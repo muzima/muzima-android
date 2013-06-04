@@ -1,0 +1,10 @@
+local.properties
+project.properties
+.idea
+gen/
+target/
+muzima-ui.iml
+gen-external-apklibs/
+out/
+tmp/
+*.iml
