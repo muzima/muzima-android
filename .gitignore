@@ -8,3 +8,4 @@ gen-external-apklibs/
 out/
 tmp/
 *.iml
+classes/
