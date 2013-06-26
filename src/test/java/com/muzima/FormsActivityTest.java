@@ -4,9 +4,9 @@ package com.muzima;
 import android.widget.ListView;
 
 import com.muzima.testSupport.CustomTestRunner;
+import com.muzima.view.FormsActivity;
 
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertNotNull;

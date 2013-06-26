@@ -1,4 +1,4 @@
-package com.muzima;
+package com.muzima.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.muzima.R;
 import com.muzima.domain.Form;
 import com.muzima.utils.Fonts;
 

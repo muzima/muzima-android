@@ -1,20 +1,25 @@
 
-package com.muzima;
+package com.muzima.view;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
+import com.muzima.R;
 import com.muzima.domain.Form;
 import com.muzima.domain.Html5Form;
+import com.muzima.service.FormsService;
 
 public class FormsActivity extends SherlockActivity implements ActionBar.TabListener {
     private ListView formsList;
+    private FormsService formsService;
     private Form[] forms = {
             new Html5Form("1", "Patient Form", "A form to register patient", null),
             new Html5Form("2", "PMTCT Form", "", null),
@@ -25,6 +30,8 @@ public class FormsActivity extends SherlockActivity implements ActionBar.TabList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        formsService = ((MuzimaApplication)getApplication()).getFormsService();
+
         formsList = (ListView) findViewById(R.id.forms_list);
         formsList.setAdapter(new FormsAdapter(this, R.layout.form_list_item, forms));
 
@@ -33,16 +40,44 @@ public class FormsActivity extends SherlockActivity implements ActionBar.TabList
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getSupportMenuInflater().inflate(R.menu.form_list_activity_menu, menu);
+
         SearchView searchView = new SearchView(getSupportActionBar().getThemedContext());
         searchView.setQueryHint("Search forms..");
 
         menu.add("Search")
-                .setIcon(R.drawable.ic_search_inverse)
+                .setIcon(R.drawable.ic_search)
                 .setActionView(searchView)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_load:
+                int fetchingStatus = formsService.fetchForms();
+                if(fetchingStatus == FormsService.NO_NETWORK_CONNECTIVITY){
+                    Toast.makeText(this, "No network connectivity, please try again later", Toast.LENGTH_SHORT).show();
+                }else if(fetchingStatus == FormsService.ALREADY_FETCHING){
+                    Toast.makeText(this, "Already fetching forms, ignored the request", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override
