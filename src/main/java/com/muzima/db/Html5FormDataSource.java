@@ -20,13 +20,18 @@ public class Html5FormDataSource {
     private String[] allColumns = {Html5FormEntry.COLUMN_NAME_ENTRY_ID,
             Html5FormEntry.COLUMN_NAME_NAME,
             Html5FormEntry.COLUMN_NAME_DESCRIPTION};
+    private DataChangeListener dataChangeListener;
 
     public Html5FormDataSource(Context context) {
         dbHelper = new Html5FormDBHelper(context);
     }
 
-    public void open() throws SQLException {
+    public void openToWrite() throws SQLException {
         database = dbHelper.getWritableDatabase();
+    }
+
+    public void openToRead() throws SQLException {
+        database = dbHelper.getReadableDatabase();
     }
 
     public void close() {
@@ -39,14 +44,25 @@ public class Html5FormDataSource {
         Cursor cursor = database.query(Html5FormEntry.TABLE_NAME,
                 allColumns, null, null, null, null, null);
 
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Html5Form form = getFormFromCursor(cursor);
-            forms.add(form);
-            cursor.moveToNext();
+        if (cursor != null) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Html5Form form = getFormFromCursor(cursor);
+                forms.add(form);
+                cursor.moveToNext();
+            }
+            cursor.close();
         }
-        cursor.close();
         return forms;
+    }
+
+    public void saveForms(List<Html5Form> forms){
+        for (Html5Form form : forms) {
+            saveForm(form);
+        }
+        if(dataChangeListener != null){
+            dataChangeListener.onInsert();
+        }
     }
 
     public void saveForm(Html5Form form) {
@@ -56,6 +72,22 @@ public class Html5FormDataSource {
         values.put(Html5FormEntry.COLUMN_NAME_DESCRIPTION, form.getDescription());
         database.insert(Html5FormEntry.TABLE_NAME, null,
                 values);
+    }
+
+    public void deleteAllForms(){
+        database.delete(Html5FormEntry.TABLE_NAME, null, null);
+    }
+
+    public interface DataChangeListener{
+        public void onInsert();
+    }
+
+    public void setDataChangeListener(DataChangeListener dataChangeListener) {
+        this.dataChangeListener = dataChangeListener;
+    }
+
+    public void removeDataChangeListener(){
+        this.dataChangeListener = null;
     }
 
     private Html5Form getFormFromCursor(Cursor cursor) {

@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.muzima.db.Html5FormDataSource;
+import com.muzima.domain.Html5Form;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,6 +19,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FormsService {
     private static final String TAG = "FORM_SERVICE";
@@ -31,20 +34,17 @@ public class FormsService {
     private static final String FORMS_URL = "http://10.4.32.241:8081/openmrs-standalone/module/html5forms/forms.form";
 
     private Context context;
-    private Html5FormDataSource mHtml5FormDataSource;
+    private Html5FormDataSource html5FormDataSource;
     private int currentState;
 
     public FormsService(Context context, Html5FormDataSource html5FormDataSource) {
         this.context = context;
-        mHtml5FormDataSource = html5FormDataSource;
+        this.html5FormDataSource = html5FormDataSource;
         currentState = NOT_FETCHING;
     }
 
     public int fetchForms() {
-        ConnectivityManager connMgr = (ConnectivityManager)
-                context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
+        if (isConnectedToNetwork()) {
             if (currentState == FETCHING) {
                 return ALREADY_FETCHING;
             }
@@ -54,6 +54,13 @@ public class FormsService {
         } else {
             return NO_NETWORK_CONNECTIVITY;
         }
+    }
+
+    private boolean isConnectedToNetwork() {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
     }
 
     private class FetchFormsInBackgroundTask extends AsyncTask<Void, Void, Void> {
@@ -105,12 +112,16 @@ public class FormsService {
 
     private void saveForms(String formsString) throws JSONException {
         JSONArray jsonArray = new JSONArray(formsString);
+        List<Html5Form> forms = new ArrayList<Html5Form>();
         for(int i =0; i<jsonArray.length(); i++){
             JSONObject jsonForm = jsonArray.getJSONObject(i);
-            Log.i(TAG, "id :" + jsonForm.get("id"));
-            Log.i(TAG, "name :" + jsonForm.get("name"));
-            Log.i(TAG, "description :" + jsonForm.get("description"));
+            String id = jsonForm.getString("id");
+            String name = jsonForm.getString("name");
+            String description = jsonForm.getString("description");
+            Html5Form form = new Html5Form(id, name, description, null);
+            forms.add(form);
         }
+        html5FormDataSource.saveForms(forms);
     }
 
     private String getStringFromInputStream(InputStream is) throws IOException {

@@ -3,7 +3,6 @@ package com.muzima.view;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -13,17 +12,12 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 import com.muzima.R;
-import com.muzima.domain.Form;
-import com.muzima.domain.Html5Form;
+import com.muzima.db.Html5FormDataSource;
 import com.muzima.service.FormsService;
 
 public class FormsActivity extends SherlockActivity implements ActionBar.TabListener {
     private ListView formsList;
     private FormsService formsService;
-    private Form[] forms = {
-            new Html5Form("1", "Patient Form", "A form to register patient", null),
-            new Html5Form("2", "PMTCT Form", "", null),
-            new Html5Form("1", "Ante-Natal Care Form", "This forms hold the ante-natal care information", null),};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,7 +27,8 @@ public class FormsActivity extends SherlockActivity implements ActionBar.TabList
         formsService = ((MuzimaApplication)getApplication()).getFormsService();
 
         formsList = (ListView) findViewById(R.id.forms_list);
-        formsList.setAdapter(new FormsAdapter(this, R.layout.form_list_item, forms));
+        Html5FormDataSource html5FormDataSource = ((MuzimaApplication) getApplication()).getHtml5FormDataSource();
+        formsList.setAdapter(new Html5FormsAdapter(this, R.layout.form_list_item, html5FormDataSource));
 
         getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         initTabs();
