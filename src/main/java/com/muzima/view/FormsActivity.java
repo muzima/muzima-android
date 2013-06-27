@@ -3,6 +3,7 @@ package com.muzima.view;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -16,8 +17,10 @@ import com.muzima.db.Html5FormDataSource;
 import com.muzima.service.FormsService;
 
 public class FormsActivity extends SherlockActivity implements ActionBar.TabListener {
+    private static final String TAG = "FormsActivity";
     private ListView formsList;
     private FormsService formsService;
+    private Html5FormDataSource html5FormDataSource;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,8 +29,10 @@ public class FormsActivity extends SherlockActivity implements ActionBar.TabList
 
         formsService = ((MuzimaApplication)getApplication()).getFormsService();
 
+        html5FormDataSource = ((MuzimaApplication) getApplication()).getHtml5FormDataSource();
+        html5FormDataSource.open();
+
         formsList = (ListView) findViewById(R.id.forms_list);
-        Html5FormDataSource html5FormDataSource = ((MuzimaApplication) getApplication()).getHtml5FormDataSource();
         formsList.setAdapter(new Html5FormsAdapter(this, R.layout.form_list_item, html5FormDataSource));
 
         getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -37,11 +42,13 @@ public class FormsActivity extends SherlockActivity implements ActionBar.TabList
     @Override
     protected void onResume() {
         super.onResume();
+        html5FormDataSource.open();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        html5FormDataSource.close();
     }
 
     @Override
@@ -64,6 +71,7 @@ public class FormsActivity extends SherlockActivity implements ActionBar.TabList
         switch (item.getItemId()){
             case R.id.menu_load:
                 int fetchingStatus = formsService.fetchForms();
+                Log.d(TAG, "fetching status is " + fetchingStatus);
                 if(fetchingStatus == FormsService.NO_NETWORK_CONNECTIVITY){
                     Toast.makeText(this, "No network connectivity, please try again later", Toast.LENGTH_SHORT).show();
                 }else if(fetchingStatus == FormsService.ALREADY_FETCHING){

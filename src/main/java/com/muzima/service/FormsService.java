@@ -31,7 +31,7 @@ public class FormsService {
     public static final int ALREADY_FETCHING = 1;
     public static final int STARTED_A_NEW_FETCH = 2;
 
-    private static final String FORMS_URL = "http://10.4.32.241:8081/openmrs-standalone/module/html5forms/forms.form";
+    private static final String FORMS_URL = "http://192.168.0.5:8081/openmrs-standalone/module/html5forms/forms.form";
 
     private Context context;
     private Html5FormDataSource html5FormDataSource;
@@ -118,9 +118,12 @@ public class FormsService {
             String id = jsonForm.getString("id");
             String name = jsonForm.getString("name");
             String description = jsonForm.getString("description");
+            description = description.equals("null") ? "" : description;
             Html5Form form = new Html5Form(id, name, description, null);
             forms.add(form);
         }
+        Log.d(TAG, "Number of Forms fetched: " + forms.size());
+        html5FormDataSource.deleteAllForms();
         html5FormDataSource.saveForms(forms);
     }
 

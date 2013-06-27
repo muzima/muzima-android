@@ -17,16 +17,15 @@ import java.util.List;
 
 import static com.muzima.db.Html5FormDataSource.DataChangeListener;
 
-public class Html5FormsAdapter extends ArrayAdapter<Html5Form> implements DataChangeListener{
+public class Html5FormsAdapter extends ArrayAdapter<Html5Form> implements DataChangeListener {
 
     private Html5FormDataSource html5FormDataSource;
-    private final BackgroundQueryTask backgroundQueryTask;
 
-    public Html5FormsAdapter(Context context, int textViewResourceId,Html5FormDataSource html5FormDataSource) {
+    public Html5FormsAdapter(Context context, int textViewResourceId, Html5FormDataSource html5FormDataSource) {
         super(context, textViewResourceId);
         this.html5FormDataSource = html5FormDataSource;
-        backgroundQueryTask = new BackgroundQueryTask();
-        backgroundQueryTask.execute();
+        html5FormDataSource.setDataChangeListener(this);
+        new BackgroundQueryTask().execute();
     }
 
 
@@ -52,7 +51,11 @@ public class Html5FormsAdapter extends ArrayAdapter<Html5Form> implements DataCh
         holder.name.setText(form.getName());
         holder.name.setTypeface(Fonts.roboto_bold(getContext()));
 
-        holder.description.setText(form.getDescription());
+        String description = form.getDescription();
+        if(description.equals("")){
+            description = "No description available";
+        }
+        holder.description.setText(description);
         holder.name.setTypeface(Fonts.roboto_medium(getContext()));
 
         return convertView;
@@ -60,7 +63,7 @@ public class Html5FormsAdapter extends ArrayAdapter<Html5Form> implements DataCh
 
     @Override
     public void onInsert() {
-        backgroundQueryTask.execute();
+        new BackgroundQueryTask().execute();
     }
 
     private static class ViewHolder {
@@ -68,13 +71,11 @@ public class Html5FormsAdapter extends ArrayAdapter<Html5Form> implements DataCh
         TextView description;
     }
 
-    public class BackgroundQueryTask extends AsyncTask<Void, Void, List<Html5Form>>{
+    public class BackgroundQueryTask extends AsyncTask<Void, Void, List<Html5Form>> {
 
         @Override
         protected List<Html5Form> doInBackground(Void... voids) {
-            html5FormDataSource.openToRead();
             List<Html5Form> allForms = html5FormDataSource.getAllForms();
-            html5FormDataSource.close();
             return allForms;
         }
 

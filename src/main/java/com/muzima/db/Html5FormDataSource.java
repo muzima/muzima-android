@@ -26,12 +26,8 @@ public class Html5FormDataSource {
         dbHelper = new Html5FormDBHelper(context);
     }
 
-    public void openToWrite() throws SQLException {
+    public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
-    }
-
-    public void openToRead() throws SQLException {
-        database = dbHelper.getReadableDatabase();
     }
 
     public void close() {
@@ -72,6 +68,7 @@ public class Html5FormDataSource {
         values.put(Html5FormEntry.COLUMN_NAME_DESCRIPTION, form.getDescription());
         database.insert(Html5FormEntry.TABLE_NAME, null,
                 values);
+
     }
 
     public void deleteAllForms(){
