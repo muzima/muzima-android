@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
@@ -8,4 +8,31 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
     </ListView>
-</LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/no_data_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone">
+
+        <TextView
+                android:id="@+id/no_data_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_data_text"
+                android:gravity="center_horizontal"
+                android:textSize="20sp">
+        </TextView>
+
+        <TextView
+                android:id="@+id/no_data_tip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_data_hint"
+                android:gravity="center_horizontal"
+                android:textSize="16sp">
+        </TextView>
+    </LinearLayout>
+</FrameLayout>

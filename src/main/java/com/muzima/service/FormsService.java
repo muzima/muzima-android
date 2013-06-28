@@ -63,28 +63,6 @@ public class FormsService {
         return (networkInfo != null && networkInfo.isConnected());
     }
 
-    private class FetchFormsInBackgroundTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                String formsString = downloadForms();
-                saveForms(formsString);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            currentState = NOT_FETCHING;
-        }
-    }
-
     private String downloadForms() throws IOException {
         InputStream is = null;
 
@@ -154,5 +132,28 @@ public class FormsService {
             }
         }
         return sb.toString();
+    }
+
+    private class FetchFormsInBackgroundTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                String formsString = downloadForms();
+                saveForms(formsString);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            currentState = NOT_FETCHING;
+            html5FormDataSource.notifyDataSetChanged();
+        }
     }
 }

@@ -4,8 +4,10 @@ package com.muzima.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.muzima.domain.Html5Form;
 import com.muzima.utils.StringUtils;
@@ -60,9 +62,18 @@ public class Html5FormDataSource {
         for (Html5Form form : forms) {
             saveForm(form);
         }
+    }
+
+    public void notifyDataSetChanged() {
         if(dataChangeListener != null){
             dataChangeListener.onInsert();
         }
+    }
+
+    public boolean hasForms(){
+        long numOfForms = DatabaseUtils.queryNumEntries(database, Html5FormEntry.TABLE_NAME);
+        Log.w("DEBUG", "numOfForms" + numOfForms);
+        return numOfForms != 0;
     }
 
     public void saveForm(Html5Form form) {
