@@ -13,7 +13,7 @@ public class Html5FormDBHelper extends SQLiteOpenHelper{
 
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";
-    private static final String SQL_CREATE_ENTRIES =
+    public static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + Html5FormEntry.TABLE_NAME + " (" +
                     Html5FormEntry._ID + " INTEGER PRIMARY KEY," +
                     Html5FormEntry.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
@@ -22,7 +22,7 @@ public class Html5FormDBHelper extends SQLiteOpenHelper{
                     Html5FormEntry.COLUMN_NAME_TAGS + TEXT_TYPE +
             " )";
 
-    private static final String SQL_DELETE_ENTRIES =
+    public static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + Html5FormEntry.TABLE_NAME;
 
     public Html5FormDBHelper(Context context) {

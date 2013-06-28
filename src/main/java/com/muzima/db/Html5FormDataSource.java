@@ -26,10 +26,9 @@ public class Html5FormDataSource {
             Html5FormEntry.COLUMN_NAME_NAME,
             Html5FormEntry.COLUMN_NAME_DESCRIPTION,
             Html5FormEntry.COLUMN_NAME_TAGS};
-    private DataChangeListener dataChangeListener;
 
-    public Html5FormDataSource(Context context) {
-        dbHelper = new Html5FormDBHelper(context);
+    public Html5FormDataSource(Html5FormDBHelper dbHelper) {
+        this.dbHelper = dbHelper;
     }
 
     public void open() throws SQLException {
@@ -64,12 +63,6 @@ public class Html5FormDataSource {
         }
     }
 
-    public void notifyDataSetChanged() {
-        if(dataChangeListener != null){
-            dataChangeListener.onInsert();
-        }
-    }
-
     public boolean hasForms(){
         long numOfForms = DatabaseUtils.queryNumEntries(database, Html5FormEntry.TABLE_NAME);
         Log.w("DEBUG", "numOfForms" + numOfForms);
@@ -89,18 +82,6 @@ public class Html5FormDataSource {
 
     public void deleteAllForms(){
         database.delete(Html5FormEntry.TABLE_NAME, null, null);
-    }
-
-    public interface DataChangeListener{
-        public void onInsert();
-    }
-
-    public void setDataChangeListener(DataChangeListener dataChangeListener) {
-        this.dataChangeListener = dataChangeListener;
-    }
-
-    public void removeDataChangeListener(){
-        this.dataChangeListener = null;
     }
 
     private Html5Form getFormFromCursor(Cursor cursor) {

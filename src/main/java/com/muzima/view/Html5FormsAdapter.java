@@ -17,8 +17,6 @@ import com.muzima.utils.StringUtils;
 
 import java.util.List;
 
-import static com.muzima.db.Html5FormDataSource.DataChangeListener;
-
 public class Html5FormsAdapter extends ArrayAdapter<Html5Form>{
 
     private Html5FormDataSource html5FormDataSource;

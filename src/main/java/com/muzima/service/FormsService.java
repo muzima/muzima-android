@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.muzima.Urls;
 import com.muzima.db.Html5FormDataSource;
 import com.muzima.domain.Html5Form;
 
@@ -17,42 +18,80 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FormsService {
     private static final String TAG = "FORM_SERVICE";
-    private static final int FETCHING = 0;
-    private static final int NOT_FETCHING = 1;
+    public static final int FETCHING = 0;
+    public static final int NOT_FETCHING = 1;
 
     public static final int NO_NETWORK_CONNECTIVITY = 0;
     public static final int ALREADY_FETCHING = 1;
-    public static final int STARTED_A_NEW_FETCH = 2;
-
-    private static final String FORMS_URL = "http://10.4.32.241:8081/openmrs-standalone/module/html5forms/forms.form";
+    public static final int FETCH_SUCCESSFUL = 2;
+    public static final int IO_EXCEPTION = 3;
+    public static final int JSON_EXCEPTION = 4;
 
     private Context context;
     private Html5FormDataSource html5FormDataSource;
     private int currentState;
+    private OnDataFetchComplete dataFetchListener;
+    private HttpService httpService;
 
-    public FormsService(Context context, Html5FormDataSource html5FormDataSource) {
+    public FormsService(Context context, Html5FormDataSource html5FormDataSource, HttpService httpService) {
         this.context = context;
         this.html5FormDataSource = html5FormDataSource;
+        this.httpService = httpService;
         currentState = NOT_FETCHING;
     }
 
-    public int fetchForms() {
+    public void fetchForms() {
         if (isConnectedToNetwork()) {
             if (currentState == FETCHING) {
-                return ALREADY_FETCHING;
+                if (dataFetchListener != null) {
+                    dataFetchListener.onFetch(ALREADY_FETCHING);
+                }
             }
             currentState = FETCHING;
             new FetchFormsInBackgroundTask().execute();
-            return STARTED_A_NEW_FETCH;
         } else {
-            return NO_NETWORK_CONNECTIVITY;
+            if (dataFetchListener != null) {
+                dataFetchListener.onFetch(NO_NETWORK_CONNECTIVITY);
+            }
+        }
+    }
+
+    public int getCurrentState() {
+        return currentState;
+    }
+
+    public void setDataFetchListener(OnDataFetchComplete dataFetchListener) {
+        this.dataFetchListener = dataFetchListener;
+    }
+
+    private class FetchFormsInBackgroundTask extends AsyncTask<Void, Void, Integer> {
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            try {
+                saveForms(downloadForms());
+                return FETCH_SUCCESSFUL;
+            } catch (IOException e) {
+                return IO_EXCEPTION;
+            } catch (JSONException e) {
+                return JSON_EXCEPTION;
+            } catch (URISyntaxException e) {
+                throw new RuntimeException("URISyntaxException occurred for " + Urls.FORMS_GET_URL);
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Integer resultCode) {
+            currentState = NOT_FETCHING;
+            if (dataFetchListener != null) {
+                dataFetchListener.onFetch(resultCode);
+            }
         }
     }
 
@@ -63,24 +102,14 @@ public class FormsService {
         return (networkInfo != null && networkInfo.isConnected());
     }
 
-    private String downloadForms() throws IOException {
+    private String downloadForms() throws IOException, URISyntaxException {
         InputStream is = null;
-
         try {
-            URL url = new URL(FORMS_URL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(10000 /* milliseconds */);
-            conn.setConnectTimeout(15000 /* milliseconds */);
-            conn.setRequestMethod("GET");
-            conn.setDoInput(true);
-            conn.connect();
+            HttpService.Response response = httpService.get(Urls.FORMS_GET_URL, null);
+            is = response.getResponseBody();
 
-            int response = conn.getResponseCode();
-            Log.d(TAG, "The response is: " + response);
-            is = conn.getInputStream();
             String result = getStringFromInputStream(is);
             return result;
-
         } finally {
             if (is != null) {
                 is.close();
@@ -91,7 +120,7 @@ public class FormsService {
     private void saveForms(String formsString) throws JSONException {
         JSONArray jsonArray = new JSONArray(formsString);
         List<Html5Form> forms = new ArrayList<Html5Form>();
-        for(int i =0; i<jsonArray.length(); i++){
+        for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonForm = jsonArray.getJSONObject(i);
             String id = jsonForm.getString("id");
             String name = jsonForm.getString("name");
@@ -109,7 +138,7 @@ public class FormsService {
     private List<String> parseTagsArray(JSONObject jsonForm) throws JSONException {
         JSONArray tagsArray = jsonForm.getJSONArray("tags");
         List<String> tags = new ArrayList<String>();
-        for(int i =0; i<tagsArray.length(); i++){
+        for (int i = 0; i < tagsArray.length(); i++) {
             JSONObject tag = tagsArray.getJSONObject(i);
             tags.add(tag.getString("name"));
         }
@@ -134,26 +163,7 @@ public class FormsService {
         return sb.toString();
     }
 
-    private class FetchFormsInBackgroundTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                String formsString = downloadForms();
-                saveForms(formsString);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            currentState = NOT_FETCHING;
-            html5FormDataSource.notifyDataSetChanged();
-        }
+    public interface OnDataFetchComplete {
+        public void onFetch(int resultCode);
     }
 }

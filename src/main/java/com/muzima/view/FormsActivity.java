@@ -14,14 +14,14 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.db.Html5FormDataSource;
 import com.muzima.service.FormsService;
 import com.muzima.utils.Fonts;
 
-import static com.muzima.db.Html5FormDataSource.DataChangeListener;
 
-public class FormsActivity extends SherlockActivity implements ActionBar.TabListener, DataChangeListener {
+public class FormsActivity extends SherlockActivity implements ActionBar.TabListener, FormsService.OnDataFetchComplete {
     private static final String TAG = "FormsActivity";
     private ListView formsList;
     private FormsService formsService;
@@ -35,10 +35,10 @@ public class FormsActivity extends SherlockActivity implements ActionBar.TabList
         setContentView(R.layout.activity_main);
 
         formsService = ((MuzimaApplication) getApplication()).getFormsService();
+        formsService.setDataFetchListener(this);
 
         html5FormDataSource = ((MuzimaApplication) getApplication()).getHtml5FormDataSource();
         html5FormDataSource.open();
-        html5FormDataSource.setDataChangeListener(this);
         html5FormsAdapter = new Html5FormsAdapter(this, R.layout.form_list_item, html5FormDataSource);
 
         formsList = (ListView) findViewById(R.id.forms_list);
@@ -82,13 +82,7 @@ public class FormsActivity extends SherlockActivity implements ActionBar.TabList
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_load:
-                int fetchingStatus = formsService.fetchForms();
-                Log.d(TAG, "fetching status is " + fetchingStatus);
-                if (fetchingStatus == FormsService.NO_NETWORK_CONNECTIVITY) {
-                    Toast.makeText(this, "No network connectivity, please try again later", Toast.LENGTH_SHORT).show();
-                } else if (fetchingStatus == FormsService.ALREADY_FETCHING) {
-                    Toast.makeText(this, "Already fetching forms, ignored the request", Toast.LENGTH_SHORT).show();
-                }
+                formsService.fetchForms();
                 return true;
             default:
                 return false;
@@ -96,10 +90,30 @@ public class FormsActivity extends SherlockActivity implements ActionBar.TabList
     }
 
     @Override
-    public void onInsert() {
-        setupListView();
-        if(html5FormDataSource.hasForms()){
-            html5FormsAdapter.dataSetChanged();
+    public void onFetch(int resultCode) {
+        Log.d(TAG, "fetching result code is " + resultCode);
+        switch (resultCode) {
+            case FormsService.NO_NETWORK_CONNECTIVITY:
+                Toast.makeText(this, "No network connectivity, please try again later", Toast.LENGTH_SHORT).show();
+                break;
+            case FormsService.ALREADY_FETCHING:
+                Toast.makeText(this, "Already fetching forms, ignored the request", Toast.LENGTH_SHORT).show();
+                break;
+            case FormsService.IO_EXCEPTION:
+                Toast.makeText(this, "I/O Exception occurred while fetching forms from server", Toast.LENGTH_SHORT).show();
+                break;
+            case FormsService.JSON_EXCEPTION:
+                Toast.makeText(this, "JSON Parse Exception occurred while fetching forms from server", Toast.LENGTH_SHORT).show();
+                break;
+            case FormsService.FETCH_SUCCESSFUL:
+                Toast.makeText(this, "Done fetching forms", Toast.LENGTH_SHORT).show();
+                setupListView();
+                if (html5FormDataSource.hasForms()) {
+                    html5FormsAdapter.dataSetChanged();
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -149,4 +163,5 @@ public class FormsActivity extends SherlockActivity implements ActionBar.TabList
         noDataText.setTypeface(Fonts.roboto_bold_condensed(this));
         noDataTip.setTypeface(Fonts.roboto_light(this));
     }
+
 }

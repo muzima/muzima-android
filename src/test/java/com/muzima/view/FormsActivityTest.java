@@ -1,4 +1,4 @@
-package com.muzima;
+package com.muzima.view;
 
 
 import android.widget.ListView;
