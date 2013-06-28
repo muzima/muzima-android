@@ -1,29 +1,36 @@
 package com.muzima.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.muzima.R;
 import com.muzima.db.Html5FormDataSource;
 import com.muzima.domain.Html5Form;
 import com.muzima.utils.Fonts;
-import com.muzima.utils.StringUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
-public class Html5FormsAdapter extends ArrayAdapter<Html5Form>{
+public class Html5FormsAdapter extends ArrayAdapter<Html5Form> {
 
     private Html5FormDataSource html5FormDataSource;
+    private Map<String, Integer> tagColors;
 
     public Html5FormsAdapter(Context context, int textViewResourceId, Html5FormDataSource html5FormDataSource) {
         super(context, textViewResourceId);
         this.html5FormDataSource = html5FormDataSource;
+        tagColors = new HashMap<String, Integer>();
         new BackgroundQueryTask().execute();
     }
 
@@ -40,6 +47,9 @@ public class Html5FormsAdapter extends ArrayAdapter<Html5Form>{
                     .findViewById(R.id.form_name);
             holder.description = (TextView) convertView
                     .findViewById(R.id.form_description);
+            holder.tagsScroller = (HorizontalScrollView) convertView.findViewById(R.id.tags_scroller);
+            holder.tagsLayout = (LinearLayout) convertView.findViewById(R.id.tags);
+            holder.tags = new ArrayList<TextView>();
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -51,24 +61,66 @@ public class Html5FormsAdapter extends ArrayAdapter<Html5Form>{
         holder.name.setTypeface(Fonts.roboto_bold(getContext()));
 
         String description = form.getDescription();
-        if(description.equals("")){
+        if (description.equals("")) {
             description = "No description available";
         }
         holder.description.setText(description);
         holder.name.setTypeface(Fonts.roboto_medium(getContext()));
 
-        Log.w("DEBUG", "tags: " + StringUtils.getCommaSeparatedStringFromList(form.getTags()));
+        addTags(holder, form);
 
         return convertView;
     }
 
-    public void dataSetChanged(){
+    private void addTags(ViewHolder holder, Html5Form form) {
+        List<String> tags = form.getTags();
+        if (tags.size() > 0) {
+            holder.tagsScroller.setVisibility(View.VISIBLE);
+            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+            for (int i = 0; i < tags.size(); i++) {
+                TextView textView = null;
+                if (holder.tags.size() <= i) {
+                    textView = (TextView) layoutInflater.inflate(R.layout.tag, null, false);
+                    holder.tags.add(textView);
+                    holder.tagsLayout.addView(textView);
+                }
+                textView = holder.tags.get(i);
+                textView.setText(tags.get(i));
+                textView.setBackgroundColor(getTagColor(tags.get(i)));
+            }
+            if (tags.size() < holder.tags.size()) {
+                for (int i = tags.size(); i < holder.tags.size(); i++) {
+                    holder.tagsLayout.removeView(holder.tags.get(i));
+                    holder.tags.remove(i);
+                }
+            }
+        } else {
+            holder.tagsScroller.setVisibility(View.GONE);
+        }
+    }
+
+    private int getTagColor(String tag) {
+        if(tagColors.get(tag) == null){
+            tagColors.put(tag, randomColor());
+        }
+        return tagColors.get(tag);
+    }
+
+    public static Integer randomColor() {
+        Random random = new Random();
+        return Color.rgb(100 + random.nextInt(150), 100 + random.nextInt(150), 100 + random.nextInt(150));
+    }
+
+    public void dataSetChanged() {
         new BackgroundQueryTask().execute();
     }
 
     private static class ViewHolder {
         TextView name;
         TextView description;
+        HorizontalScrollView tagsScroller;
+        LinearLayout tagsLayout;
+        List<TextView> tags;
     }
 
     public class BackgroundQueryTask extends AsyncTask<Void, Void, List<Html5Form>> {
