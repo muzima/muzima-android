@@ -1,13 +1,15 @@
 package com.muzima.domain;
 
 
+import java.util.List;
+
 public class Html5Form implements Form {
     private String id;
     private String name;
     private String description;
-    private String[] tags;
+    private List<String> tags;
 
-    public Html5Form(String id, String name, String description, String[] tags){
+    public Html5Form(String id, String name, String description, List<String> tags){
         this.id = id;
         this.name = name;
         this.description = description;
@@ -30,7 +32,7 @@ public class Html5Form implements Form {
     }
 
     @Override
-    public String[] getTags() {
+    public List<String> getTags() {
         return tags;
     }
 }

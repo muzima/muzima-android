@@ -18,7 +18,8 @@ public class Html5FormDBHelper extends SQLiteOpenHelper{
                     Html5FormEntry._ID + " INTEGER PRIMARY KEY," +
                     Html5FormEntry.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
                     Html5FormEntry.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
-                    Html5FormEntry.COLUMN_NAME_DESCRIPTION + TEXT_TYPE +
+                    Html5FormEntry.COLUMN_NAME_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
+                    Html5FormEntry.COLUMN_NAME_TAGS + TEXT_TYPE +
             " )";
 
     private static final String SQL_DELETE_ENTRIES =

@@ -1,8 +1,10 @@
 package com.muzima.domain;
 
+import java.util.List;
+
 public interface Form {
     public String getId();
     public String getName();
     public String getDescription();
-    public String[] getTags();
+    public List<String> getTags();
 }

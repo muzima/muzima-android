@@ -2,6 +2,7 @@ package com.muzima.view;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.muzima.R;
 import com.muzima.db.Html5FormDataSource;
 import com.muzima.domain.Html5Form;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.StringUtils;
 
 import java.util.List;
 
@@ -57,6 +59,8 @@ public class Html5FormsAdapter extends ArrayAdapter<Html5Form> implements DataCh
         }
         holder.description.setText(description);
         holder.name.setTypeface(Fonts.roboto_medium(getContext()));
+
+        Log.w("DEBUG", "tags: " + StringUtils.getCommaSeparatedStringFromList(form.getTags()));
 
         return convertView;
     }

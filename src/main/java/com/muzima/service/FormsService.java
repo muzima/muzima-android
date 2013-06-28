@@ -31,7 +31,7 @@ public class FormsService {
     public static final int ALREADY_FETCHING = 1;
     public static final int STARTED_A_NEW_FETCH = 2;
 
-    private static final String FORMS_URL = "http://192.168.0.5:8081/openmrs-standalone/module/html5forms/forms.form";
+    private static final String FORMS_URL = "http://10.4.32.241:8081/openmrs-standalone/module/html5forms/forms.form";
 
     private Context context;
     private Html5FormDataSource html5FormDataSource;
@@ -119,12 +119,23 @@ public class FormsService {
             String name = jsonForm.getString("name");
             String description = jsonForm.getString("description");
             description = description.equals("null") ? "" : description;
-            Html5Form form = new Html5Form(id, name, description, null);
+            List<String> tags = parseTagsArray(jsonForm);
+            Html5Form form = new Html5Form(id, name, description, tags);
             forms.add(form);
         }
         Log.d(TAG, "Number of Forms fetched: " + forms.size());
         html5FormDataSource.deleteAllForms();
         html5FormDataSource.saveForms(forms);
+    }
+
+    private List<String> parseTagsArray(JSONObject jsonForm) throws JSONException {
+        JSONArray tagsArray = jsonForm.getJSONArray("tags");
+        List<String> tags = new ArrayList<String>();
+        for(int i =0; i<tagsArray.length(); i++){
+            JSONObject tag = tagsArray.getJSONObject(i);
+            tags.add(tag.getString("name"));
+        }
+        return tags;
     }
 
     private String getStringFromInputStream(InputStream is) throws IOException {
