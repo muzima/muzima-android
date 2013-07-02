@@ -1,0 +1,84 @@
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/DashboardWrapper"
+    tools:context=".MainActivity" >
+
+    <LinearLayout style="@style/DashboardTableContainer" >
+
+        <TextView
+            android:id="@+id/providerName"
+            style="@style/DashboardTitleText"
+            android:text="@string/title_logout" />
+
+        <LinearLayout style="@style/SummaryItemRow" >
+
+            <LinearLayout android:id="@+id/sync_device"
+                style="@style/DashboardButton"
+                android:onClick="sync_device" >
+
+                <ImageView
+                    android:id="@+id/ic_sync"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_sync" />
+
+                <TextView
+                    style="@style/DashboardBaseText"
+                    android:paddingLeft="4dp"
+                    android:text="@string/textview_sync_device" >
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/logout"
+                style="@style/DashboardButton"
+                android:onClick="logout" >
+
+                <ImageView
+                    android:id="@+id/ic_spaceholder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_spaceholder" />
+
+                <TextView
+                    style="@style/DashboardBaseText"
+                    android:paddingLeft="4dp"
+                    android:text="@string/textview_logout" >
+                </TextView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout style="@style/DividerLine" >
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="bottom"
+        android:orientation="vertical" >
+
+        <LinearLayout style="@style/DashboardRefreshBar" >
+
+            <ImageButton
+                android:id="@+id/refreshButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#222222"
+                android:padding="5dp"
+                android:src="@drawable/ic_sync"
+                android:onClick="refresh" />
+
+            <TextView
+                style="@style/DashboardBaseText"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="right|center"
+                android:padding="5dp"
+                android:text="Last Sync: 3:00 pm 5/27/2013"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

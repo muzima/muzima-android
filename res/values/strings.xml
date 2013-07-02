@@ -1,10 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<string name="app_name">Muzima</string>
-	<string name="menu_settings">Settings</string>
+    <string name="app_name">mUzima</string>
+    <string name="menu_settings">Settings</string>
     <string name="menu_load">Load</string>
     <string name="menu_search">Search</string>
     <string name="no_data_text">No Forms Available</string>
     <string name="no_data_hint">Please press load to fetch data from server</string>
-
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_client_list">Clients</string>
+    <string name="client_search">Search Name or ID</string>
+    <string name="observation_search">Search Observations</string>
+    <string name="title_activity_search_results">SearchResultsActivity</string>
+    <string name="title_activity_settings">Settings Activity</string>
+    <string name="title_activity_help">Help Activity</string>
+    <string name="title_activity_logout">Logout Activity</string>
+    <string name="title_activity_register_client">Register Client Activity</string>
+    <string name="title_activity_sync">Sync Activity</string>
+    <string name="title_activity_form_list">Form List Activity</string>
+    <string name="title_activity_notice_list">Notice List Activity</string>
+    <string name="title_activity_client_summary">Client Summary Activity</string>
+    <string name="title_activity_client_observations">ClientObservationsActivity</string>
+    <string name="title_login">Please Log In</string>
+    <string name="textview_login_username">Username:</string>
+    <string name="textview_login_password">Password:</string>
+    <string name="button_login">Log In</string>
+    <string name="button_logout">Log Out</string>
+    <string name="title_logout">Log Out:</string>
+    <string name="textview_sync_device">Sync Device</string>
+    <string name="textview_logout">Log Out:</string>
+    <string name="textview_formlist_title">Form List:</string>
+    <string name="textview_formlist_blank_forms">Blank Forms</string>
+    <string name="textview_formlist_incomplete_forms">Incomplete Forms:</string>
+	<string name="radio_button_register_male">Male</string>
+	<string name="radio_button_register_female">Female</string>
+	<string name="textview_register_given_name">Given:</string>
+	<string name="textview_register_middle_name">Middle:</string>
+	<string name="textview_register_family_name">Family:</string>
+	<string name="textview_register_birthdate">Birthdate:</string>
+	<string name="textview_register_birthdate_format">dd/mm/yyyy:</string>
+	<string name="textview_register_identifier">Identifier:</string>
+	<string name="textview_register_patient_identifier">Patient Identifier:</string>
 </resources>

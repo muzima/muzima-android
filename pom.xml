@@ -17,10 +17,10 @@
 		<!-- Plugins -->
 		<android-maven-plugin.version>3.6.0</android-maven-plugin.version>
 		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
-		<api.platform>16</api.platform>
+		<api.platform>17</api.platform>
 
 		<!-- Dependencies -->
-		<actionBarSherlock.version>4.2.0</actionBarSherlock.version>
+		<actionBarSherlock.version>4.3.1</actionBarSherlock.version>
 		<android.version>4.1.1.4</android.version>
 		<nineoldandroids.version>2.4.0</nineoldandroids.version>
 		<acra.version>4.4.0</acra.version>
@@ -29,6 +29,11 @@
 	</properties>
 
 	<dependencies>
+        <dependency>
+            <groupId>com.muzima</groupId>
+            <artifactId>muzima-api</artifactId>
+            <version>1.0</version>
+        </dependency>
 		<dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>

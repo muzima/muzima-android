@@ -1,0 +1,30 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/search"
+        android:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/ic_search"
+        android:showAsAction="always"
+        android:title="@string/client_search"/>
+    <!--
+          <item
+        android:id="@+id/client_search"
+        android:icon="@drawable/ic_search"
+        android:showAsAction="always|collapseActionView"
+        android:title="@string/client_search"
+        android:actionLayout="@layout/search_layout"/>
+    -->
+    <item
+        android:id="@+id/client_add"
+        android:icon="@drawable/ic_action_add_client"
+        android:showAsAction="always"
+        android:title="@string/client_search"/>
+    <!--
+         <item
+        android:id="@+id/dashboard_here"
+        android:icon="@drawable/ic_action_dashboard"
+        android:showAsAction="always"
+        android:title="@string/action_settings"/>
+    -->
+
+</menu>

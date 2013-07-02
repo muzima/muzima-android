@@ -1,0 +1,123 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/DashboardTableContainer"
+    tools:context=".ClientSummaryActivity" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Demographics\n\n"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold" >
+    </TextView>
+
+    <LinearLayout style="@style/SummaryItemRow" >
+
+        <LinearLayout
+            android:id="@+id/quickSearch"
+            style="@style/DashboardButton"
+            android:onClick="clientObservations" >
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_search" />
+
+            <TextView
+                style="@style/DashboardBaseText"
+                android:paddingLeft="4dp"
+                android:text="Search\nObservations" >
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/DashboardButton"
+            android:onClick="clientObservations" >
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_list" />
+
+            <TextView
+                style="@style/DashboardBaseText"
+                android:paddingLeft="4dp"
+                android:text="View\nEnounter List" >
+            </TextView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout style="@style/DividerLineLight" >
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:clickable="true"
+        android:drawableRight="@drawable/ic_dropdown"
+        android:onClick="showReminders"
+        android:padding="8dp"
+        android:text="Reminders (2)"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        >
+    </TextView>
+
+    <LinearLayout style="@style/DividerLineLight" >
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:drawableRight="@drawable/ic_dropdown"
+        android:onClick="showRecommended"
+        android:padding="8dp"
+        android:text="Recommended Forms (3)"
+        android:textAppearance="?android:attr/textAppearanceLarge" >
+    </TextView>
+
+    <LinearLayout style="@style/DividerLineLight" >
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:drawableRight="@drawable/ic_dropdown"
+        android:onClick="showIncomplete"
+        android:padding="8dp"
+        android:text="Incomplete Forms (2)"
+        android:textAppearance="?android:attr/textAppearanceLarge" >
+    </TextView>
+
+    <LinearLayout style="@style/DividerLineLight" >
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:drawableRight="@drawable/ic_dropdown"
+        android:onClick="showForms"
+        android:padding="8dp"
+        android:text="More Forms (8)"
+        android:textAppearance="?android:attr/textAppearanceLarge" >
+    </TextView>
+
+    <LinearLayout style="@style/DividerLineLight" >
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="Clinical Abstracts\n\n"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold" >
+    </TextView>
+
+</LinearLayout>

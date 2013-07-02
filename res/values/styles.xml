@@ -1,3 +1,152 @@
-<resources>
-			<style name="AppTheme" parent="@style/Theme.Sherlock.Light" />
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here.
+        <item name="android:actionBarStyle">@style/MyActionBar</item> -->
+    </style>
+
+    
+    <!--<style name="MyActionBar" parent="android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@drawable/actionbar_bg</item>
+        <item name="android:titleTextStyle">@style/Theme.MyAppTheme.ActionBar.TitleTextStyle</item>
+        <item name="android:textColorHint">#99cc99</item>
+        <item name="android:lines">1</item>
+    </style>-->
+
+    <!--  <style name="Theme.MyAppTheme.ActionBar.TitleTextStyle" parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>-->
+    
+
+    <style name="ScreenWrapper">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="DashboardWrapper" parent="ScreenWrapper">
+        <item name="android:background">#333333</item>
+    </style>
+
+    <style name="DashboardTableContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="DashboardBaseText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#eeeeee</item>
+    </style>
+
+    <style name="DashboardTitleText" parent="DashboardBaseText">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="TitleText" parent="DashboardBaseText">
+        <item name="android:textColor">#DDDDDD</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>   
+    </style>
+    
+     <style name="LoginText" parent="DashboardBaseText">
+        <item name="android:textColor">#DDDDDD</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>   
+    </style>
+         <style name="RegisterText" parent="DashboardBaseText">
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:textColor">#DDDDDD</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>   
+    </style>
+    
+    <style name="ClickableSummaryItem">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="SummaryItemRow">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">2dp</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="SummaryItemRowLeftSection">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">.7</item>
+        <item name="android:gravity">left</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="SummaryItemRowRightSection">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">.3</item>
+        <item name="android:gravity">right</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="DashboardRefreshBar">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left</item>
+        <item name="android:background">#222222</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="DividerLine">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">#555555</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+       <style name="DividerLineMargin">
+        <item name="android:layout_width">fill_parent</item>
+         <item name="android:layout_marginTop">8dp</item>
+          <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">#555555</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+    
+    <style name="DividerLineLight">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">#AAAAAA</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="DashboardButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">.5</item>
+        <item name="android:layout_margin">1dp</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:background">#555555</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <color name="secondary_text">#888888</color>
+
 </resources>
