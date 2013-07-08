@@ -88,7 +88,7 @@ public class MainActivity extends Activity {
 	}
 	/** Called when the user clicks the Forms area */
 	public void formsList(View view) {
-		Intent intent = new Intent(this, FormListActivity.class);
+		Intent intent = new Intent(this, FormsActivity.class);
 		startActivity(intent);
 	}
 	/** Called when the user clicks the Notices area */

@@ -1,6 +1,7 @@
 
 package com.muzima.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -32,7 +33,7 @@ public class FormsActivity extends SherlockActivity implements ActionBar.TabList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_forms);
 
         formsService = ((MuzimaApplication) getApplication()).getFormsService();
         formsService.setDataFetchListener(this);
@@ -65,16 +66,7 @@ public class FormsActivity extends SherlockActivity implements ActionBar.TabList
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.form_list_activity_menu, menu);
-
-        SearchView searchView = new SearchView(getSupportActionBar().getThemedContext());
-        searchView.setQueryHint("Search forms..");
-
-        menu.add("Search")
-                .setIcon(R.drawable.ic_search)
-                .setActionView(searchView)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-
+        getSupportMenuInflater().inflate(R.menu.form_list_menu, menu);
         return true;
     }
 
@@ -83,6 +75,10 @@ public class FormsActivity extends SherlockActivity implements ActionBar.TabList
         switch (item.getItemId()) {
             case R.id.menu_load:
                 formsService.fetchForms();
+                return true;
+            case R.id.client_add:
+                Intent intent = new Intent(this, RegisterClientActivity.class);
+                startActivity(intent);
                 return true;
             default:
                 return false;
@@ -101,6 +97,9 @@ public class FormsActivity extends SherlockActivity implements ActionBar.TabList
                 break;
             case FormsService.IO_EXCEPTION:
                 Toast.makeText(this, "I/O Exception occurred while fetching forms from server", Toast.LENGTH_SHORT).show();
+                break;
+            case FormsService.CONNECTION_TIMEOUT:
+                Toast.makeText(this, "Connection timeout occurred while fetching forms from server", Toast.LENGTH_SHORT).show();
                 break;
             case FormsService.JSON_EXCEPTION:
                 Toast.makeText(this, "JSON Parse Exception occurred while fetching forms from server", Toast.LENGTH_SHORT).show();
@@ -131,17 +130,22 @@ public class FormsActivity extends SherlockActivity implements ActionBar.TabList
 
     private void initTabs() {
         ActionBar.Tab tab = getSupportActionBar().newTab();
-        tab.setText("New Forms");
+        tab.setText("New");
         tab.setTabListener(this);
         getSupportActionBar().addTab(tab);
 
         tab = getSupportActionBar().newTab();
-        tab.setText("Drafts");
+        tab.setText("Incomplete");
         tab.setTabListener(this);
         getSupportActionBar().addTab(tab);
 
         tab = getSupportActionBar().newTab();
-        tab.setText("Synced Forms");
+        tab.setText("Completed");
+        tab.setTabListener(this);
+        getSupportActionBar().addTab(tab);
+
+        tab = getSupportActionBar().newTab();
+        tab.setText("Synced");
         tab.setTabListener(this);
         getSupportActionBar().addTab(tab);
     }

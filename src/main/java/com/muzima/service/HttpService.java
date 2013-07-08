@@ -3,6 +3,8 @@ package com.muzima.service;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,9 +14,14 @@ import java.util.Map;
 
 public class HttpService {
     private DefaultHttpClient httpClient;
+    private int CONNECTION_TIMEOUT = 10000;
+    private int SO_TIMEOUT = 10000;
 
     public HttpService() {
-        httpClient = new DefaultHttpClient();
+        BasicHttpParams httpParams = new BasicHttpParams();
+        HttpConnectionParams.setConnectionTimeout(httpParams, CONNECTION_TIMEOUT);
+        HttpConnectionParams.setSoTimeout(httpParams, SO_TIMEOUT);
+        httpClient = new DefaultHttpClient(httpParams);
     }
 
     public Response get(String url, Map<String, String> headers)

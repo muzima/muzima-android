@@ -91,6 +91,18 @@ public class FormsServiceTest {
     }
 
     @Test
+    public void fetchForms_shouldNotifyConnectionTimeoutException() throws IOException, URISyntaxException {
+        setupConnectedNetworkExpectation();
+        Robolectric.getBackgroundScheduler().pause();
+
+        formsService.fetchForms();
+        Robolectric.addPendingHttpResponse(408, "");
+        Robolectric.getBackgroundScheduler().runOneTask();
+
+        verify(dataFetchCompleteListener).onFetch(FormsService.CONNECTION_TIMEOUT);
+    }
+
+    @Test
     public void fetchForms_shouldNotifyIOException() throws IOException, URISyntaxException {
         httpService = mock(HttpService.class);
         formsService = new FormsService(context, html5FormDataSource, httpService);

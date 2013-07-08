@@ -10,6 +10,7 @@ import com.muzima.Urls;
 import com.muzima.db.Html5FormDataSource;
 import com.muzima.domain.Html5Form;
 
+import org.apache.http.conn.ConnectTimeoutException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,6 +33,7 @@ public class FormsService {
     public static final int FETCH_SUCCESSFUL = 2;
     public static final int IO_EXCEPTION = 3;
     public static final int JSON_EXCEPTION = 4;
+    public static final int CONNECTION_TIMEOUT = 5;
 
     private Context context;
     private Html5FormDataSource html5FormDataSource;
@@ -77,6 +79,8 @@ public class FormsService {
             try {
                 saveForms(downloadForms());
                 return FETCH_SUCCESSFUL;
+            } catch (ConnectTimeoutException e){
+               return CONNECTION_TIMEOUT;
             } catch (IOException e) {
                 return IO_EXCEPTION;
             } catch (JSONException e) {
@@ -102,10 +106,13 @@ public class FormsService {
         return (networkInfo != null && networkInfo.isConnected());
     }
 
-    private String downloadForms() throws IOException, URISyntaxException {
+    private String downloadForms() throws URISyntaxException, IOException {
         InputStream is = null;
         try {
             HttpService.Response response = httpService.get(Urls.FORMS_GET_URL, null);
+            if(response.getStatusCode() == 408){
+                throw new ConnectTimeoutException();
+            }
             is = response.getResponseBody();
 
             String result = getStringFromInputStream(is);
