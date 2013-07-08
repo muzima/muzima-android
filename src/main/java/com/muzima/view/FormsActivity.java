@@ -14,7 +14,6 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.SearchView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.db.Html5FormDataSource;
@@ -25,10 +24,27 @@ import com.muzima.utils.Fonts;
 public class FormsActivity extends SherlockActivity implements ActionBar.TabListener, FormsService.OnDataFetchComplete {
     private static final String TAG = "FormsActivity";
     private ListView formsList;
+    private View noDataView;
+    private TextView noDataText;
+    private TextView noDataTip;
+
     private FormsService formsService;
     private Html5FormDataSource html5FormDataSource;
     private Html5FormsAdapter html5FormsAdapter;
-    private View noDataView;
+
+    private ActionBar.Tab completeTab;
+    private ActionBar.Tab newTab;
+    private ActionBar.Tab incompleteTab;
+    private ActionBar.Tab syncedTab;
+
+    private String noNewFormMsg;
+    private String noNewFormTip;
+    private String noIncompleteFormMsg;
+    private String noIncompleteFormTip;
+    private String noCompleteFormMsg;
+    private String noCompleteFormTip;
+    private String noSyncedFormMsg;
+    private String noSyncedFormTip;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,10 +62,10 @@ public class FormsActivity extends SherlockActivity implements ActionBar.TabList
         noDataView = findViewById(R.id.no_data_layout);
 
         setupNoDataView();
-        setupListView();
 
         getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         initTabs();
+        getSupportActionBar().selectTab(newTab);
     }
 
     @Override
@@ -106,7 +122,7 @@ public class FormsActivity extends SherlockActivity implements ActionBar.TabList
                 break;
             case FormsService.FETCH_SUCCESSFUL:
                 Toast.makeText(this, "Done fetching forms", Toast.LENGTH_SHORT).show();
-                setupListView();
+                handleNewFormsListVisibility();
                 if (html5FormDataSource.hasForms()) {
                     html5FormsAdapter.dataSetChanged();
                 }
@@ -122,6 +138,16 @@ public class FormsActivity extends SherlockActivity implements ActionBar.TabList
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction transaction) {
+        if (tab.equals(newTab)) {
+            formsList.setAdapter(html5FormsAdapter);
+            handleNewFormsListVisibility();
+        } else if (tab.equals(incompleteTab)) {
+            makeNoDataTextVisible(noIncompleteFormMsg, noIncompleteFormTip);
+        } else if (tab.equals(completeTab)) {
+            makeNoDataTextVisible(noCompleteFormMsg, noCompleteFormTip);
+        } else if (tab.equals(syncedTab)) {
+            makeNoDataTextVisible(noSyncedFormMsg, noSyncedFormTip);
+        }
     }
 
     @Override
@@ -129,43 +155,64 @@ public class FormsActivity extends SherlockActivity implements ActionBar.TabList
     }
 
     private void initTabs() {
-        ActionBar.Tab tab = getSupportActionBar().newTab();
-        tab.setText("New");
-        tab.setTabListener(this);
-        getSupportActionBar().addTab(tab);
+        newTab = getSupportActionBar().newTab();
+        newTab.setText("New");
+        newTab.setTabListener(this);
+        getSupportActionBar().addTab(newTab);
 
-        tab = getSupportActionBar().newTab();
-        tab.setText("Incomplete");
-        tab.setTabListener(this);
-        getSupportActionBar().addTab(tab);
+        completeTab = getSupportActionBar().newTab();
+        completeTab = getSupportActionBar().newTab();
+        completeTab.setText("Completed");
+        completeTab.setTabListener(this);
+        getSupportActionBar().addTab(completeTab);
 
-        tab = getSupportActionBar().newTab();
-        tab.setText("Completed");
-        tab.setTabListener(this);
-        getSupportActionBar().addTab(tab);
+        incompleteTab = getSupportActionBar().newTab();
+        incompleteTab = getSupportActionBar().newTab();
+        incompleteTab.setText("Incomplete");
+        incompleteTab.setTabListener(this);
+        getSupportActionBar().addTab(incompleteTab);
 
-        tab = getSupportActionBar().newTab();
-        tab.setText("Synced");
-        tab.setTabListener(this);
-        getSupportActionBar().addTab(tab);
+        syncedTab = getSupportActionBar().newTab();
+        syncedTab = getSupportActionBar().newTab();
+        syncedTab.setText("Synced");
+        syncedTab.setTabListener(this);
+        getSupportActionBar().addTab(syncedTab);
     }
 
-    private void setupListView() {
+    private void handleNewFormsListVisibility() {
         if (html5FormDataSource.hasForms()) {
-            formsList.setVisibility(View.VISIBLE);
-            noDataView.setVisibility(View.GONE);
-            formsList.setAdapter(html5FormsAdapter);
+            makeListVisible();
         } else {
-            noDataView.setVisibility(View.VISIBLE);
-            formsList.setVisibility(View.GONE);
+            makeNoDataTextVisible(noNewFormMsg, noNewFormTip);
         }
     }
 
+    private void makeListVisible() {
+        formsList.setVisibility(View.VISIBLE);
+        noDataView.setVisibility(View.GONE);
+    }
+
+    private void makeNoDataTextVisible(String msg, String tip) {
+        noDataView.setVisibility(View.VISIBLE);
+        formsList.setVisibility(View.GONE);
+        noDataText.setText(msg);
+        noDataTip.setText(tip);
+    }
+
     private void setupNoDataView() {
-        TextView noDataText = (TextView) findViewById(R.id.no_data_text);
-        TextView noDataTip = (TextView) findViewById(R.id.no_data_tip);
+        noDataText = (TextView) findViewById(R.id.no_data_text);
+        noDataTip = (TextView) findViewById(R.id.no_data_tip);
         noDataText.setTypeface(Fonts.roboto_bold_condensed(this));
         noDataTip.setTypeface(Fonts.roboto_light(this));
+
+        noNewFormMsg = getResources().getString(R.string.no_new_form_msg);
+        noNewFormTip = getResources().getString(R.string.no_new_form_tip);
+        noIncompleteFormMsg = getResources().getString(R.string.no_incomplete_form_msg);
+        noIncompleteFormTip = getResources().getString(R.string.no_incomplete_form_tip);
+        noCompleteFormMsg = getResources().getString(R.string.no_complete_form_msg);
+        noCompleteFormTip = getResources().getString(R.string.no_complete_form_tip);
+        noSyncedFormMsg = getResources().getString(R.string.no_synced_form_msg);
+        noSyncedFormTip = getResources().getString(R.string.no_synced_form_tip);
     }
 
 }

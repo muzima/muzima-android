@@ -5,8 +5,16 @@
     <string name="menu_settings">Settings</string>
     <string name="menu_load">Load</string>
     <string name="menu_search">Search</string>
-    <string name="no_data_text">No Forms Available</string>
-    <string name="no_data_hint">Please press load to fetch data from server</string>
+
+    <string name="no_new_form_msg">No Forms Available</string>
+    <string name="no_new_form_tip">Please press load to fetch data from server</string>
+    <string name="no_incomplete_form_msg">No Incomplete Forms On Device</string>
+    <string name="no_incomplete_form_tip">Incomplete forms are available only if you have saved a partially filled form</string>
+    <string name="no_complete_form_msg">No Completed And Unsynced Forms On Device</string>
+    <string name="no_complete_form_tip">Complete Forms are available only if you have filled a form completely but have not synced it with the server</string>
+    <string name="no_synced_form_msg">No Forms Have Been Synced Yet</string>
+    <string name="no_synced_form_tip">Please press sync button to sync completed forms with server</string>
+
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_client_list">Clients</string>
