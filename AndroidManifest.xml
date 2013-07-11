@@ -102,7 +102,7 @@
                 android:value="com.muzima.view.DashboardActivity" />
         </activity>
         <activity
-                android:name="com.muzima.view.FormsActivity"
+                android:name=".view.forms.FormsActivity"
                 android:label="@string/title_activity_form_list"
                 android:parentActivityName="com.muzima.view.MainActivity" >
             <meta-data

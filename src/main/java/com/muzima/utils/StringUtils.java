@@ -25,4 +25,8 @@ public class StringUtils {
         String[] values = split(value, ",");
         return Arrays.asList(values);
     }
+
+    public static boolean isEmpty(String description) {
+        return (description == null || description.isEmpty());
+    }
 }

@@ -1,0 +1,15 @@
+<resources>
+    <declare-styleable name="PagerSlidingTabStrip">
+        <attr name="indicatorColor" format="color" />
+        <attr name="underlineColor" format="color" />
+        <attr name="dividerColor" format="reference" />
+        <attr name="indicatorHeight" format="dimension" />
+        <attr name="underlineHeight" format="dimension" />
+        <attr name="dividerPadding" format="dimension" />
+        <attr name="tabPaddingLeftRight" format="dimension" />
+        <attr name="scrollOffset" format="dimension" />
+        <attr name="tabBackground" format="reference" />
+        <attr name="shouldExpand" format="boolean" />
+    </declare-styleable>
+
+</resources>

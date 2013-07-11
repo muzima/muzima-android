@@ -3,36 +3,50 @@ package com.muzima;
 
 import android.app.Application;
 
-import com.muzima.db.Html5FormDBHelper;
-import com.muzima.db.Html5FormDataSource;
-import com.muzima.service.FormsService;
-import com.muzima.service.HttpService;
+import com.muzima.api.context.Context;
+import com.muzima.api.context.ContextFactory;
+import com.muzima.util.Constants;
 
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
 
-@ReportsCrashes(formKey = "YOUR_FORM_KEY")
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+@ReportsCrashes(formKey = "ACRA_FORM_KEY")
 public class MuzimaApplication extends Application{
-    private Html5FormDataSource html5FormDataSource;
-    private FormsService formsService;
+    private Context muzimaContext;
 
     @Override
     public void onCreate() {
         ACRA.init(this);
         super.onCreate();
+        try {
+            ContextFactory.setProperty(Constants.RESOURCE_CONFIGURATION_STRING, getConfigurationString());
+            muzimaContext = ContextFactory.createContext();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public Html5FormDataSource getHtml5FormDataSource(){
-        if(html5FormDataSource == null){
-            html5FormDataSource = new Html5FormDataSource(new Html5FormDBHelper(this));
-        }
-        return html5FormDataSource;
+    public Context getMuzimaContext(){
+        return muzimaContext;
     }
 
-    public FormsService getFormsService() {
-        if(formsService == null){
-            formsService = new FormsService(this, getHtml5FormDataSource(), new HttpService());
+    private String getConfigurationString() throws IOException {
+        InputStream inputStream = getResources().openRawResource(R.raw.configuration);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+        String line;
+        StringBuilder builder = new StringBuilder();
+        while ((line = reader.readLine()) != null) {
+            builder.append(line);
         }
-        return formsService;
+        reader.close();
+        return builder.toString();
     }
 }

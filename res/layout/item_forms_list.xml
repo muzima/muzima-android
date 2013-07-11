@@ -2,8 +2,8 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:paddingLeft="16dp"
-              android:paddingRight="16dp"
+              android:paddingLeft="@dimen/activity_horizontal_margin"
+              android:paddingRight="@dimen/activity_horizontal_margin"
               android:orientation="vertical">
 
     <TextView
@@ -12,6 +12,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:paddingTop="5dp"
+            android:textColor="#313131"
             android:textSize="18sp">
     </TextView>
 
@@ -22,6 +23,7 @@
             android:layout_weight="1"
             android:paddingTop="2dp"
             android:paddingBottom="5dp"
+            android:textColor="#ff3d3d3d"
             android:textSize="12sp">
     </TextView>
 

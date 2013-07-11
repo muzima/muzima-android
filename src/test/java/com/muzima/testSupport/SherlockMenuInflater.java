@@ -15,7 +15,7 @@ import org.robolectric.util.I18nException;
 import static org.robolectric.Robolectric.shadowOf;
 
 /**
- * Inflates menus that are part of ActionBarSherlock instead. Uses ABS custom {@link
+ * Inflates menus that are part of ActionBarSherlock instead. Uses ABS customViews {@link
  * com.actionbarsherlock.view.Menu} instead of the stock one.
  */
 public class SherlockMenuInflater extends MenuInflater {

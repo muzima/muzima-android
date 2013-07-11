@@ -55,8 +55,8 @@
     />
 
     <!--
-        Import per project custom build rules if present at the root of the project.
-        This is the place to put custom intermediary targets such as:
+        Import per project customViews build rules if present at the root of the project.
+        This is the place to put customViews intermediary targets such as:
             -pre-build
             -pre-compile
             -post-compile (This is typically used for code obfuscation.
@@ -83,7 +83,7 @@
          ***********************
          ****** IMPORTANT ******
          ***********************
-         In all cases you must update the value of version-tag below to read 'custom' instead of an integer,
+         In all cases you must update the value of version-tag below to read 'customViews' instead of an integer,
          in order to avoid having your file be overridden by tools such as "android update project"
     -->
     <!-- version-tag: 1 -->

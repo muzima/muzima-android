@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
 import com.muzima.R;
+import com.muzima.view.forms.FormsActivity;
 
 public class MainActivity extends Activity {
 
