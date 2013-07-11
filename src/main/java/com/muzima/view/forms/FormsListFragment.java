@@ -2,6 +2,7 @@ package com.muzima.view.forms;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.muzima.utils.Fonts;
 
 public class FormsListFragment extends Fragment implements EmptyListListener {
 
+    private static final String TAG = "FormsListFragment";
     private ListView formsList;
     private View noDataLayout;
     private TextView noDataMsgTextView;
@@ -30,11 +32,13 @@ public class FormsListFragment extends Fragment implements EmptyListListener {
         f.noDataMsg = noDataMsg;
         f.noDataTip = noDataTip;
         f.listAdapter = listAdapter;
+        f.setRetainInstance(true);
         return f;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView called()");
         View formsLayout = inflater.inflate(R.layout.layout_forms, container, false);
         formsList = (ListView) formsLayout.findViewById(R.id.forms_list);
 
@@ -51,6 +55,11 @@ public class FormsListFragment extends Fragment implements EmptyListListener {
         return formsLayout;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     private void setupNoDataView(View formsLayout) {
         noDataLayout = formsLayout.findViewById(R.id.no_data_layout);
         noDataMsgTextView = (TextView) formsLayout.findViewById(R.id.no_data_msg);
@@ -63,6 +72,7 @@ public class FormsListFragment extends Fragment implements EmptyListListener {
 
     @Override
     public void onResume() {
+        Log.d(TAG, "onResume called()");
         super.onResume();
         if (listAdapter != null) {
             listAdapter.reloadData();
@@ -77,6 +87,8 @@ public class FormsListFragment extends Fragment implements EmptyListListener {
             listAdapter.reloadData();
         }else if(downloadStatus == DownloadFormTask.ERROR){
             msg = "An error occurred while downloading forms";
+        }else if(downloadStatus == DownloadFormTask.CANCELLED){
+            msg = "Form download task has been cancelled";
         }
         Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }

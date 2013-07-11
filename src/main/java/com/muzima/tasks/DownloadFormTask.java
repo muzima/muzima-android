@@ -15,6 +15,7 @@ public class DownloadFormTask extends DownloadTask<String, Void, Integer[]> {
 
     public static final int ERROR = 0;
     public static final int SUCCESS = 1;
+    public static final int CANCELLED = 2;
 
     private Context muzimaContext;
 
@@ -36,9 +37,13 @@ public class DownloadFormTask extends DownloadTask<String, Void, Integer[]> {
                 muzimaContext.authenticate(username, password, server);
             }
 
+            if (checkIfTaskIsCancelled(result)) return result;
+
             FormService formService = muzimaContext.getFormService();
 
             List<Form> forms = formService.downloadFormsByName(StringUtil.EMPTY);
+
+            if (checkIfTaskIsCancelled(result)) return result;
             deleteLuceneCache();
             if (!forms.isEmpty()) {
                 for (Form form : forms) {
@@ -56,6 +61,14 @@ public class DownloadFormTask extends DownloadTask<String, Void, Integer[]> {
 
         result[0] = SUCCESS;
         return result;
+    }
+
+    private boolean checkIfTaskIsCancelled(Integer[] result) {
+        if(isCancelled()){
+            result[0] = CANCELLED;
+            return true;
+        }
+        return false;
     }
 
     private void deleteLuceneCache() {

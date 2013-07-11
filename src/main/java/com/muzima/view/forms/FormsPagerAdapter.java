@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.ViewGroup;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -34,6 +35,11 @@ public class FormsPagerAdapter extends FragmentPagerAdapter implements DownloadL
     @Override
     public int getCount() {
         return pagers.length;
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        return super.instantiateItem(container, position);
     }
 
     @Override
@@ -88,5 +94,4 @@ public class FormsPagerAdapter extends FragmentPagerAdapter implements DownloadL
             this.fragment = fragment;
         }
     }
-
 }
