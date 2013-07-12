@@ -18,10 +18,24 @@ public enum CustomColor {
     CENTENARY_BLUE("#7BA5D1"),
     ALLERGIC_RED("#FF4040"),
     SOMEWHAT_PURPLE("#C19652"),
+    HUMAN_DRESS("#57553c"),
+    LOST_SOMEWHERE("#48A09B"),
+    HIGH_SKYBLUE("#107FC9"),
+    YUM("#098786"),
+    ROUNGE("#FF6600"),
+    EYES_IN_SKY("#7D96FF"),
+    BLESSING("#DB1750"),
+    ACQUA("#036564"),
+    GRUBBY("#308000"),
+    POOLSIDE("#34BEDA"),
+    CREEP("#0B8C8F"),
+    BUZZ("#6991AA"),
+    BLUSH("#E05D6F"),
+    GRUMMPY("#CC527A"),
     COOL_AID("#A40778");
 
     private int color;
-    private static final Random random = new Random(47);
+    private static final Random random = new Random();
 
     public int getColor() {
         return color;
