@@ -104,7 +104,7 @@
         <activity
                 android:name=".view.forms.FormsActivity"
                 android:label="@string/title_activity_form_list"
-                android:parentActivityName="com.muzima.view.MainActivity" >
+                android:parentActivityName="com.muzima.view.MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.DashboardActivity" />

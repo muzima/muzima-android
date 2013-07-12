@@ -4,6 +4,7 @@ package com.muzima.view.forms;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
 
@@ -79,8 +80,17 @@ public class FormsActivity extends SherlockFragmentActivity{
                 Intent intent = new Intent(this, RegisterClientActivity.class);
                 startActivity(intent);
                 return true;
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
             default:
                 return false;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
     }
 }

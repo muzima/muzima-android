@@ -50,4 +50,5 @@
 	<string name="textview_register_birthdate_format">dd/mm/yyyy:</string>
 	<string name="textview_register_identifier">Identifier:</string>
 	<string name="textview_register_patient_identifier">Patient Identifier:</string>
+    <string name="client_add">Register client</string>
 </resources>

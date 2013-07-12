@@ -38,7 +38,6 @@ public class FormsListFragment extends Fragment implements EmptyListListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView called()");
         View formsLayout = inflater.inflate(R.layout.layout_forms, container, false);
         formsList = (ListView) formsLayout.findViewById(R.id.forms_list);
 
@@ -72,7 +71,6 @@ public class FormsListFragment extends Fragment implements EmptyListListener {
 
     @Override
     public void onResume() {
-        Log.d(TAG, "onResume called()");
         super.onResume();
         if (listAdapter != null) {
             listAdapter.reloadData();

@@ -8,7 +8,7 @@
     <com.muzima.view.customViews.PagerSlidingTabStrip
             android:id="@+id/pager_indicator"
             custom:indicatorColor="@color/tab_indicator"
-            custom:indicatorHeight="3dp"
+            custom:indicatorHeight="5dp"
             android:layout_width="match_parent"
             android:layout_height="@dimen/pager_indicator_height"
             android:overScrollMode="ifContentScrolls"

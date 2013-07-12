@@ -4,7 +4,9 @@
               android:layout_height="wrap_content"
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              android:clickable="true"
+              android:background="@drawable/list_selector">
 
     <TextView
             android:id="@+id/form_name"
@@ -24,17 +26,19 @@
             android:paddingTop="2dp"
             android:paddingBottom="5dp"
             android:textColor="#ff3d3d3d"
-            android:textSize="12sp">
+            android:textSize="14sp">
     </TextView>
 
     <HorizontalScrollView
+            android:id="@+id/tags_scroller"
             android:layout_width="wrap_content"
-            android:layout_height="15dp"
+            android:layout_height="16dp"
             android:scrollbars="none"
+            android:layout_gravity="right"
             android:visibility="gone">
 
         <LinearLayout
-                android:id="@+id/form_tags"
+                android:id="@+id/tags"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">

@@ -1,5 +1,6 @@
 package com.muzima.view;
 
+import android.app.ActivityOptions;
 import android.os.Bundle;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -91,7 +92,8 @@ public class MainActivity extends Activity {
 	public void formsList(View view) {
 		Intent intent = new Intent(this, FormsActivity.class);
 		startActivity(intent);
-	}
+        overridePendingTransition(R.anim.push_in_from_right, R.anim.push_out_to_left);
+    }
 	/** Called when the user clicks the Notices area */
 	public void noticesList(View view) {
 		Intent intent = new Intent(this, NoticeListActivity.class);
