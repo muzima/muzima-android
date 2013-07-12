@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -14,7 +17,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.tasks.DownloadFormTask;
-import com.muzima.tasks.DownloadTask;
 import com.muzima.utils.Fonts;
 import com.muzima.view.RegisterClientActivity;
 import com.muzima.view.customViews.PagerSlidingTabStrip;
@@ -26,19 +28,23 @@ import static com.muzima.utils.Constants.PASS;
 import static com.muzima.utils.Constants.USERNAME;
 
 
-public class FormsActivity extends SherlockFragmentActivity{
+public class FormsActivity extends SherlockFragmentActivity {
     private static final String TAG = "FormsActivity";
     private DownloadFormTask formDownloadTask;
     private ViewPager formsPager;
     private PagerSlidingTabStrip pagerTabsLayout;
     private FormsPagerAdapter formsPagerAdapter;
+    private ListView mTagsDrawer;
+    private DrawerLayout mainLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forms);
+        mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_forms, null);
+        setContentView(mainLayout);
         initPager();
         initPagerIndicator();
+        mTagsDrawer = (ListView) findViewById(R.id.tags_drawer);
     }
 
 
@@ -72,7 +78,7 @@ public class FormsActivity extends SherlockFragmentActivity{
                     Toast.makeText(this, "Already fetching forms, ignored the request", Toast.LENGTH_SHORT).show();
                     return true;
                 }
-                formDownloadTask = new DownloadFormTask(((MuzimaApplication)getApplication()).getMuzimaContext());
+                formDownloadTask = new DownloadFormTask(((MuzimaApplication) getApplication()).getMuzimaContext());
                 formDownloadTask.setDownloadListener(formsPagerAdapter);
                 formDownloadTask.execute(USERNAME, PASS, FORMS_SERVER);
                 return true;
@@ -82,6 +88,13 @@ public class FormsActivity extends SherlockFragmentActivity{
                 return true;
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
+                return true;
+            case R.id.tags:
+                if (mainLayout.isDrawerOpen(GravityCompat.END)) {
+                    mainLayout.closeDrawer(GravityCompat.END);
+                } else {
+                    mainLayout.openDrawer(GravityCompat.END);
+                }
                 return true;
             default:
                 return false;
