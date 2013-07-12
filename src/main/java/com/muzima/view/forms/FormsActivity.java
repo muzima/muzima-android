@@ -4,10 +4,12 @@ package com.muzima.view.forms;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -34,8 +36,9 @@ public class FormsActivity extends SherlockFragmentActivity {
     private ViewPager formsPager;
     private PagerSlidingTabStrip pagerTabsLayout;
     private FormsPagerAdapter formsPagerAdapter;
-    private ListView mTagsDrawer;
+    private ListView tagsDrawer;
     private DrawerLayout mainLayout;
+    private ActionBarDrawerToggle actionbarDrawerToggle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,23 +47,7 @@ public class FormsActivity extends SherlockFragmentActivity {
         setContentView(mainLayout);
         initPager();
         initPagerIndicator();
-        mTagsDrawer = (ListView) findViewById(R.id.tags_drawer);
-    }
-
-
-    private void initPager() {
-        formsPager = (ViewPager) findViewById(R.id.pager);
-        formsPagerAdapter = new FormsPagerAdapter(getApplicationContext(), getSupportFragmentManager());
-        formsPager.setAdapter(formsPagerAdapter);
-    }
-
-    private void initPagerIndicator() {
-        pagerTabsLayout = (PagerSlidingTabStrip) findViewById(R.id.pager_indicator);
-        pagerTabsLayout.setTextColor(Color.WHITE);
-        pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));
-        pagerTabsLayout.setSelectedTextColor(getResources().getColor(R.color.tab_indicator));
-        pagerTabsLayout.setTypeface(Fonts.roboto_medium(this), -1);
-        pagerTabsLayout.setViewPager(formsPager);
+        initDrawer();
     }
 
     @Override
@@ -105,5 +92,46 @@ public class FormsActivity extends SherlockFragmentActivity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
+    }
+
+    private void initDrawer() {
+        tagsDrawer = (ListView) findViewById(R.id.tags_drawer);
+        actionbarDrawerToggle = new ActionBarDrawerToggle(this, mainLayout,
+                R.drawable.ic_labels, R.string.drawer_open, R.string.drawer_close) {
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                String title = getResources().getString(R.string.title_activity_form_list);
+                getSupportActionBar().setTitle(title);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                String title = getResources().getString(R.string.drawer_title);
+                getSupportActionBar().setTitle(title);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            }
+        };
+        mainLayout.setDrawerListener(actionbarDrawerToggle);
+        mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+    private void initPager() {
+        formsPager = (ViewPager) findViewById(R.id.pager);
+        formsPagerAdapter = new FormsPagerAdapter(getApplicationContext(), getSupportFragmentManager());
+        formsPager.setAdapter(formsPagerAdapter);
+    }
+
+
+    private void initPagerIndicator() {
+        pagerTabsLayout = (PagerSlidingTabStrip) findViewById(R.id.pager_indicator);
+        pagerTabsLayout.setTextColor(Color.WHITE);
+        pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));
+        pagerTabsLayout.setSelectedTextColor(getResources().getColor(R.color.tab_indicator));
+        pagerTabsLayout.setTypeface(Fonts.roboto_medium(this), -1);
+        pagerTabsLayout.setViewPager(formsPager);
     }
 }
