@@ -1,7 +1,6 @@
-package com.muzima.view.forms;
+package com.muzima.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,9 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.muzima.R;
+import com.muzima.adapters.FormsListAdapter;
 import com.muzima.api.model.Form;
 import com.muzima.api.service.FormService;
-import com.muzima.utils.CustomColor;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.StringUtils;
 
@@ -25,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import static com.muzima.utils.CustomColor.getRandomColor;
 

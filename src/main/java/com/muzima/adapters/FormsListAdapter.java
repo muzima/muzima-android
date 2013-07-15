@@ -1,4 +1,4 @@
-package com.muzima.view.forms;
+package com.muzima.adapters;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;

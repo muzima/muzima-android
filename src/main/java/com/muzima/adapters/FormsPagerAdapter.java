@@ -1,4 +1,4 @@
-package com.muzima.view.forms;
+package com.muzima.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -11,11 +11,12 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.service.FormService;
 import com.muzima.listeners.DownloadListener;
+import com.muzima.view.forms.FormsListFragment;
 
 import java.io.IOException;
 
 public class FormsPagerAdapter extends FragmentPagerAdapter implements DownloadListener<Integer[]>{
-    private static final int TAB_NEW = 0;
+    private static final int TAB_All = 0;
     private static final int TAB_COMPLETE = 1;
     private static final int TAB_INCOMPLETE = 2;
     private static final int TAB_SYNCED = 3;
@@ -49,14 +50,14 @@ public class FormsPagerAdapter extends FragmentPagerAdapter implements DownloadL
 
     @Override
     public void downloadTaskComplete(Integer[] result) {
-        pagers[TAB_NEW].fragment.downloadComplete(result);
+        pagers[TAB_All].fragment.downloadComplete(result);
     }
 
     private void initPagerViews(Context context) {
         final Resources resources = context.getResources();
         FormService formService = getFormService(context);
         pagers = new PagerView[4];
-        pagers[TAB_NEW] = new PagerView("New", FormsListFragment.newInstance(
+        pagers[TAB_All] = new PagerView("All", FormsListFragment.newInstance(
                 new NewFormsAdapter(context, R.layout.item_forms_list, formService),
                 resources.getString(R.string.no_new_form_msg),
                 resources.getString(R.string.no_new_form_tip)));
