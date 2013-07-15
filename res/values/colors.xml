@@ -6,4 +6,6 @@
 
     <color name="listitem_state_pressed">#777dbcd3</color>
     <color name="listitem_state_focused">#777dbcd3</color>
+
+    <color name="drawer_background">#232323</color>
 </resources>

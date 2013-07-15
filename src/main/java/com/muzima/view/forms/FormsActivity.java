@@ -1,6 +1,7 @@
 
 package com.muzima.view.forms;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,8 +10,13 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -18,10 +24,15 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.domain.Tag;
 import com.muzima.tasks.DownloadFormTask;
+import com.muzima.utils.CustomColor;
 import com.muzima.utils.Fonts;
 import com.muzima.view.RegisterClientActivity;
 import com.muzima.view.customViews.PagerSlidingTabStrip;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.os.AsyncTask.Status.PENDING;
 import static android.os.AsyncTask.Status.RUNNING;
@@ -96,6 +107,7 @@ public class FormsActivity extends SherlockFragmentActivity {
 
     private void initDrawer() {
         tagsDrawer = (ListView) findViewById(R.id.tags_drawer);
+        tagsDrawer.setAdapter(new TagsListAdapter(this, R.layout.item_tags_list));
         actionbarDrawerToggle = new ActionBarDrawerToggle(this, mainLayout,
                 R.drawable.ic_labels, R.string.drawer_open, R.string.drawer_close) {
 
@@ -134,4 +146,53 @@ public class FormsActivity extends SherlockFragmentActivity {
         pagerTabsLayout.setTypeface(Fonts.roboto_medium(this), -1);
         pagerTabsLayout.setViewPager(formsPager);
     }
+
+    private static class TagsListAdapter extends ArrayAdapter<Tag> {
+        List<Tag> tags;
+
+        public TagsListAdapter(Context context, int textViewResourceId) {
+            super(context, textViewResourceId);
+            tags = new ArrayList<Tag>();
+            tags.add(new Tag("Patient", CustomColor.BLESSING.getColor()));
+            tags.add(new Tag("Registration", CustomColor.ALLERGIC_RED.getColor()));
+            tags.add(new Tag("PMTCT", CustomColor.POOLSIDE.getColor()));
+            tags.add(new Tag("Observation", CustomColor.GRUBBY.getColor()));
+            tags.add(new Tag("Natal Care", CustomColor.BLUSH.getColor()));
+
+            addAll(tags);
+        }
+
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            if (convertView == null) {
+                LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+                convertView = layoutInflater.inflate(
+                        R.layout.item_tags_list, parent, false);
+                holder = new ViewHolder();
+                holder.indicator = convertView.findViewById(R.id.tag_indicator);
+                holder.name = (TextView) convertView
+                        .findViewById(R.id.tag_name);
+                holder.icon = (ImageView) convertView
+                        .findViewById(R.id.tag_icon);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            holder.indicator.setBackgroundColor(getItem(position).getColor());
+            holder.name.setText(getItem(position).getName());
+            holder.icon.setBackgroundColor(getItem(position).getColor());
+
+            return convertView;
+        }
+
+        private static class ViewHolder {
+            View indicator;
+            TextView name;
+            ImageView icon;
+        }
+    }
+
 }
