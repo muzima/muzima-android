@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.muzima.R;
 import com.muzima.api.model.Form;
+import com.muzima.api.model.Tag;
 import com.muzima.api.service.FormService;
 import com.muzima.controller.FormController;
 import com.muzima.utils.Fonts;
@@ -29,13 +30,11 @@ import static com.muzima.utils.CustomColor.getRandomColor;
 
 public class NewFormsAdapter extends FormsListAdapter<Form> {
     private static final String TAG = "NewFormsAdapter";
-    private final Map<String, Integer> tagColors;
     private FormController formController;
 
     public NewFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId);
         this.formController = formController;
-        tagColors = new HashMap<String, Integer>();
     }
 
     @Override
@@ -76,13 +75,13 @@ public class NewFormsAdapter extends FormsListAdapter<Form> {
     }
 
     private void addTags(ViewHolder holder, Form form) {
-        List<String> tags = getTags();
-        if (tags.size() > 0) {
+        Tag[] tags = form.getTags();
+        if (tags.length > 0) {
             holder.tagsScroller.setVisibility(View.VISIBLE);
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
 
             //add update tags
-            for (int i = 0; i < tags.size(); i++) {
+            for (int i = 0; i < tags.length; i++) {
                 TextView textView = null;
                 if (holder.tags.size() <= i) {
                     textView = newTextview(layoutInflater);
@@ -90,13 +89,13 @@ public class NewFormsAdapter extends FormsListAdapter<Form> {
                     holder.tagsLayout.addView(textView);
                 }
                 textView = holder.tags.get(i);
-                textView.setText(tags.get(i));
-                textView.setBackgroundColor(getTagColor(tags.get(i)));
+                textView.setText(tags[i].getName());
+                textView.setBackgroundColor(formController.getTagColor(tags[i].getUuid()));
             }
 
         //remove already existing extra tags
-        if (tags.size() < holder.tags.size()) {
-            for (int i = tags.size(); i < holder.tags.size(); i++) {
+        if (tags.length < holder.tags.size()) {
+            for (int i = tags.length; i < holder.tags.size(); i++) {
                 holder.tagsLayout.removeView(holder.tags.get(i));
                 holder.tags.remove(i);
             }
@@ -112,23 +111,6 @@ public class NewFormsAdapter extends FormsListAdapter<Form> {
         layoutParams.setMargins(1, 0, 0, 0);
         textView.setLayoutParams(layoutParams);
         return textView;
-    }
-
-    private List<String> getTags() {
-        ArrayList<String> tagsList = new ArrayList<String>() {{
-            add("Patient");
-            add("Registration");
-            add("PMTCT");
-            add("AMPATH");
-        }};
-        return tagsList;
-    }
-
-    private int getTagColor(String tag) {
-        if (tagColors.get(tag) == null) {
-            tagColors.put(tag, getRandomColor());
-        }
-        return tagColors.get(tag);
     }
 
     @Override

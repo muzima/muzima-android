@@ -18,8 +18,11 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.adapters.FormsListAdapter;
 import com.muzima.adapters.FormsPagerAdapter;
 import com.muzima.adapters.TagsListAdapter;
+import com.muzima.controller.FormController;
+import com.muzima.listeners.EmptyListListener;
 import com.muzima.tasks.DownloadFormTask;
 import com.muzima.utils.Fonts;
 import com.muzima.view.RegisterClientActivity;
@@ -32,7 +35,7 @@ import static com.muzima.utils.Constants.PASS;
 import static com.muzima.utils.Constants.USERNAME;
 
 
-public class FormsActivity extends SherlockFragmentActivity {
+public class FormsActivity extends SherlockFragmentActivity implements EmptyListListener{
     private static final String TAG = "FormsActivity";
     private DownloadFormTask formDownloadTask;
     private ViewPager formsPager;
@@ -41,6 +44,7 @@ public class FormsActivity extends SherlockFragmentActivity {
     private ListView tagsDrawer;
     private DrawerLayout mainLayout;
     private ActionBarDrawerToggle actionbarDrawerToggle;
+    private TagsListAdapter tagsListAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,8 +57,18 @@ public class FormsActivity extends SherlockFragmentActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        tagsListAdapter.reloadData();
+    }
+
+    @Override
     protected void onDestroy() {
-        formDownloadTask.cancel(true);
+        if (formDownloadTask != null) {
+            formDownloadTask.cancel(true);
+        }
+        FormController formController = ((MuzimaApplication) getApplication()).getFormController();
+        formController.resetTagColors();
         super.onDestroy();
     }
 
@@ -74,7 +88,8 @@ public class FormsActivity extends SherlockFragmentActivity {
                     return true;
                 }
                 formDownloadTask = new DownloadFormTask((MuzimaApplication) getApplicationContext());
-                formDownloadTask.setDownloadListener(formsPagerAdapter);
+                formDownloadTask.addDownloadListener(formsPagerAdapter);
+                formDownloadTask.addDownloadListener(tagsListAdapter);
                 formDownloadTask.execute(USERNAME, PASS, FORMS_SERVER);
                 return true;
             case R.id.client_add:
@@ -102,9 +117,16 @@ public class FormsActivity extends SherlockFragmentActivity {
         overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
     }
 
+    @Override
+    public void listIsEmpty(boolean isEmpty) {
+
+    }
+
     private void initDrawer() {
         tagsDrawer = (ListView) findViewById(R.id.tags_drawer);
-        tagsDrawer.setAdapter(new TagsListAdapter(this, R.layout.item_tags_list, null));
+        tagsListAdapter = new TagsListAdapter(this, R.layout.item_tags_list, ((MuzimaApplication)getApplication()).getFormController());
+        tagsDrawer.setAdapter(tagsListAdapter);
+        tagsListAdapter.setEmptyListListener(this);
         actionbarDrawerToggle = new ActionBarDrawerToggle(this, mainLayout,
                 R.drawable.ic_labels, R.string.drawer_open, R.string.drawer_close) {
 

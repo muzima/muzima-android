@@ -1,38 +1,30 @@
 package com.muzima.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.muzima.R;
-import com.muzima.domain.Tag;
-import com.muzima.listeners.EmptyListListener;
-import com.muzima.utils.CustomColor;
+import com.muzima.api.model.Tag;
+import com.muzima.controller.FormController;
+import com.muzima.listeners.DownloadListener;
+import com.muzima.tasks.DownloadFormTask;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class TagsListAdapter extends ArrayAdapter<Tag> {
-    List<Tag> tags;
+public class TagsListAdapter extends FormsListAdapter<Tag> implements DownloadListener<Integer[]>{
+    private static final String TAG = "TagsListAdapter";
+    private FormController formController;
 
-    public TagsListAdapter(Context context, int textViewResourceId, List<Tag> tags) {
+    public TagsListAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId);
-        tags = new ArrayList<Tag>();
-        tags.add(new Tag("All", Color.parseColor("#444444")));
-        tags.add(new Tag("Patient", CustomColor.BLESSING.getColor()));
-        tags.add(new Tag("Registration", CustomColor.ALLERGIC_RED.getColor()));
-        tags.add(new Tag("PMTCT", CustomColor.POOLSIDE.getColor()));
-        tags.add(new Tag("Observation", CustomColor.GRUBBY.getColor()));
-        tags.add(new Tag("Natal Care", CustomColor.BLUSH.getColor()));
-
-        addAll(tags);
+        this.formController = formController;
     }
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -52,16 +44,54 @@ public class TagsListAdapter extends ArrayAdapter<Tag> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.indicator.setBackgroundColor(getItem(position).getColor());
+        int tagColor = formController.getTagColor(getItem(position).getUuid());
+        holder.indicator.setBackgroundColor(tagColor);
         holder.name.setText(getItem(position).getName());
-        holder.icon.setBackgroundColor(getItem(position).getColor());
+        holder.icon.setBackgroundColor(tagColor);
 
         return convertView;
+    }
+
+    @Override
+    public void reloadData() {
+        new BackgroundQueryTask().execute();
+    }
+
+    @Override
+    public void downloadTaskComplete(Integer[] result) {
+        if(result[0] == DownloadFormTask.SUCCESS){
+            reloadData();
+        }
     }
 
     private static class ViewHolder {
         View indicator;
         TextView name;
         ImageView icon;
+    }
+
+    public class BackgroundQueryTask extends AsyncTask<Void, Void, List<Tag>> {
+
+        @Override
+        protected List<Tag> doInBackground(Void... voids) {
+            List<Tag> allTags = null;
+            try {
+                allTags = formController.getAllTags();
+                Log.i(TAG, "#Tags: " + allTags.size());
+            } catch (FormController.FormFetchException e) {
+                Log.w(TAG, "Exception occurred while fetching tags" + e);
+            }
+            return allTags;
+        }
+
+        @Override
+        protected void onPostExecute(List<Tag> forms) {
+            TagsListAdapter.this.clear();
+            for (Tag tag : forms) {
+                add(tag);
+            }
+            notifyDataSetChanged();
+            notifyEmptyDataListener(forms.size() == 0);
+        }
     }
 }
