@@ -5,6 +5,7 @@ import android.app.Application;
 
 import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
+import com.muzima.controller.FormController;
 import com.muzima.util.Constants;
 
 import org.acra.ACRA;
@@ -18,6 +19,7 @@ import java.io.InputStreamReader;
 @ReportsCrashes(formKey = "ACRA_FORM_KEY")
 public class MuzimaApplication extends Application{
     private Context muzimaContext;
+    private FormController formController;
 
     @Override
     public void onCreate() {
@@ -35,6 +37,17 @@ public class MuzimaApplication extends Application{
 
     public Context getMuzimaContext(){
         return muzimaContext;
+    }
+
+    public FormController getFormController(){
+        if(formController == null){
+            try {
+                formController = new FormController(muzimaContext.getFormService());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return formController;
     }
 
     private String getConfigurationString() throws IOException {

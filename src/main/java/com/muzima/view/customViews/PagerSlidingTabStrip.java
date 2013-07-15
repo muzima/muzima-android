@@ -291,6 +291,10 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
     }
 
+    public void markCurrentSelected(int position){
+        selectTextFor(position);
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);

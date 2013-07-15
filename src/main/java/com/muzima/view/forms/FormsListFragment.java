@@ -2,6 +2,7 @@ package com.muzima.view.forms;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,13 +80,18 @@ public class FormsListFragment extends Fragment implements EmptyListListener {
 
     public void downloadComplete(Integer[] status) {
         Integer downloadStatus = status[0];
-        String msg = "Download Complete";
+        String msg = "Download Complete with status " + downloadStatus;
+        Log.i(TAG, msg);
         if (downloadStatus == DownloadFormTask.SUCCESS) {
             msg = "Forms downloaded: " + status[1];
             listAdapter.reloadData();
-        }else if(downloadStatus == DownloadFormTask.ERROR){
+        } else if (downloadStatus == DownloadFormTask.DOWNLOAD_ERROR) {
             msg = "An error occurred while downloading forms";
-        }else if(downloadStatus == DownloadFormTask.CANCELLED){
+        } else if (downloadStatus == DownloadFormTask.AUTHENTICATION_ERROR) {
+            msg = "Authentication error occurred while downloading forms";
+        }else if (downloadStatus == DownloadFormTask.SAVE_ERROR) {
+            msg = "An error occurred while saving the downloaded forms";
+        } else if (downloadStatus == DownloadFormTask.CANCELLED) {
             msg = "Form download task has been cancelled";
         }
         Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();

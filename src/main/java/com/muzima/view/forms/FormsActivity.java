@@ -73,7 +73,7 @@ public class FormsActivity extends SherlockFragmentActivity {
                     Toast.makeText(this, "Already fetching forms, ignored the request", Toast.LENGTH_SHORT).show();
                     return true;
                 }
-                formDownloadTask = new DownloadFormTask(((MuzimaApplication) getApplication()).getMuzimaContext());
+                formDownloadTask = new DownloadFormTask((MuzimaApplication) getApplicationContext());
                 formDownloadTask.setDownloadListener(formsPagerAdapter);
                 formDownloadTask.execute(USERNAME, PASS, FORMS_SERVER);
                 return true;
@@ -142,5 +142,7 @@ public class FormsActivity extends SherlockFragmentActivity {
         pagerTabsLayout.setSelectedTextColor(getResources().getColor(R.color.tab_indicator));
         pagerTabsLayout.setTypeface(Fonts.roboto_medium(this), -1);
         pagerTabsLayout.setViewPager(formsPager);
+        formsPager.setCurrentItem(0);
+        pagerTabsLayout.markCurrentSelected(0);
     }
 }

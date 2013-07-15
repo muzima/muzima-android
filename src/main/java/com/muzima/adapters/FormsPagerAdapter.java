@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.service.FormService;
+import com.muzima.controller.FormController;
 import com.muzima.listeners.DownloadListener;
 import com.muzima.view.forms.FormsListFragment;
 
@@ -55,10 +56,10 @@ public class FormsPagerAdapter extends FragmentPagerAdapter implements DownloadL
 
     private void initPagerViews(Context context) {
         final Resources resources = context.getResources();
-        FormService formService = getFormService(context);
         pagers = new PagerView[4];
+        FormController formController = ((MuzimaApplication) context.getApplicationContext()).getFormController();
         pagers[TAB_All] = new PagerView("All", FormsListFragment.newInstance(
-                new NewFormsAdapter(context, R.layout.item_forms_list, formService),
+                new NewFormsAdapter(context, R.layout.item_forms_list, formController),
                 resources.getString(R.string.no_new_form_msg),
                 resources.getString(R.string.no_new_form_tip)));
         pagers[TAB_COMPLETE] = new PagerView("Complete", FormsListFragment.newInstance(
@@ -73,17 +74,6 @@ public class FormsPagerAdapter extends FragmentPagerAdapter implements DownloadL
                 null,
                 resources.getString(R.string.no_synced_form_msg),
                 resources.getString(R.string.no_synced_form_tip)));
-    }
-
-    private FormService getFormService(Context context){
-        com.muzima.api.context.Context muzimaContext = ((MuzimaApplication) context.getApplicationContext()).getMuzimaContext();
-        FormService formService = null;
-        try {
-            formService = muzimaContext.getFormService();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return formService;
     }
 
     private static class PagerView {

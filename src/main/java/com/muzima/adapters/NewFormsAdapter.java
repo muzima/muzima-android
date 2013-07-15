@@ -11,9 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.muzima.R;
-import com.muzima.adapters.FormsListAdapter;
 import com.muzima.api.model.Form;
 import com.muzima.api.service.FormService;
+import com.muzima.controller.FormController;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.StringUtils;
 
@@ -30,11 +30,11 @@ import static com.muzima.utils.CustomColor.getRandomColor;
 public class NewFormsAdapter extends FormsListAdapter<Form> {
     private static final String TAG = "NewFormsAdapter";
     private final Map<String, Integer> tagColors;
-    private FormService formService;
+    private FormController formController;
 
-    public NewFormsAdapter(Context context, int textViewResourceId, FormService formService) {
+    public NewFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId);
-        this.formService = formService;
+        this.formController = formController;
         tagColors = new HashMap<String, Integer>();
     }
 
@@ -150,11 +150,9 @@ public class NewFormsAdapter extends FormsListAdapter<Form> {
         protected List<Form> doInBackground(Void... voids) {
             List<Form> allForms = null;
             try {
-                allForms = formService.getAllForms();
+                allForms = formController.getAllForms();
                 Log.i(TAG, "#Forms: " + allForms.size());
-            } catch (IOException e) {
-                Log.w(TAG, "Exception occurred while fetching local forms " + e);
-            } catch (ParseException e) {
+            } catch (FormController.FormFetchException e) {
                 Log.w(TAG, "Exception occurred while fetching local forms " + e);
             }
             return allForms;

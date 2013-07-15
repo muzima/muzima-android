@@ -1,11 +1,11 @@
 package com.muzima.tasks;
 
 import android.util.Log;
+
+import com.muzima.MuzimaApplication;
 import com.muzima.api.context.Context;
-import com.muzima.api.context.ContextFactory;
 import com.muzima.api.model.Form;
-import com.muzima.api.service.FormService;
-import com.muzima.search.api.util.StringUtil;
+import com.muzima.controller.FormController;
 
 import java.io.File;
 import java.util.List;
@@ -13,14 +13,16 @@ import java.util.List;
 public class DownloadFormTask extends DownloadTask<String, Void, Integer[]> {
     private static final String TAG = "DownloadFormTask";
 
-    public static final int ERROR = 0;
-    public static final int SUCCESS = 1;
-    public static final int CANCELLED = 2;
+    public static final int DOWNLOAD_ERROR = 0;
+    public static final int SAVE_ERROR = 1;
+    public static final int AUTHENTICATION_ERROR = 2;
+    public static final int SUCCESS = 3;
+    public static final int CANCELLED = 4;
 
-    private Context muzimaContext;
+    private MuzimaApplication applicationContext;
 
-    public DownloadFormTask(Context context){
-        muzimaContext = context;
+    public DownloadFormTask(MuzimaApplication applicationContext){
+        this.applicationContext = applicationContext;
     }
 
     @Override
@@ -31,32 +33,42 @@ public class DownloadFormTask extends DownloadTask<String, Void, Integer[]> {
         String password = values[1];
         String server = values[2];
 
+        Context context = applicationContext.getMuzimaContext();
         try {
-            muzimaContext.openSession();
-            if (!muzimaContext.isAuthenticated()) {
-                muzimaContext.authenticate(username, password, server);
+            context.openSession();
+            if (!context.isAuthenticated()) {
+                context.authenticate(username, password, server);
             }
 
             if (checkIfTaskIsCancelled(result)) return result;
 
-            FormService formService = muzimaContext.getFormService();
+            FormController formController = applicationContext.getFormController();
 
-            List<Form> forms = formService.downloadFormsByName(StringUtil.EMPTY);
+            List<Form> forms = formController.downloadAllForms();
 
             if (checkIfTaskIsCancelled(result)) return result;
             deleteLuceneCache();
             if (!forms.isEmpty()) {
                 for (Form form : forms) {
-                    formService.saveForm(form);
+                    formController.saveForm(form);
                 }
             }
             result[1] = forms.size();
+        } catch (FormController.FormFetchException e) {
+            Log.e(TAG, "Exception when trying to download forms", e);
+            result[0] = DOWNLOAD_ERROR;
+            return result;
+        } catch (FormController.FormSaveException e) {
+            Log.e(TAG, "Exception when trying to save forms", e);
+            result[0] = SAVE_ERROR;
+            return result;
         } catch (Exception e) {
-            Log.e(TAG, "Exception when trying to load forms", e);
-            result[0] = ERROR;
+            Log.e(TAG, "Exception during authentication", e);
+            result[0] = AUTHENTICATION_ERROR;
+            return result;
         } finally {
-            if (muzimaContext != null)
-                muzimaContext.closeSession();
+            if (context != null)
+                context.closeSession();
         }
 
         result[0] = SUCCESS;
