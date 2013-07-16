@@ -22,10 +22,14 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:textColor="#ffffff"/>
 
+    <FrameLayout
+            android:id="@+id/tag_color_indicator"
+            android:layout_width="@dimen/abs__action_bar_default_height"
+            android:layout_height="match_parent">
     <ImageView
             android:id="@+id/tag_icon"
-            android:layout_width="@dimen/abs__action_bar_default_height"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="10dp"
-            android:src="@drawable/ic_previous_item"/>
+            android:layout_margin="10dp"/>
+    </FrameLayout>
 </LinearLayout>

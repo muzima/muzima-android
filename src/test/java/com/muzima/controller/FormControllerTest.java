@@ -101,6 +101,85 @@ public class FormControllerTest {
         assertThat(allTags.get(3).getUuid(), is("tag4"));
     }
 
+    @Test
+    public void addSelectedTag_shouldAddTagToSelectedList(){
+        assertThat(formController.getSelectedTags().size(), is(0));
+
+        Tag tag = new Tag();
+        formController.addSelectedTags(tag);
+
+        assertThat(formController.getSelectedTags().size(), is(1));
+        assertThat(formController.getSelectedTags().get(0), is(tag));
+    }
+
+    @Test
+    public void addSelectedTag_shouldNotAddTagIfItIsNull(){
+        assertThat(formController.getSelectedTags().size(), is(0));
+
+        formController.addSelectedTags(null);
+
+        assertThat(formController.getSelectedTags().size(), is(0));
+    }
+
+    @Test
+    public void addSelectedTag_shouldNotAddTagIfItIsAlreadyAdded(){
+        assertThat(formController.getSelectedTags().size(), is(0));
+
+        Tag tag = new Tag();
+        formController.addSelectedTags(tag);
+
+        assertThat(formController.getSelectedTags().size(), is(1));
+
+        formController.addSelectedTags(tag);
+
+        assertThat(formController.getSelectedTags().size(), is(1));
+    }
+
+    @Test
+    public void removeSelectedTag_shouldRemoveATag(){
+        Tag tag = new Tag();
+        formController.addSelectedTags(tag);
+
+        assertThat(formController.getSelectedTags().size(), is(1));
+
+        formController.removeSelectedTags(tag);
+
+        assertThat(formController.getSelectedTags().size(), is(0));
+    }
+
+    @Test
+    public void clearAllSelectedTags_shouldRemoveAllTags(){
+        Tag tag = new Tag();
+        formController.addSelectedTags(tag);
+
+        assertThat(formController.getSelectedTags().size(), is(1));
+
+        formController.clearAllSelectedTags();
+
+        assertThat(formController.getSelectedTags().size(), is(0));
+    }
+
+    @Test
+    public void isTagSelected_shouldReturnTrueIfATagIsSelected(){
+        Tag tag1 = new Tag();
+        tag1.setUuid("tag1");
+        Tag tag2 = new Tag();
+        tag2.setUuid("tag2");
+        formController.addSelectedTags(tag1);
+
+        assertThat(formController.isTagSelected(tag1), is(true));
+        assertThat(formController.isTagSelected(tag2), is(false));
+    }
+
+    @Test
+    public void hasSelectedTags_shouldReturnTrueIfNoTagsArePresent(){
+        assertThat(formController.hasSelectedTags(), is(false));
+
+        formController.addSelectedTags(new Tag());
+
+        assertThat(formController.hasSelectedTags(), is(true));
+    }
+
     private List<Form> buildForms() {
         List<Form> forms = new ArrayList<Form>();
         Tag[] tags1 = new Tag[3];

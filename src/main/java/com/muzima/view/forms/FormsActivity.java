@@ -133,6 +133,7 @@ public class FormsActivity extends SherlockFragmentActivity implements EmptyList
         tagsDrawerList = (ListView) findViewById(R.id.tags_list);
         tagsListAdapter = new TagsListAdapter(this, R.layout.item_tags_list, ((MuzimaApplication)getApplication()).getFormController());
         tagsDrawerList.setAdapter(tagsListAdapter);
+        tagsDrawerList.setOnItemClickListener(tagsListAdapter);
         tagsListAdapter.setEmptyListListener(this);
         actionbarDrawerToggle = new ActionBarDrawerToggle(this, mainLayout,
                 R.drawable.ic_labels, R.string.drawer_open, R.string.drawer_close) {

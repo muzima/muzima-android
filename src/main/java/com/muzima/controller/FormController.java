@@ -18,10 +18,12 @@ public class FormController {
 
     private FormService formService;
     private Map<String, Integer> tagColors;
+    private List<Tag> selectedTags;
 
     public FormController(FormService formService) {
         this.formService = formService;
         tagColors = new HashMap<String, Integer>();
+        selectedTags = new ArrayList<Tag>();
     }
 
     public List<Form> getAllForms() throws FormFetchException {
@@ -53,13 +55,13 @@ public class FormController {
     }
 
     public int getTagColor(String uuid) {
-        if(!tagColors.containsKey(uuid)){
+        if (!tagColors.containsKey(uuid)) {
             tagColors.put(uuid, CustomColor.getRandomColor());
         }
         return tagColors.get(uuid);
     }
 
-    public void resetTagColors(){
+    public void resetTagColors() {
         tagColors.clear();
     }
 
@@ -68,7 +70,7 @@ public class FormController {
         List<Form> allForms = getAllForms();
         for (Form form : allForms) {
             for (Tag tag : form.getTags()) {
-                if(!allTags.contains(tag)){
+                if (!allTags.contains(tag)) {
                     allTags.add(tag);
                 }
             }
@@ -76,14 +78,40 @@ public class FormController {
         return allTags;
     }
 
+    public List<Tag> getSelectedTags() {
+        return selectedTags;
+    }
+
+    public void addSelectedTags(Tag tag) {
+        if (tag != null && !selectedTags.contains(tag)) {
+            selectedTags.add(tag);
+        }
+    }
+
+    public void removeSelectedTags(Tag tag) {
+        selectedTags.remove(tag);
+    }
+
+    public void clearAllSelectedTags(){
+        selectedTags.clear();
+    }
+
+    public boolean isTagSelected(Tag tag){
+        return selectedTags.contains(tag);
+    }
+
+    public boolean hasSelectedTags(){
+        return !selectedTags.isEmpty();
+    }
+
     public static class FormFetchException extends Throwable {
-        public FormFetchException(Throwable throwable){
+        public FormFetchException(Throwable throwable) {
             super(throwable);
         }
     }
 
     public static class FormSaveException extends Throwable {
-        public FormSaveException(Throwable throwable){
+        public FormSaveException(Throwable throwable) {
             super(throwable);
         }
     }
