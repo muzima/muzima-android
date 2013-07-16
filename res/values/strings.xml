@@ -54,4 +54,5 @@
     <string name="drawer_open">Tags drawer open</string>
     <string name="drawer_close">Tags drawer close</string>
     <string name="drawer_title">Tags</string>
+    <string name="tags_no_data">No Tags Available</string>
 </resources>

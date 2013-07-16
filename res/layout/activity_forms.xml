@@ -28,11 +28,30 @@
 
     </LinearLayout>
     <!-- The navigation drawer -->
-    <ListView android:id="@+id/tags_drawer"
-              android:layout_width="240dp"
-              android:layout_height="match_parent"
-              android:layout_gravity="right"
-              android:divider="@drawable/tags_list_divider"
-              android:dividerHeight="2dp"
-              android:background="@color/drawer_background"/>
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                 android:id="@+id/tags_drawer"
+                 android:layout_gravity="right"
+                 android:layout_width="240dp"
+                 android:layout_height="match_parent"
+                 android:background="@color/drawer_background">
+
+        <ListView
+                android:id="@+id/tags_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@drawable/tags_list_divider"
+                android:dividerHeight="2dp"/>
+
+
+        <TextView
+                android:id="@+id/tags_no_data_msg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textColor="#ffffff"
+                android:text="@string/tags_no_data">
+        </TextView>
+
+    </FrameLayout>
 </android.support.v4.widget.DrawerLayout>

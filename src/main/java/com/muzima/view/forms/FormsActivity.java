@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -18,7 +19,6 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.FormsListAdapter;
 import com.muzima.adapters.FormsPagerAdapter;
 import com.muzima.adapters.TagsListAdapter;
 import com.muzima.controller.FormController;
@@ -41,7 +41,8 @@ public class FormsActivity extends SherlockFragmentActivity implements EmptyList
     private ViewPager formsPager;
     private PagerSlidingTabStrip pagerTabsLayout;
     private FormsPagerAdapter formsPagerAdapter;
-    private ListView tagsDrawer;
+    private ListView tagsDrawerList;
+    private TextView tagsNoDataMsg;
     private DrawerLayout mainLayout;
     private ActionBarDrawerToggle actionbarDrawerToggle;
     private TagsListAdapter tagsListAdapter;
@@ -119,13 +120,19 @@ public class FormsActivity extends SherlockFragmentActivity implements EmptyList
 
     @Override
     public void listIsEmpty(boolean isEmpty) {
-
+        if (isEmpty) {
+            tagsDrawerList.setVisibility(View.GONE);
+            tagsNoDataMsg.setVisibility(View.VISIBLE);
+        } else {
+            tagsDrawerList.setVisibility(View.VISIBLE);
+            tagsNoDataMsg.setVisibility(View.GONE);
+        }
     }
 
     private void initDrawer() {
-        tagsDrawer = (ListView) findViewById(R.id.tags_drawer);
+        tagsDrawerList = (ListView) findViewById(R.id.tags_list);
         tagsListAdapter = new TagsListAdapter(this, R.layout.item_tags_list, ((MuzimaApplication)getApplication()).getFormController());
-        tagsDrawer.setAdapter(tagsListAdapter);
+        tagsDrawerList.setAdapter(tagsListAdapter);
         tagsListAdapter.setEmptyListListener(this);
         actionbarDrawerToggle = new ActionBarDrawerToggle(this, mainLayout,
                 R.drawable.ic_labels, R.string.drawer_open, R.string.drawer_close) {
@@ -148,6 +155,9 @@ public class FormsActivity extends SherlockFragmentActivity implements EmptyList
         };
         mainLayout.setDrawerListener(actionbarDrawerToggle);
         mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+        tagsNoDataMsg = (TextView) findViewById(R.id.tags_no_data_msg);
+        tagsNoDataMsg.setTypeface(Fonts.roboto_bold_condensed(this));
     }
 
     private void initPager() {
