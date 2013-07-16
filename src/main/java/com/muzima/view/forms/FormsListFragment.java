@@ -6,36 +6,32 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.muzima.R;
 import com.muzima.adapters.FormsListAdapter;
+import com.muzima.controller.FormController;
 import com.muzima.listeners.EmptyListListener;
 import com.muzima.tasks.DownloadFormTask;
 import com.muzima.utils.Fonts;
 
-public class FormsListFragment extends Fragment implements EmptyListListener {
+public abstract class FormsListFragment extends SherlockFragment implements EmptyListListener, AdapterView.OnItemClickListener {
 
     private static final String TAG = "FormsListFragment";
-    private ListView formsList;
-    private View noDataLayout;
-    private TextView noDataMsgTextView;
-    private TextView noDataTipTextView;
+    protected ListView formsList;
+    protected View noDataLayout;
+    protected TextView noDataMsgTextView;
+    protected TextView noDataTipTextView;
 
-    private String noDataMsg;
-    private String noDataTip;
-    private FormsListAdapter listAdapter;
+    protected String noDataMsg;
+    protected String noDataTip;
+    protected FormsListAdapter listAdapter;
+    protected FormController formController;
 
-    public static FormsListFragment newInstance(FormsListAdapter listAdapter, String noDataMsg, String noDataTip) {
-        FormsListFragment f = new FormsListFragment();
-        f.noDataMsg = noDataMsg;
-        f.noDataTip = noDataTip;
-        f.listAdapter = listAdapter;
-        f.setRetainInstance(true);
-        return f;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,6 +43,7 @@ public class FormsListFragment extends Fragment implements EmptyListListener {
         // Todo no need to do this check after all list adapters are implemented
         if (listAdapter != null) {
             formsList.setAdapter(listAdapter);
+            formsList.setOnItemClickListener(this);
             listAdapter.setEmptyListListener(this);
         } else {
             listIsEmpty(true);

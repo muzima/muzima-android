@@ -8,6 +8,8 @@
 
     <string name="no_new_form_msg">No Forms Available</string>
     <string name="no_new_form_tip">Please press load to fetch data from server</string>
+    <string name="no_downloaded_form_msg">No Forms Have Been Downloaded</string>
+    <string name="no_downloaded_form_tip">Please select forms from all forms list and click download</string>
     <string name="no_incomplete_form_msg">No Incomplete Forms On Device</string>
     <string name="no_incomplete_form_tip">Incomplete forms are available only if you have saved a partially filled form</string>
     <string name="no_complete_form_msg">No Completed And Unsynced Forms On Device</string>
