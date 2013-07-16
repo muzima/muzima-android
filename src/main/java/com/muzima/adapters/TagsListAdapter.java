@@ -24,10 +24,19 @@ import java.util.List;
 public class TagsListAdapter extends FormsListAdapter<Tag> implements DownloadListener<Integer[]>, AdapterView.OnItemClickListener {
     private static final String TAG = "TagsListAdapter";
     private FormController formController;
+    private TagsChangedListener tagsChangedListener;
 
     public TagsListAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId);
         this.formController = formController;
+    }
+
+    public interface TagsChangedListener{
+        public void onTagsChanged();
+    }
+
+    public void setTagsChangedListener(TagsChangedListener tagsChangedListener) {
+        this.tagsChangedListener = tagsChangedListener;
     }
 
     @Override
@@ -101,16 +110,17 @@ public class TagsListAdapter extends FormsListAdapter<Tag> implements DownloadLi
 
         if(position == 0){
             formController.clearAllSelectedTags();
-            notifyDataSetChanged();
-            return;
-        }
-
-        if(formController.isTagSelected(tag)){
-            formController.removeSelectedTags(tag);
         }else{
-            formController.addSelectedTags(tag);
+            if(formController.isTagSelected(tag)){
+                formController.removeSelectedTags(tag);
+            }else{
+                formController.addSelectedTags(tag);
+            }
         }
         notifyDataSetChanged();
+        if(tagsChangedListener != null){
+            tagsChangedListener.onTagsChanged();
+        }
     }
 
     private static class ViewHolder {
@@ -120,7 +130,7 @@ public class TagsListAdapter extends FormsListAdapter<Tag> implements DownloadLi
         ImageView icon;
     }
 
-    public class BackgroundQueryTask extends AsyncTask<Void, Void, List<Tag>> {
+    private class BackgroundQueryTask extends AsyncTask<Void, Void, List<Tag>> {
         @Override
         protected List<Tag> doInBackground(Void... voids) {
             List<Tag> allTags = null;

@@ -16,7 +16,9 @@ import com.muzima.view.forms.FormsListFragment;
 
 import java.io.IOException;
 
-public class FormsPagerAdapter extends FragmentPagerAdapter implements DownloadListener<Integer[]>{
+import static com.muzima.adapters.TagsListAdapter.TagsChangedListener;
+
+public class FormsPagerAdapter extends FragmentPagerAdapter implements DownloadListener<Integer[]>, TagsChangedListener{
     private static final int TAB_All = 0;
     private static final int TAB_COMPLETE = 1;
     private static final int TAB_INCOMPLETE = 2;
@@ -52,6 +54,11 @@ public class FormsPagerAdapter extends FragmentPagerAdapter implements DownloadL
     @Override
     public void downloadTaskComplete(Integer[] result) {
         pagers[TAB_All].fragment.downloadComplete(result);
+    }
+
+    @Override
+    public void onTagsChanged() {
+        pagers[TAB_All].fragment.tagsChanged();
     }
 
     private void initPagerViews(Context context) {

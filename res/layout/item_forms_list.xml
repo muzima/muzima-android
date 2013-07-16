@@ -32,7 +32,7 @@
     <HorizontalScrollView
             android:id="@+id/tags_scroller"
             android:layout_width="wrap_content"
-            android:layout_height="16dp"
+            android:layout_height="@dimen/tag_selected_height"
             android:scrollbars="none"
             android:layout_gravity="right"
             android:visibility="gone">
@@ -41,7 +41,8 @@
                 android:id="@+id/tags"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
         </LinearLayout>
     </HorizontalScrollView>
 </LinearLayout>

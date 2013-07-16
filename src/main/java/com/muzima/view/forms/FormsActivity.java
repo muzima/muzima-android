@@ -135,6 +135,7 @@ public class FormsActivity extends SherlockFragmentActivity implements EmptyList
         tagsDrawerList.setAdapter(tagsListAdapter);
         tagsDrawerList.setOnItemClickListener(tagsListAdapter);
         tagsListAdapter.setEmptyListListener(this);
+        tagsListAdapter.setTagsChangedListener(formsPagerAdapter);
         actionbarDrawerToggle = new ActionBarDrawerToggle(this, mainLayout,
                 R.drawable.ic_labels, R.string.drawer_open, R.string.drawer_close) {
 

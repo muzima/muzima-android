@@ -36,6 +36,32 @@ public class FormController {
         }
     }
 
+    //TODO Do this at lucene level
+    public List<Form> getAllFormByTags(List<String> tagsUuid) throws FormFetchException{
+        try {
+            List<Form> allForms = formService.getAllForms();
+            if(tagsUuid.isEmpty()){
+                return allForms;
+            }
+
+            List<Form> filteredForms = new ArrayList<Form>();
+            for (Form form : allForms) {
+                Tag[] formTags = form.getTags();
+                for (Tag formTag : formTags) {
+                    if(tagsUuid.contains(formTag.getUuid())){
+                        filteredForms.add(form);
+                        break;
+                    }
+                }
+            }
+            return filteredForms;
+        } catch (IOException e) {
+            throw new FormFetchException(e);
+        } catch (ParseException e) {
+            throw new FormFetchException(e);
+        }
+    }
+
     public List<Form> downloadAllForms() throws FormFetchException {
         try {
             return formService.downloadFormsByName(StringUtil.EMPTY);

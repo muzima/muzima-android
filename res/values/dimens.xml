@@ -6,4 +6,7 @@
 
     <dimen name="pager_indicator_height">56dp</dimen>
     <dimen name="pager_indicator_text_size">14sp</dimen>
+
+    <dimen name="tag_selected_height">16dp</dimen>
+    <dimen name="tag_unselected_height">2dp</dimen>
 </resources>

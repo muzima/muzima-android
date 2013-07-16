@@ -10,11 +10,13 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.actionbarsherlock.internal.nineoldandroids.animation.ObjectAnimator;
 import com.muzima.R;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.Tag;
 import com.muzima.api.service.FormService;
 import com.muzima.controller.FormController;
+import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.StringUtils;
 
@@ -84,13 +86,17 @@ public class NewFormsAdapter extends FormsListAdapter<Form> {
             for (int i = 0; i < tags.length; i++) {
                 TextView textView = null;
                 if (holder.tags.size() <= i) {
-                    textView = newTextview(layoutInflater);
+                    textView = newTextview(layoutInflater, tags[i]);
                     holder.tags.add(textView);
                     holder.tagsLayout.addView(textView);
                 }
                 textView = holder.tags.get(i);
-                textView.setText(tags[i].getName());
                 textView.setBackgroundColor(formController.getTagColor(tags[i].getUuid()));
+                if(!formController.hasSelectedTags() || formController.isTagSelected(tags[i])){
+                    textView.setText(tags[i].getName());
+                }else{
+                    textView.setText(StringUtil.EMPTY);
+                }
             }
 
         //remove already existing extra tags
@@ -105,7 +111,7 @@ public class NewFormsAdapter extends FormsListAdapter<Form> {
         }
     }
 
-    private TextView newTextview (LayoutInflater layoutInflater) {
+    private TextView newTextview(LayoutInflater layoutInflater, Tag tag) {
         TextView textView = (TextView) layoutInflater.inflate(R.layout.tag, null, false);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
         layoutParams.setMargins(1, 0, 0, 0);
@@ -132,7 +138,13 @@ public class NewFormsAdapter extends FormsListAdapter<Form> {
         protected List<Form> doInBackground(Void... voids) {
             List<Form> allForms = null;
             try {
-                allForms = formController.getAllForms();
+                List<Tag> selectedTags = formController.getSelectedTags();
+                List<String> tags = new ArrayList<String>();
+                for (Tag selectedTag : selectedTags) {
+                    tags.add(selectedTag.getUuid());
+                }
+
+                allForms = formController.getAllFormByTags(tags);
                 Log.i(TAG, "#Forms: " + allForms.size());
             } catch (FormController.FormFetchException e) {
                 Log.w(TAG, "Exception occurred while fetching local forms " + e);

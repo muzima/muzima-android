@@ -17,6 +17,7 @@ import java.util.List;
 
 import static com.muzima.controller.FormController.FormFetchException;
 import static com.muzima.controller.FormController.FormSaveException;
+import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.hasItem;
@@ -50,6 +51,30 @@ public class FormControllerTest {
 
         doThrow(new ParseException()).when(formService).getAllForms();
         formController.getAllForms();
+    }
+
+    @Test
+    public void getAllFormByTags_shouldFetchAllFormsWithGivenTags() throws IOException, ParseException, FormFetchException {
+        List<Form> forms = buildForms();
+        when(formService.getAllForms()).thenReturn(forms);
+
+        List<Form> formByTags = formController.getAllFormByTags(asList("tag2"));
+        assertThat(formByTags.size(), is(1));
+        assertThat(formByTags, hasItem(forms.get(0)));
+
+        formByTags = formController.getAllFormByTags(asList("tag1"));
+        assertThat(formByTags.size(), is(2));
+        assertThat(formByTags, hasItem(forms.get(0)));
+        assertThat(formByTags, hasItem(forms.get(1)));
+    }
+
+    @Test
+    public void getAllFormByTags_shouldFetchAllFormsIfNoTagsAreProvided() throws IOException, ParseException, FormFetchException {
+        List<Form> forms = buildForms();
+        when(formService.getAllForms()).thenReturn(forms);
+
+        List<Form> formByTags = formController.getAllFormByTags(new ArrayList<String>());
+        assertThat(formByTags.size(), is(2));
     }
 
     @Test

@@ -107,4 +107,8 @@ public class FormsListFragment extends Fragment implements EmptyListListener {
             noDataLayout.setVisibility(View.GONE);
         }
     }
+
+    public void tagsChanged() {
+        listAdapter.reloadData();
+    }
 }
