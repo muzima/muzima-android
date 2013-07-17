@@ -93,14 +93,14 @@ public class FormsActivity extends SherlockFragmentActivity implements EmptyList
                 formDownloadTask.addDownloadListener(tagsListAdapter);
                 formDownloadTask.execute(USERNAME, PASS, FORMS_SERVER);
                 return true;
-            case R.id.client_add:
+            case R.id.menu_client_add:
                 Intent intent = new Intent(this, RegisterClientActivity.class);
                 startActivity(intent);
                 return true;
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
-            case R.id.tags:
+            case R.id.menu_tags:
                 if (mainLayout.isDrawerOpen(GravityCompat.END)) {
                     mainLayout.closeDrawer(GravityCompat.END);
                 } else {

@@ -6,11 +6,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
 import com.muzima.adapters.NewFormsAdapter;
+import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
 
-public class NewFormsListFragment extends FormsListFragment{
+import java.util.List;
+
+public class NewFormsListFragment extends FormsListFragment {
+    private static final String TAG = "NewFormsListFragment";
+
+    private ActionMode actionMode;
+    private boolean actionModeActive = false;
 
     public static NewFormsListFragment newInstance(FormController formController, String noDataMsg, String noDataTip) {
         NewFormsListFragment f = new NewFormsListFragment();
@@ -28,7 +38,47 @@ public class NewFormsListFragment extends FormsListFragment{
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        if (actionModeActive == false) {
+            actionMode = getSherlockActivity().startActionMode(new NewFormsActionModeCallback());
+            actionModeActive = true;
+        }
+        ((NewFormsAdapter) listAdapter).onListItemClick(position);
+        int numOfSelectedForms = ((NewFormsAdapter) listAdapter).getSelectedForms().size();
+        actionMode.setTitle(String.valueOf(numOfSelectedForms));
+    }
 
+    public final class NewFormsActionModeCallback implements ActionMode.Callback {
+
+        @Override
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            getSherlockActivity().getSupportMenuInflater().inflate(R.menu.form_list_actionmode_menu, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.menu_download:
+                    List<Form> selectedForms = ((NewFormsAdapter) listAdapter).getSelectedForms();
+                    formController.downloadFormsTemplate(selectedForms);
+                    if (NewFormsListFragment.this.actionMode != null) {
+                        NewFormsListFragment.this.actionMode.finish();
+                    }
+                    return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+            actionModeActive = false;
+            ((NewFormsAdapter)listAdapter).clearSelectedForms();
+        }
     }
 }

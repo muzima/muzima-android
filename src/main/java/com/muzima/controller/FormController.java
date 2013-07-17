@@ -108,26 +108,12 @@ public class FormController {
         return selectedTags;
     }
 
-    public void addSelectedTags(Tag tag) {
-        if (tag != null && !selectedTags.contains(tag)) {
-            selectedTags.add(tag);
-        }
+    public void setSelectedTags(List<Tag> selectedTags) {
+        this.selectedTags = selectedTags;
     }
 
-    public void removeSelectedTags(Tag tag) {
-        selectedTags.remove(tag);
-    }
-
-    public void clearAllSelectedTags(){
-        selectedTags.clear();
-    }
-
-    public boolean isTagSelected(Tag tag){
-        return selectedTags.contains(tag);
-    }
-
-    public boolean hasSelectedTags(){
-        return !selectedTags.isEmpty();
+    public void downloadFormsTemplate(List<Form> selectedForms) {
+        
     }
 
     public static class FormFetchException extends Throwable {

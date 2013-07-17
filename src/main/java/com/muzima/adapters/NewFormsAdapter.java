@@ -1,6 +1,7 @@
 package com.muzima.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,33 +11,26 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.actionbarsherlock.internal.nineoldandroids.animation.ObjectAnimator;
 import com.muzima.R;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.Tag;
-import com.muzima.api.service.FormService;
 import com.muzima.controller.FormController;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.StringUtils;
 
-import org.apache.lucene.queryParser.ParseException;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static com.muzima.utils.CustomColor.getRandomColor;
 
 public class NewFormsAdapter extends FormsListAdapter<Form> {
     private static final String TAG = "NewFormsAdapter";
     private FormController formController;
+    private List<Form> selectedForms;
 
     public NewFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId);
         this.formController = formController;
+        selectedForms = new ArrayList<Form>();
     }
 
     @Override
@@ -52,7 +46,7 @@ public class NewFormsAdapter extends FormsListAdapter<Form> {
             holder.description = (TextView) convertView
                     .findViewById(R.id.form_description);
             holder.tagsScroller = (HorizontalScrollView) convertView.findViewById(R.id.tags_scroller);
-            holder.tagsLayout = (LinearLayout) convertView.findViewById(R.id.tags);
+            holder.tagsLayout = (LinearLayout) convertView.findViewById(R.id.menu_tags);
             holder.tags = new ArrayList<TextView>();
             convertView.setTag(holder);
         } else {
@@ -73,7 +67,17 @@ public class NewFormsAdapter extends FormsListAdapter<Form> {
 
         addTags(holder, form);
 
+        higlightIfSelected(convertView, form);
+
         return convertView;
+    }
+
+    private void higlightIfSelected(View convertView, Form form) {
+        if(selectedForms.contains(form)){
+            convertView.setBackgroundColor(getContext().getResources().getColor(R.color.listitem_state_pressed));
+        }else{
+            convertView.setBackgroundColor(Color.WHITE);
+        }
     }
 
     private void addTags(ViewHolder holder, Form form) {
@@ -92,7 +96,8 @@ public class NewFormsAdapter extends FormsListAdapter<Form> {
                 }
                 textView = holder.tags.get(i);
                 textView.setBackgroundColor(formController.getTagColor(tags[i].getUuid()));
-                if(!formController.hasSelectedTags() || formController.isTagSelected(tags[i])){
+                List<Tag> selectedTags = formController.getSelectedTags();
+                if(selectedTags.isEmpty() || selectedTags.contains(tags[i])){
                     textView.setText(tags[i].getName());
                 }else{
                     textView.setText(StringUtil.EMPTY);
@@ -122,6 +127,25 @@ public class NewFormsAdapter extends FormsListAdapter<Form> {
     @Override
     public void reloadData() {
         new BackgroundQueryTask().execute();
+    }
+
+    public void onListItemClick(int position) {
+        Form form = getItem(position);
+        if(selectedForms.contains(form)){
+            selectedForms.remove(form);
+        }else{
+            selectedForms.add(form);
+        }
+        notifyDataSetChanged();
+    }
+
+    public List<Form> getSelectedForms() {
+        return selectedForms;
+    }
+
+    public void clearSelectedForms(){
+        selectedForms.clear();
+        notifyDataSetChanged();
     }
 
     private static class ViewHolder {

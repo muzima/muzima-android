@@ -2,9 +2,12 @@
 <resources>
 
     <string name="app_name">mUzima</string>
+
     <string name="menu_settings">Settings</string>
     <string name="menu_load">Load</string>
     <string name="menu_search">Search</string>
+    <string name="menu_client_add">Register client</string>
+    <string name="menu_download">Download</string>
 
     <string name="no_new_form_msg">No Forms Available</string>
     <string name="no_new_form_tip">Please press load to fetch data from server</string>
@@ -52,7 +55,8 @@
 	<string name="textview_register_birthdate_format">dd/mm/yyyy:</string>
 	<string name="textview_register_identifier">Identifier:</string>
 	<string name="textview_register_patient_identifier">Patient Identifier:</string>
-    <string name="client_add">Register client</string>
+
+
     <string name="drawer_open">Tags drawer open</string>
     <string name="drawer_close">Tags drawer close</string>
     <string name="drawer_title">Tags</string>

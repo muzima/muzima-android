@@ -63,14 +63,15 @@ public class TagsListAdapter extends FormsListAdapter<Tag> implements DownloadLi
         }
 
         Resources resources = getContext().getResources();
-        if (!formController.hasSelectedTags()) {
+        List<Tag> selectedTags = formController.getSelectedTags();
+        if (selectedTags.isEmpty()) {
             if (position == 0) {
                 markItemSelected(holder, tagColor, resources);
             } else {
                 markItemUnselected(holder, resources);
             }
         } else {
-            if (formController.isTagSelected(getItem(position))) {
+            if (selectedTags.contains(getItem(position))) {
                 markItemSelected(holder, tagColor, resources);
             } else {
                 markItemUnselected(holder, resources);
@@ -108,15 +109,17 @@ public class TagsListAdapter extends FormsListAdapter<Tag> implements DownloadLi
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         Tag tag = getItem(position);
 
+        List<Tag> selectedTags = formController.getSelectedTags();
         if(position == 0){
-            formController.clearAllSelectedTags();
+            selectedTags.clear();
         }else{
-            if(formController.isTagSelected(tag)){
-                formController.removeSelectedTags(tag);
+            if(selectedTags.contains(tag)){
+                selectedTags.remove(tag);
             }else{
-                formController.addSelectedTags(tag);
+                selectedTags.add(tag);
             }
         }
+//        formController.setSelectedTags(selectedTags);
         notifyDataSetChanged();
         if(tagsChangedListener != null){
             tagsChangedListener.onTagsChanged();

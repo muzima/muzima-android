@@ -15,7 +15,7 @@
         android:actionLayout="@layout/search_layout"/>
     -->
     <item
-        android:id="@+id/client_add"
+        android:id="@+id/menu_client_add"
         android:icon="@drawable/ic_action_add_client"
         android:showAsAction="always"
         android:title="@string/client_search"/>

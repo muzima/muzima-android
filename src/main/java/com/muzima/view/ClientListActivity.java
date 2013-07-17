@@ -62,7 +62,7 @@ public class ClientListActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.client_add: // icon in action bar clicked
+		case R.id.menu_client_add: // icon in action bar clicked
 			Intent intent = new Intent(this, RegisterClientActivity.class);
 			startActivity(intent);
 			return true;

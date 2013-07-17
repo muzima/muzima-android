@@ -20,8 +20,8 @@ import com.muzima.tasks.DownloadFormTask;
 import com.muzima.utils.Fonts;
 
 public abstract class FormsListFragment extends SherlockFragment implements EmptyListListener, AdapterView.OnItemClickListener {
-
     private static final String TAG = "FormsListFragment";
+
     protected ListView formsList;
     protected View noDataLayout;
     protected TextView noDataMsgTextView;

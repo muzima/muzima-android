@@ -4,8 +4,8 @@
     <color name="tab_indicator">#09A9E4</color>
     <color name="tab_background">#1a1a1a</color>
 
-    <color name="listitem_state_pressed">#777dbcd3</color>
-    <color name="listitem_state_focused">#777dbcd3</color>
+    <color name="listitem_state_pressed">#997dbcd3</color>
+    <color name="listitem_state_focused">#997dbcd3</color>
 
     <color name="drawer_background">#232323</color>
     <color name="drawer_header_separator_background">#161616</color>
