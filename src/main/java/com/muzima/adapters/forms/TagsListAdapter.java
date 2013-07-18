@@ -1,4 +1,4 @@
-package com.muzima.adapters;
+package com.muzima.adapters.forms;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -21,7 +21,7 @@ import com.muzima.tasks.forms.DownloadFormTask;
 
 import java.util.List;
 
-public class TagsListAdapter extends FormsListAdapter<Tag> implements DownloadListener<Integer[]>, AdapterView.OnItemClickListener {
+public class TagsListAdapter extends ListAdapter<Tag> implements DownloadListener<Integer[]>, AdapterView.OnItemClickListener {
     private static final String TAG = "TagsListAdapter";
     private FormController formController;
     private TagsChangedListener tagsChangedListener;

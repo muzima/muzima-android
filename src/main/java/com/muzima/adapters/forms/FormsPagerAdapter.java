@@ -1,4 +1,4 @@
-package com.muzima.adapters;
+package com.muzima.adapters.forms;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -16,9 +16,7 @@ import com.muzima.view.forms.IncompleteFormsListFragment;
 import com.muzima.view.forms.NewFormsListFragment;
 import com.muzima.view.forms.SyncedFormsListFragment;
 
-import static com.muzima.adapters.TagsListAdapter.TagsChangedListener;
-
-public class FormsPagerAdapter extends FragmentPagerAdapter implements DownloadListener<Integer[]>, TagsChangedListener{
+public class FormsPagerAdapter extends FragmentPagerAdapter implements DownloadListener<Integer[]>, TagsListAdapter.TagsChangedListener {
     private static final int TAB_All = 0;
     private static final int TAB_DOWNLOADED = 1;
     private static final int TAB_COMPLETE = 2;

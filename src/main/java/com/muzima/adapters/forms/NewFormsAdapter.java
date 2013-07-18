@@ -1,4 +1,4 @@
-package com.muzima.adapters;
+package com.muzima.adapters.forms;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,59 +15,27 @@ import com.muzima.api.model.Form;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
 import com.muzima.search.api.util.StringUtil;
-import com.muzima.utils.Fonts;
-import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewFormsAdapter extends FormsListAdapter<Form> {
+public class NewFormsAdapter extends FormsAdapter {
     private static final String TAG = "NewFormsAdapter";
-    private FormController formController;
     private List<Form> selectedForms;
 
     public NewFormsAdapter(Context context, int textViewResourceId, FormController formController) {
-        super(context, textViewResourceId);
-        this.formController = formController;
+        super(context, textViewResourceId, formController);
         selectedForms = new ArrayList<Form>();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        if (convertView == null) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            convertView = layoutInflater.inflate(
-                    R.layout.item_forms_list, parent, false);
-            holder = new ViewHolder();
-            holder.name = (TextView) convertView
-                    .findViewById(R.id.form_name);
-            holder.description = (TextView) convertView
-                    .findViewById(R.id.form_description);
-            holder.tagsScroller = (HorizontalScrollView) convertView.findViewById(R.id.tags_scroller);
-            holder.tagsLayout = (LinearLayout) convertView.findViewById(R.id.menu_tags);
-            holder.tags = new ArrayList<TextView>();
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
+        convertView = super.getView(position, convertView, parent);
 
+        ViewHolder holder = (ViewHolder) convertView.getTag();
         Form form = getItem(position);
-
-        holder.name.setText(form.getName());
-        holder.name.setTypeface(Fonts.roboto_bold(getContext()));
-
-        String description = form.getDescription();
-        if (StringUtils.isEmpty(description)) {
-            description = "No description available";
-        }
-        holder.description.setText(description);
-        holder.name.setTypeface(Fonts.roboto_medium(getContext()));
-
         addTags(holder, form);
-
         highlightIfSelected(convertView, form);
-
         return convertView;
     }
 
@@ -146,14 +113,6 @@ public class NewFormsAdapter extends FormsListAdapter<Form> {
     public void clearSelectedForms(){
         selectedForms.clear();
         notifyDataSetChanged();
-    }
-
-    private static class ViewHolder {
-        TextView name;
-        TextView description;
-        HorizontalScrollView tagsScroller;
-        LinearLayout tagsLayout;
-        List<TextView> tags;
     }
 
     public class BackgroundQueryTask extends AsyncTask<Void, Void, List<Form>> {

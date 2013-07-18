@@ -1,5 +1,7 @@
 package com.muzima.controller;
 
+import android.util.Log;
+
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Tag;
@@ -74,6 +76,28 @@ public class FormController {
             }
         }
         return allTags;
+    }
+
+    //Todo find a better way of doing this
+    public List<Form> getAllDownloadedForms() throws FormFetchException {
+        ArrayList<Form> result = new ArrayList<Form>();
+        try {
+            List<FormTemplate> allFormTemplates = formService.getAllFormTemplates();
+            List<Form> allForms = formService.getAllForms();
+            for (FormTemplate formTemplate : allFormTemplates) {
+                for (Form form : allForms) {
+                    if(form.getUuid().equals(formTemplate.getUuid())){
+                        result.add(form);
+                        break;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new FormFetchException(e);
+        } catch (ParseException e) {
+            throw new FormFetchException(e);
+        }
+        return result;
     }
 
     public List<Form> downloadAllForms() throws FormFetchException {

@@ -1,14 +1,14 @@
-package com.muzima.adapters;
+package com.muzima.adapters.forms;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;
 
 import com.muzima.listeners.EmptyListListener;
 
-public abstract class FormsListAdapter<T> extends ArrayAdapter<T>{
+public abstract class ListAdapter<T> extends ArrayAdapter<T>{
     private EmptyListListener emptyListListener;
 
-    public FormsListAdapter(Context context, int textViewResourceId) {
+    public ListAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
     }
 

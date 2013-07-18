@@ -65,8 +65,9 @@ public class FormControllerTest {
         when(formService.getAllForms()).thenReturn(forms);
 
         List<Form> formByTags = formController.getAllFormByTags(asList("tag2"));
-        assertThat(formByTags.size(), is(1));
+        assertThat(formByTags.size(), is(2));
         assertThat(formByTags, hasItem(forms.get(0)));
+        assertThat(formByTags, hasItem(forms.get(2)));
 
         formByTags = formController.getAllFormByTags(asList("tag1"));
         assertThat(formByTags.size(), is(2));
@@ -80,7 +81,7 @@ public class FormControllerTest {
         when(formService.getAllForms()).thenReturn(forms);
 
         List<Form> formByTags = formController.getAllFormByTags(new ArrayList<String>());
-        assertThat(formByTags.size(), is(2));
+        assertThat(formByTags.size(), is(5));
     }
 
     @Test
@@ -116,19 +117,19 @@ public class FormControllerTest {
         formController.downloadFormTemplateByUuid(uuid);
     }
 
-    @Test
-    public void downloadFormTemplates_shouldDownloadAllFormTemplates() throws IOException, FormFetchException {
-        List<Form> forms = buildForms();
-        FormTemplate formTemplate1 = new FormTemplate();
-        FormTemplate formTemplate2 = new FormTemplate();
-        when(formService.downloadFormTemplateByUuid(forms.get(0).getUuid())).thenReturn(formTemplate1);
-        when(formService.downloadFormTemplateByUuid(forms.get(1).getUuid())).thenReturn(formTemplate2);
-
-        List<FormTemplate> formTemplates = formController.downloadFormTemplates(new String[]{forms.get(0).getUuid(), forms.get(1).getUuid()});
-        assertThat(formTemplates.size(), is(2));
-        assertThat(formTemplates, hasItem(formTemplate1));
-        assertThat(formTemplates, hasItem(formTemplate2));
-    }
+//    @Test
+//    public void downloadFormTemplates_shouldDownloadAllFormTemplates() throws IOException, FormFetchException {
+//        List<Form> forms = buildForms();
+//        FormTemplate formTemplate1 = new FormTemplate();
+//        FormTemplate formTemplate2 = new FormTemplate();
+//        when(formService.downloadFormTemplateByUuid(forms.get(0).getUuid())).thenReturn(formTemplate1);
+//        when(formService.downloadFormTemplateByUuid(forms.get(1).getUuid())).thenReturn(formTemplate2);
+//
+//        List<FormTemplate> formTemplates = formController.downloadFormTemplates(new String[]{forms.get(0).getUuid(), forms.get(1).getUuid()});
+//        assertThat(formTemplates.size(), is(2));
+//        assertThat(formTemplates, hasItem(formTemplate1));
+//        assertThat(formTemplates, hasItem(formTemplate2));
+//    }
 
     @Test
     public void saveAllForms_shouldSaveAllForm() throws FormSaveException, IOException {
@@ -136,8 +137,7 @@ public class FormControllerTest {
 
         formController.saveAllForms(forms);
 
-        verify(formService).saveForm(forms.get(0));
-        verify(formService).saveForm(forms.get(1));
+        verify(formService, times(forms.size())).saveForm(any(Form.class));
         verifyNoMoreInteractions(formService);
     }
 
@@ -155,11 +155,12 @@ public class FormControllerTest {
 
         List<Tag> allTags = formController.getAllTags();
 
-        assertThat(allTags.size(), is(4));
+        assertThat(allTags.size(), is(5));
         assertThat(allTags.get(0).getUuid(), is("tag1"));
         assertThat(allTags.get(1).getUuid(), is("tag2"));
         assertThat(allTags.get(2).getUuid(), is("tag3"));
         assertThat(allTags.get(3).getUuid(), is("tag4"));
+        assertThat(allTags.get(4).getUuid(), is("tag5"));
     }
 
     @Test
@@ -170,8 +171,7 @@ public class FormControllerTest {
         formController.deleteAllForms();
 
         verify(formService).getAllForms();
-        verify(formService).deleteForm(forms.get(0));
-        verify(formService).deleteForm(forms.get(1));
+        verify(formService, times(5)).deleteForm(any(Form.class));
         verifyNoMoreInteractions(formService);
     }
 
@@ -205,22 +205,48 @@ public class FormControllerTest {
         verify(formService).saveFormTemplate(newFormTemplates.get(2));
     }
 
+    @Test
+    public void getAllDownloadedForms_shouldReturnOnlyDownloadedForms() throws IOException, ParseException, FormFetchException {
+        List<Form> forms = buildForms();
+        List<FormTemplate> formTemplates = buildFormTemplates();
+
+        when(formService.getAllForms()).thenReturn(forms);
+        when(formService.getAllFormTemplates()).thenReturn(formTemplates);
+
+        List<Form> allDownloadedForms = formController.getAllDownloadedForms();
+
+        assertThat(allDownloadedForms.size(), is(3));
+        assertThat(allDownloadedForms, hasItem(forms.get(0)));
+        assertThat(allDownloadedForms, hasItem(forms.get(1)));
+        assertThat(allDownloadedForms, hasItem(forms.get(2)));
+    }
+
+
     private List<Form> buildForms() {
         List<Form> forms = new ArrayList<Form>();
-        Tag[] tags1 = new Tag[3];
-        tags1[0] = TagBuilder.tag().withName("Patient").withUuid("tag1").build();
-        tags1[1] = TagBuilder.tag().withName("PMTCT").withUuid("tag2").build();
-        tags1[2] = TagBuilder.tag().withName("Observation").withUuid("tag3").build();
+        Tag tag1 = TagBuilder.tag().withName("Patient").withUuid("tag1").build();
+        Tag tag2 = TagBuilder.tag().withName("PMTCT").withUuid("tag2").build();
+        Tag tag3 = TagBuilder.tag().withName("Observation").withUuid("tag3").build();
+        Tag tag4 = TagBuilder.tag().withName("AMPATH").withUuid("tag4").build();
+        Tag tag5 = TagBuilder.tag().withName("Encounter").withUuid("tag5").build();
 
-        Tag[] tags2 = new Tag[2];
-        tags2[0] = tags1[0];
-        tags2[1] = TagBuilder.tag().withName("AMPATH").withUuid("tag4").build();
+        Tag[] tags1 = {tag1, tag2, tag3};
+        Tag[] tags2 = {tag1, tag3};
+        Tag[] tags3 = {tag2, tag4};
+        Tag[] tags4 = {tag4, tag5, tag3};
+        Tag[] tags5 = {};
 
         Form form1 = FormBuilder.form().withName("Patient Registration").withDescription("Form for patient registration").withUuid("uuid1").withTags(tags1).build();
         Form form2 = FormBuilder.form().withName("PMTCT").withDescription("Form for pmtct registration").withUuid("uuid2").withTags(tags2).build();
+        Form form3 = FormBuilder.form().withName("Ampath").withDescription("Form for pmtct registration").withUuid("uuid3").withTags(tags3).build();
+        Form form4 = FormBuilder.form().withName("Patient Observation").withDescription("Form for pmtct registration").withUuid("uuid4").withTags(tags4).build();
+        Form form5 = FormBuilder.form().withName("Encounter Form").withDescription("Form for pmtct registration").withUuid("uuid5").withTags(tags5).build();
 
         forms.add(form1);
         forms.add(form2);
+        forms.add(form3);
+        forms.add(form4);
+        forms.add(form5);
 
         return forms;
     }

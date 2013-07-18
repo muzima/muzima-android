@@ -1,7 +1,6 @@
 package com.muzima.view.forms;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,7 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.muzima.R;
-import com.muzima.adapters.FormsListAdapter;
+import com.muzima.adapters.forms.ListAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.listeners.EmptyListListener;
 import com.muzima.tasks.forms.DownloadFormTask;
@@ -29,7 +28,7 @@ public abstract class FormsListFragment extends SherlockFragment implements Empt
 
     protected String noDataMsg;
     protected String noDataTip;
-    protected FormsListAdapter listAdapter;
+    protected ListAdapter listAdapter;
     protected FormController formController;
 
 

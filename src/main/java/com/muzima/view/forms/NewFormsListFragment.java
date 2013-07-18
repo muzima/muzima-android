@@ -1,7 +1,6 @@
 package com.muzima.view.forms;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.NewFormsAdapter;
+import com.muzima.adapters.forms.NewFormsAdapter;
 import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
 import com.muzima.listeners.DownloadListener;

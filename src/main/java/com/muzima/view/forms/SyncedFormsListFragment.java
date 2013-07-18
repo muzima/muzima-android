@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.muzima.R;
-import com.muzima.adapters.FormsListAdapter;
 import com.muzima.controller.FormController;
 
 public class SyncedFormsListFragment extends FormsListFragment{
