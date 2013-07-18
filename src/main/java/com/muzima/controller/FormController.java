@@ -1,7 +1,5 @@
 package com.muzima.controller;
 
-import android.util.Log;
-
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Tag;
