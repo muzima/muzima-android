@@ -47,12 +47,8 @@ public class DownloadFormTask extends DownloadTask<String, Void, Integer[]> {
             List<Form> forms = formController.downloadAllForms();
 
             if (checkIfTaskIsCancelled(result)) return result;
-            deleteLuceneCache();
-            if (!forms.isEmpty()) {
-                for (Form form : forms) {
-                    formController.saveForm(form);
-                }
-            }
+            formController.deleteAllForms();
+            formController.saveAllForms(forms);
             result[1] = forms.size();
         } catch (FormController.FormFetchException e) {
             Log.e(TAG, "Exception when trying to download forms", e);
@@ -66,6 +62,8 @@ public class DownloadFormTask extends DownloadTask<String, Void, Integer[]> {
             Log.e(TAG, "Exception during authentication", e);
             result[0] = AUTHENTICATION_ERROR;
             return result;
+        } catch (FormController.FormDeleteException e) {
+            Log.e(TAG, "Exception occurred while deleting existing forms", e);
         } finally {
             if (context != null)
                 context.closeSession();
@@ -83,15 +81,4 @@ public class DownloadFormTask extends DownloadTask<String, Void, Integer[]> {
         return false;
     }
 
-    private void deleteLuceneCache() {
-        File luceneDirectory = new File(System.getProperty("java.io.tmpdir") + "/lucene");
-        int numberOfFiles = luceneDirectory.listFiles().length;
-        Log.d(TAG, "Number of files in lucene directory: " + numberOfFiles);
-        int fileCounter = 0;
-        for (String filename : luceneDirectory.list()) {
-            File file = new File(luceneDirectory, filename);
-            if(file.delete())   fileCounter++;
-        }
-        Log.d(TAG, "Number of deleted files: " + fileCounter);
-    }
 }

@@ -1,6 +1,7 @@
 package com.muzima.controller;
 
 import com.muzima.api.model.Form;
+import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Tag;
 import com.muzima.api.service.FormService;
 import com.muzima.search.api.util.StringUtil;
@@ -72,13 +73,25 @@ public class FormController {
         }
     }
 
-    public void saveForm(Form form) throws FormSaveException {
+    public FormTemplate downloadFormTemplateByUuid(String uuid) throws FormFetchException {
         try {
-            formService.saveForm(form);
+            return formService.downloadFormTemplateByUuid(uuid);
+        } catch (IOException e) {
+            throw new FormFetchException(e);
+        }
+    }
+
+    public void saveAllForms(List<Form> forms) throws FormSaveException {
+        try {
+            for (Form form : forms) {
+                formService.saveForm(form);
+            }
         } catch (IOException e) {
             throw new FormSaveException(e);
         }
     }
+
+
 
     public int getTagColor(String uuid) {
         if (!tagColors.containsKey(uuid)) {
@@ -112,8 +125,17 @@ public class FormController {
         this.selectedTags = selectedTags;
     }
 
-    public void downloadFormsTemplate(List<Form> selectedForms) {
-        
+    public void deleteAllForms() throws FormDeleteException {
+        try {
+            List<Form> allForms = formService.getAllForms();
+            for (Form form : allForms) {
+                formService.deleteForm(form);
+            }
+        } catch (IOException e) {
+            throw new FormDeleteException(e);
+        } catch (ParseException e) {
+            throw new FormDeleteException(e);
+        }
     }
 
     public static class FormFetchException extends Throwable {
@@ -124,6 +146,12 @@ public class FormController {
 
     public static class FormSaveException extends Throwable {
         public FormSaveException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+
+    public static class FormDeleteException extends Throwable {
+        public FormDeleteException(Throwable throwable) {
             super(throwable);
         }
     }

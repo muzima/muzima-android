@@ -66,7 +66,7 @@ public class NewFormsListFragment extends FormsListFragment {
             switch (menuItem.getItemId()) {
                 case R.id.menu_download:
                     List<Form> selectedForms = ((NewFormsAdapter) listAdapter).getSelectedForms();
-                    formController.downloadFormsTemplate(selectedForms);
+//                    formController.downloadFormsTemplate(selectedForms);
                     if (NewFormsListFragment.this.actionMode != null) {
                         NewFormsListFragment.this.actionMode.finish();
                     }

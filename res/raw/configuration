@@ -175,7 +175,6 @@
             "field.unique": "uuid",
             "field.searchable": {
                 "uuid": "$['uuid']",
-                "formUuid": "$['form.uuid']"
             }
         },
         {

@@ -1,6 +1,7 @@
 package com.muzima.controller;
 
 import com.muzima.api.model.Form;
+import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Tag;
 import com.muzima.api.service.FormService;
 import com.muzima.builder.FormBuilder;
@@ -15,15 +16,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.muzima.controller.FormController.FormDeleteException;
 import static com.muzima.controller.FormController.FormFetchException;
 import static com.muzima.controller.FormController.FormSaveException;
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.hasItem;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 public class FormControllerTest {
@@ -95,22 +100,38 @@ public class FormControllerTest {
     }
 
     @Test
-    public void saveForm_shouldSaveForm() throws FormSaveException, IOException {
-        Form form = new Form();
+    public void downloadFormTemplateByUuid_shouldDownloadFormByUuid() throws IOException, FormFetchException {
+        FormTemplate formTemplate = new FormTemplate();
+        String uuid = "uuid";
+        when(formService.downloadFormTemplateByUuid(uuid)).thenReturn(formTemplate);
 
-        formController.saveForm(form);
+        assertThat(formController.downloadFormTemplateByUuid(uuid), is(formTemplate));
+    }
 
-        verify(formService).saveForm(form);
+    @Test(expected = FormFetchException.class)
+    public void downloadFormTemplateByUuid_shouldThrowFormFetchExceptionIfExceptionThrownByFormService() throws IOException, FormFetchException {
+        String uuid = "uuid";
+        doThrow(new IOException()).when(formService).downloadFormTemplateByUuid(uuid);
+        formController.downloadFormTemplateByUuid(uuid);
+    }
+
+    @Test
+    public void saveAllForms_shouldSaveAllForm() throws FormSaveException, IOException {
+        List<Form> forms = buildForms();
+
+        formController.saveAllForms(forms);
+
+        verify(formService).saveForm(forms.get(0));
+        verify(formService).saveForm(forms.get(1));
+        verifyNoMoreInteractions(formService);
     }
 
     @Test(expected = FormSaveException.class)
     public void saveForm_shouldThrowFormSaveExceptionIfExceptionThrownByFormService() throws FormSaveException, IOException, ParseException {
-        Form form = new Form();
-        doThrow(new IOException()).when(formService).saveForm(form);
+        List<Form> forms = buildForms();
+        doThrow(new IOException()).when(formService).saveForm(forms.get(0));
 
-        formController.saveForm(form);
-
-        verify(formService).saveForm(form);
+        formController.saveAllForms(forms);
     }
 
     @Test
@@ -126,6 +147,27 @@ public class FormControllerTest {
         assertThat(allTags.get(3).getUuid(), is("tag4"));
     }
 
+    @Test
+    public void deleteAllForms_shouldDeleteAllForms() throws FormDeleteException, IOException, ParseException, FormFetchException {
+        List<Form> forms = buildForms();
+        when(formService.getAllForms()).thenReturn(forms);
+
+        formController.deleteAllForms();
+
+        verify(formService).getAllForms();
+        verify(formService).deleteForm(forms.get(0));
+        verify(formService).deleteForm(forms.get(1));
+        verifyNoMoreInteractions(formService);
+    }
+
+    @Test(expected = FormDeleteException.class)
+    public void deleteAllForms_shouldThrowFormSaveExceptionIfExceptionThrownByFormService() throws IOException, FormDeleteException, ParseException {
+        List<Form> forms = buildForms();
+        when(formService.getAllForms()).thenReturn(forms);
+        doThrow(new IOException()).when(formService).deleteForm(forms.get(0));
+
+        formController.deleteAllForms();
+    }
 
     private List<Form> buildForms() {
         List<Form> forms = new ArrayList<Form>();
