@@ -23,7 +23,8 @@ import com.muzima.adapters.FormsPagerAdapter;
 import com.muzima.adapters.TagsListAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.listeners.EmptyListListener;
-import com.muzima.tasks.DownloadFormTask;
+import com.muzima.tasks.forms.DownloadFormMetadataTask;
+import com.muzima.tasks.forms.DownloadFormTask;
 import com.muzima.utils.Fonts;
 import com.muzima.view.RegisterClientActivity;
 import com.muzima.view.customViews.PagerSlidingTabStrip;
@@ -88,7 +89,7 @@ public class FormsActivity extends SherlockFragmentActivity implements EmptyList
                     Toast.makeText(this, "Already fetching forms, ignored the request", Toast.LENGTH_SHORT).show();
                     return true;
                 }
-                formDownloadTask = new DownloadFormTask((MuzimaApplication) getApplicationContext());
+                formDownloadTask = new DownloadFormMetadataTask((MuzimaApplication) getApplicationContext());
                 formDownloadTask.addDownloadListener(formsPagerAdapter);
                 formDownloadTask.addDownloadListener(tagsListAdapter);
                 formDownloadTask.execute(USERNAME, PASS, FORMS_SERVER);

@@ -17,7 +17,7 @@ import com.muzima.R;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
 import com.muzima.listeners.DownloadListener;
-import com.muzima.tasks.DownloadFormTask;
+import com.muzima.tasks.forms.DownloadFormTask;
 
 import java.util.List;
 

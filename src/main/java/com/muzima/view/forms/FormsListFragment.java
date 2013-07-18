@@ -16,7 +16,7 @@ import com.muzima.R;
 import com.muzima.adapters.FormsListAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.listeners.EmptyListListener;
-import com.muzima.tasks.DownloadFormTask;
+import com.muzima.tasks.forms.DownloadFormTask;
 import com.muzima.utils.Fonts;
 
 public abstract class FormsListFragment extends SherlockFragment implements EmptyListListener, AdapterView.OnItemClickListener {
@@ -86,6 +86,8 @@ public abstract class FormsListFragment extends SherlockFragment implements Empt
             msg = "An error occurred while downloading forms";
         } else if (downloadStatus == DownloadFormTask.AUTHENTICATION_ERROR) {
             msg = "Authentication error occurred while downloading forms";
+        } else if (downloadStatus == DownloadFormTask.DELETE_ERROR) {
+            msg = "An error occurred while deleting existing forms";
         }else if (downloadStatus == DownloadFormTask.SAVE_ERROR) {
             msg = "An error occurred while saving the downloaded forms";
         } else if (downloadStatus == DownloadFormTask.CANCELLED) {
