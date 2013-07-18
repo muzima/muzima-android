@@ -18,12 +18,11 @@ public class DownloadFormMetadataTask extends DownloadFormTask {
     }
 
     @Override
-    protected Integer[] performTask() throws FormDeleteException, FormSaveException, FormFetchException {
+    protected Integer[] performTask(String[] values) throws FormDeleteException, FormSaveException, FormFetchException {
         Integer[] result = new Integer[2];
         FormController formController = applicationContext.getFormController();
 
-        List<Form> forms = null;
-        forms = formController.downloadAllForms();
+        List<Form> forms = formController.downloadAllForms();
 
         if (checkIfTaskIsCancelled(result)) return result;
 

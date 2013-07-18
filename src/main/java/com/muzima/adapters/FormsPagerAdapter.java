@@ -5,11 +5,8 @@ import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.view.ViewGroup;
 
 import com.muzima.MuzimaApplication;
-import com.muzima.R;
-import com.muzima.api.service.FormService;
 import com.muzima.controller.FormController;
 import com.muzima.listeners.DownloadListener;
 import com.muzima.view.forms.CompleteFormsListFragment;
@@ -18,8 +15,6 @@ import com.muzima.view.forms.FormsListFragment;
 import com.muzima.view.forms.IncompleteFormsListFragment;
 import com.muzima.view.forms.NewFormsListFragment;
 import com.muzima.view.forms.SyncedFormsListFragment;
-
-import java.io.IOException;
 
 import static com.muzima.adapters.TagsListAdapter.TagsChangedListener;
 
@@ -54,7 +49,7 @@ public class FormsPagerAdapter extends FragmentPagerAdapter implements DownloadL
 
     @Override
     public void downloadTaskComplete(Integer[] result) {
-        pagers[TAB_All].fragment.downloadComplete(result);
+        pagers[TAB_All].fragment.formDownloadComplete(result);
     }
 
     @Override
@@ -66,26 +61,20 @@ public class FormsPagerAdapter extends FragmentPagerAdapter implements DownloadL
         final Resources resources = context.getResources();
         pagers = new PagerView[5];
         FormController formController = ((MuzimaApplication) context.getApplicationContext()).getFormController();
-        pagers[TAB_All] = new PagerView("All", NewFormsListFragment.newInstance(
-                formController,
-                resources.getString(R.string.no_new_form_msg),
-                resources.getString(R.string.no_new_form_tip)));
-        pagers[TAB_DOWNLOADED] = new PagerView("Downloaded", DownloadedFormsListFragment.newInstance(
-                formController,
-                resources.getString(R.string.no_downloaded_form_msg),
-                resources.getString(R.string.no_downloaded_form_tip)));
-        pagers[TAB_COMPLETE] = new PagerView("Complete", CompleteFormsListFragment.newInstance(
-                formController,
-                resources.getString(R.string.no_complete_form_msg),
-                resources.getString(R.string.no_complete_form_tip)));
-        pagers[TAB_INCOMPLETE] = new PagerView("Incomplete", IncompleteFormsListFragment.newInstance(
-                formController,
-                resources.getString(R.string.no_incomplete_form_msg),
-                resources.getString(R.string.no_incomplete_form_tip)));
-        pagers[TAB_SYNCED] = new PagerView("Synced", SyncedFormsListFragment.newInstance(
-                formController,
-                resources.getString(R.string.no_synced_form_msg),
-                resources.getString(R.string.no_synced_form_tip)));
+
+        NewFormsListFragment newFormsListFragment = NewFormsListFragment.newInstance(formController);
+        DownloadedFormsListFragment downloadedFormsListFragment = DownloadedFormsListFragment.newInstance(formController);
+        CompleteFormsListFragment completeFormsListFragment = CompleteFormsListFragment.newInstance(formController);
+        IncompleteFormsListFragment incompleteFormsListFragment = IncompleteFormsListFragment.newInstance(formController);
+        SyncedFormsListFragment syncedFormsListFragment = SyncedFormsListFragment.newInstance(formController);
+
+        newFormsListFragment.setTemplateDownloadCompleteListener(downloadedFormsListFragment);
+
+        pagers[TAB_All] = new PagerView("All", newFormsListFragment);
+        pagers[TAB_DOWNLOADED] = new PagerView("Downloaded", downloadedFormsListFragment);
+        pagers[TAB_COMPLETE] = new PagerView("Complete", completeFormsListFragment);
+        pagers[TAB_INCOMPLETE] = new PagerView("Incomplete", incompleteFormsListFragment);
+        pagers[TAB_SYNCED] = new PagerView("Synced", syncedFormsListFragment);
     }
 
     private static class PagerView {

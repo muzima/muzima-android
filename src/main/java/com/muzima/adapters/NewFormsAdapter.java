@@ -67,12 +67,12 @@ public class NewFormsAdapter extends FormsListAdapter<Form> {
 
         addTags(holder, form);
 
-        higlightIfSelected(convertView, form);
+        highlightIfSelected(convertView, form);
 
         return convertView;
     }
 
-    private void higlightIfSelected(View convertView, Form form) {
+    private void highlightIfSelected(View convertView, Form form) {
         if(selectedForms.contains(form)){
             convertView.setBackgroundColor(getContext().getResources().getColor(R.color.listitem_state_pressed));
         }else{

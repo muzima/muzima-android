@@ -5,6 +5,7 @@ import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Tag;
 import com.muzima.api.service.FormService;
 import com.muzima.builder.FormBuilder;
+import com.muzima.builder.FormTemplateBuilder;
 import com.muzima.builder.TagBuilder;
 import com.muzima.search.api.util.StringUtil;
 
@@ -116,6 +117,20 @@ public class FormControllerTest {
     }
 
     @Test
+    public void downloadFormTemplates_shouldDownloadAllFormTemplates() throws IOException, FormFetchException {
+        List<Form> forms = buildForms();
+        FormTemplate formTemplate1 = new FormTemplate();
+        FormTemplate formTemplate2 = new FormTemplate();
+        when(formService.downloadFormTemplateByUuid(forms.get(0).getUuid())).thenReturn(formTemplate1);
+        when(formService.downloadFormTemplateByUuid(forms.get(1).getUuid())).thenReturn(formTemplate2);
+
+        List<FormTemplate> formTemplates = formController.downloadFormTemplates(new String[]{forms.get(0).getUuid(), forms.get(1).getUuid()});
+        assertThat(formTemplates.size(), is(2));
+        assertThat(formTemplates, hasItem(formTemplate1));
+        assertThat(formTemplates, hasItem(formTemplate2));
+    }
+
+    @Test
     public void saveAllForms_shouldSaveAllForm() throws FormSaveException, IOException {
         List<Form> forms = buildForms();
 
@@ -169,6 +184,27 @@ public class FormControllerTest {
         formController.deleteAllForms();
     }
 
+    @Test
+    public void replaceFormTemplates_shouldReplaceAnyExistingFormTemplateWithSameId() throws IOException, FormFetchException, FormSaveException {
+        List<FormTemplate> newFormTemplates = buildFormTemplates();
+
+        FormTemplate existingFormTemplate1 = FormTemplateBuilder.formTemplate().withUuid("uuid1").build();
+        FormTemplate existingFormTemplate2 = FormTemplateBuilder.formTemplate().withUuid("uuid2").build();
+
+        when(formService.getFormTemplateByUuid(newFormTemplates.get(0).getUuid())).thenReturn(existingFormTemplate1);
+        when(formService.getFormTemplateByUuid(newFormTemplates.get(1).getUuid())).thenReturn(existingFormTemplate2);
+        when(formService.getFormTemplateByUuid(newFormTemplates.get(2).getUuid())).thenReturn(null);
+
+        formController.replaceFormTemplates(newFormTemplates);
+
+        verify(formService).deleteFormTemplate(existingFormTemplate1);
+        verify(formService).deleteFormTemplate(existingFormTemplate2);
+
+        verify(formService).saveFormTemplate(newFormTemplates.get(0));
+        verify(formService).saveFormTemplate(newFormTemplates.get(1));
+        verify(formService).saveFormTemplate(newFormTemplates.get(2));
+    }
+
     private List<Form> buildForms() {
         List<Form> forms = new ArrayList<Form>();
         Tag[] tags1 = new Tag[3];
@@ -187,5 +223,19 @@ public class FormControllerTest {
         forms.add(form2);
 
         return forms;
+    }
+
+    private List<FormTemplate> buildFormTemplates() {
+        List<FormTemplate> formTemplates = new ArrayList<FormTemplate>();
+
+        FormTemplate formTemplate1 = FormTemplateBuilder.formTemplate().withUuid("uuid1").withHtml("html1").withModel("{model1}").withModelJson("{modelJson1}").build();
+        FormTemplate formTemplate2 = FormTemplateBuilder.formTemplate().withUuid("uuid2").withHtml("html2").withModel("{model2}").withModelJson("{modelJson2}").build();
+        FormTemplate formTemplate3 = FormTemplateBuilder.formTemplate().withUuid("uuid3").withHtml("html3").withModel("{model3}").withModelJson("{modelJson3}").build();
+
+        formTemplates.add(formTemplate1);
+        formTemplates.add(formTemplate2);
+        formTemplates.add(formTemplate3);
+
+        return formTemplates;
     }
 }

@@ -11,7 +11,7 @@ import com.muzima.tasks.DownloadTask;
 import java.io.File;
 import java.util.List;
 
-public abstract class DownloadFormTask extends DownloadTask<String, Void, Integer[]> {
+public abstract class DownloadFormTask extends DownloadTask<String[], Void, Integer[]> {
     private static final String TAG = "DownloadFormTask";
 
     public static final int DOWNLOAD_ERROR = 0;
@@ -28,12 +28,13 @@ public abstract class DownloadFormTask extends DownloadTask<String, Void, Intege
     }
 
     @Override
-    protected Integer[] doInBackground(String... values) {
+    protected Integer[] doInBackground(String[]... values) {
         Integer[] result = new Integer[2];
 
-        String username = values[0];
-        String password = values[1];
-        String server = values[2];
+        String[] credentials = values[0];
+        String username = credentials[0];
+        String password = credentials[1];
+        String server = credentials[2];
 
         Context context = applicationContext.getMuzimaContext();
         try {
@@ -43,7 +44,7 @@ public abstract class DownloadFormTask extends DownloadTask<String, Void, Intege
             }
 
             if (checkIfTaskIsCancelled(result)) return result;
-            result = performTask();
+            result = performTask(values[1]);
 
         } catch (Exception e) {
             Log.e(TAG, "Exception during authentication", e);
@@ -69,7 +70,7 @@ public abstract class DownloadFormTask extends DownloadTask<String, Void, Intege
         return result;
     }
 
-    protected abstract Integer[] performTask() throws FormController.FormFetchException, FormController.FormDeleteException, FormController.FormSaveException;
+    protected abstract Integer[] performTask(String[] values) throws FormController.FormFetchException, FormController.FormDeleteException, FormController.FormSaveException;
 
     protected boolean checkIfTaskIsCancelled(Integer[] result) {
         if(isCancelled()){

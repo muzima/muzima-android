@@ -92,7 +92,8 @@ public class FormsActivity extends SherlockFragmentActivity implements EmptyList
                 formDownloadTask = new DownloadFormMetadataTask((MuzimaApplication) getApplicationContext());
                 formDownloadTask.addDownloadListener(formsPagerAdapter);
                 formDownloadTask.addDownloadListener(tagsListAdapter);
-                formDownloadTask.execute(USERNAME, PASS, FORMS_SERVER);
+                String[] credentials = new String[]{USERNAME, PASS, FORMS_SERVER};
+                formDownloadTask.execute(credentials);
                 return true;
             case R.id.menu_client_add:
                 Intent intent = new Intent(this, RegisterClientActivity.class);

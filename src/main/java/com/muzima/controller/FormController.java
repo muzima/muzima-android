@@ -63,6 +63,19 @@ public class FormController {
         }
     }
 
+    public List<Tag> getAllTags() throws FormFetchException {
+        List<Tag> allTags = new ArrayList<Tag>();
+        List<Form> allForms = getAllForms();
+        for (Form form : allForms) {
+            for (Tag tag : form.getTags()) {
+                if (!allTags.contains(tag)) {
+                    allTags.add(tag);
+                }
+            }
+        }
+        return allTags;
+    }
+
     public List<Form> downloadAllForms() throws FormFetchException {
         try {
             return formService.downloadFormsByName(StringUtil.EMPTY);
@@ -71,6 +84,18 @@ public class FormController {
         } catch (ParseException e) {
             throw new FormFetchException(e);
         }
+    }
+
+    public List<FormTemplate> downloadFormTemplates(String[] formUuids) throws FormFetchException {
+        ArrayList<FormTemplate> formTemplates = new ArrayList<FormTemplate>();
+
+        String[] tempUuids = new String[1];
+        tempUuids[0] = "18";
+
+        for (String uuid : tempUuids) {
+            formTemplates.add(downloadFormTemplateByUuid(uuid));
+        }
+        return formTemplates;
     }
 
     public FormTemplate downloadFormTemplateByUuid(String uuid) throws FormFetchException {
@@ -91,7 +116,33 @@ public class FormController {
         }
     }
 
+    public void deleteAllForms() throws FormDeleteException {
+        try {
+            List<Form> allForms = formService.getAllForms();
+            for (Form form : allForms) {
+                formService.deleteForm(form);
+            }
+        } catch (IOException e) {
+            throw new FormDeleteException(e);
+        } catch (ParseException e) {
+            throw new FormDeleteException(e);
+        }
+    }
 
+    public void replaceFormTemplates(List<FormTemplate> formTemplates) throws FormSaveException {
+        for (FormTemplate formTemplate : formTemplates) {
+            FormTemplate existingFormTemplate = null;
+            try {
+                existingFormTemplate = formService.getFormTemplateByUuid(formTemplate.getUuid());
+                if(existingFormTemplate != null){
+                    formService.deleteFormTemplate(existingFormTemplate);
+                }
+                formService.saveFormTemplate(formTemplate);
+            } catch (IOException e) {
+                throw new FormSaveException(e);
+            }
+        }
+    }
 
     public int getTagColor(String uuid) {
         if (!tagColors.containsKey(uuid)) {
@@ -104,38 +155,12 @@ public class FormController {
         tagColors.clear();
     }
 
-    public List<Tag> getAllTags() throws FormFetchException {
-        List<Tag> allTags = new ArrayList<Tag>();
-        List<Form> allForms = getAllForms();
-        for (Form form : allForms) {
-            for (Tag tag : form.getTags()) {
-                if (!allTags.contains(tag)) {
-                    allTags.add(tag);
-                }
-            }
-        }
-        return allTags;
-    }
-
     public List<Tag> getSelectedTags() {
         return selectedTags;
     }
 
     public void setSelectedTags(List<Tag> selectedTags) {
         this.selectedTags = selectedTags;
-    }
-
-    public void deleteAllForms() throws FormDeleteException {
-        try {
-            List<Form> allForms = formService.getAllForms();
-            for (Form form : allForms) {
-                formService.deleteForm(form);
-            }
-        } catch (IOException e) {
-            throw new FormDeleteException(e);
-        } catch (ParseException e) {
-            throw new FormDeleteException(e);
-        }
     }
 
     public static class FormFetchException extends Throwable {

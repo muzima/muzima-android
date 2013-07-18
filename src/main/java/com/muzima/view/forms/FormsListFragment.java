@@ -75,13 +75,15 @@ public abstract class FormsListFragment extends SherlockFragment implements Empt
         }
     }
 
-    public void downloadComplete(Integer[] status) {
+    public void formDownloadComplete(Integer[] status) {
         Integer downloadStatus = status[0];
         String msg = "Download Complete with status " + downloadStatus;
         Log.i(TAG, msg);
         if (downloadStatus == DownloadFormTask.SUCCESS) {
             msg = "Forms downloaded: " + status[1];
-            listAdapter.reloadData();
+            if(listAdapter != null){
+                listAdapter.reloadData();
+            }
         } else if (downloadStatus == DownloadFormTask.DOWNLOAD_ERROR) {
             msg = "An error occurred while downloading forms";
         } else if (downloadStatus == DownloadFormTask.AUTHENTICATION_ERROR) {
