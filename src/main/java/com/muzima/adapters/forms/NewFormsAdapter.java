@@ -57,7 +57,7 @@ public class NewFormsAdapter extends FormsAdapter {
             for (int i = 0; i < tags.length; i++) {
                 TextView textView = null;
                 if (holder.tags.size() <= i) {
-                    textView = newTextview(layoutInflater, tags[i]);
+                    textView = newTextview(layoutInflater);
                     holder.addTag(textView);
                 }
                 textView = holder.tags.get(i);
@@ -78,22 +78,12 @@ public class NewFormsAdapter extends FormsAdapter {
                 }
                 holder.removeTags(tagsToRemove);
             }
-
-            //Todo Remove this
-            if(tags.length != holder.tags.size()){
-                throw new RuntimeException("tags count virtual mismatch for " + holder.name.getText() + " , should be " + tags.length + ", but is " + holder.tags.size());
-            }
-
-            //Todo Remove this
-            if(tags.length != holder.tagsLayout.getChildCount()){
-                throw new RuntimeException("tags count real mismatch for " + holder.name.getText() + " , should be " + tags.length + ", but is " + holder.tagsLayout.getChildCount());
-            }
         } else {
             holder.tagsScroller.setVisibility(View.GONE);
         }
     }
 
-    private TextView newTextview(LayoutInflater layoutInflater, Tag tag) {
+    private TextView newTextview(LayoutInflater layoutInflater) {
         TextView textView = (TextView) layoutInflater.inflate(R.layout.tag, null, false);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
         layoutParams.setMargins(1, 0, 0, 0);
@@ -118,10 +108,6 @@ public class NewFormsAdapter extends FormsAdapter {
 
     public List<String> getSelectedForms() {
         return selectedFormsUuid;
-    }
-
-    public void setSelectedFormsUuid(List<String> selectedFormsUuid) {
-        this.selectedFormsUuid = selectedFormsUuid;
     }
 
     public void clearSelectedForms() {

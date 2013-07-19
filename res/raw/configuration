@@ -269,7 +269,7 @@
 
         {
             "resource.name": "Search Form Resource",
-            "node.root": "$['forms']",
+            "node.root": "$['results']",
             "resource.object": "com.muzima.api.model.Form",
             "algorithm.class": "com.muzima.api.model.algorithm.FormAlgorithm",
             "resolver.class": "com.muzima.api.model.resolver.SearchFormResolver",
