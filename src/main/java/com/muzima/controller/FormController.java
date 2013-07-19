@@ -1,5 +1,7 @@
 package com.muzima.controller;
 
+import android.util.Log;
+
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Tag;
@@ -110,11 +112,7 @@ public class FormController {
 
     public List<FormTemplate> downloadFormTemplates(String[] formUuids) throws FormFetchException {
         ArrayList<FormTemplate> formTemplates = new ArrayList<FormTemplate>();
-
-        String[] tempUuids = new String[1];
-        tempUuids[0] = "18";
-
-        for (String uuid : tempUuids) {
+        for (String uuid : formUuids) {
             formTemplates.add(downloadFormTemplateByUuid(uuid));
         }
         return formTemplates;

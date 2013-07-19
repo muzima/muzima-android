@@ -21,11 +21,11 @@ import java.util.List;
 
 public class NewFormsAdapter extends FormsAdapter {
     private static final String TAG = "NewFormsAdapter";
-    private List<Form> selectedForms;
+    private List<String> selectedFormsUuid;
 
     public NewFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
-        selectedForms = new ArrayList<Form>();
+        selectedFormsUuid = new ArrayList<String>();
     }
 
     @Override
@@ -40,9 +40,9 @@ public class NewFormsAdapter extends FormsAdapter {
     }
 
     private void highlightIfSelected(View convertView, Form form) {
-        if(selectedForms.contains(form)){
+        if (selectedFormsUuid.contains(form.getUuid())) {
             convertView.setBackgroundColor(getContext().getResources().getColor(R.color.listitem_state_pressed));
-        }else{
+        } else {
             convertView.setBackgroundColor(Color.WHITE);
         }
     }
@@ -58,27 +58,37 @@ public class NewFormsAdapter extends FormsAdapter {
                 TextView textView = null;
                 if (holder.tags.size() <= i) {
                     textView = newTextview(layoutInflater, tags[i]);
-                    holder.tags.add(textView);
-                    holder.tagsLayout.addView(textView);
+                    holder.addTag(textView);
                 }
                 textView = holder.tags.get(i);
                 textView.setBackgroundColor(formController.getTagColor(tags[i].getUuid()));
                 List<Tag> selectedTags = formController.getSelectedTags();
-                if(selectedTags.isEmpty() || selectedTags.contains(tags[i])){
+                if (selectedTags.isEmpty() || selectedTags.contains(tags[i])) {
                     textView.setText(tags[i].getName());
-                }else{
+                } else {
                     textView.setText(StringUtil.EMPTY);
                 }
             }
 
-        //remove already existing extra tags
-        if (tags.length < holder.tags.size()) {
-            for (int i = tags.length; i < holder.tags.size(); i++) {
-                holder.tagsLayout.removeView(holder.tags.get(i));
-                holder.tags.remove(i);
+            //remove existing extra tags which are present because of recylced list view
+            if (tags.length < holder.tags.size()) {
+                List<TextView> tagsToRemove = new ArrayList<TextView>();
+                for (int i = tags.length; i < holder.tags.size(); i++) {
+                    tagsToRemove.add(holder.tags.get(i));
+                }
+                holder.removeTags(tagsToRemove);
             }
-        }
-        }else{
+
+            //Todo Remove this
+            if(tags.length != holder.tags.size()){
+                throw new RuntimeException("tags count virtual mismatch for " + holder.name.getText() + " , should be " + tags.length + ", but is " + holder.tags.size());
+            }
+
+            //Todo Remove this
+            if(tags.length != holder.tagsLayout.getChildCount()){
+                throw new RuntimeException("tags count real mismatch for " + holder.name.getText() + " , should be " + tags.length + ", but is " + holder.tagsLayout.getChildCount());
+            }
+        } else {
             holder.tagsScroller.setVisibility(View.GONE);
         }
     }
@@ -98,20 +108,24 @@ public class NewFormsAdapter extends FormsAdapter {
 
     public void onListItemClick(int position) {
         Form form = getItem(position);
-        if(selectedForms.contains(form)){
-            selectedForms.remove(form);
-        }else{
-            selectedForms.add(form);
+        if (selectedFormsUuid.contains(form.getUuid())) {
+            selectedFormsUuid.remove(form.getUuid());
+        } else {
+            selectedFormsUuid.add(form.getUuid());
         }
         notifyDataSetChanged();
     }
 
-    public List<Form> getSelectedForms() {
-        return selectedForms;
+    public List<String> getSelectedForms() {
+        return selectedFormsUuid;
     }
 
-    public void clearSelectedForms(){
-        selectedForms.clear();
+    public void setSelectedFormsUuid(List<String> selectedFormsUuid) {
+        this.selectedFormsUuid = selectedFormsUuid;
+    }
+
+    public void clearSelectedForms() {
+        selectedFormsUuid.clear();
         notifyDataSetChanged();
     }
 

@@ -1,6 +1,7 @@
 package com.muzima.view.forms;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.NewFormsAdapter;
-import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
 import com.muzima.listeners.DownloadListener;
 import com.muzima.tasks.forms.DownloadFormTemplateTask;
@@ -29,6 +29,8 @@ import static com.muzima.utils.Constants.USERNAME;
 public class NewFormsListFragment extends FormsListFragment implements DownloadListener<Integer[]> {
     private static final String TAG = "NewFormsListFragment";
 
+    private static final String BUNDLE_SELECTED_FORMS = "selectedForms";
+
     private ActionMode actionMode;
     private boolean actionModeActive = false;
     private DownloadFormTemplateTask formTemplateDownloadTask;
@@ -43,9 +45,17 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        listAdapter = new NewFormsAdapter(getActivity(), R.layout.item_forms_list, formController);
+        if (listAdapter == null) {
+            listAdapter = new NewFormsAdapter(getActivity(), R.layout.item_forms_list, formController);
+        }
         noDataMsg = getActivity().getResources().getString(R.string.no_new_form_msg);
         noDataTip = getActivity().getResources().getString(R.string.no_new_form_tip);
+
+        // this can happen on orientation change
+        if (actionModeActive) {
+            actionMode = getSherlockActivity().startActionMode(new NewFormsActionModeCallback());
+            actionMode.setTitle(String.valueOf(((NewFormsAdapter) listAdapter).getSelectedForms().size()));
+        }
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -58,7 +68,7 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
         }
         ((NewFormsAdapter) listAdapter).onListItemClick(position);
         int numOfSelectedForms = ((NewFormsAdapter) listAdapter).getSelectedForms().size();
-        if(numOfSelectedForms == 0 && actionModeActive){
+        if (numOfSelectedForms == 0 && actionModeActive) {
             actionMode.finish();
         }
         actionMode.setTitle(String.valueOf(numOfSelectedForms));
@@ -66,7 +76,7 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
 
     @Override
     public void downloadTaskComplete(Integer[] result) {
-        if(templateDownloadCompleteListener != null){
+        if (templateDownloadCompleteListener != null) {
             templateDownloadCompleteListener.onTemplateDownloadComplete(result);
         }
     }
@@ -96,7 +106,7 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
                     formTemplateDownloadTask = new DownloadFormTemplateTask((MuzimaApplication) getActivity().getApplication());
                     formTemplateDownloadTask.addDownloadListener(NewFormsListFragment.this);
                     String[] credentials = new String[]{USERNAME, PASS, FORMS_SERVER};
-                    formTemplateDownloadTask.execute(credentials, getSelectedFormsUuid());
+                    formTemplateDownloadTask.execute(credentials, getSelectedFormsArray());
                     if (NewFormsListFragment.this.actionMode != null) {
                         NewFormsListFragment.this.actionMode.finish();
                     }
@@ -108,17 +118,14 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
-            ((NewFormsAdapter)listAdapter).clearSelectedForms();
+            ((NewFormsAdapter) listAdapter).clearSelectedForms();
         }
     }
 
-    private String[] getSelectedFormsUuid() {
-        List<Form> selectedForms = ((NewFormsAdapter) listAdapter).getSelectedForms();
+    private String[] getSelectedFormsArray() {
+        List<String> selectedForms = ((NewFormsAdapter) listAdapter).getSelectedForms();
         String[] selectedFormUuids = new String[selectedForms.size()];
-        for(int i =0; i < selectedForms.size(); i++){
-            selectedFormUuids[i] = selectedForms.get(i).getUuid();
-        }
-        return selectedFormUuids;
+        return selectedForms.toArray(selectedFormUuids);
     }
 
     public void setTemplateDownloadCompleteListener(OnTemplateDownloadComplete templateDownloadCompleteListener) {

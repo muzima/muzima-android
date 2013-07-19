@@ -49,14 +49,14 @@ public abstract class FormsAdapter extends ListAdapter<Form> {
         Form form = getItem(position);
 
         holder.name.setText(form.getName());
-        holder.name.setTypeface(Fonts.roboto_bold(getContext()));
+        holder.name.setTypeface(Fonts.roboto_medium(getContext()));
 
         String description = form.getDescription();
         if (StringUtils.isEmpty(description)) {
             description = "No description available";
         }
         holder.description.setText(description);
-        holder.description.setTypeface(Fonts.roboto_medium(getContext()));
+        holder.description.setTypeface(Fonts.roboto_light(getContext()));
 
         return convertView;
     }
@@ -67,5 +67,17 @@ public abstract class FormsAdapter extends ListAdapter<Form> {
         HorizontalScrollView tagsScroller;
         LinearLayout tagsLayout;
         List<TextView> tags;
+
+        public void addTag(TextView tag) {
+            this.tags.add(tag);
+            tagsLayout.addView(tag);
+        }
+
+        public void removeTags(List<TextView> tagsToRemove) {
+            for (TextView tag : tagsToRemove) {
+                tagsLayout.removeView(tag);
+            }
+            tags.removeAll(tagsToRemove);
+        }
     }
 }

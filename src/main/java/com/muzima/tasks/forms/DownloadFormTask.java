@@ -44,7 +44,12 @@ public abstract class DownloadFormTask extends DownloadTask<String[], Void, Inte
             }
 
             if (checkIfTaskIsCancelled(result)) return result;
-            result = performTask(null);
+
+            String[] dataToDownload = null;
+            if(values.length > 1){
+                dataToDownload = values[1];
+            }
+            result = performTask(dataToDownload);
 
         } catch (Exception e) {
             Log.e(TAG, "Exception during authentication", e);

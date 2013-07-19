@@ -117,19 +117,19 @@ public class FormControllerTest {
         formController.downloadFormTemplateByUuid(uuid);
     }
 
-//    @Test
-//    public void downloadFormTemplates_shouldDownloadAllFormTemplates() throws IOException, FormFetchException {
-//        List<Form> forms = buildForms();
-//        FormTemplate formTemplate1 = new FormTemplate();
-//        FormTemplate formTemplate2 = new FormTemplate();
-//        when(formService.downloadFormTemplateByUuid(forms.get(0).getUuid())).thenReturn(formTemplate1);
-//        when(formService.downloadFormTemplateByUuid(forms.get(1).getUuid())).thenReturn(formTemplate2);
-//
-//        List<FormTemplate> formTemplates = formController.downloadFormTemplates(new String[]{forms.get(0).getUuid(), forms.get(1).getUuid()});
-//        assertThat(formTemplates.size(), is(2));
-//        assertThat(formTemplates, hasItem(formTemplate1));
-//        assertThat(formTemplates, hasItem(formTemplate2));
-//    }
+    @Test
+    public void downloadFormTemplates_shouldDownloadAllFormTemplates() throws IOException, FormFetchException {
+        List<Form> forms = buildForms();
+        FormTemplate formTemplate1 = new FormTemplate();
+        FormTemplate formTemplate2 = new FormTemplate();
+        when(formService.downloadFormTemplateByUuid(forms.get(0).getUuid())).thenReturn(formTemplate1);
+        when(formService.downloadFormTemplateByUuid(forms.get(1).getUuid())).thenReturn(formTemplate2);
+
+        List<FormTemplate> formTemplates = formController.downloadFormTemplates(new String[]{forms.get(0).getUuid(), forms.get(1).getUuid()});
+        assertThat(formTemplates.size(), is(2));
+        assertThat(formTemplates, hasItem(formTemplate1));
+        assertThat(formTemplates, hasItem(formTemplate2));
+    }
 
     @Test
     public void saveAllForms_shouldSaveAllForm() throws FormSaveException, IOException {
