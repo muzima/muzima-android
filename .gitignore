@@ -9,3 +9,5 @@ out/
 tmp/
 *.iml
 classes/
+*.DS_Store
+
