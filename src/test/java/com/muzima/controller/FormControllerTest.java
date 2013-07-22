@@ -221,6 +221,35 @@ public class FormControllerTest {
         assertThat(allDownloadedForms, hasItem(forms.get(2)));
     }
 
+    @Test
+    public void isFormDownloaded_shouldReturnTrueIfFromIsDownloaded() throws IOException, ParseException, FormFetchException {
+        List<Form> forms = buildForms();
+        List<FormTemplate> formTemplates = buildFormTemplates();
+
+        when(formService.getAllFormTemplates()).thenReturn(formTemplates);
+
+        assertThat(formController.isFormDownloaded(forms.get(0)), is(true));
+        assertThat(formController.isFormDownloaded(forms.get(1)), is(true));
+        assertThat(formController.isFormDownloaded(forms.get(4)), is(false));
+    }
+
+    @Test
+    public void getFormTemplateByUuid_shouldReturnForm() throws IOException, FormFetchException {
+        List<FormTemplate> formTemplates = buildFormTemplates();
+        String uuid = formTemplates.get(0).getUuid();
+        when(formService.getFormTemplateByUuid(uuid)).thenReturn(formTemplates.get(0));
+
+        assertThat(formController.getFormTemplateByUuid(uuid), is(formTemplates.get(0)));
+    }
+
+    @Test
+    public void getFormByUuid_shouldReturnForm() throws IOException, FormFetchException {
+        List<Form> forms = buildForms();
+        String uuid = forms.get(0).getUuid();
+        when(formService.getFormByUuid(uuid)).thenReturn(forms.get(0));
+
+        assertThat(formController.getFormByUuid(uuid), is(forms.get(0)));
+    }
 
     private List<Form> buildForms() {
         List<Form> forms = new ArrayList<Form>();

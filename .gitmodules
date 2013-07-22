@@ -1,0 +1,3 @@
+[submodule "assets/js/ziggy"]
+	path = assets/js/ziggy
+	url = git@github.com:modilabs/ziggy.git

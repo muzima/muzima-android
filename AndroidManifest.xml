@@ -110,6 +110,14 @@
                     android:value="com.muzima.view.DashboardActivity" />
         </activity>
         <activity
+                android:name=".view.forms.FormWebViewActivity"
+                android:label="@string/title_activity_form_webview"
+                android:parentActivityName="com.muzima.view.forms.FormsActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.forms.FormsActivity" />
+        </activity>
+        <activity
             android:name="com.muzima.view.NoticeListActivity"
             android:label="@string/title_activity_notice_list"
             android:parentActivityName="com.muzima.view.MainActivity" >

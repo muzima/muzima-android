@@ -1,5 +1,6 @@
 package com.muzima.view.forms;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +9,9 @@ import android.widget.AdapterView;
 
 import com.muzima.R;
 import com.muzima.adapters.forms.DownloadedFormsAdapter;
+import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
+import com.muzima.view.SettingsActivity;
 
 public class DownloadedFormsListFragment extends FormsListFragment implements NewFormsListFragment.OnTemplateDownloadComplete{
 
@@ -28,8 +31,12 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Ne
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        Form form = (Form) listAdapter.getItem(position);
+        Intent intent = new Intent(getActivity(), FormWebViewActivity.class);
+        intent.putExtra(FormWebViewActivity.FORM_ID, form.getUuid());
+        intent.putExtra(FormWebViewActivity.PATIENT_ID, "patientId");
+        startActivity(intent);
     }
 
     @Override

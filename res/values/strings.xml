@@ -32,6 +32,7 @@
     <string name="title_activity_register_client">Register Client Activity</string>
     <string name="title_activity_sync">Sync Activity</string>
     <string name="title_activity_form_list">Forms</string>
+    <string name="title_activity_form_webview">Form</string>
     <string name="title_activity_notice_list">Notice List Activity</string>
     <string name="title_activity_client_summary">Client Summary Activity</string>
     <string name="title_activity_client_observations">ClientObservationsActivity</string>

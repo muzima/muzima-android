@@ -1,7 +1,5 @@
 package com.muzima.controller;
 
-import android.util.Log;
-
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Tag;
@@ -39,11 +37,27 @@ public class FormController {
         }
     }
 
+    public Form getFormByUuid(String formId) throws FormFetchException {
+        try {
+            return formService.getFormByUuid(formId);
+        } catch (IOException e) {
+            throw new FormFetchException(e);
+        }
+    }
+
+    public FormTemplate getFormTemplateByUuid(String formId) throws FormFetchException {
+        try {
+            return formService.getFormTemplateByUuid(formId);
+        } catch (IOException e) {
+            throw new FormFetchException(e);
+        }
+    }
+
     //TODO Do this at lucene level
-    public List<Form> getAllFormByTags(List<String> tagsUuid) throws FormFetchException{
+    public List<Form> getAllFormByTags(List<String> tagsUuid) throws FormFetchException {
         try {
             List<Form> allForms = formService.getAllForms();
-            if(tagsUuid.isEmpty()){
+            if (tagsUuid.isEmpty()) {
                 return allForms;
             }
 
@@ -51,7 +65,7 @@ public class FormController {
             for (Form form : allForms) {
                 Tag[] formTags = form.getTags();
                 for (Tag formTag : formTags) {
-                    if(tagsUuid.contains(formTag.getUuid())){
+                    if (tagsUuid.contains(formTag.getUuid())) {
                         filteredForms.add(form);
                         break;
                     }
@@ -86,7 +100,7 @@ public class FormController {
             List<Form> allForms = formService.getAllForms();
             for (FormTemplate formTemplate : allFormTemplates) {
                 for (Form form : allForms) {
-                    if(form.getUuid().equals(formTemplate.getUuid())){
+                    if (form.getUuid().equals(formTemplate.getUuid())) {
                         result.add(form);
                         break;
                     }
@@ -154,7 +168,7 @@ public class FormController {
             FormTemplate existingFormTemplate = null;
             try {
                 existingFormTemplate = formService.getFormTemplateByUuid(formTemplate.getUuid());
-                if(existingFormTemplate != null){
+                if (existingFormTemplate != null) {
                     formService.deleteFormTemplate(existingFormTemplate);
                 }
                 formService.saveFormTemplate(formTemplate);
@@ -162,6 +176,22 @@ public class FormController {
                 throw new FormSaveException(e);
             }
         }
+    }
+
+    public boolean isFormDownloaded(Form form) throws FormFetchException {
+        try {
+            List<FormTemplate> allFormTemplates = formService.getAllFormTemplates();
+            for (FormTemplate formTemplate : allFormTemplates) {
+                if (form.getUuid().equals(formTemplate.getUuid())) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            throw new FormFetchException(e);
+        } catch (ParseException e) {
+            throw new FormFetchException(e);
+        }
+        return false;
     }
 
     public int getTagColor(String uuid) {

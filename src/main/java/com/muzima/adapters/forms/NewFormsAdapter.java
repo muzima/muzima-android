@@ -36,15 +36,8 @@ public class NewFormsAdapter extends FormsAdapter {
         Form form = getItem(position);
         addTags(holder, form);
         highlightIfSelected(convertView, form);
+//        highlightIfDownloaded(convertView,form);
         return convertView;
-    }
-
-    private void highlightIfSelected(View convertView, Form form) {
-        if (selectedFormsUuid.contains(form.getUuid())) {
-            convertView.setBackgroundColor(getContext().getResources().getColor(R.color.listitem_state_pressed));
-        } else {
-            convertView.setBackgroundColor(Color.WHITE);
-        }
     }
 
     private void addTags(ViewHolder holder, Form form) {
@@ -80,6 +73,24 @@ public class NewFormsAdapter extends FormsAdapter {
             }
         } else {
             holder.tagsScroller.setVisibility(View.GONE);
+        }
+    }
+
+    private void highlightIfSelected(View convertView, Form form) {
+        if (selectedFormsUuid.contains(form.getUuid())) {
+            convertView.setBackgroundColor(getContext().getResources().getColor(R.color.listitem_state_pressed));
+        } else {
+            convertView.setBackgroundColor(Color.WHITE);
+        }
+    }
+
+    private void highlightIfDownloaded(View convertView, Form form) {
+        try {
+            if(formController.isFormDownloaded(form)){
+                convertView.setBackgroundColor(Color.parseColor("#A8A8A8"));
+            }
+        } catch (FormController.FormFetchException e) {
+            throw new RuntimeException(e);
         }
     }
 
