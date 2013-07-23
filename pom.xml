@@ -104,6 +104,18 @@
             <groupId>com.muzima</groupId>
             <artifactId>search-api</artifactId>
             <version>1.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.inject</groupId>
+                    <artifactId>guice</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>3.0</version>
+            <classifier>no_aop</classifier>
         </dependency>
     </dependencies>
 
