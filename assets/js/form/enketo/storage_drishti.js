@@ -272,6 +272,7 @@ function JData(data) {
 
     //if the default path does not have a trailing slash, add one
     function defaultPathFixed(path) {
+        if(!path) path = "";
         return (path.lastIndexOf('/') !== path.length - 1) ? path + '/' : path;
     }
 

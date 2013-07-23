@@ -1033,7 +1033,7 @@ function Form(formSelector, dataStr, dataStrToEdit) {
         }
 
         //var profiler = new Profiler('preloads.init()');
-        this.preloads.init(this); //before widgets.init (as instanceID used in offlineFileWidget)
+        // this.preloads.init(this); //before widgets.init (as instanceID used in offlineFileWidget)
         //profiler.report();
 
         this.grosslyViolateStandardComplianceByIgnoringCertainCalcs(); //before calcUpdate!
