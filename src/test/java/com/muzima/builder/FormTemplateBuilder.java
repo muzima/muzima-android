@@ -1,8 +1,6 @@
 package com.muzima.builder;
 
-import com.muzima.api.model.Form;
 import com.muzima.api.model.FormTemplate;
-import com.muzima.api.model.Tag;
 
 public class FormTemplateBuilder {
     private String uuid;

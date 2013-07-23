@@ -76,7 +76,6 @@ public class FormWebViewActivity extends SherlockFragmentActivity {
         webView.getSettings().setDomStorageEnabled(true);
         webView.addJavascriptInterface(new FormWebInterface(form, formTemplate), FORM_INTERFACE);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-//        webView.loadData(formTemplate.getHtml(), "text/html", null);
         webView.loadUrl("file:///android_asset/www/form/template.html");
     }
 }

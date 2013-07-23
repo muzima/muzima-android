@@ -45,6 +45,7 @@ $(document).ready(function() {
 
 	//controller for submission of data to drishti
 	$(document).on('click', 'button#submit-form:not(.disabled)', function(){
+	    console.log("submit button clicked");
 		var jData, saveResult;
 		if (typeof form !== 'undefined'){
 			form.validateForm();
