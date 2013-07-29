@@ -40,12 +40,10 @@ $(document).ready(function() {
 	form = new Form('form.jr:eq(0)', modelStr, instanceToEdit);
 
 	loadErrors = form.init();
-	//check if JSON format is complete and if not, prepend the errors
-	jsonErrors = jDataO.get().errors;
 
 	//controller for submission of data to drishti
 	$(document).on('click', 'button#submit-form:not(.disabled)', function(){
-	    console.log("submit button clicked");
+
 		var jData, saveResult;
 		if (typeof form !== 'undefined'){
 			form.validateForm();
@@ -55,6 +53,7 @@ $(document).ready(function() {
 			}
 			else{
 				jData = jDataO.get();
+				delete jData.errors;
 				saveResult = formDataController.save(form.getInstanceID(), jData);
 			}
 		}

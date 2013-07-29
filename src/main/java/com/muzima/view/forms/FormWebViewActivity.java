@@ -1,5 +1,6 @@
 package com.muzima.view.forms;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,16 +26,21 @@ public class FormWebViewActivity extends SherlockFragmentActivity {
     public static final String FORM_ID = "formId";
     public static final String PATIENT_ID = "patientId";
     public static final String FORM_INTERFACE = "formInterface";
+    public static final String REPOSITORY = "formDataRepositoryContext";
+    public static final String ZIGGY_FILE_LOADER = "ziggyFileLoader";
+
 
     private WebView webView;
     private String patientId;
     private Form form;
     private FormTemplate formTemplate;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_webview);
+        progressDialogInitialization();
         try {
             setupFormData();
             setupWebView();
@@ -57,6 +63,14 @@ public class FormWebViewActivity extends SherlockFragmentActivity {
         webView = (WebView) findViewById(R.id.webView);
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
+            public void onProgressChanged(WebView view, int progress) {
+                FormWebViewActivity.this.setProgress(progress * 1000);
+
+                if (progress == 100 && progressDialog.isShowing())
+                    progressDialog.dismiss();
+            }
+
+            @Override
             public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
                 String message = format("Javascript Log. Message: {0}, lineNumber: {1}, sourceId, {2}", consoleMessage.message(),
                         consoleMessage.lineNumber(), consoleMessage.sourceId());
@@ -74,8 +88,20 @@ public class FormWebViewActivity extends SherlockFragmentActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDatabaseEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
-        webView.addJavascriptInterface(new FormWebInterface(form, formTemplate), FORM_INTERFACE);
+
+        FormWebInterface formWebInterface = new FormWebInterface(form, formTemplate);
+        webView.addJavascriptInterface(formWebInterface, FORM_INTERFACE);
+        webView.addJavascriptInterface(new FormDataRepository(), REPOSITORY);
+        webView.addJavascriptInterface(new ZiggyFileLoader("www/ziggy", "www/form", getApplicationContext().getAssets(), formWebInterface.getModelJson()), ZIGGY_FILE_LOADER);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        webView.loadUrl("file:///android_asset/www/form/template.html");
+        webView.loadUrl("file:///android_asset/www/enketo/template.html");
+    }
+
+    private void progressDialogInitialization() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
+        progressDialog.setTitle("Loading ...");
+        progressDialog.setMessage("Please wait");
+        progressDialog.show();
     }
 }
