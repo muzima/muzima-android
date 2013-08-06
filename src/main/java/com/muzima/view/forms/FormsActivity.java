@@ -2,8 +2,11 @@
 package com.muzima.view.forms;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
@@ -23,6 +26,7 @@ import com.muzima.adapters.forms.FormsPagerAdapter;
 import com.muzima.adapters.forms.TagsListAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.listeners.EmptyListListener;
+import com.muzima.search.api.util.StringUtil;
 import com.muzima.tasks.forms.DownloadFormMetadataTask;
 import com.muzima.tasks.forms.DownloadFormTask;
 import com.muzima.utils.Fonts;
@@ -89,10 +93,16 @@ public class FormsActivity extends SherlockFragmentActivity implements EmptyList
                     Toast.makeText(this, "Already fetching forms, ignored the request", Toast.LENGTH_SHORT).show();
                     return true;
                 }
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
                 formDownloadTask = new DownloadFormMetadataTask((MuzimaApplication) getApplicationContext());
                 formDownloadTask.addDownloadListener(formsPagerAdapter);
                 formDownloadTask.addDownloadListener(tagsListAdapter);
-                String[] credentials = new String[]{USERNAME, PASS, FORMS_SERVER};
+                String usernameKey = getResources().getString(R.string.preference_username);
+                String passwordKey = getResources().getString(R.string.preference_password);
+                String serverKey = getResources().getString(R.string.preference_server);
+                String[] credentials = new String[]{settings.getString(usernameKey, StringUtil.EMPTY),
+                        settings.getString(passwordKey, StringUtil.EMPTY),
+                        settings.getString(serverKey, StringUtil.EMPTY)};
                 formDownloadTask.execute(credentials);
                 return true;
             case R.id.menu_client_add:

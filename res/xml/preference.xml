@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/preference_category_openmrs">>
+        <EditTextPreference
+                android:dialogMessage="@string/preference_server_desc"
+                android:dialogTitle="@string/preference_server_title"
+                android:key="@string/preference_server"
+                android:negativeButtonText="@android:string/cancel"
+                android:positiveButtonText="@android:string/ok"
+                android:title="@string/preference_server_title" />
+        <EditTextPreference
+                android:dialogMessage="@string/preference_username_desc"
+                android:dialogTitle="@string/preference_username_title"
+                android:key="@string/preference_username"
+                android:negativeButtonText="@android:string/cancel"
+                android:positiveButtonText="@android:string/ok"
+                android:title="@string/preference_username_title" />
+        <EditTextPreference
+                android:dialogMessage="@string/preference_password_desc"
+                android:dialogTitle="@string/preference_password_title"
+                android:key="@string/preference_password"
+                android:negativeButtonText="@android:string/cancel"
+                android:positiveButtonText="@android:string/ok"
+                android:title="@string/preference_password_title" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

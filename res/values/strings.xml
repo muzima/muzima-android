@@ -57,9 +57,22 @@
 	<string name="textview_register_identifier">Identifier:</string>
 	<string name="textview_register_patient_identifier">Patient Identifier:</string>
 
-
     <string name="drawer_open">Tags drawer open</string>
     <string name="drawer_close">Tags drawer close</string>
     <string name="drawer_title">Tags</string>
     <string name="tags_no_data">No Tags Available</string>
+
+    <string name="preference_server_title">Server</string>
+    <string name="preference_server_desc">Enter the OpenMRS Server</string>
+    <string name="preference_server">serverPreference</string>
+    <string name="preference_username_title">Username</string>
+    <string name="preference_username_desc">Enter the OpenMRS username</string>
+    <string name="preference_username">usernamePreference</string>
+    <string name="preference_password_title">Password</string>
+    <string name="preference_password_desc">Enter the OpenMRS password</string>
+    <string name="preference_password">passwordPreference</string>
+    <string name="preference_cohort_title">Cohort</string>
+    <string name="preference_cohort_desc">Select cohort to work with</string>
+    <string name="preference_cohort">cohortPreference</string>
+    <string name="preference_category_openmrs">OpenMRS Settings</string>
 </resources>
