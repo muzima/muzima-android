@@ -22,7 +22,8 @@
                 android:key="@string/preference_password"
                 android:negativeButtonText="@android:string/cancel"
                 android:positiveButtonText="@android:string/ok"
-                android:title="@string/preference_password_title" />
+                android:title="@string/preference_password_title"
+                android:inputType="textPassword"/>
     </PreferenceCategory>
 
 </PreferenceScreen>
