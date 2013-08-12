@@ -278,6 +278,9 @@ function Form (formSelector, dataStr, dataStrToEdit){
          * @returns {?boolean} null is returned when the node is not found or multiple nodes were selected
          */
         Nodeset.prototype.setVal = function(newVals, expr, xmlDataType){
+            console.error('<<<<newVals:' + newVals);
+            console.error('<<<<expr:' + expr);
+            console.error('<<<<xmlDataType:' + xmlDataType);
             var $target, curVal, /**@type {string}*/ newVal, success;
 
             curVal = this.getVal()[0];
@@ -289,6 +292,7 @@ function Form (formSelector, dataStr, dataStrToEdit){
             newVal = this.convert(newVal, xmlDataType);
 
             $target = this.get();
+            console.error('<<<<target:' + $target);
 
             if ( $target.length === 1 && $.trim(newVal.toString()) !== $.trim(curVal.toString()) ){ //|| (target.length > 1 && typeof this.index == 'undefined') ){
                 //first change the value so that it can be evaluated in XPath (validated)
@@ -408,7 +412,11 @@ function Form (formSelector, dataStr, dataStrToEdit){
          * @return {boolean}            returns true if both validations are true
          */
         Nodeset.prototype.validate = function(expr, xmlDataType){
-            console.error(">>>>>>>>>>>>>>>>" + expr);
+            console.error(">>>>>>>>xml>>>>>>>>" + dataStr);
+            console.error(">>>>>>>>stack>>>>>>>>" + new Error().stack);
+            console.error(">>>>>>>>expr>>>>>>>>" + expr);
+            console.error(">>>>>>>>this.getVal()>>>>>>>>" + this.getVal());
+            console.error(">>>>>>>>xmlDataType>>>>>>>>" + xmlDataType);
             var typeValid, exprValid,
                 value = this.getVal()[0];
 
@@ -461,6 +469,7 @@ function Form (formSelector, dataStr, dataStrToEdit){
             }, 
             'date' : {
                 validate : function(x){
+                    console.error(">>>>>date validate was called.")
                     var pattern = (/([0-9]{4})([\-]|[\/])([0-9]{2})([\-]|[\/])([0-9]{2})/),
                         segments = pattern.exec(x);
 

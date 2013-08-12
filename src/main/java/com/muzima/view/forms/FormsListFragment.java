@@ -93,6 +93,10 @@ public abstract class FormsListFragment extends SherlockFragment implements Empt
             msg = "An error occurred while saving the downloaded forms";
         } else if (downloadStatus == DownloadFormTask.CANCELLED) {
             msg = "Form download task has been cancelled";
+        } else if (downloadStatus == DownloadFormTask.CONNECTION_ERROR) {
+            msg = "Connection error occurred while downloading forms";
+        } else if (downloadStatus == DownloadFormTask.PARSING_ERROR) {
+            msg = "Parse exception has been thrown while fetching data";
         }
         Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }

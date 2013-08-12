@@ -20,8 +20,7 @@
     <TextView
             android:id="@+id/form_description"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:paddingTop="2dp"
             android:paddingBottom="5dp"
             android:textColor="#ff3d3d3d"

@@ -43,10 +43,12 @@ $(document).ready(function() {
 
 	//controller for submission of data to drishti
 	$(document).on('click', 'button#submit-form:not(.disabled)', function(){
-
+        console.error('>>submit clicked!');
 		var jData, saveResult;
 		if (typeof form !== 'undefined'){
+			console.error('>>validating form');
 			form.validateForm();
+			console.error('>>form validated');
 			if (!form.isValid()){
 				gui.alert('Form contains errors <br/>(please see fields marked in red)');
 				return;

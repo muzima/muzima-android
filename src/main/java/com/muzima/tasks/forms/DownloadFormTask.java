@@ -8,7 +8,11 @@ import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
 import com.muzima.tasks.DownloadTask;
 
+import org.apache.lucene.queryParser.ParseException;
+
 import java.io.File;
+import java.io.IOException;
+import java.net.ConnectException;
 import java.util.List;
 
 public abstract class DownloadFormTask extends DownloadTask<String[], Void, Integer[]> {
@@ -20,6 +24,8 @@ public abstract class DownloadFormTask extends DownloadTask<String[], Void, Inte
     public static final int DELETE_ERROR = 3;
     public static final int SUCCESS = 4;
     public static final int CANCELLED = 5;
+    public static final int CONNECTION_ERROR = 6;
+    public static final int PARSING_ERROR = 7;
 
     protected MuzimaApplication applicationContext;
 
@@ -51,10 +57,7 @@ public abstract class DownloadFormTask extends DownloadTask<String[], Void, Inte
             }
             result = performTask(dataToDownload);
 
-        } catch (Exception e) {
-            Log.e(TAG, "Exception during authentication", e);
-            result[0] = AUTHENTICATION_ERROR;
-            return result;
+
         } catch (FormController.FormFetchException e) {
             Log.e(TAG, "Exception when trying to download forms", e);
             result[0] = DOWNLOAD_ERROR;
@@ -66,6 +69,18 @@ public abstract class DownloadFormTask extends DownloadTask<String[], Void, Inte
         } catch (FormController.FormDeleteException e) {
             Log.e(TAG, "Exception occurred while deleting existing forms", e);
             result[0] = DELETE_ERROR;
+            return result;
+        }catch (ConnectException e) {
+            Log.e(TAG, "Exception occurred while connecting to server", e);
+            result[0] = CONNECTION_ERROR;
+            return result;
+        } catch (ParseException e) {
+            Log.e(TAG, "Exception occurred while authentication phase", e);
+            result[0] = AUTHENTICATION_ERROR;
+            return result;
+        } catch (IOException e) {
+            Log.e(TAG, "Exception occurred while authentication phase", e);
+            result[0] = AUTHENTICATION_ERROR;
             return result;
         } finally {
             if (context != null)
