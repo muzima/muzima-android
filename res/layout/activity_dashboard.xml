@@ -203,7 +203,7 @@
                 android:background="#222222"
                 android:padding="5dp"
                 android:src="@drawable/ic_sync"
-                android:onClick="refresh" />
+                android:onClick="sync" />
 
             <TextView
                 style="@style/DashboardBaseText"

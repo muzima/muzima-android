@@ -99,5 +99,4 @@ public abstract class DownloadFormTask extends DownloadTask<String[], Void, Inte
         }
         return false;
     }
-
 }

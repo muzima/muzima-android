@@ -1,7 +1,6 @@
 package com.muzima.view.forms;
 
 import android.util.Log;
-import android.webkit.JavascriptInterface;
 
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormTemplate;
@@ -16,22 +15,22 @@ public class FormWebInterface {
         this.formTemplate = formTemplate;
     }
 
-    @JavascriptInterface
+//    @JavascriptInterface
     public String getFormName(){
         return form.getName();
     }
 
-    @JavascriptInterface
+//    @JavascriptInterface
     public String getModel() {
         return formTemplate.getModel();
     }
 
-    @JavascriptInterface
+//    @JavascriptInterface
     public String getModelJson() {
         return formTemplate.getModelJson();
     }
 
-    @JavascriptInterface
+//    @JavascriptInterface
     public String getHtml(){
         return formTemplate.getHtml();
     }

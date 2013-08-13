@@ -106,10 +106,8 @@ public class MainActivity extends Activity {
 		startActivity(intent);
 	}
 	
-	/** Called when the user clicks the Refresh (sync) Button */
-	public void refresh(View view) {
-		Intent intent = new Intent(this, SyncActivity.class);
-		startActivity(intent);
-	}
+	/** Called when the user clicks the Sync Button */
+	public void sync(View view) {
 
+	}
 }
