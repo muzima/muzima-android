@@ -63,7 +63,7 @@ public class NewFormsAdapter extends FormsAdapter {
                 }
             }
 
-            //remove existing extra tags which are present because of recylced list view
+            //remove existing extra tags which are present because of recycled list view
             if (tags.length < holder.tags.size()) {
                 List<TextView> tagsToRemove = new ArrayList<TextView>();
                 for (int i = tags.length; i < holder.tags.size(); i++) {
@@ -153,7 +153,6 @@ public class NewFormsAdapter extends FormsAdapter {
                 add(form);
             }
             notifyDataSetChanged();
-            notifyEmptyDataListener(forms.size() == 0);
         }
     }
 }

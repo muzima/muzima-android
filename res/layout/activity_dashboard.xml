@@ -172,13 +172,13 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout style="@style/SummaryItemRow" >
+            <LinearLayout style="@style/SummaryItemRow">
 
-                <LinearLayout style="@style/SummaryItemRowLeftSection" >
+                <LinearLayout style="@style/SummaryItemRowLeftSection">
 
                     <TextView
                         style="@style/DashboardBaseText"
-                        android:text="## Unread, ## Recommendations" >
+                        android:text="## Unread, ## Recommendations">
                     </TextView>
                 </LinearLayout>
             </LinearLayout>

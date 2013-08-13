@@ -1,6 +1,8 @@
 package com.muzima.view.forms;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import com.muzima.R;
 import com.muzima.adapters.forms.NewFormsAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.listeners.DownloadListener;
+import com.muzima.search.api.util.StringUtil;
 import com.muzima.tasks.forms.DownloadFormTemplateTask;
 
 import java.util.List;
@@ -103,9 +106,15 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
                         Toast.makeText(getActivity(), "Already fetching form templates, ignored the request", Toast.LENGTH_SHORT).show();
                         return true;
                     }
+                    SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
                     formTemplateDownloadTask = new DownloadFormTemplateTask((MuzimaApplication) getActivity().getApplication());
                     formTemplateDownloadTask.addDownloadListener(NewFormsListFragment.this);
-                    String[] credentials = new String[]{USERNAME, PASS, FORMS_SERVER};
+                    String usernameKey = getResources().getString(R.string.preference_username);
+                    String passwordKey = getResources().getString(R.string.preference_password);
+                    String serverKey = getResources().getString(R.string.preference_server);
+                    String[] credentials = new String[]{settings.getString(usernameKey, StringUtil.EMPTY),
+                            settings.getString(passwordKey, StringUtil.EMPTY),
+                            settings.getString(serverKey, StringUtil.EMPTY)};
                     formTemplateDownloadTask.execute(credentials, getSelectedFormsArray());
                     if (NewFormsListFragment.this.actionMode != null) {
                         NewFormsListFragment.this.actionMode.finish();

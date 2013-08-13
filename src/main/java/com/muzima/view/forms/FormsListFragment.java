@@ -14,11 +14,10 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.muzima.R;
 import com.muzima.adapters.forms.ListAdapter;
 import com.muzima.controller.FormController;
-import com.muzima.listeners.EmptyListListener;
 import com.muzima.tasks.forms.DownloadFormTask;
 import com.muzima.utils.Fonts;
 
-public abstract class FormsListFragment extends SherlockFragment implements EmptyListListener, AdapterView.OnItemClickListener {
+public abstract class FormsListFragment extends SherlockFragment implements AdapterView.OnItemClickListener {
     private static final String TAG = "FormsListFragment";
 
     protected ListView formsList;
@@ -43,10 +42,8 @@ public abstract class FormsListFragment extends SherlockFragment implements Empt
         if (listAdapter != null) {
             formsList.setAdapter(listAdapter);
             formsList.setOnItemClickListener(this);
-            listAdapter.setEmptyListListener(this);
-        } else {
-            listIsEmpty(true);
         }
+        formsList.setEmptyView(formsLayout.findViewById(R.id.no_data_layout));
 
         return formsLayout;
     }
@@ -99,17 +96,6 @@ public abstract class FormsListFragment extends SherlockFragment implements Empt
             msg = "Parse exception has been thrown while fetching data";
         }
         Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void listIsEmpty(boolean isEmpty) {
-        if (isEmpty) {
-            formsList.setVisibility(View.GONE);
-            noDataLayout.setVisibility(View.VISIBLE);
-        } else {
-            formsList.setVisibility(View.VISIBLE);
-            noDataLayout.setVisibility(View.GONE);
-        }
     }
 
     public void tagsChanged() {

@@ -31,7 +31,7 @@ public class TagsListAdapter extends ListAdapter<Tag> implements DownloadListene
         this.formController = formController;
     }
 
-    public interface TagsChangedListener{
+    public interface TagsChangedListener {
         public void onTagsChanged();
     }
 
@@ -110,18 +110,18 @@ public class TagsListAdapter extends ListAdapter<Tag> implements DownloadListene
         Tag tag = getItem(position);
 
         List<Tag> selectedTags = formController.getSelectedTags();
-        if(position == 0){
+        if (position == 0) {
             selectedTags.clear();
-        }else{
-            if(selectedTags.contains(tag)){
+        } else {
+            if (selectedTags.contains(tag)) {
                 selectedTags.remove(tag);
-            }else{
+            } else {
                 selectedTags.add(tag);
             }
         }
 //        formController.setSelectedTags(selectedTags);
         notifyDataSetChanged();
-        if(tagsChangedListener != null){
+        if (tagsChangedListener != null) {
             tagsChangedListener.onTagsChanged();
         }
     }
@@ -147,16 +147,17 @@ public class TagsListAdapter extends ListAdapter<Tag> implements DownloadListene
         }
 
         @Override
-        protected void onPostExecute(List<Tag> forms) {
+        protected void onPostExecute(List<Tag> tags) {
             TagsListAdapter.this.clear();
 
-            add(getAllTagsElement());
+            if (!tags.isEmpty()) {
+                add(getAllTagsElement());
+            }
 
-            for (Tag tag : forms) {
+            for (Tag tag : tags) {
                 add(tag);
             }
             notifyDataSetChanged();
-            notifyEmptyDataListener(forms.size() == 0);
         }
 
         private Tag getAllTagsElement() {

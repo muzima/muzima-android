@@ -18,7 +18,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dashboard);
-		getOverflowMenu();
+//		getOverflowMenu();
 
 		ActionBar actionBar = getActionBar();
 		// actionBar.hide();

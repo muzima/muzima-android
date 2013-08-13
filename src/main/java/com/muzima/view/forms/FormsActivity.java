@@ -5,14 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,7 +24,6 @@ import com.muzima.R;
 import com.muzima.adapters.forms.FormsPagerAdapter;
 import com.muzima.adapters.forms.TagsListAdapter;
 import com.muzima.controller.FormController;
-import com.muzima.listeners.EmptyListListener;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.tasks.forms.DownloadFormMetadataTask;
 import com.muzima.tasks.forms.DownloadFormTask;
@@ -36,12 +33,9 @@ import com.muzima.view.customViews.PagerSlidingTabStrip;
 
 import static android.os.AsyncTask.Status.PENDING;
 import static android.os.AsyncTask.Status.RUNNING;
-import static com.muzima.utils.Constants.FORMS_SERVER;
-import static com.muzima.utils.Constants.PASS;
-import static com.muzima.utils.Constants.USERNAME;
 
 
-public class FormsActivity extends SherlockFragmentActivity implements EmptyListListener{
+public class FormsActivity extends SherlockFragmentActivity{
     private static final String TAG = "FormsActivity";
     private DownloadFormTask formDownloadTask;
     private ViewPager formsPager;
@@ -131,23 +125,12 @@ public class FormsActivity extends SherlockFragmentActivity implements EmptyList
         overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
     }
 
-    @Override
-    public void listIsEmpty(boolean isEmpty) {
-        if (isEmpty) {
-            tagsDrawerList.setVisibility(View.GONE);
-            tagsNoDataMsg.setVisibility(View.VISIBLE);
-        } else {
-            tagsDrawerList.setVisibility(View.VISIBLE);
-            tagsNoDataMsg.setVisibility(View.GONE);
-        }
-    }
-
     private void initDrawer() {
         tagsDrawerList = (ListView) findViewById(R.id.tags_list);
+        tagsDrawerList.setEmptyView(findViewById(R.id.tags_no_data_msg));
         tagsListAdapter = new TagsListAdapter(this, R.layout.item_tags_list, ((MuzimaApplication)getApplication()).getFormController());
         tagsDrawerList.setAdapter(tagsListAdapter);
         tagsDrawerList.setOnItemClickListener(tagsListAdapter);
-        tagsListAdapter.setEmptyListListener(this);
         tagsListAdapter.setTagsChangedListener(formsPagerAdapter);
         actionbarDrawerToggle = new ActionBarDrawerToggle(this, mainLayout,
                 R.drawable.ic_labels, R.string.drawer_open, R.string.drawer_close) {

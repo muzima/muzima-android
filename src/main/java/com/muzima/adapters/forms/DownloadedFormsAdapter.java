@@ -52,7 +52,6 @@ public class DownloadedFormsAdapter extends FormsAdapter {
                 add(form);
             }
             notifyDataSetChanged();
-            notifyEmptyDataListener(forms.size() == 0);
         }
     }
 }

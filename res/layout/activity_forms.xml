@@ -50,7 +50,8 @@
                 android:gravity="center"
                 android:textSize="20sp"
                 android:textColor="#ffffff"
-                android:text="@string/tags_no_data">
+                android:text="@string/tags_no_data"
+                android:visibility="gone">
         </TextView>
 
     </FrameLayout>
