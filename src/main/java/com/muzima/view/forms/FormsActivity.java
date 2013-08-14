@@ -25,9 +25,10 @@ import com.muzima.adapters.forms.FormsPagerAdapter;
 import com.muzima.adapters.forms.TagsListAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.search.api.util.StringUtil;
+import com.muzima.tasks.DownloadMuzimaTask;
 import com.muzima.tasks.forms.DownloadFormMetadataTask;
-import com.muzima.tasks.forms.DownloadFormTask;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.NetworkUtils;
 import com.muzima.view.RegisterClientActivity;
 import com.muzima.view.customViews.PagerSlidingTabStrip;
 
@@ -37,7 +38,7 @@ import static android.os.AsyncTask.Status.RUNNING;
 
 public class FormsActivity extends SherlockFragmentActivity{
     private static final String TAG = "FormsActivity";
-    private DownloadFormTask formDownloadTask;
+    private DownloadMuzimaTask formDownloadTask;
     private ViewPager formsPager;
     private PagerSlidingTabStrip pagerTabsLayout;
     private FormsPagerAdapter formsPagerAdapter;
@@ -83,6 +84,11 @@ public class FormsActivity extends SherlockFragmentActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_load:
+                if(!NetworkUtils.isConnectedToNetwork(this)){
+                    Toast.makeText(this, "No connection found, please connect your device and try again", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+
                 if (formDownloadTask != null &&
                         (formDownloadTask.getStatus() == PENDING || formDownloadTask.getStatus() == RUNNING)) {
                     Toast.makeText(this, "Already fetching forms, ignored the request", Toast.LENGTH_SHORT).show();

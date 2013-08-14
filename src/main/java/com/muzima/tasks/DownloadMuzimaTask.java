@@ -1,22 +1,17 @@
-package com.muzima.tasks.forms;
+package com.muzima.tasks;
 
 import android.util.Log;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.api.context.Context;
-import com.muzima.api.model.Form;
-import com.muzima.controller.FormController;
-import com.muzima.tasks.DownloadTask;
 
 import org.apache.lucene.queryParser.ParseException;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
-import java.util.List;
 
-public abstract class DownloadFormTask extends DownloadTask<String[], Void, Integer[]> {
-    private static final String TAG = "DownloadFormTask";
+public abstract class DownloadMuzimaTask extends DownloadTask<String[], Void, Integer[]> {
+    private static final String TAG = "DownloadMuzimaTask";
 
     public static final int DOWNLOAD_ERROR = 0;
     public static final int SAVE_ERROR = 1;
@@ -26,10 +21,12 @@ public abstract class DownloadFormTask extends DownloadTask<String[], Void, Inte
     public static final int CANCELLED = 5;
     public static final int CONNECTION_ERROR = 6;
     public static final int PARSING_ERROR = 7;
+    public static final int AUTHENTICATION_SUCCESS = 8;
+
 
     protected MuzimaApplication applicationContext;
 
-    public DownloadFormTask(MuzimaApplication applicationContext){
+    public DownloadMuzimaTask(MuzimaApplication applicationContext){
         this.applicationContext = applicationContext;
     }
 
@@ -37,11 +34,21 @@ public abstract class DownloadFormTask extends DownloadTask<String[], Void, Inte
     protected Integer[] doInBackground(String[]... values) {
         Integer[] result = new Integer[2];
 
-        String[] credentials = values[0];
+        int status = authenticate(values[0]);
+        if(checkIfTaskIsCancelled(result))  return result;
+        if(status != AUTHENTICATION_SUCCESS){
+            result[0] = status;
+            return result;
+        }
+
+        result = performTask(values);
+        return result;
+    }
+
+    private int authenticate(String[] credentials){
         String username = credentials[0];
         String password = credentials[1];
         String server = credentials[2];
-
         Context context = applicationContext.getMuzimaContext();
         try {
             context.openSession();
@@ -49,48 +56,24 @@ public abstract class DownloadFormTask extends DownloadTask<String[], Void, Inte
                 context.authenticate(username, password, server);
             }
 
-            if (checkIfTaskIsCancelled(result)) return result;
-
-            String[] dataToDownload = null;
-            if(values.length > 1){
-                dataToDownload = values[1];
-            }
-            result = performTask(dataToDownload);
-
-
-        } catch (FormController.FormFetchException e) {
-            Log.e(TAG, "Exception when trying to download forms", e);
-            result[0] = DOWNLOAD_ERROR;
-            return result;
-        } catch (FormController.FormSaveException e) {
-            Log.e(TAG, "Exception when trying to save forms", e);
-            result[0] = SAVE_ERROR;
-            return result;
-        } catch (FormController.FormDeleteException e) {
-            Log.e(TAG, "Exception occurred while deleting existing forms", e);
-            result[0] = DELETE_ERROR;
-            return result;
         }catch (ConnectException e) {
             Log.e(TAG, "Exception occurred while connecting to server", e);
-            result[0] = CONNECTION_ERROR;
-            return result;
+            return CONNECTION_ERROR;
         } catch (ParseException e) {
             Log.e(TAG, "Exception occurred while authentication phase", e);
-            result[0] = AUTHENTICATION_ERROR;
-            return result;
+            return PARSING_ERROR;
         } catch (IOException e) {
             Log.e(TAG, "Exception occurred while authentication phase", e);
-            result[0] = AUTHENTICATION_ERROR;
-            return result;
+            return AUTHENTICATION_ERROR;
         } finally {
             if (context != null)
                 context.closeSession();
         }
 
-        return result;
+        return AUTHENTICATION_SUCCESS;
     }
 
-    protected abstract Integer[] performTask(String[] values) throws FormController.FormFetchException, FormController.FormDeleteException, FormController.FormSaveException;
+    protected abstract Integer[] performTask(String[]... values);
 
     protected boolean checkIfTaskIsCancelled(Integer[] result) {
         if(isCancelled()){

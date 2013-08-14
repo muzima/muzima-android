@@ -20,6 +20,7 @@ import com.muzima.controller.FormController;
 import com.muzima.listeners.DownloadListener;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.tasks.forms.DownloadFormTemplateTask;
+import com.muzima.utils.NetworkUtils;
 
 import java.util.List;
 
@@ -101,6 +102,11 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.menu_download:
+                    if(!NetworkUtils.isConnectedToNetwork(getActivity())){
+                        Toast.makeText(getActivity(), "No connection found, please connect your device and try again", Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+
                     if (formTemplateDownloadTask != null &&
                             (formTemplateDownloadTask.getStatus() == PENDING || formTemplateDownloadTask.getStatus() == RUNNING)) {
                         Toast.makeText(getActivity(), "Already fetching form templates, ignored the request", Toast.LENGTH_SHORT).show();

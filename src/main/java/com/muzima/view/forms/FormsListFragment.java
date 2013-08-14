@@ -14,7 +14,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.muzima.R;
 import com.muzima.adapters.forms.ListAdapter;
 import com.muzima.controller.FormController;
-import com.muzima.tasks.forms.DownloadFormTask;
+import com.muzima.tasks.DownloadMuzimaTask;
 import com.muzima.utils.Fonts;
 
 public abstract class FormsListFragment extends SherlockFragment implements AdapterView.OnItemClickListener {
@@ -75,24 +75,24 @@ public abstract class FormsListFragment extends SherlockFragment implements Adap
         Integer downloadStatus = status[0];
         String msg = "Download Complete with status " + downloadStatus;
         Log.i(TAG, msg);
-        if (downloadStatus == DownloadFormTask.SUCCESS) {
+        if (downloadStatus == DownloadMuzimaTask.SUCCESS) {
             msg = "Forms downloaded: " + status[1];
             if(listAdapter != null){
                 listAdapter.reloadData();
             }
-        } else if (downloadStatus == DownloadFormTask.DOWNLOAD_ERROR) {
+        } else if (downloadStatus == DownloadMuzimaTask.DOWNLOAD_ERROR) {
             msg = "An error occurred while downloading forms";
-        } else if (downloadStatus == DownloadFormTask.AUTHENTICATION_ERROR) {
+        } else if (downloadStatus == DownloadMuzimaTask.AUTHENTICATION_ERROR) {
             msg = "Authentication error occurred while downloading forms";
-        } else if (downloadStatus == DownloadFormTask.DELETE_ERROR) {
+        } else if (downloadStatus == DownloadMuzimaTask.DELETE_ERROR) {
             msg = "An error occurred while deleting existing forms";
-        }else if (downloadStatus == DownloadFormTask.SAVE_ERROR) {
+        }else if (downloadStatus == DownloadMuzimaTask.SAVE_ERROR) {
             msg = "An error occurred while saving the downloaded forms";
-        } else if (downloadStatus == DownloadFormTask.CANCELLED) {
+        } else if (downloadStatus == DownloadMuzimaTask.CANCELLED) {
             msg = "Form download task has been cancelled";
-        } else if (downloadStatus == DownloadFormTask.CONNECTION_ERROR) {
+        } else if (downloadStatus == DownloadMuzimaTask.CONNECTION_ERROR) {
             msg = "Connection error occurred while downloading forms";
-        } else if (downloadStatus == DownloadFormTask.PARSING_ERROR) {
+        } else if (downloadStatus == DownloadMuzimaTask.PARSING_ERROR) {
             msg = "Parse exception has been thrown while fetching data";
         }
         Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
