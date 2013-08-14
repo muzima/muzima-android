@@ -3,7 +3,6 @@ package com.muzima.tasks.forms;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.context.Context;
 import com.muzima.api.model.Form;
-import com.muzima.api.model.FormTemplate;
 import com.muzima.controller.FormController;
 import com.muzima.listeners.DownloadListener;
 import com.muzima.tasks.DownloadMuzimaTask;

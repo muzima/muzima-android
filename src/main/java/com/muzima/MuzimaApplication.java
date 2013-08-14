@@ -5,6 +5,7 @@ import android.app.Application;
 
 import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
+import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
 import com.muzima.util.Constants;
 
@@ -20,6 +21,7 @@ import java.io.InputStreamReader;
 public class MuzimaApplication extends Application{
     private Context muzimaContext;
     private FormController formController;
+    private CohortController cohortController;
 
     @Override
     public void onCreate() {
@@ -48,6 +50,17 @@ public class MuzimaApplication extends Application{
             }
         }
         return formController;
+    }
+
+    public CohortController getCohortController(){
+        if(cohortController == null){
+            try {
+                cohortController = new CohortController(muzimaContext.getCohortService());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return cohortController;
     }
 
     private String getConfigurationString() throws IOException {
