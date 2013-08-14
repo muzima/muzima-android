@@ -146,4 +146,12 @@
 			</plugin>
 		</plugins>
 	</build>
+    <profiles>
+        <profile>
+            <id>give_sdk</id>
+            <properties>
+                <android.sdk.path>/Users/twer/bin/adt-bundle-mac-x86_64-20130729/sdk</android.sdk.path>
+            </properties>
+        </profile>
+    </profiles>
 </project>
