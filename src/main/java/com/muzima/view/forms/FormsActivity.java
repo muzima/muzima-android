@@ -67,7 +67,7 @@ public class FormsActivity extends SherlockFragmentActivity{
     @Override
     protected void onDestroy() {
         if (formDownloadTask != null) {
-            formDownloadTask.cancel(true);
+            formDownloadTask.cancel(false);
         }
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
         formController.resetTagColors();

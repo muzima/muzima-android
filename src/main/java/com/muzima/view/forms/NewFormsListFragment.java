@@ -65,6 +65,14 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
     }
 
     @Override
+    public void onDestroy() {
+        if(formTemplateDownloadTask != null){
+            formTemplateDownloadTask.cancel(false);
+        }
+        super.onDestroy();
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         if (!actionModeActive) {
             actionMode = getSherlockActivity().startActionMode(new NewFormsActionModeCallback());

@@ -27,10 +27,12 @@ public class DownloadFormTemplateTask extends DownloadMuzimaTask {
 
         try{
             List<FormTemplate> formTemplates = formController.downloadFormTemplates(values[1]);
+            Log.i(TAG, "Form template download successful");
 
             if (checkIfTaskIsCancelled(result)) return result;
 
             formController.replaceFormTemplates(formTemplates);
+            Log.i(TAG, "Form templates replaced");
 
             result[0] = SUCCESS;
             result[1] = formTemplates.size();

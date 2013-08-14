@@ -1,6 +1,7 @@
 package com.muzima.tasks;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.api.context.Context;
@@ -26,7 +27,7 @@ public abstract class DownloadMuzimaTask extends DownloadTask<String[], Void, In
 
     protected MuzimaApplication applicationContext;
 
-    public DownloadMuzimaTask(MuzimaApplication applicationContext){
+    public DownloadMuzimaTask(MuzimaApplication applicationContext) {
         this.applicationContext = applicationContext;
     }
 
@@ -35,17 +36,18 @@ public abstract class DownloadMuzimaTask extends DownloadTask<String[], Void, In
         Integer[] result = new Integer[2];
 
         int status = authenticate(values[0]);
-        if(checkIfTaskIsCancelled(result))  return result;
-        if(status != AUTHENTICATION_SUCCESS){
+        if (checkIfTaskIsCancelled(result)) return result;
+        if (status != AUTHENTICATION_SUCCESS) {
             result[0] = status;
             return result;
         }
 
+        Log.i(TAG, "Authentication successful");
         result = performTask(values);
         return result;
     }
 
-    private int authenticate(String[] credentials){
+    private int authenticate(String[] credentials) {
         String username = credentials[0];
         String password = credentials[1];
         String server = credentials[2];
@@ -56,7 +58,7 @@ public abstract class DownloadMuzimaTask extends DownloadTask<String[], Void, In
                 context.authenticate(username, password, server);
             }
 
-        }catch (ConnectException e) {
+        } catch (ConnectException e) {
             Log.e(TAG, "Exception occurred while connecting to server", e);
             return CONNECTION_ERROR;
         } catch (ParseException e) {
@@ -73,10 +75,17 @@ public abstract class DownloadMuzimaTask extends DownloadTask<String[], Void, In
         return AUTHENTICATION_SUCCESS;
     }
 
+    @Override
+    protected void onCancelled(Integer[] result) {
+        if (result[0] == CANCELLED) {
+            Toast.makeText(applicationContext, "Download task has been cancelled.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     protected abstract Integer[] performTask(String[]... values);
 
     protected boolean checkIfTaskIsCancelled(Integer[] result) {
-        if(isCancelled()){
+        if (isCancelled()) {
             result[0] = CANCELLED;
             return true;
         }

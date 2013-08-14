@@ -23,11 +23,13 @@ public class DownloadFormMetadataTask extends DownloadMuzimaTask {
 
         try {
             List<Form> forms = formController.downloadAllForms();
-
+            Log.i(TAG, "Form download successful, " + isCancelled());
             if (checkIfTaskIsCancelled(result)) return result;
 
             formController.deleteAllForms();
+            Log.i(TAG, "Old forms are deleted");
             formController.saveAllForms(forms);
+            Log.i(TAG, "New forms are saved");
             result[0] = SUCCESS;
             result[1] = forms.size();
 
