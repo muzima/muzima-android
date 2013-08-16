@@ -24,8 +24,6 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements DownloadLis
     private static final int TAB_INCOMPLETE = 3;
     private static final int TAB_SYNCED = 4;
 
-    private PagerView[] pagers;
-
     public FormsPagerAdapter(Context context, FragmentManager fm) {
         super(context,fm);
     }

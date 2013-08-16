@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.muzima.R;
 import com.muzima.tasks.DownloadMuzimaTask;
-import com.muzima.adapters.forms.ListAdapter;
+import com.muzima.adapters.ListAdapter;
 import com.muzima.utils.Fonts;
 
 public abstract class MuzimaListFragment extends SherlockFragment implements AdapterView.OnItemClickListener {
@@ -50,31 +50,6 @@ public abstract class MuzimaListFragment extends SherlockFragment implements Ada
         }
     }
 
-    public void formDownloadComplete(Integer[] status) {
-        Integer downloadStatus = status[0];
-        String msg = "Download Complete with status " + downloadStatus;
-        Log.i(TAG, msg);
-        if (downloadStatus == DownloadMuzimaTask.SUCCESS) {
-            msg = "Forms downloaded: " + status[1];
-            if(listAdapter != null){
-                listAdapter.reloadData();
-            }
-        } else if (downloadStatus == DownloadMuzimaTask.DOWNLOAD_ERROR) {
-            msg = "An error occurred while downloading forms";
-        } else if (downloadStatus == DownloadMuzimaTask.AUTHENTICATION_ERROR) {
-            msg = "Authentication error occurred while downloading forms";
-        } else if (downloadStatus == DownloadMuzimaTask.DELETE_ERROR) {
-            msg = "An error occurred while deleting existing forms";
-        }else if (downloadStatus == DownloadMuzimaTask.SAVE_ERROR) {
-            msg = "An error occurred while saving the downloaded forms";
-        } else if (downloadStatus == DownloadMuzimaTask.CANCELLED) {
-            msg = "Form download task has been cancelled";
-        } else if (downloadStatus == DownloadMuzimaTask.CONNECTION_ERROR) {
-            msg = "Connection error occurred while downloading forms";
-        } else if (downloadStatus == DownloadMuzimaTask.PARSING_ERROR) {
-            msg = "Parse exception has been thrown while fetching data";
-        }
-        Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-    }
+    public abstract void formDownloadComplete(Integer[] status);
 
 }

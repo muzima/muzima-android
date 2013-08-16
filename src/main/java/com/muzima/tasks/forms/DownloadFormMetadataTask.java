@@ -30,6 +30,7 @@ public class DownloadFormMetadataTask extends DownloadMuzimaTask {
             Log.i(TAG, "Old forms are deleted");
             formController.saveAllForms(forms);
             Log.i(TAG, "New forms are saved");
+
             result[0] = SUCCESS;
             result[1] = forms.size();
 

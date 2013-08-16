@@ -30,6 +30,7 @@ import com.muzima.tasks.forms.DownloadFormMetadataTask;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.RegisterClientActivity;
+import com.muzima.view.SettingsActivity;
 import com.muzima.view.customViews.PagerSlidingTabStrip;
 
 import static android.os.AsyncTask.Status.PENDING;
@@ -82,6 +83,7 @@ public class FormsActivity extends SherlockFragmentActivity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = null;
         switch (item.getItemId()) {
             case R.id.menu_load:
                 if(!NetworkUtils.isConnectedToNetwork(this)){
@@ -107,7 +109,7 @@ public class FormsActivity extends SherlockFragmentActivity{
                 formDownloadTask.execute(credentials);
                 return true;
             case R.id.menu_client_add:
-                Intent intent = new Intent(this, RegisterClientActivity.class);
+                intent = new Intent(this, RegisterClientActivity.class);
                 startActivity(intent);
                 return true;
             case android.R.id.home:
@@ -120,6 +122,10 @@ public class FormsActivity extends SherlockFragmentActivity{
                 } else {
                     mainLayout.openDrawer(GravityCompat.END);
                 }
+                return true;
+            case R.id.action_settings:
+                intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
                 return true;
             default:
                 return false;

@@ -8,9 +8,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.muzima.MuzimaApplication;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.controller.CohortController;
+import com.muzima.listeners.DownloadListener;
 import com.muzima.view.cohort.AllCohortsListFragment;
 
-public class CohortPagerAdapter extends MuzimaPagerAdapter{
+public class CohortPagerAdapter extends MuzimaPagerAdapter implements DownloadListener<Integer[]> {
     private static final String TAG = "CohortPagerAdapter";
 
     private static final int TAB_All = 0;
@@ -18,6 +19,11 @@ public class CohortPagerAdapter extends MuzimaPagerAdapter{
 
     public CohortPagerAdapter(Context context, FragmentManager supportFragmentManager) {
         super(context, supportFragmentManager);
+    }
+
+    @Override
+    public void downloadTaskComplete(Integer[] result) {
+        pagers[TAB_All].fragment.formDownloadComplete(result);
     }
 
     protected void initPagerViews(Context context){

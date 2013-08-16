@@ -25,8 +25,13 @@ public class DownloadCohortTask extends DownloadMuzimaTask {
 
         try {
             List<Cohort> cohorts = cohortController.downloadAllCohorts();
-
+            Log.i(TAG, "Cohort download successful, " + isCancelled());
             if (checkIfTaskIsCancelled(result)) return result;
+
+            cohortController.deleteAllCohorts();
+            Log.i(TAG, "Old cohorts are deleted");
+            cohortController.saveAllCohorts(cohorts);
+            Log.i(TAG, "New cohorts are saved");
 
             result[0] = SUCCESS;
             result[1] = cohorts.size();
@@ -34,6 +39,14 @@ public class DownloadCohortTask extends DownloadMuzimaTask {
         } catch (CohortController.CohortDownloadException e) {
             Log.e(TAG, "Exception when trying to download cohorts");
             result[0] = DOWNLOAD_ERROR;
+            return result;
+        } catch (CohortController.CohortSaveException e) {
+            Log.e(TAG, "Exception when trying to save cohorts");
+            result[0] = SAVE_ERROR;
+            return result;
+        } catch (CohortController.CohortDeleteException e) {
+            Log.e(TAG, "Exception when trying to delete cohorts");
+            result[0] = DELETE_ERROR;
             return result;
         }
         return result;

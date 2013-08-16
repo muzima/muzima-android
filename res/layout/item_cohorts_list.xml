@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingLeft="@dimen/activity_horizontal_margin"
+              android:paddingRight="@dimen/activity_horizontal_margin"
+              android:descendantFocusability="blocksDescendants"
+              android:layout_marginTop="7dp"
+              android:layout_marginBottom="7dp"
+              android:orientation="vertical">
+
+    <TextView
+            android:id="@+id/cohort_name"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingTop="5dp"
+            android:textColor="#313131"
+            android:textSize="18sp">
+    </TextView>
+
+    <TextView
+            android:id="@+id/cohort_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="2dp"
+            android:paddingBottom="5dp"
+            android:textColor="#ff3d3d3d"
+            android:textSize="14sp">
+    </TextView>
+
+</LinearLayout>

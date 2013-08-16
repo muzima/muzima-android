@@ -119,7 +119,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                 //
                 // http://developer.android.com/design/patterns/navigation.html#up-vs-back
                 //
-                NavUtils.navigateUpFromSameTask(this);
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);

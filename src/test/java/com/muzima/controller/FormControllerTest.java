@@ -142,7 +142,7 @@ public class FormControllerTest {
     }
 
     @Test(expected = FormSaveException.class)
-    public void saveForm_shouldThrowFormSaveExceptionIfExceptionThrownByFormService() throws FormSaveException, IOException, ParseException {
+    public void saveAllForms_shouldThrowFormSaveExceptionIfExceptionThrownByFormService() throws FormSaveException, IOException, ParseException {
         List<Form> forms = buildForms();
         doThrow(new IOException()).when(formService).saveForm(forms.get(0));
 
