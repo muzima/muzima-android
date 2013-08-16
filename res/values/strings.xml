@@ -22,6 +22,8 @@
 
     <string name="no_cohorts_available">No Cohorts Available</string>
     <string name="no_cohorts_available_tip">Please press load to fetch available cohorts list from server</string>
+    <string name="no_cohorts_synced">No Cohorts Have Been Synced</string>
+    <string name="no_cohorts_synced_tip">Please select cohorts from all cohorts list and click sync</string>
 
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
