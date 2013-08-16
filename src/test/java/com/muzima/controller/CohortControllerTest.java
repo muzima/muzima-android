@@ -1,7 +1,6 @@
 package com.muzima.controller;
 
 import com.muzima.api.model.Cohort;
-import com.muzima.api.model.Form;
 import com.muzima.api.service.CohortService;
 import com.muzima.search.api.util.StringUtil;
 
