@@ -3,7 +3,6 @@ package com.muzima.view.forms;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +25,6 @@ import java.util.List;
 
 import static android.os.AsyncTask.Status.PENDING;
 import static android.os.AsyncTask.Status.RUNNING;
-import static com.muzima.utils.Constants.FORMS_SERVER;
-import static com.muzima.utils.Constants.PASS;
-import static com.muzima.utils.Constants.USERNAME;
 
 public class NewFormsListFragment extends FormsListFragment implements DownloadListener<Integer[]> {
     private static final String TAG = "NewFormsListFragment";

@@ -8,10 +8,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.muzima.R;
-import com.muzima.adapters.forms.DownloadedFormsAdapter;
 import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
-import com.muzima.view.SettingsActivity;
+import com.muzima.adapters.forms.*;
 
 public class DownloadedFormsListFragment extends FormsListFragment implements NewFormsListFragment.OnTemplateDownloadComplete{
 

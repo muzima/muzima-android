@@ -1,22 +1,12 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.muzima.R;
 import com.muzima.api.model.Form;
-import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
-import com.muzima.search.api.util.StringUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DownloadedFormsAdapter extends FormsAdapter {

@@ -31,6 +31,14 @@
             </intent-filter>
         </activity>
         <activity
+                android:name="com.muzima.view.cohort.CohortActivity"
+                android:label="@string/title_activity_cohort_list"
+                android:parentActivityName="com.muzima.view.MainActivity" >
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.DashboardActivity" />
+        </activity>
+        <activity
             android:name="com.muzima.view.ClientListActivity"
             android:label="@string/title_activity_client_list"
             android:parentActivityName="com.muzima.view.MainActivity" >

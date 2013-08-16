@@ -112,6 +112,7 @@ public class FormsActivity extends SherlockFragmentActivity{
                 return true;
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
+                overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
                 return true;
             case R.id.menu_tags:
                 if (mainLayout.isDrawerOpen(GravityCompat.END)) {

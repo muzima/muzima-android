@@ -1,4 +1,4 @@
-package com.muzima.view.forms;
+package com.muzima.view.cohort;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,13 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.muzima.R;
-import com.muzima.controller.FormController;
+import com.muzima.controller.CohortController;
 import com.muzima.view.MuzimaListFragment;
 
-public abstract class FormsListFragment extends MuzimaListFragment {
-    private static final String TAG = "FormsListFragment";
+public abstract class CohortListFragment extends MuzimaListFragment {
+    private static final String TAG = "CohortListFragment";
 
-    protected FormController formController;
+    protected CohortController cohortController;
 
 
     @Override
@@ -31,9 +31,5 @@ public abstract class FormsListFragment extends MuzimaListFragment {
         list.setEmptyView(formsLayout.findViewById(R.id.no_data_layout));
 
         return formsLayout;
-    }
-
-    public void tagsChanged() {
-        listAdapter.reloadData();
     }
 }

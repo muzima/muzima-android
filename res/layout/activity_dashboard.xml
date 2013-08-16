@@ -53,8 +53,57 @@
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout style="@style/DividerLine" >
+        <View style="@style/DividerLine" >
+        </View>
+
+        <LinearLayout
+                style="@style/ClickableSummaryItem"
+                android:onClick="cohortList" >
+
+            <LinearLayout style="@style/SummaryItemRow" >
+
+                <LinearLayout style="@style/SummaryItemRowLeftSection" >
+
+                    <TextView
+                            style="@style/DashboardBaseText"
+                            android:text="Cohorts"
+                            android:textAppearance="?android:attr/textAppearanceLarge" >
+                    </TextView>
+
+                    <TextView
+                            style="@style/DashboardBaseText"
+                            android:layout_marginLeft="5dp"
+                            android:text="(3 Cohorts)"
+                            android:textAppearance="?android:attr/textAppearanceSmall" >
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout style="@style/SummaryItemRowRightSection" >
+
+                    <TextView
+                            android:id="@+id/clients"
+                            style="@style/DashboardBaseText"
+                            android:text="##"
+                            android:textAppearance="?android:attr/textAppearanceLarge" >
+                    </TextView>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/SummaryItemRow" >
+
+                <LinearLayout style="@style/SummaryItemRowLeftSection" >
+
+                    <TextView
+                            android:id="@+id/clientNotifications"
+                            style="@style/DashboardBaseText"
+                            android:text="## Total Patients, ## Synced Patients" >
+                    </TextView>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
+
+        <View style="@style/DividerLine" >
+        </View>
 
         <LinearLayout
             style="@style/ClickableSummaryItem"
@@ -102,8 +151,8 @@
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout style="@style/DividerLine" >
-        </LinearLayout>
+        <View style="@style/DividerLine" >
+        </View>
 
         <LinearLayout
             style="@style/ClickableSummaryItem"
@@ -143,8 +192,8 @@
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout style="@style/DividerLine" >
-        </LinearLayout>
+        <View style="@style/DividerLine" >
+        </View>
 
         <LinearLayout
             style="@style/ClickableSummaryItem"
@@ -184,8 +233,8 @@
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout style="@style/DividerLine" >
-        </LinearLayout>
+        <View style="@style/DividerLine" >
+        </View>
     </LinearLayout>
 
     <LinearLayout

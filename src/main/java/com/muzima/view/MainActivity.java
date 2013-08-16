@@ -19,6 +19,7 @@ import com.muzima.search.api.util.StringUtil;
 import com.muzima.tasks.DownloadMuzimaTask;
 import com.muzima.tasks.cohort.DownloadCohortTask;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.view.cohort.CohortActivity;
 import com.muzima.view.forms.FormsActivity;
 
 import static android.os.AsyncTask.Status.PENDING;
@@ -85,6 +86,15 @@ public class MainActivity extends SherlockActivity implements DownloadListener<I
             downloadCohortTask.cancel(false);
         }
         super.onDestroy();
+    }
+
+    /**
+     * Called when the user clicks the Cohort area
+     */
+    public void cohortList(View view) {
+        Intent intent = new Intent(this, CohortActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.push_in_from_right, R.anim.push_out_to_left);
     }
 
     /**
@@ -158,6 +168,12 @@ public class MainActivity extends SherlockActivity implements DownloadListener<I
             msg = "Cohorts downloaded: " + result[1];
         } else if (downloadStatus == DownloadMuzimaTask.DOWNLOAD_ERROR) {
             msg = "An error occurred while downloading forms";
+        } else if (downloadStatus == DownloadMuzimaTask.AUTHENTICATION_ERROR) {
+            msg = "Authentication error occurred while downloading forms";
+        } else if (downloadStatus == DownloadMuzimaTask.CONNECTION_ERROR) {
+            msg = "Connection error occurred while downloading forms";
+        } else if (downloadStatus == DownloadMuzimaTask.PARSING_ERROR) {
+            msg = "Parse exception has been thrown while fetching data";
         }
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
