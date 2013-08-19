@@ -89,6 +89,17 @@ public class CohortController {
         }
     }
 
+    public List<Cohort> getSyncedCohort() throws CohortFetchException {
+        try {
+            //TODO should get synced cohorts instead of all
+            return cohortService.getAllCohorts();
+        } catch (IOException e) {
+            throw new CohortFetchException(e);
+        } catch (ParseException e) {
+            throw new CohortFetchException(e);
+        }
+    }
+
     public static class CohortDownloadException extends Throwable {
         public CohortDownloadException(Throwable throwable) {
             super(throwable);
