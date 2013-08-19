@@ -1,8 +1,12 @@
 package com.muzima.controller;
 
+import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.Patient;
+import com.muzima.api.service.CohortService;
 import com.muzima.api.service.PatientService;
 
+import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,6 +14,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -22,11 +28,13 @@ public class PatientControllerTest {
 
     private PatientController patientController;
     private PatientService patientService;
+    private CohortService cohortService;
 
     @Before
     public void setup(){
         patientService = mock(PatientService.class);
-        patientController = new PatientController(patientService);
+        cohortService = mock(CohortService.class);
+        patientController = new PatientController(patientService,cohortService );
     }
 
     @Test
@@ -54,6 +62,40 @@ public class PatientControllerTest {
         doThrow(new IOException()).when(patientService).getPatientByUuid(patients.get(0).getUuid());
 
         patientController.replacePatients(patients);
+    }
+
+    @Test
+    public void getPatientsInCohort_shouldReturnThePatientsInTheCohort() throws IOException, PatientController.LoadPatientException {
+        String cohortId = "cohortId";
+        List<CohortMember> members = buildCohortMembers(cohortId);
+        when(cohortService.getCohortMembers(cohortId)).thenReturn(members);
+
+        Patient patient = new Patient();
+        patient.setUuid(members.get(0).getPatientUuid());
+        when(patientService.getPatientByUuid(patient.getUuid())).thenReturn(patient);
+
+        List<Patient> patients = patientController.getPatients(cohortId);
+
+        assertThat(patients.size(), is(1));
+    }
+
+    private List<CohortMember> buildCohortMembers(String cohortId) {
+        List<CohortMember> cohortMembers = new ArrayList<CohortMember>();
+        CohortMember member1 = new CohortMember();
+        member1.setCohortUuid(cohortId);
+        member1.setPatientUuid("patientId1");
+        cohortMembers.add(member1);
+        return cohortMembers;
+    }
+
+    @Test(expected = PatientController.LoadPatientException.class)
+    public void getPatientsInCohort_shouldThrowLoadPatientExceptionIfExceptionThrownByService() throws IOException, PatientController.LoadPatientException {
+        String cohortId = "cohortId";
+        List<CohortMember> members = buildCohortMembers(cohortId);
+        when(cohortService.getCohortMembers(cohortId)).thenReturn(members);
+        doThrow(new IOException()).when(patientService).getPatientByUuid(members.get(0).getPatientUuid());
+
+        patientController.getPatients(cohortId);
     }
 
     private List<Patient> buildPatients() {

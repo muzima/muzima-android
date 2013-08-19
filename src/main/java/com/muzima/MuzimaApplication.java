@@ -68,7 +68,7 @@ public class MuzimaApplication extends Application{
     public PatientController getPatientController() {
         if(patientConroller == null){
             try {
-                patientConroller = new PatientController(muzimaContext.getPatientService());
+                patientConroller = new PatientController(muzimaContext.getPatientService(),muzimaContext.getCohortService() );
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

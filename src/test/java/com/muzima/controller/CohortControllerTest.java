@@ -172,4 +172,13 @@ public class CohortControllerTest {
 
         cohortController.replaceCohortMembers(uuid, new ArrayList<CohortMember>());
     }
+
+    @Test
+    public void getSyncedCohorts_shouldReturnTheCohortsReturned() throws CohortController.CohortReplaceException, IOException, ParseException, CohortController.CohortFetchException {
+        List<Cohort> cohorts = new ArrayList<Cohort>();
+        //TODO should mock getSyncedCohorts
+        when(cohortService.getAllCohorts()).thenReturn(cohorts);
+
+        assertThat(cohortController.getSyncedCohort(),is(cohorts));
+    }
 }
