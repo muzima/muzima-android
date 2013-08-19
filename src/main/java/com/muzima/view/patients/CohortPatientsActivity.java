@@ -28,7 +28,6 @@ public class CohortPatientsActivity extends Activity {
                 ((MuzimaApplication)getApplicationContext()).getPatientController(),
                 getIntent().getExtras().getString(COHORT_ID));
 
-        cohortPatientsList.setEmptyView(findViewById(R.id.cohort_patients_no_data_msg));
         cohortPatientsList.setAdapter(cohortPatientsAdapter);
     }
 

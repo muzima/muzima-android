@@ -83,5 +83,4 @@
     <string name="preference_cohort_desc">Select cohort to work with</string>
     <string name="preference_cohort">cohortPreference</string>
     <string name="preference_category_openmrs">OpenMRS Settings</string>
-    <string name="cohort_patients_no_data">No patients for the cohort</string>
 </resources>
