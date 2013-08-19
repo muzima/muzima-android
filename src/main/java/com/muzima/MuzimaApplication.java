@@ -7,6 +7,7 @@ import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
+import com.muzima.controller.PatientController;
 import com.muzima.util.Constants;
 
 import org.acra.ACRA;
@@ -22,6 +23,7 @@ public class MuzimaApplication extends Application{
     private Context muzimaContext;
     private FormController formController;
     private CohortController cohortController;
+    private PatientController patientConroller;
 
     @Override
     public void onCreate() {
@@ -61,6 +63,17 @@ public class MuzimaApplication extends Application{
             }
         }
         return cohortController;
+    }
+
+    public PatientController getPatientController() {
+        if(patientConroller == null){
+            try {
+                patientConroller = new PatientController(muzimaContext.getPatientService());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return patientConroller;
     }
 
     private String getConfigurationString() throws IOException {

@@ -43,7 +43,7 @@ public abstract class CohortListFragment extends MuzimaListFragment {
         String msg = "Download Complete with status " + downloadStatus;
         Log.i(TAG, msg);
         if (downloadStatus == DownloadMuzimaTask.SUCCESS) {
-            msg = "Cohorts downloaded: " + status[1];
+            msg = "Downloaded " + status[1] + " entities";
             if (listAdapter != null) {
                 listAdapter.reloadData();
             }
@@ -61,6 +61,8 @@ public abstract class CohortListFragment extends MuzimaListFragment {
             msg = "Connection error occurred while downloading cohorts";
         } else if (downloadStatus == DownloadMuzimaTask.PARSING_ERROR) {
             msg = "Parse exception has been thrown while fetching data";
+        }else if (downloadStatus == DownloadMuzimaTask.REPLACE_ERROR) {
+            msg = "An error occurred while replace existing cohort data";
         }
         Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }

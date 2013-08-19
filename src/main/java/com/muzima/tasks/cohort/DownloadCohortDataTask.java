@@ -4,15 +4,11 @@ import android.util.Log;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.CohortData;
-import com.muzima.api.model.FormTemplate;
 import com.muzima.controller.CohortController;
-import com.muzima.controller.FormController;
+import com.muzima.controller.PatientController;
 import com.muzima.tasks.DownloadMuzimaTask;
 
 import java.util.List;
-
-import static com.muzima.controller.FormController.FormFetchException;
-import static com.muzima.controller.FormController.FormSaveException;
 
 public class DownloadCohortDataTask extends DownloadMuzimaTask {
     private static final String TAG = "DownloadCohortDataTask";
@@ -25,24 +21,33 @@ public class DownloadCohortDataTask extends DownloadMuzimaTask {
     protected Integer[] performTask(String[]... values){
         Integer[] result = new Integer[2];
         CohortController cohortController = applicationContext.getCohortController();
-
+        PatientController patientController = applicationContext.getPatientController();
+        int patientCount = 0;
         try{
             List<CohortData> cohortDataList = cohortController.downloadCohortData(values[1]);
-            Log.i(TAG, "Cohort data download successful");
+            Log.i(TAG, "Cohort data download successful with " + cohortDataList.size() + " cohorts");
 
             if (checkIfTaskIsCancelled(result)) return result;
 
             for (CohortData cohortData : cohortDataList) {
                 cohortController.replaceCohortMembers(cohortData.getUuid(), cohortData.getCohortMembers());
+                patientController.replacePatients(cohortData.getPatients());
+                patientCount += cohortData.getPatients().size();
             }
-            Log.i(TAG, "Form templates replaced");
+
+            Log.i(TAG, "Cohort data replaced");
+            Log.i(TAG, "Patients downloaded " + patientCount);
 
             result[0] = SUCCESS;
+            result[1] = patientCount;
         } catch (CohortController.CohortDownloadException e) {
             Log.e(TAG, "Exception thrown while downloading cohort data");
             result[0] =  DOWNLOAD_ERROR;
         } catch (CohortController.CohortReplaceException e) {
             Log.e(TAG, "Exception thrown while replacing cohort data");
+            result[0] = REPLACE_ERROR;
+        } catch (PatientController.PatientReplaceException e) {
+            Log.e(TAG, "Exception thrown while replacing patients");
             result[0] = REPLACE_ERROR;
         }
         return result;

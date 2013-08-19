@@ -1,10 +1,15 @@
 package com.muzima.adapters.cohort;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 
+import com.muzima.R;
 import com.muzima.api.model.Cohort;
+import com.muzima.api.model.Form;
 import com.muzima.controller.CohortController;
 
 import java.util.ArrayList;
@@ -30,6 +35,31 @@ public class AllCohortsAdapter extends CohortsAdapter{
 
     public void clearSelectedCohorts() {
         selectedCohortsUuid.clear();
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View view = super.getView(position, convertView, parent);
+        highlightIfSelected(view, getItem(position));
+        return view;
+    }
+
+    private void highlightIfSelected(View convertView, Cohort cohort) {
+        if (selectedCohortsUuid.contains(cohort.getUuid())) {
+            convertView.setBackgroundColor(getContext().getResources().getColor(R.color.listitem_state_pressed));
+        } else {
+            convertView.setBackgroundColor(Color.WHITE);
+        }
+    }
+
+    public void onListItemClick(int position) {
+        Cohort cohort = getItem(position);
+        if (selectedCohortsUuid.contains(cohort.getUuid())) {
+            selectedCohortsUuid.remove(cohort.getUuid());
+        } else {
+            selectedCohortsUuid.add(cohort.getUuid());
+        }
         notifyDataSetChanged();
     }
 
