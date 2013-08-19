@@ -23,6 +23,7 @@ public abstract class DownloadMuzimaTask extends DownloadTask<String[], Void, In
     public static final int CONNECTION_ERROR = 6;
     public static final int PARSING_ERROR = 7;
     public static final int AUTHENTICATION_SUCCESS = 8;
+    public static final int REPLACE_ERROR = 9;
 
 
     protected MuzimaApplication applicationContext;

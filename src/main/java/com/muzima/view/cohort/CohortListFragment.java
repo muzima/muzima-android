@@ -5,9 +5,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.ActionMode;
 import com.muzima.R;
 import com.muzima.controller.CohortController;
 import com.muzima.tasks.DownloadMuzimaTask;
@@ -17,7 +19,6 @@ public abstract class CohortListFragment extends MuzimaListFragment {
     private static final String TAG = "CohortListFragment";
 
     protected CohortController cohortController;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

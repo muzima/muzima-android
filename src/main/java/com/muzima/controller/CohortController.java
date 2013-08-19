@@ -1,13 +1,18 @@
 package com.muzima.controller;
 
 import com.muzima.api.model.Cohort;
+import com.muzima.api.model.CohortData;
+import com.muzima.api.model.CohortDefinition;
+import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.Form;
+import com.muzima.api.model.FormTemplate;
 import com.muzima.api.service.CohortService;
 import com.muzima.search.api.util.StringUtil;
 
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CohortController {
@@ -30,6 +35,22 @@ public class CohortController {
     public List<Cohort> downloadAllCohorts() throws CohortDownloadException {
         try {
             return cohortService.downloadCohortsByName(StringUtil.EMPTY);
+        } catch (IOException e) {
+            throw new CohortDownloadException(e);
+        }
+    }
+
+    public List<CohortData> downloadCohortData(String[] cohortUuids) throws CohortDownloadException {
+        ArrayList<CohortData> allCohortData = new ArrayList<CohortData>();
+        for (String cohortUuid : cohortUuids) {
+            allCohortData.add(downloadCohortDataByUuid(cohortUuid));
+        }
+        return allCohortData;
+    }
+
+    public CohortData downloadCohortDataByUuid(String uuid) throws CohortDownloadException {
+        try {
+            return cohortService.downloadCohortData(uuid, false);
         } catch (IOException e) {
             throw new CohortDownloadException(e);
         }
@@ -59,6 +80,15 @@ public class CohortController {
         }
     }
 
+    public void replaceCohortMembers(String cohortUuid, List<CohortMember> cohortMembers) throws CohortReplaceException {
+        try {
+            cohortService.deleteCohortMembers(cohortUuid);
+            cohortService.saveCohortMembers(cohortMembers);
+        } catch (IOException e) {
+            throw new CohortReplaceException(e);
+        }
+    }
+
     public static class CohortDownloadException extends Throwable {
         public CohortDownloadException(Throwable throwable) {
             super(throwable);
@@ -79,6 +109,12 @@ public class CohortController {
 
     public static class CohortDeleteException extends Throwable {
         public CohortDeleteException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+
+    public static class CohortReplaceException extends Throwable {
+        public CohortReplaceException(Throwable throwable) {
             super(throwable);
         }
     }

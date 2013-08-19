@@ -93,7 +93,7 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            getSherlockActivity().getSupportMenuInflater().inflate(R.menu.form_list_actionmode_menu, menu);
+            getSherlockActivity().getSupportMenuInflater().inflate(R.menu.actionmode_menu_download, menu);
             return true;
         }
 
