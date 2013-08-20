@@ -15,7 +15,7 @@
 
         <LinearLayout
             android:id="@+id/quickSearch"
-            style="@style/DashboardButton"
+            style="@style/DashboardTextButton"
             android:onClick="clientObservations" >
 
             <ImageView
@@ -33,7 +33,7 @@
         </LinearLayout>
 
         <LinearLayout
-            style="@style/DashboardButton"
+            style="@style/DashboardTextButton"
             android:onClick="clientObservations" >
 
             <ImageView

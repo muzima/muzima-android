@@ -14,7 +14,7 @@
 
             <LinearLayout
                 android:id="@+id/blank_forms"
-                style="@style/DashboardButton"
+                style="@style/DashboardTextButton"
                 android:layout_marginBottom="2dp" >
 
                 <ImageView
@@ -36,7 +36,7 @@
             </LinearLayout> <!-- end dashboard button -->
 
 
-            <LinearLayout style="@style/DashboardButton"
+            <LinearLayout style="@style/DashboardTextButton"
                 android:onClick="registerClient" >
 
 				                <ImageView

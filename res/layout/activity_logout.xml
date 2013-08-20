@@ -13,7 +13,7 @@
         <LinearLayout style="@style/SummaryItemRow" >
 
             <LinearLayout android:id="@+id/sync_device"
-                style="@style/DashboardButton"
+                style="@style/DashboardTextButton"
                 android:onClick="sync_device" >
 
                 <ImageView
@@ -31,7 +31,7 @@
             </LinearLayout>
 
             <LinearLayout android:id="@+id/logout"
-                style="@style/DashboardButton"
+                style="@style/DashboardTextButton"
                 android:onClick="logout" >
 
                 <ImageView

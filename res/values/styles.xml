@@ -44,9 +44,10 @@
 
     <style name="DashboardTableContainer">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">8dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:padding">8dp</item>
         <item name="android:orientation">vertical</item>
+        <item name="android:background">#333333</item>
     </style>
 
     <style name="DashboardBaseText">
@@ -136,14 +137,17 @@
         <item name="android:orientation">horizontal</item>
     </style>
 
-    <style name="DashboardButton">
+    <style name="DashboardTextButton">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">@dimen/dashboardButtonHeight</item>
         <item name="android:layout_weight">.5</item>
         <item name="android:layout_margin">1dp</item>
         <item name="android:padding">5dp</item>
         <item name="android:background">#555555</item>
-        <item name="android:orientation">horizontal</item>
+        <item name="android:textColor">#eeeeee</item>
+        <item name="android:drawablePadding">6dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="ListHeader">

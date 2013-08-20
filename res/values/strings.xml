@@ -9,6 +9,14 @@
     <string name="menu_client_add">Register client</string>
     <string name="menu_download">Download</string>
 
+    <string name="provider">Provider</string>
+    <string name="search_clients">Search Clients</string>
+    <string name="register_new_patient">Register Patient</string>
+    <string name="cohorts">Cohorts</string>
+    <string name="patients">Patients</string>
+    <string name="forms">Forms</string>
+    <string name="notices">Notices</string>
+
     <string name="no_new_form_msg">No Forms Available</string>
     <string name="no_new_form_tip">Please press load to fetch data from server</string>
     <string name="no_downloaded_form_msg">No Forms Have Been Downloaded</string>
