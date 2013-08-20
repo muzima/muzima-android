@@ -18,9 +18,6 @@ public abstract class MuzimaListFragment extends SherlockFragment implements Ada
     private static final String TAG = "MuzimaListFragment";
 
     protected ListView list;
-    protected View noDataLayout;
-    protected TextView noDataMsgTextView;
-    protected TextView noDataTipTextView;
 
     protected String noDataMsg;
     protected String noDataTip;
@@ -33,10 +30,9 @@ public abstract class MuzimaListFragment extends SherlockFragment implements Ada
     }
 
     protected void setupNoDataView(View formsLayout) {
-        noDataLayout = formsLayout.findViewById(R.id.no_data_layout);
-        noDataMsgTextView = (TextView) formsLayout.findViewById(R.id.no_data_msg);
+        TextView noDataMsgTextView = (TextView) formsLayout.findViewById(R.id.no_data_msg);
         noDataMsgTextView.setText(noDataMsg);
-        noDataTipTextView = (TextView) formsLayout.findViewById(R.id.no_data_tip);
+        TextView noDataTipTextView = (TextView) formsLayout.findViewById(R.id.no_data_tip);
         noDataTipTextView.setText(noDataTip);
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(getActivity()));
         noDataTipTextView.setTypeface(Fonts.roboto_light(getActivity()));

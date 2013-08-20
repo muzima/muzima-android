@@ -39,25 +39,6 @@
                     android:value="com.muzima.view.DashboardActivity" />
         </activity>
         <activity
-                android:name="com.muzima.view.patients.CohortPatientsActivity"
-                android:label="@string/title_activity_client_list"
-                android:parentActivityName="com.muzima.view.cohort.CohortActivity" >
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.muzima.view.cohort.CohortActivity" />
-        </activity>
-        <activity
-            android:name="com.muzima.view.ClientListActivity"
-            android:label="@string/title_activity_client_list"
-            android:parentActivityName="com.muzima.view.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.DashboardActivity" />
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-        </activity>
-        <activity
             android:name="com.muzima.view.SearchResultsActivity"
             android:label="@string/title_activity_search_results"
             android:parentActivityName="com.muzima.view.ClientListActivity" >
@@ -113,6 +94,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.muzima.view.DashboardActivity" />
+        </activity>
+        <activity
+                android:name="com.muzima.view.patients.PatientsActivity"
+                android:label="@string/title_activity_patients_list"
+                android:parentActivityName="com.muzima.view.MainActivity" >
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.DashboardActivity" />
         </activity>
         <activity
                 android:name=".view.forms.FormsActivity"

@@ -21,7 +21,7 @@ public abstract class FormsListFragment extends MuzimaListFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View formsLayout = inflater.inflate(R.layout.layout_list_fragment, container, false);
+        View formsLayout = inflater.inflate(R.layout.layout_list, container, false);
         list = (ListView) formsLayout.findViewById(R.id.list);
 
         setupNoDataView(formsLayout);

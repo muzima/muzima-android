@@ -5,6 +5,8 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.PatientService;
 
+import org.apache.lucene.queryParser.ParseException;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +35,7 @@ public class PatientController {
         }
     }
 
-    public List<Patient> getPatients(String cohortId) throws LoadPatientException {
+    public List<Patient> getPatients(String cohortId) throws PatientLoadException {
         try {
             List<CohortMember> cohortMembers = cohortService.getCohortMembers(cohortId);
             ArrayList<Patient> patients = new ArrayList<Patient>();
@@ -42,7 +44,17 @@ public class PatientController {
             }
             return patients;
         } catch (IOException e) {
-            throw new LoadPatientException(e);
+            throw new PatientLoadException(e);
+        }
+    }
+
+    public List<Patient> getAllPatients() throws PatientLoadException {
+        try {
+            return patientService.getAllPatients();
+        } catch (IOException e) {
+            throw new PatientLoadException(e);
+        } catch (ParseException e) {
+            throw new PatientLoadException(e);
         }
     }
 
@@ -52,8 +64,8 @@ public class PatientController {
         }
     }
 
-    public static class LoadPatientException extends Throwable {
-        public LoadPatientException(IOException e) {
+    public static class PatientLoadException extends Throwable {
+        public PatientLoadException(Throwable e) {
             super(e);
         }
     }

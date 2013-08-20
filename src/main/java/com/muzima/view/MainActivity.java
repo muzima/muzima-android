@@ -21,6 +21,7 @@ import com.muzima.tasks.cohort.DownloadCohortTask;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.cohort.CohortActivity;
 import com.muzima.view.forms.FormsActivity;
+import com.muzima.view.patients.PatientsActivity;
 
 import static android.os.AsyncTask.Status.PENDING;
 import static android.os.AsyncTask.Status.RUNNING;
@@ -101,9 +102,9 @@ public class MainActivity extends SherlockActivity implements DownloadListener<I
      * Called when the user clicks the Clients area or Search Clients Button
      */
     public void clientList(View view) {
-        Intent intent = new Intent(this, ClientListActivity.class);
+        Intent intent = new Intent(this, PatientsActivity.class);
         if (view.getId() == R.id.quickSearch) {
-            intent.putExtra("quickSearch", "true");
+            intent.putExtra(PatientsActivity.QUICK_SEARCH, "true");
         }
         startActivity(intent);
     }

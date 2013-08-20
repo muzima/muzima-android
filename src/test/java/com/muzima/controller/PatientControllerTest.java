@@ -1,12 +1,13 @@
 package com.muzima.controller;
 
 import com.muzima.api.model.CohortMember;
+import com.muzima.api.model.Form;
 import com.muzima.api.model.Patient;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.PatientService;
 
-import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
+import org.apache.lucene.queryParser.ParseException;
+import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,6 +39,20 @@ public class PatientControllerTest {
     }
 
     @Test
+    public void getAllPatients_shouldReturnAllAvailablePatients() throws IOException, ParseException, PatientController.PatientLoadException {
+        List<Patient> patients = new ArrayList<Patient>();
+        when(patientService.getAllPatients()).thenReturn(patients);
+
+        assertThat(patientController.getAllPatients(), is(patients));
+    }
+
+    @Test(expected = PatientController.PatientLoadException.class)
+    public void getAllForms_shouldThrowFormFetchExceptionIfExceptionThrownByFormService() throws IOException, ParseException, PatientController.PatientLoadException {
+        doThrow(new IOException()).when(patientService).getAllPatients();
+        patientController.getAllPatients();
+    }
+
+    @Test
     public void replacePatients_shouldReplaceAllExistingPatientsAndAddNewPatients() throws IOException, PatientController.PatientReplaceException {
         List<Patient> patients = buildPatients();
 
@@ -65,7 +80,7 @@ public class PatientControllerTest {
     }
 
     @Test
-    public void getPatientsInCohort_shouldReturnThePatientsInTheCohort() throws IOException, PatientController.LoadPatientException {
+    public void getPatientsInCohort_shouldReturnThePatientsInTheCohort() throws IOException, PatientController.PatientLoadException {
         String cohortId = "cohortId";
         List<CohortMember> members = buildCohortMembers(cohortId);
         when(cohortService.getCohortMembers(cohortId)).thenReturn(members);
@@ -88,8 +103,8 @@ public class PatientControllerTest {
         return cohortMembers;
     }
 
-    @Test(expected = PatientController.LoadPatientException.class)
-    public void getPatientsInCohort_shouldThrowLoadPatientExceptionIfExceptionThrownByService() throws IOException, PatientController.LoadPatientException {
+    @Test(expected = PatientController.PatientLoadException.class)
+    public void getPatientsInCohort_shouldThrowLoadPatientExceptionIfExceptionThrownByService() throws IOException, PatientController.PatientLoadException {
         String cohortId = "cohortId";
         List<CohortMember> members = buildCohortMembers(cohortId);
         when(cohortService.getCohortMembers(cohortId)).thenReturn(members);
