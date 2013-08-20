@@ -2,6 +2,7 @@ package com.muzima.view.patients;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -14,7 +15,10 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.patients.PatientsAdapter;
 import com.muzima.utils.Fonts;
+import com.muzima.view.HelpActivity;
+import com.muzima.view.LogoutActivity;
 import com.muzima.view.RegisterClientActivity;
+import com.muzima.view.SettingsActivity;
 
 public class PatientsActivity extends SherlockActivity {
     public static final String COHORT_ID = "cohortId";
@@ -61,9 +65,23 @@ public class PatientsActivity extends SherlockActivity {
                 Intent intent = new Intent(this, RegisterClientActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.action_settings:
+                intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
     }
 
     @Override

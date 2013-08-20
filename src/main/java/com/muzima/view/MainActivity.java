@@ -107,6 +107,7 @@ public class MainActivity extends SherlockActivity implements DownloadListener<I
             intent.putExtra(PatientsActivity.QUICK_SEARCH, "true");
         }
         startActivity(intent);
+        overridePendingTransition(R.anim.push_in_from_right, R.anim.push_out_to_left);
     }
 
     /**
