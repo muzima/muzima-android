@@ -1,5 +1,7 @@
 package com.muzima.tasks.cohort;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.muzima.MuzimaApplication;
@@ -8,7 +10,11 @@ import com.muzima.api.model.Form;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
 import com.muzima.tasks.DownloadMuzimaTask;
+import com.muzima.utils.Constants;
+import com.muzima.view.cohort.AllCohortsListFragment;
+import com.muzima.view.forms.NewFormsListFragment;
 
+import java.util.Date;
 import java.util.List;
 
 public class DownloadCohortTask extends DownloadMuzimaTask {
@@ -50,5 +56,15 @@ public class DownloadCohortTask extends DownloadMuzimaTask {
             return result;
         }
         return result;
+    }
+
+    @Override
+    protected void onPostExecute(Integer[] result) {
+        SharedPreferences pref = applicationContext.getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        Date date = new Date();
+        editor.putLong(AllCohortsListFragment.COHORTS_LAST_SYNCED_TIME, date.getTime());
+        editor.commit();
+        super.onPostExecute(result);
     }
 }

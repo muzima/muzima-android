@@ -36,7 +36,7 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
     private static final String TAG = "NewFormsListFragment";
 
     private static final String BUNDLE_SELECTED_FORMS = "selectedForms";
-    public static final String LAST_SYNCED_TIME = "lastSyncedTime";
+    public static final String FORMS_METADATA_LAST_SYNCED_TIME = "formsMetadataSyncedTime";
     public static final long NOT_SYNCED_TIME = -1;
 
     private ActionMode actionMode;
@@ -70,21 +70,11 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
     }
 
     @Override
-    protected View setupMainView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
         View view = inflater.inflate(R.layout.layout_synced_list, container, false);
         syncText = (TextView) view.findViewById(R.id.sync_text);
         updateSyncText();
         return view;
-    }
-
-    private void updateSyncText() {
-        SharedPreferences pref = getActivity().getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
-        long lastSyncedTime = pref.getLong(LAST_SYNCED_TIME, NOT_SYNCED_TIME);
-        String lastSyncedMsg = "Not synced yet";
-        if(lastSyncedTime != NOT_SYNCED_TIME){
-            lastSyncedMsg = "Last synced on: " + DateUtils.getFormattedDateTime(new Date(lastSyncedTime));
-        }
-        syncText.setText(lastSyncedMsg);
     }
 
     @Override
@@ -123,6 +113,8 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
         }
         super.formDownloadComplete(status);
     }
+
+
 
     public final class NewFormsActionModeCallback implements ActionMode.Callback {
 
@@ -176,17 +168,27 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
         }
     }
 
-    private String[] getSelectedFormsArray() {
-        List<String> selectedForms = ((NewFormsAdapter) listAdapter).getSelectedForms();
-        String[] selectedFormUuids = new String[selectedForms.size()];
-        return selectedForms.toArray(selectedFormUuids);
-    }
-
     public void setTemplateDownloadCompleteListener(OnTemplateDownloadComplete templateDownloadCompleteListener) {
         this.templateDownloadCompleteListener = templateDownloadCompleteListener;
     }
 
     public interface OnTemplateDownloadComplete {
         public void onTemplateDownloadComplete(Integer[] result);
+    }
+
+    private String[] getSelectedFormsArray() {
+        List<String> selectedForms = ((NewFormsAdapter) listAdapter).getSelectedForms();
+        String[] selectedFormUuids = new String[selectedForms.size()];
+        return selectedForms.toArray(selectedFormUuids);
+    }
+
+    private void updateSyncText() {
+        SharedPreferences pref = getActivity().getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
+        long lastSyncedTime = pref.getLong(FORMS_METADATA_LAST_SYNCED_TIME, NOT_SYNCED_TIME);
+        String lastSyncedMsg = "Not synced yet";
+        if(lastSyncedTime != NOT_SYNCED_TIME){
+            lastSyncedMsg = "Last synced on: " + DateUtils.getFormattedDateTime(new Date(lastSyncedTime));
+        }
+        syncText.setText(lastSyncedMsg);
     }
 }

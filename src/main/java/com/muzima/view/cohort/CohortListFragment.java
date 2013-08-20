@@ -20,7 +20,7 @@ public abstract class CohortListFragment extends MuzimaListFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View formsLayout = inflater.inflate(R.layout.layout_list, container, false);
+        View formsLayout = setupMainView(inflater,container);
         list = (ListView) formsLayout.findViewById(R.id.list);
 
         setupNoDataView(formsLayout);
@@ -33,6 +33,10 @@ public abstract class CohortListFragment extends MuzimaListFragment {
         list.setEmptyView(formsLayout.findViewById(R.id.no_data_layout));
 
         return formsLayout;
+    }
+
+    protected View setupMainView(LayoutInflater inflater, ViewGroup container){
+        return inflater.inflate(R.layout.layout_list, container, false);
     }
 
     @Override

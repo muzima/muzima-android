@@ -80,6 +80,7 @@ public class PatientsActivity extends SherlockActivity {
 
     private void setupListView(String cohortId) {
         listView = (ListView) findViewById(R.id.list);
+        listView.setEmptyView(findViewById(R.id.no_data_layout));
         cohortPatientsAdapter = new PatientsAdapter(getApplicationContext(),
                 R.layout.layout_list,
                 ((MuzimaApplication) getApplicationContext()).getPatientController(),

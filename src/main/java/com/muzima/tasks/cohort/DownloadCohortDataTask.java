@@ -1,5 +1,7 @@
 package com.muzima.tasks.cohort;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.muzima.MuzimaApplication;
@@ -7,7 +9,10 @@ import com.muzima.api.model.CohortData;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.PatientController;
 import com.muzima.tasks.DownloadMuzimaTask;
+import com.muzima.utils.Constants;
+import com.muzima.view.forms.NewFormsListFragment;
 
+import java.util.Date;
 import java.util.List;
 
 public class DownloadCohortDataTask extends DownloadMuzimaTask {

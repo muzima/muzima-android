@@ -1,5 +1,6 @@
 package com.muzima.view.cohort;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.ActionMode;
@@ -23,9 +25,12 @@ import com.muzima.search.api.util.StringUtil;
 import com.muzima.tasks.DownloadMuzimaTask;
 import com.muzima.tasks.cohort.DownloadCohortDataTask;
 import com.muzima.tasks.forms.DownloadFormTemplateTask;
+import com.muzima.utils.Constants;
+import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.forms.NewFormsListFragment;
 
+import java.util.Date;
 import java.util.List;
 
 import static android.os.AsyncTask.Status.PENDING;
@@ -33,10 +38,14 @@ import static android.os.AsyncTask.Status.RUNNING;
 
 public class AllCohortsListFragment extends CohortListFragment implements DownloadListener<Integer[]>{
     private static final String TAG = "AllCohortsListFragment";
+    public static final String COHORTS_LAST_SYNCED_TIME = "cohortsSyncedTime";
+    public static final long NOT_SYNCED_TIME = -1;
+
     private ActionMode actionMode;
     private boolean actionModeActive = false;
     private DownloadCohortDataTask cohortDataDownloadTask;
     private OnCohortDataDownloadListener cohortDataDownloadListener;
+    private TextView syncText;
 
     public static AllCohortsListFragment newInstance(CohortController cohortController) {
         AllCohortsListFragment f = new AllCohortsListFragment();
@@ -53,6 +62,14 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
         noDataMsg = getActivity().getResources().getString(R.string.no_cohorts_available);
         noDataTip = getActivity().getResources().getString(R.string.no_cohorts_available_tip);
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
+        View view = inflater.inflate(R.layout.layout_synced_list, container, false);
+        syncText = (TextView) view.findViewById(R.id.sync_text);
+        updateSyncText();
+        return view;
     }
 
     @Override
@@ -80,6 +97,14 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
             actionMode.finish();
         }
         actionMode.setTitle(String.valueOf(numOfSelectedCohorts));
+    }
+
+    @Override
+    public void formDownloadComplete(Integer[] status) {
+        if(status[0] == DownloadMuzimaTask.SUCCESS){
+            updateSyncText();
+        }
+        super.formDownloadComplete(status);
     }
 
     @Override
@@ -153,6 +178,16 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
 
     public interface OnCohortDataDownloadListener{
         public void onCohortDataDownloadComplete(Integer[] result);
+    }
+
+    private void updateSyncText() {
+        SharedPreferences pref = getActivity().getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
+        long lastSyncedTime = pref.getLong(COHORTS_LAST_SYNCED_TIME, NOT_SYNCED_TIME);
+        String lastSyncedMsg = "Not synced yet";
+        if(lastSyncedTime != NOT_SYNCED_TIME){
+            lastSyncedMsg = "Last synced on: " + DateUtils.getFormattedDateTime(new Date(lastSyncedTime));
+        }
+        syncText.setText(lastSyncedMsg);
     }
 
 }

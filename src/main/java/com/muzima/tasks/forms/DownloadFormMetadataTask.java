@@ -60,7 +60,7 @@ public class DownloadFormMetadataTask extends DownloadMuzimaTask {
         SharedPreferences pref = applicationContext.getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         Date date = new Date();
-        editor.putLong(NewFormsListFragment.LAST_SYNCED_TIME, date.getTime());
+        editor.putLong(NewFormsListFragment.FORMS_METADATA_LAST_SYNCED_TIME, date.getTime());
         editor.commit();
         super.onPostExecute(result);
     }
