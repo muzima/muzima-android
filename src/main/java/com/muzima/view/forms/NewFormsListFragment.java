@@ -1,5 +1,6 @@
 package com.muzima.view.forms;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -7,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.ActionMode;
@@ -18,9 +20,13 @@ import com.muzima.adapters.forms.NewFormsAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.listeners.DownloadListener;
 import com.muzima.search.api.util.StringUtil;
+import com.muzima.tasks.DownloadMuzimaTask;
 import com.muzima.tasks.forms.DownloadFormTemplateTask;
+import com.muzima.utils.Constants;
+import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
 
+import java.util.Date;
 import java.util.List;
 
 import static android.os.AsyncTask.Status.PENDING;
@@ -30,11 +36,14 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
     private static final String TAG = "NewFormsListFragment";
 
     private static final String BUNDLE_SELECTED_FORMS = "selectedForms";
+    public static final String LAST_SYNCED_TIME = "lastSyncedTime";
+    public static final long NOT_SYNCED_TIME = -1;
 
     private ActionMode actionMode;
     private boolean actionModeActive = false;
     private DownloadFormTemplateTask formTemplateDownloadTask;
     private OnTemplateDownloadComplete templateDownloadCompleteListener;
+    private TextView syncText;
 
     public static NewFormsListFragment newInstance(FormController formController) {
         NewFormsListFragment f = new NewFormsListFragment();
@@ -58,6 +67,24 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
         }
 
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    protected View setupMainView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.layout_synced_list, container, false);
+        syncText = (TextView) view.findViewById(R.id.sync_text);
+        updateSyncText();
+        return view;
+    }
+
+    private void updateSyncText() {
+        SharedPreferences pref = getActivity().getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
+        long lastSyncedTime = pref.getLong(LAST_SYNCED_TIME, NOT_SYNCED_TIME);
+        String lastSyncedMsg = "Not synced yet";
+        if(lastSyncedTime != NOT_SYNCED_TIME){
+            lastSyncedMsg = "Last synced on: " + DateUtils.getFormattedDateTime(new Date(lastSyncedTime));
+        }
+        syncText.setText(lastSyncedMsg);
     }
 
     @Override
@@ -87,6 +114,14 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
         if (templateDownloadCompleteListener != null) {
             templateDownloadCompleteListener.onTemplateDownloadComplete(result);
         }
+    }
+
+    @Override
+    public void formDownloadComplete(Integer[] status) {
+        if(status[0] == DownloadMuzimaTask.SUCCESS){
+            updateSyncText();
+        }
+        super.formDownloadComplete(status);
     }
 
     public final class NewFormsActionModeCallback implements ActionMode.Callback {

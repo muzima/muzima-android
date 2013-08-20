@@ -13,8 +13,14 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
+import com.muzima.utils.DateUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import static com.muzima.utils.DateUtils.getFormattedDate;
 
 public class PatientsAdapter extends ListAdapter<Patient> {
     private static final String TAG = "PatientsAdapter";
@@ -46,12 +52,16 @@ public class PatientsAdapter extends ListAdapter<Patient> {
 
         Patient patient = getItem(position);
 
-        holder.dateOfBirth.setText(patient.getBirthdate().toString());
+        holder.dateOfBirth.setText(getFormattedDate(patient.getBirthdate()));
         holder.identifier.setText(patient.getIdentifier());
         holder.name.setText(String.format(patient.getFamilyName() + ", " + patient.getGivenName() + " " + patient.getMiddleName()));
-        int imgSrc = patient.getGender().equalsIgnoreCase("male") ? R.drawable.ic_male : R.drawable.ic_female;
-        holder.genderImg.setImageResource(imgSrc);
+        holder.genderImg.setImageResource(getGenderImage(patient.getGender()));
         return convertView;
+    }
+
+    private int getGenderImage(String gender) {
+        int imgSrc = gender.equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
+        return imgSrc;
     }
 
     @Override

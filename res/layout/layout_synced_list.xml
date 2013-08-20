@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+        <ListView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:choiceMode="multipleChoice">
+        </ListView>
+
+        <LinearLayout
+                android:id="@+id/no_data_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:visibility="gone">
+
+            <TextView
+                    android:id="@+id/no_data_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textSize="20sp">
+            </TextView>
+
+            <TextView
+                    android:id="@+id/no_data_tip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textSize="16sp">
+            </TextView>
+        </LinearLayout>
+    </FrameLayout>
+    <TextView android:id="@+id/sync_text"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sync_bar_height"
+            android:padding="5dp"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:background="#222222"/>
+</LinearLayout>

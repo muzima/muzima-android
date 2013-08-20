@@ -12,7 +12,7 @@
             android:id="@+id/genderImg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_female" />
+            android:layout_gravity="center"/>
 
     <LinearLayout
             android:layout_width="fill_parent"
@@ -23,30 +23,28 @@
 
         <TextView
                 android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                style="@style/ListHeader" />
 
         <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:layout_marginTop="3dp"
+                android:layout_margin="3dp"
                 android:orientation="horizontal" >
 
             <TextView
                     android:id="@+id/dateOfBirth"
+                    style="@style/ListDescription"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     android:layout_weight=".7"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/secondary_text" />
 
             <TextView
                     android:id="@+id/identifier"
+                    style="@style/ListDescription"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     android:layout_weight=".3"
+                    android:paddingRight="3dp"
                     android:gravity="right"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/secondary_text" />
