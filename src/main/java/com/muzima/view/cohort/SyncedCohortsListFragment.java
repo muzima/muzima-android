@@ -2,21 +2,22 @@ package com.muzima.view.cohort;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.muzima.R;
-import com.muzima.adapters.cohort.AllCohortsAdapter;
 import com.muzima.adapters.cohort.SyncedCohortsAdapter;
 import com.muzima.api.model.Cohort;
-import com.muzima.api.model.Form;
 import com.muzima.controller.CohortController;
-import com.muzima.view.forms.FormWebViewActivity;
+import com.muzima.tasks.DownloadMuzimaTask;
 import com.muzima.view.patients.CohortPatientsActivity;
 
-public class SyncedCohortsListFragment extends CohortListFragment{
+public class SyncedCohortsListFragment extends CohortListFragment implements AllCohortsListFragment.OnCohortDataDownloadListener {
+    private static final String TAG = "SyncedCohortsListFragment";
 
     public static SyncedCohortsListFragment newInstance(CohortController cohortController) {
         SyncedCohortsListFragment f = new SyncedCohortsListFragment();
@@ -43,4 +44,38 @@ public class SyncedCohortsListFragment extends CohortListFragment{
         startActivity(intent);
     }
 
+    @Override
+    public void formDownloadComplete(Integer[] status) {
+        Integer downloadStatus = status[0];
+        String msg = "Download Complete with status " + downloadStatus;
+        Log.i(TAG, msg);
+        if (downloadStatus == DownloadMuzimaTask.SUCCESS) {
+            msg = "Downloaded " + status[2] + " patients for " + status[1] + " cohorts";
+            if (listAdapter != null) {
+                listAdapter.reloadData();
+            }
+        } else if (downloadStatus == DownloadMuzimaTask.DOWNLOAD_ERROR) {
+            msg = "An error occurred while downloading cohorts";
+        } else if (downloadStatus == DownloadMuzimaTask.AUTHENTICATION_ERROR) {
+            msg = "Authentication error occurred while downloading cohorts";
+        } else if (downloadStatus == DownloadMuzimaTask.DELETE_ERROR) {
+            msg = "An error occurred while deleting existing cohorts";
+        } else if (downloadStatus == DownloadMuzimaTask.SAVE_ERROR) {
+            msg = "An error occurred while saving the downloaded cohorts";
+        } else if (downloadStatus == DownloadMuzimaTask.CANCELLED) {
+            msg = "Cohort download task has been cancelled";
+        } else if (downloadStatus == DownloadMuzimaTask.CONNECTION_ERROR) {
+            msg = "Connection error occurred while downloading cohorts";
+        } else if (downloadStatus == DownloadMuzimaTask.PARSING_ERROR) {
+            msg = "Parse exception has been thrown while fetching data";
+        }else if (downloadStatus == DownloadMuzimaTask.REPLACE_ERROR) {
+            msg = "An error occurred while replace existing cohort data";
+        }
+        Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCohortDataDownloadComplete(Integer[] result) {
+        formDownloadComplete(result);
+    }
 }

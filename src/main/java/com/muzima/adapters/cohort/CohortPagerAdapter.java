@@ -33,6 +33,9 @@ public class CohortPagerAdapter extends MuzimaPagerAdapter implements DownloadLi
 
         AllCohortsListFragment allCohortsListFragment = AllCohortsListFragment.newInstance(cohortController);
         SyncedCohortsListFragment syncedCohortsListFragment = SyncedCohortsListFragment.newInstance(cohortController);
+
+        allCohortsListFragment.setCohortDataDownloadListener(syncedCohortsListFragment);
+
         pagers[TAB_SYNCED] = new PagerView("Synced", syncedCohortsListFragment);
         pagers[TAB_All] = new PagerView("All", allCohortsListFragment);
     }

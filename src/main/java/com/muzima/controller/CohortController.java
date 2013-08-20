@@ -91,8 +91,15 @@ public class CohortController {
 
     public List<Cohort> getSyncedCohort() throws CohortFetchException {
         try {
-            //TODO should get synced cohorts instead of all
-            return cohortService.getAllCohorts();
+            //TODO this is very inefficient, should have a download flag in cohorts
+            List<Cohort> cohorts = cohortService.getAllCohorts();
+            List<Cohort> syncedCohorts = new ArrayList<Cohort>();
+            for (Cohort cohort : cohorts) {
+                if(!cohortService.getCohortMembers(cohort.getUuid()).isEmpty()){
+                    syncedCohorts.add(cohort);
+                }
+            }
+            return syncedCohorts;
         } catch (IOException e) {
             throw new CohortFetchException(e);
         } catch (ParseException e) {

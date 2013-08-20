@@ -36,34 +36,4 @@ public abstract class CohortListFragment extends MuzimaListFragment {
 
         return formsLayout;
     }
-
-    @Override
-    public void formDownloadComplete(Integer[] status) {
-        Integer downloadStatus = status[0];
-        String msg = "Download Complete with status " + downloadStatus;
-        Log.i(TAG, msg);
-        if (downloadStatus == DownloadMuzimaTask.SUCCESS) {
-            msg = "Downloaded " + status[1] + " entities";
-            if (listAdapter != null) {
-                listAdapter.reloadData();
-            }
-        } else if (downloadStatus == DownloadMuzimaTask.DOWNLOAD_ERROR) {
-            msg = "An error occurred while downloading cohorts";
-        } else if (downloadStatus == DownloadMuzimaTask.AUTHENTICATION_ERROR) {
-            msg = "Authentication error occurred while downloading cohorts";
-        } else if (downloadStatus == DownloadMuzimaTask.DELETE_ERROR) {
-            msg = "An error occurred while deleting existing cohorts";
-        } else if (downloadStatus == DownloadMuzimaTask.SAVE_ERROR) {
-            msg = "An error occurred while saving the downloaded cohorts";
-        } else if (downloadStatus == DownloadMuzimaTask.CANCELLED) {
-            msg = "Cohort download task has been cancelled";
-        } else if (downloadStatus == DownloadMuzimaTask.CONNECTION_ERROR) {
-            msg = "Connection error occurred while downloading cohorts";
-        } else if (downloadStatus == DownloadMuzimaTask.PARSING_ERROR) {
-            msg = "Parse exception has been thrown while fetching data";
-        }else if (downloadStatus == DownloadMuzimaTask.REPLACE_ERROR) {
-            msg = "An error occurred while replace existing cohort data";
-        }
-        Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-    }
 }

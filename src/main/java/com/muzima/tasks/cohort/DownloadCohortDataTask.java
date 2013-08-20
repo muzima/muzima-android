@@ -19,7 +19,7 @@ public class DownloadCohortDataTask extends DownloadMuzimaTask {
 
     @Override
     protected Integer[] performTask(String[]... values){
-        Integer[] result = new Integer[2];
+        Integer[] result = new Integer[3];
         CohortController cohortController = applicationContext.getCohortController();
         PatientController patientController = applicationContext.getPatientController();
         int patientCount = 0;
@@ -39,7 +39,8 @@ public class DownloadCohortDataTask extends DownloadMuzimaTask {
             Log.i(TAG, "Patients downloaded " + patientCount);
 
             result[0] = SUCCESS;
-            result[1] = patientCount;
+            result[1] = cohortDataList.size();
+            result[2] = patientCount;
         } catch (CohortController.CohortDownloadException e) {
             Log.e(TAG, "Exception thrown while downloading cohort data");
             result[0] =  DOWNLOAD_ERROR;

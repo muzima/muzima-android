@@ -3,6 +3,7 @@ package com.muzima.view.cohort;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.muzima.adapters.forms.NewFormsAdapter;
 import com.muzima.controller.CohortController;
 import com.muzima.listeners.DownloadListener;
 import com.muzima.search.api.util.StringUtil;
+import com.muzima.tasks.DownloadMuzimaTask;
 import com.muzima.tasks.cohort.DownloadCohortDataTask;
 import com.muzima.tasks.forms.DownloadFormTemplateTask;
 import com.muzima.utils.NetworkUtils;
@@ -30,10 +32,11 @@ import static android.os.AsyncTask.Status.PENDING;
 import static android.os.AsyncTask.Status.RUNNING;
 
 public class AllCohortsListFragment extends CohortListFragment implements DownloadListener<Integer[]>{
-
+    private static final String TAG = "AllCohortsListFragment";
     private ActionMode actionMode;
     private boolean actionModeActive = false;
     private DownloadCohortDataTask cohortDataDownloadTask;
+    private OnCohortDataDownloadListener cohortDataDownloadListener;
 
     public static AllCohortsListFragment newInstance(CohortController cohortController) {
         AllCohortsListFragment f = new AllCohortsListFragment();
@@ -76,7 +79,13 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
 
     @Override
     public void downloadTaskComplete(Integer[] result) {
+        if(cohortDataDownloadListener != null){
+            cohortDataDownloadListener.onCohortDataDownloadComplete(result);
+        }
+    }
 
+    public void setCohortDataDownloadListener(OnCohortDataDownloadListener cohortDataDownloadListener) {
+        this.cohortDataDownloadListener = cohortDataDownloadListener;
     }
 
     public final class AllCohortsActionModeCallback implements ActionMode.Callback {
@@ -135,6 +144,40 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
         List<String> selectedCohorts = ((AllCohortsAdapter) listAdapter).getSelectedCohorts();
         String[] selectedCohortsUuids = new String[selectedCohorts.size()];
         return selectedCohorts.toArray(selectedCohortsUuids);
+    }
+
+    @Override
+    public void formDownloadComplete(Integer[] status) {
+        Integer downloadStatus = status[0];
+        String msg = "Download Complete with status " + downloadStatus;
+        Log.i(TAG, msg);
+        if (downloadStatus == DownloadMuzimaTask.SUCCESS) {
+            msg = "Downloaded: " + status[1] + " cohorts";
+            if (listAdapter != null) {
+                listAdapter.reloadData();
+            }
+        } else if (downloadStatus == DownloadMuzimaTask.DOWNLOAD_ERROR) {
+            msg = "An error occurred while downloading cohorts";
+        } else if (downloadStatus == DownloadMuzimaTask.AUTHENTICATION_ERROR) {
+            msg = "Authentication error occurred while downloading cohorts";
+        } else if (downloadStatus == DownloadMuzimaTask.DELETE_ERROR) {
+            msg = "An error occurred while deleting existing cohorts";
+        } else if (downloadStatus == DownloadMuzimaTask.SAVE_ERROR) {
+            msg = "An error occurred while saving the downloaded cohorts";
+        } else if (downloadStatus == DownloadMuzimaTask.CANCELLED) {
+            msg = "Cohort download task has been cancelled";
+        } else if (downloadStatus == DownloadMuzimaTask.CONNECTION_ERROR) {
+            msg = "Connection error occurred while downloading cohorts";
+        } else if (downloadStatus == DownloadMuzimaTask.PARSING_ERROR) {
+            msg = "Parse exception has been thrown while fetching data";
+        }else if (downloadStatus == DownloadMuzimaTask.REPLACE_ERROR) {
+            msg = "An error occurred while replace existing cohort data";
+        }
+        Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    public interface OnCohortDataDownloadListener{
+        public void onCohortDataDownloadComplete(Integer[] result);
     }
 
 }

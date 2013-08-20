@@ -30,14 +30,14 @@ public class SyncedCohortsAdapter extends CohortsAdapter{
 
         @Override
         protected List<Cohort> doInBackground(Void... voids) {
-            List<Cohort> allCohorts = null;
+            List<Cohort> syncedCohorts = null;
             try {
-                allCohorts = cohortController.getSyncedCohort();
-                Log.i(TAG, "#Synced Cohorts: " + allCohorts.size());
+                syncedCohorts = cohortController.getSyncedCohort();
+                Log.i(TAG, "#Synced Cohorts: " + syncedCohorts.size());
             } catch (CohortController.CohortFetchException e) {
-                Log.w(TAG, "Exception occurred while fetching local synced cohorts " + e);
+                Log.e(TAG, "Exception occurred while fetching local synced cohorts " + e);
             }
-            return allCohorts;
+            return syncedCohorts;
         }
 
         @Override
