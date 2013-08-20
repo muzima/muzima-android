@@ -38,6 +38,7 @@ public class SyncedCohortsListFragment extends CohortListFragment implements All
         Cohort cohort = (Cohort) listAdapter.getItem(position);
         Intent intent = new Intent(getActivity(), PatientsActivity.class);
         intent.putExtra(PatientsActivity.COHORT_ID, cohort.getUuid());
+        intent.putExtra(PatientsActivity.COHORT_NAME, cohort.getName());
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.push_in_from_right, R.anim.push_out_to_left);
     }

@@ -22,6 +22,7 @@ import com.muzima.view.SettingsActivity;
 
 public class PatientsActivity extends SherlockActivity {
     public static final String COHORT_ID = "cohortId";
+    public static final String COHORT_NAME = "cohortName";
     public static final String QUICK_SEARCH = "quickSearch";
 
     private ListView listView;
@@ -37,6 +38,10 @@ public class PatientsActivity extends SherlockActivity {
         if(intentExtras != null){
             quickSearch = intentExtras.getBoolean(QUICK_SEARCH);
             cohortId = intentExtras.getString(COHORT_ID);
+            String title = intentExtras.getString(COHORT_NAME);
+            if(title!=null){
+                setTitle(title);
+            }
         }
 
         setupActionbar();
