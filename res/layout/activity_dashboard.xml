@@ -75,7 +75,7 @@
 
     <LinearLayout
             style="@style/ClickableSummaryItem"
-            android:onClick="cohortList">
+            android:onClick="patientList">
 
         <LinearLayout style="@style/SummaryItemRow">
 
@@ -116,7 +116,7 @@
 
     <LinearLayout
             style="@style/ClickableSummaryItem"
-            android:onClick="cohortList">
+            android:onClick="formsList">
 
         <LinearLayout style="@style/SummaryItemRow">
 
@@ -157,7 +157,7 @@
 
     <LinearLayout
             style="@style/ClickableSummaryItem"
-            android:onClick="cohortList">
+            android:onClick="noticesList">
 
         <LinearLayout style="@style/SummaryItemRow">
 

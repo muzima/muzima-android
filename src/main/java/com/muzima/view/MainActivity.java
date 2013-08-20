@@ -101,7 +101,7 @@ public class MainActivity extends SherlockActivity implements DownloadListener<I
     /**
      * Called when the user clicks the Clients area or Search Clients Button
      */
-    public void clientList(View view) {
+    public void patientList(View view) {
         Intent intent = new Intent(this, PatientsActivity.class);
         if (view.getId() == R.id.quickSearch) {
             intent.putExtra(PatientsActivity.QUICK_SEARCH, "true");
