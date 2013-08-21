@@ -37,6 +37,11 @@ public class FormController {
         }
     }
 
+    public int getTotalFormCount() throws FormFetchException {
+        //TODO need to be done in form service
+        return getAllForms().size();
+    }
+
     public Form getFormByUuid(String formId) throws FormFetchException {
         try {
             return formService.getFormByUuid(formId);
@@ -112,6 +117,11 @@ public class FormController {
             throw new FormFetchException(e);
         }
         return result;
+    }
+
+    public int getDownloadedFormsCount() throws FormFetchException {
+        //TODO need to be done in form service
+        return getAllDownloadedForms().size();
     }
 
     public List<Form> downloadAllForms() throws FormFetchException {

@@ -60,6 +60,17 @@ public class FormControllerTest {
     }
 
     @Test
+    public void getTotalFormCount_shouldReturnTotalAvailableForms() throws IOException, ParseException, FormFetchException {
+        List<Form> forms = new ArrayList<Form>();
+        forms.add(new Form());
+        forms.add(new Form());
+
+        when(formService.getAllForms()).thenReturn(forms);
+
+        assertThat(formController.getTotalFormCount(), is(2));
+    }
+
+    @Test
     public void getAllFormByTags_shouldFetchAllFormsWithGivenTags() throws IOException, ParseException, FormFetchException {
         List<Form> forms = buildForms();
         when(formService.getAllForms()).thenReturn(forms);

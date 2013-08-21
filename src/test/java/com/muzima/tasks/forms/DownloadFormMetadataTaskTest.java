@@ -10,8 +10,10 @@ import com.muzima.testSupport.CustomTestRunner;
 
 import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(CustomTestRunner.class)
+@Ignore
 public class DownloadFormMetadataTaskTest {
     private DownloadFormMetadataTask downloadFormMetadataTask;
     private DownloadListener<Integer[]> taskListener;

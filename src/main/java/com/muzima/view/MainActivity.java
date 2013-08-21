@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
+import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
 import com.muzima.tasks.cohort.DownloadCohortTask;
 import com.muzima.view.cohort.CohortActivity;
@@ -35,7 +37,6 @@ public class MainActivity extends SherlockActivity {
         setContentView(mMainView);
 
         setupActionbar();
-        executeBackgroundTask();
     }
 
     @Override
@@ -67,15 +68,31 @@ public class MainActivity extends SherlockActivity {
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        executeBackgroundTask();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onStop() {
         if(mBackgroundQueryTask != null){
             mBackgroundQueryTask.cancel(true);
         }
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
         super.onDestroy();
     }
 
@@ -133,14 +150,19 @@ public class MainActivity extends SherlockActivity {
             HomeActivityMetadata homeActivityMetadata = new HomeActivityMetadata();
             CohortController cohortController = muzimaApplication.getCohortController();
             PatientController patientController = muzimaApplication.getPatientController();
+            FormController formController = muzimaApplication.getFormController();
             try {
                 homeActivityMetadata.totalCohorts = cohortController.getTotalCohortsCount();
                 homeActivityMetadata.syncedCohorts = cohortController.getSyncedCohortsCount();
                 homeActivityMetadata.syncedPatients = patientController.getTotalPatientsCount();
+                homeActivityMetadata.totalForms = formController.getTotalFormCount();
+                homeActivityMetadata.downloadedForms = formController.getDownloadedFormsCount();
             } catch (CohortController.CohortFetchException e) {
                 Log.w(TAG, "CohortFetchException occurred while fetching metadata in MainActivityBackgroundTask");
             } catch (PatientController.PatientLoadException e) {
                 Log.w(TAG, "PatientLoadException occurred while fetching metadata in MainActivityBackgroundTask");
+            } catch (FormController.FormFetchException e) {
+                Log.w(TAG, "FormFetchException occurred while fetching metadata in MainActivityBackgroundTask");
             }
             return homeActivityMetadata;
         }
@@ -149,12 +171,14 @@ public class MainActivity extends SherlockActivity {
         protected void onPostExecute(HomeActivityMetadata homeActivityMetadata) {
             TextView cohortsCountView = (TextView) mMainView.findViewById(R.id.cohortsCount);
             cohortsCountView.setText(homeActivityMetadata.syncedCohorts + "/" + homeActivityMetadata.totalCohorts);
-
             TextView cohortsDescriptionView = (TextView) mMainView.findViewById(R.id.cohortDescription);
             cohortsDescriptionView.setText("## Total Patients, " + homeActivityMetadata.syncedPatients + " Synced Patients");
 
             TextView patientsCountView = (TextView) mMainView.findViewById(R.id.patientsCount);
             patientsCountView.setText(homeActivityMetadata.syncedPatients + "/##");
+
+            TextView formsCount = (TextView) mMainView.findViewById(R.id.formsCount);
+            formsCount.setText(homeActivityMetadata.downloadedForms + "/" + homeActivityMetadata.totalForms);
         }
     }
 
@@ -168,6 +192,7 @@ public class MainActivity extends SherlockActivity {
         int incompleteForms;
         int completeAndUnsyncedForms;
         int downloadedForms;
+        int totalForms;
         int totalNotices;
         int unreadNotices;
         int recommendations;
