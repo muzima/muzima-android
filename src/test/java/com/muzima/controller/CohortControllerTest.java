@@ -175,12 +175,25 @@ public class CohortControllerTest {
     }
 
     @Test
-    @Ignore
-    public void getSyncedCohorts_shouldReturnTheCohortsReturned() throws CohortController.CohortReplaceException, IOException, ParseException, CohortController.CohortFetchException {
+    public void getTotalCohortsCount_shouldReturnTotalNumberOfCohorts() throws IOException, ParseException, CohortController.CohortFetchException {
         List<Cohort> cohorts = new ArrayList<Cohort>();
-        //TODO should mock getSyncedCohorts
+        cohorts.add(new Cohort());
+        cohorts.add(new Cohort());
+
         when(cohortService.getAllCohorts()).thenReturn(cohorts);
 
-        assertThat(cohortController.getSyncedCohort(),is(cohorts));
+        assertThat(cohortController.getTotalCohortsCount(), is(2));
+    }
+
+    @Test
+    @Ignore
+    public void getSyncedCohortsCount_shouldReturnTotalNumberOfSyncedCohorts() throws IOException, ParseException, CohortController.CohortFetchException {
+        //TODO write after adding synced flag to cohort in muzima api
+    }
+
+    @Test
+    @Ignore
+    public void getSyncedCohorts_shouldReturnTheCohortsReturned() throws CohortController.CohortReplaceException, IOException, ParseException, CohortController.CohortFetchException {
+        //TODO write after adding synced flag to cohort in muzima api
     }
 }

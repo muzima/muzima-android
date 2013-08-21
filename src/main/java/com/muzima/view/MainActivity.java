@@ -1,12 +1,11 @@
 package com.muzima.view;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
@@ -14,37 +13,29 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.listeners.DownloadListener;
-import com.muzima.search.api.util.StringUtil;
-import com.muzima.tasks.DownloadMuzimaTask;
+import com.muzima.api.model.Cohort;
+import com.muzima.controller.CohortController;
+import com.muzima.controller.PatientController;
 import com.muzima.tasks.cohort.DownloadCohortTask;
-import com.muzima.utils.NetworkUtils;
 import com.muzima.view.cohort.CohortActivity;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.patients.PatientsActivity;
 
-import static android.os.AsyncTask.Status.PENDING;
-import static android.os.AsyncTask.Status.RUNNING;
+import java.util.List;
 
-public class MainActivity extends SherlockActivity implements DownloadListener<Integer[]> {
+public class MainActivity extends SherlockActivity {
     private static final String TAG = "MainActivity";
-    private DownloadCohortTask downloadCohortTask;
+    private View mMainView;
+    private BackgroundQueryTask mBackgroundQueryTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
-//		getOverflowMenu();
+        mMainView = getLayoutInflater().inflate(R.layout.activity_dashboard,null);
+        setContentView(mMainView);
 
-        ActionBar actionBar = getSupportActionBar();
-        // actionBar.hide();
-        actionBar.setDisplayShowTitleEnabled(true);
-        // actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        // View cView
-        // =getLayoutInflater().inflate(R.layout.actionbar_dashboard,null);
-        // actionBar.setCustomView(cView);
+        setupActionbar();
+        executeBackgroundTask();
     }
 
     @Override
@@ -77,14 +68,13 @@ public class MainActivity extends SherlockActivity implements DownloadListener<I
 
     @Override
     protected void onPause() {
-        //overridePendingTransition(R.anim.fade_in, R.anim.push_out_to_left);
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        if (downloadCohortTask != null) {
-            downloadCohortTask.cancel(false);
+        if(mBackgroundQueryTask != null){
+            mBackgroundQueryTask.cancel(true);
         }
         super.onDestroy();
     }
@@ -135,48 +125,62 @@ public class MainActivity extends SherlockActivity implements DownloadListener<I
         startActivity(intent);
     }
 
-    /**
-     * Called when the user clicks the Sync Button
-     */
-    public void sync(View view) {
-        if (!NetworkUtils.isConnectedToNetwork(this)) {
-            Toast.makeText(this, "No connection found, please connect your device and try again", Toast.LENGTH_SHORT).show();
-            return;
+    public class BackgroundQueryTask extends AsyncTask<Void, Void, HomeActivityMetadata> {
+
+        @Override
+        protected HomeActivityMetadata doInBackground(Void... voids) {
+            MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
+            HomeActivityMetadata homeActivityMetadata = new HomeActivityMetadata();
+            CohortController cohortController = muzimaApplication.getCohortController();
+            PatientController patientController = muzimaApplication.getPatientController();
+            try {
+                homeActivityMetadata.totalCohorts = cohortController.getTotalCohortsCount();
+                homeActivityMetadata.syncedCohorts = cohortController.getSyncedCohortsCount();
+                homeActivityMetadata.syncedPatients = patientController.getTotalPatientsCount();
+            } catch (CohortController.CohortFetchException e) {
+                Log.w(TAG, "CohortFetchException occurred while fetching metadata in MainActivityBackgroundTask");
+            } catch (PatientController.PatientLoadException e) {
+                Log.w(TAG, "PatientLoadException occurred while fetching metadata in MainActivityBackgroundTask");
+            }
+            return homeActivityMetadata;
         }
 
-        if (downloadCohortTask != null &&
-                (downloadCohortTask.getStatus() == PENDING || downloadCohortTask.getStatus() == RUNNING)) {
-            Toast.makeText(this, "Already fetching forms, ignored the request", Toast.LENGTH_SHORT).show();
-            return;
+        @Override
+        protected void onPostExecute(HomeActivityMetadata homeActivityMetadata) {
+            TextView cohortsCountView = (TextView) mMainView.findViewById(R.id.cohortsCount);
+            cohortsCountView.setText(homeActivityMetadata.syncedCohorts + "/" + homeActivityMetadata.totalCohorts);
+
+            TextView cohortsDescriptionView = (TextView) mMainView.findViewById(R.id.cohortDescription);
+            cohortsDescriptionView.setText("## Total Patients, " + homeActivityMetadata.syncedPatients + " Synced Patients");
+
+            TextView patientsCountView = (TextView) mMainView.findViewById(R.id.patientsCount);
+            patientsCountView.setText(homeActivityMetadata.syncedPatients + "/##");
         }
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        downloadCohortTask = new DownloadCohortTask((MuzimaApplication) getApplicationContext());
-        downloadCohortTask.addDownloadListener(this);
-        String usernameKey = getResources().getString(R.string.preference_username);
-        String passwordKey = getResources().getString(R.string.preference_password);
-        String serverKey = getResources().getString(R.string.preference_server);
-        String[] credentials = new String[]{settings.getString(usernameKey, StringUtil.EMPTY),
-                settings.getString(passwordKey, StringUtil.EMPTY),
-                settings.getString(serverKey, StringUtil.EMPTY)};
-        downloadCohortTask.execute(credentials);
     }
 
-    @Override
-    public void downloadTaskComplete(Integer[] result) {
-        Integer downloadStatus = result[0];
-        String msg = "Download Complete with status " + downloadStatus;
-        Log.i(TAG, msg);
-        if (downloadStatus == DownloadMuzimaTask.SUCCESS) {
-            msg = "Cohorts downloaded: " + result[1];
-        } else if (downloadStatus == DownloadMuzimaTask.DOWNLOAD_ERROR) {
-            msg = "An error occurred while downloading forms";
-        } else if (downloadStatus == DownloadMuzimaTask.AUTHENTICATION_ERROR) {
-            msg = "Authentication error occurred while downloading forms";
-        } else if (downloadStatus == DownloadMuzimaTask.CONNECTION_ERROR) {
-            msg = "Connection error occurred while downloading forms";
-        } else if (downloadStatus == DownloadMuzimaTask.PARSING_ERROR) {
-            msg = "Parse exception has been thrown while fetching data";
-        }
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+    private static class HomeActivityMetadata{
+        int totalCohorts;
+        int syncedCohorts;
+        int totalPatients;
+        int syncedPatients;
+        int overdueReminders;
+        int upcomingReminders;
+        int incompleteForms;
+        int completeAndUnsyncedForms;
+        int downloadedForms;
+        int totalNotices;
+        int unreadNotices;
+        int recommendations;
+    }
+
+    private void setupActionbar() {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+    }
+    private void executeBackgroundTask() {
+        mBackgroundQueryTask = new BackgroundQueryTask();
+        mBackgroundQueryTask.execute();
     }
 }

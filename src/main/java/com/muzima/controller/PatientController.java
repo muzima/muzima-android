@@ -58,6 +58,11 @@ public class PatientController {
         }
     }
 
+    //TODO this need to be implemented in patient service
+    public int getTotalPatientsCount() throws PatientLoadException {
+        return getAllPatients().size();
+    }
+
     public static class PatientReplaceException extends Throwable {
         public PatientReplaceException(Throwable throwable) {
             super(throwable);

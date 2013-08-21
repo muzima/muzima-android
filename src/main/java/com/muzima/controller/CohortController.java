@@ -32,6 +32,11 @@ public class CohortController {
         }
     }
 
+    public int getTotalCohortsCount() throws CohortFetchException {
+        //TODO count method should be added to cohortService
+        return getAllCohorts().size();
+    }
+
     public List<Cohort> downloadAllCohorts() throws CohortDownloadException {
         try {
             return cohortService.downloadCohortsByName(StringUtil.EMPTY);
@@ -105,6 +110,10 @@ public class CohortController {
         } catch (ParseException e) {
             throw new CohortFetchException(e);
         }
+    }
+
+    public int getSyncedCohortsCount() throws CohortFetchException {
+        return getSyncedCohort().size();
     }
 
     public static class CohortDownloadException extends Throwable {

@@ -53,6 +53,17 @@ public class PatientControllerTest {
     }
 
     @Test
+    public void getTotalPatientsCount_shouldReturnPatientsCount() throws IOException, ParseException, PatientController.PatientLoadException {
+        List<Patient> patients = new ArrayList<Patient>();
+        patients.add(new Patient());
+        patients.add(new Patient());
+
+        when(patientService.getAllPatients()).thenReturn(patients);
+
+        assertThat(patientController.getTotalPatientsCount(), is(2));
+    }
+
+    @Test
     public void replacePatients_shouldReplaceAllExistingPatientsAndAddNewPatients() throws IOException, PatientController.PatientReplaceException {
         List<Patient> patients = buildPatients();
 
