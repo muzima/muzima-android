@@ -26,4 +26,14 @@
                 android:inputType="textPassword"/>
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/preference_category_cohorts">
+        <EditTextPreference
+                android:dialogMessage="@string/preference_cohort_desc"
+                android:dialogTitle="@string/preference_cohort_title"
+                android:key="@string/preference_cohort_prefix"
+                android:negativeButtonText="@android:string/cancel"
+                android:positiveButtonText="@android:string/ok"
+                android:title="@string/preference_cohort_title" />
+    </PreferenceCategory>
+
 </PreferenceScreen>

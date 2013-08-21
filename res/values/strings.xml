@@ -93,6 +93,8 @@
     <string name="preference_password">passwordPreference</string>
     <string name="preference_cohort_title">Cohort</string>
     <string name="preference_cohort_desc">Select cohort to work with</string>
-    <string name="preference_cohort">cohortPreference</string>
     <string name="preference_category_openmrs">OpenMRS Settings</string>
+    <string name="preference_category_cohorts">Cohort Settings</string>
+    <string name="preference_cohorts_prefix_desc">Enter cohort prefixes</string>
+    <string name="preference_cohort_prefix">cohortPrefixesPreference</string>
 </resources>

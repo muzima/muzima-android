@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.PreferenceActivity;
-import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -16,10 +15,12 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     private String serverPreferenceKey;
     private String usernamePreferenceKey;
     private String passwordPreferenceKey;
+    private String cohortPrefixPreferenceKey;
 
     private EditTextPreference serverPreference;
     private EditTextPreference usernamePreference;
     private EditTextPreference passwordPreference;
+    private EditTextPreference cohortPrefixPreference;
 
 
     @Override
@@ -40,6 +41,10 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         if (passwordPreference.getText() != null) {
             passwordPreference.setSummary(passwordPreference.getText().replaceAll(".", "*"));
         }
+
+        cohortPrefixPreferenceKey = getResources().getString(R.string.preference_cohort_prefix);
+        cohortPrefixPreference = (EditTextPreference) getPreferenceScreen().findPreference(cohortPrefixPreferenceKey);
+        cohortPrefixPreference.setSummary(cohortPrefixPreference.getText());
 
         // Show the Up button in the action bar.
         setupActionBar();
@@ -65,6 +70,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             usernamePreference.setSummary(value);
         } else if (StringUtil.equals(key, passwordPreferenceKey)) {
             passwordPreference.setSummary(value.replaceAll(".", "*"));
+        } else if(StringUtil.equals(key, cohortPrefixPreferenceKey)){
+            cohortPrefixPreference.setSummary(value);
         }
     }
 
