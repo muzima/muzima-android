@@ -2,10 +2,7 @@ package com.muzima.controller;
 
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
-import com.muzima.api.model.CohortDefinition;
 import com.muzima.api.model.CohortMember;
-import com.muzima.api.model.Form;
-import com.muzima.api.model.FormTemplate;
 import com.muzima.api.service.CohortService;
 import com.muzima.search.api.util.StringUtil;
 
@@ -22,7 +19,7 @@ public class CohortController {
         this.cohortService = cohortService;
     }
 
-    public List<Cohort> getAllCohorts() throws CohortFetchException{
+    public List<Cohort> getAllCohorts() throws CohortFetchException {
         try {
             return cohortService.getAllCohorts();
         } catch (IOException e) {
@@ -59,6 +56,48 @@ public class CohortController {
         } catch (IOException e) {
             throw new CohortDownloadException(e);
         }
+    }
+
+    public List<Cohort> downloadCohortsByPrefix(List<String> cohortPrefixes) throws CohortFetchException {
+        List<Cohort> filteredCohorts = new ArrayList<Cohort>();
+        try {
+            for (String cohortPrefix : cohortPrefixes) {
+                List<Cohort> cohorts = cohortService.downloadCohortsByName(cohortPrefix);
+                List<Cohort> filteredCohortsForPrefix = filterCohortsByPrefix(cohorts, cohortPrefix);
+                addUniqueCohorts(filteredCohorts, filteredCohortsForPrefix);
+//                filteredCohorts.addAll(filteredCohortsForPrefix);
+            }
+        } catch (IOException e) {
+            throw new CohortFetchException(e);
+        }
+        return filteredCohorts;
+    }
+
+    private void addUniqueCohorts(List<Cohort> filteredCohorts, List<Cohort> filteredCohortsForPrefix) {
+        for (Cohort fileteredCohortForPrefix : filteredCohortsForPrefix) {
+            boolean found = false;
+            for (Cohort filteredCohort : filteredCohorts) {
+                if (fileteredCohortForPrefix.getUuid().equals(filteredCohort.getUuid())) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                filteredCohorts.add(fileteredCohortForPrefix);
+            }
+        }
+    }
+
+    private List<Cohort> filterCohortsByPrefix(List<Cohort> cohorts, String cohortPrefix) {
+        ArrayList<Cohort> filteredCohortList = new ArrayList<Cohort>();
+        for (Cohort cohort : cohorts) {
+            String lowerCaseCohortName = cohort.getName().toLowerCase();
+            String lowerCasePrefix = cohortPrefix.toLowerCase();
+            if (lowerCaseCohortName.startsWith(lowerCasePrefix)) {
+                filteredCohortList.add(cohort);
+            }
+        }
+        return filteredCohortList;
     }
 
     public void saveAllCohorts(List<Cohort> cohorts) throws CohortSaveException {
@@ -100,7 +139,7 @@ public class CohortController {
             List<Cohort> cohorts = cohortService.getAllCohorts();
             List<Cohort> syncedCohorts = new ArrayList<Cohort>();
             for (Cohort cohort : cohorts) {
-                if(!cohortService.getCohortMembers(cohort.getUuid()).isEmpty()){
+                if (!cohortService.getCohortMembers(cohort.getUuid()).isEmpty()) {
                     syncedCohorts.add(cohort);
                 }
             }

@@ -21,6 +21,7 @@ import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.junit.matchers.JUnitMatchers.hasItem;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
@@ -102,6 +103,50 @@ public class CohortControllerTest {
         assertThat(allCohortData.size(), is(2));
         assertThat(allCohortData, hasItem(cohortData1));
         assertThat(allCohortData, hasItem(cohortData2));
+    }
+
+    @Test
+    public void downloadCohortsByPrefix_shouldDownloadAllCohortsForTheGivenPrefixes() throws IOException, CohortController.CohortFetchException {
+        List<String> cohortPrefixes = new ArrayList<String>(){{
+            add("Age");
+            add("age");
+            add("Encounter");
+        }};
+
+        Cohort cohort1 = new Cohort() {{
+            setUuid("uuid1");
+            setName("Age between 20 and 30");
+        }};
+        Cohort cohort2 = new Cohort() {{
+            setUuid("uuid2");
+            setName("Patients with age over 65");
+        }};
+        Cohort cohort3 = new Cohort() {{
+            setUuid("uuid3");
+            setName("Encounter 1");
+        }};
+        Cohort cohort4 = new Cohort() {{
+            setUuid("uuid4");
+            setName("Encounter 2");
+        }};
+
+
+        ArrayList<Cohort> agePrefixedCohortList = new ArrayList<Cohort>();
+        agePrefixedCohortList.add(cohort1);
+        agePrefixedCohortList.add(cohort2);
+
+        ArrayList<Cohort> encounterPerfixedCohortList = new ArrayList<Cohort>();
+        encounterPerfixedCohortList.add(cohort3);
+        encounterPerfixedCohortList.add(cohort4);
+
+        when(cohortService.downloadCohortsByName(cohortPrefixes.get(0))).thenReturn(agePrefixedCohortList);
+        when(cohortService.downloadCohortsByName(cohortPrefixes.get(1))).thenReturn(agePrefixedCohortList);
+        when(cohortService.downloadCohortsByName(cohortPrefixes.get(2))).thenReturn(encounterPerfixedCohortList);
+
+        assertThat(cohortController.downloadCohortsByPrefix(cohortPrefixes).size(), is(3));
+        assertTrue(cohortController.downloadCohortsByPrefix(cohortPrefixes).contains(cohort1));
+        assertTrue(cohortController.downloadCohortsByPrefix(cohortPrefixes).contains(cohort3));
+        assertTrue(cohortController.downloadCohortsByPrefix(cohortPrefixes).contains(cohort4));
     }
 
     @Test
