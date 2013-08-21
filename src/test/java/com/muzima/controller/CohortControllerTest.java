@@ -113,10 +113,15 @@ public class CohortControllerTest {
             add("Encounter");
         }};
 
-        Cohort cohort1 = new Cohort() {{
+        Cohort cohort11 = new Cohort() {{
             setUuid("uuid1");
             setName("Age between 20 and 30");
         }};
+        Cohort cohort12 = new Cohort() {{
+            setUuid("uuid1");
+            setName("Age between 20 and 30");
+        }};
+
         Cohort cohort2 = new Cohort() {{
             setUuid("uuid2");
             setName("Patients with age over 65");
@@ -131,20 +136,24 @@ public class CohortControllerTest {
         }};
 
 
-        ArrayList<Cohort> agePrefixedCohortList = new ArrayList<Cohort>();
-        agePrefixedCohortList.add(cohort1);
-        agePrefixedCohortList.add(cohort2);
+        ArrayList<Cohort> agePrefixedCohortList1 = new ArrayList<Cohort>();
+        agePrefixedCohortList1.add(cohort11);
+        agePrefixedCohortList1.add(cohort2);
+
+        ArrayList<Cohort> agePrefixedCohortList2 = new ArrayList<Cohort>();
+        agePrefixedCohortList2.add(cohort12);
+        agePrefixedCohortList2.add(cohort2);
 
         ArrayList<Cohort> encounterPerfixedCohortList = new ArrayList<Cohort>();
         encounterPerfixedCohortList.add(cohort3);
         encounterPerfixedCohortList.add(cohort4);
 
-        when(cohortService.downloadCohortsByName(cohortPrefixes.get(0))).thenReturn(agePrefixedCohortList);
-        when(cohortService.downloadCohortsByName(cohortPrefixes.get(1))).thenReturn(agePrefixedCohortList);
+        when(cohortService.downloadCohortsByName(cohortPrefixes.get(0))).thenReturn(agePrefixedCohortList1);
+        when(cohortService.downloadCohortsByName(cohortPrefixes.get(1))).thenReturn(agePrefixedCohortList2);
         when(cohortService.downloadCohortsByName(cohortPrefixes.get(2))).thenReturn(encounterPerfixedCohortList);
 
         assertThat(cohortController.downloadCohortsByPrefix(cohortPrefixes).size(), is(3));
-        assertTrue(cohortController.downloadCohortsByPrefix(cohortPrefixes).contains(cohort1));
+        assertTrue(cohortController.downloadCohortsByPrefix(cohortPrefixes).contains(cohort11));
         assertTrue(cohortController.downloadCohortsByPrefix(cohortPrefixes).contains(cohort3));
         assertTrue(cohortController.downloadCohortsByPrefix(cohortPrefixes).contains(cohort4));
     }
