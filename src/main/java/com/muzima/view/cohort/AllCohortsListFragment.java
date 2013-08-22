@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,17 +17,14 @@ import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.cohort.AllCohortsAdapter;
-import com.muzima.adapters.forms.NewFormsAdapter;
 import com.muzima.controller.CohortController;
 import com.muzima.listeners.DownloadListener;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.tasks.DownloadMuzimaTask;
 import com.muzima.tasks.cohort.DownloadCohortDataTask;
-import com.muzima.tasks.forms.DownloadFormTemplateTask;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
-import com.muzima.view.forms.NewFormsListFragment;
 
 import java.util.Date;
 import java.util.List;
@@ -46,6 +42,8 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
     private DownloadCohortDataTask cohortDataDownloadTask;
     private OnCohortDataDownloadListener cohortDataDownloadListener;
     private TextView syncText;
+    private TextView downloadProgressBar;
+    public TextView syncProgressBar;
 
     public static AllCohortsListFragment newInstance(CohortController cohortController) {
         AllCohortsListFragment f = new AllCohortsListFragment();
@@ -68,6 +66,8 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
     protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
         View view = inflater.inflate(R.layout.layout_synced_list, container, false);
         syncText = (TextView) view.findViewById(R.id.sync_text);
+        downloadProgressBar = (TextView) view.findViewById(R.id.download_progress_bar);
+        syncProgressBar = (TextView) view.findViewById(R.id.sync_progress_bar);
         updateSyncText();
         return view;
     }
@@ -101,6 +101,8 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
 
     @Override
     public void formDownloadComplete(Integer[] status) {
+        syncProgressBar.setVisibility(View.GONE);
+        syncProgressBar.invalidate();
         if(status[0] == DownloadMuzimaTask.SUCCESS){
             updateSyncText();
         }
@@ -109,6 +111,8 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
 
     @Override
     public void downloadTaskComplete(Integer[] result) {
+        downloadProgressBar.setVisibility(View.GONE);
+        downloadProgressBar.invalidate();
         if(cohortDataDownloadListener != null){
             cohortDataDownloadListener.onCohortDataDownloadComplete(result);
         }
@@ -154,7 +158,9 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
                     String[] credentials = new String[]{settings.getString(usernameKey, StringUtil.EMPTY),
                             settings.getString(passwordKey, StringUtil.EMPTY),
                             settings.getString(serverKey, StringUtil.EMPTY)};
+                    downloadProgressBar.setVisibility(View.VISIBLE);
                     cohortDataDownloadTask.execute(credentials, getSelectedCohortsArray());
+
                     if (AllCohortsListFragment.this.actionMode != null) {
                         AllCohortsListFragment.this.actionMode.finish();
                     }

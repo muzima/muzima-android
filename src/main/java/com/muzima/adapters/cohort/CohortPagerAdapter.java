@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import android.view.View;
 import com.muzima.MuzimaApplication;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.controller.CohortController;
@@ -38,5 +39,9 @@ public class CohortPagerAdapter extends MuzimaPagerAdapter implements DownloadLi
 
         pagers[TAB_SYNCED] = new PagerView("Synced", syncedCohortsListFragment);
         pagers[TAB_All] = new PagerView("All", allCohortsListFragment);
+    }
+
+    public void showSyncProgressBar(){
+        ((AllCohortsListFragment)pagers[TAB_All].fragment).syncProgressBar.setVisibility(View.VISIBLE);
     }
 }

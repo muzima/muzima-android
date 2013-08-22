@@ -106,6 +106,7 @@ public class FormsActivity extends SherlockFragmentActivity{
                 String[] credentials = new String[]{settings.getString(usernameKey, StringUtil.EMPTY),
                         settings.getString(passwordKey, StringUtil.EMPTY),
                         settings.getString(serverKey, StringUtil.EMPTY)};
+                formsPagerAdapter.showSyncProgressBar();
                 formDownloadTask.execute(credentials);
                 return true;
             case R.id.menu_client_add:

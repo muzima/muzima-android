@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import android.view.View;
 import com.muzima.MuzimaApplication;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.controller.FormController;
@@ -56,5 +57,9 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements DownloadLis
         pagers[TAB_COMPLETE] = new PagerView("Complete", completeFormsListFragment);
         pagers[TAB_INCOMPLETE] = new PagerView("Incomplete", incompleteFormsListFragment);
         pagers[TAB_SYNCED] = new PagerView("Synced", syncedFormsListFragment);
+    }
+
+    public void showSyncProgressBar() {
+        ((NewFormsListFragment)pagers[TAB_All].fragment).syncProgressBar.setVisibility(View.VISIBLE);
     }
 }
