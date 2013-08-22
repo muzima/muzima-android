@@ -9,11 +9,14 @@ import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Form;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
+import com.muzima.search.api.util.StringUtil;
 import com.muzima.tasks.DownloadMuzimaTask;
 import com.muzima.utils.Constants;
 import com.muzima.view.cohort.AllCohortsListFragment;
 import com.muzima.view.forms.NewFormsListFragment;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -29,8 +32,15 @@ public class DownloadCohortTask extends DownloadMuzimaTask {
         Integer[] result = new Integer[2];
         CohortController cohortController = applicationContext.getCohortController();
 
+        List<String> cohortPrefixes = getCohortPrefixes(values);
+
         try {
-            List<Cohort> cohorts = cohortController.downloadAllCohorts();
+            List<Cohort> cohorts;
+            if (cohortPrefixes == null) {
+                cohorts = cohortController.downloadAllCohorts();
+            } else {
+                cohorts = cohortController.downloadCohortsByPrefix(cohortPrefixes);
+            }
             Log.i(TAG, "Cohort download successful, " + isCancelled());
             if (checkIfTaskIsCancelled(result)) return result;
 
@@ -56,6 +66,13 @@ public class DownloadCohortTask extends DownloadMuzimaTask {
             return result;
         }
         return result;
+    }
+
+    private List<String> getCohortPrefixes(String[][] values) {
+        if(values.length > 1){
+            return Arrays.asList(values[1]);
+        }
+        return null;
     }
 
     @Override

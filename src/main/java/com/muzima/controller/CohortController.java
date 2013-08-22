@@ -58,7 +58,7 @@ public class CohortController {
         }
     }
 
-    public List<Cohort> downloadCohortsByPrefix(List<String> cohortPrefixes) throws CohortFetchException {
+    public List<Cohort> downloadCohortsByPrefix(List<String> cohortPrefixes) throws CohortDownloadException {
         List<Cohort> filteredCohorts = new ArrayList<Cohort>();
         try {
             for (String cohortPrefix : cohortPrefixes) {
@@ -68,7 +68,7 @@ public class CohortController {
 //                filteredCohorts.addAll(filteredCohortsForPrefix);
             }
         } catch (IOException e) {
-            throw new CohortFetchException(e);
+            throw new CohortDownloadException(e);
         }
         return filteredCohorts;
     }

@@ -69,10 +69,18 @@ public class CohortActivity extends SherlockFragmentActivity{
                 String usernameKey = getResources().getString(R.string.preference_username);
                 String passwordKey = getResources().getString(R.string.preference_password);
                 String serverKey = getResources().getString(R.string.preference_server);
+                String cohortPrefixKey = getResources().getString(R.string.preference_cohort_prefix);
                 String[] credentials = new String[]{settings.getString(usernameKey, StringUtil.EMPTY),
                         settings.getString(passwordKey, StringUtil.EMPTY),
                         settings.getString(serverKey, StringUtil.EMPTY)};
-                cohortDownloadTask.execute(credentials);
+
+                String prefix = settings.getString(cohortPrefixKey, StringUtil.EMPTY);
+                if (StringUtil.EMPTY.equals(prefix)) {
+                    cohortDownloadTask.execute(credentials);
+                } else {
+                    cohortDownloadTask.execute(credentials, new String[]{prefix});
+                }
+
                 return true;
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);

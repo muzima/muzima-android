@@ -106,7 +106,7 @@ public class CohortControllerTest {
     }
 
     @Test
-    public void downloadCohortsByPrefix_shouldDownloadAllCohortsForTheGivenPrefixes() throws IOException, CohortController.CohortFetchException {
+    public void downloadCohortsByPrefix_shouldDownloadAllCohortsForTheGivenPrefixes() throws IOException, CohortController.CohortDownloadException {
         List<String> cohortPrefixes = new ArrayList<String>(){{
             add("Age");
             add("age");
