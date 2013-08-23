@@ -14,16 +14,13 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
-import com.muzima.tasks.cohort.DownloadCohortTask;
 import com.muzima.view.cohort.CohortActivity;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.patients.PatientsActivity;
-
-import java.util.List;
+import com.muzima.view.preferences.SettingsActivity;
 
 public class MainActivity extends SherlockActivity {
     private static final String TAG = "MainActivity";

@@ -1,107 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.muzima"
-    android:versionCode="1"
-    android:versionName="1.0" >
+          package="com.muzima"
+          android:versionCode="1"
+          android:versionName="1.0">
 
     <uses-sdk
-        android:minSdkVersion="11"
-        android:targetSdkVersion="17" />
+            android:minSdkVersion="11"
+            android:targetSdkVersion="17"/>
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher_logo"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name=".MuzimaApplication">
+            android:allowBackup="true"
+            android:icon="@drawable/ic_launcher_logo"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme"
+            android:name=".MuzimaApplication">
         <meta-data
-            android:name="android.app.default_searchable"
-            android:value="com.muzima.view.SearchResultsActivity" />
+                android:name="android.app.default_searchable"
+                android:value="com.muzima.view.SearchResultsActivity"/>
 
         <activity
-            android:name="com.muzima.view.MainActivity"
-            android:label="@string/app_name" >
+                android:name="com.muzima.view.MainActivity"
+                android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
                 android:name="com.muzima.view.cohort.CohortActivity"
                 android:label="@string/title_activity_cohort_list"
-                android:parentActivityName="com.muzima.view.MainActivity" >
+                android:parentActivityName="com.muzima.view.MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.muzima.view.DashboardActivity" />
+                    android:value="com.muzima.view.DashboardActivity"/>
         </activity>
         <activity
-            android:name="com.muzima.view.SearchResultsActivity"
-            android:label="@string/title_activity_search_results"
-            android:parentActivityName="com.muzima.view.ClientListActivity" >
+                android:name="com.muzima.view.SearchResultsActivity"
+                android:label="@string/title_activity_search_results"
+                android:parentActivityName="com.muzima.view.ClientListActivity">
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
+                <action android:name="android.intent.action.SEARCH"/>
             </intent-filter>
 
             <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
+                    android:name="android.app.searchable"
+                    android:resource="@xml/searchable"/>
         </activity>
         <activity
-            android:name="com.muzima.view.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName="com.muzima.view.MainActivity" >
+                android:name=".view.preferences.SettingsActivity"
+                android:theme="@style/PreferencesTheme"
+                android:label="@string/title_activity_settings"
+                android:parentActivityName="com.muzima.view.MainActivity">
         </activity>
         <activity
-            android:name="com.muzima.view.HelpActivity"
-            android:label="@string/title_activity_help"
-            android:parentActivityName="com.muzima.view.MainActivity" >
+                android:name=".view.preferences.CohortPrefActivity"
+                android:theme="@style/PreferencesTheme"
+                android:label="@string/title_activity_cohort_pref"
+                android:parentActivityName="com.muzima.view.preferences.SettingsActivity">
             <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.DashboardActivity" />
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.preferences.SettingsActivity"/>
         </activity>
         <activity
-            android:name="com.muzima.view.LogoutActivity"
-            android:label="@string/title_activity_logout"
-            android:parentActivityName="com.muzima.view.MainActivity" >
+                android:name="com.muzima.view.HelpActivity"
+                android:label="@string/title_activity_help"
+                android:parentActivityName="com.muzima.view.MainActivity">
             <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.DashboardActivity" />
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.DashboardActivity"/>
         </activity>
         <activity
-            android:name="com.muzima.view.RegisterClientActivity"
-            android:label="@string/title_activity_register_client"
-            android:parentActivityName="com.muzima.view.ClientListActivity" >
+                android:name="com.muzima.view.LogoutActivity"
+                android:label="@string/title_activity_logout"
+                android:parentActivityName="com.muzima.view.MainActivity">
             <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.ClientListActivity" />
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.DashboardActivity"/>
         </activity>
         <activity
-            android:name="com.muzima.view.SyncActivity"
-            android:label="@string/title_activity_sync"
-            android:parentActivityName="com.muzima.view.MainActivity" >
+                android:name="com.muzima.view.RegisterClientActivity"
+                android:label="@string/title_activity_register_client"
+                android:parentActivityName="com.muzima.view.ClientListActivity">
             <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.DashboardActivity" />
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.ClientListActivity"/>
         </activity>
         <activity
-            android:name="com.muzima.view.FormListActivity"
-            android:label="@string/title_activity_form_list"
-            android:parentActivityName="com.muzima.view.MainActivity" >
+                android:name="com.muzima.view.SyncActivity"
+                android:label="@string/title_activity_sync"
+                android:parentActivityName="com.muzima.view.MainActivity">
             <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.DashboardActivity" />
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.DashboardActivity"/>
+        </activity>
+        <activity
+                android:name="com.muzima.view.FormListActivity"
+                android:label="@string/title_activity_form_list"
+                android:parentActivityName="com.muzima.view.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.DashboardActivity"/>
         </activity>
         <activity
                 android:name="com.muzima.view.patients.PatientsActivity"
                 android:label="@string/title_activity_patients_list"
-                android:parentActivityName="com.muzima.view.MainActivity" >
+                android:parentActivityName="com.muzima.view.MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.muzima.view.DashboardActivity" />
+                    android:value="com.muzima.view.DashboardActivity"/>
         </activity>
         <activity
                 android:name=".view.forms.FormsActivity"
@@ -109,7 +119,7 @@
                 android:parentActivityName="com.muzima.view.MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.muzima.view.DashboardActivity" />
+                    android:value="com.muzima.view.DashboardActivity"/>
         </activity>
         <activity
                 android:name=".view.forms.FormWebViewActivity"
@@ -117,31 +127,31 @@
                 android:parentActivityName="com.muzima.view.forms.FormsActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.muzima.view.forms.FormsActivity" />
+                    android:value="com.muzima.view.forms.FormsActivity"/>
         </activity>
         <activity
-            android:name="com.muzima.view.NoticeListActivity"
-            android:label="@string/title_activity_notice_list"
-            android:parentActivityName="com.muzima.view.MainActivity" >
+                android:name="com.muzima.view.NoticeListActivity"
+                android:label="@string/title_activity_notice_list"
+                android:parentActivityName="com.muzima.view.MainActivity">
             <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.DashboardActivity" />
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.DashboardActivity"/>
         </activity>
         <activity
-            android:name="com.muzima.view.ClientSummaryActivity"
-            android:label="@string/title_activity_client_summary"
-            android:parentActivityName="com.muzima.view.ClientListActivity" >
+                android:name="com.muzima.view.ClientSummaryActivity"
+                android:label="@string/title_activity_client_summary"
+                android:parentActivityName="com.muzima.view.ClientListActivity">
             <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.ClientListActivity" />
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.ClientListActivity"/>
         </activity>
         <activity
-            android:name="com.muzima.view.ClientObservationsActivity"
-            android:label="@string/title_activity_client_observations"
-            android:parentActivityName="com.muzima.view.ClientSummaryActivity" >
+                android:name="com.muzima.view.ClientObservationsActivity"
+                android:label="@string/title_activity_client_observations"
+                android:parentActivityName="com.muzima.view.ClientSummaryActivity">
             <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.ClientSummaryActivity" />
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.ClientSummaryActivity"/>
         </activity>
     </application>
 

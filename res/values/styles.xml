@@ -18,6 +18,10 @@
         <item name="android:actionBarStyle">@style/MyActionBar</item> -->
     </style>
 
+    <style name="PreferencesTheme" parent="android:Theme.Holo">
+        <item name="android:windowBackground">@color/theme_color</item>
+    </style>
+
 
     <!--<style name="MyActionBar" parent="android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@drawable/actionbar_bg</item>
@@ -29,7 +33,7 @@
     <!--  <style name="Theme.MyAppTheme.ActionBar.TitleTextStyle" parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">#FFFFFF</item>
     </style>-->
-    
+
 
     <style name="ScreenWrapper">
         <item name="android:layout_width">match_parent</item>
@@ -45,7 +49,7 @@
     <style name="DashboardTableContainer">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:padding">8dp</item>
+        <item name="android:padding">16dp</item>
         <item name="android:orientation">vertical</item>
         <item name="android:background">#333333</item>
     </style>
@@ -61,22 +65,23 @@
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
+
     <style name="TitleText" parent="DashboardBaseText">
         <item name="android:textColor">#DDDDDD</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>   
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
     </style>
-    
-     <style name="LoginText" parent="DashboardBaseText">
+
+    <style name="LoginText" parent="DashboardBaseText">
         <item name="android:textColor">#DDDDDD</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>   
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>
-         <style name="RegisterText" parent="DashboardBaseText">
+
+    <style name="RegisterText" parent="DashboardBaseText">
         <item name="android:layout_marginLeft">8dp</item>
         <item name="android:textColor">#DDDDDD</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>   
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>
-    
+
     <style name="ClickableSummaryItem">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -121,15 +126,16 @@
         <item name="android:layout_height">1dp</item>
         <item name="android:background">#555555</item>
     </style>
-       <style name="DividerLineMargin">
+
+    <style name="DividerLineMargin">
         <item name="android:layout_width">fill_parent</item>
-         <item name="android:layout_marginTop">8dp</item>
-          <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
         <item name="android:layout_height">1dp</item>
         <item name="android:background">#555555</item>
         <item name="android:orientation">horizontal</item>
     </style>
-    
+
     <style name="DividerLineLight">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">1dp</item>

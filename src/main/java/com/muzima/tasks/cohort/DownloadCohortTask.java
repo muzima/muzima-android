@@ -18,7 +18,12 @@ import com.muzima.view.forms.NewFormsListFragment;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import static com.muzima.utils.Constants.COHORT_PREFIX_PREF;
+import static com.muzima.utils.Constants.COHORT_PREFIX_PREF_KEY;
 
 public class DownloadCohortTask extends DownloadMuzimaTask {
     private static final String TAG = "DownloadCohortTask";
@@ -36,7 +41,7 @@ public class DownloadCohortTask extends DownloadMuzimaTask {
 
         try {
             List<Cohort> cohorts;
-            if (cohortPrefixes == null) {
+            if (cohortPrefixes.isEmpty()) {
                 cohorts = cohortController.downloadAllCohorts();
             } else {
                 cohorts = cohortController.downloadCohortsByPrefix(cohortPrefixes);
@@ -69,10 +74,9 @@ public class DownloadCohortTask extends DownloadMuzimaTask {
     }
 
     private List<String> getCohortPrefixes(String[][] values) {
-        if(values.length > 1){
-            return Arrays.asList(values[1]);
-        }
-        return null;
+        SharedPreferences cohortSharedPref = applicationContext.getSharedPreferences(COHORT_PREFIX_PREF, Context.MODE_PRIVATE);
+        Set<String> prefixes = new HashSet<String>(cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>()));
+        return new ArrayList<String>(prefixes);
     }
 
     @Override

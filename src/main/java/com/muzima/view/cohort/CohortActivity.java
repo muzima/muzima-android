@@ -18,16 +18,15 @@ import com.muzima.adapters.cohort.CohortPagerAdapter;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.tasks.DownloadMuzimaTask;
 import com.muzima.tasks.cohort.DownloadCohortTask;
-import com.muzima.tasks.forms.DownloadFormMetadataTask;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
-import com.muzima.view.SettingsActivity;
 import com.muzima.view.customViews.PagerSlidingTabStrip;
+import com.muzima.view.preferences.SettingsActivity;
 
 import static android.os.AsyncTask.Status.PENDING;
 import static android.os.AsyncTask.Status.RUNNING;
 
-public class CohortActivity extends SherlockFragmentActivity{
+public class CohortActivity extends SherlockFragmentActivity {
     private static final String TAG = "CohortActivity";
     private ViewPager viewPager;
     private CohortPagerAdapter cohortPagerAdapter;
@@ -53,7 +52,7 @@ public class CohortActivity extends SherlockFragmentActivity{
         Intent intent = null;
         switch (item.getItemId()) {
             case R.id.menu_load:
-                if(!NetworkUtils.isConnectedToNetwork(this)){
+                if (!NetworkUtils.isConnectedToNetwork(this)) {
                     Toast.makeText(this, "No connection found, please connect your device and try again", Toast.LENGTH_SHORT).show();
                     return true;
                 }
@@ -69,18 +68,12 @@ public class CohortActivity extends SherlockFragmentActivity{
                 String usernameKey = getResources().getString(R.string.preference_username);
                 String passwordKey = getResources().getString(R.string.preference_password);
                 String serverKey = getResources().getString(R.string.preference_server);
-                String cohortPrefixKey = getResources().getString(R.string.preference_cohort_prefix);
                 String[] credentials = new String[]{settings.getString(usernameKey, StringUtil.EMPTY),
                         settings.getString(passwordKey, StringUtil.EMPTY),
                         settings.getString(serverKey, StringUtil.EMPTY)};
 
-                String prefix = settings.getString(cohortPrefixKey, StringUtil.EMPTY);
                 cohortPagerAdapter.showSyncProgressBar();
-                if (StringUtil.EMPTY.equals(prefix)) {
-                    cohortDownloadTask.execute(credentials);
-                } else {
-                    cohortDownloadTask.execute(credentials, new String[]{prefix});
-                }
+                cohortDownloadTask.execute(credentials);
 
                 return true;
             case android.R.id.home:

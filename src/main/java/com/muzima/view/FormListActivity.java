@@ -10,8 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.PopupMenu;
-import android.support.v4.app.NavUtils;
+
 import com.muzima.R;
+import com.muzima.view.preferences.SettingsActivity;
 
 public class FormListActivity extends Activity {
 

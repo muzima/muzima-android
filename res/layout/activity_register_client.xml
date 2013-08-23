@@ -4,8 +4,6 @@
     tools:context=".MainActivity" >
    <LinearLayout style="@style/DashboardTableContainer" >
 
-      
-
         <LinearLayout style="@style/DividerLineMargin" >
         </LinearLayout>
 

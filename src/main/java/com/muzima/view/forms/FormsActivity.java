@@ -30,7 +30,7 @@ import com.muzima.tasks.forms.DownloadFormMetadataTask;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.RegisterClientActivity;
-import com.muzima.view.SettingsActivity;
+import com.muzima.view.preferences.SettingsActivity;
 import com.muzima.view.customViews.PagerSlidingTabStrip;
 
 import static android.os.AsyncTask.Status.PENDING;

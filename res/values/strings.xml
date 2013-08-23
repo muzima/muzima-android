@@ -56,6 +56,7 @@
     <string name="title_activity_client_summary">Client Summary Activity</string>
     <string name="title_activity_client_observations">ClientObservationsActivity</string>
     <string name="title_login">Please Log In</string>
+    <string name="title_activity_cohort_pref">Cohort Prefixes</string>
 
     <string name="textview_login_username">Username:</string>
     <string name="textview_login_password">Password:</string>
@@ -91,10 +92,17 @@
     <string name="preference_password_title">Password</string>
     <string name="preference_password_desc">Enter the OpenMRS password</string>
     <string name="preference_password">passwordPreference</string>
-    <string name="preference_cohort_title">Cohort</string>
-    <string name="preference_cohort_desc">Select cohort to work with</string>
+    <string name="preference_cohort_title">Add Cohort Prefix</string>
+    <string name="preference_cohort_desc">You can add multiple cohort prefixes to restrict the cohort downloads</string>
     <string name="preference_category_openmrs">OpenMRS Settings</string>
     <string name="preference_category_cohorts">Cohort Settings</string>
     <string name="preference_cohorts_prefix_desc">Enter cohort prefixes</string>
     <string name="preference_cohort_prefix">cohortPrefixesPreference</string>
+
+    <string name="add_cohort_prefixes">Add Cohort Prefixes</string>
+    <string name="no_cohort_prefixes_added">No Cohort Prefixes Added</string>
+    <string name="no_cohort_prefixes_msg">Please click on add button to add a cohort prefix</string>
+    <string name="cohort_prefix_label">Prefix:</string>
+    <string name="cohort_add_prefix_hint">Add Prefix</string>
+
 </resources>

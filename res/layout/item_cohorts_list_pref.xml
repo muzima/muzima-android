@@ -1,36 +1,32 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="horizontal"
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/abs__action_bar_default_height">
-
-    <View
-            android:id="@+id/tag_indicator"
-            android:layout_width="5dp"
-            android:layout_height="match_parent"/>
+              style="@style/SummaryItemRow"
+              android:background="#333333">
 
     <TextView
-            android:id="@+id/tag_name"
+            android:id="@+id/prefix"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:textSize="18sp"
             android:gravity="center_vertical"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:singleLine="true"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
-            android:textColor="#ffffff"/>
+            android:textColor="#DDDDDD"/>
 
     <FrameLayout
-            android:id="@+id/tag_color_indicator"
+            android:id="@+id/delete_button"
             android:layout_width="@dimen/abs__action_bar_default_height"
-            android:layout_height="match_parent">
+            android:layout_height="@dimen/abs__action_bar_default_height"
+            android:clickable="true"
+            android:layout_margin="6dp"
+            android:background="@drawable/dark_button_selector">
 
         <ImageView
-                android:id="@+id/tag_icon"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_cancel"/>
     </FrameLayout>
+
 </LinearLayout>

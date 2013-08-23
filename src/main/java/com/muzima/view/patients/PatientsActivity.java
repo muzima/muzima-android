@@ -15,10 +15,8 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.patients.PatientsAdapter;
 import com.muzima.utils.Fonts;
-import com.muzima.view.HelpActivity;
-import com.muzima.view.LogoutActivity;
 import com.muzima.view.RegisterClientActivity;
-import com.muzima.view.SettingsActivity;
+import com.muzima.view.preferences.SettingsActivity;
 
 public class PatientsActivity extends SherlockActivity {
     public static final String COHORT_ID = "cohortId";
