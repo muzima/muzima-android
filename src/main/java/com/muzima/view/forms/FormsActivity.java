@@ -108,6 +108,7 @@ public class FormsActivity extends SherlockFragmentActivity{
                 String[] credentials = new String[]{settings.getString(usernameKey, StringUtil.EMPTY),
                         settings.getString(passwordKey, StringUtil.EMPTY),
                         settings.getString(serverKey, StringUtil.EMPTY)};
+                menubarLoadButton.setActionView(R.layout.refresh_menuitem);
                 formDownloadTask.execute(credentials);
                 return true;
             case R.id.menu_client_add:
@@ -138,6 +139,14 @@ public class FormsActivity extends SherlockFragmentActivity{
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
+    }
+
+    public void hideProgressbar() {
+        menubarLoadButton.setActionView(null);
+    }
+
+    public void showProgressBar() {
+        menubarLoadButton.setActionView(R.layout.refresh_menuitem);
     }
 
     private void initDrawer() {
@@ -190,4 +199,5 @@ public class FormsActivity extends SherlockFragmentActivity{
         formsPager.setCurrentItem(0);
         pagerTabsLayout.markCurrentSelected(0);
     }
+
 }

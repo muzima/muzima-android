@@ -97,6 +97,7 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
 
     @Override
     public void formDownloadComplete(Integer[] status) {
+        ((CohortActivity)getActivity()).hideProgressbar();
         if(status[0] == DownloadMuzimaTask.SUCCESS){
             updateSyncText();
         }
@@ -150,6 +151,7 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
                     String[] credentials = new String[]{settings.getString(usernameKey, StringUtil.EMPTY),
                             settings.getString(passwordKey, StringUtil.EMPTY),
                             settings.getString(serverKey, StringUtil.EMPTY)};
+                    ((CohortActivity)getActivity()).showProgressBar();
                     cohortDataDownloadTask.execute(credentials, getSelectedCohortsArray());
 
                     if (AllCohortsListFragment.this.actionMode != null) {

@@ -32,6 +32,7 @@ public class CohortActivity extends SherlockFragmentActivity {
     private CohortPagerAdapter cohortPagerAdapter;
     private PagerSlidingTabStrip pagerTabsLayout;
     private DownloadMuzimaTask cohortDownloadTask;
+    private MenuItem menubarLoadButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class CohortActivity extends SherlockFragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.cohort_list_menu, menu);
+        menubarLoadButton = menu.findItem(R.id.menu_load);
         return true;
     }
 
@@ -72,6 +74,7 @@ public class CohortActivity extends SherlockFragmentActivity {
                         settings.getString(passwordKey, StringUtil.EMPTY),
                         settings.getString(serverKey, StringUtil.EMPTY)};
 
+                menubarLoadButton.setActionView(R.layout.refresh_menuitem);
                 cohortDownloadTask.execute(credentials);
 
                 return true;
@@ -92,6 +95,14 @@ public class CohortActivity extends SherlockFragmentActivity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
+    }
+
+    public void hideProgressbar() {
+        menubarLoadButton.setActionView(null);
+    }
+
+    public void showProgressBar() {
+        menubarLoadButton.setActionView(R.layout.refresh_menuitem);
     }
 
     private void initPager() {
