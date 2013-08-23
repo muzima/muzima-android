@@ -55,8 +55,4 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements DownloadLis
         pagers[TAB_INCOMPLETE] = new PagerView("Incomplete", incompleteFormsListFragment);
         pagers[TAB_SYNCED] = new PagerView("Synced", syncedFormsListFragment);
     }
-
-    public void showSyncProgressBar() {
-        ((NewFormsListFragment)pagers[TAB_All].fragment).syncProgressBar.setVisibility(View.VISIBLE);
-    }
 }

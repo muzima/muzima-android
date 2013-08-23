@@ -1,7 +1,5 @@
 package com.muzima.tasks.cohort;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.muzima.MuzimaApplication;
@@ -9,10 +7,7 @@ import com.muzima.api.model.CohortData;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.PatientController;
 import com.muzima.tasks.DownloadMuzimaTask;
-import com.muzima.utils.Constants;
-import com.muzima.view.forms.NewFormsListFragment;
 
-import java.util.Date;
 import java.util.List;
 
 public class DownloadCohortDataTask extends DownloadMuzimaTask {
@@ -25,8 +20,16 @@ public class DownloadCohortDataTask extends DownloadMuzimaTask {
     @Override
     protected Integer[] performTask(String[]... values){
         Integer[] result = new Integer[3];
-        CohortController cohortController = applicationContext.getCohortController();
-        PatientController patientController = applicationContext.getPatientController();
+
+        MuzimaApplication muzimaApplicationContext = getMuzimaApplicationContext();
+
+        if (muzimaApplicationContext == null) {
+            result[0] = CANCELLED;
+            return result;
+        }
+
+        CohortController cohortController = muzimaApplicationContext.getCohortController();
+        PatientController patientController = muzimaApplicationContext.getPatientController();
         int patientCount = 0;
         try{
             List<CohortData> cohortDataList = cohortController.downloadCohortData(values[1]);

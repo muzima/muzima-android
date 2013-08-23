@@ -42,8 +42,6 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
     private DownloadCohortDataTask cohortDataDownloadTask;
     private OnCohortDataDownloadListener cohortDataDownloadListener;
     private TextView syncText;
-    private TextView downloadProgressBar;
-    public TextView syncProgressBar;
 
     public static AllCohortsListFragment newInstance(CohortController cohortController) {
         AllCohortsListFragment f = new AllCohortsListFragment();
@@ -66,8 +64,6 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
     protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
         View view = inflater.inflate(R.layout.layout_synced_list, container, false);
         syncText = (TextView) view.findViewById(R.id.sync_text);
-        downloadProgressBar = (TextView) view.findViewById(R.id.download_progress_bar);
-        syncProgressBar = (TextView) view.findViewById(R.id.sync_progress_bar);
         updateSyncText();
         return view;
     }
@@ -101,9 +97,8 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
 
     @Override
     public void synchronizationComplete(Integer[] status) {
-        syncProgressBar.setVisibility(View.GONE);
-        syncProgressBar.invalidate();
-        if(status[0] == DownloadMuzimaTask.SUCCESS){
+        ((CohortActivity)getActivity()).hideProgressbar();
+       if(status[0] == DownloadMuzimaTask.SUCCESS){
             updateSyncText();
         }
         super.synchronizationComplete(status);
@@ -111,8 +106,6 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
 
     @Override
     public void downloadTaskComplete(Integer[] result) {
-        downloadProgressBar.setVisibility(View.GONE);
-        downloadProgressBar.invalidate();
         if(cohortDataDownloadListener != null){
             cohortDataDownloadListener.onCohortDataDownloadComplete(result);
         }
@@ -158,7 +151,7 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
                     String[] credentials = new String[]{settings.getString(usernameKey, StringUtil.EMPTY),
                             settings.getString(passwordKey, StringUtil.EMPTY),
                             settings.getString(serverKey, StringUtil.EMPTY)};
-                    downloadProgressBar.setVisibility(View.VISIBLE);
+                    ((CohortActivity)getActivity()).showProgressBar();
                     cohortDataDownloadTask.execute(credentials, getSelectedCohortsArray());
 
                     if (AllCohortsListFragment.this.actionMode != null) {

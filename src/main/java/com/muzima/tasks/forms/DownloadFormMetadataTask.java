@@ -24,7 +24,15 @@ public class DownloadFormMetadataTask extends DownloadMuzimaTask {
     @Override
     protected Integer[] performTask(String[]... values){
         Integer[] result = new Integer[2];
-        FormController formController = applicationContext.getFormController();
+
+        MuzimaApplication muzimaApplicationContext = getMuzimaApplicationContext();
+
+        if (muzimaApplicationContext == null) {
+            result[0] = CANCELLED;
+            return result;
+        }
+
+        FormController formController = muzimaApplicationContext.getFormController();
 
         try {
             List<Form> forms = formController.downloadAllForms();
@@ -57,7 +65,13 @@ public class DownloadFormMetadataTask extends DownloadMuzimaTask {
 
     @Override
     protected void onPostExecute(Integer[] result) {
-        SharedPreferences pref = applicationContext.getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
+        MuzimaApplication muzimaApplicationContext = getMuzimaApplicationContext();
+
+        if (muzimaApplicationContext == null) {
+            return;
+        }
+
+        SharedPreferences pref = muzimaApplicationContext.getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         Date date = new Date();
         editor.putLong(NewFormsListFragment.FORMS_METADATA_LAST_SYNCED_TIME, date.getTime());

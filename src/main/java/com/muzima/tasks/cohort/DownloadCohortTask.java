@@ -35,9 +35,17 @@ public class DownloadCohortTask extends DownloadMuzimaTask {
     @Override
     protected Integer[] performTask(String[]... values){
         Integer[] result = new Integer[2];
-        CohortController cohortController = applicationContext.getCohortController();
 
-        List<String> cohortPrefixes = getCohortPrefixes(values);
+        MuzimaApplication muzimaApplicationContext = getMuzimaApplicationContext();
+
+        if (muzimaApplicationContext == null) {
+            result[0] = CANCELLED;
+            return result;
+        }
+
+        CohortController cohortController = muzimaApplicationContext.getCohortController();
+
+        List<String> cohortPrefixes = getCohortPrefixes(muzimaApplicationContext, values);
 
         try {
             List<Cohort> cohorts;
@@ -73,15 +81,21 @@ public class DownloadCohortTask extends DownloadMuzimaTask {
         return result;
     }
 
-    private List<String> getCohortPrefixes(String[][] values) {
-        SharedPreferences cohortSharedPref = applicationContext.getSharedPreferences(COHORT_PREFIX_PREF, Context.MODE_PRIVATE);
+    private List<String> getCohortPrefixes(MuzimaApplication muzimaApplicationContext, String[][] values) {
+        SharedPreferences cohortSharedPref = muzimaApplicationContext.getSharedPreferences(COHORT_PREFIX_PREF, Context.MODE_PRIVATE);
         Set<String> prefixes = new HashSet<String>(cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>()));
         return new ArrayList<String>(prefixes);
     }
 
     @Override
     protected void onPostExecute(Integer[] result) {
-        SharedPreferences pref = applicationContext.getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
+        MuzimaApplication muzimaApplicationContext = getMuzimaApplicationContext();
+
+        if (muzimaApplicationContext == null) {
+            return;
+        }
+
+        SharedPreferences pref = muzimaApplicationContext.getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         Date date = new Date();
         editor.putLong(AllCohortsListFragment.COHORTS_LAST_SYNCED_TIME, date.getTime());

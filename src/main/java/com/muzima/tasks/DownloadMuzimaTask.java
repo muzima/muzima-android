@@ -9,6 +9,7 @@ import com.muzima.api.context.Context;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.net.ConnectException;
 
 public abstract class DownloadMuzimaTask extends DownloadTask<String[], Void, Integer[]> {
@@ -26,10 +27,10 @@ public abstract class DownloadMuzimaTask extends DownloadTask<String[], Void, In
     public static final int REPLACE_ERROR = 9;
 
 
-    protected MuzimaApplication applicationContext;
+    protected WeakReference<MuzimaApplication> muzimaApplicationWeakReference;
 
     public DownloadMuzimaTask(MuzimaApplication applicationContext) {
-        this.applicationContext = applicationContext;
+        muzimaApplicationWeakReference = new WeakReference<MuzimaApplication>(applicationContext);
     }
 
     @Override
@@ -52,7 +53,14 @@ public abstract class DownloadMuzimaTask extends DownloadTask<String[], Void, In
         String username = credentials[0];
         String password = credentials[1];
         String server = credentials[2];
-        Context context = applicationContext.getMuzimaContext();
+
+        MuzimaApplication muzimaApplicationContext = getMuzimaApplicationContext();
+
+        if (muzimaApplicationContext == null) {
+            return CANCELLED;
+        }
+
+        Context context = muzimaApplicationContext.getMuzimaContext();
         try {
             context.openSession();
             if (!context.isAuthenticated()) {
@@ -79,7 +87,11 @@ public abstract class DownloadMuzimaTask extends DownloadTask<String[], Void, In
     @Override
     protected void onCancelled(Integer[] result) {
         if (result[0] == CANCELLED) {
-            Toast.makeText(applicationContext, "Download task has been cancelled.", Toast.LENGTH_SHORT).show();
+            if(muzimaApplicationWeakReference != null && muzimaApplicationWeakReference.get() != null){
+                MuzimaApplication muzimaApplication = muzimaApplicationWeakReference.get();
+                Toast.makeText(muzimaApplication, "Download task has been cancelled.", Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 
@@ -91,5 +103,13 @@ public abstract class DownloadMuzimaTask extends DownloadTask<String[], Void, In
             return true;
         }
         return false;
+    }
+
+    public MuzimaApplication getMuzimaApplicationContext() {
+        if(muzimaApplicationWeakReference == null){
+            return null;
+        }else{
+            return muzimaApplicationWeakReference.get();
+        }
     }
 }
