@@ -96,12 +96,12 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
     }
 
     @Override
-    public void formDownloadComplete(Integer[] status) {
+    public void synchronizationComplete(Integer[] status) {
         ((CohortActivity)getActivity()).hideProgressbar();
-        if(status[0] == DownloadMuzimaTask.SUCCESS){
+       if(status[0] == DownloadMuzimaTask.SUCCESS){
             updateSyncText();
         }
-        super.formDownloadComplete(status);
+        super.synchronizationComplete(status);
     }
 
     @Override

@@ -107,12 +107,12 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
     }
 
     @Override
-    public void formDownloadComplete(Integer[] status) {
+    public void synchronizationComplete(Integer[] status) {
         ((FormsActivity)getActivity()).hideProgressbar();
         if(status[0] == DownloadMuzimaTask.SUCCESS){
             updateSyncText();
         }
-        super.formDownloadComplete(status);
+        super.synchronizationComplete(status);
     }
 
     public final class NewFormsActionModeCallback implements ActionMode.Callback {

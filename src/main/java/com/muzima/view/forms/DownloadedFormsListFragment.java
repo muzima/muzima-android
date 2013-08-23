@@ -41,6 +41,6 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Ne
     @Override
     public void onTemplateDownloadComplete(Integer[] result) {
         ((FormsActivity)getActivity()).hideProgressbar();
-        formDownloadComplete(result);
-    }
+        synchronizationComplete(result);
+   }
 }

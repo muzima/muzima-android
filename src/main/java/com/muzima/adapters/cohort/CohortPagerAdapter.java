@@ -1,9 +1,7 @@
 package com.muzima.adapters.cohort;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 
 import android.view.View;
 import com.muzima.MuzimaApplication;
@@ -25,7 +23,7 @@ public class CohortPagerAdapter extends MuzimaPagerAdapter implements DownloadLi
 
     @Override
     public void downloadTaskComplete(Integer[] result) {
-        pagers[TAB_All].fragment.formDownloadComplete(result);
+        pagers[TAB_All].fragment.synchronizationComplete(result);
     }
 
     protected void initPagerViews(Context context){
