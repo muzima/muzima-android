@@ -100,13 +100,13 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
     }
 
     @Override
-    public void formDownloadComplete(Integer[] status) {
+    public void synchronizationComplete(Integer[] status) {
         syncProgressBar.setVisibility(View.GONE);
         syncProgressBar.invalidate();
         if(status[0] == DownloadMuzimaTask.SUCCESS){
             updateSyncText();
         }
-        super.formDownloadComplete(status);
+        super.synchronizationComplete(status);
     }
 
     @Override

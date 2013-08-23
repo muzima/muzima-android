@@ -50,6 +50,6 @@ public class SyncedCohortsListFragment extends CohortListFragment implements All
 
     @Override
     public void onCohortDataDownloadComplete(Integer[] result) {
-        formDownloadComplete(result);
+        synchronizationComplete(result);
     }
 }

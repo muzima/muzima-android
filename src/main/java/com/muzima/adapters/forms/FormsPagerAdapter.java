@@ -1,10 +1,7 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 
 import android.view.View;
 import com.muzima.MuzimaApplication;
@@ -31,7 +28,7 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements DownloadLis
 
     @Override
     public void downloadTaskComplete(Integer[] result) {
-        pagers[TAB_All].fragment.formDownloadComplete(result);
+        pagers[TAB_All].fragment.synchronizationComplete(result);
     }
 
     @Override

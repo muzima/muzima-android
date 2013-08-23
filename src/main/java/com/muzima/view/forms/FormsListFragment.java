@@ -45,7 +45,7 @@ public abstract class FormsListFragment extends MuzimaListFragment {
     }
 
     @Override
-    public void formDownloadComplete(Integer[] status) {
+    public void synchronizationComplete(Integer[] status) {
         Integer downloadStatus = status[0];
         String msg = "Download Complete with status " + downloadStatus;
         Log.i(TAG, msg);

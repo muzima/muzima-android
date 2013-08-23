@@ -40,6 +40,6 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Ne
 
     @Override
     public void onTemplateDownloadComplete(Integer[] result) {
-        formDownloadComplete(result);
+        synchronizationComplete(result);
     }
 }
