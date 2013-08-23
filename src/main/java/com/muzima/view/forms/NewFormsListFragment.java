@@ -44,8 +44,6 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
     private DownloadFormTemplateTask formTemplateDownloadTask;
     private OnTemplateDownloadComplete templateDownloadCompleteListener;
     private TextView syncText;
-    private TextView downloadProgressBar;
-    public TextView syncProgressBar;
 
     public static NewFormsListFragment newInstance(FormController formController) {
         NewFormsListFragment f = new NewFormsListFragment();
@@ -75,8 +73,6 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
     protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
         View view = inflater.inflate(R.layout.layout_synced_list, container, false);
         syncText = (TextView) view.findViewById(R.id.sync_text);
-        downloadProgressBar = (TextView) view.findViewById(R.id.download_progress_bar);
-        syncProgressBar = (TextView) view.findViewById(R.id.sync_progress_bar);
         updateSyncText();
         return view;
     }
@@ -105,8 +101,6 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
 
     @Override
     public void downloadTaskComplete(Integer[] result) {
-        downloadProgressBar.setVisibility(View.GONE);
-        downloadProgressBar.invalidate();
         if (templateDownloadCompleteListener != null) {
             templateDownloadCompleteListener.onTemplateDownloadComplete(result);
         }
@@ -114,8 +108,6 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
 
     @Override
     public void formDownloadComplete(Integer[] status) {
-        syncProgressBar.setVisibility(View.GONE);
-        syncProgressBar.invalidate();
         if(status[0] == DownloadMuzimaTask.SUCCESS){
             updateSyncText();
         }
@@ -158,7 +150,6 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
                     String[] credentials = new String[]{settings.getString(usernameKey, StringUtil.EMPTY),
                             settings.getString(passwordKey, StringUtil.EMPTY),
                             settings.getString(serverKey, StringUtil.EMPTY)};
-                    downloadProgressBar.setVisibility(View.VISIBLE);
                     formTemplateDownloadTask.execute(credentials, getSelectedFormsArray());
                     if (NewFormsListFragment.this.actionMode != null) {
                         NewFormsListFragment.this.actionMode.finish();

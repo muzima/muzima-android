@@ -43,25 +43,6 @@
             </TextView>
         </LinearLayout>
     </FrameLayout>
-    <TextView android:id="@+id/download_progress_bar"
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/sync_bar_height"
-              android:padding="5dp"
-              android:gravity="center"
-              android:textColor="@android:color/white"
-              android:background="#222222"
-              android:text="Downloading..."
-              android:visibility="gone"/>
-
-    <TextView android:id="@+id/sync_progress_bar"
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/sync_bar_height"
-              android:padding="5dp"
-              android:gravity="center"
-              android:textColor="@android:color/white"
-              android:background="#222222"
-              android:text="Synchronizing..."
-              android:visibility="gone"/>
 
     <TextView android:id="@+id/sync_text"
             android:layout_width="match_parent"

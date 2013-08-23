@@ -72,7 +72,6 @@ public class CohortActivity extends SherlockFragmentActivity {
                         settings.getString(passwordKey, StringUtil.EMPTY),
                         settings.getString(serverKey, StringUtil.EMPTY)};
 
-                cohortPagerAdapter.showSyncProgressBar();
                 cohortDownloadTask.execute(credentials);
 
                 return true;

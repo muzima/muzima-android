@@ -48,6 +48,7 @@ public class FormsActivity extends SherlockFragmentActivity{
     private DrawerLayout mainLayout;
     private ActionBarDrawerToggle actionbarDrawerToggle;
     private TagsListAdapter tagsListAdapter;
+    private MenuItem menubarLoadButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,7 @@ public class FormsActivity extends SherlockFragmentActivity{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.form_list_menu, menu);
+        menubarLoadButton = menu.findItem(R.id.menu_load);
         return true;
     }
 
@@ -106,7 +108,6 @@ public class FormsActivity extends SherlockFragmentActivity{
                 String[] credentials = new String[]{settings.getString(usernameKey, StringUtil.EMPTY),
                         settings.getString(passwordKey, StringUtil.EMPTY),
                         settings.getString(serverKey, StringUtil.EMPTY)};
-                formsPagerAdapter.showSyncProgressBar();
                 formDownloadTask.execute(credentials);
                 return true;
             case R.id.menu_client_add:

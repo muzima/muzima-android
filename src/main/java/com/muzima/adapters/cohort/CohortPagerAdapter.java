@@ -40,8 +40,4 @@ public class CohortPagerAdapter extends MuzimaPagerAdapter implements DownloadLi
         pagers[TAB_SYNCED] = new PagerView("Synced", syncedCohortsListFragment);
         pagers[TAB_All] = new PagerView("All", allCohortsListFragment);
     }
-
-    public void showSyncProgressBar(){
-        ((AllCohortsListFragment)pagers[TAB_All].fragment).syncProgressBar.setVisibility(View.VISIBLE);
-    }
 }

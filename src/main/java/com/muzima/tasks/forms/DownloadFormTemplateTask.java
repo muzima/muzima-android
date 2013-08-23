@@ -23,7 +23,15 @@ public class DownloadFormTemplateTask extends DownloadMuzimaTask {
     @Override
     protected Integer[] performTask(String[]... values){
         Integer[] result = new Integer[2];
-        FormController formController = applicationContext.getFormController();
+
+        MuzimaApplication muzimaApplicationContext = getMuzimaApplicationContext();
+
+        if (muzimaApplicationContext == null) {
+            result[0] = CANCELLED;
+            return result;
+        }
+
+        FormController formController = muzimaApplicationContext.getFormController();
 
         try{
             List<FormTemplate> formTemplates = formController.downloadFormTemplates(values[1]);
