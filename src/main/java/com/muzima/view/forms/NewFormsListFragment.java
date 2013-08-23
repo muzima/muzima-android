@@ -35,7 +35,6 @@ import static android.os.AsyncTask.Status.RUNNING;
 public class NewFormsListFragment extends FormsListFragment implements DownloadListener<Integer[]> {
     private static final String TAG = "NewFormsListFragment";
 
-    private static final String BUNDLE_SELECTED_FORMS = "selectedForms";
     public static final String FORMS_METADATA_LAST_SYNCED_TIME = "formsMetadataSyncedTime";
     public static final long NOT_SYNCED_TIME = -1;
 
