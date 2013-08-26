@@ -23,12 +23,17 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements DownloadLis
     private static final int TAB_SYNCED = 4;
 
     public FormsPagerAdapter(Context context, FragmentManager fm) {
-        super(context,fm);
+        super(context, fm);
     }
 
     @Override
     public void downloadTaskComplete(Integer[] result) {
         pagers[TAB_All].fragment.synchronizationComplete(result);
+    }
+
+    @Override
+    public void downloadTaskStart() {
+        pagers[TAB_All].fragment.synchronizationStarted();
     }
 
     @Override

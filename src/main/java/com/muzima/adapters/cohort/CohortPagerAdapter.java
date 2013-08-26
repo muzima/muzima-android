@@ -26,6 +26,11 @@ public class CohortPagerAdapter extends MuzimaPagerAdapter implements DownloadLi
         pagers[TAB_All].fragment.synchronizationComplete(result);
     }
 
+    @Override
+    public void downloadTaskStart() {
+
+    }
+
     protected void initPagerViews(Context context){
         pagers = new PagerView[2];
         CohortController cohortController = ((MuzimaApplication) context.getApplicationContext()).getCohortController();

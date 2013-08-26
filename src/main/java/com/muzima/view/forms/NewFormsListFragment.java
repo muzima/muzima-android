@@ -16,7 +16,6 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.forms.NewFormsAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.listeners.DownloadListener;
@@ -32,7 +31,6 @@ import java.util.List;
 
 import static android.os.AsyncTask.Status.PENDING;
 import static android.os.AsyncTask.Status.RUNNING;
-import static com.muzima.adapters.ListAdapter.BackgroundListQueryTaskListener;
 
 public class NewFormsListFragment extends FormsListFragment implements DownloadListener<Integer[]>{
     private static final String TAG = "NewFormsListFragment";
@@ -45,6 +43,7 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
     private DownloadFormTemplateTask formTemplateDownloadTask;
     private OnTemplateDownloadComplete templateDownloadCompleteListener;
     private TextView syncText;
+    private boolean newFormsSyncInProgress;
 
     public static NewFormsListFragment newInstance(FormController formController) {
         NewFormsListFragment f = new NewFormsListFragment();
@@ -108,13 +107,23 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
     }
 
     @Override
+    public void downloadTaskStart() {
+    }
+
+    @Override
     public void synchronizationComplete(Integer[] status) {
+        newFormsSyncInProgress = false;
 
         ((FormsActivity)getActivity()).hideProgressbar();
         if(status[0] == DownloadMuzimaTask.SUCCESS){
             updateSyncText();
         }
         super.synchronizationComplete(status);
+    }
+
+    @Override
+    public void synchronizationStarted() {
+        newFormsSyncInProgress = true;
     }
 
     public final class NewFormsActionModeCallback implements ActionMode.Callback {
@@ -134,6 +143,14 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.menu_download:
+                    if(newFormsSyncInProgress){
+                        Toast.makeText(getActivity(), "Action not allowed while sync is in progress", Toast.LENGTH_SHORT).show();
+                        if (NewFormsListFragment.this.actionMode != null) {
+                            NewFormsListFragment.this.actionMode.finish();
+                        }
+                        break;
+                    }
+
                     if(!NetworkUtils.isConnectedToNetwork(getActivity())){
                         Toast.makeText(getActivity(), "No connection found, please connect your device and try again", Toast.LENGTH_SHORT).show();
                         return true;

@@ -12,6 +12,13 @@ public abstract class DownloadTask<Pa, Pr, Re> extends AsyncTask<Pa, Pr, Re> {
     private List<DownloadListener> mStateListener = new ArrayList<DownloadListener>();
 
     @Override
+    protected void onPreExecute() {
+        for (DownloadListener downloadListener : mStateListener) {
+            downloadListener.downloadTaskStart();
+        }
+    }
+
+    @Override
     protected void onPostExecute(Re result) {
         for (DownloadListener downloadListener : mStateListener) {
             downloadListener.downloadTaskComplete(result);

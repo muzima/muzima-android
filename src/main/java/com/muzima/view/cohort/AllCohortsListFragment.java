@@ -111,6 +111,11 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
         }
     }
 
+    @Override
+    public void downloadTaskStart() {
+        
+    }
+
     public void setCohortDataDownloadListener(OnCohortDataDownloadListener cohortDataDownloadListener) {
         this.cohortDataDownloadListener = cohortDataDownloadListener;
     }

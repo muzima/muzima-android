@@ -107,6 +107,11 @@ public class TagsListAdapter extends ListAdapter<Tag> implements DownloadListene
     }
 
     @Override
+    public void downloadTaskStart() {
+
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         Tag tag = getItem(position);
 
