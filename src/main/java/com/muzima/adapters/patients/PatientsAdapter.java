@@ -8,24 +8,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
-import com.muzima.utils.DateUtils;
+import com.muzima.utils.StringUtils;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.muzima.utils.DateUtils.getFormattedDate;
 
 public class PatientsAdapter extends ListAdapter<Patient> {
     private static final String TAG = "PatientsAdapter";
+    public static final String SEARCH = "search";
     private PatientController patientController;
     private final String cohortId;
+    private List<Patient> patients = new ArrayList<Patient>();
 
     public PatientsAdapter(Context context, int textViewResourceId, PatientController patientController, String cohortId) {
         super(context, textViewResourceId);
@@ -69,11 +68,18 @@ public class PatientsAdapter extends ListAdapter<Patient> {
         new BackgroundQueryTask().execute(cohortId);
     }
 
+    public void search(String text){
+        new BackgroundQueryTask().execute(text, SEARCH);
+    }
+
     private class BackgroundQueryTask extends AsyncTask<String, Void, List<Patient>> {
         @Override
-        protected List<Patient> doInBackground(String... cohortId) {
-            List<Patient> patients = null;
-            String cohortUuid = cohortId[0];
+        protected List<Patient> doInBackground(String... params) {
+            if(isSearch(params)){
+                return search(params[0]);
+            }
+            patients = null;
+            String cohortUuid = params[0];
             try {
                 if (cohortUuid != null) {
                     patients = patientController.getPatients(cohortUuid);
@@ -87,6 +93,34 @@ public class PatientsAdapter extends ListAdapter<Patient> {
                 Log.w(TAG, "Exception occurred while fetching patients" + e);
             }
             return patients;
+        }
+
+        private List<Patient> search(String text){
+            if(StringUtils.isEmpty(text)){
+                return patients;
+            }
+            List<Patient> result = new ArrayList<Patient>();
+            for (Patient patient : patients) {
+                if(match(patient, text)){
+                    result.add(patient);
+                }
+            }
+            return result;
+        }
+
+        private boolean match(Patient patient, String text) {
+            return containsIgnoreCase(patient.getIdentifier(), text) ||
+                    containsIgnoreCase(patient.getGivenName(), text) ||
+                    containsIgnoreCase(patient.getMiddleName(), text) ||
+                    containsIgnoreCase(patient.getFamilyName(), text);
+        }
+
+        private boolean containsIgnoreCase(String original, String toCheck) {
+            return original.toLowerCase().contains(toCheck.toLowerCase());
+        }
+
+        private boolean isSearch(String[] params) {
+            return params.length > 1 && SEARCH.equals(params[1]);
         }
 
         @Override

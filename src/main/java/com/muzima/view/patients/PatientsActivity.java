@@ -52,6 +52,19 @@ public class PatientsActivity extends SherlockActivity {
         getSupportMenuInflater().inflate(R.menu.client_list, menu);
         SearchView searchView = (SearchView) menu.findItem(R.id.search)
                 .getActionView();
+        setupNoSearchResultDataView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                cohortPatientsAdapter.search(s);
+                return true;
+            }
+        });
 
         if (quickSearch) {
             searchView.setIconified(false);
@@ -116,5 +129,12 @@ public class PatientsActivity extends SherlockActivity {
         noDataTipTextView.setText(R.string.no_patients_downloaded_tip);
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
         noDataTipTextView.setTypeface(Fonts.roboto_light(this));
+    }
+
+    private void setupNoSearchResultDataView() {
+        TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
+        noDataMsgTextView.setText(getResources().getText(R.string.no_patients_matched));
+        TextView noDataTipTextView = (TextView) findViewById(R.id.no_data_tip);
+        noDataTipTextView.setText(R.string.no_patients_matched_tip);
     }
 }

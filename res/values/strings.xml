@@ -36,6 +36,9 @@
     <string name="no_patients_downloaded">No Patients have been downloaded</string>
     <string name="no_patients_downloaded_tip">Please select cohorts from all cohorts list and click sync to download patients</string>
 
+    <string name="no_patients_matched">No Patients matched your search</string>
+    <string name="no_patients_matched_tip">Please note that your search includes patient id, given name, middle name and family name</string>
+
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="client_search">Search Name or ID</string>
