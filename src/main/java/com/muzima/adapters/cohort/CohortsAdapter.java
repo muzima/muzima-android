@@ -14,6 +14,7 @@ import com.muzima.utils.Fonts;
 
 public abstract class CohortsAdapter extends ListAdapter<Cohort> {
     protected CohortController cohortController;
+    protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
 
     public CohortsAdapter(Context context, int textViewResourceId, CohortController cohortController) {
         super(context, textViewResourceId);
@@ -51,5 +52,9 @@ public abstract class CohortsAdapter extends ListAdapter<Cohort> {
     protected static class ViewHolder {
         TextView name;
         TextView description;
+    }
+
+    public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
+        this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
     }
 }

@@ -129,6 +129,13 @@ public class NewFormsAdapter extends FormsAdapter {
     public class BackgroundQueryTask extends AsyncTask<Void, Void, List<Form>> {
 
         @Override
+        protected void onPreExecute() {
+            if(backgroundListQueryTaskListener != null){
+                backgroundListQueryTaskListener.onQueryTaskStarted();
+            }
+        }
+
+        @Override
         protected List<Form> doInBackground(Void... voids) {
             List<Form> allForms = null;
             try {
@@ -153,6 +160,10 @@ public class NewFormsAdapter extends FormsAdapter {
                 add(form);
             }
             notifyDataSetChanged();
+
+            if(backgroundListQueryTaskListener != null){
+                backgroundListQueryTaskListener.onQueryTaskFinish();
+            }
         }
     }
 }

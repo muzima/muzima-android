@@ -16,6 +16,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.forms.NewFormsAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.listeners.DownloadListener;
@@ -31,8 +32,9 @@ import java.util.List;
 
 import static android.os.AsyncTask.Status.PENDING;
 import static android.os.AsyncTask.Status.RUNNING;
+import static com.muzima.adapters.ListAdapter.BackgroundListQueryTaskListener;
 
-public class NewFormsListFragment extends FormsListFragment implements DownloadListener<Integer[]> {
+public class NewFormsListFragment extends FormsListFragment implements DownloadListener<Integer[]>{
     private static final String TAG = "NewFormsListFragment";
 
     public static final String FORMS_METADATA_LAST_SYNCED_TIME = "formsMetadataSyncedTime";

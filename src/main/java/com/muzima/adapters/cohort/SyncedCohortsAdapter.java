@@ -29,6 +29,13 @@ public class SyncedCohortsAdapter extends CohortsAdapter{
     public class BackgroundQueryTask extends AsyncTask<Void, Void, List<Cohort>> {
 
         @Override
+        protected void onPreExecute() {
+            if(backgroundListQueryTaskListener != null){
+                backgroundListQueryTaskListener.onQueryTaskStarted();
+            }
+        }
+
+        @Override
         protected List<Cohort> doInBackground(Void... voids) {
             List<Cohort> syncedCohorts = null;
             try {
@@ -47,6 +54,10 @@ public class SyncedCohortsAdapter extends CohortsAdapter{
                 add(cohort);
             }
             notifyDataSetChanged();
+
+            if(backgroundListQueryTaskListener != null){
+                backgroundListQueryTaskListener.onQueryTaskFinish();
+            }
         }
     }
 }

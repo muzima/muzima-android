@@ -21,6 +21,7 @@ import java.util.List;
 public abstract class FormsAdapter extends ListAdapter<Form> {
     private static final String TAG = "FormsAdapter";
     protected FormController formController;
+    protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
 
     public FormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId);
@@ -80,5 +81,9 @@ public abstract class FormsAdapter extends ListAdapter<Form> {
             }
             tags.removeAll(tagsToRemove);
         }
+    }
+
+    public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
+        this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
     }
 }

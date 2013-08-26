@@ -9,4 +9,9 @@ public abstract class ListAdapter<T> extends ArrayAdapter<T>{
         super(context, textViewResourceId);
     }
     public abstract void reloadData();
+
+    public interface BackgroundListQueryTaskListener{
+        public void onQueryTaskStarted();
+        public void onQueryTaskFinish();
+    }
 }

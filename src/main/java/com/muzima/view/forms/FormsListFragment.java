@@ -5,24 +5,35 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.muzima.R;
+import com.muzima.adapters.ListAdapter;
+import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.tasks.DownloadMuzimaTask;
 import com.muzima.view.MuzimaListFragment;
 
-public abstract class FormsListFragment extends MuzimaListFragment {
+import static com.muzima.adapters.ListAdapter.BackgroundListQueryTaskListener;
+
+public abstract class FormsListFragment extends MuzimaListFragment implements BackgroundListQueryTaskListener{
     private static final String TAG = "FormsListFragment";
 
     protected FormController formController;
+    protected FrameLayout progressBarContainer;
+    protected LinearLayout noDataView;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View formsLayout = setupMainView(inflater, container);
         list = (ListView) formsLayout.findViewById(R.id.list);
+        progressBarContainer = (FrameLayout) formsLayout.findViewById(R.id.progressbarContainer);
+        noDataView = (LinearLayout) formsLayout.findViewById(R.id.no_data_layout);
 
         setupNoDataView(formsLayout);
 
@@ -30,6 +41,7 @@ public abstract class FormsListFragment extends MuzimaListFragment {
         if (listAdapter != null) {
             list.setAdapter(listAdapter);
             list.setOnItemClickListener(this);
+            ((FormsAdapter)listAdapter).setBackgroundListQueryTaskListener(this);
         }
         list.setEmptyView(formsLayout.findViewById(R.id.no_data_layout));
 
@@ -70,5 +82,18 @@ public abstract class FormsListFragment extends MuzimaListFragment {
             msg = "Parse exception has been thrown while fetching data";
         }
         Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onQueryTaskStarted() {
+        list.setVisibility(View.INVISIBLE);
+        noDataView.setVisibility(View.INVISIBLE);
+        progressBarContainer.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onQueryTaskFinish() {
+        list.setVisibility(View.VISIBLE);
+        progressBarContainer.setVisibility(View.INVISIBLE);
     }
 }
