@@ -120,7 +120,7 @@ public class PatientsAdapter extends ListAdapter<Patient> {
         }
 
         private boolean isSearch(String[] params) {
-            return params.length > 1 && SEARCH.equals(params[1]);
+            return SEARCH.equals(params[1]);
         }
 
         @Override
