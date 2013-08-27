@@ -37,6 +37,11 @@
 
 	<dependencies>
         <dependency>
+            <groupId>com.madgag</groupId>
+            <artifactId>scprov-jdk15on</artifactId>
+            <version>1.47.0.2</version>
+        </dependency>
+        <dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>
 			<scope>provided</scope>

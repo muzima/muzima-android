@@ -8,24 +8,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
-import com.muzima.utils.DateUtils;
+import com.muzima.utils.StringUtils;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.muzima.utils.DateUtils.getFormattedDate;
 
 public class PatientsAdapter extends ListAdapter<Patient> {
     private static final String TAG = "PatientsAdapter";
+    public static final String SEARCH = "search";
     private PatientController patientController;
     private final String cohortId;
+    private List<Patient> patients = new ArrayList<Patient>();
 
     public PatientsAdapter(Context context, int textViewResourceId, PatientController patientController, String cohortId) {
         super(context, textViewResourceId);
@@ -69,11 +68,22 @@ public class PatientsAdapter extends ListAdapter<Patient> {
         new BackgroundQueryTask().execute(cohortId);
     }
 
+    public void search(String text){
+        new BackgroundQueryTask().execute(text, SEARCH);
+    }
+
     private class BackgroundQueryTask extends AsyncTask<String, Void, List<Patient>> {
         @Override
-        protected List<Patient> doInBackground(String... cohortId) {
-            List<Patient> patients = null;
-            String cohortUuid = cohortId[0];
+        protected List<Patient> doInBackground(String... params) {
+            if(isSearch(params)){
+                try {
+                    return patientController.searchPatient(params[0]);
+                } catch (PatientController.PatientLoadException e) {
+                    Log.w(TAG, "Exception occurred while searching patients for " + params[0] + " search string. " + e);
+                }
+            }
+            patients = null;
+            String cohortUuid = params[0];
             try {
                 if (cohortUuid != null) {
                     patients = patientController.getPatients(cohortUuid);
@@ -87,6 +97,10 @@ public class PatientsAdapter extends ListAdapter<Patient> {
                 Log.w(TAG, "Exception occurred while fetching patients" + e);
             }
             return patients;
+        }
+
+        private boolean isSearch(String[] params) {
+            return params.length == 2 && SEARCH.equals(params[1]);
         }
 
         @Override

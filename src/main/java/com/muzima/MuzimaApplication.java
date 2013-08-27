@@ -17,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.security.Security;
 
 @ReportsCrashes(formKey = "ACRA_FORM_KEY")
 public class MuzimaApplication extends Application{
@@ -24,6 +25,11 @@ public class MuzimaApplication extends Application{
     private FormController formController;
     private CohortController cohortController;
     private PatientController patientConroller;
+
+    static {
+        // see http://rtyley.github.io/spongycastle/
+        Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
+    }
 
     @Override
     public void onCreate() {
