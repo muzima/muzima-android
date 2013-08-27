@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="no-js">
 	<head>
-		<title>Drishti</title>
+		<title>Muzima</title>
 		<meta charset="utf-8">
 		<meta name="author" content="Martijn van de Rijdt (Aid Web Solutions) &amp; Modi Research Group">
 		<meta name="robots" content="noindex">
@@ -9,23 +9,20 @@
 		<meta name="apple-mobile-web-app-capable" content="yes">
 
 		<link href="css/drishti.css" media="all" rel="stylesheet" type="text/css">
+
+		<script type="text/javascript" src="test/main.js"></script>
 		<script type="text/javascript" src="js/libraries-all-min.js"></script>
-		<script type="text/javascript" src="js/webform-drishti-all-min.js"></script>
+		<!--<script type="text/javascript" src="js/webform-drishti-all-min.js"></script>-->
 
 		<script type="text/javascript" src="js/form.js"></script>
-		<!--<script type="text/javascript" src="js/gui.js"></script>-->
-		<!--<script type="text/javascript" src="js/helpers.js"></script>-->
+		<script type="text/javascript" src="js/gui.js"></script>
+		<script type="text/javascript" src="js/helpers.js"></script>
 		<script type="text/javascript" src="js/storage_drishti.js"></script>
-		<!--<script type="text/javascript" src="js/webform_dirshti.js"></script>-->
-		<!--<script type="text/javascript" src="js/widgets.js"></script>-->
+		<script type="text/javascript" src="js/webform_drishti.js"></script>
+		<script type="text/javascript" src="js/widgets.js"></script>
 
 		<script type="text/javascript" src="../ziggy/ziggy.js"></script>
 		<script type="text/javascript">
-			window.onerror = function (m, u, l) {
-        	    console.error("Javascript Error: , msg: {0}, url: {1}, line: {2}".format(m, u, l));
-				return true;
-			};
-
 			var settings = {};
 			settings['mapsDynamicAPIKey'] = 'AIzaSyDF5xYZfxN7r5SsNPGstjAeTzwa6dVU4Ik';
 			settings['mapsStaticAPIKey'] = 'AIzaSyDF5xYZfxN7r5SsNPGstjAeTzwa6dVU4Ik';
@@ -94,10 +91,10 @@
 				<div class="form-header clearfix"><span class="form-language-selector"><span>Choose Language</span></span></div>
 				
 				<script>
-					document.write(formInterface.getHtml());
+					document.write(formInterface.getHTML());
 				</script>
 				
-				<button id="submit-form" class="btn btn-info btn-large">Submit</button>	
+				<button id="submit-form" class="btn btn-info btn-large" onclick="formSubmit()">Submit</button>
 				<div class="enketo-power">Powered by <img src="images/enketo_bare_100x37.png" alt="enketo logo" /></div>
 			</article>
 		</div>

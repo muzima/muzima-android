@@ -153,5 +153,11 @@
                 <android.sdk.path>/Users/twer/bin/adt-bundle-mac-x86_64-20130729/sdk</android.sdk.path>
             </properties>
         </profile>
+        <profile>
+            <id>zabil_sdk</id>
+            <properties>
+                <android.sdk.path>/usr/local/Cellar/android-sdk/r22.0.4</android.sdk.path>
+            </properties>
+        </profile>
     </profiles>
 </project>
