@@ -105,6 +105,16 @@ public class PatientControllerTest {
         assertThat(patients.size(), is(1));
     }
 
+    @Test
+    public void searchPatient_shouldReturnSearchedPatients() throws IOException, ParseException, PatientController.PatientLoadException {
+        String serachString = "searchString";
+        List<Patient> patients = new ArrayList<Patient>();
+
+        when(patientService.searchPatients(serachString)).thenReturn(patients);
+
+        assertThat(patientController.searchPatient(serachString), is(patients));
+    }
+
     private List<CohortMember> buildCohortMembers(String cohortId) {
         List<CohortMember> cohortMembers = new ArrayList<CohortMember>();
         CohortMember member1 = new CohortMember();

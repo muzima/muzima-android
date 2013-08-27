@@ -76,7 +76,11 @@ public class PatientsAdapter extends ListAdapter<Patient> {
         @Override
         protected List<Patient> doInBackground(String... params) {
             if(isSearch(params)){
-                return search(params[0]);
+                try {
+                    return patientController.searchPatient(params[0]);
+                } catch (PatientController.PatientLoadException e) {
+                    Log.w(TAG, "Exception occurred while searching patients for " + params[0] + " search string. " + e);
+                }
             }
             patients = null;
             String cohortUuid = params[0];
@@ -95,32 +99,8 @@ public class PatientsAdapter extends ListAdapter<Patient> {
             return patients;
         }
 
-        private List<Patient> search(String text){
-            if(StringUtils.isEmpty(text)){
-                return patients;
-            }
-            List<Patient> result = new ArrayList<Patient>();
-            for (Patient patient : patients) {
-                if(match(patient, text)){
-                    result.add(patient);
-                }
-            }
-            return result;
-        }
-
-        private boolean match(Patient patient, String text) {
-            return containsIgnoreCase(patient.getIdentifier(), text) ||
-                    containsIgnoreCase(patient.getGivenName(), text) ||
-                    containsIgnoreCase(patient.getMiddleName(), text) ||
-                    containsIgnoreCase(patient.getFamilyName(), text);
-        }
-
-        private boolean containsIgnoreCase(String original, String toCheck) {
-            return original.toLowerCase().contains(toCheck.toLowerCase());
-        }
-
         private boolean isSearch(String[] params) {
-            return SEARCH.equals(params[1]);
+            return params.length == 2 && SEARCH.equals(params[1]);
         }
 
         @Override

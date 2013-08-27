@@ -58,6 +58,16 @@ public class PatientController {
         }
     }
 
+    public List<Patient> searchPatient(String searchString) throws PatientLoadException {
+        try {
+            return patientService.searchPatients(searchString);
+        } catch (IOException e) {
+            throw new PatientLoadException(e);
+        } catch (ParseException e) {
+            throw new PatientLoadException(e);
+        }
+    }
+
     //TODO this need to be implemented in patient service
     public int getTotalPatientsCount() throws PatientLoadException {
         return getAllPatients().size();
