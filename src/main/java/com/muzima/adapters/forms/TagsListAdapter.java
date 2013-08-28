@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
@@ -154,6 +155,11 @@ public class TagsListAdapter extends ListAdapter<Tag> implements DownloadListene
 
         @Override
         protected void onPostExecute(List<Tag> tags) {
+            if(tags == null){
+                Toast.makeText(getContext(), "Something went wrong while fetching tags from local repo", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             TagsListAdapter.this.clear();
 
             if (!tags.isEmpty()) {

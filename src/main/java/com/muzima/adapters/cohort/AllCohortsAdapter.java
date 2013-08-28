@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.muzima.R;
 import com.muzima.api.model.Cohort;
@@ -86,6 +87,11 @@ public class AllCohortsAdapter extends CohortsAdapter{
 
         @Override
         protected void onPostExecute(List<Cohort> cohorts) {
+            if(cohorts == null){
+                Toast.makeText(getContext(), "Something went wrong while fetching cohorts from local repo", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             AllCohortsAdapter.this.clear();
             for (Cohort cohort : cohorts) {
                 add(cohort);

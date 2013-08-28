@@ -3,6 +3,7 @@ package com.muzima.adapters.forms;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
@@ -44,6 +45,11 @@ public class DownloadedFormsAdapter extends FormsAdapter {
 
         @Override
         protected void onPostExecute(List<Form> forms) {
+            if(forms == null){
+                Toast.makeText(getContext(), "Something went wrong while fetching forms from local repo", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             DownloadedFormsAdapter.this.clear();
             for (Form form : forms) {
                 add(form);

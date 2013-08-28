@@ -138,7 +138,7 @@
                     android:value="com.muzima.view.DashboardActivity"/>
         </activity>
         <activity
-                android:name="com.muzima.view.ClientSummaryActivity"
+                android:name=".view.patients.PatientSummaryActivity"
                 android:label="@string/title_activity_client_summary"
                 android:parentActivityName="com.muzima.view.ClientListActivity">
             <meta-data
