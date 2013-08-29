@@ -60,10 +60,23 @@
         <item name="android:textColor">#eeeeee</item>
     </style>
 
+    <style name="DashboardItemDescription">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#eeeeee</item>
+    </style>
+
     <style name="DashboardTitleText" parent="DashboardBaseText">
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="DashboardListItemPrimaryText">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#eeeeee</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
     </style>
 
     <style name="TitleText" parent="DashboardBaseText">

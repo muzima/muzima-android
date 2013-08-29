@@ -113,6 +113,7 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.DashboardActivity"/>
         </activity>
+
         <activity
                 android:name=".view.forms.FormsActivity"
                 android:label="@string/title_activity_form_list"
@@ -145,6 +146,16 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.ClientListActivity"/>
         </activity>
+
+        <activity
+                android:name=".view.forms.PatientFormsActivity"
+                android:label="@string/title_activity_client_summary"
+                android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.patients.PatientSummaryActivity"/>
+        </activity>
+
         <activity
                 android:name=".view.patients.PatientObservationsActivity"
                 android:label="@string/title_activity_client_observations"

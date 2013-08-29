@@ -37,12 +37,10 @@ import static android.os.AsyncTask.Status.PENDING;
 import static android.os.AsyncTask.Status.RUNNING;
 
 
-public class FormsActivity extends SherlockFragmentActivity{
+public class FormsActivity extends FormsActivityBase{
     private static final String TAG = "FormsActivity";
+
     private DownloadMuzimaTask formDownloadTask;
-    private ViewPager formsPager;
-    private PagerSlidingTabStrip pagerTabsLayout;
-    private FormsPagerAdapter formsPagerAdapter;
     private ListView tagsDrawerList;
     private TextView tagsNoDataMsg;
     private DrawerLayout mainLayout;
@@ -52,11 +50,9 @@ public class FormsActivity extends SherlockFragmentActivity{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_forms, null);
         setContentView(mainLayout);
-        initPager();
-        initPagerIndicator();
+        super.onCreate(savedInstanceState);
         initDrawer();
     }
 
@@ -85,6 +81,10 @@ public class FormsActivity extends SherlockFragmentActivity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if(super.onOptionsItemSelected(item)){
+            return true;
+        }
+
         Intent intent = null;
         switch (item.getItemId()) {
             case R.id.menu_load:
@@ -100,7 +100,7 @@ public class FormsActivity extends SherlockFragmentActivity{
                 }
                 SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
                 formDownloadTask = new DownloadFormMetadataTask((MuzimaApplication) getApplicationContext());
-                formDownloadTask.addDownloadListener(formsPagerAdapter);
+                formDownloadTask.addDownloadListener((FormsPagerAdapter)formsPagerAdapter);
                 formDownloadTask.addDownloadListener(tagsListAdapter);
                 String usernameKey = getResources().getString(R.string.preference_username);
                 String passwordKey = getResources().getString(R.string.preference_password);
@@ -126,19 +126,14 @@ public class FormsActivity extends SherlockFragmentActivity{
                     mainLayout.openDrawer(GravityCompat.END);
                 }
                 return true;
-            case R.id.action_settings:
-                intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
-                return true;
             default:
                 return false;
         }
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
+    protected FormsPagerAdapter createFormsPagerAdapter() {
+        return new FormsPagerAdapter(getApplicationContext(), getSupportFragmentManager());
     }
 
     public void hideProgressbar() {
@@ -155,7 +150,7 @@ public class FormsActivity extends SherlockFragmentActivity{
         tagsListAdapter = new TagsListAdapter(this, R.layout.item_tags_list, ((MuzimaApplication)getApplication()).getFormController());
         tagsDrawerList.setAdapter(tagsListAdapter);
         tagsDrawerList.setOnItemClickListener(tagsListAdapter);
-        tagsListAdapter.setTagsChangedListener(formsPagerAdapter);
+        tagsListAdapter.setTagsChangedListener((FormsPagerAdapter)formsPagerAdapter);
         actionbarDrawerToggle = new ActionBarDrawerToggle(this, mainLayout,
                 R.drawable.ic_labels, R.string.drawer_open, R.string.drawer_close) {
 
@@ -182,22 +177,5 @@ public class FormsActivity extends SherlockFragmentActivity{
         tagsNoDataMsg.setTypeface(Fonts.roboto_bold_condensed(this));
     }
 
-    private void initPager() {
-        formsPager = (ViewPager) findViewById(R.id.pager);
-        formsPagerAdapter = new FormsPagerAdapter(getApplicationContext(), getSupportFragmentManager());
-        formsPager.setAdapter(formsPagerAdapter);
-    }
-
-
-    private void initPagerIndicator() {
-        pagerTabsLayout = (PagerSlidingTabStrip) findViewById(R.id.pager_indicator);
-        pagerTabsLayout.setTextColor(Color.WHITE);
-        pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));
-        pagerTabsLayout.setSelectedTextColor(getResources().getColor(R.color.tab_indicator));
-        pagerTabsLayout.setTypeface(Fonts.roboto_medium(this), -1);
-        pagerTabsLayout.setViewPager(formsPager);
-        formsPager.setCurrentItem(0);
-        pagerTabsLayout.markCurrentSelected(0);
-    }
 
 }

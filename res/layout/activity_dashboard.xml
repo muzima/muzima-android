@@ -40,32 +40,24 @@
 
 
             <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    style="@style/DashboardListItemPrimaryText"
                     android:layout_weight=".7"
                     android:gravity="left"
-                    android:text="@string/cohorts"
-                    android:textColor="#eeeeee"
-                    android:textAppearance="?android:attr/textAppearanceLarge">
+                    android:text="@string/cohorts">
             </TextView>
 
             <TextView
                     android:id="@+id/cohortsCount"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".7"
+                    style="@style/DashboardListItemPrimaryText"
+                    android:layout_weight=".3"
                     android:gravity="right"
-                    android:text="##"
-                    android:textColor="#eeeeee"
-                    android:textAppearance="?android:attr/textAppearanceLarge">
+                    android:text="##">
             </TextView>
         </LinearLayout>
 
         <TextView
                 android:id="@+id/cohortDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/DashboardBaseText"
+                style="@style/DashboardItemDescription"
                 android:text="## Total Patients, ## Synced Patients">
         </TextView>
 
@@ -81,32 +73,24 @@
         <LinearLayout style="@style/SummaryItemRow">
 
             <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    style="@style/DashboardListItemPrimaryText"
                     android:layout_weight=".7"
                     android:gravity="left"
-                    android:text="@string/patients"
-                    android:textColor="#eeeeee"
-                    android:textAppearance="?android:attr/textAppearanceLarge">
+                    android:text="@string/patients">
             </TextView>
 
             <TextView
                     android:id="@+id/patientsCount"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".7"
+                    style="@style/DashboardListItemPrimaryText"
+                    android:layout_weight=".3"
                     android:gravity="right"
-                    android:text="##"
-                    android:textColor="#eeeeee"
-                    android:textAppearance="?android:attr/textAppearanceLarge">
+                    android:text="##">
             </TextView>
         </LinearLayout>
 
         <TextView
                 android:id="@+id/patientDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/DashboardBaseText"
+                style="@style/DashboardItemDescription"
                 android:text="## Overdue, ## Upcoming(Next 7 days)">
         </TextView>
 
@@ -122,32 +106,24 @@
         <LinearLayout style="@style/SummaryItemRow">
 
             <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    style="@style/DashboardListItemPrimaryText"
                     android:layout_weight=".7"
                     android:gravity="left"
-                    android:text="@string/forms"
-                    android:textColor="#eeeeee"
-                    android:textAppearance="?android:attr/textAppearanceLarge">
+                    android:text="@string/forms">
             </TextView>
 
             <TextView
                     android:id="@+id/formsCount"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".7"
+                    style="@style/DashboardListItemPrimaryText"
+                    android:layout_weight=".3"
                     android:gravity="right"
-                    android:text="##"
-                    android:textColor="#eeeeee"
-                    android:textAppearance="?android:attr/textAppearanceLarge">
+                    android:text="##">
             </TextView>
         </LinearLayout>
 
         <TextView
                 android:id="@+id/formDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/DashboardBaseText"
+                style="@style/DashboardItemDescription"
                 android:text="## Incomplete, ## Outbox">
         </TextView>
 
@@ -163,32 +139,24 @@
         <LinearLayout style="@style/SummaryItemRow">
 
             <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    style="@style/DashboardListItemPrimaryText"
                     android:layout_weight=".7"
                     android:gravity="left"
-                    android:text="@string/notices"
-                    android:textColor="#eeeeee"
-                    android:textAppearance="?android:attr/textAppearanceLarge">
+                    android:text="@string/notices">
             </TextView>
 
             <TextView
                     android:id="@+id/noticesCount"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".7"
+                    style="@style/DashboardListItemPrimaryText"
+                    android:layout_weight=".3"
                     android:gravity="right"
-                    android:text="##"
-                    android:textColor="#eeeeee"
-                    android:textAppearance="?android:attr/textAppearanceLarge">
+                    android:text="##">
             </TextView>
         </LinearLayout>
 
         <TextView
                 android:id="@+id/noticesDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/DashboardBaseText"
+                style="@style/DashboardItemDescription"
                 android:text="## Unread, ## Recommendations">
         </TextView>
 
