@@ -7,6 +7,7 @@ import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
+import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.util.Constants;
 
@@ -25,11 +26,13 @@ public class MuzimaApplication extends Application{
     private FormController formController;
     private CohortController cohortController;
     private PatientController patientConroller;
+    private ObservationController observationController;
 
     static {
         // see http://rtyley.github.io/spongycastle/
         Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
     }
+
 
     @Override
     public void onCreate() {
@@ -80,6 +83,17 @@ public class MuzimaApplication extends Application{
             }
         }
         return patientConroller;
+    }
+
+    public ObservationController getObservationController() {
+        if(observationController == null){
+            try {
+                observationController = new ObservationController(muzimaContext.getObservationService());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return observationController;
     }
 
     private String getConfigurationString() throws IOException {

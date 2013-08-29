@@ -7,17 +7,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
-import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Observation;
-import com.muzima.controller.PatientController;
+import com.muzima.controller.ObservationController;
 import com.muzima.utils.Fonts;
+import com.muzima.view.patients.PatientSummaryActivity;
 
 public abstract class  ObservationsAdapter extends ListAdapter<Observation> {
-    protected PatientController patientController;
+    protected final String patientUuid;
+    protected ObservationController observationController;
 
-    public ObservationsAdapter(Context context, int textViewResourceId, PatientController patientController) {
+    public ObservationsAdapter(Context context, int textViewResourceId, ObservationController observationController) {
         super(context, textViewResourceId);
-        this.patientController = patientController;
+        this.observationController = observationController;
+        patientUuid = activity.getIntent().getStringExtra(PatientSummaryActivity.PATIENT_ID);
     }
 
     @Override

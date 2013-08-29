@@ -2,7 +2,7 @@ package com.muzima.view.observations;
 
 import android.view.View;
 import android.widget.AdapterView;
-import com.muzima.controller.PatientController;
+import com.muzima.controller.ObservationController;
 import com.muzima.view.patients.ObservationsListFragment;
 
 public class ObservationByEncountersFragment extends ObservationsListFragment{
@@ -10,9 +10,9 @@ public class ObservationByEncountersFragment extends ObservationsListFragment{
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
     }
 
-    public static ObservationByEncountersFragment newInstance(PatientController patientController) {
+    public static ObservationByEncountersFragment newInstance(ObservationController observationController) {
         ObservationByEncountersFragment f = new ObservationByEncountersFragment();
-        f.patientController = patientController;
+        f.observationController = observationController;
         f.setRetainInstance(true);
         return f;
     }
