@@ -23,13 +23,7 @@ public class PatientController {
 
     public void replacePatients(List<Patient> patients) throws PatientReplaceException {
         try {
-            for (Patient patient : patients) {
-                Patient existingPatient = patientService.getPatientByUuid(patient.getUuid());
-                if(existingPatient != null){
-                    patientService.deletePatient(patient);
-                }
-                patientService.savePatient(patient);
-            }
+            patientService.updatePatients(patients);
         } catch (IOException e) {
             throw new PatientReplaceException(e);
         }
@@ -53,8 +47,6 @@ public class PatientController {
             return patientService.getAllPatients();
         } catch (IOException e) {
             throw new PatientLoadException(e);
-        } catch (ParseException e) {
-            throw new PatientLoadException(e);
         }
     }
 
@@ -68,9 +60,12 @@ public class PatientController {
         }
     }
 
-    //TODO this need to be implemented in patient service
     public int getTotalPatientsCount() throws PatientLoadException {
-        return getAllPatients().size();
+        try {
+            return patientService.countAllPatients();
+        } catch (IOException e) {
+            throw new PatientLoadException(e);
+        }
     }
 
     public static class PatientReplaceException extends Throwable {

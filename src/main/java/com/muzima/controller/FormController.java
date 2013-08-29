@@ -32,14 +32,15 @@ public class FormController {
             return formService.getAllForms();
         } catch (IOException e) {
             throw new FormFetchException(e);
-        } catch (ParseException e) {
-            throw new FormFetchException(e);
         }
     }
 
     public int getTotalFormCount() throws FormFetchException {
-        //TODO need to be done in form service
-        return getAllForms().size();
+        try {
+            return formService.countAllForms();
+        } catch (IOException e) {
+            throw new FormFetchException(e);
+        }
     }
 
     public Form getFormByUuid(String formId) throws FormFetchException {
@@ -79,8 +80,6 @@ public class FormController {
             return filteredForms;
         } catch (IOException e) {
             throw new FormFetchException(e);
-        } catch (ParseException e) {
-            throw new FormFetchException(e);
         }
     }
 
@@ -101,35 +100,30 @@ public class FormController {
     public List<Form> getAllDownloadedForms() throws FormFetchException {
         ArrayList<Form> result = new ArrayList<Form>();
         try {
-            List<FormTemplate> allFormTemplates = formService.getAllFormTemplates();
             List<Form> allForms = formService.getAllForms();
-            for (FormTemplate formTemplate : allFormTemplates) {
-                for (Form form : allForms) {
-                    if (form.getUuid().equals(formTemplate.getUuid())) {
-                        result.add(form);
-                        break;
-                    }
+            for (Form form : allForms) {
+                if (formService.isFormTemplateDownloaded(form.getUuid())) {
+                    result.add(form);
                 }
             }
         } catch (IOException e) {
-            throw new FormFetchException(e);
-        } catch (ParseException e) {
             throw new FormFetchException(e);
         }
         return result;
     }
 
     public int getDownloadedFormsCount() throws FormFetchException {
-        //TODO need to be done in form service
-        return getAllDownloadedForms().size();
+        try {
+            return formService.countAllFormTemplates();
+        } catch (IOException e) {
+            throw new FormFetchException(e);
+        }
     }
 
     public List<Form> downloadAllForms() throws FormFetchException {
         try {
             return formService.downloadFormsByName(StringUtil.EMPTY);
         } catch (IOException e) {
-            throw new FormFetchException(e);
-        } catch (ParseException e) {
             throw new FormFetchException(e);
         }
     }
@@ -152,9 +146,7 @@ public class FormController {
 
     public void saveAllForms(List<Form> forms) throws FormSaveException {
         try {
-            for (Form form : forms) {
-                formService.saveForm(form);
-            }
+            formService.saveForms(forms);
         } catch (IOException e) {
             throw new FormSaveException(e);
         }
@@ -162,13 +154,8 @@ public class FormController {
 
     public void deleteAllForms() throws FormDeleteException {
         try {
-            List<Form> allForms = formService.getAllForms();
-            for (Form form : allForms) {
-                formService.deleteForm(form);
-            }
+            formService.deleteForms(formService.getAllForms());
         } catch (IOException e) {
-            throw new FormDeleteException(e);
-        } catch (ParseException e) {
             throw new FormDeleteException(e);
         }
     }
@@ -189,19 +176,13 @@ public class FormController {
     }
 
     public boolean isFormDownloaded(Form form) throws FormFetchException {
+        boolean downloaded;
         try {
-            List<FormTemplate> allFormTemplates = formService.getAllFormTemplates();
-            for (FormTemplate formTemplate : allFormTemplates) {
-                if (form.getUuid().equals(formTemplate.getUuid())) {
-                    return true;
-                }
-            }
+            downloaded = formService.isFormTemplateDownloaded(form.getUuid());
         } catch (IOException e) {
             throw new FormFetchException(e);
-        } catch (ParseException e) {
-            throw new FormFetchException(e);
         }
-        return false;
+        return downloaded;
     }
 
     public int getTagColor(String uuid) {
