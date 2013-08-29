@@ -1,4 +1,4 @@
-package com.muzima.view;
+package com.muzima.view.patients;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -10,7 +10,7 @@ import android.widget.SearchView;
 import android.support.v4.app.NavUtils;
 import com.muzima.R;
 
-public class ClientObservationsActivity extends Activity {
+public class PatientObservationsActivity extends Activity {
 
 	public boolean quickSearch = false;
 	
@@ -20,11 +20,10 @@ public class ClientObservationsActivity extends Activity {
 		setContentView(R.layout.activity_client_observations);
 		
 		Bundle extras = getIntent().getExtras();
-		if (extras != null) {
-			if (extras.getString("quickSearch").equals("true"))
-				quickSearch = true;
-		}
-		// Show the Up button in the action bar.
+        if (extras != null && "true".equals(extras.getString("quickSearch"))) {
+            quickSearch = true;
+        }
+        // Show the Up button in the action bar.
 		setupActionBar();
 	}
 

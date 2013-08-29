@@ -146,12 +146,12 @@
                     android:value="com.muzima.view.ClientListActivity"/>
         </activity>
         <activity
-                android:name="com.muzima.view.ClientObservationsActivity"
+                android:name=".view.patients.PatientObservationsActivity"
                 android:label="@string/title_activity_client_observations"
-                android:parentActivityName="com.muzima.view.ClientSummaryActivity">
+                android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.muzima.view.ClientSummaryActivity"/>
+                    android:value="com.muzima.view.patients.PatientSummaryActivity"/>
         </activity>
     </application>
 

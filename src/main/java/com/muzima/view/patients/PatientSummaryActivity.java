@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.PopupMenu;
 import android.support.v4.app.NavUtils;
 import com.muzima.R;
-import com.muzima.view.ClientObservationsActivity;
+import com.muzima.view.patients.PatientObservationsActivity;
 
 public class PatientSummaryActivity extends Activity {
     public static final String PATIENT_ID = "patientId";
@@ -19,7 +19,18 @@ public class PatientSummaryActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_client_summary);
-		// Show the Up button in the action bar.
+
+        final String patientId = getIntent().getStringExtra(PATIENT_ID);
+        View observations = findViewById(R.id.observations);
+        observations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PatientSummaryActivity.this, PatientObservationsActivity.class);
+                intent.putExtra(PATIENT_ID, patientId);
+                startActivity(intent);
+            }
+        });
+        // Show the Up button in the action bar.
 		setupActionBar();
 	}
 
@@ -83,7 +94,7 @@ public class PatientSummaryActivity extends Activity {
 	}
 	/** Called when the user clicks the Clients Encounters Button or Search Clients Observations Button */
 	public void clientObservations(View view) {
-		Intent intent = new Intent(this, ClientObservationsActivity.class);
+		Intent intent = new Intent(this, PatientObservationsActivity.class);
 		if (view.getId() == R.id.quickSearch) {
 			intent.putExtra("quickSearch", "true");
 		}

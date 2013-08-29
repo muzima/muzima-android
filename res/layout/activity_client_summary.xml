@@ -28,6 +28,48 @@
     </View>
 
     <LinearLayout
+            android:id="@+id/observations"
+            style="@style/ClickableSummaryItem">
+
+        <LinearLayout style="@style/SummaryItemRow">
+
+
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".7"
+                    android:gravity="left"
+                    android:text="Observations"
+                    android:textColor="#eeeeee"
+                    android:textAppearance="?android:attr/textAppearanceLarge">
+            </TextView>
+
+            <TextView
+                    android:id="@+id/cohortsCount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".7"
+                    android:gravity="right"
+                    android:text="##"
+                    android:textColor="#eeeeee"
+                    android:textAppearance="?android:attr/textAppearanceLarge">
+            </TextView>
+        </LinearLayout>
+
+        <TextView
+                android:id="@+id/cohortDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/DashboardBaseText"
+                android:text="##">
+        </TextView>
+
+    </LinearLayout>
+
+    <View style="@style/DividerLine">
+    </View>
+
+    <LinearLayout
             style="@style/ClickableSummaryItem">
 
         <LinearLayout style="@style/SummaryItemRow">
