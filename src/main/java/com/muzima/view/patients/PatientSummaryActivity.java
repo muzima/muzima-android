@@ -10,10 +10,14 @@ import android.view.View;
 import android.widget.PopupMenu;
 import android.support.v4.app.NavUtils;
 import com.muzima.R;
+import com.muzima.api.model.Patient;
 import com.muzima.view.ClientObservationsActivity;
+import com.muzima.view.forms.PatientFormsActivity;
 
 public class PatientSummaryActivity extends Activity {
     public static final String PATIENT_ID = "patientId";
+
+    private String patientId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -21,16 +25,19 @@ public class PatientSummaryActivity extends Activity {
 		setContentView(R.layout.activity_client_summary);
 		// Show the Up button in the action bar.
 		setupActionBar();
-	}
+
+        Bundle intentExtras = getIntent().getExtras();
+        if(intentExtras != null){
+            patientId = intentExtras.getString(PATIENT_ID);
+        }
+    }
 
 	/**
 	 * Set up the {@link android.app.ActionBar}.
 	 */
 	private void setupActionBar() {
-
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setTitle("♀ Client Name, ID#");
-
 	}
 
 	@Override
@@ -57,29 +64,11 @@ public class PatientSummaryActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void showReminders(View v) {
-	    PopupMenu popup = new PopupMenu(this, v);
-	    MenuInflater inflater = popup.getMenuInflater();
-	    inflater.inflate(R.menu.reminders, popup.getMenu());
-	    popup.show();
-	}
-	public void showRecommended(View v) {
-	    PopupMenu popup = new PopupMenu(this, v);
-	    MenuInflater inflater = popup.getMenuInflater();
-	    inflater.inflate(R.menu.reminders, popup.getMenu());
-	    popup.show();
-	}
-	public void showIncomplete(View v) {
-	    PopupMenu popup = new PopupMenu(this, v);
-	    MenuInflater inflater = popup.getMenuInflater();
-	    inflater.inflate(R.menu.reminders, popup.getMenu());
-	    popup.show();
-	}
 	public void showForms(View v) {
-	    PopupMenu popup = new PopupMenu(this, v);
-	    MenuInflater inflater = popup.getMenuInflater();
-	    inflater.inflate(R.menu.form_list, popup.getMenu());
-	    popup.show();
+        Intent intent = new Intent(this, PatientFormsActivity.class);
+        intent.putExtra(PatientSummaryActivity.PATIENT_ID, patientId);
+        startActivity(intent);
+        overridePendingTransition(R.anim.push_in_from_right, R.anim.push_out_to_left);
 	}
 	/** Called when the user clicks the Clients Encounters Button or Search Clients Observations Button */
 	public void clientObservations(View view) {

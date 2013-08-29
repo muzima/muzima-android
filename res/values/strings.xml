@@ -11,8 +11,12 @@
 
     <string name="provider">Provider</string>
     <string name="search_clients">Search Clients</string>
+    <string name="search_observations">Search Observations</string>
     <string name="register_new_patient">Register Patient</string>
+    <string name="view_encounters">View Encounters</string>
     <string name="cohorts">Cohorts</string>
+    <string name="reminders">Reminders</string>
+    <string name="observations">Observations</string>
     <string name="patients">Patients</string>
     <string name="forms">Forms</string>
     <string name="notices">Notices</string>

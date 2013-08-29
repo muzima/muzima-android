@@ -37,7 +37,7 @@ public class CohortActivity extends SherlockFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cohort);
+        setContentView(R.layout.activity_with_pager);
         initPager();
         initPagerIndicator();
     }
