@@ -71,15 +71,15 @@
     <string name="textview_formlist_title">Form List:</string>
     <string name="textview_formlist_blank_forms">Blank Forms</string>
     <string name="textview_formlist_incomplete_forms">Incomplete Forms:</string>
-	<string name="radio_button_register_male">Male</string>
-	<string name="radio_button_register_female">Female</string>
-	<string name="textview_register_given_name">Given:</string>
-	<string name="textview_register_middle_name">Middle:</string>
-	<string name="textview_register_family_name">Family:</string>
-	<string name="textview_register_birthdate">Birthdate:</string>
-	<string name="textview_register_birthdate_format">dd/mm/yyyy:</string>
-	<string name="textview_register_identifier">Identifier:</string>
-	<string name="textview_register_patient_identifier">Patient Identifier:</string>
+    <string name="radio_button_register_male">Male</string>
+    <string name="radio_button_register_female">Female</string>
+    <string name="textview_register_given_name">Given:</string>
+    <string name="textview_register_middle_name">Middle:</string>
+    <string name="textview_register_family_name">Family:</string>
+    <string name="textview_register_birthdate">Birthdate:</string>
+    <string name="textview_register_birthdate_format">dd/mm/yyyy:</string>
+    <string name="textview_register_identifier">Identifier:</string>
+    <string name="textview_register_patient_identifier">Patient Identifier:</string>
 
     <string name="drawer_open">Tags drawer open</string>
     <string name="drawer_close">Tags drawer close</string>
@@ -108,4 +108,5 @@
     <string name="cohort_prefix_label">Prefix:</string>
     <string name="cohort_add_prefix_hint">Add Prefix</string>
 
+    <string name="no_observations_available">No Observations Available</string>
 </resources>
