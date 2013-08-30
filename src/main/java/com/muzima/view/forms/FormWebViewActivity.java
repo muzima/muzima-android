@@ -14,6 +14,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Form;
+import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.controller.FormController;
 
@@ -23,18 +24,19 @@ import static java.text.MessageFormat.format;
 
 public class FormWebViewActivity extends SherlockFragmentActivity {
     private static final String TAG = "FormWebViewActivity";
-    public static final String FORM_ID = "formId";
-    public static final String PATIENT_ID = "patientId";
-    public static final String FORM_INTERFACE = "formInterface";
+    public static final String FORM_UUID = "formId";
+    public static final String FORM_DATA_UUID = "formId";
+    public static final String FORM_INSTANCE = "formInstance";
     public static final String REPOSITORY = "formDataRepositoryContext";
     public static final String ZIGGY_FILE_LOADER = "ziggyFileLoader";
 
 
     private WebView webView;
-    private String patientId;
+    private String formDataUuid;
     private Form form;
     private FormTemplate formTemplate;
     private ProgressDialog progressDialog;
+    private FormData formData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +49,20 @@ public class FormWebViewActivity extends SherlockFragmentActivity {
         } catch (FormFetchException e) {
             Log.e(TAG, e.getMessage());
             finish();
+        } catch (FormController.FormDataFetchException e) {
+            Log.e(TAG, e.getMessage());
+            finish();
         }
     }
 
-    private void setupFormData() throws FormFetchException {
+    private void setupFormData() throws FormFetchException, FormController.FormDataFetchException {
         Intent intent = getIntent();
-        String formId = intent.getStringExtra(FORM_ID);
-        patientId = intent.getStringExtra(PATIENT_ID);
+        String formId = intent.getStringExtra(FORM_UUID);
+        formDataUuid = intent.getStringExtra(FORM_DATA_UUID);
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
         form = formController.getFormByUuid(formId);
         formTemplate = formController.getFormTemplateByUuid(formId);
+        formData = formController.getFormDataByUuid(formDataUuid);
     }
 
     private void setupWebView() {
@@ -89,10 +95,11 @@ public class FormWebViewActivity extends SherlockFragmentActivity {
         webView.getSettings().setDatabaseEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
 
-        FormWebInterface formWebInterface = new FormWebInterface(form, formTemplate);
-        webView.addJavascriptInterface(formWebInterface, FORM_INTERFACE);
-        webView.addJavascriptInterface(new FormDataRepository(), REPOSITORY);
-        webView.addJavascriptInterface(new ZiggyFileLoader("www/ziggy", "www/form", getApplicationContext().getAssets(), formWebInterface.getModelJson()), ZIGGY_FILE_LOADER);
+        FormInstance formInstance = new FormInstance(form, formTemplate);
+        webView.addJavascriptInterface(formInstance, FORM_INSTANCE);
+        FormController formController = ((MuzimaApplication) getApplication()).getFormController();
+        webView.addJavascriptInterface(new FormDataRepository(formController, formData), REPOSITORY);
+        webView.addJavascriptInterface(new ZiggyFileLoader("www/ziggy", "www/form", getApplicationContext().getAssets(), formInstance.getModelJson()), ZIGGY_FILE_LOADER);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.loadUrl("file:///android_asset/www/enketo/template.html");
     }

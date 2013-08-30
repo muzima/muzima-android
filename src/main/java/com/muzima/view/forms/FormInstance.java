@@ -5,12 +5,12 @@ import android.util.Log;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormTemplate;
 
-public class FormWebInterface {
-    private static final String TAG = "FormWebInterface";
+public class FormInstance {
+    private static final String TAG = "FormInstance";
     private final Form form;
     private final FormTemplate formTemplate;
 
-    public FormWebInterface(Form form, FormTemplate formTemplate) {
+    public FormInstance(Form form, FormTemplate formTemplate) {
         this.form = form;
         this.formTemplate = formTemplate;
     }
@@ -35,14 +35,8 @@ public class FormWebInterface {
         return formTemplate.getHtml();
     }
 
-
-
-//    public void goBack() {
-//        activity.setResult(FORM_SUCCESSFULLY_SUBMITTED_RESULT_CODE);
-//        activity.finish();
-//    }
-
     public void log(String message) {
         Log.d(TAG, message);
     }
+
 }

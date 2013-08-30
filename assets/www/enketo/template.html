@@ -29,7 +29,7 @@
 			settings['supportEmail'] = '';
 			settings['returnURL'] = '';
 
-			var modelStr = formInterface.getModel();
+			var modelStr = formInstance.getModel();
 		</script>
 	</head>
 	<body>
@@ -91,7 +91,7 @@
 				<div class="form-header clearfix"><span class="form-language-selector"><span>Choose Language</span></span></div>
 				
 				<script>
-					document.write(formInterface.getHTML());
+					document.write(formInstance.getHTML());
 				</script>
 
                 <div><button id="draft-form" class="btn btn-info btn-large">Save Draft</button></div>

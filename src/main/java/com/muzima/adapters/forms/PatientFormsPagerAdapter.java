@@ -12,6 +12,7 @@ import com.muzima.view.forms.DownloadedFormsListFragment;
 import com.muzima.view.forms.FormsListFragment;
 import com.muzima.view.forms.IncompleteFormsListFragment;
 import com.muzima.view.forms.NewFormsListFragment;
+import com.muzima.view.forms.RecommendedFormsListFragment;
 import com.muzima.view.forms.SyncedFormsListFragment;
 
 public class PatientFormsPagerAdapter extends MuzimaPagerAdapter{
@@ -30,7 +31,7 @@ public class PatientFormsPagerAdapter extends MuzimaPagerAdapter{
         FormController formController = ((MuzimaApplication) context.getApplicationContext()).getFormController();
 
         IncompleteFormsListFragment incompleteFormsListFragment = IncompleteFormsListFragment.newInstance(formController);
-        CompleteFormsListFragment recommendedFormsListFragment = CompleteFormsListFragment.newInstance(formController);
+        RecommendedFormsListFragment recommendedFormsListFragment = RecommendedFormsListFragment.newInstance(formController);
         CompleteFormsListFragment completeFormsListFragment = CompleteFormsListFragment.newInstance(formController);
         SyncedFormsListFragment syncedFormsListFragment = SyncedFormsListFragment.newInstance(formController);
 
