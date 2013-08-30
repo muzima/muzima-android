@@ -1,6 +1,7 @@
 package com.muzima.controller;
 
 import com.muzima.api.model.Form;
+import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Tag;
 import com.muzima.api.service.FormService;
@@ -223,6 +224,22 @@ public class FormController {
         this.selectedTags = selectedTags;
     }
 
+    public FormData getFormDataByUuid(String formDataUuid) throws FormDataFetchException {
+        try {
+            return formService.getFormDataByUuid(formDataUuid);
+        } catch (IOException e) {
+            throw new FormDataFetchException(e);
+        }
+    }
+
+    public void saveFormData(FormData formData) throws FormDataSaveException {
+        try {
+            formService.saveFormData(formData);
+        } catch (IOException e) {
+            throw new FormDataSaveException(e);
+        }
+    }
+
     public static class FormFetchException extends Throwable {
         public FormFetchException(Throwable throwable) {
             super(throwable);
@@ -237,6 +254,18 @@ public class FormController {
 
     public static class FormDeleteException extends Throwable {
         public FormDeleteException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+
+    public static class FormDataFetchException extends Throwable {
+        public FormDataFetchException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+
+    public static class FormDataSaveException extends Throwable {
+        public FormDataSaveException(Throwable throwable) {
             super(throwable);
         }
     }

@@ -21,7 +21,7 @@ public class ZiggyFileLoader {
         formModelJson = modelJson;
     }
 
-//    @JavascriptInterface
+    //    @JavascriptInterface
     public String getJSFiles() throws IOException, URISyntaxException {
         StringBuilder builder = new StringBuilder();
         String[] fileNames = assetManager.list(ziggyDirectoryPath);
@@ -33,14 +33,10 @@ public class ZiggyFileLoader {
         return builder.toString();
     }
 
-//    @JavascriptInterface
+    //    @JavascriptInterface
     public String loadAppData(String fileName) {
-        if(fileName.equals("entity_relationship.json")){
-            try {
-                return readFileFromAssets(formDirectoryPath + "/" + fileName);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if ("entity_relationship.json".equals(fileName)) {
+            return "[]";
         }
         return formModelJson;
     }

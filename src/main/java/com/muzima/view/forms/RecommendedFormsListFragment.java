@@ -8,14 +8,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.muzima.R;
+import com.muzima.adapters.forms.DownloadedFormsAdapter;
 import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
-import com.muzima.adapters.forms.*;
 
-public class DownloadedFormsListFragment extends FormsListFragment implements NewFormsListFragment.OnTemplateDownloadComplete{
+public class RecommendedFormsListFragment extends FormsListFragment implements NewFormsListFragment.OnTemplateDownloadComplete{
 
-    public static DownloadedFormsListFragment newInstance(FormController formController) {
-        DownloadedFormsListFragment f = new DownloadedFormsListFragment();
+    public static RecommendedFormsListFragment newInstance(FormController formController) {
+        RecommendedFormsListFragment f = new RecommendedFormsListFragment();
         f.formController = formController;
         f.setRetainInstance(true);
         return f;

@@ -1,6 +1,7 @@
 package com.muzima.controller;
 
 import com.muzima.api.model.Form;
+import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Tag;
 import com.muzima.api.service.FormService;
@@ -8,7 +9,6 @@ import com.muzima.builder.FormBuilder;
 import com.muzima.builder.FormTemplateBuilder;
 import com.muzima.builder.TagBuilder;
 import com.muzima.search.api.util.StringUtil;
-
 import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,20 +17,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.muzima.controller.FormController.FormDeleteException;
-import static com.muzima.controller.FormController.FormFetchException;
-import static com.muzima.controller.FormController.FormSaveException;
+import static com.muzima.controller.FormController.*;
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.hasItem;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class FormControllerTest {
     private FormController formController;
@@ -260,6 +253,41 @@ public class FormControllerTest {
         when(formService.getFormByUuid(uuid)).thenReturn(forms.get(0));
 
         assertThat(formController.getFormByUuid(uuid), is(forms.get(0)));
+    }
+
+    @Test
+    public void getFormDataByUuid_shouldReturnFormDataForAGivenId() throws Exception, FormDataFetchException {
+        FormData formData = new FormData();
+        String uuid = "uuid";
+
+        when(formService.getFormDataByUuid(uuid)).thenReturn(formData);
+
+        assertThat(formController.getFormDataByUuid(uuid), is(formData));
+    }
+
+    @Test(expected = FormController.FormDataFetchException.class)
+    public void getFormDataByUuid_shouldThrowFormDataFetchExceptionIfFormServiceThrowAnException() throws Exception, FormDataFetchException {
+        String uuid = "uuid";
+        doThrow(new IOException()).when(formService).getFormDataByUuid(uuid);
+
+        formController.getFormDataByUuid(uuid);
+    }
+
+    @Test
+    public void saveFormData_shouldSaveFormData() throws Exception, FormDataSaveException {
+        FormData formData = new FormData();
+
+        formController.saveFormData(formData);
+
+        verify(formService).saveFormData(formData);
+    }
+
+    @Test(expected = FormDataSaveException.class)
+    public void saveFormData_shouldThrowFormDataSaveExceptionIfExceptionThrownByFormService() throws Exception, FormDataSaveException {
+        FormData formData = new FormData();
+
+        doThrow(new IOException()).when(formService).saveFormData(formData);
+        formController.saveFormData(formData);
     }
 
     private List<Form> buildForms() {
