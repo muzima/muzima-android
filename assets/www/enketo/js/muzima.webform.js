@@ -17,59 +17,50 @@
 /*jslint browser:true, devel:true, jquery:true, smarttabs:true, sub:true *//*global vkbeautify, gui, FormDataController, modelStr, StorageLocal, FileManager, Form*/
 
 var /**@type {Form}*/form;
-var /**@type {Connection}*/connection;
 var /**@type {*}*/fileManager;
 
-$(document).ready(function() {
-	'use strict';
-	var formParts, existingInstanceJ, instanceToEdit, loadErrors, jsonErrors, jDataO,
-		queryParams = helper.getAllQueryParams(),
-		formDataController = new FormDataController(queryParams);
+$(document).ready(function () {
+    'use strict';
+    var existingInstanceJ, instanceToEdit, loadErrors, jDataO,
+        queryParams = helper.getAllQueryParams(),
+        formDataController = new FormDataController(queryParams);
 
-	connection = new Connection();
-	existingInstanceJ = formDataController.get();
+    existingInstanceJ = formDataController.get();
 
-	if (!existingInstanceJ){
-		$('form.jr').remove();
-		return gui.alert('Instance with id "'+settings.instanceId+'" could not be found.');
-	}
+    if (!existingInstanceJ) {
+        $('form.jr').remove();
+        return gui.alert('Instance with id "' + settings.instanceId + '" could not be found.');
+    }
 
-	jDataO = new JData(existingInstanceJ);
-	instanceToEdit = jDataO.toXML();
-	console.debug('instance to edit: ', instanceToEdit);
-	form = new Form('form.jr:eq(0)', modelStr, instanceToEdit);
+    jDataO = new JData(existingInstanceJ);
+    instanceToEdit = jDataO.toXML();
+    form = new Form('form.jr:eq(0)', modelStr, instanceToEdit);
 
-	loadErrors = form.init();
+    loadErrors = form.init();
 
-	//controller for submission of data to drishti
-    $(document).on('click', 'button#submit-form', function () {
-        console.error('>>submit clicked!');
-        var jData, saveResult;
+    function save() {
+        var jData = jDataO.get();
+        delete jData.errors;
+        formDataController.save(form.getInstanceID(), jData);
+    }
+
+    //controller for submission of data to drishti
+    $(document).on('click', 'button#draft-form', function () {
         if (typeof form !== 'undefined') {
-            console.error('>>validating form');
+            save();
+        }
+    });
+    //controller for submission of data to drishti
+    $(document).on('click', 'button#submit-form', function () {
+        if (typeof form !== 'undefined') {
             form.validateForm();
-            console.error('>>form validated');
             if (!form.isValid()) {
                 gui.alert('Form contains errors <br/>(please see fields marked in red)');
                 return;
             }
             else {
-                jData = jDataO.get();
-                delete jData.errors;
-                saveResult = formDataController.save(form.getInstanceID(), jData);
+                save();
             }
         }
     });
 });
-
-/**
- * Connection Class (this can probably be removed - it is kept in for the google maps script only)
- * @constructor
- */
-function Connection (){
-	/**
-	* Loads a google maps API v3 script
-	* @param  {Function} callback function to call when script has been loaded and added to DOM
-	*/
-	this.loadGoogleMaps = function(callback){};
-}
