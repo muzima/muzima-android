@@ -73,7 +73,7 @@ function Form (formSelector, dataStr, dataStrToEdit){
         //profiler.report();
         
         if (loadErrors.length > 0){
-            console.error('loadErrors: ',loadErrors);
+            console.error('loadErrors: ',JSON.stringify(loadErrors));
         }
         return loadErrors;
     };
@@ -420,7 +420,7 @@ function Form (formSelector, dataStr, dataStrToEdit){
             var typeValid, exprValid,
                 value = this.getVal()[0];
 
-            if (value.toString() === '') {
+            if (!value || value.toString() === '') {
                 return true;
             }
 
