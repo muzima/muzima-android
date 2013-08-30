@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortPrefixPrefAdapter;
+import com.muzima.adapters.cohort.SettingsBaseAdapter;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -19,7 +20,7 @@ import java.util.TreeSet;
 import static com.muzima.utils.Constants.COHORT_PREFIX_PREF;
 import static com.muzima.utils.Constants.COHORT_PREFIX_PREF_KEY;
 
-public class CohortPrefActivity extends SherlockActivity implements CohortPrefixPrefAdapter.PrefixClickListener{
+public class CohortPrefActivity extends SherlockActivity implements SettingsBaseAdapter.PreferenceClickListener {
 
     private CohortPrefixPrefAdapter prefAdapter;
     private EditText addPrefixEditText;
@@ -30,8 +31,8 @@ public class CohortPrefActivity extends SherlockActivity implements CohortPrefix
         setContentView(R.layout.activity_cohort_pref);
 
         ListView cohortPrefList = (ListView) findViewById(R.id.cohort_pref_list);
-        prefAdapter = new CohortPrefixPrefAdapter(this, R.layout.item_cohorts_list_pref);
-        prefAdapter.setPrefixClickListener(this);
+        prefAdapter = new CohortPrefixPrefAdapter(this, R.layout.item_preference);
+        prefAdapter.setPreferenceClickListener(this);
         cohortPrefList.setEmptyView(findViewById(R.id.no_data_msg));
         cohortPrefList.setAdapter(prefAdapter);
 
@@ -65,10 +66,10 @@ public class CohortPrefActivity extends SherlockActivity implements CohortPrefix
     }
 
     @Override
-    public void onDeletePrefixClick(String prefix) {
+    public void onDeletePreferenceClick(String pref) {
         SharedPreferences cohortSharedPref = getSharedPreferences(COHORT_PREFIX_PREF, MODE_PRIVATE);
         Set<String> prefixes = new HashSet<String>(cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>()));
-        prefixes.remove(prefix);
+        prefixes.remove(pref);
 
         SharedPreferences.Editor editor = cohortSharedPref.edit();
         editor.putStringSet(COHORT_PREFIX_PREF_KEY, prefixes);
@@ -78,7 +79,7 @@ public class CohortPrefActivity extends SherlockActivity implements CohortPrefix
     }
 
     @Override
-    public void onChangePrefixClick(String prefix) {
+    public void onChangePreferenceClick(String pref) {
         //save prefix
         //notify list
     }

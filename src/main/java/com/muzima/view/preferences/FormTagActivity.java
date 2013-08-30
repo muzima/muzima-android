@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.muzima.R;
 import com.muzima.adapters.cohort.FormTagPrefAdapter;
+import com.muzima.adapters.cohort.SettingsBaseAdapter;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -17,7 +18,7 @@ import java.util.TreeSet;
 
 import static com.muzima.utils.Constants.*;
 
-public class FormTagActivity extends SherlockActivity implements FormTagPrefAdapter.TagClickListener {
+public class FormTagActivity extends SherlockActivity implements SettingsBaseAdapter.PreferenceClickListener {
 
     private FormTagPrefAdapter prefAdapter;
     private EditText addTagEditText;
@@ -28,8 +29,8 @@ public class FormTagActivity extends SherlockActivity implements FormTagPrefAdap
         setContentView(R.layout.activity_form_tags);
 
         ListView tagsList = (ListView) findViewById(R.id.tags_list);
-        prefAdapter = new FormTagPrefAdapter(this, R.layout.item_cohorts_list_pref);
-        prefAdapter.setTagClickListener(this);
+        prefAdapter = new FormTagPrefAdapter(this, R.layout.item_preference);
+        prefAdapter.setPreferenceClickListener(this);
         tagsList.setEmptyView(findViewById(R.id.no_data_msg));
         tagsList.setAdapter(prefAdapter);
 
@@ -63,7 +64,7 @@ public class FormTagActivity extends SherlockActivity implements FormTagPrefAdap
     }
 
     @Override
-    public void onDeleteTagClick(String tag) {
+    public void onDeletePreferenceClick(String tag) {
         SharedPreferences sharedPreferences = getSharedPreferences(FORM_TAG_PREF, MODE_PRIVATE);
         Set<String> tags = new HashSet<String>(sharedPreferences.getStringSet(FORM_TAG_PREF_KEY, new HashSet<String>()));
         tags.remove(tag);
@@ -76,7 +77,7 @@ public class FormTagActivity extends SherlockActivity implements FormTagPrefAdap
     }
 
     @Override
-    public void onChangeTagClick(String tag) {
+    public void onChangePreferenceClick(String tag) {
         //save prefix
         //notify list
     }
