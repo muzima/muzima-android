@@ -204,6 +204,16 @@ public class FormController {
     public void setSelectedTags(List<Tag> selectedTags) {
         this.selectedTags = selectedTags;
     }
+    public List<Form> downloadFormsByTags(List<String> tags) throws FormFetchException {
+        try {
+            //TODO replace with downloadFormsByTags later
+            return formService.downloadFormsByName(StringUtil.EMPTY) ;
+        } catch (IOException e) {
+            throw new FormFetchException(e);
+        } catch (ParseException e) {
+            throw new FormFetchException(e);
+        }
+    }
 
     public FormData getFormDataByUuid(String formDataUuid) throws FormDataFetchException {
         try {

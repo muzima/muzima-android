@@ -6,17 +6,12 @@ import android.util.Log;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Cohort;
-import com.muzima.api.model.Form;
 import com.muzima.controller.CohortController;
-import com.muzima.controller.FormController;
-import com.muzima.search.api.util.StringUtil;
 import com.muzima.tasks.DownloadMuzimaTask;
 import com.muzima.utils.Constants;
 import com.muzima.view.cohort.AllCohortsListFragment;
-import com.muzima.view.forms.NewFormsListFragment;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -45,7 +40,7 @@ public class DownloadCohortTask extends DownloadMuzimaTask {
 
         CohortController cohortController = muzimaApplicationContext.getCohortController();
 
-        List<String> cohortPrefixes = getCohortPrefixes(muzimaApplicationContext, values);
+        List<String> cohortPrefixes = getCohortPrefixes(muzimaApplicationContext);
 
         try {
             List<Cohort> cohorts;
@@ -81,9 +76,9 @@ public class DownloadCohortTask extends DownloadMuzimaTask {
         return result;
     }
 
-    private List<String> getCohortPrefixes(MuzimaApplication muzimaApplicationContext, String[][] values) {
+    private List<String> getCohortPrefixes(MuzimaApplication muzimaApplicationContext) {
         SharedPreferences cohortSharedPref = muzimaApplicationContext.getSharedPreferences(COHORT_PREFIX_PREF, Context.MODE_PRIVATE);
-        Set<String> prefixes = new HashSet<String>(cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>()));
+        Set<String> prefixes = cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>());
         return new ArrayList<String>(prefixes);
     }
 

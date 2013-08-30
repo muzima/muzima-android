@@ -11,8 +11,7 @@ import com.muzima.tasks.DownloadMuzimaTask;
 import com.muzima.utils.Constants;
 import com.muzima.view.forms.NewFormsListFragment;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class DownloadFormMetadataTask extends DownloadMuzimaTask {
     private static final String TAG = "DownloadFormMetadataTask";
@@ -33,9 +32,15 @@ public class DownloadFormMetadataTask extends DownloadMuzimaTask {
         }
 
         FormController formController = muzimaApplicationContext.getFormController();
+        List<String> tags = getTags(muzimaApplicationContext);
 
         try {
-            List<Form> forms = formController.downloadAllForms();
+            List<Form> forms;
+            if (tags.isEmpty()) {
+                forms = formController.downloadAllForms();
+            } else {
+                forms = formController.downloadFormsByTags(tags);
+            }
             Log.i(TAG, "Form download successful, " + isCancelled());
             if (checkIfTaskIsCancelled(result)) return result;
 
@@ -61,6 +66,12 @@ public class DownloadFormMetadataTask extends DownloadMuzimaTask {
             return result;
         }
         return result;
+    }
+
+    private List<String> getTags(MuzimaApplication muzimaApplicationContext) {
+        SharedPreferences sharedPreferences = muzimaApplicationContext.getSharedPreferences(Constants.FORM_TAG_PREF, Context.MODE_PRIVATE);
+        Set<String> tags = sharedPreferences.getStringSet(Constants.FORM_TAG_PREF_KEY, new HashSet<String>());
+        return new ArrayList<String>(tags);
     }
 
     @Override
