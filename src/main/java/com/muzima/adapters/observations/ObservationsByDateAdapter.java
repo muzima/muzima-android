@@ -24,7 +24,7 @@ public class ObservationsByDateAdapter extends ObservationsAdapter {
 
     @Override
     public void reloadData() {
-        new BackgroundQueryTask().execute();
+        new BackgroundQueryTask().execute(patientUuid);
     }
 
     public class BackgroundQueryTask extends AsyncTask<String, Void, List<Observation>> {

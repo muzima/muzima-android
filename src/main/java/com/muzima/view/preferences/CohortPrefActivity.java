@@ -57,7 +57,7 @@ public class CohortPrefActivity extends SherlockActivity implements CohortPrefix
             editor.putStringSet(COHORT_PREFIX_PREF_KEY, copiedPrefixesSet);
             editor.commit();
         }else{
-            Toast.makeText(this, "Prefix already exist", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Prefix already exists", Toast.LENGTH_SHORT).show();
         }
 
         prefAdapter.reloadData();

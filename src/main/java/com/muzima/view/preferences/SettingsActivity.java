@@ -15,7 +15,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     private String serverPreferenceKey;
     private String usernamePreferenceKey;
     private String passwordPreferenceKey;
-    private String cohortPrefixPreferenceKey;
 
     private EditTextPreference serverPreference;
     private EditTextPreference usernamePreference;

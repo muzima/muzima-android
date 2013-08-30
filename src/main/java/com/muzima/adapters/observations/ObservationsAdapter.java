@@ -1,6 +1,7 @@
 package com.muzima.adapters.observations;
 
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,10 @@ public abstract class  ObservationsAdapter extends ListAdapter<Observation> {
     protected final String patientUuid;
     protected ObservationController observationController;
 
-    public ObservationsAdapter(Context context, int textViewResourceId, ObservationController observationController) {
+    public ObservationsAdapter(FragmentActivity context, int textViewResourceId, ObservationController observationController) {
         super(context, textViewResourceId);
         this.observationController = observationController;
-        patientUuid = activity.getIntent().getStringExtra(PatientSummaryActivity.PATIENT_ID);
+        patientUuid = context.getIntent().getStringExtra(PatientSummaryActivity.PATIENT_ID);
     }
 
     @Override
