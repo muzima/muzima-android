@@ -32,7 +32,9 @@ public class DownloadCohortDataTask extends DownloadMuzimaTask {
         PatientController patientController = muzimaApplicationContext.getPatientController();
         int patientCount = 0;
         try{
+            long i = System.currentTimeMillis();
             List<CohortData> cohortDataList = cohortController.downloadCohortData(values[1]);
+            long downloadTime = System.currentTimeMillis();
             Log.i(TAG, "Cohort data download successful with " + cohortDataList.size() + " cohorts");
 
             if (checkIfTaskIsCancelled(result)) return result;
@@ -42,8 +44,12 @@ public class DownloadCohortDataTask extends DownloadMuzimaTask {
                 patientController.replacePatients(cohortData.getPatients());
                 patientCount += cohortData.getPatients().size();
             }
+            long cohortMemberAndPatientReplaceTime = System.currentTimeMillis();
 
             Log.i(TAG, "Cohort data replaced");
+            Log.d(TAG, "Time Taken:\n " +
+                    "In Downloading data: " + (downloadTime - i)/1000 + " sec\n" +
+                    "In Replacing cohort members and patients: " + (cohortMemberAndPatientReplaceTime - downloadTime)/1000 + " sec");
             Log.i(TAG, "Patients downloaded " + patientCount);
 
             result[0] = SUCCESS;

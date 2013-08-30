@@ -1,123 +1,190 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="@style/DashboardTableContainer"
-    tools:context=".ClientSummaryActivity" >
+              style="@style/DashboardTableContainer">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Demographics\n\n"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold" >
-    </TextView>
+            android:id="@+id/providerName"
+            style="@style/DashboardTitleText"
+            android:text="Demographics"/>
 
-    <LinearLayout style="@style/SummaryItemRow" >
+    <LinearLayout style="@style/SummaryItemRow">
 
-        <LinearLayout
-            android:id="@+id/quickSearch"
-            style="@style/DashboardTextButton"
-            android:onClick="clientObservations" >
+        <TextView
+                style="@style/DashboardTextButton"
+                android:drawableLeft="@drawable/ic_search"
+                android:singleLine="true"
+                android:text="Search Observations">
+        </TextView>
 
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_search" />
+        <TextView
+                style="@style/DashboardTextButton"
+                android:drawableLeft="@drawable/ic_list"
+                android:singleLine="true"
+                android:text="View Encounter List">
+        </TextView>
+
+    </LinearLayout>
+
+    <View style="@style/DividerLine">
+    </View>
+
+    <LinearLayout
+            style="@style/ClickableSummaryItem">
+
+        <LinearLayout style="@style/SummaryItemRow">
+
 
             <TextView
-                style="@style/DashboardBaseText"
-                android:paddingLeft="4dp"
-                android:text="Search\nObservations" >
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".7"
+                    android:gravity="left"
+                    android:text="Reminders"
+                    android:textColor="#eeeeee"
+                    android:textAppearance="?android:attr/textAppearanceLarge">
+            </TextView>
+
+            <TextView
+                    android:id="@+id/cohortsCount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".7"
+                    android:gravity="right"
+                    android:text="##"
+                    android:textColor="#eeeeee"
+                    android:textAppearance="?android:attr/textAppearanceLarge">
             </TextView>
         </LinearLayout>
 
-        <LinearLayout
-            style="@style/DashboardTextButton"
-            android:onClick="clientObservations" >
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
+        <TextView
+                android:id="@+id/cohortDescription"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_list" />
+                style="@style/DashboardBaseText"
+                android:text="##">
+        </TextView>
+
+    </LinearLayout>
+
+    <View style="@style/DividerLine">
+    </View>
+
+    <LinearLayout
+            style="@style/ClickableSummaryItem">
+
+        <LinearLayout style="@style/SummaryItemRow">
 
             <TextView
-                style="@style/DashboardBaseText"
-                android:paddingLeft="4dp"
-                android:text="View\nEnounter List" >
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".7"
+                    android:gravity="left"
+                    android:text="Incomplete Forms"
+                    android:textColor="#eeeeee"
+                    android:textAppearance="?android:attr/textAppearanceLarge">
+            </TextView>
+
+            <TextView
+                    android:id="@+id/patientsCount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".7"
+                    android:gravity="right"
+                    android:text="##"
+                    android:textColor="#eeeeee"
+                    android:textAppearance="?android:attr/textAppearanceLarge">
             </TextView>
         </LinearLayout>
+
+        <TextView
+                android:id="@+id/patientDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/DashboardBaseText"
+                android:text="##">
+        </TextView>
+
     </LinearLayout>
 
-    <LinearLayout style="@style/DividerLineLight" >
+    <View style="@style/DividerLine">
+    </View>
+
+    <LinearLayout
+            style="@style/ClickableSummaryItem">
+
+        <LinearLayout style="@style/SummaryItemRow">
+
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".7"
+                    android:gravity="left"
+                    android:text="Recommended Forms"
+                    android:textColor="#eeeeee"
+                    android:textAppearance="?android:attr/textAppearanceLarge">
+            </TextView>
+
+            <TextView
+                    android:id="@+id/formsCount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".7"
+                    android:gravity="right"
+                    android:text="##"
+                    android:textColor="#eeeeee"
+                    android:textAppearance="?android:attr/textAppearanceLarge">
+            </TextView>
+        </LinearLayout>
+
+        <TextView
+                android:id="@+id/formDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/DashboardBaseText"
+                android:text="##">
+        </TextView>
+
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:clickable="true"
-        android:drawableRight="@drawable/ic_dropdown"
-        android:onClick="showReminders"
-        android:padding="8dp"
-        android:text="Reminders (2)"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        >
-    </TextView>
+    <View style="@style/DividerLine">
+    </View>
 
-    <LinearLayout style="@style/DividerLineLight" >
+    <LinearLayout
+            style="@style/ClickableSummaryItem">
+
+        <LinearLayout style="@style/SummaryItemRow">
+
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".7"
+                    android:gravity="left"
+                    android:text="Observations"
+                    android:textColor="#eeeeee"
+                    android:textAppearance="?android:attr/textAppearanceLarge">
+            </TextView>
+
+            <TextView
+                    android:id="@+id/noticesCount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".7"
+                    android:gravity="right"
+                    android:text="##"
+                    android:textColor="#eeeeee"
+                    android:textAppearance="?android:attr/textAppearanceLarge">
+            </TextView>
+        </LinearLayout>
+
+        <TextView
+                android:id="@+id/noticesDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/DashboardBaseText"
+                android:text="##">
+        </TextView>
+
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:drawableRight="@drawable/ic_dropdown"
-        android:onClick="showRecommended"
-        android:padding="8dp"
-        android:text="Recommended Forms (3)"
-        android:textAppearance="?android:attr/textAppearanceLarge" >
-    </TextView>
-
-    <LinearLayout style="@style/DividerLineLight" >
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:drawableRight="@drawable/ic_dropdown"
-        android:onClick="showIncomplete"
-        android:padding="8dp"
-        android:text="Incomplete Forms (2)"
-        android:textAppearance="?android:attr/textAppearanceLarge" >
-    </TextView>
-
-    <LinearLayout style="@style/DividerLineLight" >
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:drawableRight="@drawable/ic_dropdown"
-        android:onClick="showForms"
-        android:padding="8dp"
-        android:text="More Forms (8)"
-        android:textAppearance="?android:attr/textAppearanceLarge" >
-    </TextView>
-
-    <LinearLayout style="@style/DividerLineLight" >
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:text="Clinical Abstracts\n\n"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold" >
-    </TextView>
-
+    <View style="@style/DividerLine">
+    </View>
 </LinearLayout>

@@ -2,14 +2,9 @@ package com.muzima.controller;
 
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
-import com.muzima.api.model.CohortDefinition;
 import com.muzima.api.model.CohortMember;
-import com.muzima.api.model.Form;
-import com.muzima.api.model.FormTemplate;
 import com.muzima.api.service.CohortService;
-import com.muzima.builder.FormTemplateBuilder;
 import com.muzima.search.api.util.StringUtil;
-
 import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
 import org.junit.Ignore;

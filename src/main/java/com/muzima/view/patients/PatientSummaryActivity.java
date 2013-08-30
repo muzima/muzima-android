@@ -1,4 +1,4 @@
-package com.muzima.view;
+package com.muzima.view.patients;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -10,8 +10,10 @@ import android.view.View;
 import android.widget.PopupMenu;
 import android.support.v4.app.NavUtils;
 import com.muzima.R;
+import com.muzima.view.ClientObservationsActivity;
 
-public class ClientSummaryActivity extends Activity {
+public class PatientSummaryActivity extends Activity {
+    public static final String PATIENT_ID = "patientId";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

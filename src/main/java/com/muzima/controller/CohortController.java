@@ -24,14 +24,15 @@ public class CohortController {
             return cohortService.getAllCohorts();
         } catch (IOException e) {
             throw new CohortFetchException(e);
-        } catch (ParseException e) {
-            throw new CohortFetchException(e);
         }
     }
 
     public int getTotalCohortsCount() throws CohortFetchException {
-        //TODO count method should be added to cohortService
-        return getAllCohorts().size();
+        try {
+            return cohortService.countAllCohorts();
+        } catch (IOException e) {
+            throw new CohortFetchException(e);
+        }
     }
 
     public List<Cohort> downloadAllCohorts() throws CohortDownloadException {
@@ -102,9 +103,7 @@ public class CohortController {
 
     public void saveAllCohorts(List<Cohort> cohorts) throws CohortSaveException {
         try {
-            for (Cohort cohort : cohorts) {
-                cohortService.saveCohort(cohort);
-            }
+            cohortService.saveCohorts(cohorts);
         } catch (IOException e) {
             throw new CohortSaveException(e);
         }
@@ -113,13 +112,8 @@ public class CohortController {
 
     public void deleteAllCohorts() throws CohortDeleteException {
         try {
-            List<Cohort> allCohorts = cohortService.getAllCohorts();
-            for (Cohort cohort : allCohorts) {
-                cohortService.deleteCohort(cohort);
-            }
+            cohortService.deleteCohorts(cohortService.getAllCohorts());
         } catch (IOException e) {
-            throw new CohortDeleteException(e);
-        } catch (ParseException e) {
             throw new CohortDeleteException(e);
         }
     }
@@ -139,14 +133,12 @@ public class CohortController {
             List<Cohort> cohorts = cohortService.getAllCohorts();
             List<Cohort> syncedCohorts = new ArrayList<Cohort>();
             for (Cohort cohort : cohorts) {
-                if (!cohortService.getCohortMembers(cohort.getUuid()).isEmpty()) {
+                if (cohortService.countCohortMembers(cohort.getUuid()) > 0) {
                     syncedCohorts.add(cohort);
                 }
             }
             return syncedCohorts;
         } catch (IOException e) {
-            throw new CohortFetchException(e);
-        } catch (ParseException e) {
             throw new CohortFetchException(e);
         }
     }

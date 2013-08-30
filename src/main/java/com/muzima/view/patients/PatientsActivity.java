@@ -3,6 +3,9 @@ package com.muzima.view.patients;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -14,11 +17,13 @@ import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.patients.PatientsAdapter;
+import com.muzima.api.model.Cohort;
+import com.muzima.api.model.Patient;
 import com.muzima.utils.Fonts;
 import com.muzima.view.RegisterClientActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
-public class PatientsActivity extends SherlockActivity {
+public class PatientsActivity extends SherlockActivity implements AdapterView.OnItemClickListener{
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
     public static final String QUICK_SEARCH = "quickSearch";
@@ -120,6 +125,7 @@ public class PatientsActivity extends SherlockActivity {
                 ((MuzimaApplication) getApplicationContext()).getPatientController(),
                 cohortId);
         listView.setAdapter(cohortPatientsAdapter);
+        listView.setOnItemClickListener(this);
     }
 
     private void setupNoDataView() {
@@ -136,5 +142,14 @@ public class PatientsActivity extends SherlockActivity {
         noDataMsgTextView.setText(getResources().getText(R.string.no_patients_matched));
         TextView noDataTipTextView = (TextView) findViewById(R.id.no_data_tip);
         noDataTipTextView.setText(R.string.no_patients_matched_tip);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        Patient patient = cohortPatientsAdapter.getItem(position);
+        Intent intent = new Intent(this, PatientSummaryActivity.class);
+        intent.putExtra(PatientSummaryActivity.PATIENT_ID, patient.getUuid());
+        startActivity(intent);
+        overridePendingTransition(R.anim.push_in_from_right, R.anim.push_out_to_left);
     }
 }

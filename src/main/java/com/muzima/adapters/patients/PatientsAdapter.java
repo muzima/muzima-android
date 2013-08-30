@@ -6,8 +6,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
@@ -19,7 +22,7 @@ import java.util.List;
 
 import static com.muzima.utils.DateUtils.getFormattedDate;
 
-public class PatientsAdapter extends ListAdapter<Patient> {
+public class PatientsAdapter extends ListAdapter<Patient>{
     private static final String TAG = "PatientsAdapter";
     public static final String SEARCH = "search";
     private PatientController patientController;
@@ -105,6 +108,11 @@ public class PatientsAdapter extends ListAdapter<Patient> {
 
         @Override
         protected void onPostExecute(List<Patient> patients) {
+            if(patients == null){
+                Toast.makeText(getContext(), "Something went wrong while fetching patients from local repo", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             PatientsAdapter.this.clear();
 
             for (Patient patient : patients) {
