@@ -50,6 +50,13 @@ public class DownloadCohortDataTask extends DownloadMuzimaTask {
             }
             long cohortMemberAndPatientReplaceTime = System.currentTimeMillis();
 
+            Log.i(TAG, "Cohort data replaced");
+            Log.d(TAG, "Time Taken:\n " +
+                    "In Downloading cohort data: " + (endDownloadCohortData - startDownloadCohortData) / 1000 + " sec\n" +
+                    "In Replacing cohort members and patients: " + (cohortMemberAndPatientReplaceTime - endDownloadCohortData) / 1000 + " sec");
+            Log.i(TAG, "Patients downloaded " + patientCount);
+            Log.i(TAG, "Cohort data replaced");
+
 
             List<String> patientUuids = getPatientUuids(cohortDataList);
 
@@ -60,13 +67,6 @@ public class DownloadCohortDataTask extends DownloadMuzimaTask {
 
             observationController.replaceObservations(patientUuids, allObservations);
             long replacedObservations = System.currentTimeMillis();
-
-            Log.i(TAG, "Cohort data replaced");
-            Log.d(TAG, "Time Taken:\n " +
-                    "In Downloading cohort data: " + (endDownloadCohortData - startDownloadCohortData) / 1000 + " sec\n" +
-                    "In Replacing cohort members and patients: " + (cohortMemberAndPatientReplaceTime - endDownloadCohortData) / 1000 + " sec");
-            Log.i(TAG, "Patients downloaded " + patientCount);
-            Log.i(TAG, "Cohort data replaced");
 
             Log.d(TAG, "In Downloading observations : " + (endDownloadObservations - startDownloadObservations) / 1000 + " sec\n" +
                     "In Replacing observations for patients: " + (replacedObservations - endDownloadObservations) / 1000 + " sec");
@@ -95,9 +95,18 @@ public class DownloadCohortDataTask extends DownloadMuzimaTask {
 
     private ArrayList<Observation> getAllObservations(ObservationController observationController, List<String> patientUuids) throws ObservationController.DownloadObservationException {
         ArrayList<Observation> allObservations = new ArrayList<Observation>();
+        int index = 0;
         for (String patientUuid : patientUuids) {
+            try {
                 List<Observation> observations = observationController.downloadObservations(patientUuid);
                 allObservations.addAll(observations);
+            } catch (ObservationController.DownloadObservationException e) {
+                Log.d(TAG, "Exception thrown while download observations for " + patientUuid);
+            }
+            index++;
+            if (index % 5 == 0) {
+                Log.i(TAG, index + "/" + patientUuids.size() + " patients' observations downloaded");
+            }
         }
         return allObservations;
     }
