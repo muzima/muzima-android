@@ -10,6 +10,8 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Observation;
 import com.muzima.controller.ObservationController;
+import com.muzima.util.Constants;
+import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
 import com.muzima.view.patients.PatientSummaryActivity;
 
@@ -35,6 +37,8 @@ public abstract class  ObservationsAdapter extends ListAdapter<Observation> {
                     .findViewById(R.id.observation_description);
             holder.value = (TextView) convertView
                     .findViewById(R.id.observation_value);
+            holder.date = (TextView) convertView
+                    .findViewById(R.id.observation_date);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -48,6 +52,9 @@ public abstract class  ObservationsAdapter extends ListAdapter<Observation> {
         holder.value.setText(getObservationValue(observation));
         holder.value.setTypeface(Fonts.roboto_light(getContext()));
 
+        holder.date.setText(DateUtils.getFormattedDate(observation.getObservationDate()));
+        holder.value.setTypeface(Fonts.roboto_light(getContext()));
+
         return convertView;
     }
 
@@ -56,11 +63,21 @@ public abstract class  ObservationsAdapter extends ListAdapter<Observation> {
     }
 
     private String getObservationValue(Observation observation) {
+        switch (observation.getDataType()){
+            //TODO to add some extra info like unit of measure
+            case Constants.TYPE_NUMERIC:
+                return observation.getValue();
+            case Constants.TYPE_DATE:
+                return observation.getValue();
+            case Constants.TYPE_STRING:
+                return observation.getValue();
+        }
         return observation.getValue();
     }
 
     protected static class ViewHolder {
         TextView description;
         TextView value;
+        TextView date;
     }
 }
