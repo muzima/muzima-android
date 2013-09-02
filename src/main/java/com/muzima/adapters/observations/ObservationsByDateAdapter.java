@@ -34,7 +34,7 @@ public class ObservationsByDateAdapter extends ObservationsAdapter {
             List<Observation> observations = null;
             try {
                 observations = observationController.getObservationsByDate(patientUuid[0]);
-                Log.i(TAG, "#Cohorts: " + observations.size());
+                Log.i(TAG, "#Observations: " + observations.size());
             } catch (ObservationController.LoadObservationException e) {
                 Log.e(TAG, "Exception occurred while fetching observations " + e);
             }
