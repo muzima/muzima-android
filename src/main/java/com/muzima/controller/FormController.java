@@ -210,8 +210,6 @@ public class FormController {
             return formService.downloadFormsByName(StringUtil.EMPTY) ;
         } catch (IOException e) {
             throw new FormFetchException(e);
-        } catch (ParseException e) {
-            throw new FormFetchException(e);
         }
     }
 

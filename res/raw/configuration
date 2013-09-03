@@ -26,50 +26,11 @@
             }
         },
         {
-            "resource.name": "Local Form Data Resource",
-            "node.root": "$",
-            "resource.object": "com.muzima.api.model.FormData",
-            "algorithm.class": "com.muzima.api.model.algorithm.FormDataAlgorithm",
-            "resolver.class": "com.muzima.api.model.resolver.LocalResolver",
-            "field.unique": "uuid",
-            "field.searchable": {
-                "uuid": "$['uuid']",
-                "status": "$['status']",
-                "userUuid": "$['user.uuid']",
-                "patientUuid": "$['patient.uuid']",
-                "templateUuid": "$['template.uuid']"
-            }
-        },
-        {
-            "resource.name": "Search Dynamic Cohort Resource",
+            "resource.name": "Search Cohort Resource",
             "node.root": "$['results']",
             "resource.object": "com.muzima.api.model.Cohort",
             "algorithm.class": "com.muzima.api.model.algorithm.CohortAlgorithm",
-            "resolver.class": "com.muzima.api.model.resolver.SearchDynamicCohortResolver",
-            "field.unique": "uuid",
-            "field.searchable": {
-                "uuid": "$['uuid']",
-                "name": "$['name']"
-            }
-        },
-        {
-            "resource.name": "Search Static Cohort Resource",
-            "node.root": "$['results']",
-            "resource.object": "com.muzima.api.model.Cohort",
-            "algorithm.class": "com.muzima.api.model.algorithm.CohortAlgorithm",
-            "resolver.class": "com.muzima.api.model.resolver.SearchStaticCohortResolver",
-            "field.unique": "uuid",
-            "field.searchable": {
-                "uuid": "$['uuid']",
-                "name": "$['name']"
-            }
-        },
-        {
-            "resource.name": "Search Form Resource",
-            "node.root": "$['results']",
-            "resource.object": "com.muzima.api.model.Form",
-            "algorithm.class": "com.muzima.api.model.algorithm.FormAlgorithm",
-            "resolver.class": "com.muzima.api.model.resolver.SearchFormResolver",
+            "resolver.class": "com.muzima.api.model.resolver.StaticCohortDataResolver",
             "field.unique": "uuid",
             "field.searchable": {
                 "uuid": "$['uuid']",
@@ -159,6 +120,42 @@
             }
         },
         {
+            "resource.name": "Search Static Cohort Resource",
+            "node.root": "$['results']",
+            "resource.object": "com.muzima.api.model.Cohort",
+            "algorithm.class": "com.muzima.api.model.algorithm.CohortAlgorithm",
+            "resolver.class": "com.muzima.api.model.resolver.SearchStaticCohortResolver",
+            "field.unique": "uuid",
+            "field.searchable": {
+                "uuid": "$['uuid']",
+                "name": "$['name']"
+            }
+        },
+        {
+            "resource.name": "Uuid Static Cohort Resource",
+            "node.root": "$['results']",
+            "resource.object": "com.muzima.api.model.Cohort",
+            "algorithm.class": "com.muzima.api.model.algorithm.CohortAlgorithm",
+            "resolver.class": "com.muzima.api.model.resolver.UuidStaticCohortResolver",
+            "field.unique": "uuid",
+            "field.searchable": {
+                "uuid": "$['uuid']",
+                "name": "$['name']"
+            }
+        },
+        {
+            "resource.name": "Uuid Dynamic Cohort Resource",
+            "node.root": "$['results']",
+            "resource.object": "com.muzima.api.model.Cohort",
+            "algorithm.class": "com.muzima.api.model.algorithm.CohortAlgorithm",
+            "resolver.class": "com.muzima.api.model.resolver.UuidDynamicCohortResolver",
+            "field.unique": "uuid",
+            "field.searchable": {
+                "uuid": "$['uuid']",
+                "name": "$['name']"
+            }
+        },
+        {
             "resource.name": "Search Role Resource",
             "node.root": "$['results']",
             "resource.object": "com.muzima.api.model.Role",
@@ -187,19 +184,7 @@
             }
         },
         {
-            "resource.name": "Uuid Dynamic Cohort Resource",
-            "node.root": "$",
-            "resource.object": "com.muzima.api.model.Cohort",
-            "algorithm.class": "com.muzima.api.model.algorithm.CohortAlgorithm",
-            "resolver.class": "com.muzima.api.model.resolver.UuidDynamicCohortResolver",
-            "field.unique": "uuid",
-            "field.searchable": {
-                "uuid": "$['uuid']",
-                "name": "$['name']"
-            }
-        },
-        {
-            "resource.name": "Uuid Static Cohort Resource",
+            "resource.name": "Uuid Cohort Resource",
             "node.root": "$",
             "resource.object": "com.muzima.api.model.Cohort",
             "algorithm.class": "com.muzima.api.model.algorithm.CohortAlgorithm",
