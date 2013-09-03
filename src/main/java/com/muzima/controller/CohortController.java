@@ -24,8 +24,6 @@ public class CohortController {
             return cohortService.getAllCohorts();
         } catch (IOException e) {
             throw new CohortFetchException(e);
-        } catch (ParseException e) {
-            throw new CohortFetchException(e);
         }
     }
 
@@ -119,8 +117,6 @@ public class CohortController {
             }
         } catch (IOException e) {
             throw new CohortDeleteException(e);
-        } catch (ParseException e) {
-            throw new CohortDeleteException(e);
         }
     }
 
@@ -145,8 +141,6 @@ public class CohortController {
             }
             return syncedCohorts;
         } catch (IOException e) {
-            throw new CohortFetchException(e);
-        } catch (ParseException e) {
             throw new CohortFetchException(e);
         }
     }

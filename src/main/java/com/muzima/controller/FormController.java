@@ -33,8 +33,6 @@ public class FormController {
             return formService.getAllForms();
         } catch (IOException e) {
             throw new FormFetchException(e);
-        } catch (ParseException e) {
-            throw new FormFetchException(e);
         }
     }
 
@@ -80,8 +78,6 @@ public class FormController {
             return filteredForms;
         } catch (IOException e) {
             throw new FormFetchException(e);
-        } catch (ParseException e) {
-            throw new FormFetchException(e);
         }
     }
 
@@ -114,8 +110,6 @@ public class FormController {
             }
         } catch (IOException e) {
             throw new FormFetchException(e);
-        } catch (ParseException e) {
-            throw new FormFetchException(e);
         }
         return result;
     }
@@ -129,8 +123,6 @@ public class FormController {
         try {
             return formService.downloadFormsByName(StringUtil.EMPTY);
         } catch (IOException e) {
-            throw new FormFetchException(e);
-        } catch (ParseException e) {
             throw new FormFetchException(e);
         }
     }
@@ -169,8 +161,6 @@ public class FormController {
             }
         } catch (IOException e) {
             throw new FormDeleteException(e);
-        } catch (ParseException e) {
-            throw new FormDeleteException(e);
         }
     }
 
@@ -198,8 +188,6 @@ public class FormController {
                 }
             }
         } catch (IOException e) {
-            throw new FormFetchException(e);
-        } catch (ParseException e) {
             throw new FormFetchException(e);
         }
         return false;
