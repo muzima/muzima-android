@@ -53,7 +53,7 @@ public class PatientController {
             return patientService.getAllPatients();
         } catch (IOException e) {
             throw new PatientLoadException(e);
-        }                   §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+        }
     }
 
     public List<Patient> searchPatient(String searchString) throws PatientLoadException {
