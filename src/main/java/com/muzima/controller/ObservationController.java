@@ -2,6 +2,7 @@ package com.muzima.controller;
 
 import com.muzima.api.model.Observation;
 import com.muzima.api.service.ObservationService;
+import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,15 +55,25 @@ public class ObservationController {
         }
     }
 
+    public List<Observation> searchObservations(String term, String patientUuid) throws LoadObservationException {
+        try {
+            return observationService.searchObservations(patientUuid,term);
+        } catch (IOException e) {
+            throw new LoadObservationException(e);
+        } catch (ParseException e) {
+            throw new LoadObservationException(e);
+        }
+    }
+
 
     public class LoadObservationException extends Throwable {
-        public LoadObservationException(IOException e) {
+        public LoadObservationException(Throwable e) {
             super(e);
         }
     }
 
     public class DownloadObservationException extends Throwable {
-        public DownloadObservationException(IOException e) {
+        public DownloadObservationException(Throwable e) {
             super(e);
         }
     }

@@ -16,4 +16,8 @@ public class ObservationByEncountersFragment extends ObservationsListFragment{
         f.setRetainInstance(true);
         return f;
     }
+
+    @Override
+    public void onSearchTextChange(String query) {
+    }
 }

@@ -27,7 +27,6 @@ public class PatientsAdapter extends ListAdapter<Patient>{
     public static final String SEARCH = "search";
     private PatientController patientController;
     private final String cohortId;
-    private List<Patient> patients = new ArrayList<Patient>();
 
     public PatientsAdapter(Context context, int textViewResourceId, PatientController patientController, String cohortId) {
         super(context, textViewResourceId);
@@ -85,7 +84,7 @@ public class PatientsAdapter extends ListAdapter<Patient>{
                     Log.w(TAG, "Exception occurred while searching patients for " + params[0] + " search string. " + e);
                 }
             }
-            patients = null;
+            List<Patient> patients = null;
             String cohortUuid = params[0];
             try {
                 if (cohortUuid != null) {

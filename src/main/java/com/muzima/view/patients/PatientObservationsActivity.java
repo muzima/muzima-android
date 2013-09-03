@@ -1,13 +1,22 @@
 package com.muzima.view.patients;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.widget.SearchView;
+import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
+import com.muzima.adapters.observations.ObservationsByDateAdapter;
 import com.muzima.adapters.observations.ObservationsPagerAdapter;
 import com.muzima.utils.Fonts;
 import com.muzima.view.customViews.PagerSlidingTabStrip;
+import com.muzima.view.preferences.SettingsActivity;
 
 public class PatientObservationsActivity extends SherlockFragmentActivity {
 
@@ -54,4 +63,34 @@ public class PatientObservationsActivity extends SherlockFragmentActivity {
 	private void setupActionBar() {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getSupportMenuInflater().inflate(R.menu.observation_list, menu);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search)
+                .getActionView();
+//        setupNoSearchResultDataView();
+        searchView.setOnQueryTextListener(cohortPagerAdapter);
+        return true;
+    }
+
+//    private void setupNoSearchResultDataView() {
+//        setupNoDataView();
+//        TextView noDataMsgTextView = (TextView) getActivity().findViewById(R.id.no_data_msg);
+//        noDataMsgTextView.setText(getResources().getText(R.string.no_patients_matched));
+//        TextView noDataTipTextView = (TextView) getActivity().findViewById(R.id.no_data_tip);
+//        noDataTipTextView.setText(R.string.no_patients_matched_tip);
+//    }
 }

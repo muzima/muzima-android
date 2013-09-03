@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.SearchView;
+import com.actionbarsherlock.view.Menu;
 import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsByDateAdapter;
 import com.muzima.controller.ObservationController;
@@ -35,6 +37,12 @@ public class ObservationsByDateListFragment extends ObservationsListFragment {
     }
 
     @Override
+    public void onSearchTextChange(String query) {
+        ((ObservationsByDateAdapter)listAdapter).search(query);
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
     }
+
 }
