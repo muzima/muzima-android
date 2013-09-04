@@ -22,7 +22,7 @@ var /**@type {*}*/fileManager;
 $(document).ready(function () {
     'use strict';
     var existingInstanceJ, instanceToEdit, loadErrors, jDataO,
-        queryParams = {id:formInstance.getPatientId(), formName:formInstance.getFormName()},
+        queryParams = {id:"", formName:""},
         formDataController = new FormDataController(queryParams);
 
     existingInstanceJ = formDataController.get();

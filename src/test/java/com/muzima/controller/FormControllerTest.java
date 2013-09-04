@@ -290,6 +290,17 @@ public class FormControllerTest {
         formController.saveFormData(formData);
     }
 
+    @Test
+    public void getAllFormData_shouldReturnListOfAllFormDatas() throws Exception, FormDataFetchException {
+        FormData formData = new FormData();
+        String status = "draft";
+
+        when(formService.getAllFormData(status)).thenReturn(asList(formData));
+
+        assertThat(formController.getAllFormData(status).size(), is(1));
+        assertThat(formController.getAllFormData(status), hasItem(formData));
+    }
+
     private List<Form> buildForms() {
         List<Form> forms = new ArrayList<Form>();
         Tag tag1 = TagBuilder.tag().withName("Patient").withUuid("tag1").build();

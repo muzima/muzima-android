@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import com.muzima.MuzimaApplication;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.controller.FormController;
+import com.muzima.controller.PatientController;
 import com.muzima.listeners.DownloadListener;
 import com.muzima.view.forms.CompleteFormsListFragment;
 import com.muzima.view.forms.DownloadedFormsListFragment;
@@ -20,9 +21,11 @@ public class PatientFormsPagerAdapter extends MuzimaPagerAdapter{
     private static final int TAB_RECOMMENDED = 1;
     private static final int TAB_COMPLETE = 2;
     private static final int TAB_SYNCED = 3;
+    private final String patientId;
 
-    public PatientFormsPagerAdapter(Context context, FragmentManager fm) {
+    public PatientFormsPagerAdapter(Context context, FragmentManager fm, String patientId) {
         super(context, fm);
+        this.patientId = patientId;
     }
 
     @Override
@@ -31,7 +34,7 @@ public class PatientFormsPagerAdapter extends MuzimaPagerAdapter{
         FormController formController = ((MuzimaApplication) context.getApplicationContext()).getFormController();
 
         IncompleteFormsListFragment incompleteFormsListFragment = IncompleteFormsListFragment.newInstance(formController);
-        RecommendedFormsListFragment recommendedFormsListFragment = RecommendedFormsListFragment.newInstance(formController);
+        RecommendedFormsListFragment recommendedFormsListFragment = RecommendedFormsListFragment.newInstance(formController, patientId);
         CompleteFormsListFragment completeFormsListFragment = CompleteFormsListFragment.newInstance(formController);
         SyncedFormsListFragment syncedFormsListFragment = SyncedFormsListFragment.newInstance(formController);
 

@@ -73,6 +73,14 @@ public class PatientController {
         return getAllPatients().size();
     }
 
+    public Patient getPatientByUuid(String uuid) throws PatientLoadException {
+        try {
+            return patientService.getPatientByUuid(uuid);
+        } catch (IOException e) {
+            throw new PatientLoadException(e);
+        }
+    }
+
     public static class PatientReplaceException extends Throwable {
         public PatientReplaceException(Throwable throwable) {
             super(throwable);

@@ -29,24 +29,29 @@ import com.muzima.tasks.forms.DownloadFormMetadataTask;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.RegisterClientActivity;
+import com.muzima.view.patients.PatientSummaryActivity;
 
 import static android.os.AsyncTask.Status.PENDING;
 import static android.os.AsyncTask.Status.RUNNING;
+import static com.muzima.view.patients.PatientSummaryActivity.PATIENT_ID;
 
 
 public class PatientFormsActivity extends FormsActivityBase{
     private static final String TAG = "FormsActivity";
+    private String patientId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_with_pager);
+        Intent intent = getIntent();
+        patientId = intent.getStringExtra(PATIENT_ID);
         super.onCreate(savedInstanceState);
     }
 
 
     @Override
     protected MuzimaPagerAdapter createFormsPagerAdapter() {
-        return new PatientFormsPagerAdapter(getApplicationContext(), getSupportFragmentManager());
+        return new PatientFormsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), patientId);
     }
 
 }
