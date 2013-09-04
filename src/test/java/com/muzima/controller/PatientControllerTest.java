@@ -1,13 +1,11 @@
 package com.muzima.controller;
 
 import com.muzima.api.model.CohortMember;
-import com.muzima.api.model.Form;
 import com.muzima.api.model.Patient;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.PatientService;
 
 import org.apache.lucene.queryParser.ParseException;
-import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,11 +52,7 @@ public class PatientControllerTest {
 
     @Test
     public void getTotalPatientsCount_shouldReturnPatientsCount() throws IOException, ParseException, PatientController.PatientLoadException {
-        List<Patient> patients = new ArrayList<Patient>();
-        patients.add(new Patient());
-        patients.add(new Patient());
-
-        when(patientService.getAllPatients()).thenReturn(patients);
+        when(patientService.countAllPatients()).thenReturn(2);
 
         assertThat(patientController.getTotalPatientsCount(), is(2));
     }
@@ -67,17 +61,9 @@ public class PatientControllerTest {
     public void replacePatients_shouldReplaceAllExistingPatientsAndAddNewPatients() throws IOException, PatientController.PatientReplaceException {
         List<Patient> patients = buildPatients();
 
-        when(patientService.getPatientByUuid("uuid1")).thenReturn(null);
-        when(patientService.getPatientByUuid("uuid2")).thenReturn(patients.get(1));
-        when(patientService.getPatientByUuid("uuid3")).thenReturn(null);
-
         patientController.replacePatients(patients);
 
-        verify(patientService, times(3)).getPatientByUuid(anyString());
-        verify(patientService).deletePatient(patients.get(1));
-        verify(patientService).savePatient(patients.get(0));
-        verify(patientService).savePatient(patients.get(1));
-        verify(patientService).savePatient(patients.get(2));
+        verify(patientService).updatePatients(patients);
         verifyNoMoreInteractions(patientService);
     }
 
@@ -85,7 +71,7 @@ public class PatientControllerTest {
     public void replacePatients_shouldThrowPatientReplaceExceptionIfExceptionThrownByService() throws IOException, PatientController.PatientReplaceException {
         List<Patient> patients = buildPatients();
 
-        doThrow(new IOException()).when(patientService).getPatientByUuid(patients.get(0).getUuid());
+        doThrow(new IOException()).when(patientService).updatePatients(patients);
 
         patientController.replacePatients(patients);
     }
@@ -132,6 +118,16 @@ public class PatientControllerTest {
         doThrow(new IOException()).when(patientService).getPatientByUuid(members.get(0).getPatientUuid());
 
         patientController.getPatients(cohortId);
+    }
+
+    @Test
+    public void getPatientByUuid_shouldReturnPatientForId() throws Exception, PatientController.PatientLoadException {
+        Patient patient = new Patient();
+        String uuid = "uuid";
+
+        when(patientService.getPatientByUuid(uuid)).thenReturn(patient);
+
+        assertThat(patientController.getPatientByUuid(uuid), is(patient));
     }
 
     private List<Patient> buildPatients() {

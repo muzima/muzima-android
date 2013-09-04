@@ -1,22 +1,23 @@
 package com.muzima.view.forms;
 
 import android.util.Log;
+//import android.webkit.JavascriptInterface;
 
 import com.muzima.api.model.FormData;
 import com.muzima.controller.FormController;
 
-public class FormDataRepository {
-    private static final String TAG = "FormDataRepository";
+public class FormDataStore {
+    private static final String TAG = "FormDataStore";
 
     private FormController formController;
     private FormData formData;
 
-    public FormDataRepository(FormController formController, FormData formData) {
+    public FormDataStore(FormController formController, FormData formData) {
         this.formController = formController;
         this.formData = formData;
     }
 
-    //    @JavascriptInterface
+//    @JavascriptInterface
     public boolean saveFormSubmission(String paramsJSON, String data) {
         Log.d(TAG, "saving form data: " + data);
         formData.setPayload(data);

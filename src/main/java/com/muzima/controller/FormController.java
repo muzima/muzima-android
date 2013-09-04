@@ -97,7 +97,6 @@ public class FormController {
         return allTags;
     }
 
-    //Todo find a better way of doing this
     public List<Form> getAllDownloadedForms() throws FormFetchException {
         ArrayList<Form> result = new ArrayList<Form>();
         try {
@@ -226,6 +225,14 @@ public class FormController {
             formService.saveFormData(formData);
         } catch (IOException e) {
             throw new FormDataSaveException(e);
+        }
+    }
+
+    public List<FormData> getAllFormData(String status) throws FormDataFetchException {
+        try {
+            return formService.getAllFormData(status);
+        } catch (Exception e) {
+            throw new FormDataFetchException(e);
         }
     }
 

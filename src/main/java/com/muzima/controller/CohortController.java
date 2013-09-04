@@ -1,13 +1,10 @@
 package com.muzima.controller;
 
-import android.util.Log;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
 import com.muzima.api.model.CohortMember;
 import com.muzima.api.service.CohortService;
 import com.muzima.search.api.util.StringUtil;
-
-import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -119,32 +116,14 @@ public class CohortController {
         }
     }
 
-    public void replaceCohortMembers(String cohortUuid, List<CohortMember> cohortMembers) throws CohortReplaceException {
+    public List<Cohort> getSyncedCohorts() throws CohortFetchException {
         try {
-            List<CohortMember> cohortMembersToDelete = cohortService.getCohortMembers(cohortUuid);
-            Log.d("CohortController", "Number of cohortmembers to delete:" + cohortMembersToDelete + " cohortUuid:" + cohortUuid);
-            StringBuffer stringBuffer = new StringBuffer();
-            for (CohortMember member : cohortMembersToDelete) {
-                stringBuffer.append(member.getCohortUuid()+",");
-            }
-            Log.d("CohortController", "CohortMember with the cohortuuid:" + stringBuffer);
 
-            cohortService.deleteCohortMembers(cohortUuid);
-            cohortService.saveCohortMembers(cohortMembers);
-        } catch (IOException e) {
-            throw new CohortReplaceException(e);
-        }
-    }
-
-    public List<Cohort> getSyncedCohort() throws CohortFetchException {
-        try {
-            //TODO this is very inefficient, should have a download flag in cohorts
             List<Cohort> cohorts = cohortService.getAllCohorts();
             List<Cohort> syncedCohorts = new ArrayList<Cohort>();
             for (Cohort cohort : cohorts) {
-                List<CohortMember> cohortMembers = cohortService.getCohortMembers(cohort.getUuid());
-                Log.d("CohortController", "cohort name:" + cohort.getName() + " cohortUuid:" + cohort.getUuid() + " Number of members:" + cohortMembers.size());
-                if (cohortService.countCohortMembers(cohort.getUuid()) > 0) {
+            //TODO: Have a has members method to make this more explicit
+            if (cohortService.countCohortMembers(cohort.getUuid()) > 0) {
                     syncedCohorts.add(cohort);
                 }
             }
@@ -155,7 +134,7 @@ public class CohortController {
     }
 
     public int getSyncedCohortsCount() throws CohortFetchException {
-        return getSyncedCohort().size();
+        return getSyncedCohorts().size();
     }
 
     public void deleteCohortMembers(String cohortUuid) throws CohortReplaceException {

@@ -75,6 +75,13 @@ public class PatientsAdapter extends ListAdapter<Patient>{
     }
 
     private class BackgroundQueryTask extends AsyncTask<String, Void, List<Patient>> {
+        long mStartingTime;
+
+        @Override
+        protected void onPreExecute() {
+            mStartingTime = System.currentTimeMillis();
+        }
+
         @Override
         protected List<Patient> doInBackground(String... params) {
             if(isSearch(params)){
@@ -122,6 +129,9 @@ public class PatientsAdapter extends ListAdapter<Patient>{
                 add(patient);
             }
             notifyDataSetChanged();
+
+            long currentTime = System.currentTimeMillis();
+            Log.d(TAG, "Time taken in fetching patients from local repo: " + (currentTime - mStartingTime)/1000 + " sec");
         }
     }
 

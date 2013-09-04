@@ -54,11 +54,7 @@ public class FormControllerTest {
 
     @Test
     public void getTotalFormCount_shouldReturnTotalAvailableForms() throws IOException, ParseException, FormFetchException {
-        List<Form> forms = new ArrayList<Form>();
-        forms.add(new Form());
-        forms.add(new Form());
-
-        when(formService.getAllForms()).thenReturn(forms);
+        when(formService.countAllForms()).thenReturn(2);
 
         assertThat(formController.getTotalFormCount(), is(2));
     }
@@ -141,14 +137,14 @@ public class FormControllerTest {
 
         formController.saveAllForms(forms);
 
-        verify(formService, times(forms.size())).saveForm(any(Form.class));
+        verify(formService).saveForms(forms);
         verifyNoMoreInteractions(formService);
     }
 
     @Test(expected = FormSaveException.class)
-    public void saveAllForms_shouldThrowFormSaveExceptionIfExceptionThrownByFormService() throws FormSaveException, IOException, ParseException {
+    public void saveAllForms_shouldThrowFormSaveExceptionIfExceptionThrownByFormService() throws FormSaveException, IOException {
         List<Form> forms = buildForms();
-        doThrow(new IOException()).when(formService).saveForm(forms.get(0));
+        doThrow(new IOException()).when(formService).saveForms(forms);
 
         formController.saveAllForms(forms);
     }
@@ -175,7 +171,7 @@ public class FormControllerTest {
         formController.deleteAllForms();
 
         verify(formService).getAllForms();
-        verify(formService, times(5)).deleteForm(any(Form.class));
+        verify(formService).deleteForms(forms);
         verifyNoMoreInteractions(formService);
     }
 
@@ -183,7 +179,7 @@ public class FormControllerTest {
     public void deleteAllForms_shouldThrowFormSaveExceptionIfExceptionThrownByFormService() throws IOException, FormDeleteException, ParseException {
         List<Form> forms = buildForms();
         when(formService.getAllForms()).thenReturn(forms);
-        doThrow(new IOException()).when(formService).deleteForm(forms.get(0));
+        doThrow(new IOException()).when(formService).deleteForms(forms);
 
         formController.deleteAllForms();
     }
@@ -215,14 +211,24 @@ public class FormControllerTest {
         List<FormTemplate> formTemplates = buildFormTemplates();
 
         when(formService.getAllForms()).thenReturn(forms);
-        when(formService.getAllFormTemplates()).thenReturn(formTemplates);
+        when(formService.isFormTemplateDownloaded(anyString())).thenReturn(true);
 
         List<Form> allDownloadedForms = formController.getAllDownloadedForms();
 
-        assertThat(allDownloadedForms.size(), is(3));
-        assertThat(allDownloadedForms, hasItem(forms.get(0)));
-        assertThat(allDownloadedForms, hasItem(forms.get(1)));
-        assertThat(allDownloadedForms, hasItem(forms.get(2)));
+        assertThat(allDownloadedForms.size(), is(5));
+    }
+
+    @Test
+    public void getAllDownloadedForms_shouldReturnNoFormsIfNoTemplateIsDownloaded() throws IOException, ParseException, FormFetchException {
+        List<Form> forms = buildForms();
+        List<FormTemplate> formTemplates = buildFormTemplates();
+
+        when(formService.getAllForms()).thenReturn(forms);
+        when(formService.isFormTemplateDownloaded(anyString())).thenReturn(false);
+
+        List<Form> allDownloadedForms = formController.getAllDownloadedForms();
+
+        assertThat(allDownloadedForms.size(), is(0));
     }
 
     @Test
@@ -230,11 +236,19 @@ public class FormControllerTest {
         List<Form> forms = buildForms();
         List<FormTemplate> formTemplates = buildFormTemplates();
 
-        when(formService.getAllFormTemplates()).thenReturn(formTemplates);
+        when(formService.isFormTemplateDownloaded(anyString())).thenReturn(true);
 
         assertThat(formController.isFormDownloaded(forms.get(0)), is(true));
-        assertThat(formController.isFormDownloaded(forms.get(1)), is(true));
-        assertThat(formController.isFormDownloaded(forms.get(4)), is(false));
+    }
+
+    @Test
+    public void isFormDownloaded_shouldReturnFalseIfFromIsNotDownloaded() throws IOException, ParseException, FormFetchException {
+        List<Form> forms = buildForms();
+        List<FormTemplate> formTemplates = buildFormTemplates();
+
+        when(formService.isFormTemplateDownloaded(anyString())).thenReturn(false);
+
+        assertThat(formController.isFormDownloaded(forms.get(0)), is(false));
     }
 
     @Test
@@ -288,6 +302,17 @@ public class FormControllerTest {
 
         doThrow(new IOException()).when(formService).saveFormData(formData);
         formController.saveFormData(formData);
+    }
+
+    @Test
+    public void getAllFormData_shouldReturnListOfAllFormDatas() throws Exception, FormDataFetchException {
+        FormData formData = new FormData();
+        String status = "draft";
+
+        when(formService.getAllFormData(status)).thenReturn(asList(formData));
+
+        assertThat(formController.getAllFormData(status).size(), is(1));
+        assertThat(formController.getAllFormData(status), hasItem(formData));
     }
 
     private List<Form> buildForms() {

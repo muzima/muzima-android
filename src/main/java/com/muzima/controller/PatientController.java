@@ -68,6 +68,14 @@ public class PatientController {
         }
     }
 
+    public Patient getPatientByUuid(String uuid) throws PatientLoadException {
+        try {
+            return patientService.getPatientByUuid(uuid);
+        } catch (IOException e) {
+            throw new PatientLoadException(e);
+        }
+    }
+
     public List<Patient> searchPatient(String term, String cohortUuid) throws PatientLoadException {
         try {
             return patientService.searchPatients(term, cohortUuid);
