@@ -50,8 +50,14 @@ public class ObservationController {
 
     public List<Observation> downloadObservations(String patientUuid) throws DownloadObservationException {
         try {
-            //TODO add conceptUuid
-            return observationService.downloadObservationsByPatientAndConcept(patientUuid, StringUtil.EMPTY);
+            //TODO hardcoded conceptUuid for now
+            String[] concepts = {"be4f6913-1691-11df-97a5-7038c432aabf", "be41f326-1691-11df-97a5-7038c432aabf"};
+            ArrayList<Observation> observations = new ArrayList<Observation>();
+            for (String concept : concepts) {
+                observations.addAll(observationService.downloadObservationsByPatientAndConcept(patientUuid,concept));
+            }
+
+            return observations;
         } catch (IOException e) {
             throw new DownloadObservationException(e);
         }
