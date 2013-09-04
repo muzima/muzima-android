@@ -672,7 +672,7 @@ enketo.FormDataRepository = function () {
 
     return {
         getFormInstanceByFormTypeAndId: function (formID, formName) {
-            return repository.getFormInstanceByFormTypeAndId(formID, formName);
+            return repository.getFormPayload();
         },
         queryUniqueResult: function (sql) {
             return repository.queryUniqueResult(sql);
@@ -680,8 +680,8 @@ enketo.FormDataRepository = function () {
         queryList: function (sql) {
             return repository.queryList(sql);
         },
-        saveFormSubmission: function (params, data) {
-            return repository.saveFormSubmission(JSON.stringify(params), JSON.stringify(data));
+        saveFormSubmission: function (data) {
+            return repository.saveFormSubmission(JSON.stringify(data));
         },
         saveEntity: function (entityType, entity) {
             return repository.saveEntity(entityType, JSON.stringify(entity));
@@ -731,18 +731,11 @@ enketo.FormDataController = function (entityRelationshipLoader, formDefinitionLo
         init(params);
         return formModelMapper.mapToFormModel(self.entityDefinitions, self.formDefinition, params);
     };
-    self.save = function (params, data) {
-        if (typeof params !== 'object') {
-            params = JSON.parse(params);
-        }
-        if (typeof data !== 'object') {
-            data = JSON.parse(data);
-        }
-        params = updateEntityAndParams(params, data);
-        if (enketo.hasValue(formDataRepository.saveFormSubmission(params, data))) {
-            submissionRouter.route(params.instanceId);
-        }
+
+    self.save = function (data) {
+        formDataRepository.saveFormSubmission(data);
     };
+
     self.createOrUpdateEntity = function (params, data) {
         if (typeof params !== 'object') {
             params = JSON.parse(params);

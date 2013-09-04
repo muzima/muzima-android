@@ -71,18 +71,18 @@ public class FormWebViewActivity extends SherlockFragmentActivity {
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
         form = formController.getFormByUuid(formId);
         formTemplate = formController.getFormTemplateByUuid(formId);
-        if(formDataUuid != null){
+        if (formDataUuid != null) {
             formData = formController.getFormDataByUuid(formDataUuid);
-        }else{
-            formData = createNewFormData(patientUuid, form.getUuid());
+        } else {
+            formData = createNewFormData(patientUuid, form.getUuid(), formTemplate.getModelJson());
         }
     }
 
-    private FormData createNewFormData(final String patientUuid, final String formUuid) throws FormController.FormDataSaveException {
+    private FormData createNewFormData(final String patientUuid, final String formUuid, final String modelJson) throws FormController.FormDataSaveException {
         FormData formData = new FormData() {{
             setUuid(UUID.randomUUID().toString());
             setPatientUuid(patientUuid);
-            setPayload("");
+            setPayload(modelJson);
             setUserUuid("userUuid");
             setStatus("draft");
             setTemplateUuid(formUuid);
@@ -124,7 +124,7 @@ public class FormWebViewActivity extends SherlockFragmentActivity {
         FormInstance formInstance = new FormInstance(form, formTemplate);
         webView.addJavascriptInterface(formInstance, FORM_INSTANCE);
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
-        webView.addJavascriptInterface(new FormDataStore(formController, formData), REPOSITORY);
+        webView.addJavascriptInterface(new FormDataStore(this, formController, formData), REPOSITORY);
         webView.addJavascriptInterface(new ZiggyFileLoader("www/ziggy", "www/form", getApplicationContext().getAssets(), formInstance.getModelJson()), ZIGGY_FILE_LOADER);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.loadUrl("file:///android_asset/www/enketo/template.html");

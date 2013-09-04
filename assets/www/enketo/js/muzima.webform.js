@@ -49,7 +49,9 @@ $(document).ready(function () {
         if (typeof form !== 'undefined') {
             save();
         }
+        return false;
     });
+
     //controller for submission of data to drishti
     $(document).on('click', 'button#submit-form', function () {
         if (typeof form !== 'undefined') {

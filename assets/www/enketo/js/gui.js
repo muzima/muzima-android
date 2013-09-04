@@ -615,7 +615,6 @@ GUI.prototype.fillHeight = function($elem){
  */
 GUI.prototype.positionPageAndBar = function(){
 	"use strict";
-	console.log('positionPageAndBar called');
 	var fTop, pTop,
 		$header = $('header'),
 		hHeight = $header.outerHeight() || 0,

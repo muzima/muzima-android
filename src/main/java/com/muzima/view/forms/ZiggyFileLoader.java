@@ -1,6 +1,7 @@
 package com.muzima.view.forms;
 
 import android.content.res.AssetManager;
+import android.webkit.JavascriptInterface;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,7 +22,7 @@ public class ZiggyFileLoader {
         formModelJson = modelJson;
     }
 
-    //    @JavascriptInterface
+    @JavascriptInterface
     public String getJSFiles() throws IOException, URISyntaxException {
         StringBuilder builder = new StringBuilder();
         String[] fileNames = assetManager.list(ziggyDirectoryPath);
@@ -33,7 +34,7 @@ public class ZiggyFileLoader {
         return builder.toString();
     }
 
-    //    @JavascriptInterface
+    @JavascriptInterface
     public String loadAppData(String fileName) {
         if ("entity_relationship.json".equals(fileName)) {
             return "[]";
