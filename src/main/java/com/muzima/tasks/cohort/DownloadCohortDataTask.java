@@ -38,13 +38,18 @@ public class DownloadCohortDataTask extends DownloadMuzimaTask {
         int patientCount = 0;
         try {
             long startDownloadCohortData = System.currentTimeMillis();
-            List<CohortData> cohortDataList = cohortController.downloadCohortData(values[1]);
+            String[] cohortUuids = values[1];
+            List<CohortData> cohortDataList = cohortController.downloadCohortData(cohortUuids);
             long endDownloadCohortData = System.currentTimeMillis();
             Log.i(TAG, "Cohort data download successful with " + cohortDataList.size() + " cohorts");
             if (checkIfTaskIsCancelled(result)) return result;
 
+            for (String cohortUuid : cohortUuids) {
+                cohortController.deleteCohortMembers(cohortUuid);
+            }
+
             for (CohortData cohortData : cohortDataList) {
-                cohortController.replaceCohortMembers(cohortData.getUuid(), cohortData.getCohortMembers());
+                cohortController.addCohortMembers(cohortData.getCohortMembers());
                 patientController.replacePatients(cohortData.getPatients());
                 patientCount += cohortData.getPatients().size();
             }
@@ -75,19 +80,19 @@ public class DownloadCohortDataTask extends DownloadMuzimaTask {
             result[1] = cohortDataList.size();
             result[2] = patientCount;
         } catch (CohortController.CohortDownloadException e) {
-            Log.e(TAG, "Exception thrown while downloading cohort data");
+            Log.e(TAG, "Exception thrown while downloading cohort data" + e);
             result[0] = DOWNLOAD_ERROR;
         } catch (CohortController.CohortReplaceException e) {
-            Log.e(TAG, "Exception thrown while replacing cohort data");
+            Log.e(TAG, "Exception thrown while replacing cohort data" + e);
             result[0] = REPLACE_ERROR;
         } catch (PatientController.PatientReplaceException e) {
-            Log.e(TAG, "Exception thrown while replacing patients");
+            Log.e(TAG, "Exception thrown while replacing patients" + e);
             result[0] = REPLACE_ERROR;
         } catch (ObservationController.LoadObservationException e) {
-            Log.e(TAG, "Exception thrown while replacing observations");
+            Log.e(TAG, "Exception thrown while replacing observations" + e);
             result[0] = REPLACE_ERROR;
         } catch (ObservationController.DownloadObservationException e) {
-            Log.e(TAG, "Exception thrown while downloading observations");
+            Log.e(TAG, "Exception thrown while downloading observations" + e);
             result[0] = DOWNLOAD_ERROR;
         }
         return result;

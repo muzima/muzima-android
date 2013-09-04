@@ -1,5 +1,6 @@
 package com.muzima.controller;
 
+import android.util.Log;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
 import com.muzima.api.model.CohortMember;
@@ -120,6 +121,14 @@ public class CohortController {
 
     public void replaceCohortMembers(String cohortUuid, List<CohortMember> cohortMembers) throws CohortReplaceException {
         try {
+            List<CohortMember> cohortMembersToDelete = cohortService.getCohortMembers(cohortUuid);
+            Log.d("CohortController", "Number of cohortmembers to delete:" + cohortMembersToDelete + " cohortUuid:" + cohortUuid);
+            StringBuffer stringBuffer = new StringBuffer();
+            for (CohortMember member : cohortMembersToDelete) {
+                stringBuffer.append(member.getCohortUuid()+",");
+            }
+            Log.d("CohortController", "CohortMember with the cohortuuid:" + stringBuffer);
+
             cohortService.deleteCohortMembers(cohortUuid);
             cohortService.saveCohortMembers(cohortMembers);
         } catch (IOException e) {
@@ -133,6 +142,8 @@ public class CohortController {
             List<Cohort> cohorts = cohortService.getAllCohorts();
             List<Cohort> syncedCohorts = new ArrayList<Cohort>();
             for (Cohort cohort : cohorts) {
+                List<CohortMember> cohortMembers = cohortService.getCohortMembers(cohort.getUuid());
+                Log.d("CohortController", "cohort name:" + cohort.getName() + " cohortUuid:" + cohort.getUuid() + " Number of members:" + cohortMembers.size());
                 if (cohortService.countCohortMembers(cohort.getUuid()) > 0) {
                     syncedCohorts.add(cohort);
                 }
@@ -145,6 +156,24 @@ public class CohortController {
 
     public int getSyncedCohortsCount() throws CohortFetchException {
         return getSyncedCohort().size();
+    }
+
+    public void deleteCohortMembers(String cohortUuid) throws CohortReplaceException {
+        try {
+            cohortService.deleteCohortMembers(cohortUuid);
+        } catch (IOException e) {
+            throw new CohortReplaceException(e);
+        }
+
+    }
+
+    public void addCohortMembers(List<CohortMember> cohortMembers) throws  CohortReplaceException {
+        try {
+            cohortService.saveCohortMembers(cohortMembers);
+        } catch (IOException e) {
+            throw new CohortReplaceException(e);
+        }
+
     }
 
     public static class CohortDownloadException extends Throwable {

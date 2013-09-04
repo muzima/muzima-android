@@ -68,6 +68,16 @@ public class PatientController {
         }
     }
 
+    public List<Patient> searchPatient(String term, String cohortUuid) throws PatientLoadException {
+        try {
+            return patientService.searchPatients(term, cohortUuid);
+        } catch (IOException e) {
+            throw new PatientLoadException(e);
+        } catch (ParseException e) {
+            throw new PatientLoadException(e);
+        }
+    }
+
     public static class PatientReplaceException extends Throwable {
         public PatientReplaceException(Throwable throwable) {
             super(throwable);
