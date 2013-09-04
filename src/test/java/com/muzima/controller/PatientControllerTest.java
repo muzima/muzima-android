@@ -1,13 +1,11 @@
 package com.muzima.controller;
 
 import com.muzima.api.model.CohortMember;
-import com.muzima.api.model.Form;
 import com.muzima.api.model.Patient;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.PatientService;
 
 import org.apache.lucene.queryParser.ParseException;
-import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -132,6 +130,16 @@ public class PatientControllerTest {
         doThrow(new IOException()).when(patientService).getPatientByUuid(members.get(0).getPatientUuid());
 
         patientController.getPatients(cohortId);
+    }
+
+    @Test
+    public void getPatientByUuid_shouldReturnPatientForId() throws Exception, PatientController.PatientLoadException {
+        Patient patient = new Patient();
+        String uuid = "uuid";
+
+        when(patientService.getPatientByUuid(uuid)).thenReturn(patient);
+
+        assertThat(patientController.getPatientByUuid(uuid), is(patient));
     }
 
     private List<Patient> buildPatients() {

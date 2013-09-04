@@ -229,6 +229,14 @@ public class FormController {
         }
     }
 
+    public List<FormData> getAllFormData(String status) throws FormDataFetchException {
+        try {
+            return formService.getAllFormData(status);
+        } catch (Exception e) {
+            throw new FormDataFetchException(e);
+        }
+    }
+
     public static class FormFetchException extends Throwable {
         public FormFetchException(Throwable throwable) {
             super(throwable);

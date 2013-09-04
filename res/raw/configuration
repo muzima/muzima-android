@@ -233,6 +233,21 @@
             }
         },
         {
+                    "resource.name": "Local Form Data Resource",
+                    "node.root": "$",
+                    "resource.object": "com.muzima.api.model.FormData",
+                    "algorithm.class": "com.muzima.api.model.algorithm.FormDataAlgorithm",
+                    "resolver.class": "com.muzima.api.model.resolver.LocalResolver",
+                    "field.unique": "uuid",
+                    "field.searchable": {
+                        "uuid": "$['uuid']",
+                        "status": "$['status']",
+                        "userUuid": "$['user.uuid']",
+                        "patientUuid": "$['patient.uuid']",
+                        "templateUuid": "$['template.uuid']"
+                    }
+                },
+        {
             "resource.name": "Uuid Observation Resource",
             "node.root": "$",
             "resource.object": "com.muzima.api.model.Observation",
