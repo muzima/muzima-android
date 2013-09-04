@@ -14,6 +14,7 @@ import java.util.List;
 public class ObservationController {
 
     private ObservationService observationService;
+    private static final int ORDER_DESCENDING = -1;
 
     public ObservationController(ObservationService observationService) {
         this.observationService = observationService;
@@ -25,7 +26,7 @@ public class ObservationController {
             Collections.sort(observationsByPatient, new Comparator<Observation>() {
                 @Override
                 public int compare(Observation observation, Observation observation2) {
-                    return observation.getObservationDate().compareTo(observation2.getObservationDate());
+                    return ORDER_DESCENDING * observation.getObservationDate().compareTo(observation2.getObservationDate());
                 }
             });
             return observationsByPatient;

@@ -33,13 +33,7 @@ public class ObservationsByDateAdapter extends ObservationsAdapter {
             if(isSearch(params)){
                 Log.d(TAG, "searching observations for query string: " + params[0]);
                 try {
-                    List<Observation> observations = observationController.searchObservations(params[0], patientUuid);
-                    Log.d(TAG, "=====================" + params[0] +"============="+ observations.size()+"=========");
-                    for (Observation observation : observations) {
-                        Log.d(TAG, "observation: " + observation.getQuestionName());
-
-                    }
-                    return observations;
+                    return observationController.searchObservations(params[0], patientUuid);
                 }  catch (ObservationController.LoadObservationException e) {
                     Log.w(TAG, "Exception occurred while searching observations for " + params[0] + " search string. " + e);
                 }
