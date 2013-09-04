@@ -86,7 +86,11 @@ public class PatientsAdapter extends ListAdapter<Patient>{
         protected List<Patient> doInBackground(String... params) {
             if(isSearch(params)){
                 try {
-                    return patientController.searchPatient(params[0]);
+                    if (StringUtils.isEmpty(cohortId)) {
+                        return patientController.searchPatient(params[0]);
+                    } else {
+                        return patientController.searchPatient(params[0], cohortId);
+                    }
                 } catch (PatientController.PatientLoadException e) {
                     Log.w(TAG, "Exception occurred while searching patients for " + params[0] + " search string. " + e);
                 }

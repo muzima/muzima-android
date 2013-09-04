@@ -1,5 +1,6 @@
 package com.muzima.controller;
 
+import android.util.Log;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
 import com.muzima.api.model.CohortMember;
@@ -116,22 +117,13 @@ public class CohortController {
         }
     }
 
-    public void replaceCohortMembers(String cohortUuid, List<CohortMember> cohortMembers) throws CohortReplaceException {
-        try {
-            cohortService.deleteCohortMembers(cohortUuid);
-            cohortService.saveCohortMembers(cohortMembers);
-        } catch (IOException e) {
-            throw new CohortReplaceException(e);
-        }
-    }
-
     public List<Cohort> getSyncedCohorts() throws CohortFetchException {
         try {
             List<Cohort> cohorts = cohortService.getAllCohorts();
             List<Cohort> syncedCohorts = new ArrayList<Cohort>();
             for (Cohort cohort : cohorts) {
-                //TODO: Have a has members method to make this more explicit
-                if (cohortService.countCohortMembers(cohort.getUuid()) > 0) {
+            //TODO: Have a has members method to make this more explicit
+            if (cohortService.countCohortMembers(cohort.getUuid()) > 0) {
                     syncedCohorts.add(cohort);
                 }
             }
@@ -143,6 +135,24 @@ public class CohortController {
 
     public int getSyncedCohortsCount() throws CohortFetchException {
         return getSyncedCohorts().size();
+    }
+
+    public void deleteCohortMembers(String cohortUuid) throws CohortReplaceException {
+        try {
+            cohortService.deleteCohortMembers(cohortUuid);
+        } catch (IOException e) {
+            throw new CohortReplaceException(e);
+        }
+
+    }
+
+    public void addCohortMembers(List<CohortMember> cohortMembers) throws  CohortReplaceException {
+        try {
+            cohortService.saveCohortMembers(cohortMembers);
+        } catch (IOException e) {
+            throw new CohortReplaceException(e);
+        }
+
     }
 
     public static class CohortDownloadException extends Throwable {

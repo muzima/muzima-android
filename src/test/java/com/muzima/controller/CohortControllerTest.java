@@ -205,25 +205,6 @@ public class CohortControllerTest {
     }
 
     @Test
-    public void replaceCohortMembers_shouldDeleteOldCohortsAndSaveNewCohorts() throws IOException, CohortController.CohortReplaceException {
-        ArrayList<CohortMember> cohortMembers = new ArrayList<CohortMember>();
-        String uuid = "uuid";
-
-        controller.replaceCohortMembers(uuid, cohortMembers);
-
-        verify(service).deleteCohortMembers(uuid);
-        verify(service).saveCohortMembers(cohortMembers);
-    }
-
-    @Test(expected = CohortController.CohortReplaceException.class)
-    public void replaceCohortMembers_shouldThrowCohortDeleteExceptionIfExceptionThrownByCohortService() throws CohortController.CohortReplaceException, IOException {
-        String uuid = "uuid";
-        doThrow(new IOException()).when(service).deleteCohortMembers(uuid);
-
-        controller.replaceCohortMembers(uuid, new ArrayList<CohortMember>());
-    }
-
-    @Test
     public void getTotalCohortsCount_shouldReturnEmptyListOfNoCohortsHaveBeenSynced() throws IOException, ParseException, CohortController.CohortFetchException {
         when(service.countAllCohorts()).thenReturn(2);
         assertThat(controller.getTotalCohortsCount(), is(2));
