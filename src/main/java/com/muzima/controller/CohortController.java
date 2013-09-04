@@ -6,8 +6,6 @@ import com.muzima.api.model.CohortMember;
 import com.muzima.api.service.CohortService;
 import com.muzima.search.api.util.StringUtil;
 
-import org.apache.lucene.queryParser.ParseException;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -127,12 +125,12 @@ public class CohortController {
         }
     }
 
-    public List<Cohort> getSyncedCohort() throws CohortFetchException {
+    public List<Cohort> getSyncedCohorts() throws CohortFetchException {
         try {
-            //TODO this is very inefficient, should have a download flag in cohorts
             List<Cohort> cohorts = cohortService.getAllCohorts();
             List<Cohort> syncedCohorts = new ArrayList<Cohort>();
             for (Cohort cohort : cohorts) {
+                //TODO: Have a has members method to make this more explicit
                 if (cohortService.countCohortMembers(cohort.getUuid()) > 0) {
                     syncedCohorts.add(cohort);
                 }
@@ -144,7 +142,7 @@ public class CohortController {
     }
 
     public int getSyncedCohortsCount() throws CohortFetchException {
-        return getSyncedCohort().size();
+        return getSyncedCohorts().size();
     }
 
     public static class CohortDownloadException extends Throwable {

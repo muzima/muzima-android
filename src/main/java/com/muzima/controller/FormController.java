@@ -97,7 +97,6 @@ public class FormController {
         return allTags;
     }
 
-    //Todo find a better way of doing this
     public List<Form> getAllDownloadedForms() throws FormFetchException {
         ArrayList<Form> result = new ArrayList<Form>();
         try {

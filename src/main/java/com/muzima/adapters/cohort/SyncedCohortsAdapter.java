@@ -1,19 +1,13 @@
 package com.muzima.adapters.cohort;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Toast;
 
-import com.muzima.R;
 import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SyncedCohortsAdapter extends CohortsAdapter{
@@ -41,7 +35,7 @@ public class SyncedCohortsAdapter extends CohortsAdapter{
         protected List<Cohort> doInBackground(Void... voids) {
             List<Cohort> syncedCohorts = null;
             try {
-                syncedCohorts = cohortController.getSyncedCohort();
+                syncedCohorts = cohortController.getSyncedCohorts();
                 Log.i(TAG, "#Synced Cohorts: " + syncedCohorts.size());
             } catch (CohortController.CohortFetchException e) {
                 Log.e(TAG, "Exception occurred while fetching local synced cohorts " + e);
