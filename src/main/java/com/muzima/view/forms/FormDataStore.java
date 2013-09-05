@@ -6,7 +6,7 @@ import android.widget.Toast;
 import com.muzima.api.model.FormData;
 import com.muzima.controller.FormController;
 
-import android.webkit.JavascriptInterface;
+//import android.webkit.JavascriptInterface;
 
 public class FormDataStore {
     private static final String TAG = "FormDataStore";
@@ -21,7 +21,7 @@ public class FormDataStore {
         this.formData = formData;
     }
 
-    @JavascriptInterface
+//    @JavascriptInterface
     public void save(String data, String status) {
         Log.d(TAG, "saving form data: " + data);
         formData.setPayload(data);
@@ -35,7 +35,7 @@ public class FormDataStore {
         }
     }
 
-    @JavascriptInterface
+//    @JavascriptInterface
     public String getFormPayload() {
         return formData.getPayload();
     }
