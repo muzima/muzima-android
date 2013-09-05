@@ -39,9 +39,7 @@ public class ObservationController {
         try {
             for (String patientUuid : patientUuids) {
                 List<Observation> observationsByPatient = observationService.getObservationsByPatient(patientUuid);
-                for (Observation observation : observationsByPatient) {
-                    observationService.deleteObservation(observation);
-                }
+                observationService.deleteObservations(observationsByPatient);
             }
             observationService.saveObservations(allObservations);
         } catch (IOException e) {

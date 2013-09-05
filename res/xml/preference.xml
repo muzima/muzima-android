@@ -3,6 +3,7 @@
 
     <PreferenceCategory android:title="@string/preference_category_openmrs">
         <EditTextPreference
+                android:defaultValue="http://54.213.146.103:8081/openmrs-standalone"
                 android:dialogMessage="@string/preference_server_desc"
                 android:dialogTitle="@string/preference_server_title"
                 android:key="@string/preference_server"
@@ -10,6 +11,7 @@
                 android:positiveButtonText="@android:string/ok"
                 android:title="@string/preference_server_title"/>
         <EditTextPreference
+                android:defaultValue="admin"
                 android:dialogMessage="@string/preference_username_desc"
                 android:dialogTitle="@string/preference_username_title"
                 android:key="@string/preference_username"
@@ -17,6 +19,7 @@
                 android:positiveButtonText="@android:string/ok"
                 android:title="@string/preference_username_title"/>
         <EditTextPreference
+                android:defaultValue="test"
                 android:dialogMessage="@string/preference_password_desc"
                 android:dialogTitle="@string/preference_password_title"
                 android:key="@string/preference_password"
