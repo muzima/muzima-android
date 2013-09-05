@@ -28,10 +28,13 @@ public class FormDataStore {
         formData.setStatus(status);
         try {
             formController.saveFormData(formData);
+            Log.e(TAG, "" + formController.getAllFormData("incomplete").size());
             formWebViewActivity.finish();
         } catch (FormController.FormDataSaveException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving the form", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while saving form data" + e);
+        } catch (FormController.FormDataFetchException e) {
+            e.printStackTrace();
         }
     }
 

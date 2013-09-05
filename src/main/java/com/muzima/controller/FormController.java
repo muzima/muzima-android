@@ -236,6 +236,14 @@ public class FormController {
         }
     }
 
+    public List<FormData> getAllFormDataByPatientUuid(String patientUuid, String status) throws FormDataFetchException {
+        try {
+            return formService.getFormDataByPatient(patientUuid, status);
+        } catch (IOException e) {
+            throw new FormDataFetchException(e);
+        }
+    }
+
     public static class FormFetchException extends Throwable {
         public FormFetchException(Throwable throwable) {
             super(throwable);

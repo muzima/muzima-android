@@ -10,6 +10,7 @@ import com.muzima.builder.FormTemplateBuilder;
 import com.muzima.builder.TagBuilder;
 import com.muzima.search.api.util.StringUtil;
 import org.apache.lucene.queryParser.ParseException;
+import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -313,6 +314,23 @@ public class FormControllerTest {
 
         assertThat(formController.getAllFormData(status).size(), is(1));
         assertThat(formController.getAllFormData(status), hasItem(formData));
+    }
+
+    @Test
+    public void getAllFormDataByPatientUuid_shouldReturnAllFormDataForPatientAndGivenStatus() throws Exception, FormDataFetchException {
+        List<FormData> formDataList = new ArrayList<FormData>();
+        String patientUuid = "patientUuid";
+        String status = "status";
+
+        when(formService.getFormDataByPatient(patientUuid, status)).thenReturn(formDataList);
+
+        assertThat(formController.getAllFormDataByPatientUuid(patientUuid, status), is(formDataList));
+    }
+
+    @Test (expected = FormDataFetchException.class)
+    public void getAllFormDataByPatientUuid_shouldThrowFormDataFetchExpetionIfExceptionThrownByService() throws Exception, FormDataFetchException {
+        doThrow(new IOException()).when(formService).getFormDataByPatient(anyString(), anyString());
+        formController.getAllFormDataByPatientUuid("", "");
     }
 
     private List<Form> buildForms() {
