@@ -6,6 +6,7 @@ import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Tag;
 import com.muzima.api.service.FormService;
 import com.muzima.search.api.util.StringUtil;
+import com.muzima.utils.Constants;
 import com.muzima.utils.CustomColor;
 
 import org.apache.lucene.queryParser.ParseException;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 
 public class FormController {
 
@@ -242,6 +245,33 @@ public class FormController {
         } catch (IOException e) {
             throw new FormDataFetchException(e);
         }
+    }
+
+    public List<Form> getAllIncompleteForms() throws FormFetchException {
+        List<Form> incompleteForms = new ArrayList<Form>();
+
+        try {
+            List<FormData> allFormData = formService.getAllFormData(STATUS_INCOMPLETE);
+            for (FormData formData : allFormData) {
+                incompleteForms.add(formService.getFormByUuid(formData.getTemplateUuid()));
+            }
+        } catch (IOException e) {
+            throw new FormFetchException(e);
+        }
+        return incompleteForms;
+    }
+
+    public List<Form> getAllIncompleteFormsForPatientUuid(String patientUuid) throws FormFetchException {
+        List<Form> incompleteForms = new ArrayList<Form>();
+        try {
+            List<FormData> allFormData = formService.getFormDataByPatient(patientUuid, STATUS_INCOMPLETE);
+            for (FormData formData : allFormData) {
+                incompleteForms.add(formService.getFormByUuid(formData.getTemplateUuid()));
+            }
+        } catch (IOException e) {
+            throw new FormFetchException(e);
+        }
+        return incompleteForms;
     }
 
     public static class FormFetchException extends Throwable {

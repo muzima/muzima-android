@@ -17,11 +17,13 @@ import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.controller.FormController;
+import com.muzima.utils.Constants;
 
 import java.util.UUID;
 
 import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
 import static com.muzima.controller.FormController.FormFetchException;
+import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 import static java.text.MessageFormat.format;
 
 public class FormWebViewActivity extends SherlockFragmentActivity {
@@ -84,7 +86,7 @@ public class FormWebViewActivity extends SherlockFragmentActivity {
             setPatientUuid(patientUuid);
             setPayload(modelJson);
             setUserUuid("userUuid");
-            setStatus("incomplete");
+            setStatus(STATUS_INCOMPLETE);
             setTemplateUuid(formUuid);
         }};
         return formData;

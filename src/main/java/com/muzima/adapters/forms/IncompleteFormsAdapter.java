@@ -9,6 +9,7 @@ import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
 import com.muzima.tasks.QueryTask;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IncompleteFormsAdapter extends FormsAdapter {
@@ -33,7 +34,8 @@ public class IncompleteFormsAdapter extends FormsAdapter {
         protected List<Form> doInBackground(Void... voids) {
             List<Form> downloadedForms = null;
             try {
-                downloadedForms = formController.getAllDownloadedForms();
+                downloadedForms = formController.getAllIncompleteForms();
+
                 Log.i(TAG, "#Forms with templates: " + downloadedForms.size());
             } catch (FormController.FormFetchException e) {
                 Log.w(TAG, "Exception occurred while fetching local forms " + e);

@@ -9,6 +9,8 @@ import com.muzima.builder.FormBuilder;
 import com.muzima.builder.FormTemplateBuilder;
 import com.muzima.builder.TagBuilder;
 import com.muzima.search.api.util.StringUtil;
+import com.muzima.utils.Constants;
+
 import org.apache.lucene.queryParser.ParseException;
 import org.hamcrest.Matcher;
 import org.junit.Before;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.muzima.controller.FormController.*;
+import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -331,6 +334,74 @@ public class FormControllerTest {
     public void getAllFormDataByPatientUuid_shouldThrowFormDataFetchExpetionIfExceptionThrownByService() throws Exception, FormDataFetchException {
         doThrow(new IOException()).when(formService).getFormDataByPatient(anyString(), anyString());
         formController.getAllFormDataByPatientUuid("", "");
+    }
+
+    @Test
+    public void getAllIncompleteForms_shouldReturnAllIncompleteForms() throws Exception, FormFetchException {
+        final Form form1 = new Form();
+        final Form form2 = new Form();
+        List<Form> forms = new ArrayList<Form>(){{
+            add(form1);
+            add(form2);
+        }};
+
+        final FormData formData1 = new FormData();
+        formData1.setTemplateUuid("form1Uuid");
+        final FormData formData2 = new FormData();
+        formData2.setTemplateUuid("form2Uuid");
+
+        List<FormData> formDataList = new ArrayList<FormData>(){{
+            add(formData1);
+            add(formData2);
+        }};
+
+        when(formService.getAllFormData(STATUS_INCOMPLETE)).thenReturn(formDataList);
+        when(formService.getFormByUuid(formData1.getTemplateUuid())).thenReturn(form1);
+        when(formService.getFormByUuid(formData2.getTemplateUuid())).thenReturn(form2);
+
+        assertThat(formController.getAllIncompleteForms(), is(forms));
+    }
+
+    @Test (expected = FormFetchException.class)
+    public void getAllIncompleteForms_shouldThrowFormFetchExceptionIfExceptionThrownByService() throws Exception, FormFetchException {
+        doThrow(new IOException()).when(formService).getAllFormData(anyString());
+
+        formController.getAllIncompleteForms();
+    }
+
+    @Test
+    public void getAllIncompleteFormsForPatientUuid_shouldReturnAllIncompleteFormsForGivenPatient() throws Exception, FormFetchException {
+        final Form form1 = new Form();
+        final Form form2 = new Form();
+        List<Form> forms = new ArrayList<Form>(){{
+            add(form1);
+            add(form2);
+        }};
+
+        final FormData formData1 = new FormData();
+        formData1.setTemplateUuid("form1Uuid");
+        final FormData formData2 = new FormData();
+        formData2.setTemplateUuid("form2Uuid");
+
+        List<FormData> formDataList = new ArrayList<FormData>(){{
+            add(formData1);
+            add(formData2);
+        }};
+
+        String patientUuid = "patientUuid";
+
+        when(formService.getFormDataByPatient(patientUuid, STATUS_INCOMPLETE)).thenReturn(formDataList);
+        when(formService.getFormByUuid(formData1.getTemplateUuid())).thenReturn(form1);
+        when(formService.getFormByUuid(formData2.getTemplateUuid())).thenReturn(form2);
+
+        assertThat(formController.getAllIncompleteFormsForPatientUuid(patientUuid), is(forms));
+    }
+
+    @Test (expected = FormFetchException.class)
+    public void getAllIncompleteFormsForPatientUuid_shouldThrowFormFetchExceptionIfExceptionThrownByService() throws Exception, FormFetchException {
+        doThrow(new IOException()).when(formService).getFormDataByPatient(anyString(),anyString());
+
+        formController.getAllIncompleteFormsForPatientUuid("patientUuid");
     }
 
     private List<Form> buildForms() {
