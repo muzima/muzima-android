@@ -66,7 +66,7 @@ public class DownloadCohortDataTask extends DownloadMuzimaTask {
             List<String> patientUuids = getPatientUuids(cohortDataList);
 
             long startDownloadObservations = System.currentTimeMillis();
-            List<Observation> allObservations = getAllObservations(observationController, patientUuids);
+            List<Observation> allObservations = downloadAllObservations(observationController, patientUuids);
             long endDownloadObservations = System.currentTimeMillis();
             Log.i(TAG, "Observations download successful with " + allObservations.size() + " observations");
 
@@ -98,7 +98,7 @@ public class DownloadCohortDataTask extends DownloadMuzimaTask {
         return result;
     }
 
-    private ArrayList<Observation> getAllObservations(ObservationController observationController, List<String> patientUuids) throws ObservationController.DownloadObservationException {
+    private ArrayList<Observation> downloadAllObservations(ObservationController observationController, List<String> patientUuids) throws ObservationController.DownloadObservationException {
         ArrayList<Observation> allObservations = new ArrayList<Observation>();
         int index = 0;
         for (String patientUuid : patientUuids) {

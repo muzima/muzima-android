@@ -84,7 +84,7 @@ public class FormWebViewActivity extends SherlockFragmentActivity {
             setPatientUuid(patientUuid);
             setPayload(modelJson);
             setUserUuid("userUuid");
-            setStatus("draft");
+            setStatus("incomplete");
             setTemplateUuid(formUuid);
         }};
         return formData;

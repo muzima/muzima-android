@@ -38,16 +38,16 @@ $(document).ready(function () {
 
     loadErrors = form.init();
 
-    function save() {
+    function save(status) {
         var jData = jDataO.get();
         delete jData.errors;
-        formDataController.save(form.getInstanceID(), jData);
+        formDataController.save(jData, status);
     }
 
     //controller for submission of data to drishti
     $(document).on('click', 'button#draft-form', function () {
         if (typeof form !== 'undefined') {
-            save();
+            save("incomplete");
         }
         return false;
     });
@@ -61,7 +61,7 @@ $(document).ready(function () {
                 return;
             }
             else {
-                save();
+                save("complete");
             }
         }
     });

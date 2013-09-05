@@ -29,8 +29,8 @@ function FormDataController(params){
 	 * @param  {*}		data		Form Data JSON object 
 	 * @return {boolean}     
 	 */
-	this.save = function(data){
-		controller.save(data);
+	this.save = function(data, status){
+		controller.save(data, status);
 	};
 
 	this.remove = function(instanceId){
