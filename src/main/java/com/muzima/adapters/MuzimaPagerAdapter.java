@@ -5,16 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.muzima.MuzimaApplication;
-import com.muzima.controller.FormController;
-import com.muzima.listeners.DownloadListener;
 import com.muzima.view.MuzimaListFragment;
-import com.muzima.view.forms.CompleteFormsListFragment;
-import com.muzima.view.forms.DownloadedFormsListFragment;
-import com.muzima.view.forms.FormsListFragment;
-import com.muzima.view.forms.IncompleteFormsListFragment;
-import com.muzima.view.forms.NewFormsListFragment;
-import com.muzima.view.forms.SyncedFormsListFragment;
 
 public abstract class MuzimaPagerAdapter extends FragmentPagerAdapter{
     protected PagerView[] pagers;

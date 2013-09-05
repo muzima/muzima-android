@@ -11,10 +11,10 @@ import com.muzima.tasks.QueryTask;
 
 import java.util.List;
 
-public class DownloadedFormsAdapter extends FormsAdapter {
+public class IncompleteFormsAdapter extends FormsAdapter {
     private static final String TAG = "NewFormsAdapter";
 
-    public DownloadedFormsAdapter(Context context, int textViewResourceId, FormController formController) {
+    public IncompleteFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
     }
 
@@ -48,7 +48,7 @@ public class DownloadedFormsAdapter extends FormsAdapter {
                 return;
             }
 
-            DownloadedFormsAdapter.this.clear();
+            IncompleteFormsAdapter.this.clear();
             for (Form form : forms) {
                 add(form);
             }

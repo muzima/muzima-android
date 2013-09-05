@@ -2,7 +2,6 @@ package com.muzima.adapters.forms;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +15,7 @@ import com.muzima.api.model.Form;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
 import com.muzima.search.api.util.StringUtil;
+import com.muzima.tasks.QueryTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +87,7 @@ public class NewFormsAdapter extends FormsAdapter {
 
     private void highlightIfDownloaded(View convertView, Form form) {
         try {
-            if(formController.isFormDownloaded(form)){
+            if (formController.isFormDownloaded(form)) {
                 convertView.setBackgroundColor(Color.parseColor("#A8A8A8"));
             }
         } catch (FormController.FormFetchException e) {
@@ -101,11 +101,6 @@ public class NewFormsAdapter extends FormsAdapter {
         layoutParams.setMargins(1, 0, 0, 0);
         textView.setLayoutParams(layoutParams);
         return textView;
-    }
-
-    @Override
-    public void reloadData() {
-        new BackgroundQueryTask().execute();
     }
 
     public void onListItemClick(int position) {
@@ -127,13 +122,15 @@ public class NewFormsAdapter extends FormsAdapter {
         notifyDataSetChanged();
     }
 
-    public class BackgroundQueryTask extends AsyncTask<Void, Void, List<Form>> {
+    @Override
+    public void reloadData() {
+        new BackgroundQueryTask(backgroundListQueryTaskListener).execute();
+    }
 
-        @Override
-        protected void onPreExecute() {
-            if(backgroundListQueryTaskListener != null){
-                backgroundListQueryTaskListener.onQueryTaskStarted();
-            }
+    public class BackgroundQueryTask extends QueryTask {
+
+        public BackgroundQueryTask(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
+            super(backgroundListQueryTaskListener);
         }
 
         @Override
@@ -156,7 +153,7 @@ public class NewFormsAdapter extends FormsAdapter {
 
         @Override
         protected void onPostExecute(List<Form> forms) {
-            if(forms == null){
+            if (forms == null) {
                 Toast.makeText(getContext(), "Something went wrong while fetching forms from local repo", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -167,9 +164,7 @@ public class NewFormsAdapter extends FormsAdapter {
             }
             notifyDataSetChanged();
 
-            if(backgroundListQueryTaskListener != null){
-                backgroundListQueryTaskListener.onQueryTaskFinish();
-            }
+            super.onPostExecute(forms);
         }
     }
 }

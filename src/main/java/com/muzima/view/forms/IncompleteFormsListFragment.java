@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.muzima.R;
+import com.muzima.adapters.forms.DownloadedFormsAdapter;
+import com.muzima.adapters.forms.IncompleteFormsAdapter;
 import com.muzima.controller.FormController;
 
 public class IncompleteFormsListFragment extends FormsListFragment{
@@ -20,7 +22,7 @@ public class IncompleteFormsListFragment extends FormsListFragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        listAdapter = null;
+        listAdapter = new IncompleteFormsAdapter(getActivity(), R.layout.item_forms_list, formController);
         noDataMsg = getActivity().getResources().getString(R.string.no_incomplete_form_msg);
         noDataTip = getActivity().getResources().getString(R.string.no_incomplete_form_tip);
         return super.onCreateView(inflater, container, savedInstanceState);

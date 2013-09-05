@@ -6,7 +6,7 @@ import android.widget.Toast;
 import com.muzima.api.model.FormData;
 import com.muzima.controller.FormController;
 
-//import android.webkit.JavascriptInterface;
+import android.webkit.JavascriptInterface;
 
 public class FormDataStore {
     private static final String TAG = "FormDataStore";
@@ -21,21 +21,24 @@ public class FormDataStore {
         this.formData = formData;
     }
 
-//    @JavascriptInterface
+    @JavascriptInterface
     public void save(String data, String status) {
         Log.d(TAG, "saving form data: " + data);
         formData.setPayload(data);
         formData.setStatus(status);
         try {
             formController.saveFormData(formData);
+            Log.e(TAG, "" + formController.getAllFormData("incomplete").size());
             formWebViewActivity.finish();
         } catch (FormController.FormDataSaveException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving the form", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while saving form data" + e);
+        } catch (FormController.FormDataFetchException e) {
+            e.printStackTrace();
         }
     }
 
-//    @JavascriptInterface
+    @JavascriptInterface
     public String getFormPayload() {
         return formData.getPayload();
     }
