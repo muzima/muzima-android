@@ -69,7 +69,7 @@ public class PatientObservationsActivity extends SherlockFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                finish();
                 overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
                 return true;
             default:

@@ -91,7 +91,7 @@ public class PatientsActivity extends SherlockActivity implements AdapterView.On
                 startActivity(intent);
                 return true;
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                finish();
                 overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
                 return true;
             default:
