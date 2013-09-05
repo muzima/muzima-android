@@ -78,7 +78,7 @@ public class PatientController {
 
     public List<Patient> searchPatient(String term, String cohortUuid) throws PatientLoadException {
         try {
-            return patientService.searchPatients(term);
+            return patientService.searchPatients(term, cohortUuid);
         } catch (IOException e) {
             throw new PatientLoadException(e);
         } catch (ParseException e) {
