@@ -1,10 +1,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               style="@style/DashboardTableContainer">
 
-    <TextView
-            android:id="@+id/providerName"
-            style="@style/DashboardTitleText"
-            android:text="Demographics"/>
+    <LinearLayout style="@style/PatientDemographicsLayout">
+
+        <TextView
+                android:id="@+id/patientName"
+                style="@style/DashboardTitleText"
+                android:layout_weight="1"/>
+
+        <ImageView
+                android:id="@+id/genderImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|right"/>
+    </LinearLayout>
+
+    <LinearLayout
+            style="@style/PatientDemographicsLayout"
+            android:paddingTop="4dp"
+            android:paddingBottom="16dp">
+
+        <TextView
+                android:id="@+id/dob"
+                style="@style/DashboardBaseText"
+                android:layout_weight="1"/>
+
+        <TextView
+                android:id="@+id/patientIdentifier"
+                style="@style/DashboardBaseText"
+                android:layout_gravity="right"/>
+    </LinearLayout>
 
     <LinearLayout style="@style/SummaryItemRow">
 
@@ -29,8 +54,8 @@
     </View>
 
     <LinearLayout
-            android:id="@+id/observations"
-            style="@style/ClickableSummaryItem">
+            style="@style/ClickableSummaryItem"
+            android:onClick="showObservations">
 
         <LinearLayout style="@style/SummaryItemRow">
 

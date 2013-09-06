@@ -186,4 +186,10 @@
         <item name="android:textColor">#ff3d3d3d</item>
         <item name="android:textSize">14sp</item>
     </style>
+
+    <style name="PatientDemographicsLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
 </resources>

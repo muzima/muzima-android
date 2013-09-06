@@ -20,7 +20,7 @@ import com.muzima.utils.Fonts;
 import com.muzima.view.RegisterClientActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
-public class PatientsActivity extends SherlockActivity implements AdapterView.OnItemClickListener{
+public class PatientsListActivity extends SherlockActivity implements AdapterView.OnItemClickListener{
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
     public static final String QUICK_SEARCH = "quickSearch";

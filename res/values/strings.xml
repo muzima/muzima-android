@@ -61,7 +61,7 @@
     <string name="title_activity_patients_list">Patients</string>
     <string name="title_activity_form_webview">Form</string>
     <string name="title_activity_notice_list">Notice List Activity</string>
-    <string name="title_activity_client_summary">Client Summary Activity</string>
+    <string name="title_activity_client_summary">Patient Summary</string>
     <string name="title_activity_client_observations">Patient Observations</string>
     <string name="title_login">Please Log In</string>
     <string name="title_activity_cohort_pref">Cohort Prefixes</string>

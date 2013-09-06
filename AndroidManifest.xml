@@ -116,7 +116,7 @@
                     android:value="com.muzima.view.DashboardActivity"/>
         </activity>
         <activity
-                android:name="com.muzima.view.patients.PatientsActivity"
+                android:name=".view.patients.PatientsListActivity"
                 android:label="@string/title_activity_patients_list"
                 android:parentActivityName="com.muzima.view.MainActivity">
             <meta-data

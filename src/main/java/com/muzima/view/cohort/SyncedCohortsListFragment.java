@@ -11,7 +11,7 @@ import com.muzima.R;
 import com.muzima.adapters.cohort.SyncedCohortsAdapter;
 import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
-import com.muzima.view.patients.PatientsActivity;
+import com.muzima.view.patients.PatientsListActivity;
 
 public class SyncedCohortsListFragment extends CohortListFragment implements AllCohortsListFragment.OnCohortDataDownloadListener {
     private static final String TAG = "SyncedCohortsListFragment";
@@ -36,9 +36,9 @@ public class SyncedCohortsListFragment extends CohortListFragment implements All
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         Cohort cohort = (Cohort) listAdapter.getItem(position);
-        Intent intent = new Intent(getActivity(), PatientsActivity.class);
-        intent.putExtra(PatientsActivity.COHORT_ID, cohort.getUuid());
-        intent.putExtra(PatientsActivity.COHORT_NAME, cohort.getName());
+        Intent intent = new Intent(getActivity(), PatientsListActivity.class);
+        intent.putExtra(PatientsListActivity.COHORT_ID, cohort.getUuid());
+        intent.putExtra(PatientsListActivity.COHORT_NAME, cohort.getName());
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.push_in_from_right, R.anim.push_out_to_left);
     }

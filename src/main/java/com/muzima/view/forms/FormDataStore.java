@@ -1,12 +1,11 @@
 package com.muzima.view.forms;
 
 import android.util.Log;
+import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
 import com.muzima.api.model.FormData;
 import com.muzima.controller.FormController;
-
-import android.webkit.JavascriptInterface;
 
 public class FormDataStore {
     private static final String TAG = "FormDataStore";

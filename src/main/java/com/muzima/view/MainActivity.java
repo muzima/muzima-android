@@ -19,7 +19,7 @@ import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
 import com.muzima.view.cohort.CohortActivity;
 import com.muzima.view.forms.FormsActivity;
-import com.muzima.view.patients.PatientsActivity;
+import com.muzima.view.patients.PatientsListActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
 public class MainActivity extends SherlockActivity {
@@ -106,9 +106,9 @@ public class MainActivity extends SherlockActivity {
      * Called when the user clicks the Clients area or Search Clients Button
      */
     public void patientList(View view) {
-        Intent intent = new Intent(this, PatientsActivity.class);
+        Intent intent = new Intent(this, PatientsListActivity.class);
         if (view.getId() == R.id.quickSearch) {
-            intent.putExtra(PatientsActivity.QUICK_SEARCH, "true");
+            intent.putExtra(PatientsListActivity.QUICK_SEARCH, "true");
         }
         startActivity(intent);
         overridePendingTransition(R.anim.push_in_from_right, R.anim.push_out_to_left);
