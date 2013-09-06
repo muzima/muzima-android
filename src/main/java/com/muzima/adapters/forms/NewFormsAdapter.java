@@ -8,14 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.muzima.R;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
 import com.muzima.search.api.util.StringUtil;
-import com.muzima.tasks.QueryTask;
+import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,47 +123,35 @@ public class NewFormsAdapter extends FormsAdapter {
 
     @Override
     public void reloadData() {
-        new BackgroundQueryTask(backgroundListQueryTaskListener).execute();
+        new BackgroundQueryTask(this).execute();
     }
 
-    public class BackgroundQueryTask extends QueryTask {
+    public static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask {
 
-        public BackgroundQueryTask(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
-            super(backgroundListQueryTaskListener);
+        public BackgroundQueryTask(FormsAdapter formsAdapter) {
+            super(formsAdapter);
         }
 
         @Override
         protected List<Form> doInBackground(Void... voids) {
             List<Form> allForms = null;
-            try {
-                List<Tag> selectedTags = formController.getSelectedTags();
-                List<String> tags = new ArrayList<String>();
-                for (Tag selectedTag : selectedTags) {
-                    tags.add(selectedTag.getUuid());
-                }
 
-                allForms = formController.getAllFormByTags(tags);
-                Log.i(TAG, "#Forms: " + allForms.size());
-            } catch (FormController.FormFetchException e) {
-                Log.w(TAG, "Exception occurred while fetching local forms " + e);
+            if (adapterWeakReference.get() != null) {
+                try {
+                    FormsAdapter formsAdapter = adapterWeakReference.get();
+                    List<Tag> selectedTags = formsAdapter.getFormController().getSelectedTags();
+                    List<String> tags = new ArrayList<String>();
+                    for (Tag selectedTag : selectedTags) {
+                        tags.add(selectedTag.getUuid());
+                    }
+
+                    allForms = formsAdapter.getFormController().getAllFormByTags(tags);
+                    Log.i(TAG, "#Forms: " + allForms.size());
+                } catch (FormController.FormFetchException e) {
+                    Log.w(TAG, "Exception occurred while fetching local forms " + e);
+                }
             }
             return allForms;
-        }
-
-        @Override
-        protected void onPostExecute(List<Form> forms) {
-            if (forms == null) {
-                Toast.makeText(getContext(), "Something went wrong while fetching forms from local repo", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            NewFormsAdapter.this.clear();
-            for (Form form : forms) {
-                add(form);
-            }
-            notifyDataSetChanged();
-
-            super.onPostExecute(forms);
         }
     }
 }

@@ -2,13 +2,12 @@ package com.muzima.adapters.forms;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
-import com.muzima.view.forms.CompleteFormsListFragment;
+import com.muzima.view.forms.CompletePatientsFormsListFragment;
 import com.muzima.view.forms.IncompletePatientsFormsListFragment;
 import com.muzima.view.forms.RecommendedFormsListFragment;
 
@@ -31,7 +30,7 @@ public class PatientFormsPagerAdapter extends MuzimaPagerAdapter{
 
         IncompletePatientsFormsListFragment incompleteFormsListFragment = IncompletePatientsFormsListFragment.newInstance(formController, patientController, patientId);
         RecommendedFormsListFragment recommendedFormsListFragment = RecommendedFormsListFragment.newInstance(formController, patientId);
-        CompleteFormsListFragment completeFormsListFragment = CompleteFormsListFragment.newInstance(formController);
+        CompletePatientsFormsListFragment completeFormsListFragment = CompletePatientsFormsListFragment.newInstance(formController, patientController, patientId);
 
         pagers[TAB_INCOMPLETE] = new PagerView("Incomplete", incompleteFormsListFragment);
         pagers[TAB_RECOMMENDED] = new PagerView("Recommended", recommendedFormsListFragment);

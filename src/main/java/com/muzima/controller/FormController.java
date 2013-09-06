@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
+import static com.muzima.utils.Constants.*;
 
 public class FormController {
 
@@ -261,6 +261,20 @@ public class FormController {
         return incompleteForms;
     }
 
+    public List<Form> getAllCompleteForms() throws FormFetchException {
+        List<Form> completeForms = new ArrayList<Form>();
+
+        try {
+            List<FormData> allFormData = formService.getAllFormData(STATUS_COMPLETE);
+            for (FormData formData : allFormData) {
+                completeForms.add(formService.getFormByUuid(formData.getTemplateUuid()));
+            }
+        } catch (IOException e) {
+            throw new FormFetchException(e);
+        }
+        return completeForms;
+    }
+
     public List<Form> getAllIncompleteFormsForPatientUuid(String patientUuid) throws FormFetchException {
         List<Form> incompleteForms = new ArrayList<Form>();
         try {
@@ -272,6 +286,19 @@ public class FormController {
             throw new FormFetchException(e);
         }
         return incompleteForms;
+    }
+
+    public List<Form> getAllCompleteFormsForPatientUuid(String patientUuid) throws FormFetchException {
+        List<Form> completeForms = new ArrayList<Form>();
+        try {
+            List<FormData> allFormData = formService.getFormDataByPatient(patientUuid, STATUS_COMPLETE);
+            for (FormData formData : allFormData) {
+                completeForms.add(formService.getFormByUuid(formData.getTemplateUuid()));
+            }
+        } catch (IOException e) {
+            throw new FormFetchException(e);
+        }
+        return completeForms;
     }
 
     public static class FormFetchException extends Throwable {

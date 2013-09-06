@@ -2,42 +2,21 @@
 package com.muzima.view.forms;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.NavUtils;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
-import android.view.View;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
-import com.muzima.adapters.forms.FormsPagerAdapter;
 import com.muzima.adapters.forms.PatientFormsPagerAdapter;
-import com.muzima.adapters.forms.TagsListAdapter;
-import com.muzima.controller.FormController;
-import com.muzima.search.api.util.StringUtil;
-import com.muzima.tasks.DownloadMuzimaTask;
-import com.muzima.tasks.forms.DownloadFormMetadataTask;
-import com.muzima.utils.Fonts;
-import com.muzima.utils.NetworkUtils;
-import com.muzima.view.RegisterClientActivity;
-import com.muzima.view.patients.PatientSummaryActivity;
+import com.muzima.api.model.Patient;
+import com.muzima.controller.PatientController;
 
-import static android.os.AsyncTask.Status.PENDING;
-import static android.os.AsyncTask.Status.RUNNING;
 import static com.muzima.view.patients.PatientSummaryActivity.PATIENT_ID;
 
 
-public class PatientFormsActivity extends FormsActivityBase{
+public class PatientFormsActivity extends FormsActivityBase {
     private static final String TAG = "FormsActivity";
     private String patientId;
 
@@ -47,6 +26,19 @@ public class PatientFormsActivity extends FormsActivityBase{
         Intent intent = getIntent();
         patientId = intent.getStringExtra(PATIENT_ID);
         super.onCreate(savedInstanceState);
+        try {
+            setupActionbar();
+        } catch (PatientController.PatientLoadException e) {
+            Toast.makeText(this, "An error occurred while fetching patien", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
+
+    private void setupActionbar() throws PatientController.PatientLoadException {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        PatientController patientController = ((MuzimaApplication) getApplicationContext()).getPatientController();
+        Patient patient = patientController.getPatientByUuid(patientId);
+        getSupportActionBar().setTitle(patient.getFamilyName() + ", " + patient.getGivenName() + " " + patient.getMiddleName());
     }
 
 
@@ -55,4 +47,14 @@ public class PatientFormsActivity extends FormsActivityBase{
         return new PatientFormsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), patientId);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

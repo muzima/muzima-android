@@ -86,4 +86,12 @@ public abstract class FormsAdapter extends ListAdapter<Form> {
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
         this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
     }
+
+    public BackgroundListQueryTaskListener getBackgroundListQueryTaskListener() {
+        return backgroundListQueryTaskListener;
+    }
+
+    public FormController getFormController() {
+        return formController;
+    }
 }

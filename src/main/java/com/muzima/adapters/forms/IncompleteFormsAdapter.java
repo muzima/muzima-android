@@ -1,19 +1,16 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
-import com.muzima.tasks.QueryTask;
+import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class IncompleteFormsAdapter extends FormsAdapter {
-    private static final String TAG = "NewFormsAdapter";
+    private static final String TAG = "IncompleteFormsAdapter";
 
     public IncompleteFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
@@ -21,42 +18,30 @@ public abstract class IncompleteFormsAdapter extends FormsAdapter {
 
     @Override
     public void reloadData() {
-        new BackgroundQueryTask(backgroundListQueryTaskListener).execute();
+        new BackgroundQueryTask(this).execute();
     }
 
-    public class BackgroundQueryTask extends QueryTask {
+    public static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask {
 
-        public BackgroundQueryTask(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
-            super(backgroundListQueryTaskListener);
+        public BackgroundQueryTask(FormsAdapter formsAdapter) {
+            super(formsAdapter);
         }
 
         @Override
         protected List<Form> doInBackground(Void... voids) {
             List<Form> downloadedForms = null;
-            try {
-                downloadedForms = fetchForms();
 
-                Log.i(TAG, "#Forms with templates: " + downloadedForms.size());
-            } catch (FormController.FormFetchException e) {
-                Log.w(TAG, "Exception occurred while fetching local forms " + e);
+            if (adapterWeakReference.get() != null) {
+                try {
+                    FormsAdapter formsAdapter = adapterWeakReference.get();
+                    downloadedForms = ((IncompleteFormsAdapter)formsAdapter).fetchForms();
+
+                    Log.i(TAG, "#Incomplete forms: " + downloadedForms.size());
+                } catch (FormController.FormFetchException e) {
+                    Log.w(TAG, "Exception occurred while fetching local forms " + e);
+                }
             }
             return downloadedForms;
-        }
-
-        @Override
-        protected void onPostExecute(List<Form> forms) {
-            if(forms == null){
-                Toast.makeText(getContext(), "Something went wrong while fetching forms from local repo", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            IncompleteFormsAdapter.this.clear();
-            for (Form form : forms) {
-                add(form);
-            }
-            notifyDataSetChanged();
-
-            super.onPostExecute(forms);
         }
     }
 

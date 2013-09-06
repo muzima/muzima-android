@@ -36,7 +36,7 @@ public class PatientSummaryActivity extends SherlockActivity {
             patientSummary = intentExtras.getString(PATIENT_SUMMARY);
         }
 
-		setupActionBar();
+        setupActionbar();
         try {
             setupPatientMetadata();
         } catch (PatientController.PatientLoadException e) {
@@ -44,14 +44,6 @@ public class PatientSummaryActivity extends SherlockActivity {
             finish();
         }
     }
-
-	/**
-	 * Set up the {@link android.app.ActionBar}.
-	 */
-	private void setupActionBar() {
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setTitle(patientSummary);
-	}
 
     private void setupActionbar() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

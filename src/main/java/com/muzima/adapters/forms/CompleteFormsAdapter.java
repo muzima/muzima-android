@@ -9,10 +9,10 @@ import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
 import java.util.List;
 
-public class DownloadedFormsAdapter extends FormsAdapter {
-    private static final String TAG = "DownloadedFormsAdapter";
+public abstract class CompleteFormsAdapter extends FormsAdapter {
+    private static final String TAG = "CompleteFormsAdapter";
 
-    public DownloadedFormsAdapter(Context context, int textViewResourceId, FormController formController) {
+    public CompleteFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
     }
 
@@ -21,6 +21,8 @@ public class DownloadedFormsAdapter extends FormsAdapter {
         new BackgroundQueryTask(this).execute();
     }
 
+    protected abstract List<Form> fetchForms() throws FormController.FormFetchException;
+
     public static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask {
 
         public BackgroundQueryTask(FormsAdapter formsAdapter) {
@@ -28,18 +30,22 @@ public class DownloadedFormsAdapter extends FormsAdapter {
         }
 
         @Override
-        protected List<Form> doInBackground(Void... params) {
+        protected List<Form> doInBackground(Void... voids) {
             List<Form> downloadedForms = null;
+
             if (adapterWeakReference.get() != null) {
                 try {
                     FormsAdapter formsAdapter = adapterWeakReference.get();
-                    downloadedForms = formsAdapter.getFormController().getAllDownloadedForms();
-                    Log.i(TAG, "#Forms with templates: " + downloadedForms.size());
+                    downloadedForms = ((CompleteFormsAdapter)formsAdapter).fetchForms();
+
+                    Log.i(TAG, "#Complete forms: " + downloadedForms.size());
                 } catch (FormController.FormFetchException e) {
                     Log.w(TAG, "Exception occurred while fetching local forms " + e);
                 }
             }
+
             return downloadedForms;
         }
+
     }
 }

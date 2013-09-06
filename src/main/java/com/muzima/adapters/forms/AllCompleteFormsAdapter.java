@@ -7,15 +7,15 @@ import com.muzima.controller.FormController;
 
 import java.util.List;
 
-public class AllIncompleteFormsAdapter extends IncompleteFormsAdapter {
-    private static final String TAG = "AllIncompleteFormsAdapter";
+public class AllCompleteFormsAdapter extends IncompleteFormsAdapter {
+    private static final String TAG = "AllCompleteFormsAdapter";
 
-    public AllIncompleteFormsAdapter(Context context, int textViewResourceId, FormController formController) {
+    public AllCompleteFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
     }
 
     @Override
     protected List<Form> fetchForms() throws FormController.FormFetchException {
-        return formController.getAllIncompleteForms();
+        return formController.getAllCompleteForms();
     }
 }

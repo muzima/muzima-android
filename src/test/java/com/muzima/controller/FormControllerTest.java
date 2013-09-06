@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.muzima.controller.FormController.*;
-import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
+import static com.muzima.utils.Constants.*;
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -395,6 +395,41 @@ public class FormControllerTest {
         when(formService.getFormByUuid(formData2.getTemplateUuid())).thenReturn(form2);
 
         assertThat(formController.getAllIncompleteFormsForPatientUuid(patientUuid), is(forms));
+    }
+
+    @Test (expected = FormFetchException.class)
+    public void getAllCompleteFormsForPatientUuid_shouldThrowFormFetchExceptionIfExceptionThrownByService() throws Exception, FormFetchException {
+        doThrow(new IOException()).when(formService).getFormDataByPatient(anyString(),anyString());
+
+        formController.getAllCompleteFormsForPatientUuid("patientUuid");
+    }
+
+    @Test
+    public void getAllCompleteFormsForPatientUuid_shouldReturnAllCompleteFormsForGivenPatient() throws Exception, FormFetchException {
+        final Form form1 = new Form();
+        final Form form2 = new Form();
+        List<Form> forms = new ArrayList<Form>(){{
+            add(form1);
+            add(form2);
+        }};
+
+        final FormData formData1 = new FormData();
+        formData1.setTemplateUuid("form1Uuid");
+        final FormData formData2 = new FormData();
+        formData2.setTemplateUuid("form2Uuid");
+
+        List<FormData> formDataList = new ArrayList<FormData>(){{
+            add(formData1);
+            add(formData2);
+        }};
+
+        String patientUuid = "patientUuid";
+
+        when(formService.getFormDataByPatient(patientUuid, STATUS_COMPLETE)).thenReturn(formDataList);
+        when(formService.getFormByUuid(formData1.getTemplateUuid())).thenReturn(form1);
+        when(formService.getFormByUuid(formData2.getTemplateUuid())).thenReturn(form2);
+
+        assertThat(formController.getAllCompleteFormsForPatientUuid(patientUuid), is(forms));
     }
 
     @Test (expected = FormFetchException.class)

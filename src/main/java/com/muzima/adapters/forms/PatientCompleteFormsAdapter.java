@@ -7,17 +7,17 @@ import com.muzima.controller.FormController;
 
 import java.util.List;
 
-public class PatientIncompleteFormsAdapter extends IncompleteFormsAdapter {
-    private static final String TAG = "PatientIncompleteFormsAdapter";
+public class PatientCompleteFormsAdapter extends IncompleteFormsAdapter {
+    private static final String TAG = "PatientCompleteFormsAdapter";
     private final String patientId;
 
-    public PatientIncompleteFormsAdapter(Context context, int textViewResourceId, FormController formController, String patientId) {
+    public PatientCompleteFormsAdapter(Context context, int textViewResourceId, FormController formController, String patientId) {
         super(context, textViewResourceId, formController);
         this.patientId = patientId;
     }
 
     @Override
     protected List<Form> fetchForms() throws FormController.FormFetchException {
-        return formController.getAllIncompleteFormsForPatientUuid(patientId);
+        return formController.getAllCompleteFormsForPatientUuid(patientId);
     }
 }

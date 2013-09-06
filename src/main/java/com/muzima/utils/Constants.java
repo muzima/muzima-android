@@ -7,6 +7,7 @@ public class Constants {
     public static final String FORM_TAG_PREF = "FormTagPref";
     public static final String FORM_TAG_PREF_KEY = "FormTagPref";
     public static final String STATUS_INCOMPLETE = "incomplete";
+    public static final String STATUS_COMPLETE = "complete";
 
 
 }
