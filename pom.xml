@@ -13,9 +13,15 @@
 
     <repositories>
         <repository>
-            <id>local-project-libraries</id>
+            <id>local-project-libraries-github</id>
             <name>Local project libraries</name>
-            <url>file://${project.basedir}/libs</url>
+            <url>https://raw.github.com/muzima/muzima-maven/master/releases</url>
+        </repository>
+        <repository>
+            <id>local-project-libraries-snapshot-github</id>
+            <name>Local project libraries</name>
+            <url>https://raw.github.com/muzima/muzima-maven/master/snapshots</url>
+            <snapshots/>
         </repository>
     </repositories>
 
@@ -109,12 +115,7 @@
         <dependency>
             <groupId>com.muzima</groupId>
             <artifactId>muzima-api</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.muzima</groupId>
-            <artifactId>search-api</artifactId>
-            <version>1.0</version>
+            <version>1.0-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.inject</groupId>
