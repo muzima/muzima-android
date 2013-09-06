@@ -21,7 +21,7 @@ public class DownloadedFormsAdapter extends FormsAdapter {
         new BackgroundQueryTask(this).execute();
     }
 
-    public static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask {
+    public class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask {
 
         public BackgroundQueryTask(FormsAdapter formsAdapter) {
             super(formsAdapter);
@@ -38,6 +38,7 @@ public class DownloadedFormsAdapter extends FormsAdapter {
                 } catch (FormController.FormFetchException e) {
                     Log.w(TAG, "Exception occurred while fetching local forms " + e);
                 }
+            }
             return downloadedForms;
         }
     }
