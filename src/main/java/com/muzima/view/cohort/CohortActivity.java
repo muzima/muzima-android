@@ -108,6 +108,7 @@ public class CohortActivity extends SherlockFragmentActivity {
     private void initPager() {
         viewPager = (ViewPager) findViewById(R.id.pager);
         cohortPagerAdapter = new CohortPagerAdapter(getApplicationContext(), getSupportFragmentManager());
+        cohortPagerAdapter.initPagerViews();
         viewPager.setAdapter(cohortPagerAdapter);
     }
 

@@ -9,10 +9,12 @@ import com.muzima.view.MuzimaListFragment;
 
 public abstract class MuzimaPagerAdapter extends FragmentPagerAdapter{
     protected PagerView[] pagers;
+    protected Context context;
 
     public MuzimaPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
-        initPagerViews(context);
+        this.context = context;
+        initPagerViews();
     }
 
     @Override
@@ -30,7 +32,7 @@ public abstract class MuzimaPagerAdapter extends FragmentPagerAdapter{
         return pagers[position].title;
     }
 
-    protected abstract void initPagerViews(Context context);
+    public abstract void initPagerViews();
 
     public static class PagerView {
         public String title;

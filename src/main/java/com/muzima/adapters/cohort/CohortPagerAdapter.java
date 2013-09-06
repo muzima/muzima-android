@@ -3,7 +3,6 @@ package com.muzima.adapters.cohort;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 
-import android.view.View;
 import com.muzima.MuzimaApplication;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.controller.CohortController;
@@ -31,7 +30,7 @@ public class CohortPagerAdapter extends MuzimaPagerAdapter implements DownloadLi
 
     }
 
-    protected void initPagerViews(Context context){
+    public void initPagerViews(){
         pagers = new PagerView[2];
         CohortController cohortController = ((MuzimaApplication) context.getApplicationContext()).getCohortController();
 

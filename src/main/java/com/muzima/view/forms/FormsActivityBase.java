@@ -74,6 +74,7 @@ public abstract class FormsActivityBase extends SherlockFragmentActivity{
     private void initPager() {
         formsPager = (ViewPager) findViewById(R.id.pager);
         formsPagerAdapter = createFormsPagerAdapter();
+        formsPagerAdapter.initPagerViews();
         formsPager.setAdapter(formsPagerAdapter);
     }
 

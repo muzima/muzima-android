@@ -5,9 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.widget.SearchView;
 import com.muzima.MuzimaApplication;
 import com.muzima.adapters.MuzimaPagerAdapter;
-import com.muzima.controller.CohortController;
 import com.muzima.controller.ObservationController;
-import com.muzima.controller.PatientController;
 import com.muzima.view.observations.ObservationByEncountersFragment;
 import com.muzima.view.observations.ObservationsByDateListFragment;
 import com.muzima.view.patients.ObservationsListFragment;
@@ -22,7 +20,7 @@ public class ObservationsPagerAdapter extends MuzimaPagerAdapter implements Sear
     }
 
     @Override
-    protected void initPagerViews(Context context) {
+    public void initPagerViews() {
         pagers = new PagerView[2];
         ObservationController observationController = ((MuzimaApplication) context.getApplicationContext()).getObservationController();
 

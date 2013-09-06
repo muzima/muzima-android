@@ -20,7 +20,6 @@ public class PatientSummaryActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_client_summary);
 
-
         Bundle intentExtras = getIntent().getExtras();
         if(intentExtras != null){
             patientId = intentExtras.getString(PATIENT_ID);

@@ -39,7 +39,7 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements DownloadLis
     }
 
     @Override
-    protected void initPagerViews(Context context) {
+    public void initPagerViews() {
         pagers = new PagerView[4];
         FormController formController = ((MuzimaApplication) context.getApplicationContext()).getFormController();
 

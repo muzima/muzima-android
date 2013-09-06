@@ -54,6 +54,7 @@ public class PatientObservationsActivity extends SherlockFragmentActivity {
     private void initPager() {
         viewPager = (ViewPager) findViewById(R.id.pager);
         cohortPagerAdapter = new ObservationsPagerAdapter(getApplicationContext(), getSupportFragmentManager());
+        cohortPagerAdapter.initPagerViews();
         viewPager.setAdapter(cohortPagerAdapter);
     }
 

@@ -12,7 +12,7 @@ import com.muzima.tasks.QueryTask;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IncompleteFormsAdapter extends FormsAdapter {
+public abstract class IncompleteFormsAdapter extends FormsAdapter {
     private static final String TAG = "NewFormsAdapter";
 
     public IncompleteFormsAdapter(Context context, int textViewResourceId, FormController formController) {
@@ -34,7 +34,7 @@ public class IncompleteFormsAdapter extends FormsAdapter {
         protected List<Form> doInBackground(Void... voids) {
             List<Form> downloadedForms = null;
             try {
-                downloadedForms = formController.getAllIncompleteForms();
+                downloadedForms = fetchForms();
 
                 Log.i(TAG, "#Forms with templates: " + downloadedForms.size());
             } catch (FormController.FormFetchException e) {
@@ -59,4 +59,6 @@ public class IncompleteFormsAdapter extends FormsAdapter {
             super.onPostExecute(forms);
         }
     }
+
+    protected abstract List<Form> fetchForms() throws FormController.FormFetchException;
 }
