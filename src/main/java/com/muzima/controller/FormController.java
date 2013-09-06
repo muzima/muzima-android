@@ -302,6 +302,14 @@ public class FormController {
         return completeForms;
     }
 
+    public int getAllIncompleteFormsSize() throws FormFetchException {
+        return getAllIncompleteForms().size();
+    }
+
+    public int getAllCompleteFormsSize() throws FormFetchException {
+        return getAllCompleteForms().size();
+    }
+
     public static class FormFetchException extends Throwable {
         public FormFetchException(Throwable throwable) {
             super(throwable);

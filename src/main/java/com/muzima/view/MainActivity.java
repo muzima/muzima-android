@@ -154,6 +154,8 @@ public class MainActivity extends SherlockActivity {
                 homeActivityMetadata.syncedPatients = patientController.getTotalPatientsCount();
                 homeActivityMetadata.totalForms = formController.getTotalFormCount();
                 homeActivityMetadata.downloadedForms = formController.getDownloadedFormsCount();
+                homeActivityMetadata.incompleteForms = formController.getAllIncompleteFormsSize();
+                homeActivityMetadata.completeAndUnsyncedForms = formController.getAllCompleteFormsSize();
             } catch (CohortController.CohortFetchException e) {
                 Log.w(TAG, "CohortFetchException occurred while fetching metadata in MainActivityBackgroundTask");
             } catch (PatientController.PatientLoadException e) {
@@ -176,6 +178,10 @@ public class MainActivity extends SherlockActivity {
 
             TextView formsCount = (TextView) mMainView.findViewById(R.id.formsCount);
             formsCount.setText(homeActivityMetadata.downloadedForms + "/" + homeActivityMetadata.totalForms);
+
+            TextView formsDescription = (TextView) mMainView.findViewById(R.id.formDescription);
+            formsDescription.setText(homeActivityMetadata.incompleteForms + " Incomplete, "
+                    + homeActivityMetadata.completeAndUnsyncedForms + " Complete");
         }
     }
 
