@@ -126,7 +126,7 @@ public class TagsListAdapter extends ListAdapter<Tag> implements DownloadListene
                 selectedTags.add(tag);
             }
         }
-//        formController.setSelectedTags(selectedTags);
+
         notifyDataSetChanged();
         if (tagsChangedListener != null) {
             tagsChangedListener.onTagsChanged();
