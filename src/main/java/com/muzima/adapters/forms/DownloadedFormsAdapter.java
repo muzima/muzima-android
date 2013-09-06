@@ -33,12 +33,11 @@ public class DownloadedFormsAdapter extends FormsAdapter {
             if (adapterWeakReference.get() != null) {
                 try {
                     FormsAdapter formsAdapter = adapterWeakReference.get();
-                    downloadedForms = formsAdapter.getFormController().getAllDownloadedForms();
+                    downloadedForms = formsAdapter.getFormController().getAllDownloadedFormsByTags(getSelectedTagUuids());
                     Log.i(TAG, "#Forms with templates: " + downloadedForms.size());
                 } catch (FormController.FormFetchException e) {
                     Log.w(TAG, "Exception occurred while fetching local forms " + e);
                 }
-            }
             return downloadedForms;
         }
     }

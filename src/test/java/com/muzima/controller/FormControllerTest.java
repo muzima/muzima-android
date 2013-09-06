@@ -9,10 +9,8 @@ import com.muzima.builder.FormBuilder;
 import com.muzima.builder.FormTemplateBuilder;
 import com.muzima.builder.TagBuilder;
 import com.muzima.search.api.util.StringUtil;
-import com.muzima.utils.Constants;
 
 import org.apache.lucene.queryParser.ParseException;
-import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -217,7 +215,7 @@ public class FormControllerTest {
         when(formService.getAllForms()).thenReturn(forms);
         when(formService.isFormTemplateDownloaded(anyString())).thenReturn(true);
 
-        List<Form> allDownloadedForms = formController.getAllDownloadedForms();
+        List<Form> allDownloadedForms = formController.getAllDownloadedFormsByTags(null);
 
         assertThat(allDownloadedForms.size(), is(5));
     }
@@ -230,7 +228,7 @@ public class FormControllerTest {
         when(formService.getAllForms()).thenReturn(forms);
         when(formService.isFormTemplateDownloaded(anyString())).thenReturn(false);
 
-        List<Form> allDownloadedForms = formController.getAllDownloadedForms();
+        List<Form> allDownloadedForms = formController.getAllDownloadedFormsByTags(null);
 
         assertThat(allDownloadedForms.size(), is(0));
     }

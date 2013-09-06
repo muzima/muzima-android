@@ -6,10 +6,7 @@ import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Tag;
 import com.muzima.api.service.FormService;
 import com.muzima.search.api.util.StringUtil;
-import com.muzima.utils.Constants;
 import com.muzima.utils.CustomColor;
-
-import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -67,24 +64,28 @@ public class FormController {
     public List<Form> getAllFormByTags(List<String> tagsUuid) throws FormFetchException {
         try {
             List<Form> allForms = formService.getAllForms();
-            if (tagsUuid.isEmpty()) {
-                return allForms;
-            }
-
-            List<Form> filteredForms = new ArrayList<Form>();
-            for (Form form : allForms) {
-                Tag[] formTags = form.getTags();
-                for (Tag formTag : formTags) {
-                    if (tagsUuid.contains(formTag.getUuid())) {
-                        filteredForms.add(form);
-                        break;
-                    }
-                }
-            }
+            List<Form> filteredForms = filterFormsByTags(allForms, tagsUuid);
             return filteredForms;
         } catch (IOException e) {
             throw new FormFetchException(e);
         }
+    }
+
+    private List<Form> filterFormsByTags(List<Form> forms, List<String> tagsUuid) {
+        if (tagsUuid==null || tagsUuid.isEmpty()) {
+            return forms;
+        }
+        List<Form> filteredForms = new ArrayList<Form>();
+        for (Form form : forms) {
+            Tag[] formTags = form.getTags();
+            for (Tag formTag : formTags) {
+                if (tagsUuid.contains(formTag.getUuid())) {
+                    filteredForms.add(form);
+                    break;
+                }
+            }
+        }
+        return filteredForms;
     }
 
     public List<Tag> getAllTags() throws FormFetchException {
@@ -100,11 +101,11 @@ public class FormController {
         return allTags;
     }
 
-    public List<Form> getAllDownloadedForms() throws FormFetchException {
+    public List<Form> getAllDownloadedFormsByTags(List<String> tags) throws FormFetchException {
         ArrayList<Form> result = new ArrayList<Form>();
         try {
             List<Form> allForms = formService.getAllForms();
-            for (Form form : allForms) {
+            for (Form form : filterFormsByTags(allForms, tags)) {
                 if (formService.isFormTemplateDownloaded(form.getUuid())) {
                     result.add(form);
                 }

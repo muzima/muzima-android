@@ -3,17 +3,11 @@ package com.muzima.adapters.forms;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
 import com.muzima.R;
 import com.muzima.api.model.Form;
-import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
-import com.muzima.search.api.util.StringUtil;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
 import java.util.ArrayList;
@@ -77,23 +71,16 @@ public class NewFormsAdapter extends FormsAdapter {
         @Override
         protected List<Form> doInBackground(Void... voids) {
             List<Form> allForms = null;
-
             if (adapterWeakReference.get() != null) {
                 try {
                     FormsAdapter formsAdapter = adapterWeakReference.get();
-                    List<Tag> selectedTags = formsAdapter.getFormController().getSelectedTags();
-                    List<String> tags = new ArrayList<String>();
-                    for (Tag selectedTag : selectedTags) {
-                        tags.add(selectedTag.getUuid());
-                    }
-
-                    allForms = formsAdapter.getFormController().getAllFormByTags(tags);
+                    allForms = formsAdapter.getFormController().getAllFormByTags(getSelectedTagUuids());
                     Log.i(TAG, "#Forms: " + allForms.size());
                 } catch (FormController.FormFetchException e) {
                     Log.w(TAG, "Exception occurred while fetching local forms " + e);
                 }
-            }
             return allForms;
         }
     }
+
 }

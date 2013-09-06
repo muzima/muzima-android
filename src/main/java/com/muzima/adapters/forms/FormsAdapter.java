@@ -110,6 +110,15 @@ public abstract class FormsAdapter extends ListAdapter<Form> {
         return textView;
     }
 
+    protected List<String> getSelectedTagUuids() {
+        List<Tag> selectedTags = formController.getSelectedTags();
+        List<String> tags = new ArrayList<String>();
+        for (Tag selectedTag : selectedTags) {
+            tags.add(selectedTag.getUuid());
+        }
+        return tags;
+    }
+
     protected static class ViewHolder {
         TextView name;
         TextView description;
