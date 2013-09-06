@@ -79,6 +79,7 @@ public class PatientObservationsActivity extends SherlockFragmentActivity {
         getSupportMenuInflater().inflate(R.menu.observation_list, menu);
         SearchView searchView = (SearchView) menu.findItem(R.id.search)
                 .getActionView();
+        searchView.setQueryHint("Search observations");
         searchView.setOnQueryTextListener(cohortPagerAdapter);
         return true;
     }
