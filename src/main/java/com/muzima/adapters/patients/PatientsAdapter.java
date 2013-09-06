@@ -55,9 +55,13 @@ public class PatientsAdapter extends ListAdapter<Patient>{
 
         holder.dateOfBirth.setText("DOB: " + getFormattedDate(patient.getBirthdate()));
         holder.identifier.setText(patient.getIdentifier());
-        holder.name.setText(String.format(patient.getFamilyName() + ", " + patient.getGivenName() + " " + patient.getMiddleName()));
+        holder.name.setText(String.format(getPatientFullName(patient)));
         holder.genderImg.setImageResource(getGenderImage(patient.getGender()));
         return convertView;
+    }
+
+    private String getPatientFullName(Patient patient) {
+        return patient.getFamilyName() + ", " + patient.getGivenName() + " " + patient.getMiddleName();
     }
 
     private int getGenderImage(String gender) {

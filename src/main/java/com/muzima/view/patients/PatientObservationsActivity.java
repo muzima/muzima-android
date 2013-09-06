@@ -29,11 +29,7 @@ public class PatientObservationsActivity extends SherlockFragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_patient_observations);
-		
-		Bundle extras = getIntent().getExtras();
-        if (extras != null && "true".equals(extras.getString("quickSearch"))) {
-            quickSearch = true;
-        }
+
         // Show the Up button in the action bar.
 		setupActionBar();
         initPager();
@@ -63,6 +59,7 @@ public class PatientObservationsActivity extends SherlockFragmentActivity {
 	 */
 	private void setupActionBar() {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setTitle(getIntent().getStringExtra(PatientSummaryActivity.PATIENT_SUMMARY));
 	}
 
     @Override
@@ -82,16 +79,8 @@ public class PatientObservationsActivity extends SherlockFragmentActivity {
         getSupportMenuInflater().inflate(R.menu.observation_list, menu);
         SearchView searchView = (SearchView) menu.findItem(R.id.search)
                 .getActionView();
-//        setupNoSearchResultDataView();
         searchView.setOnQueryTextListener(cohortPagerAdapter);
         return true;
     }
 
-//    private void setupNoSearchResultDataView() {
-//        setupNoDataView();
-//        TextView noDataMsgTextView = (TextView) getActivity().findViewById(R.id.no_data_msg);
-//        noDataMsgTextView.setText(getResources().getText(R.string.no_patients_matched));
-//        TextView noDataTipTextView = (TextView) getActivity().findViewById(R.id.no_data_tip);
-//        noDataTipTextView.setText(R.string.no_patients_matched_tip);
-//    }
 }

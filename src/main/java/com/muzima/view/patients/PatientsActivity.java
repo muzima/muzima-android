@@ -2,8 +2,6 @@ package com.muzima.view.patients;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -17,7 +15,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.patients.PatientsAdapter;
-import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.Fonts;
 import com.muzima.view.RegisterClientActivity;
@@ -149,7 +146,22 @@ public class PatientsActivity extends SherlockActivity implements AdapterView.On
         Patient patient = cohortPatientsAdapter.getItem(position);
         Intent intent = new Intent(this, PatientSummaryActivity.class);
         intent.putExtra(PatientSummaryActivity.PATIENT_ID, patient.getUuid());
+        intent.putExtra(PatientSummaryActivity.PATIENT_SUMMARY, getPatientSummary(patient));
         startActivity(intent);
         overridePendingTransition(R.anim.push_in_from_right, R.anim.push_out_to_left);
+    }
+
+    private String getPatientSummary(Patient patient) {
+        StringBuffer sb = new StringBuffer();
+        sb.append(patient.getGender().equalsIgnoreCase("f") ? "♀" : "♂")
+                .append(" ")
+                .append(getPatientAbbrName(patient))
+                .append(", ")
+                .append(patient.getIdentifier());
+        return sb.toString();
+    }
+
+    private String getPatientAbbrName(Patient patient) {
+        return patient.getFamilyName() + ", " + patient.getGivenName().substring(0, 1) + " " + patient.getMiddleName().substring(0, 1);
     }
 }

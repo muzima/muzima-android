@@ -12,10 +12,12 @@ import com.muzima.view.forms.PatientFormsActivity;
 
 public class PatientSummaryActivity extends Activity {
     public static final String PATIENT_ID = "patientId";
+    public static final String PATIENT_SUMMARY = "patientSummary";
 
     private String patientId;
+    private String patientSummary;
 
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_client_summary);
@@ -23,6 +25,7 @@ public class PatientSummaryActivity extends Activity {
         Bundle intentExtras = getIntent().getExtras();
         if(intentExtras != null){
             patientId = intentExtras.getString(PATIENT_ID);
+            patientSummary = intentExtras.getString(PATIENT_SUMMARY);
         }
 
         View observations = findViewById(R.id.observations);
@@ -31,6 +34,7 @@ public class PatientSummaryActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(PatientSummaryActivity.this, PatientObservationsActivity.class);
                 intent.putExtra(PATIENT_ID, patientId);
+                intent.putExtra(PATIENT_SUMMARY, patientSummary);
                 startActivity(intent);
                 overridePendingTransition(R.anim.push_in_from_right, R.anim.push_out_to_left);
             }
@@ -44,7 +48,7 @@ public class PatientSummaryActivity extends Activity {
 	 */
 	private void setupActionBar() {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setTitle("♀ Client Name, ID#");
+		getActionBar().setTitle(patientSummary);
 	}
 
 	@Override
