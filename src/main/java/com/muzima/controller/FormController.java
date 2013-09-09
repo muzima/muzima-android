@@ -7,7 +7,9 @@ import com.muzima.api.model.Tag;
 import com.muzima.api.service.FormService;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
+import com.muzima.model.collections.DownloadedForms;
 import com.muzima.model.mapper.AvailableFormBuilder;
+import com.muzima.model.mapper.DownloadedFormBuilder;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.CustomColor;
 
@@ -108,19 +110,19 @@ public class FormController {
         return allTags;
     }
 
-    public List<Form> getAllDownloadedFormsByTags(List<String> tags) throws FormFetchException {
-        ArrayList<Form> result = new ArrayList<Form>();
+    public DownloadedForms getAllDownloadedFormsByTags() throws FormFetchException {
+        DownloadedForms downloadedFormsByTags = new DownloadedForms();
         try {
             List<Form> allForms = formService.getAllForms();
-            for (Form form : filterFormsByTags(allForms, tags)) {
+            for (Form form : allForms) {
                 if (formService.isFormTemplateDownloaded(form.getUuid())) {
-                    result.add(form);
+                    downloadedFormsByTags.add(new DownloadedFormBuilder().withDownloadedForm(form).build());
                 }
             }
         } catch (IOException e) {
             throw new FormFetchException(e);
         }
-        return result;
+        return downloadedFormsByTags;
     }
 
     public int getDownloadedFormsCount() throws FormFetchException {

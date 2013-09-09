@@ -10,6 +10,7 @@ import com.muzima.builder.FormTemplateBuilder;
 import com.muzima.builder.TagBuilder;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
+import com.muzima.model.collections.DownloadedForms;
 import com.muzima.search.api.util.StringUtil;
 
 import org.apache.lucene.queryParser.ParseException;
@@ -77,12 +78,12 @@ public class FormControllerTest {
         when(formService.isFormTemplateDownloaded(forms.get(2).getUuid())).thenReturn(false);
 
         AvailableForms availableForms = formController.getAvailableFormByTags(asList("tag2"));
-        assertThat(getAvailableFormWithUuid(availableForms,forms.get(0).getUuid()).isDownloaded(), is(false));
-        assertThat(getAvailableFormWithUuid(availableForms,forms.get(2).getUuid()).isDownloaded(), is(false));
+        assertThat(getAvailableFormWithUuid(availableForms, forms.get(0).getUuid()).isDownloaded(), is(false));
+        assertThat(getAvailableFormWithUuid(availableForms, forms.get(2).getUuid()).isDownloaded(), is(false));
 
         availableForms = formController.getAvailableFormByTags(asList("tag1"));
-        assertThat(getAvailableFormWithUuid(availableForms,forms.get(0).getUuid()).isDownloaded(), is(false));
-        assertThat(getAvailableFormWithUuid(availableForms,forms.get(1).getUuid()).isDownloaded(), is(true));
+        assertThat(getAvailableFormWithUuid(availableForms, forms.get(0).getUuid()).isDownloaded(), is(false));
+        assertThat(getAvailableFormWithUuid(availableForms, forms.get(1).getUuid()).isDownloaded(), is(true));
     }
 
     private AvailableForm getAvailableFormWithUuid(AvailableForms availableForms, String uuid) {
@@ -238,25 +239,23 @@ public class FormControllerTest {
     @Test
     public void getAllDownloadedForms_shouldReturnOnlyDownloadedForms() throws IOException, ParseException, FormFetchException {
         List<Form> forms = buildForms();
-        List<FormTemplate> formTemplates = buildFormTemplates();
 
         when(formService.getAllForms()).thenReturn(forms);
-        when(formService.isFormTemplateDownloaded(anyString())).thenReturn(true);
+        when(formService.isFormTemplateDownloaded(forms.get(0).getUuid())).thenReturn(true);
 
-        List<Form> allDownloadedForms = formController.getAllDownloadedFormsByTags(null);
+        DownloadedForms allDownloadedForms = formController.getAllDownloadedFormsByTags();
 
-        assertThat(allDownloadedForms.size(), is(5));
+        assertThat(allDownloadedForms.size(), is(1));
     }
 
     @Test
     public void getAllDownloadedForms_shouldReturnNoFormsIfNoTemplateIsDownloaded() throws IOException, ParseException, FormFetchException {
         List<Form> forms = buildForms();
-        List<FormTemplate> formTemplates = buildFormTemplates();
 
         when(formService.getAllForms()).thenReturn(forms);
         when(formService.isFormTemplateDownloaded(anyString())).thenReturn(false);
 
-        List<Form> allDownloadedForms = formController.getAllDownloadedFormsByTags(null);
+        DownloadedForms allDownloadedForms = formController.getAllDownloadedFormsByTags();
 
         assertThat(allDownloadedForms.size(), is(0));
     }
