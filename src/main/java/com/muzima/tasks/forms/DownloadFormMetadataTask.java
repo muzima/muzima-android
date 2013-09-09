@@ -9,7 +9,7 @@ import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
 import com.muzima.tasks.DownloadMuzimaTask;
 import com.muzima.utils.Constants;
-import com.muzima.view.forms.NewFormsListFragment;
+import com.muzima.view.forms.AllAvailableFormsListFragment;
 
 import java.util.*;
 
@@ -85,7 +85,7 @@ public class DownloadFormMetadataTask extends DownloadMuzimaTask {
         SharedPreferences pref = muzimaApplicationContext.getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         Date date = new Date();
-        editor.putLong(NewFormsListFragment.FORMS_METADATA_LAST_SYNCED_TIME, date.getTime());
+        editor.putLong(AllAvailableFormsListFragment.FORMS_METADATA_LAST_SYNCED_TIME, date.getTime());
         editor.commit();
         super.onPostExecute(result);
     }

@@ -6,24 +6,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.muzima.R;
-import com.muzima.api.model.Form;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
+import com.muzima.model.AvailableForm;
+import com.muzima.model.collections.AvailableForms;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewFormsAdapter extends FormsAdapter {
-    private static final String TAG = "NewFormsAdapter";
+public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> {
+    private static final String TAG = "AllAvailableFormsAdapter";
     private List<String> selectedFormsUuid;
 
-    public NewFormsAdapter(Context context, int textViewResourceId, FormController formController) {
+    public AllAvailableFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
         selectedFormsUuid = new ArrayList<String>();
     }
@@ -34,10 +36,21 @@ public class NewFormsAdapter extends FormsAdapter {
 
         highlightIfSelected(convertView, getItem(position));
         addTags((ViewHolder) convertView.getTag(), getItem(position));
+        displayDownloadStatus(convertView, getItem(position));
+
         return convertView;
     }
 
-    protected void addTags(ViewHolder holder, Form form) {
+    private void displayDownloadStatus(View convertView, AvailableForm form) {
+        ImageView imageView = (ImageView) convertView.findViewById(R.id.downloadImg);
+        if(form.isDownloaded()){
+            imageView.setVisibility(View.VISIBLE);
+        }else{
+            imageView.setVisibility(View.GONE);
+        }
+    }
+
+    protected void addTags(ViewHolder holder, AvailableForm form) {
         Tag[] tags = form.getTags();
         if (tags.length > 0) {
             holder.tagsScroller.setVisibility(View.VISIBLE);
@@ -81,8 +94,8 @@ public class NewFormsAdapter extends FormsAdapter {
         return textView;
     }
 
-    private void highlightIfSelected(View convertView, Form form) {
-        if (selectedFormsUuid.contains(form.getUuid())) {
+    private void highlightIfSelected(View convertView, AvailableForm form) {
+        if (selectedFormsUuid.contains(form.getFormUuid())) {
             convertView.setBackgroundColor(getContext().getResources().getColor(R.color.listitem_state_pressed));
         } else {
             convertView.setBackgroundColor(Color.WHITE);
@@ -90,11 +103,11 @@ public class NewFormsAdapter extends FormsAdapter {
     }
 
     public void onListItemClick(int position) {
-        Form form = getItem(position);
-        if (selectedFormsUuid.contains(form.getUuid())) {
-            selectedFormsUuid.remove(form.getUuid());
+        AvailableForm form = getItem(position);
+        if (selectedFormsUuid.contains(form.getFormUuid())) {
+            selectedFormsUuid.remove(form.getFormUuid());
         } else {
-            selectedFormsUuid.add(form.getUuid());
+            selectedFormsUuid.add(form.getFormUuid());
         }
         notifyDataSetChanged();
     }
@@ -113,19 +126,19 @@ public class NewFormsAdapter extends FormsAdapter {
         new BackgroundQueryTask(this).execute();
     }
 
-    public class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask {
+    public class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<AvailableForm> {
 
         public BackgroundQueryTask(FormsAdapter formsAdapter) {
             super(formsAdapter);
         }
 
         @Override
-        protected List<Form> doInBackground(Void... voids) {
-            List<Form> allForms = null;
+        protected AvailableForms doInBackground(Void... voids) {
+            AvailableForms allForms = null;
             if (adapterWeakReference.get() != null) {
                 try {
                     FormsAdapter formsAdapter = adapterWeakReference.get();
-                    allForms = formsAdapter.getFormController().getAllFormByTags(getSelectedTagUuids());
+                    allForms = formsAdapter.getFormController().getAvailableFormByTags(getSelectedTagUuids());
                     Log.i(TAG, "#Forms: " + allForms.size());
                 } catch (FormController.FormFetchException e) {
                     Log.w(TAG, "Exception occurred while fetching local forms " + e);

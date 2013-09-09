@@ -8,6 +8,8 @@ import com.muzima.api.service.FormService;
 import com.muzima.builder.FormBuilder;
 import com.muzima.builder.FormTemplateBuilder;
 import com.muzima.builder.TagBuilder;
+import com.muzima.model.AvailableForm;
+import com.muzima.model.collections.AvailableForms;
 import com.muzima.search.api.util.StringUtil;
 
 import org.apache.lucene.queryParser.ParseException;
@@ -23,6 +25,7 @@ import static com.muzima.utils.Constants.*;
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.junit.matchers.JUnitMatchers.hasItem;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -38,23 +41,6 @@ public class FormControllerTest {
     }
 
     @Test
-    public void getAllForms_shouldReturnAllAvailableForms() throws IOException, ParseException, FormFetchException {
-        List<Form> forms = new ArrayList<Form>();
-        when(formService.getAllForms()).thenReturn(forms);
-
-        assertThat(formController.getAllForms(), is(forms));
-    }
-
-    @Test(expected = FormFetchException.class)
-    public void getAllForms_shouldThrowFormFetchExceptionIfExceptionThrownByFormService() throws IOException, ParseException, FormFetchException {
-        doThrow(new IOException()).when(formService).getAllForms();
-        formController.getAllForms();
-
-        doThrow(new ParseException()).when(formService).getAllForms();
-        formController.getAllForms();
-    }
-
-    @Test
     public void getTotalFormCount_shouldReturnTotalAvailableForms() throws IOException, ParseException, FormFetchException {
         when(formService.countAllForms()).thenReturn(2);
 
@@ -66,24 +52,66 @@ public class FormControllerTest {
         List<Form> forms = buildForms();
         when(formService.getAllForms()).thenReturn(forms);
 
-        List<Form> formByTags = formController.getAllFormByTags(asList("tag2"));
-        assertThat(formByTags.size(), is(2));
-        assertThat(formByTags, hasItem(forms.get(0)));
-        assertThat(formByTags, hasItem(forms.get(2)));
+        when(formService.isFormTemplateDownloaded(forms.get(0).getUuid())).thenReturn(false);
+        when(formService.isFormTemplateDownloaded(forms.get(1).getUuid())).thenReturn(true);
+        when(formService.isFormTemplateDownloaded(forms.get(2).getUuid())).thenReturn(false);
 
-        formByTags = formController.getAllFormByTags(asList("tag1"));
-        assertThat(formByTags.size(), is(2));
-        assertThat(formByTags, hasItem(forms.get(0)));
-        assertThat(formByTags, hasItem(forms.get(1)));
+        AvailableForms availableForms = formController.getAvailableFormByTags(asList("tag2"));
+        assertThat(availableForms.size(), is(2));
+        assertTrue(containsFormWithUuid(availableForms, forms.get(0).getUuid()));
+        assertTrue(containsFormWithUuid(availableForms, forms.get(2).getUuid()));
+
+        availableForms = formController.getAvailableFormByTags(asList("tag1"));
+        assertThat(availableForms.size(), is(2));
+        assertTrue(containsFormWithUuid(availableForms, forms.get(0).getUuid()));
+        assertTrue(containsFormWithUuid(availableForms, forms.get(1).getUuid()));
     }
+
+    @Test
+    public void getAllFormByTags_shouldAssignDownloadStatusToForms() throws IOException, ParseException, FormFetchException {
+        List<Form> forms = buildForms();
+        when(formService.getAllForms()).thenReturn(forms);
+
+        when(formService.isFormTemplateDownloaded(forms.get(0).getUuid())).thenReturn(false);
+        when(formService.isFormTemplateDownloaded(forms.get(1).getUuid())).thenReturn(true);
+        when(formService.isFormTemplateDownloaded(forms.get(2).getUuid())).thenReturn(false);
+
+        AvailableForms availableForms = formController.getAvailableFormByTags(asList("tag2"));
+        assertThat(getAvailableFormWithUuid(availableForms,forms.get(0).getUuid()).isDownloaded(), is(false));
+        assertThat(getAvailableFormWithUuid(availableForms,forms.get(2).getUuid()).isDownloaded(), is(false));
+
+        availableForms = formController.getAvailableFormByTags(asList("tag1"));
+        assertThat(getAvailableFormWithUuid(availableForms,forms.get(0).getUuid()).isDownloaded(), is(false));
+        assertThat(getAvailableFormWithUuid(availableForms,forms.get(1).getUuid()).isDownloaded(), is(true));
+    }
+
+    private AvailableForm getAvailableFormWithUuid(AvailableForms availableForms, String uuid) {
+        for (AvailableForm availableForm : availableForms) {
+            if(availableForm.getFormUuid().equals(uuid)){
+                return availableForm;
+            }
+        }
+        return null;
+    }
+
+    private boolean containsFormWithUuid(AvailableForms availableForms, String uuid) {
+        for (AvailableForm availableForm : availableForms) {
+            if(availableForm.getFormUuid().equals(uuid)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
     @Test
     public void getAllFormByTags_shouldFetchAllFormsIfNoTagsAreProvided() throws IOException, ParseException, FormFetchException {
         List<Form> forms = buildForms();
         when(formService.getAllForms()).thenReturn(forms);
 
-        List<Form> formByTags = formController.getAllFormByTags(new ArrayList<String>());
-        assertThat(formByTags.size(), is(5));
+        AvailableForms availableFormByTags = formController.getAvailableFormByTags(new ArrayList<String>());
+        assertThat(availableFormByTags.size(), is(5));
     }
 
     @Test

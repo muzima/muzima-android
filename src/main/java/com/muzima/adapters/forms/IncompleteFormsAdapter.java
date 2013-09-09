@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
+import com.muzima.model.IncompleteForm;
+import com.muzima.model.collections.IncompleteForms;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
 import java.util.List;
@@ -21,27 +23,27 @@ public abstract class IncompleteFormsAdapter extends FormsAdapter {
         new BackgroundQueryTask(this).execute();
     }
 
-    public static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask {
+    public static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<IncompleteForm> {
 
         public BackgroundQueryTask(FormsAdapter formsAdapter) {
             super(formsAdapter);
         }
 
         @Override
-        protected List<Form> doInBackground(Void... voids) {
-            List<Form> downloadedForms = null;
+        protected List<IncompleteForm> doInBackground(Void... voids) {
+            IncompleteForms incompleteForms = null;
 
-            if (adapterWeakReference.get() != null) {
-                try {
-                    FormsAdapter formsAdapter = adapterWeakReference.get();
-                    downloadedForms = ((IncompleteFormsAdapter)formsAdapter).fetchForms();
-
-                    Log.i(TAG, "#Incomplete forms: " + downloadedForms.size());
-                } catch (FormController.FormFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local forms " + e);
-                }
-            }
-            return downloadedForms;
+//            if (adapterWeakReference.get() != null) {
+//                try {
+//                    FormsAdapter formsAdapter = adapterWeakReference.get();
+//                    incompleteForms = ((IncompleteFormsAdapter)formsAdapter).fetchForms();
+//
+//                    Log.i(TAG, "#Incomplete forms: " + incompleteForms.size());
+//                } catch (FormController.FormFetchException e) {
+//                    Log.w(TAG, "Exception occurred while fetching local forms " + e);
+//                }
+//            }
+            return incompleteForms;
         }
     }
 

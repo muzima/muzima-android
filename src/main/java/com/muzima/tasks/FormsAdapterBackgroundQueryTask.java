@@ -6,13 +6,14 @@ import android.widget.Toast;
 
 import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.api.model.Form;
+import com.muzima.model.BaseForm;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
 
 import static com.muzima.adapters.ListAdapter.BackgroundListQueryTaskListener;
 
-public class FormsAdapterBackgroundQueryTask extends AsyncTask<Void, Void, List<Form>> {
+public abstract class FormsAdapterBackgroundQueryTask<T extends BaseForm> extends AsyncTask<Void, Void, List<T>> {
 
     protected WeakReference<FormsAdapter> adapterWeakReference;
 
@@ -33,12 +34,7 @@ public class FormsAdapterBackgroundQueryTask extends AsyncTask<Void, Void, List<
     }
 
     @Override
-    protected List<Form> doInBackground(Void... params) {
-        return null;
-    }
-
-    @Override
-    protected void onPostExecute(List<Form> forms) {
+    protected void onPostExecute(List<T> forms) {
         changeDataSet(forms);
         if (adapterWeakReference.get() != null) {
             FormsAdapter formsAdapter = adapterWeakReference.get();
@@ -49,7 +45,7 @@ public class FormsAdapterBackgroundQueryTask extends AsyncTask<Void, Void, List<
         }
     }
 
-    protected void changeDataSet(List<Form> forms) {
+    protected void changeDataSet(List<T> forms) {
         if (adapterWeakReference.get() != null) {
             FormsAdapter formsAdapter = adapterWeakReference.get();
             if (forms == null) {
@@ -57,9 +53,7 @@ public class FormsAdapterBackgroundQueryTask extends AsyncTask<Void, Void, List<
                 return;
             }
             formsAdapter.clear();
-            for (Form form : forms) {
-                formsAdapter.add(form);
-            }
+            formsAdapter.addAll(forms);
             formsAdapter.notifyDataSetChanged();
         }
     }

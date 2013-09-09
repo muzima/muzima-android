@@ -10,17 +10,16 @@ import android.widget.TextView;
 
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
-import com.muzima.api.model.Form;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
-import com.muzima.search.api.util.StringUtil;
+import com.muzima.model.BaseForm;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class FormsAdapter extends ListAdapter<Form> {
+public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
     private static final String TAG = "FormsAdapter";
     protected FormController formController;
     protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
@@ -50,7 +49,7 @@ public abstract class FormsAdapter extends ListAdapter<Form> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Form form = getItem(position);
+        BaseForm form = getItem(position);
 
         holder.name.setText(form.getName());
         holder.name.setTypeface(Fonts.roboto_medium(getContext()));

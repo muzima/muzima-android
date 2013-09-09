@@ -5,6 +5,9 @@ import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Tag;
 import com.muzima.api.service.FormService;
+import com.muzima.model.AvailableForm;
+import com.muzima.model.collections.AvailableForms;
+import com.muzima.model.mapper.AvailableFormBuilder;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.CustomColor;
 
@@ -26,14 +29,6 @@ public class FormController {
         this.formService = formService;
         tagColors = new HashMap<String, Integer>();
         selectedTags = new ArrayList<Tag>();
-    }
-
-    public List<Form> getAllForms() throws FormFetchException {
-        try {
-            return formService.getAllForms();
-        } catch (IOException e) {
-            throw new FormFetchException(e);
-        }
     }
 
     public int getTotalFormCount() throws FormFetchException {
@@ -60,12 +55,19 @@ public class FormController {
         }
     }
 
-    //TODO Do this at lucene level
-    public List<Form> getAllFormByTags(List<String> tagsUuid) throws FormFetchException {
+    public AvailableForms getAvailableFormByTags(List<String> tagsUuid) throws FormFetchException {
         try {
             List<Form> allForms = formService.getAllForms();
             List<Form> filteredForms = filterFormsByTags(allForms, tagsUuid);
-            return filteredForms;
+            AvailableForms availableForms  = new AvailableForms();
+            for (Form filteredForm : filteredForms) {
+                boolean downloadStatus = formService.isFormTemplateDownloaded(filteredForm.getUuid());
+                AvailableForm availableForm = new AvailableFormBuilder()
+                        .withAvailableForm(filteredForm)
+                        .withDownloadStatus(downloadStatus).build();
+                availableForms.add(availableForm);
+            }
+            return availableForms;
         } catch (IOException e) {
             throw new FormFetchException(e);
         }
@@ -90,7 +92,12 @@ public class FormController {
 
     public List<Tag> getAllTags() throws FormFetchException {
         List<Tag> allTags = new ArrayList<Tag>();
-        List<Form> allForms = getAllForms();
+        List<Form> allForms = null;
+        try {
+            allForms = formService.getAllForms();
+        } catch (IOException e) {
+                throw new FormFetchException(e);
+        }
         for (Form form : allForms) {
             for (Tag tag : form.getTags()) {
                 if (!allTags.contains(tag)) {

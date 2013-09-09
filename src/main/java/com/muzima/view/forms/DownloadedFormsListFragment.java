@@ -12,7 +12,7 @@ import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
 import com.muzima.adapters.forms.*;
 
-public class DownloadedFormsListFragment extends FormsListFragment implements NewFormsListFragment.OnTemplateDownloadComplete{
+public class DownloadedFormsListFragment extends FormsListFragment implements AllAvailableFormsListFragment.OnTemplateDownloadComplete{
 
     public static DownloadedFormsListFragment newInstance(FormController formController) {
         DownloadedFormsListFragment f = new DownloadedFormsListFragment();
