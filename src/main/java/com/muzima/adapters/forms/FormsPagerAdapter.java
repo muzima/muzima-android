@@ -14,10 +14,10 @@ import com.muzima.view.forms.IncompleteFormsListFragment;
 import com.muzima.view.forms.NewFormsListFragment;
 
 public class FormsPagerAdapter extends MuzimaPagerAdapter implements DownloadListener<Integer[]>, TagsListAdapter.TagsChangedListener {
-    private static final int TAB_All = 0;
-    private static final int TAB_DOWNLOADED = 1;
-    private static final int TAB_COMPLETE = 2;
-    private static final int TAB_INCOMPLETE = 3;
+    public static final int TAB_All = 0;
+    public static final int TAB_DOWNLOADED = 1;
+    public static final int TAB_COMPLETE = 2;
+    public static final int TAB_INCOMPLETE = 3;
 
     public FormsPagerAdapter(Context context, FragmentManager fm) {
         super(context, fm);
