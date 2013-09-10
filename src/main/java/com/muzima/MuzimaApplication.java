@@ -55,7 +55,7 @@ public class MuzimaApplication extends Application{
     public FormController getFormController(){
         if(formController == null){
             try {
-                formController = new FormController(muzimaContext.getFormService());
+                formController = new FormController(muzimaContext.getFormService(), muzimaContext.getPatientService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

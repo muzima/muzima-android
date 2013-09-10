@@ -1,15 +1,21 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
+import com.muzima.model.CompleteForm;
+import com.muzima.model.IncompleteForm;
+import com.muzima.model.collections.CompleteForms;
+import com.muzima.model.collections.IncompleteForms;
+import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
 import java.util.List;
 
-public class PatientIncompleteFormsAdapter extends IncompleteFormsAdapter {
+public class PatientIncompleteFormsAdapter extends FormsAdapter {
     private static final String TAG = "PatientIncompleteFormsAdapter";
-    private final String patientId;
+    private String patientId;
 
     public PatientIncompleteFormsAdapter(Context context, int textViewResourceId, FormController formController, String patientId) {
         super(context, textViewResourceId, formController);
@@ -17,7 +23,37 @@ public class PatientIncompleteFormsAdapter extends IncompleteFormsAdapter {
     }
 
     @Override
-    protected List<Form> fetchForms() throws FormController.FormFetchException {
-        return formController.getAllIncompleteFormsForPatientUuid(patientId);
+    public void reloadData() {
+        new BackgroundQueryTask(this).execute();
+    }
+
+    public String getPatientId() {
+        return patientId;
+    }
+
+    public static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<IncompleteForm> {
+
+        public BackgroundQueryTask(FormsAdapter formsAdapter) {
+            super(formsAdapter);
+        }
+
+        @Override
+        protected IncompleteForms doInBackground(Void... voids) {
+            IncompleteForms incompleteForms = null;
+
+            if (adapterWeakReference.get() != null) {
+                try {
+                    FormsAdapter formsAdapter = adapterWeakReference.get();
+                    incompleteForms = formsAdapter.getFormController()
+                            .getAllIncompleteFormsForPatientUuid(((PatientIncompleteFormsAdapter) formsAdapter).getPatientId());
+
+                    Log.i(TAG, "#Complete forms: " + incompleteForms.size());
+                } catch (FormController.FormFetchException e) {
+                    Log.w(TAG, "Exception occurred while fetching local forms " + e);
+                }
+            }
+
+            return incompleteForms;
+        }
     }
 }

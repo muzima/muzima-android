@@ -2,9 +2,13 @@ package com.muzima.adapters.forms;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
+import com.muzima.model.DownloadedForm;
+import com.muzima.model.collections.DownloadedForms;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
 import java.util.List;
@@ -21,19 +25,19 @@ public class DownloadedFormsAdapter extends FormsAdapter {
         new BackgroundQueryTask(this).execute();
     }
 
-    public class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask {
+    public class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<DownloadedForm> {
 
         public BackgroundQueryTask(FormsAdapter formsAdapter) {
             super(formsAdapter);
         }
 
         @Override
-        protected List<Form> doInBackground(Void... params) {
-            List<Form> downloadedForms = null;
+        protected List<DownloadedForm> doInBackground(Void... params) {
+            DownloadedForms downloadedForms = null;
             if (adapterWeakReference.get() != null) {
                 try {
                     FormsAdapter formsAdapter = adapterWeakReference.get();
-                    downloadedForms = formsAdapter.getFormController().getAllDownloadedFormsByTags(getSelectedTagUuids());
+                    downloadedForms = formsAdapter.getFormController().getAllDownloadedFormsByTags();
                     Log.i(TAG, "#Forms with templates: " + downloadedForms.size());
                 } catch (FormController.FormFetchException e) {
                     Log.w(TAG, "Exception occurred while fetching local forms " + e);

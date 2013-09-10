@@ -16,7 +16,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.forms.NewFormsAdapter;
+import com.muzima.adapters.forms.AllAvailableFormsAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.listeners.DownloadListener;
 import com.muzima.search.api.util.StringUtil;
@@ -32,8 +32,8 @@ import java.util.List;
 import static android.os.AsyncTask.Status.PENDING;
 import static android.os.AsyncTask.Status.RUNNING;
 
-public class NewFormsListFragment extends FormsListFragment implements DownloadListener<Integer[]>{
-    private static final String TAG = "NewFormsListFragment";
+public class AllAvailableFormsListFragment extends FormsListFragment implements DownloadListener<Integer[]>{
+    private static final String TAG = "AllAvailableFormsListFragment";
 
     public static final String FORMS_METADATA_LAST_SYNCED_TIME = "formsMetadataSyncedTime";
     public static final long NOT_SYNCED_TIME = -1;
@@ -45,8 +45,8 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
     private TextView syncText;
     private boolean newFormsSyncInProgress;
 
-    public static NewFormsListFragment newInstance(FormController formController) {
-        NewFormsListFragment f = new NewFormsListFragment();
+    public static AllAvailableFormsListFragment newInstance(FormController formController) {
+        AllAvailableFormsListFragment f = new AllAvailableFormsListFragment();
         f.formController = formController;
         f.setRetainInstance(true);
         return f;
@@ -55,7 +55,7 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (listAdapter == null) {
-            listAdapter = new NewFormsAdapter(getActivity(), R.layout.item_forms_list, formController);
+            listAdapter = new AllAvailableFormsAdapter(getActivity(), R.layout.item_forms_list, formController);
         }
         noDataMsg = getActivity().getResources().getString(R.string.no_new_form_msg);
         noDataTip = getActivity().getResources().getString(R.string.no_new_form_tip);
@@ -63,7 +63,7 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
         // this can happen on orientation change
         if (actionModeActive) {
             actionMode = getSherlockActivity().startActionMode(new NewFormsActionModeCallback());
-            actionMode.setTitle(String.valueOf(((NewFormsAdapter) listAdapter).getSelectedForms().size()));
+            actionMode.setTitle(String.valueOf(((AllAvailableFormsAdapter) listAdapter).getSelectedForms().size()));
         }
 
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -91,8 +91,8 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
             actionMode = getSherlockActivity().startActionMode(new NewFormsActionModeCallback());
             actionModeActive = true;
         }
-        ((NewFormsAdapter) listAdapter).onListItemClick(position);
-        int numOfSelectedForms = ((NewFormsAdapter) listAdapter).getSelectedForms().size();
+        ((AllAvailableFormsAdapter) listAdapter).onListItemClick(position);
+        int numOfSelectedForms = ((AllAvailableFormsAdapter) listAdapter).getSelectedForms().size();
         if (numOfSelectedForms == 0 && actionModeActive) {
             actionMode.finish();
         }
@@ -104,6 +104,7 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
         if (templateDownloadCompleteListener != null) {
             templateDownloadCompleteListener.onTemplateDownloadComplete(result);
         }
+        listAdapter.reloadData();
     }
 
     @Override
@@ -145,8 +146,8 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
                 case R.id.menu_download:
                     if(newFormsSyncInProgress){
                         Toast.makeText(getActivity(), "Action not allowed while sync is in progress", Toast.LENGTH_SHORT).show();
-                        if (NewFormsListFragment.this.actionMode != null) {
-                            NewFormsListFragment.this.actionMode.finish();
+                        if (AllAvailableFormsListFragment.this.actionMode != null) {
+                            AllAvailableFormsListFragment.this.actionMode.finish();
                         }
                         break;
                     }
@@ -163,7 +164,7 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
                     }
                     SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
                     formTemplateDownloadTask = new DownloadFormTemplateTask((MuzimaApplication) getActivity().getApplication());
-                    formTemplateDownloadTask.addDownloadListener(NewFormsListFragment.this);
+                    formTemplateDownloadTask.addDownloadListener(AllAvailableFormsListFragment.this);
                     String usernameKey = getResources().getString(R.string.preference_username);
                     String passwordKey = getResources().getString(R.string.preference_password);
                     String serverKey = getResources().getString(R.string.preference_server);
@@ -172,8 +173,8 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
                             settings.getString(serverKey, StringUtil.EMPTY)};
                     ((FormsActivity)getActivity()).showProgressBar();
                     formTemplateDownloadTask.execute(credentials, getSelectedFormsArray());
-                    if (NewFormsListFragment.this.actionMode != null) {
-                        NewFormsListFragment.this.actionMode.finish();
+                    if (AllAvailableFormsListFragment.this.actionMode != null) {
+                        AllAvailableFormsListFragment.this.actionMode.finish();
                     }
                     return true;
             }
@@ -183,7 +184,7 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
-            ((NewFormsAdapter) listAdapter).clearSelectedForms();
+            ((AllAvailableFormsAdapter) listAdapter).clearSelectedForms();
         }
     }
 
@@ -196,7 +197,7 @@ public class NewFormsListFragment extends FormsListFragment implements DownloadL
     }
 
     private String[] getSelectedFormsArray() {
-        List<String> selectedForms = ((NewFormsAdapter) listAdapter).getSelectedForms();
+        List<String> selectedForms = ((AllAvailableFormsAdapter) listAdapter).getSelectedForms();
         String[] selectedFormUuids = new String[selectedForms.size()];
         return selectedForms.toArray(selectedFormUuids);
     }

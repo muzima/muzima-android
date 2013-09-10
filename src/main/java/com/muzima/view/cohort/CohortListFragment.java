@@ -83,14 +83,14 @@ public abstract class CohortListFragment extends MuzimaListFragment implements L
 
     @Override
     public void onQueryTaskStarted() {
-//        list.setVisibility(View.INVISIBLE);
-//        noDataView.setVisibility(View.INVISIBLE);
-//        progressBarContainer.setVisibility(View.VISIBLE);
+        list.setVisibility(View.INVISIBLE);
+        noDataView.setVisibility(View.INVISIBLE);
+        progressBarContainer.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onQueryTaskFinish() {
-//        list.setVisibility(View.VISIBLE);
-//        progressBarContainer.setVisibility(View.INVISIBLE);
+        list.setVisibility(View.VISIBLE);
+        progressBarContainer.setVisibility(View.INVISIBLE);
     }
 }

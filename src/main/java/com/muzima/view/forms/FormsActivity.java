@@ -51,6 +51,7 @@ public class FormsActivity extends FormsActivityBase{
     private TagsListAdapter tagsListAdapter;
     private MenuItem menubarLoadButton;
     private FormController formController;
+    private MenuItem tagsButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,11 @@ public class FormsActivity extends FormsActivityBase{
         super.onCreate(savedInstanceState);
         formController = ((MuzimaApplication) getApplication()).getFormController();
         initDrawer();
+        setupActionbar();
+    }
+
+    private void setupActionbar() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -82,6 +88,7 @@ public class FormsActivity extends FormsActivityBase{
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.form_list_menu, menu);
         menubarLoadButton = menu.findItem(R.id.menu_load);
+        tagsButton = menu.findItem(R.id.menu_tags);
         return true;
     }
 
@@ -223,5 +230,16 @@ public class FormsActivity extends FormsActivityBase{
             }
         }
         formController.setSelectedTags(selectedTags);
+    }
+
+    @Override
+    protected void onPageChange(int position) {
+        if(position == FormsPagerAdapter.TAB_All){
+            tagsButton.setEnabled(true);
+            tagsButton.setIcon(R.drawable.ic_labels);
+        }else{
+            tagsButton.setEnabled(false);
+            tagsButton.setIcon(R.drawable.ic_labels_disabled);
+        }
     }
 }

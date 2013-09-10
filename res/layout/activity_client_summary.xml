@@ -104,7 +104,7 @@
             </TextView>
 
             <TextView
-                    android:id="@+id/patientsCount"
+                    android:id="@+id/formsCount"
                     style="@style/DashboardListItemPrimaryText"
                     android:layout_weight=".3"
                     android:gravity="right"
@@ -113,7 +113,7 @@
         </LinearLayout>
 
         <TextView
-                android:id="@+id/patientDescription"
+                android:id="@+id/formDescription"
                 style="@style/DashboardItemDescription"
                 android:text="##">
         </TextView>

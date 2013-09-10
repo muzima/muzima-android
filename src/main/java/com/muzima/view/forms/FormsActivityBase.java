@@ -11,6 +11,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,9 +39,8 @@ import static android.os.AsyncTask.Status.PENDING;
 import static android.os.AsyncTask.Status.RUNNING;
 
 
-public abstract class FormsActivityBase extends SherlockFragmentActivity{
+public abstract class FormsActivityBase extends SherlockFragmentActivity {
     private static final String TAG = "FormsActivityBase";
-
     protected ViewPager formsPager;
     protected PagerSlidingTabStrip pagerTabsLayout;
     protected MuzimaPagerAdapter formsPagerAdapter;
@@ -90,6 +90,14 @@ public abstract class FormsActivityBase extends SherlockFragmentActivity{
         pagerTabsLayout.setViewPager(formsPager);
         formsPager.setCurrentItem(0);
         pagerTabsLayout.markCurrentSelected(0);
+        pagerTabsLayout.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+            @Override
+            public void onPageSelected(int position) {
+                onPageChange(position);
+            }
+        });
     }
 
+    protected void onPageChange(int position){
+    }
 }

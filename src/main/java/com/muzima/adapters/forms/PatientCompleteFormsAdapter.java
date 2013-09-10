@@ -1,15 +1,16 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
+import android.util.Log;
 
-import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
+import com.muzima.model.CompleteForm;
+import com.muzima.model.collections.CompleteForms;
+import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
-import java.util.List;
-
-public class PatientCompleteFormsAdapter extends IncompleteFormsAdapter {
+public class PatientCompleteFormsAdapter extends FormsAdapter {
     private static final String TAG = "PatientCompleteFormsAdapter";
-    private final String patientId;
+    private String patientId;
 
     public PatientCompleteFormsAdapter(Context context, int textViewResourceId, FormController formController, String patientId) {
         super(context, textViewResourceId, formController);
@@ -17,7 +18,37 @@ public class PatientCompleteFormsAdapter extends IncompleteFormsAdapter {
     }
 
     @Override
-    protected List<Form> fetchForms() throws FormController.FormFetchException {
-        return formController.getAllCompleteFormsForPatientUuid(patientId);
+    public void reloadData() {
+        new BackgroundQueryTask(this).execute();
+    }
+
+    public String getPatientId() {
+        return patientId;
+    }
+
+    public static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<CompleteForm> {
+
+        public BackgroundQueryTask(FormsAdapter formsAdapter) {
+            super(formsAdapter);
+        }
+
+        @Override
+        protected CompleteForms doInBackground(Void... voids) {
+            CompleteForms completePatientForms = null;
+
+            if (adapterWeakReference.get() != null) {
+                try {
+                    FormsAdapter formsAdapter = adapterWeakReference.get();
+                    completePatientForms = formsAdapter.getFormController()
+                            .getAllCompleteFormsForPatientUuid(((PatientCompleteFormsAdapter) formsAdapter).getPatientId());
+
+                    Log.i(TAG, "#Complete forms: " + completePatientForms.size());
+                } catch (FormController.FormFetchException e) {
+                    Log.w(TAG, "Exception occurred while fetching local forms " + e);
+                }
+            }
+
+            return completePatientForms;
+        }
     }
 }

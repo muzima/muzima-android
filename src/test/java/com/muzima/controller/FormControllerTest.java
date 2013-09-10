@@ -3,11 +3,17 @@ package com.muzima.controller;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
+import com.muzima.api.model.Patient;
 import com.muzima.api.model.Tag;
 import com.muzima.api.service.FormService;
+import com.muzima.api.service.PatientService;
 import com.muzima.builder.FormBuilder;
 import com.muzima.builder.FormTemplateBuilder;
 import com.muzima.builder.TagBuilder;
+import com.muzima.model.AvailableForm;
+import com.muzima.model.BaseForm;
+import com.muzima.model.collections.AvailableForms;
+import com.muzima.model.collections.DownloadedForms;
 import com.muzima.search.api.util.StringUtil;
 
 import org.apache.lucene.queryParser.ParseException;
@@ -23,6 +29,7 @@ import static com.muzima.utils.Constants.*;
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.junit.matchers.JUnitMatchers.hasItem;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -30,28 +37,13 @@ import static org.mockito.Mockito.*;
 public class FormControllerTest {
     private FormController formController;
     private FormService formService;
+    private PatientService patientService;
 
     @Before
     public void setup() {
         formService = mock(FormService.class);
-        formController = new FormController(formService);
-    }
-
-    @Test
-    public void getAllForms_shouldReturnAllAvailableForms() throws IOException, ParseException, FormFetchException {
-        List<Form> forms = new ArrayList<Form>();
-        when(formService.getAllForms()).thenReturn(forms);
-
-        assertThat(formController.getAllForms(), is(forms));
-    }
-
-    @Test(expected = FormFetchException.class)
-    public void getAllForms_shouldThrowFormFetchExceptionIfExceptionThrownByFormService() throws IOException, ParseException, FormFetchException {
-        doThrow(new IOException()).when(formService).getAllForms();
-        formController.getAllForms();
-
-        doThrow(new ParseException()).when(formService).getAllForms();
-        formController.getAllForms();
+        patientService = mock(PatientService.class);
+        formController = new FormController(formService, patientService);
     }
 
     @Test
@@ -66,15 +58,46 @@ public class FormControllerTest {
         List<Form> forms = buildForms();
         when(formService.getAllForms()).thenReturn(forms);
 
-        List<Form> formByTags = formController.getAllFormByTags(asList("tag2"));
-        assertThat(formByTags.size(), is(2));
-        assertThat(formByTags, hasItem(forms.get(0)));
-        assertThat(formByTags, hasItem(forms.get(2)));
+        when(formService.isFormTemplateDownloaded(forms.get(0).getUuid())).thenReturn(false);
+        when(formService.isFormTemplateDownloaded(forms.get(1).getUuid())).thenReturn(true);
+        when(formService.isFormTemplateDownloaded(forms.get(2).getUuid())).thenReturn(false);
 
-        formByTags = formController.getAllFormByTags(asList("tag1"));
-        assertThat(formByTags.size(), is(2));
-        assertThat(formByTags, hasItem(forms.get(0)));
-        assertThat(formByTags, hasItem(forms.get(1)));
+        AvailableForms availableForms = formController.getAvailableFormByTags(asList("tag2"));
+        assertThat(availableForms.size(), is(2));
+        assertTrue(containsFormWithUuid(availableForms, forms.get(0).getUuid()));
+        assertTrue(containsFormWithUuid(availableForms, forms.get(2).getUuid()));
+
+        availableForms = formController.getAvailableFormByTags(asList("tag1"));
+        assertThat(availableForms.size(), is(2));
+        assertTrue(containsFormWithUuid(availableForms, forms.get(0).getUuid()));
+        assertTrue(containsFormWithUuid(availableForms, forms.get(1).getUuid()));
+    }
+
+    @Test
+    public void getAllFormByTags_shouldAssignDownloadStatusToForms() throws IOException, ParseException, FormFetchException {
+        List<Form> forms = buildForms();
+        when(formService.getAllForms()).thenReturn(forms);
+
+        when(formService.isFormTemplateDownloaded(forms.get(0).getUuid())).thenReturn(false);
+        when(formService.isFormTemplateDownloaded(forms.get(1).getUuid())).thenReturn(true);
+        when(formService.isFormTemplateDownloaded(forms.get(2).getUuid())).thenReturn(false);
+
+        AvailableForms availableForms = formController.getAvailableFormByTags(asList("tag2"));
+        assertThat(getAvailableFormWithUuid(availableForms, forms.get(0).getUuid()).isDownloaded(), is(false));
+        assertThat(getAvailableFormWithUuid(availableForms, forms.get(2).getUuid()).isDownloaded(), is(false));
+
+        availableForms = formController.getAvailableFormByTags(asList("tag1"));
+        assertThat(getAvailableFormWithUuid(availableForms, forms.get(0).getUuid()).isDownloaded(), is(false));
+        assertThat(getAvailableFormWithUuid(availableForms, forms.get(1).getUuid()).isDownloaded(), is(true));
+    }
+
+    private AvailableForm getAvailableFormWithUuid(AvailableForms availableForms, String uuid) {
+        for (AvailableForm availableForm : availableForms) {
+            if(availableForm.getFormUuid().equals(uuid)){
+                return availableForm;
+            }
+        }
+        return null;
     }
 
     @Test
@@ -82,8 +105,8 @@ public class FormControllerTest {
         List<Form> forms = buildForms();
         when(formService.getAllForms()).thenReturn(forms);
 
-        List<Form> formByTags = formController.getAllFormByTags(new ArrayList<String>());
-        assertThat(formByTags.size(), is(5));
+        AvailableForms availableFormByTags = formController.getAvailableFormByTags(new ArrayList<String>());
+        assertThat(availableFormByTags.size(), is(5));
     }
 
     @Test
@@ -210,25 +233,23 @@ public class FormControllerTest {
     @Test
     public void getAllDownloadedForms_shouldReturnOnlyDownloadedForms() throws IOException, ParseException, FormFetchException {
         List<Form> forms = buildForms();
-        List<FormTemplate> formTemplates = buildFormTemplates();
 
         when(formService.getAllForms()).thenReturn(forms);
-        when(formService.isFormTemplateDownloaded(anyString())).thenReturn(true);
+        when(formService.isFormTemplateDownloaded(forms.get(0).getUuid())).thenReturn(true);
 
-        List<Form> allDownloadedForms = formController.getAllDownloadedFormsByTags(null);
+        DownloadedForms allDownloadedForms = formController.getAllDownloadedFormsByTags();
 
-        assertThat(allDownloadedForms.size(), is(5));
+        assertThat(allDownloadedForms.size(), is(1));
     }
 
     @Test
     public void getAllDownloadedForms_shouldReturnNoFormsIfNoTemplateIsDownloaded() throws IOException, ParseException, FormFetchException {
         List<Form> forms = buildForms();
-        List<FormTemplate> formTemplates = buildFormTemplates();
 
         when(formService.getAllForms()).thenReturn(forms);
         when(formService.isFormTemplateDownloaded(anyString())).thenReturn(false);
 
-        List<Form> allDownloadedForms = formController.getAllDownloadedFormsByTags(null);
+        DownloadedForms allDownloadedForms = formController.getAllDownloadedFormsByTags();
 
         assertThat(allDownloadedForms.size(), is(0));
     }
@@ -336,8 +357,12 @@ public class FormControllerTest {
 
     @Test
     public void getAllIncompleteForms_shouldReturnAllIncompleteForms() throws Exception, FormFetchException {
-        final Form form1 = new Form();
-        final Form form2 = new Form();
+        final Form form1 = new Form(){{
+            setUuid("form1");
+        }};
+        final Form form2 = new Form(){{
+            setUuid("form2");
+        }};
         List<Form> forms = new ArrayList<Form>(){{
             add(form1);
             add(form2);
@@ -345,8 +370,10 @@ public class FormControllerTest {
 
         final FormData formData1 = new FormData();
         formData1.setTemplateUuid("form1Uuid");
+        formData1.setPatientUuid("patient1Uuid");
         final FormData formData2 = new FormData();
         formData2.setTemplateUuid("form2Uuid");
+        formData2.setPatientUuid("patient2Uuid");
 
         List<FormData> formDataList = new ArrayList<FormData>(){{
             add(formData1);
@@ -356,8 +383,11 @@ public class FormControllerTest {
         when(formService.getAllFormData(STATUS_INCOMPLETE)).thenReturn(formDataList);
         when(formService.getFormByUuid(formData1.getTemplateUuid())).thenReturn(form1);
         when(formService.getFormByUuid(formData2.getTemplateUuid())).thenReturn(form2);
+        when(patientService.getPatientByUuid(formData1.getPatientUuid())).thenReturn(new Patient());
+        when(patientService.getPatientByUuid(formData2.getPatientUuid())).thenReturn(new Patient());
 
-        assertThat(formController.getAllIncompleteForms(), is(forms));
+        assertTrue(containsFormWithUuid(formController.getAllIncompleteForms(), form1.getUuid()));
+        assertTrue(containsFormWithUuid(formController.getAllIncompleteForms(), form2.getUuid()));
     }
 
     @Test (expected = FormFetchException.class)
@@ -369,8 +399,12 @@ public class FormControllerTest {
 
     @Test
     public void getAllIncompleteFormsForPatientUuid_shouldReturnAllIncompleteFormsForGivenPatient() throws Exception, FormFetchException {
-        final Form form1 = new Form();
-        final Form form2 = new Form();
+        final Form form1 = new Form(){{
+            setUuid("form1");
+        }};
+        final Form form2 = new Form(){{
+            setUuid("form2");
+        }};
         List<Form> forms = new ArrayList<Form>(){{
             add(form1);
             add(form2);
@@ -392,7 +426,8 @@ public class FormControllerTest {
         when(formService.getFormByUuid(formData1.getTemplateUuid())).thenReturn(form1);
         when(formService.getFormByUuid(formData2.getTemplateUuid())).thenReturn(form2);
 
-        assertThat(formController.getAllIncompleteFormsForPatientUuid(patientUuid), is(forms));
+        assertTrue(containsFormWithUuid(formController.getAllIncompleteFormsForPatientUuid(patientUuid), form1.getUuid()));
+        assertTrue(containsFormWithUuid(formController.getAllIncompleteFormsForPatientUuid(patientUuid), form2.getUuid()));
     }
 
     @Test (expected = FormFetchException.class)
@@ -404,8 +439,12 @@ public class FormControllerTest {
 
     @Test
     public void getAllCompleteFormsForPatientUuid_shouldReturnAllCompleteFormsForGivenPatient() throws Exception, FormFetchException {
-        final Form form1 = new Form();
-        final Form form2 = new Form();
+        final Form form1 = new Form(){{
+            setUuid("form1Uuid");
+        }};
+        final Form form2 = new Form(){{
+            setUuid("form2Uuid");
+        }};
         List<Form> forms = new ArrayList<Form>(){{
             add(form1);
             add(form2);
@@ -427,7 +466,8 @@ public class FormControllerTest {
         when(formService.getFormByUuid(formData1.getTemplateUuid())).thenReturn(form1);
         when(formService.getFormByUuid(formData2.getTemplateUuid())).thenReturn(form2);
 
-        assertThat(formController.getAllCompleteFormsForPatientUuid(patientUuid), is(forms));
+        assertTrue(containsFormWithUuid(formController.getAllCompleteFormsForPatientUuid(patientUuid), forms.get(0).getUuid()));
+        assertTrue(containsFormWithUuid(formController.getAllCompleteFormsForPatientUuid(patientUuid), forms.get(1).getUuid()));
     }
 
     @Test (expected = FormFetchException.class)
@@ -478,5 +518,14 @@ public class FormControllerTest {
         formTemplates.add(formTemplate3);
 
         return formTemplates;
+    }
+
+    private boolean containsFormWithUuid(List<? extends BaseForm> forms, String uuid) {
+        for (BaseForm form : forms) {
+            if(form.getFormUuid().equals(uuid)){
+                return true;
+            }
+        }
+        return false;
     }
 }

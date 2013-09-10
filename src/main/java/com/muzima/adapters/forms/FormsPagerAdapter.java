@@ -11,13 +11,13 @@ import com.muzima.view.forms.CompleteFormsListFragment;
 import com.muzima.view.forms.DownloadedFormsListFragment;
 import com.muzima.view.forms.FormsListFragment;
 import com.muzima.view.forms.IncompleteFormsListFragment;
-import com.muzima.view.forms.NewFormsListFragment;
+import com.muzima.view.forms.AllAvailableFormsListFragment;
 
 public class FormsPagerAdapter extends MuzimaPagerAdapter implements DownloadListener<Integer[]>, TagsListAdapter.TagsChangedListener {
-    private static final int TAB_All = 0;
-    private static final int TAB_DOWNLOADED = 1;
-    private static final int TAB_COMPLETE = 2;
-    private static final int TAB_INCOMPLETE = 3;
+    public static final int TAB_All = 0;
+    public static final int TAB_DOWNLOADED = 1;
+    public static final int TAB_COMPLETE = 2;
+    public static final int TAB_INCOMPLETE = 3;
 
     public FormsPagerAdapter(Context context, FragmentManager fm) {
         super(context, fm);
@@ -43,14 +43,14 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements DownloadLis
         pagers = new PagerView[4];
         FormController formController = ((MuzimaApplication) context.getApplicationContext()).getFormController();
 
-        NewFormsListFragment newFormsListFragment = NewFormsListFragment.newInstance(formController);
+        AllAvailableFormsListFragment allAvailableFormsListFragment = AllAvailableFormsListFragment.newInstance(formController);
         DownloadedFormsListFragment downloadedFormsListFragment = DownloadedFormsListFragment.newInstance(formController);
         CompleteFormsListFragment completeFormsListFragment = CompleteFormsListFragment.newInstance(formController);
         IncompleteFormsListFragment incompleteFormsListFragment = IncompleteFormsListFragment.newInstance(formController);
 
-        newFormsListFragment.setTemplateDownloadCompleteListener(downloadedFormsListFragment);
+        allAvailableFormsListFragment.setTemplateDownloadCompleteListener(downloadedFormsListFragment);
 
-        pagers[TAB_All] = new PagerView("All", newFormsListFragment);
+        pagers[TAB_All] = new PagerView("All", allAvailableFormsListFragment);
         pagers[TAB_DOWNLOADED] = new PagerView("Downloaded", downloadedFormsListFragment);
         pagers[TAB_COMPLETE] = new PagerView("Complete", completeFormsListFragment);
         pagers[TAB_INCOMPLETE] = new PagerView("Incomplete", incompleteFormsListFragment);

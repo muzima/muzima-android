@@ -5,11 +5,14 @@ import android.util.Log;
 
 import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
+import com.muzima.model.IncompleteFormWithPatientData;
+import com.muzima.model.collections.IncompleteForms;
+import com.muzima.model.collections.IncompleteFormsWithPatientData;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
 import java.util.List;
 
-public abstract class IncompleteFormsAdapter extends FormsAdapter {
+public class IncompleteFormsAdapter extends FormsAdapter {
     private static final String TAG = "IncompleteFormsAdapter";
 
     public IncompleteFormsAdapter(Context context, int textViewResourceId, FormController formController) {
@@ -21,29 +24,27 @@ public abstract class IncompleteFormsAdapter extends FormsAdapter {
         new BackgroundQueryTask(this).execute();
     }
 
-    public static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask {
+    public static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<IncompleteFormWithPatientData> {
 
         public BackgroundQueryTask(FormsAdapter formsAdapter) {
             super(formsAdapter);
         }
 
         @Override
-        protected List<Form> doInBackground(Void... voids) {
-            List<Form> downloadedForms = null;
+        protected IncompleteFormsWithPatientData doInBackground(Void... voids) {
+            IncompleteFormsWithPatientData incompleteForms = null;
 
             if (adapterWeakReference.get() != null) {
                 try {
                     FormsAdapter formsAdapter = adapterWeakReference.get();
-                    downloadedForms = ((IncompleteFormsAdapter)formsAdapter).fetchForms();
+                    incompleteForms = formsAdapter.getFormController().getAllIncompleteForms();
 
-                    Log.i(TAG, "#Incomplete forms: " + downloadedForms.size());
+                    Log.i(TAG, "#Incomplete forms: " + incompleteForms.size());
                 } catch (FormController.FormFetchException e) {
                     Log.w(TAG, "Exception occurred while fetching local forms " + e);
                 }
             }
-            return downloadedForms;
+            return incompleteForms;
         }
     }
-
-    protected abstract List<Form> fetchForms() throws FormController.FormFetchException;
 }

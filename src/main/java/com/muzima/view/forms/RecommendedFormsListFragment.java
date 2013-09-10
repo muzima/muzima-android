@@ -2,23 +2,17 @@ package com.muzima.view.forms;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Toast;
 
 import com.muzima.R;
 import com.muzima.adapters.forms.DownloadedFormsAdapter;
 import com.muzima.api.model.Form;
-import com.muzima.api.model.FormData;
 import com.muzima.controller.FormController;
-import com.muzima.controller.PatientController;
 
-import java.util.UUID;
-
-public class RecommendedFormsListFragment extends FormsListFragment implements NewFormsListFragment.OnTemplateDownloadComplete {
+public class RecommendedFormsListFragment extends FormsListFragment implements AllAvailableFormsListFragment.OnTemplateDownloadComplete {
     private static String TAG = "RecommendedFormsListFragment";
     private String patientId;
 

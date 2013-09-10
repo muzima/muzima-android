@@ -3,13 +3,12 @@ package com.muzima.adapters.forms;
 import android.content.Context;
 import android.util.Log;
 
-import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
+import com.muzima.model.CompleteFormWithPatientData;
+import com.muzima.model.collections.CompleteFormsWithPatientData;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
-import java.util.List;
-
-public abstract class CompleteFormsAdapter extends FormsAdapter {
+public class CompleteFormsAdapter extends FormsAdapter {
     private static final String TAG = "CompleteFormsAdapter";
 
     public CompleteFormsAdapter(Context context, int textViewResourceId, FormController formController) {
@@ -21,31 +20,28 @@ public abstract class CompleteFormsAdapter extends FormsAdapter {
         new BackgroundQueryTask(this).execute();
     }
 
-    protected abstract List<Form> fetchForms() throws FormController.FormFetchException;
-
-    public static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask {
+    public static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<CompleteFormWithPatientData> {
 
         public BackgroundQueryTask(FormsAdapter formsAdapter) {
             super(formsAdapter);
         }
 
         @Override
-        protected List<Form> doInBackground(Void... voids) {
-            List<Form> downloadedForms = null;
+        protected CompleteFormsWithPatientData doInBackground(Void... voids) {
+            CompleteFormsWithPatientData completeForms = null;
 
             if (adapterWeakReference.get() != null) {
                 try {
                     FormsAdapter formsAdapter = adapterWeakReference.get();
-                    downloadedForms = ((CompleteFormsAdapter)formsAdapter).fetchForms();
+                    completeForms = ((CompleteFormsAdapter) formsAdapter).formController.getAllCompleteForms();
 
-                    Log.i(TAG, "#Complete forms: " + downloadedForms.size());
+                    Log.i(TAG, "#Complete forms: " + completeForms.size());
                 } catch (FormController.FormFetchException e) {
                     Log.w(TAG, "Exception occurred while fetching local forms " + e);
                 }
             }
 
-            return downloadedForms;
+            return completeForms;
         }
-
     }
 }
