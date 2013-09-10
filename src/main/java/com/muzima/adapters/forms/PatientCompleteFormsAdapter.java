@@ -4,12 +4,12 @@ import android.content.Context;
 import android.util.Log;
 
 import com.muzima.controller.FormController;
-import com.muzima.model.CompletePatientForm;
-import com.muzima.model.collections.CompletePatientForms;
+import com.muzima.model.CompleteForm;
+import com.muzima.model.collections.CompleteForms;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
 public class PatientCompleteFormsAdapter extends FormsAdapter {
-    private static final String TAG = "CompleteFormsAdapter";
+    private static final String TAG = "PatientCompleteFormsAdapter";
     private String patientId;
 
     public PatientCompleteFormsAdapter(Context context, int textViewResourceId, FormController formController, String patientId) {
@@ -26,15 +26,15 @@ public class PatientCompleteFormsAdapter extends FormsAdapter {
         return patientId;
     }
 
-    public static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<CompletePatientForm> {
+    public static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<CompleteForm> {
 
         public BackgroundQueryTask(FormsAdapter formsAdapter) {
             super(formsAdapter);
         }
 
         @Override
-        protected CompletePatientForms doInBackground(Void... voids) {
-            CompletePatientForms completePatientForms = null;
+        protected CompleteForms doInBackground(Void... voids) {
+            CompleteForms completePatientForms = null;
 
             if (adapterWeakReference.get() != null) {
                 try {

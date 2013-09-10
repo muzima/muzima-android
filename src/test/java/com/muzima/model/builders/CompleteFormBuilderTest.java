@@ -1,7 +1,7 @@
 package com.muzima.model.builders;
 
 import com.muzima.api.model.Form;
-import com.muzima.model.CompleteForm;
+import com.muzima.model.CompleteFormWithPatientData;
 
 import org.junit.Test;
 
@@ -17,7 +17,7 @@ public class CompleteFormBuilderTest {
         form.setName("description");
         form.setUuid("uuid");
 
-        CompleteForm completeForm = new CompleteFormBuilder().withCompleteForm(form).build();
+        CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder().withForm(form).build();
 
         assertThat(completeForm.getName(), is(form.getName()));
         assertThat(completeForm.getDescription(), is(form.getDescription()));
@@ -26,7 +26,7 @@ public class CompleteFormBuilderTest {
 
     @Test
     public void withPatientInfo_shouldSetPatientInfoValues() throws Exception {
-        CompleteForm completeForm = new CompleteFormBuilder().withPatientInfo("Obama","Barack", "Hussein",  "USNO1").build();
+        CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder().withPatientInfo("Obama","Barack", "Hussein",  "USNO1").build();
 
         assertThat(completeForm.getPatientFamilyName(), is("Obama"));
         assertThat(completeForm.getPatientGivenName(), is("Barack"));
@@ -36,14 +36,14 @@ public class CompleteFormBuilderTest {
 
     @Test
     public void withFormDataId_shouldSetFromDataUuid() throws Exception {
-        CompleteForm completeForm = new CompleteFormBuilder().withFormDataUuid("uuid").build();
+        CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder().withFormDataUuid("uuid").build();
 
         assertThat(completeForm.getFormDataUuid(), is("uuid"));
     }
 
     @Test
     public void withLastModifiedDate_shouldSetLastModifiedDate() throws Exception {
-        CompleteForm completeForm = new CompleteFormBuilder().withLastModifiedData("24/09/2013").build();
+        CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder().withLastModifiedData("24/09/2013").build();
 
         assertThat(completeForm.getLastModifiedDate(), is("24/09/2013"));
     }

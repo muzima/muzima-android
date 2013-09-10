@@ -3,6 +3,7 @@ package com.muzima.controller;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
+import com.muzima.api.model.Patient;
 import com.muzima.api.model.Tag;
 import com.muzima.api.service.FormService;
 import com.muzima.api.service.PatientService;
@@ -356,8 +357,12 @@ public class FormControllerTest {
 
     @Test
     public void getAllIncompleteForms_shouldReturnAllIncompleteForms() throws Exception, FormFetchException {
-        final Form form1 = new Form();
-        final Form form2 = new Form();
+        final Form form1 = new Form(){{
+            setUuid("form1");
+        }};
+        final Form form2 = new Form(){{
+            setUuid("form2");
+        }};
         List<Form> forms = new ArrayList<Form>(){{
             add(form1);
             add(form2);
@@ -365,8 +370,10 @@ public class FormControllerTest {
 
         final FormData formData1 = new FormData();
         formData1.setTemplateUuid("form1Uuid");
+        formData1.setPatientUuid("patient1Uuid");
         final FormData formData2 = new FormData();
         formData2.setTemplateUuid("form2Uuid");
+        formData2.setPatientUuid("patient2Uuid");
 
         List<FormData> formDataList = new ArrayList<FormData>(){{
             add(formData1);
@@ -376,8 +383,11 @@ public class FormControllerTest {
         when(formService.getAllFormData(STATUS_INCOMPLETE)).thenReturn(formDataList);
         when(formService.getFormByUuid(formData1.getTemplateUuid())).thenReturn(form1);
         when(formService.getFormByUuid(formData2.getTemplateUuid())).thenReturn(form2);
+        when(patientService.getPatientByUuid(formData1.getPatientUuid())).thenReturn(new Patient());
+        when(patientService.getPatientByUuid(formData2.getPatientUuid())).thenReturn(new Patient());
 
-        assertThat(formController.getAllIncompleteForms(), is(forms));
+        assertTrue(containsFormWithUuid(formController.getAllIncompleteForms(), form1.getUuid()));
+        assertTrue(containsFormWithUuid(formController.getAllIncompleteForms(), form2.getUuid()));
     }
 
     @Test (expected = FormFetchException.class)
@@ -389,8 +399,12 @@ public class FormControllerTest {
 
     @Test
     public void getAllIncompleteFormsForPatientUuid_shouldReturnAllIncompleteFormsForGivenPatient() throws Exception, FormFetchException {
-        final Form form1 = new Form();
-        final Form form2 = new Form();
+        final Form form1 = new Form(){{
+            setUuid("form1");
+        }};
+        final Form form2 = new Form(){{
+            setUuid("form2");
+        }};
         List<Form> forms = new ArrayList<Form>(){{
             add(form1);
             add(form2);
@@ -412,7 +426,8 @@ public class FormControllerTest {
         when(formService.getFormByUuid(formData1.getTemplateUuid())).thenReturn(form1);
         when(formService.getFormByUuid(formData2.getTemplateUuid())).thenReturn(form2);
 
-        assertThat(formController.getAllIncompleteFormsForPatientUuid(patientUuid), is(forms));
+        assertTrue(containsFormWithUuid(formController.getAllIncompleteFormsForPatientUuid(patientUuid), form1.getUuid()));
+        assertTrue(containsFormWithUuid(formController.getAllIncompleteFormsForPatientUuid(patientUuid), form2.getUuid()));
     }
 
     @Test (expected = FormFetchException.class)

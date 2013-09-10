@@ -5,5 +5,5 @@ import com.muzima.model.IncompleteFormWithPatientData;
 
 import java.util.ArrayList;
 
-public class IncompleteForms extends ArrayList<IncompleteForm> {
+public class IncompleteFormsWithPatientData extends ArrayList<IncompleteFormWithPatientData> {
 }
