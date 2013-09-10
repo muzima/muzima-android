@@ -3,15 +3,10 @@ package com.muzima.adapters.forms;
 import android.content.Context;
 import android.util.Log;
 
-import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
-import com.muzima.model.CompleteForm;
 import com.muzima.model.IncompleteForm;
-import com.muzima.model.collections.CompleteForms;
 import com.muzima.model.collections.IncompleteForms;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
-
-import java.util.List;
 
 public class PatientIncompleteFormsAdapter extends FormsAdapter {
     private static final String TAG = "PatientIncompleteFormsAdapter";
