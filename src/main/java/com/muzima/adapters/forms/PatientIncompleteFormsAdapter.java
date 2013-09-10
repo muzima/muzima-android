@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.muzima.controller.FormController;
+import com.muzima.model.IncompleteForm;
 import com.muzima.model.collections.IncompleteForms;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
