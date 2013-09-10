@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -14,13 +15,14 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.Fonts;
 import com.muzima.view.RegisterClientActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
-public class PatientsListActivity extends SherlockActivity implements AdapterView.OnItemClickListener{
+public class  PatientsListActivity extends SherlockActivity implements AdapterView.OnItemClickListener, ListAdapter.BackgroundListQueryTaskListener {
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
     public static final String QUICK_SEARCH = "quickSearch";
@@ -29,6 +31,8 @@ public class PatientsListActivity extends SherlockActivity implements AdapterVie
     private boolean quickSearch = false;
     private String cohortId = null;
     private PatientsAdapter cohortPatientsAdapter;
+    private FrameLayout progressBarContainer;
+    private View noDataView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,8 @@ public class PatientsListActivity extends SherlockActivity implements AdapterVie
                 setTitle(title);
             }
         }
+
+        progressBarContainer = (FrameLayout) findViewById(R.id.progressbarContainer);
 
         setupActionbar();
         setupNoDataView();
@@ -122,11 +128,14 @@ public class PatientsListActivity extends SherlockActivity implements AdapterVie
                 R.layout.layout_list,
                 ((MuzimaApplication) getApplicationContext()).getPatientController(),
                 cohortId);
+        cohortPatientsAdapter.setBackgroundListQueryTaskListener(this);
         listView.setAdapter(cohortPatientsAdapter);
         listView.setOnItemClickListener(this);
     }
 
     private void setupNoDataView() {
+        noDataView = findViewById(R.id.no_data_layout);
+
         TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
         noDataMsgTextView.setText(getResources().getText(R.string.no_patients_downloaded));
         TextView noDataTipTextView = (TextView) findViewById(R.id.no_data_tip);
@@ -164,5 +173,18 @@ public class PatientsListActivity extends SherlockActivity implements AdapterVie
 
     private String getPatientAbbrName(Patient patient) {
         return patient.getFamilyName() + ", " + patient.getGivenName().substring(0, 1) + " " + patient.getMiddleName().substring(0, 1);
+    }
+
+    @Override
+    public void onQueryTaskStarted() {
+        listView.setVisibility(View.INVISIBLE);
+        noDataView.setVisibility(View.INVISIBLE);
+        progressBarContainer.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onQueryTaskFinish() {
+        listView.setVisibility(View.VISIBLE);
+        progressBarContainer.setVisibility(View.INVISIBLE);
     }
 }

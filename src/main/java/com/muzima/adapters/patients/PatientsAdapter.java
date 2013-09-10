@@ -27,6 +27,7 @@ public class PatientsAdapter extends ListAdapter<Patient>{
     public static final String SEARCH = "search";
     private PatientController patientController;
     private final String cohortId;
+    protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
 
     public PatientsAdapter(Context context, int textViewResourceId, PatientController patientController, String cohortId) {
         super(context, textViewResourceId);
@@ -78,12 +79,23 @@ public class PatientsAdapter extends ListAdapter<Patient>{
         new BackgroundQueryTask().execute(text, SEARCH);
     }
 
+    public BackgroundListQueryTaskListener getBackgroundListQueryTaskListener() {
+        return backgroundListQueryTaskListener;
+    }
+
+    public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
+        this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
+    }
+
     private class BackgroundQueryTask extends AsyncTask<String, Void, List<Patient>> {
         long mStartingTime;
 
         @Override
         protected void onPreExecute() {
             mStartingTime = System.currentTimeMillis();
+            if(backgroundListQueryTaskListener != null){
+                backgroundListQueryTaskListener.onQueryTaskStarted();
+            }
         }
 
         @Override
@@ -136,6 +148,10 @@ public class PatientsAdapter extends ListAdapter<Patient>{
 
             long currentTime = System.currentTimeMillis();
             Log.d(TAG, "Time taken in fetching patients from local repo: " + (currentTime - mStartingTime)/1000 + " sec");
+
+            if(backgroundListQueryTaskListener != null){
+                backgroundListQueryTaskListener.onQueryTaskFinish();
+            }
         }
     }
 

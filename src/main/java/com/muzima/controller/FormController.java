@@ -351,6 +351,14 @@ public class FormController {
         return getAllCompleteForms().size();
     }
 
+    public int getCompleteFormsCountForPatient(String patientId) throws FormFetchException {
+        return getAllCompleteFormsForPatientUuid(patientId).size();
+    }
+
+    public int getIncompleteFormsCountForPatient(String patientId) throws FormFetchException {
+        return getAllIncompleteFormsForPatientUuid(patientId).size();
+    }
+
     public static class FormFetchException extends Throwable {
         public FormFetchException(Throwable throwable) {
             super(throwable);

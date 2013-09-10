@@ -1,7 +1,9 @@
 package com.muzima.view.patients;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,17 +15,22 @@ import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Patient;
+import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
 import com.muzima.view.forms.PatientFormsActivity;
 
 import static com.muzima.utils.DateUtils.getFormattedDate;
 
 public class PatientSummaryActivity extends SherlockActivity {
+    private static final String TAG = "PatientSummaryActivity";
+
     public static final String PATIENT_ID = "patientId";
     public static final String PATIENT_SUMMARY = "patientSummary";
 
     private String patientId;
     private String patientSummary;
+    private BackgroundQueryTask mBackgroundQueryTask;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +47,19 @@ public class PatientSummaryActivity extends SherlockActivity {
         try {
             setupPatientMetadata();
         } catch (PatientController.PatientLoadException e) {
-            Toast.makeText(this, "An error occurred while fetching patien", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "An error occurred while fetching patient", Toast.LENGTH_SHORT).show();
             finish();
         }
+
+        executeBackgroundTask();
+    }
+
+    @Override
+    protected void onStop() {
+        if(mBackgroundQueryTask != null){
+            mBackgroundQueryTask.cancel(true);
+        }
+        super.onStop();
     }
 
     private void setupActionbar() {
@@ -110,5 +127,45 @@ public class PatientSummaryActivity extends SherlockActivity {
             intent.putExtra("quickSearch", "true");
         }
         startActivity(intent);
+    }
+
+    private static class PatientSummaryActivityMetadata{
+        int recommendedForms;
+        int incompleteForms;
+        int completeForms;
+    }
+
+    public class BackgroundQueryTask extends AsyncTask<Void, Void, PatientSummaryActivityMetadata> {
+
+        @Override
+        protected PatientSummaryActivityMetadata doInBackground(Void... voids) {
+            MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
+            PatientSummaryActivityMetadata patientSummaryActivityMetadata = new PatientSummaryActivityMetadata();
+            PatientController patientController = muzimaApplication.getPatientController();
+            FormController formController = muzimaApplication.getFormController();
+            try {
+                patientSummaryActivityMetadata.recommendedForms = formController.getDownloadedFormsCount();
+                patientSummaryActivityMetadata.completeForms = formController.getCompleteFormsCountForPatient(patientId);
+                patientSummaryActivityMetadata.incompleteForms = formController.getIncompleteFormsCountForPatient(patientId);
+            } catch (FormController.FormFetchException e) {
+                Log.w(TAG, "FormFetchException occurred while fetching metadata in MainActivityBackgroundTask");
+            }
+            return patientSummaryActivityMetadata;
+        }
+
+        @Override
+        protected void onPostExecute(PatientSummaryActivityMetadata patientSummaryActivityMetadata) {
+            TextView formsCount = (TextView) findViewById(R.id.formsCount);
+            formsCount.setText(Integer.toString(patientSummaryActivityMetadata.recommendedForms));
+
+            TextView formsDescription = (TextView) findViewById(R.id.formDescription);
+            formsDescription.setText(patientSummaryActivityMetadata.incompleteForms + " Incomplete, "
+                    + patientSummaryActivityMetadata.completeForms + " Complete");
+        }
+    }
+
+    private void executeBackgroundTask() {
+        mBackgroundQueryTask = new BackgroundQueryTask();
+        mBackgroundQueryTask.execute();
     }
 }
