@@ -129,6 +129,11 @@
             <version>3.0</version>
             <classifier>no_aop</classifier>
         </dependency>
+        <dependency>
+            <groupId>com.emilsjolander</groupId>
+            <artifactId>stickylistheaders</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
 	<build>
