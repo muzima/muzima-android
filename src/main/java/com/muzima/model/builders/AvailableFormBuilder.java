@@ -1,4 +1,4 @@
-package com.muzima.model.mapper;
+package com.muzima.model.builders;
 
 import com.muzima.api.model.Form;
 import com.muzima.model.AvailableForm;
@@ -10,11 +10,11 @@ public class AvailableFormBuilder{
         availableForm = new AvailableForm();
     }
 
-    public AvailableFormBuilder withAvailableForm(Form filteredForm) {
-        availableForm.setName(filteredForm.getName());
-        availableForm.setDescription(filteredForm.getDescription());
-        availableForm.setTags(filteredForm.getTags());
-        availableForm.setFormUuid(filteredForm.getUuid());
+    public AvailableFormBuilder withAvailableForm(Form form) {
+        availableForm.setName(form.getName());
+        availableForm.setDescription(form.getDescription());
+        availableForm.setTags(form.getTags());
+        availableForm.setFormUuid(form.getUuid());
         return this;
     }
 

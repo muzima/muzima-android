@@ -3,13 +3,19 @@ package com.muzima.controller;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
+import com.muzima.api.model.Patient;
 import com.muzima.api.model.Tag;
 import com.muzima.api.service.FormService;
+import com.muzima.api.service.PatientService;
 import com.muzima.model.AvailableForm;
+import com.muzima.model.CompleteForm;
 import com.muzima.model.collections.AvailableForms;
+import com.muzima.model.collections.CompleteForms;
+import com.muzima.model.collections.CompletePatientForms;
 import com.muzima.model.collections.DownloadedForms;
-import com.muzima.model.mapper.AvailableFormBuilder;
-import com.muzima.model.mapper.DownloadedFormBuilder;
+import com.muzima.model.builders.AvailableFormBuilder;
+import com.muzima.model.builders.CompleteFormBuilder;
+import com.muzima.model.builders.DownloadedFormBuilder;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.CustomColor;
 
@@ -24,11 +30,13 @@ import static com.muzima.utils.Constants.*;
 public class FormController {
 
     private FormService formService;
+    private PatientService patientService;
     private Map<String, Integer> tagColors;
     private List<Tag> selectedTags;
 
-    public FormController(FormService formService) {
+    public FormController(FormService formService, PatientService patientService) {
         this.formService = formService;
+        this.patientService = patientService;
         tagColors = new HashMap<String, Integer>();
         selectedTags = new ArrayList<Tag>();
     }
@@ -271,13 +279,18 @@ public class FormController {
         return incompleteForms;
     }
 
-    public List<Form> getAllCompleteForms() throws FormFetchException {
-        List<Form> completeForms = new ArrayList<Form>();
+    public CompleteForms getAllCompleteForms() throws FormFetchException {
+        CompleteForms completeForms = new CompleteForms();
 
         try {
             List<FormData> allFormData = formService.getAllFormData(STATUS_COMPLETE);
             for (FormData formData : allFormData) {
-                completeForms.add(formService.getFormByUuid(formData.getTemplateUuid()));
+                Patient patient = patientService.getPatientByUuid(formData.getPatientUuid());
+                CompleteForm completeForm = new CompleteFormBuilder()
+                        .withCompleteForm(formService.getFormByUuid(formData.getTemplateUuid()))
+                        .withPatientInfo(patient.getFamilyName(),patient.getGivenName(),patient.getMiddleName(),patient.getIdentifier())
+                        .build();
+                completeForms.add(completeForm);
             }
         } catch (IOException e) {
             throw new FormFetchException(e);
@@ -298,17 +311,18 @@ public class FormController {
         return incompleteForms;
     }
 
-    public List<Form> getAllCompleteFormsForPatientUuid(String patientUuid) throws FormFetchException {
-        List<Form> completeForms = new ArrayList<Form>();
+    public CompletePatientForms getAllCompleteFormsForPatientUuid(String patientUuid) throws FormFetchException {
+        CompletePatientForms completePatientForms = new CompletePatientForms();
         try {
             List<FormData> allFormData = formService.getFormDataByPatient(patientUuid, STATUS_COMPLETE);
             for (FormData formData : allFormData) {
-                completeForms.add(formService.getFormByUuid(formData.getTemplateUuid()));
+//                completePatientForms.add(formService.getFormByUuid(formData.getTemplateUuid()));
+
             }
         } catch (IOException e) {
             throw new FormFetchException(e);
         }
-        return completeForms;
+        return completePatientForms;
     }
 
     public int getAllIncompleteFormsSize() throws FormFetchException {

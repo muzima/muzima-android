@@ -1,4 +1,4 @@
-package com.muzima.model.mapper;
+package com.muzima.model.builders;
 
 import com.muzima.api.model.Form;
 import com.muzima.api.model.Tag;
