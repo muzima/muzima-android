@@ -10,6 +10,7 @@ import com.muzima.builder.FormBuilder;
 import com.muzima.builder.FormTemplateBuilder;
 import com.muzima.builder.TagBuilder;
 import com.muzima.model.AvailableForm;
+import com.muzima.model.BaseForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.model.collections.DownloadedForms;
 import com.muzima.search.api.util.StringUtil;
@@ -97,17 +98,6 @@ public class FormControllerTest {
         }
         return null;
     }
-
-    private boolean containsFormWithUuid(AvailableForms availableForms, String uuid) {
-        for (AvailableForm availableForm : availableForms) {
-            if(availableForm.getFormUuid().equals(uuid)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-
 
     @Test
     public void getAllFormByTags_shouldFetchAllFormsIfNoTagsAreProvided() throws IOException, ParseException, FormFetchException {
@@ -434,8 +424,12 @@ public class FormControllerTest {
 
     @Test
     public void getAllCompleteFormsForPatientUuid_shouldReturnAllCompleteFormsForGivenPatient() throws Exception, FormFetchException {
-        final Form form1 = new Form();
-        final Form form2 = new Form();
+        final Form form1 = new Form(){{
+            setUuid("form1Uuid");
+        }};
+        final Form form2 = new Form(){{
+            setUuid("form2Uuid");
+        }};
         List<Form> forms = new ArrayList<Form>(){{
             add(form1);
             add(form2);
@@ -457,7 +451,8 @@ public class FormControllerTest {
         when(formService.getFormByUuid(formData1.getTemplateUuid())).thenReturn(form1);
         when(formService.getFormByUuid(formData2.getTemplateUuid())).thenReturn(form2);
 
-//        assertThat(formController.getAllCompleteFormsForPatientUuid(patientUuid), is(forms));
+        assertTrue(containsFormWithUuid(formController.getAllCompleteFormsForPatientUuid(patientUuid), forms.get(0).getUuid()));
+        assertTrue(containsFormWithUuid(formController.getAllCompleteFormsForPatientUuid(patientUuid), forms.get(1).getUuid()));
     }
 
     @Test (expected = FormFetchException.class)
@@ -508,5 +503,14 @@ public class FormControllerTest {
         formTemplates.add(formTemplate3);
 
         return formTemplates;
+    }
+
+    private boolean containsFormWithUuid(List<? extends BaseForm> forms, String uuid) {
+        for (BaseForm form : forms) {
+            if(form.getFormUuid().equals(uuid)){
+                return true;
+            }
+        }
+        return false;
     }
 }

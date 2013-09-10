@@ -9,6 +9,7 @@ import com.muzima.api.service.FormService;
 import com.muzima.api.service.PatientService;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.CompleteForm;
+import com.muzima.model.builders.CompletePatientFormBuilder;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.model.collections.CompleteForms;
 import com.muzima.model.collections.CompletePatientForms;
@@ -316,8 +317,11 @@ public class FormController {
         try {
             List<FormData> allFormData = formService.getFormDataByPatient(patientUuid, STATUS_COMPLETE);
             for (FormData formData : allFormData) {
-//                completePatientForms.add(formService.getFormByUuid(formData.getTemplateUuid()));
-
+                Form form = formService.getFormByUuid(formData.getTemplateUuid());
+                completePatientForms.add(new CompletePatientFormBuilder()
+                        .withCompleteForm(form)
+                        .withFormDataUuid(formData.getUuid())
+                        .build());
             }
         } catch (IOException e) {
             throw new FormFetchException(e);
