@@ -9,8 +9,8 @@ import android.widget.AdapterView;
 
 import com.muzima.R;
 import com.muzima.adapters.forms.DownloadedFormsAdapter;
-import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
+import com.muzima.model.DownloadedForm;
 
 public class RecommendedFormsListFragment extends FormsListFragment implements AllAvailableFormsListFragment.OnTemplateDownloadComplete {
     private static String TAG = "RecommendedFormsListFragment";
@@ -34,9 +34,9 @@ public class RecommendedFormsListFragment extends FormsListFragment implements A
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        Form form = (Form) listAdapter.getItem(position);
+        DownloadedForm form = (DownloadedForm) listAdapter.getItem(position);
         Intent intent = new Intent(getActivity(), FormWebViewActivity.class);
-        intent.putExtra(FormWebViewActivity.FORM_UUID, form.getUuid());
+        intent.putExtra(FormWebViewActivity.FORM_UUID, form.getFormUuid());
         intent.putExtra(FormWebViewActivity.PATIENT_UUID, patientId);
         startActivity(intent);
     }

@@ -2,7 +2,6 @@ package com.muzima.controller;
 
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
-import com.muzima.api.model.CohortMember;
 import com.muzima.api.service.CohortService;
 import com.muzima.search.api.util.StringUtil;
 

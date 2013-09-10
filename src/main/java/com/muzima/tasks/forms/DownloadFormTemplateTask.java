@@ -9,7 +9,6 @@ import com.muzima.tasks.DownloadMuzimaTask;
 
 import java.util.List;
 
-import static com.muzima.controller.FormController.FormDeleteException;
 import static com.muzima.controller.FormController.FormFetchException;
 import static com.muzima.controller.FormController.FormSaveException;
 

@@ -1,20 +1,15 @@
 package com.muzima.view.patients;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
+
 import com.muzima.R;
-import com.muzima.adapters.cohort.CohortsAdapter;
-import com.muzima.controller.CohortController;
 import com.muzima.controller.ObservationController;
-import com.muzima.controller.PatientController;
-import com.muzima.tasks.DownloadMuzimaTask;
 import com.muzima.view.MuzimaListFragment;
 
 public abstract class ObservationsListFragment extends MuzimaListFragment{

@@ -5,10 +5,11 @@ import android.util.Log;
 
 import com.muzima.controller.FormController;
 import com.muzima.model.CompleteForm;
+import com.muzima.model.CompleteFormWithPatientData;
 import com.muzima.model.collections.CompleteForms;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
-public class PatientCompleteFormsAdapter extends FormsAdapter {
+public class PatientCompleteFormsAdapter extends FormsAdapter<CompleteFormWithPatientData> {
     private static final String TAG = "PatientCompleteFormsAdapter";
     private String patientId;
 

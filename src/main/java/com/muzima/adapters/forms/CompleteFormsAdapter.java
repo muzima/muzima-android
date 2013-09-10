@@ -4,11 +4,12 @@ import android.content.Context;
 import android.util.Log;
 
 import com.muzima.controller.FormController;
+import com.muzima.model.CompleteForm;
 import com.muzima.model.CompleteFormWithPatientData;
 import com.muzima.model.collections.CompleteFormsWithPatientData;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
-public class CompleteFormsAdapter extends FormsAdapter {
+public class CompleteFormsAdapter extends FormsAdapter<CompleteForm> {
     private static final String TAG = "CompleteFormsAdapter";
 
     public CompleteFormsAdapter(Context context, int textViewResourceId, FormController formController) {

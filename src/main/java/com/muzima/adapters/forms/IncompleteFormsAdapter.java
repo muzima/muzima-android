@@ -3,16 +3,13 @@ package com.muzima.adapters.forms;
 import android.content.Context;
 import android.util.Log;
 
-import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
+import com.muzima.model.IncompleteForm;
 import com.muzima.model.IncompleteFormWithPatientData;
-import com.muzima.model.collections.IncompleteForms;
 import com.muzima.model.collections.IncompleteFormsWithPatientData;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
-import java.util.List;
-
-public class IncompleteFormsAdapter extends FormsAdapter {
+public class IncompleteFormsAdapter extends FormsAdapter<IncompleteForm> {
     private static final String TAG = "IncompleteFormsAdapter";
 
     public IncompleteFormsAdapter(Context context, int textViewResourceId, FormController formController) {

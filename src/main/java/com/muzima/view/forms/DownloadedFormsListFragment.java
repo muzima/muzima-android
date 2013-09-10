@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.muzima.R;
-import com.muzima.api.model.Form;
+import com.muzima.adapters.forms.DownloadedFormsAdapter;
 import com.muzima.controller.FormController;
-import com.muzima.adapters.forms.*;
+import com.muzima.model.DownloadedForm;
 
 public class DownloadedFormsListFragment extends FormsListFragment implements AllAvailableFormsListFragment.OnTemplateDownloadComplete{
 
@@ -31,9 +31,9 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        Form form = (Form) listAdapter.getItem(position);
+        DownloadedForm form = (DownloadedForm) listAdapter.getItem(position);
         Intent intent = new Intent(getActivity(), FormWebViewActivity.class);
-        intent.putExtra(FormWebViewActivity.FORM_UUID, form.getUuid());
+        intent.putExtra(FormWebViewActivity.FORM_UUID, form.getFormUuid());
         intent.putExtra(FormWebViewActivity.FORM_DATA_UUID, "patientId");
         startActivity(intent);
     }

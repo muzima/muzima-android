@@ -2,6 +2,7 @@ package com.muzima.view.observations;
 
 import android.view.View;
 import android.widget.AdapterView;
+
 import com.muzima.controller.ObservationController;
 import com.muzima.view.patients.ObservationsListFragment;
 

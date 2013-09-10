@@ -24,15 +24,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.muzima.controller.FormController.*;
-import static com.muzima.utils.Constants.*;
+import static com.muzima.controller.FormController.FormDataFetchException;
+import static com.muzima.controller.FormController.FormDataSaveException;
+import static com.muzima.controller.FormController.FormDeleteException;
+import static com.muzima.controller.FormController.FormFetchException;
+import static com.muzima.controller.FormController.FormSaveException;
+import static com.muzima.utils.Constants.STATUS_COMPLETE;
+import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.matchers.JUnitMatchers.hasItem;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 public class FormControllerTest {
     private FormController formController;

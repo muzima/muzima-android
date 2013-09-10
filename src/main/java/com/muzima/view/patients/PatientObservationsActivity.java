@@ -1,22 +1,17 @@
 package com.muzima.view.patients;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.widget.SearchView;
-import android.widget.TextView;
+
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
-import com.muzima.adapters.observations.ObservationsByDateAdapter;
 import com.muzima.adapters.observations.ObservationsPagerAdapter;
 import com.muzima.utils.Fonts;
 import com.muzima.view.customViews.PagerSlidingTabStrip;
-import com.muzima.view.preferences.SettingsActivity;
 
 public class PatientObservationsActivity extends SherlockFragmentActivity {
 

@@ -1,9 +1,9 @@
 package com.muzima.view;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.os.Bundle;
 
 public class SearchResultsActivity extends Activity {
 

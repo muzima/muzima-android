@@ -2,7 +2,7 @@ package com.muzima.controller;
 
 import com.muzima.api.model.Observation;
 import com.muzima.api.service.ObservationService;
-import com.muzima.search.api.util.StringUtil;
+
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;

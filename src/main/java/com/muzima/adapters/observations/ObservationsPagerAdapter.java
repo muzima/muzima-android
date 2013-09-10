@@ -3,6 +3,7 @@ package com.muzima.adapters.observations;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.widget.SearchView;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.controller.ObservationController;
