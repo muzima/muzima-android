@@ -77,7 +77,6 @@ public class DashboardActivity extends Activity {
 
 		@Override
 		protected void onPause() {
-			//overridePendingTransition(R.anim.fade_in, R.anim.push_out_to_left);
 			super.onPause();
 		}
 

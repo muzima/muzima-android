@@ -96,7 +96,6 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
                 return true;
             case android.R.id.home:
                 finish();
-                overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -106,7 +105,6 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
     }
 
     @Override
@@ -158,7 +156,6 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
         intent.putExtra(PatientSummaryActivity.PATIENT_ID, patient.getUuid());
         intent.putExtra(PatientSummaryActivity.PATIENT_SUMMARY, getPatientSummary(patient));
         startActivity(intent);
-        overridePendingTransition(R.anim.push_in_from_right, R.anim.push_out_to_left);
     }
 
     private String getPatientSummary(Patient patient) {

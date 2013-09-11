@@ -40,7 +40,6 @@ public class SyncedCohortsListFragment extends CohortListFragment implements All
         intent.putExtra(PatientsListActivity.COHORT_ID, cohort.getUuid());
         intent.putExtra(PatientsListActivity.COHORT_NAME, cohort.getName());
         startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.push_in_from_right, R.anim.push_out_to_left);
     }
 
     @Override
