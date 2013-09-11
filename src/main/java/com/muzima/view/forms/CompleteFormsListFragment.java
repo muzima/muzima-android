@@ -15,7 +15,6 @@ public class CompleteFormsListFragment extends FormsListFragment {
     public static CompleteFormsListFragment newInstance(FormController formController) {
         CompleteFormsListFragment f = new CompleteFormsListFragment();
         f.formController = formController;
-        f.setRetainInstance(true);
         return f;
     }
 

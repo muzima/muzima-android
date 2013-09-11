@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-
 import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsByDateAdapter;
 import com.muzima.controller.ObservationController;
@@ -16,7 +15,6 @@ public class ObservationsByDateListFragment extends ObservationsListFragment {
     public static ObservationsByDateListFragment newInstance(ObservationController observationController) {
         ObservationsByDateListFragment f = new ObservationsByDateListFragment();
         f.observationController = observationController;
-        f.setRetainInstance(true);
         return f;
     }
 

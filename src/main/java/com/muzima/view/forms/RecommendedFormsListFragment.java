@@ -18,7 +18,6 @@ public class RecommendedFormsListFragment extends FormsListFragment implements A
         RecommendedFormsListFragment f = new RecommendedFormsListFragment();
         f.formController = formController;
         f.patientId = patientId;
-        f.setRetainInstance(true);
         return f;
     }
 

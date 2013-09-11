@@ -17,9 +17,7 @@ public class IncompletePatientsFormsListFragment extends FormsListFragment {
     public static IncompletePatientsFormsListFragment newInstance(FormController formController, String patientId) {
         IncompletePatientsFormsListFragment f = new IncompletePatientsFormsListFragment();
         f.formController = formController;
-
         f.patientId = patientId;
-        f.setRetainInstance(true);
         return f;
     }
 

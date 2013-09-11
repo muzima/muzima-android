@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-
 import com.muzima.R;
 import com.muzima.adapters.forms.DownloadedFormsAdapter;
 import com.muzima.controller.FormController;
@@ -17,7 +16,6 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
     public static DownloadedFormsListFragment newInstance(FormController formController) {
         DownloadedFormsListFragment f = new DownloadedFormsListFragment();
         f.formController = formController;
-        f.setRetainInstance(true);
         return f;
     }
 

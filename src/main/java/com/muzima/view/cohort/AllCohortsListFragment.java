@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -46,7 +45,6 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
     public static AllCohortsListFragment newInstance(CohortController cohortController) {
         AllCohortsListFragment f = new AllCohortsListFragment();
         f.cohortController = cohortController;
-        f.setRetainInstance(true);
         return f;
     }
 

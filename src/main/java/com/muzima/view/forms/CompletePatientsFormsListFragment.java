@@ -26,7 +26,6 @@ public class CompletePatientsFormsListFragment extends FormsListFragment {
 
         f.patientId = patientId;
         f.patientController = patientController;
-        f.setRetainInstance(true);
         return f;
     }
 

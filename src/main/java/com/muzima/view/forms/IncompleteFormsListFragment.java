@@ -15,7 +15,6 @@ public class IncompleteFormsListFragment extends FormsListFragment {
     public static IncompleteFormsListFragment newInstance(FormController formController) {
         IncompleteFormsListFragment f = new IncompleteFormsListFragment();
         f.formController = formController;
-        f.setRetainInstance(true);
         return f;
     }
 

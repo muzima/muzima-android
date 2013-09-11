@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-
 import com.muzima.R;
 import com.muzima.adapters.cohort.SyncedCohortsAdapter;
 import com.muzima.api.model.Cohort;
@@ -19,7 +18,6 @@ public class SyncedCohortsListFragment extends CohortListFragment implements All
     public static SyncedCohortsListFragment newInstance(CohortController cohortController) {
         SyncedCohortsListFragment f = new SyncedCohortsListFragment();
         f.cohortController = cohortController;
-        f.setRetainInstance(true);
         return f;
     }
 

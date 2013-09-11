@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -48,7 +47,6 @@ public class AllAvailableFormsListFragment extends FormsListFragment implements 
     public static AllAvailableFormsListFragment newInstance(FormController formController) {
         AllAvailableFormsListFragment f = new AllAvailableFormsListFragment();
         f.formController = formController;
-        f.setRetainInstance(true);
         return f;
     }
 

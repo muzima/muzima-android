@@ -9,7 +9,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.muzima.R;
 import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.controller.FormController;
@@ -24,7 +23,6 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
     protected FormController formController;
     protected FrameLayout progressBarContainer;
     protected LinearLayout noDataView;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

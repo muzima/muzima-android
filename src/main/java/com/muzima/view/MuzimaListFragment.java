@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.actionbarsherlock.app.SherlockFragment;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
@@ -20,6 +19,9 @@ public abstract class MuzimaListFragment extends SherlockFragment implements Ada
     protected String noDataTip;
     protected ListAdapter listAdapter;
 
+    protected MuzimaListFragment() {
+        setRetainInstance(true);
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
