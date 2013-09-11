@@ -1,5 +1,6 @@
 package com.muzima.view.forms;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,12 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Toast;
-
 import com.muzima.R;
 import com.muzima.adapters.forms.PatientIncompleteFormsAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
+import com.muzima.model.IncompleteForm;
 
 public class IncompletePatientsFormsListFragment extends FormsListFragment{
     private static final String TAG = "IncompletePatientsFormsListFragment";
@@ -51,7 +52,12 @@ public class IncompletePatientsFormsListFragment extends FormsListFragment{
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        IncompleteForm form = (IncompleteForm) listAdapter.getItem(position);
+        Intent intent = new Intent(getActivity(), FormWebViewActivity.class);
+        intent.putExtra(FormWebViewActivity.FORM_UUID, form.getFormUuid());
+        intent.putExtra(FormWebViewActivity.FORM_DATA_UUID, form.getFormDataUuid());
+        intent.putExtra(FormWebViewActivity.PATIENT_UUID, patientId);
+        startActivity(intent);
     }
 }
