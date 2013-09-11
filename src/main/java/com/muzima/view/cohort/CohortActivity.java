@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
-
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
@@ -20,12 +18,13 @@ import com.muzima.tasks.cohort.DownloadCohortTask;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.customViews.PagerSlidingTabStrip;
+import com.muzima.view.patients.MuzimaFragmentActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
 import static android.os.AsyncTask.Status.PENDING;
 import static android.os.AsyncTask.Status.RUNNING;
 
-public class CohortActivity extends SherlockFragmentActivity {
+public class CohortActivity extends MuzimaFragmentActivity {
     private static final String TAG = "CohortActivity";
     private ViewPager viewPager;
     private CohortPagerAdapter cohortPagerAdapter;
@@ -79,7 +78,6 @@ public class CohortActivity extends SherlockFragmentActivity {
                 return true;
             case android.R.id.home:
                 finish();
-                overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
                 return true;
             case R.id.action_settings:
                 intent = new Intent(this, SettingsActivity.class);
@@ -88,12 +86,6 @@ public class CohortActivity extends SherlockFragmentActivity {
             default:
                 return false;
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
     }
 
     public void hideProgressbar() {

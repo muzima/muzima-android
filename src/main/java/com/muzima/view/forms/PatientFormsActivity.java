@@ -4,7 +4,6 @@ package com.muzima.view.forms;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
-
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -52,7 +51,6 @@ public class PatientFormsActivity extends FormsActivityBase {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
-                overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
                 return true;
         }
         return super.onOptionsItemSelected(item);

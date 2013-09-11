@@ -4,8 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.widget.SearchView;
-
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
@@ -13,23 +11,23 @@ import com.muzima.adapters.observations.ObservationsPagerAdapter;
 import com.muzima.utils.Fonts;
 import com.muzima.view.customViews.PagerSlidingTabStrip;
 
-public class PatientObservationsActivity extends SherlockFragmentActivity {
+public class PatientObservationsActivity extends MuzimaFragmentActivity {
 
-	public boolean quickSearch = false;
+    public boolean quickSearch = false;
     private ViewPager viewPager;
     private ObservationsPagerAdapter cohortPagerAdapter;
     private PagerSlidingTabStrip pagerTabsLayout;
 
     @Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_patient_observations);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_patient_observations);
 
         // Show the Up button in the action bar.
-		setupActionBar();
+        setupActionBar();
         initPager();
         initPagerIndicator();
-	}
+    }
 
     private void initPagerIndicator() {
         pagerTabsLayout = (PagerSlidingTabStrip) findViewById(R.id.pager_indicator);
@@ -49,24 +47,12 @@ public class PatientObservationsActivity extends SherlockFragmentActivity {
         viewPager.setAdapter(cohortPagerAdapter);
     }
 
-	/**
-	 * Set up the {@link android.app.ActionBar}.
-	 */
-	private void setupActionBar() {
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+    /**
+     * Set up the {@link android.app.ActionBar}.
+     */
+    private void setupActionBar() {
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setTitle(getIntent().getStringExtra(PatientSummaryActivity.PATIENT_SUMMARY));
-	}
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
-                return true;
-            default:
-                return false;
-        }
     }
 
     @Override
@@ -79,4 +65,14 @@ public class PatientObservationsActivity extends SherlockFragmentActivity {
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return false;
+        }
+    }
 }

@@ -5,17 +5,16 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.utils.Fonts;
 import com.muzima.view.customViews.PagerSlidingTabStrip;
+import com.muzima.view.patients.MuzimaFragmentActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
 
-public abstract class FormsActivityBase extends SherlockFragmentActivity {
+public abstract class FormsActivityBase extends MuzimaFragmentActivity {
     private static final String TAG = "FormsActivityBase";
     protected ViewPager formsPager;
     protected PagerSlidingTabStrip pagerTabsLayout;
@@ -44,7 +43,6 @@ public abstract class FormsActivityBase extends SherlockFragmentActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
     }
 
     private void initPager() {

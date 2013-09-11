@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
@@ -149,7 +148,6 @@ public class FormsActivity extends FormsActivityBase{
                 return true;
             case android.R.id.home:
                 finish();
-                overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
                 return true;
             case R.id.menu_tags:
                 if (mainLayout.isDrawerOpen(GravityCompat.END)) {

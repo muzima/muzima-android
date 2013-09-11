@@ -9,13 +9,13 @@ import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.controller.FormController;
+import com.muzima.view.patients.MuzimaFragmentActivity;
 
 import java.util.UUID;
 
@@ -24,7 +24,7 @@ import static com.muzima.controller.FormController.FormFetchException;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 import static java.text.MessageFormat.format;
 
-public class FormWebViewActivity extends SherlockFragmentActivity {
+public class FormWebViewActivity extends MuzimaFragmentActivity {
     private static final String TAG = "FormWebViewActivity";
     public static final String FORM_UUID = "formId";
     public static final String FORM_DATA_UUID = "formDataId";
@@ -141,4 +141,5 @@ public class FormWebViewActivity extends SherlockFragmentActivity {
         progressDialog.setMessage("Please wait");
         progressDialog.show();
     }
+
 }
