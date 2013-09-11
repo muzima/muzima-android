@@ -26,7 +26,7 @@
     <string name="no_downloaded_form_msg">No Forms Have Been Downloaded</string>
     <string name="no_downloaded_form_tip">Please select forms from all forms list and click download</string>
     <string name="no_incomplete_form_msg">No Incomplete Forms On Device</string>
-    <string name="no_incomplete_patient_form_msg">No Incomplete Forms For</string>
+    <string name="no_incomplete_patient_form_msg">No Incomplete Forms</string>
     <string name="no_incomplete_form_tip">Incomplete forms are available only if you have saved a partially filled form</string>
     <string name="no_complete_form_msg">No Completed And Unsynced Forms On Device</string>
     <string name="no_complete_patient_form_msg">No Completed And Unsynced Forms For</string>

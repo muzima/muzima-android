@@ -9,7 +9,6 @@ import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -66,7 +65,6 @@ public class FormWebViewActivity extends SherlockFragmentActivity {
         Intent intent = getIntent();
         String formId = intent.getStringExtra(FORM_UUID);
         formDataUuid = intent.getStringExtra(FORM_DATA_UUID);
-        String patientUuid = intent.getStringExtra(PATIENT_UUID);
 
 
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
@@ -75,6 +73,7 @@ public class FormWebViewActivity extends SherlockFragmentActivity {
         if (formDataUuid != null) {
             formData = formController.getFormDataByUuid(formDataUuid);
         } else {
+            String patientUuid = intent.getStringExtra(PATIENT_UUID);
             formData = createNewFormData(patientUuid, form.getUuid(), formTemplate.getModelJson());
         }
     }

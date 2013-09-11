@@ -2,7 +2,6 @@ package com.muzima.adapters.forms;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
-
 import com.muzima.MuzimaApplication;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.controller.FormController;
@@ -28,7 +27,7 @@ public class PatientFormsPagerAdapter extends MuzimaPagerAdapter{
         FormController formController = ((MuzimaApplication) context.getApplicationContext()).getFormController();
         PatientController patientController = ((MuzimaApplication) context.getApplicationContext()).getPatientController();
 
-        IncompletePatientsFormsListFragment incompleteFormsListFragment = IncompletePatientsFormsListFragment.newInstance(formController, patientController, patientId);
+        IncompletePatientsFormsListFragment incompleteFormsListFragment = IncompletePatientsFormsListFragment.newInstance(formController, patientId);
         RecommendedFormsListFragment recommendedFormsListFragment = RecommendedFormsListFragment.newInstance(formController, patientId);
         CompletePatientsFormsListFragment completeFormsListFragment = CompletePatientsFormsListFragment.newInstance(formController, patientController, patientId);
 
