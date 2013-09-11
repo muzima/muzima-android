@@ -7,11 +7,11 @@ import com.muzima.MuzimaApplication;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.listeners.DownloadListener;
+import com.muzima.view.forms.AllAvailableFormsListFragment;
 import com.muzima.view.forms.CompleteFormsListFragment;
 import com.muzima.view.forms.DownloadedFormsListFragment;
 import com.muzima.view.forms.FormsListFragment;
 import com.muzima.view.forms.IncompleteFormsListFragment;
-import com.muzima.view.forms.AllAvailableFormsListFragment;
 
 public class FormsPagerAdapter extends MuzimaPagerAdapter implements DownloadListener<Integer[]>, TagsListAdapter.TagsChangedListener {
     public static final int TAB_All = 0;

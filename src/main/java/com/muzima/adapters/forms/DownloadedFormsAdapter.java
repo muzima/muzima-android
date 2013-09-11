@@ -2,10 +2,7 @@ package com.muzima.adapters.forms;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
 import com.muzima.model.DownloadedForm;
 import com.muzima.model.collections.DownloadedForms;
@@ -13,7 +10,7 @@ import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
 import java.util.List;
 
-public class DownloadedFormsAdapter extends FormsAdapter {
+public class DownloadedFormsAdapter extends FormsAdapter<DownloadedForm> {
     private static final String TAG = "DownloadedFormsAdapter";
 
     public DownloadedFormsAdapter(Context context, int textViewResourceId, FormController formController) {

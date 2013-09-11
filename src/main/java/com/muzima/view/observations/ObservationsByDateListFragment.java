@@ -5,8 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.SearchView;
-import com.actionbarsherlock.view.Menu;
+
 import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsByDateAdapter;
 import com.muzima.controller.ObservationController;

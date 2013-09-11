@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import com.actionbarsherlock.app.SherlockActivity;
 import com.muzima.R;
 import com.muzima.adapters.cohort.FormTagPrefAdapter;
@@ -16,7 +17,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import static com.muzima.utils.Constants.*;
+import static com.muzima.utils.Constants.FORM_TAG_PREF;
+import static com.muzima.utils.Constants.FORM_TAG_PREF_KEY;
 
 public class FormTagActivity extends SherlockActivity implements SettingsBaseAdapter.PreferenceClickListener {
 

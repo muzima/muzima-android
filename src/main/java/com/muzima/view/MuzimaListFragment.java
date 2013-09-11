@@ -1,16 +1,13 @@
 package com.muzima.view;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.muzima.R;
-import com.muzima.tasks.DownloadMuzimaTask;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.utils.Fonts;
 

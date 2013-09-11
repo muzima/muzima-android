@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
+
 import com.muzima.api.model.Observation;
 import com.muzima.controller.ObservationController;
 

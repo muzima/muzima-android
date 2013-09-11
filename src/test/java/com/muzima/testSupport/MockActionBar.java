@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.SpinnerAdapter;
+
 import com.actionbarsherlock.app.ActionBar;
 
 public class MockActionBar extends ActionBar {

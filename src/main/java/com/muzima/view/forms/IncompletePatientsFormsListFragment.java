@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.muzima.R;
-import com.muzima.adapters.forms.IncompleteFormsAdapter;
 import com.muzima.adapters.forms.PatientIncompleteFormsAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;

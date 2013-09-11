@@ -1,11 +1,9 @@
 package com.muzima.tasks;
 
 import android.os.AsyncTask;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.muzima.adapters.forms.FormsAdapter;
-import com.muzima.api.model.Form;
 import com.muzima.model.BaseForm;
 
 import java.lang.ref.WeakReference;

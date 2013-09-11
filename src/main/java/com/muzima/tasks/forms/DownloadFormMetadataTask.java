@@ -11,7 +11,11 @@ import com.muzima.tasks.DownloadMuzimaTask;
 import com.muzima.utils.Constants;
 import com.muzima.view.forms.AllAvailableFormsListFragment;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class DownloadFormMetadataTask extends DownloadMuzimaTask {
     private static final String TAG = "DownloadFormMetadataTask";

@@ -3,13 +3,15 @@ package com.muzima.testSupport;
 
 import android.content.Context;
 import android.util.AttributeSet;
+
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.SubMenu;
+
 import org.robolectric.internal.Implementation;
 import org.robolectric.res.MenuNode;
-import org.robolectric.tester.android.util.ResName;
 import org.robolectric.res.ResourceLoader;
+import org.robolectric.tester.android.util.ResName;
 import org.robolectric.util.I18nException;
 
 import static org.robolectric.Robolectric.shadowOf;
