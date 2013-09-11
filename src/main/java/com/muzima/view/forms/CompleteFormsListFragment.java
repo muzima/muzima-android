@@ -5,12 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-
 import com.muzima.R;
 import com.muzima.adapters.forms.CompleteFormsAdapter;
 import com.muzima.controller.FormController;
+import com.muzima.model.FormWithData;
 
-public class CompleteFormsListFragment extends FormsListFragment{
+public class CompleteFormsListFragment extends FormsListFragment {
 
     public static CompleteFormsListFragment newInstance(FormController formController) {
         CompleteFormsListFragment f = new CompleteFormsListFragment();
@@ -28,8 +28,8 @@ public class CompleteFormsListFragment extends FormsListFragment{
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        startActivity(new FormViewIntent(getActivity(), (FormWithData) listAdapter.getItem(position)));
     }
 
 }

@@ -7,14 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Toast;
-
 import com.muzima.R;
 import com.muzima.adapters.forms.PatientCompleteFormsAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
+import com.muzima.model.FormWithData;
 
-public class CompletePatientsFormsListFragment extends FormsListFragment{
+public class CompletePatientsFormsListFragment extends FormsListFragment {
     private static final String TAG = "CompletePatientsFormsListFragment";
 
     private PatientController patientController;
@@ -51,7 +51,7 @@ public class CompletePatientsFormsListFragment extends FormsListFragment{
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        startActivity(new FormViewIntent(getActivity(), (FormWithData) listAdapter.getItem(position)));
     }
 }
