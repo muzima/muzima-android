@@ -28,10 +28,10 @@ public class CompleteFormBuilderTest {
     public void withPatientInfo_shouldSetPatientInfoValues() throws Exception {
         CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder().withPatientInfo("Obama","Barack", "Hussein",  "USNO1").build();
 
-        assertThat(completeForm.getPatientFamilyName(), is("Obama"));
-        assertThat(completeForm.getPatientGivenName(), is("Barack"));
-        assertThat(completeForm.getPatientMiddleName(), is("Hussein"));
-        assertThat(completeForm.getPatientIdentifier(), is("USNO1"));
+        assertThat(completeForm.getPatientMetaData().getPatientFamilyName(), is("Obama"));
+        assertThat(completeForm.getPatientMetaData().getPatientGivenName(), is("Barack"));
+        assertThat(completeForm.getPatientMetaData().getPatientMiddleName(), is("Hussein"));
+        assertThat(completeForm.getPatientMetaData().getPatientIdentifier(), is("USNO1"));
     }
 
     @Test

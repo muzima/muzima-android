@@ -32,4 +32,9 @@ public class CompleteFormsListFragment extends FormsListFragment {
         startActivity(new FormViewIntent(getActivity(), (FormWithData) listAdapter.getItem(position)));
     }
 
+    @Override
+    protected View setupMainView(LayoutInflater inflater, ViewGroup container){
+        return inflater.inflate(R.layout.layout_list_with_sections, container, false);
+    }
+
 }

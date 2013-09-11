@@ -4,12 +4,15 @@ import android.content.Context;
 import android.util.Log;
 
 import com.muzima.controller.FormController;
-import com.muzima.model.CompleteForm;
 import com.muzima.model.CompleteFormWithPatientData;
+import com.muzima.model.PatientMetaData;
 import com.muzima.model.collections.CompleteFormsWithPatientData;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
-public class CompleteFormsAdapter extends FormsAdapter<CompleteForm> {
+import java.util.ArrayList;
+import java.util.List;
+
+public class CompleteFormsAdapter extends SectionedFormsAdapter<CompleteFormWithPatientData>{
     private static final String TAG = "CompleteFormsAdapter";
 
     public CompleteFormsAdapter(Context context, int textViewResourceId, FormController formController) {
@@ -34,8 +37,7 @@ public class CompleteFormsAdapter extends FormsAdapter<CompleteForm> {
             if (adapterWeakReference.get() != null) {
                 try {
                     FormsAdapter formsAdapter = adapterWeakReference.get();
-                    completeForms = ((CompleteFormsAdapter) formsAdapter).formController.getAllCompleteForms();
-
+                    completeForms = formsAdapter.getFormController().getAllCompleteForms();
                     Log.i(TAG, "#Complete forms: " + completeForms.size());
                 } catch (FormController.FormFetchException e) {
                     Log.w(TAG, "Exception occurred while fetching local forms " + e);
@@ -43,6 +45,16 @@ public class CompleteFormsAdapter extends FormsAdapter<CompleteForm> {
             }
 
             return completeForms;
+        }
+
+        @Override
+        protected void onPostExecute(List<CompleteFormWithPatientData> forms) {
+            super.onPostExecute(forms);
+            if (adapterWeakReference.get() != null) {
+                SectionedFormsAdapter formsAdapter = (SectionedFormsAdapter)adapterWeakReference.get();
+                formsAdapter.setPatients(formsAdapter.buildPatientsList(forms));
+                formsAdapter.sortFormsByPatientName();
+            }
         }
     }
 }

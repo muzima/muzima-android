@@ -31,4 +31,9 @@ public class IncompleteFormsListFragment extends FormsListFragment {
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         startActivity(new FormViewIntent(getActivity(), (FormWithData) listAdapter.getItem(position)));
     }
+
+    @Override
+    protected View setupMainView(LayoutInflater inflater, ViewGroup container){
+        return inflater.inflate(R.layout.layout_list_with_sections, container, false);
+    }
 }

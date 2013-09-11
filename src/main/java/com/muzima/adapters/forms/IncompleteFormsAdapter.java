@@ -4,12 +4,14 @@ import android.content.Context;
 import android.util.Log;
 
 import com.muzima.controller.FormController;
-import com.muzima.model.IncompleteForm;
+import com.muzima.model.CompleteFormWithPatientData;
 import com.muzima.model.IncompleteFormWithPatientData;
 import com.muzima.model.collections.IncompleteFormsWithPatientData;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
-public class IncompleteFormsAdapter extends FormsAdapter<IncompleteForm> {
+import java.util.List;
+
+public class IncompleteFormsAdapter extends SectionedFormsAdapter<IncompleteFormWithPatientData> {
     private static final String TAG = "IncompleteFormsAdapter";
 
     public IncompleteFormsAdapter(Context context, int textViewResourceId, FormController formController) {
@@ -35,13 +37,22 @@ public class IncompleteFormsAdapter extends FormsAdapter<IncompleteForm> {
                 try {
                     FormsAdapter formsAdapter = adapterWeakReference.get();
                     incompleteForms = formsAdapter.getFormController().getAllIncompleteForms();
-
                     Log.i(TAG, "#Incomplete forms: " + incompleteForms.size());
                 } catch (FormController.FormFetchException e) {
                     Log.w(TAG, "Exception occurred while fetching local forms " + e);
                 }
             }
             return incompleteForms;
+        }
+
+        @Override
+        protected void onPostExecute(List<IncompleteFormWithPatientData> forms) {
+            super.onPostExecute(forms);
+            if (adapterWeakReference.get() != null) {
+                SectionedFormsAdapter formsAdapter = (SectionedFormsAdapter)adapterWeakReference.get();
+                formsAdapter.setPatients(formsAdapter.buildPatientsList(forms));
+                formsAdapter.sortFormsByPatientName();
+            }
         }
     }
 }

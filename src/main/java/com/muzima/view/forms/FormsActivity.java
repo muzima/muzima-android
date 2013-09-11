@@ -39,7 +39,7 @@ import static com.muzima.utils.Constants.FORM_TAG_PREF;
 import static com.muzima.utils.Constants.FORM_TAG_PREF_KEY;
 
 
-public class FormsActivity extends FormsActivityBase{
+public class FormsActivity extends FormsActivityBase {
     private static final String TAG = "FormsActivity";
 
     private DownloadMuzimaTask formDownloadTask;
@@ -77,7 +77,7 @@ public class FormsActivity extends FormsActivityBase{
         if (formDownloadTask != null) {
             formDownloadTask.cancel(false);
         }
-        if(formController!=null){
+        if (formController != null) {
             formController.resetTagColors();
         }
         super.onDestroy();
@@ -112,14 +112,14 @@ public class FormsActivity extends FormsActivityBase{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(super.onOptionsItemSelected(item)){
+        if (super.onOptionsItemSelected(item)) {
             return true;
         }
 
         Intent intent = null;
         switch (item.getItemId()) {
             case R.id.menu_load:
-                if(!NetworkUtils.isConnectedToNetwork(this)){
+                if (!NetworkUtils.isConnectedToNetwork(this)) {
                     Toast.makeText(this, "No connection found, please connect your device and try again", Toast.LENGTH_SHORT).show();
                     return true;
                 }
@@ -131,7 +131,7 @@ public class FormsActivity extends FormsActivityBase{
                 }
                 SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
                 formDownloadTask = new DownloadFormMetadataTask((MuzimaApplication) getApplicationContext());
-                formDownloadTask.addDownloadListener((FormsPagerAdapter)formsPagerAdapter);
+                formDownloadTask.addDownloadListener((FormsPagerAdapter) formsPagerAdapter);
                 formDownloadTask.addDownloadListener(tagsListAdapter);
                 String usernameKey = getResources().getString(R.string.preference_username);
                 String passwordKey = getResources().getString(R.string.preference_password);
@@ -223,7 +223,7 @@ public class FormsActivity extends FormsActivityBase{
         }
         List<Tag> selectedTags = new ArrayList<Tag>();
         for (Tag tag : allTags) {
-            if(selectedTagsInPref.contains(tag.getName())){
+            if (selectedTagsInPref.contains(tag.getName())) {
                 selectedTags.add(tag);
             }
         }
@@ -232,10 +232,16 @@ public class FormsActivity extends FormsActivityBase{
 
     @Override
     protected void onPageChange(int position) {
-        if(position == FormsPagerAdapter.TAB_All){
+        if (tagsButton == null) {
+            return;
+        }
+
+        if (position == FormsPagerAdapter.TAB_All) {
             tagsButton.setEnabled(true);
             tagsButton.setIcon(R.drawable.ic_labels);
-        }else{
+        } else
+
+        {
             tagsButton.setEnabled(false);
             tagsButton.setIcon(R.drawable.ic_labels_disabled);
         }
