@@ -49,11 +49,11 @@ public class CompleteFormsAdapter extends SectionedFormsAdapter<CompleteFormWith
 
         @Override
         protected void onPostExecute(List<CompleteFormWithPatientData> forms) {
-            super.onPostExecute(forms);
             if (adapterWeakReference.get() != null) {
                 SectionedFormsAdapter formsAdapter = (SectionedFormsAdapter)adapterWeakReference.get();
                 formsAdapter.setPatients(formsAdapter.buildPatientsList(forms));
-                formsAdapter.sortFormsByPatientName();
+                formsAdapter.sortFormsByPatientName(forms);
+                notifyListener();
             }
         }
     }

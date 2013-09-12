@@ -82,7 +82,7 @@ public class CompleteFormsAdapterTest {
             add(patient1MetaData);
         }});
 
-        completeFormsAdapter.sortFormsByPatientName();
+        completeFormsAdapter.sortFormsByPatientName(completeFormsAdapter.getCurrentListData());
 
         assertThat(completeFormsAdapter.getPatients().get(0), is(patient1MetaData));
         assertThat(completeFormsAdapter.getPatients().get(1), is(patient2MetaData));
@@ -120,7 +120,7 @@ public class CompleteFormsAdapterTest {
 
         completeFormsAdapter.addAll(completeFormsWithPatientData);
 
-        completeFormsAdapter.sortFormsByPatientName();
+        completeFormsAdapter.sortFormsByPatientName(formsAdapter.getCurrentListData());
 
         assertThat(completeFormsAdapter.getItem(0), is(completeFormWithPatientData2));
         assertThat(completeFormsAdapter.getItem(1), is(completeFormWithPatientData1));

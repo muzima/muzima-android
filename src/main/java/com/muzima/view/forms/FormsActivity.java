@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
@@ -62,6 +63,11 @@ public class FormsActivity extends FormsActivityBase {
         setupActionbar();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     private void setupActionbar() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -88,6 +94,8 @@ public class FormsActivity extends FormsActivityBase {
         getSupportMenuInflater().inflate(R.menu.form_list_menu, menu);
         menubarLoadButton = menu.findItem(R.id.menu_load);
         tagsButton = menu.findItem(R.id.menu_tags);
+
+        onPageChange(formsPager.getCurrentItem());
         return true;
     }
 
@@ -95,7 +103,6 @@ public class FormsActivity extends FormsActivityBase {
     protected void onPause() {
         super.onPause();
         storeSelectedTags();
-
     }
 
     private void storeSelectedTags() {
@@ -222,9 +229,12 @@ public class FormsActivity extends FormsActivityBase {
             Log.e(TAG, "Error occurred while get all tags from local repository\n" + e);
         }
         List<Tag> selectedTags = new ArrayList<Tag>();
-        for (Tag tag : allTags) {
-            if (selectedTagsInPref.contains(tag.getName())) {
-                selectedTags.add(tag);
+
+        if (selectedTagsInPref != null) {
+            for (Tag tag : allTags) {
+                if (selectedTagsInPref.contains(tag.getName())){
+                    selectedTags.add(tag);
+                }
             }
         }
         formController.setSelectedTags(selectedTags);
