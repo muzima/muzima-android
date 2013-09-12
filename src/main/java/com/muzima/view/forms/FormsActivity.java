@@ -62,6 +62,11 @@ public class FormsActivity extends FormsActivityBase {
         setupActionbar();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     private void setupActionbar() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -88,6 +93,8 @@ public class FormsActivity extends FormsActivityBase {
         getSupportMenuInflater().inflate(R.menu.form_list_menu, menu);
         menubarLoadButton = menu.findItem(R.id.menu_load);
         tagsButton = menu.findItem(R.id.menu_tags);
+
+        onPageChange(formsPager.getCurrentItem());
         return true;
     }
 
@@ -95,7 +102,6 @@ public class FormsActivity extends FormsActivityBase {
     protected void onPause() {
         super.onPause();
         storeSelectedTags();
-
     }
 
     private void storeSelectedTags() {
