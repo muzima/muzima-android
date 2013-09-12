@@ -61,6 +61,14 @@ public class FormWebViewActivity extends MuzimaFragmentActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        if(progressDialog != null){
+            progressDialog.dismiss();
+        }
+        super.onDestroy();
+    }
+
     private void setupFormData() throws FormFetchException, FormController.FormDataFetchException, FormController.FormDataSaveException {
         Intent intent = getIntent();
         String formId = intent.getStringExtra(FORM_UUID);
