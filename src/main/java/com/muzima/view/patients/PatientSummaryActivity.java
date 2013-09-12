@@ -96,7 +96,6 @@ public class PatientSummaryActivity extends SherlockActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
-                overridePendingTransition(R.anim.push_in_from_left, R.anim.push_out_to_right);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -106,7 +105,6 @@ public class PatientSummaryActivity extends SherlockActivity {
         Intent intent = new Intent(this, PatientFormsActivity.class);
         intent.putExtra(PatientSummaryActivity.PATIENT_ID, patientId);
         startActivity(intent);
-        overridePendingTransition(R.anim.push_in_from_right, R.anim.push_out_to_left);
     }
 
     public void showObservations(View v) {
@@ -114,7 +112,6 @@ public class PatientSummaryActivity extends SherlockActivity {
         intent.putExtra(PATIENT_ID, patientId);
         intent.putExtra(PATIENT_SUMMARY, patientSummary);
         startActivity(intent);
-        overridePendingTransition(R.anim.push_in_from_right, R.anim.push_out_to_left);
     }
 
 

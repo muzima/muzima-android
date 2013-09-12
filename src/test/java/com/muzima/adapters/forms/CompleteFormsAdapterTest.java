@@ -29,8 +29,8 @@ public class CompleteFormsAdapterTest {
 
     @Before
     public void setUp() throws Exception {
-        formsAdapter = mock(CompleteFormsAdapter.class);
         formController = mock(FormController.class);
+        formsAdapter = new CompleteFormsAdapter(null, 0, formController);
     }
 
     @Test
@@ -39,7 +39,6 @@ public class CompleteFormsAdapterTest {
         CompleteFormsWithPatientData completeFormsWithPatientData = new CompleteFormsWithPatientData();
         completeFormsWithPatientData.add(new CompleteFormWithPatientData());
 
-        when(formsAdapter.getFormController()).thenReturn(formController);
         when(formController.getAllCompleteForms()).thenReturn(completeFormsWithPatientData);
 
         assertThat((CompleteFormsWithPatientData)(queryTask.execute().get()), is(completeFormsWithPatientData));
@@ -61,7 +60,6 @@ public class CompleteFormsAdapterTest {
             setPatientMetaData(patient1MetaData);
         }});
 
-        when(formsAdapter.getFormController()).thenReturn(formController);
         when(formController.getAllCompleteForms()).thenReturn(completeFormsWithPatientData);
 
         List<PatientMetaData> patients = new ArrayList<PatientMetaData>() {{
@@ -71,7 +69,7 @@ public class CompleteFormsAdapterTest {
 
         queryTask.execute();
 
-        verify(formsAdapter).setPatients(patients);
+        assertThat(formsAdapter.getPatients(), is(patients));
     }
 
     @Test

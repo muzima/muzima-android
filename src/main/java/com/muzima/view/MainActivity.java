@@ -99,7 +99,6 @@ public class MainActivity extends SherlockActivity {
     public void cohortList(View view) {
         Intent intent = new Intent(this, CohortActivity.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.push_in_from_right, R.anim.push_out_to_left);
     }
 
     /**
@@ -111,7 +110,6 @@ public class MainActivity extends SherlockActivity {
             intent.putExtra(PatientsListActivity.QUICK_SEARCH, "true");
         }
         startActivity(intent);
-        overridePendingTransition(R.anim.push_in_from_right, R.anim.push_out_to_left);
     }
 
     /**
@@ -120,7 +118,6 @@ public class MainActivity extends SherlockActivity {
     public void formsList(View view) {
         Intent intent = new Intent(this, FormsActivity.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.push_in_from_right, R.anim.push_out_to_left);
     }
 
     /**
