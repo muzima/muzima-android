@@ -43,6 +43,8 @@ import static com.muzima.utils.Constants.FORM_TAG_PREF_KEY;
 public class FormsActivity extends FormsActivityBase {
     private static final String TAG = "FormsActivity";
 
+    public static int FORM_VIEW_ACTIVITY_RESULT = 1;
+
     private DownloadMuzimaTask formDownloadTask;
     private ListView tagsDrawerList;
     private TextView tagsNoDataMsg;
@@ -73,9 +75,21 @@ public class FormsActivity extends FormsActivityBase {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         tagsListAdapter.reloadData();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == FORM_VIEW_ACTIVITY_RESULT){
+            formsPagerAdapter.reloadData();
+        }
     }
 
     @Override

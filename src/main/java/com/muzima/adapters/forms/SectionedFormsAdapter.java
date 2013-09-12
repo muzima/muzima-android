@@ -10,10 +10,8 @@ import android.widget.TextView;
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersAdapter;
 import com.muzima.R;
 import com.muzima.controller.FormController;
-import com.muzima.model.CompleteFormWithPatientData;
 import com.muzima.model.FormWithPatientData;
 import com.muzima.model.PatientMetaData;
-import com.muzima.model.collections.CompleteFormsWithPatientData;
 
 import java.util.ArrayList;
 import java.util.Collections;

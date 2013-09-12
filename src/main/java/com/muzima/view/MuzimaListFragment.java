@@ -1,6 +1,7 @@
 package com.muzima.view;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -38,9 +39,9 @@ public abstract class MuzimaListFragment extends SherlockFragment implements Ada
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        if (listAdapter != null) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(listAdapter != null){
             listAdapter.reloadData();
         }
     }
@@ -48,5 +49,11 @@ public abstract class MuzimaListFragment extends SherlockFragment implements Ada
     public abstract void synchronizationComplete(Integer[] status);
 
     public void synchronizationStarted(){
+    }
+
+    public void reloadData() {
+        if(listAdapter != null){
+            listAdapter.reloadData();
+        }
     }
 }

@@ -22,16 +22,17 @@ public class RecommendedFormsListFragment extends FormsListFragment implements A
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         listAdapter = new DownloadedFormsAdapter(getActivity(), R.layout.item_forms_list, formController);
         noDataMsg = getActivity().getResources().getString(R.string.no_downloaded_form_msg);
         noDataTip = getActivity().getResources().getString(R.string.no_downloaded_form_tip);
-        return super.onCreateView(inflater, container, savedInstanceState);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        startActivity(new FormViewIntent(getActivity(), (DownloadedForm) listAdapter.getItem(position), patientId));
+        FormViewIntent intent = new FormViewIntent(getActivity(), (DownloadedForm) listAdapter.getItem(position), patientId);
+        getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 
     @Override

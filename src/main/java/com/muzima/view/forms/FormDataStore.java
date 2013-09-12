@@ -27,6 +27,7 @@ public class FormDataStore {
         formData.setStatus(status);
         try {
             formController.saveFormData(formData);
+            formWebViewActivity.setResult(FormsActivity.RESULT_OK);
             formWebViewActivity.finish();
         } catch (FormController.FormDataSaveException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving the form", Toast.LENGTH_SHORT).show();

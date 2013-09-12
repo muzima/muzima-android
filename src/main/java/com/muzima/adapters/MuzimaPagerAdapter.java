@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.muzima.view.MuzimaListFragment;
+import com.muzima.view.forms.FormsListFragment;
 
 public abstract class MuzimaPagerAdapter extends FragmentPagerAdapter{
     protected PagerView[] pagers;
@@ -33,6 +34,12 @@ public abstract class MuzimaPagerAdapter extends FragmentPagerAdapter{
     }
 
     public abstract void initPagerViews();
+
+    public void reloadData() {
+        for (PagerView pager : pagers) {
+            pager.fragment.reloadData();
+        }
+    }
 
     public static class PagerView {
         public String title;

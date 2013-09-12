@@ -51,7 +51,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment implements 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         if (listAdapter == null) {
             listAdapter = new AllAvailableFormsAdapter(getActivity(), R.layout.item_forms_list, formController);
         }
@@ -63,8 +63,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment implements 
             actionMode = getSherlockActivity().startActionMode(new NewFormsActionModeCallback());
             actionMode.setTitle(String.valueOf(((AllAvailableFormsAdapter) listAdapter).getSelectedForms().size()));
         }
-
-        return super.onCreateView(inflater, container, savedInstanceState);
+        super.onCreate(savedInstanceState);
     }
 
     @Override

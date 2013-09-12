@@ -30,7 +30,7 @@ public class CompletePatientsFormsListFragment extends FormsListFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         listAdapter = new PatientCompleteFormsAdapter(getActivity(), R.layout.item_forms_list, formController, patientId);
 
         Patient patient = null;
@@ -46,11 +46,12 @@ public class CompletePatientsFormsListFragment extends FormsListFragment {
 
         noDataMsg = getActivity().getResources().getString(R.string.no_complete_patient_form_msg) + msgPostFix;
         noDataTip = getActivity().getResources().getString(R.string.no_incomplete_form_tip);
-        return super.onCreateView(inflater, container, savedInstanceState);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        startActivity(new FormViewIntent(getActivity(), (FormWithData) listAdapter.getItem(position)));
+        FormViewIntent intent = new FormViewIntent(getActivity(), (FormWithData) listAdapter.getItem(position));
+        getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 }

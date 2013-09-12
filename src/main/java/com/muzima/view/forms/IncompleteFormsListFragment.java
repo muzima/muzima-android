@@ -19,16 +19,17 @@ public class IncompleteFormsListFragment extends FormsListFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         listAdapter = new IncompleteFormsAdapter(getActivity(), R.layout.item_forms_list, formController);
         noDataMsg = getActivity().getResources().getString(R.string.no_incomplete_form_msg);
         noDataTip = getActivity().getResources().getString(R.string.no_incomplete_form_tip);
-        return super.onCreateView(inflater, container, savedInstanceState);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        startActivity(new FormViewIntent(getActivity(), (FormWithData) listAdapter.getItem(position)));
+        FormViewIntent intent = new FormViewIntent(getActivity(), (FormWithData) listAdapter.getItem(position));
+        getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 
     @Override

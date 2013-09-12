@@ -20,11 +20,11 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         listAdapter = new DownloadedFormsAdapter(getActivity(), R.layout.item_forms_list, formController);
         noDataMsg = getActivity().getResources().getString(R.string.no_downloaded_form_msg);
         noDataTip = getActivity().getResources().getString(R.string.no_downloaded_form_tip);
-        return super.onCreateView(inflater, container, savedInstanceState);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
