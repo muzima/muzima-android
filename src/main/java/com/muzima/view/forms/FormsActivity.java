@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
@@ -228,9 +229,12 @@ public class FormsActivity extends FormsActivityBase {
             Log.e(TAG, "Error occurred while get all tags from local repository\n" + e);
         }
         List<Tag> selectedTags = new ArrayList<Tag>();
-        for (Tag tag : allTags) {
-            if (selectedTagsInPref.contains(tag.getName())) {
-                selectedTags.add(tag);
+
+        if (selectedTagsInPref != null) {
+            for (Tag tag : allTags) {
+                if (selectedTagsInPref.contains(tag.getName())){
+                    selectedTags.add(tag);
+                }
             }
         }
         formController.setSelectedTags(selectedTags);
