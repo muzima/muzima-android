@@ -91,12 +91,13 @@ public abstract class SectionedFormsAdapter<T extends FormWithPatientData> exten
         return patients.indexOf(getItem(position).getPatientMetaData());
     }
 
-    public void sortFormsByPatientName() {
+    public void sortFormsByPatientName(List<T> forms) {
         Collections.sort(patients);
-        List<T> formsWithPatientData = getCurrentListData();
-        Collections.sort(formsWithPatientData, alphabaticalComparator);
+        Collections.sort(forms, alphabaticalComparator);
+        setNotifyOnChange(false);
         clear();
-        addAll(formsWithPatientData);
+        addAll(forms);
+        notifyDataSetChanged();
     }
 
     public void sortPatientsByDate() {
@@ -116,7 +117,7 @@ public abstract class SectionedFormsAdapter<T extends FormWithPatientData> exten
         TextView patientIdentifier;
     }
 
-    private List<T> getCurrentListData() {
+    public List<T> getCurrentListData() {
         List<T> formsWithPatientData = new ArrayList<T>();
         for (int x = 0; x < getCount(); x++) {
             formsWithPatientData.add(getItem(x));

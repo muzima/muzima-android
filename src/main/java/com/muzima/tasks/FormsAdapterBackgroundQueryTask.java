@@ -3,6 +3,7 @@ package com.muzima.tasks;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.model.BaseForm;
 
@@ -34,6 +35,10 @@ public abstract class FormsAdapterBackgroundQueryTask<T extends BaseForm> extend
     @Override
     protected void onPostExecute(List<T> forms) {
         changeDataSet(forms);
+        notifyListener();
+    }
+
+    protected void notifyListener() {
         if (adapterWeakReference.get() != null) {
             FormsAdapter formsAdapter = adapterWeakReference.get();
             BackgroundListQueryTaskListener backgroundListQueryTaskListener = formsAdapter.getBackgroundListQueryTaskListener();
