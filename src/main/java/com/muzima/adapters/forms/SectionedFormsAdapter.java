@@ -58,7 +58,11 @@ public abstract class SectionedFormsAdapter<T extends FormWithPatientData> exten
 
     @Override
     public Object[] getSections() {
-        return patients.toArray();
+        String[] familyNames = new String[patients.size()];
+        for(int i = 0; i < patients.size(); i++){
+            familyNames[i] = String.valueOf(patients.get(i).getPatientFamilyName().charAt(0));
+        }
+        return familyNames;
     }
 
     @Override
