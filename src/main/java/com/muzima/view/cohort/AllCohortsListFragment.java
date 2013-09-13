@@ -49,13 +49,13 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         if(listAdapter == null){
             listAdapter = new AllCohortsAdapter(getActivity(), R.layout.item_cohorts_list, cohortController);
         }
         noDataMsg = getActivity().getResources().getString(R.string.no_cohorts_available);
         noDataTip = getActivity().getResources().getString(R.string.no_cohorts_available_tip);
-        return super.onCreateView(inflater, container, savedInstanceState);
+        super.onCreate(savedInstanceState);
     }
 
     @Override

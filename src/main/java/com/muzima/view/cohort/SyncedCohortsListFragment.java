@@ -22,13 +22,13 @@ public class SyncedCohortsListFragment extends CohortListFragment implements All
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         if(listAdapter == null){
             listAdapter = new SyncedCohortsAdapter(getActivity(), R.layout.item_cohorts_list, cohortController);
         }
         noDataMsg = getActivity().getResources().getString(R.string.no_cohorts_synced);
         noDataTip = getActivity().getResources().getString(R.string.no_cohorts_synced_tip);
-        return super.onCreateView(inflater, container, savedInstanceState);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
