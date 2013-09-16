@@ -1,0 +1,43 @@
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/DashboardTableContainer">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_concept"
+            android:textAllCaps="true"
+            android:paddingBottom="3dp"
+            android:textColor="@android:color/white"/>
+
+
+    <LinearLayout
+            style="@style/SummaryItemRow"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp">
+
+        <AutoCompleteTextView
+                android:id="@+id/concept_add_concept"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter concept name ...">
+
+            <requestFocus/>
+        </AutoCompleteTextView>
+
+    </LinearLayout>
+
+    <View
+            style="@style/DividerLine"
+            android:layout_height="2dp"/>
+
+    <ListView
+            android:id="@+id/concept_preference_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
+
+    <View
+            style="@style/DividerLine"
+            android:layout_height="2dp"/>
+</LinearLayout>
