@@ -16,6 +16,10 @@ import com.muzima.view.preferences.SettingsActivity;
 
 public abstract class FormsActivityBase extends MuzimaFragmentActivity {
     private static final String TAG = "FormsActivityBase";
+
+    public static int FORM_VIEW_ACTIVITY_RESULT = 1;
+
+
     protected ViewPager formsPager;
     protected PagerSlidingTabStrip pagerTabsLayout;
     protected MuzimaPagerAdapter formsPagerAdapter;
@@ -37,6 +41,13 @@ public abstract class FormsActivityBase extends MuzimaFragmentActivity {
                 return true;
             default:
                 return false;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == FORM_VIEW_ACTIVITY_RESULT){
+            formsPagerAdapter.reloadData();
         }
     }
 
