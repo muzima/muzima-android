@@ -4,10 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersAdapter;
+import com.emilsjolander.components.stickylistheaders.StickyListHeadersSectionIndexerAdapterWrapper;
 import com.muzima.R;
 import com.muzima.controller.FormController;
 import com.muzima.model.FormWithPatientData;
@@ -22,6 +25,7 @@ public abstract class SectionedFormsAdapter<T extends FormWithPatientData> exten
     private static final String TAG = "SectionedFormsAdapter";
 
     private List<PatientMetaData> patients;
+    private ListView listView;
 
     public SectionedFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
@@ -47,6 +51,10 @@ public abstract class SectionedFormsAdapter<T extends FormWithPatientData> exten
         holder.patientIdentifier.setText(patientMetaData.getPatientIdentifier());
 
         return convertView;
+    }
+
+    public void setListView(ListView listView) {
+        this.listView = listView;
     }
 
     @Override
@@ -99,7 +107,8 @@ public abstract class SectionedFormsAdapter<T extends FormWithPatientData> exten
         setNotifyOnChange(false);
         clear();
         addAll(forms);
-        notifyDataSetChanged();
+        StickyListHeadersSectionIndexerAdapterWrapper adapter = (StickyListHeadersSectionIndexerAdapterWrapper) listView.getAdapter();
+        adapter.notifyDataSetChanged();
     }
 
     public void sortPatientsByDate() {

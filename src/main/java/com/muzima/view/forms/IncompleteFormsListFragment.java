@@ -10,7 +10,7 @@ import com.muzima.adapters.forms.IncompleteFormsAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.model.FormWithData;
 
-public class IncompleteFormsListFragment extends FormsListFragment {
+public class IncompleteFormsListFragment extends FormsFragmentWithSectionedListAdapter {
 
     public static IncompleteFormsListFragment newInstance(FormController formController) {
         IncompleteFormsListFragment f = new IncompleteFormsListFragment();

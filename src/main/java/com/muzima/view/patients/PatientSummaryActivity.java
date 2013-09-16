@@ -50,7 +50,11 @@ public class PatientSummaryActivity extends SherlockActivity {
             Toast.makeText(this, "An error occurred while fetching patient", Toast.LENGTH_SHORT).show();
             finish();
         }
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
         executeBackgroundTask();
     }
 

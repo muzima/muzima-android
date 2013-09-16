@@ -41,9 +41,7 @@ public abstract class MuzimaListFragment extends SherlockFragment implements Ada
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(listAdapter != null){
-            listAdapter.reloadData();
-        }
+        reloadData();
     }
 
     public abstract void synchronizationComplete(Integer[] status);

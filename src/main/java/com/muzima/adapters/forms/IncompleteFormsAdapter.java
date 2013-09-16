@@ -2,9 +2,9 @@ package com.muzima.adapters.forms;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.ListView;
 
 import com.muzima.controller.FormController;
-import com.muzima.model.CompleteFormWithPatientData;
 import com.muzima.model.IncompleteFormWithPatientData;
 import com.muzima.model.collections.IncompleteFormsWithPatientData;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;

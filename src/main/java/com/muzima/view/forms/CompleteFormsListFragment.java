@@ -10,7 +10,7 @@ import com.muzima.adapters.forms.CompleteFormsAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.model.FormWithData;
 
-public class CompleteFormsListFragment extends FormsListFragment {
+public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAdapter {
 
     public static CompleteFormsListFragment newInstance(FormController formController) {
         CompleteFormsListFragment f = new CompleteFormsListFragment();
