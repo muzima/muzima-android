@@ -5,17 +5,22 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
+import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ObservationsByDateAdapter extends ObservationsAdapter {
     private static final String TAG = "ObservationsByDateAdapter";
     private static final String SEARCH = "search";
 
-    public ObservationsByDateAdapter(FragmentActivity activity, int itemCohortsList, ObservationController observationController) {
-        super(activity, itemCohortsList, observationController);
+    public ObservationsByDateAdapter(FragmentActivity activity, int itemCohortsList,
+                                     ConceptController conceptController, ObservationController observationController) {
+        super(activity, itemCohortsList, conceptController, observationController);
     }
 
     @Override
@@ -34,9 +39,22 @@ public class ObservationsByDateAdapter extends ObservationsAdapter {
             if(isSearch(params)){
                 Log.d(TAG, "searching observations for query string: " + params[0]);
                 try {
-                    return observationController.searchObservations(params[0], patientUuid);
-                }  catch (ObservationController.LoadObservationException e) {
+                    Map<String, Concept> conceptMap = new HashMap<String, Concept>();
+                    List<Observation> observations = observationController.searchObservations(params[0], patientUuid);
+                    for (Observation observation : observations) {
+                        Concept concept = observation.getConcept();
+                        Concept fullConcept = conceptMap.get(concept.getUuid());
+                        if (fullConcept == null) {
+                            fullConcept = conceptController.getConceptByUuid(concept.getUuid());
+                            conceptMap.put(fullConcept.getUuid(), fullConcept);
+                        }
+                        observation.setConcept(fullConcept);
+                    }
+                    return observations;
+                } catch (ObservationController.LoadObservationException e) {
                     Log.w(TAG, "Exception occurred while searching observations for " + params[0] + " search string. " + e);
+                } catch (ConceptController.ConceptFetchException e) {
+                    Log.w(TAG, "Exception occurred while searching concept!", e);
                 }
             }
 
@@ -44,9 +62,21 @@ public class ObservationsByDateAdapter extends ObservationsAdapter {
 
             try {
                 observations = observationController.getObservationsByDate(params[0]);
+                Map<String, Concept> conceptMap = new HashMap<String, Concept>();
+                for (Observation observation : observations) {
+                    Concept concept = observation.getConcept();
+                    Concept fullConcept = conceptMap.get(concept.getUuid());
+                    if (fullConcept == null) {
+                        fullConcept = conceptController.getConceptByUuid(concept.getUuid());
+                        conceptMap.put(fullConcept.getUuid(), fullConcept);
+                    }
+                    observation.setConcept(fullConcept);
+                }
                 Log.i(TAG, "#Observations: " + observations.size());
             } catch (ObservationController.LoadObservationException e) {
                 Log.e(TAG, "Exception occurred while fetching observations " + e);
+            } catch (ConceptController.ConceptFetchException e) {
+                Log.w(TAG, "Exception occurred while searching concept!", e);
             }
             return observations;
         }

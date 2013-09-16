@@ -115,7 +115,7 @@
         <dependency>
             <groupId>com.muzima</groupId>
             <artifactId>muzima-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.0-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.inject</groupId>
@@ -163,29 +163,5 @@
 			</plugin>
 		</plugins>
 	</build>
-    <profiles>
-        <profile>
-            <id>give_sdk</id>
-            <properties>
-                <android.sdk.path>/Users/twer/bin/adt-bundle-mac-x86_64-20130729/sdk</android.sdk.path>
-            </properties>
-        </profile>
-        <profile>
-            <id>zabil_sdk</id>
-            <properties>
-                <android.sdk.path>/Users/zabil/projects/adt-bundle-mac-x86_64-20130729/sdk</android.sdk.path>
-            </properties>
-        </profile>
-        <profile>
-            <id>javascript</id>
-            <dependencies>
-                <dependency>
-                    <groupId>com.muzima</groupId>
-                    <artifactId>android-backward-compatibility</artifactId>
-                    <version>0.1</version>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
 
 </project>

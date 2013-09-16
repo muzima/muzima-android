@@ -1,5 +1,7 @@
 package com.muzima.tasks.cohort;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.muzima.MuzimaApplication;
@@ -10,9 +12,15 @@ import com.muzima.controller.CohortController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.tasks.DownloadMuzimaTask;
+import com.muzima.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import static com.muzima.utils.Constants.COHORT_PREFIX_PREF;
+import static com.muzima.utils.Constants.COHORT_PREFIX_PREF_KEY;
 
 public class DownloadCohortDataTask extends DownloadMuzimaTask {
     private static final String TAG = "DownloadCohortDataTask";
@@ -66,7 +74,7 @@ public class DownloadCohortDataTask extends DownloadMuzimaTask {
             List<String> patientUuids = getPatientUuids(cohortDataList);
 
             long startDownloadObservations = System.currentTimeMillis();
-            List<Observation> allObservations = downloadAllObservations(observationController, patientUuids);
+            List<Observation> allObservations = downloadAllObservations(muzimaApplicationContext, patientUuids);
             long endDownloadObservations = System.currentTimeMillis();
             Log.i(TAG, "Observations download successful with " + allObservations.size() + " observations");
 
@@ -98,15 +106,24 @@ public class DownloadCohortDataTask extends DownloadMuzimaTask {
         return result;
     }
 
-    private ArrayList<Observation> downloadAllObservations(ObservationController observationController, List<String> patientUuids) throws ObservationController.DownloadObservationException {
+    private List<String> getConceptUuids(MuzimaApplication muzimaApplicationContext) {
+        SharedPreferences cohortSharedPref = muzimaApplicationContext.getSharedPreferences(Constants.CONCEPT_PREF, Context.MODE_PRIVATE);
+        Set<String> prefixes = cohortSharedPref.getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>());
+        return new ArrayList<String>(prefixes);
+    }
+
+    private ArrayList<Observation> downloadAllObservations(MuzimaApplication muzimaApplicationContext, List<String> patientUuids) throws ObservationController.DownloadObservationException {
         ArrayList<Observation> allObservations = new ArrayList<Observation>();
+        ObservationController observationController = muzimaApplicationContext.getObservationController();
         int index = 0;
         for (String patientUuid : patientUuids) {
-            try {
-                List<Observation> observations = observationController.downloadObservations(patientUuid);
-                allObservations.addAll(observations);
-            } catch (ObservationController.DownloadObservationException e) {
-                Log.d(TAG, "Exception thrown while download observations for " + patientUuid);
+            for (String conceptUuid : getConceptUuids(muzimaApplicationContext)) {
+                try {
+                    List<Observation> observations = observationController.downloadObservations(patientUuid, conceptUuid);
+                    allObservations.addAll(observations);
+                } catch (ObservationController.DownloadObservationException e) {
+                    Log.d(TAG, "Exception thrown while download observations for " + patientUuid);
+                }
             }
             index++;
             if (index % 5 == 0) {

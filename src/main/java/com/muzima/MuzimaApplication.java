@@ -5,7 +5,9 @@ import android.app.Application;
 
 import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
+import com.muzima.api.service.ConceptService;
 import com.muzima.controller.CohortController;
+import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
@@ -26,6 +28,7 @@ public class MuzimaApplication extends Application{
     private FormController formController;
     private CohortController cohortController;
     private PatientController patientConroller;
+    private ConceptController conceptController;
     private ObservationController observationController;
 
     static {
@@ -50,6 +53,17 @@ public class MuzimaApplication extends Application{
 
     public Context getMuzimaContext(){
         return muzimaContext;
+    }
+
+    public ConceptController getConceptController() {
+        if (conceptController == null) {
+            try {
+                conceptController = new ConceptController(muzimaContext.getService(ConceptService.class));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return conceptController;
     }
 
     public FormController getFormController(){

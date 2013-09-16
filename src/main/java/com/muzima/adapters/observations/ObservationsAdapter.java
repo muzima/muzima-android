@@ -8,19 +8,27 @@ import android.widget.TextView;
 
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
+import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
+import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.util.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
 import com.muzima.view.patients.PatientSummaryActivity;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 public abstract class  ObservationsAdapter extends ListAdapter<Observation> {
     protected final String patientUuid;
+    protected ConceptController conceptController;
     protected ObservationController observationController;
 
-    public ObservationsAdapter(FragmentActivity context, int textViewResourceId, ObservationController observationController) {
+    public ObservationsAdapter(FragmentActivity context, int textViewResourceId,
+                               ConceptController conceptController, ObservationController observationController) {
         super(context, textViewResourceId);
+        this.conceptController = conceptController;
         this.observationController = observationController;
         patientUuid = context.getIntent().getStringExtra(PatientSummaryActivity.PATIENT_ID);
     }
@@ -52,27 +60,36 @@ public abstract class  ObservationsAdapter extends ListAdapter<Observation> {
         holder.value.setText(getObservationValue(observation));
         holder.value.setTypeface(Fonts.roboto_light(getContext()));
 
-        holder.date.setText(DateUtils.getFormattedDate(observation.getObservationDate()));
+        holder.date.setText(DateUtils.getFormattedDate(observation.getObservationDatetime()));
         holder.value.setTypeface(Fonts.roboto_light(getContext()));
 
         return convertView;
     }
 
     private String getObservationDescription(Observation observation) {
-        return observation.getQuestionName();
+        Concept concept = observation.getConcept();
+        return concept.getName();
     }
 
     private String getObservationValue(Observation observation) {
-        switch (observation.getDataType()){
-            //TODO to add some extra info like unit of measure
-            case Constants.TYPE_NUMERIC:
-                return observation.getValue();
-            case Constants.TYPE_DATE:
-                return observation.getValue();
-            case Constants.TYPE_STRING:
-                return observation.getValue();
+        Concept concept = observation.getConcept();
+        if (concept.isCoded()) {
+            Concept valueCoded = observation.getValueCoded();
+            return valueCoded.getName();
+        } else if (concept.isNumeric()) {
+            NumberFormat numberFormat = NumberFormat.getNumberInstance();
+            DecimalFormat decimalFormat = (DecimalFormat) numberFormat;
+            if (!concept.isPrecise()) {
+                decimalFormat.applyPattern("#");
+            } else {
+                decimalFormat.applyPattern("#.###");
+            }
+            return decimalFormat.format(observation.getValueNumeric());
+        } else if (concept.isDatetime()) {
+            return DateUtils.getFormattedDateTime(observation.getValueDatetime());
+        } else {
+            return observation.getValueText();
         }
-        return observation.getValue();
     }
 
     protected static class ViewHolder {

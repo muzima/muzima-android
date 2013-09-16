@@ -1,9 +1,8 @@
 package com.muzima.controller;
 
 import com.muzima.api.model.Observation;
+import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.ObservationService;
-
-import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class ObservationController {
             Collections.sort(observationsByPatient, new Comparator<Observation>() {
                 @Override
                 public int compare(Observation observation, Observation observation2) {
-                    return ORDER_DESCENDING * observation.getObservationDate().compareTo(observation2.getObservationDate());
+                    return ORDER_DESCENDING * observation.getObservationDatetime().compareTo(observation2.getObservationDatetime());
                 }
             });
             return observationsByPatient;
@@ -47,16 +46,9 @@ public class ObservationController {
         }
     }
 
-    public List<Observation> downloadObservations(String patientUuid) throws DownloadObservationException {
+    public List<Observation> downloadObservations(String patientUuid, String conceptUuid) throws DownloadObservationException {
         try {
-            //TODO hardcoded conceptUuid for now
-            String[] concepts = {"be4f6913-1691-11df-97a5-7038c432aabf", "be41f326-1691-11df-97a5-7038c432aabf"};
-            ArrayList<Observation> observations = new ArrayList<Observation>();
-            for (String concept : concepts) {
-                observations.addAll(observationService.downloadObservationsByPatientAndConcept(patientUuid,concept));
-            }
-
-            return observations;
+            return observationService.downloadObservationsByPatientAndConcept(patientUuid, conceptUuid);
         } catch (IOException e) {
             throw new DownloadObservationException(e);
         }
@@ -64,10 +56,8 @@ public class ObservationController {
 
     public List<Observation> searchObservations(String term, String patientUuid) throws LoadObservationException {
         try {
-            return observationService.searchObservations(patientUuid,term);
+            return observationService.searchObservations(patientUuid, term);
         } catch (IOException e) {
-            throw new LoadObservationException(e);
-        } catch (ParseException e) {
             throw new LoadObservationException(e);
         }
     }

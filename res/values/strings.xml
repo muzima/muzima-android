@@ -123,4 +123,9 @@
     <string name="form_add_tag_hint">Add Tags</string>
     <string name="no_form_tags_added">No Form Tags Added</string>
 
+    <string name="title_activity_concept_pref">Concepts</string>
+    <string name="add_concept">Search Concept</string>
+    <string name="concept_add_concept">Enter concept name ...</string>
+    <string name="no_concept_added">No concept added yet.</string>
+
 </resources>

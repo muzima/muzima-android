@@ -9,12 +9,14 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.muzima.R;
+import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.view.MuzimaListFragment;
 
 public abstract class ObservationsListFragment extends MuzimaListFragment{
     private static final String TAG = "ObservationsListFragment";
 
+    protected ConceptController conceptController;
     protected ObservationController observationController;
     protected FrameLayout progressBarContainer;
     protected LinearLayout noDataView;

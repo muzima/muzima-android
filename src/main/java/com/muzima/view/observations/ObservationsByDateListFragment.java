@@ -7,24 +7,27 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsByDateAdapter;
+import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.view.patients.ObservationsListFragment;
 
 public class ObservationsByDateListFragment extends ObservationsListFragment {
 
-    public static ObservationsByDateListFragment newInstance(ObservationController observationController) {
+    public static ObservationsByDateListFragment newInstance(ConceptController conceptController, ObservationController observationController) {
         ObservationsByDateListFragment f = new ObservationsByDateListFragment();
         f.observationController = observationController;
+        f.conceptController = conceptController;
         return f;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         if(listAdapter == null){
-            listAdapter = new ObservationsByDateAdapter(getActivity(), R.layout.item_observation_list, observationController);
+            listAdapter = new ObservationsByDateAdapter(
+                    getActivity(), R.layout.item_observation_list, conceptController, observationController);
         }
         noDataMsg = getActivity().getResources().getString(R.string.no_observations_available);
-        return super.onCreateView(inflater, container, savedInstanceState);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
