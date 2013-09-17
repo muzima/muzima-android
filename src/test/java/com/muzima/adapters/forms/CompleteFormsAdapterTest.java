@@ -1,5 +1,9 @@
 package com.muzima.adapters.forms;
 
+import android.widget.ListView;
+
+import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
+import com.emilsjolander.components.stickylistheaders.StickyListHeadersSectionIndexerAdapterWrapper;
 import com.muzima.controller.FormController;
 import com.muzima.model.CompleteFormWithPatientData;
 import com.muzima.model.PatientMetaData;
@@ -11,13 +15,17 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
+import org.robolectric.RobolectricContext;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static com.muzima.adapters.forms.CompleteFormsAdapter.BackgroundQueryTask;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -31,6 +39,9 @@ public class CompleteFormsAdapterTest {
     public void setUp() throws Exception {
         formController = mock(FormController.class);
         formsAdapter = new CompleteFormsAdapter(null, 0, formController);
+
+        Robolectric.getBackgroundScheduler().pause();
+        Robolectric.getUiThreadScheduler().pause();
     }
 
     @Test
@@ -41,7 +52,9 @@ public class CompleteFormsAdapterTest {
 
         when(formController.getAllCompleteForms()).thenReturn(completeFormsWithPatientData);
 
-        assertThat((CompleteFormsWithPatientData)(queryTask.execute().get()), is(completeFormsWithPatientData));
+        queryTask.execute();
+        Robolectric.runBackgroundTasks();
+        assertEquals(completeFormsWithPatientData, queryTask.get(100, TimeUnit.MILLISECONDS));
     }
 
     @Test
@@ -67,8 +80,13 @@ public class CompleteFormsAdapterTest {
             add(patient2MetaData);
         }};
 
-        queryTask.execute();
+        StickyListHeadersListView listView = new StickyListHeadersListView(Robolectric.application);
+        listView.setAdapter(formsAdapter);
+        formsAdapter.setListView(listView);
 
+        queryTask.execute();
+        Robolectric.runBackgroundTasks();
+        Robolectric.runUiThreadTasks();
         assertThat(formsAdapter.getPatients(), is(patients));
     }
 
@@ -81,6 +99,10 @@ public class CompleteFormsAdapterTest {
             add(patient2MetaData);
             add(patient1MetaData);
         }});
+
+        StickyListHeadersListView listView = new StickyListHeadersListView(Robolectric.application);
+        listView.setAdapter(completeFormsAdapter);
+        completeFormsAdapter.setListView(listView);
 
         completeFormsAdapter.sortFormsByPatientName(completeFormsAdapter.getCurrentListData());
 
