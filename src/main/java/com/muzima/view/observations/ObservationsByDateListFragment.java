@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import com.muzima.R;
-import com.muzima.adapters.observations.ObservationsByDateAdapter;
+import com.muzima.adapters.observations.ObservationsByConceptAdapter;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.view.patients.ObservationsListFragment;
@@ -23,7 +23,7 @@ public class ObservationsByDateListFragment extends ObservationsListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if(listAdapter == null){
-            listAdapter = new ObservationsByDateAdapter(
+            listAdapter = new ObservationsByConceptAdapter(
                     getActivity(), R.layout.item_observation_list, conceptController, observationController);
         }
         noDataMsg = getActivity().getResources().getString(R.string.no_observations_available);
@@ -38,7 +38,7 @@ public class ObservationsByDateListFragment extends ObservationsListFragment {
 
     @Override
     public void onSearchTextChange(String query) {
-        ((ObservationsByDateAdapter)listAdapter).search(query);
+        ((ObservationsByConceptAdapter)listAdapter).search(query);
     }
 
     @Override

@@ -102,7 +102,7 @@ public class MuzimaApplication extends Application{
     public ObservationController getObservationController() {
         if(observationController == null){
             try {
-                observationController = new ObservationController(muzimaContext.getObservationService());
+                observationController = new ObservationController(muzimaContext.getObservationService(), muzimaContext.getService(ConceptService.class));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

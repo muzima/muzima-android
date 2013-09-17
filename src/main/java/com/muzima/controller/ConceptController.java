@@ -21,9 +21,6 @@ import com.muzima.api.service.ConceptService;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * TODO: Write brief description about the class here.
- */
 public class ConceptController {
     private ConceptService conceptService;
 

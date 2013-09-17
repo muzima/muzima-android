@@ -75,15 +75,6 @@
                     android:value="com.muzima.view.preferences.SettingsActivity"/>
         </activity>
         <activity
-                android:name=".view.preferences.FormTagActivity"
-                android:theme="@style/PreferencesTheme"
-                android:label="@string/title_activity_form_tag"
-                android:parentActivityName="com.muzima.view.preferences.SettingsActivity">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.muzima.view.preferences.SettingsActivity"/>
-        </activity>
-        <activity
                 android:name="com.muzima.view.HelpActivity"
                 android:label="@string/title_activity_help"
                 android:parentActivityName="com.muzima.view.MainActivity">

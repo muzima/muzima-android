@@ -1,0 +1,13 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/ObservationByConceptElement">
+
+    <TextView
+            android:id="@+id/observation_value"
+            style="@style/ObservationValue">
+    </TextView>
+
+    <TextView
+            android:id="@+id/observation_date"
+            style="@style/ObservationDate">
+    </TextView>
+</LinearLayout>

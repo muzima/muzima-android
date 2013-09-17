@@ -1,22 +1,31 @@
 package com.muzima.controller;
 
+import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.ObservationService;
+import com.muzima.model.observation.ConceptWithObservations;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
+
+import static java.util.Arrays.asList;
 
 public class ObservationController {
 
     private ObservationService observationService;
+    private ConceptService conceptService;
     private static final int ORDER_DESCENDING = -1;
 
-    public ObservationController(ObservationService observationService) {
+    public ObservationController(ObservationService observationService, ConceptService conceptService) {
         this.observationService = observationService;
+        this.conceptService = conceptService;
     }
 
     public List<Observation> getObservationsByDate(String patientUuid) throws LoadObservationException {
@@ -29,6 +38,28 @@ public class ObservationController {
                 }
             });
             return observationsByPatient;
+        } catch (IOException e) {
+            throw new LoadObservationException(e);
+        }
+    }
+
+    public List<ConceptWithObservations> getConceptWithObservations(String patientUuid) throws LoadObservationException {
+        try {
+            List<Observation> observationsByPatient = observationService.getObservationsByPatient(patientUuid);
+
+            Map<String, ConceptWithObservations> conceptWithObservationsMap = new HashMap<String, ConceptWithObservations>();
+            for (Observation observation : observationsByPatient) {
+                Concept concept = observation.getConcept();
+                ConceptWithObservations conceptWithObservations = conceptWithObservationsMap.get(concept.getUuid());
+                if (conceptWithObservations == null) {
+                    conceptWithObservations = new ConceptWithObservations();
+                    conceptWithObservations.setConcept(conceptService.getConceptByUuid(concept.getUuid()));
+                    conceptWithObservationsMap.put(concept.getUuid(), conceptWithObservations);
+                }
+                conceptWithObservations.addObservation(observation);
+            }
+
+            return new ArrayList<ConceptWithObservations>(conceptWithObservationsMap.values());
         } catch (IOException e) {
             throw new LoadObservationException(e);
         }
