@@ -82,15 +82,14 @@ public class FormWebViewActivity extends MuzimaFragmentActivity {
             formData = formController.getFormDataByUuid(formDataUuid);
         } else {
             String patientUuid = intent.getStringExtra(PATIENT_UUID);
-            formData = createNewFormData(patientUuid, form.getUuid(), formTemplate.getModelJson());
+            formData = createNewFormData(patientUuid, formId);
         }
     }
 
-    private FormData createNewFormData(final String patientUuid, final String formUuid, final String modelJson) throws FormController.FormDataSaveException {
+    private FormData createNewFormData(final String patientUuid, final String formUuid) throws FormController.FormDataSaveException {
         FormData formData = new FormData() {{
             setUuid(UUID.randomUUID().toString());
             setPatientUuid(patientUuid);
-            setPayload(modelJson);
             setUserUuid("userUuid");
             setStatus(STATUS_INCOMPLETE);
             setTemplateUuid(formUuid);
@@ -133,7 +132,7 @@ public class FormWebViewActivity extends MuzimaFragmentActivity {
         webView.addJavascriptInterface(formInstance, FORM_INSTANCE);
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
         webView.addJavascriptInterface(new FormDataStore(this, formController, formData), REPOSITORY);
-        webView.addJavascriptInterface(new ZiggyFileLoader("www/ziggy", "www/form", getApplicationContext().getAssets(), formInstance.getModelJson()), ZIGGY_FILE_LOADER);
+        webView.addJavascriptInterface(new ZiggyFileLoader("www/ziggy", getApplicationContext().getAssets(), formInstance.getModelJson()), ZIGGY_FILE_LOADER);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.loadUrl("file:///android_asset/www/enketo/template.html");
     }

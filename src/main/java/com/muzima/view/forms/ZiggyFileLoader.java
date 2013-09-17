@@ -11,13 +11,11 @@ import java.net.URISyntaxException;
 
 public class ZiggyFileLoader {
     private String ziggyDirectoryPath;
-    private String formDirectoryPath;
     private AssetManager assetManager;
     private String formModelJson;
 
-    public ZiggyFileLoader(String ziggyDirectoryPath, String formDirectoryPath, AssetManager assetManager, String modelJson) {
+    public ZiggyFileLoader(String ziggyDirectoryPath, AssetManager assetManager, String modelJson) {
         this.ziggyDirectoryPath = ziggyDirectoryPath;
-        this.formDirectoryPath = formDirectoryPath;
         this.assetManager = assetManager;
         formModelJson = modelJson;
     }

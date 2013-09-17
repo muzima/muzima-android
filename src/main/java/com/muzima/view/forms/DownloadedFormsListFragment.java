@@ -1,15 +1,11 @@
 package com.muzima.view.forms;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import com.muzima.R;
 import com.muzima.adapters.forms.DownloadedFormsAdapter;
 import com.muzima.controller.FormController;
-import com.muzima.model.DownloadedForm;
 
 public class DownloadedFormsListFragment extends FormsListFragment implements AllAvailableFormsListFragment.OnTemplateDownloadComplete{
 
@@ -29,11 +25,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        DownloadedForm form = (DownloadedForm) listAdapter.getItem(position);
-        Intent intent = new Intent(getActivity(), FormWebViewActivity.class);
-        intent.putExtra(FormWebViewActivity.FORM_UUID, form.getFormUuid());
-        intent.putExtra(FormWebViewActivity.FORM_DATA_UUID, "patientId");
-        startActivity(intent);
+        //TODO: Launch patient selection view
     }
 
     @Override

@@ -245,7 +245,12 @@ enketo.FormModelMapper = function (formDataRepository, queryBuilder, idFactory) 
     return {
         mapToFormModel: function (entitiesDefinition, formDefinition, params) {
             //TODO: Handle errors, savedFormInstance could be null!
-            var savedFormInstance = JSON.parse(formDataRepository.getFormInstanceByFormTypeAndId(params.id, params.formName));
+            var savedFormInstance;
+            var formInstance = formDataRepository.getFormInstanceByFormTypeAndId(params.id, params.formName);
+            if(formInstance) {
+                savedFormInstance = JSON.parse(formInstance);
+            }
+
             if (enketo.hasValue(savedFormInstance)) {
                 return savedFormInstance;
             }

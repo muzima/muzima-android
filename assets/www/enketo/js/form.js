@@ -668,7 +668,7 @@ function Form (formSelector, dataStr, dataStrToEdit){
         instanceID = this.node('*>meta>instanceID');
         if (instanceID.get().length !== 1){
             error = 'InstanceID node in default instance error (found '+instanceID.get().length+' instanceID nodes)';
-            console.error(error);
+            console.debug(error);
             loadErrors.push(error);
             return;
         }

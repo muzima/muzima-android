@@ -13,7 +13,7 @@ public class ZiggyFileLoaderTest {
 
     @Before
     public void setUp() {
-        json = new ZiggyFileLoader(null, null, null, "json");
+        json = new ZiggyFileLoader(null, null, "json");
     }
 
     @Test
