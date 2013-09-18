@@ -16,7 +16,10 @@ public class Constants {
         public static final String CREDENTIALS = "credentials";
         public static final String SYNC_STATUS = "sync_status";
         public static final String DOWNLOAD_COUNT = "donwload_count";
+        public static final String FROM_IDS = "formIds";
+
         public static final int SYNC_FORMS = 0;
+        public static final int SYNC_TEMPLATES = 1;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;

@@ -4,25 +4,24 @@ import android.app.IntentService;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
 import com.muzima.BroadcastListenerActivity;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.api.model.Form;
-import com.muzima.controller.FormController;
-import com.muzima.utils.AuthenticationManager;
 import com.muzima.utils.Constants;
+import com.muzima.view.forms.AllAvailableFormsListFragment;
 
-import java.util.List;
+import java.util.Date;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.CREDENTIALS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.FROM_IDS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_FORMS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TEMPLATES;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
 
 public class DataSyncService extends IntentService {
 
@@ -31,6 +30,7 @@ public class DataSyncService extends IntentService {
     private final String notificationServiceRunning = "Muzima Sync Service Running";
     private final String notificationServiceFinished = "Muzima Sync Service Finished";
     private String notificationMsg;
+    private DownloadService downloadService;
 
     public DataSyncService() {
         super("DataSyncService");
@@ -39,6 +39,7 @@ public class DataSyncService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
+        downloadService = new DownloadService(((MuzimaApplication) getApplication()));
         updateNotificationMsg("Sync service started");
     }
 
@@ -51,21 +52,27 @@ public class DataSyncService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         int syncType = intent.getIntExtra(SYNC_TYPE, -1);
         Intent broadcastIntent = new Intent();
+        String[] credentials = intent.getStringArrayExtra(CREDENTIALS);
         broadcastIntent.setAction(BroadcastListenerActivity.MESSAGE_SENT_ACTION);
         broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, syncType);
+
         switch (syncType) {
             case SYNC_FORMS:
                 updateNotificationMsg("Downloading Forms Metadata");
-                int authenticationStatus = authenticate(intent);
-                if (authenticationStatus != SyncStatusConstants.AUTHENTICATION_SUCCESS) {
-                    broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_STATUS, authenticationStatus);
-                } else {
-                    Integer[] result = downloadForms();
-                    broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_STATUS, result[0]);
-                    if(result[0] == SUCCESS){
-                        broadcastIntent.putExtra(Constants.DataSyncServiceConstants.DOWNLOAD_COUNT, result[1]);
-                        updateNotificationMsg("Downloaded " + result[1] + " forms");
-                    }
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    int[] result = downloadService.downloadForms();
+                    String msg = "Downloaded " + result[1] + " forms";
+                    prepareBroadcastMsg(broadcastIntent, result, msg);
+                    saveSyncTime(result);
+                }
+                break;
+            case SYNC_TEMPLATES:
+                String[] formIds = intent.getStringArrayExtra(FROM_IDS);
+                updateNotificationMsg("Downloading Forms Template for " + formIds.length + " forms");
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    int[] result = downloadService.downloadFormTemplates(formIds);
+                    String msg = "Downloaded " + result[1] + " form templates";
+                    prepareBroadcastMsg(broadcastIntent, result, msg);
                 }
                 break;
             default:
@@ -74,9 +81,31 @@ public class DataSyncService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
 
-    private int authenticate(Intent intent) {
-        com.muzima.api.context.Context muzimaContext = ((MuzimaApplication) getApplication()).getMuzimaContext();
-        return AuthenticationManager.authenticate(intent.getStringArrayExtra(CREDENTIALS), muzimaContext);
+    private void prepareBroadcastMsg(Intent broadcastIntent, int[] result, String msg) {
+        broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_STATUS, result[0]);
+        if (result[0] == SyncStatusConstants.SUCCESS) {
+            broadcastIntent.putExtra(Constants.DataSyncServiceConstants.DOWNLOAD_COUNT, result[1]);
+            updateNotificationMsg(msg);
+        }
+    }
+
+    private void saveSyncTime(int[] result) {
+        if (result[0] == SyncStatusConstants.SUCCESS) {
+            SharedPreferences pref = getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            Date date = new Date();
+            editor.putLong(AllAvailableFormsListFragment.FORMS_METADATA_LAST_SYNCED_TIME, date.getTime());
+            editor.commit();
+        }
+    }
+
+    private boolean authenticationSuccessful(String[] credentials, Intent broadcastIntent) {
+        int authenticationStatus = downloadService.authenticate(credentials);
+        if (authenticationStatus != SyncStatusConstants.AUTHENTICATION_SUCCESS) {
+            broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_STATUS, authenticationStatus);
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -96,38 +125,6 @@ public class DataSyncService extends IntentService {
         mNotificationManager.notify(MUZIMA_NOTIFICATION, mBuilder.getNotification());
     }
 
-    private Integer[] downloadForms() {
-        Integer[] result = new Integer[2];
-
-        FormController formController = ((MuzimaApplication) getApplication()).getFormController();
-
-        try {
-            List<Form> forms;
-            forms = formController.downloadAllForms();
-            Log.i(TAG, "Form download successful");
-            formController.deleteAllForms();
-            Log.i(TAG, "Old forms are deleted");
-            formController.saveAllForms(forms);
-            Log.i(TAG, "New forms are saved");
-
-            result[0] = SyncStatusConstants.SUCCESS;
-            result[1] = forms.size();
-
-        } catch (FormController.FormFetchException e) {
-            Log.e(TAG, "Exception when trying to download forms", e);
-            result[0] = DOWNLOAD_ERROR;
-            return result;
-        } catch (FormController.FormSaveException e) {
-            Log.e(TAG, "Exception when trying to save forms", e);
-            result[0] = SAVE_ERROR;
-            return result;
-        } catch (FormController.FormDeleteException e) {
-            Log.e(TAG, "Exception occurred while deleting existing forms", e);
-            result[0] = DELETE_ERROR;
-            return result;
-        }
-        return result;
-    }
 
     private void updateNotificationMsg(String msg) {
         notificationMsg = msg;

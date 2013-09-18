@@ -45,7 +45,6 @@ public abstract class MuzimaListFragment extends SherlockFragment implements Ada
     }
 
     public abstract void synchronizationComplete(Integer[] status);
-    public abstract void synchronizationComplete();
 
     public void synchronizationStarted(){
     }

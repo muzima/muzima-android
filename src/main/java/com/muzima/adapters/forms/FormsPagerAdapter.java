@@ -18,12 +18,16 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements TagsListAda
         super(context, fm);
     }
 
-    public void onDownloadStart(){
-        pagers[TAB_All].fragment.synchronizationStarted();
+    public void onFormMetadataDownloadStart(){
+        ((AllAvailableFormsListFragment)pagers[TAB_All].fragment).onFormMetaDataDownloadStart();
     }
 
-    public void onDownloadFinish(){
-        pagers[TAB_All].fragment.synchronizationComplete();
+    public void onFormMetadataDownloadFinish(){
+        ((AllAvailableFormsListFragment)pagers[TAB_All].fragment).onFormMetaDataDownloadFinish();
+    }
+
+    public void onFormTemplateDownloadFinish() {
+        ((AllAvailableFormsListFragment)pagers[TAB_All].fragment).onFormTemplateDownloadFinish();
     }
 
     @Override

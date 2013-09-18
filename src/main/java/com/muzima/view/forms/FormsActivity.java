@@ -37,6 +37,7 @@ import java.util.Set;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.CREDENTIALS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_FORMS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_STATUS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TEMPLATES;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
@@ -134,7 +135,13 @@ public class FormsActivity extends FormsActivityBase {
             hideProgressbar();
             syncInProgress = false;
             if(syncStatus == SUCCESS){
-                ((FormsPagerAdapter)formsPagerAdapter).onDownloadFinish();
+                tagsListAdapter.reloadData();
+                ((FormsPagerAdapter)formsPagerAdapter).onFormMetadataDownloadFinish();
+            }
+        }else if(syncType == SYNC_TEMPLATES){
+            hideProgressbar();
+            if(syncStatus == SUCCESS){
+                ((FormsPagerAdapter)formsPagerAdapter).onFormTemplateDownloadFinish();
             }
         }
     }
@@ -157,8 +164,6 @@ public class FormsActivity extends FormsActivityBase {
                     return true;
                 }
                 syncAllFormsInBackgroundService();
-                ((FormsPagerAdapter) formsPagerAdapter).onDownloadStart();
-                showProgressBar();
                 return true;
             case R.id.menu_client_add:
                 intent = new Intent(this, RegisterClientActivity.class);
@@ -184,11 +189,13 @@ public class FormsActivity extends FormsActivityBase {
         intent.putExtra(SYNC_TYPE, SYNC_FORMS);
         intent.putExtra(CREDENTIALS, getCredentials());
         syncInProgress = true;
+        ((FormsPagerAdapter) formsPagerAdapter).onFormMetadataDownloadStart();
+        showProgressBar();
         startService(intent);
     }
 
     private String[] getCredentials() {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String usernameKey = getResources().getString(R.string.preference_username);
         String passwordKey = getResources().getString(R.string.preference_password);
         String serverKey = getResources().getString(R.string.preference_server);

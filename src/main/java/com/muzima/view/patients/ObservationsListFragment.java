@@ -49,9 +49,5 @@ public abstract class ObservationsListFragment extends MuzimaListFragment{
     public void synchronizationComplete(Integer[] status) {
     }
 
-    @Override
-    public void synchronizationComplete() {
-    }
-
     public abstract void onSearchTextChange(String query);
 }

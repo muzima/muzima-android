@@ -49,10 +49,6 @@ public abstract class CohortListFragment extends MuzimaListFragment implements L
     }
 
     @Override
-    public void synchronizationComplete() {
-    }
-
-    @Override
     public void synchronizationComplete(Integer[] status) {
         Integer downloadStatus = status[0];
         String msg = "Download Complete with status " + downloadStatus;

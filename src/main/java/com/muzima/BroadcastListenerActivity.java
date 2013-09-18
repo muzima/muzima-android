@@ -13,6 +13,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.DOWNLOAD_COUNT;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_FORMS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_STATUS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TEMPLATES;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_ERROR;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.CONNECTION_ERROR;
@@ -74,6 +75,8 @@ public abstract class BroadcastListenerActivity extends SherlockFragmentActivity
             msg = "Downloaded " + downloadCount;
             if(syncType == SYNC_FORMS){
                 msg += " forms";
+            }else if(syncType == SYNC_TEMPLATES){
+                msg += " form templates";
             }
         }
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
