@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Concept;
@@ -87,7 +86,7 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
                 TextView observationValue = (TextView) layout.findViewById(R.id.observation_value);
                 //TODO: Figure out the right type of the observation
                 Observation observation = observations.get(i);
-                observationValue.setText(getValueForObservation(observation));
+                observationValue.setText(observation.getValueAsString());
                 TextView observationDateView = (TextView) layout.findViewById(R.id.observation_date);
                 observationDateView.setText(DateUtils.getFormattedDateTime(observation.getObservationDatetime()));
             }
@@ -98,12 +97,8 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
                 for (int i = observations.size(); i < observationViewHolders.size(); i++) {
                     holdersToRemove.add(observationViewHolders.get(i));
                 }
-               removeObservations(holdersToRemove);
+                removeObservations(holdersToRemove);
             }
-        }
-
-        private CharSequence getValueForObservation(Observation observation) {
-            return "abcd";
         }
 
         private void removeObservations(List<LinearLayout> holdersToRemove) {
