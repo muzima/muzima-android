@@ -4,64 +4,43 @@ import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.ObservationService;
-import com.muzima.model.observation.ConceptWithObservations;
+import com.muzima.model.observation.Concepts;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
-
-import static java.util.Arrays.asList;
 
 public class ObservationController {
 
     private ObservationService observationService;
     private ConceptService conceptService;
-    private static final int ORDER_DESCENDING = -1;
 
     public ObservationController(ObservationService observationService, ConceptService conceptService) {
         this.observationService = observationService;
         this.conceptService = conceptService;
     }
 
-    public List<Observation> getObservationsByDate(String patientUuid) throws LoadObservationException {
+    public Concepts getConceptWithObservations(String patientUuid) throws LoadObservationException {
         try {
-            List<Observation> observationsByPatient = observationService.getObservationsByPatient(patientUuid);
-            Collections.sort(observationsByPatient, new Comparator<Observation>() {
-                @Override
-                public int compare(Observation observation, Observation observation2) {
-                    return ORDER_DESCENDING * observation.getObservationDatetime().compareTo(observation2.getObservationDatetime());
-                }
-            });
-            return observationsByPatient;
+            return groupByConcepts(observationService.getObservationsByPatient(patientUuid));
         } catch (IOException e) {
             throw new LoadObservationException(e);
         }
     }
 
-    public List<ConceptWithObservations> getConceptWithObservations(String patientUuid) throws LoadObservationException {
-        try {
-            List<Observation> observationsByPatient = observationService.getObservationsByPatient(patientUuid);
+    private void inflateConcepts(List<Observation> observationsByPatient) throws IOException {
+        Map<String, Concept> conceptCache = new HashMap<String, Concept>();
 
-            Map<String, ConceptWithObservations> conceptWithObservationsMap = new HashMap<String, ConceptWithObservations>();
-            for (Observation observation : observationsByPatient) {
-                Concept concept = observation.getConcept();
-                ConceptWithObservations conceptWithObservations = conceptWithObservationsMap.get(concept.getUuid());
-                if (conceptWithObservations == null) {
-                    conceptWithObservations = new ConceptWithObservations();
-                    conceptWithObservations.setConcept(conceptService.getConceptByUuid(concept.getUuid()));
-                    conceptWithObservationsMap.put(concept.getUuid(), conceptWithObservations);
-                }
-                conceptWithObservations.addObservation(observation);
+        for (Observation observation : observationsByPatient) {
+            Concept concept = observation.getConcept();
+            String conceptUuid = concept.getUuid();
+            if (!conceptCache.containsKey(conceptUuid)) {
+                Concept conceptByUuid = conceptService.getConceptByUuid(conceptUuid);
+                conceptCache.put(conceptUuid, conceptByUuid);
             }
+            observation.setConcept(conceptCache.get(conceptUuid));
 
-            return new ArrayList<ConceptWithObservations>(conceptWithObservationsMap.values());
-        } catch (IOException e) {
-            throw new LoadObservationException(e);
         }
     }
 
@@ -85,12 +64,17 @@ public class ObservationController {
         }
     }
 
-    public List<Observation> searchObservations(String term, String patientUuid) throws LoadObservationException {
+    public Concepts searchObservations(String term, String patientUuid) throws LoadObservationException {
         try {
-            return observationService.searchObservations(patientUuid, term);
+            return groupByConcepts(observationService.searchObservations(patientUuid, term));
         } catch (IOException e) {
             throw new LoadObservationException(e);
         }
+    }
+
+    private Concepts groupByConcepts(List<Observation> observations) throws IOException {
+        inflateConcepts(observations);
+        return new Concepts(observations);
     }
 
 
