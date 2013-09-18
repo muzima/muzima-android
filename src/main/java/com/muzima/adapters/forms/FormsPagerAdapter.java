@@ -8,7 +8,7 @@ import com.muzima.controller.FormController;
 import com.muzima.listeners.DownloadListener;
 import com.muzima.view.forms.*;
 
-public class FormsPagerAdapter extends MuzimaPagerAdapter implements DownloadListener<Integer[]>, TagsListAdapter.TagsChangedListener {
+public class FormsPagerAdapter extends MuzimaPagerAdapter implements TagsListAdapter.TagsChangedListener {
     public static final int TAB_All = 0;
     public static final int TAB_DOWNLOADED = 1;
     public static final int TAB_INCOMPLETE = 2;
@@ -18,14 +18,12 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements DownloadLis
         super(context, fm);
     }
 
-    @Override
-    public void downloadTaskComplete(Integer[] result) {
-        pagers[TAB_All].fragment.synchronizationComplete(result);
+    public void onDownloadStart(){
+        pagers[TAB_All].fragment.synchronizationStarted();
     }
 
-    @Override
-    public void downloadTaskStart() {
-        pagers[TAB_All].fragment.synchronizationStarted();
+    public void onDownloadFinish(){
+        pagers[TAB_All].fragment.synchronizationComplete();
     }
 
     @Override

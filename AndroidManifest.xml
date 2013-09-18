@@ -173,6 +173,10 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.patients.PatientSummaryActivity"/>
         </activity>
+
+        <service android:name=".service.DataSyncService"
+                 android:exported="false"/>
+
     </application>
 
 </manifest>

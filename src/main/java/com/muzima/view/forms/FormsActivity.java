@@ -1,6 +1,7 @@
 
 package com.muzima.view.forms;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -23,8 +24,7 @@ import com.muzima.adapters.forms.TagsListAdapter;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
 import com.muzima.search.api.util.StringUtil;
-import com.muzima.tasks.DownloadMuzimaTask;
-import com.muzima.tasks.forms.DownloadFormMetadataTask;
+import com.muzima.service.DataSyncService;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.RegisterClientActivity;
@@ -34,8 +34,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static android.os.AsyncTask.Status.PENDING;
-import static android.os.AsyncTask.Status.RUNNING;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.CREDENTIALS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_FORMS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_STATUS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
 import static com.muzima.utils.Constants.FORM_TAG_PREF;
 import static com.muzima.utils.Constants.FORM_TAG_PREF_KEY;
 
@@ -43,7 +47,6 @@ import static com.muzima.utils.Constants.FORM_TAG_PREF_KEY;
 public class FormsActivity extends FormsActivityBase {
     private static final String TAG = "FormsActivity";
 
-    private DownloadMuzimaTask formDownloadTask;
     private ListView tagsDrawerList;
     private TextView tagsNoDataMsg;
     private DrawerLayout mainLayout;
@@ -52,6 +55,7 @@ public class FormsActivity extends FormsActivityBase {
     private MenuItem menubarLoadButton;
     private FormController formController;
     private MenuItem tagsButton;
+    private boolean syncInProgress;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,9 +89,6 @@ public class FormsActivity extends FormsActivityBase {
 
     @Override
     protected void onDestroy() {
-        if (formDownloadTask != null) {
-            formDownloadTask.cancel(false);
-        }
         if (formController != null) {
             formController.resetTagColors();
         }
@@ -123,6 +124,22 @@ public class FormsActivity extends FormsActivityBase {
     }
 
     @Override
+    protected void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+
+        int syncStatus = intent.getIntExtra(SYNC_STATUS, UNKNOWN_ERROR);
+        int syncType = intent.getIntExtra(SYNC_TYPE, -1);
+
+        if(syncType == SYNC_FORMS){
+            hideProgressbar();
+            syncInProgress = false;
+            if(syncStatus == SUCCESS){
+                ((FormsPagerAdapter)formsPagerAdapter).onDownloadFinish();
+            }
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (super.onOptionsItemSelected(item)) {
             return true;
@@ -135,24 +152,13 @@ public class FormsActivity extends FormsActivityBase {
                     Toast.makeText(this, "No connection found, please connect your device and try again", Toast.LENGTH_SHORT).show();
                     return true;
                 }
-
-                if (formDownloadTask != null &&
-                        (formDownloadTask.getStatus() == PENDING || formDownloadTask.getStatus() == RUNNING)) {
+                if(syncInProgress){
                     Toast.makeText(this, "Already fetching forms, ignored the request", Toast.LENGTH_SHORT).show();
                     return true;
                 }
-                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                formDownloadTask = new DownloadFormMetadataTask((MuzimaApplication) getApplicationContext());
-                formDownloadTask.addDownloadListener((FormsPagerAdapter) formsPagerAdapter);
-                formDownloadTask.addDownloadListener(tagsListAdapter);
-                String usernameKey = getResources().getString(R.string.preference_username);
-                String passwordKey = getResources().getString(R.string.preference_password);
-                String serverKey = getResources().getString(R.string.preference_server);
-                String[] credentials = new String[]{settings.getString(usernameKey, StringUtil.EMPTY),
-                        settings.getString(passwordKey, StringUtil.EMPTY),
-                        settings.getString(serverKey, StringUtil.EMPTY)};
-                menubarLoadButton.setActionView(R.layout.refresh_menuitem);
-                formDownloadTask.execute(credentials);
+                syncAllFormsInBackgroundService();
+                ((FormsPagerAdapter) formsPagerAdapter).onDownloadStart();
+                showProgressBar();
                 return true;
             case R.id.menu_client_add:
                 intent = new Intent(this, RegisterClientActivity.class);
@@ -171,6 +177,25 @@ public class FormsActivity extends FormsActivityBase {
             default:
                 return false;
         }
+    }
+
+    private void syncAllFormsInBackgroundService() {
+        Intent intent = new Intent(this, DataSyncService.class);
+        intent.putExtra(SYNC_TYPE, SYNC_FORMS);
+        intent.putExtra(CREDENTIALS, getCredentials());
+        syncInProgress = true;
+        startService(intent);
+    }
+
+    private String[] getCredentials() {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String usernameKey = getResources().getString(R.string.preference_username);
+        String passwordKey = getResources().getString(R.string.preference_password);
+        String serverKey = getResources().getString(R.string.preference_server);
+        String[] credentials = new String[]{settings.getString(usernameKey, StringUtil.EMPTY),
+                settings.getString(passwordKey, StringUtil.EMPTY),
+                settings.getString(serverKey, StringUtil.EMPTY)};
+        return credentials;
     }
 
     @Override

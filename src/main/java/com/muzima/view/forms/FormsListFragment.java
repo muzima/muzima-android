@@ -53,6 +53,9 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
         listAdapter.reloadData();
     }
 
+    public void synchronizationComplete(){
+    }
+
     @Override
     public void synchronizationComplete(Integer[] status) {
         Integer downloadStatus = status[0];

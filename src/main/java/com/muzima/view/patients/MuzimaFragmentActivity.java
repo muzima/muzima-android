@@ -2,10 +2,11 @@ package com.muzima.view.patients;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
+import com.muzima.BroadcastListenerActivity;
 import com.muzima.R;
 
 //TODO pull the onOptionsItemClick up here
-public class MuzimaFragmentActivity extends SherlockFragmentActivity {
+public class MuzimaFragmentActivity extends BroadcastListenerActivity {
     public MuzimaFragmentActivity() {
     }
 

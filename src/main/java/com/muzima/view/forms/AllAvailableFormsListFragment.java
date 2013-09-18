@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -19,7 +20,6 @@ import com.muzima.adapters.forms.AllAvailableFormsAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.listeners.DownloadListener;
 import com.muzima.search.api.util.StringUtil;
-import com.muzima.tasks.DownloadMuzimaTask;
 import com.muzima.tasks.forms.DownloadFormTemplateTask;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
@@ -31,7 +31,7 @@ import java.util.List;
 import static android.os.AsyncTask.Status.PENDING;
 import static android.os.AsyncTask.Status.RUNNING;
 
-public class AllAvailableFormsListFragment extends FormsListFragment implements DownloadListener<Integer[]>{
+public class AllAvailableFormsListFragment extends FormsListFragment implements DownloadListener<Integer[]> {
     private static final String TAG = "AllAvailableFormsListFragment";
 
     public static final String FORMS_METADATA_LAST_SYNCED_TIME = "formsMetadataSyncedTime";
@@ -70,13 +70,13 @@ public class AllAvailableFormsListFragment extends FormsListFragment implements 
     protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
         View view = inflater.inflate(R.layout.layout_synced_list, container, false);
         syncText = (TextView) view.findViewById(R.id.sync_text);
-        updateSyncText();
+        updateSyncTime();
         return view;
     }
 
     @Override
     public void onDestroy() {
-        if(formTemplateDownloadTask != null){
+        if (formTemplateDownloadTask != null) {
             formTemplateDownloadTask.cancel(false);
         }
         super.onDestroy();
@@ -109,14 +109,9 @@ public class AllAvailableFormsListFragment extends FormsListFragment implements 
     }
 
     @Override
-    public void synchronizationComplete(Integer[] status) {
+    public void synchronizationComplete() {
         newFormsSyncInProgress = false;
-
-        ((FormsActivity)getActivity()).hideProgressbar();
-        if(status[0] == DownloadMuzimaTask.SUCCESS){
-            updateSyncText();
-        }
-        super.synchronizationComplete(status);
+        updateSyncTime();
     }
 
     @Override
@@ -141,7 +136,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment implements 
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.menu_download:
-                    if(newFormsSyncInProgress){
+                    if (newFormsSyncInProgress) {
                         Toast.makeText(getActivity(), "Action not allowed while sync is in progress", Toast.LENGTH_SHORT).show();
                         if (AllAvailableFormsListFragment.this.actionMode != null) {
                             AllAvailableFormsListFragment.this.actionMode.finish();
@@ -149,7 +144,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment implements 
                         break;
                     }
 
-                    if(!NetworkUtils.isConnectedToNetwork(getActivity())){
+                    if (!NetworkUtils.isConnectedToNetwork(getActivity())) {
                         Toast.makeText(getActivity(), "No connection found, please connect your device and try again", Toast.LENGTH_SHORT).show();
                         return true;
                     }
@@ -168,7 +163,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment implements 
                     String[] credentials = new String[]{settings.getString(usernameKey, StringUtil.EMPTY),
                             settings.getString(passwordKey, StringUtil.EMPTY),
                             settings.getString(serverKey, StringUtil.EMPTY)};
-                    ((FormsActivity)getActivity()).showProgressBar();
+                    ((FormsActivity) getActivity()).showProgressBar();
                     formTemplateDownloadTask.execute(credentials, getSelectedFormsArray());
                     if (AllAvailableFormsListFragment.this.actionMode != null) {
                         AllAvailableFormsListFragment.this.actionMode.finish();
@@ -199,11 +194,11 @@ public class AllAvailableFormsListFragment extends FormsListFragment implements 
         return selectedForms.toArray(selectedFormUuids);
     }
 
-    private void updateSyncText() {
+    private void updateSyncTime() {
         SharedPreferences pref = getActivity().getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
         long lastSyncedTime = pref.getLong(FORMS_METADATA_LAST_SYNCED_TIME, NOT_SYNCED_TIME);
         String lastSyncedMsg = "Not synced yet";
-        if(lastSyncedTime != NOT_SYNCED_TIME){
+        if (lastSyncedTime != NOT_SYNCED_TIME) {
             lastSyncedMsg = "Last synced on: " + DateUtils.getFormattedDateTime(new Date(lastSyncedTime));
         }
         syncText.setText(lastSyncedMsg);
