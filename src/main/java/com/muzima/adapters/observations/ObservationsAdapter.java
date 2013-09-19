@@ -45,8 +45,6 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
             holder = new ViewHolder();
             holder.headerText = (TextView) convertView
                     .findViewById(R.id.observation_header);
-            holder.observationScroller = (HorizontalScrollView) convertView
-                    .findViewById(R.id.observation_scroller);
             holder.observationLayout = (LinearLayout) convertView
                     .findViewById(R.id.observation_layout);
             convertView.setTag(holder);
@@ -68,7 +66,6 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
 
     protected class ViewHolder {
         TextView headerText;
-        HorizontalScrollView observationScroller;
         LinearLayout observationLayout;
         List<LinearLayout> observationViewHolders;
 
