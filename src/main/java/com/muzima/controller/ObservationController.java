@@ -5,6 +5,7 @@ import com.muzima.api.model.Observation;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.model.observation.Concepts;
+import com.muzima.utils.CustomColor;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -15,10 +16,12 @@ public class ObservationController {
 
     private ObservationService observationService;
     private ConceptService conceptService;
+    private Map<String, Integer> conceptColors;
 
     public ObservationController(ObservationService observationService, ConceptService conceptService) {
         this.observationService = observationService;
         this.conceptService = conceptService;
+        conceptColors = new HashMap<String, Integer>();
     }
 
     public Concepts getConceptWithObservations(String patientUuid) throws LoadObservationException {
@@ -42,6 +45,13 @@ public class ObservationController {
             observation.setConcept(conceptCache.get(conceptUuid));
 
         }
+    }
+
+    public int getConceptColor(String uuid) {
+        if (!conceptColors.containsKey(uuid)) {
+            conceptColors.put(uuid, CustomColor.getOrderedColor(conceptColors.size()));
+        }
+        return conceptColors.get(uuid);
     }
 
     public void replaceObservations(List<String> patientUuids, List<Observation> allObservations) throws LoadObservationException {

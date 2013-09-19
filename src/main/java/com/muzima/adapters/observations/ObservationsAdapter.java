@@ -16,6 +16,7 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.ConceptWithObservations;
 import com.muzima.utils.DateUtils;
+import com.muzima.utils.Fonts;
 import com.muzima.view.patients.PatientSummaryActivity;
 
 import java.util.ArrayList;
@@ -54,8 +55,12 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
         }
 
         ConceptWithObservations item = (ConceptWithObservations) getItem(position);
+
+        int conceptColor = observationController.getConceptColor(item.getConcept().getUuid());
+        holder.headerText.setBackgroundColor(conceptColor);
+
         Log.d(TAG, "concept:" + item.getConcept().getName() + " observation num:" + item.getObservations().size());
-        holder.addObservations(item.getObservations());
+        holder.addObservations(item.getObservations(), conceptColor);
         holder.setConcept(item.getConcept());
         return convertView;
     }
@@ -71,12 +76,17 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
             observationViewHolders = new ArrayList<LinearLayout>();
         }
 
-        protected void addObservations(List<Observation> observations) {
+        protected void addObservations(List<Observation> observations, int conceptColor) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
+            int observationPadding = (int) getContext().getResources().getDimension(R.dimen.observation_element_padding);
             for (int i = 0; i < observations.size(); i++) {
                 LinearLayout layout = null;
                 if (observationViewHolders.size() <= i) {
                     layout = (LinearLayout) inflater.inflate(R.layout.item_observation_by_concept, null);
+                    int width = (int) getContext().getResources().getDimension(R.dimen.observation_element_height);
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, width);
+                    layoutParams.setMargins(observationPadding, observationPadding, observationPadding, observationPadding);
+                    layout.setLayoutParams(layoutParams);
                     observationViewHolders.add(layout);
                     observationLayout.addView(layout);
                 } else {
@@ -87,8 +97,16 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
                 //TODO: Figure out the right type of the observation
                 Observation observation = observations.get(i);
                 observationValue.setText(observation.getValueAsString());
+                observationValue.setTypeface(Fonts.roboto_medium(getContext()));
+                observationValue.setTextColor(conceptColor);
+
+                View divider = layout.findViewById(R.id.divider);
+                divider.setBackgroundColor(conceptColor);
+
                 TextView observationDateView = (TextView) layout.findViewById(R.id.observation_date);
-                observationDateView.setText(DateUtils.getFormattedDateTime(observation.getObservationDatetime()));
+                observationDateView.setText(DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime()));
+                observationDateView.setTypeface(Fonts.roboto_light(getContext()));
+                observationDateView.setTextColor(conceptColor);
             }
 
 
@@ -109,7 +127,11 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
         }
 
         public void setConcept(Concept concept) {
-            headerText.setText(concept.getName());
+            String text = concept.getName();
+            if(concept.getConceptType().getName().equals(Concept.NUMERIC_TYPE)){
+                text += " (" + concept.getUnit() +")";
+            }
+            headerText.setText(text);
         }
     }
 

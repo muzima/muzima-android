@@ -3,22 +3,20 @@
 
     <TextView
             android:id="@+id/observation_header"
-            style="@style/ListHeader">
+            style="@style/ObservationConceptHeader">
     </TextView>
 
     <HorizontalScrollView
             android:id="@+id/observation_scroller"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="none"
-            android:focusable="false">
+            android:focusable="false"
+            android:background="@color/observation_scroller_background">
 
         <LinearLayout
                 android:id="@+id/observation_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                style="@style/ObservationHorizontalLayout">
         </LinearLayout>
     </HorizontalScrollView>
 </LinearLayout>
