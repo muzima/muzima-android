@@ -83,15 +83,16 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
                 LinearLayout layout = null;
                 if (observationViewHolders.size() <= i) {
                     layout = (LinearLayout) inflater.inflate(R.layout.item_observation_by_concept, null);
-                    int width = (int) getContext().getResources().getDimension(R.dimen.observation_element_height);
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, width);
-                    layoutParams.setMargins(observationPadding, observationPadding, observationPadding, observationPadding);
-                    layout.setLayoutParams(layoutParams);
                     observationViewHolders.add(layout);
                     observationLayout.addView(layout);
                 } else {
                     layout = observationViewHolders.get(i);
                 }
+
+                int width = (int) getContext().getResources().getDimension(R.dimen.observation_element_height);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, width);
+                layoutParams.setMargins(observationPadding, observationPadding, observationPadding, observationPadding);
+                layout.setLayoutParams(layoutParams);
 
                 TextView observationValue = (TextView) layout.findViewById(R.id.observation_value);
                 //TODO: Figure out the right type of the observation
