@@ -1,22 +1,31 @@
 package com.muzima.service;
 
+import android.content.SharedPreferences;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.api.context.Context;
+import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormTemplate;
+import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
 import com.muzima.testSupport.CustomTestRunner;
+import com.muzima.utils.Constants;
 
 import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.IOException;
 import java.net.ConnectException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import static com.muzima.utils.Constants.*;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_ERROR;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.CONNECTION_ERROR;
@@ -33,6 +42,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(CustomTestRunner.class)
@@ -42,15 +52,22 @@ public class DownloadServiceTest {
     private MuzimaApplication muzimaApplication;
     private Context muzimaContext;
     private FormController formContorller;
+    private CohortController cohortController;
+    private SharedPreferences sharedPref;
 
     @Before
     public void setUp() throws Exception {
         muzimaApplication = mock(MuzimaApplication.class);
         muzimaContext = mock(Context.class);
         formContorller = mock(FormController.class);
+        cohortController = mock(CohortController.class);
+        sharedPref = mock(SharedPreferences.class);
+
         downloadService = new DownloadService(muzimaApplication);
         when(muzimaApplication.getMuzimaContext()).thenReturn(muzimaContext);
         when(muzimaApplication.getFormController()).thenReturn(formContorller);
+        when(muzimaApplication.getCohortController()).thenReturn(cohortController);
+
     }
 
     @Test
@@ -199,4 +216,83 @@ public class DownloadServiceTest {
         doThrow(new FormController.FormSaveException(null)).when(formContorller).replaceFormTemplates(anyList());
         assertThat(downloadService.downloadFormTemplates(formUuids)[0], is(SAVE_ERROR));
     }
+
+
+    @Test
+    public void downloadCohort_shouldDownloadAllCohortsWhenNoPrefixesAreAvailableAndReplaceOldCohorts() throws Exception, CohortController.CohortDownloadException, CohortController.CohortDeleteException, CohortController.CohortSaveException {
+        List<Cohort> cohorts = new ArrayList<Cohort>();
+
+        when(cohortController.downloadAllCohorts()).thenReturn(cohorts);
+        when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
+        when(sharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
+
+        downloadService.downloadCohorts();
+
+        verify(cohortController).downloadAllCohorts();
+        verify(cohortController).deleteAllCohorts();
+        verify(cohortController).saveAllCohorts(cohorts);
+        verifyNoMoreInteractions(cohortController);
+    }
+
+    @Test
+    public void downloadCohort_shouldDownloadOnlyPrefixedCohortsWhenPrefixesAreAvailableAndReplaceOldCohorts() throws Exception, CohortController.CohortDownloadException, CohortController.CohortDeleteException, CohortController.CohortSaveException {
+        List<Cohort> cohorts = new ArrayList<Cohort>();
+        Set<String> cohortPrefixes = new HashSet<String>(){{
+            add("Pre1");
+        }};
+
+        when(cohortController.downloadAllCohorts()).thenReturn(cohorts);
+        when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
+        when(sharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(cohortPrefixes);
+
+        downloadService.downloadCohorts();
+
+        verify(cohortController).downloadCohortsByPrefix(new ArrayList<String>(cohortPrefixes));
+        verify(cohortController).deleteAllCohorts();
+        verify(cohortController).saveAllCohorts(cohorts);
+        verifyNoMoreInteractions(cohortController);
+    }
+
+    @Test
+    public void downloadCohort_shouldReturnSuccessStatusAndDownloadCountIfSuccessful() throws Exception, CohortController.CohortDownloadException {
+        List<Cohort> cohorts = new ArrayList<Cohort>() {{
+            add(new Cohort());
+            add(new Cohort());
+        }};
+        int[] result = new int[]{SUCCESS, 2};
+
+        when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
+        when(sharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
+        when(cohortController.downloadAllCohorts()).thenReturn(cohorts);
+
+        assertThat(downloadService.downloadCohorts(), is(result));
+    }
+
+    @Test
+    public void downloadCohort_shouldReturnDownloadErrorIfDownloadExceptionOccurs() throws Exception, CohortController.CohortDownloadException {
+        when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
+        when(sharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
+        doThrow(new CohortController.CohortDownloadException(null)).when(cohortController).downloadAllCohorts();
+
+        assertThat(downloadService.downloadCohorts()[0], is(DOWNLOAD_ERROR));
+    }
+
+    @Test
+    public void downloadCohort_shouldReturnSaveErrorIfSaveExceptionOccurs() throws Exception, CohortController.CohortSaveException {
+        when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
+        when(sharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
+        doThrow(new CohortController.CohortSaveException(null)).when(cohortController).saveAllCohorts(new ArrayList<Cohort>());
+
+        assertThat(downloadService.downloadCohorts()[0], is(SAVE_ERROR));
+    }
+
+    @Test
+    public void downloadCohort_shouldReturnDeleteErrorIfDeleteExceptionOccurs() throws CohortController.CohortDeleteException {
+        when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
+        when(sharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
+        doThrow(new CohortController.CohortDeleteException(null)).when(cohortController).deleteAllCohorts();
+
+        assertThat(downloadService.downloadCohorts()[0], is(DELETE_ERROR));
+    }
+
 }

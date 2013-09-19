@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.DOWNLOAD_COUNT;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_COHORTS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_FORMS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_STATUS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TEMPLATES;
@@ -77,6 +78,8 @@ public abstract class BroadcastListenerActivity extends SherlockFragmentActivity
                 msg += " forms";
             }else if(syncType == SYNC_TEMPLATES){
                 msg += " form templates";
+            } else if(syncType == SYNC_COHORTS){
+                msg += " cohorts";
             }
         }
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();

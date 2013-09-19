@@ -18,6 +18,7 @@ import java.util.Date;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.CREDENTIALS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.FROM_IDS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_COHORTS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_FORMS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TEMPLATES;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
@@ -53,7 +54,7 @@ public class DataSyncService extends IntentService {
         int syncType = intent.getIntExtra(SYNC_TYPE, -1);
         Intent broadcastIntent = new Intent();
         String[] credentials = intent.getStringArrayExtra(CREDENTIALS);
-        broadcastIntent.setAction(BroadcastListenerActivity.MESSAGE_SENT_ACTION);
+          broadcastIntent.setAction(BroadcastListenerActivity.MESSAGE_SENT_ACTION);
         broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, syncType);
 
         switch (syncType) {
@@ -72,6 +73,14 @@ public class DataSyncService extends IntentService {
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = downloadService.downloadFormTemplates(formIds);
                     String msg = "Downloaded " + result[1] + " form templates";
+                    prepareBroadcastMsg(broadcastIntent, result, msg);
+                }
+                break;
+            case SYNC_COHORTS:
+                updateNotificationMsg("Downloading Cohorts");
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    int[] result = downloadService.downloadCohorts();
+                    String msg = "Downloaded " + result[1] + " cohorts";
                     prepareBroadcastMsg(broadcastIntent, result, msg);
                 }
                 break;

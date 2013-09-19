@@ -41,6 +41,7 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
     private DownloadCohortDataTask cohortDataDownloadTask;
     private OnCohortDataDownloadListener cohortDataDownloadListener;
     private TextView syncText;
+    private boolean cohortsSyncInProgress;
 
     public static AllCohortsListFragment newInstance(CohortController cohortController) {
         AllCohortsListFragment f = new AllCohortsListFragment();
@@ -94,15 +95,6 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
     }
 
     @Override
-    public void synchronizationComplete(Integer[] status) {
-        ((CohortActivity)getActivity()).hideProgressbar();
-       if(status[0] == DownloadMuzimaTask.SUCCESS){
-            updateSyncText();
-        }
-        super.synchronizationComplete(status);
-    }
-
-    @Override
     public void downloadTaskComplete(Integer[] result) {
         if(cohortDataDownloadListener != null){
             cohortDataDownloadListener.onCohortDataDownloadComplete(result);
@@ -116,6 +108,16 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
 
     public void setCohortDataDownloadListener(OnCohortDataDownloadListener cohortDataDownloadListener) {
         this.cohortDataDownloadListener = cohortDataDownloadListener;
+    }
+
+    public void onCohortDownloadFinish() {
+        cohortsSyncInProgress = false;
+        listAdapter.reloadData();
+        updateSyncText();
+    }
+
+    public void onCohortDownloadStart() {
+        cohortsSyncInProgress = true;
     }
 
     public final class AllCohortsActionModeCallback implements ActionMode.Callback {
@@ -135,6 +137,14 @@ public class AllCohortsListFragment extends CohortListFragment implements Downlo
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.menu_download:
+                    if (cohortsSyncInProgress) {
+                        Toast.makeText(getActivity(), "Action not allowed while sync is in progress", Toast.LENGTH_SHORT).show();
+                        if (AllCohortsListFragment.this.actionMode != null) {
+                            AllCohortsListFragment.this.actionMode.finish();
+                        }
+                        break;
+                    }
+
                     if(!NetworkUtils.isConnectedToNetwork(getActivity())){
                         Toast.makeText(getActivity(), "No connection found, please connect your device and try again", Toast.LENGTH_SHORT).show();
                         return true;

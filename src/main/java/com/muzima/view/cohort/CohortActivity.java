@@ -1,20 +1,19 @@
 package com.muzima.view.cohort;
 
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
+
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortPagerAdapter;
-import com.muzima.search.api.util.StringUtil;
+import com.muzima.adapters.forms.FormsPagerAdapter;
+import com.muzima.service.DataSyncService;
 import com.muzima.tasks.DownloadMuzimaTask;
-import com.muzima.tasks.cohort.DownloadCohortTask;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.customViews.PagerSlidingTabStrip;
@@ -23,6 +22,8 @@ import com.muzima.view.preferences.SettingsActivity;
 
 import static android.os.AsyncTask.Status.PENDING;
 import static android.os.AsyncTask.Status.RUNNING;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
 
 public class CohortActivity extends MuzimaFragmentActivity {
     private static final String TAG = "CohortActivity";
@@ -31,6 +32,7 @@ public class CohortActivity extends MuzimaFragmentActivity {
     private PagerSlidingTabStrip pagerTabsLayout;
     private DownloadMuzimaTask cohortDownloadTask;
     private MenuItem menubarLoadButton;
+    private boolean syncInProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,20 +64,9 @@ public class CohortActivity extends MuzimaFragmentActivity {
                     Toast.makeText(this, "Already fetching forms, ignored the request", Toast.LENGTH_SHORT).show();
                     return true;
                 }
-                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                cohortDownloadTask = new DownloadCohortTask((MuzimaApplication) getApplicationContext());
-                cohortDownloadTask.addDownloadListener(cohortPagerAdapter);
-                String usernameKey = getResources().getString(R.string.preference_username);
-                String passwordKey = getResources().getString(R.string.preference_password);
-                String serverKey = getResources().getString(R.string.preference_server);
-                String[] credentials = new String[]{settings.getString(usernameKey, StringUtil.EMPTY),
-                        settings.getString(passwordKey, StringUtil.EMPTY),
-                        settings.getString(serverKey, StringUtil.EMPTY)};
-
-                menubarLoadButton.setActionView(R.layout.refresh_menuitem);
-                cohortDownloadTask.execute(credentials);
-
+                syncCohortsInBackgroundService();
                 return true;
+
             case android.R.id.home:
                 finish();
                 return true;
@@ -87,6 +78,23 @@ public class CohortActivity extends MuzimaFragmentActivity {
                 return false;
         }
     }
+
+    @Override
+    protected void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+
+        int syncStatus = intent.getIntExtra(SYNC_STATUS, UNKNOWN_ERROR);
+        int syncType = intent.getIntExtra(SYNC_TYPE, -1);
+
+        if(syncType == SYNC_COHORTS){
+            hideProgressbar();
+            syncInProgress = false;
+            if(syncStatus == SUCCESS){
+                cohortPagerAdapter.onCohortDownloadFinish();
+            }
+        }
+    }
+
 
     public void hideProgressbar() {
         menubarLoadButton.setActionView(null);
@@ -112,5 +120,15 @@ public class CohortActivity extends MuzimaFragmentActivity {
         pagerTabsLayout.setViewPager(viewPager);
         viewPager.setCurrentItem(0);
         pagerTabsLayout.markCurrentSelected(0);
+    }
+
+    private void syncCohortsInBackgroundService() {
+        Intent intent = new Intent(this, DataSyncService.class);
+        intent.putExtra(SYNC_TYPE, SYNC_COHORTS);
+        intent.putExtra(CREDENTIALS, getCredentials());
+        syncInProgress = true;
+        cohortPagerAdapter.onCohortDownloadStart();
+        showProgressBar();
+        startService(intent);
     }
 }

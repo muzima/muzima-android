@@ -49,13 +49,12 @@ public class DownloadCohortTask extends DownloadMuzimaTask {
             } else {
                 cohorts = cohortController.downloadCohortsByPrefix(cohortPrefixes);
             }
-            Log.i(TAG, "Cohort download successful, " + isCancelled());
+
             if (checkIfTaskIsCancelled(result)) return result;
 
             cohortController.deleteAllCohorts();
-            Log.i(TAG, "Old cohorts are deleted");
+
             cohortController.saveAllCohorts(cohorts);
-            Log.i(TAG, "New cohorts are saved");
 
             result[0] = SUCCESS;
             result[1] = cohorts.size();

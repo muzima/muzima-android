@@ -194,17 +194,6 @@ public class FormsActivity extends FormsActivityBase {
         startService(intent);
     }
 
-    private String[] getCredentials() {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        String usernameKey = getResources().getString(R.string.preference_username);
-        String passwordKey = getResources().getString(R.string.preference_password);
-        String serverKey = getResources().getString(R.string.preference_server);
-        String[] credentials = new String[]{settings.getString(usernameKey, StringUtil.EMPTY),
-                settings.getString(passwordKey, StringUtil.EMPTY),
-                settings.getString(serverKey, StringUtil.EMPTY)};
-        return credentials;
-    }
-
     @Override
     protected FormsPagerAdapter createFormsPagerAdapter() {
         return new FormsPagerAdapter(getApplicationContext(), getSupportFragmentManager());
