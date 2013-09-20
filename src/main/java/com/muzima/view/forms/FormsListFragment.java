@@ -1,19 +1,16 @@
 package com.muzima.view.forms;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
+
 import com.muzima.R;
 import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.controller.FormController;
-import com.muzima.tasks.DownloadMuzimaTask;
 import com.muzima.view.MuzimaListFragment;
 
 import static com.muzima.adapters.ListAdapter.BackgroundListQueryTaskListener;
@@ -51,10 +48,6 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
 
     public void tagsChanged() {
         listAdapter.reloadData();
-    }
-
-    @Override
-    public void synchronizationComplete(Integer[] status) {
     }
 
     @Override

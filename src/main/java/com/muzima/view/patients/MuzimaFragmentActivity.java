@@ -25,7 +25,7 @@ public class MuzimaFragmentActivity extends BroadcastListenerActivity {
         }
     }
 
-    protected String[] getCredentials() {
+    public String[] getCredentials() {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String usernameKey = getResources().getString(R.string.preference_username);
         String passwordKey = getResources().getString(R.string.preference_password);

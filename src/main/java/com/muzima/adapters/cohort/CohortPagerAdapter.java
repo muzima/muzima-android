@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import com.muzima.MuzimaApplication;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.controller.CohortController;
-import com.muzima.listeners.DownloadListener;
 import com.muzima.view.cohort.AllCohortsListFragment;
 import com.muzima.view.cohort.SyncedCohortsListFragment;
 
@@ -41,4 +40,9 @@ public class CohortPagerAdapter extends MuzimaPagerAdapter {
     public void onCohortDownloadFinish() {
         ((AllCohortsListFragment)pagers[TAB_All].fragment).onCohortDownloadFinish();
     }
+
+    public void onPatientsDownloadFinish() {
+        ((AllCohortsListFragment)pagers[TAB_All].fragment).onPatientDownloadFinish();
+    }
+
 }

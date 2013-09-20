@@ -11,26 +11,27 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortPagerAdapter;
-import com.muzima.adapters.forms.FormsPagerAdapter;
 import com.muzima.service.DataSyncService;
-import com.muzima.tasks.DownloadMuzimaTask;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.customViews.PagerSlidingTabStrip;
 import com.muzima.view.patients.MuzimaFragmentActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
-import static android.os.AsyncTask.Status.PENDING;
-import static android.os.AsyncTask.Status.RUNNING;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.CREDENTIALS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_COHORTS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_OBSERVATIONS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_PATIENTS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_STATUS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
 
 public class CohortActivity extends MuzimaFragmentActivity {
     private static final String TAG = "CohortActivity";
     private ViewPager viewPager;
     private CohortPagerAdapter cohortPagerAdapter;
     private PagerSlidingTabStrip pagerTabsLayout;
-    private DownloadMuzimaTask cohortDownloadTask;
     private MenuItem menubarLoadButton;
     private boolean syncInProgress;
 
@@ -59,11 +60,11 @@ public class CohortActivity extends MuzimaFragmentActivity {
                     return true;
                 }
 
-                if (cohortDownloadTask != null &&
-                        (cohortDownloadTask.getStatus() == PENDING || cohortDownloadTask.getStatus() == RUNNING)) {
-                    Toast.makeText(this, "Already fetching forms, ignored the request", Toast.LENGTH_SHORT).show();
+                if(syncInProgress){
+                    Toast.makeText(this, "Already fetching cohorts, ignored the request", Toast.LENGTH_SHORT).show();
                     return true;
                 }
+
                 syncCohortsInBackgroundService();
                 return true;
 
@@ -92,6 +93,12 @@ public class CohortActivity extends MuzimaFragmentActivity {
             if(syncStatus == SUCCESS){
                 cohortPagerAdapter.onCohortDownloadFinish();
             }
+        }else if(syncType == SYNC_PATIENTS){
+            if(syncStatus == SUCCESS){
+                cohortPagerAdapter.onPatientsDownloadFinish();
+            }
+        }else if(syncType == SYNC_OBSERVATIONS){
+            hideProgressbar();
         }
     }
 

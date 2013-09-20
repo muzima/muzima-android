@@ -15,12 +15,16 @@ public class Constants {
         public static final String SYNC_TYPE = "sync_type";
         public static final String CREDENTIALS = "credentials";
         public static final String SYNC_STATUS = "sync_status";
-        public static final String DOWNLOAD_COUNT = "donwload_count";
+        public static final String DOWNLOAD_COUNT_PRIMARY = "donwload_count_primary";
+        public static final String DOWNLOAD_COUNT_SECONDARY = "donwload_count_secondary";
         public static final String FROM_IDS = "formIds";
+        public static final String COHORT_IDS = "cohortIds";
 
         public static final int SYNC_FORMS = 0;
         public static final int SYNC_TEMPLATES = 1;
         public static final int SYNC_COHORTS = 2;
+        public static final int SYNC_PATIENTS = 3;
+        public static final int SYNC_OBSERVATIONS = 4;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;

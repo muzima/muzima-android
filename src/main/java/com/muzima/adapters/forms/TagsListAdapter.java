@@ -18,12 +18,10 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
-import com.muzima.listeners.DownloadListener;
-import com.muzima.tasks.DownloadMuzimaTask;
 
 import java.util.List;
 
-public class TagsListAdapter extends ListAdapter<Tag> implements DownloadListener<Integer[]>, AdapterView.OnItemClickListener {
+public class TagsListAdapter extends ListAdapter<Tag> implements AdapterView.OnItemClickListener {
     private static final String TAG = "TagsListAdapter";
     private FormController formController;
     private TagsChangedListener tagsChangedListener;
@@ -98,18 +96,6 @@ public class TagsListAdapter extends ListAdapter<Tag> implements DownloadListene
     @Override
     public void reloadData() {
         new BackgroundQueryTask().execute();
-    }
-
-    @Override
-    public void downloadTaskComplete(Integer[] result) {
-        if (result[0] == DownloadMuzimaTask.SUCCESS) {
-            reloadData();
-        }
-    }
-
-    @Override
-    public void downloadTaskStart() {
-
     }
 
     @Override

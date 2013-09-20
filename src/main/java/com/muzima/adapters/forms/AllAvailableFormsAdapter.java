@@ -36,12 +36,12 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> {
 
         highlightIfSelected(convertView, getItem(position));
         addTags((ViewHolder) convertView.getTag(), getItem(position));
-        displayDownloadStatus(convertView, getItem(position));
+        markIfDonwloaded(convertView, getItem(position));
 
         return convertView;
     }
 
-    private void displayDownloadStatus(View convertView, AvailableForm form) {
+    private void markIfDonwloaded(View convertView, AvailableForm form) {
         ImageView imageView = (ImageView) convertView.findViewById(R.id.downloadImg);
         if(form.isDownloaded()){
             imageView.setVisibility(View.VISIBLE);

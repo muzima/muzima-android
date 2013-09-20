@@ -17,13 +17,7 @@ import com.muzima.view.forms.AllAvailableFormsListFragment;
 
 import java.util.Date;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.CREDENTIALS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.FROM_IDS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_COHORTS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_FORMS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TEMPLATES;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
 
 public class DataSyncService extends IntentService {
 
@@ -86,6 +80,24 @@ public class DataSyncService extends IntentService {
                     saveCohortsSyncTime(result);
                 }
                 break;
+            case SYNC_PATIENTS:
+                String[] cohortIds = intent.getStringArrayExtra(COHORT_IDS);
+                updateNotificationMsg("Downloading Patients");
+                if(authenticationSuccessful(credentials, broadcastIntent)){
+                    int[] resultForPatients = downloadService.downloadPatientsForCohorts(cohortIds);
+                    String msgForPatients = "Downloaded " + resultForPatients[1] + " patients";
+                    prepareBroadcastMsg(broadcastIntent, resultForPatients, msgForPatients);
+                    if (resultForPatients[0] == SyncStatusConstants.SUCCESS) {
+                        broadcastIntent.putExtra(Constants.DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, resultForPatients[2]);
+                    }
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+
+                    int[] resultForObservations = downloadService.downloadObservationsForPatients(cohortIds);
+                    String msgForObservations = "Downloaded " + resultForPatients[1] + " observations";
+                    prepareBroadcastMsg(broadcastIntent, resultForObservations, msgForObservations);
+                    broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, SYNC_OBSERVATIONS);
+                }
+                break;
             default:
                 break;
         }
@@ -95,7 +107,7 @@ public class DataSyncService extends IntentService {
     private void prepareBroadcastMsg(Intent broadcastIntent, int[] result, String msg) {
         broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_STATUS, result[0]);
         if (result[0] == SyncStatusConstants.SUCCESS) {
-            broadcastIntent.putExtra(Constants.DataSyncServiceConstants.DOWNLOAD_COUNT, result[1]);
+            broadcastIntent.putExtra(Constants.DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, result[1]);
             updateNotificationMsg(msg);
         }
     }

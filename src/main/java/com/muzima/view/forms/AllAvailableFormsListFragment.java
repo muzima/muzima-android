@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,11 +18,11 @@ import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
 import com.muzima.adapters.forms.AllAvailableFormsAdapter;
 import com.muzima.controller.FormController;
-import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.DataSyncService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.view.patients.MuzimaFragmentActivity;
 
 import java.util.Date;
 import java.util.List;
@@ -109,11 +108,6 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
 
     public void onFormMetaDataDownloadStart() {
         newFormsSyncInProgress = true;
-
-    }
-
-    @Override
-    public void synchronizationStarted() {
     }
 
     public final class NewFormsActionModeCallback implements ActionMode.Callback {
@@ -166,21 +160,10 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     private void syncAllFormTemplatesInBackgroundService() {
         Intent intent = new Intent(getActivity(), DataSyncService.class);
         intent.putExtra(SYNC_TYPE, SYNC_TEMPLATES);
-        intent.putExtra(CREDENTIALS, getCredentials());
+        intent.putExtra(CREDENTIALS, ((MuzimaFragmentActivity) getActivity()).getCredentials());
         intent.putExtra(FROM_IDS, getSelectedFormsArray());
         ((FormsActivity) getActivity()).showProgressBar();
         getActivity().startService(intent);
-    }
-
-    private String[] getCredentials() {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String usernameKey = getResources().getString(R.string.preference_username);
-        String passwordKey = getResources().getString(R.string.preference_password);
-        String serverKey = getResources().getString(R.string.preference_server);
-        String[] credentials = new String[]{settings.getString(usernameKey, StringUtil.EMPTY),
-                settings.getString(passwordKey, StringUtil.EMPTY),
-                settings.getString(serverKey, StringUtil.EMPTY)};
-        return credentials;
     }
 
     public void setTemplateDownloadCompleteListener(OnTemplateDownloadComplete templateDownloadCompleteListener) {
