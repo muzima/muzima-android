@@ -54,7 +54,7 @@ public class ObservationController {
         return conceptColors.get(uuid);
     }
 
-    public void replaceObservations(List<String> patientUuids, List<Observation> allObservations) throws LoadObservationException {
+    public void replaceObservations(List<String> patientUuids, List<Observation> allObservations) throws ReplaceObservationException {
         try {
             for (String patientUuid : patientUuids) {
                 List<Observation> observationsByPatient = observationService.getObservationsByPatient(patientUuid);
@@ -62,7 +62,7 @@ public class ObservationController {
             }
             observationService.saveObservations(allObservations);
         } catch (IOException e) {
-            throw new LoadObservationException(e);
+            throw new ReplaceObservationException(e);
         }
     }
 
@@ -88,13 +88,19 @@ public class ObservationController {
     }
 
 
-    public class LoadObservationException extends Throwable {
+    public static class LoadObservationException extends Throwable {
         public LoadObservationException(Throwable e) {
             super(e);
         }
     }
 
-    public class DownloadObservationException extends Throwable {
+    public static class ReplaceObservationException extends Throwable {
+        public ReplaceObservationException(Throwable e) {
+            super(e);
+        }
+    }
+
+    public static class DownloadObservationException extends Throwable {
         public DownloadObservationException(Throwable e) {
             super(e);
         }

@@ -36,8 +36,7 @@ public class RecommendedFormsListFragment extends FormsListFragment implements A
     }
 
     @Override
-    public void onTemplateDownloadComplete(Integer[] result) {
-        ((FormsActivity) getActivity()).hideProgressbar();
-        synchronizationComplete(result);
+    public void onTemplateDownloadComplete() {
+        listAdapter.reloadData();
     }
 }
