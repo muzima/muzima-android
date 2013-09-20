@@ -6,12 +6,12 @@ import android.widget.Toast;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.Concepts;
 
-public class BackgroundQueryTask extends AsyncTask<Void, Void, Concepts> {
+public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Void, Concepts> {
 
     private ConceptAction conceptAction;
     private ObservationsByConceptAdapter observationsByConceptAdapter;
 
-    public BackgroundQueryTask(ObservationsByConceptAdapter observationsByConceptAdapter, ConceptAction conceptAction) {
+    public ObservationsByConceptBackgroundTask(ObservationsByConceptAdapter observationsByConceptAdapter, ConceptAction conceptAction) {
         this.observationsByConceptAdapter = observationsByConceptAdapter;
         this.conceptAction = conceptAction;
     }

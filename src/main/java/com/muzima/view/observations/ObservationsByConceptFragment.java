@@ -11,10 +11,10 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.view.patients.ObservationsListFragment;
 
-public class ObservationsByDateListFragment extends ObservationsListFragment {
+public class ObservationsByConceptFragment extends ObservationsListFragment {
 
-    public static ObservationsByDateListFragment newInstance(ConceptController conceptController, ObservationController observationController) {
-        ObservationsByDateListFragment f = new ObservationsByDateListFragment();
+    public static ObservationsByConceptFragment newInstance(ConceptController conceptController, ObservationController observationController) {
+        ObservationsByConceptFragment f = new ObservationsByConceptFragment();
         f.observationController = observationController;
         f.conceptController = conceptController;
         return f;

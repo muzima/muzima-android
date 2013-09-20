@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Concept;
+import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
@@ -52,16 +53,11 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        ConceptWithObservations item = (ConceptWithObservations) getItem(position);
-
-        int conceptColor = observationController.getConceptColor(item.getConcept().getUuid());
-        holder.headerText.setBackgroundColor(conceptColor);
-
-        Log.d(TAG, "concept:" + item.getConcept().getName() + " observation num:" + item.getObservations().size());
-        holder.addObservations(item.getObservations(), conceptColor);
-        holder.setConcept(item.getConcept());
+        renderItem(position, holder);
         return convertView;
     }
+
+    protected abstract void renderItem(int position, ViewHolder holder);
 
 
     protected class ViewHolder {
@@ -92,7 +88,6 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
                 layout.setLayoutParams(layoutParams);
 
                 TextView observationValue = (TextView) layout.findViewById(R.id.observation_value);
-                //TODO: Figure out the right type of the observation
                 Observation observation = observations.get(i);
                 observationValue.setText(observation.getValueAsString());
                 observationValue.setTypeface(Fonts.roboto_medium(getContext()));
@@ -105,6 +100,51 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
                 observationDateView.setText(DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime()));
                 observationDateView.setTypeface(Fonts.roboto_light(getContext()));
                 observationDateView.setTextColor(conceptColor);
+            }
+
+
+            if (observations.size() < observationViewHolders.size()) {
+                List<LinearLayout> holdersToRemove = new ArrayList<LinearLayout>();
+                for (int i = observations.size(); i < observationViewHolders.size(); i++) {
+                    holdersToRemove.add(observationViewHolders.get(i));
+                }
+                removeObservations(holdersToRemove);
+            }
+        }
+
+        protected void addEncounterObservations(List<Observation> observations) {
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            int observationPadding = (int) getContext().getResources().getDimension(R.dimen.observation_element_padding);
+            for (int i = 0; i < observations.size(); i++) {
+                LinearLayout layout = null;
+                if (observationViewHolders.size() <= i) {
+                    layout = (LinearLayout) inflater.inflate(R.layout.item_observation_by_encounter, null);
+                    observationViewHolders.add(layout);
+                    observationLayout.addView(layout);
+                } else {
+                    layout = observationViewHolders.get(i);
+                }
+
+                int width = (int) getContext().getResources().getDimension(R.dimen.observation_element_height);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, width);
+                layoutParams.setMargins(observationPadding, observationPadding, observationPadding, observationPadding);
+                layout.setLayoutParams(layoutParams);
+
+                Observation observation = observations.get(i);
+
+                TextView conceptInfo = (TextView) layout.findViewById(R.id.concept_info);
+                conceptInfo.setText(observation.getConcept().getName());
+                conceptInfo.setTypeface(Fonts.roboto_medium(getContext()));
+
+                TextView observationValue = (TextView) layout.findViewById(R.id.observation_value);
+                observationValue.setText(observation.getValueAsString());
+                observationValue.setTypeface(Fonts.roboto_medium(getContext()));
+
+                View divider = layout.findViewById(R.id.divider);
+
+                TextView observationDateView = (TextView) layout.findViewById(R.id.observation_date);
+                observationDateView.setText(DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime()));
+                observationDateView.setTypeface(Fonts.roboto_light(getContext()));
             }
 
 
@@ -130,6 +170,10 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
                 text += " (" + concept.getUnit() +")";
             }
             headerText.setText(text);
+        }
+
+        public void setEncounter(Encounter encounter) {
+            headerText.setText(encounter.getLocation().getName());
         }
     }
 

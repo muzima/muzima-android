@@ -3,9 +3,9 @@ package com.muzima.controller;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
 import com.muzima.api.service.ConceptService;
+import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.model.observation.ConceptWithObservations;
-import com.muzima.utils.DateUtils;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +13,6 @@ import org.junit.Test;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +31,8 @@ public class ObservationControllerTest {
     public void setUp() throws Exception {
         observationService = mock(ObservationService.class);
         conceptService = mock(ConceptService.class);
-        observationController = new ObservationController(observationService, conceptService);
+        EncounterService encounterService = mock(EncounterService.class);
+        observationController = new ObservationController(observationService, conceptService, encounterService);
     }
 
     @Test

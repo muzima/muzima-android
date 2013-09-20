@@ -6,6 +6,7 @@ import android.app.Application;
 import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
 import com.muzima.api.service.ConceptService;
+import com.muzima.api.service.EncounterService;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
@@ -102,7 +103,9 @@ public class MuzimaApplication extends Application{
     public ObservationController getObservationController() {
         if(observationController == null){
             try {
-                observationController = new ObservationController(muzimaContext.getObservationService(), muzimaContext.getService(ConceptService.class));
+                observationController = new ObservationController(muzimaContext.getObservationService(),
+                        muzimaContext.getService(ConceptService.class),
+                        muzimaContext.getService(EncounterService.class));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

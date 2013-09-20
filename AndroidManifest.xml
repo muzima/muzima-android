@@ -166,7 +166,7 @@
         </activity>
 
         <activity
-                android:name=".view.patients.PatientObservationsActivity"
+                android:name=".view.patients.ObservationsActivity"
                 android:label="@string/title_activity_client_observations"
                 android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity">
             <meta-data

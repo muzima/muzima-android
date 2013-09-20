@@ -1,10 +1,13 @@
 package com.muzima.controller;
 
 import com.muzima.api.model.Concept;
+import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
 import com.muzima.api.service.ConceptService;
+import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.model.observation.Concepts;
+import com.muzima.model.observation.Encounters;
 import com.muzima.utils.CustomColor;
 
 import java.io.IOException;
@@ -16,11 +19,13 @@ public class ObservationController {
 
     private ObservationService observationService;
     private ConceptService conceptService;
+    private EncounterService encounterService;
     private Map<String, Integer> conceptColors;
 
-    public ObservationController(ObservationService observationService, ConceptService conceptService) {
+    public ObservationController(ObservationService observationService, ConceptService conceptService, EncounterService encounterService) {
         this.observationService = observationService;
         this.conceptService = conceptService;
+        this.encounterService = encounterService;
         conceptColors = new HashMap<String, Integer>();
     }
 
@@ -43,6 +48,23 @@ public class ObservationController {
                 conceptCache.put(conceptUuid, conceptByUuid);
             }
             observation.setConcept(conceptCache.get(conceptUuid));
+        }
+    }
+
+    private void inflateEncounters(List<Observation> observationsByPatient) throws IOException {
+        Map<String, Encounter> encounterCache = new HashMap<String, Encounter>();
+
+        for (Observation observation : observationsByPatient) {
+            Encounter encounter = observation.getEncounter();
+            String encounterUuid = encounter.getUuid();
+            if (!encounterCache.containsKey(encounterUuid)) {
+                Encounter fullEncounter = encounterService.getEncounterByUuid(encounterUuid);
+                if (fullEncounter == null) {
+                    fullEncounter = encounterService.downloadEncounterByUuid(encounterUuid);
+                }
+                encounterCache.put(encounterUuid, fullEncounter);
+            }
+            observation.setEncounter(encounterCache.get(encounterUuid));
         }
     }
 
@@ -84,6 +106,17 @@ public class ObservationController {
     private Concepts groupByConcepts(List<Observation> observations) throws IOException {
         inflateConcepts(observations);
         return new Concepts(observations);
+    }
+
+    public Encounters getEncountersWithObservations(String patientUuid) throws LoadObservationException {
+        try {
+            List<Observation> observationsByPatient = observationService.getObservationsByPatient(patientUuid);
+            inflateConcepts(observationsByPatient);
+            inflateEncounters(observationsByPatient);
+            return new Encounters(observationsByPatient);
+        } catch (IOException e) {
+            throw new LoadObservationException(e);
+        }
     }
 
 
