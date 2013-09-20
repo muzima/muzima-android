@@ -12,6 +12,7 @@ import com.muzima.BroadcastListenerActivity;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.utils.Constants;
+import com.muzima.view.cohort.AllCohortsListFragment;
 import com.muzima.view.forms.AllAvailableFormsListFragment;
 
 import java.util.Date;
@@ -54,7 +55,7 @@ public class DataSyncService extends IntentService {
         int syncType = intent.getIntExtra(SYNC_TYPE, -1);
         Intent broadcastIntent = new Intent();
         String[] credentials = intent.getStringArrayExtra(CREDENTIALS);
-          broadcastIntent.setAction(BroadcastListenerActivity.MESSAGE_SENT_ACTION);
+        broadcastIntent.setAction(BroadcastListenerActivity.MESSAGE_SENT_ACTION);
         broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, syncType);
 
         switch (syncType) {
@@ -64,7 +65,7 @@ public class DataSyncService extends IntentService {
                     int[] result = downloadService.downloadForms();
                     String msg = "Downloaded " + result[1] + " forms";
                     prepareBroadcastMsg(broadcastIntent, result, msg);
-                    saveSyncTime(result);
+                    saveFormsSyncTime(result);
                 }
                 break;
             case SYNC_TEMPLATES:
@@ -82,6 +83,7 @@ public class DataSyncService extends IntentService {
                     int[] result = downloadService.downloadCohorts();
                     String msg = "Downloaded " + result[1] + " cohorts";
                     prepareBroadcastMsg(broadcastIntent, result, msg);
+                    saveCohortsSyncTime(result);
                 }
                 break;
             default:
@@ -98,12 +100,22 @@ public class DataSyncService extends IntentService {
         }
     }
 
-    private void saveSyncTime(int[] result) {
+    private void saveFormsSyncTime(int[] result) {
         if (result[0] == SyncStatusConstants.SUCCESS) {
             SharedPreferences pref = getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
             Date date = new Date();
             editor.putLong(AllAvailableFormsListFragment.FORMS_METADATA_LAST_SYNCED_TIME, date.getTime());
+            editor.commit();
+        }
+    }
+
+    private void saveCohortsSyncTime(int[] result) {
+        if (result[0] == SyncStatusConstants.SUCCESS) {
+            SharedPreferences pref = getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            Date date = new Date();
+            editor.putLong(AllCohortsListFragment.COHORTS_LAST_SYNCED_TIME, date.getTime());
             editor.commit();
         }
     }
