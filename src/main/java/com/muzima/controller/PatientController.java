@@ -86,6 +86,19 @@ public class PatientController {
         }
     }
 
+    public List<Patient> getPatientsForCohorts(String[] cohortUuids) throws PatientLoadException {
+        List<Patient> allPatients = new ArrayList<Patient>();
+        for (String cohortUuid : cohortUuids) {
+            try {
+                List<Patient> patients = getPatients(cohortUuid);
+                allPatients.addAll(patients);
+            } catch (PatientLoadException e) {
+                throw new PatientLoadException(e);
+            }
+        }
+        return allPatients;
+    }
+
     public static class PatientReplaceException extends Throwable {
         public PatientReplaceException(Throwable throwable) {
             super(throwable);

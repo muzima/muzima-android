@@ -33,7 +33,8 @@ public class Constants {
             public static final int PARSING_ERROR = 7;
             public static final int AUTHENTICATION_SUCCESS = 8;
             public static final int REPLACE_ERROR = 9;
-            public static final int UNKNOWN_ERROR = 10;
+            public static final int LOAD_ERROR = 10;
+            public static final int UNKNOWN_ERROR = 11;
         }
     }
 }

@@ -96,12 +96,11 @@ public class DownloadCohortDataTask extends DownloadMuzimaTask {
         } catch (PatientController.PatientReplaceException e) {
             Log.e(TAG, "Exception thrown while replacing patients" + e);
             result[0] = REPLACE_ERROR;
-        } catch (ObservationController.LoadObservationException e) {
-            Log.e(TAG, "Exception thrown while replacing observations" + e);
-            result[0] = REPLACE_ERROR;
         } catch (ObservationController.DownloadObservationException e) {
             Log.e(TAG, "Exception thrown while downloading observations" + e);
             result[0] = DOWNLOAD_ERROR;
+        } catch (ObservationController.ReplaceObservationException e) {
+            e.printStackTrace();
         }
         return result;
     }

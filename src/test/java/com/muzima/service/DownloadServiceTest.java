@@ -5,16 +5,21 @@ import android.content.SharedPreferences;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.context.Context;
 import com.muzima.api.model.Cohort;
+import com.muzima.api.model.CohortData;
+import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormTemplate;
+import com.muzima.api.model.Observation;
+import com.muzima.api.model.Patient;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
+import com.muzima.controller.ObservationController;
+import com.muzima.controller.PatientController;
 import com.muzima.testSupport.CustomTestRunner;
 import com.muzima.utils.Constants;
 
 import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -25,13 +30,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.muzima.controller.ObservationController.*;
 import static com.muzima.utils.Constants.*;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_ERROR;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.CONNECTION_ERROR;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.DELETE_ERROR;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.PARSING_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.REPLACE_ERROR;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static org.hamcrest.core.Is.is;
@@ -54,6 +62,8 @@ public class DownloadServiceTest {
     private FormController formContorller;
     private CohortController cohortController;
     private SharedPreferences sharedPref;
+    private PatientController patientController;
+    private ObservationController observationController;
 
     @Before
     public void setUp() throws Exception {
@@ -61,13 +71,16 @@ public class DownloadServiceTest {
         muzimaContext = mock(Context.class);
         formContorller = mock(FormController.class);
         cohortController = mock(CohortController.class);
+        patientController = mock(PatientController.class);
+        observationController = mock(ObservationController.class);
         sharedPref = mock(SharedPreferences.class);
 
         downloadService = new DownloadService(muzimaApplication);
         when(muzimaApplication.getMuzimaContext()).thenReturn(muzimaContext);
         when(muzimaApplication.getFormController()).thenReturn(formContorller);
         when(muzimaApplication.getCohortController()).thenReturn(cohortController);
-
+        when(muzimaApplication.getPatientController()).thenReturn(patientController);
+        when(muzimaApplication.getObservationController()).thenReturn(observationController);
     }
 
     @Test
@@ -293,6 +306,222 @@ public class DownloadServiceTest {
         doThrow(new CohortController.CohortDeleteException(null)).when(cohortController).deleteAllCohorts();
 
         assertThat(downloadService.downloadCohorts()[0], is(DELETE_ERROR));
+    }
+
+    @Test
+    public void downloadPatientsForCohorts_shouldDownloadAndReplaceCohortMembersAndPatients() throws Exception, CohortController.CohortDownloadException, CohortController.CohortReplaceException, PatientController.PatientReplaceException {
+        String[] cohortUuids = new String[]{"uuid1","uuid2"};
+        List<CohortData> cohortDataList = new ArrayList<CohortData>(){{
+            add(new CohortData(){{
+                addCohortMember(new CohortMember());
+                addPatient(new Patient());
+            }});
+            add(new CohortData(){{
+                addCohortMember(new CohortMember());
+                addPatient(new Patient());
+            }});
+        }};
+
+        when(cohortController.downloadCohortData(cohortUuids)).thenReturn(cohortDataList);
+
+        downloadService.downloadPatientsForCohorts(cohortUuids);
+
+        verify(cohortController).downloadCohortData(cohortUuids);
+        verify(cohortController).deleteCohortMembers(cohortUuids[0]);
+        verify(cohortController).deleteCohortMembers(cohortUuids[1]);
+        verify(cohortController).addCohortMembers(cohortDataList.get(0).getCohortMembers());
+        verify(cohortController).addCohortMembers(cohortDataList.get(1).getCohortMembers());
+        verify(patientController).replacePatients(cohortDataList.get(0).getPatients());
+        verify(patientController).replacePatients(cohortDataList.get(1).getPatients());
+        verifyNoMoreInteractions(cohortController);
+    }
+
+    @Test
+    public void downloadPatientsForCohorts_shouldReturnSuccessStatusAndCohortAndPatinetCountIfDownloadIsSuccessful() throws Exception, CohortController.CohortDownloadException {
+        String[] cohortUuids = new String[]{"uuid1","uuid2"};
+        List<CohortData> cohortDataList = new ArrayList<CohortData>(){{
+            add(new CohortData(){{
+                addCohortMember(new CohortMember());
+                addPatient(new Patient());
+            }});
+            add(new CohortData(){{
+                addCohortMember(new CohortMember());
+                addPatient(new Patient());
+                addPatient(new Patient());
+            }});
+        }};
+
+        when(cohortController.downloadCohortData(cohortUuids)).thenReturn(cohortDataList);
+
+        int[] result = downloadService.downloadPatientsForCohorts(cohortUuids);
+        assertThat(result[0], is(SUCCESS));
+        assertThat(result[1], is(2));
+        assertThat(result[2], is(3));
+    }
+
+    @Test
+    public void downloadPatientsForCohorts_shouldReturnDownloadErrorIfDownloadExceptionIsThrown() throws CohortController.CohortDownloadException {
+        String[] cohortUuids = new String[]{"uuid1","uuid2"};
+
+        doThrow(new CohortController.CohortDownloadException(null)).when(cohortController).downloadCohortData(cohortUuids);
+
+        assertThat(downloadService.downloadPatientsForCohorts(cohortUuids)[0], is(DOWNLOAD_ERROR));
+    }
+
+    @Test
+    public void downloadPatientsForCohorts_shouldReturnReplaceErrorIfReplaceExceptionIsThrownForCohorts() throws CohortController.CohortReplaceException, CohortController.CohortDownloadException {
+        String[] cohortUuids = new String[]{"uuid1","uuid2"};
+        List<CohortData> cohortDataList = new ArrayList<CohortData>(){{
+            add(new CohortData(){{
+                addCohortMember(new CohortMember());
+                addPatient(new Patient());
+            }});
+            add(new CohortData(){{
+                addCohortMember(new CohortMember());
+                addPatient(new Patient());
+                addPatient(new Patient());
+            }});
+        }};
+
+        when(cohortController.downloadCohortData(cohortUuids)).thenReturn(cohortDataList);
+        doThrow(new CohortController.CohortReplaceException(null)).when(cohortController).addCohortMembers(anyList());
+
+        assertThat(downloadService.downloadPatientsForCohorts(cohortUuids)[0], is(REPLACE_ERROR));
+    }
+
+    @Test
+    public void downloadPatientsForCohorts_shouldReturnReplaceErrorIfReplaceExceptionIsThrownForPatients() throws CohortController.CohortDownloadException, PatientController.PatientReplaceException {
+        String[] cohortUuids = new String[]{"uuid1","uuid2"};
+        List<CohortData> cohortDataList = new ArrayList<CohortData>(){{
+            add(new CohortData(){{
+                addCohortMember(new CohortMember());
+                addPatient(new Patient());
+            }});
+            add(new CohortData(){{
+                addCohortMember(new CohortMember());
+                addPatient(new Patient());
+                addPatient(new Patient());
+            }});
+        }};
+
+        when(cohortController.downloadCohortData(cohortUuids)).thenReturn(cohortDataList);
+        doThrow(new PatientController.PatientReplaceException(null)).when(patientController).replacePatients(anyList());
+
+        assertThat(downloadService.downloadPatientsForCohorts(cohortUuids)[0], is(REPLACE_ERROR));
+    }
+
+    @Test
+    public void downloadObservationsForPatients_shouldDownloadObservationsForGiveCohortIdsAndSavedConcepts() throws Exception, PatientController.PatientLoadException, ObservationController.DownloadObservationException, ObservationController.ReplaceObservationException {
+        String[] cohortUuids = new String[]{"uuid1","uuid2"};
+        List<Patient> patients = new ArrayList<Patient>(){{
+            add(new Patient(){{
+                setUuid("patient1");
+            }});
+            add(new Patient(){{
+                setUuid("patient2");
+            }});
+        }};
+        Set<String> concepts = new HashSet<String>(){{
+            add("weight");
+            add("temp");
+        }};
+        final List<Observation> observationList1ForWeight = new ArrayList<Observation>();
+        final List<Observation> observationList2ForWeight = new ArrayList<Observation>();
+        final List<Observation> observationList1ForTemp = new ArrayList<Observation>();
+        final List<Observation> observationList2ForTemp = new ArrayList<Observation>();
+
+        List<Observation> allObservations = new ArrayList<Observation>(){{
+            addAll(observationList1ForWeight);
+            addAll(observationList2ForWeight);
+            addAll(observationList1ForTemp);
+            addAll(observationList2ForTemp);
+        }};
+
+        when(patientController.getPatientsForCohorts(cohortUuids)).thenReturn(patients);
+        when(muzimaApplication.getSharedPreferences(Constants.CONCEPT_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
+        when(sharedPref.getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>())).thenReturn(concepts);
+        when(observationController.downloadObservations("patient1", "weight")).thenReturn(observationList1ForWeight);
+        when(observationController.downloadObservations("patient1", "temp")).thenReturn(observationList1ForTemp);
+        when(observationController.downloadObservations("patient2", "weight")).thenReturn(observationList2ForWeight);
+        when(observationController.downloadObservations("patient2", "temp")).thenReturn(observationList2ForTemp);
+
+        downloadService.downloadObservationsForPatients(cohortUuids);
+
+        verify(observationController).downloadObservations("patient1", "weight");
+        verify(observationController).downloadObservations("patient1", "temp");
+        verify(observationController).downloadObservations("patient2", "weight");
+        verify(observationController).downloadObservations("patient2", "temp");
+        verify(observationController).replaceObservations(downloadService.getPatientUuids(patients), allObservations);
+        verifyNoMoreInteractions(observationController);
+    }
+
+    @Test
+    public void downloadObservationsForPatients_shouldReturnSuccessAndCountWhenDownloadingObservationsForPatient() throws Exception, PatientController.PatientLoadException, ObservationController.DownloadObservationException {
+        String[] cohortUuids = new String[]{"uuid1"};
+        List<Patient> patients = new ArrayList<Patient>(){{
+            add(new Patient(){{
+                setUuid("patient1");
+            }});
+        }};
+        Set<String> concepts = new HashSet<String>(){{
+            add("weight");
+        }};
+
+        List<Observation> allObservations = new ArrayList<Observation>(){{
+            add(new Observation());
+            add(new Observation());
+        }};
+
+        when(patientController.getPatientsForCohorts(cohortUuids)).thenReturn(patients);
+        when(muzimaApplication.getSharedPreferences(Constants.CONCEPT_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
+        when(sharedPref.getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>())).thenReturn(concepts);
+        when(observationController.downloadObservations("patient1", "weight")).thenReturn(allObservations);
+
+        int[] result = downloadService.downloadObservationsForPatients(cohortUuids);
+
+        assertThat(result[0], is(SUCCESS));
+        assertThat(result[1], is(2));
+    }
+
+    @Test
+    public void downloadObservationsForPatients_shouldReturnLoadErrorWhenLoadExceptionIsThrownForObservations() throws Exception, PatientController.PatientLoadException {
+        String[] cohortUuids = new String[]{};
+
+        doThrow(new PatientController.PatientLoadException(null)).when(patientController).getPatientsForCohorts(cohortUuids);
+
+        int[] result = downloadService.downloadObservationsForPatients(cohortUuids);
+        assertThat(result[0], is(LOAD_ERROR));
+    }
+
+    @Test
+    public void downloadObservationsForPatients_shouldReturnDownloadErrorWhenDownloadExceptionIsThrownForObservations() throws Exception, ObservationController.DownloadObservationException, PatientController.PatientLoadException {
+        String[] cohortUuids = new String[]{"uuid1"};
+        List<Patient> patients = new ArrayList<Patient>(){{
+            add(new Patient(){{
+                setUuid("patient1");
+            }});
+        }};
+        Set<String> concepts = new HashSet<String>(){{
+            add("weight");
+        }};
+
+        when(patientController.getPatientsForCohorts(cohortUuids)).thenReturn(patients);
+        when(muzimaApplication.getSharedPreferences(Constants.CONCEPT_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
+        when(sharedPref.getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>())).thenReturn(concepts);
+        doThrow(new ObservationController.DownloadObservationException(null)).when(observationController).downloadObservations(anyString(),anyString());
+
+        int[] result = downloadService.downloadObservationsForPatients(cohortUuids);
+        assertThat(result[0], is(DOWNLOAD_ERROR));
+    }
+
+    @Test
+    public void downloadObservationsForPatients_shouldReturnReplaceErrorWhenReplaceExceptionIsThrownForObservations() throws Exception, ReplaceObservationException {
+        String[] cohortUuids = new String[]{};
+
+        doThrow(new ObservationController.ReplaceObservationException(null)).when(observationController).replaceObservations(anyList(), anyList());
+
+        int[] result = downloadService.downloadObservationsForPatients(cohortUuids);
+        assertThat(result[0], is(REPLACE_ERROR));
     }
 
 }

@@ -6,10 +6,15 @@ import android.util.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.context.Context;
 import com.muzima.api.model.Cohort;
+import com.muzima.api.model.CohortData;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormTemplate;
+import com.muzima.api.model.Observation;
+import com.muzima.api.model.Patient;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
+import com.muzima.controller.ObservationController;
+import com.muzima.controller.PatientController;
 import com.muzima.utils.Constants;
 
 import org.apache.lucene.queryParser.ParseException;
@@ -23,7 +28,16 @@ import java.util.Set;
 
 import static com.muzima.utils.Constants.COHORT_PREFIX_PREF;
 import static com.muzima.utils.Constants.COHORT_PREFIX_PREF_KEY;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.CONNECTION_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.DELETE_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.PARSING_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.REPLACE_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
 public class DownloadService {
     private static final String TAG = "DownloadService";
@@ -152,6 +166,119 @@ public class DownloadService {
         return result;
     }
 
+    public int[] downloadPatientsForCohorts(String[] cohortUuids) {
+        int[] result = new int[3];
+
+        CohortController cohortController = muzimaApplication.getCohortController();
+        PatientController patientController = muzimaApplication.getPatientController();
+        int patientCount = 0;
+        try {
+            long startDownloadCohortData = System.currentTimeMillis();
+
+            List<CohortData> cohortDataList = cohortController.downloadCohortData(cohortUuids);
+
+            long endDownloadCohortData = System.currentTimeMillis();
+            Log.i(TAG, "Cohort data download successful with " + cohortDataList.size() + " cohorts");
+
+            for (String cohortUuid : cohortUuids) {
+                cohortController.deleteCohortMembers(cohortUuid);
+            }
+
+            for (CohortData cohortData : cohortDataList) {
+                cohortController.addCohortMembers(cohortData.getCohortMembers());
+                patientController.replacePatients(cohortData.getPatients());
+                patientCount += cohortData.getPatients().size();
+            }
+            long cohortMemberAndPatientReplaceTime = System.currentTimeMillis();
+
+            Log.i(TAG, "Cohort data replaced");
+            Log.i(TAG, "Patients downloaded " + patientCount);
+            Log.d(TAG, "Time Taken:\n " +
+                    "In Downloading cohort data: " + (endDownloadCohortData - startDownloadCohortData) / 1000 + " sec\n" +
+                    "In Replacing cohort members and patients: " + (cohortMemberAndPatientReplaceTime - endDownloadCohortData) / 1000 + " sec");
+
+            result[0] = SUCCESS;
+            result[1] = cohortDataList.size();
+            result[2] = patientCount;
+        } catch (CohortController.CohortDownloadException e) {
+            Log.e(TAG, "Exception thrown while downloading cohort data" + e);
+            result[0] = DOWNLOAD_ERROR;
+        } catch (CohortController.CohortReplaceException e) {
+            Log.e(TAG, "Exception thrown while replacing cohort data" + e);
+            result[0] = REPLACE_ERROR;
+        } catch (PatientController.PatientReplaceException e) {
+            Log.e(TAG, "Exception thrown while replacing patients" + e);
+            result[0] = REPLACE_ERROR;
+        }
+        return result;
+    }
+
+    public int[] downloadObservationsForPatients(String[] cohortUuids) {
+        int[] result = new int[2];
+
+        PatientController patientController = muzimaApplication.getPatientController();
+        ObservationController observationController = muzimaApplication.getObservationController();
+        try {
+            List<Patient> patients = patientController.getPatientsForCohorts(cohortUuids);
+            List<String> patientUuids = getPatientUuids(patients);
+
+            long startDownloadObservations = System.currentTimeMillis();
+            List<Observation> allObservations = downloadAllObservations(patientUuids);
+            long endDownloadObservations = System.currentTimeMillis();
+            Log.i(TAG, "Observations download successful with " + allObservations.size() + " observations");
+
+            observationController.replaceObservations(patientUuids, allObservations);
+            long replacedObservations = System.currentTimeMillis();
+
+            Log.d(TAG, "In Downloading observations : " + (endDownloadObservations - startDownloadObservations) / 1000 + " sec\n" +
+                    "In Replacing observations for patients: " + (replacedObservations - endDownloadObservations) / 1000 + " sec");
+
+            result[0] = SUCCESS;
+            result[1] = allObservations.size();
+        } catch (PatientController.PatientLoadException e) {
+            Log.e(TAG, "Exception thrown while loading patients" + e);
+            result[0] = LOAD_ERROR;
+        } catch (ObservationController.DownloadObservationException e) {
+            Log.e(TAG, "Exception thrown while downloading observations" + e);
+            result[0] = DOWNLOAD_ERROR;
+        } catch (ObservationController.ReplaceObservationException e) {
+            Log.e(TAG, "Exception thrown while replacing observations" + e);
+            result[0] = REPLACE_ERROR;
+        }
+
+        return result;
+    }
+
+    private ArrayList<Observation> downloadAllObservations(List<String> patientUuids) throws ObservationController.DownloadObservationException {
+        ArrayList<Observation> allObservations = new ArrayList<Observation>();
+        ObservationController observationController = muzimaApplication.getObservationController();
+        int index = 0;
+        for (String patientUuid : patientUuids) {
+            for (String conceptUuid : getConceptUuids()) {
+                List<Observation> observations = observationController.downloadObservations(patientUuid, conceptUuid);
+                allObservations.addAll(observations);
+            }
+            index++;
+            if (index % 5 == 0) {
+                Log.i(TAG, index + "/" + patientUuids.size() + " patients' observations downloaded");
+            }
+        }
+        return allObservations;
+    }
+
+    private List<String> getConceptUuids() {
+        SharedPreferences cohortSharedPref = muzimaApplication.getSharedPreferences(Constants.CONCEPT_PREF, android.content.Context.MODE_PRIVATE);
+        Set<String> prefixes = cohortSharedPref.getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>());
+        return new ArrayList<String>(prefixes);
+    }
+
+    List<String> getPatientUuids(List<Patient> patients) {
+        List<String> patientUuids = new ArrayList<String>();
+        for (Patient patient : patients) {
+            patientUuids.add(patient.getUuid());
+        }
+        return patientUuids;
+    }
 
     private List<String> getCohortPrefixes() {
         SharedPreferences cohortSharedPref = muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE);
