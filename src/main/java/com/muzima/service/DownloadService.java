@@ -198,8 +198,8 @@ public class DownloadService {
                     "In Replacing cohort members and patients: " + (cohortMemberAndPatientReplaceTime - endDownloadCohortData) / 1000 + " sec");
 
             result[0] = SUCCESS;
-            result[1] = cohortDataList.size();
-            result[2] = patientCount;
+            result[1] = patientCount;
+            result[2] = cohortDataList.size();
         } catch (CohortController.CohortDownloadException e) {
             Log.e(TAG, "Exception thrown while downloading cohort data" + e);
             result[0] = DOWNLOAD_ERROR;

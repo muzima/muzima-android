@@ -43,7 +43,6 @@ public class ObservationController {
                 conceptCache.put(conceptUuid, conceptByUuid);
             }
             observation.setConcept(conceptCache.get(conceptUuid));
-
         }
     }
 
