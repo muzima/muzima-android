@@ -18,12 +18,7 @@ import com.muzima.view.customViews.PagerSlidingTabStrip;
 import com.muzima.view.patients.MuzimaFragmentActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.CREDENTIALS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_COHORTS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_OBSERVATIONS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_PATIENTS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_STATUS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
 
@@ -97,7 +92,9 @@ public class CohortActivity extends MuzimaFragmentActivity {
             if(syncStatus == SUCCESS){
                 cohortPagerAdapter.onPatientsDownloadFinish();
             }
-        }else if(syncType == SYNC_OBSERVATIONS){
+        }/*else if(syncType == SYNC_OBSERVATIONS){
+            hideProgressbar();
+        }*/else if(syncType == SYNC_ENCOUNTERS){
             hideProgressbar();
         }
     }

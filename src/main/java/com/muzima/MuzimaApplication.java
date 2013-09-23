@@ -7,11 +7,7 @@ import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
-import com.muzima.controller.CohortController;
-import com.muzima.controller.ConceptController;
-import com.muzima.controller.FormController;
-import com.muzima.controller.ObservationController;
-import com.muzima.controller.PatientController;
+import com.muzima.controller.*;
 import com.muzima.util.Constants;
 
 import org.acra.ACRA;
@@ -31,6 +27,7 @@ public class MuzimaApplication extends Application{
     private PatientController patientConroller;
     private ConceptController conceptController;
     private ObservationController observationController;
+    private EncounterController encounterController;
 
     static {
         // see http://rtyley.github.io/spongycastle/
@@ -111,6 +108,17 @@ public class MuzimaApplication extends Application{
             }
         }
         return observationController;
+    }
+
+    public EncounterController getEncounterController() {
+        if(encounterController == null){
+            try {
+                encounterController = new EncounterController(muzimaContext.getService(EncounterService.class));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return encounterController;
     }
 
     private String getConfigurationString() throws IOException {

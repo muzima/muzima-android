@@ -93,9 +93,16 @@ public class DataSyncService extends IntentService {
                     LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
 
                     int[] resultForObservations = downloadService.downloadObservationsForPatients(cohortIds);
-                    String msgForObservations = "Downloaded " + resultForPatients[1] + " observations";
+                    String msgForObservations = "Downloaded " + resultForObservations[1] + " observations";
                     prepareBroadcastMsg(broadcastIntent, resultForObservations, msgForObservations);
                     broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, SYNC_OBSERVATIONS);
+
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+
+                    int[] resultForEncounters = downloadService.downloadEncountersForPatients(cohortIds);
+                    String msgForEncounters = "Downloaded " + resultForEncounters[1] + " encounters";
+                    prepareBroadcastMsg(broadcastIntent, resultForEncounters, msgForEncounters);
+                    broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, SYNC_ENCOUNTERS);
                 }
                 break;
             default:

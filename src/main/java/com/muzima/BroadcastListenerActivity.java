@@ -10,15 +10,7 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_COHORTS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_FORMS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_OBSERVATIONS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_PATIENTS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_STATUS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TEMPLATES;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_ERROR;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.CONNECTION_ERROR;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.DELETE_ERROR;
@@ -88,9 +80,11 @@ public abstract class BroadcastListenerActivity extends SherlockFragmentActivity
                 msg += " cohorts";
             } else if(syncType == SYNC_PATIENTS){
                 int downloadCountSec = intent.getIntExtra(DOWNLOAD_COUNT_SECONDARY, 0);
-                msg += " patients for " + downloadCountSec + " cohorts. Still downloading observations";
+                msg += " patients for " + downloadCountSec + " cohorts. Still downloading observations and encounters";
             } else if(syncType == SYNC_OBSERVATIONS){
                 msg += " observations";
+            } else if(syncType == SYNC_ENCOUNTERS){
+                msg += " encounters";
             }
 
         }

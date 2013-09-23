@@ -59,9 +59,6 @@ public class ObservationController {
             String encounterUuid = encounter.getUuid();
             if (!encounterCache.containsKey(encounterUuid)) {
                 Encounter fullEncounter = encounterService.getEncounterByUuid(encounterUuid);
-                if (fullEncounter == null) {
-                    fullEncounter = encounterService.downloadEncounterByUuid(encounterUuid);
-                }
                 encounterCache.put(encounterUuid, fullEncounter);
             }
             observation.setEncounter(encounterCache.get(encounterUuid));
