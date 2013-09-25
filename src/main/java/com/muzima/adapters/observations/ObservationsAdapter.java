@@ -1,11 +1,9 @@
 package com.muzima.adapters.observations;
 
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.muzima.R;
@@ -15,7 +13,6 @@ import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
-import com.muzima.model.observation.ConceptWithObservations;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
 import com.muzima.view.patients.PatientSummaryActivity;
@@ -37,33 +34,14 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
         patientUuid = context.getIntent().getStringExtra(PatientSummaryActivity.PATIENT_ID);
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        if (convertView == null) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            convertView = layoutInflater.inflate(R.layout.item_observation_list, parent, false);
-            holder = new ViewHolder();
-            holder.headerText = (TextView) convertView
-                    .findViewById(R.id.observation_header);
-            holder.observationLayout = (LinearLayout) convertView
-                    .findViewById(R.id.observation_layout);
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
-
-        renderItem(position, holder);
-        return convertView;
-    }
-
-    protected abstract void renderItem(int position, ViewHolder holder);
-
-
     protected class ViewHolder {
         TextView headerText;
         LinearLayout observationLayout;
         List<LinearLayout> observationViewHolders;
+        public TextView encounterType;
+        public TextView encounterDate;
+        public TextView encounterLocation;
+        public LinearLayout headerLayout ;
 
         public ViewHolder() {
             observationViewHolders = new ArrayList<LinearLayout>();
@@ -82,7 +60,7 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
                     layout = observationViewHolders.get(i);
                 }
 
-                int width = (int) getContext().getResources().getDimension(R.dimen.observation_element_height);
+                int width = (int) getContext().getResources().getDimension(R.dimen.observation_element_by_concept_height);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, width);
                 layoutParams.setMargins(observationPadding, observationPadding, observationPadding, observationPadding);
                 layout.setLayoutParams(layoutParams);
@@ -125,7 +103,7 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
                     layout = observationViewHolders.get(i);
                 }
 
-                int width = (int) getContext().getResources().getDimension(R.dimen.observation_element_height);
+                int width = (int) getContext().getResources().getDimension(R.dimen.observation_element_by_encounter_height);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, width);
                 layoutParams.setMargins(observationPadding, observationPadding, observationPadding, observationPadding);
                 layout.setLayoutParams(layoutParams);
@@ -133,18 +111,26 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
                 Observation observation = observations.get(i);
 
                 TextView conceptInfo = (TextView) layout.findViewById(R.id.concept_info);
-                conceptInfo.setText(observation.getConcept().getName());
+                conceptInfo.setText(getConceptDisplay(observation.getConcept()));
                 conceptInfo.setTypeface(Fonts.roboto_medium(getContext()));
+                int conceptColor = observationController.getConceptColor(observation.getConcept().getUuid());
+                conceptInfo.setTextColor(conceptColor);
+
+                View divider = layout.findViewById(R.id.divider1);
+                divider.setBackgroundColor(conceptColor);
 
                 TextView observationValue = (TextView) layout.findViewById(R.id.observation_value);
                 observationValue.setText(observation.getValueAsString());
                 observationValue.setTypeface(Fonts.roboto_medium(getContext()));
+                observationValue.setTextColor(conceptColor);
 
-                View divider = layout.findViewById(R.id.divider);
+                View divider2 = layout.findViewById(R.id.divider2);
+                divider2.setBackgroundColor(conceptColor);
 
                 TextView observationDateView = (TextView) layout.findViewById(R.id.observation_date);
                 observationDateView.setText(DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime()));
                 observationDateView.setTypeface(Fonts.roboto_light(getContext()));
+                observationDateView.setTextColor(conceptColor);
             }
 
 
@@ -164,16 +150,18 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
             }
         }
 
-        public void setConcept(Concept concept) {
+        public String getConceptDisplay(Concept concept) {
             String text = concept.getName();
             if(concept.getConceptType().getName().equals(Concept.NUMERIC_TYPE)){
                 text += " (" + concept.getUnit() +")";
             }
-            headerText.setText(text);
+            return text;
         }
 
         public void setEncounter(Encounter encounter) {
-            headerText.setText(encounter.getLocation().getName());
+            encounterType.setText(encounter.getEncounterType().getName());
+            encounterDate.setText(DateUtils.getMonthNameFormattedDate(encounter.getEncounterDatetime()));
+            encounterLocation.setText(encounter.getLocation().getName());
         }
     }
 

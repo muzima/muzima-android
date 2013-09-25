@@ -225,7 +225,7 @@
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="ObservationConceptHeader">
+    <style name="ObservationGroupByConceptHeader">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">16dp</item>
@@ -234,6 +234,16 @@
         <item name="android:paddingBottom">4dp</item>
         <item name="android:textColor">#ffffff</item>
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="ObservationGroupByEncounterHeader">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:orientation">vertical</item>
     </style>
 
     <style name="ObservationListElement">
@@ -250,8 +260,15 @@
     </style>
 
     <style name="ObservationByConceptElement">
-        <item name="android:layout_width">@dimen/observation_element_height</item>
-        <item name="android:layout_height">@dimen/observation_element_height</item>
+        <item name="android:layout_width">@dimen/observation_element_by_concept_height</item>
+        <item name="android:layout_height">@dimen/observation_element_by_concept_height</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="ObservationByEncounterElement">
+        <item name="android:layout_width">@dimen/observation_element_by_encounter_height</item>
+        <item name="android:layout_height">@dimen/observation_element_by_encounter_height</item>
         <item name="android:orientation">vertical</item>
         <item name="android:background">@android:color/white</item>
     </style>
@@ -263,6 +280,15 @@
         <item name="android:padding">8dp</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="ObservationConcept">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">.5</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="ObservationDate">
@@ -277,4 +303,37 @@
         <item name="android:gravity">center</item>
         <item name="android:textSize">16sp</item>
     </style>
+    <style name="EncounterLocation">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">.5</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="EncounterDate">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">.4</item>
+        <item name="android:gravity">right</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="EncounterType">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">.6</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="EncounterTypeRow">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">2dp</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+
 </resources>

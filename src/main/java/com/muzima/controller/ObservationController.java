@@ -21,12 +21,14 @@ public class ObservationController {
     private ConceptService conceptService;
     private EncounterService encounterService;
     private Map<String, Integer> conceptColors;
+    private Map<String, Integer> encounterColors;
 
     public ObservationController(ObservationService observationService, ConceptService conceptService, EncounterService encounterService) {
         this.observationService = observationService;
         this.conceptService = conceptService;
         this.encounterService = encounterService;
         conceptColors = new HashMap<String, Integer>();
+        encounterColors = new HashMap<String, Integer>();
     }
 
     public Concepts getConceptWithObservations(String patientUuid) throws LoadObservationException {
@@ -70,6 +72,13 @@ public class ObservationController {
             conceptColors.put(uuid, CustomColor.getOrderedColor(conceptColors.size()));
         }
         return conceptColors.get(uuid);
+    }
+
+    public int getEncounterColor(String encounterTypeUuid) {
+        if (!encounterColors.containsKey(encounterTypeUuid)) {
+            encounterColors.put(encounterTypeUuid, CustomColor.getOrderedColor(encounterColors.size()));
+        }
+        return encounterColors.get(encounterTypeUuid);
     }
 
     public void replaceObservations(List<String> patientUuids, List<Observation> allObservations) throws ReplaceObservationException {

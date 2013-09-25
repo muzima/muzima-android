@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              style="@style/ObservationByConceptElement">
+              style="@style/ObservationByEncounterElement">
     <TextView
             android:id="@+id/concept_info"
-            style="@style/ObservationValue">
+            style="@style/ObservationConcept">
     </TextView>
 
     <View
@@ -19,7 +19,7 @@
     </TextView>
 
     <View
-            android:id="@+id/divider"
+            android:id="@+id/divider2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginLeft="8dp"

@@ -1,10 +1,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               style="@style/ObservationListElement">
 
-    <TextView
+    <LinearLayout
             android:id="@+id/observation_header"
-            style="@style/ObservationConceptHeader">
-    </TextView>
+            style="@style/ObservationGroupByEncounterHeader">
+        <LinearLayout style="@style/EncounterTypeRow">
+            <TextView
+                    android:id="@+id/encounter_type"
+                    style="@style/EncounterType">
+            </TextView>
+            <TextView
+                    android:id="@+id/encounter_date"
+                    style="@style/EncounterDate">
+            </TextView>
+        </LinearLayout>
+        <TextView android:id="@+id/encounter_location"
+                style ="@style/EncounterLocation">
+        </TextView>
+    </LinearLayout>
 
     <HorizontalScrollView
             android:id="@+id/observation_scroller"

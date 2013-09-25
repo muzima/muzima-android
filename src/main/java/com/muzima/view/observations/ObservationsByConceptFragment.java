@@ -24,7 +24,7 @@ public class ObservationsByConceptFragment extends ObservationsListFragment {
     public void onCreate(Bundle savedInstanceState) {
         if(listAdapter == null){
             listAdapter = new ObservationsByConceptAdapter(
-                    getActivity(), R.layout.item_observation_list, conceptController, observationController);
+                    getActivity(), R.layout.item_observation_by_concept_list, conceptController, observationController);
         }
         noDataMsg = getActivity().getResources().getString(R.string.no_observations_available);
         super.onCreate(savedInstanceState);

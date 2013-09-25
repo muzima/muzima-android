@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/ObservationListElement">
+
+    <TextView
+            android:id="@+id/observation_header"
+            style="@style/ObservationGroupByConceptHeader">
+    </TextView>
+
+    <HorizontalScrollView
+            android:id="@+id/observation_scroller"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:focusable="false"
+            android:background="@color/observation_scroller_background">
+
+        <LinearLayout
+                android:id="@+id/observation_layout"
+                style="@style/ObservationHorizontalLayout">
+        </LinearLayout>
+    </HorizontalScrollView>
+</LinearLayout>
