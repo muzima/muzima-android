@@ -36,7 +36,12 @@ public class EncounterWithObservations {
     private Comparator<Observation> observationDateTimeComparator = new Comparator<Observation>() {
         @Override
         public int compare(Observation lhs, Observation rhs) {
-            return lhs.getConcept().getName().compareTo(rhs.getConcept().getName());
+            int isConceptNameEqual = lhs.getConcept().getName().compareTo(rhs.getConcept().getName());
+            if(isConceptNameEqual != 0){
+                return isConceptNameEqual;
+            }
+
+            return -lhs.getObservationDatetime().compareTo(rhs.getObservationDatetime());
         }
     };
 

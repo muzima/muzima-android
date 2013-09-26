@@ -6,6 +6,7 @@ import com.muzima.api.model.Observation;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -26,15 +27,37 @@ public class EncounterWithObservationsTest {
         assertThat(encounterWithObservations.getObservations(), is(expected));
     }
 
+    @Test
+    public void shouldOrderObservationByConceptNameThenByDate() {
+        EncounterWithObservations encounterWithObservations = new EncounterWithObservations();
+        Observation observation1 = getObservation("o1", "c1", "Weight", new Date(1));
+        Observation observation2 = getObservation("o2", "c2", "Blood_Type", new Date(2));
+        Observation observation3 = getObservation("o3", "c2", "Blood_Type", new Date(1));
+        encounterWithObservations.addObservation(observation1);
+        encounterWithObservations.addObservation(observation2);
+        encounterWithObservations.addObservation(observation3);
+
+        List<Observation> expected = new ArrayList<Observation>();
+        expected.add(observation2);
+        expected.add(observation3);
+        expected.add(observation1);
+        assertThat(encounterWithObservations.getObservations(), is(expected));
+    }
+
     private Observation getObservation(String observationUuid, final String conceptUuid, final String conceptName) {
-        Observation observation1 = new Observation();
-        observation1.setUuid(observationUuid);
+        return getObservation(observationUuid, conceptUuid, conceptName, new Date());
+    }
+
+    private Observation getObservation(String observationUuid, final String conceptUuid, final String conceptName, Date date) {
+        Observation observation = new Observation();
+        observation.setUuid(observationUuid);
         Concept concept = new Concept();
         concept.addName(new ConceptName(){{
             setUuid(conceptUuid);
             setName(conceptName);
         }});
-        observation1.setConcept(concept);
-        return observation1;
+        observation.setObservationDatetime(date);
+        observation.setConcept(concept);
+        return observation;
     }
 }
