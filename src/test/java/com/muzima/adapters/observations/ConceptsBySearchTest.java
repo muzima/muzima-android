@@ -12,6 +12,6 @@ public class ConceptsBySearchTest {
         ObservationController controller = mock(ObservationController.class);
         ConceptsBySearch conceptsBySearch = new ConceptsBySearch(controller, "uuid", "term");
         conceptsBySearch.get();
-        verify(controller).searchObservations("term", "uuid");
+        verify(controller).searchObservationsGroupedByConcepts("term", "uuid");
     }
 }

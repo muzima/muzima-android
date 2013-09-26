@@ -31,5 +31,6 @@ public class ObservationByEncountersFragment extends ObservationsListFragment{
 
     @Override
     public void onSearchTextChange(String query) {
+        ((ObservationsByEncounterAdapter)listAdapter).search(query);
     }
 }

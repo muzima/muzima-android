@@ -1,27 +1,27 @@
 package com.muzima.adapters.observations;
 
 import com.muzima.controller.ObservationController;
-import com.muzima.model.observation.Concepts;
+import com.muzima.model.observation.Encounters;
 
-public class ConceptsBySearch extends ConceptAction {
+public class EncountersBySearch extends EncounterAction {
     private String patientUuid;
     private String term;
     private ObservationController controller;
 
-    public ConceptsBySearch(ObservationController controller, String patientUuid, String term) {
+    public EncountersBySearch(ObservationController controller, String patientUuid, String term) {
         this.controller = controller;
         this.patientUuid = patientUuid;
         this.term = term;
     }
 
     @Override
-    Concepts get() throws ObservationController.LoadObservationException {
-        return controller.searchObservationsGroupedByConcepts(term, patientUuid);
+    Encounters get() throws ObservationController.LoadObservationException {
+        return controller.searchObservationsGroupedByEncounter(term, patientUuid);
     }
 
     @Override
     public String toString() {
-        return "ConceptsBySearch{" +
+        return "EncountersBySearch{" +
                 "patientUuid='" + patientUuid + '\'' +
                 ", term='" + term + '\'' +
                 ", controller=" + controller +

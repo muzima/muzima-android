@@ -101,7 +101,7 @@ public class ObservationController {
         }
     }
 
-    public Concepts searchObservations(String term, String patientUuid) throws LoadObservationException {
+    public Concepts searchObservationsGroupedByConcepts(String term, String patientUuid) throws LoadObservationException {
         try {
             return groupByConcepts(observationService.searchObservations(patientUuid, term));
         } catch (IOException e) {
@@ -116,10 +116,21 @@ public class ObservationController {
 
     public Encounters getEncountersWithObservations(String patientUuid) throws LoadObservationException {
         try {
-            List<Observation> observationsByPatient = observationService.getObservationsByPatient(patientUuid);
-            inflateConcepts(observationsByPatient);
-            inflateEncounters(observationsByPatient);
-            return new Encounters(observationsByPatient);
+            return groupByEncounters(observationService.getObservationsByPatient(patientUuid));
+        } catch (IOException e) {
+            throw new LoadObservationException(e);
+        }
+    }
+
+    private Encounters groupByEncounters(List<Observation> observationsByPatient) throws IOException {
+        inflateConcepts(observationsByPatient);
+        inflateEncounters(observationsByPatient);
+        return new Encounters(observationsByPatient);
+    }
+
+    public Encounters searchObservationsGroupedByEncounter(String term, String patientUuid) throws LoadObservationException {
+        try {
+            return groupByEncounters(observationService.searchObservations(patientUuid, term));
         } catch (IOException e) {
             throw new LoadObservationException(e);
         }

@@ -55,4 +55,8 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
     public void reloadData() {
         new ObservationsByEncounterBackgroundTask(this, new EncountersByPatient(observationController, patientUuid)).execute();
     }
+
+    public void search(String query) {
+        new ObservationsByEncounterBackgroundTask(this, new EncountersBySearch(observationController, patientUuid, query)).execute();
+    }
 }
