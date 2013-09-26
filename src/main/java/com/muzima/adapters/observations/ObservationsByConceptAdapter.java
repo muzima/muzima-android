@@ -7,16 +7,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.muzima.R;
-import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.ConceptWithObservations;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWithObservations> {
 
@@ -43,18 +39,10 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
             holder = (ObservationsByConceptViewHolder) convertView.getTag();
         }
 
-        renderItem(position, holder);
+        holder.renderItem(getItem(position));
         return convertView;
     }
 
-    protected void renderItem(int position, ObservationsByConceptViewHolder holder) {
-        ConceptWithObservations item = getItem(position);
-
-        int conceptColor = observationController.getConceptColor(item.getConcept().getUuid());
-        holder.headerText.setBackgroundColor(conceptColor);
-        holder.addEncounterObservations(item.getObservations());
-        holder.headerText.setText(holder.getConceptDisplay(item.getConcept()));
-    }
 
     @Override
     public void reloadData() {
@@ -70,6 +58,13 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
 
         public ObservationsByConceptViewHolder() {
             super();
+        }
+
+        private void renderItem(ConceptWithObservations item) {
+            int conceptColor = observationController.getConceptColor(item.getConcept().getUuid());
+            headerText.setBackgroundColor(conceptColor);
+            addEncounterObservations(item.getObservations());
+            headerText.setText(getConceptDisplay(item.getConcept()));
         }
 
         @Override
@@ -93,6 +88,11 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         @Override
         protected int getObservationLayout() {
             return R.layout.item_observation_by_concept;
+        }
+
+        @Override
+        protected int getObservationElementHeight() {
+            return R.dimen.observation_element_by_concept_height;
         }
     }
 }

@@ -2,19 +2,14 @@ package com.muzima.adapters.observations;
 
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Concept;
-import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
-import com.muzima.utils.DateUtils;
-import com.muzima.utils.Fonts;
 import com.muzima.view.patients.PatientSummaryActivity;
 
 import java.util.ArrayList;
@@ -84,11 +79,13 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
 
         private void setStyle(LinearLayout layout) {
             int observationPadding = (int) getContext().getResources().getDimension(R.dimen.observation_element_padding);
-            int width = (int) getContext().getResources().getDimension(R.dimen.observation_element_by_encounter_height);
+            int width = (int) getContext().getResources().getDimension(getObservationElementHeight());
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, width);
             layoutParams.setMargins(observationPadding, observationPadding, observationPadding, observationPadding);
             layout.setLayoutParams(layoutParams);
         }
+
+        protected abstract int getObservationElementHeight();
 
         private void removeObservations(List<LinearLayout> holdersToRemove) {
             observationViewHolders.removeAll(holdersToRemove);

@@ -1,6 +1,5 @@
 package com.muzima.adapters.observations;
 
-import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,19 +39,10 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
             holder = (ObservationsByEncounterViewHolder) convertView.getTag();
         }
 
-        renderItem(position, holder);
+        holder.renderItem(getItem(position));
         return convertView;
     }
 
-
-    protected void renderItem(int position, ObservationsByEncounterViewHolder holder) {
-        EncounterWithObservations item = getItem(position);
-        holder.addEncounterObservations(item.getObservations());
-        holder.setEncounter(item.getEncounter());
-
-//        holder.headerLayout.setBackgroundColor(observationController.getEncounterColor(item.getEncounter().getEncounterType().getUuid()));
-        holder.headerLayout.setBackgroundColor(Color.parseColor("#888888"));
-    }
 
     @Override
     public void reloadData() {
@@ -71,6 +61,12 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
 
         public ObservationsByEncounterViewHolder() {
             super();
+        }
+
+        private void renderItem(EncounterWithObservations item) {
+            addEncounterObservations(item.getObservations());
+            setEncounter(item.getEncounter());
+            headerLayout.setBackgroundColor(getContext().getResources().getColor(R.color.observation_by_encounter_header_background));
         }
 
         @Override
@@ -107,6 +103,11 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
         @Override
         protected int getObservationLayout() {
             return R.layout.item_observation_by_encounter;
+        }
+
+        @Override
+        protected int getObservationElementHeight() {
+            return R.dimen.observation_element_by_encounter_height;
         }
     }
 }
