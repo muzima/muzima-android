@@ -7,9 +7,16 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.muzima.R;
+import com.muzima.api.model.Concept;
+import com.muzima.api.model.Observation;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.ConceptWithObservations;
+import com.muzima.utils.DateUtils;
+import com.muzima.utils.Fonts;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWithObservations> {
 
@@ -22,30 +29,30 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        ObservationsByConceptViewHolder holder;
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             convertView = layoutInflater.inflate(R.layout.item_observation_by_concept_list, parent, false);
-            holder = new ViewHolder();
+            holder = new ObservationsByConceptViewHolder();
             holder.headerText = (TextView) convertView
                     .findViewById(R.id.observation_header);
             holder.observationLayout = (LinearLayout) convertView
                     .findViewById(R.id.observation_layout);
             convertView.setTag(holder);
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            holder = (ObservationsByConceptViewHolder) convertView.getTag();
         }
 
         renderItem(position, holder);
         return convertView;
     }
 
-    protected void renderItem(int position, ViewHolder holder) {
+    protected void renderItem(int position, ObservationsByConceptViewHolder holder) {
         ConceptWithObservations item = getItem(position);
 
         int conceptColor = observationController.getConceptColor(item.getConcept().getUuid());
         holder.headerText.setBackgroundColor(conceptColor);
-        holder.addObservations(item.getObservations(), conceptColor);
+        holder.addEncounterObservations(item.getObservations());
         holder.headerText.setText(holder.getConceptDisplay(item.getConcept()));
     }
 
@@ -56,5 +63,36 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
 
     public void search(String term) {
         new ObservationsByConceptBackgroundTask(this, new ConceptsBySearch(observationController, patientUuid, term)).execute();
+    }
+
+    protected class ObservationsByConceptViewHolder extends ViewHolder{
+        TextView headerText;
+
+        public ObservationsByConceptViewHolder() {
+            super();
+        }
+
+        @Override
+        protected void setObservation(LinearLayout layout, Observation observation) {
+            int conceptColor = observationController.getConceptColor(observation.getConcept().getUuid());
+
+            TextView observationValue = (TextView) layout.findViewById(R.id.observation_value);
+            observationValue.setText(observation.getValueAsString());
+            observationValue.setTypeface(Fonts.roboto_medium(getContext()));
+            observationValue.setTextColor(conceptColor);
+
+            View divider = layout.findViewById(R.id.divider);
+            divider.setBackgroundColor(conceptColor);
+
+            TextView observationDateView = (TextView) layout.findViewById(R.id.observation_date);
+            observationDateView.setText(DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime()));
+            observationDateView.setTypeface(Fonts.roboto_light(getContext()));
+            observationDateView.setTextColor(conceptColor);
+        }
+
+        @Override
+        protected int getObservationLayout() {
+            return R.layout.item_observation_by_concept;
+        }
     }
 }
