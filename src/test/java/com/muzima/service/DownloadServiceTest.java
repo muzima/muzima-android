@@ -355,8 +355,8 @@ public class DownloadServiceTest {
 
         int[] result = downloadService.downloadPatientsForCohorts(cohortUuids);
         assertThat(result[0], is(SUCCESS));
-        assertThat(result[1], is(2));
-        assertThat(result[2], is(3));
+        assertThat(result[1], is(3));
+        assertThat(result[2], is(2));
     }
 
     @Test
