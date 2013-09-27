@@ -6,8 +6,8 @@
             style="@style/ObservationGroupByEncounterHeader">
         <LinearLayout style="@style/EncounterTypeRow">
             <TextView
-                    android:id="@+id/encounter_type"
-                    style="@style/EncounterType">
+                    android:id="@+id/encounter_provider"
+                    style="@style/EncounterProvider">
             </TextView>
             <TextView
                     android:id="@+id/encounter_date"

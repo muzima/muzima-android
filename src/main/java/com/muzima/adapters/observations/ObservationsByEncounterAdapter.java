@@ -31,7 +31,7 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
             holder.observationLayout = (LinearLayout) convertView
                     .findViewById(R.id.observation_layout);
             holder.headerLayout = (LinearLayout) convertView.findViewById(R.id.observation_header);
-            holder.encounterType = (TextView) convertView.findViewById(R.id.encounter_type);
+            holder.encounterProvider = (TextView) convertView.findViewById(R.id.encounter_provider);
             holder.encounterDate = (TextView) convertView.findViewById(R.id.encounter_date);
             holder.encounterLocation = (TextView) convertView.findViewById(R.id.encounter_location);
             convertView.setTag(holder);
@@ -54,7 +54,7 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
     }
 
     protected class ObservationsByEncounterViewHolder extends ViewHolder {
-        public TextView encounterType;
+        public TextView encounterProvider;
         public TextView encounterDate;
         public TextView encounterLocation;
         public LinearLayout headerLayout ;
@@ -95,7 +95,7 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
         }
 
         public void setEncounter(Encounter encounter) {
-            encounterType.setText(encounter.getEncounterType().getName());
+            encounterProvider.setText(encounter.getProvider().getGivenName());
             encounterDate.setText(DateUtils.getMonthNameFormattedDate(encounter.getEncounterDatetime()));
             encounterLocation.setText(encounter.getLocation().getName());
         }
