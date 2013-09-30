@@ -1,8 +1,6 @@
 package com.muzima.controller;
 
-import com.muzima.api.model.Concept;
-import com.muzima.api.model.Encounter;
-import com.muzima.api.model.Observation;
+import com.muzima.api.model.*;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.ObservationService;
@@ -10,7 +8,15 @@ import com.muzima.model.observation.Concepts;
 import com.muzima.model.observation.Encounters;
 import com.muzima.utils.CustomColor;
 
+import javax.security.auth.Subject;
+import javax.security.auth.callback.CallbackHandler;
+import javax.security.auth.login.LoginException;
 import java.io.IOException;
+import java.security.AuthProvider;
+import java.security.Provider;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,11 +66,28 @@ public class ObservationController {
             Encounter encounter = observation.getEncounter();
             String encounterUuid = encounter.getUuid();
             if (!encounterCache.containsKey(encounterUuid)) {
-                Encounter fullEncounter = encounterService.getEncounterByUuid(encounterUuid);
+                Encounter fullEncounter = getEncounterForNullEncounterUuid();
+                if (encounterUuid!=null)
+                    fullEncounter = encounterService.getEncounterByUuid(encounterUuid);
                 encounterCache.put(encounterUuid, fullEncounter);
             }
             observation.setEncounter(encounterCache.get(encounterUuid));
         }
+    }
+
+    private Encounter getEncounterForNullEncounterUuid() {
+        final Date finalDate = new Date();
+        final PersonName personName = new PersonName();
+        personName.setGivenName("Observations");
+        final Person person = new Person();
+        person.addName(personName);
+        final Location location = new Location();
+        location.setName("without encounter");
+        return new Encounter(){{
+            setEncounterDatetime(finalDate);
+            setProvider(person);
+            setLocation(location);
+        }};
     }
 
     public int getConceptColor(String uuid) {
