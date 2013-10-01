@@ -61,14 +61,13 @@ public class ObservationController {
 
     private void inflateEncounters(List<Observation> observationsByPatient) throws IOException {
         Map<String, Encounter> encounterCache = new HashMap<String, Encounter>();
+        encounterCache.put(null, getEncounterForNullEncounterUuid());
 
         for (Observation observation : observationsByPatient) {
             Encounter encounter = observation.getEncounter();
             String encounterUuid = encounter.getUuid();
             if (!encounterCache.containsKey(encounterUuid)) {
-                Encounter fullEncounter = getEncounterForNullEncounterUuid();
-                if (encounterUuid!=null)
-                    fullEncounter = encounterService.getEncounterByUuid(encounterUuid);
+                Encounter fullEncounter = encounterService.getEncounterByUuid(encounterUuid);
                 encounterCache.put(encounterUuid, fullEncounter);
             }
             observation.setEncounter(encounterCache.get(encounterUuid));
@@ -78,11 +77,11 @@ public class ObservationController {
     private Encounter getEncounterForNullEncounterUuid() {
         final Date finalDate = new Date();
         final PersonName personName = new PersonName();
-        personName.setGivenName("Observations");
+        personName.setGivenName("");
         final Person person = new Person();
         person.addName(personName);
         final Location location = new Location();
-        location.setName("without encounter");
+        location.setName("");
         return new Encounter(){{
             setEncounterDatetime(finalDate);
             setProvider(person);
