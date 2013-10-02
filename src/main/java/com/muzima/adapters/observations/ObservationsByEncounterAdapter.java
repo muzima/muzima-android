@@ -95,24 +95,28 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
         }
 
         public void setEncounter(Encounter encounter) {
-            String providerGivenName = encounter.getProvider().getGivenName();
-            encounterProvider.setText(providerGivenName);
+            encounterProvider.setText(encounter.getProvider().getDisplayName());
             String date = "";
-            boolean NotEncounterForObservationWithNullEncounterUuid = providerGivenName.length() != 0;
-            if(NotEncounterForObservationWithNullEncounterUuid)
+            boolean isEncounterForObservationWithNonNullEncounterUuid = !isEncounterForObservationWithNullEncounterUuid(encounter);
+            if(isEncounterForObservationWithNonNullEncounterUuid)
                 date = DateUtils.getMonthNameFormattedDate(encounter.getEncounterDatetime());
             encounterDate.setText(date);
             encounterLocation.setText(encounter.getLocation().getName());
+        }
+
+        private boolean isEncounterForObservationWithNullEncounterUuid(Encounter encounter) {
+            return encounter.getProvider().getFamilyName() == null && encounter.getProvider().getMiddleName() == null
+                    && encounter.getProvider().getGivenName() == null;
         }
 
         @Override
         protected int getObservationLayout() {
             return R.layout.item_observation_by_encounter;
         }
-
         @Override
         protected int getObservationElementHeight() {
             return R.dimen.observation_element_by_encounter_height;
         }
+
     }
 }

@@ -65,10 +65,8 @@ public class ObservationController {
     }
 
     private Encounter getEncounterForNullEncounterUuid() {
-        final PersonName personName = new PersonName();
-        personName.setGivenName("");
         final Person person = new Person();
-        person.addName(personName);
+        person.addName(new PersonName());
         final Location location = new Location();
         location.setName("");
         return new Encounter(){{
