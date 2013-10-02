@@ -8,15 +8,7 @@ import com.muzima.model.observation.Concepts;
 import com.muzima.model.observation.Encounters;
 import com.muzima.utils.CustomColor;
 
-import javax.security.auth.Subject;
-import javax.security.auth.callback.CallbackHandler;
-import javax.security.auth.login.LoginException;
 import java.io.IOException;
-import java.security.AuthProvider;
-import java.security.Provider;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,14 +19,12 @@ public class ObservationController {
     private ConceptService conceptService;
     private EncounterService encounterService;
     private Map<String, Integer> conceptColors;
-    private Map<String, Integer> encounterColors;
 
     public ObservationController(ObservationService observationService, ConceptService conceptService, EncounterService encounterService) {
         this.observationService = observationService;
         this.conceptService = conceptService;
         this.encounterService = encounterService;
         conceptColors = new HashMap<String, Integer>();
-        encounterColors = new HashMap<String, Integer>();
     }
 
     public Concepts getConceptWithObservations(String patientUuid) throws LoadObservationException {
@@ -75,7 +65,6 @@ public class ObservationController {
     }
 
     private Encounter getEncounterForNullEncounterUuid() {
-        final Date finalDate = new Date();
         final PersonName personName = new PersonName();
         personName.setGivenName("");
         final Person person = new Person();
@@ -83,7 +72,6 @@ public class ObservationController {
         final Location location = new Location();
         location.setName("");
         return new Encounter(){{
-            setEncounterDatetime(finalDate);
             setProvider(person);
             setLocation(location);
         }};
@@ -94,13 +82,6 @@ public class ObservationController {
             conceptColors.put(uuid, CustomColor.getOrderedColor(conceptColors.size()));
         }
         return conceptColors.get(uuid);
-    }
-
-    public int getEncounterColor(String encounterTypeUuid) {
-        if (!encounterColors.containsKey(encounterTypeUuid)) {
-            encounterColors.put(encounterTypeUuid, CustomColor.getOrderedColor(encounterColors.size()));
-        }
-        return encounterColors.get(encounterTypeUuid);
     }
 
     public void replaceObservations(List<String> patientUuids, List<Observation> allObservations) throws ReplaceObservationException {

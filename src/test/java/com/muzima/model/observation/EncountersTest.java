@@ -54,7 +54,38 @@ public class EncountersTest {
         }};
 
         assertThat(encounters, is(expectedOrderedConcept));
+    }
 
+    @Test
+    public void shouldPutEncounterWithNullDateAtTheTopWhenItsNotAtTheTop() throws Exception {
+        final Observation observation1 = createObservation(createEncounter("c1", new Date(1)), "01");
+        final Observation observation2 = createObservation(createEncounter("c2", null), "02");
+
+        final Encounters encounters = new Encounters(observation1, observation2);
+        encounters.sortByDate();
+
+        final Encounters expectedOrderedConcept = new Encounters() {{
+            add(encounterWithObservations(observation2));
+            add(encounterWithObservations(observation1));
+        }};
+
+        assertThat(encounters, is(expectedOrderedConcept));
+    }
+
+    @Test
+    public void shouldPutEncounterWithNullDateAtTheTopWhenItsAtTheTop() throws Exception {
+        final Observation observation1 = createObservation(createEncounter("c1", null), "01");
+        final Observation observation2 = createObservation(createEncounter("c2", new Date(1)), "02");
+
+        final Encounters encounters = new Encounters(observation1, observation2);
+        encounters.sortByDate();
+
+        final Encounters expectedOrderedConcept = new Encounters() {{
+            add(encounterWithObservations(observation1));
+            add(encounterWithObservations(observation2));
+        }};
+
+        assertThat(encounters, is(expectedOrderedConcept));
     }
 
     private Encounter createEncounter(final String uuid, final Date date) {

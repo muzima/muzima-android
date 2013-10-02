@@ -95,8 +95,13 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
         }
 
         public void setEncounter(Encounter encounter) {
-            encounterProvider.setText(encounter.getProvider().getGivenName());
-            encounterDate.setText(DateUtils.getMonthNameFormattedDate(encounter.getEncounterDatetime()));
+            String providerGivenName = encounter.getProvider().getGivenName();
+            encounterProvider.setText(providerGivenName);
+            String date = "";
+            boolean NotEncounterForObservationWithNullEncounterUuid = providerGivenName.length() != 0;
+            if(NotEncounterForObservationWithNullEncounterUuid)
+                date = DateUtils.getMonthNameFormattedDate(encounter.getEncounterDatetime());
+            encounterDate.setText(date);
             encounterLocation.setText(encounter.getLocation().getName());
         }
 
