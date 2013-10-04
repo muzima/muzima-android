@@ -12,6 +12,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.muzima.BroadcastListenerActivity;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.controller.CohortController;
@@ -22,7 +23,7 @@ import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.patients.PatientsListActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
-public class MainActivity extends SherlockActivity {
+public class MainActivity extends BroadcastListenerActivity {
     private static final String TAG = "MainActivity";
     private View mMainView;
     private BackgroundQueryTask mBackgroundQueryTask;

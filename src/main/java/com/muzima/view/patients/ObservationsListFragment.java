@@ -45,9 +45,5 @@ public abstract class ObservationsListFragment extends MuzimaListFragment{
         return inflater.inflate(R.layout.layout_list, container, false);
     }
 
-    @Override
-    public void synchronizationComplete(Integer[] status) {
-    }
-
     public abstract void onSearchTextChange(String query);
 }

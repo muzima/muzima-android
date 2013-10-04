@@ -13,4 +13,9 @@ public class DateUtils {
         SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy/MM/dd hh:mm");
         return formattedDate.format(date);
     }
+
+    public static String getMonthNameFormattedDate(Date date){
+        SimpleDateFormat formattedDate = new SimpleDateFormat("dd MMM yyyy");
+        return formattedDate.format(date);
+    }
 }

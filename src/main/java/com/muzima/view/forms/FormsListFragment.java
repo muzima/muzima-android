@@ -1,19 +1,16 @@
 package com.muzima.view.forms;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
+
 import com.muzima.R;
 import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.controller.FormController;
-import com.muzima.tasks.DownloadMuzimaTask;
 import com.muzima.view.MuzimaListFragment;
 
 import static com.muzima.adapters.ListAdapter.BackgroundListQueryTaskListener;
@@ -51,34 +48,6 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
 
     public void tagsChanged() {
         listAdapter.reloadData();
-    }
-
-    @Override
-    public void synchronizationComplete(Integer[] status) {
-        Integer downloadStatus = status[0];
-        String msg = "Download Complete with status " + downloadStatus;
-        Log.i(TAG, msg);
-        if (downloadStatus == DownloadMuzimaTask.SUCCESS) {
-            msg = "Forms downloaded: " + status[1];
-            if (listAdapter != null) {
-                listAdapter.reloadData();
-            }
-        } else if (downloadStatus == DownloadMuzimaTask.DOWNLOAD_ERROR) {
-            msg = "An error occurred while downloading forms";
-        } else if (downloadStatus == DownloadMuzimaTask.AUTHENTICATION_ERROR) {
-            msg = "Authentication error occurred while downloading forms";
-        } else if (downloadStatus == DownloadMuzimaTask.DELETE_ERROR) {
-            msg = "An error occurred while deleting existing forms";
-        } else if (downloadStatus == DownloadMuzimaTask.SAVE_ERROR) {
-            msg = "An error occurred while saving the downloaded forms";
-        } else if (downloadStatus == DownloadMuzimaTask.CANCELLED) {
-            msg = "Form download task has been cancelled";
-        } else if (downloadStatus == DownloadMuzimaTask.CONNECTION_ERROR) {
-            msg = "Connection error occurred while downloading forms";
-        } else if (downloadStatus == DownloadMuzimaTask.PARSING_ERROR) {
-            msg = "Parse exception has been thrown while fetching data";
-        }
-        Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override

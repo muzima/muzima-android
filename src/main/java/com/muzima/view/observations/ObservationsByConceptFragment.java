@@ -6,15 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import com.muzima.R;
-import com.muzima.adapters.observations.ObservationsByDateAdapter;
+import com.muzima.adapters.observations.ObservationsByConceptAdapter;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.view.patients.ObservationsListFragment;
 
-public class ObservationsByDateListFragment extends ObservationsListFragment {
+public class ObservationsByConceptFragment extends ObservationsListFragment {
 
-    public static ObservationsByDateListFragment newInstance(ConceptController conceptController, ObservationController observationController) {
-        ObservationsByDateListFragment f = new ObservationsByDateListFragment();
+    public static ObservationsByConceptFragment newInstance(ConceptController conceptController, ObservationController observationController) {
+        ObservationsByConceptFragment f = new ObservationsByConceptFragment();
         f.observationController = observationController;
         f.conceptController = conceptController;
         return f;
@@ -23,8 +23,8 @@ public class ObservationsByDateListFragment extends ObservationsListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if(listAdapter == null){
-            listAdapter = new ObservationsByDateAdapter(
-                    getActivity(), R.layout.item_observation_list, conceptController, observationController);
+            listAdapter = new ObservationsByConceptAdapter(
+                    getActivity(), R.layout.item_observation_by_concept_list, conceptController, observationController);
         }
         noDataMsg = getActivity().getResources().getString(R.string.no_observations_available);
         super.onCreate(savedInstanceState);
@@ -38,7 +38,7 @@ public class ObservationsByDateListFragment extends ObservationsListFragment {
 
     @Override
     public void onSearchTextChange(String query) {
-        ((ObservationsByDateAdapter)listAdapter).search(query);
+        ((ObservationsByConceptAdapter)listAdapter).search(query);
     }
 
     @Override

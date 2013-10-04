@@ -1,37 +1,38 @@
 package com.muzima.view.forms;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.AllAvailableFormsAdapter;
 import com.muzima.controller.FormController;
-import com.muzima.listeners.DownloadListener;
-import com.muzima.search.api.util.StringUtil;
-import com.muzima.tasks.DownloadMuzimaTask;
-import com.muzima.tasks.forms.DownloadFormTemplateTask;
+import com.muzima.service.DataSyncService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.view.patients.MuzimaFragmentActivity;
 
 import java.util.Date;
 import java.util.List;
 
-import static android.os.AsyncTask.Status.PENDING;
-import static android.os.AsyncTask.Status.RUNNING;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.CREDENTIALS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.FROM_IDS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TEMPLATES;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
 
-public class AllAvailableFormsListFragment extends FormsListFragment implements DownloadListener<Integer[]>{
+public class AllAvailableFormsListFragment extends FormsListFragment {
     private static final String TAG = "AllAvailableFormsListFragment";
 
     public static final String FORMS_METADATA_LAST_SYNCED_TIME = "formsMetadataSyncedTime";
@@ -39,7 +40,6 @@ public class AllAvailableFormsListFragment extends FormsListFragment implements 
 
     private ActionMode actionMode;
     private boolean actionModeActive = false;
-    private DownloadFormTemplateTask formTemplateDownloadTask;
     private OnTemplateDownloadComplete templateDownloadCompleteListener;
     private TextView syncText;
     private boolean newFormsSyncInProgress;
@@ -70,15 +70,12 @@ public class AllAvailableFormsListFragment extends FormsListFragment implements 
     protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
         View view = inflater.inflate(R.layout.layout_synced_list, container, false);
         syncText = (TextView) view.findViewById(R.id.sync_text);
-        updateSyncText();
+        updateSyncTime();
         return view;
     }
 
     @Override
     public void onDestroy() {
-        if(formTemplateDownloadTask != null){
-            formTemplateDownloadTask.cancel(false);
-        }
         super.onDestroy();
     }
 
@@ -96,31 +93,20 @@ public class AllAvailableFormsListFragment extends FormsListFragment implements 
         actionMode.setTitle(String.valueOf(numOfSelectedForms));
     }
 
-    @Override
-    public void downloadTaskComplete(Integer[] result) {
+    public void onFormTemplateDownloadFinish(){
         if (templateDownloadCompleteListener != null) {
-            templateDownloadCompleteListener.onTemplateDownloadComplete(result);
+            templateDownloadCompleteListener.onTemplateDownloadComplete();
         }
         listAdapter.reloadData();
     }
 
-    @Override
-    public void downloadTaskStart() {
-    }
-
-    @Override
-    public void synchronizationComplete(Integer[] status) {
+    public void onFormMetaDataDownloadFinish() {
         newFormsSyncInProgress = false;
-
-        ((FormsActivity)getActivity()).hideProgressbar();
-        if(status[0] == DownloadMuzimaTask.SUCCESS){
-            updateSyncText();
-        }
-        super.synchronizationComplete(status);
+        listAdapter.reloadData();
+        updateSyncTime();
     }
 
-    @Override
-    public void synchronizationStarted() {
+    public void onFormMetaDataDownloadStart() {
         newFormsSyncInProgress = true;
     }
 
@@ -141,7 +127,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment implements 
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.menu_download:
-                    if(newFormsSyncInProgress){
+                    if (newFormsSyncInProgress) {
                         Toast.makeText(getActivity(), "Action not allowed while sync is in progress", Toast.LENGTH_SHORT).show();
                         if (AllAvailableFormsListFragment.this.actionMode != null) {
                             AllAvailableFormsListFragment.this.actionMode.finish();
@@ -149,27 +135,13 @@ public class AllAvailableFormsListFragment extends FormsListFragment implements 
                         break;
                     }
 
-                    if(!NetworkUtils.isConnectedToNetwork(getActivity())){
+                    if (!NetworkUtils.isConnectedToNetwork(getActivity())) {
                         Toast.makeText(getActivity(), "No connection found, please connect your device and try again", Toast.LENGTH_SHORT).show();
                         return true;
                     }
 
-                    if (formTemplateDownloadTask != null &&
-                            (formTemplateDownloadTask.getStatus() == PENDING || formTemplateDownloadTask.getStatus() == RUNNING)) {
-                        Toast.makeText(getActivity(), "Already fetching form templates, ignored the request", Toast.LENGTH_SHORT).show();
-                        return true;
-                    }
-                    SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
-                    formTemplateDownloadTask = new DownloadFormTemplateTask((MuzimaApplication) getActivity().getApplication());
-                    formTemplateDownloadTask.addDownloadListener(AllAvailableFormsListFragment.this);
-                    String usernameKey = getResources().getString(R.string.preference_username);
-                    String passwordKey = getResources().getString(R.string.preference_password);
-                    String serverKey = getResources().getString(R.string.preference_server);
-                    String[] credentials = new String[]{settings.getString(usernameKey, StringUtil.EMPTY),
-                            settings.getString(passwordKey, StringUtil.EMPTY),
-                            settings.getString(serverKey, StringUtil.EMPTY)};
-                    ((FormsActivity)getActivity()).showProgressBar();
-                    formTemplateDownloadTask.execute(credentials, getSelectedFormsArray());
+                    syncAllFormTemplatesInBackgroundService();
+
                     if (AllAvailableFormsListFragment.this.actionMode != null) {
                         AllAvailableFormsListFragment.this.actionMode.finish();
                     }
@@ -185,12 +157,21 @@ public class AllAvailableFormsListFragment extends FormsListFragment implements 
         }
     }
 
+    private void syncAllFormTemplatesInBackgroundService() {
+        Intent intent = new Intent(getActivity(), DataSyncService.class);
+        intent.putExtra(SYNC_TYPE, SYNC_TEMPLATES);
+        intent.putExtra(CREDENTIALS, ((MuzimaFragmentActivity) getActivity()).getCredentials());
+        intent.putExtra(FROM_IDS, getSelectedFormsArray());
+        ((FormsActivity) getActivity()).showProgressBar();
+        getActivity().startService(intent);
+    }
+
     public void setTemplateDownloadCompleteListener(OnTemplateDownloadComplete templateDownloadCompleteListener) {
         this.templateDownloadCompleteListener = templateDownloadCompleteListener;
     }
 
     public interface OnTemplateDownloadComplete {
-        public void onTemplateDownloadComplete(Integer[] result);
+        public void onTemplateDownloadComplete();
     }
 
     private String[] getSelectedFormsArray() {
@@ -199,13 +180,14 @@ public class AllAvailableFormsListFragment extends FormsListFragment implements 
         return selectedForms.toArray(selectedFormUuids);
     }
 
-    private void updateSyncText() {
+    private void updateSyncTime() {
         SharedPreferences pref = getActivity().getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
         long lastSyncedTime = pref.getLong(FORMS_METADATA_LAST_SYNCED_TIME, NOT_SYNCED_TIME);
         String lastSyncedMsg = "Not synced yet";
-        if(lastSyncedTime != NOT_SYNCED_TIME){
+        if (lastSyncedTime != NOT_SYNCED_TIME) {
             lastSyncedMsg = "Last synced on: " + DateUtils.getFormattedDateTime(new Date(lastSyncedTime));
         }
+        Log.e(TAG, lastSyncedMsg);
         syncText.setText(lastSyncedMsg);
     }
 }

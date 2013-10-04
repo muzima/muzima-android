@@ -112,7 +112,7 @@ public class PatientSummaryActivity extends SherlockActivity {
     }
 
     public void showObservations(View v) {
-        Intent intent = new Intent(PatientSummaryActivity.this, PatientObservationsActivity.class);
+        Intent intent = new Intent(PatientSummaryActivity.this, ObservationsActivity.class);
         intent.putExtra(PATIENT_ID, patientId);
         intent.putExtra(PATIENT_SUMMARY, patientSummary);
         startActivity(intent);
@@ -123,7 +123,7 @@ public class PatientSummaryActivity extends SherlockActivity {
      * Called when the user clicks the Clients Encounters Button or Search Clients Observations Button
      */
     public void clientObservations(View view) {
-        Intent intent = new Intent(this, PatientObservationsActivity.class);
+        Intent intent = new Intent(this, ObservationsActivity.class);
         if (view.getId() == R.id.quickSearch) {
             intent.putExtra("quickSearch", "true");
         }

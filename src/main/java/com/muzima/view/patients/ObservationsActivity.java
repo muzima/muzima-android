@@ -11,7 +11,7 @@ import com.muzima.adapters.observations.ObservationsPagerAdapter;
 import com.muzima.utils.Fonts;
 import com.muzima.view.customViews.PagerSlidingTabStrip;
 
-public class PatientObservationsActivity extends MuzimaFragmentActivity {
+public class ObservationsActivity extends MuzimaFragmentActivity {
 
     public boolean quickSearch = false;
     private ViewPager viewPager;

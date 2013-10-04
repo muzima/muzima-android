@@ -13,4 +13,9 @@
     <dimen name="tag_unselected_height">2dp</dimen>
 
     <dimen name="sync_bar_height">40dp</dimen>
+
+    <dimen name="observation_element_by_concept_height">120dp</dimen>
+    <dimen name="observation_element_by_encounter_height">140dp</dimen>
+    <dimen name="observation_element_padding">2dp</dimen>
+
 </resources>

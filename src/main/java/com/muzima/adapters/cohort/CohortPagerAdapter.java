@@ -6,11 +6,10 @@ import android.support.v4.app.FragmentManager;
 import com.muzima.MuzimaApplication;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.controller.CohortController;
-import com.muzima.listeners.DownloadListener;
 import com.muzima.view.cohort.AllCohortsListFragment;
 import com.muzima.view.cohort.SyncedCohortsListFragment;
 
-public class CohortPagerAdapter extends MuzimaPagerAdapter implements DownloadListener<Integer[]> {
+public class CohortPagerAdapter extends MuzimaPagerAdapter {
     private static final String TAG = "CohortPagerAdapter";
 
     private static final int TAB_SYNCED = 0;
@@ -18,16 +17,6 @@ public class CohortPagerAdapter extends MuzimaPagerAdapter implements DownloadLi
 
     public CohortPagerAdapter(Context context, FragmentManager supportFragmentManager) {
         super(context, supportFragmentManager);
-    }
-
-    @Override
-    public void downloadTaskComplete(Integer[] result) {
-        pagers[TAB_All].fragment.synchronizationComplete(result);
-    }
-
-    @Override
-    public void downloadTaskStart() {
-
     }
 
     public void initPagerViews(){
@@ -42,4 +31,18 @@ public class CohortPagerAdapter extends MuzimaPagerAdapter implements DownloadLi
         pagers[TAB_SYNCED] = new PagerView("Synced", syncedCohortsListFragment);
         pagers[TAB_All] = new PagerView("All", allCohortsListFragment);
     }
+
+    public void onCohortDownloadStart() {
+        ((AllCohortsListFragment)pagers[TAB_All].fragment).onCohortDownloadStart();
+
+    }
+
+    public void onCohortDownloadFinish() {
+        ((AllCohortsListFragment)pagers[TAB_All].fragment).onCohortDownloadFinish();
+    }
+
+    public void onPatientsDownloadFinish() {
+        ((AllCohortsListFragment)pagers[TAB_All].fragment).onPatientDownloadFinish();
+    }
+
 }

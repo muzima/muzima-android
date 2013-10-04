@@ -2,25 +2,21 @@ package com.muzima.adapters.observations;
 
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
+import android.widget.LinearLayout;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
-import com.muzima.util.Constants;
-import com.muzima.utils.DateUtils;
-import com.muzima.utils.Fonts;
 import com.muzima.view.patients.PatientSummaryActivity;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 
-public abstract class  ObservationsAdapter extends ListAdapter<Observation> {
+public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
+    private static final String TAG = "ObservationsAdapter";
     protected final String patientUuid;
     protected ConceptController conceptController;
     protected ObservationController observationController;
@@ -33,68 +29,77 @@ public abstract class  ObservationsAdapter extends ListAdapter<Observation> {
         patientUuid = context.getIntent().getStringExtra(PatientSummaryActivity.PATIENT_ID);
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        if (convertView == null) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            convertView = layoutInflater.inflate(
-                    R.layout.item_observation_list, parent, false);
-            holder = new ViewHolder();
-            holder.description = (TextView) convertView
-                    .findViewById(R.id.observation_description);
-            holder.value = (TextView) convertView
-                    .findViewById(R.id.observation_value);
-            holder.date = (TextView) convertView
-                    .findViewById(R.id.observation_date);
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
+    protected abstract class ViewHolder{
+
+        protected LayoutInflater inflater;
+        protected LinearLayout observationLayout;
+        List<LinearLayout> observationViewHolders;
+
+        protected ViewHolder() {
+            observationViewHolders = new ArrayList<LinearLayout>();
+            inflater = LayoutInflater.from(getContext());
         }
 
-        Observation observation = getItem(position);
+        protected void addEncounterObservations(List<Observation> observations) {
+            for (int i = 0; i < observations.size(); i++) {
+                LinearLayout layout = getLinearLayoutForObservation(i);
+                Observation observation = observations.get(i);
 
-        holder.description.setText(getObservationDescription(observation));
-        holder.description.setTypeface(Fonts.roboto_medium(getContext()));
-
-        holder.value.setText(getObservationValue(observation));
-        holder.value.setTypeface(Fonts.roboto_light(getContext()));
-
-        holder.date.setText(DateUtils.getFormattedDate(observation.getObservationDatetime()));
-        holder.value.setTypeface(Fonts.roboto_light(getContext()));
-
-        return convertView;
-    }
-
-    private String getObservationDescription(Observation observation) {
-        Concept concept = observation.getConcept();
-        return concept.getName();
-    }
-
-    private String getObservationValue(Observation observation) {
-        Concept concept = observation.getConcept();
-        if (concept.isCoded()) {
-            Concept valueCoded = observation.getValueCoded();
-            return valueCoded.getName();
-        } else if (concept.isNumeric()) {
-            NumberFormat numberFormat = NumberFormat.getNumberInstance();
-            DecimalFormat decimalFormat = (DecimalFormat) numberFormat;
-            if (!concept.isPrecise()) {
-                decimalFormat.applyPattern("#");
-            } else {
-                decimalFormat.applyPattern("#.###");
+                setObservation(layout, observation);
             }
-            return decimalFormat.format(observation.getValueNumeric());
-        } else if (concept.isDatetime()) {
-            return DateUtils.getFormattedDateTime(observation.getValueDatetime());
-        } else {
-            return observation.getValueText();
-        }
-    }
 
-    protected static class ViewHolder {
-        TextView description;
-        TextView value;
-        TextView date;
+            shrink(observations.size());
+        }
+
+        protected LinearLayout getLinearLayoutForObservation(int i) {
+            LinearLayout layout;
+            if (observationViewHolders.size() <= i) {
+                layout = (LinearLayout) inflater.inflate(getObservationLayout(), null);
+                observationViewHolders.add(layout);
+                observationLayout.addView(layout);
+            } else {
+                layout = observationViewHolders.get(i);
+            }
+
+            setStyle(layout);
+            return layout;
+        }
+
+        protected abstract void setObservation(LinearLayout layout, Observation observation);
+
+        protected abstract int getObservationLayout();
+
+        private void shrink(int startIndex) {
+            List<LinearLayout> holdersToRemove = new ArrayList<LinearLayout>();
+            for (int i = startIndex; i < observationViewHolders.size(); i++) {
+                holdersToRemove.add(observationViewHolders.get(i));
+            }
+            removeObservations(holdersToRemove);
+        }
+
+        private void setStyle(LinearLayout layout) {
+            int observationPadding = (int) getContext().getResources().getDimension(R.dimen.observation_element_padding);
+            int width = (int) getContext().getResources().getDimension(getObservationElementHeight());
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, width);
+            layoutParams.setMargins(observationPadding, observationPadding, observationPadding, observationPadding);
+            layout.setLayoutParams(layoutParams);
+        }
+
+        protected abstract int getObservationElementHeight();
+
+        private void removeObservations(List<LinearLayout> holdersToRemove) {
+            observationViewHolders.removeAll(holdersToRemove);
+            for (LinearLayout linearLayout : holdersToRemove) {
+                observationLayout.removeView(linearLayout);
+            }
+        }
+
+        protected String getConceptDisplay(Concept concept) {
+            String text = concept.getName();
+            if(concept.getConceptType().getName().equals(Concept.NUMERIC_TYPE)){
+                text += " (" + concept.getUnit() +")";
+            }
+            return text;
+        }
     }
 }

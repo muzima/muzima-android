@@ -2,13 +2,17 @@ package com.muzima.adapters.forms;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.controller.FormController;
-import com.muzima.listeners.DownloadListener;
-import com.muzima.view.forms.*;
+import com.muzima.view.forms.AllAvailableFormsListFragment;
+import com.muzima.view.forms.CompleteFormsListFragment;
+import com.muzima.view.forms.DownloadedFormsListFragment;
+import com.muzima.view.forms.FormsListFragment;
+import com.muzima.view.forms.IncompleteFormsListFragment;
 
-public class FormsPagerAdapter extends MuzimaPagerAdapter implements DownloadListener<Integer[]>, TagsListAdapter.TagsChangedListener {
+public class FormsPagerAdapter extends MuzimaPagerAdapter implements TagsListAdapter.TagsChangedListener {
     public static final int TAB_All = 0;
     public static final int TAB_DOWNLOADED = 1;
     public static final int TAB_INCOMPLETE = 2;
@@ -18,14 +22,16 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements DownloadLis
         super(context, fm);
     }
 
-    @Override
-    public void downloadTaskComplete(Integer[] result) {
-        pagers[TAB_All].fragment.synchronizationComplete(result);
+    public void onFormMetadataDownloadStart(){
+        ((AllAvailableFormsListFragment)pagers[TAB_All].fragment).onFormMetaDataDownloadStart();
     }
 
-    @Override
-    public void downloadTaskStart() {
-        pagers[TAB_All].fragment.synchronizationStarted();
+    public void onFormMetadataDownloadFinish(){
+        ((AllAvailableFormsListFragment)pagers[TAB_All].fragment).onFormMetaDataDownloadFinish();
+    }
+
+    public void onFormTemplateDownloadFinish() {
+        ((AllAvailableFormsListFragment)pagers[TAB_All].fragment).onFormTemplateDownloadFinish();
     }
 
     @Override

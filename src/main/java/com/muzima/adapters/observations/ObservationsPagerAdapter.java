@@ -9,7 +9,7 @@ import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.view.observations.ObservationByEncountersFragment;
-import com.muzima.view.observations.ObservationsByDateListFragment;
+import com.muzima.view.observations.ObservationsByConceptFragment;
 import com.muzima.view.patients.ObservationsListFragment;
 
 public class ObservationsPagerAdapter extends MuzimaPagerAdapter implements SearchView.OnQueryTextListener {
@@ -28,10 +28,10 @@ public class ObservationsPagerAdapter extends MuzimaPagerAdapter implements Sear
         ObservationController observationController = ((MuzimaApplication) context.getApplicationContext()).getObservationController();
 
         ObservationsListFragment observationByDateListFragment =
-                ObservationsByDateListFragment.newInstance(conceptController, observationController);
+                ObservationsByConceptFragment.newInstance(conceptController, observationController);
         ObservationsListFragment observationByEncountersFragment = ObservationByEncountersFragment.newInstance(observationController);
 
-        pagers[TAB_BY_DATE] = new PagerView("By Date", observationByDateListFragment);
+        pagers[TAB_BY_DATE] = new PagerView("By Concepts", observationByDateListFragment);
         pagers[TAB_BY_ENCOUNTERS] = new PagerView("By Encounters", observationByEncountersFragment);
 
     }

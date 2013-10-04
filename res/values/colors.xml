@@ -16,4 +16,7 @@
 
     <color name="list_section_header_background">#bb09A9E4</color>
 
+    <color name="observation_scroller_background">#d4d4d4</color>
+    <color name="observation_by_encounter_header_background">#888888</color>
+
 </resources>

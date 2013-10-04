@@ -29,8 +29,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
     }
 
     @Override
-    public void onTemplateDownloadComplete(Integer[] result) {
-        ((FormsActivity)getActivity()).hideProgressbar();
-        synchronizationComplete(result);
+    public void onTemplateDownloadComplete() {
+        listAdapter.reloadData();
     }
 }
