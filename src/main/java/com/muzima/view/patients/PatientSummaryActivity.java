@@ -153,12 +153,10 @@ public class PatientSummaryActivity extends SherlockActivity {
 
         @Override
         protected void onPostExecute(PatientSummaryActivityMetadata patientSummaryActivityMetadata) {
-            TextView formsCount = (TextView) findViewById(R.id.formsCount);
-            formsCount.setText(Integer.toString(patientSummaryActivityMetadata.recommendedForms));
-
             TextView formsDescription = (TextView) findViewById(R.id.formDescription);
             formsDescription.setText(patientSummaryActivityMetadata.incompleteForms + " Incomplete, "
-                    + patientSummaryActivityMetadata.completeForms + " Complete");
+                    + patientSummaryActivityMetadata.completeForms + " Complete, "
+                    + patientSummaryActivityMetadata.recommendedForms + " Recommended");
         }
     }
 
