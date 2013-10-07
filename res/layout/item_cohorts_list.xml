@@ -12,10 +12,4 @@
             android:id="@+id/cohort_name"
             style="@style/ListHeader">
     </TextView>
-
-    <TextView
-            android:id="@+id/cohort_description"
-            style="@style/ListDescription">
-    </TextView>
-
 </LinearLayout>

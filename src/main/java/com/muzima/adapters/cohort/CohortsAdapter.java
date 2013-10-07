@@ -31,8 +31,6 @@ public abstract class CohortsAdapter extends ListAdapter<Cohort> {
             holder = new ViewHolder();
             holder.name = (TextView) convertView
                     .findViewById(R.id.cohort_name);
-            holder.description = (TextView) convertView
-                    .findViewById(R.id.cohort_description);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -43,15 +41,11 @@ public abstract class CohortsAdapter extends ListAdapter<Cohort> {
         holder.name.setText(cohort.getName());
         holder.name.setTypeface(Fonts.roboto_medium(getContext()));
 
-        holder.description.setText("## patients");
-        holder.description.setTypeface(Fonts.roboto_light(getContext()));
-
         return convertView;
     }
 
     protected static class ViewHolder {
         TextView name;
-        TextView description;
     }
 
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
