@@ -173,16 +173,11 @@ public class MainActivity extends BroadcastListenerActivity {
 
         @Override
         protected void onPostExecute(HomeActivityMetadata homeActivityMetadata) {
-            TextView cohortsCountView = (TextView) mMainView.findViewById(R.id.cohortsCount);
-            cohortsCountView.setText(homeActivityMetadata.syncedCohorts + "/" + homeActivityMetadata.totalCohorts);
             TextView cohortsDescriptionView = (TextView) mMainView.findViewById(R.id.cohortDescription);
             cohortsDescriptionView.setText(homeActivityMetadata.syncedCohorts + " Synced, " + homeActivityMetadata.totalCohorts + " Total");
 
-            TextView patientsCountView = (TextView) mMainView.findViewById(R.id.patientsCount);
-            patientsCountView.setText(homeActivityMetadata.syncedPatients + "/##");
-
-            TextView formsCount = (TextView) mMainView.findViewById(R.id.formsCount);
-            formsCount.setText(homeActivityMetadata.downloadedForms + "/" + homeActivityMetadata.totalForms);
+            TextView patientDescriptionView = (TextView) mMainView.findViewById(R.id.patientDescription);
+            patientDescriptionView.setText(homeActivityMetadata.syncedPatients + " Synced");
 
             TextView formsDescription = (TextView) mMainView.findViewById(R.id.formDescription);
             formsDescription.setText(homeActivityMetadata.incompleteForms + " Incomplete, "

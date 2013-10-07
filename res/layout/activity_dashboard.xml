@@ -19,20 +19,11 @@
 
         <LinearLayout style="@style/SummaryItemRow">
 
-
             <TextView
                     style="@style/DashboardListItemPrimaryText"
-                    android:layout_weight=".7"
+                    android:layout_weight="1"
                     android:gravity="left"
                     android:text="@string/cohorts">
-            </TextView>
-
-            <TextView
-                    android:id="@+id/cohortsCount"
-                    style="@style/DashboardListItemPrimaryText"
-                    android:layout_weight=".3"
-                    android:gravity="right"
-                    android:text="##">
             </TextView>
         </LinearLayout>
 
@@ -55,24 +46,16 @@
 
             <TextView
                     style="@style/DashboardListItemPrimaryText"
-                    android:layout_weight=".7"
+                    android:layout_weight="1"
                     android:gravity="left"
                     android:text="@string/patients">
-            </TextView>
-
-            <TextView
-                    android:id="@+id/patientsCount"
-                    style="@style/DashboardListItemPrimaryText"
-                    android:layout_weight=".3"
-                    android:gravity="right"
-                    android:text="##">
             </TextView>
         </LinearLayout>
 
         <TextView
                 android:id="@+id/patientDescription"
                 style="@style/DashboardItemDescription"
-                android:text="## Overdue, ## Upcoming(Next 7 days)">
+                android:text="## Synced">
         </TextView>
 
     </LinearLayout>
@@ -88,17 +71,9 @@
 
             <TextView
                     style="@style/DashboardListItemPrimaryText"
-                    android:layout_weight=".7"
+                    android:layout_weight="1"
                     android:gravity="left"
                     android:text="@string/forms">
-            </TextView>
-
-            <TextView
-                    android:id="@+id/formsCount"
-                    style="@style/DashboardListItemPrimaryText"
-                    android:layout_weight=".3"
-                    android:gravity="right"
-                    android:text="##">
             </TextView>
         </LinearLayout>
 
