@@ -23,7 +23,7 @@
 
         <activity
                 android:name="com.muzima.view.MainActivity"
-                android:label="@string/app_name">
+                android:label="@string/homepage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
