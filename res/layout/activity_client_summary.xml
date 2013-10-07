@@ -43,28 +43,15 @@
 
             <TextView
                     style="@style/DashboardListItemPrimaryText"
-                    android:layout_weight=".7"
+                    android:layout_weight="1"
                     android:gravity="left"
                     android:textColor="#eeeeee"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="@string/observations">
             </TextView>
-
-            <TextView
-                    android:id="@+id/cohortsCount"
-                    style="@style/DashboardListItemPrimaryText"
-                    android:layout_weight=".3"
-                    android:gravity="right"
-                    android:text="##">
-            </TextView>
         </LinearLayout>
-
-        <TextView
-                android:id="@+id/cohortDescription"
-                style="@style/DashboardItemDescription"
-                android:text="##">
-        </TextView>
-
     </LinearLayout>
 
     <View style="@style/DividerLine">
