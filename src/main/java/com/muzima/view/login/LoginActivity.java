@@ -204,7 +204,8 @@ public class LoginActivity extends SherlockActivity {
                 finish();
             } else {
                 Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
-                if (authenticatingText.getVisibility() == View.VISIBLE) {
+                if (authenticatingText.getVisibility() == View.VISIBLE || flipFromLoginToAuthAnimator.isRunning()) {
+                    flipFromLoginToAuthAnimator.cancel();
                     flipFromAuthToLoginAnimator.start();
                 }
             }
