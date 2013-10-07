@@ -20,12 +20,12 @@ import static com.muzima.utils.Constants.COHORT_PREFIX_PREF;
 import static com.muzima.utils.Constants.COHORT_PREFIX_PREF_KEY;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
 
-public class DownloadService {
-    private static final String TAG = "DownloadService";
+public class MuzimaSyncService {
+    private static final String TAG = "MuzimaSyncService";
 
     private MuzimaApplication muzimaApplication;
 
-    public DownloadService(MuzimaApplication muzimaContext) {
+    public MuzimaSyncService(MuzimaApplication muzimaContext) {
         this.muzimaApplication = muzimaContext;
     }
 
@@ -41,10 +41,13 @@ public class DownloadService {
                 muzimaContext.authenticate(username, password, server);
             }
         } catch (ConnectException e) {
+            Log.e(TAG, "ConnectException Exception thrown while authentication " + e.getMessage());
             return CONNECTION_ERROR;
         } catch (ParseException e) {
+            Log.e(TAG, "ParseException Exception thrown while authentication " + e.getMessage());
             return PARSING_ERROR;
         } catch (IOException e) {
+            Log.e(TAG, "IOException Exception thrown while authentication " + e.getMessage());
             return AUTHENTICATION_ERROR;
         } finally {
             if (muzimaContext != null)

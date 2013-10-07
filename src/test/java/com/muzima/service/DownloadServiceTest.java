@@ -56,7 +56,7 @@ import static org.mockito.Mockito.when;
 @RunWith(CustomTestRunner.class)
 public class DownloadServiceTest {
 
-    private DownloadService downloadService;
+    private MuzimaSyncService muzimaSyncService;
     private MuzimaApplication muzimaApplication;
     private Context muzimaContext;
     private FormController formContorller;
@@ -75,7 +75,7 @@ public class DownloadServiceTest {
         observationController = mock(ObservationController.class);
         sharedPref = mock(SharedPreferences.class);
 
-        downloadService = new DownloadService(muzimaApplication);
+        muzimaSyncService = new MuzimaSyncService(muzimaApplication);
         when(muzimaApplication.getMuzimaContext()).thenReturn(muzimaContext);
         when(muzimaApplication.getFormController()).thenReturn(formContorller);
         when(muzimaApplication.getCohortController()).thenReturn(cohortController);
@@ -87,7 +87,7 @@ public class DownloadServiceTest {
     public void authenticate_shouldReturnSuccessStatusIfAuthenticated() throws Exception {
         String[] credentials = new String[]{"username", "password", "url"};
 
-        assertThat(downloadService.authenticate(credentials), is(AUTHENTICATION_SUCCESS));
+        assertThat(muzimaSyncService.authenticate(credentials), is(AUTHENTICATION_SUCCESS));
     }
 
     @Test
@@ -97,14 +97,14 @@ public class DownloadServiceTest {
         when(muzimaContext.isAuthenticated()).thenReturn(true);
 
         verify(muzimaContext, times(0)).authenticate(anyString(), anyString(), anyString());
-        assertThat(downloadService.authenticate(credentials), is(AUTHENTICATION_SUCCESS));
+        assertThat(muzimaSyncService.authenticate(credentials), is(AUTHENTICATION_SUCCESS));
     }
 
     @Test
     public void authenticate_shouldCallCloseSessionIfAuthenticationSucceed() throws Exception {
         String[] credentials = new String[]{"username", "password", "url"};
 
-        downloadService.authenticate(credentials);
+        muzimaSyncService.authenticate(credentials);
 
         verify(muzimaContext).closeSession();
     }
@@ -114,7 +114,7 @@ public class DownloadServiceTest {
         String[] credentials = new String[]{"username", "password", "url"};
 
         doThrow(new ParseException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2]);
-        downloadService.authenticate(credentials);
+        muzimaSyncService.authenticate(credentials);
 
         verify(muzimaContext).closeSession();
     }
@@ -125,7 +125,7 @@ public class DownloadServiceTest {
 
         doThrow(new ParseException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2]);
 
-        assertThat(downloadService.authenticate(credentials), is(PARSING_ERROR));
+        assertThat(muzimaSyncService.authenticate(credentials), is(PARSING_ERROR));
     }
 
     @Test
@@ -134,7 +134,7 @@ public class DownloadServiceTest {
 
         doThrow(new ConnectException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2]);
 
-        assertThat(downloadService.authenticate(credentials), is(CONNECTION_ERROR));
+        assertThat(muzimaSyncService.authenticate(credentials), is(CONNECTION_ERROR));
     }
 
     @Test
@@ -143,7 +143,7 @@ public class DownloadServiceTest {
 
         doThrow(new IOException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2]);
 
-        assertThat(downloadService.authenticate(credentials), is(AUTHENTICATION_ERROR));
+        assertThat(muzimaSyncService.authenticate(credentials), is(AUTHENTICATION_ERROR));
     }
 
     @Test
@@ -151,7 +151,7 @@ public class DownloadServiceTest {
         List<Form> forms = new ArrayList<Form>();
         when(formContorller.downloadAllForms()).thenReturn(forms);
 
-        downloadService.downloadForms();
+        muzimaSyncService.downloadForms();
 
         verify(formContorller).downloadAllForms();
         verify(formContorller).deleteAllForms();
@@ -168,25 +168,25 @@ public class DownloadServiceTest {
         }};
         when(formContorller.downloadAllForms()).thenReturn(forms);
 
-        assertThat(downloadService.downloadForms(), is(result));
+        assertThat(muzimaSyncService.downloadForms(), is(result));
     }
 
     @Test
     public void downloadForms_shouldReturnDownloadErrorIfDownloadExceptionOccur() throws Exception, FormController.FormFetchException {
         doThrow(new FormController.FormFetchException(null)).when(formContorller).downloadAllForms();
-        assertThat(downloadService.downloadForms()[0], is(DOWNLOAD_ERROR));
+        assertThat(muzimaSyncService.downloadForms()[0], is(DOWNLOAD_ERROR));
     }
 
     @Test
     public void downloadForms_shouldReturnSaveErrorIfSaveExceptionOccur() throws Exception, FormController.FormSaveException {
         doThrow(new FormController.FormSaveException(null)).when(formContorller).saveAllForms(anyList());
-        assertThat(downloadService.downloadForms()[0], is(SAVE_ERROR));
+        assertThat(muzimaSyncService.downloadForms()[0], is(SAVE_ERROR));
     }
 
     @Test
     public void downloadForms_shouldReturnDeleteErrorIfDeleteExceptionOccur() throws Exception, FormController.FormDeleteException {
         doThrow(new FormController.FormDeleteException(null)).when(formContorller).deleteAllForms();
-        assertThat(downloadService.downloadForms()[0], is(DELETE_ERROR));
+        assertThat(muzimaSyncService.downloadForms()[0], is(DELETE_ERROR));
     }
 
     @Test
@@ -195,7 +195,7 @@ public class DownloadServiceTest {
         List<FormTemplate> formTemplates = new ArrayList<FormTemplate>();
         when(formContorller.downloadFormTemplates(formTemplateUuids)).thenReturn(formTemplates);
 
-        downloadService.downloadFormTemplates(formTemplateUuids);
+        muzimaSyncService.downloadFormTemplates(formTemplateUuids);
 
         verify(formContorller).downloadFormTemplates(formTemplateUuids);
         verify(formContorller).replaceFormTemplates(formTemplates);
@@ -213,21 +213,21 @@ public class DownloadServiceTest {
         String[] formIds = {};
         when(formContorller.downloadFormTemplates(formIds)).thenReturn(formTemplates);
 
-        assertThat(downloadService.downloadFormTemplates(formIds), is(result));
+        assertThat(muzimaSyncService.downloadFormTemplates(formIds), is(result));
     }
 
     @Test
     public void downloadFormTemplates_shouldReturnDownloadErrorIfDownloadExceptionOccur() throws FormController.FormFetchException {
         String[] formUuids = {};
         doThrow(new FormController.FormFetchException(null)).when(formContorller).downloadFormTemplates(formUuids);
-        assertThat(downloadService.downloadFormTemplates(formUuids)[0], is(DOWNLOAD_ERROR));
+        assertThat(muzimaSyncService.downloadFormTemplates(formUuids)[0], is(DOWNLOAD_ERROR));
     }
 
     @Test
     public void downloadFormTemplates_shouldReturnSaveErrorIfSaveExceptionOccur() throws FormController.FormSaveException, FormController.FormFetchException {
         String[] formUuids = {};
         doThrow(new FormController.FormSaveException(null)).when(formContorller).replaceFormTemplates(anyList());
-        assertThat(downloadService.downloadFormTemplates(formUuids)[0], is(SAVE_ERROR));
+        assertThat(muzimaSyncService.downloadFormTemplates(formUuids)[0], is(SAVE_ERROR));
     }
 
 
@@ -239,7 +239,7 @@ public class DownloadServiceTest {
         when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
         when(sharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
 
-        downloadService.downloadCohorts();
+        muzimaSyncService.downloadCohorts();
 
         verify(cohortController).downloadAllCohorts();
         verify(cohortController).deleteAllCohorts();
@@ -258,7 +258,7 @@ public class DownloadServiceTest {
         when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
         when(sharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(cohortPrefixes);
 
-        downloadService.downloadCohorts();
+        muzimaSyncService.downloadCohorts();
 
         verify(cohortController).downloadCohortsByPrefix(new ArrayList<String>(cohortPrefixes));
         verify(cohortController).deleteAllCohorts();
@@ -278,7 +278,7 @@ public class DownloadServiceTest {
         when(sharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
         when(cohortController.downloadAllCohorts()).thenReturn(cohorts);
 
-        assertThat(downloadService.downloadCohorts(), is(result));
+        assertThat(muzimaSyncService.downloadCohorts(), is(result));
     }
 
     @Test
@@ -287,7 +287,7 @@ public class DownloadServiceTest {
         when(sharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
         doThrow(new CohortController.CohortDownloadException(null)).when(cohortController).downloadAllCohorts();
 
-        assertThat(downloadService.downloadCohorts()[0], is(DOWNLOAD_ERROR));
+        assertThat(muzimaSyncService.downloadCohorts()[0], is(DOWNLOAD_ERROR));
     }
 
     @Test
@@ -296,7 +296,7 @@ public class DownloadServiceTest {
         when(sharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
         doThrow(new CohortController.CohortSaveException(null)).when(cohortController).saveAllCohorts(new ArrayList<Cohort>());
 
-        assertThat(downloadService.downloadCohorts()[0], is(SAVE_ERROR));
+        assertThat(muzimaSyncService.downloadCohorts()[0], is(SAVE_ERROR));
     }
 
     @Test
@@ -305,7 +305,7 @@ public class DownloadServiceTest {
         when(sharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
         doThrow(new CohortController.CohortDeleteException(null)).when(cohortController).deleteAllCohorts();
 
-        assertThat(downloadService.downloadCohorts()[0], is(DELETE_ERROR));
+        assertThat(muzimaSyncService.downloadCohorts()[0], is(DELETE_ERROR));
     }
 
     @Test
@@ -324,7 +324,7 @@ public class DownloadServiceTest {
 
         when(cohortController.downloadCohortData(cohortUuids)).thenReturn(cohortDataList);
 
-        downloadService.downloadPatientsForCohorts(cohortUuids);
+        muzimaSyncService.downloadPatientsForCohorts(cohortUuids);
 
         verify(cohortController).downloadCohortData(cohortUuids);
         verify(cohortController).deleteCohortMembers(cohortUuids[0]);
@@ -353,7 +353,7 @@ public class DownloadServiceTest {
 
         when(cohortController.downloadCohortData(cohortUuids)).thenReturn(cohortDataList);
 
-        int[] result = downloadService.downloadPatientsForCohorts(cohortUuids);
+        int[] result = muzimaSyncService.downloadPatientsForCohorts(cohortUuids);
         assertThat(result[0], is(SUCCESS));
         assertThat(result[1], is(3));
         assertThat(result[2], is(2));
@@ -365,7 +365,7 @@ public class DownloadServiceTest {
 
         doThrow(new CohortController.CohortDownloadException(null)).when(cohortController).downloadCohortData(cohortUuids);
 
-        assertThat(downloadService.downloadPatientsForCohorts(cohortUuids)[0], is(DOWNLOAD_ERROR));
+        assertThat(muzimaSyncService.downloadPatientsForCohorts(cohortUuids)[0], is(DOWNLOAD_ERROR));
     }
 
     @Test
@@ -386,7 +386,7 @@ public class DownloadServiceTest {
         when(cohortController.downloadCohortData(cohortUuids)).thenReturn(cohortDataList);
         doThrow(new CohortController.CohortReplaceException(null)).when(cohortController).addCohortMembers(anyList());
 
-        assertThat(downloadService.downloadPatientsForCohorts(cohortUuids)[0], is(REPLACE_ERROR));
+        assertThat(muzimaSyncService.downloadPatientsForCohorts(cohortUuids)[0], is(REPLACE_ERROR));
     }
 
     @Test
@@ -407,7 +407,7 @@ public class DownloadServiceTest {
         when(cohortController.downloadCohortData(cohortUuids)).thenReturn(cohortDataList);
         doThrow(new PatientController.PatientReplaceException(null)).when(patientController).replacePatients(anyList());
 
-        assertThat(downloadService.downloadPatientsForCohorts(cohortUuids)[0], is(REPLACE_ERROR));
+        assertThat(muzimaSyncService.downloadPatientsForCohorts(cohortUuids)[0], is(REPLACE_ERROR));
     }
 
     @Test
@@ -445,13 +445,13 @@ public class DownloadServiceTest {
         when(observationController.downloadObservations("patient2", "weight")).thenReturn(observationList2ForWeight);
         when(observationController.downloadObservations("patient2", "temp")).thenReturn(observationList2ForTemp);
 
-        downloadService.downloadObservationsForPatients(cohortUuids);
+        muzimaSyncService.downloadObservationsForPatients(cohortUuids);
 
         verify(observationController).downloadObservations("patient1", "weight");
         verify(observationController).downloadObservations("patient1", "temp");
         verify(observationController).downloadObservations("patient2", "weight");
         verify(observationController).downloadObservations("patient2", "temp");
-        verify(observationController).replaceObservations(downloadService.getPatientUuids(patients), allObservations);
+        verify(observationController).replaceObservations(muzimaSyncService.getPatientUuids(patients), allObservations);
         verifyNoMoreInteractions(observationController);
     }
 
@@ -477,7 +477,7 @@ public class DownloadServiceTest {
         when(sharedPref.getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>())).thenReturn(concepts);
         when(observationController.downloadObservations("patient1", "weight")).thenReturn(allObservations);
 
-        int[] result = downloadService.downloadObservationsForPatients(cohortUuids);
+        int[] result = muzimaSyncService.downloadObservationsForPatients(cohortUuids);
 
         assertThat(result[0], is(SUCCESS));
         assertThat(result[1], is(2));
@@ -489,7 +489,7 @@ public class DownloadServiceTest {
 
         doThrow(new PatientController.PatientLoadException(null)).when(patientController).getPatientsForCohorts(cohortUuids);
 
-        int[] result = downloadService.downloadObservationsForPatients(cohortUuids);
+        int[] result = muzimaSyncService.downloadObservationsForPatients(cohortUuids);
         assertThat(result[0], is(LOAD_ERROR));
     }
 
@@ -510,7 +510,7 @@ public class DownloadServiceTest {
         when(sharedPref.getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>())).thenReturn(concepts);
         doThrow(new ObservationController.DownloadObservationException(null)).when(observationController).downloadObservations(anyString(),anyString());
 
-        int[] result = downloadService.downloadObservationsForPatients(cohortUuids);
+        int[] result = muzimaSyncService.downloadObservationsForPatients(cohortUuids);
         assertThat(result[0], is(DOWNLOAD_ERROR));
     }
 
@@ -520,7 +520,7 @@ public class DownloadServiceTest {
 
         doThrow(new ObservationController.ReplaceObservationException(null)).when(observationController).replaceObservations(anyList(), anyList());
 
-        int[] result = downloadService.downloadObservationsForPatients(cohortUuids);
+        int[] result = muzimaSyncService.downloadObservationsForPatients(cohortUuids);
         assertThat(result[0], is(REPLACE_ERROR));
     }
 

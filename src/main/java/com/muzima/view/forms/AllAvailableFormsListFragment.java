@@ -160,7 +160,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     private void syncAllFormTemplatesInBackgroundService() {
         Intent intent = new Intent(getActivity(), DataSyncService.class);
         intent.putExtra(SYNC_TYPE, SYNC_TEMPLATES);
-        intent.putExtra(CREDENTIALS, ((MuzimaFragmentActivity) getActivity()).getCredentials());
+        intent.putExtra(CREDENTIALS, ((MuzimaFragmentActivity) getActivity()).credentials().getCredentialsArray());
         intent.putExtra(FROM_IDS, getSelectedFormsArray());
         ((FormsActivity) getActivity()).showProgressBar();
         getActivity().startService(intent);

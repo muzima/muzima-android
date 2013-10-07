@@ -1,4 +1,4 @@
-package com.muzima;
+package com.muzima.view;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,8 +7,6 @@ import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
-
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_ERROR;
@@ -21,7 +19,7 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
 
-public abstract class BroadcastListenerActivity extends SherlockFragmentActivity {
+public abstract class BroadcastListenerActivity extends SecuredActivity {
     private static final String TAG = "BroadcastListenerActivity";
     public static final String MESSAGE_SENT_ACTION = "com.muzima.MESSAGE_RECEIVED_ACTION";
 

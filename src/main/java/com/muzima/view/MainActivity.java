@@ -1,23 +1,24 @@
 package com.muzima.view;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.muzima.BroadcastListenerActivity;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
+import com.muzima.search.api.util.StringUtil;
 import com.muzima.view.cohort.CohortActivity;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.patients.PatientsListActivity;
@@ -31,7 +32,7 @@ public class MainActivity extends BroadcastListenerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mMainView = getLayoutInflater().inflate(R.layout.activity_dashboard,null);
+        mMainView = getLayoutInflater().inflate(R.layout.activity_dashboard, null);
         setContentView(mMainView);
 
         setupActionbar();
@@ -57,8 +58,14 @@ public class MainActivity extends BroadcastListenerActivity {
                 startActivity(intent);
                 return true;
             case R.id.action_logout:
-                intent = new Intent(this, LogoutActivity.class);
-                startActivity(intent);
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                String passwordKey = getResources().getString(R.string.preference_password);
+                settings.edit()
+                        .putString(passwordKey, StringUtil.EMPTY)
+                        .commit();
+
+                launchLoginActivity(false);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -83,7 +90,7 @@ public class MainActivity extends BroadcastListenerActivity {
 
     @Override
     protected void onStop() {
-        if(mBackgroundQueryTask != null){
+        if (mBackgroundQueryTask != null) {
             mBackgroundQueryTask.cancel(true);
         }
         super.onStop();
@@ -183,7 +190,7 @@ public class MainActivity extends BroadcastListenerActivity {
         }
     }
 
-    private static class HomeActivityMetadata{
+    private static class HomeActivityMetadata {
         int totalCohorts;
         int syncedCohorts;
         int totalPatients;
@@ -205,6 +212,7 @@ public class MainActivity extends BroadcastListenerActivity {
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(false);
     }
+
     private void executeBackgroundTask() {
         mBackgroundQueryTask = new BackgroundQueryTask();
         mBackgroundQueryTask.execute();

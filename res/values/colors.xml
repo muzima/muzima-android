@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="primary_color">#105b63</color>
     <color name="theme_color">#333333</color>
     <color name="secondary_text">#888888</color>
     <color name="dark_button_background">#262626</color>
@@ -18,5 +19,9 @@
 
     <color name="observation_scroller_background">#d4d4d4</color>
     <color name="observation_by_encounter_header_background">#888888</color>
+
+    <color name="login_button_color">#0d484e</color>
+    <color name="error_text_color">#ffaf6267</color>
+
 
 </resources>

@@ -129,7 +129,7 @@ public class CohortActivity extends MuzimaFragmentActivity {
     private void syncCohortsInBackgroundService() {
         Intent intent = new Intent(this, DataSyncService.class);
         intent.putExtra(SYNC_TYPE, SYNC_COHORTS);
-        intent.putExtra(CREDENTIALS, getCredentials());
+        intent.putExtra(CREDENTIALS, credentials().getCredentialsArray());
         syncInProgress = true;
         cohortPagerAdapter.onCohortDownloadStart();
         showProgressBar();

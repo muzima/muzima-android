@@ -8,6 +8,7 @@ import com.muzima.api.context.ContextFactory;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
 import com.muzima.controller.*;
+import com.muzima.service.MuzimaSyncService;
 import com.muzima.util.Constants;
 
 import org.acra.ACRA;
@@ -28,6 +29,7 @@ public class MuzimaApplication extends Application{
     private ConceptController conceptController;
     private ObservationController observationController;
     private EncounterController encounterController;
+    private MuzimaSyncService muzimaSyncService;
 
     static {
         // see http://rtyley.github.io/spongycastle/
@@ -119,6 +121,13 @@ public class MuzimaApplication extends Application{
             }
         }
         return encounterController;
+    }
+
+    public MuzimaSyncService getMuzimaSyncService() {
+        if(muzimaSyncService == null){
+            muzimaSyncService = new MuzimaSyncService(this);
+        }
+        return muzimaSyncService;
     }
 
     private String getConfigurationString() throws IOException {

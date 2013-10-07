@@ -187,7 +187,7 @@ public class FormsActivity extends FormsActivityBase {
     private void syncAllFormsInBackgroundService() {
         Intent intent = new Intent(this, DataSyncService.class);
         intent.putExtra(SYNC_TYPE, SYNC_FORMS);
-        intent.putExtra(CREDENTIALS, getCredentials());
+        intent.putExtra(CREDENTIALS, credentials().getCredentialsArray());
         syncInProgress = true;
         ((FormsPagerAdapter) formsPagerAdapter).onFormMetadataDownloadStart();
         showProgressBar();
