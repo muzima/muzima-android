@@ -10,25 +10,6 @@
             style="@style/DashboardTitleText"
             android:text="Last, First"/>
 
-    <LinearLayout style="@style/SummaryItemRow">
-
-        <TextView
-                android:id="@+id/quickSearch"
-                style="@style/DashboardTextButton"
-                android:drawableLeft="@drawable/ic_search"
-                android:singleLine="true"
-                android:text="@string/search_clients">
-        </TextView>
-
-        <TextView
-                style="@style/DashboardTextButton"
-                android:drawableLeft="@drawable/ic_action_add_client"
-                android:singleLine="true"
-                android:text="@string/register_new_patient">
-        </TextView>
-
-    </LinearLayout>
-
     <View style="@style/DividerLine">
     </View>
 
