@@ -124,9 +124,6 @@ public class PatientSummaryActivity extends SherlockActivity {
      */
     public void clientObservations(View view) {
         Intent intent = new Intent(this, ObservationsActivity.class);
-        if (view.getId() == R.id.quickSearch) {
-            intent.putExtra("quickSearch", "true");
-        }
         startActivity(intent);
     }
 

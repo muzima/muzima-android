@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
-
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -114,9 +113,6 @@ public class MainActivity extends BroadcastListenerActivity {
      */
     public void patientList(View view) {
         Intent intent = new Intent(this, PatientsListActivity.class);
-        if (view.getId() == R.id.quickSearch) {
-            intent.putExtra(PatientsListActivity.QUICK_SEARCH, "true");
-        }
         startActivity(intent);
     }
 

@@ -31,25 +31,6 @@
                 android:layout_gravity="right"/>
     </LinearLayout>
 
-    <LinearLayout style="@style/SummaryItemRow">
-
-        <TextView
-                android:id="@+id/quickSearch"
-                style="@style/DashboardTextButton"
-                android:drawableLeft="@drawable/ic_search"
-                android:singleLine="true"
-                android:text="@string/search_observations">
-        </TextView>
-
-        <TextView
-                style="@style/DashboardTextButton"
-                android:drawableLeft="@drawable/ic_list"
-                android:singleLine="true"
-                android:text="@string/view_encounters">
-        </TextView>
-
-    </LinearLayout>
-
     <View style="@style/DividerLine">
     </View>
 
