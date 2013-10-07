@@ -344,5 +344,86 @@
         <item name="android:orientation">horizontal</item>
     </style>
 
+    <!--Login Screen-->
+    <style name="LoginActivityLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@color/primary_color</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">32dp</item>
+    </style>
+
+    <style name="LoginActivityLogo">
+        <item name="android:layout_width">72dp</item>
+        <item name="android:layout_height">72dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:src">@drawable/ic_launcher_logo</item>
+    </style>
+
+    <style name="LoginActivityHeader">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:typeface">normal</item>
+        <item name="android:text">Muzima Clinic</item>
+    </style>
+
+    <style name="LoginActivityDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+    </style>
+
+    <style name="LoginActivityDivider.Style">
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:background">#0d484e</item>
+    </style>
+
+    <style name="LoginActivityDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:background">#0d484e</item>
+    </style>
+
+    <style name="LoginInfoLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@drawable/login_layout_background</item>
+    </style>
+
+    <style name="LoginInfoLayoutDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">#dddddd</item>
+    </style>
+
+    <style name="LoginInfoEditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:textColor">#333333</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="LoginButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:text">"Login"</item>
+        <item name="android:background">@drawable/login_button_selector</item>
+    </style>
 
 </resources>
