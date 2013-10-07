@@ -416,14 +416,43 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="LoginButton">
+    <style name="LoginButtonLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:layout_marginTop">16dp</item>
         <item name="android:layout_marginBottom">16dp</item>
+    </style>
+
+    <style name="LoginButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:text">"Login"</item>
         <item name="android:background">@drawable/login_button_selector</item>
+    </style>
+
+    <style name="LoginActivityNoConnectionView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:text">"No Internet Connectivity"</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:background">@color/login_noConnectivity_background</item>
+    </style>
+
+    <style name="LoginActivityAuthenticatingView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:text">"Authenticating..."</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:background">@color/login_authenticating_background</item>
     </style>
 
 </resources>

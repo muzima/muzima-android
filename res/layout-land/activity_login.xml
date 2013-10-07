@@ -56,13 +56,28 @@
             <EditText
                     android:id="@+id/password"
                     style="@style/LoginInfoEditText"
-                    android:hint="Password"/>
+                    android:hint="Password"
+                    android:inputType="textPassword"/>
 
         </LinearLayout>
 
-        <Button
-                android:id="@+id/login"
-                style="@style/LoginButton"/>
+        <FrameLayout
+                style="@style/LoginButtonLayout">
+
+            <Button
+                    android:id="@+id/login"
+                    style="@style/LoginButton"/>
+
+            <TextView
+                    android:id="@+id/noConnectionText"
+                    style="@style/LoginActivityNoConnectionView"
+                    android:visibility="gone"/>
+
+            <TextView
+                    android:id="@+id/authenticatingText"
+                    style="@style/LoginActivityAuthenticatingView"
+                    android:visibility="gone"/>
+        </FrameLayout>
     </LinearLayout>
 
 </LinearLayout>
