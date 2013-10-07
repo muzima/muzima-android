@@ -176,7 +176,7 @@ public class MainActivity extends BroadcastListenerActivity {
             TextView cohortsCountView = (TextView) mMainView.findViewById(R.id.cohortsCount);
             cohortsCountView.setText(homeActivityMetadata.syncedCohorts + "/" + homeActivityMetadata.totalCohorts);
             TextView cohortsDescriptionView = (TextView) mMainView.findViewById(R.id.cohortDescription);
-            cohortsDescriptionView.setText("## Total Patients, " + homeActivityMetadata.syncedPatients + " Synced Patients");
+            cohortsDescriptionView.setText(homeActivityMetadata.syncedCohorts + " Synced, " + homeActivityMetadata.totalCohorts + " Total");
 
             TextView patientsCountView = (TextView) mMainView.findViewById(R.id.patientsCount);
             patientsCountView.setText(homeActivityMetadata.syncedPatients + "/##");

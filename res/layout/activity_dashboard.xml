@@ -39,7 +39,7 @@
         <TextView
                 android:id="@+id/cohortDescription"
                 style="@style/DashboardItemDescription"
-                android:text="## Total Patients, ## Synced Patients">
+                android:text="## Synced, ## Total">
         </TextView>
 
     </LinearLayout>
