@@ -2,9 +2,7 @@ package com.muzima.view.forms;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Toast;
 import com.muzima.R;
@@ -44,7 +42,7 @@ public class CompletePatientsFormsListFragment extends FormsListFragment {
             msgPostFix += "Current Patient";
         }
 
-        noDataMsg = getActivity().getResources().getString(R.string.no_complete_patient_form_msg) + msgPostFix;
+        noDataMsg = getActivity().getResources().getString(R.string.no_complete_client_form_msg) + msgPostFix;
         noDataTip = getActivity().getResources().getString(R.string.no_incomplete_form_tip);
         super.onCreate(savedInstanceState);
     }

@@ -135,18 +135,18 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
         noDataView = findViewById(R.id.no_data_layout);
 
         TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
-        noDataMsgTextView.setText(getResources().getText(R.string.no_patients_downloaded));
+        noDataMsgTextView.setText(getResources().getText(R.string.no_clients_downloaded));
         TextView noDataTipTextView = (TextView) findViewById(R.id.no_data_tip);
-        noDataTipTextView.setText(R.string.no_patients_downloaded_tip);
+        noDataTipTextView.setText(R.string.no_clients_downloaded_tip);
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
         noDataTipTextView.setTypeface(Fonts.roboto_light(this));
     }
 
     private void setupNoSearchResultDataView() {
         TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
-        noDataMsgTextView.setText(getResources().getText(R.string.no_patients_matched));
+        noDataMsgTextView.setText(getResources().getText(R.string.no_clients_matched));
         TextView noDataTipTextView = (TextView) findViewById(R.id.no_data_tip);
-        noDataTipTextView.setText(R.string.no_patients_matched_tip);
+        noDataTipTextView.setText(R.string.no_clients_matched_tip);
     }
 
     @Override

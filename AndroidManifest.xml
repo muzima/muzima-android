@@ -123,7 +123,7 @@
         </activity>
         <activity
                 android:name=".view.patients.PatientsListActivity"
-                android:label="@string/title_activity_patients_list"
+                android:label="@string/title_activity_clients_list"
                 android:parentActivityName="com.muzima.view.MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
