@@ -1,7 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               style="@style/DashboardTableContainer">
 
-    <LinearLayout style="@style/PatientDemographicsLayout">
+    <LinearLayout style="@style/PatientDemographicsLayout"
+                  android:background="@color/tab_background">
 
         <TextView
                 android:id="@+id/patientName"
@@ -18,7 +19,8 @@
     <LinearLayout
             style="@style/PatientDemographicsLayout"
             android:paddingTop="4dp"
-            android:paddingBottom="16dp">
+            android:paddingBottom="16dp"
+            android:background="@color/tab_background">
 
         <TextView
                 android:id="@+id/dob"
@@ -45,7 +47,6 @@
                     style="@style/DashboardListItemPrimaryText"
                     android:layout_weight="1"
                     android:gravity="left"
-                    android:textColor="#eeeeee"
                     android:paddingBottom="15dp"
                     android:paddingTop="15dp"
                     android:textAppearance="?android:attr/textAppearanceLarge"
