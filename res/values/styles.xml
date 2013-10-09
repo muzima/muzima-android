@@ -120,7 +120,7 @@
         <item name="android:orientation">horizontal</item>
     </style>
 
-    <style name="WizardButtonRow">
+    <style name="ButtonRow">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginBottom">2dp</item>
