@@ -120,6 +120,13 @@
         <item name="android:orientation">horizontal</item>
     </style>
 
+    <style name="WizardButtonRow">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">2dp</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
     <style name="SummaryItemRowLeftSection">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -431,6 +438,24 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:text">"Login"</item>
         <item name="android:background">@drawable/login_button_selector</item>
+    </style>
+
+    <style name="PreviousButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:text">"Previous"</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:background">@drawable/previous_button_selector</item>
+    </style>
+
+    <style name="NextButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:text">"Next"</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:background">@drawable/next_button_selector</item>
     </style>
 
     <style name="LoginActivityNoConnectionView">

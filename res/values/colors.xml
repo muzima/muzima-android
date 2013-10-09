@@ -22,6 +22,8 @@
     <color name="observation_by_encounter_header_background">#888888</color>
 
     <color name="login_button_color">#0d484e</color>
+    <color name="previous_button_color">#d4d4d4</color>
+    <color name="next_button_color">#962d3e</color>
     <color name="login_noConnectivity_background">#962d3e</color>
     <color name="login_authenticating_background">#168039</color>
     <color name="error_text_color">#ffaf6267</color>
