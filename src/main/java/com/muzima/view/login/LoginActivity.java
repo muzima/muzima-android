@@ -63,8 +63,6 @@ public class LoginActivity extends SherlockActivity {
             serverUrlText.setEnabled(false);
             serverUrlText.setInputType(0);
             serverUrlText.setTextColor(Color.parseColor("#666666"));
-
-            usernameText.setText(credentials.getUserName());
         }
 
     }
