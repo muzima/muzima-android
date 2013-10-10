@@ -18,9 +18,15 @@
             <url>https://raw.github.com/muzima/muzima-maven/master/releases</url>
         </repository>
         <repository>
-            <id>local-project-libraries-snapshot-github</id>
+            <id>local-project-libraries-snapshot-github-search</id>
             <name>Local project libraries</name>
-            <url>https://raw.github.com/muzima/muzima-maven/snapshots</url>
+            <url>https://raw.github.com/muzima/muzima-maven/search-api</url>
+            <snapshots/>
+        </repository>
+        <repository>
+            <id>local-project-libraries-snapshot-github-api</id>
+            <name>Local project libraries</name>
+            <url>https://raw.github.com/muzima/muzima-maven/muzima-api</url>
             <snapshots/>
         </repository>
     </repositories>
