@@ -6,7 +6,7 @@
     <LinearLayout style="@style/DashboardTableContainer" >
 
         <TextView
-            android:id="@+id/providerName"
+            android:id="@+id/currentUser"
             style="@style/DashboardTitleText"
             android:text="@string/title_logout" />
 

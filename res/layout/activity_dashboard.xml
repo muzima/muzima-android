@@ -1,6 +1,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               style="@style/DashboardTableContainer">
+    <LinearLayout
+            style="@style/NotClickableSummaryItem"
+            android:background="@color/tab_background">
+       <TextView
+                style="@style/DashboardBaseText"
+                android:text="@string/currentUser"/>
 
+        <TextView
+                android:id="@+id/currentUser"
+                style="@style/DashboardTitleText"/>
+        </LinearLayout>
+        <View style="@style/DividerLine">
+        </View>
     <LinearLayout
             style="@style/ClickableSummaryItem"
             android:onClick="cohortList">

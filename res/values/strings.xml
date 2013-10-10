@@ -126,5 +126,6 @@
     <string name="add_concept">Search Concept</string>
     <string name="concept_add_concept">Enter concept name ...</string>
     <string name="no_concept_added">No concept added yet.</string>
+    <string name="currentUser">Current User</string>
 
 </resources>

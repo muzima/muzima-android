@@ -178,6 +178,9 @@ public class MainActivity extends BroadcastListenerActivity {
             TextView formsDescription = (TextView) mMainView.findViewById(R.id.formDescription);
             formsDescription.setText(homeActivityMetadata.incompleteForms + " Incomplete, "
                     + homeActivityMetadata.completeAndUnsyncedForms + " Complete");
+
+            TextView currentUser = (TextView) findViewById(R.id.currentUser);
+            currentUser.setText(credentials().getCredentialsArray()[0]);
         }
     }
 
