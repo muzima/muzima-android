@@ -112,9 +112,12 @@ public class AllCohortsAdapter extends CohortsAdapter{
             List<Cohort> allCohorts = null;
             try {
                 allCohorts = cohortController.downloadAllCohorts();
+                cohortController.saveAllCohorts(allCohorts);
                 Log.i(TAG, "#Cohorts: " + allCohorts.size());
             } catch (CohortController.CohortDownloadException e) {
                 Log.w(TAG, "Exception occurred while downloading cohorts " + e);
+            } catch (CohortController.CohortSaveException e) {
+                Log.w(TAG, "Exception occurred while saving cohorts " + e);
             }
             return allCohorts;
         }

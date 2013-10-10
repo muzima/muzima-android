@@ -11,8 +11,13 @@ import android.widget.ListView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.cohort.AllCohortsAdapter;
+import com.muzima.service.DataSyncService;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainActivity;
+
+import java.util.List;
+
+import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
 
 
 public class CohortWizardActivity extends BroadcastListenerActivity {
@@ -34,6 +39,8 @@ public class CohortWizardActivity extends BroadcastListenerActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                CohortWizardActivity.this.syncPatientsAndObservationsInBackgroundService(cohortsAdapter.getSelectedCohorts());
+
                 SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(CohortWizardActivity.this);
                 String wizardFinishedKey = getResources().getString(R.string.preference_wizard_finished);
                 settings.edit()
@@ -53,4 +60,13 @@ public class CohortWizardActivity extends BroadcastListenerActivity {
     private ListView getListView() {
         return (ListView) findViewById(R.id.cohort_wizard_list);
     }
+
+    private void syncPatientsAndObservationsInBackgroundService(List<String> selectedCohortsArray) {
+        Intent intent = new Intent(this, DataSyncService.class);
+        intent.putExtra(SYNC_TYPE, SYNC_PATIENTS);
+        intent.putExtra(CREDENTIALS, credentials().getCredentialsArray());
+        intent.putExtra(COHORT_IDS, selectedCohortsArray.toArray(new String[selectedCohortsArray.size()]));
+        startService(intent);
+    }
+
 }
