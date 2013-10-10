@@ -26,7 +26,11 @@ public class AllCohortsAdapter extends CohortsAdapter{
 
     @Override
     public void reloadData() {
-        new BackgroundQueryTask().execute();
+        new LoadBackgroundQueryTask().execute();
+    }
+
+    public void downloadCohortAndReload() {
+        new DownloadBackgroundQueryTask().execute();
     }
 
     public List<String> getSelectedCohorts() {
@@ -63,8 +67,7 @@ public class AllCohortsAdapter extends CohortsAdapter{
         notifyDataSetChanged();
     }
 
-    public class BackgroundQueryTask extends AsyncTask<Void, Void, List<Cohort>> {
-
+    public class LoadBackgroundQueryTask extends AsyncTask<Void, Void, List<Cohort>> {
         @Override
         protected void onPreExecute() {
             if(backgroundListQueryTaskListener != null){
@@ -100,6 +103,20 @@ public class AllCohortsAdapter extends CohortsAdapter{
             if(backgroundListQueryTaskListener != null){
                 backgroundListQueryTaskListener.onQueryTaskFinish();
             }
+        }
+    }
+
+    public class DownloadBackgroundQueryTask extends LoadBackgroundQueryTask {
+        @Override
+        protected List<Cohort> doInBackground(Void... voids) {
+            List<Cohort> allCohorts = null;
+            try {
+                allCohorts = cohortController.downloadAllCohorts();
+                Log.i(TAG, "#Cohorts: " + allCohorts.size());
+            } catch (CohortController.CohortDownloadException e) {
+                Log.w(TAG, "Exception occurred while downloading cohorts " + e);
+            }
+            return allCohorts;
         }
     }
 }
