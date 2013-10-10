@@ -27,6 +27,7 @@ import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.MainActivity;
+import com.muzima.view.cohort.CohortWizardActivity;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
 
@@ -197,9 +198,7 @@ public class LoginActivity extends SherlockActivity {
             if (result.status == AUTHENTICATION_SUCCESS) {
                 saveCredentials(result.credentials);
 
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
+                startNextActivity();
             } else {
                 Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
                 if (authenticatingText.getVisibility() == View.VISIBLE || flipFromLoginToAuthAnimator.isRunning()) {
@@ -208,6 +207,24 @@ public class LoginActivity extends SherlockActivity {
                 }
             }
 
+        }
+
+        private void startNextActivity() {
+            Intent intent;
+            if (isWizardFinished()) {
+                intent = new Intent(getApplicationContext(), MainActivity.class);
+            } else {
+                intent = new Intent(getApplicationContext(), CohortWizardActivity.class);
+            }
+            startActivity(intent);
+            finish();
+        }
+
+        private boolean isWizardFinished() {
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+            String wizardFinishedKey = getResources().getString(R.string.preference_wizard_finished);
+
+            return settings.getBoolean(wizardFinishedKey, false);
         }
 
         private void saveCredentials(Credentials credentials) {
