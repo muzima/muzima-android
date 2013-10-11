@@ -1,4 +1,4 @@
 package com.muzima.model;
 
-public class IncompleteFormWithPatientData extends FormWithPatientData {
+public class IncompleteFormWithPatientData extends FormWithData {
 }

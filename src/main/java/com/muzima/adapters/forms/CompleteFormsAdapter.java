@@ -2,15 +2,11 @@ package com.muzima.adapters.forms;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.ListView;
-
 import com.muzima.controller.FormController;
 import com.muzima.model.CompleteFormWithPatientData;
-import com.muzima.model.PatientMetaData;
 import com.muzima.model.collections.CompleteFormsWithPatientData;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CompleteFormsAdapter extends SectionedFormsAdapter<CompleteFormWithPatientData>{

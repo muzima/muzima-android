@@ -4,32 +4,33 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
-
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersAdapter;
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersSectionIndexerAdapterWrapper;
 import com.muzima.R;
+import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
-import com.muzima.model.FormWithPatientData;
-import com.muzima.model.PatientMetaData;
+import com.muzima.model.FormWithData;
+import com.muzima.utils.PatientComparator;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class SectionedFormsAdapter<T extends FormWithPatientData> extends FormsAdapter<T> implements StickyListHeadersAdapter, SectionIndexer {
+public abstract class SectionedFormsAdapter<T extends FormWithData> extends FormsAdapter<T> implements StickyListHeadersAdapter, SectionIndexer {
     private static final String TAG = "SectionedFormsAdapter";
 
-    private List<PatientMetaData> patients;
+    private List<Patient> patients;
     private ListView listView;
+    private PatientComparator patientComparator;
 
     public SectionedFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
-        patients = new ArrayList<PatientMetaData>();
+        patients = new ArrayList<Patient>();
+        patientComparator = new PatientComparator();
     }
 
     @Override
@@ -46,9 +47,9 @@ public abstract class SectionedFormsAdapter<T extends FormWithPatientData> exten
             holder = (HeaderViewHolder) convertView.getTag();
         }
 
-        PatientMetaData patientMetaData = patients.get(getSectionForPosition(position));
-        holder.patientName.setText(patientMetaData.getDisplayName());
-        holder.patientIdentifier.setText(patientMetaData.getPatientIdentifier());
+        Patient patient = patients.get(getSectionForPosition(position));
+        holder.patientName.setText(patient.getDisplayName());
+        holder.patientIdentifier.setText(patient.getIdentifier());
 
         return convertView;
     }
@@ -59,14 +60,14 @@ public abstract class SectionedFormsAdapter<T extends FormWithPatientData> exten
 
     @Override
     public long getHeaderId(int position) {
-        return patients.indexOf(getItem(position).getPatientMetaData());
+        return patients.indexOf(getItem(position).getPatient());
     }
 
     @Override
     public Object[] getSections() {
         String[] familyNames = new String[patients.size()];
-        for(int i = 0; i < patients.size(); i++){
-            familyNames[i] = String.valueOf(patients.get(i).getPatientFamilyName().charAt(0));
+        for (int i = 0; i < patients.size(); i++) {
+            familyNames[i] = String.valueOf(patients.get(i).getFamilyName().charAt(0));
         }
         return familyNames;
     }
@@ -81,8 +82,8 @@ public abstract class SectionedFormsAdapter<T extends FormWithPatientData> exten
 
         int position = 0;
         for (int i = 0; i < getCount(); i++) {
-            FormWithPatientData item = getItem(i);
-            if(item.getPatientMetaData().equals(patients.get(section))){
+            FormWithData item = getItem(i);
+            if (item.getPatient().equals(patients.get(section))) {
                 position = i;
                 break;
             }
@@ -92,17 +93,17 @@ public abstract class SectionedFormsAdapter<T extends FormWithPatientData> exten
 
     @Override
     public int getSectionForPosition(int position) {
-        if(position >= getCount()){
-            position = getCount()-1;
-        }else if(position < 0){
+        if (position >= getCount()) {
+            position = getCount() - 1;
+        } else if (position < 0) {
             position = 0;
         }
 
-        return patients.indexOf(getItem(position).getPatientMetaData());
+        return patients.indexOf(getItem(position).getPatient());
     }
 
     public void sortFormsByPatientName(List<T> forms) {
-        Collections.sort(patients);
+        Collections.sort(patients, patientComparator);
         Collections.sort(forms, alphabaticalComparator);
         setNotifyOnChange(false);
         clear();
@@ -111,15 +112,11 @@ public abstract class SectionedFormsAdapter<T extends FormWithPatientData> exten
         adapter.notifyDataSetChanged();
     }
 
-    public void sortPatientsByDate() {
-
-    }
-
-    List<PatientMetaData> getPatients() {
+    List<Patient> getPatients() {
         return patients;
     }
 
-    public void setPatients(List<PatientMetaData> patients) {
+    public void setPatients(List<Patient> patients) {
         this.patients = patients;
     }
 
@@ -128,27 +125,19 @@ public abstract class SectionedFormsAdapter<T extends FormWithPatientData> exten
         TextView patientIdentifier;
     }
 
-    public List<T> getCurrentListData() {
-        List<T> formsWithPatientData = new ArrayList<T>();
-        for (int x = 0; x < getCount(); x++) {
-            formsWithPatientData.add(getItem(x));
-        }
-        return formsWithPatientData;
-    }
-
-    private Comparator<FormWithPatientData> alphabaticalComparator = new Comparator<FormWithPatientData>() {
+    private Comparator<FormWithData> alphabaticalComparator = new Comparator<FormWithData>() {
         @Override
-        public int compare(FormWithPatientData lhs, FormWithPatientData rhs) {
-            return lhs.getPatientMetaData().compareTo(rhs.getPatientMetaData());
+        public int compare(FormWithData lhs, FormWithData rhs) {
+            return patientComparator.compare(lhs.getPatient(), rhs.getPatient());
         }
     };
 
-    protected List<PatientMetaData> buildPatientsList(List<T> forms) {
-        List<PatientMetaData> result = new ArrayList<PatientMetaData>();
-        for (FormWithPatientData form : forms) {
-            PatientMetaData patientMetaData = form.getPatientMetaData();
-            if (!result.contains(patientMetaData)) {
-                result.add(patientMetaData);
+    protected List<Patient> buildPatientsList(List<T> forms) {
+        List<Patient> result = new ArrayList<Patient>();
+        for (FormWithData form : forms) {
+            Patient patient = form.getPatient();
+            if (!result.contains(patient)) {
+                result.add(patient);
             }
         }
         return result;

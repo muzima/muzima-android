@@ -1,33 +1,26 @@
 package com.muzima.adapters.forms;
 
-import android.widget.ListView;
-
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
-import com.emilsjolander.components.stickylistheaders.StickyListHeadersSectionIndexerAdapterWrapper;
+import com.muzima.api.model.Patient;
+import com.muzima.api.model.PatientIdentifier;
+import com.muzima.api.model.PersonName;
 import com.muzima.controller.FormController;
 import com.muzima.model.CompleteFormWithPatientData;
-import com.muzima.model.PatientMetaData;
 import com.muzima.model.collections.CompleteFormsWithPatientData;
 import com.muzima.testSupport.CustomTestRunner;
-
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
-import org.robolectric.RobolectricContext;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.muzima.adapters.forms.CompleteFormsAdapter.BackgroundQueryTask;
+import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(CustomTestRunner.class)
@@ -58,28 +51,16 @@ public class CompleteFormsAdapterTest {
     }
 
     @Test
-    public void queryTask_shouldBuildPatientList() throws Exception, FormController.FormFetchException {
+    public void shouldGroupPatients() throws Exception, FormController.FormFetchException {
         BackgroundQueryTask queryTask = new BackgroundQueryTask(formsAdapter);
-        final PatientMetaData patient1MetaData = new PatientMetaData("family name", "given name", "middle name", "identifier1");
-        final PatientMetaData patient2MetaData = new PatientMetaData("family name", "given name", "middle name", "identifier2");
-        CompleteFormsWithPatientData completeFormsWithPatientData = new CompleteFormsWithPatientData();
-        completeFormsWithPatientData.add(new CompleteFormWithPatientData(){{
-            setPatientMetaData(patient1MetaData);
-        }});
-        completeFormsWithPatientData.add(new CompleteFormWithPatientData(){{
-            setPatientMetaData(patient2MetaData);
-        }});
-        completeFormsWithPatientData.add(new CompleteFormWithPatientData(){{
-            setPatientMetaData(patient1MetaData);
-        }});
-
-        when(formController.getAllCompleteForms()).thenReturn(completeFormsWithPatientData);
-
-        List<PatientMetaData> patients = new ArrayList<PatientMetaData>() {{
-            add(patient1MetaData);
-            add(patient2MetaData);
+        final Patient patient1 = patient("familyName", "middleName", "givenName", "identifier1");
+        final Patient patient2 = patient("familyName", "middleName", "givenName", "identifier2");
+        CompleteFormsWithPatientData completeFormsWithPatientData = new CompleteFormsWithPatientData() {{
+            add(completeFormWithPatientData(patient1));
+            add(completeFormWithPatientData(patient2));
+            add(completeFormWithPatientData(patient1));
         }};
-
+        when(formController.getAllCompleteForms()).thenReturn(completeFormsWithPatientData);
         StickyListHeadersListView listView = new StickyListHeadersListView(Robolectric.application);
         listView.setAdapter(formsAdapter);
         formsAdapter.setListView(listView);
@@ -87,66 +68,25 @@ public class CompleteFormsAdapterTest {
         queryTask.execute();
         Robolectric.runBackgroundTasks();
         Robolectric.runUiThreadTasks();
-        assertThat(formsAdapter.getPatients(), is(patients));
+        assertThat(formsAdapter.getPatients(), is(asList(patient1, patient2)));
     }
 
-    @Test
-    public void sortFormsByPatientName_shouldSortPatientsList() throws Exception {
-        final PatientMetaData patient1MetaData = new PatientMetaData("Obama", "Barack", "Hussein", "id1");
-        final PatientMetaData patient2MetaData = new PatientMetaData("Obama", "George", "W", "id2");
-        CompleteFormsAdapter completeFormsAdapter = new CompleteFormsAdapter(null, 0, formController);
-        completeFormsAdapter.setPatients(new ArrayList<PatientMetaData>() {{
-            add(patient2MetaData);
-            add(patient1MetaData);
-        }});
-
-        StickyListHeadersListView listView = new StickyListHeadersListView(Robolectric.application);
-        listView.setAdapter(completeFormsAdapter);
-        completeFormsAdapter.setListView(listView);
-
-        completeFormsAdapter.sortFormsByPatientName(completeFormsAdapter.getCurrentListData());
-
-        assertThat(completeFormsAdapter.getPatients().get(0), is(patient1MetaData));
-        assertThat(completeFormsAdapter.getPatients().get(1), is(patient2MetaData));
+    private CompleteFormWithPatientData completeFormWithPatientData(final Patient patient1) {
+        return new CompleteFormWithPatientData() {{
+            setPatient(patient1);
+        }};
     }
 
-    @Test
-    @Ignore
-    public void sortFormsByPatientName_shouldSortCompleteFormsListByPatientMetadata() throws Exception {
-        final PatientMetaData patient1MetaData = new PatientMetaData("Obama", "Barack", "Hussein", "id1");
-        final PatientMetaData patient2MetaData = new PatientMetaData("Obama", "George", "W", "id2");
-        final PatientMetaData patient3MetaData = new PatientMetaData("Bush", "George", "W", "id3");
-
-        CompleteFormsAdapter completeFormsAdapter = new CompleteFormsAdapter(Robolectric.application, 0, formController);
-        completeFormsAdapter.setPatients(new ArrayList<PatientMetaData>() {{
-            add(patient1MetaData);
-            add(patient2MetaData);
-            add(patient3MetaData);
-        }});
-
-        CompleteFormsWithPatientData completeFormsWithPatientData = new CompleteFormsWithPatientData();
-
-        CompleteFormWithPatientData completeFormWithPatientData1 = new CompleteFormWithPatientData();
-        completeFormWithPatientData1.setPatientMetaData(patient1MetaData);
-        CompleteFormWithPatientData completeFormWithPatientData2 = new CompleteFormWithPatientData();
-        completeFormWithPatientData2.setPatientMetaData(patient3MetaData);
-        CompleteFormWithPatientData completeFormWithPatientData3 = new CompleteFormWithPatientData();
-        completeFormWithPatientData3.setPatientMetaData(patient1MetaData);
-        CompleteFormWithPatientData completeFormWithPatientData4 = new CompleteFormWithPatientData();
-        completeFormWithPatientData4.setPatientMetaData(patient2MetaData);
-
-        completeFormsWithPatientData.add(completeFormWithPatientData1);
-        completeFormsWithPatientData.add(completeFormWithPatientData2);
-        completeFormsWithPatientData.add(completeFormWithPatientData3);
-        completeFormsWithPatientData.add(completeFormWithPatientData4);
-
-        completeFormsAdapter.addAll(completeFormsWithPatientData);
-
-        completeFormsAdapter.sortFormsByPatientName(formsAdapter.getCurrentListData());
-
-        assertThat(completeFormsAdapter.getItem(0), is(completeFormWithPatientData2));
-        assertThat(completeFormsAdapter.getItem(1), is(completeFormWithPatientData1));
-        assertThat(completeFormsAdapter.getItem(2), is(completeFormWithPatientData3));
-        assertThat(completeFormsAdapter.getItem(3), is(completeFormWithPatientData4));
+    private Patient patient(String familyName, String middleName, String givenName, String identifier) {
+        Patient patient = new Patient();
+        PersonName personName = new PersonName();
+        personName.setFamilyName(familyName);
+        personName.setMiddleName(middleName);
+        personName.setGivenName(givenName);
+        patient.setNames(asList(personName));
+        PatientIdentifier personId = new PatientIdentifier();
+        personId.setIdentifier(identifier);
+        patient.setIdentifiers(asList(personId));
+        return patient;
     }
 }

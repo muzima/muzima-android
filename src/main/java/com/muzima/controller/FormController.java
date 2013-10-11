@@ -1,26 +1,12 @@
 package com.muzima.controller;
 
-import com.muzima.api.model.Form;
-import com.muzima.api.model.FormData;
-import com.muzima.api.model.FormTemplate;
-import com.muzima.api.model.Patient;
-import com.muzima.api.model.Tag;
+import com.muzima.api.model.*;
 import com.muzima.api.service.FormService;
 import com.muzima.api.service.PatientService;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.CompleteFormWithPatientData;
-import com.muzima.model.builders.AvailableFormBuilder;
-import com.muzima.model.builders.CompleteFormBuilder;
-import com.muzima.model.builders.CompleteFormWithPatientDataBuilder;
-import com.muzima.model.builders.DownloadedFormBuilder;
-import com.muzima.model.builders.IncompleteFormBuilder;
-import com.muzima.model.builders.IncompleteFormWithPatientDataBuilder;
-import com.muzima.model.collections.AvailableForms;
-import com.muzima.model.collections.CompleteForms;
-import com.muzima.model.collections.CompleteFormsWithPatientData;
-import com.muzima.model.collections.DownloadedForms;
-import com.muzima.model.collections.IncompleteForms;
-import com.muzima.model.collections.IncompleteFormsWithPatientData;
+import com.muzima.model.builders.*;
+import com.muzima.model.collections.*;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.CustomColor;
 
@@ -282,7 +268,7 @@ public class FormController {
                 incompleteForms.add(new IncompleteFormWithPatientDataBuilder()
                         .withForm(formService.getFormByUuid(formData.getTemplateUuid()))
                         .withFormDataUuid(formData.getUuid())
-                        .withPatientInfo(patient.getFamilyName(), patient.getGivenName(), patient.getMiddleName(), patient.getIdentifier())
+                        .withPatient(patient)
                         .build());
             }
         } catch (IOException e) {
@@ -301,7 +287,7 @@ public class FormController {
                 CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder()
                         .withForm(formService.getFormByUuid(formData.getTemplateUuid()))
                         .withFormDataUuid(formData.getUuid())
-                        .withPatientInfo(patient.getFamilyName(), patient.getGivenName(), patient.getMiddleName(), patient.getIdentifier())
+                        .withPatient(patient)
                         .build();
                 completeForms.add(completeForm);
             }

@@ -2,7 +2,6 @@ package com.muzima.model.builders;
 
 import com.muzima.api.model.Form;
 import com.muzima.model.CompleteFormWithPatientData;
-
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
@@ -22,16 +21,6 @@ public class CompleteFormBuilderTest {
         assertThat(completeForm.getName(), is(form.getName()));
         assertThat(completeForm.getDescription(), is(form.getDescription()));
         assertThat(completeForm.getFormUuid(), is(form.getUuid()));
-    }
-
-    @Test
-    public void withPatientInfo_shouldSetPatientInfoValues() throws Exception {
-        CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder().withPatientInfo("Obama","Barack", "Hussein",  "USNO1").build();
-
-        assertThat(completeForm.getPatientMetaData().getPatientFamilyName(), is("Obama"));
-        assertThat(completeForm.getPatientMetaData().getPatientGivenName(), is("Barack"));
-        assertThat(completeForm.getPatientMetaData().getPatientMiddleName(), is("Hussein"));
-        assertThat(completeForm.getPatientMetaData().getPatientIdentifier(), is("USNO1"));
     }
 
     @Test
