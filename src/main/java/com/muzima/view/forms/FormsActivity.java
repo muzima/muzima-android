@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
@@ -23,7 +21,6 @@ import com.muzima.adapters.forms.FormsPagerAdapter;
 import com.muzima.adapters.forms.TagsListAdapter;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
-import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.DataSyncService;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
@@ -34,11 +31,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.CREDENTIALS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_FORMS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_STATUS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TEMPLATES;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
 import static com.muzima.utils.Constants.FORM_TAG_PREF;
@@ -148,9 +141,6 @@ public class FormsActivity extends FormsActivityBase {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (super.onOptionsItemSelected(item)) {
-            return true;
-        }
 
         Intent intent = null;
         switch (item.getItemId()) {
@@ -169,9 +159,6 @@ public class FormsActivity extends FormsActivityBase {
                 intent = new Intent(this, RegisterClientActivity.class);
                 startActivity(intent);
                 return true;
-            case android.R.id.home:
-                finish();
-                return true;
             case R.id.menu_tags:
                 if (mainLayout.isDrawerOpen(GravityCompat.END)) {
                     mainLayout.closeDrawer(GravityCompat.END);
@@ -180,7 +167,7 @@ public class FormsActivity extends FormsActivityBase {
                 }
                 return true;
             default:
-                return false;
+                return super.onOptionsItemSelected(item);
         }
     }
 

@@ -17,7 +17,7 @@ import com.muzima.api.model.FormTemplate;
 import com.muzima.controller.FormController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
-import com.muzima.view.patients.MuzimaFragmentActivity;
+import com.muzima.view.BroadcastListenerActivity;
 
 import java.util.UUID;
 
@@ -26,7 +26,7 @@ import static com.muzima.controller.FormController.FormFetchException;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 import static java.text.MessageFormat.format;
 
-public class FormWebViewActivity extends MuzimaFragmentActivity {
+public class FormWebViewActivity extends BroadcastListenerActivity {
     private static final String TAG = "FormWebViewActivity";
     public static final String PATIENT_UUID = "patientUuid";
     public static final String FORM_INSTANCE = "formInstance";

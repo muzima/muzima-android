@@ -10,9 +10,10 @@ import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.Fonts;
+import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.customViews.PagerSlidingTabStrip;
 
-public class ObservationsActivity extends MuzimaFragmentActivity {
+public class ObservationsActivity extends BroadcastListenerActivity {
 
     public boolean quickSearch = false;
     private ViewPager viewPager;

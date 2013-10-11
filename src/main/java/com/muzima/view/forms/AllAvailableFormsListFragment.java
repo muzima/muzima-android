@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -22,15 +21,12 @@ import com.muzima.service.DataSyncService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
-import com.muzima.view.patients.MuzimaFragmentActivity;
+import com.muzima.view.BroadcastListenerActivity;
 
 import java.util.Date;
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.CREDENTIALS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.FROM_IDS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TEMPLATES;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
 
 public class AllAvailableFormsListFragment extends FormsListFragment {
     private static final String TAG = "AllAvailableFormsListFragment";
@@ -160,7 +156,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     private void syncAllFormTemplatesInBackgroundService() {
         Intent intent = new Intent(getActivity(), DataSyncService.class);
         intent.putExtra(SYNC_TYPE, SYNC_TEMPLATES);
-        intent.putExtra(CREDENTIALS, ((MuzimaFragmentActivity) getActivity()).credentials().getCredentialsArray());
+        intent.putExtra(CREDENTIALS, ((BroadcastListenerActivity) getActivity()).credentials().getCredentialsArray());
         intent.putExtra(FROM_IDS, getSelectedFormsArray());
         ((FormsActivity) getActivity()).showProgressBar();
         getActivity().startService(intent);

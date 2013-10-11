@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
-
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
@@ -14,15 +13,14 @@ import com.muzima.adapters.cohort.CohortPagerAdapter;
 import com.muzima.service.DataSyncService;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.customViews.PagerSlidingTabStrip;
-import com.muzima.view.patients.MuzimaFragmentActivity;
-import com.muzima.view.preferences.SettingsActivity;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
 
-public class CohortActivity extends MuzimaFragmentActivity {
+public class CohortActivity extends BroadcastListenerActivity {
     private static final String TAG = "CohortActivity";
     private ViewPager viewPager;
     private CohortPagerAdapter cohortPagerAdapter;
@@ -47,7 +45,6 @@ public class CohortActivity extends MuzimaFragmentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = null;
         switch (item.getItemId()) {
             case R.id.menu_load:
                 if (!NetworkUtils.isConnectedToNetwork(this)) {
@@ -62,16 +59,8 @@ public class CohortActivity extends MuzimaFragmentActivity {
 
                 syncCohortsInBackgroundService();
                 return true;
-
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.action_settings:
-                intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
-                return true;
             default:
-                return false;
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -92,9 +81,7 @@ public class CohortActivity extends MuzimaFragmentActivity {
             if(syncStatus == SUCCESS){
                 cohortPagerAdapter.onPatientsDownloadFinish();
             }
-        }/*else if(syncType == SYNC_OBSERVATIONS){
-            hideProgressbar();
-        }*/else if(syncType == SYNC_ENCOUNTERS){
+        }else if(syncType == SYNC_ENCOUNTERS){
             hideProgressbar();
         }
     }

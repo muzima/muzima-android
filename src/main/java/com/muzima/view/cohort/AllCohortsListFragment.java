@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -21,15 +20,12 @@ import com.muzima.service.DataSyncService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
-import com.muzima.view.patients.MuzimaFragmentActivity;
+import com.muzima.view.BroadcastListenerActivity;
 
 import java.util.Date;
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.COHORT_IDS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.CREDENTIALS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_PATIENTS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
 
 public class AllCohortsListFragment extends CohortListFragment {
     private static final String TAG = "AllCohortsListFragment";
@@ -160,7 +156,7 @@ public class AllCohortsListFragment extends CohortListFragment {
     private void syncPatientsAndObservationsInBackgroundService() {
         Intent intent = new Intent(getActivity(), DataSyncService.class);
         intent.putExtra(SYNC_TYPE, SYNC_PATIENTS);
-        intent.putExtra(CREDENTIALS, ((MuzimaFragmentActivity) getActivity()).credentials().getCredentialsArray());
+        intent.putExtra(CREDENTIALS, ((BroadcastListenerActivity) getActivity()).credentials().getCredentialsArray());
         intent.putExtra(COHORT_IDS, getSelectedCohortsArray());
         ((CohortActivity)getActivity()).showProgressBar();
         getActivity().startService(intent);

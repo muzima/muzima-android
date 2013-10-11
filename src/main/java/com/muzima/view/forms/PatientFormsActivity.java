@@ -4,7 +4,7 @@ package com.muzima.view.forms;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
-import com.actionbarsherlock.view.MenuItem;
+
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.adapters.forms.PatientFormsPagerAdapter;
@@ -26,7 +26,7 @@ public class PatientFormsActivity extends FormsActivityBase {
         try {
             setupActionbar();
         } catch (PatientController.PatientLoadException e) {
-            Toast.makeText(this, "An error occurred while fetching patien", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "An error occurred while fetching patient", Toast.LENGTH_SHORT).show();
             finish();
         }
     }
@@ -40,15 +40,5 @@ public class PatientFormsActivity extends FormsActivityBase {
     @Override
     protected MuzimaPagerAdapter createFormsPagerAdapter() {
         return new PatientFormsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), patient.getUuid());
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

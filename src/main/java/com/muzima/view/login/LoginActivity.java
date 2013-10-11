@@ -216,11 +216,11 @@ public class LoginActivity extends SherlockActivity {
         }
 
         private boolean isWizardFinished() {
-            return false;
-//            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
-//            String wizardFinishedKey = getResources().getString(R.string.preference_wizard_finished);
-//
-//            return settings.getBoolean(wizardFinishedKey, false);
+//            return false;
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+            String wizardFinishedKey = getResources().getString(R.string.preference_wizard_finished);
+
+            return settings.getBoolean(wizardFinishedKey, false);
         }
 
         private void saveCredentials(Credentials credentials) {
