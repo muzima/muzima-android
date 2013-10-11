@@ -4,16 +4,24 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import android.widget.TextView;
 import com.muzima.R;
 
 public class HelpActivity extends Activity {
+
+    public static final String HELP_TYPE = "HELP_TYPE";
+    public static final String COHORT_WIZARD_HELP = "COHORT_WIZARD_HELP";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_help);
-		// Show the Up button in the action bar.
+        TextView helpContentView = (TextView)findViewById(R.id.helpContent);
+        String helpType = getIntent().getStringExtra(HELP_TYPE);
+        if(COHORT_WIZARD_HELP.equals(helpType)){
+            helpContentView.setText(getResources().getText(R.string.cohort_wizard_help));
+        }
+        // Show the Up button in the action bar.
 		setupActionBar();
 		
 	}

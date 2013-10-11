@@ -491,4 +491,12 @@
         <item name="android:background">@color/login_authenticating_background</item>
     </style>
 
+    <style name="HelpContent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">15dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
 </resources>

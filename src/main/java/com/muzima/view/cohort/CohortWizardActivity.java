@@ -8,12 +8,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.cohort.AllCohortsAdapter;
+import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.DataSyncService;
 import com.muzima.view.BroadcastListenerActivity;
+import com.muzima.view.HelpActivity;
 import com.muzima.view.MainActivity;
+import com.muzima.view.preferences.SettingsActivity;
 
 import java.util.List;
 
@@ -53,6 +58,40 @@ public class CohortWizardActivity extends BroadcastListenerActivity {
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getSupportMenuInflater().inflate(R.menu.dashboard, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_help:
+                intent = new Intent(this, HelpActivity.class);
+                intent.putExtra(HelpActivity.HELP_TYPE,HelpActivity.COHORT_WIZARD_HELP);
+                startActivity(intent);
+                return true;
+            case R.id.action_logout:
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                String passwordKey = getResources().getString(R.string.preference_password);
+                settings.edit()
+                        .putString(passwordKey, StringUtil.EMPTY)
+                        .commit();
+
+                launchLoginActivity(false);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     private AllCohortsAdapter createAllCohortsAdapter() {
         return new AllCohortsAdapter(getApplicationContext(), R.layout.item_cohorts_list, ((MuzimaApplication) getApplicationContext()).getCohortController());
     }

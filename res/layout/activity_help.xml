@@ -1,31 +1,10 @@
 <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+              xmlns:android="http://schemas.android.com/apk/res/android"
               style="@style/DashboardWrapper"
               tools:context=".MainActivity">
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    <TextView
+            android:id="@+id/helpContent"
+            style="@style/HelpContent"
+            android:text="Help!"/>
     
 </LinearLayout>
