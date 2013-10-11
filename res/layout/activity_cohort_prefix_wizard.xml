@@ -1,0 +1,27 @@
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <RelativeLayout android:layout_height="match_parent" android:layout_width="match_parent">
+        <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_alignParentTop="true">
+            <ListView
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:id="@+id/cohort_wizard_list"
+                    android:choiceMode="multipleChoice"
+                    />
+        </LinearLayout>
+        <LinearLayout style="@style/ButtonRow"
+                      android:layout_alignParentBottom="true">
+            <Button
+                    android:id="@+id/next"
+                    style="@style/NextButton"
+                    android:layout_weight=".3"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+</FrameLayout>

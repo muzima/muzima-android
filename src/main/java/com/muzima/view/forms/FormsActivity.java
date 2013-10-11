@@ -141,7 +141,6 @@ public class FormsActivity extends FormsActivityBase {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         Intent intent = null;
         switch (item.getItemId()) {
             case R.id.menu_load:

@@ -54,6 +54,15 @@ public class CohortWizardActivity extends BroadcastListenerActivity {
                 startActivity(intent);
             }
         });
+
+        Button previousButton = (Button) findViewById(R.id.previous);
+        previousButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CohortPrefixWizardActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

@@ -183,6 +183,7 @@
         <activity android:name=".view.cohort.CohortWizardActivity"
                   android:label="@string/title_activity_cohort_wizard">
         </activity>
+        <activity android:name=".view.cohort.CohortPrefixWizardActivity" android:label="Define Cohorts Prefix"/>
 
         <service android:name=".service.DataSyncService"
                  android:exported="false"/>
