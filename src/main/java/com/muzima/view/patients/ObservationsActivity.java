@@ -75,7 +75,7 @@ public class ObservationsActivity extends BroadcastListenerActivity {
                 finish();
                 return true;
             default:
-                return false;
+                return super.onOptionsItemSelected(item);
         }
     }
 }
