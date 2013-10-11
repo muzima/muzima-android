@@ -5,25 +5,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 import com.actionbarsherlock.view.MenuItem;
-import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.adapters.forms.PatientFormsPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
-
-import static com.muzima.view.patients.PatientSummaryActivity.PATIENT_ID;
+import com.muzima.view.patients.PatientSummaryActivity;
 
 
 public class PatientFormsActivity extends FormsActivityBase {
     private static final String TAG = "FormsActivity";
-    private String patientId;
+    private Patient patient;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_with_pager);
         Intent intent = getIntent();
-        patientId = intent.getStringExtra(PATIENT_ID);
+        patient = (Patient)intent.getSerializableExtra(PatientSummaryActivity.PATIENT);
         super.onCreate(savedInstanceState);
         try {
             setupActionbar();
@@ -35,15 +33,13 @@ public class PatientFormsActivity extends FormsActivityBase {
 
     private void setupActionbar() throws PatientController.PatientLoadException {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        PatientController patientController = ((MuzimaApplication) getApplicationContext()).getPatientController();
-        Patient patient = patientController.getPatientByUuid(patientId);
         getSupportActionBar().setTitle(patient.getFamilyName() + ", " + patient.getGivenName() + " " + patient.getMiddleName());
     }
 
 
     @Override
     protected MuzimaPagerAdapter createFormsPagerAdapter() {
-        return new PatientFormsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), patientId);
+        return new PatientFormsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), patient.getUuid());
     }
 
     @Override

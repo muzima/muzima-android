@@ -8,6 +8,7 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
+import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.view.patients.PatientSummaryActivity;
@@ -26,7 +27,8 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
         super(context, textViewResourceId);
         this.conceptController = conceptController;
         this.observationController = observationController;
-        patientUuid = context.getIntent().getStringExtra(PatientSummaryActivity.PATIENT_ID);
+        Patient patient = (Patient) context.getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
+        patientUuid = patient.getUuid();
     }
 
     protected abstract class ViewHolder{

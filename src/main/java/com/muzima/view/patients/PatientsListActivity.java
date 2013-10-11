@@ -3,12 +3,7 @@ package com.muzima.view.patients;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.TextView;
-
+import android.widget.*;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
@@ -153,23 +148,8 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         Patient patient = cohortPatientsAdapter.getItem(position);
         Intent intent = new Intent(this, PatientSummaryActivity.class);
-        intent.putExtra(PatientSummaryActivity.PATIENT_ID, patient.getUuid());
-        intent.putExtra(PatientSummaryActivity.PATIENT_SUMMARY, getPatientSummary(patient));
+        intent.putExtra(PatientSummaryActivity.PATIENT,patient);
         startActivity(intent);
-    }
-
-    private String getPatientSummary(Patient patient) {
-        StringBuffer sb = new StringBuffer();
-        sb.append(patient.getGender().equalsIgnoreCase("f") ? "♀" : "♂")
-                .append(" ")
-                .append(getPatientAbbrName(patient))
-                .append(", ")
-                .append(patient.getIdentifier());
-        return sb.toString();
-    }
-
-    private String getPatientAbbrName(Patient patient) {
-        return patient.getFamilyName() + ", " + patient.getGivenName().substring(0, 1) + " " + patient.getMiddleName().substring(0, 1);
     }
 
     @Override

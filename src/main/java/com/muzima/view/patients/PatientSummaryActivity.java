@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -23,14 +22,11 @@ import static com.muzima.utils.DateUtils.getFormattedDate;
 
 public class PatientSummaryActivity extends SherlockActivity {
     private static final String TAG = "PatientSummaryActivity";
+    public static final String PATIENT = "patient";
 
-    public static final String PATIENT_ID = "patientId";
-    public static final String PATIENT_SUMMARY = "patientSummary";
-
-    private String patientId;
-    private String patientSummary;
     private BackgroundQueryTask mBackgroundQueryTask;
 
+    private Patient patient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +35,7 @@ public class PatientSummaryActivity extends SherlockActivity {
 
         Bundle intentExtras = getIntent().getExtras();
         if (intentExtras != null) {
-            patientId = intentExtras.getString(PATIENT_ID);
-            patientSummary = intentExtras.getString(PATIENT_SUMMARY);
+            patient = (Patient) intentExtras.getSerializable(PATIENT);
         }
 
         setupActionbar();
@@ -60,7 +55,7 @@ public class PatientSummaryActivity extends SherlockActivity {
 
     @Override
     protected void onStop() {
-        if(mBackgroundQueryTask != null){
+        if (mBackgroundQueryTask != null) {
             mBackgroundQueryTask.cancel(true);
         }
         super.onStop();
@@ -71,8 +66,6 @@ public class PatientSummaryActivity extends SherlockActivity {
     }
 
     private void setupPatientMetadata() throws PatientController.PatientLoadException {
-        PatientController patientController = ((MuzimaApplication) getApplicationContext()).getPatientController();
-        Patient patient = patientController.getPatientByUuid(patientId);
 
         TextView patientName = (TextView) findViewById(R.id.patientName);
         patientName.setText(patient.getFamilyName() + ", " + patient.getGivenName() + " " + patient.getMiddleName());
@@ -107,14 +100,13 @@ public class PatientSummaryActivity extends SherlockActivity {
 
     public void showForms(View v) {
         Intent intent = new Intent(this, PatientFormsActivity.class);
-        intent.putExtra(PatientSummaryActivity.PATIENT_ID, patientId);
+        intent.putExtra(PATIENT, patient);
         startActivity(intent);
     }
 
     public void showObservations(View v) {
-        Intent intent = new Intent(PatientSummaryActivity.this, ObservationsActivity.class);
-        intent.putExtra(PATIENT_ID, patientId);
-        intent.putExtra(PATIENT_SUMMARY, patientSummary);
+        Intent intent = new Intent(this, ObservationsActivity.class);
+        intent.putExtra(PATIENT, patient);
         startActivity(intent);
     }
 
@@ -127,7 +119,7 @@ public class PatientSummaryActivity extends SherlockActivity {
         startActivity(intent);
     }
 
-    private static class PatientSummaryActivityMetadata{
+    private static class PatientSummaryActivityMetadata {
         int recommendedForms;
         int incompleteForms;
         int completeForms;
@@ -143,8 +135,8 @@ public class PatientSummaryActivity extends SherlockActivity {
             FormController formController = muzimaApplication.getFormController();
             try {
                 patientSummaryActivityMetadata.recommendedForms = formController.getDownloadedFormsCount();
-                patientSummaryActivityMetadata.completeForms = formController.getCompleteFormsCountForPatient(patientId);
-                patientSummaryActivityMetadata.incompleteForms = formController.getIncompleteFormsCountForPatient(patientId);
+                patientSummaryActivityMetadata.completeForms = formController.getCompleteFormsCountForPatient(patient.getUuid());
+                patientSummaryActivityMetadata.incompleteForms = formController.getIncompleteFormsCountForPatient(patient.getUuid());
             } catch (FormController.FormFetchException e) {
                 Log.w(TAG, "FormFetchException occurred while fetching metadata in MainActivityBackgroundTask");
             }
