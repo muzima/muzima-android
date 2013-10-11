@@ -1,27 +1,21 @@
 package com.muzima.view;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
-import com.muzima.search.api.util.StringUtil;
 import com.muzima.view.cohort.CohortActivity;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.patients.PatientsListActivity;
-import com.muzima.view.preferences.SettingsActivity;
 
 public class MainActivity extends BroadcastListenerActivity {
     private static final String TAG = "MainActivity";
@@ -35,40 +29,6 @@ public class MainActivity extends BroadcastListenerActivity {
         setContentView(mMainView);
 
         setupActionbar();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getSupportMenuInflater().inflate(R.menu.dashboard, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent;
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.action_help:
-                intent = new Intent(this, HelpActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.action_logout:
-                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                String passwordKey = getResources().getString(R.string.preference_password);
-                settings.edit()
-                        .putString(passwordKey, StringUtil.EMPTY)
-                        .commit();
-
-                launchLoginActivity(false);
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     @Override
@@ -187,17 +147,11 @@ public class MainActivity extends BroadcastListenerActivity {
     private static class HomeActivityMetadata {
         int totalCohorts;
         int syncedCohorts;
-        int totalPatients;
         int syncedPatients;
-        int overdueReminders;
-        int upcomingReminders;
         int incompleteForms;
         int completeAndUnsyncedForms;
         int downloadedForms;
         int totalForms;
-        int totalNotices;
-        int unreadNotices;
-        int recommendations;
     }
 
     private void setupActionbar() {

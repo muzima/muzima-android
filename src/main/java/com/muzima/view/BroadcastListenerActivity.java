@@ -9,17 +9,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.CONNECTION_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.DELETE_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.PARSING_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
 
-public abstract class BroadcastListenerActivity extends SecuredActivity {
+public abstract class BroadcastListenerActivity extends BaseActivity {
     private static final String TAG = "BroadcastListenerActivity";
     public static final String MESSAGE_SENT_ACTION = "com.muzima.MESSAGE_RECEIVED_ACTION";
 
