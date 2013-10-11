@@ -15,6 +15,8 @@ import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.controller.FormController;
+import com.muzima.model.BaseForm;
+import com.muzima.model.FormWithData;
 import com.muzima.view.patients.MuzimaFragmentActivity;
 
 import java.util.UUID;
@@ -26,16 +28,14 @@ import static java.text.MessageFormat.format;
 
 public class FormWebViewActivity extends MuzimaFragmentActivity {
     private static final String TAG = "FormWebViewActivity";
-    public static final String FORM_UUID = "formId";
-    public static final String FORM_DATA_UUID = "formDataId";
     public static final String PATIENT_UUID = "patientUuid";
     public static final String FORM_INSTANCE = "formInstance";
     public static final String REPOSITORY = "formDataRepositoryContext";
     public static final String ZIGGY_FILE_LOADER = "ziggyFileLoader";
+    public static final String FORM = "form";
 
 
     private WebView webView;
-    private String formDataUuid;
     private Form form;
     private FormTemplate formTemplate;
     private ProgressDialog progressDialog;
@@ -71,15 +71,14 @@ public class FormWebViewActivity extends MuzimaFragmentActivity {
 
     private void setupFormData() throws FormFetchException, FormController.FormDataFetchException, FormController.FormDataSaveException {
         Intent intent = getIntent();
-        String formId = intent.getStringExtra(FORM_UUID);
-        formDataUuid = intent.getStringExtra(FORM_DATA_UUID);
-
+        BaseForm formObject = (BaseForm) intent.getSerializableExtra(FORM);
 
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
+        String formId = formObject.getFormUuid();
         form = formController.getFormByUuid(formId);
         formTemplate = formController.getFormTemplateByUuid(formId);
-        if (formDataUuid != null) {
-            formData = formController.getFormDataByUuid(formDataUuid);
+        if (formObject instanceof FormWithData) {
+            formData = formController.getFormDataByUuid(((FormWithData) formObject).getFormDataUuid());
         } else {
             String patientUuid = intent.getStringExtra(PATIENT_UUID);
             formData = createNewFormData(patientUuid, formId);

@@ -1,6 +1,8 @@
 package com.muzima.model;
 
-public abstract class BaseForm {
+import java.io.Serializable;
+
+public abstract class BaseForm implements Serializable {
     protected String name;
     protected String description;
     protected String formUuid;

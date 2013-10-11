@@ -1,6 +1,8 @@
 package com.muzima.model;
 
-public class PatientMetaData implements Comparable{
+import java.io.Serializable;
+
+public class PatientMetaData implements Comparable, Serializable {
     private String patientFamilyName;
     private String patientGivenName;
     private String patientMiddleName;

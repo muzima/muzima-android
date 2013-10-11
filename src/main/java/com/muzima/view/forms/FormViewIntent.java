@@ -8,13 +8,12 @@ import com.muzima.model.FormWithData;
 public class FormViewIntent extends Intent {
     public FormViewIntent(FragmentActivity activity, FormWithData form) {
         super(activity, FormWebViewActivity.class);
-        putExtra(FormWebViewActivity.FORM_UUID, form.getFormUuid());
-        putExtra(FormWebViewActivity.FORM_DATA_UUID, form.getFormDataUuid());
+        putExtra(FormWebViewActivity.FORM,form);
     }
 
     public FormViewIntent(FragmentActivity activity, BaseForm form, String patientId) {
         super(activity, FormWebViewActivity.class);
-        putExtra(FormWebViewActivity.FORM_UUID, form.getFormUuid());
+        putExtra(FormWebViewActivity.FORM,form);
         putExtra(FormWebViewActivity.PATIENT_UUID, patientId);
     }
 }
