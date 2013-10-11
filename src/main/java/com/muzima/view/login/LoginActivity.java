@@ -1,10 +1,6 @@
 package com.muzima.view.login;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
@@ -17,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.internal.nineoldandroids.animation.ValueAnimator;
 import com.muzima.MuzimaApplication;
@@ -221,10 +216,11 @@ public class LoginActivity extends SherlockActivity {
         }
 
         private boolean isWizardFinished() {
-            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
-            String wizardFinishedKey = getResources().getString(R.string.preference_wizard_finished);
-
-            return settings.getBoolean(wizardFinishedKey, false);
+            return false;
+//            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+//            String wizardFinishedKey = getResources().getString(R.string.preference_wizard_finished);
+//
+//            return settings.getBoolean(wizardFinishedKey, false);
         }
 
         private void saveCredentials(Credentials credentials) {

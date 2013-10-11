@@ -180,7 +180,8 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.patients.PatientSummaryActivity"/>
         </activity>
-        <activity android:name=".view.cohort.CohortWizardActivity">
+        <activity android:name=".view.cohort.CohortWizardActivity"
+                  android:label="@string/title_activity_cohort_wizard">
         </activity>
 
         <service android:name=".service.DataSyncService"

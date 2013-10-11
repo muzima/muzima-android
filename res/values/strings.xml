@@ -53,7 +53,7 @@
     <string name="title_activity_cohort_list">Cohorts</string>
     <string name="title_activity_search_results">SearchResultsActivity</string>
     <string name="title_activity_settings">Settings Activity</string>
-    <string name="title_activity_help">Help Activity</string>
+    <string name="title_activity_help">Help</string>
     <string name="title_activity_logout">Logout Activity</string>
     <string name="title_activity_register_client">Register Client Activity</string>
     <string name="title_activity_sync">Sync Activity</string>
@@ -129,5 +129,7 @@
     <string name="currentUser">Current User</string>
     <string name="preference_wizard_finished">wizardFinished</string>
     <string name="cohort_wizard_help"> In this step of the wizard, you download the cohorts you need. A cohort is a predefined group of patients. Please select the cohorts and click next.</string>
+    <string name="title_activity_cohort_wizard">Download Cohorts</string>
+    <string name="cohort_wizard_help_title">Download Cohorts Help</string>
 
 </resources>

@@ -16,18 +16,22 @@ public class HelpActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_help);
-        TextView helpContentView = (TextView)findViewById(R.id.helpContent);
-        String helpType = getIntent().getStringExtra(HELP_TYPE);
-        if(COHORT_WIZARD_HELP.equals(helpType)){
-            helpContentView.setText(getResources().getText(R.string.cohort_wizard_help));
-        }
+        setHelpContent();
         // Show the Up button in the action bar.
 		setupActionBar();
 		
 	}
 
+    private void setHelpContent() {
+        TextView helpContentView = (TextView)findViewById(R.id.helpContent);
+        String helpType = getIntent().getStringExtra(HELP_TYPE);
+        if(COHORT_WIZARD_HELP.equals(helpType)){
+            helpContentView.setText(getResources().getText(R.string.cohort_wizard_help));
+            setTitle(R.string.cohort_wizard_help_title);
+        }
+    }
 
-	/**
+    /**
 	 * Set up the {@link android.app.ActionBar}.
 	 */
 	private void setupActionBar() {
