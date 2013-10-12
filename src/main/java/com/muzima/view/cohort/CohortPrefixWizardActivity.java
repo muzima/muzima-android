@@ -17,9 +17,13 @@ public class CohortPrefixWizardActivity extends BroadcastListenerActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), CohortWizardActivity.class);
-                startActivity(intent);
+                navigateToNextActivity();
             }
         });
+    }
+
+    private void navigateToNextActivity() {
+        Intent intent = new Intent(getApplicationContext(), CohortWizardActivity.class);
+        startActivity(intent);
     }
 }
