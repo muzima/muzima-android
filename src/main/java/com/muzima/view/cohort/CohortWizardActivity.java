@@ -42,16 +42,9 @@ public class CohortWizardActivity extends BroadcastListenerActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CohortWizardActivity.this.syncPatientsAndObservationsInBackgroundService(cohortsAdapter.getSelectedCohorts());
-
-                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(CohortWizardActivity.this);
-                String wizardFinishedKey = getResources().getString(R.string.preference_wizard_finished);
-                settings.edit()
-                        .putBoolean(wizardFinishedKey, true)
-                        .commit();
-
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+                downloadAndSaveCohortData(cohortsAdapter);
+                markWizardHasEnded();
+                navigateToNextActivity();
             }
         });
 
@@ -59,10 +52,31 @@ public class CohortWizardActivity extends BroadcastListenerActivity {
         previousButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), CohortPrefixWizardActivity.class);
-                startActivity(intent);
+                navigateToPreviousActivity();
             }
         });
+    }
+
+    private void navigateToPreviousActivity() {
+        Intent intent = new Intent(getApplicationContext(), CohortPrefixWizardActivity.class);
+        startActivity(intent);
+    }
+
+    private void downloadAndSaveCohortData(AllCohortsAdapter cohortsAdapter) {
+        this.syncPatientsAndObservationsInBackgroundService(cohortsAdapter.getSelectedCohorts());
+    }
+
+    private void markWizardHasEnded() {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String wizardFinishedKey = getResources().getString(R.string.preference_wizard_finished);
+        settings.edit()
+                .putBoolean(wizardFinishedKey, true)
+                .commit();
+    }
+
+    private void navigateToNextActivity() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
     }
 
     @Override
