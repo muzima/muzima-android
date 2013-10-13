@@ -18,14 +18,18 @@ public class CohortPrefixFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_cohort_pref,container, false);
 
+        initialiseList(view);
+
+        addPrefixEditText = (EditText) view.findViewById(R.id.prefix_edit_text);
+        return view;
+    }
+
+    private void initialiseList(View view) {
         ListView cohortPrefList = (ListView) view.findViewById(R.id.cohort_pref_list);
         prefAdapter = new CohortPrefixPrefAdapter(getActivity(), R.layout.item_preference);
         prefAdapter.setPreferenceClickListener((CohortPrefActivity) getActivity());
         cohortPrefList.setEmptyView(view.findViewById(R.id.no_data_msg));
         cohortPrefList.setAdapter(prefAdapter);
-
-        addPrefixEditText = (EditText) view.findViewById(R.id.prefix_edit_text);
-        return view;
     }
 
     public String getPrefixText() {
