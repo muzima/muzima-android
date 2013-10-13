@@ -2,15 +2,12 @@ package com.muzima.view.preferences;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
-
-import com.actionbarsherlock.app.SherlockActivity;
 import com.muzima.R;
-import com.muzima.adapters.cohort.CohortPrefixPrefAdapter;
 import com.muzima.adapters.cohort.SettingsBaseAdapter;
+import com.muzima.view.cohort.CohortPrefixFragment;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -20,33 +17,26 @@ import java.util.TreeSet;
 import static com.muzima.utils.Constants.COHORT_PREFIX_PREF;
 import static com.muzima.utils.Constants.COHORT_PREFIX_PREF_KEY;
 
-public class CohortPrefActivity extends SherlockActivity implements SettingsBaseAdapter.PreferenceClickListener {
+public class CohortPrefActivity extends FragmentActivity implements SettingsBaseAdapter.PreferenceClickListener {
 
-    private CohortPrefixPrefAdapter prefAdapter;
-    private EditText addPrefixEditText;
+    CohortPrefixFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cohort_pref);
+        setContentView(R.layout.activity_cohort_pref_settings);
 
-        ListView cohortPrefList = (ListView) findViewById(R.id.cohort_pref_list);
-        prefAdapter = new CohortPrefixPrefAdapter(this, R.layout.item_preference);
-        prefAdapter.setPreferenceClickListener(this);
-        cohortPrefList.setEmptyView(findViewById(R.id.no_data_msg));
-        cohortPrefList.setAdapter(prefAdapter);
-
-        addPrefixEditText = (EditText) findViewById(R.id.prefix_edit_text);
+        fragment = (CohortPrefixFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        prefAdapter.reloadData();
+        fragment.reloadData();
     }
 
     public void addPrefix(View view){
-        String newPrefix = addPrefixEditText.getText().toString();
+        String newPrefix = fragment.getPrefixText();
         SharedPreferences cohortSharedPref = getSharedPreferences(COHORT_PREFIX_PREF, MODE_PRIVATE);
         Set<String> originalPrefixesSet = cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>());
         Set<String> copiedPrefixesSet = new TreeSet<String>(new CaseInsensitiveComparator());
@@ -61,8 +51,7 @@ public class CohortPrefActivity extends SherlockActivity implements SettingsBase
             Toast.makeText(this, "Prefix already exists", Toast.LENGTH_SHORT).show();
         }
 
-        prefAdapter.reloadData();
-        addPrefixEditText.setText("");
+        fragment.updateView();
     }
 
     @Override
@@ -75,7 +64,7 @@ public class CohortPrefActivity extends SherlockActivity implements SettingsBase
         editor.putStringSet(COHORT_PREFIX_PREF_KEY, prefixes);
         editor.commit();
 
-        prefAdapter.reloadData();
+        fragment.reloadData();
     }
 
     @Override
