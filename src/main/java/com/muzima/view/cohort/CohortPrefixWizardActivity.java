@@ -6,9 +6,11 @@ import android.view.View;
 import android.widget.Button;
 import com.muzima.R;
 import com.muzima.view.BroadcastListenerActivity;
+import com.muzima.view.preferences.CohortPrefActivity;
 
 
-public class CohortPrefixWizardActivity extends BroadcastListenerActivity {
+public class CohortPrefixWizardActivity extends CohortPrefActivity {
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cohort_prefix_wizard);
@@ -20,6 +22,8 @@ public class CohortPrefixWizardActivity extends BroadcastListenerActivity {
                 navigateToNextActivity();
             }
         });
+
+        fragment = (CohortPrefixFragment) getSupportFragmentManager().findFragmentById(R.id.cohortPrefixWizardFragment);
     }
 
     private void navigateToNextActivity() {

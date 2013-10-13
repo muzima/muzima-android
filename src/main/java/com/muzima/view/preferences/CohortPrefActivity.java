@@ -19,7 +19,7 @@ import static com.muzima.utils.Constants.COHORT_PREFIX_PREF_KEY;
 
 public class CohortPrefActivity extends FragmentActivity implements SettingsBaseAdapter.PreferenceClickListener {
 
-    CohortPrefixFragment fragment;
+    protected CohortPrefixFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

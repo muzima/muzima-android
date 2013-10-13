@@ -1,24 +1,23 @@
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         style="@style/DashboardTableContainer">
-
+    <LinearLayout
+            style="@style/NotClickableSummaryItem"
+            android:background="@color/tab_background">
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/add_cohort_prefixes"
-            android:textAllCaps="true"
             android:paddingBottom="3dp"
             android:textColor="@android:color/white"/>
-
-    <View
-            style="@style/DividerLine"
-            android:layout_height="2dp"/>
-
+    </LinearLayout>
+    <View style="@style/DividerLine"/>
 
     <LinearLayout
             style="@style/SummaryItemRow"
             android:paddingTop="3dp"
-            android:paddingBottom="3dp">
+            android:paddingBottom="3dp"
+            android:background="@color/tab_background">
 
         <EditText
                 android:id="@+id/prefix_edit_text"
@@ -48,10 +47,7 @@
                 style="@style/RegisterText"/>
 
     </LinearLayout>
-
-    <View
-            style="@style/DividerLine"
-            android:layout_height="2dp"/>
+    <View style="@style/DividerLine"/>
 
     <ListView
             android:id="@+id/cohort_pref_list"
