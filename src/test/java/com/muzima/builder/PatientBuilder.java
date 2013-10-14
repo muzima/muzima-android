@@ -14,6 +14,7 @@ public class PatientBuilder {
     private String familyName;
     private String givenName;
     private String middleName;
+    private String sex;
 
     public static PatientBuilder patient() {
         return new PatientBuilder();
@@ -44,6 +45,11 @@ public class PatientBuilder {
         return this;
     }
 
+    public PatientBuilder withSex(String sex) {
+        this.sex = sex;
+        return this;
+    }
+
     public Patient instance() {
         PatientIdentifier patientIdentifier = new PatientIdentifier();
         patientIdentifier.setIdentifier(identifier);
@@ -57,6 +63,7 @@ public class PatientBuilder {
         personName.setMiddleName(middleName);
         personName.setPreferred(true);
         patient.setNames(asList(personName));
+        patient.setGender(sex);
         return patient;
     }
 }

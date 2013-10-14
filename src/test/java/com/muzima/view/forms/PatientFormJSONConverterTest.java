@@ -38,7 +38,7 @@ public class PatientFormJSONConverterTest {
         String json = converter.convert(patient().withBirthdate(currentDate).instance());
         JSONObject form = (JSONObject) new JSONObject(json).get("form");
 
-        JSONObject field = (JSONObject) ((JSONArray) form.get("fields")).get(4);
+        JSONObject field = (JSONObject) ((JSONArray) form.get("fields")).get(5);
         assertThat((String) field.get("name"), is("patient.birthdate"));
         assertThat((String) field.get("value"), is(getFormattedDate(currentDate)));
     }
@@ -82,6 +82,16 @@ public class PatientFormJSONConverterTest {
         JSONObject field = (JSONObject) ((JSONArray) form.get("fields")).get(3);
         assertThat((String) field.get("name"), is("patient.middle_name"));
         assertThat((String) field.get("value"), is("middleName"));
+    }
+
+    @Test
+    public void shouldMapPatientsSex() throws Exception {
+        String json = converter.convert(patient().withSex("f").instance());
+        JSONObject form = (JSONObject) new JSONObject(json).get("form");
+
+        JSONObject field = (JSONObject) ((JSONArray) form.get("fields")).get(4);
+        assertThat((String) field.get("name"), is("patient.sex"));
+        assertThat((String) field.get("value"), is("f"));
     }
 
 }

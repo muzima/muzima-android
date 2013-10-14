@@ -15,6 +15,7 @@ public class PatientFormJSONConverter {
         form.addField("patient.family_name", patient.getFamilyName());
         form.addField("patient.given_name", patient.getGivenName());
         form.addField("patient.middle_name", patient.getMiddleName());
+        form.addField("patient.sex", patient.getGender());
         if (patient.getBirthdate() != null) {
             form.addField("patient.birthdate", getFormattedDate(patient.getBirthdate()));
         }
