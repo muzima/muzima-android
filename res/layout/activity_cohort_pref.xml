@@ -1,6 +1,7 @@
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        style="@style/DashboardTableContainer">
+        style="@style/DashboardTableContainer"
+        android:background="@android:color/white">
     <LinearLayout
             style="@style/NotClickableSummaryItem"
             android:background="@color/tab_background">
@@ -15,9 +16,10 @@
 
     <LinearLayout
             style="@style/SummaryItemRow"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:background="@color/tab_background">
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp">
 
         <AutoCompleteTextView
                 android:id="@+id/prefix_add_prefix"
@@ -39,21 +41,21 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:text="Add"
-                android:background="@drawable/dark_button_selector"
+                android:background="@drawable/previous_button_selector"
                 android:gravity="center"
                 android:onClick="addPrefix"
                 android:clickable="true"
                 style="@style/RegisterText"/>
 
     </LinearLayout>
-    <View style="@style/DividerLine"/>
+    <View style="@style/DividerLine"
+          android:layout_height="2dp"/>
 
     <ListView
             android:id="@+id/cohort_pref_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"/>
+            android:paddingTop="3dp"/>
 
     <TextView
             android:id="@+id/no_data_msg"

@@ -10,7 +10,6 @@
 
     <TextView
             android:id="@+id/concept_autocomplete_name"
-            android:textColor="@android:color/white"
             style="@style/ListHeader">
     </TextView>
 

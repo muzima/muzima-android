@@ -1,7 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              style="@style/SummaryItemRow"
-              android:background="#333333">
-
+              android:layout_height="match_parent"
+              android:layout_width="match_parent"
+              android:orientation="vertical">
+<LinearLayout
+        style="@style/SummaryItemRow">
     <TextView
             android:id="@+id/prefix"
             android:layout_width="0dp"
@@ -12,7 +14,7 @@
             android:singleLine="true"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
-            android:textColor="#DDDDDD"/>
+            android:textColor="@color/theme_color"/>
 
     <FrameLayout
             android:id="@+id/delete_button"
@@ -20,7 +22,7 @@
             android:layout_height="@dimen/abs__action_bar_default_height"
             android:clickable="true"
             android:layout_margin="6dp"
-            android:background="@drawable/dark_button_selector">
+            android:background="@drawable/previous_button_selector">
 
         <ImageView
                 android:layout_width="match_parent"
@@ -29,4 +31,6 @@
                 android:src="@drawable/ic_cancel"/>
     </FrameLayout>
 
+</LinearLayout>
+<View style="@style/DividerLine"/>
 </LinearLayout>
