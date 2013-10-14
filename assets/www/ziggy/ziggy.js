@@ -252,6 +252,7 @@ enketo.FormModelMapper = function (formDataRepository, queryBuilder, idFactory) 
             }
 
             if (enketo.hasValue(savedFormInstance)) {
+                setupSubFormFieldsAndInstances(savedFormInstance);
                 return savedFormInstance;
             }
             if (!enketo.hasValue(entitiesDefinition)) {
@@ -317,7 +318,7 @@ enketo.EntityRelationshipLoader = function () {
 
     return {
         load: function () {
-            return JSON.parse(ziggyFileLoader.loadAppData("entity_relationship.json"));
+            return [];
         }
     };
 };;if (typeof enketo === "undefined" || !enketo) {
@@ -600,7 +601,7 @@ enketo.FormDefinitionLoader = function () {
 
     return {
         load: function (formName) {
-            return JSON.parse(ziggyFileLoader.loadAppData(formName + "/form_definition.json"));
+            return JSON.parse(ziggyFileLoader.loadAppData());
         }
     };
 };;if (typeof enketo === "undefined" || !enketo) {

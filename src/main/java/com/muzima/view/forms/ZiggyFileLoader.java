@@ -33,10 +33,7 @@ public class ZiggyFileLoader {
     }
 
     @JavascriptInterface
-    public String loadAppData(String fileName) {
-        if ("entity_relationship.json".equals(fileName)) {
-            return "[]";
-        }
+    public String loadAppData() {
         return formModelJson;
     }
 

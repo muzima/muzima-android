@@ -1,7 +1,6 @@
 package com.muzima.view.forms;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +18,7 @@ import com.muzima.controller.FormController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
 import com.muzima.view.BroadcastListenerActivity;
+import org.json.JSONException;
 
 import java.util.UUID;
 
@@ -48,8 +48,9 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         setContentView(R.layout.activity_form_webview);
         progressDialogInitialization();
         try {
-            setupFormData();
-            setupWebView();
+            Patient patient = (Patient) getIntent().getSerializableExtra(PATIENT);
+            setupFormData(patient);
+            setupWebView(patient);
         } catch (FormFetchException e) {
             Log.e(TAG, e.getMessage());
             finish();
@@ -70,23 +71,22 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         super.onDestroy();
     }
 
-    private void setupFormData() throws FormFetchException, FormController.FormDataFetchException, FormController.FormDataSaveException {
-        Intent intent = getIntent();
-        BaseForm formObject = (BaseForm) intent.getSerializableExtra(FORM);
+    private void setupFormData(Patient patient) throws FormFetchException, FormController.FormDataFetchException, FormController.FormDataSaveException {
+        BaseForm formObject = (BaseForm) getIntent().getSerializableExtra(FORM);
 
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
         String formId = formObject.getFormUuid();
         form = formController.getFormByUuid(formId);
         formTemplate = formController.getFormTemplateByUuid(formId);
+
         if (formObject.hasData()) {
             formData = formController.getFormDataByUuid(((FormWithData) formObject).getFormDataUuid());
         } else {
-            Patient patientUuid = (Patient) intent.getSerializableExtra(PATIENT);
-            formData = createNewFormData(patientUuid.getUuid(), formId);
+            formData = createNewFormData(patient.getUuid(), formId, patient,formTemplate);
         }
     }
 
-    private FormData createNewFormData(final String patientUuid, final String formUuid) throws FormController.FormDataSaveException {
+    private FormData createNewFormData(final String patientUuid, final String formUuid, Patient patient, FormTemplate formTemplate) throws FormController.FormDataSaveException {
         FormData formData = new FormData() {{
             setUuid(UUID.randomUUID().toString());
             setPatientUuid(patientUuid);
@@ -94,11 +94,17 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             setStatus(STATUS_INCOMPLETE);
             setTemplateUuid(formUuid);
         }};
+        try {
+            PatientJSONMapper mapper = new PatientJSONMapper(formTemplate.getModelJson());
+            formData.setPayload(mapper.map(patient));
+        } catch (JSONException e) {
+            Log.e(TAG, "Error while converting Model JSON");
+        }
         return formData;
     }
 
 
-    private void setupWebView() {
+    private void setupWebView(Patient patient) {
         webView = (WebView) findViewById(R.id.webView);
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
