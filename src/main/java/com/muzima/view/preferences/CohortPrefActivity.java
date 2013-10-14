@@ -21,13 +21,13 @@ import static com.muzima.utils.Constants.COHORT_PREFIX_PREF;
 import static com.muzima.utils.Constants.COHORT_PREFIX_PREF_KEY;
 
 public class CohortPrefActivity extends SherlockActivity implements SettingsBaseAdapter.PreferenceClickListener {
-    private CohortPrefixPrefAdapter prefAdapter;
-    private EditText addPrefixEditText;
+    protected CohortPrefixPrefAdapter prefAdapter;
+    protected EditText addPrefixEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cohort_pref);
+        setContentView(getContentView());
 
         ListView cohortPrefList = (ListView) findViewById(R.id.cohort_pref_list);
         prefAdapter = new CohortPrefixPrefAdapter(this, R.layout.item_preference);
@@ -36,6 +36,10 @@ public class CohortPrefActivity extends SherlockActivity implements SettingsBase
         cohortPrefList.setAdapter(prefAdapter);
 
         addPrefixEditText = (EditText) findViewById(R.id.prefix_edit_text);
+    }
+
+    protected int getContentView() {
+        return R.layout.activity_cohort_pref;
     }
 
     @Override

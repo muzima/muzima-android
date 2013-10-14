@@ -1,28 +1,88 @@
-<FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <RelativeLayout android:layout_height="match_parent" android:layout_width="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_height="match_parent" android:layout_width="match_parent">
+    <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            style="@style/DashboardTableContainer">
         <LinearLayout
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:layout_alignParentTop="true">
-            <fragment
-                    android:id="@+id/cohortPrefixWizardFragment"
-                    android:name="com.muzima.view.cohort.CohortPrefixFragment"
+                style="@style/NotClickableSummaryItem"
+                android:background="@color/tab_background">
+            <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"/>
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_cohort_prefixes"
+                    android:paddingBottom="3dp"
+                    android:textColor="@android:color/white"/>
         </LinearLayout>
-        <LinearLayout style="@style/ButtonRow"
-                      android:layout_height="wrap_content"
-                      android:layout_alignParentBottom="true">
-            <Button
-                    android:id="@+id/next"
-                    style="@style/NextButton"/>
-        </LinearLayout>
+        <View style="@style/DividerLine"/>
 
-    </RelativeLayout>
-</FrameLayout>
+        <LinearLayout
+                style="@style/SummaryItemRow"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:background="@color/tab_background">
+
+            <EditText
+                    android:id="@+id/prefix_edit_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/cohort_add_prefix_hint"
+                    android:inputType="textPersonName">
+
+                <requestFocus/>
+            </EditText>
+
+            <TextView
+                    android:layout_width="72dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="Add"
+                    android:background="@drawable/dark_button_selector"
+                    android:gravity="center"
+                    android:onClick="addPrefix"
+                    android:clickable="true"
+                    style="@style/RegisterText"/>
+
+        </LinearLayout>
+        <View style="@style/DividerLine"/>
+
+        <ListView
+                android:id="@+id/cohort_pref_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"/>
+
+        <TextView
+                android:id="@+id/no_data_msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/no_cohort_prefixes_added"
+                android:textSize="20sp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:visibility="invisible">
+        </TextView>
+
+        <View
+                style="@style/DividerLine"
+                android:layout_height="2dp"/>
+    </LinearLayout>
+
+    <LinearLayout style="@style/ButtonRow"
+                  android:layout_height="wrap_content"
+                  android:layout_alignParentBottom="true">
+        <Button
+                android:id="@+id/next"
+                style="@style/NextButton"/>
+    </LinearLayout>
+
+</RelativeLayout>
+
+
