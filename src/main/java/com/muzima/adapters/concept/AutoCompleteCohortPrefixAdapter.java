@@ -17,115 +17,34 @@ package com.muzima.adapters.concept;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Filter;
-import android.widget.TextView;
-import android.widget.Toast;
-import com.muzima.MuzimaApplication;
-import com.muzima.R;
 import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
-import com.muzima.domain.Credentials;
-import com.muzima.service.MuzimaSyncService;
-import com.muzima.view.BaseActivity;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
-
-public class AutoCompleteCohortPrefixAdapter extends ArrayAdapter<Cohort> {
+public class AutoCompleteCohortPrefixAdapter extends AutoCompleteBaseAdapter<Cohort> {
 
     private static final String TAG = AutoCompleteCohortPrefixAdapter.class.getSimpleName();
-    protected WeakReference<MuzimaApplication> muzimaApplicationWeakReference;
-    private final MuzimaSyncService muzimaSyncService;
 
     public AutoCompleteCohortPrefixAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
-        muzimaApplicationWeakReference = new WeakReference<MuzimaApplication>((MuzimaApplication) context);
-        muzimaSyncService = getMuzimaApplicationContext().getMuzimaSyncService();
     }
 
-    public MuzimaApplication getMuzimaApplicationContext() {
-        if (muzimaApplicationWeakReference == null) {
-            return null;
-        } else {
-            return muzimaApplicationWeakReference.get();
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(final CharSequence constraint) {
-                FilterResults filterResults = new FilterResults();
-                if (constraint != null && constraint.length() > 2) {
-                    Credentials credentials = BaseActivity.credentials(getContext());
-
-                    MuzimaApplication muzimaApplicationContext = getMuzimaApplicationContext();
-                    List<Cohort> cohorts = new ArrayList<Cohort>();
-                    try {
-                        if(muzimaSyncService.authenticate(credentials.getCredentialsArray())==AUTHENTICATION_SUCCESS){
-                            CohortController cohortController = muzimaApplicationContext.getCohortController();
-                            cohorts = cohortController.downloadCohortByName(constraint.toString());
-                        } else {
-                            Toast.makeText(getMuzimaApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
-                        }
-
-                        Log.i(TAG, "Downloaded: " + cohorts.size());
-                    } catch (Throwable t) {
-                        Log.e(TAG, "Unable to download cohorts!", t);
-                    } finally {
-                        muzimaApplicationContext.getMuzimaContext().closeSession();
-                    }
-                    filterResults.values = cohorts;
-                    filterResults.count = cohorts.size();
-                }
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(final CharSequence constraint, final FilterResults results) {
-                List<Cohort> cohortList = (List<Cohort>) results.values;
-                if (cohortList != null && cohortList.size() > 0) {
-                    clear();
-                    for (Cohort c : cohortList) {
-                        add(c);
-                    }
-                    notifyDataSetChanged();
-                }
-            }
-        };
-    }
-
-    private class ViewHolder {
-        TextView name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        if (convertView == null) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            convertView = layoutInflater.inflate(R.layout.item_concept_autocomplete, parent, false);
-            holder = new ViewHolder();
-            holder.name = (TextView) convertView.findViewById(R.id.concept_autocomplete_name);
-            convertView.setTag(holder);
+    protected List<Cohort> getOptions(CharSequence constraint) {
+        CohortController cohortController = getMuzimaApplicationContext().getCohortController();
+        try {
+            return cohortController.downloadCohortByName(constraint.toString());
+        } catch (CohortController.CohortDownloadException e) {
+            Log.e(TAG, "Unable to download cohorts!", e);
         }
-        holder = (ViewHolder) convertView.getTag();
-        Cohort cohort = getItem(position);
-        holder.name.setText(cohort.getName());
-        return convertView;
+        return new ArrayList<Cohort>();
+    }
+
+
+    @Override
+    protected String getOptionDisplay(Cohort cohort) {
+        return cohort.getName();
     }
 }

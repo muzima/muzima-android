@@ -17,118 +17,35 @@ package com.muzima.adapters.concept;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Filter;
-import android.widget.TextView;
-import android.widget.Toast;
-import com.muzima.MuzimaApplication;
-import com.muzima.R;
 import com.muzima.api.model.Concept;
 import com.muzima.controller.ConceptController;
-import com.muzima.domain.Credentials;
-import com.muzima.service.MuzimaSyncService;
-import com.muzima.view.BaseActivity;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
 
 /**
  * TODO: Write brief description about the class here.
  */
-public class AutoCompleteConceptAdapter extends ArrayAdapter<Concept> {
-
+public class AutoCompleteConceptAdapter extends AutoCompleteBaseAdapter<Concept> {
     private static final String TAG = AutoCompleteConceptAdapter.class.getSimpleName();
-    protected WeakReference<MuzimaApplication> muzimaApplicationWeakReference;
-    private final MuzimaSyncService muzimaSyncService;
 
     public AutoCompleteConceptAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
-        muzimaApplicationWeakReference = new WeakReference<MuzimaApplication>((MuzimaApplication) context);
-        muzimaSyncService = getMuzimaApplicationContext().getMuzimaSyncService();
     }
 
-    public MuzimaApplication getMuzimaApplicationContext() {
-        if (muzimaApplicationWeakReference == null) {
-            return null;
-        } else {
-            return muzimaApplicationWeakReference.get();
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(final CharSequence constraint) {
-                FilterResults filterResults = new FilterResults();
-                if (constraint != null && constraint.length() > 2) {
-                    Credentials credentials = BaseActivity.credentials(getContext());
-
-                    MuzimaApplication muzimaApplicationContext = getMuzimaApplicationContext();
-                    List<Concept> concepts = new ArrayList<Concept>();
-                    try {
-                        if(muzimaSyncService.authenticate(credentials.getCredentialsArray())==AUTHENTICATION_SUCCESS){
-                            ConceptController conceptController = muzimaApplicationContext.getConceptController();
-                            concepts = conceptController.downloadConceptsByName(constraint.toString());
-                        } else {
-                            Toast.makeText(getMuzimaApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
-                        }
-
-                        Log.i(TAG, "Downloaded: " + concepts.size());
-                    } catch (Throwable t) {
-                        Log.e(TAG, "Unable to download concepts!", t);
-                    } finally {
-                        muzimaApplicationContext.getMuzimaContext().closeSession();
-                    }
-                    filterResults.values = concepts;
-                    filterResults.count = concepts.size();
-                }
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(final CharSequence constraint, final FilterResults results) {
-                List<Concept> conceptList = (List<Concept>) results.values;
-                if (conceptList != null && conceptList.size() > 0) {
-                    clear();
-                    for (Concept c : conceptList) {
-                        add(c);
-                    }
-                    notifyDataSetChanged();
-                }
-            }
-        };
-    }
-
-    private class ViewHolder {
-        TextView name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        if (convertView == null) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            convertView = layoutInflater.inflate(R.layout.item_concept_autocomplete, parent, false);
-            holder = new ViewHolder();
-            holder.name = (TextView) convertView.findViewById(R.id.concept_autocomplete_name);
-            convertView.setTag(holder);
+    protected List<Concept> getOptions(CharSequence constraint) {
+        ConceptController conceptController = getMuzimaApplicationContext().getConceptController();
+        try {
+            return conceptController.downloadConceptsByName(constraint.toString());
+        } catch (ConceptController.ConceptDownloadException e) {
+            Log.e(TAG, "Unable to download concepts!", e);
         }
-        holder = (ViewHolder) convertView.getTag();
-        Concept concept = getItem(position);
-        holder.name.setText(concept.getName());
-        return convertView;
+        return new ArrayList<Concept>();
+    }
+
+    @Override
+    protected String getOptionDisplay(Concept concept) {
+        return concept.getName();
     }
 }
