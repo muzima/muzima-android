@@ -155,6 +155,14 @@ public class CohortController {
 
     }
 
+    public List<Cohort> downloadCohortByName(String name) throws CohortDownloadException {
+        try {
+            return cohortService.downloadCohortsByName(name);
+        } catch (IOException e) {
+            throw new CohortDownloadException(e);
+        }
+    }
+
     public static class CohortDownloadException extends Throwable {
         public CohortDownloadException(Throwable throwable) {
             super(throwable);

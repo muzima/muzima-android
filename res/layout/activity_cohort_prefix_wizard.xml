@@ -21,17 +21,16 @@
                 android:paddingBottom="3dp"
                 android:background="@color/tab_background">
 
-            <EditText
-                    android:id="@+id/prefix_edit_text"
+            <AutoCompleteTextView
+                    android:id="@+id/prefix_add_prefix"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="@string/cohort_add_prefix_hint"
-                    android:inputType="textPersonName">
+                    android:hint="Enter prefix ...">
 
                 <requestFocus/>
-            </EditText>
+            </AutoCompleteTextView>
 
             <TextView
                     android:layout_width="72dp"

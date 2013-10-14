@@ -3,14 +3,16 @@ package com.muzima.view.preferences;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.actionbarsherlock.app.SherlockActivity;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortPrefixPrefAdapter;
 import com.muzima.adapters.cohort.SettingsBaseAdapter;
+import com.muzima.adapters.concept.AutoCompleteCohortPrefixAdapter;
+import com.muzima.api.model.Cohort;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -22,7 +24,8 @@ import static com.muzima.utils.Constants.COHORT_PREFIX_PREF_KEY;
 
 public class CohortPrefActivity extends SherlockActivity implements SettingsBaseAdapter.PreferenceClickListener {
     protected CohortPrefixPrefAdapter prefAdapter;
-    protected EditText addPrefixEditText;
+    private AutoCompleteCohortPrefixAdapter autoCompleteCohortPrefixAdapter;
+    private AutoCompleteTextView cohortPrefix;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +38,18 @@ public class CohortPrefActivity extends SherlockActivity implements SettingsBase
         cohortPrefList.setEmptyView(findViewById(R.id.no_data_msg));
         cohortPrefList.setAdapter(prefAdapter);
 
-        addPrefixEditText = (EditText) findViewById(R.id.prefix_edit_text);
+
+        cohortPrefix = (AutoCompleteTextView)findViewById(R.id.prefix_add_prefix);
+        autoCompleteCohortPrefixAdapter = new AutoCompleteCohortPrefixAdapter(getApplicationContext(), R.layout.item_concept_autocomplete);
+        cohortPrefix.setAdapter(autoCompleteCohortPrefixAdapter);
+
+        cohortPrefix.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
+                Cohort selectedCohort = (Cohort) parent.getItemAtPosition(position);
+                cohortPrefix.setText(selectedCohort.getName());
+            }
+        });
     }
 
     protected int getContentView() {
@@ -49,7 +63,7 @@ public class CohortPrefActivity extends SherlockActivity implements SettingsBase
     }
 
     public void addPrefix(View view){
-        String newPrefix = addPrefixEditText.getText().toString();
+        String newPrefix = cohortPrefix.getText().toString();
         SharedPreferences cohortSharedPref = getSharedPreferences(COHORT_PREFIX_PREF, MODE_PRIVATE);
         Set<String> originalPrefixesSet = cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>());
         Set<String> copiedPrefixesSet = new TreeSet<String>(new CaseInsensitiveComparator());
@@ -65,7 +79,7 @@ public class CohortPrefActivity extends SherlockActivity implements SettingsBase
         }
 
         prefAdapter.reloadData();
-        addPrefixEditText.setText("");
+        cohortPrefix.setText("");
     }
 
     @Override

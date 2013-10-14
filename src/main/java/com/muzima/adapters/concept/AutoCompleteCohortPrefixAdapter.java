@@ -26,8 +26,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.api.model.Concept;
-import com.muzima.controller.ConceptController;
+import com.muzima.api.model.Cohort;
+import com.muzima.controller.CohortController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.view.BaseActivity;
@@ -38,16 +38,13 @@ import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
 
-/**
- * TODO: Write brief description about the class here.
- */
-public class AutoCompleteConceptAdapter extends ArrayAdapter<Concept> {
+public class AutoCompleteCohortPrefixAdapter extends ArrayAdapter<Cohort> {
 
-    private static final String TAG = AutoCompleteConceptAdapter.class.getSimpleName();
+    private static final String TAG = AutoCompleteCohortPrefixAdapter.class.getSimpleName();
     protected WeakReference<MuzimaApplication> muzimaApplicationWeakReference;
     private final MuzimaSyncService muzimaSyncService;
 
-    public AutoCompleteConceptAdapter(Context context, int textViewResourceId) {
+    public AutoCompleteCohortPrefixAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
         muzimaApplicationWeakReference = new WeakReference<MuzimaApplication>((MuzimaApplication) context);
         muzimaSyncService = getMuzimaApplicationContext().getMuzimaSyncService();
@@ -74,33 +71,33 @@ public class AutoCompleteConceptAdapter extends ArrayAdapter<Concept> {
                     Credentials credentials = BaseActivity.credentials(getContext());
 
                     MuzimaApplication muzimaApplicationContext = getMuzimaApplicationContext();
-                    List<Concept> concepts = new ArrayList<Concept>();
+                    List<Cohort> cohorts = new ArrayList<Cohort>();
                     try {
                         if(muzimaSyncService.authenticate(credentials.getCredentialsArray())==AUTHENTICATION_SUCCESS){
-                            ConceptController conceptController = muzimaApplicationContext.getConceptController();
-                            concepts = conceptController.downloadConceptsByName(constraint.toString());
+                            CohortController cohortController = muzimaApplicationContext.getCohortController();
+                            cohorts = cohortController.downloadCohortByName(constraint.toString());
                         } else {
                             Toast.makeText(getMuzimaApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
                         }
 
-                        Log.i(TAG, "Downloaded: " + concepts.size());
+                        Log.i(TAG, "Downloaded: " + cohorts.size());
                     } catch (Throwable t) {
-                        Log.e(TAG, "Unable to download concepts!", t);
+                        Log.e(TAG, "Unable to download cohorts!", t);
                     } finally {
                         muzimaApplicationContext.getMuzimaContext().closeSession();
                     }
-                    filterResults.values = concepts;
-                    filterResults.count = concepts.size();
+                    filterResults.values = cohorts;
+                    filterResults.count = cohorts.size();
                 }
                 return filterResults;
             }
 
             @Override
             protected void publishResults(final CharSequence constraint, final FilterResults results) {
-                List<Concept> conceptList = (List<Concept>) results.values;
-                if (conceptList != null && conceptList.size() > 0) {
+                List<Cohort> cohortList = (List<Cohort>) results.values;
+                if (cohortList != null && cohortList.size() > 0) {
                     clear();
-                    for (Concept c : conceptList) {
+                    for (Cohort c : cohortList) {
                         add(c);
                     }
                     notifyDataSetChanged();
@@ -127,8 +124,8 @@ public class AutoCompleteConceptAdapter extends ArrayAdapter<Concept> {
             convertView.setTag(holder);
         }
         holder = (ViewHolder) convertView.getTag();
-        Concept concept = getItem(position);
-        holder.name.setText(concept.getName());
+        Cohort cohort = getItem(position);
+        holder.name.setText(cohort.getName());
         return convertView;
     }
 }
