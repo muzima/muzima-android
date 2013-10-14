@@ -16,8 +16,6 @@
 package com.muzima.adapters.concept;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,15 +23,20 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Concept;
 import com.muzima.controller.ConceptController;
-import com.muzima.search.api.util.StringUtil;
+import com.muzima.domain.Credentials;
+import com.muzima.service.MuzimaSyncService;
+import com.muzima.view.BaseActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
 
 /**
  * TODO: Write brief description about the class here.
@@ -42,10 +45,12 @@ public class AutoCompleteConceptAdapter extends ArrayAdapter<Concept> {
 
     private static final String TAG = AutoCompleteConceptAdapter.class.getSimpleName();
     protected WeakReference<MuzimaApplication> muzimaApplicationWeakReference;
+    private final MuzimaSyncService muzimaSyncService;
 
     public AutoCompleteConceptAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
         muzimaApplicationWeakReference = new WeakReference<MuzimaApplication>((MuzimaApplication) context);
+        muzimaSyncService = getMuzimaApplicationContext().getMuzimaSyncService();
     }
 
     public MuzimaApplication getMuzimaApplicationContext() {
@@ -66,29 +71,18 @@ public class AutoCompleteConceptAdapter extends ArrayAdapter<Concept> {
             protected FilterResults performFiltering(final CharSequence constraint) {
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null && constraint.length() > 3) {
-                    SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getContext());
-                    String usernameKey = getContext().getResources().getString(R.string.preference_username);
-                    String passwordKey = getContext().getResources().getString(R.string.preference_password);
-                    String serverKey = getContext().getResources().getString(R.string.preference_server);
+                    Credentials credentials = BaseActivity.credentials(getContext());
+
                     MuzimaApplication muzimaApplicationContext = getMuzimaApplicationContext();
                     List<Concept> concepts = new ArrayList<Concept>();
                     try {
-                        muzimaApplicationContext.getMuzimaContext().openSession();
-                        if (!muzimaApplicationContext.getMuzimaContext().isAuthenticated()) {
-                            muzimaApplicationContext.getMuzimaContext().authenticate(
-                                    settings.getString(usernameKey, StringUtil.EMPTY),
-                                    settings.getString(passwordKey, StringUtil.EMPTY),
-                                    settings.getString(serverKey, StringUtil.EMPTY));
+                        if(muzimaSyncService.authenticate(credentials.getCredentialsArray())==AUTHENTICATION_SUCCESS){
+                            ConceptController conceptController = muzimaApplicationContext.getConceptController();
+                            concepts = conceptController.downloadConceptsByName(constraint.toString());
+                        } else {
+                            Toast.makeText(getMuzimaApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
                         }
-                        ConceptController conceptController = muzimaApplicationContext.getConceptController();
-                        List<Concept> downloadedConcepts = conceptController.downloadConceptsByName(constraint.toString());
-                        List<Concept> savedConcepts = conceptController.getConceptByName(constraint.toString());
-                        for (Concept savedConcept : savedConcepts) {
-                            if (!downloadedConcepts.contains(savedConcept)) {
-                                concepts.add(savedConcept);
-                            }
-                        }
-                        concepts.addAll(downloadedConcepts);
+
                         Log.i(TAG, "Downloaded: " + concepts.size());
                     } catch (Throwable t) {
                         Log.e(TAG, "Unable to download concepts!", t);

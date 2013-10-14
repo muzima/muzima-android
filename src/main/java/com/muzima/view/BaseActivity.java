@@ -1,5 +1,6 @@
 package com.muzima.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -30,12 +31,15 @@ public class BaseActivity extends SherlockFragmentActivity{
             launchLoginActivity(false);
         }
     }
-
     public Credentials credentials(){
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        String usernameKey = getResources().getString(R.string.preference_username);
-        String passwordKey = getResources().getString(R.string.preference_password);
-        String serverKey = getResources().getString(R.string.preference_server);
+        return credentials(this);
+    }
+
+    public static Credentials credentials(Context context){
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        String usernameKey = context.getResources().getString(R.string.preference_username);
+        String passwordKey = context.getResources().getString(R.string.preference_password);
+        String serverKey = context.getResources().getString(R.string.preference_server);
         return new Credentials(settings.getString(usernameKey, StringUtil.EMPTY),
                 settings.getString(passwordKey, StringUtil.EMPTY),
                 settings.getString(serverKey, StringUtil.EMPTY));
