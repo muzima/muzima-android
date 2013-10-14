@@ -22,8 +22,6 @@ public class CohortPrefixWizardActivity extends CohortPrefActivity {
                 navigateToNextActivity();
             }
         });
-
-        fragment = (CohortPrefixFragment) getSupportFragmentManager().findFragmentById(R.id.cohortPrefixWizardFragment);
     }
 
     private void navigateToNextActivity() {
