@@ -1,23 +1,22 @@
 package com.muzima.view.forms;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import com.muzima.R;
 import com.muzima.adapters.forms.DownloadedFormsAdapter;
+import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.DownloadedForm;
 
 public class RecommendedFormsListFragment extends FormsListFragment implements AllAvailableFormsListFragment.OnTemplateDownloadComplete {
     private static String TAG = "RecommendedFormsListFragment";
-    private String patientId;
+    private Patient patient;
 
-    public static RecommendedFormsListFragment newInstance(FormController formController, String patientId) {
+    public static RecommendedFormsListFragment newInstance(FormController formController, Patient patient) {
         RecommendedFormsListFragment f = new RecommendedFormsListFragment();
         f.formController = formController;
-        f.patientId = patientId;
+        f.patient = patient;
         return f;
     }
 
@@ -31,7 +30,7 @@ public class RecommendedFormsListFragment extends FormsListFragment implements A
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        FormViewIntent intent = new FormViewIntent(getActivity(), (DownloadedForm) listAdapter.getItem(position), patientId);
+        FormViewIntent intent = new FormViewIntent(getActivity(), (DownloadedForm) listAdapter.getItem(position), patient);
         getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 

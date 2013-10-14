@@ -14,6 +14,7 @@ import com.muzima.R;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
+import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
@@ -28,7 +29,7 @@ import static java.text.MessageFormat.format;
 
 public class FormWebViewActivity extends BroadcastListenerActivity {
     private static final String TAG = "FormWebViewActivity";
-    public static final String PATIENT_UUID = "patientUuid";
+    public static final String PATIENT = "patient";
     public static final String FORM_INSTANCE = "formInstance";
     public static final String REPOSITORY = "formDataRepositoryContext";
     public static final String ZIGGY_FILE_LOADER = "ziggyFileLoader";
@@ -63,7 +64,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
 
     @Override
     protected void onDestroy() {
-        if(progressDialog != null){
+        if (progressDialog != null) {
             progressDialog.dismiss();
         }
         super.onDestroy();
@@ -77,11 +78,11 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         String formId = formObject.getFormUuid();
         form = formController.getFormByUuid(formId);
         formTemplate = formController.getFormTemplateByUuid(formId);
-        if (formObject instanceof FormWithData) {
+        if (formObject.hasData()) {
             formData = formController.getFormDataByUuid(((FormWithData) formObject).getFormDataUuid());
         } else {
-            String patientUuid = intent.getStringExtra(PATIENT_UUID);
-            formData = createNewFormData(patientUuid, formId);
+            Patient patientUuid = (Patient) intent.getSerializableExtra(PATIENT);
+            formData = createNewFormData(patientUuid.getUuid(), formId);
         }
     }
 
@@ -147,7 +148,6 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         progressDialog.setMessage("Please wait");
         progressDialog.show();
     }
-
 
 
 }

@@ -30,4 +30,8 @@ public abstract class BaseForm implements Serializable {
     public void setFormUuid(String formUuid) {
         this.formUuid = formUuid;
     }
+
+    public boolean hasData() {
+        return this instanceof FormWithData;
+    }
 }

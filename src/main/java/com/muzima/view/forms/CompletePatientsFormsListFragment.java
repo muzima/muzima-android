@@ -15,41 +15,28 @@ import com.muzima.model.FormWithData;
 public class CompletePatientsFormsListFragment extends FormsListFragment {
     private static final String TAG = "CompletePatientsFormsListFragment";
 
-    private PatientController patientController;
-    private String patientId;
+    private Patient patient;
 
-    public static CompletePatientsFormsListFragment newInstance(FormController formController, PatientController patientController, String patientId) {
+    public static CompletePatientsFormsListFragment newInstance(FormController formController, Patient patient) {
         CompletePatientsFormsListFragment f = new CompletePatientsFormsListFragment();
         f.formController = formController;
 
-        f.patientId = patientId;
-        f.patientController = patientController;
+        f.patient = patient;
         return f;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        listAdapter = new PatientCompleteFormsAdapter(getActivity(), R.layout.item_forms_list, formController, patientId);
+        listAdapter = new PatientCompleteFormsAdapter(getActivity(), R.layout.item_forms_list, formController, patient.getUuid());
 
-        Patient patient = null;
-        String msgPostFix = " ";
-        try {
-            patient = patientController.getPatientByUuid(patientId);
-            msgPostFix += patient.getGivenName() + " " + patient.getFamilyName();
-        } catch (PatientController.PatientLoadException e) {
-            Log.e(TAG, "Exception thrown while fetching patient " + e);
-            Toast.makeText(getActivity(), "An error occurred while fetching patient data", Toast.LENGTH_SHORT).show();
-            msgPostFix += "Current Patient";
-        }
-
-        noDataMsg = getActivity().getResources().getString(R.string.no_complete_client_form_msg) + msgPostFix;
+        noDataMsg = getActivity().getResources().getString(R.string.no_complete_client_form_msg);
         noDataTip = getActivity().getResources().getString(R.string.no_incomplete_form_tip);
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        FormViewIntent intent = new FormViewIntent(getActivity(), (FormWithData) listAdapter.getItem(position));
+        FormViewIntent intent = new FormViewIntent(getActivity(), (FormWithData) listAdapter.getItem(position), patient);
         getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 }

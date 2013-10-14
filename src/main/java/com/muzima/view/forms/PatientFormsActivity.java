@@ -39,6 +39,6 @@ public class PatientFormsActivity extends FormsActivityBase {
 
     @Override
     protected MuzimaPagerAdapter createFormsPagerAdapter() {
-        return new PatientFormsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), patient.getUuid());
+        return new PatientFormsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), patient);
     }
 }
