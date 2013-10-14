@@ -35,6 +35,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity {
                 cohortsAdapter.onListItemClick(position);
             }
         });
+
         cohortsAdapter.downloadCohortAndReload();
         listView.setAdapter(cohortsAdapter);
 

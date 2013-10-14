@@ -8,20 +8,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
+import com.muzima.service.MuzimaSyncService;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+
 public class AllCohortsAdapter extends CohortsAdapter{
     private static final String TAG = "AllCohortsAdapter";
+    private final MuzimaSyncService muzimaSyncService;
     private List<String> selectedCohortsUuid;
 
     public AllCohortsAdapter(Context context, int textViewResourceId, CohortController cohortController) {
         super(context, textViewResourceId, cohortController);
         selectedCohortsUuid = new ArrayList<String>();
+            muzimaSyncService = ((MuzimaApplication)(getContext().getApplicationContext())).getMuzimaSyncService();
     }
 
     @Override
@@ -111,15 +117,21 @@ public class AllCohortsAdapter extends CohortsAdapter{
         protected List<Cohort> doInBackground(Void... voids) {
             List<Cohort> allCohorts = null;
             try {
-                allCohorts = cohortController.downloadAllCohorts();
-                cohortController.saveAllCohorts(allCohorts);
+                int[] results = muzimaSyncService.downloadCohorts();
+                displayErrorMessage(results[0]);
+                allCohorts = cohortController.getAllCohorts();
                 Log.i(TAG, "#Cohorts: " + allCohorts.size());
-            } catch (CohortController.CohortDownloadException e) {
-                Log.w(TAG, "Exception occurred while downloading cohorts " + e);
-            } catch (CohortController.CohortSaveException e) {
-                Log.w(TAG, "Exception occurred while saving cohorts " + e);
+            } catch (CohortController.CohortFetchException e) {
+                Log.w(TAG, "Exception occurred while fetching the downloaded cohorts" + e);
             }
             return allCohorts;
+        }
+
+        private void displayErrorMessage(int result) {
+            if(result !=SUCCESS)
+            {
+                Toast.makeText(getContext(), "Something went wrong while downloading cohorts from server", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

@@ -118,15 +118,10 @@ public class MuzimaSyncService {
 
     public int[] downloadCohorts() {
         int[] result = new int[2];
-        CohortController cohortController = muzimaApplication.getCohortController();
-
-        List<String> cohortPrefixes = getCohortPrefixes();
         try {
-            List<Cohort> cohorts;
-            if (cohortPrefixes.isEmpty())
-                cohorts = cohortController.downloadAllCohorts();
-            else
-                cohorts = cohortController.downloadCohortsByPrefix(cohortPrefixes);
+            CohortController cohortController = muzimaApplication.getCohortController();
+
+            List<Cohort> cohorts = downloadCohortsList();
             Log.i(TAG, "Cohort download successful");
             cohortController.deleteAllCohorts();
             Log.i(TAG, "Old cohorts are deleted");
@@ -148,6 +143,17 @@ public class MuzimaSyncService {
             return result;
         }
         return result;
+    }
+
+    private List<Cohort> downloadCohortsList() throws CohortController.CohortDownloadException {
+        CohortController cohortController = muzimaApplication.getCohortController();
+        List<String> cohortPrefixes = getCohortPrefixes();
+        List<Cohort> cohorts;
+        if (cohortPrefixes.isEmpty())
+            cohorts = cohortController.downloadAllCohorts();
+        else
+            cohorts = cohortController.downloadCohortsByPrefix(cohortPrefixes);
+        return cohorts;
     }
 
     public int[] downloadPatientsForCohorts(String[] cohortUuids) {
