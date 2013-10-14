@@ -77,7 +77,7 @@ public class CohortActivity extends BroadcastListenerActivity {
             if(syncStatus == SUCCESS){
                 cohortPagerAdapter.onCohortDownloadFinish();
             }
-        }else if(syncType == SYNC_PATIENTS){
+        }else if(syncType == SYNC_PATIENTS_FULL_DATA){
             if(syncStatus == SUCCESS){
                 cohortPagerAdapter.onPatientsDownloadFinish();
             }

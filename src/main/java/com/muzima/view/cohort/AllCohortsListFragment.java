@@ -155,7 +155,7 @@ public class AllCohortsListFragment extends CohortListFragment {
 
     private void syncPatientsAndObservationsInBackgroundService() {
         Intent intent = new Intent(getActivity(), DataSyncService.class);
-        intent.putExtra(SYNC_TYPE, SYNC_PATIENTS);
+        intent.putExtra(SYNC_TYPE, SYNC_PATIENTS_FULL_DATA);
         intent.putExtra(CREDENTIALS, ((BroadcastListenerActivity) getActivity()).credentials().getCredentialsArray());
         intent.putExtra(COHORT_IDS, getSelectedCohortsArray());
         ((CohortActivity)getActivity()).showProgressBar();

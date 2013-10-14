@@ -80,17 +80,11 @@ public class DataSyncService extends IntentService {
                     saveCohortsSyncTime(result);
                 }
                 break;
-            case SYNC_PATIENTS:
+            case SYNC_PATIENTS_FULL_DATA:
                 String[] cohortIds = intent.getStringArrayExtra(COHORT_IDS);
                 updateNotificationMsg("Downloading Patients");
                 if(authenticationSuccessful(credentials, broadcastIntent)){
-                    int[] resultForPatients = muzimaSyncService.downloadPatientsForCohorts(cohortIds);
-                    String msgForPatients = "Downloaded " + resultForPatients[1] + " patients";
-                    prepareBroadcastMsg(broadcastIntent, resultForPatients, msgForPatients);
-                    if (resultForPatients[0] == SyncStatusConstants.SUCCESS) {
-                        broadcastIntent.putExtra(Constants.DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, resultForPatients[2]);
-                    }
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+                    DownloadPatients(broadcastIntent, cohortIds);
 
                     int[] resultForObservations = muzimaSyncService.downloadObservationsForPatients(cohortIds);
                     String msgForObservations = "Downloaded " + resultForObservations[1] + " observations";
@@ -105,8 +99,25 @@ public class DataSyncService extends IntentService {
                     broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, SYNC_ENCOUNTERS);
                 }
                 break;
+            case SYNC_PATIENTS_ONLY:
+                String[] cohortIdsToDownload = intent.getStringArrayExtra(COHORT_IDS);
+                updateNotificationMsg("Downloading Patients");
+                if(authenticationSuccessful(credentials, broadcastIntent)){
+                    DownloadPatients(broadcastIntent, cohortIdsToDownload);
+                }
+                break;
             default:
                 break;
+        }
+        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+    }
+
+    private void DownloadPatients(Intent broadcastIntent, String[] cohortIds) {
+        int[] resultForPatients = muzimaSyncService.downloadPatientsForCohorts(cohortIds);
+        String msgForPatients = "Downloaded " + resultForPatients[1] + " patients";
+        prepareBroadcastMsg(broadcastIntent, resultForPatients, msgForPatients);
+        if (resultForPatients[0] == SyncStatusConstants.SUCCESS) {
+            broadcastIntent.putExtra(Constants.DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, resultForPatients[2]);
         }
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }

@@ -42,7 +42,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                downloadAndSaveCohortData(cohortsAdapter);
+                downloadAndSavePatients(cohortsAdapter);
                 markWizardHasEnded();
                 navigateToNextActivity();
             }
@@ -62,8 +62,8 @@ public class CohortWizardActivity extends BroadcastListenerActivity {
         startActivity(intent);
     }
 
-    private void downloadAndSaveCohortData(AllCohortsAdapter cohortsAdapter) {
-        this.syncPatientsAndObservationsInBackgroundService(cohortsAdapter.getSelectedCohorts());
+    private void downloadAndSavePatients(AllCohortsAdapter cohortsAdapter) {
+        this.syncPatientsInBackgroundService(cohortsAdapter.getSelectedCohorts());
     }
 
     private void markWizardHasEnded() {
@@ -108,9 +108,9 @@ public class CohortWizardActivity extends BroadcastListenerActivity {
         return (ListView) findViewById(R.id.cohort_wizard_list);
     }
 
-    private void syncPatientsAndObservationsInBackgroundService(List<String> selectedCohortsArray) {
+    private void syncPatientsInBackgroundService(List<String> selectedCohortsArray) {
         Intent intent = new Intent(this, DataSyncService.class);
-        intent.putExtra(SYNC_TYPE, SYNC_PATIENTS);
+        intent.putExtra(SYNC_TYPE, SYNC_PATIENTS_ONLY);
         intent.putExtra(CREDENTIALS, credentials().getCredentialsArray());
         intent.putExtra(COHORT_IDS, selectedCohortsArray.toArray(new String[selectedCohortsArray.size()]));
         startService(intent);

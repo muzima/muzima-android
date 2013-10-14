@@ -68,9 +68,12 @@ public abstract class BroadcastListenerActivity extends BaseActivity {
                 msg += " form templates";
             } else if(syncType == SYNC_COHORTS){
                 msg += " cohorts";
-            } else if(syncType == SYNC_PATIENTS){
+            } else if(syncType == SYNC_PATIENTS_FULL_DATA){
                 int downloadCountSec = intent.getIntExtra(DOWNLOAD_COUNT_SECONDARY, 0);
                 msg += " patients for " + downloadCountSec + " cohorts. Still downloading observations and encounters";
+            } else if(syncType == SYNC_PATIENTS_ONLY){
+                int downloadCountSec = intent.getIntExtra(DOWNLOAD_COUNT_SECONDARY, 0);
+                msg += " patients for " + downloadCountSec + " cohorts.";
             } else if(syncType == SYNC_OBSERVATIONS){
                 msg += " observations";
             } else if(syncType == SYNC_ENCOUNTERS){

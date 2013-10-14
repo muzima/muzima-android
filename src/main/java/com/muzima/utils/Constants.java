@@ -23,9 +23,10 @@ public class Constants {
         public static final int SYNC_FORMS = 0;
         public static final int SYNC_TEMPLATES = 1;
         public static final int SYNC_COHORTS = 2;
-        public static final int SYNC_PATIENTS = 3;
+        public static final int SYNC_PATIENTS_FULL_DATA = 3;
         public static final int SYNC_OBSERVATIONS = 4;
         public static final int SYNC_ENCOUNTERS = 5;
+        public static final int SYNC_PATIENTS_ONLY = 6;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;
