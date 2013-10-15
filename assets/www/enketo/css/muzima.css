@@ -670,7 +670,7 @@ h1, h2, h3, h4, h5, h6 {
 h1 small, h2 small, h3 small, h4 small, h5 small, h6 small {
     font-weight: normal;
     line-height: 1;
-    color: #999999;
+    color: #ffffff;
 }
 
 h1, h2, h3 {
@@ -6531,7 +6531,7 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus {
     }
 
     input[type="checkbox"], input[type="radio"] {
-        border: 1px solid #ccc;
+        border: 1px solid #ffffff;
     }
 
     .form-horizontal .control-label {
@@ -6852,7 +6852,8 @@ progress {
 }
 
 .paper {
-    background-color: #F0F8FF;
+    background-color: #000000;
+    color:#ffffff;
     border-radius: 7px;
     border: 7px solid #e7e7e7;
 }
@@ -7111,7 +7112,7 @@ progress {
 /* overriding main rules */
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    color: #0d0d0d;
+    color: #ffffff;
 }
 
 h3 {
@@ -7119,7 +7120,7 @@ h3 {
 }
 
 h2, h3, h4, legend {
-    color: #0d0d0d;
+    color: #ffffff;
 }
 
 .btn-info {
@@ -7653,7 +7654,7 @@ h4 {
 }
 
 .jr-repeat {
-    background-color: #89adec;
+    background-color: #0A171C;
     margin: 0 0 3px 0;
     padding: 10px 10px 10px 10px;
 }
@@ -7819,7 +7820,7 @@ input[type=radio]:checked {
     line-height: 40px;
     text-align: left;
     margin-bottom: .4em;
-    background-color: #f0f0f0;
+    background-color: #0A171C;
 }
 
 .btn-radiocheck:focus, .btn-radiocheck:hover, .btn-radiocheck:active, .btn-radiocheck[data-checked] {
@@ -7903,8 +7904,8 @@ fieldset .remove {
     -moz-transition: all 0.6s ease-out;
     -o-transition: all 0.6s ease-out;
     transition: all 0.6s ease-out;
-    background-color: #F2DEDE;
-    border-color: #EED3D7;
+    background-color: #AA0000;
+    border-color: #550000;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
@@ -7920,7 +7921,7 @@ fieldset .remove {
     padding-top: 5px;
     font-size: 0.85em;
     font-weight: bold;
-    color: #B94A48;
+    color: #CCCCCC;
 }
 
 .invalid-constraint .jr-constraint-msg.active {
@@ -7928,7 +7929,7 @@ fieldset .remove {
     padding-top: 5px;
     font-size: 0.85em;
     font-weight: bold;
-    color: #B94A48;
+    color: #CCCCCC;
 }
 
 .jr-branch {
@@ -8213,7 +8214,8 @@ fieldset .remove {
 }
 
 .btn-radiocheck:hover, .btn-radiocheck:focus, .btn-radiocheck:active, .btn-radiocheck[data-checked] {
-    background-color: #e4f4ff;
+    background-color: #006600;
+    color: #ffffff;
 }
 
 .input-append .add-on {
