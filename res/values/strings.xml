@@ -128,8 +128,10 @@
     <string name="no_concept_added">No concept added yet.</string>
     <string name="currentUser">Current User</string>
     <string name="preference_wizard_finished">wizardFinished</string>
-    <string name="cohort_wizard_help"> In this step of the wizard, you download the cohorts you need. A cohort is a predefined group of patients. Please select the cohorts and click next.</string>
+    <string name="cohort_wizard_help"> In this step of the wizard, you download the cohorts you need. Please select the cohorts and click next.</string>
+    <string name="cohort_prefix_wizard_help">A cohort is a predefined group of patients for which you can fill forms and download observations. The prefix(es) set here will be used to download cohorts afterwards.</string>
     <string name="title_activity_cohort_wizard">Download Cohorts</string>
     <string name="cohort_wizard_help_title">Download Cohorts Help</string>
+    <string name="cohort_prefix_wizard_help_title">Define Cohorts Prefix(es) Help</string>
 
 </resources>

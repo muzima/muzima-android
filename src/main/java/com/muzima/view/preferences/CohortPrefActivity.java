@@ -1,5 +1,6 @@
 package com.muzima.view.preferences;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -7,12 +8,14 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortPrefixPrefAdapter;
 import com.muzima.adapters.cohort.SettingsBaseAdapter;
 import com.muzima.adapters.concept.AutoCompleteCohortPrefixAdapter;
 import com.muzima.api.model.Cohort;
 import com.muzima.view.BaseActivity;
+import com.muzima.view.HelpActivity;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -54,6 +57,19 @@ public class CohortPrefActivity extends BaseActivity implements SettingsBaseAdap
 
     protected int getContentView() {
         return R.layout.activity_cohort_pref;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_help:
+                Intent intent = new Intent(this, HelpActivity.class);
+                intent.putExtra(HelpActivity.HELP_TYPE, HelpActivity.COHORT_PREFIX_WIZARD_HELP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

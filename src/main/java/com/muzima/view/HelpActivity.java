@@ -10,9 +10,10 @@ import com.muzima.R;
 public class HelpActivity extends Activity {
 
     public static final String HELP_TYPE = "HELP_TYPE";
-    public static final String COHORT_WIZARD_HELP = "COHORT_WIZARD_HELP";
+    public static final int COHORT_WIZARD_HELP = 1;
+    public static final int COHORT_PREFIX_WIZARD_HELP = 2;
 
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_help);
@@ -24,10 +25,16 @@ public class HelpActivity extends Activity {
 
     private void setHelpContent() {
         TextView helpContentView = (TextView)findViewById(R.id.helpContent);
-        String helpType = getIntent().getStringExtra(HELP_TYPE);
-        if(COHORT_WIZARD_HELP.equals(helpType)){
-            helpContentView.setText(getResources().getText(R.string.cohort_wizard_help));
-            setTitle(R.string.cohort_wizard_help_title);
+        int helpType = getIntent().getIntExtra(HELP_TYPE, 0);
+        switch (helpType){
+            case COHORT_WIZARD_HELP:
+                helpContentView.setText(getResources().getText(R.string.cohort_wizard_help));
+                setTitle(R.string.cohort_wizard_help_title);
+                break;
+            case COHORT_PREFIX_WIZARD_HELP:
+                helpContentView.setText(getResources().getText(R.string.cohort_prefix_wizard_help));
+                setTitle(R.string.cohort_prefix_wizard_help_title);
+                break;
         }
     }
 
