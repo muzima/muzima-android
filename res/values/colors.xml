@@ -2,6 +2,7 @@
 <resources>
     <color name="primary_color">#105b63</color>
     <color name="theme_color">#333333</color>
+    <color name="theme_color_background">@android:color/white</color>
     <color name="secondary_text">#888888</color>
     <color name="divider">#d4d4d4</color>
     <color name="dark_button_background">#262626</color>
