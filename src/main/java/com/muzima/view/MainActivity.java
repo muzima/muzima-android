@@ -27,6 +27,7 @@ public class MainActivity extends BroadcastListenerActivity {
         super.onCreate(savedInstanceState);
         mMainView = getLayoutInflater().inflate(R.layout.activity_dashboard, null);
         setContentView(mMainView);
+        setTitle(R.string.homepage);
 
         setupActionbar();
     }
