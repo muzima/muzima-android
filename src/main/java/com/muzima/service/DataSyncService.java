@@ -63,7 +63,7 @@ public class DataSyncService extends IntentService {
                 }
                 break;
             case SYNC_TEMPLATES:
-                String[] formIds = intent.getStringArrayExtra(FROM_IDS);
+                String[] formIds = intent.getStringArrayExtra(FORM_IDS);
                 updateNotificationMsg("Downloading Forms Template for " + formIds.length + " forms");
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = muzimaSyncService.downloadFormTemplates(formIds);

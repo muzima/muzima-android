@@ -9,25 +9,34 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.search.api.util.StringUtil;
+import com.muzima.service.MuzimaSyncService;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+
 public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> {
     private static final String TAG = "AllAvailableFormsAdapter";
     private List<String> selectedFormsUuid;
+    private final MuzimaSyncService muzimaSyncService;
+
 
     public AllAvailableFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
         selectedFormsUuid = new ArrayList<String>();
+        muzimaSyncService = ((MuzimaApplication)(getContext().getApplicationContext())).getMuzimaSyncService();
+
     }
 
     @Override
@@ -36,12 +45,12 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> {
 
         highlightIfSelected(convertView, getItem(position));
         addTags((ViewHolder) convertView.getTag(), getItem(position));
-        markIfDonwloaded(convertView, getItem(position));
+        markIfDownloaded(convertView, getItem(position));
 
         return convertView;
     }
 
-    private void markIfDonwloaded(View convertView, AvailableForm form) {
+    private void markIfDownloaded(View convertView, AvailableForm form) {
         ImageView imageView = (ImageView) convertView.findViewById(R.id.downloadImg);
         if(form.isDownloaded()){
             imageView.setVisibility(View.VISIBLE);
@@ -60,7 +69,7 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> {
             for (int i = 0; i < tags.length; i++) {
                 TextView textView = null;
                 if (holder.tags.size() <= i) {
-                    textView = newTextview(layoutInflater);
+                    textView = newTextView(layoutInflater);
                     holder.addTag(textView);
                 }
                 textView = holder.tags.get(i);
@@ -86,7 +95,7 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> {
         }
     }
 
-    private TextView newTextview(LayoutInflater layoutInflater) {
+    private TextView newTextView(LayoutInflater layoutInflater) {
         TextView textView = (TextView) layoutInflater.inflate(R.layout.tag, null, false);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
         layoutParams.setMargins(1, 0, 0, 0);
@@ -125,6 +134,42 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> {
     public void reloadData() {
         new BackgroundQueryTask(this).execute();
     }
+
+    public void downloadFormTemplatesAndReload() {
+        new DownloadBackgroundQueryTask(this).execute();
+    }
+
+    public class DownloadBackgroundQueryTask extends FormsAdapterBackgroundQueryTask<AvailableForm> {
+
+        public DownloadBackgroundQueryTask(FormsAdapter adapter) {
+            super(adapter);
+        }
+
+        @Override
+        protected AvailableForms doInBackground(Void... voids) {
+            AvailableForms allForms = null;
+            if (adapterWeakReference.get() != null) {
+                try {
+                    FormsAdapter formsAdapter = adapterWeakReference.get();
+                    int[] result = muzimaSyncService.downloadForms();
+                    displayErrorMessage(result[0]);
+                    allForms = formsAdapter.getFormController().getAvailableFormByTags(getSelectedTagUuids());
+                    Log.i(TAG, "#Forms: " + allForms.size());
+                } catch (FormController.FormFetchException e) {
+                    Log.w(TAG, "Exception occurred while fetching local forms " + e);
+                }
+            }
+            return allForms;
+        }
+
+        private void displayErrorMessage(int result) {
+            if(result != SUCCESS)
+            {
+                Toast.makeText(getContext(), "Something went wrong while downloading Form Templates from server", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 
     public class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<AvailableForm> {
 

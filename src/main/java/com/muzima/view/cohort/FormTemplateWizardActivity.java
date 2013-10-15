@@ -8,11 +8,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.cohort.AllCohortsAdapter;
+import com.muzima.adapters.forms.AllAvailableFormsAdapter;
 import com.muzima.service.DataSyncService;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
@@ -20,30 +21,34 @@ import com.muzima.view.MainActivity;
 
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.CREDENTIALS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.FORM_IDS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TEMPLATES;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
 
 
-public class CohortWizardActivity extends BroadcastListenerActivity {
+public class FormTemplateWizardActivity extends BroadcastListenerActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cohort_wizard);
+        setContentView(R.layout.activity_form_templates_wizard);
         ListView listView = getListView();
-        final AllCohortsAdapter cohortsAdapter = createAllCohortsAdapter();
+        final AllAvailableFormsAdapter allAvailableFormsAdapter = createAllFormsAdapter();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                cohortsAdapter.onListItemClick(position);
+                allAvailableFormsAdapter.onListItemClick(position);
             }
         });
 
-        cohortsAdapter.downloadCohortAndReload();
-        listView.setAdapter(cohortsAdapter);
+        allAvailableFormsAdapter.downloadFormTemplatesAndReload();
+        listView.setAdapter(allAvailableFormsAdapter);
 
         Button nextButton = (Button) findViewById(R.id.next);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                downloadAndSavePatients(cohortsAdapter);
+                downloadFormTemplates();
+                markWizardHasEnded();
                 navigateToNextActivity();
             }
         });
@@ -58,23 +63,31 @@ public class CohortWizardActivity extends BroadcastListenerActivity {
     }
 
     private void navigateToPreviousActivity() {
-        Intent intent = new Intent(getApplicationContext(), CohortPrefixWizardActivity.class);
+        Intent intent = new Intent(getApplicationContext(), CohortWizardActivity.class);
         startActivity(intent);
     }
 
-    private void downloadAndSavePatients(AllCohortsAdapter cohortsAdapter) {
-        this.syncPatientsInBackgroundService(cohortsAdapter.getSelectedCohorts());
+    private void downloadFormTemplates() {
+    }
+
+    private void markWizardHasEnded() {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String wizardFinishedKey = getResources().getString(R.string.preference_wizard_finished);
+        settings.edit()
+                .putBoolean(wizardFinishedKey, true)
+                .commit();
     }
 
     private void navigateToNextActivity() {
-        Intent intent = new Intent(getApplicationContext(), FormTemplateWizardActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        disableSettingsMenu(menu);
+        MenuItem menuSettings = menu.findItem(R.id.action_settings);
+        menuSettings.setEnabled(false);
         return true;
     }
 
@@ -91,19 +104,19 @@ public class CohortWizardActivity extends BroadcastListenerActivity {
         }
     }
 
-    private AllCohortsAdapter createAllCohortsAdapter() {
-        return new AllCohortsAdapter(getApplicationContext(), R.layout.item_cohorts_list, ((MuzimaApplication) getApplicationContext()).getCohortController());
+    private AllAvailableFormsAdapter createAllFormsAdapter() {
+        return new AllAvailableFormsAdapter(getApplicationContext(), R.layout.item_forms_list, ((MuzimaApplication) getApplicationContext()).getFormController());
     }
 
     private ListView getListView() {
-        return (ListView) findViewById(R.id.cohort_wizard_list);
+        return (ListView) findViewById(R.id.form_template_wizard_list);
     }
 
-    private void syncPatientsInBackgroundService(List<String> selectedCohortsArray) {
+    private void syncPatientsInBackgroundService(List<String> selectedFormIdsArray) {
         Intent intent = new Intent(this, DataSyncService.class);
-        intent.putExtra(SYNC_TYPE, SYNC_PATIENTS_ONLY);
+        intent.putExtra(SYNC_TYPE, SYNC_TEMPLATES);
         intent.putExtra(CREDENTIALS, credentials().getCredentialsArray());
-        intent.putExtra(COHORT_IDS, selectedCohortsArray.toArray(new String[selectedCohortsArray.size()]));
+        intent.putExtra(FORM_IDS, selectedFormIdsArray.toArray(new String[selectedFormIdsArray.size()]));
         startService(intent);
     }
 

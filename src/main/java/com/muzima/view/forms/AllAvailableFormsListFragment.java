@@ -157,7 +157,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         Intent intent = new Intent(getActivity(), DataSyncService.class);
         intent.putExtra(SYNC_TYPE, SYNC_TEMPLATES);
         intent.putExtra(CREDENTIALS, ((BroadcastListenerActivity) getActivity()).credentials().getCredentialsArray());
-        intent.putExtra(FROM_IDS, getSelectedFormsArray());
+        intent.putExtra(FORM_IDS, getSelectedFormsArray());
         ((FormsActivity) getActivity()).showProgressBar();
         getActivity().startService(intent);
     }

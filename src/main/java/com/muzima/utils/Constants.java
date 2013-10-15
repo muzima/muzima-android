@@ -17,7 +17,7 @@ public class Constants {
         public static final String SYNC_STATUS = "sync_status";
         public static final String DOWNLOAD_COUNT_PRIMARY = "donwload_count_primary";
         public static final String DOWNLOAD_COUNT_SECONDARY = "donwload_count_secondary";
-        public static final String FROM_IDS = "formIds";
+        public static final String FORM_IDS = "formIds";
         public static final String COHORT_IDS = "cohortIds";
 
         public static final int SYNC_FORMS = 0;

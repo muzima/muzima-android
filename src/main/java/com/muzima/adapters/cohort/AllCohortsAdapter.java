@@ -27,7 +27,7 @@ public class AllCohortsAdapter extends CohortsAdapter{
     public AllCohortsAdapter(Context context, int textViewResourceId, CohortController cohortController) {
         super(context, textViewResourceId, cohortController);
         selectedCohortsUuid = new ArrayList<String>();
-            muzimaSyncService = ((MuzimaApplication)(getContext().getApplicationContext())).getMuzimaSyncService();
+        muzimaSyncService = ((MuzimaApplication)(getContext().getApplicationContext())).getMuzimaSyncService();
     }
 
     @Override
