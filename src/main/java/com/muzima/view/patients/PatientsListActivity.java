@@ -55,7 +55,7 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
         getSupportMenuInflater().inflate(R.menu.client_list, menu);
         SearchView searchView = (SearchView) menu.findItem(R.id.search)
                 .getActionView();
-        searchView.setQueryHint("Search patients");
+        searchView.setQueryHint("Search clients");
         setupNoSearchResultDataView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
