@@ -185,6 +185,7 @@
         </activity>
         <activity android:name=".view.cohort.CohortPrefixWizardActivity" android:label="Define Cohorts Prefix"/>
         <activity android:name=".view.cohort.FormTemplateWizardActivity" android:label="Download Form Templates"/>
+        <activity android:name=".view.cohort.CustomConceptWizardActivity" android:label="Define Custom Concept"/>
 
         <service android:name=".service.DataSyncService"
                  android:exported="false"/>
