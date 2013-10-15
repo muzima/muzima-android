@@ -16,7 +16,9 @@ if (!String.prototype.format) {
             return typeof args[number] !== 'undefined' ? args[number] : match;
         });
     };
-};/*global formDataRepositoryContext*/
+}
+;
+/*global formDataRepositoryContext*/
 
 if (typeof enketo === "undefined" || !enketo) {
     var enketo = {};
@@ -44,7 +46,8 @@ enketo.IdFactoryBridge = function () {
         }
     };
 };
-;if (typeof enketo === "undefined" || !enketo) {
+;
+if (typeof enketo === "undefined" || !enketo) {
     var enketo = {};
 }
 
@@ -236,8 +239,10 @@ enketo.FormModelMapper = function (formDataRepository, queryBuilder, idFactory) 
     var setupSubFormFieldsAndInstances = function (formDefinition) {
         if (enketo.hasValue(formDefinition.form.sub_forms)) {
             formDefinition.form.sub_forms.forEach(function (subForm) {
-                addSourceToFields(subForm.fields, subForm.bind_type);
-                subForm.instances = [];
+                if (!enketo.hasValue(subForm.instances)) {
+                    addSourceToFields(subForm.fields, subForm.bind_type);
+                    subForm.instances = [];
+                }
             });
         }
     };
@@ -247,7 +252,7 @@ enketo.FormModelMapper = function (formDataRepository, queryBuilder, idFactory) 
             //TODO: Handle errors, savedFormInstance could be null!
             var savedFormInstance;
             var formInstance = formDataRepository.getFormInstanceByFormTypeAndId(params.id, params.formName);
-            if(formInstance) {
+            if (formInstance) {
                 savedFormInstance = JSON.parse(formInstance);
             }
 
@@ -307,7 +312,8 @@ enketo.FormModelMapper = function (formDataRepository, queryBuilder, idFactory) 
         }
     };
 };
-;/*global ziggyFileLoader*/
+;
+/*global ziggyFileLoader*/
 
 if (typeof enketo === "undefined" || !enketo) {
     var enketo = {};
@@ -321,7 +327,9 @@ enketo.EntityRelationshipLoader = function () {
             return [];
         }
     };
-};;if (typeof enketo === "undefined" || !enketo) {
+};
+;
+if (typeof enketo === "undefined" || !enketo) {
     var enketo = {};
 }
 
@@ -385,7 +393,8 @@ enketo.Relation = function (type, kind, as, from, to) {
     self.from = from;
     self.to = to;
 };
-;if (typeof enketo === "undefined" || !enketo) {
+;
+if (typeof enketo === "undefined" || !enketo) {
     var enketo = {};
 }
 
@@ -438,7 +447,9 @@ enketo.Entities = function () {
     self.contains = function (entity) {
         return enketo.hasValue(self.findEntityByTypeAndId(entity));
     };
-};;if (typeof enketo === "undefined" || !enketo) {
+};
+;
+if (typeof enketo === "undefined" || !enketo) {
     var enketo = {};
 }
 
@@ -490,7 +501,8 @@ enketo.RelationDef = function (type, kind, as, from, to) {
         return new enketo.Relation(self.type, self.kind, self.as, self.from, self.to);
     };
 };
-;if (typeof enketo === "undefined" || !enketo) {
+;
+if (typeof enketo === "undefined" || !enketo) {
     var enketo = {};
 }
 
@@ -534,7 +546,9 @@ enketo.EntityDefinitions = function () {
         }
         return null;
     };
-};;if (typeof enketo === "undefined" || !enketo) {
+};
+;
+if (typeof enketo === "undefined" || !enketo) {
     var enketo = {};
 }
 
@@ -546,7 +560,9 @@ enketo.RelationKind = {
 
 enketo.RelationKind.one_to_one.inverse = enketo.RelationKind.one_to_one;
 enketo.RelationKind.one_to_many.inverse = enketo.RelationKind.many_to_one;
-enketo.RelationKind.many_to_one.inverse = enketo.RelationKind.one_to_many;;if (typeof enketo === "undefined" || !enketo) {
+enketo.RelationKind.many_to_one.inverse = enketo.RelationKind.one_to_many;
+;
+if (typeof enketo === "undefined" || !enketo) {
     var enketo = {};
 }
 
@@ -591,7 +607,8 @@ enketo.EntityRelationships = function (jsonDefinition) {
         }
     };
 };
-;/*global ziggyFileLoader*/
+;
+/*global ziggyFileLoader*/
 if (typeof enketo === "undefined" || !enketo) {
     var enketo = {};
 }
@@ -604,7 +621,9 @@ enketo.FormDefinitionLoader = function () {
             return JSON.parse(ziggyFileLoader.loadAppData());
         }
     };
-};;if (typeof enketo === "undefined" || !enketo) {
+};
+;
+if (typeof enketo === "undefined" || !enketo) {
     var enketo = {};
 }
 
@@ -662,7 +681,8 @@ enketo.SQLQueryBuilder = function (formDataRepository) {
         }
     };
 };
-;/*global formDataRepositoryContext*/
+;
+/*global formDataRepositoryContext*/
 
 if (typeof enketo === "undefined" || !enketo) {
     var enketo = {};
@@ -693,7 +713,9 @@ enketo.FormDataRepository = function () {
             return repository.saveEntity(entityType, JSON.stringify(entity));
         }
     };
-};;/*global formSubmissionRouter*/
+};
+;
+/*global formSubmissionRouter*/
 
 if (typeof enketo === "undefined" || !enketo) {
     var enketo = {};
@@ -711,7 +733,9 @@ enketo.FormSubmissionRouter = function () {
             return submissionRouter.route(instanceId);
         }
     };
-};;if (typeof enketo === "undefined" || !enketo) {
+};
+;
+if (typeof enketo === "undefined" || !enketo) {
     var enketo = {};
 }
 
