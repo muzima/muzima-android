@@ -43,9 +43,8 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity {
     private TextView tagsNoDataMsg;
     private ActionBarDrawerToggle actionbarDrawerToggle;
     private TagsListAdapter tagsListAdapter;
-    private MenuItem menubarLoadButton;
     private FormController formController;
-
+    private AllAvailableFormsAdapter allAvailableFormsAdapter;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -54,7 +53,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity {
         setContentView(mainLayout);
         formController = ((MuzimaApplication) getApplication()).getFormController();
         ListView listView = getListView();
-        final AllAvailableFormsAdapter allAvailableFormsAdapter = createAllFormsAdapter();
+        allAvailableFormsAdapter = createAllFormsAdapter();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -164,7 +163,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity {
         tagsListAdapter = new TagsListAdapter(this, R.layout.item_tags_list, formController);
         tagsDrawerList.setAdapter(tagsListAdapter);
         tagsDrawerList.setOnItemClickListener(tagsListAdapter);
-//        tagsListAdapter.setTagsChangedListener((FormsPagerAdapter) formsPagerAdapter);
+        tagsListAdapter.setTagsChangedListener(allAvailableFormsAdapter);
         actionbarDrawerToggle = new ActionBarDrawerToggle(this, mainLayout,
                 R.drawable.ic_labels, R.string.drawer_open, R.string.drawer_close) {
 

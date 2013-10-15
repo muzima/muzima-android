@@ -26,7 +26,7 @@ import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
-public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> {
+public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implements TagsListAdapter.TagsChangedListener{
     private static final String TAG = "AllAvailableFormsAdapter";
     private List<String> selectedFormsUuid;
     private final MuzimaSyncService muzimaSyncService;
@@ -137,6 +137,11 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> {
 
     public void downloadFormTemplatesAndReload() {
         new DownloadBackgroundQueryTask(this).execute();
+    }
+
+    @Override
+    public void onTagsChanged() {
+        reloadData();
     }
 
     public class DownloadBackgroundQueryTask extends FormsAdapterBackgroundQueryTask<AvailableForm> {
