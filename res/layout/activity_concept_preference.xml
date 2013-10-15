@@ -1,25 +1,29 @@
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        style="@style/DashboardTableContainer">
+        style="@style/DashboardTableContainer"
+        android:background="@color/theme_color_background">
 
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/add_concept"
-            android:textAllCaps="true"
             android:paddingBottom="3dp"
+            android:background="@color/tab_background"
             android:textColor="@android:color/white"/>
 
 
     <LinearLayout
             style="@style/SummaryItemRow"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp">
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp">
 
         <AutoCompleteTextView
                 android:id="@+id/concept_add_concept"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/theme_color"
                 android:hint="Enter concept name ...">
 
             <requestFocus/>
