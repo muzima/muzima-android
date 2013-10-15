@@ -23,7 +23,7 @@ public class ConceptPreferenceActivity extends SherlockActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_concept_preference);
+        setContentView(getContentView());
 
         selectedConceptListView = (ListView) findViewById(R.id.concept_preference_list);
         selectedConceptAdapter = new SelectedConceptAdapter(getApplicationContext(), R.layout.item_concept_list,
@@ -42,6 +42,10 @@ public class ConceptPreferenceActivity extends SherlockActivity {
                 autoCompleteConceptTextView.setText(StringUtil.EMPTY);
             }
         });
+    }
+
+    protected int getContentView() {
+        return R.layout.activity_concept_preference;
     }
 
     @Override

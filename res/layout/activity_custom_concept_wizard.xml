@@ -1,22 +1,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
                 android:layout_height="wrap_content" android:layout_width="match_parent">
-
-    <RelativeLayout android:layout_height="match_parent" android:layout_width="match_parent">
-
-        <LinearLayout style="@style/ButtonRow"
-                      android:layout_alignParentBottom="true">
-            <Button
-                    android:id="@+id/previous"
-                    style="@style/PreviousButton"
-                    android:layout_weight=".3"/>
-            <Button
-                    android:id="@+id/next"
-                    style="@style/NextButton"
-                    android:layout_weight=".3"/>
-        </LinearLayout>
-
-    </RelativeLayout>
+    <include layout="@layout/activity_concept_preference"/>
+    <LinearLayout style="@style/ButtonRow"
+                  android:layout_height="wrap_content">
+        <Button
+                android:id="@+id/previous"
+                style="@style/PreviousButton"
+                android:layout_weight=".3"/>
+        <Button
+                android:id="@+id/next"
+                style="@style/NextButton"
+                android:layout_weight=".3"/>
+    </LinearLayout>
 
 </LinearLayout>
 
