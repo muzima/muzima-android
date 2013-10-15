@@ -83,8 +83,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        MenuItem menuSettings = menu.findItem(R.id.action_settings);
-        menuSettings.setEnabled(false);
+        disableSettingsMenu(menu);
         return true;
     }
 

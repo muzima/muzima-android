@@ -87,4 +87,9 @@ public class BaseActivity extends SherlockFragmentActivity{
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    protected void disableSettingsMenu(Menu menu) {
+        MenuItem menuSettings = menu.findItem(R.id.action_settings);
+        menuSettings.setEnabled(false);
+    }
 }

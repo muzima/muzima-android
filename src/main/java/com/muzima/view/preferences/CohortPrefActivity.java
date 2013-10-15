@@ -7,12 +7,12 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.Toast;
-import com.actionbarsherlock.app.SherlockActivity;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortPrefixPrefAdapter;
 import com.muzima.adapters.cohort.SettingsBaseAdapter;
 import com.muzima.adapters.concept.AutoCompleteCohortPrefixAdapter;
 import com.muzima.api.model.Cohort;
+import com.muzima.view.BaseActivity;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -22,7 +22,7 @@ import java.util.TreeSet;
 import static com.muzima.utils.Constants.COHORT_PREFIX_PREF;
 import static com.muzima.utils.Constants.COHORT_PREFIX_PREF_KEY;
 
-public class CohortPrefActivity extends SherlockActivity implements SettingsBaseAdapter.PreferenceClickListener {
+public class CohortPrefActivity extends BaseActivity implements SettingsBaseAdapter.PreferenceClickListener {
     protected CohortPrefixPrefAdapter prefAdapter;
     private AutoCompleteCohortPrefixAdapter autoCompleteCohortPrefixAdapter;
     private AutoCompleteTextView cohortPrefix;
