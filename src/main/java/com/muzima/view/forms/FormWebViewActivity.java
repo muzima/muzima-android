@@ -8,6 +8,8 @@ import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Form;
@@ -50,7 +52,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         try {
             Patient patient = (Patient) getIntent().getSerializableExtra(PATIENT);
             setupFormData(patient);
-            setupWebView(patient);
+            setupWebView();
         } catch (FormFetchException e) {
             Log.e(TAG, e.getMessage());
             finish();
@@ -69,6 +71,26 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             progressDialog.dismiss();
         }
         super.onDestroy();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getSupportMenuInflater().inflate(R.menu.form_save_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.form_save_as_draft:
+                webView.loadUrl("javascript:document.saveDraft()");
+                return true;
+            case R.id.form_submit:
+                webView.loadUrl("javascript:document.submit()");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void setupFormData(Patient patient) throws FormFetchException, FormController.FormDataFetchException, FormController.FormDataSaveException {
@@ -104,7 +126,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     }
 
 
-    private void setupWebView(Patient patient) {
+    private void setupWebView() {
         webView = (WebView) findViewById(R.id.webView);
         webView.setWebChromeClient(new WebChromeClient() {
             @Override

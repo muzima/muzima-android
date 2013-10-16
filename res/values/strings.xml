@@ -136,4 +136,7 @@
     <string name="cohort_prefix_help_title">Define Cohorts Prefix(es) Help</string>
     <string name="custom_concept_help_title"> Concepts Help</string>
 
+    <string name="form_save_as_draft">Save As Draft</string>
+    <string name="form_submit">Submit</string>
+
 </resources>

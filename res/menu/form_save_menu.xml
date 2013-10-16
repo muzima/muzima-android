@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:id="@+id/form_save_as_draft"
+            android:icon="@drawable/ic_action_save"
+            android:showAsAction="always"
+            android:title="@string/form_save_as_draft"/>
+    <item
+            android:id="@+id/form_submit"
+            android:icon="@drawable/ic_accept"
+            android:showAsAction="always"
+            android:title="@string/form_submit"/>
+</menu>

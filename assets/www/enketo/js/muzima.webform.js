@@ -44,16 +44,14 @@ $(document).ready(function () {
         formDataController.save(jData, status);
     }
 
-    //controller for submission of data to drishti
-    $(document).on('click', 'button#draft-form', function () {
+    document.saveDraft =  function() {
         if (typeof form !== 'undefined') {
             save("incomplete");
         }
         return false;
-    });
+    };
 
-    //controller for submission of data to drishti
-    $(document).on('click', 'button#submit-form', function () {
+    document.submit =  function () {
         if (typeof form !== 'undefined') {
             form.validateForm();
             if (!form.isValid()) {
@@ -64,5 +62,11 @@ $(document).ready(function () {
                 save("complete");
             }
         }
-    });
+    };
+
+    //controller for submission of data to drishti
+//    $(document).on('click', 'button#draft-form', document.saveDraft);
+
+    //controller for submission of data to drishti
+//    $(document).on('click', 'button#submit-form', submit);
 });
