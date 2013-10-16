@@ -24,9 +24,17 @@ public class MuzimaSyncService {
     private static final String TAG = "MuzimaSyncService";
 
     private MuzimaApplication muzimaApplication;
+    private FormController formController;
+    private ConceptController conceptController;
+    private CohortController cohortController;
+    private PatientController patientController;
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
         this.muzimaApplication = muzimaContext;
+        formController = muzimaApplication.getFormController();
+        conceptController = muzimaApplication.getConceptController();
+        cohortController = muzimaApplication.getCohortController();
+        patientController = muzimaApplication.getPatientController();
     }
 
     public int authenticate(String[] credentials) {
@@ -60,8 +68,6 @@ public class MuzimaSyncService {
     public int[] downloadForms() {
         int[] result = new int[2];
 
-        FormController formController = muzimaApplication.getFormController();
-
         try {
             List<Form> forms;
             forms = formController.downloadAllForms();
@@ -93,13 +99,15 @@ public class MuzimaSyncService {
     public int[] downloadFormTemplates(String[] formIds) {
         int[] result = new int[2];
 
-        FormController formController = muzimaApplication.getFormController();
-
         try {
             List<FormTemplate> formTemplates = formController.downloadFormTemplates(formIds);
             Log.i(TAG, "Form template download successful");
 
             formController.replaceFormTemplates(formTemplates);
+            List<Concept> concepts = getRelatedConcepts(formTemplates);
+            conceptController.saveConcepts(concepts);
+
+            new PreferenceHelper(muzimaApplication).addConcepts(concepts);
             Log.i(TAG, "Form templates replaced");
 
             result[0] = SUCCESS;
@@ -112,14 +120,30 @@ public class MuzimaSyncService {
             Log.e(TAG, "Exception when trying to download forms", e);
             result[0] = DOWNLOAD_ERROR;
             return result;
+        } catch (ConceptController.ConceptSaveException e) {
+            Log.e(TAG, "Exception when trying to save concepts related to forms", e);
+            result[0] = SAVE_ERROR;
+            return result;
+        } catch (ConceptController.ConceptDownloadException e) {
+            Log.e(TAG, "Exception when trying to download concepts", e);
+            result[0] = DOWNLOAD_ERROR;
         }
         return result;
+    }
+
+    private List<Concept> getRelatedConcepts(List<FormTemplate> formTemplates) throws ConceptController.ConceptDownloadException {
+        HashSet<Concept> concepts = new HashSet<Concept>();
+        ConceptParser utils = new ConceptParser();
+        for (FormTemplate formTemplate : formTemplates) {
+            List<String> names = utils.parse(formTemplate.getModel());
+            concepts.addAll(conceptController.downloadConceptsByNames(names));
+        }
+        return new ArrayList<Concept>(concepts);
     }
 
     public int[] downloadCohorts() {
         int[] result = new int[2];
         try {
-            CohortController cohortController = muzimaApplication.getCohortController();
 
             List<Cohort> cohorts = downloadCohortsList();
             Log.i(TAG, "Cohort download successful");
@@ -146,7 +170,6 @@ public class MuzimaSyncService {
     }
 
     private List<Cohort> downloadCohortsList() throws CohortController.CohortDownloadException {
-        CohortController cohortController = muzimaApplication.getCohortController();
         List<String> cohortPrefixes = getCohortPrefixes();
         List<Cohort> cohorts;
         if (cohortPrefixes.isEmpty())
@@ -159,8 +182,6 @@ public class MuzimaSyncService {
     public int[] downloadPatientsForCohorts(String[] cohortUuids) {
         int[] result = new int[3];
 
-        CohortController cohortController = muzimaApplication.getCohortController();
-        PatientController patientController = muzimaApplication.getPatientController();
         int patientCount = 0;
         try {
             long startDownloadCohortData = System.currentTimeMillis();
@@ -206,7 +227,6 @@ public class MuzimaSyncService {
     public int[] downloadObservationsForPatients(String[] cohortUuids) {
         int[] result = new int[2];
 
-        PatientController patientController = muzimaApplication.getPatientController();
         ObservationController observationController = muzimaApplication.getObservationController();
         try {
             List<Patient> patients = patientController.getPatientsForCohorts(cohortUuids);

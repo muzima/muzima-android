@@ -1,23 +1,15 @@
 package com.muzima.service;
 
 import android.content.SharedPreferences;
-
 import com.muzima.MuzimaApplication;
 import com.muzima.api.context.Context;
-import com.muzima.api.model.Cohort;
-import com.muzima.api.model.CohortData;
-import com.muzima.api.model.CohortMember;
-import com.muzima.api.model.Form;
-import com.muzima.api.model.FormTemplate;
-import com.muzima.api.model.Observation;
-import com.muzima.api.model.Patient;
+import com.muzima.api.model.*;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.testSupport.CustomTestRunner;
 import com.muzima.utils.Constants;
-
 import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,28 +22,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.muzima.controller.ObservationController.*;
-import static com.muzima.utils.Constants.*;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.CONNECTION_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.DELETE_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.PARSING_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.REPLACE_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+import static com.muzima.controller.ObservationController.ReplaceObservationException;
+import static com.muzima.utils.Constants.COHORT_PREFIX_PREF;
+import static com.muzima.utils.Constants.COHORT_PREFIX_PREF_KEY;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(CustomTestRunner.class)
 public class DownloadServiceTest {

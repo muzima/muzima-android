@@ -82,6 +82,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity {
     }
 
     private void downloadFormTemplates() {
+        syncFormTemplatesInBackgroundService(allAvailableFormsAdapter.getSelectedForms());
     }
 
     private void navigateToNextActivity() {
@@ -132,7 +133,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity {
         return (ListView) findViewById(R.id.form_template_wizard_list);
     }
 
-    private void syncPatientsInBackgroundService(List<String> selectedFormIdsArray) {
+    private void syncFormTemplatesInBackgroundService(List<String> selectedFormIdsArray) {
         Intent intent = new Intent(this, DataSyncService.class);
         intent.putExtra(SYNC_TYPE, SYNC_TEMPLATES);
         intent.putExtra(CREDENTIALS, credentials().getCredentialsArray());

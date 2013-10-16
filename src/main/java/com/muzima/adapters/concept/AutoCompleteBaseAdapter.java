@@ -69,22 +69,22 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
                     Credentials credentials = BaseActivity.credentials(getContext());
 
                     MuzimaApplication muzimaApplicationContext = getMuzimaApplicationContext();
-                    List<T> cohorts = new ArrayList<T>();
+                    List<T> options = new ArrayList<T>();
                     try {
                         if(muzimaSyncService.authenticate(credentials.getCredentialsArray())==AUTHENTICATION_SUCCESS){
-                            cohorts = getOptions(constraint);
+                            options = getOptions(constraint);
                         } else {
                             Toast.makeText(getMuzimaApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
                         }
 
-                        Log.i(TAG, "Downloaded: " + cohorts.size());
+                        Log.i(TAG, "Downloaded: " + options.size());
                     } catch (Throwable t) {
                         Log.e(TAG, "Unable to download cohorts!", t);
                     } finally {
                         muzimaApplicationContext.getMuzimaContext().closeSession();
                     }
-                    filterResults.values = cohorts;
-                    filterResults.count = cohorts.size();
+                    filterResults.values = options;
+                    filterResults.count = options.size();
                 }
                 return filterResults;
             }

@@ -30,15 +30,10 @@ import com.muzima.api.model.Concept;
 import com.muzima.api.model.ConceptName;
 import com.muzima.controller.ConceptController;
 import com.muzima.search.api.util.StringUtil;
+import com.muzima.service.PreferenceHelper;
 import com.muzima.utils.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import static com.muzima.utils.Constants.CONCEPT_PREF;
 import static com.muzima.utils.Constants.CONCEPT_PREF_KEY;
@@ -113,23 +108,15 @@ public class SelectedConceptAdapter extends ArrayAdapter<Concept> {
 
         @Override
         protected Void doInBackground(Concept... concepts) {
-            SharedPreferences conceptSharedPreferences = getContext().getSharedPreferences(CONCEPT_PREF, Context.MODE_PRIVATE);
-            Set<String> conceptUuidSet = conceptSharedPreferences.getStringSet(CONCEPT_PREF_KEY, new LinkedHashSet<String>());
-            Set<String> copyOfUuidSet = new LinkedHashSet<String>();
-            copyOfUuidSet.addAll(conceptUuidSet);
-            for (Concept concept : concepts) {
-                try {
-                    conceptController.saveConcept(concept);
-                    copyOfUuidSet.add(concept.getUuid());
-                } catch (ConceptController.ConceptSaveException e) {
-                    Log.w(TAG, "Exception occurred while saving concept to local data repository!", e);
-                }
+            List<Concept> conceptList = Arrays.asList(concepts);
+            try {
+                conceptController.saveConcepts(conceptList);
+            } catch (ConceptController.ConceptSaveException e) {
+                Log.w(TAG, "Exception occurred while saving concept to local data repository!", e);
             }
-            Log.i(TAG, "Concept uuid set: " + conceptUuidSet);
-            Log.i(TAG, "Copy concept uuid set: " + copyOfUuidSet);
-            SharedPreferences.Editor editor = conceptSharedPreferences.edit();
-            editor.putStringSet(CONCEPT_PREF_KEY, copyOfUuidSet);
-            editor.commit();
+
+            new PreferenceHelper(getContext()).addConcepts(conceptList);
+
             return null;
         }
     }

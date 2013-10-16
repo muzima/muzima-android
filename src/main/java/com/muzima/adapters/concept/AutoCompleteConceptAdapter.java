@@ -23,9 +23,6 @@ import com.muzima.controller.ConceptController;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * TODO: Write brief description about the class here.
- */
 public class AutoCompleteConceptAdapter extends AutoCompleteBaseAdapter<Concept> {
     private static final String TAG = AutoCompleteConceptAdapter.class.getSimpleName();
 
@@ -37,7 +34,7 @@ public class AutoCompleteConceptAdapter extends AutoCompleteBaseAdapter<Concept>
     protected List<Concept> getOptions(CharSequence constraint) {
         ConceptController conceptController = getMuzimaApplicationContext().getConceptController();
         try {
-            return conceptController.downloadConceptsByName(constraint.toString());
+            return conceptController.downloadConceptsByNamePrefix(constraint.toString());
         } catch (ConceptController.ConceptDownloadException e) {
             Log.e(TAG, "Unable to download concepts!", e);
         }

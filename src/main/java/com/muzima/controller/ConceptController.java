@@ -19,7 +19,7 @@ import com.muzima.api.model.Concept;
 import com.muzima.api.service.ConceptService;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
 public class ConceptController {
     private ConceptService conceptService;
@@ -28,7 +28,7 @@ public class ConceptController {
         this.conceptService = conceptService;
     }
 
-    public List<Concept> downloadConceptsByName(String name) throws ConceptDownloadException {
+    public List<Concept> downloadConceptsByNamePrefix(String name) throws ConceptDownloadException {
         try {
             return conceptService.downloadConceptsByName(name);
         } catch (IOException e) {
@@ -66,6 +66,31 @@ public class ConceptController {
         } catch (IOException e) {
             throw new ConceptDeleteException(e);
         }
+    }
+
+    public void saveConcepts(List<Concept> concepts) throws ConceptSaveException {
+        try {
+            conceptService.saveConcepts(concepts);
+        } catch (IOException e) {
+            throw new ConceptSaveException(e);
+        }
+
+    }
+
+    public List<Concept> downloadConceptsByNames(List<String> names) throws ConceptDownloadException {
+        HashSet<Concept> result = new HashSet<Concept>();
+        for (String name : names) {
+            List<Concept> concepts = downloadConceptsByNamePrefix(name);
+            Iterator<Concept> iterator = concepts.iterator();
+            while (iterator.hasNext()){
+                Concept next = iterator.next();
+                if(!name.equalsIgnoreCase(next.getName())){
+                    iterator.remove();
+                }
+            }
+            result.addAll(concepts);
+        }
+        return new ArrayList<Concept>(result);
     }
 
     public static class ConceptDownloadException extends Throwable {
