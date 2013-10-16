@@ -33,24 +33,7 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
             @Override
             public void onClick(View v) {
                 markWizardHasEnded();
-
-                Intent intent = new Intent(getApplicationContext(), DataSyncService.class);
-                intent.putExtra(SYNC_TYPE, SYNC_PATIENTS_DATA_ONLY);
-                intent.putExtra(CREDENTIALS, credentials().getCredentialsArray());
-                try {
-                    CohortController cohortController = ((MuzimaApplication) getApplicationContext()).getCohortController();
-                    List<Cohort> allCohorts = cohortController.getAllCohorts();
-                    ArrayList<String> cohortsUuid = new ArrayList<String>();
-                    for (Cohort cohort : allCohorts){
-                        cohortsUuid.add(cohort.getUuid());
-                    }
-                    intent.putExtra(COHORT_IDS, cohortsUuid.toArray(new String[allCohorts.size()]));
-                    startService(intent);
-                } catch (CohortController.CohortFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local cohorts " + e);
-                    Toast.makeText(getApplicationContext(), "Something went wrong while downloading relevant patient data", Toast.LENGTH_SHORT).show();
-                }
-
+                downloadObservationAndEncounter();
                 navigateToNextActivity();
             }
         });
@@ -62,6 +45,25 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
                 navigateToPreviousActivity();
             }
         });
+    }
+
+    private void downloadObservationAndEncounter() {
+        Intent intent = new Intent(getApplicationContext(), DataSyncService.class);
+        intent.putExtra(SYNC_TYPE, SYNC_PATIENTS_DATA_ONLY);
+        intent.putExtra(CREDENTIALS, credentials().getCredentialsArray());
+        try {
+            CohortController cohortController = ((MuzimaApplication) getApplicationContext()).getCohortController();
+            List<Cohort> allCohorts = cohortController.getAllCohorts();
+            ArrayList<String> cohortsUuid = new ArrayList<String>();
+            for (Cohort cohort : allCohorts){
+                cohortsUuid.add(cohort.getUuid());
+            }
+            intent.putExtra(COHORT_IDS, cohortsUuid.toArray(new String[allCohorts.size()]));
+            startService(intent);
+        } catch (CohortController.CohortFetchException e) {
+            Log.w(TAG, "Exception occurred while fetching local cohorts " + e);
+            Toast.makeText(getApplicationContext(), "Something went wrong while downloading relevant patient data", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
