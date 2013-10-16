@@ -64,7 +64,7 @@ public class CohortPrefActivity extends BaseActivity implements SettingsBaseAdap
         switch (item.getItemId()) {
             case R.id.action_help:
                 Intent intent = new Intent(this, HelpActivity.class);
-                intent.putExtra(HelpActivity.HELP_TYPE, HelpActivity.COHORT_PREFIX_WIZARD_HELP);
+                intent.putExtra(HelpActivity.HELP_TYPE, HelpActivity.COHORT_PREFIX_HELP);
                 startActivity(intent);
                 return true;
             default:

@@ -11,7 +11,8 @@ public class HelpActivity extends Activity {
 
     public static final String HELP_TYPE = "HELP_TYPE";
     public static final int COHORT_WIZARD_HELP = 1;
-    public static final int COHORT_PREFIX_WIZARD_HELP = 2;
+    public static final int COHORT_PREFIX_HELP = 2;
+    public static final int CUSTOM_CONCEPT_HELP = 3;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +32,13 @@ public class HelpActivity extends Activity {
                 helpContentView.setText(getResources().getText(R.string.cohort_wizard_help));
                 setTitle(R.string.cohort_wizard_help_title);
                 break;
-            case COHORT_PREFIX_WIZARD_HELP:
-                helpContentView.setText(getResources().getText(R.string.cohort_prefix_wizard_help));
-                setTitle(R.string.cohort_prefix_wizard_help_title);
+            case COHORT_PREFIX_HELP:
+                helpContentView.setText(getResources().getText(R.string.cohort_prefix_help));
+                setTitle(R.string.cohort_prefix_help_title);
+                break;
+            case CUSTOM_CONCEPT_HELP:
+                helpContentView.setText(getResources().getText(R.string.custom_concept_help));
+                setTitle(R.string.custom_concept_help_title);
                 break;
         }
     }

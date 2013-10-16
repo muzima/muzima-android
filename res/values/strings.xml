@@ -129,9 +129,11 @@
     <string name="currentUser">Current User</string>
     <string name="preference_wizard_finished">wizardFinished</string>
     <string name="cohort_wizard_help"> In this step of the wizard, you download the cohorts you need. Please select the cohorts and click next.</string>
-    <string name="cohort_prefix_wizard_help">A cohort is a predefined group of clients for which you can fill forms and download observations. The prefix(es) set here will be used to download cohorts afterwards.</string>
+    <string name="cohort_prefix_help">A cohort is a predefined group of clients for which you can fill forms and download observations. The prefix(es) set here will be used to download cohorts afterwards.</string>
+    <string name="custom_concept_help"> Here you define concepts whose data will be included in later download.</string>
     <string name="title_activity_cohort_wizard">Download Cohorts</string>
     <string name="cohort_wizard_help_title">Download Cohorts Help</string>
-    <string name="cohort_prefix_wizard_help_title">Define Cohorts Prefix(es) Help</string>
+    <string name="cohort_prefix_help_title">Define Cohorts Prefix(es) Help</string>
+    <string name="custom_concept_help_title"> Concepts Help</string>
 
 </resources>

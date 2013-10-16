@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import com.actionbarsherlock.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Cohort;
@@ -45,6 +46,13 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
                 navigateToPreviousActivity();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        disableSettingsMenu(menu);
+        return true;
     }
 
     private void downloadObservationAndEncounter() {
