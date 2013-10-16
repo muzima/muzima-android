@@ -106,6 +106,23 @@ public class DataSyncService extends IntentService {
                     DownloadPatients(broadcastIntent, cohortIdsToDownload);
                 }
                 break;
+            case SYNC_PATIENTS_DATA_ONLY:
+                String[] savedCohortIds = intent.getStringArrayExtra(COHORT_IDS);
+                updateNotificationMsg("Downloading Patients data");
+                if(authenticationSuccessful(credentials, broadcastIntent)){
+                    int[] resultForObservations = muzimaSyncService.downloadObservationsForPatients(savedCohortIds);
+                    String msgForObservations = "Downloaded " + resultForObservations[1] + " observations";
+                    prepareBroadcastMsg(broadcastIntent, resultForObservations, msgForObservations);
+                    broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, SYNC_OBSERVATIONS);
+
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+
+                    int[] resultForEncounters = muzimaSyncService.downloadEncountersForPatients(savedCohortIds);
+                    String msgForEncounters = "Downloaded " + resultForEncounters[1] + " encounters";
+                    prepareBroadcastMsg(broadcastIntent, resultForEncounters, msgForEncounters);
+                    broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, SYNC_ENCOUNTERS);
+                }
+                break;
             default:
                 break;
         }

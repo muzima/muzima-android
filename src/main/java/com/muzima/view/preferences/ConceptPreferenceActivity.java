@@ -5,15 +5,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
-import com.actionbarsherlock.app.SherlockActivity;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.concept.AutoCompleteConceptAdapter;
 import com.muzima.adapters.concept.SelectedConceptAdapter;
 import com.muzima.api.model.Concept;
 import com.muzima.search.api.util.StringUtil;
+import com.muzima.view.BaseActivity;
 
-public class ConceptPreferenceActivity extends SherlockActivity {
+public class ConceptPreferenceActivity extends BaseActivity {
     private static final String TAG = ConceptPreferenceActivity.class.getSimpleName();
     private SelectedConceptAdapter selectedConceptAdapter;
     private ListView selectedConceptListView;

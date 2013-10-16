@@ -27,6 +27,7 @@ public class Constants {
         public static final int SYNC_OBSERVATIONS = 4;
         public static final int SYNC_ENCOUNTERS = 5;
         public static final int SYNC_PATIENTS_ONLY = 6;
+        public static final int SYNC_PATIENTS_DATA_ONLY = 7;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;
