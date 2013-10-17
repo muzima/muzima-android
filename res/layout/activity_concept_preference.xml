@@ -23,8 +23,10 @@
 
         <AutoCompleteTextView
                 android:id="@+id/concept_add_concept"
-                android:layout_width="fill_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:ems="10"
                 android:textColor="@color/theme_color"
                 android:hint="Enter concept name ...">
 

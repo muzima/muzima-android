@@ -97,7 +97,7 @@ public class MuzimaSyncService {
     }
 
     public int[] downloadFormTemplates(String[] formIds) {
-        int[] result = new int[2];
+        int[] result = new int[3];
 
         try {
             List<FormTemplate> formTemplates = formController.downloadFormTemplates(formIds);
@@ -112,6 +112,7 @@ public class MuzimaSyncService {
 
             result[0] = SUCCESS;
             result[1] = formTemplates.size();
+            result[2] = concepts.size();
         } catch (FormController.FormSaveException e) {
             Log.e(TAG, "Exception when trying to save forms", e);
             result[0] = SAVE_ERROR;

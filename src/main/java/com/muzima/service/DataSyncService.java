@@ -67,7 +67,7 @@ public class DataSyncService extends IntentService {
                 updateNotificationMsg("Downloading Forms Template for " + formIds.length + " forms");
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = muzimaSyncService.downloadFormTemplates(formIds);
-                    String msg = "Downloaded " + result[1] + " form templates";
+                    String msg = "Downloaded " + result[1] + " form templates and " + result[2] + "concepts";
                     prepareBroadcastMsg(broadcastIntent, result, msg);
                 }
                 break;
