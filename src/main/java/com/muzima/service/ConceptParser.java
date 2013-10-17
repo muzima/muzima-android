@@ -21,7 +21,9 @@ public class ConceptParser {
 
     public ConceptParser(XmlPullParser parser)  {
         try {
-            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+            if (parser!=null) {
+                parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+            }
         } catch (XmlPullParserException e) {
             throw new ParseConceptException(e);
         }
@@ -30,6 +32,9 @@ public class ConceptParser {
 
     public List<String> parse(String model) {
         try {
+            if(StringUtils.isEmpty(model)) {
+                return new ArrayList<String>();
+            }
             parser.setInput(new ByteArrayInputStream(model.getBytes()), null);
             parser.nextTag();
             return readConceptName(parser);

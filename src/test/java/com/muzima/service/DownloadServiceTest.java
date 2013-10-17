@@ -4,10 +4,7 @@ import android.content.SharedPreferences;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.context.Context;
 import com.muzima.api.model.*;
-import com.muzima.controller.CohortController;
-import com.muzima.controller.FormController;
-import com.muzima.controller.ObservationController;
-import com.muzima.controller.PatientController;
+import com.muzima.controller.*;
 import com.muzima.testSupport.CustomTestRunner;
 import com.muzima.utils.Constants;
 import org.apache.lucene.queryParser.ParseException;
@@ -43,6 +40,7 @@ public class DownloadServiceTest {
     private SharedPreferences sharedPref;
     private PatientController patientController;
     private ObservationController observationController;
+    private ConceptController conceptController;
 
     @Before
     public void setUp() throws Exception {
@@ -53,13 +51,16 @@ public class DownloadServiceTest {
         patientController = mock(PatientController.class);
         observationController = mock(ObservationController.class);
         sharedPref = mock(SharedPreferences.class);
+        conceptController = mock(ConceptController.class);
 
-        muzimaSyncService = new MuzimaSyncService(muzimaApplication);
         when(muzimaApplication.getMuzimaContext()).thenReturn(muzimaContext);
         when(muzimaApplication.getFormController()).thenReturn(formContorller);
         when(muzimaApplication.getCohortController()).thenReturn(cohortController);
         when(muzimaApplication.getPatientController()).thenReturn(patientController);
         when(muzimaApplication.getObservationController()).thenReturn(observationController);
+        when(muzimaApplication.getConceptController()).thenReturn(conceptController);
+        when(muzimaApplication.getSharedPreferences(anyString(), anyInt())).thenReturn(sharedPref);
+        muzimaSyncService = new MuzimaSyncService(muzimaApplication);
     }
 
     @Test
@@ -173,6 +174,8 @@ public class DownloadServiceTest {
         String[] formTemplateUuids = new String[]{};
         List<FormTemplate> formTemplates = new ArrayList<FormTemplate>();
         when(formContorller.downloadFormTemplates(formTemplateUuids)).thenReturn(formTemplates);
+        SharedPreferences.Editor editor = mock(SharedPreferences.Editor.class);
+        when(sharedPref.edit()).thenReturn(editor);
 
         muzimaSyncService.downloadFormTemplates(formTemplateUuids);
 
@@ -191,6 +194,8 @@ public class DownloadServiceTest {
 
         String[] formIds = {};
         when(formContorller.downloadFormTemplates(formIds)).thenReturn(formTemplates);
+        SharedPreferences.Editor editor = mock(SharedPreferences.Editor.class);
+        when(sharedPref.edit()).thenReturn(editor);
 
         assertThat(muzimaSyncService.downloadFormTemplates(formIds), is(result));
     }
