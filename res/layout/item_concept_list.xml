@@ -1,29 +1,51 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_height="match_parent"
+              android:layout_width="match_parent"
+              android:orientation="vertical">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  style="@style/SummaryItemRow">
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:descendantFocusability="blocksDescendants"
                 android:layout_marginTop="7dp"
                 android:layout_marginBottom="7dp"
                 android:orientation="vertical">
 
-    <TextView
-            android:id="@+id/concept_name"
-            style="@style/ListHeader"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-    </TextView>
+            <TextView
+                    android:id="@+id/concept_name"
+                    style="@style/ListHeader"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+            </TextView>
 
+            <TextView
+                    android:id="@+id/concept_synonyms"
+                    style="@style/ListDescription"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_below="@+id/concept_name">
+            </TextView>
 
-    <TextView
-            android:id="@+id/concept_synonyms"
-            style="@style/ListDescription"
-            android:layout_alignParentLeft="true"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:layout_below="@+id/concept_name">
-    </TextView>
+        </LinearLayout>
+
+        <FrameLayout
+                android:id="@+id/delete_button"
+                android:layout_width="@dimen/abs__action_bar_default_height"
+                android:layout_height="@dimen/abs__action_bar_default_height"
+                android:clickable="true"
+                android:layout_margin="6dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/previous_button_selector">
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/ic_cancel"/>
+        </FrameLayout>
+
+    </LinearLayout>
     <View style="@style/DividerLine"/>
 
-</RelativeLayout>
+</LinearLayout>
