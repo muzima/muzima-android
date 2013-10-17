@@ -1,6 +1,8 @@
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         style="@style/DashboardTableContainer"
+        android:layout_height="0dp"
+        android:layout_weight="13"
         android:background="@color/theme_color_background">
     <LinearLayout
             style="@style/NotClickableSummaryItem"
@@ -54,8 +56,8 @@
 
     <ListView
             android:id="@+id/cohort_pref_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:paddingTop="3dp"/>
 
     <TextView
