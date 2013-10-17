@@ -65,7 +65,7 @@ public abstract class BroadcastListenerActivity extends BaseActivity {
             if(syncType == SYNC_FORMS){
                 msg += " forms";
             }else if(syncType == SYNC_TEMPLATES){
-                msg += " form templates";
+                msg += " form templates and " + intent.getIntExtra(DOWNLOAD_COUNT_SECONDARY, 0) + " related concepts";
             } else if(syncType == SYNC_COHORTS){
                 msg += " cohorts";
             } else if(syncType == SYNC_PATIENTS_FULL_DATA){

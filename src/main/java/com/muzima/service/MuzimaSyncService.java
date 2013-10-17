@@ -101,7 +101,7 @@ public class MuzimaSyncService {
 
         try {
             List<FormTemplate> formTemplates = formController.downloadFormTemplates(formIds);
-            Log.i(TAG, "Form template download successful");
+            Log.i(TAG, formTemplates.size() + "form template download successful");
 
             formController.replaceFormTemplates(formTemplates);
             List<Concept> concepts = getRelatedConcepts(formTemplates);
