@@ -53,7 +53,6 @@ public class SelectedConceptAdapter extends ArrayAdapter<Concept> {
     private class ViewHolder {
         TextView name;
         TextView synonyms;
-        TextView uuid;
     }
 
     @Override
@@ -65,7 +64,6 @@ public class SelectedConceptAdapter extends ArrayAdapter<Concept> {
             holder = new ViewHolder();
             holder.name = (TextView) convertView.findViewById(R.id.concept_name);
             holder.synonyms = (TextView) convertView.findViewById(R.id.concept_synonyms);
-            holder.uuid = (TextView) convertView.findViewById(R.id.concept_uuid);
             convertView.setTag(holder);
         }
         holder = (ViewHolder) convertView.getTag();
@@ -89,7 +87,6 @@ public class SelectedConceptAdapter extends ArrayAdapter<Concept> {
                 synonymBuilder.append(" (").append(conceptNames.size() - 2).append(" more.)");
             }
             holder.synonyms.setText(synonymBuilder.toString());
-            holder.uuid.setText(concept.getUuid());
         }
         return convertView;
     }

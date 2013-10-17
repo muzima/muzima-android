@@ -15,14 +15,6 @@
             android:layout_height="wrap_content">
     </TextView>
 
-    <TextView
-            android:id="@+id/concept_uuid"
-            style="@style/ListDescription"
-            android:layout_alignParentLeft="true"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:layout_below="@+id/concept_name">
-    </TextView>
 
     <TextView
             android:id="@+id/concept_synonyms"
@@ -30,7 +22,7 @@
             android:layout_alignParentLeft="true"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:layout_below="@+id/concept_uuid">
+            android:layout_below="@+id/concept_name">
     </TextView>
     <View style="@style/DividerLine"/>
 
