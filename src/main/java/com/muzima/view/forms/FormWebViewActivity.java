@@ -1,6 +1,5 @@
 package com.muzima.view.forms;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -41,14 +40,15 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     private WebView webView;
     private Form form;
     private FormTemplate formTemplate;
-    private ProgressDialog progressDialog;
+    private FormProgressDialog progressDialog;
     private FormData formData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_webview);
-        progressDialogInitialization();
+        progressDialog = new FormProgressDialog(this);
+        progressDialog.show("Loading... ");
         try {
             Patient patient = (Patient) getIntent().getSerializableExtra(PATIENT);
             setupFormData(patient);
@@ -132,16 +132,15 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             @Override
             public void onProgressChanged(WebView view, int progress) {
                 FormWebViewActivity.this.setProgress(progress * 1000);
-
-                if (progress == 100 && progressDialog.isShowing())
-                    progressDialog.dismiss();
+                if (progress == 100){
+                    progressDialog.hide();
+                }
             }
 
             @Override
             public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
                 String message = format("Javascript Log. Message: {0}, lineNumber: {1}, sourceId, {2}", consoleMessage.message(),
                         consoleMessage.lineNumber(), consoleMessage.sourceId());
-
                 if (consoleMessage.messageLevel() == ERROR) {
                     Log.e(TAG, message);
                 } else {
@@ -161,6 +160,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
         webView.addJavascriptInterface(new FormDataStore(this, formController, formData), REPOSITORY);
         webView.addJavascriptInterface(new ZiggyFileLoader("www/ziggy", getApplicationContext().getAssets(), formInstance.getModelJson()), ZIGGY_FILE_LOADER);
+        webView.addJavascriptInterface(new FormProgressDialog(this), "progressDialog");
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.loadUrl("file:///android_asset/www/enketo/template.html");
     }
@@ -168,15 +168,6 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     private WebSettings getSettings() {
         return webView.getSettings();
     }
-
-    private void progressDialogInitialization() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(false);
-        progressDialog.setTitle("Loading ...");
-        progressDialog.setMessage("Please wait");
-        progressDialog.show();
-    }
-
 
 }
 

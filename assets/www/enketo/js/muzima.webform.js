@@ -39,9 +39,11 @@ $(document).ready(function () {
     loadErrors = form.init();
 
     function save(status) {
+        progressDialog.show("Saving...");
         var jData = jDataO.get();
         delete jData.errors;
         formDataController.save(jData, status);
+        progressDialog.hide();
     }
 
     document.saveDraft =  function() {
