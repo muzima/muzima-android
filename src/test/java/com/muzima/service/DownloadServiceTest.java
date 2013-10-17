@@ -185,7 +185,7 @@ public class DownloadServiceTest {
 
     @Test
     public void downloadFormTemplates_shouldReturnSuccessStatusAndDownloadCountIfSuccessful() throws FormController.FormFetchException {
-        int[] result = new int[]{SUCCESS, 2};
+        int[] result = new int[]{SUCCESS, 2, 0};
 
         List<FormTemplate> formTemplates = new ArrayList<FormTemplate>(){{
             add(new FormTemplate());
