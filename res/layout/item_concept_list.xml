@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_height="match_parent"
               android:layout_width="match_parent"
+              android:listSelector="@android:color/transparent"
               android:orientation="vertical">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   style="@style/SummaryItemRow">
@@ -23,27 +24,17 @@
                     android:id="@+id/concept_synonyms"
                     style="@style/ListDescription"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:layout_below="@+id/concept_name">
+                    android:paddingRight="10dp">
             </TextView>
-
         </LinearLayout>
 
-        <FrameLayout
-                android:id="@+id/delete_button"
-                android:layout_width="@dimen/abs__action_bar_default_height"
-                android:layout_height="@dimen/abs__action_bar_default_height"
+        <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:clickable="true"
-                android:layout_margin="6dp"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/previous_button_selector">
-
-            <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:src="@drawable/ic_cancel"/>
-        </FrameLayout>
+                android:src="@drawable/ic_action_discard"
+                android:contentDescription="Delete"/>
 
     </LinearLayout>
     <View style="@style/DividerLine"/>
