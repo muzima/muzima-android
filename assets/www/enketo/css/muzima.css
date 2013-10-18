@@ -916,9 +916,18 @@ form {
 }
 
 fieldset {
-    padding: 0;
+    padding: 5px;
     margin: 0;
-    border: 0;
+    border-width: 1px;
+    border-style: ridge;
+}
+
+fieldset fieldset {
+    border: 0
+}
+
+fieldset.restoring-sanity-to-legends {
+    border:1;
 }
 
 legend {
@@ -930,7 +939,8 @@ legend {
     line-height: 44px;
     color: #333333;
     border: 0;
-    border-bottom: 1px solid #e5e5e5;
+    padding: 5px;
+    border-top: 1px solid #e5e5e5;
 }
 
 legend small {
@@ -1285,7 +1295,7 @@ input[type="radio"][disabled], input[type="checkbox"][disabled], input[type="rad
 .control-group.success .input-prepend .add-on, .control-group.success .input-append .add-on {
     color: #468847;
     background-color: #dff0d8;
-    border-color: #468847;
+    border-color: #3a87ad;
 }
 
 .control-group.info .control-label, .control-group.info .help-block, .control-group.info .help-inline {
@@ -1414,7 +1424,7 @@ input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:fo
 
 .input-append .active, .input-prepend .active {
     background-color: #a9dba9;
-    border-color: #46a546;
+    border-color: #3a87ad;
 }
 
 .input-prepend .add-on, .input-prepend .btn {
@@ -7706,6 +7716,10 @@ label, legend, .trigger {
     font-size: 0.60em;
 }
 
+fieldset label {
+    padding: 2px;
+}
+
 img, audio, video {
     float: right;
     max-height: 300px;
@@ -7803,12 +7817,10 @@ input[type=radio]:checked {
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
-    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
     width: 100%;
     line-height: 40px;
     text-align: left;
     margin-bottom: .4em;
-    background-color: #0A171C;
 }
 
 .btn-radiocheck:focus, .btn-radiocheck:hover, .btn-radiocheck:active, .btn-radiocheck[data-checked] {
@@ -8202,7 +8214,7 @@ fieldset .remove {
 }
 
 .btn-radiocheck:hover, .btn-radiocheck:focus, .btn-radiocheck:active, .btn-radiocheck[data-checked] {
-    background-color: #006600;
+    background-color: #3a87ad;
     color: #ffffff;
 }
 

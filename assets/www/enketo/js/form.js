@@ -2052,13 +2052,8 @@ function Form (formSelector, dataStr, dataStrToEdit){
             if (!Modernizr.touch || !Modernizr.inputtypes.datetime){
                 this.dateTimeWidget();
             }
-            if (!Modernizr.touch){
-                this.selectWidget();
-            }
-            else{
-                this.mobileSelectWidget();
-                this.touchRadioCheckWidget();
-            }
+            this.mobileSelectWidget();
+            this.touchRadioCheckWidget();
             this.geopointWidget();
             this.tableWidget();
             this.spinnerWidget();
