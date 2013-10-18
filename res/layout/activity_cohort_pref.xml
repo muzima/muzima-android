@@ -1,8 +1,6 @@
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         style="@style/DashboardTableContainer"
-        android:layout_height="0dp"
-        android:layout_weight="13"
         android:background="@color/theme_color_background">
     <LinearLayout
             style="@style/NotClickableSummaryItem"
