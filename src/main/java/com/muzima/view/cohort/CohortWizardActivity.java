@@ -1,44 +1,41 @@
 package com.muzima.view.cohort;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.cohort.AllCohortsAdapter;
 import com.muzima.service.DataSyncService;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
-import com.muzima.view.MainActivity;
+import com.muzima.view.forms.MuzimaProgressDialog;
 
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.COHORT_IDS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.CREDENTIALS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_PATIENTS_ONLY;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
 
 
-public class CohortWizardActivity extends BroadcastListenerActivity {
+public class CohortWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener{
+
+    private MuzimaProgressDialog progressDialog;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cohort_wizard);
         ListView listView = getListView();
+
         final AllCohortsAdapter cohortsAdapter = createAllCohortsAdapter();
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                cohortsAdapter.onListItemClick(position);
-            }
-        });
-
-        cohortsAdapter.downloadCohortAndReload();
-        listView.setAdapter(cohortsAdapter);
-
         Button nextButton = (Button) findViewById(R.id.next);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,11 +52,23 @@ public class CohortWizardActivity extends BroadcastListenerActivity {
                 navigateToPreviousActivity();
             }
         });
+
+        cohortsAdapter.setBackgroundListQueryTaskListener(this);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                cohortsAdapter.onListItemClick(position);
+            }
+        });
+
+        cohortsAdapter.downloadCohortAndReload();
+        listView.setAdapter(cohortsAdapter);
     }
 
     private void navigateToPreviousActivity() {
         Intent intent = new Intent(getApplicationContext(), CohortPrefixWizardActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void downloadAndSavePatients(AllCohortsAdapter cohortsAdapter) {
@@ -69,6 +78,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity {
     private void navigateToNextActivity() {
         Intent intent = new Intent(getApplicationContext(), FormTemplateWizardActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @Override
@@ -107,4 +117,14 @@ public class CohortWizardActivity extends BroadcastListenerActivity {
         startService(intent);
     }
 
+    @Override
+    public void onQueryTaskStarted() {
+        progressDialog = new MuzimaProgressDialog(this);
+        progressDialog.show("Loading Cohorts...");
+    }
+
+    @Override
+    public void onQueryTaskFinish() {
+        progressDialog.dismiss();
+    }
 }

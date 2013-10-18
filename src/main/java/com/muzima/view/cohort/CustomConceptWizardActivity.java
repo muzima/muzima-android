@@ -90,10 +90,12 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
     private void navigateToNextActivity() {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void navigateToPreviousActivity() {
         Intent intent = new Intent(getApplicationContext(), FormTemplateWizardActivity.class);
         startActivity(intent);
+        finish();
     }
 }

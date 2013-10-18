@@ -4,14 +4,14 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.webkit.JavascriptInterface;
 
-public class FormProgressDialog {
+public class MuzimaProgressDialog {
     private ProgressDialog dialog;
 
-    public FormProgressDialog(Activity activity) {
+    public MuzimaProgressDialog(Activity activity) {
         this(new ProgressDialog(activity));
     }
 
-    FormProgressDialog(ProgressDialog dialog) {
+    MuzimaProgressDialog(ProgressDialog dialog) {
         this.dialog = dialog;
         this.dialog.setCancelable(false);
     }

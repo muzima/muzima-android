@@ -40,14 +40,14 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     private WebView webView;
     private Form form;
     private FormTemplate formTemplate;
-    private FormProgressDialog progressDialog;
+    private MuzimaProgressDialog progressDialog;
     private FormData formData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_webview);
-        progressDialog = new FormProgressDialog(this);
+        progressDialog = new MuzimaProgressDialog(this);
         progressDialog.show("Loading... ");
         try {
             Patient patient = (Patient) getIntent().getSerializableExtra(PATIENT);
@@ -160,7 +160,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
         webView.addJavascriptInterface(new FormDataStore(this, formController, formData), REPOSITORY);
         webView.addJavascriptInterface(new ZiggyFileLoader("www/ziggy", getApplicationContext().getAssets(), formInstance.getModelJson()), ZIGGY_FILE_LOADER);
-        webView.addJavascriptInterface(new FormProgressDialog(this), "progressDialog");
+        webView.addJavascriptInterface(new MuzimaProgressDialog(this), "progressDialog");
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.loadUrl("file:///android_asset/www/enketo/template.html");
     }

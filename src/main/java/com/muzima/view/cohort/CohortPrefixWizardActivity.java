@@ -37,5 +37,6 @@ public class CohortPrefixWizardActivity extends CohortPrefActivity {
     private void navigateToNextActivity() {
         Intent intent = new Intent(getApplicationContext(), CohortWizardActivity.class);
         startActivity(intent);
+        finish();
     }
 }

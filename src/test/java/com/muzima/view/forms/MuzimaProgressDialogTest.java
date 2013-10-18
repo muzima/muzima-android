@@ -6,15 +6,15 @@ import org.junit.Test;
 
 import static org.mockito.Mockito.*;
 
-public class FormProgressDialogTest {
+public class MuzimaProgressDialogTest {
 
     private ProgressDialog progressDialog;
-    private FormProgressDialog dialog;
+    private MuzimaProgressDialog dialog;
 
     @Before
     public void setUp() throws Exception {
         progressDialog = mock(ProgressDialog.class);
-        dialog = new FormProgressDialog(progressDialog);
+        dialog = new MuzimaProgressDialog(progressDialog);
     }
 
     @Test
