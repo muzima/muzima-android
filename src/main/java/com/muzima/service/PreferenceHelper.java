@@ -30,4 +30,16 @@ public class PreferenceHelper {
         editor.putStringSet(CONCEPT_PREF_KEY, copyOfUuidSet);
         editor.commit();
     }
+
+    public void removeConcept(Concept concept) {
+        SharedPreferences conceptSharedPreferences = context.getSharedPreferences(CONCEPT_PREF, Context.MODE_PRIVATE);
+        Set<String> conceptUuidSet = conceptSharedPreferences.getStringSet(CONCEPT_PREF_KEY, new LinkedHashSet<String>());
+        SharedPreferences.Editor editor = conceptSharedPreferences.edit();
+        Set<String> copyOfUuidSet = new LinkedHashSet<String>();
+        copyOfUuidSet.addAll(conceptUuidSet);
+
+        copyOfUuidSet.remove(concept.getUuid());
+        editor.putStringSet(CONCEPT_PREF_KEY, copyOfUuidSet);
+        editor.commit();
+    }
 }

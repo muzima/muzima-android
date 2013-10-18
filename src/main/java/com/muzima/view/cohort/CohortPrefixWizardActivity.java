@@ -6,10 +6,10 @@ import android.view.View;
 import android.widget.Button;
 import com.actionbarsherlock.view.Menu;
 import com.muzima.R;
-import com.muzima.view.preferences.CohortPrefActivity;
+import com.muzima.view.preferences.CohortPreferenceActivity;
 
 
-public class CohortPrefixWizardActivity extends CohortPrefActivity {
+public class CohortPrefixWizardActivity extends CohortPreferenceActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

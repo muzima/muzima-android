@@ -64,7 +64,7 @@
                 android:parentActivityName="com.muzima.view.MainActivity">
         </activity>
         <activity
-                android:name=".view.preferences.CohortPrefActivity"
+                android:name=".view.preferences.CohortPreferenceActivity"
                 android:theme="@style/PreferencesTheme"
                 android:label="@string/title_activity_cohort_pref"
                 android:parentActivityName="com.muzima.view.preferences.SettingsActivity">

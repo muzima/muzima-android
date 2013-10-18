@@ -25,7 +25,7 @@ import java.util.TreeSet;
 import static com.muzima.utils.Constants.COHORT_PREFIX_PREF;
 import static com.muzima.utils.Constants.COHORT_PREFIX_PREF_KEY;
 
-public class CohortPrefActivity extends BaseActivity implements SettingsBaseAdapter.PreferenceClickListener {
+public class CohortPreferenceActivity extends BaseActivity implements SettingsBaseAdapter.PreferenceClickListener {
     protected CohortPrefixPrefAdapter prefAdapter;
     private AutoCompleteCohortPrefixAdapter autoCompleteCohortPrefixAdapter;
     private AutoCompleteTextView cohortPrefix;

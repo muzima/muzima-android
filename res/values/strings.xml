@@ -124,7 +124,7 @@
 
     <string name="title_activity_concept_pref">Concepts</string>
     <string name="add_concept">Search Concept</string>
-    <string name="concept_add_concept">Enter concept name ...</string>
+    <string name="concept_add_concept">Enter concept name …</string>
     <string name="no_concept_added">No concept added yet.</string>
     <string name="currentUser">Current User</string>
     <string name="preference_wizard_finished">wizardFinished</string>

@@ -37,6 +37,7 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
         selectedConceptAdapter = new SelectedConceptAdapter(getApplicationContext(), R.layout.item_concept_list,
                 ((MuzimaApplication)getApplicationContext()).getConceptController());
         selectedConceptListView.setAdapter(selectedConceptAdapter);
+        selectedConceptListView.setEmptyView(findViewById(R.id.no_concept_added));
 
         autoCompleteConceptTextView = (AutoCompleteTextView) findViewById(R.id.concept_add_concept);
         autoCompleteConceptAdapter = new AutoCompleteConceptAdapter(getApplicationContext(), R.layout.item_concept_autocomplete);

@@ -34,7 +34,7 @@
                 android:title="@string/preference_cohort_title"
                 android:summary="@string/preference_cohort_desc">
             <intent android:targetPackage="com.muzima"
-                    android:targetClass="com.muzima.view.preferences.CohortPrefActivity"/>
+                    android:targetClass="com.muzima.view.preferences.CohortPreferenceActivity"/>
         </Preference>
         <Preference
                 android:title="Add concepts"
