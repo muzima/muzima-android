@@ -1,0 +1,41 @@
+<model>
+    <instance>
+        <form
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="29"
+                name="No Demographic with repeats" uuid="ec2f1d29-4df0-4830-9c6e-19897a9f769a" version="0.1">
+            <header>
+                <enterer/>
+                <date_entered/>
+                <session/>
+                <uid/>
+            </header>
+            <encounter>
+                <encounter.encounter_datetime openmrs_attribute="encounter_datetime" openmrs_table="encounter">today()
+                </encounter.encounter_datetime>
+                <encounter.location_id openmrs_attribute="location_id" openmrs_table="encounter"/>
+                <encounter.provider_id openmrs_attribute="provider_id" openmrs_table="encounter"
+                                       provider_id_type="PROVIDER.ID"/>
+            </encounter>
+            <obs>
+                <weight_kg openmrs_concept="5089^WEIGHT (KG)^99DCT" openmrs_datatype="NM">
+                    <date xsi:nil="true"/>
+                    <time xsi:nil="true"/>
+                    <value xsi:nil="true"/>
+                </weight_kg>
+            </obs>
+            <problem_list openmrs_concept="1284^PROBLEM LIST^99DCT" openmrs_datatype="ZZ">
+                <problem_added template="0" openmrs_concept="6042^PROBLEM ADDED^99DCT" openmrs_datatype="CWE">
+                    <date xsi:nil="true"/>
+                    <time xsi:nil="true"/>
+                    <value xsi:nil="true"/>
+                </problem_added>
+                <problem_resolved template="0" openmrs_concept="6097^PROBLEM RESOLVED^99DCT" openmrs_datatype="CWE">
+                    <date xsi:nil="true"/>
+                    <time xsi:nil="true"/>
+                    <value xsi:nil="true"/>
+                </problem_resolved>
+            </problem_list>
+            <other/>
+        </form>
+    </instance>
+</model>

@@ -1,0 +1,109 @@
+{"form": {
+    "fields": [
+        {
+            "name": "header",
+            "bind": "\/model\/instance\/form\/header"
+        },
+        {
+            "name": "enterer",
+            "bind": "\/model\/instance\/form\/header\/enterer"
+        },
+        {
+            "name": "date_entered",
+            "bind": "\/model\/instance\/form\/header\/date_entered"
+        },
+        {
+            "name": "session",
+            "bind": "\/model\/instance\/form\/header\/session"
+        },
+        {
+            "name": "uid",
+            "bind": "\/model\/instance\/form\/header\/uid"
+        },
+        {
+            "name": "encounter",
+            "bind": "\/model\/instance\/form\/encounter"
+        },
+        {
+            "name": "encounter.encounter_datetime",
+            "bind": "\/model\/instance\/form\/encounter\/encounter.encounter_datetime"
+        },
+        {
+            "name": "encounter.location_id",
+            "bind": "\/model\/instance\/form\/encounter\/encounter.location_id"
+        },
+        {
+            "name": "encounter.provider_id",
+            "bind": "\/model\/instance\/form\/encounter\/encounter.provider_id"
+        },
+        {
+            "name": "obs",
+            "bind": "\/model\/instance\/form\/obs"
+        },
+        {
+            "name": "weight_kg",
+            "bind": "\/model\/instance\/form\/obs\/weight_kg",
+            "value": "10"
+        },
+        {
+            "name": "date",
+            "bind": "\/model\/instance\/form\/obs\/weight_kg\/date"
+        },
+        {
+            "name": "time",
+            "bind": "\/model\/instance\/form\/obs\/weight_kg\/time"
+        },
+        {
+            "name": "value",
+            "bind": "\/model\/instance\/form\/obs\/weight_kg\/value"
+        },
+        {
+            "name": "problem_list",
+            "bind": "\/model\/instance\/form\/problem_list"
+        },
+        {
+            "name": "other",
+            "bind": "\/model\/instance\/form\/other"
+        }
+    ],
+    "sub_forms": [
+        {
+            "name": "problem_added",
+            "bind_type": "child",
+            "default_bind_path": "\/model\/instance\/form\/problem_list\/problem_added",
+            "fields": [
+                {
+                    "name": "date",
+                    "bind": "\/model\/instance\/form\/problem_list\/problem_added\/date"
+                },
+                {
+                    "name": "time",
+                    "bind": "\/model\/instance\/form\/problem_list\/problem_added\/time"
+                },
+                {
+                    "name": "value",
+                    "bind": "\/model\/instance\/form\/problem_list\/problem_added\/value"
+                }
+            ]
+        },
+        {
+            "name": "problem_resolved",
+            "bind_type": "child",
+            "default_bind_path": "\/model\/instance\/form\/problem_list\/problem_resolved",
+            "fields": [
+                {
+                    "name": "date",
+                    "bind": "\/model\/instance\/form\/problem_list\/problem_resolved\/date"
+                },
+                {
+                    "name": "time",
+                    "bind": "\/model\/instance\/form\/problem_list\/problem_resolved\/time"
+                },
+                {
+                    "name": "value",
+                    "bind": "\/model\/instance\/form\/problem_list\/problem_resolved\/value"
+                }
+            ]
+        }
+    ]
+}}
