@@ -12,9 +12,9 @@ import com.muzima.view.forms.IncompletePatientsFormsListFragment;
 import com.muzima.view.forms.RecommendedFormsListFragment;
 
 public class PatientFormsPagerAdapter extends MuzimaPagerAdapter {
-    private static final int TAB_INCOMPLETE = 0;
-    private static final int TAB_COMPLETE = 1;
-    private static final int TAB_RECOMMENDED = 2;
+    private static final int TAB_RECOMMENDED = 0;
+    private static final int TAB_INCOMPLETE = 1;
+    private static final int TAB_COMPLETE = 2;
     private final Patient patient;
 
     public PatientFormsPagerAdapter(Context context, FragmentManager fm, Patient patient) {
