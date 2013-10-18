@@ -60,6 +60,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity {
     private void navigateToPreviousActivity() {
         Intent intent = new Intent(getApplicationContext(), CohortPrefixWizardActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void downloadAndSavePatients(AllCohortsAdapter cohortsAdapter) {
@@ -69,6 +70,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity {
     private void navigateToNextActivity() {
         Intent intent = new Intent(getApplicationContext(), FormTemplateWizardActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @Override

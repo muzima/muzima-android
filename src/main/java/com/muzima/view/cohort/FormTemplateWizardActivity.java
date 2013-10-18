@@ -79,6 +79,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity {
     private void navigateToPreviousActivity() {
         Intent intent = new Intent(getApplicationContext(), CohortWizardActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void downloadFormTemplates() {
@@ -88,6 +89,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity {
     private void navigateToNextActivity() {
         Intent intent = new Intent(getApplicationContext(), CustomConceptWizardActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @Override
