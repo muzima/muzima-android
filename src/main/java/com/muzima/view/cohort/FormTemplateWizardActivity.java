@@ -14,6 +14,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.forms.AllAvailableFormsAdapter;
 import com.muzima.adapters.forms.TagsListAdapter;
 import com.muzima.controller.FormController;
@@ -21,13 +22,14 @@ import com.muzima.service.DataSyncService;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
+import com.muzima.view.forms.MuzimaProgressDialog;
 
 import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
 
 
-public class FormTemplateWizardActivity extends BroadcastListenerActivity {
+public class FormTemplateWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener{
     private MenuItem tagsButton;
     private DrawerLayout mainLayout;
 
@@ -37,6 +39,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity {
     private TagsListAdapter tagsListAdapter;
     private FormController formController;
     private AllAvailableFormsAdapter allAvailableFormsAdapter;
+    private MuzimaProgressDialog progressDialog;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +48,9 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity {
         setContentView(mainLayout);
         formController = ((MuzimaApplication) getApplication()).getFormController();
         ListView listView = getListView();
+        progressDialog = new MuzimaProgressDialog(this);
         allAvailableFormsAdapter = createAllFormsAdapter();
+        allAvailableFormsAdapter.setBackgroundListQueryTaskListener(this);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -60,6 +65,8 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 downloadFormTemplates();
                 navigateToNextActivity();
             }
@@ -180,5 +187,14 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity {
         tagsNoDataMsg.setTypeface(Fonts.roboto_bold_condensed(this));
     }
 
+    @Override
+    public void onQueryTaskStarted() {
+        progressDialog.show("Loading Forms...");
+    }
+
+    @Override
+    public void onQueryTaskFinish() {
+        progressDialog.dismiss();
+    }
 }
 
