@@ -1,11 +1,13 @@
 package com.muzima.view.cohort;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -13,17 +15,14 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.cohort.AllCohortsAdapter;
-import com.muzima.service.DataSyncService;
+import com.muzima.service.MuzimaSyncService;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.forms.MuzimaProgressDialog;
 
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.COHORT_IDS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.CREDENTIALS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_PATIENTS_ONLY;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
 
 public class CohortWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener{
@@ -40,8 +39,20 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                downloadAndSavePatients(cohortsAdapter);
-                navigateToNextActivity();
+                progressDialog.show("Downloading clients...");
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        downloadAndSavePatients(cohortsAdapter);
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        progressDialog.dismiss();
+                        navigateToNextActivity();
+                    }
+                }.execute();
             }
         });
 
@@ -52,6 +63,8 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
                 navigateToPreviousActivity();
             }
         });
+
+        progressDialog = new MuzimaProgressDialog(this);
 
         cohortsAdapter.setBackgroundListQueryTaskListener(this);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -72,7 +85,12 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
     }
 
     private void downloadAndSavePatients(AllCohortsAdapter cohortsAdapter) {
-        this.syncPatientsInBackgroundService(cohortsAdapter.getSelectedCohorts());
+        MuzimaSyncService muzimaSyncService = ((MuzimaApplication)getApplicationContext()).getMuzimaSyncService();
+        List<String> selectedCohortsArray = cohortsAdapter.getSelectedCohorts();
+        int[] result = muzimaSyncService.downloadPatientsForCohorts(selectedCohortsArray.toArray(new String[selectedCohortsArray.size()]));
+        if (result[0] != SUCCESS) {
+            Toast.makeText(this, "Could not download patients", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void navigateToNextActivity() {
@@ -109,17 +127,8 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         return (ListView) findViewById(R.id.cohort_wizard_list);
     }
 
-    private void syncPatientsInBackgroundService(List<String> selectedCohortsArray) {
-        Intent intent = new Intent(this, DataSyncService.class);
-        intent.putExtra(SYNC_TYPE, SYNC_PATIENTS_ONLY);
-        intent.putExtra(CREDENTIALS, credentials().getCredentialsArray());
-        intent.putExtra(COHORT_IDS, selectedCohortsArray.toArray(new String[selectedCohortsArray.size()]));
-        startService(intent);
-    }
-
     @Override
     public void onQueryTaskStarted() {
-        progressDialog = new MuzimaProgressDialog(this);
         progressDialog.show("Loading Cohorts...");
     }
 
