@@ -180,12 +180,21 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.patients.PatientSummaryActivity"/>
         </activity>
+
         <activity android:name=".view.cohort.CohortWizardActivity"
-                  android:label="@string/title_activity_cohort_wizard">
-        </activity>
-        <activity android:name=".view.cohort.CohortPrefixWizardActivity" android:label="Define Cohorts Prefix"/>
-        <activity android:name=".view.cohort.FormTemplateWizardActivity" android:label="Download Form Templates"/>
-        <activity android:name=".view.cohort.CustomConceptWizardActivity" android:label="Define Custom Concept"/>
+                  android:label="@string/title_activity_cohort_wizard"
+                  android:configChanges="orientation|screenSize"/>
+
+        <activity android:name=".view.cohort.CohortPrefixWizardActivity"
+                  android:label="Define Cohorts Prefix"/>
+
+        <activity android:name=".view.cohort.FormTemplateWizardActivity"
+                  android:label="Download Form Templates"
+                  android:configChanges="orientation|screenSize"/>
+
+        <activity android:name=".view.cohort.CustomConceptWizardActivity"
+                  android:label="Define Custom Concept"
+                  android:configChanges="orientation|screenSize"/>
 
         <service android:name=".service.DataSyncService"
                  android:exported="false"/>
