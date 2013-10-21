@@ -4,40 +4,36 @@
 
     <ImageView
             android:id="@+id/logo"
-            style="@style/LoginActivityLogo"/>
+            style="@style/LoginActivityLogo"
+            android:contentDescription="@string/logo_alt_text"/>
 
     <TextView
             android:id="@+id/title_login"
             style="@style/LoginActivityHeader"/>
 
-    <View
-            style="@style/LoginActivityDivider.Style"/>
+    <View style="@style/LoginActivityDivider.Style"/>
 
-    <LinearLayout
-            style="@style/LoginInfoLayout">
+    <LinearLayout style="@style/LoginInfoLayout">
 
         <EditText
                 android:id="@+id/serverUrl"
                 style="@style/LoginInfoEditText"
-                android:hint="Server URL"
-                />
+                android:inputType="textUri"
+                android:hint="@string/server_hint_text"/>
 
-        <View
-                style="@style/LoginInfoLayoutDivider"/>
+        <View style="@style/LoginInfoLayoutDivider"/>
 
         <EditText
                 android:id="@+id/username"
                 style="@style/LoginInfoEditText"
-                android:hint="Username"
-                />
+                android:hint="@string/username_hint_text"/>
 
-        <View
-                style="@style/LoginInfoLayoutDivider"/>
+        <View style="@style/LoginInfoLayoutDivider"/>
 
         <EditText
                 android:id="@+id/password"
+                android:hint="@string/password_hint_text"
                 style="@style/LoginInfoEditText"
-                android:hint="Password"
                 android:inputType="textPassword"/>
 
     </LinearLayout>

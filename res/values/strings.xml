@@ -139,5 +139,9 @@
     <string name="form_save_as_draft">Save As Draft</string>
     <string name="form_submit">Submit</string>
     <string name="delete_text">Delete</string>
+    <string name="logo_alt_text">MuzimaLogo</string>
+    <string name="server_hint_text">Server URL</string>
+    <string name="username_hint_text">Username</string>
+    <string name="password_hint_text">Password</string>
 
 </resources>

@@ -2,6 +2,7 @@ package com.muzima.view.login;
 
 import android.content.*;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -60,7 +61,7 @@ public class LoginActivity extends SherlockActivity {
             serverUrlText.setInputType(0);
             serverUrlText.setTextColor(Color.parseColor("#666666"));
         }
-
+        passwordText.setTypeface(Typeface.DEFAULT); //Hack to get it to use default font space.
     }
 
     @Override

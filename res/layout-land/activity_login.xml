@@ -3,19 +3,10 @@
         style="@style/LoginActivityLayout"
         android:orientation="horizontal">
 
-    <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingRight="32dp"
-            android:gravity="center">
-
-        <ImageView
-                android:id="@+id/logo"
-                style="@style/LoginActivityLogo"/>
+    <LinearLayout style="@style/LoginLandscapeLayout">
 
         <TextView
+                android:drawableTop="@drawable/ic_launcher_logo"
                 android:id="@+id/title_login"
                 style="@style/LoginActivityHeader"/>
 
@@ -24,13 +15,7 @@
     <View
             style="@style/LoginActivityDivider.Style"/>
 
-    <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingLeft="32dp"
-            android:gravity="center">
+    <LinearLayout style="@style/LoginLandscapeLayout">
 
         <LinearLayout
                 style="@style/LoginInfoLayout">
@@ -38,7 +23,8 @@
             <EditText
                     android:id="@+id/serverUrl"
                     style="@style/LoginInfoEditText"
-                    android:hint="Server URL"
+                    android:inputType="textUri"
+                    android:hint="@string/server_hint_text"
                     />
 
             <View
@@ -47,7 +33,7 @@
             <EditText
                     android:id="@+id/username"
                     style="@style/LoginInfoEditText"
-                    android:hint="Username"
+                    android:hint="@string/username_hint_text"
                     />
 
             <View
@@ -56,7 +42,7 @@
             <EditText
                     android:id="@+id/password"
                     style="@style/LoginInfoEditText"
-                    android:hint="Password"
+                    android:hint="@string/password_hint_text"
                     android:inputType="textPassword"/>
 
         </LinearLayout>

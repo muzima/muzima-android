@@ -366,7 +366,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:background">@color/primary_color</item>
+        <item name="android:background">@color/primary_black</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">32dp</item>
     </style>
@@ -420,16 +420,26 @@
     <style name="LoginInfoLayoutDivider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">#dddddd</item>
+        <item name="android:background">#eeeeee</item>
+    </style>
+
+    <style name="LoginLandscapeLayout">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingRight">32dp</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="LoginInfoEditText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
-        <item name="android:textColor">#333333</item>
+        <item name="android:textColor">@color/primary_blue</item>
+        <item name="android:textColorHint">@color/primary_blue</item>
         <item name="android:paddingLeft">12dp</item>
         <item name="android:paddingRight">12dp</item>
-        <item name="android:typeface">monospace</item>
+        <item name="android:typeface">normal</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
 
