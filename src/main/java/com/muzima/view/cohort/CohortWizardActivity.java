@@ -33,7 +33,6 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cohort_wizard);
         ListView listView = getListView();
-
         final AllCohortsAdapter cohortsAdapter = createAllCohortsAdapter();
         Button nextButton = (Button) findViewById(R.id.next);
         nextButton.setOnClickListener(new View.OnClickListener() {
