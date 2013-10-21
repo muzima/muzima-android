@@ -3,7 +3,7 @@
         style="@style/LoginActivityLayout"
         android:orientation="horizontal">
 
-    <LinearLayout style="@style/LoginLandscapeLayout">
+    <LinearLayout style="@style/LoginLandscapeLeftLayout">
 
         <TextView
                 android:drawableTop="@drawable/ic_launcher_logo"
@@ -15,7 +15,7 @@
     <View
             style="@style/LoginActivityDivider.Style"/>
 
-    <LinearLayout style="@style/LoginLandscapeLayout">
+    <LinearLayout style="@style/LoginLandscapeRightLayout">
 
         <LinearLayout
                 style="@style/LoginInfoLayout">
@@ -28,7 +28,7 @@
                     />
 
             <View
-                    style="@style/LoginInfoLayoutDivider"/>
+                    style="@style/LoginInfoLayoutDivider" android:id = "@+id/server_url_divider"/>
 
             <EditText
                     android:id="@+id/username"
@@ -64,6 +64,7 @@
                     style="@style/LoginActivityAuthenticatingView"
                     android:visibility="gone"/>
         </FrameLayout>
+
     </LinearLayout>
 
 </LinearLayout>

@@ -423,12 +423,21 @@
         <item name="android:background">#eeeeee</item>
     </style>
 
-    <style name="LoginLandscapeLayout">
+    <style name="LoginLandscapeLeftLayout">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:paddingRight">32dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="LoginLandscapeRightLayout">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
         <item name="android:gravity">center</item>
     </style>
 
@@ -436,7 +445,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:textColor">@color/primary_blue</item>
-        <item name="android:textColorHint">@color/primary_blue</item>
+        <item name="android:textColorHint">@color/hint_text_blue</item>
         <item name="android:paddingLeft">12dp</item>
         <item name="android:paddingRight">12dp</item>
         <item name="android:typeface">normal</item>

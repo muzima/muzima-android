@@ -133,7 +133,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             public void onProgressChanged(WebView view, int progress) {
                 FormWebViewActivity.this.setProgress(progress * 1000);
                 if (progress == 100){
-                    progressDialog.hide();
+                    progressDialog.dismiss();
                 }
             }
 
