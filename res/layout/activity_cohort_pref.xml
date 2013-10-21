@@ -5,12 +5,15 @@
     <LinearLayout
             style="@style/NotClickableSummaryItem"
             android:background="@color/tab_background">
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/add_cohort_prefixes"
-            android:paddingBottom="3dp"
-            android:textColor="@android:color/white"/>
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/add_cohort_prefixes"
+                android:padding="3dp"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_blue"/>
     </LinearLayout>
     <View style="@style/DividerLine"/>
 
@@ -27,14 +30,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:textColor="@color/theme_color"
-                android:hint="Enter prefix ...">
-
+                android:textColor="@color/primary_blue"
+                android:hint="Enter Prefix ...">
             <requestFocus/>
         </AutoCompleteTextView>
 
-        <TextView
-                android:layout_width="72dp"
+        <Button android:layout_width="72dp"
                 android:layout_height="match_parent"
                 android:layout_marginTop="2dp"
                 android:paddingTop="6dp"
@@ -42,12 +43,10 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:text="Add"
-                android:background="@drawable/previous_button_selector"
+                android:background="@color/primary_blue"
                 android:gravity="center"
-                android:onClick="addPrefix"
-                android:clickable="true"
-                style="@style/RegisterText"/>
-
+                android:onClick="addPrefix">
+        </Button>
     </LinearLayout>
     <View style="@style/DividerLine"
           android:layout_height="2dp"/>
@@ -56,7 +55,7 @@
             android:id="@+id/cohort_pref_list"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:paddingTop="3dp"/>
+            style="@style/MuzimaListView"/>
 
     <TextView
             android:id="@+id/no_data_msg"

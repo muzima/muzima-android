@@ -3,6 +3,7 @@
               android:layout_width="match_parent"
               android:orientation="vertical">
     <LinearLayout
+
             style="@style/SummaryItemRow">
         <TextView
                 android:id="@+id/prefix"
@@ -10,15 +11,16 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/white"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:singleLine="true"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:textColor="@color/theme_color"/>
+                android:paddingRight="@dimen/activity_horizontal_margin"/>
 
         <ImageButton
                 android:id="@+id/del_cohort_prefix_btn"
                 android:layout_width="wrap_content"
+                android:background="@android:color/transparent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:clickable="true"
@@ -26,5 +28,4 @@
                 android:contentDescription="@string/delete_text"/>
 
     </LinearLayout>
-    <View style="@style/DividerLine"/>
 </LinearLayout>

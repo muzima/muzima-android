@@ -1,22 +1,20 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_height="match_parent"
-              android:weightSum="15"
-              android:layout_width="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_height="match_parent"
+                android:padding="2dp"
+                android:layout_width="match_parent">
     <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="0dp"
-                  android:layout_weight="13">
+                  android:layout_height="match_parent"
+                  android:padding="5dp">
         <include layout="@layout/activity_cohort_pref"/>
     </LinearLayout>
 
     <LinearLayout style="@style/ButtonRow"
-                  android:layout_height="0dp"
-                  android:layout_weight="2"
-                  android:gravity="center|bottom">
+                  android:layout_alignParentBottom="true">
         <Button
                 android:id="@+id/next"
                 style="@style/NextButton"/>
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
 
 
