@@ -296,21 +296,9 @@ public class MuzimaSyncService {
         return result;
     }
 
-    private ArrayList<Observation> downloadAllObservations(List<String> patientUuids) throws ObservationController.DownloadObservationException {
-        ArrayList<Observation> allObservations = new ArrayList<Observation>();
+    private List<Observation> downloadAllObservations(List<String> patientUuids) throws ObservationController.DownloadObservationException {
         ObservationController observationController = muzimaApplication.getObservationController();
-        int index = 0;
-        for (String patientUuid : patientUuids) {
-            for (String conceptUuid : getConceptUuids()) {
-                List<Observation> observations = observationController.downloadObservations(patientUuid, conceptUuid);
-                allObservations.addAll(observations);
-            }
-            index++;
-            if (index % 5 == 0) {
-                Log.i(TAG, index + "/" + patientUuids.size() + " patients' observations downloaded");
-            }
-        }
-        return allObservations;
+        return observationController.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, getConceptUuids());
     }
 
     private ArrayList<Encounter> downloadAllEncounters(List<String> patientUuids) throws EncounterController.DownloadEncounterException {

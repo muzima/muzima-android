@@ -137,6 +137,14 @@ public class ObservationController {
         }
     }
 
+    public List<Observation> downloadObservationsByPatientUuidsAndConceptUuids(List<String> patientUuids, List<String> conceptUuids) throws DownloadObservationException {
+        try {
+            return observationService.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids);
+        } catch (IOException e) {
+            throw new DownloadObservationException(e);
+        }
+    }
+
 
     public static class LoadObservationException extends Throwable {
         public LoadObservationException(Throwable e) {
