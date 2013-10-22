@@ -1,15 +1,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:paddingLeft="@dimen/activity_horizontal_margin"
-              android:paddingRight="@dimen/activity_horizontal_margin"
-              android:descendantFocusability="blocksDescendants"
               android:layout_marginTop="7dp"
               android:layout_marginBottom="7dp"
+              android:background="@color/primary_black"
               android:orientation="vertical">
 
     <TextView
             android:id="@+id/cohort_name"
-            style="@style/ListHeader">
-    </TextView>
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/list_selector_blue"
+            android:textColor="@android:color/white"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 </LinearLayout>

@@ -19,6 +19,7 @@
                 android:id="@+id/serverUrl"
                 style="@style/LoginInfoEditText"
                 android:inputType="textUri"
+                android:text="http://10.25.3.120:8081/openmrs-standalone"
                 android:hint="@string/server_hint_text"/>
 
         <View style="@style/LoginInfoLayoutDivider" android:id = "@+id/server_url_divider"/>

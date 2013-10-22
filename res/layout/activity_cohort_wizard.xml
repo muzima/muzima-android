@@ -3,6 +3,7 @@
                 android:layout_height="match_parent"
                 android:padding="2dp"
                 android:layout_width="match_parent">
+
     <LinearLayout android:id="@+id/download_cohort_header"
                   style="@style/NotClickableSummaryItem"
                   android:layout_alignParentTop="true">
@@ -19,17 +20,15 @@
 
     </LinearLayout>
 
-    <LinearLayout style="@style/NotClickableSummaryItem"
+    <LinearLayout style="@style/WizardContainer"
                   android:layout_below="@+id/download_cohort_header"
                   android:layout_height="match_parent"
-                  android:layout_width="match_parent"
-                  android:padding="5dp">
+                  android:layout_width="match_parent">
 
         <ListView
                 android:id="@+id/cohort_wizard_list"
                 style="@style/MuzimaSelectableListView"
-                android:choiceMode="multipleChoice"
-                />
+                android:choiceMode="multipleChoice"/>
     </LinearLayout>
 
     <LinearLayout style="@style/ButtonRow"
