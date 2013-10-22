@@ -61,6 +61,23 @@
         <item name="android:orientation">vertical</item>
     </style>
 
+    <style name="WizardContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@color/primary_black</item>
+    </style>
+
+    <style name="SummaryHeader">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">3dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/primary_blue</item>
+    </style>
+
     <style name="DashboardBaseText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -114,6 +131,7 @@
 
     <style name="NotClickableSummaryItem">
         <item name="android:layout_width">fill_parent</item>
+        <item name="android:background">@color/primary_black</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">15dp</item>
         <item name="android:paddingRight">15dp</item>
@@ -129,6 +147,18 @@
         <item name="android:paddingTop">5dp</item>
         <item name="android:paddingBottom">5dp</item>
         <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="AutocompleteTextArea">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">2dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@android:color/white</item>
     </style>
 
     <style name="ButtonRow">
@@ -165,7 +195,7 @@
     <style name="DividerLine">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/divider</item>
+        <item name="android:background">@color/primary_blue</item>
     </style>
 
     <style name="DividerLineMargin">
@@ -522,7 +552,20 @@
         <item name="android:divider">@drawable/divider</item>
         <item name="android:dividerHeight">1dp</item>
         <item name="android:listSelector">@null</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_width">fill_parent</item>
+    </style>
 
+    <style name="NoItemInListView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textColor">@color/primary_blue</item>
+        <item name="android:background">@color/primary_black</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:visibility">invisible</item>
     </style>
 
 </resources>

@@ -1,37 +1,22 @@
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        style="@style/DashboardTableContainer"
-        android:background="@color/theme_color_background">
-    <LinearLayout
-            style="@style/NotClickableSummaryItem"
-            android:background="@color/tab_background">
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/add_cohort_prefixes"
-                android:padding="3dp"
-                android:textAlignment="center"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/primary_blue"/>
-    </LinearLayout>
-    <View style="@style/DividerLine"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/WizardContainer">
 
-    <LinearLayout
-            style="@style/SummaryItemRow"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp">
+    <LinearLayout style="@style/NotClickableSummaryItem">
+        <TextView style="@style/SummaryHeader"
+                  android:text="@string/add_cohort_prefixes"/>
+    </LinearLayout>
+
+    <LinearLayout style="@style/AutocompleteTextArea">
 
         <AutoCompleteTextView
                 android:id="@+id/prefix_add_prefix"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:ems="10"
                 android:textColor="@color/primary_blue"
-                android:hint="Enter Prefix ...">
+                android:textColorHint="@color/hint_text_grey"
+                android:textCursorDrawable="@color/primary_blue"
+                android:hint="Type Cohort name ...">
             <requestFocus/>
         </AutoCompleteTextView>
 
@@ -48,25 +33,18 @@
                 android:onClick="addPrefix">
         </Button>
     </LinearLayout>
+
     <View style="@style/DividerLine"
           android:layout_height="2dp"/>
 
     <ListView
             android:id="@+id/cohort_pref_list"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
             style="@style/MuzimaListView"/>
 
     <TextView
             android:id="@+id/no_data_msg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
             android:text="@string/no_cohort_prefixes_added"
-            android:textSize="20sp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:visibility="invisible">
+            style="@style/NoItemInListView">
     </TextView>
 
     <View
