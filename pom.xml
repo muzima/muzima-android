@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
->
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.muzima</groupId>
-	<artifactId>muzima-android</artifactId>
-	<version>1.0-SNAPSHOT</version>
-	<packaging>apk</packaging>
-	<name>Muzima-Android</name>
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+        >
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.muzima</groupId>
+    <artifactId>muzima-android</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>apk</packaging>
+    <name>Muzima-Android</name>
 
     <repositories>
         <repository>
@@ -31,79 +31,76 @@
         </repository>
     </repositories>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- Plugins -->
-		<android-maven-plugin.version>3.6.0</android-maven-plugin.version>
-		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
-		<api.platform>17</api.platform>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Dependencies -->
+        <actionBarSherlock.version>4.3.1</actionBarSherlock.version>
+        <nineoldandroids.version>2.4.0</nineoldandroids.version>
+    </properties>
 
-		<!-- Dependencies -->
-		<actionBarSherlock.version>4.3.1</actionBarSherlock.version>
-		<android.version>4.1.1.4</android.version>
-		<nineoldandroids.version>2.4.0</nineoldandroids.version>
-		<acra.version>4.4.0</acra.version>
-        <junit.version>4.8.2</junit.version>
-        <mockito.version>1.9.0</mockito.version>
-        <lucenetransform.version>0.9.2.2</lucenetransform.version>
-	</properties>
-
-	<dependencies>
+    <dependencies>
         <dependency>
             <groupId>com.madgag</groupId>
             <artifactId>scprov-jdk15on</artifactId>
             <version>1.47.0.2</version>
         </dependency>
         <dependency>
-			<groupId>com.google.android</groupId>
-			<artifactId>android</artifactId>
-			<scope>provided</scope>
-			<version>${android.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.actionbarsherlock</groupId>
-			<artifactId>actionbarsherlock</artifactId>
-			<version>${actionBarSherlock.version}</version>
-			<type>apklib</type>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20090211</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>android</artifactId>
+            <scope>system</scope>
+            <systemPath>${env.ANDROID_HOME}/platforms/android-18/android.jar</systemPath>
+            <version>4.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.actionbarsherlock</groupId>
+            <artifactId>actionbarsherlock</artifactId>
+            <version>${actionBarSherlock.version}</version>
+            <type>apklib</type>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.android</groupId>
                     <artifactId>support-v4</artifactId>
                 </exclusion>
             </exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.actionbarsherlock</groupId>
-			<artifactId>actionbarsherlock</artifactId>
-			<version>${actionBarSherlock.version}</version>
-			<type>jar</type>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.nineoldandroids</groupId>
-			<artifactId>library</artifactId>
-			<version>${nineoldandroids.version}</version>
-		</dependency>
+        </dependency>
+        <dependency>
+            <groupId>com.actionbarsherlock</groupId>
+            <artifactId>actionbarsherlock</artifactId>
+            <version>${actionBarSherlock.version}</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.nineoldandroids</groupId>
+            <artifactId>library</artifactId>
+            <version>${nineoldandroids.version}</version>
+        </dependency>
         <dependency>
             <groupId>lucene.transform</groupId>
             <artifactId>lucenetransform</artifactId>
-            <version>${lucenetransform.version}</version>
+            <version>0.9.2.2</version>
         </dependency>
-		<dependency>
-			<groupId>ch.acra</groupId>
-			<artifactId>acra</artifactId>
-			<version>${acra.version}</version>
-		</dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
+            <groupId>ch.acra</groupId>
+            <artifactId>acra</artifactId>
+            <version>4.4.0</version>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
-            <version>${mockito.version}</version>
+            <version>1.8.5</version>
             <scope>test</scope>
         </dependency>
         <!-- Make sure this is below the android dependencies -->
@@ -148,33 +145,31 @@
         </dependency>
     </dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
-				<artifactId>android-maven-plugin</artifactId>
-				<version>${android-maven-plugin.version}</version>
-				<extensions>true</extensions>
-				<configuration>
-					<sdk>
-						<platform>${api.platform}</platform>
-					</sdk>
-					<!-- Proguard is not skipped by default -->
-					<proguard>
-						<skip>true</skip>
-					</proguard>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${maven-compiler-plugin.version}</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <sdk>
+                        <platform>17</platform>
+                    </sdk>
+                    <!-- Proguard is not skipped by default -->
+                    <proguard>
+                        <skip>true</skip>
+                    </proguard>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <profiles>
         <profile>
