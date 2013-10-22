@@ -34,6 +34,10 @@ public abstract class FormsAdapterBackgroundQueryTask<T extends BaseForm> extend
 
     @Override
     protected void onPostExecute(List<T> forms) {
+        if (forms==null) {
+            Toast.makeText(adapterWeakReference.get().getContext(), "Could not load forms", Toast.LENGTH_SHORT).show();
+        }
+
         changeDataSet(forms);
         notifyListener();
     }

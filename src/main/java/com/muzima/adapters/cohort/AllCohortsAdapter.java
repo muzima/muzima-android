@@ -117,8 +117,7 @@ public class AllCohortsAdapter extends CohortsAdapter{
         protected List<Cohort> doInBackground(Void... voids) {
             List<Cohort> allCohorts = null;
             try {
-                int[] results = muzimaSyncService.downloadCohorts();
-                displayErrorMessage(results[0]);
+                muzimaSyncService.downloadCohorts();
                 allCohorts = cohortController.getAllCohorts();
                 Log.i(TAG, "#Cohorts: " + allCohorts.size());
             } catch (CohortController.CohortFetchException e) {
@@ -127,11 +126,6 @@ public class AllCohortsAdapter extends CohortsAdapter{
             return allCohorts;
         }
 
-        private void displayErrorMessage(int result) {
-            if(result !=SUCCESS)
-            {
-                Toast.makeText(getContext(), "Something went wrong while downloading cohorts from server", Toast.LENGTH_SHORT).show();
-            }
-        }
+
     }
 }

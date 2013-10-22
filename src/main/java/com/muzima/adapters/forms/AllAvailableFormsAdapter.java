@@ -156,8 +156,7 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
             if (adapterWeakReference.get() != null) {
                 try {
                     FormsAdapter formsAdapter = adapterWeakReference.get();
-                    int[] result = muzimaSyncService.downloadForms();
-                    displayErrorMessage(result[0]);
+                    muzimaSyncService.downloadForms();
                     allForms = formsAdapter.getFormController().getAvailableFormByTags(getSelectedTagUuids());
                     Log.i(TAG, "#Forms: " + allForms.size());
                 } catch (FormController.FormFetchException e) {
@@ -165,13 +164,6 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
                 }
             }
             return allForms;
-        }
-
-        private void displayErrorMessage(int result) {
-            if(result != SUCCESS)
-            {
-                Toast.makeText(getContext(), "Something went wrong while downloading Form Templates from server", Toast.LENGTH_SHORT).show();
-            }
         }
     }
 
