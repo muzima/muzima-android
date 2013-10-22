@@ -1,6 +1,7 @@
 package com.muzima.view.cohort;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -10,24 +11,28 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.forms.AllAvailableFormsAdapter;
 import com.muzima.adapters.forms.TagsListAdapter;
 import com.muzima.controller.FormController;
-import com.muzima.service.DataSyncService;
+import com.muzima.service.MuzimaSyncService;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
+import com.muzima.view.forms.MuzimaProgressDialog;
 
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
 
-public class FormTemplateWizardActivity extends BroadcastListenerActivity {
+public class FormTemplateWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
     private MenuItem tagsButton;
     private DrawerLayout mainLayout;
 
@@ -37,6 +42,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity {
     private TagsListAdapter tagsListAdapter;
     private FormController formController;
     private AllAvailableFormsAdapter allAvailableFormsAdapter;
+    private MuzimaProgressDialog progressDialog;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +51,9 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity {
         setContentView(mainLayout);
         formController = ((MuzimaApplication) getApplication()).getFormController();
         ListView listView = getListView();
+        progressDialog = new MuzimaProgressDialog(this);
         allAvailableFormsAdapter = createAllFormsAdapter();
+        allAvailableFormsAdapter.setBackgroundListQueryTaskListener(this);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -59,9 +67,23 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity {
         Button nextButton = (Button) findViewById(R.id.next);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                downloadFormTemplates();
-                navigateToNextActivity();
+            public void onClick(View view) {
+                progressDialog.show("Downloading Form Templates...");
+
+                new AsyncTask<Void, Void, Void>() {
+
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        downloadFormTemplates();
+                        navigateToNextActivity();
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        progressDialog.dismiss();
+                    }
+                }.execute();
             }
         });
 
@@ -83,7 +105,12 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity {
     }
 
     private void downloadFormTemplates() {
-        syncFormTemplatesInBackgroundService(allAvailableFormsAdapter.getSelectedForms());
+        List<String> selectedFormIdsArray = allAvailableFormsAdapter.getSelectedForms();
+        MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
+        int[] result = muzimaSyncService.downloadFormTemplates(selectedFormIdsArray.toArray(new String[selectedFormIdsArray.size()]));
+        if (result[0] != SUCCESS) {
+            Toast.makeText(this, "Could not download form templates", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void navigateToNextActivity() {
@@ -135,14 +162,6 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity {
         return (ListView) findViewById(R.id.form_template_wizard_list);
     }
 
-    private void syncFormTemplatesInBackgroundService(List<String> selectedFormIdsArray) {
-        Intent intent = new Intent(this, DataSyncService.class);
-        intent.putExtra(SYNC_TYPE, SYNC_TEMPLATES);
-        intent.putExtra(CREDENTIALS, credentials().getCredentialsArray());
-        intent.putExtra(FORM_IDS, selectedFormIdsArray.toArray(new String[selectedFormIdsArray.size()]));
-        startService(intent);
-    }
-
     private void initDrawer() {
         tagsDrawerList = (ListView) findViewById(R.id.tags_list);
         tagsDrawerList.setEmptyView(findViewById(R.id.tags_no_data_msg));
@@ -180,5 +199,14 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity {
         tagsNoDataMsg.setTypeface(Fonts.roboto_bold_condensed(this));
     }
 
+    @Override
+    public void onQueryTaskStarted() {
+        progressDialog.show("Loading Forms...");
+    }
+
+    @Override
+    public void onQueryTaskFinish() {
+        progressDialog.dismiss();
+    }
 }
 

@@ -184,16 +184,6 @@
                 <android.sdk.path>/Users/akani/Development/bundles/adt-bundle-mac-x86_64-20130729/sdk</android.sdk.path>
             </properties>
         </profile>
-        <profile>
-            <id>javascript</id>
-            <dependencies>
-                <dependency>
-                    <groupId>com.muzima</groupId>
-                    <artifactId>android-backward-compatibility</artifactId>
-                    <version>0.1</version>
-                </dependency>
-            </dependencies>
-        </profile>
     </profiles>
 
 </project>

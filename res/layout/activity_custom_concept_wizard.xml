@@ -3,7 +3,11 @@
               android:weightSum="15"
               android:layout_height="match_parent"
               android:layout_width="match_parent">
-    <include layout="@layout/activity_concept_preference"/>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="13">
+        <include layout="@layout/activity_concept_preference"/>
+    </LinearLayout>
     <LinearLayout style="@style/ButtonRow"
                   android:layout_height="0dp"
                   android:layout_weight="2">

@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.muzima.R;
@@ -51,8 +52,24 @@ public class SelectedConceptAdapter extends ArrayAdapter<Concept> {
     }
 
     private class ViewHolder {
-        TextView name;
-        TextView synonyms;
+        private TextView name;
+        private TextView synonyms;
+        private ImageButton deleteButton;
+
+        private ViewHolder(View conceptView) {
+            name = (TextView) conceptView.findViewById(R.id.concept_name);
+            synonyms = (TextView) conceptView.findViewById(R.id.concept_synonyms);
+            deleteButton = (ImageButton) conceptView.findViewById(R.id.delete_concept_btn);
+        }
+
+        private View.OnClickListener deleteConceptListener(final int position) {
+            return new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    remove(getItem(position));
+                }
+            };
+        }
     }
 
     @Override
@@ -61,32 +78,15 @@ public class SelectedConceptAdapter extends ArrayAdapter<Concept> {
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             convertView = layoutInflater.inflate(R.layout.item_concept_list, parent, false);
-            holder = new ViewHolder();
-            holder.name = (TextView) convertView.findViewById(R.id.concept_name);
-            holder.synonyms = (TextView) convertView.findViewById(R.id.concept_synonyms);
+            holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         }
         holder = (ViewHolder) convertView.getTag();
         Concept concept = getItem(position);
         if (concept != null) {
             holder.name.setText(concept.getName());
-            // get a synonym and then display the more text if there are more synonyms
-            int counter = 0;
-            List<String> synonyms = new ArrayList<String>();
-            List<ConceptName> conceptNames = concept.getConceptNames();
-            while (counter < conceptNames.size() && synonyms.size() < 1) {
-                ConceptName conceptName = conceptNames.get(counter++);
-                String name = conceptName.getName();
-                if (!synonyms.contains(name) && !StringUtil.equals(name, concept.getName())) {
-                    synonyms.add(name);
-                }
-            }
-            StringBuilder synonymBuilder = new StringBuilder();
-            synonymBuilder.append(StringUtils.getCommaSeparatedStringFromList(synonyms));
-            if (conceptNames.size() > 2) {
-                synonymBuilder.append(" (").append(conceptNames.size() - 2).append(" more.)");
-            }
-            holder.synonyms.setText(synonymBuilder.toString());
+            holder.synonyms.setText(getSynonyms(concept));
+            holder.deleteButton.setOnClickListener(holder.deleteConceptListener(position));
         }
         return convertView;
     }
@@ -95,6 +95,17 @@ public class SelectedConceptAdapter extends ArrayAdapter<Concept> {
     public void add(final Concept concept) {
         super.add(concept);
         new BackgroundSaveTask().execute(concept);
+    }
+
+    @Override
+    public void remove(Concept concept) {
+        super.remove(concept);
+        try {
+            conceptController.deleteConcept(concept);
+            new PreferenceHelper(getContext()).removeConcept(concept);
+        } catch (ConceptController.ConceptDeleteException e) {
+            Log.e(TAG, "Error while deleting the concept", e);
+        }
     }
 
     public void reloadData() {
@@ -111,9 +122,7 @@ public class SelectedConceptAdapter extends ArrayAdapter<Concept> {
             } catch (ConceptController.ConceptSaveException e) {
                 Log.w(TAG, "Exception occurred while saving concept to local data repository!", e);
             }
-
             new PreferenceHelper(getContext()).addConcepts(conceptList);
-
             return null;
         }
     }
@@ -149,5 +158,24 @@ public class SelectedConceptAdapter extends ArrayAdapter<Concept> {
             }
             notifyDataSetChanged();
         }
+    }
+
+    private String getSynonyms(Concept concept) {
+        int counter = 0;
+        List<String> synonyms = new ArrayList<String>();
+        List<ConceptName> conceptNames = concept.getConceptNames();
+        while (counter < conceptNames.size() && synonyms.size() < 1) {
+            ConceptName conceptName = conceptNames.get(counter++);
+            String name = conceptName.getName();
+            if (!synonyms.contains(name) && !StringUtil.equals(name, concept.getName())) {
+                synonyms.add(name);
+            }
+        }
+        StringBuilder synonymBuilder = new StringBuilder();
+        synonymBuilder.append(StringUtils.getCommaSeparatedStringFromList(synonyms));
+        if (conceptNames.size() > 2) {
+            synonymBuilder.append(" (").append(conceptNames.size() - 2).append(" more.)");
+        }
+        return synonymBuilder.toString();
     }
 }

@@ -3,6 +3,6 @@
 
     <item android:state_pressed="true" android:drawable="@color/listitem_state_pressed" />
     <item android:state_focused="true" android:drawable="@color/listitem_state_focused"/>
-    <item android:drawable="@color/next_button_color"/>
+    <item android:drawable="@color/primary_blue"/>
 
 </selector>

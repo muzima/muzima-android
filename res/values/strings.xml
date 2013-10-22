@@ -107,7 +107,7 @@
     <string name="preference_cohorts_prefix_desc">Enter cohort prefixes</string>
     <string name="preference_cohort_prefix">cohortPrefixesPreference</string>
 
-    <string name="add_cohort_prefixes">Add Cohort Prefixes</string>
+    <string name="add_cohort_prefixes">Step 1: Add Cohort Prefix</string>
     <string name="no_cohort_prefixes_added">No Cohort Prefixes Added</string>
     <string name="no_cohort_prefixes_msg">Please click on add button to add a cohort prefix</string>
     <string name="cohort_prefix_label">Prefix:</string>
@@ -124,7 +124,7 @@
 
     <string name="title_activity_concept_pref">Concepts</string>
     <string name="add_concept">Search Concept</string>
-    <string name="concept_add_concept">Enter concept name ...</string>
+    <string name="concept_add_concept">Enter concept name …</string>
     <string name="no_concept_added">No concept added yet.</string>
     <string name="currentUser">Current User</string>
     <string name="preference_wizard_finished">wizardFinished</string>
@@ -138,5 +138,10 @@
 
     <string name="form_save_as_draft">Save As Draft</string>
     <string name="form_submit">Submit</string>
+    <string name="delete_text">Delete</string>
+    <string name="logo_alt_text">MuzimaLogo</string>
+    <string name="server_hint_text">Server URL</string>
+    <string name="username_hint_text">Username</string>
+    <string name="password_hint_text">Password</string>
 
 </resources>

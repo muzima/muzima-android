@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="primary_color">#105b63</color>
+    <color name="primary_blue">#12A5F4</color>
+    <color name="hint_text_grey">#888888</color>
+    <color name="primary_black">#000000</color>
     <color name="theme_color">#333333</color>
     <color name="theme_color_background">@android:color/white</color>
     <color name="secondary_text">#888888</color>
@@ -11,8 +14,8 @@
     <color name="tab_indicator">#09A9E4</color>
     <color name="tab_background">#1a1a1a</color>
 
-    <color name="listitem_state_pressed">#997dbcd3</color>
-    <color name="listitem_state_focused">#997dbcd3</color>
+    <color name="listitem_state_pressed">#6633B5E5</color>
+    <color name="listitem_state_focused">#6633B5E5</color>
 
     <color name="drawer_background">#232323</color>
     <color name="drawer_header_separator_background">#161616</color>
@@ -22,7 +25,6 @@
     <color name="observation_scroller_background">#d4d4d4</color>
     <color name="observation_by_encounter_header_background">#888888</color>
 
-    <color name="login_button_color">#0d484e</color>
     <color name="previous_button_color">#888888</color>
     <color name="next_button_color">#ff13d4a1</color>
     <color name="login_noConnectivity_background">#962d3e</color>

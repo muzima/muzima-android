@@ -64,7 +64,7 @@
                 android:parentActivityName="com.muzima.view.MainActivity">
         </activity>
         <activity
-                android:name=".view.preferences.CohortPrefActivity"
+                android:name=".view.preferences.CohortPreferenceActivity"
                 android:theme="@style/PreferencesTheme"
                 android:label="@string/title_activity_cohort_pref"
                 android:parentActivityName="com.muzima.view.preferences.SettingsActivity">
@@ -180,12 +180,25 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.patients.PatientSummaryActivity"/>
         </activity>
+
         <activity android:name=".view.cohort.CohortWizardActivity"
-                  android:label="@string/title_activity_cohort_wizard">
+                  android:label="Step 2 : Download Cohort"
+                  android:configChanges="orientation|screenSize"
+                  android:theme="@android:style/Theme.Holo.DialogWhenLarge.NoActionBar">
         </activity>
-        <activity android:name=".view.cohort.CohortPrefixWizardActivity" android:label="Define Cohorts Prefix"/>
-        <activity android:name=".view.cohort.FormTemplateWizardActivity" android:label="Download Form Templates"/>
-        <activity android:name=".view.cohort.CustomConceptWizardActivity" android:label="Define Custom Concept"/>
+        <activity android:name=".view.cohort.CohortPrefixWizardActivity"
+                  android:label="Step 1 : Add Cohort Prefix"
+                  android:configChanges="orientation|screenSize"
+                  android:theme="@android:style/Theme.Holo.DialogWhenLarge.NoActionBar">
+        </activity>
+        <activity android:name=".view.cohort.FormTemplateWizardActivity"
+                  android:label="Download Form Templates"
+                  android:configChanges="orientation|screenSize"
+                  android:theme="@android:style/Theme.Holo.DialogWhenLarge.NoActionBar"/>
+        <activity android:name=".view.cohort.CustomConceptWizardActivity"
+                  android:label="Define Custom Concept"
+                  android:configChanges="orientation|screenSize"
+                  android:theme="@android:style/Theme.Holo.DialogWhenLarge.NoActionBar"/>
 
         <service android:name=".service.DataSyncService"
                  android:exported="false"/>

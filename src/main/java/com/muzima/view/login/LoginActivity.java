@@ -1,7 +1,7 @@
 package com.muzima.view.login;
 
 import android.content.*;
-import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -54,13 +54,10 @@ public class LoginActivity extends SherlockActivity {
 
         boolean isFirstLaunch = getIntent().getBooleanExtra(LoginActivity.isFirstLaunch, true);
         if (!isFirstLaunch) {
-            Credentials credentials = credentials();
-            serverUrlText.setText(credentials.getServerUrl());
-            serverUrlText.setEnabled(false);
-            serverUrlText.setInputType(0);
-            serverUrlText.setTextColor(Color.parseColor("#666666"));
+            serverUrlText.setVisibility(View.GONE);
+            findViewById(R.id.server_url_divider).setVisibility(View.GONE);
         }
-
+        passwordText.setTypeface(Typeface.DEFAULT); //Hack to get it to use default font space.
     }
 
     @Override
@@ -85,7 +82,7 @@ public class LoginActivity extends SherlockActivity {
             noConnectivityText.setVisibility(View.GONE);
             loginButton.setVisibility(View.GONE);
             authenticatingText.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             noConnectivityText.setVisibility(View.GONE);
             loginButton.setVisibility(View.VISIBLE);
             authenticatingText.setVisibility(View.GONE);
@@ -261,19 +258,19 @@ public class LoginActivity extends SherlockActivity {
     };
 
     private void onConnected() {
-        if(noConnectivityText.getVisibility() == View.VISIBLE){
+        if (noConnectivityText.getVisibility() == View.VISIBLE) {
             flipFromNoConnToLoginAnimator.start();
         }
     }
 
     private void onDisconnected() {
-        if(loginButton.getVisibility() == View.VISIBLE){
+        if (loginButton.getVisibility() == View.VISIBLE) {
             flipFromLoginToNoConnAnimator.start();
-        }else if(authenticatingText.getVisibility() == View.VISIBLE){
+        } else if (authenticatingText.getVisibility() == View.VISIBLE) {
             flipFromAuthToNoConnAnimator.start();
         }
 
-        if(backgroundAuthenticationTask != null && backgroundAuthenticationTask.getStatus() == AsyncTask.Status.RUNNING){
+        if (backgroundAuthenticationTask != null && backgroundAuthenticationTask.getStatus() == AsyncTask.Status.RUNNING) {
             backgroundAuthenticationTask.cancel(true);
         }
     }

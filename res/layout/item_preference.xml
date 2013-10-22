@@ -2,35 +2,30 @@
               android:layout_height="match_parent"
               android:layout_width="match_parent"
               android:orientation="vertical">
-<LinearLayout
-        style="@style/SummaryItemRow">
-    <TextView
-            android:id="@+id/prefix"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:singleLine="true"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:textColor="@color/theme_color"/>
+    <LinearLayout
 
-    <FrameLayout
-            android:id="@+id/delete_button"
-            android:layout_width="@dimen/abs__action_bar_default_height"
-            android:layout_height="@dimen/abs__action_bar_default_height"
-            android:clickable="true"
-            android:layout_margin="6dp"
-            android:background="@drawable/previous_button_selector">
-
-        <ImageView
-                android:layout_width="match_parent"
+            style="@style/SummaryItemRow">
+        <TextView
+                android:id="@+id/prefix"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:src="@drawable/ic_cancel"/>
-    </FrameLayout>
+                android:gravity="center_vertical"
+                android:textColor="@android:color/white"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:singleLine="true"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"/>
 
-</LinearLayout>
-<View style="@style/DividerLine"/>
+        <ImageButton
+                android:id="@+id/del_cohort_prefix_btn"
+                android:layout_width="wrap_content"
+                android:background="@android:color/transparent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:src="@drawable/ic_action_discard"
+                android:contentDescription="@string/delete_text"/>
+
+    </LinearLayout>
 </LinearLayout>
