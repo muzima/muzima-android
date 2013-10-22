@@ -17,11 +17,11 @@ import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
 import com.muzima.adapters.forms.AllAvailableFormsAdapter;
 import com.muzima.controller.FormController;
+import com.muzima.domain.Credentials;
 import com.muzima.service.DataSyncService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
-import com.muzima.view.BroadcastListenerActivity;
 
 import java.util.Date;
 import java.util.List;
@@ -39,6 +39,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     private OnTemplateDownloadComplete templateDownloadCompleteListener;
     private TextView syncText;
     private boolean newFormsSyncInProgress;
+    private Credentials credentials;
 
     public static AllAvailableFormsListFragment newInstance(FormController formController) {
         AllAvailableFormsListFragment f = new AllAvailableFormsListFragment();
@@ -51,6 +52,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         if (listAdapter == null) {
             listAdapter = new AllAvailableFormsAdapter(getActivity(), R.layout.item_forms_list, formController);
         }
+        credentials = new Credentials(getActivity());
         noDataMsg = getActivity().getResources().getString(R.string.no_new_form_msg);
         noDataTip = getActivity().getResources().getString(R.string.no_new_form_tip);
 
@@ -89,7 +91,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         actionMode.setTitle(String.valueOf(numOfSelectedForms));
     }
 
-    public void onFormTemplateDownloadFinish(){
+    public void onFormTemplateDownloadFinish() {
         if (templateDownloadCompleteListener != null) {
             templateDownloadCompleteListener.onTemplateDownloadComplete();
         }
@@ -156,7 +158,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     private void syncAllFormTemplatesInBackgroundService() {
         Intent intent = new Intent(getActivity(), DataSyncService.class);
         intent.putExtra(SYNC_TYPE, SYNC_TEMPLATES);
-        intent.putExtra(CREDENTIALS, ((BroadcastListenerActivity) getActivity()).credentials().getCredentialsArray());
+        intent.putExtra(CREDENTIALS, credentials.getCredentialsArray());
         intent.putExtra(FORM_IDS, getSelectedFormsArray());
         ((FormsActivity) getActivity()).showProgressBar();
         getActivity().startService(intent);

@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortPrefixPrefAdapter;
-import com.muzima.adapters.cohort.SettingsBaseAdapter;
+import com.muzima.adapters.cohort.PreferenceClickListener;
 import com.muzima.adapters.concept.AutoCompleteCohortPrefixAdapter;
 import com.muzima.api.model.Cohort;
 import com.muzima.view.BaseActivity;
@@ -25,7 +25,7 @@ import java.util.TreeSet;
 import static com.muzima.utils.Constants.COHORT_PREFIX_PREF;
 import static com.muzima.utils.Constants.COHORT_PREFIX_PREF_KEY;
 
-public class CohortPreferenceActivity extends BaseActivity implements SettingsBaseAdapter.PreferenceClickListener {
+public class CohortPreferenceActivity extends BaseActivity implements PreferenceClickListener {
     protected CohortPrefixPrefAdapter prefAdapter;
     private AutoCompleteCohortPrefixAdapter autoCompleteCohortPrefixAdapter;
     private AutoCompleteTextView cohortPrefix;

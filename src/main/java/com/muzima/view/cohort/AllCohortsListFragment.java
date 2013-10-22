@@ -16,11 +16,11 @@ import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
 import com.muzima.adapters.cohort.AllCohortsAdapter;
 import com.muzima.controller.CohortController;
+import com.muzima.domain.Credentials;
 import com.muzima.service.DataSyncService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
-import com.muzima.view.BroadcastListenerActivity;
 
 import java.util.Date;
 import java.util.List;
@@ -37,6 +37,7 @@ public class AllCohortsListFragment extends CohortListFragment {
     private OnCohortDataDownloadListener cohortDataDownloadListener;
     private TextView syncText;
     private boolean cohortsSyncInProgress;
+    private Credentials credentials;
 
     public static AllCohortsListFragment newInstance(CohortController cohortController) {
         AllCohortsListFragment f = new AllCohortsListFragment();
@@ -46,9 +47,10 @@ public class AllCohortsListFragment extends CohortListFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if(listAdapter == null){
+        if (listAdapter == null) {
             listAdapter = new AllCohortsAdapter(getActivity(), R.layout.item_cohorts_list, cohortController);
         }
+        credentials = new Credentials(getActivity());
         noDataMsg = getActivity().getResources().getString(R.string.no_cohorts_available);
         noDataTip = getActivity().getResources().getString(R.string.no_cohorts_available_tip);
         super.onCreate(savedInstanceState);
@@ -101,7 +103,7 @@ public class AllCohortsListFragment extends CohortListFragment {
     }
 
     public void onPatientDownloadFinish() {
-        if(cohortDataDownloadListener != null){
+        if (cohortDataDownloadListener != null) {
             cohortDataDownloadListener.onCohortDataDownloadComplete();
         }
     }
@@ -131,7 +133,7 @@ public class AllCohortsListFragment extends CohortListFragment {
                         break;
                     }
 
-                    if(!NetworkUtils.isConnectedToNetwork(getActivity())){
+                    if (!NetworkUtils.isConnectedToNetwork(getActivity())) {
                         Toast.makeText(getActivity(), "No connection found, please connect your device and try again", Toast.LENGTH_SHORT).show();
                         return true;
                     }
@@ -156,9 +158,9 @@ public class AllCohortsListFragment extends CohortListFragment {
     private void syncPatientsAndObservationsInBackgroundService() {
         Intent intent = new Intent(getActivity(), DataSyncService.class);
         intent.putExtra(SYNC_TYPE, SYNC_PATIENTS_FULL_DATA);
-        intent.putExtra(CREDENTIALS, ((BroadcastListenerActivity) getActivity()).credentials().getCredentialsArray());
+        intent.putExtra(CREDENTIALS, credentials.getCredentialsArray());
         intent.putExtra(COHORT_IDS, getSelectedCohortsArray());
-        ((CohortActivity)getActivity()).showProgressBar();
+        ((CohortActivity) getActivity()).showProgressBar();
         getActivity().startService(intent);
     }
 
@@ -168,7 +170,7 @@ public class AllCohortsListFragment extends CohortListFragment {
         return selectedCohorts.toArray(selectedCohortsUuids);
     }
 
-    public interface OnCohortDataDownloadListener{
+    public interface OnCohortDataDownloadListener {
         public void onCohortDataDownloadComplete();
     }
 
@@ -176,7 +178,7 @@ public class AllCohortsListFragment extends CohortListFragment {
         SharedPreferences pref = getActivity().getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
         long lastSyncedTime = pref.getLong(COHORTS_LAST_SYNCED_TIME, NOT_SYNCED_TIME);
         String lastSyncedMsg = "Not synced yet";
-        if(lastSyncedTime != NOT_SYNCED_TIME){
+        if (lastSyncedTime != NOT_SYNCED_TIME) {
             lastSyncedMsg = "Last synced on: " + DateUtils.getFormattedDateTime(new Date(lastSyncedTime));
         }
         syncText.setText(lastSyncedMsg);

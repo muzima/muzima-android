@@ -13,6 +13,7 @@ import com.muzima.R;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
+import com.muzima.domain.Credentials;
 import com.muzima.view.cohort.CohortActivity;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.patients.PatientsListActivity;
@@ -21,10 +22,12 @@ public class MainActivity extends BroadcastListenerActivity {
     private static final String TAG = "MainActivity";
     private View mMainView;
     private BackgroundQueryTask mBackgroundQueryTask;
+    private Credentials credentials;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        credentials = new Credentials(this);
         mMainView = getLayoutInflater().inflate(R.layout.activity_dashboard, null);
         setContentView(mMainView);
         setTitle(R.string.homepage);
@@ -141,7 +144,7 @@ public class MainActivity extends BroadcastListenerActivity {
                     + homeActivityMetadata.completeAndUnsyncedForms + " Complete");
 
             TextView currentUser = (TextView) findViewById(R.id.currentUser);
-            currentUser.setText(credentials().getCredentialsArray()[0]);
+            currentUser.setText(credentials.getCredentialsArray()[0]);
         }
     }
 

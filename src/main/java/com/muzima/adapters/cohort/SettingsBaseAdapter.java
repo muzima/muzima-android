@@ -51,12 +51,6 @@ public abstract class SettingsBaseAdapter extends ListAdapter<String> {
         return convertView;
     }
 
-    public static interface PreferenceClickListener {
-        public void onDeletePreferenceClick(String pref);
-
-        public void onChangePreferenceClick(String pref);
-    }
-
     protected class ViewHolder {
         private TextView text;
         private ImageButton deleteButton;

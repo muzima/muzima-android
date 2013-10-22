@@ -2,20 +2,13 @@
 package com.muzima;
 
 import android.app.Application;
-
 import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
-import com.muzima.controller.CohortController;
-import com.muzima.controller.ConceptController;
-import com.muzima.controller.EncounterController;
-import com.muzima.controller.FormController;
-import com.muzima.controller.ObservationController;
-import com.muzima.controller.PatientController;
+import com.muzima.controller.*;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.util.Constants;
-
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
 

@@ -1,6 +1,5 @@
 package com.muzima.view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,7 +13,7 @@ import com.muzima.search.api.util.StringUtil;
 import com.muzima.view.login.LoginActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
-public class BaseActivity extends SherlockFragmentActivity{
+public class BaseActivity extends SherlockFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,25 +23,9 @@ public class BaseActivity extends SherlockFragmentActivity{
     @Override
     protected void onResume() {
         super.onResume();
-        Credentials credentials = credentials();
-        if(credentials.getServerUrl().isEmpty()){
+        if (new Credentials(this).isEmpty()) {
             launchLoginActivity(true);
-        }else if(credentials.getPassword().isEmpty()){
-            launchLoginActivity(false);
         }
-    }
-    public Credentials credentials(){
-        return credentials(this);
-    }
-
-    public static Credentials credentials(Context context){
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        String usernameKey = context.getResources().getString(R.string.preference_username);
-        String passwordKey = context.getResources().getString(R.string.preference_password);
-        String serverKey = context.getResources().getString(R.string.preference_server);
-        return new Credentials(settings.getString(usernameKey, StringUtil.EMPTY),
-                settings.getString(passwordKey, StringUtil.EMPTY),
-                settings.getString(serverKey, StringUtil.EMPTY));
     }
 
     protected void launchLoginActivity(boolean isFirstLaunch) {

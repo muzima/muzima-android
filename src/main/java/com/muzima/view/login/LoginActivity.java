@@ -18,7 +18,6 @@ import com.actionbarsherlock.internal.nineoldandroids.animation.ValueAnimator;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
-import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.MainActivity;
@@ -113,11 +112,11 @@ public class LoginActivity extends SherlockActivity {
                         return;
                     }
 
-                    Credentials credentials = new Credentials(usernameText.getText().toString(),
-                            passwordText.getText().toString(),
-                            serverUrlText.getText().toString());
                     backgroundAuthenticationTask = new BackgroundAuthenticationTask();
-                    backgroundAuthenticationTask.execute(credentials);
+                    backgroundAuthenticationTask.execute(
+                            new Credentials(serverUrlText.getText().toString(), usernameText.getText().toString(),
+                                    passwordText.getText().toString()
+                            ));
                 } else {
                     int errorColor = getResources().getColor(R.color.error_text_color);
                     if (serverUrlText.getText().toString().isEmpty()) {
@@ -156,17 +155,6 @@ public class LoginActivity extends SherlockActivity {
         noConnectivityText = (TextView) findViewById(R.id.noConnectionText);
         authenticatingText = (TextView) findViewById(R.id.authenticatingText);
     }
-
-    private Credentials credentials() {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        String usernameKey = getResources().getString(R.string.preference_username);
-        String passwordKey = getResources().getString(R.string.preference_password);
-        String serverKey = getResources().getString(R.string.preference_server);
-        return new Credentials(settings.getString(usernameKey, StringUtil.EMPTY),
-                settings.getString(passwordKey, StringUtil.EMPTY),
-                settings.getString(serverKey, StringUtil.EMPTY));
-    }
-
 
     private class BackgroundAuthenticationTask extends AsyncTask<Credentials, Void, BackgroundAuthenticationTask.Result> {
 

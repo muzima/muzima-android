@@ -21,6 +21,7 @@ import com.muzima.adapters.forms.FormsPagerAdapter;
 import com.muzima.adapters.forms.TagsListAdapter;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
+import com.muzima.domain.Credentials;
 import com.muzima.service.DataSyncService;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
@@ -50,10 +51,12 @@ public class FormsActivity extends FormsActivityBase {
     private FormController formController;
     private MenuItem tagsButton;
     private boolean syncInProgress;
+    private Credentials credentials;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_forms, null);
+        credentials = new Credentials(this);
         setContentView(mainLayout);
         super.onCreate(savedInstanceState);
         formController = ((MuzimaApplication) getApplication()).getFormController();
@@ -124,17 +127,17 @@ public class FormsActivity extends FormsActivityBase {
         int syncStatus = intent.getIntExtra(SYNC_STATUS, UNKNOWN_ERROR);
         int syncType = intent.getIntExtra(SYNC_TYPE, -1);
 
-        if(syncType == SYNC_FORMS){
+        if (syncType == SYNC_FORMS) {
             hideProgressbar();
             syncInProgress = false;
-            if(syncStatus == SUCCESS){
+            if (syncStatus == SUCCESS) {
                 tagsListAdapter.reloadData();
-                ((FormsPagerAdapter)formsPagerAdapter).onFormMetadataDownloadFinish();
+                ((FormsPagerAdapter) formsPagerAdapter).onFormMetadataDownloadFinish();
             }
-        }else if(syncType == SYNC_TEMPLATES){
+        } else if (syncType == SYNC_TEMPLATES) {
             hideProgressbar();
-            if(syncStatus == SUCCESS){
-                ((FormsPagerAdapter)formsPagerAdapter).onFormTemplateDownloadFinish();
+            if (syncStatus == SUCCESS) {
+                ((FormsPagerAdapter) formsPagerAdapter).onFormTemplateDownloadFinish();
             }
         }
     }
@@ -148,7 +151,7 @@ public class FormsActivity extends FormsActivityBase {
                     Toast.makeText(this, "No connection found, please connect your device and try again", Toast.LENGTH_SHORT).show();
                     return true;
                 }
-                if(syncInProgress){
+                if (syncInProgress) {
                     Toast.makeText(this, "Already fetching forms, ignored the request", Toast.LENGTH_SHORT).show();
                     return true;
                 }
@@ -173,7 +176,7 @@ public class FormsActivity extends FormsActivityBase {
     private void syncAllFormsInBackgroundService() {
         Intent intent = new Intent(this, DataSyncService.class);
         intent.putExtra(SYNC_TYPE, SYNC_FORMS);
-        intent.putExtra(CREDENTIALS, credentials().getCredentialsArray());
+        intent.putExtra(CREDENTIALS, credentials.getCredentialsArray());
         syncInProgress = true;
         ((FormsPagerAdapter) formsPagerAdapter).onFormMetadataDownloadStart();
         showProgressBar();
@@ -244,7 +247,7 @@ public class FormsActivity extends FormsActivityBase {
 
         if (selectedTagsInPref != null) {
             for (Tag tag : allTags) {
-                if (selectedTagsInPref.contains(tag.getName())){
+                if (selectedTagsInPref.contains(tag.getName())) {
                     selectedTags.add(tag);
                 }
             }

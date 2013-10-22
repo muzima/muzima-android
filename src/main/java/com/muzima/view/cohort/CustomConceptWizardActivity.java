@@ -14,9 +14,8 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
-import com.muzima.service.DataSyncService;
+import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaSyncService;
-import com.muzima.utils.Constants;
 import com.muzima.view.MainActivity;
 import com.muzima.view.forms.MuzimaProgressDialog;
 import com.muzima.view.preferences.ConceptPreferenceActivity;
@@ -24,7 +23,6 @@ import com.muzima.view.preferences.ConceptPreferenceActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
@@ -32,9 +30,11 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
     private static final String TAG = CustomConceptWizardActivity.class.getSimpleName();
     private MuzimaProgressDialog muzimaProgressDialog;
+    private Credentials credentials;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        credentials = new Credentials(this);
 
         Button nextButton = (Button) findViewById(R.id.next);
         muzimaProgressDialog = new MuzimaProgressDialog(this);
@@ -84,7 +84,7 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
         MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
 
         int[] results = new int[2];
-        if(muzimaSyncService.authenticate(credentials().getCredentialsArray())==AUTHENTICATION_SUCCESS){
+        if(muzimaSyncService.authenticate(credentials.getCredentialsArray())==AUTHENTICATION_SUCCESS){
 
             String[] cohortsUuidDownloaded = getDownloadedCohortUuids();
 

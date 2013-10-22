@@ -28,7 +28,6 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaSyncService;
-import com.muzima.view.BaseActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -66,12 +65,12 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
             protected FilterResults performFiltering(final CharSequence constraint) {
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null && constraint.length() > 2) {
-                    Credentials credentials = BaseActivity.credentials(getContext());
+                    Credentials credentials = new Credentials(getContext());
 
                     MuzimaApplication muzimaApplicationContext = getMuzimaApplicationContext();
                     List<T> options = new ArrayList<T>();
                     try {
-                        if(muzimaSyncService.authenticate(credentials.getCredentialsArray())==AUTHENTICATION_SUCCESS){
+                        if (muzimaSyncService.authenticate(credentials.getCredentialsArray()) == AUTHENTICATION_SUCCESS) {
                             options = getOptions(constraint);
                         } else {
                             Toast.makeText(getMuzimaApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();

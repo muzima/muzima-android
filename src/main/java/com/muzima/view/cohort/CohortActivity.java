@@ -10,6 +10,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortPagerAdapter;
+import com.muzima.domain.Credentials;
 import com.muzima.service.DataSyncService;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
@@ -27,6 +28,7 @@ public class CohortActivity extends BroadcastListenerActivity {
     private PagerSlidingTabStrip pagerTabsLayout;
     private MenuItem menubarLoadButton;
     private boolean syncInProgress;
+    private Credentials credentials;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class CohortActivity extends BroadcastListenerActivity {
         setContentView(R.layout.activity_with_pager);
         initPager();
         initPagerIndicator();
+        credentials = new Credentials(this);
     }
 
     @Override
@@ -116,7 +119,7 @@ public class CohortActivity extends BroadcastListenerActivity {
     private void syncCohortsInBackgroundService() {
         Intent intent = new Intent(this, DataSyncService.class);
         intent.putExtra(SYNC_TYPE, SYNC_COHORTS);
-        intent.putExtra(CREDENTIALS, credentials().getCredentialsArray());
+        intent.putExtra(CREDENTIALS, credentials.getCredentialsArray());
         syncInProgress = true;
         cohortPagerAdapter.onCohortDownloadStart();
         showProgressBar();
