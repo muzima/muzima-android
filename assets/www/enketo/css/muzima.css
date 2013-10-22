@@ -7389,8 +7389,8 @@ h2, h3, h4, legend {
 
 .datepicker td.active:hover, .datepicker td.active:focus, .datepicker td.active:active, .datepicker td.active.active, .datepicker td.active.disabled, .datepicker td.active[disabled], .datepicker td.active:hover:hover, .datepicker td.active:hover:focus, .datepicker td.active:hover:active, .datepicker td.active:hover.active, .datepicker td.active:hover.disabled, .datepicker td.active:hover[disabled], .datepicker td.active.disabled:hover, .datepicker td.active.disabled:focus, .datepicker td.active.disabled:active, .datepicker td.active.disabled.active, .datepicker td.active.disabled.disabled, .datepicker td.active.disabled[disabled], .datepicker td.active.disabled:hover:hover, .datepicker td.active.disabled:hover:focus, .datepicker td.active.disabled:hover:active, .datepicker td.active.disabled:hover.active, .datepicker td.active.disabled:hover.disabled, .datepicker td.active.disabled:hover[disabled] {
     color: white;
-    background-color: #006600;
-    *background-color: #006600;
+    background-color: #12A5F4;
+    *background-color: #12A5F4;
 }
 
 .datepicker td.active:active, .datepicker td.active.active, .datepicker td.active:hover:active, .datepicker td.active:hover.active, .datepicker td.active.disabled:active, .datepicker td.active.disabled.active, .datepicker td.active.disabled:hover:active, .datepicker td.active.disabled:hover.active {
