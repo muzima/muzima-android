@@ -1,31 +1,49 @@
-<FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_height="match_parent"
+                android:padding="2dp"
+                android:layout_width="match_parent">
+    <LinearLayout android:id="@+id/download_cohort_header"
+                  style="@style/NotClickableSummaryItem"
+                  android:layout_alignParentTop="true">
+        <TextView style="@style/SummaryHeader"
+                  android:text="@string/download_cohort"/>
 
-    <RelativeLayout android:layout_height="match_parent" android:layout_width="match_parent">
-        <LinearLayout
-                android:layout_height="wrap_content"
+        <TextView
+                android:textColor="@android:color/white"
+                android:textAlignment="center"
                 android:layout_width="match_parent"
-                android:layout_alignParentTop="true">
-            <ListView
-                    android:layout_height="match_parent"
-                    android:layout_width="match_parent"
-                    android:id="@+id/cohort_wizard_list"
-                    android:choiceMode="multipleChoice"
-                    />
-        </LinearLayout>
-        <LinearLayout style="@style/ButtonRow"
-                      android:layout_alignParentBottom="true">
-            <Button
-                    android:id="@+id/previous"
-                    style="@style/PreviousButton"
-                    android:layout_weight=".3"/>
-            <Button
-                    android:id="@+id/next"
-                    style="@style/NextButton"
-                    android:layout_weight=".3"/>
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:text="@string/download_cohort_desc">
+        </TextView>
 
-    </RelativeLayout>
-</FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout style="@style/NotClickableSummaryItem"
+                  android:layout_below="@+id/download_cohort_header"
+                  android:layout_height="match_parent"
+                  android:layout_width="match_parent"
+                  android:padding="5dp">
+
+        <ListView
+                android:id="@+id/cohort_wizard_list"
+                style="@style/MuzimaSelectableListView"
+                android:choiceMode="multipleChoice"
+                />
+    </LinearLayout>
+
+    <LinearLayout style="@style/ButtonRow"
+                  android:layout_alignParentBottom="true">
+        <Button
+                android:id="@+id/previous"
+                style="@style/PreviousButton"
+                android:layout_weight=".3"/>
+        <Button
+                android:id="@+id/next"
+                style="@style/NextButton"
+                android:layout_weight=".3"/>
+    </LinearLayout>
+</RelativeLayout>
+
+
+
