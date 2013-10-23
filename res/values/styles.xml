@@ -231,9 +231,10 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:padding">15dp</item>
-        <item name="android:textColor">@color/theme_color</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@color/primary_black</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>
 
     <style name="ListDescription">
@@ -241,8 +242,9 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingTop">2dp</item>
         <item name="android:paddingBottom">5dp</item>
-        <item name="android:textColor">#ff3d3d3d</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@color/primary_black</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
     </style>
 
     <style name="PatientDemographicsLayout">

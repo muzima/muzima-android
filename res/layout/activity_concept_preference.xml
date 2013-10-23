@@ -1,33 +1,22 @@
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        style="@style/DashboardTableContainer"
-        android:background="@color/theme_color_background">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/WizardContainer">
 
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/add_concept"
-            android:paddingBottom="3dp"
-            android:background="@color/tab_background"
-            android:textColor="@android:color/white"/>
+    <LinearLayout style="@style/NotClickableSummaryItem">
+        <TextView style="@style/SummaryHeader"
+                  android:text="@string/add_concept_prefixes"/>
+    </LinearLayout>
 
+    <LinearLayout style="@style/AutocompleteTextArea">
 
-    <LinearLayout
-            style="@style/SummaryItemRow"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp">
-
-        <AutoCompleteTextView
+    <AutoCompleteTextView
                 android:id="@+id/concept_add_concept"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:textColor="@color/theme_color"
+                android:layout_weight="1"
+                android:textColor="@color/primary_blue"
+                android:textColorHint="@color/hint_text_grey"
+                android:textCursorDrawable="@color/primary_blue"
                 android:hint="Enter concept name ...">
-
             <requestFocus/>
         </AutoCompleteTextView>
 
@@ -39,19 +28,11 @@
 
     <ListView
             android:id="@+id/concept_preference_list"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical"/>
+            style="@style/MuzimaListView"/>
 
     <TextView android:id="@+id/no_concept_added"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:gravity="center_horizontal"
-              android:textSize="20sp"
-              android:layout_marginTop="16dp"
-              android:layout_marginBottom="16dp"
               android:text="@string/no_concept_added"
-              android:visibility="invisible"/>
+              style="@style/NoItemInListView"/>
     <View
             style="@style/DividerLine"
             android:layout_height="2dp"/>

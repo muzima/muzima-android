@@ -184,13 +184,11 @@
         <activity android:name=".view.cohort.CohortWizardActivity"
                   android:label="Step 2 : Download Cohort"
                   android:configChanges="orientation|screenSize"
-                  android:theme="@android:style/Theme.Holo.DialogWhenLarge.NoActionBar">
-        </activity>
+                  android:theme="@android:style/Theme.Holo.DialogWhenLarge.NoActionBar"/>
         <activity android:name=".view.cohort.CohortPrefixWizardActivity"
                   android:label="Step 1 : Add Cohort Prefix"
                   android:configChanges="orientation|screenSize"
-                  android:theme="@android:style/Theme.Holo.DialogWhenLarge.NoActionBar">
-        </activity>
+                  android:theme="@android:style/Theme.Holo.DialogWhenLarge.NoActionBar"/>
         <activity android:name=".view.cohort.FormTemplateWizardActivity"
                   android:label="Download Form Templates"
                   android:configChanges="orientation|screenSize"

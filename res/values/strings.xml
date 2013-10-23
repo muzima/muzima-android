@@ -26,10 +26,14 @@
     <string name="no_downloaded_form_tip">Please select forms from all forms list and click download</string>
     <string name="no_incomplete_form_msg">No Incomplete Forms On Device</string>
     <string name="no_incomplete_client_form_msg">No Incomplete Forms</string>
-    <string name="no_incomplete_form_tip">Incomplete forms are available only if you have saved a partially filled form</string>
+    <string name="no_incomplete_form_tip">Incomplete forms are available only if you have saved a partially filled
+        form
+    </string>
     <string name="no_complete_form_msg">No Completed And Unsynced Forms On Device</string>
     <string name="no_complete_client_form_msg">No Completed And Unsynced Forms</string>
-    <string name="no_complete_form_tip">Complete Forms are available only if you have filled a form completely but have not synced it with the server</string>
+    <string name="no_complete_form_tip">Complete Forms are available only if you have filled a form completely but have
+        not synced it with the server
+    </string>
     <string name="no_synced_form_msg">No Forms Have Been Synced Yet</string>
     <string name="no_synced_form_tip">Please press sync button to sync completed forms with server</string>
 
@@ -39,10 +43,14 @@
     <string name="no_cohorts_synced_tip">Please select cohorts from all cohorts list and click sync</string>
 
     <string name="no_clients_downloaded">No clients have been downloaded</string>
-    <string name="no_clients_downloaded_tip">Please select cohorts from all cohorts list and click sync to download clients</string>
+    <string name="no_clients_downloaded_tip">Please select cohorts from all cohorts list and click sync to download
+        clients
+    </string>
 
     <string name="no_clients_matched">No clients matched your search</string>
-    <string name="no_clients_matched_tip">Please note that your search includes client id, given name, middle name and family name</string>
+    <string name="no_clients_matched_tip">Please note that your search includes client id, given name, middle name and
+        family name
+    </string>
 
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
@@ -110,6 +118,7 @@
     <string name="add_cohort_prefixes">Step 1: Add Cohort Prefix</string>
     <string name="download_cohort">Step 2: Download Cohort(s)</string>
     <string name="download_form">Step 3: Download Form(s)</string>
+    <string name="add_concept_prefixes">Step 4: Add Concept</string>
 
     <string name="no_cohort_prefixes_added">No Cohort Prefixes Added</string>
     <string name="no_cohort_prefixes_msg">Please click on add button to add a cohort prefix</string>
@@ -131,13 +140,17 @@
     <string name="no_concept_added">No concept added yet.</string>
     <string name="currentUser">Current User</string>
     <string name="preference_wizard_finished">wizardFinished</string>
-    <string name="cohort_wizard_help"> In this step of the wizard, you download the cohorts you need. Please select the cohorts and click next.</string>
-    <string name="cohort_prefix_help">A cohort is a predefined group of clients for which you can fill forms and download observations. The prefix(es) set here will be used to download cohorts afterwards.</string>
-    <string name="custom_concept_help"> Here you define concepts whose data will be included in later download.</string>
+    <string name="cohort_wizard_help">In this step of the wizard, you download the cohorts you need. Please select the
+        cohorts and click next.
+    </string>
+    <string name="cohort_prefix_help">A cohort is a predefined group of clients for which you can fill forms and
+        download observations. The prefix(es) set here will be used to download cohorts afterwards.
+    </string>
+    <string name="custom_concept_help">Here you define concepts whose data will be included in later download.</string>
     <string name="title_activity_cohort_wizard">Download Cohorts</string>
     <string name="cohort_wizard_help_title">Download Cohorts Help</string>
     <string name="cohort_prefix_help_title">Define Cohorts Prefix(es) Help</string>
-    <string name="custom_concept_help_title"> Concepts Help</string>
+    <string name="custom_concept_help_title">Concepts Help</string>
 
     <string name="form_save_as_draft">Save As Draft</string>
     <string name="form_submit">Submit</string>
@@ -146,7 +159,11 @@
     <string name="server_hint_text">Server URL</string>
     <string name="username_hint_text">Username</string>
     <string name="password_hint_text">Password</string>
-    <string name="download_cohort_desc">Select one or more cohorts from the list and click on \'Next\' to download</string>
+    <string name="add_cohort_pref_desc">Add a prefix for the cohorts you are looking for. This will filter cohorts in
+        display in the next step.
+    </string>
+    <string name="download_cohort_desc">Select one or more cohorts from the list and click on \'Next\' to download
+    </string>
     <string name="download_form_desc">Select one or more forms from the list and click on \'Next\' to download</string>
 
 </resources>
