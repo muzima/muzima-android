@@ -34,6 +34,14 @@ public class EncounterController {
         }
     }
 
+    public List<Encounter> downloadEncountersByPatientUuids(List<String> patientUuids) throws DownloadEncounterException {
+        try {
+            return encounterService.downloadEncountersByPatientUuids(patientUuids);
+        } catch (IOException e) {
+            throw new DownloadEncounterException(e);
+        }
+    }
+
     public class DownloadEncounterException extends Throwable {
         public DownloadEncounterException(IOException e) {
             super(e);

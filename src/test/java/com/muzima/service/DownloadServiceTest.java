@@ -38,6 +38,7 @@ public class DownloadServiceTest {
     private PatientController patientController;
     private ObservationController observationController;
     private ConceptController conceptController;
+    private EncounterController encounterController;
 
     @Before
     public void setUp() throws Exception {
@@ -49,6 +50,7 @@ public class DownloadServiceTest {
         observationController = mock(ObservationController.class);
         sharedPref = mock(SharedPreferences.class);
         conceptController = mock(ConceptController.class);
+        encounterController = mock(EncounterController.class);
 
         when(muzimaApplication.getMuzimaContext()).thenReturn(muzimaContext);
         when(muzimaApplication.getFormController()).thenReturn(formContorller);
@@ -56,6 +58,7 @@ public class DownloadServiceTest {
         when(muzimaApplication.getPatientController()).thenReturn(patientController);
         when(muzimaApplication.getObservationController()).thenReturn(observationController);
         when(muzimaApplication.getConceptController()).thenReturn(conceptController);
+        when(muzimaApplication.getEncounterController()).thenReturn(encounterController);
         when(muzimaApplication.getSharedPreferences(anyString(), anyInt())).thenReturn(sharedPref);
         muzimaSyncService = new MuzimaSyncService(muzimaApplication);
     }
@@ -496,6 +499,30 @@ public class DownloadServiceTest {
 
         int[] result = muzimaSyncService.downloadObservationsForPatients(cohortUuids);
         assertThat(result[0], is(REPLACE_ERROR));
+    }
+
+    @Test
+    public void downloadEncountersForPatients_shouldDownloadInBatch() throws Exception, ObservationController.DownloadObservationException, PatientController.PatientLoadException, EncounterController.ReplaceEncounterException, EncounterController.DownloadEncounterException {
+        String[] cohortUuids = new String[]{"uuid1"};
+        List<Patient> patients = new ArrayList<Patient>(){{
+            add(new Patient(){{
+                setUuid("patient1");
+            }});
+        }};
+
+        List<Encounter> encounters = new ArrayList<Encounter>() {{
+            add(new Encounter());
+        }};
+
+        when(patientController.getPatientsForCohorts(cohortUuids)).thenReturn(patients);
+        List<String> patientUuids = Arrays.asList(new String[]{"patient1"});
+        when(encounterController.downloadEncountersByPatientUuids(patientUuids)).thenReturn(encounters);
+
+        muzimaSyncService.downloadEncountersForPatients(cohortUuids);
+
+        verify(encounterController).downloadEncountersByPatientUuids(patientUuids);
+        verify(encounterController).replaceEncounters(patientUuids, encounters);
+        verifyNoMoreInteractions(observationController);
     }
 
 }
