@@ -101,7 +101,7 @@ public class MuzimaSyncService {
 
         try {
             List<FormTemplate> formTemplates = formController.downloadFormTemplates(formIds);
-            Log.i(TAG, formTemplates.size() + "form template download successful");
+            Log.i(TAG, formTemplates.size() + " form template download successful");
 
             formController.replaceFormTemplates(formTemplates);
             List<Concept> concepts = getRelatedConcepts(formTemplates);
@@ -272,13 +272,13 @@ public class MuzimaSyncService {
             long startDownloadEncounters = System.currentTimeMillis();
             List<Encounter> allEncounters = downloadAllEncounters(patientUuids);
             long endDownloadObservations = System.currentTimeMillis();
-            Log.i(TAG, "Observations download successful with " + allEncounters.size() + " observations");
+            Log.i(TAG, "Encounters download successful with " + allEncounters.size() + " encounters");
 
             encounterController.replaceEncounters(patientUuids, allEncounters);
             long replacedEncounters = System.currentTimeMillis();
 
-            Log.d(TAG, "In Downloading observations : " + (endDownloadObservations - startDownloadEncounters) / 1000 + " sec\n" +
-                    "In Replacing observations for patients: " + (replacedEncounters - endDownloadObservations) / 1000 + " sec");
+            Log.d(TAG, "In Downloading encounters : " + (endDownloadObservations - startDownloadEncounters) / 1000 + " sec\n" +
+                    "In Replacing encounters for patients: " + (replacedEncounters - endDownloadObservations) / 1000 + " sec");
 
             result[0] = SUCCESS;
             result[1] = allEncounters.size();

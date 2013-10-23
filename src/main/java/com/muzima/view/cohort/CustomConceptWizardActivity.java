@@ -27,7 +27,7 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 
 
 public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
-    private static final String TAG = CustomConceptWizardActivity.class.getSimpleName();
+    private static final String TAG = "CustomConceptWizardActivity";
     private MuzimaProgressDialog muzimaProgressDialog;
     protected Credentials credentials;
 
@@ -49,18 +49,18 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
 
                     @Override
                     protected void onPostExecute(int[] results) {
+                        muzimaProgressDialog.dismiss();
                         if (results[0] != SUCCESS) {
                             Toast.makeText(CustomConceptWizardActivity.this, "Could not load cohorts", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        if (results[1] != SUCCESS) {
-                            Toast.makeText(CustomConceptWizardActivity.this, "Could not download observations for patients", Toast.LENGTH_SHORT).show();
-                        }
-                        if (results[2] != SUCCESS) {
-                            Toast.makeText(CustomConceptWizardActivity.this, "Could not download encounters for patients", Toast.LENGTH_SHORT).show();
+                        } else {
+                            if (results[1] != SUCCESS) {
+                                Toast.makeText(CustomConceptWizardActivity.this, "Could not download observations for patients", Toast.LENGTH_SHORT).show();
+                            }
+                            if (results[2] != SUCCESS) {
+                                Toast.makeText(CustomConceptWizardActivity.this, "Could not download encounters for patients", Toast.LENGTH_SHORT).show();
+                            }
                         }
                         markWizardHasEnded();
-                        muzimaProgressDialog.dismiss();
                         navigateToNextActivity();
                     }
                 }.execute();
@@ -93,6 +93,8 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
              if(cohortsUuidDownloaded==null){
                  results[0] = LOAD_ERROR;
                  return results;
+             } else{
+                 results[0] = SUCCESS;
              }
             int[] downloadObservationsResult = muzimaSyncService.downloadObservationsForPatients(cohortsUuidDownloaded);
 
