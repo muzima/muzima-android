@@ -1,10 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/add_concept_layout"
               style="@style/WizardContainer">
-
-    <LinearLayout style="@style/NotClickableSummaryItem">
-        <TextView style="@style/SummaryHeader"
-                  android:text="@string/add_concept_prefixes"/>
-    </LinearLayout>
 
     <LinearLayout style="@style/AutocompleteTextArea">
 
