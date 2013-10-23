@@ -1,7 +1,6 @@
 package com.muzima.view.forms;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,16 +16,13 @@ import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
 import com.muzima.adapters.forms.AllAvailableFormsAdapter;
 import com.muzima.controller.FormController;
-import com.muzima.domain.Credentials;
-import com.muzima.service.DataSyncService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.view.SyncFormTemplateIntent;
 
 import java.util.Date;
 import java.util.List;
-
-import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
 
 public class AllAvailableFormsListFragment extends FormsListFragment {
     private static final String TAG = "AllAvailableFormsListFragment";
@@ -39,7 +35,6 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     private OnTemplateDownloadComplete templateDownloadCompleteListener;
     private TextView syncText;
     private boolean newFormsSyncInProgress;
-    private Credentials credentials;
 
     public static AllAvailableFormsListFragment newInstance(FormController formController) {
         AllAvailableFormsListFragment f = new AllAvailableFormsListFragment();
@@ -52,7 +47,6 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         if (listAdapter == null) {
             listAdapter = new AllAvailableFormsAdapter(getActivity(), R.layout.item_forms_list, formController);
         }
-        credentials = new Credentials(getActivity());
         noDataMsg = getActivity().getResources().getString(R.string.no_new_form_msg);
         noDataTip = getActivity().getResources().getString(R.string.no_new_form_tip);
 
@@ -156,12 +150,8 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     }
 
     private void syncAllFormTemplatesInBackgroundService() {
-        Intent intent = new Intent(getActivity(), DataSyncService.class);
-        intent.putExtra(SYNC_TYPE, SYNC_TEMPLATES);
-        intent.putExtra(CREDENTIALS, credentials.getCredentialsArray());
-        intent.putExtra(FORM_IDS, getSelectedFormsArray());
         ((FormsActivity) getActivity()).showProgressBar();
-        getActivity().startService(intent);
+        new SyncFormTemplateIntent(getActivity(), getSelectedFormsArray()).start();
     }
 
     public void setTemplateDownloadCompleteListener(OnTemplateDownloadComplete templateDownloadCompleteListener) {
