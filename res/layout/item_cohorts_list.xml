@@ -8,14 +8,5 @@
 
     <TextView
             android:id="@+id/cohort_name"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:gravity="center_vertical"
-            android:background="@drawable/list_selector_blue"
-            android:textColor="@android:color/white"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            style="@style/ListViewSelectableText"/>
 </LinearLayout>

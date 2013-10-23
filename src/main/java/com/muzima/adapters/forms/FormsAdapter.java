@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Tag;

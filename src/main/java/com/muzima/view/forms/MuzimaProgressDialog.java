@@ -29,11 +29,4 @@ public class MuzimaProgressDialog {
             dialog.dismiss();
         }
     }
-
-    @JavascriptInterface
-    public void hide() {
-        if (dialog.isShowing()) {
-            dialog.hide();
-        }
-    }
 }

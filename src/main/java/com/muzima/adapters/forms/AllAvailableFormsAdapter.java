@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Tag;
@@ -23,8 +21,6 @@ import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
 public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implements TagsListAdapter.TagsChangedListener{
     private static final String TAG = "AllAvailableFormsAdapter";
@@ -63,6 +59,7 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
         Tag[] tags = form.getTags();
         if (tags.length > 0) {
             holder.tagsScroller.setVisibility(View.VISIBLE);
+            holder.tagsScroller.bringToFront();
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
 
             //add update tags
