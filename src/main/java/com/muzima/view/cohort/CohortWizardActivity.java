@@ -19,6 +19,8 @@ import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.forms.MuzimaProgressDialog;
 
+import java.util.List;
+
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
 
@@ -36,16 +38,19 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
             @Override
             public void onClick(View v) {
                 progressDialog.show("Downloading clients...");
-                new AsyncTask<Void, Void, Void>() {
+                new AsyncTask<Void, Void, int[]>() {
                     @Override
-                    protected Void doInBackground(Void... voids) {
-                        downloadAndSavePatients(cohortsAdapter);
-                        return null;
+                    protected int[] doInBackground(Void... voids) {
+                        return downloadAndSavePatients(cohortsAdapter);
                     }
 
                     @Override
-                    protected void onPostExecute(Void aVoid) {
+                    protected void onPostExecute(int[] result) {
                         progressDialog.dismiss();
+
+                        if (result[0] != SUCCESS) {
+                            Toast.makeText(CohortWizardActivity.this, "Could not download patients", Toast.LENGTH_SHORT).show();
+                        }
                         navigateToNextActivity();
                     }
                 }.execute();
@@ -80,12 +85,12 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         finish();
     }
 
-    private void downloadAndSavePatients(AllCohortsAdapter cohortsAdapter) {
+    private int[] downloadAndSavePatients(AllCohortsAdapter cohortsAdapter) {
         MuzimaSyncService muzimaSyncService = ((MuzimaApplication)getApplicationContext()).getMuzimaSyncService();
-        int[] result = muzimaSyncService.downloadPatientsForCohorts(cohortsAdapter.getSelectedCohortsArray());
-        if (result[0] != SUCCESS) {
-            Toast.makeText(this, "Could not download patients", Toast.LENGTH_SHORT).show();
-        }
+
+        List<String> selectedCohortsArray = cohortsAdapter.getSelectedCohorts();
+        int[] result = muzimaSyncService.downloadPatientsForCohorts(selectedCohortsArray.toArray(new String[selectedCohortsArray.size()]));
+        return result;
     }
 
     private void navigateToNextActivity() {

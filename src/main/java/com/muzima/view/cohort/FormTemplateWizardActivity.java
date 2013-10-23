@@ -70,18 +70,20 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
             public void onClick(View view) {
                 progressDialog.show("Downloading Form Templates...");
 
-                new AsyncTask<Void, Void, Void>() {
+                new AsyncTask<Void, Void, int[]>() {
 
                     @Override
-                    protected Void doInBackground(Void... voids) {
-                        downloadFormTemplates();
-                        navigateToNextActivity();
-                        return null;
+                    protected int[] doInBackground(Void... voids) {
+                        return downloadFormTemplates();
                     }
 
                     @Override
-                    protected void onPostExecute(Void aVoid) {
+                    protected void onPostExecute(int[] result) {
                         progressDialog.dismiss();
+                        if (result[0] != SUCCESS) {
+                            Toast.makeText(FormTemplateWizardActivity.this, "Could not download form templates", Toast.LENGTH_SHORT).show();
+                        }
+                        navigateToNextActivity();
                     }
                 }.execute();
             }
@@ -104,13 +106,10 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
         finish();
     }
 
-    private void downloadFormTemplates() {
+    private int[] downloadFormTemplates() {
         List<String> selectedFormIdsArray = allAvailableFormsAdapter.getSelectedForms();
         MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
-        int[] result = muzimaSyncService.downloadFormTemplates(selectedFormIdsArray.toArray(new String[selectedFormIdsArray.size()]));
-        if (result[0] != SUCCESS) {
-            Toast.makeText(this, "Could not download form templates", Toast.LENGTH_SHORT).show();
-        }
+        return muzimaSyncService.downloadFormTemplates(selectedFormIdsArray.toArray(new String[selectedFormIdsArray.size()]));
     }
 
     private void navigateToNextActivity() {

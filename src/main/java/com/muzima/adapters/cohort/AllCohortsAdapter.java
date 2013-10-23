@@ -36,7 +36,7 @@ public class AllCohortsAdapter extends CohortsAdapter {
         new DownloadBackgroundQueryTask().execute();
     }
 
-    private List<String> getSelectedCohorts() {
+    public List<String> getSelectedCohorts() {
         return selectedCohortsUuid;
     }
 

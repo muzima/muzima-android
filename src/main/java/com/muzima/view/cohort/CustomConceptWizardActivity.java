@@ -23,14 +23,13 @@ import com.muzima.view.preferences.ConceptPreferenceActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
 
 
 public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
     private static final String TAG = CustomConceptWizardActivity.class.getSimpleName();
     private MuzimaProgressDialog muzimaProgressDialog;
-    private Credentials credentials;
+    protected Credentials credentials;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,9 +50,13 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
                     @Override
                     protected void onPostExecute(int[] results) {
                         if (results[0] != SUCCESS) {
-                            Toast.makeText(CustomConceptWizardActivity.this, "Could not download observations for patients", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CustomConceptWizardActivity.this, "Could not load cohorts", Toast.LENGTH_SHORT).show();
+                            return;
                         }
                         if (results[1] != SUCCESS) {
+                            Toast.makeText(CustomConceptWizardActivity.this, "Could not download observations for patients", Toast.LENGTH_SHORT).show();
+                        }
+                        if (results[2] != SUCCESS) {
                             Toast.makeText(CustomConceptWizardActivity.this, "Could not download encounters for patients", Toast.LENGTH_SHORT).show();
                         }
                         markWizardHasEnded();
@@ -83,17 +86,20 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
     private int[] downloadObservationAndEncounter() {
         MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
 
-        int[] results = new int[2];
+        int[] results = new int[3];
         if(muzimaSyncService.authenticate(credentials.getCredentialsArray())==AUTHENTICATION_SUCCESS){
 
             String[] cohortsUuidDownloaded = getDownloadedCohortUuids();
-
+             if(cohortsUuidDownloaded==null){
+                 results[0] = LOAD_ERROR;
+                 return results;
+             }
             int[] downloadObservationsResult = muzimaSyncService.downloadObservationsForPatients(cohortsUuidDownloaded);
 
             int[] downloadEncountersResult = muzimaSyncService.downloadEncountersForPatients(cohortsUuidDownloaded);
 
-            results[0] = downloadObservationsResult[0];
-            results[1] = downloadEncountersResult[0];
+            results[1] = downloadObservationsResult[0];
+            results[2] = downloadEncountersResult[0];
         }
         return results;
     }
@@ -105,7 +111,7 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
             allCohorts = cohortController.getAllCohorts();
         } catch (CohortController.CohortFetchException e) {
             Log.w(TAG, "Exception occurred while fetching local cohorts " + e);
-            Toast.makeText(getApplicationContext(), "Something went wrong while downloading relevant patient data", Toast.LENGTH_SHORT).show();
+            return null;
         }
         ArrayList<String> cohortsUuid = new ArrayList<String>();
         for (Cohort cohort : allCohorts){
