@@ -1,7 +1,6 @@
 package com.muzima.view.cohort;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,16 +15,11 @@ import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
 import com.muzima.adapters.cohort.AllCohortsAdapter;
 import com.muzima.controller.CohortController;
-import com.muzima.domain.Credentials;
-import com.muzima.service.DataSyncService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
 
 import java.util.Date;
-import java.util.List;
-
-import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
 
 public class AllCohortsListFragment extends CohortListFragment {
     private static final String TAG = "AllCohortsListFragment";
@@ -37,7 +31,6 @@ public class AllCohortsListFragment extends CohortListFragment {
     private OnCohortDataDownloadListener cohortDataDownloadListener;
     private TextView syncText;
     private boolean cohortsSyncInProgress;
-    private Credentials credentials;
 
     public static AllCohortsListFragment newInstance(CohortController cohortController) {
         AllCohortsListFragment f = new AllCohortsListFragment();
@@ -50,7 +43,6 @@ public class AllCohortsListFragment extends CohortListFragment {
         if (listAdapter == null) {
             listAdapter = new AllCohortsAdapter(getActivity(), R.layout.item_cohorts_list, cohortController);
         }
-        credentials = new Credentials(getActivity());
         noDataMsg = getActivity().getResources().getString(R.string.no_cohorts_available);
         noDataTip = getActivity().getResources().getString(R.string.no_cohorts_available_tip);
         super.onCreate(savedInstanceState);
@@ -81,7 +73,7 @@ public class AllCohortsListFragment extends CohortListFragment {
             actionModeActive = true;
         }
         ((AllCohortsAdapter) listAdapter).onListItemClick(position);
-        int numOfSelectedCohorts = ((AllCohortsAdapter) listAdapter).getSelectedCohorts().size();
+        int numOfSelectedCohorts = ((AllCohortsAdapter) listAdapter).numberOfCohorts();
         if (numOfSelectedCohorts == 0 && actionModeActive) {
             actionMode.finish();
         }
@@ -156,18 +148,8 @@ public class AllCohortsListFragment extends CohortListFragment {
     }
 
     private void syncPatientsAndObservationsInBackgroundService() {
-        Intent intent = new Intent(getActivity(), DataSyncService.class);
-        intent.putExtra(SYNC_TYPE, SYNC_PATIENTS_FULL_DATA);
-        intent.putExtra(CREDENTIALS, credentials.getCredentialsArray());
-        intent.putExtra(COHORT_IDS, getSelectedCohortsArray());
         ((CohortActivity) getActivity()).showProgressBar();
-        getActivity().startService(intent);
-    }
-
-    private String[] getSelectedCohortsArray() {
-        List<String> selectedCohorts = ((AllCohortsAdapter) listAdapter).getSelectedCohorts();
-        String[] selectedCohortsUuids = new String[selectedCohorts.size()];
-        return selectedCohorts.toArray(selectedCohortsUuids);
+        new SyncPatientDataIntent(getActivity(), ((AllCohortsAdapter) listAdapter).getSelectedCohortsArray()).start();
     }
 
     public interface OnCohortDataDownloadListener {

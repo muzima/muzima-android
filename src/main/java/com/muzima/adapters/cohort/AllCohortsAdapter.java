@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Cohort;
@@ -17,9 +16,7 @@ import com.muzima.service.MuzimaSyncService;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
-
-public class AllCohortsAdapter extends CohortsAdapter{
+public class AllCohortsAdapter extends CohortsAdapter {
     private static final String TAG = "AllCohortsAdapter";
     private final MuzimaSyncService muzimaSyncService;
     private List<String> selectedCohortsUuid;
@@ -27,7 +24,7 @@ public class AllCohortsAdapter extends CohortsAdapter{
     public AllCohortsAdapter(Context context, int textViewResourceId, CohortController cohortController) {
         super(context, textViewResourceId, cohortController);
         selectedCohortsUuid = new ArrayList<String>();
-        muzimaSyncService = ((MuzimaApplication)(getContext().getApplicationContext())).getMuzimaSyncService();
+        muzimaSyncService = ((MuzimaApplication) (getContext().getApplicationContext())).getMuzimaSyncService();
     }
 
     @Override
@@ -39,8 +36,12 @@ public class AllCohortsAdapter extends CohortsAdapter{
         new DownloadBackgroundQueryTask().execute();
     }
 
-    public List<String> getSelectedCohorts() {
+    private List<String> getSelectedCohorts() {
         return selectedCohortsUuid;
+    }
+
+    public String[] getSelectedCohortsArray() {
+        return getSelectedCohorts().toArray(new String[getSelectedCohorts().size()]);
     }
 
     public void clearSelectedCohorts() {
@@ -73,10 +74,14 @@ public class AllCohortsAdapter extends CohortsAdapter{
         notifyDataSetChanged();
     }
 
+    public int numberOfCohorts() {
+        return getSelectedCohorts().size();
+    }
+
     public class LoadBackgroundQueryTask extends AsyncTask<Void, Void, List<Cohort>> {
         @Override
         protected void onPreExecute() {
-            if(backgroundListQueryTaskListener != null){
+            if (backgroundListQueryTaskListener != null) {
                 backgroundListQueryTaskListener.onQueryTaskStarted();
             }
         }
@@ -95,7 +100,7 @@ public class AllCohortsAdapter extends CohortsAdapter{
 
         @Override
         protected void onPostExecute(List<Cohort> cohorts) {
-            if(cohorts == null){
+            if (cohorts == null) {
                 Toast.makeText(getContext(), "Something went wrong while fetching cohorts from local repo", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -106,7 +111,7 @@ public class AllCohortsAdapter extends CohortsAdapter{
             }
             notifyDataSetChanged();
 
-            if(backgroundListQueryTaskListener != null){
+            if (backgroundListQueryTaskListener != null) {
                 backgroundListQueryTaskListener.onQueryTaskFinish();
             }
         }

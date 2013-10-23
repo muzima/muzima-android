@@ -1,5 +1,6 @@
 package com.muzima.utils;
 
+//TODO: This class should be burnt and flushed. Constants in an anti-pattern and and a sure sign that your abstractions are wrong: Zabil
 public class Constants {
     public static final String SYNC_PREF = "SyncMetaData";
     public static final String COHORT_PREFIX_PREF = "CohortPrefixPref";

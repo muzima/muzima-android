@@ -21,8 +21,6 @@ import com.muzima.adapters.forms.FormsPagerAdapter;
 import com.muzima.adapters.forms.TagsListAdapter;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
-import com.muzima.domain.Credentials;
-import com.muzima.service.DataSyncService;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.RegisterClientActivity;
@@ -51,12 +49,10 @@ public class FormsActivity extends FormsActivityBase {
     private FormController formController;
     private MenuItem tagsButton;
     private boolean syncInProgress;
-    private Credentials credentials;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_forms, null);
-        credentials = new Credentials(this);
         setContentView(mainLayout);
         super.onCreate(savedInstanceState);
         formController = ((MuzimaApplication) getApplication()).getFormController();
@@ -174,13 +170,10 @@ public class FormsActivity extends FormsActivityBase {
     }
 
     private void syncAllFormsInBackgroundService() {
-        Intent intent = new Intent(this, DataSyncService.class);
-        intent.putExtra(SYNC_TYPE, SYNC_FORMS);
-        intent.putExtra(CREDENTIALS, credentials.getCredentialsArray());
         syncInProgress = true;
         ((FormsPagerAdapter) formsPagerAdapter).onFormMetadataDownloadStart();
         showProgressBar();
-        startService(intent);
+        new SyncFormIntent(this).start();
     }
 
     @Override

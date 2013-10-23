@@ -19,7 +19,6 @@ import com.muzima.controller.FormController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
-import com.muzima.view.SyncFormTemplateIntent;
 
 import java.util.Date;
 import java.util.List;

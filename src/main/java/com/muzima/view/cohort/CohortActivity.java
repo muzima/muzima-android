@@ -10,8 +10,6 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortPagerAdapter;
-import com.muzima.domain.Credentials;
-import com.muzima.service.DataSyncService;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.BroadcastListenerActivity;
@@ -28,7 +26,6 @@ public class CohortActivity extends BroadcastListenerActivity {
     private PagerSlidingTabStrip pagerTabsLayout;
     private MenuItem menubarLoadButton;
     private boolean syncInProgress;
-    private Credentials credentials;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +33,6 @@ public class CohortActivity extends BroadcastListenerActivity {
         setContentView(R.layout.activity_with_pager);
         initPager();
         initPagerIndicator();
-        credentials = new Credentials(this);
     }
 
     @Override
@@ -55,7 +51,7 @@ public class CohortActivity extends BroadcastListenerActivity {
                     return true;
                 }
 
-                if(syncInProgress){
+                if (syncInProgress) {
                     Toast.makeText(this, "Already fetching cohorts, ignored the request", Toast.LENGTH_SHORT).show();
                     return true;
                 }
@@ -74,17 +70,17 @@ public class CohortActivity extends BroadcastListenerActivity {
         int syncStatus = intent.getIntExtra(SYNC_STATUS, UNKNOWN_ERROR);
         int syncType = intent.getIntExtra(SYNC_TYPE, -1);
 
-        if(syncType == SYNC_COHORTS){
+        if (syncType == SYNC_COHORTS) {
             hideProgressbar();
             syncInProgress = false;
-            if(syncStatus == SUCCESS){
+            if (syncStatus == SUCCESS) {
                 cohortPagerAdapter.onCohortDownloadFinish();
             }
-        }else if(syncType == SYNC_PATIENTS_FULL_DATA){
-            if(syncStatus == SUCCESS){
+        } else if (syncType == SYNC_PATIENTS_FULL_DATA) {
+            if (syncStatus == SUCCESS) {
                 cohortPagerAdapter.onPatientsDownloadFinish();
             }
-        }else if(syncType == SYNC_ENCOUNTERS){
+        } else if (syncType == SYNC_ENCOUNTERS) {
             hideProgressbar();
         }
     }
@@ -117,12 +113,9 @@ public class CohortActivity extends BroadcastListenerActivity {
     }
 
     private void syncCohortsInBackgroundService() {
-        Intent intent = new Intent(this, DataSyncService.class);
-        intent.putExtra(SYNC_TYPE, SYNC_COHORTS);
-        intent.putExtra(CREDENTIALS, credentials.getCredentialsArray());
         syncInProgress = true;
         cohortPagerAdapter.onCohortDownloadStart();
         showProgressBar();
-        startService(intent);
+        new SyncCohortsIntent(this).start();
     }
 }

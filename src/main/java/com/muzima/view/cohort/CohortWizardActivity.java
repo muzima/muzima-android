@@ -8,7 +8,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
@@ -19,8 +18,6 @@ import com.muzima.service.MuzimaSyncService;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.forms.MuzimaProgressDialog;
-
-import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
@@ -85,8 +82,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
 
     private void downloadAndSavePatients(AllCohortsAdapter cohortsAdapter) {
         MuzimaSyncService muzimaSyncService = ((MuzimaApplication)getApplicationContext()).getMuzimaSyncService();
-        List<String> selectedCohortsArray = cohortsAdapter.getSelectedCohorts();
-        int[] result = muzimaSyncService.downloadPatientsForCohorts(selectedCohortsArray.toArray(new String[selectedCohortsArray.size()]));
+        int[] result = muzimaSyncService.downloadPatientsForCohorts(cohortsAdapter.getSelectedCohortsArray());
         if (result[0] != SUCCESS) {
             Toast.makeText(this, "Could not download patients", Toast.LENGTH_SHORT).show();
         }

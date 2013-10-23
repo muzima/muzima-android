@@ -144,7 +144,7 @@ public class MainActivity extends BroadcastListenerActivity {
                     + homeActivityMetadata.completeAndUnsyncedForms + " Complete");
 
             TextView currentUser = (TextView) findViewById(R.id.currentUser);
-            currentUser.setText(credentials.getCredentialsArray()[0]);
+            currentUser.setText(credentials.getUserName());
         }
     }
 
