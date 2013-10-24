@@ -59,7 +59,6 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
         Tag[] tags = form.getTags();
         if (tags.length > 0) {
             holder.tagsScroller.setVisibility(View.VISIBLE);
-            holder.tagsScroller.bringToFront();
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
 
             //add update tags

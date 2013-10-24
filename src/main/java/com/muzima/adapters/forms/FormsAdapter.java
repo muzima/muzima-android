@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.muzima.R;
@@ -40,7 +39,7 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
                     .findViewById(R.id.form_name);
             holder.description = (TextView) convertView
                     .findViewById(R.id.form_description);
-            holder.tagsScroller = (HorizontalScrollView) convertView.findViewById(R.id.tags_scroller);
+            holder.tagsScroller = (LinearLayout) convertView.findViewById(R.id.tags_scroller);
             holder.tagsLayout = (LinearLayout) convertView.findViewById(R.id.menu_tags);
             holder.tags = new ArrayList<TextView>();
             convertView.setTag(holder);
@@ -75,7 +74,7 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
     protected static class ViewHolder {
         TextView name;
         TextView description;
-        HorizontalScrollView tagsScroller;
+        LinearLayout tagsScroller;
         LinearLayout tagsLayout;
         List<TextView> tags;
 
