@@ -53,10 +53,21 @@ public class LoginActivity extends SherlockActivity {
 
         boolean isFirstLaunch = getIntent().getBooleanExtra(LoginActivity.isFirstLaunch, true);
         if (!isFirstLaunch) {
-            serverUrlText.setVisibility(View.GONE);
-            findViewById(R.id.server_url_divider).setVisibility(View.GONE);
+            removeServerUrlAsInput();
+            useSavedServerUrl();
         }
         passwordText.setTypeface(Typeface.DEFAULT); //Hack to get it to use default font space.
+    }
+
+    private void removeServerUrlAsInput() {
+        serverUrlText.setVisibility(View.GONE);
+        findViewById(R.id.server_url_divider).setVisibility(View.GONE);
+    }
+
+    private void useSavedServerUrl() {
+        Credentials credentials;
+        credentials = new Credentials(this);
+        serverUrlText.setText(credentials.getServerUrl());
     }
 
     @Override
@@ -201,11 +212,11 @@ public class LoginActivity extends SherlockActivity {
         }
 
         private boolean isWizardFinished() {
-            return false;
-//            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
-//            String wizardFinishedKey = getResources().getString(R.string.preference_wizard_finished);
-//
-//            return settings.getBoolean(wizardFinishedKey, false);
+//            return false;
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+            String wizardFinishedKey = getResources().getString(R.string.preference_wizard_finished);
+
+            return settings.getBoolean(wizardFinishedKey, false);
         }
 
         private void saveCredentials(Credentials credentials) {
