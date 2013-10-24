@@ -87,19 +87,25 @@
     <style name="DashboardItemDescription">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textColor">@color/primary_black</item>
     </style>
 
     <style name="DashboardTitleText" parent="DashboardBaseText">
-        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:layout_gravity">right</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:capitalize">words</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="DashboardListItemPrimaryText">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/theme_color</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">0dip</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_gravity">center</item>
     </style>
 
     <style name="TitleText" parent="DashboardBaseText">
@@ -123,6 +129,20 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">15dp</item>
         <item name="android:paddingRight">15dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="ClickableGridItem">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:background">@drawable/grid_buttons</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
         <item name="android:paddingTop">4dp</item>
         <item name="android:paddingBottom">4dp</item>
         <item name="android:orientation">vertical</item>

@@ -32,7 +32,7 @@ public class MainActivity extends BroadcastListenerActivity {
         setContentView(mMainView);
         setTitle(R.string.homepage);
 
-        setupActionbar();
+//        setupActionbar();
     }
 
     @Override
@@ -144,7 +144,7 @@ public class MainActivity extends BroadcastListenerActivity {
                     + homeActivityMetadata.completeAndUnsyncedForms + " Complete");
 
             TextView currentUser = (TextView) findViewById(R.id.currentUser);
-            currentUser.setText(credentials.getUserName());
+            currentUser.setText(getResources().getString(R.string.currentUser) + " " + credentials.getUserName());
         }
     }
 
