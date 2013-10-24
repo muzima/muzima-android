@@ -8,8 +8,10 @@
 
     <TextView
             android:id="@+id/concept_autocomplete_name"
-            android:background="@color/theme_color_background"
-            style="@style/ListHeader">
+            style="@style/ListHeader"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/list_selector_blue">
     </TextView>
 
 </LinearLayout>
