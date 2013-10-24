@@ -15,13 +15,28 @@
             <TextView style="@style/SummaryHeader"
                       android:text="@string/download_form"/>
 
-            <TextView
-                    android:textColor="@android:color/white"
-                    android:textAlignment="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/download_form_desc">
-            </TextView>
+            <LinearLayout android:layout_height="wrap_content"
+                          android:weightSum="100"
+                          android:layout_width="fill_parent">
+
+                <TextView
+                        android:textColor="@android:color/white"
+                        android:textAlignment="center"
+                        android:layout_weight="80"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/download_form_desc">
+                </TextView>
+
+                <ImageButton android:layout_height="wrap_content"
+                             android:id="@+id/form_tags"
+                             android:layout_weight="20"
+                             android:layout_width="0dp"
+                             android:src="@drawable/ic_labels"
+                             android:contentDescription="@string/tags_no_data">
+                </ImageButton>
+
+            </LinearLayout>
 
         </LinearLayout>
         <LinearLayout style="@style/WizardContainer"

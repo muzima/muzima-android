@@ -7,13 +7,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.actionbarsherlock.view.Menu;
+import android.widget.*;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -60,7 +54,17 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
                 allAvailableFormsAdapter.onListItemClick(position);
             }
         });
-
+        ImageButton tags = (ImageButton) findViewById(R.id.form_tags);
+        tags.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mainLayout.isDrawerOpen(GravityCompat.END)) {
+                    mainLayout.closeDrawer(GravityCompat.END);
+                } else {
+                    mainLayout.openDrawer(GravityCompat.END);
+                }
+            }
+        });
         allAvailableFormsAdapter.downloadFormTemplatesAndReload();
         listView.setAdapter(allAvailableFormsAdapter);
 
@@ -125,28 +129,12 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.download_form_template_wizard, menu);
-        MenuItem menuSettings = menu.findItem(R.id.action_settings);
-        menuSettings.setEnabled(false);
-        tagsButton = menu.findItem(R.id.menu_tags);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_help:
                 Intent intent = new Intent(this, HelpActivity.class);
                 intent.putExtra(HelpActivity.HELP_TYPE, HelpActivity.COHORT_WIZARD_HELP);
                 startActivity(intent);
-                return true;
-            case R.id.menu_tags:
-                if (mainLayout.isDrawerOpen(GravityCompat.END)) {
-                    mainLayout.closeDrawer(GravityCompat.END);
-                } else {
-                    mainLayout.openDrawer(GravityCompat.END);
-                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -175,8 +163,6 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
              * Called when a drawer has settled in a completely closed state.
              */
             public void onDrawerClosed(View view) {
-                String title = getResources().getString(R.string.title_activity_form_list);
-                getSupportActionBar().setTitle(title);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             }
@@ -185,8 +171,6 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
              * Called when a drawer has settled in a completely open state.
              */
             public void onDrawerOpened(View drawerView) {
-                String title = getResources().getString(R.string.drawer_title);
-                getSupportActionBar().setTitle(title);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             }
