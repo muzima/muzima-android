@@ -72,6 +72,10 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(! allAvailableFormsAdapter.hasRegistrationFormSelected()){
+                    Toast.makeText(FormTemplateWizardActivity.this, "Please select at least one registration form!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 progressDialog.show("Downloading Form Templates...");
 
                 new AsyncTask<Void, Void, int[]>() {

@@ -1,7 +1,6 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,10 +100,21 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
 
     private void highlightIfSelected(View convertView, AvailableForm form) {
         if (selectedFormsUuid.contains(form.getFormUuid())) {
-            convertView.setBackgroundColor(getContext().getResources().getColor(R.color.listitem_state_pressed));
+            setSelected(convertView, true);
         } else {
-            convertView.setBackgroundColor(Color.WHITE);
+            setSelected(convertView, false);
         }
+    }
+
+    private void setSelected(View convertView, boolean selected) {
+        convertView.findViewById(R.id.form_name_layout).setSelected(selected);
+        convertView.findViewById(R.id.form_name_layout).setActivated(selected);
+        convertView.findViewById(R.id.form_name).setSelected(selected);
+        convertView.findViewById(R.id.form_name).setActivated(selected);
+        convertView.findViewById(R.id.form_description).setSelected(selected);
+        convertView.findViewById(R.id.form_description).setActivated(selected);
+        convertView.findViewById(R.id.tags_scroller).setSelected(selected);
+        convertView.findViewById(R.id.tags_scroller).setActivated(selected);
     }
 
     public void onListItemClick(int position) {
@@ -140,6 +150,16 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
         reloadData();
     }
 
+    public boolean hasRegistrationFormSelected() {
+        for (int i = 0; i < getCount(); i++) {
+            AvailableForm item = getItem(i);
+            if (item.isRegistrationForm() && selectedFormsUuid.contains(getItem(i).getFormUuid())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public class DownloadBackgroundQueryTask extends FormsAdapterBackgroundQueryTask<AvailableForm> {
 
         public DownloadBackgroundQueryTask(FormsAdapter adapter) {
@@ -154,12 +174,22 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
                     FormsAdapter formsAdapter = adapterWeakReference.get();
                     muzimaSyncService.downloadForms();
                     allForms = formsAdapter.getFormController().getAvailableFormByTags(getSelectedTagUuids());
+                    selectRegistrationForm(allForms);
                     Log.i(TAG, "#Forms: " + allForms.size());
                 } catch (FormController.FormFetchException e) {
                     Log.w(TAG, "Exception occurred while fetching local forms " + e);
                 }
             }
             return allForms;
+        }
+
+        private void selectRegistrationForm(AvailableForms allForms) {
+            for (AvailableForm form : allForms) {
+                if(form.isRegistrationForm()) {
+                    selectedFormsUuid.add(form.getFormUuid());
+                    Log.d(TAG, "isRegistrationForm size:" + selectedFormsUuid.size());
+                }
+            }
         }
     }
 
