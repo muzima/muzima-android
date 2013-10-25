@@ -4,7 +4,7 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+    <style name="AppBaseTheme" parent="android:Theme.Holo">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
@@ -87,7 +87,7 @@
     <style name="DashboardItemDescription">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/primary_black</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="DashboardTitleText" parent="DashboardBaseText">
@@ -503,6 +503,7 @@
         <item name="android:paddingLeft">12dp</item>
         <item name="android:paddingRight">12dp</item>
         <item name="android:typeface">normal</item>
+        <item name="android:cursorVisible">true</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
 
@@ -592,7 +593,7 @@
     <style name="MuzimaSelectableListView">
         <item name="android:divider">@android:color/white</item>
         <item name="android:dividerHeight">1dp</item>
-        <item name="android:listSelector">@drawable/list_selector_blue</item>
+        <item name="android:listSelector">@drawable/list_multi_selector_blue</item>
         <item name="android:layout_height">fill_parent</item>
         <item name="android:layout_width">fill_parent</item>
     </style>
@@ -605,7 +606,7 @@
         <item name="android:paddingLeft">15dp</item>
         <item name="android:paddingRight">15dp</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:background">@drawable/list_selector_blue</item>
+        <item name="android:background">@drawable/list_multi_selector_blue</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>

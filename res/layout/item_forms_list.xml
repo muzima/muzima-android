@@ -1,13 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_height="wrap_content"
                 android:checkable="true"
-                android:background="@drawable/list_selector_blue"
+                android:background="@drawable/list_multi_selector_blue"
                 android:layout_width="match_parent">
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="100"
-            android:background="@drawable/list_selector_blue"
+            android:background="@drawable/list_multi_selector_blue"
             android:id="@+id/form_name_layout"
             android:orientation="horizontal">
 
@@ -18,7 +18,7 @@
                 style="@style/ListViewSelectableText"/>
 
         <ImageView
-                android:background="@drawable/list_selector_blue"
+                android:background="@drawable/list_multi_selector_blue"
                 android:id="@+id/downloadImg"
                 android:layout_weight="20"
                 android:layout_width="0dp"
@@ -36,12 +36,12 @@
             android:paddingTop="5dp"
             style="@style/ListViewSelectableText">
     </TextView>
-    <LinearLayout
-            android:scrollbarAlwaysDrawHorizontalTrack="true"
+    <RelativeLayout
             android:id="@+id/tags_scroller"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="@dimen/tag_selected_height"
             android:clickable="true"
+            android:background="@drawable/list_multi_selector_blue"
             android:layout_below="@+id/form_description"
             android:layout_alignParentRight="true">
 
@@ -50,7 +50,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/list_multi_selector_blue"
                 android:gravity="center_vertical">
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>

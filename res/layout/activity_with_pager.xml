@@ -15,7 +15,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/pager_indicator_height"
                 android:overScrollMode="ifContentScrolls"
-                android:layout_alignParentBottom="true"
                 android:background="@color/tab_background"/>
 
         <android.support.v4.view.ViewPager
