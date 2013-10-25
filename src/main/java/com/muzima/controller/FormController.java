@@ -11,10 +11,7 @@ import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.CustomColor;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
@@ -110,7 +107,7 @@ public class FormController {
         return allTags;
     }
 
-    public DownloadedForms getAllDownloadedFormsByTags() throws FormFetchException {
+    public DownloadedForms getAllDownloadedForms() throws FormFetchException {
         DownloadedForms downloadedFormsByTags = new DownloadedForms();
         try {
             List<Form> allForms = formService.getAllForms();
@@ -343,6 +340,17 @@ public class FormController {
 
     public int getIncompleteFormsCountForPatient(String patientId) throws FormFetchException {
         return getAllIncompleteFormsForPatientUuid(patientId).size();
+    }
+
+    public AvailableForms getDownloadedRegistrationForms() throws FormFetchException {
+        AvailableForms result = new AvailableForms();
+
+        for (AvailableForm form : getAvailableFormByTags(null)) {
+            if(form.isDownloaded()&&form.isRegistrationForm()) {
+                result.add(form);
+            }
+        }
+        return result;
     }
 
     public static class FormFetchException extends Throwable {

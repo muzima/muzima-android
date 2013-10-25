@@ -12,6 +12,7 @@ import android.view.ViewConfiguration;
 import android.widget.PopupMenu;
 
 import com.muzima.R;
+import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
 public class FormListActivity extends Activity {
@@ -93,7 +94,7 @@ public class FormListActivity extends Activity {
 	/** Called when the user clicks the Register Client Button */
 	public void registerClient(View view) 
 	{
-		Intent intent = new Intent(this, RegisterClientActivity.class);
+		Intent intent = new Intent(this, RegistrationFormsActivity.class);
 		startActivity(intent);
 	}
 	

@@ -194,6 +194,11 @@
                   android:label="Define Custom Concept"
                   android:configChanges="orientation|screenSize"
                   android:theme="@android:style/Theme.Holo.DialogWhenLarge.NoActionBar"/>
+        <activity android:name=".view.forms.RegistrationFormsActivity"
+                  android:label="Select Registration Form"
+                  android:theme="@android:style/Theme.Holo.DialogWhenLarge.NoActionBar"/>
+
+
 
         <service android:name=".service.DataSyncService"
                  android:exported="false"/>

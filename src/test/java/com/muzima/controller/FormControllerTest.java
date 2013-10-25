@@ -246,7 +246,7 @@ public class FormControllerTest {
         when(formService.getAllForms()).thenReturn(forms);
         when(formService.isFormTemplateDownloaded(forms.get(0).getUuid())).thenReturn(true);
 
-        DownloadedForms allDownloadedForms = formController.getAllDownloadedFormsByTags();
+        DownloadedForms allDownloadedForms = formController.getAllDownloadedForms();
 
         assertThat(allDownloadedForms.size(), is(1));
     }
@@ -258,7 +258,7 @@ public class FormControllerTest {
         when(formService.getAllForms()).thenReturn(forms);
         when(formService.isFormTemplateDownloaded(anyString())).thenReturn(false);
 
-        DownloadedForms allDownloadedForms = formController.getAllDownloadedFormsByTags();
+        DownloadedForms allDownloadedForms = formController.getAllDownloadedForms();
 
         assertThat(allDownloadedForms.size(), is(0));
     }

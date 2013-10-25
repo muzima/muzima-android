@@ -14,7 +14,7 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.Fonts;
-import com.muzima.view.RegisterClientActivity;
+import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
 public class  PatientsListActivity extends SherlockActivity implements AdapterView.OnItemClickListener, ListAdapter.BackgroundListQueryTaskListener {
@@ -82,7 +82,7 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_client_add:
-                Intent intent = new Intent(this, RegisterClientActivity.class);
+                Intent intent = new Intent(this, RegistrationFormsActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.action_settings:

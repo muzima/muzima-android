@@ -17,6 +17,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
 import com.muzima.view.cohort.CohortActivity;
 import com.muzima.view.forms.FormsActivity;
+import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.patients.PatientsListActivity;
 
 public class MainActivity extends BroadcastListenerActivity {
@@ -101,7 +102,7 @@ public class MainActivity extends BroadcastListenerActivity {
      * Called when the user clicks the Register Client Button
      */
     public void registerClient(View view) {
-        Intent intent = new Intent(this, RegisterClientActivity.class);
+        Intent intent = new Intent(this, RegistrationFormsActivity.class);
         startActivity(intent);
     }
 

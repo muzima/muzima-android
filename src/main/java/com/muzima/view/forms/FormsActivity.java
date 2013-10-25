@@ -154,7 +154,7 @@ public class FormsActivity extends FormsActivityBase {
                 syncAllFormsInBackgroundService();
                 return true;
             case R.id.menu_client_add:
-                intent = new Intent(this, RegisterClientActivity.class);
+                intent = new Intent(this, RegistrationFormsActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.menu_tags:
