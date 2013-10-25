@@ -165,5 +165,6 @@
     <string name="download_cohort_desc">Select one or more cohorts from the list and click on \'Next\' to download
     </string>
     <string name="download_form_desc">Select one or more forms from the list and click on \'Next\' to download</string>
+    <string name="downloaded_image">Downloaded Image</string>
 
 </resources>
