@@ -159,12 +159,11 @@
     <string name="server_hint_text">Server URL</string>
     <string name="username_hint_text">Username</string>
     <string name="password_hint_text">Password</string>
-    <string name="add_cohort_pref_desc">Add a prefix for the cohorts you are looking for. This will filter cohorts in
-        display in the next step.
-    </string>
+    <string name="add_cohort_pref_desc">Type the first few letters of the cohort you are interested in downloading</string>
     <string name="download_cohort_desc">Select one or more cohorts from the list and click on \'Next\' to download
     </string>
     <string name="download_form_desc">Select one or more forms from the list and click on \'Next\' to download</string>
     <string name="downloaded_image">Downloaded Image</string>
+    <string name="add_concept_pref_desc">Add concepts for which you would want to be downloaded.</string>
 
 </resources>
