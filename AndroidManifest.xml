@@ -23,7 +23,6 @@
 
         <activity
                 android:name="com.muzima.view.MainActivity"
-                android:theme="@android:style/Theme.Holo.NoActionBar"
                 android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -125,7 +124,6 @@
         <activity
                 android:name=".view.patients.PatientsListActivity"
                 android:label="@string/title_activity_clients_list"
-                android:theme="@android:style/Theme.Holo"
                 android:parentActivityName="com.muzima.view.MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -159,7 +157,6 @@
         <activity
                 android:name=".view.patients.PatientSummaryActivity"
                 android:label="@string/title_activity_client_summary"
-                android:theme="@android:style/Theme.Holo"
                 android:parentActivityName="com.muzima.view.ClientListActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
