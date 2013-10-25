@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.controller.CohortController;
@@ -32,7 +33,7 @@ public class MainActivity extends BroadcastListenerActivity {
         setContentView(mMainView);
         setTitle(R.string.homepage);
 
-//        setupActionbar();
+        setupActionbar();
     }
 
     @Override
@@ -158,10 +159,16 @@ public class MainActivity extends BroadcastListenerActivity {
         int totalForms;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getSupportMenuInflater().inflate(R.menu.dashboard, menu);
+        return true;
+    }
+
     private void setupActionbar() {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(false);
     }
 
