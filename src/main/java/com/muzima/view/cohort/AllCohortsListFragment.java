@@ -68,11 +68,11 @@ public class AllCohortsListFragment extends CohortListFragment {
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        if (!actionModeActive) {
+        if (!actionModeActive && view.isActivated()) {
             actionMode = getSherlockActivity().startActionMode(new AllCohortsActionModeCallback());
             actionModeActive = true;
         }
-        ((AllCohortsAdapter) listAdapter).onListItemClick(position);
+        ((AllCohortsAdapter) listAdapter).onListItemClick(position,view.isActivated());
         int numOfSelectedCohorts = ((AllCohortsAdapter) listAdapter).numberOfCohorts();
         if (numOfSelectedCohorts == 0 && actionModeActive) {
             actionMode.finish();

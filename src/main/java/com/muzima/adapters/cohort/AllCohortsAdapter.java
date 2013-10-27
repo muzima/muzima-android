@@ -1,14 +1,12 @@
 package com.muzima.adapters.cohort;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import com.muzima.MuzimaApplication;
-import com.muzima.R;
 import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
 import com.muzima.service.MuzimaSyncService;
@@ -51,25 +49,15 @@ public class AllCohortsAdapter extends CohortsAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = super.getView(position, convertView, parent);
-        highlightIfSelected(view, getItem(position));
-        return view;
+        return super.getView(position, convertView, parent);
     }
 
-    private void highlightIfSelected(View convertView, Cohort cohort) {
-        if (selectedCohortsUuid.contains(cohort.getUuid())) {
-            convertView.setBackgroundColor(getContext().getResources().getColor(R.color.listitem_state_pressed));
-        } else {
-            convertView.setBackgroundColor(Color.WHITE);
-        }
-    }
-
-    public void onListItemClick(int position) {
+    public void onListItemClick(int position, boolean selected) {
         Cohort cohort = getItem(position);
-        if (selectedCohortsUuid.contains(cohort.getUuid())) {
-            selectedCohortsUuid.remove(cohort.getUuid());
-        } else {
+        if (selected && !selectedCohortsUuid.contains(cohort.getUuid())) {
             selectedCohortsUuid.add(cohort.getUuid());
+        } else if (!selected && selectedCohortsUuid.contains(cohort.getUuid())) {
+            selectedCohortsUuid.remove(cohort.getUuid());
         }
         notifyDataSetChanged();
     }

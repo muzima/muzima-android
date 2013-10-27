@@ -71,7 +71,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                cohortsAdapter.onListItemClick(position);
+                cohortsAdapter.onListItemClick(position,view.isActivated());
             }
         });
 

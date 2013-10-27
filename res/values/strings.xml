@@ -164,6 +164,6 @@
     </string>
     <string name="download_form_desc">Select one or more forms from the list and click on \'Next\' to download</string>
     <string name="downloaded_image">Downloaded Image</string>
-    <string name="add_concept_pref_desc">Add concepts for which you would want to be downloaded.</string>
+    <string name="add_concept_pref_desc">Add concepts for which you would want observations to be downloaded.</string>
 
 </resources>
