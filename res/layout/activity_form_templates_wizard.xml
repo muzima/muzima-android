@@ -41,7 +41,8 @@
         </LinearLayout>
         <LinearLayout style="@style/WizardContainer"
                       android:layout_below="@+id/download_form_header"
-                      android:layout_height="match_parent"
+                      android:layout_above="@+id/button_row"
+                      android:layout_height="wrap_content"
                       android:layout_width="match_parent">
             <ListView
                     android:id="@+id/form_template_wizard_list"
@@ -50,8 +51,8 @@
         </LinearLayout>
         <LinearLayout
                 style="@style/ButtonRow"
+                android:id="@+id/button_row"
                 android:layout_alignParentBottom="true">
-
             <Button
                     android:id="@+id/previous"
                     style="@style/PreviousButton"
