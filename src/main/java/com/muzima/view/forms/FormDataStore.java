@@ -22,7 +22,6 @@ public class FormDataStore {
 
     @JavascriptInterface
     public void save(String data, String status) {
-        Log.d(TAG, "saving form data: " + data);
         formData.setPayload(data);
         formData.setStatus(status);
         try {

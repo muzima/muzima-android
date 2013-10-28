@@ -1,6 +1,7 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
@@ -14,16 +15,6 @@ public class RegistrationFormsAdapter extends FormsAdapter<AvailableForm>{
     public RegistrationFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
     }
-    public void onListItemClick(int position) {
-//        AvailableForm form = getItem(position);
-//        if (selectedFormsUuid.contains(form.getFormUuid())) {
-//            selectedFormsUuid.remove(form.getFormUuid());
-//        } else {
-//            selectedFormsUuid.add(form.getFormUuid());
-//        }
-//        notifyDataSetChanged();
-    }
-
 
     @Override
     public void reloadData() {

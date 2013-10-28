@@ -1,5 +1,6 @@
 package com.muzima.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -7,6 +8,11 @@ public class DateUtils {
     public static String getFormattedDate(Date date){
         SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy/MM/dd");
         return formattedDate.format(date);
+    }
+
+    public static Date parse(String dateAsString) throws ParseException {
+        SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy/MM/dd");
+        return formattedDate.parse(dateAsString);
     }
 
     public static String getFormattedDateTime(Date date){
