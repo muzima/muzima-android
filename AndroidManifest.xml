@@ -181,6 +181,10 @@
                     android:value="com.muzima.view.patients.PatientSummaryActivity"/>
         </activity>
 
+        <activity android:name=".view.forms.RegistrationFormsActivity"
+                  android:label="Select Registration Form"/>
+
+        <!--Wizard Activities Start-->
         <activity android:name=".view.cohort.CohortWizardActivity"
                   android:configChanges="orientation|screenSize"
                   android:theme="@android:style/Theme.Holo.DialogWhenLarge.NoActionBar"/>
@@ -194,11 +198,7 @@
                   android:label="Define Custom Concept"
                   android:configChanges="orientation|screenSize"
                   android:theme="@android:style/Theme.Holo.DialogWhenLarge.NoActionBar"/>
-        <activity android:name=".view.forms.RegistrationFormsActivity"
-                  android:label="Select Registration Form"
-                  android:theme="@android:style/Theme.Holo.DialogWhenLarge.NoActionBar"/>
-
-
+        <!--Wizard Activities End-->
 
         <service android:name=".service.DataSyncService"
                  android:exported="false"/>

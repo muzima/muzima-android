@@ -14,7 +14,7 @@ public class RegistrationFormsActivity extends SherlockActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_list);
+        setContentView(R.layout.activity_registration_form_list);
         list = (ListView) findViewById(R.id.list);
         MuzimaApplication applicationContext = (MuzimaApplication) getApplicationContext();
         registrationFormsAdapter = new RegistrationFormsAdapter(applicationContext, R.layout.item_forms_list, applicationContext.getFormController());
