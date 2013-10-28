@@ -11,7 +11,7 @@ public class DateUtils {
     }
 
     public static Date parse(String dateAsString) throws ParseException {
-        SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd");
         return formattedDate.parse(dateAsString);
     }
 

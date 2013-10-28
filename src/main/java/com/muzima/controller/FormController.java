@@ -1,5 +1,6 @@
 package com.muzima.controller;
 
+import android.util.Log;
 import com.muzima.api.model.*;
 import com.muzima.api.service.FormService;
 import com.muzima.api.service.PatientService;
@@ -9,6 +10,8 @@ import com.muzima.model.builders.*;
 import com.muzima.model.collections.*;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.CustomColor;
+import com.muzima.view.forms.PatientJSONMapper;
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.*;
@@ -18,6 +21,7 @@ import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 
 public class FormController {
 
+    private static final String TAG = "FormController";
     private FormService formService;
     private PatientService patientService;
     private Map<String, Integer> tagColors;
@@ -346,11 +350,24 @@ public class FormController {
         AvailableForms result = new AvailableForms();
 
         for (AvailableForm form : getAvailableFormByTags(null)) {
-            if(form.isDownloaded()&&form.isRegistrationForm()) {
+            if (form.isDownloaded() && form.isRegistrationForm()) {
                 result.add(form);
             }
         }
         return result;
+    }
+
+    public Patient createNewPatient(String data) {
+            try {
+                Patient patient = new PatientJSONMapper(data).getPatient();
+                patientService.savePatient(patient);
+                return patient;
+            } catch (JSONException e) {
+                Log.e(TAG, e.toString());
+            } catch (IOException e) {
+                Log.e(TAG, e.toString());
+            }
+        return null;
     }
 
     public static class FormFetchException extends Throwable {

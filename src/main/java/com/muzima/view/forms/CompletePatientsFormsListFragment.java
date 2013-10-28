@@ -1,15 +1,12 @@
 package com.muzima.view.forms;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.adapters.forms.PatientCompleteFormsAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
-import com.muzima.controller.PatientController;
 import com.muzima.model.FormWithData;
 
 public class CompletePatientsFormsListFragment extends FormsListFragment {

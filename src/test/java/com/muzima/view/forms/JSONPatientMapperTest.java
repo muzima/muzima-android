@@ -22,31 +22,31 @@ public class JSONPatientMapperTest{
 
     @Test
     public void shouldHaveFamilyNameForPatient() throws Exception {
-        Patient patient = mapper.map();
+        Patient patient = mapper.getPatient();
         assertThat(patient.getFamilyName(),is("FamilyName"));
     }
 
     @Test
     public void shouldHaveMiddleNameForPatient() throws Exception {
-        Patient patient = mapper.map();
+        Patient patient = mapper.getPatient();
         assertThat(patient.getMiddleName(),is("MiddleName"));
     }
 
     @Test
     public void shouldHaveGivenNameForPatient() throws Exception {
-        Patient patient = mapper.map();
+        Patient patient = mapper.getPatient();
         assertThat(patient.getGivenName(),is("GivenName"));
     }
 
     @Test
     public void shouldHaveSexForPatient() throws Exception {
-        Patient patient = mapper.map();
+        Patient patient = mapper.getPatient();
         assertThat(patient.getGender(),is("M"));
     }
 
     @Test
     public void shouldHaveDOBForPatient() throws Exception {
-        Patient patient = mapper.map();
+        Patient patient = mapper.getPatient();
         assertThat(patient.getBirthdate(),is(DateUtils.parse("2013/10/28")));
     }
 

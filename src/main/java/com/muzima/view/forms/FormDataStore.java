@@ -5,6 +5,7 @@ import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
 import com.muzima.api.model.FormData;
+import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 
 public class FormDataStore {
@@ -22,6 +23,10 @@ public class FormDataStore {
 
     @JavascriptInterface
     public void save(String data, String status) {
+        if(isRegisterPatient()){
+            Patient newPatient = formController.createNewPatient(data);
+            formData.setPatientUuid(newPatient.getUuid());
+        }
         formData.setPayload(data);
         formData.setStatus(status);
         try {
@@ -39,4 +44,7 @@ public class FormDataStore {
         return formData.getPayload();
     }
 
+    public boolean isRegisterPatient() {
+        return formData.getPatientUuid() == null;
+    }
 }

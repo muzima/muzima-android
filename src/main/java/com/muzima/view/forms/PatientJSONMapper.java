@@ -22,7 +22,6 @@ public class PatientJSONMapper {
         model = new JSONObject(modelJSON);
     }
 
-
     public String map(Patient patient) throws JSONException {
         Map<String, String> valueMap = convert(patient);
         JSONObject form = model.getJSONObject("form");
@@ -37,7 +36,7 @@ public class PatientJSONMapper {
         return model.toString();
     }
 
-    public Patient map() throws JSONException {
+    public Patient getPatient() throws JSONException {
         JSONObject form = model.getJSONObject("form");
         JSONArray fields = form.getJSONArray("fields");
         Map<String, String> paramsMap = convertJSONToPatientAttr(fields);
