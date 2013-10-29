@@ -24,7 +24,6 @@ import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
-import com.muzima.view.RegisterClientActivity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -50,6 +49,7 @@ public class FormsActivity extends FormsActivityBase {
     private FormController formController;
     private MenuItem tagsButton;
     private boolean syncInProgress;
+    private MenuItem menuUpload;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -94,7 +94,7 @@ public class FormsActivity extends FormsActivityBase {
         getSupportMenuInflater().inflate(R.menu.form_list_menu, menu);
         menubarLoadButton = menu.findItem(R.id.menu_load);
         tagsButton = menu.findItem(R.id.menu_tags);
-
+        menuUpload = menu.findItem(R.id.menu_upload);
         onPageChange(formsPager.getCurrentItem());
         return true;
     }
@@ -131,7 +131,11 @@ public class FormsActivity extends FormsActivityBase {
                 tagsListAdapter.reloadData();
                 ((FormsPagerAdapter) formsPagerAdapter).onFormMetadataDownloadFinish();
             }
-        } else if (syncType == SYNC_TEMPLATES) {
+        } else if (syncType == SYNC_UPLOAD_FORMS) {
+            hideProgressbar();
+            syncInProgress = false;
+
+        }  else if (syncType == SYNC_TEMPLATES) {
             hideProgressbar();
             if (syncStatus == SUCCESS) {
                 ((FormsPagerAdapter) formsPagerAdapter).onFormTemplateDownloadFinish();
@@ -154,6 +158,17 @@ public class FormsActivity extends FormsActivityBase {
                 }
                 syncAllFormsInBackgroundService();
                 return true;
+            case R.id.menu_upload:
+                if (!NetworkUtils.isConnectedToNetwork(this)) {
+                    Toast.makeText(this, "No connection found, please connect your device and try again", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                if (syncInProgress) {
+                    Toast.makeText(this, "Already uploading forms, ignored the request", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                uploadAllFormsInBackgroundService();
+                return true;
             case R.id.menu_client_add:
                 intent = new Intent(this, RegistrationFormsActivity.class);
                 startActivity(intent);
@@ -175,6 +190,13 @@ public class FormsActivity extends FormsActivityBase {
         ((FormsPagerAdapter) formsPagerAdapter).onFormMetadataDownloadStart();
         showProgressBar();
         new SyncFormIntent(this).start();
+    }
+
+    private void uploadAllFormsInBackgroundService() {
+        syncInProgress = true;
+//        ((FormsPagerAdapter) formsPagerAdapter).onFormMetadataDownloadStart();
+        showProgressBar();
+        new UploadFormIntent(this).start();
     }
 
     @Override
@@ -255,18 +277,25 @@ public class FormsActivity extends FormsActivityBase {
 
     @Override
     protected void onPageChange(int position) {
-        if (tagsButton == null) {
+        if (tagsButton == null || menuUpload == null || menubarLoadButton == null) {
             return;
         }
-
-        if (position == FormsPagerAdapter.TAB_All) {
-            tagsButton.setEnabled(true);
-            tagsButton.setIcon(R.drawable.ic_labels);
-        } else
-
-        {
-            tagsButton.setEnabled(false);
-            tagsButton.setIcon(R.drawable.ic_labels_disabled);
+        switch (position) {
+            case FormsPagerAdapter.TAB_All:
+                showButtons(true, true, false);
+                break;
+            case FormsPagerAdapter.TAB_COMPLETE:
+                showButtons(false, false, true);
+                break;
+            default:
+                showButtons(false, false, false);
+                break;
         }
+    }
+
+    private void showButtons(boolean tagButton, boolean menuLoadButton, boolean menuUploadButton) {
+        tagsButton.setVisible(tagButton);
+        menubarLoadButton.setVisible(menuLoadButton);
+        menuUpload.setVisible(menuUploadButton);
     }
 }

@@ -11,6 +11,7 @@ public class Constants {
     public static final String CONCEPT_PREF_KEY = "ConceptPrefKey";
     public static final String STATUS_INCOMPLETE = "incomplete";
     public static final String STATUS_COMPLETE = "complete";
+    public static final String STATUS_UPLOADED = "uploaded";
 
     public static class DataSyncServiceConstants {
         public static final String SYNC_TYPE = "sync_type";
@@ -29,6 +30,7 @@ public class Constants {
         public static final int SYNC_ENCOUNTERS = 5;
         public static final int SYNC_PATIENTS_ONLY = 6;
         public static final int SYNC_PATIENTS_DATA_ONLY = 7;
+        public static final int SYNC_UPLOAD_FORMS = 8;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;
@@ -43,6 +45,7 @@ public class Constants {
             public static final int REPLACE_ERROR = 9;
             public static final int LOAD_ERROR = 10;
             public static final int UNKNOWN_ERROR = 11;
+            public static final int UPLOAD_ERROR = 12;
         }
     }
 }

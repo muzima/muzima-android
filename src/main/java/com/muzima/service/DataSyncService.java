@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 
+import com.muzima.search.api.util.StringUtil;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -101,6 +102,14 @@ public class DataSyncService extends IntentService {
                 updateNotificationMsg("Downloading Patients data");
                 if(authenticationSuccessful(credentials, broadcastIntent)){
                     downloadObservationsAndEncounters(broadcastIntent, savedCohortIds);
+                }
+                break;
+            case SYNC_UPLOAD_FORMS:
+                updateNotificationMsg("Uploading Forms");
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    int[] result = muzimaSyncService.uploadAllCompletedForms();
+                    broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, SYNC_UPLOAD_FORMS);
+                    prepareBroadcastMsg(broadcastIntent, result, StringUtil.EMPTY);
                 }
                 break;
             default:

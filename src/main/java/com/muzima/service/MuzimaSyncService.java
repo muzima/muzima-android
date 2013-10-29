@@ -297,6 +297,17 @@ public class MuzimaSyncService {
         return result;
     }
 
+    public int[] uploadAllCompletedForms() {
+        int[] result = new int[1];
+        try {
+            result[0] = formController.uploadAllCompletedForms() ? SUCCESS : UPLOAD_ERROR;
+        } catch (FormController.UploadFormDataException e) {
+            Log.e(TAG, "Exception thrown while uploading forms " + e);
+            result[0] = UPLOAD_ERROR;
+        }
+        return result;
+    }
+
     private List<Observation> downloadAllObservations(List<String> patientUuids) throws ObservationController.DownloadObservationException {
         ObservationController observationController = muzimaApplication.getObservationController();
         return observationController.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, getConceptUuids());
@@ -327,5 +338,6 @@ public class MuzimaSyncService {
         Set<String> prefixes = cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>());
         return new ArrayList<String>(prefixes);
     }
+
 
 }

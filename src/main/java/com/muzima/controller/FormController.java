@@ -18,6 +18,7 @@ import java.util.*;
 
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
+import static com.muzima.utils.Constants.STATUS_UPLOADED;
 
 public class FormController {
 
@@ -368,6 +369,31 @@ public class FormController {
                 Log.e(TAG, e.toString());
             }
         return null;
+    }
+
+    public boolean uploadAllCompletedForms() throws UploadFormDataException {
+        try {
+            boolean result = true;
+            List<FormData> allFormData = formService.getAllFormData(STATUS_COMPLETE);
+            for (FormData formData : allFormData) {
+                if (formService.syncFormData(formData)) {
+                    formData.setStatus(STATUS_UPLOADED);
+                    formService.saveFormData(formData);
+                } else {
+                    result = false;
+                }
+            }
+            return result;
+        } catch (IOException e) {
+            throw new UploadFormDataException(e);
+        }
+    }
+
+
+    public static class UploadFormDataException extends Throwable{
+        public UploadFormDataException(Throwable throwable) {
+            super(throwable);
+        }
     }
 
     public static class FormFetchException extends Throwable {

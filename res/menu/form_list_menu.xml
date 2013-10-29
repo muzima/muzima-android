@@ -29,6 +29,14 @@
             android:icon="@drawable/ic_refresh"/>
 
     <item
+            android:id="@+id/menu_upload"
+            android:title="@string/menu_upload"
+            android:orderInCategory="10"
+            android:showAsAction="always"
+            android:icon="@drawable/ic_action_upload"
+            android:visible="false"/>
+
+    <item
             android:id="@+id/action_settings"
             android:orderInCategory="1"
             android:showAsAction="never"

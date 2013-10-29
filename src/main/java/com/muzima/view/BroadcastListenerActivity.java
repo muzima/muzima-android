@@ -58,6 +58,8 @@ public abstract class BroadcastListenerActivity extends BaseActivity {
             msg = "Parse exception has been thrown while fetching data";
         } else if (syncStatus == LOAD_ERROR) {
             msg = "Load exception has been thrown while loading data";
+        } else if (syncStatus == UPLOAD_ERROR) {
+            msg = "Exception has been thrown while uploading data";
         } else if(syncStatus == SUCCESS){
             int syncType = intent.getIntExtra(SYNC_TYPE, -1);
             int downloadCount = intent.getIntExtra(DOWNLOAD_COUNT_PRIMARY, 0);
@@ -78,6 +80,8 @@ public abstract class BroadcastListenerActivity extends BaseActivity {
                 msg += " observations";
             } else if(syncType == SYNC_ENCOUNTERS){
                 msg += " encounters";
+            } else if(syncType == SYNC_UPLOAD_FORMS){
+                msg = "Upload forms success.";
             }
 
         }
