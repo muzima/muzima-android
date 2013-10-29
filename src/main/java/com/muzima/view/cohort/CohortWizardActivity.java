@@ -2,6 +2,7 @@ package com.muzima.view.cohort;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +17,7 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.cohort.AllCohortsAdapter;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.view.BroadcastListenerActivity;
+import com.muzima.view.CheckedLinearLayout;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.forms.MuzimaProgressDialog;
 
@@ -71,7 +73,11 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                cohortsAdapter.onListItemClick(position,view.isActivated());
+                boolean isChecked = ((CheckedLinearLayout) view).isChecked();
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+                    isChecked = !isChecked;
+                }
+                cohortsAdapter.onListItemClick(position,isChecked);
             }
         });
 

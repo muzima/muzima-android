@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.CheckedTextView;
 
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
@@ -29,7 +29,7 @@ public abstract class CohortsAdapter extends ListAdapter<Cohort> {
             convertView = layoutInflater.inflate(
                     R.layout.item_cohorts_list, parent, false);
             holder = new ViewHolder();
-            holder.name = (TextView) convertView
+            holder.name = (CheckedTextView) convertView
                     .findViewById(R.id.cohort_name);
             convertView.setTag(holder);
         } else {
@@ -45,7 +45,7 @@ public abstract class CohortsAdapter extends ListAdapter<Cohort> {
     }
 
     protected static class ViewHolder {
-        TextView name;
+        CheckedTextView name;
     }
 
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {

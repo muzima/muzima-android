@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,6 +19,8 @@ import com.muzima.model.collections.AvailableForms;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
+import com.muzima.view.CheckedLinearLayout;
+import com.muzima.view.CheckedRelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,31 +103,29 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
     }
 
     private void highlightIfSelected(View convertView, AvailableForm form) {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             if (selectedFormsUuid.contains(form.getFormUuid())) {
                 setSelected(convertView, true);
             } else {
                 setSelected(convertView, false);
             }
-        } else {
-//            TODO for FROYO
-            if (selectedFormsUuid.contains(form.getFormUuid())) {
-                convertView.setBackgroundColor(getContext().getResources().getColor(R.color.listitem_state_pressed));
-            } else {
-                convertView.setBackgroundColor(getContext().getResources().getColor(R.color.theme_color));
-            }
-        }
     }
 
     private void setSelected(View convertView, boolean selected) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            convertView.findViewById(R.id.form_name_layout).setActivated(selected);
+            convertView.findViewById(R.id.form_description).setActivated(selected);
+            convertView.findViewById(R.id.form_name).setActivated(selected);
+            convertView.findViewById(R.id.tags_scroller).setActivated(selected);
+        }
+        ((CheckedLinearLayout) convertView.findViewById(R.id.form_name_layout)).setChecked(selected);
+        ((CheckedTextView)convertView.findViewById(R.id.form_name)).setChecked(selected);
+        ((CheckedTextView)convertView.findViewById(R.id.form_description)).setChecked(selected);
+        ((CheckedRelativeLayout) convertView.findViewById(R.id.tags_scroller)).setChecked(selected);
+
         convertView.findViewById(R.id.form_name_layout).setSelected(selected);
-        convertView.findViewById(R.id.form_name_layout).setActivated(selected);
         convertView.findViewById(R.id.form_name).setSelected(selected);
-        convertView.findViewById(R.id.form_name).setActivated(selected);
         convertView.findViewById(R.id.form_description).setSelected(selected);
-        convertView.findViewById(R.id.form_description).setActivated(selected);
         convertView.findViewById(R.id.tags_scroller).setSelected(selected);
-        convertView.findViewById(R.id.tags_scroller).setActivated(selected);
     }
 
     public void onListItemClick(int position) {

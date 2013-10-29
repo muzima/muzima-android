@@ -143,10 +143,20 @@ public class SelectedConceptAdapter extends ArrayAdapter<Concept> {
                         Log.w(TAG, "Exception occurred while fetching local concept!", e);
                     }
                 }
-                Log.i(TAG, "#Concepts: " + concepts.size());
             } else {
-//                TODO for FROYO
+                int index = 1;
+                String conceptUuid = conceptPrefixPref.getString(CONCEPT_PREF_KEY + index, null);
+                while (conceptUuid != null){
+                    try {
+                        concepts.add(conceptController.getConceptByUuid(conceptUuid));
+                        index++;
+                        conceptUuid = conceptPrefixPref.getString(CONCEPT_PREF_KEY + index, null);
+                    } catch (ConceptController.ConceptFetchException e) {
+                        Log.w(TAG, "Exception occurred while fetching local concept!", e);
+                    }
+                }
             }
+            Log.i(TAG, "#Concepts: " + concepts.size());
             return concepts;
         }
 

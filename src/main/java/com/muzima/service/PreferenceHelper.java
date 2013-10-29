@@ -33,7 +33,16 @@ public class PreferenceHelper {
             editor.putStringSet(CONCEPT_PREF_KEY, copyOfUuidSet);
             editor.commit();
         } else {
-//            TODO for FROYO
+            int index = 1;
+            while (conceptSharedPreferences.getString(CONCEPT_PREF_KEY+index, null)!= null){
+                index++;
+            }
+            SharedPreferences.Editor editor = conceptSharedPreferences.edit();
+            for (Concept concept : concepts) {
+                editor.putString(CONCEPT_PREF_KEY+index, concept.getUuid());
+                index++;
+            }
+            editor.commit();
         }
     }
 
