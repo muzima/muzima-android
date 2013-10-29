@@ -47,7 +47,7 @@ public class JSONPatientMapperTest{
     @Test
     public void shouldHaveDOBForPatient() throws Exception {
         Patient patient = mapper.getPatient();
-        assertThat(patient.getBirthdate(),is(DateUtils.parse("2013/10/28")));
+        assertThat(patient.getBirthdate(),is(DateUtils.parse("2013-10-28")));
     }
 
     public String getJSONContent() {

@@ -39,7 +39,7 @@
         {
             "name": "patient.birthdate",
             "bind": "/model/instance/form/patient/patient.birthdate",
-            "value": "2013/10/28"
+            "value": "2013-10-28"
         },
         {
             "name": "patient.birthdate_estimated",

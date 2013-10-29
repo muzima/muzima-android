@@ -1,6 +1,7 @@
 package com.muzima.view.forms;
 
 import com.muzima.api.model.FormData;
+import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.testSupport.CustomTestRunner;
 
@@ -10,10 +11,7 @@ import org.junit.runner.RunWith;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @RunWith(CustomTestRunner.class)
 public class FormDataStoreTest {
@@ -28,6 +26,7 @@ public class FormDataStoreTest {
         controller = mock(FormController.class);
         activity = mock(FormWebViewActivity.class);
         formData = new FormData();
+        formData.setPatientUuid("adasdssd");
         store = new FormDataStore(activity, controller, formData);
     }
 
@@ -51,5 +50,16 @@ public class FormDataStoreTest {
     public void getFormPayload_shouldGetTheFormDataPayload() throws Exception {
         formData.setPayload("payload");
         assertThat(store.getFormPayload(), is("payload"));
+    }
+
+    @Test
+    public void shouldCreateANewPatientAndStoreHisUUIDAsPatientUUID() throws Exception {
+        String tempUUIDAssignedByDevice = "newUUID";
+        formData.setPatientUuid(null);
+        Patient patient = new Patient();
+        patient.setUuid(tempUUIDAssignedByDevice);
+        when(controller.createNewPatient("data")).thenReturn(patient);
+        store.save("data","status");
+        assertThat(formData.getPatientUuid(),is(tempUUIDAssignedByDevice));
     }
 }
