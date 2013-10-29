@@ -1,6 +1,7 @@
 package com.muzima.tasks;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.widget.Toast;
 
 import com.muzima.adapters.ListAdapter;
@@ -60,7 +61,14 @@ public abstract class FormsAdapterBackgroundQueryTask<T extends BaseForm> extend
                 return;
             }
             formsAdapter.clear();
-            formsAdapter.addAll(forms);
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                formsAdapter.addAll(forms);
+            } else {
+//              TODO for FROYO
+                for (T form : forms) {
+                    formsAdapter.add(form);
+                }
+            }
             formsAdapter.notifyDataSetChanged();
         }
     }

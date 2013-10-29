@@ -18,6 +18,7 @@ package com.muzima.adapters.concept;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -133,15 +134,19 @@ public class SelectedConceptAdapter extends ArrayAdapter<Concept> {
         protected List<Concept> doInBackground(Void... voids) {
             List<Concept> concepts = new ArrayList<Concept>();
             SharedPreferences conceptPrefixPref = getContext().getSharedPreferences(CONCEPT_PREF, Context.MODE_PRIVATE);
-            Set<String> stringSet = conceptPrefixPref.getStringSet(CONCEPT_PREF_KEY, new LinkedHashSet<String>());
-            for (String conceptUuid : stringSet) {
-                try {
-                    concepts.add(conceptController.getConceptByUuid(conceptUuid));
-                } catch (ConceptController.ConceptFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local concept!", e);
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                Set<String> stringSet = conceptPrefixPref.getStringSet(CONCEPT_PREF_KEY, new LinkedHashSet<String>());
+                for (String conceptUuid : stringSet) {
+                    try {
+                        concepts.add(conceptController.getConceptByUuid(conceptUuid));
+                    } catch (ConceptController.ConceptFetchException e) {
+                        Log.w(TAG, "Exception occurred while fetching local concept!", e);
+                    }
                 }
+                Log.i(TAG, "#Concepts: " + concepts.size());
+            } else {
+//                TODO for FROYO
             }
-            Log.i(TAG, "#Concepts: " + concepts.size());
             return concepts;
         }
 

@@ -2,6 +2,7 @@ package com.muzima.view.preferences;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -78,20 +79,24 @@ public class CohortPreferenceActivity extends BaseActivity implements Preference
         prefAdapter.reloadData();
     }
 
-    public void addPrefix(View view){
+    public void addPrefix(View view) {
         String newPrefix = cohortPrefix.getText().toString();
         SharedPreferences cohortSharedPref = getSharedPreferences(COHORT_PREFIX_PREF, MODE_PRIVATE);
-        Set<String> originalPrefixesSet = cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>());
-        Set<String> copiedPrefixesSet = new TreeSet<String>(new CaseInsensitiveComparator());
-        copiedPrefixesSet.addAll(originalPrefixesSet);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            Set<String> originalPrefixesSet = cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>());
+            Set<String> copiedPrefixesSet = new TreeSet<String>(new CaseInsensitiveComparator());
+            copiedPrefixesSet.addAll(originalPrefixesSet);
 
-        if(validPrefix(copiedPrefixesSet, newPrefix)){
-            copiedPrefixesSet.add(newPrefix);
-            SharedPreferences.Editor editor = cohortSharedPref.edit();
-            editor.putStringSet(COHORT_PREFIX_PREF_KEY, copiedPrefixesSet);
-            editor.commit();
-        }else{
-            Toast.makeText(this, "Prefix already exists", Toast.LENGTH_SHORT).show();
+            if (validPrefix(copiedPrefixesSet, newPrefix)) {
+                copiedPrefixesSet.add(newPrefix);
+                SharedPreferences.Editor editor = cohortSharedPref.edit();
+                editor.putStringSet(COHORT_PREFIX_PREF_KEY, copiedPrefixesSet);
+                editor.commit();
+            } else {
+                Toast.makeText(this, "Prefix already exists", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+//            TODO for FROYO
         }
 
         prefAdapter.reloadData();
@@ -101,13 +106,16 @@ public class CohortPreferenceActivity extends BaseActivity implements Preference
     @Override
     public void onDeletePreferenceClick(String pref) {
         SharedPreferences cohortSharedPref = getSharedPreferences(COHORT_PREFIX_PREF, MODE_PRIVATE);
-        Set<String> prefixes = new HashSet<String>(cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>()));
-        prefixes.remove(pref);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            Set<String> prefixes = new HashSet<String>(cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>()));
+            prefixes.remove(pref);
 
-        SharedPreferences.Editor editor = cohortSharedPref.edit();
-        editor.putStringSet(COHORT_PREFIX_PREF_KEY, prefixes);
-        editor.commit();
-
+            SharedPreferences.Editor editor = cohortSharedPref.edit();
+            editor.putStringSet(COHORT_PREFIX_PREF_KEY, prefixes);
+            editor.commit();
+        } else {
+//            TODO for FROYO
+        }
         prefAdapter.reloadData();
     }
 

@@ -4,6 +4,7 @@ package com.muzima.view.forms;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -229,23 +230,27 @@ public class FormsActivity extends FormsActivityBase {
 
     private void initSelectedTags() {
         SharedPreferences cohortSharedPref = getSharedPreferences(FORM_TAG_PREF, MODE_PRIVATE);
-        Set<String> selectedTagsInPref = cohortSharedPref.getStringSet(FORM_TAG_PREF_KEY, new HashSet<String>());
-        List<Tag> allTags = null;
-        try {
-            allTags = formController.getAllTags();
-        } catch (FormController.FormFetchException e) {
-            Log.e(TAG, "Error occurred while get all tags from local repository\n" + e);
-        }
-        List<Tag> selectedTags = new ArrayList<Tag>();
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            Set<String> selectedTagsInPref = cohortSharedPref.getStringSet(FORM_TAG_PREF_KEY, new HashSet<String>());
+            List<Tag> allTags = null;
+            try {
+                allTags = formController.getAllTags();
+            } catch (FormController.FormFetchException e) {
+                Log.e(TAG, "Error occurred while get all tags from local repository\n" + e);
+            }
+            List<Tag> selectedTags = new ArrayList<Tag>();
 
-        if (selectedTagsInPref != null) {
-            for (Tag tag : allTags) {
-                if (selectedTagsInPref.contains(tag.getName())) {
-                    selectedTags.add(tag);
+            if (selectedTagsInPref != null) {
+                for (Tag tag : allTags) {
+                    if (selectedTagsInPref.contains(tag.getName())) {
+                        selectedTags.add(tag);
+                    }
                 }
             }
+            formController.setSelectedTags(selectedTags);
+        } else {
+//            TODO for FROYO
         }
-        formController.setSelectedTags(selectedTags);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,7 +108,11 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
         Collections.sort(forms, alphabaticalComparator);
         setNotifyOnChange(false);
         clear();
-        addAll(forms);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            addAll(forms);
+        } else {
+//            TODO for FROYO
+        }
         StickyListHeadersSectionIndexerAdapterWrapper adapter = (StickyListHeadersSectionIndexerAdapterWrapper) listView.getAdapter();
         adapter.notifyDataSetChanged();
     }

@@ -1,6 +1,7 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,10 +100,19 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
     }
 
     private void highlightIfSelected(View convertView, AvailableForm form) {
-        if (selectedFormsUuid.contains(form.getFormUuid())) {
-            setSelected(convertView, true);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            if (selectedFormsUuid.contains(form.getFormUuid())) {
+                setSelected(convertView, true);
+            } else {
+                setSelected(convertView, false);
+            }
         } else {
-            setSelected(convertView, false);
+//            TODO for FROYO
+            if (selectedFormsUuid.contains(form.getFormUuid())) {
+                convertView.setBackgroundColor(getContext().getResources().getColor(R.color.listitem_state_pressed));
+            } else {
+                convertView.setBackgroundColor(getContext().getResources().getColor(R.color.theme_color));
+            }
         }
     }
 

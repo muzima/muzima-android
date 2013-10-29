@@ -14,14 +14,11 @@
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here.
-        <item name="android:actionBarStyle">@style/MyActionBar</item> -->
+
     </style>
 
     <!-- Application theme. -->
     <style name="WizardTheme" parent="Theme.Sherlock.Light.NoActionBar">
-        <!-- All customizations that are NOT specific to a particular API-level can go here.
-        <item name="android:actionBarStyle">@style/MyActionBar</item> -->
     </style>
 
     <!-- Application theme. -->
