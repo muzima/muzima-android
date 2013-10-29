@@ -1,0 +1,10 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="AppBaseTheme" parent="android:Theme.Holo">
+    </style>
+
+    <!-- Application theme. -->
+    <style name="WizardTheme" parent="android:Theme.Holo.DialogWhenLarge.NoActionBar">
+        <!-- All customizations that are NOT specific to a particular API-level can go here.
+        <item name="android:actionBarStyle">@style/MyActionBar</item> -->
+    </style>
+</resources>

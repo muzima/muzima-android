@@ -2,6 +2,7 @@ package com.muzima.adapters.cohort;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +31,10 @@ public abstract class SettingsBaseAdapter extends ListAdapter<String> {
     public void reloadData() {
         clear();
         SharedPreferences cohortPrefixPref = getContext().getSharedPreferences(prefixPref, Context.MODE_PRIVATE);
-        Set<String> stringSet = cohortPrefixPref.getStringSet(prefixPrefKey, new HashSet<String>());
-        addAll(stringSet);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            Set<String> stringSet = cohortPrefixPref.getStringSet(prefixPrefKey, new HashSet<String>());
+            addAll(stringSet);
+        }
     }
 
     @Override

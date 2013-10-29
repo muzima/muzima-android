@@ -4,6 +4,7 @@ import android.content.*;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -41,11 +42,16 @@ public class LoginActivity extends SherlockActivity {
     private ValueAnimator flipFromLoginToAuthAnimator;
     private ValueAnimator flipFromAuthToLoginAnimator;
     private ValueAnimator flipFromAuthToNoConnAnimator;
+    private boolean honeycombOrGreater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            honeycombOrGreater = true;
+        }
 
         initViews();
         setupListeners();
@@ -172,7 +178,9 @@ public class LoginActivity extends SherlockActivity {
         @Override
         protected void onPreExecute() {
             if (loginButton.getVisibility() == View.VISIBLE) {
-                flipFromLoginToAuthAnimator.start();
+                if (honeycombOrGreater) {
+                    flipFromLoginToAuthAnimator.start();
+                }
             }
         }
 
@@ -192,9 +200,11 @@ public class LoginActivity extends SherlockActivity {
                 startNextActivity();
             } else {
                 Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
-                if (authenticatingText.getVisibility() == View.VISIBLE || flipFromLoginToAuthAnimator.isRunning()) {
-                    flipFromLoginToAuthAnimator.cancel();
-                    flipFromAuthToLoginAnimator.start();
+                if (honeycombOrGreater) {
+                    if (authenticatingText.getVisibility() == View.VISIBLE || flipFromLoginToAuthAnimator.isRunning()) {
+                        flipFromLoginToAuthAnimator.cancel();
+                        flipFromAuthToLoginAnimator.start();
+                    }
                 }
             }
 
@@ -258,15 +268,19 @@ public class LoginActivity extends SherlockActivity {
 
     private void onConnected() {
         if (noConnectivityText.getVisibility() == View.VISIBLE) {
-            flipFromNoConnToLoginAnimator.start();
+            if (honeycombOrGreater) {
+                flipFromNoConnToLoginAnimator.start();
+            }
         }
     }
 
     private void onDisconnected() {
-        if (loginButton.getVisibility() == View.VISIBLE) {
-            flipFromLoginToNoConnAnimator.start();
-        } else if (authenticatingText.getVisibility() == View.VISIBLE) {
-            flipFromAuthToNoConnAnimator.start();
+        if (honeycombOrGreater) {
+            if (loginButton.getVisibility() == View.VISIBLE) {
+                flipFromLoginToNoConnAnimator.start();
+            } else if (authenticatingText.getVisibility() == View.VISIBLE) {
+                flipFromAuthToNoConnAnimator.start();
+            }
         }
 
         if (backgroundAuthenticationTask != null && backgroundAuthenticationTask.getStatus() == AsyncTask.Status.RUNNING) {
