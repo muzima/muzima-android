@@ -1,17 +1,11 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
 import com.muzima.controller.FormController;
 import com.muzima.model.CompleteFormWithPatientData;
-import com.muzima.model.FormWithData;
 import com.muzima.model.collections.CompleteFormsWithPatientData;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
-import com.muzima.view.forms.FormViewIntent;
-import com.muzima.view.forms.FormsActivity;
 
 import java.util.List;
 
@@ -25,23 +19,6 @@ public class CompleteFormsAdapter extends SectionedFormsAdapter<CompleteFormWith
     @Override
     public void reloadData() {
         new BackgroundQueryTask(this).execute();
-    }
-
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        View view = super.getView(position, convertView, parent);
-        ViewHolder holder = (ViewHolder) view.getTag();
-        holder.showViewDataButton();
-        holder.viewDataButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FormWithData item = getItem(position);
-                FragmentActivity activity = (FragmentActivity) getContext();
-                FormViewIntent intent = new FormViewIntent(activity, item, item.getPatient());
-                activity.startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
-            }
-        });
-        return view;
     }
 
     public static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<CompleteFormWithPatientData> {

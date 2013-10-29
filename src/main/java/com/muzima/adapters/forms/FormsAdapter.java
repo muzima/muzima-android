@@ -4,7 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.CheckedTextView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Tag;
@@ -40,7 +43,6 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
                     .findViewById(R.id.form_description);
             holder.tagsScroller = (RelativeLayout) convertView.findViewById(R.id.tags_scroller);
             holder.tagsLayout = (LinearLayout) convertView.findViewById(R.id.menu_tags);
-            holder.viewDataButton = (Button) convertView.findViewById(R.id.form_data_view_btn);
             holder.tags = new ArrayList<TextView>();
             convertView.setTag(holder);
         } else {
@@ -74,7 +76,6 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
     protected static class ViewHolder {
         CheckedTextView name;
         TextView description;
-        Button viewDataButton;
         RelativeLayout tagsScroller;
         LinearLayout tagsLayout;
         List<TextView> tags;
@@ -90,13 +91,7 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
             }
             tags.removeAll(tagsToRemove);
         }
-
-        public void showViewDataButton(){
-         viewDataButton.setVisibility(View.VISIBLE);
-        }
     }
-
-
 
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
         this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;

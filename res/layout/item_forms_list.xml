@@ -18,12 +18,6 @@
                 android:checkMark="@null"
                 style="@style/ListViewSelectableText"/>
 
-        <Button android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/form_data_view_btn"
-                android:visibility="gone"
-                android:text="View"/>
-
         <ImageView
                 android:background="@drawable/list_multi_selector_blue"
                 android:id="@+id/downloadImg"
