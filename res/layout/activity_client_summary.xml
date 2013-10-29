@@ -2,7 +2,7 @@
               style="@style/DashboardTableContainer">
 
     <RelativeLayout style="@style/PatientDemographicsLayout"
-                  android:background="@color/primary_black">
+                    android:background="@color/primary_black">
 
         <TextView
                 android:id="@+id/patientName"
@@ -39,15 +39,18 @@
             style="@style/ClickableSummaryItem"
             android:onClick="showObservations">
 
-        <LinearLayout style="@style/SummaryItemRow">
+        <LinearLayout style="@style/SummaryItemRow"
+                      android:background="@drawable/list_multi_selector_blue">
 
 
             <TextView
-                    style="@style/DashboardListItemPrimaryText"
-                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/white"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
                     android:gravity="left"
-                    android:paddingBottom="15dp"
-                    android:paddingTop="15dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="@string/observations">
             </TextView>
@@ -57,24 +60,23 @@
     <View style="@style/DividerLine">
     </View>
 
-    <LinearLayout
-            style="@style/ClickableSummaryItem"
-            android:onClick="showForms">
+    <LinearLayout style="@style/ClickableSummaryItem"
+                  android:onClick="showForms">
 
-        <LinearLayout style="@style/SummaryItemRow">
-
-
-            <TextView
-                    style="@style/DashboardListItemPrimaryText"
-                    android:layout_weight="1"
-                    android:gravity="left"
-                    android:text="@string/forms">
-            </TextView>
-        </LinearLayout>
-
+        <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:paddingBottom="10dp"
+                android:background="@drawable/list_multi_selector_blue"
+                android:paddingTop="10dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/forms">
+        </TextView>
         <TextView
                 android:id="@+id/formDescription"
                 style="@style/DashboardItemDescription"
+                android:textColor="@color/primary_blue"
                 android:text="##">
         </TextView>
 
