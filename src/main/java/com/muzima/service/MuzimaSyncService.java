@@ -309,13 +309,9 @@ public class MuzimaSyncService {
 
     private List<String> getConceptUuids() {
         SharedPreferences cohortSharedPref = muzimaApplication.getSharedPreferences(Constants.CONCEPT_PREF, android.content.Context.MODE_PRIVATE);
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            Set<String> prefixes = cohortSharedPref.getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>());
-            return new ArrayList<String>(prefixes);
-        } else {
-//            TODO for FROYO
-        }
-        return new ArrayList<String>();
+        Set<String> prefixes = cohortSharedPref.getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>());
+        return new ArrayList<String>(prefixes);
+
     }
 
     List<String> getPatientUuids(List<Patient> patients) {
@@ -328,13 +324,8 @@ public class MuzimaSyncService {
 
     private List<String> getCohortPrefixes() {
         SharedPreferences cohortSharedPref = muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE);
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            Set<String> prefixes = cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>());
-            return new ArrayList<String>(prefixes);
-        } else {
-//            TODO for FROYO
-        }
-        return new ArrayList<String>();
+        Set<String> prefixes = cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>());
+        return new ArrayList<String>(prefixes);
     }
 
 }
