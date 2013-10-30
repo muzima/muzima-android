@@ -22,7 +22,7 @@ public class SyncedCohortsListFragment extends CohortListFragment implements All
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if(listAdapter == null){
-            listAdapter = new SyncedCohortsAdapter(getActivity(), R.layout.item_cohorts_list, cohortController);
+            listAdapter = new SyncedCohortsAdapter(getActivity(), R.layout.item_synced_cohorts_list, cohortController);
         }
         noDataMsg = getActivity().getResources().getString(R.string.no_cohorts_synced);
         noDataTip = getActivity().getResources().getString(R.string.no_cohorts_synced_tip);

@@ -18,6 +18,7 @@ import com.muzima.controller.CohortController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.view.CheckedLinearLayout;
 
 import java.util.Date;
 
@@ -68,11 +69,11 @@ public class AllCohortsListFragment extends CohortListFragment {
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        if (!actionModeActive && view.isActivated()) {
+        if (!actionModeActive && ((CheckedLinearLayout) view).isChecked()) {
             actionMode = getSherlockActivity().startActionMode(new AllCohortsActionModeCallback());
             actionModeActive = true;
         }
-        ((AllCohortsAdapter) listAdapter).onListItemClick(position,view.isActivated());
+        ((AllCohortsAdapter) listAdapter).onListItemClick(position,((CheckedLinearLayout) view).isChecked());
         int numOfSelectedCohorts = ((AllCohortsAdapter) listAdapter).numberOfCohorts();
         if (numOfSelectedCohorts == 0 && actionModeActive) {
             actionMode.finish();
