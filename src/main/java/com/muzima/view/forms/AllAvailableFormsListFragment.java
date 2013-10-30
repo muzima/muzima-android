@@ -174,7 +174,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         if (lastSyncedTime != NOT_SYNCED_TIME) {
             lastSyncedMsg = "Last synced on: " + DateUtils.getFormattedDateTime(new Date(lastSyncedTime));
         }
-        Log.e(TAG, lastSyncedMsg);
+        Log.d(TAG, lastSyncedMsg);
         syncText.setText(lastSyncedMsg);
     }
 }

@@ -25,6 +25,7 @@ import java.util.UUID;
 
 import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
 import static com.muzima.controller.FormController.FormFetchException;
+import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_ENCOUNTER;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 import static java.text.MessageFormat.format;
 
@@ -115,6 +116,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             setUserUuid("userUuid");
             setStatus(STATUS_INCOMPLETE);
             setTemplateUuid(formUuid);
+            setDiscriminator(FORM_DISCRIMINATOR_ENCOUNTER);
         }};
         try {
             PatientJSONMapper mapper = new PatientJSONMapper(formTemplate.getModelJson());

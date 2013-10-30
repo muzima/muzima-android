@@ -152,7 +152,7 @@ public class ObservationController {
     private List<Observation> filter(List<Observation> observations, List<String> patientUuids, List<String> conceptUuids) {
         List<Observation> result = new ArrayList<Observation>();
         for (Observation observation : observations) {
-            if (patientUuids.contains(observation.getUuid()) && conceptUuids.contains(observation.getConcept().getUuid())) {
+            if (patientUuids.contains(observation.getPerson().getUuid()) && conceptUuids.contains(observation.getConcept().getUuid())) {
                 result.add(observation);
             }
         }

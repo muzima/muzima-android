@@ -13,6 +13,9 @@ public class Constants {
     public static final String STATUS_COMPLETE = "complete";
     public static final String STATUS_UPLOADED = "uploaded";
 
+    public static final String FORM_DISCRIMINATOR_ENCOUNTER = "uploaded";
+    public static final String FORM_DISCRIMINATOR_REGISTRATION = "registration";
+
     public static class DataSyncServiceConstants {
         public static final String SYNC_TYPE = "sync_type";
         public static final String CREDENTIALS = "credentials";
