@@ -22,8 +22,8 @@ public class Concepts extends ArrayList<ConceptWithObservations> {
     }
 
     private void addObservation(final Observation observation) {
-        ConceptWithObservations conceptWithObservations = getRelatedConceptWithObservations(observation);
-        conceptWithObservations.addObservation(observation);
+            ConceptWithObservations conceptWithObservations = getRelatedConceptWithObservations(observation);
+            conceptWithObservations.addObservation(observation);
     }
 
     private ConceptWithObservations getRelatedConceptWithObservations(Observation observation) {

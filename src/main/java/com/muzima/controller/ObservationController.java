@@ -1,5 +1,6 @@
 package com.muzima.controller;
 
+import ch.lambdaj.Lambda;
 import com.muzima.api.model.*;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
@@ -7,11 +8,14 @@ import com.muzima.api.service.ObservationService;
 import com.muzima.model.observation.Concepts;
 import com.muzima.model.observation.Encounters;
 import com.muzima.utils.CustomColor;
+import org.hamcrest.Matchers;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static ch.lambdaj.Lambda.filter;
+import static ch.lambdaj.Lambda.having;
+import static ch.lambdaj.Lambda.on;
 
 public class ObservationController {
 
@@ -139,7 +143,9 @@ public class ObservationController {
 
     public List<Observation> downloadObservationsByPatientUuidsAndConceptUuids(List<String> patientUuids, List<String> conceptUuids) throws DownloadObservationException {
         try {
-            return observationService.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids);
+            List<Observation> observations = observationService.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids);
+            /*TODO: Have to remove this filter when API is fixed.*/
+            return filter(having(on(Observation.class).getConcept().getUuid(), Matchers.isIn(conceptUuids)), observations);
         } catch (IOException e) {
             throw new DownloadObservationException(e);
         }
