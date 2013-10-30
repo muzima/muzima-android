@@ -9,6 +9,7 @@ import com.muzima.model.observation.Encounters;
 import com.muzima.utils.CustomColor;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,10 +140,23 @@ public class ObservationController {
 
     public List<Observation> downloadObservationsByPatientUuidsAndConceptUuids(List<String> patientUuids, List<String> conceptUuids) throws DownloadObservationException {
         try {
-            return observationService.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids);
+            List<Observation> observations = observationService.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids);
+
+            //TODO: remove this step after the api is fixed
+            return filter(observations, patientUuids, conceptUuids);
         } catch (IOException e) {
             throw new DownloadObservationException(e);
         }
+    }
+
+    private List<Observation> filter(List<Observation> observations, List<String> patientUuids, List<String> conceptUuids) {
+        List<Observation> result = new ArrayList<Observation>();
+        for (Observation observation : observations) {
+            if (patientUuids.contains(observation.getUuid()) && conceptUuids.contains(observation.getConcept().getUuid())) {
+                result.add(observation);
+            }
+        }
+        return result;
     }
 
 
