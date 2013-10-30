@@ -334,9 +334,21 @@ public class MuzimaSyncService {
     }
 
     private List<String> getCohortPrefixes() {
+        ArrayList<String> result = new ArrayList<String>();
         SharedPreferences cohortSharedPref = muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE);
-        Set<String> prefixes = cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>());
-        return new ArrayList<String>(prefixes);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            Set<String> prefixes = cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>());
+            result = new ArrayList<String>(prefixes);
+        } else {
+            int index = 1;
+            String cohortPrefix = cohortSharedPref.getString(COHORT_PREFIX_PREF_KEY + index, null);
+            while (cohortPrefix != null){
+                result.add(cohortPrefix);
+                index++;
+                cohortPrefix = cohortSharedPref.getString(COHORT_PREFIX_PREF_KEY + index, null);
+            }
+        }
+        return result;
     }
 
 

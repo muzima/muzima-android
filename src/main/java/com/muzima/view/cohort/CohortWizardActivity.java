@@ -48,7 +48,8 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
 
                     @Override
                     protected void onPostExecute(int[] result) {
-                        progressDialog.dismiss();
+                        if(progressDialog != null)
+                            progressDialog.dismiss();
 
                         if (result[0] != SUCCESS) {
                             Toast.makeText(CohortWizardActivity.this, "Could not download patients", Toast.LENGTH_SHORT).show();
@@ -141,5 +142,12 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
     @Override
     public void onQueryTaskFinish() {
         progressDialog.dismiss();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        if(progressDialog != null)
+            progressDialog.dismiss();
     }
 }

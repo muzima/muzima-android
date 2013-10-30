@@ -34,6 +34,15 @@ public abstract class SettingsBaseAdapter extends ListAdapter<String> {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             Set<String> stringSet = cohortPrefixPref.getStringSet(prefixPrefKey, new HashSet<String>());
             addAll(stringSet);
+        } else {
+            // TODO: Extra this custom implementation of getStringSet into util function
+            int index = 1;
+            String cohortPrefix = cohortPrefixPref.getString(prefixPrefKey + index, null);
+            while (cohortPrefix != null){
+                add(cohortPrefix);
+                index++;
+                cohortPrefix = cohortPrefixPref.getString(prefixPrefKey + index, null);
+            }
         }
     }
 

@@ -96,7 +96,28 @@ public class CohortPreferenceActivity extends BaseActivity implements Preference
                 Toast.makeText(this, "Prefix already exists", Toast.LENGTH_SHORT).show();
             }
         } else {
-//            TODO for FROYO
+            Set<String> copiedPrefixesSet = new TreeSet<String>(new CaseInsensitiveComparator());
+            int index = 1;
+            String cohortPrefix = cohortSharedPref.getString(COHORT_PREFIX_PREF_KEY+index, null);
+            while (cohortPrefix != null){
+                copiedPrefixesSet.add(cohortPrefix);
+                index++;
+                cohortPrefix = cohortSharedPref.getString(COHORT_PREFIX_PREF_KEY+index, null);
+            }
+
+            if (validPrefix(copiedPrefixesSet, newPrefix)) {
+                copiedPrefixesSet.add(newPrefix);
+                SharedPreferences.Editor editor = cohortSharedPref.edit();
+
+                index = 1;
+                for(String aCohortPrefix: copiedPrefixesSet) {
+                    editor.putString(COHORT_PREFIX_PREF_KEY + index, aCohortPrefix);
+                    index ++;
+                }
+                editor.commit();
+            } else {
+                Toast.makeText(this, "Prefix already exists", Toast.LENGTH_SHORT).show();
+            }
         }
 
         prefAdapter.reloadData();
