@@ -82,21 +82,38 @@ public class CohortPreferenceActivity extends BaseActivity implements Preference
     public void addPrefix(View view) {
         String newPrefix = cohortPrefix.getText().toString();
         SharedPreferences cohortSharedPref = getSharedPreferences(COHORT_PREFIX_PREF, MODE_PRIVATE);
+        Set<String> copiedPrefixesSet = getCurrentCohortPrefixes(cohortSharedPref);
+
+        if (validPrefix(copiedPrefixesSet, newPrefix)) {
+            copiedPrefixesSet.add(newPrefix);
+            updateCohortPrefixes(cohortSharedPref, copiedPrefixesSet);
+        } else {
+            Toast.makeText(this, "Prefix already exists", Toast.LENGTH_SHORT).show();
+        }
+        prefAdapter.reloadData();
+        cohortPrefix.setText("");
+    }
+
+    private void updateCohortPrefixes(SharedPreferences cohortSharedPref, Set<String> copiedPrefixesSet) {
+        SharedPreferences.Editor editor = cohortSharedPref.edit();
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            editor.putStringSet(COHORT_PREFIX_PREF_KEY, copiedPrefixesSet);
+        } else {
+            int index = 1;
+            for(String aCohortPrefix: copiedPrefixesSet) {
+                editor.putString(COHORT_PREFIX_PREF_KEY + index, aCohortPrefix);
+                index ++;
+            }
+        }
+        editor.commit();
+    }
+
+    private Set<String> getCurrentCohortPrefixes(SharedPreferences cohortSharedPref) {
+        Set<String> copiedPrefixesSet = new TreeSet<String>(new CaseInsensitiveComparator());
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             Set<String> originalPrefixesSet = cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>());
-            Set<String> copiedPrefixesSet = new TreeSet<String>(new CaseInsensitiveComparator());
             copiedPrefixesSet.addAll(originalPrefixesSet);
-
-            if (validPrefix(copiedPrefixesSet, newPrefix)) {
-                copiedPrefixesSet.add(newPrefix);
-                SharedPreferences.Editor editor = cohortSharedPref.edit();
-                editor.putStringSet(COHORT_PREFIX_PREF_KEY, copiedPrefixesSet);
-                editor.commit();
-            } else {
-                Toast.makeText(this, "Prefix already exists", Toast.LENGTH_SHORT).show();
-            }
         } else {
-            Set<String> copiedPrefixesSet = new TreeSet<String>(new CaseInsensitiveComparator());
             int index = 1;
             String cohortPrefix = cohortSharedPref.getString(COHORT_PREFIX_PREF_KEY+index, null);
             while (cohortPrefix != null){
@@ -104,24 +121,8 @@ public class CohortPreferenceActivity extends BaseActivity implements Preference
                 index++;
                 cohortPrefix = cohortSharedPref.getString(COHORT_PREFIX_PREF_KEY+index, null);
             }
-
-            if (validPrefix(copiedPrefixesSet, newPrefix)) {
-                copiedPrefixesSet.add(newPrefix);
-                SharedPreferences.Editor editor = cohortSharedPref.edit();
-
-                index = 1;
-                for(String aCohortPrefix: copiedPrefixesSet) {
-                    editor.putString(COHORT_PREFIX_PREF_KEY + index, aCohortPrefix);
-                    index ++;
-                }
-                editor.commit();
-            } else {
-                Toast.makeText(this, "Prefix already exists", Toast.LENGTH_SHORT).show();
-            }
         }
-
-        prefAdapter.reloadData();
-        cohortPrefix.setText("");
+        return copiedPrefixesSet;
     }
 
     @Override
