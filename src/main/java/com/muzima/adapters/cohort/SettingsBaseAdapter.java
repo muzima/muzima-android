@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
+import com.muzima.utils.PreAndroidHoneycomb;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -31,17 +32,14 @@ public abstract class SettingsBaseAdapter extends ListAdapter<String> {
     public void reloadData() {
         clear();
         SharedPreferences cohortPrefixPref = getContext().getSharedPreferences(prefixPref, Context.MODE_PRIVATE);
+        Set<String> stringSet;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            Set<String> stringSet = cohortPrefixPref.getStringSet(prefixPrefKey, new HashSet<String>());
+            stringSet = cohortPrefixPref.getStringSet(prefixPrefKey, new HashSet<String>());
             addAll(stringSet);
         } else {
-            // TODO: Extra this custom implementation of getStringSet into util function
-            int index = 1;
-            String cohortPrefix = cohortPrefixPref.getString(prefixPrefKey + index, null);
-            while (cohortPrefix != null){
+            stringSet = PreAndroidHoneycomb.SharedPreferences.getStringSet(prefixPrefKey, new HashSet<String>(), cohortPrefixPref);
+            for(String cohortPrefix: stringSet){
                 add(cohortPrefix);
-                index++;
-                cohortPrefix = cohortPrefixPref.getString(prefixPrefKey + index, null);
             }
         }
     }

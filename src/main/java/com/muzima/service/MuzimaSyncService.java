@@ -8,6 +8,7 @@ import com.muzima.api.context.Context;
 import com.muzima.api.model.*;
 import com.muzima.controller.*;
 import com.muzima.utils.Constants;
+import com.muzima.utils.PreAndroidHoneycomb;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -334,22 +335,13 @@ public class MuzimaSyncService {
     }
 
     private List<String> getCohortPrefixes() {
-        ArrayList<String> result = new ArrayList<String>();
         SharedPreferences cohortSharedPref = muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE);
+        Set<String> prefixes;
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            Set<String> prefixes = cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>());
-            result = new ArrayList<String>(prefixes);
+            prefixes = cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>());
         } else {
-            int index = 1;
-            String cohortPrefix = cohortSharedPref.getString(COHORT_PREFIX_PREF_KEY + index, null);
-            while (cohortPrefix != null){
-                result.add(cohortPrefix);
-                index++;
-                cohortPrefix = cohortSharedPref.getString(COHORT_PREFIX_PREF_KEY + index, null);
-            }
+            prefixes = PreAndroidHoneycomb.SharedPreferences.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>(), cohortSharedPref);
         }
-        return result;
+        return new ArrayList<String>(prefixes);
     }
-
-
 }
