@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.RegistrationFormsAdapter;
@@ -29,7 +30,19 @@ public class RegistrationFormsActivity extends SherlockActivity {
                 startActivity(new FormViewIntent(RegistrationFormsActivity.this, form, new Patient()));
             }
         });
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         list.setAdapter(registrationFormsAdapter);
         registrationFormsAdapter.reloadData();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
