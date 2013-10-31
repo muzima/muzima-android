@@ -109,7 +109,7 @@ public class DataSyncService extends IntentService {
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = muzimaSyncService.uploadAllCompletedForms();
                     broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, SYNC_UPLOAD_FORMS);
-                    prepareBroadcastMsg(broadcastIntent, result, StringUtil.EMPTY);
+                    prepareBroadcastMsgForFormUpload(broadcastIntent, result, "Uploaded the forms Successfully");
                 }
                 break;
             default:
@@ -149,6 +149,15 @@ public class DataSyncService extends IntentService {
             updateNotificationMsg(msg);
         }
     }
+
+    private void prepareBroadcastMsgForFormUpload(Intent broadcastIntent, int[] result, String msg) {
+        broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_STATUS, result[0]);
+        if (result[0] == SyncStatusConstants.SUCCESS) {
+            updateNotificationMsg(msg);
+        }
+    }
+
+
 
     private void saveFormsSyncTime(int[] result) {
         if (result[0] == SyncStatusConstants.SUCCESS) {

@@ -33,8 +33,11 @@ public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAda
     }
 
     @Override
-    protected View setupMainView(LayoutInflater inflater, ViewGroup container){
+    protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
         return inflater.inflate(R.layout.layout_list_with_sections, container, false);
     }
 
+    public void onFormUploadFinish() {
+        listAdapter.reloadData();
+    }
 }

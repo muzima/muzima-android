@@ -34,6 +34,10 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements TagsListAda
         ((AllAvailableFormsListFragment)pagers[TAB_All].fragment).onFormTemplateDownloadFinish();
     }
 
+    public void onFormUploadFinish() {
+        ((CompleteFormsListFragment)pagers[TAB_COMPLETE].fragment).onFormUploadFinish();
+    }
+
     @Override
     public void onTagsChanged() {
         ((FormsListFragment)pagers[TAB_All].fragment).tagsChanged();

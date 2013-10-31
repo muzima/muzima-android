@@ -132,8 +132,11 @@ public class FormsActivity extends FormsActivityBase {
                 ((FormsPagerAdapter) formsPagerAdapter).onFormMetadataDownloadFinish();
             }
         } else if (syncType == SYNC_UPLOAD_FORMS) {
-            hideProgressbar();
+            menuUpload.setActionView(null);
             syncInProgress = false;
+            if (syncStatus == SUCCESS) {
+                ((FormsPagerAdapter) formsPagerAdapter).onFormUploadFinish();
+            }
 
         }  else if (syncType == SYNC_TEMPLATES) {
             hideProgressbar();
@@ -194,8 +197,7 @@ public class FormsActivity extends FormsActivityBase {
 
     private void uploadAllFormsInBackgroundService() {
         syncInProgress = true;
-//        ((FormsPagerAdapter) formsPagerAdapter).onFormMetadataDownloadStart();
-        showProgressBar();
+        menuUpload.setActionView(R.layout.refresh_menuitem);
         new UploadFormIntent(this).start();
     }
 
