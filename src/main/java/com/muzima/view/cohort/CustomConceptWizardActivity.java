@@ -49,7 +49,8 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
 
                     @Override
                     protected void onPostExecute(int[] results) {
-                        muzimaProgressDialog.dismiss();
+                        if(muzimaProgressDialog!=null)
+                            muzimaProgressDialog.dismiss();
                         if (results[0] != SUCCESS) {
                             Toast.makeText(CustomConceptWizardActivity.this, "Could not load cohorts", Toast.LENGTH_SHORT).show();
                         } else {
@@ -122,6 +123,12 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
         return cohortsUuid.toArray(new String[allCohorts.size()]);
     }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        if(muzimaProgressDialog!=null)
+            muzimaProgressDialog.dismiss();
+    }
     @Override
     protected int getContentView() {
         return R.layout.activity_custom_concept_wizard;
