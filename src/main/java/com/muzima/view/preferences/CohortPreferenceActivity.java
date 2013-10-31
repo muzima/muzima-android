@@ -83,7 +83,7 @@ public class CohortPreferenceActivity extends BaseActivity implements Preference
     public void addPrefix(View view) {
         String newPrefix = cohortPrefix.getText().toString();
         SharedPreferences cohortSharedPref = getSharedPreferences(COHORT_PREFIX_PREF, MODE_PRIVATE);
-        Set<String> copiedPrefixesSet = getCurrentCohortPrefixes(cohortSharedPref);
+        Set<String> copiedPrefixesSet = getCohortPrefixesOrdered(cohortSharedPref);
 
         if (validPrefix(copiedPrefixesSet, newPrefix)) {
             copiedPrefixesSet.add(newPrefix);
@@ -105,14 +105,9 @@ public class CohortPreferenceActivity extends BaseActivity implements Preference
         editor.commit();
     }
 
-    private Set<String> getCurrentCohortPrefixes(SharedPreferences cohortSharedPref) {
+    private Set<String> getCohortPrefixesOrdered(SharedPreferences cohortSharedPref) {
         Set<String> copiedPrefixesSet = new TreeSet<String>(new CaseInsensitiveComparator());
-        Set<String> originalPrefixesSet;
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            originalPrefixesSet = cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>());
-        } else {
-            originalPrefixesSet = PreAndroidHoneycomb.SharedPreferences.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>(), cohortSharedPref);
-        }
+        Set<String> originalPrefixesSet = getCohortPrefixes(cohortSharedPref);
         copiedPrefixesSet.addAll(originalPrefixesSet);
         return copiedPrefixesSet;
     }
@@ -120,17 +115,20 @@ public class CohortPreferenceActivity extends BaseActivity implements Preference
     @Override
     public void onDeletePreferenceClick(String pref) {
         SharedPreferences cohortSharedPref = getSharedPreferences(COHORT_PREFIX_PREF, MODE_PRIVATE);
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            Set<String> prefixes = new HashSet<String>(cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>()));
-            prefixes.remove(pref);
-
-            SharedPreferences.Editor editor = cohortSharedPref.edit();
-            editor.putStringSet(COHORT_PREFIX_PREF_KEY, prefixes);
-            editor.commit();
-        } else {
-//            TODO for FROYO
-        }
+        Set<String> prefixes = getCohortPrefixes(cohortSharedPref);
+        prefixes.remove(pref);
+        updateCohortPrefixes(cohortSharedPref, prefixes);
         prefAdapter.reloadData();
+    }
+
+    private Set<String> getCohortPrefixes(SharedPreferences cohortSharedPref) {
+        Set<String> prefixes;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            prefixes = new HashSet<String>(cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>()));
+        } else {
+            prefixes = new HashSet<String>(PreAndroidHoneycomb.SharedPreferences.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>(), cohortSharedPref));
+        }
+        return prefixes;
     }
 
     @Override
