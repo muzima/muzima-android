@@ -8,6 +8,8 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 
 import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_REGISTRATION;
+import static com.muzima.utils.Constants.STATUS_COMPLETE;
+import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 
 public class FormDataStore {
     private static final String TAG = "FormDataStore";
@@ -24,8 +26,9 @@ public class FormDataStore {
 
     @JavascriptInterface
     public void save(String data, String status) {
-        if(isRegisterPatient()){
-            Patient newPatient = formController.createNewPatient(data);
+        Patient newPatient = null;
+        if(isRegistrationComplete(status)){
+            newPatient = formController.createNewPatient(data);
             formData.setPatientUuid(newPatient.getUuid());
             formData.setDiscriminator(FORM_DISCRIMINATOR_REGISTRATION);
         }
@@ -39,6 +42,10 @@ public class FormDataStore {
             Toast.makeText(formWebViewActivity, "An error occurred while saving the form", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while saving form data" + e);
         }
+    }
+
+    private boolean isRegistrationComplete(String status) {
+        return isRegisterPatient() && status.equals(STATUS_COMPLETE);
     }
 
     @JavascriptInterface
