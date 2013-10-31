@@ -15,6 +15,7 @@ import com.muzima.adapters.cohort.CohortPrefixPrefAdapter;
 import com.muzima.adapters.cohort.PreferenceClickListener;
 import com.muzima.adapters.concept.AutoCompleteCohortPrefixAdapter;
 import com.muzima.api.model.Cohort;
+import com.muzima.utils.PreAndroidHoneycomb;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.HelpActivity;
 
@@ -99,29 +100,20 @@ public class CohortPreferenceActivity extends BaseActivity implements Preference
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             editor.putStringSet(COHORT_PREFIX_PREF_KEY, copiedPrefixesSet);
         } else {
-            int index = 1;
-            for(String aCohortPrefix: copiedPrefixesSet) {
-                editor.putString(COHORT_PREFIX_PREF_KEY + index, aCohortPrefix);
-                index ++;
-            }
+            PreAndroidHoneycomb.SharedPreferences.putStringSet(COHORT_PREFIX_PREF_KEY, copiedPrefixesSet, editor);
         }
         editor.commit();
     }
 
     private Set<String> getCurrentCohortPrefixes(SharedPreferences cohortSharedPref) {
         Set<String> copiedPrefixesSet = new TreeSet<String>(new CaseInsensitiveComparator());
+        Set<String> originalPrefixesSet;
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            Set<String> originalPrefixesSet = cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>());
-            copiedPrefixesSet.addAll(originalPrefixesSet);
+            originalPrefixesSet = cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>());
         } else {
-            int index = 1;
-            String cohortPrefix = cohortSharedPref.getString(COHORT_PREFIX_PREF_KEY+index, null);
-            while (cohortPrefix != null){
-                copiedPrefixesSet.add(cohortPrefix);
-                index++;
-                cohortPrefix = cohortSharedPref.getString(COHORT_PREFIX_PREF_KEY+index, null);
-            }
+            originalPrefixesSet = PreAndroidHoneycomb.SharedPreferences.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>(), cohortSharedPref);
         }
+        copiedPrefixesSet.addAll(originalPrefixesSet);
         return copiedPrefixesSet;
     }
 
