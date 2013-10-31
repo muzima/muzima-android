@@ -59,7 +59,7 @@ public class FormDataStoreTest {
         Patient patient = new Patient();
         patient.setUuid(tempUUIDAssignedByDevice);
         when(controller.createNewPatient("data")).thenReturn(patient);
-        store.save("data","status");
+        store.save("data","complete");
         assertThat(formData.getPatientUuid(),is(tempUUIDAssignedByDevice));
     }
 }
