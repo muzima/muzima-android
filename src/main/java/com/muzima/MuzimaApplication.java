@@ -8,6 +8,7 @@ import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
 import com.muzima.controller.*;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.service.PreferenceHelper;
 import com.muzima.util.Constants;
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
@@ -126,6 +127,10 @@ public class MuzimaApplication extends Application{
             muzimaSyncService = new MuzimaSyncService(this);
         }
         return muzimaSyncService;
+    }
+
+    public PreferenceHelper getPreferenceHelper() {
+        return new PreferenceHelper(this);
     }
 
     private String getConfigurationString() throws IOException {
