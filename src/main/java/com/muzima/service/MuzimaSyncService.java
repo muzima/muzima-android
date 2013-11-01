@@ -13,11 +13,9 @@ import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
 import java.net.ConnectException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
+import static com.muzima.utils.Constants.CONCEPT_PREF_KEY;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
 
 public class MuzimaSyncService {
@@ -323,7 +321,8 @@ public class MuzimaSyncService {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             prefixes = cohortSharedPref.getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>());
         } else {
-            prefixes = PreAndroidHoneycomb.SharedPreferences.getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>(), cohortSharedPref);
+//            prefixes = PreAndroidHoneycomb.SharedPreferences.getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>(), cohortSharedPref);
+            prefixes = muzimaApplication.getPreferenceHelper().getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>(), cohortSharedPref);
         }
         return new ArrayList<String>(prefixes);
 

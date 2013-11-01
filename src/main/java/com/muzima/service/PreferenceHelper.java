@@ -9,10 +9,7 @@ import com.muzima.api.model.Concept;
 import com.muzima.utils.PreAndroidHoneycomb;
 import org.json.JSONArray;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.muzima.utils.Constants.COHORT_PREFIX_PREF;
 import static com.muzima.utils.Constants.COHORT_PREFIX_PREF_KEY;
@@ -39,7 +36,8 @@ public class PreferenceHelper {
             editor.putStringSet(CONCEPT_PREF_KEY, copyOfUuidSet);
             editor.commit();
         } else {
-            Set<String> conceptUuidSet = PreAndroidHoneycomb.SharedPreferences.getStringSet(CONCEPT_PREF_KEY, new LinkedHashSet<String>(),conceptSharedPreferences);
+//            Set<String> conceptUuidSet = PreAndroidHoneycomb.SharedPreferences.getStringSet(CONCEPT_PREF_KEY, new LinkedHashSet<String>(),conceptSharedPreferences);
+            Set<String> conceptUuidSet = getStringSet(CONCEPT_PREF_KEY, new LinkedHashSet<String>(), conceptSharedPreferences);
             SharedPreferences.Editor editor = conceptSharedPreferences.edit();
             Set<String> copyOfUuidSet = new LinkedHashSet<String>();
             copyOfUuidSet.addAll(conceptUuidSet);
@@ -90,6 +88,9 @@ public class PreferenceHelper {
     }
 
     private List<String> getStringSet(String sharedPreferenceString) {
+        if (sharedPreferenceString == null)
+            return new ArrayList<String>();
+
         List<String> cohortsList = new ArrayList<String>();
         try {
             JSONArray jsonArray = new JSONArray(sharedPreferenceString);
@@ -100,5 +101,9 @@ public class PreferenceHelper {
             throw new RuntimeException(e);
         }
         return cohortsList;
+    }
+    public Set<String> getStringSet(String key, Set<String> defValues, android.content.SharedPreferences cohortSharedPref){
+        // TODO: Implement this properly for FROYO devices
+        return new HashSet<String>();
     }
 }
