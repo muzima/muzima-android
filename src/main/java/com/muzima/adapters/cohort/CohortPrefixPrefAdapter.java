@@ -1,16 +1,21 @@
 package com.muzima.adapters.cohort;
 
 import android.content.Context;
-
-import static com.muzima.utils.Constants.COHORT_PREFIX_PREF;
-import static com.muzima.utils.Constants.COHORT_PREFIX_PREF_KEY;
+import com.muzima.service.CohortPrefixPreferenceService;
 
 public class CohortPrefixPrefAdapter extends SettingsBaseAdapter {
 
+    private final CohortPrefixPreferenceService cohortPrefixPreferenceService;
+
     public CohortPrefixPrefAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
-        prefixPref = COHORT_PREFIX_PREF;
-        prefixPrefKey = COHORT_PREFIX_PREF_KEY;
+        cohortPrefixPreferenceService = new CohortPrefixPreferenceService(context);
         reloadData();
+    }
+
+    @Override
+    public void reloadData() {
+        clear();
+        addAll(cohortPrefixPreferenceService.getCohortPrefixes());
     }
 }

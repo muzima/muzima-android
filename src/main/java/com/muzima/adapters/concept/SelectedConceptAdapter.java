@@ -16,9 +16,7 @@
 package com.muzima.adapters.concept;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,24 +30,25 @@ import com.muzima.api.model.Concept;
 import com.muzima.api.model.ConceptName;
 import com.muzima.controller.ConceptController;
 import com.muzima.search.api.util.StringUtil;
-import com.muzima.service.PreferenceHelper;
+import com.muzima.service.ConceptPreferenceService;
 import com.muzima.utils.StringUtils;
 
-import java.util.*;
-
-import static com.muzima.utils.Constants.CONCEPT_PREF;
-import static com.muzima.utils.Constants.CONCEPT_PREF_KEY;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * TODO: Write brief description about the class here.
  */
 public class SelectedConceptAdapter extends ArrayAdapter<Concept> {
     private final String TAG = SelectedConceptAdapter.class.getSimpleName();
+    private final ConceptPreferenceService conceptPreferenceService;
     protected ConceptController conceptController;
 
     public SelectedConceptAdapter(Context context, int textViewResourceId, ConceptController conceptController) {
         super(context, textViewResourceId);
         this.conceptController = conceptController;
+        conceptPreferenceService = new ConceptPreferenceService(context);
     }
 
     private class ViewHolder {
@@ -103,7 +102,7 @@ public class SelectedConceptAdapter extends ArrayAdapter<Concept> {
         super.remove(concept);
         try {
             conceptController.deleteConcept(concept);
-            new PreferenceHelper(getContext()).removeConcept(concept);
+            conceptPreferenceService.removeConcept(concept);
         } catch (ConceptController.ConceptDeleteException e) {
             Log.e(TAG, "Error while deleting the concept", e);
         }
@@ -123,7 +122,7 @@ public class SelectedConceptAdapter extends ArrayAdapter<Concept> {
             } catch (ConceptController.ConceptSaveException e) {
                 Log.w(TAG, "Exception occurred while saving concept to local data repository!", e);
             }
-            new PreferenceHelper(getContext()).addConcepts(conceptList);
+            conceptPreferenceService.addConcepts(conceptList);
             return null;
         }
     }
@@ -133,30 +132,15 @@ public class SelectedConceptAdapter extends ArrayAdapter<Concept> {
         @Override
         protected List<Concept> doInBackground(Void... voids) {
             List<Concept> concepts = new ArrayList<Concept>();
-            SharedPreferences conceptPrefixPref = getContext().getSharedPreferences(CONCEPT_PREF, Context.MODE_PRIVATE);
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                Set<String> stringSet = conceptPrefixPref.getStringSet(CONCEPT_PREF_KEY, new LinkedHashSet<String>());
-                for (String conceptUuid : stringSet) {
-                    try {
-                        concepts.add(conceptController.getConceptByUuid(conceptUuid));
-                    } catch (ConceptController.ConceptFetchException e) {
-                        Log.w(TAG, "Exception occurred while fetching local concept!", e);
-                    }
+            List<String> conceptUuids = conceptPreferenceService.getConcepts();
+            for (String conceptUuid : conceptUuids) {
+                try {
+                    concepts.add(conceptController.getConceptByUuid(conceptUuid));
+                } catch (ConceptController.ConceptFetchException e) {
+                    Log.w(TAG, "Exception occurred while fetching local concept!", e);
                 }
-            } else {
-                int index = 1;
-                String conceptUuid = conceptPrefixPref.getString(CONCEPT_PREF_KEY + index, null);
-                while (conceptUuid != null){
-                    try {
-                        concepts.add(conceptController.getConceptByUuid(conceptUuid));
-                        index++;
-                        conceptUuid = conceptPrefixPref.getString(CONCEPT_PREF_KEY + index, null);
-                    } catch (ConceptController.ConceptFetchException e) {
-                        Log.w(TAG, "Exception occurred while fetching local concept!", e);
-                    }
-                }
+                Log.i(TAG, "#Concepts: " + concepts.size());
             }
-            Log.i(TAG, "#Concepts: " + concepts.size());
             return concepts;
         }
 

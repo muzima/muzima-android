@@ -39,7 +39,8 @@ public class DownloadServiceTest {
     private ObservationController observationController;
     private ConceptController conceptController;
     private EncounterController encounterController;
-    private PreferenceHelper preferenceHelper;
+    private CohortPrefixPreferenceService prefixesPreferenceService;
+    private ConceptPreferenceService concetpPreferenceService;
 
     @Before
     public void setUp() throws Exception {
@@ -52,7 +53,8 @@ public class DownloadServiceTest {
         sharedPref = mock(SharedPreferences.class);
         conceptController = mock(ConceptController.class);
         encounterController = mock(EncounterController.class);
-        preferenceHelper = mock(PreferenceHelper.class);
+        prefixesPreferenceService = mock(CohortPrefixPreferenceService.class);
+        concetpPreferenceService = mock(ConceptPreferenceService.class);
 
         when(muzimaApplication.getMuzimaContext()).thenReturn(muzimaContext);
         when(muzimaApplication.getFormController()).thenReturn(formContorller);
@@ -61,8 +63,9 @@ public class DownloadServiceTest {
         when(muzimaApplication.getObservationController()).thenReturn(observationController);
         when(muzimaApplication.getConceptController()).thenReturn(conceptController);
         when(muzimaApplication.getEncounterController()).thenReturn(encounterController);
+        when(muzimaApplication.getCohortPrefixesPreferenceService()).thenReturn(prefixesPreferenceService);
+        when(muzimaApplication.getConceptPreferenceService()).thenReturn(concetpPreferenceService);
         when(muzimaApplication.getSharedPreferences(anyString(), anyInt())).thenReturn(sharedPref);
-        when(muzimaApplication.getPreferenceHelper()).thenReturn(preferenceHelper);
         muzimaSyncService = new MuzimaSyncService(muzimaApplication);
     }
 
@@ -244,12 +247,11 @@ public class DownloadServiceTest {
 
         when(cohortController.downloadAllCohorts()).thenReturn(cohorts);
         when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
-        when(sharedPref.getString(COHORT_PREFIX_PREF_KEY, "")).thenReturn("");
-        when(preferenceHelper.getCohortPrefixes()).thenReturn(cohortPrefixes);
+        when(prefixesPreferenceService.getCohortPrefixes()).thenReturn(cohortPrefixes);
 
         muzimaSyncService.downloadCohorts();
 
-        verify(cohortController).downloadCohortsByPrefix((cohortPrefixes));
+        verify(cohortController).downloadCohortsByPrefix(cohortPrefixes);
         verify(cohortController).deleteAllCohorts();
         verify(cohortController).saveAllCohorts(cohorts);
         verifyNoMoreInteractions(cohortController);
@@ -422,11 +424,11 @@ public class DownloadServiceTest {
 
         when(patientController.getPatientsForCohorts(cohortUuids)).thenReturn(patients);
         when(muzimaApplication.getSharedPreferences(Constants.CONCEPT_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
-        when(preferenceHelper.getStringSet(Constants.CONCEPT_PREF_KEY, sharedPref)).thenReturn(concepts);
         List<String> patientUuids = Arrays.asList(new String[]{"patient1", "patient2"});
         List<String> conceptUuids = Arrays.asList(new String[]{"weight","temp"});
         when(observationController.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids))
                 .thenReturn(allObservations);
+        when(concetpPreferenceService.getConcepts()).thenReturn(conceptUuids);
 
         muzimaSyncService.downloadObservationsForPatients(cohortUuids);
 
@@ -453,9 +455,9 @@ public class DownloadServiceTest {
         }};
 
         when(patientController.getPatientsForCohorts(cohortUuids)).thenReturn(patients);
-        when(muzimaApplication.getSharedPreferences(Constants.CONCEPT_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
-        when(preferenceHelper.getStringSet(Constants.CONCEPT_PREF_KEY, sharedPref)).thenReturn(concepts);
-        when(observationController.downloadObservationsByPatientUuidsAndConceptUuids(Arrays.asList(new String[]{"patient1"}), Arrays.asList(new String[]{"weight"})))
+        List<String> conceptUuids = Arrays.asList(new String[]{"weight"});
+        when(concetpPreferenceService.getConcepts()).thenReturn(conceptUuids);
+        when(observationController.downloadObservationsByPatientUuidsAndConceptUuids(Arrays.asList(new String[]{"patient1"}), conceptUuids))
                 .thenReturn(allObservations);
 
         int[] result = muzimaSyncService.downloadObservationsForPatients(cohortUuids);

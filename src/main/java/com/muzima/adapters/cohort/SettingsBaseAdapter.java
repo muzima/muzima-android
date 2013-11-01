@@ -1,24 +1,16 @@
 package com.muzima.adapters.cohort;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public abstract class SettingsBaseAdapter extends ListAdapter<String> {
     private PreferenceClickListener preferenceClickListener;
-    protected String prefixPref;
-    protected String prefixPrefKey;
 
     public SettingsBaseAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
@@ -26,22 +18,6 @@ public abstract class SettingsBaseAdapter extends ListAdapter<String> {
 
     public void setPreferenceClickListener(PreferenceClickListener preferenceClickListener) {
         this.preferenceClickListener = preferenceClickListener;
-    }
-
-    @Override
-    public void reloadData() {
-        clear();
-        SharedPreferences cohortPrefixPref = getContext().getSharedPreferences(prefixPref, Context.MODE_PRIVATE);
-        Set<String> stringSet;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            stringSet = cohortPrefixPref.getStringSet(prefixPrefKey, new HashSet<String>());
-            addAll(stringSet);
-        } else {
-            stringSet = ((MuzimaApplication)getContext().getApplicationContext()).getPreferenceHelper().getStringSet(prefixPrefKey, cohortPrefixPref);
-            for(String cohortPrefix: stringSet){
-                add(cohortPrefix);
-            }
-        }
     }
 
     @Override

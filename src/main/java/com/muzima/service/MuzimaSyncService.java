@@ -1,7 +1,5 @@
 package com.muzima.service;
 
-import android.content.SharedPreferences;
-import android.os.Build;
 import android.util.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.context.Context;
@@ -24,9 +22,13 @@ public class MuzimaSyncService {
     private ConceptController conceptController;
     private CohortController cohortController;
     private PatientController patientController;
+    private final CohortPrefixPreferenceService cohortPrefixPreferenceService;
+    private final ConceptPreferenceService conceptPreferenceService;
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
         this.muzimaApplication = muzimaContext;
+        cohortPrefixPreferenceService = muzimaApplication.getCohortPrefixesPreferenceService();
+        conceptPreferenceService = muzimaApplication.getConceptPreferenceService();
         formController = muzimaApplication.getFormController();
         conceptController = muzimaApplication.getConceptController();
         cohortController = muzimaApplication.getCohortController();
@@ -103,7 +105,7 @@ public class MuzimaSyncService {
             List<Concept> concepts = getRelatedConcepts(formTemplates);
             conceptController.saveConcepts(concepts);
 
-            new PreferenceHelper(muzimaApplication).addConcepts(concepts);
+            conceptPreferenceService.addConcepts(concepts);
             Log.i(TAG, "Form templates replaced");
 
             result[0] = SUCCESS;
@@ -167,12 +169,13 @@ public class MuzimaSyncService {
     }
 
     private List<Cohort> downloadCohortsList() throws CohortController.CohortDownloadException {
-        List<String> cohortPrefixes = getCohortPrefixes();
+        List<String> cohortPrefixes = cohortPrefixPreferenceService.getCohortPrefixes();
         List<Cohort> cohorts;
-        if (cohortPrefixes.isEmpty())
+        if (cohortPrefixes.isEmpty()){
             cohorts = cohortController.downloadAllCohorts();
-        else
+        } else {
             cohorts = cohortController.downloadCohortsByPrefix(cohortPrefixes);
+        }
         return cohorts;
     }
 
@@ -305,25 +308,12 @@ public class MuzimaSyncService {
 
     private List<Observation> downloadAllObservations(List<String> patientUuids) throws ObservationController.DownloadObservationException {
         ObservationController observationController = muzimaApplication.getObservationController();
-        return observationController.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, getConceptUuids());
+        return observationController.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptPreferenceService.getConcepts());
     }
 
     private List<Encounter> downloadAllEncounters(List<String> patientUuids) throws EncounterController.DownloadEncounterException {
         EncounterController encounterController = muzimaApplication.getEncounterController();
         return encounterController.downloadEncountersByPatientUuids(patientUuids);
-    }
-
-    private List<String> getConceptUuids() {
-        SharedPreferences cohortSharedPref = muzimaApplication.getSharedPreferences(Constants.CONCEPT_PREF, android.content.Context.MODE_PRIVATE);
-        Set<String> prefixes;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            prefixes = cohortSharedPref.getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>());
-        } else {
-//            prefixes = PreAndroidHoneycomb.SharedPreferences.getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>(), cohortSharedPref);
-            prefixes = muzimaApplication.getPreferenceHelper().getStringSet(Constants.CONCEPT_PREF_KEY, cohortSharedPref);
-        }
-        return new ArrayList<String>(prefixes);
-
     }
 
     List<String> getPatientUuids(List<Patient> patients) {
@@ -334,7 +324,4 @@ public class MuzimaSyncService {
         return patientUuids;
     }
 
-    private List<String> getCohortPrefixes() {
-        return muzimaApplication.getPreferenceHelper().getCohortPrefixes();
-    }
 }

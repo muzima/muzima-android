@@ -7,8 +7,9 @@ import com.muzima.api.context.ContextFactory;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
 import com.muzima.controller.*;
+import com.muzima.service.CohortPrefixPreferenceService;
+import com.muzima.service.ConceptPreferenceService;
 import com.muzima.service.MuzimaSyncService;
-import com.muzima.service.PreferenceHelper;
 import com.muzima.util.Constants;
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
@@ -29,11 +30,14 @@ public class MuzimaApplication extends Application{
     private ObservationController observationController;
     private EncounterController encounterController;
     private MuzimaSyncService muzimaSyncService;
+    private CohortPrefixPreferenceService prefixesPreferenceService;
 
     static {
         // see http://rtyley.github.io/spongycastle/
         Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
     }
+
+    private ConceptPreferenceService conceptPreferenceService;
 
 
     @Override
@@ -129,10 +133,6 @@ public class MuzimaApplication extends Application{
         return muzimaSyncService;
     }
 
-    public PreferenceHelper getPreferenceHelper() {
-        return new PreferenceHelper(this);
-    }
-
     private String getConfigurationString() throws IOException {
         InputStream inputStream = getResources().openRawResource(R.raw.configuration);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -144,5 +144,19 @@ public class MuzimaApplication extends Application{
         }
         reader.close();
         return builder.toString();
+    }
+
+    public CohortPrefixPreferenceService getCohortPrefixesPreferenceService() {
+        if(prefixesPreferenceService == null) {
+            prefixesPreferenceService = new CohortPrefixPreferenceService(this);
+        }
+        return prefixesPreferenceService;
+    }
+
+    public ConceptPreferenceService getConceptPreferenceService() {
+        if (conceptPreferenceService == null) {
+            conceptPreferenceService = new ConceptPreferenceService(this);
+        }
+        return conceptPreferenceService;
     }
 }

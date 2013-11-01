@@ -1,8 +1,6 @@
 package com.muzima.view.preferences;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,32 +8,29 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.actionbarsherlock.view.MenuItem;
-import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortPrefixPrefAdapter;
 import com.muzima.adapters.cohort.PreferenceClickListener;
 import com.muzima.adapters.concept.AutoCompleteCohortPrefixAdapter;
 import com.muzima.api.model.Cohort;
+import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.HelpActivity;
 
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
-
-import static com.muzima.utils.Constants.COHORT_PREFIX_PREF;
-import static com.muzima.utils.Constants.COHORT_PREFIX_PREF_KEY;
 
 public class CohortPreferenceActivity extends BaseActivity implements PreferenceClickListener {
     protected CohortPrefixPrefAdapter prefAdapter;
     private AutoCompleteCohortPrefixAdapter autoCompleteCohortPrefixAdapter;
     private AutoCompleteTextView cohortPrefix;
+    private CohortPrefixPreferenceService preferenceService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
+
+        preferenceService = new CohortPrefixPreferenceService(this);
 
         ListView cohortPrefList = (ListView) findViewById(R.id.cohort_pref_list);
         prefAdapter = new CohortPrefixPrefAdapter(this, R.layout.item_preference);
@@ -82,53 +77,18 @@ public class CohortPreferenceActivity extends BaseActivity implements Preference
 
     public void addPrefix(View view) {
         String newPrefix = cohortPrefix.getText().toString();
-        SharedPreferences cohortSharedPref = getSharedPreferences(COHORT_PREFIX_PREF, MODE_PRIVATE);
-        Set<String> copiedPrefixesSet = getCohortPrefixesOrdered(cohortSharedPref);
-
-        if (validPrefix(copiedPrefixesSet, newPrefix)) {
-            copiedPrefixesSet.add(newPrefix);
-            updateCohortPrefixes(cohortSharedPref, copiedPrefixesSet);
-        } else {
+        if(!preferenceService.addCohortPrefix(newPrefix)){
             Toast.makeText(this, "Prefix already exists", Toast.LENGTH_SHORT).show();
         }
         prefAdapter.reloadData();
         cohortPrefix.setText("");
     }
 
-    private void updateCohortPrefixes(SharedPreferences cohortSharedPref, Set<String> copiedPrefixesSet) {
-        SharedPreferences.Editor editor = cohortSharedPref.edit();
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            editor.putStringSet(COHORT_PREFIX_PREF_KEY, copiedPrefixesSet);
-        } else {
-            ((MuzimaApplication)getApplicationContext()).getPreferenceHelper().putStringSet(COHORT_PREFIX_PREF_KEY, copiedPrefixesSet, editor);
-        }
-        editor.commit();
-    }
-
-    private Set<String> getCohortPrefixesOrdered(SharedPreferences cohortSharedPref) {
-        Set<String> copiedPrefixesSet = new TreeSet<String>(new CaseInsensitiveComparator());
-        Set<String> originalPrefixesSet = getCohortPrefixes(cohortSharedPref);
-        copiedPrefixesSet.addAll(originalPrefixesSet);
-        return copiedPrefixesSet;
-    }
 
     @Override
     public void onDeletePreferenceClick(String pref) {
-        SharedPreferences cohortSharedPref = getSharedPreferences(COHORT_PREFIX_PREF, MODE_PRIVATE);
-        Set<String> prefixes = getCohortPrefixes(cohortSharedPref);
-        prefixes.remove(pref);
-        updateCohortPrefixes(cohortSharedPref, prefixes);
+        preferenceService.deleteCohortPrefix(pref);
         prefAdapter.reloadData();
-    }
-
-    private Set<String> getCohortPrefixes(SharedPreferences cohortSharedPref) {
-        Set<String> prefixes;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            prefixes = new HashSet<String>(cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>()));
-        } else {
-            prefixes = ((MuzimaApplication)getApplicationContext()).getPreferenceHelper().getStringSet(COHORT_PREFIX_PREF_KEY, cohortSharedPref);
-        }
-        return prefixes;
     }
 
     @Override
@@ -141,12 +101,6 @@ public class CohortPreferenceActivity extends BaseActivity implements Preference
         return !prefixes.contains(newPrefix);
     }
 
-    private static class CaseInsensitiveComparator implements Comparator<String>{
 
-        @Override
-        public int compare(String lhs, String rhs) {
-            return lhs.toLowerCase().compareTo(rhs.toLowerCase());
-        }
-    }
 
 }
