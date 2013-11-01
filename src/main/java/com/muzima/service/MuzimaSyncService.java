@@ -1,12 +1,14 @@
 package com.muzima.service;
 
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.util.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.context.Context;
 import com.muzima.api.model.*;
 import com.muzima.controller.*;
 import com.muzima.utils.Constants;
+import com.muzima.utils.PreAndroidHoneycomb;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -317,7 +319,12 @@ public class MuzimaSyncService {
 
     private List<String> getConceptUuids() {
         SharedPreferences cohortSharedPref = muzimaApplication.getSharedPreferences(Constants.CONCEPT_PREF, android.content.Context.MODE_PRIVATE);
-        Set<String> prefixes = cohortSharedPref.getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>());
+        Set<String> prefixes;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            prefixes = cohortSharedPref.getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>());
+        } else {
+            prefixes = PreAndroidHoneycomb.SharedPreferences.getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>(), cohortSharedPref);
+        }
         return new ArrayList<String>(prefixes);
 
     }

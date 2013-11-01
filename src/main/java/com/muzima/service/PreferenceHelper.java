@@ -6,6 +6,7 @@ import android.os.Build;
 
 import com.muzima.api.model.Concept;
 
+import com.muzima.utils.PreAndroidHoneycomb;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
@@ -38,15 +39,14 @@ public class PreferenceHelper {
             editor.putStringSet(CONCEPT_PREF_KEY, copyOfUuidSet);
             editor.commit();
         } else {
-            int index = 1;
-            while (conceptSharedPreferences.getString(CONCEPT_PREF_KEY + index, null) != null) {
-                index++;
-            }
+            Set<String> conceptUuidSet = PreAndroidHoneycomb.SharedPreferences.getStringSet(CONCEPT_PREF_KEY, new LinkedHashSet<String>(),conceptSharedPreferences);
             SharedPreferences.Editor editor = conceptSharedPreferences.edit();
+            Set<String> copyOfUuidSet = new LinkedHashSet<String>();
+            copyOfUuidSet.addAll(conceptUuidSet);
             for (Concept concept : concepts) {
-                editor.putString(CONCEPT_PREF_KEY + index, concept.getUuid());
-                index++;
+                copyOfUuidSet.add(concept.getUuid());
             }
+            PreAndroidHoneycomb.SharedPreferences.putStringSet(CONCEPT_PREF_KEY, copyOfUuidSet, editor);
             editor.commit();
         }
     }
