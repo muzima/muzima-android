@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
-import com.muzima.utils.PreAndroidHoneycomb;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -37,7 +37,7 @@ public abstract class SettingsBaseAdapter extends ListAdapter<String> {
             stringSet = cohortPrefixPref.getStringSet(prefixPrefKey, new HashSet<String>());
             addAll(stringSet);
         } else {
-            stringSet = PreAndroidHoneycomb.SharedPreferences.getStringSet(prefixPrefKey, new HashSet<String>(), cohortPrefixPref);
+            stringSet = ((MuzimaApplication)getContext().getApplicationContext()).getPreferenceHelper().getStringSet(prefixPrefKey, cohortPrefixPref);
             for(String cohortPrefix: stringSet){
                 add(cohortPrefix);
             }

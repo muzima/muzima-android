@@ -6,7 +6,6 @@ import android.os.Build;
 
 import com.muzima.api.model.Concept;
 
-import com.muzima.utils.PreAndroidHoneycomb;
 import org.json.JSONArray;
 
 import java.util.*;
@@ -37,14 +36,14 @@ public class PreferenceHelper {
             editor.commit();
         } else {
 //            Set<String> conceptUuidSet = PreAndroidHoneycomb.SharedPreferences.getStringSet(CONCEPT_PREF_KEY, new LinkedHashSet<String>(),conceptSharedPreferences);
-            Set<String> conceptUuidSet = getStringSet(CONCEPT_PREF_KEY, new LinkedHashSet<String>(), conceptSharedPreferences);
+            Set<String> conceptUuidSet = getStringSet(CONCEPT_PREF_KEY, conceptSharedPreferences);
             SharedPreferences.Editor editor = conceptSharedPreferences.edit();
             Set<String> copyOfUuidSet = new LinkedHashSet<String>();
             copyOfUuidSet.addAll(conceptUuidSet);
             for (Concept concept : concepts) {
                 copyOfUuidSet.add(concept.getUuid());
             }
-            PreAndroidHoneycomb.SharedPreferences.putStringSet(CONCEPT_PREF_KEY, copyOfUuidSet, editor);
+            putStringSet(CONCEPT_PREF_KEY, copyOfUuidSet, editor);
             editor.commit();
         }
     }
@@ -66,12 +65,11 @@ public class PreferenceHelper {
     }
 
     public List<String> getCohortPrefixes() {
+        SharedPreferences cohortSharedPref = context.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE);
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            SharedPreferences cohortSharedPref = context.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE);
             Set<String> cohortSharedPrefStringSet = cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new LinkedHashSet<String>());
             return new ArrayList<String>(cohortSharedPrefStringSet);
         } else {
-            SharedPreferences cohortSharedPref = context.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE);
             return getStringSet(cohortSharedPref.getString(COHORT_PREFIX_PREF_KEY, ""));
         }
     }
@@ -102,8 +100,30 @@ public class PreferenceHelper {
         }
         return cohortsList;
     }
-    public Set<String> getStringSet(String key, Set<String> defValues, android.content.SharedPreferences cohortSharedPref){
+    public Set<String> getStringSet(String key, SharedPreferences cohortSharedPref){
         // TODO: Implement this properly for FROYO devices
-        return new HashSet<String>();
+        Set<String> defValues = new HashSet<String>();
+        String sharedPreferenceString = cohortSharedPref.getString(key, null);
+        if (sharedPreferenceString == null)
+            return new HashSet<String>();
+
+        try {
+            JSONArray jsonArray = new JSONArray(sharedPreferenceString);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                defValues.add(jsonArray.get(i).toString());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return defValues;
+    }
+
+    public void putStringSet(String key, Set<String> defValues, android.content.SharedPreferences.Editor editor) {
+        JSONArray jsonArray = new JSONArray();
+        for (String cohort : defValues) {
+            jsonArray.put(cohort);
+        }
+        editor.putString(key, jsonArray.toString());
+        editor.commit();
     }
 }

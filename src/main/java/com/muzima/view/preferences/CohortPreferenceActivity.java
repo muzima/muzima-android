@@ -10,12 +10,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.actionbarsherlock.view.MenuItem;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortPrefixPrefAdapter;
 import com.muzima.adapters.cohort.PreferenceClickListener;
 import com.muzima.adapters.concept.AutoCompleteCohortPrefixAdapter;
 import com.muzima.api.model.Cohort;
-import com.muzima.utils.PreAndroidHoneycomb;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.HelpActivity;
 
@@ -100,7 +100,7 @@ public class CohortPreferenceActivity extends BaseActivity implements Preference
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             editor.putStringSet(COHORT_PREFIX_PREF_KEY, copiedPrefixesSet);
         } else {
-            PreAndroidHoneycomb.SharedPreferences.putStringSet(COHORT_PREFIX_PREF_KEY, copiedPrefixesSet, editor);
+            ((MuzimaApplication)getApplicationContext()).getPreferenceHelper().putStringSet(COHORT_PREFIX_PREF_KEY, copiedPrefixesSet, editor);
         }
         editor.commit();
     }
@@ -126,7 +126,7 @@ public class CohortPreferenceActivity extends BaseActivity implements Preference
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             prefixes = new HashSet<String>(cohortSharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>()));
         } else {
-            prefixes = new HashSet<String>(PreAndroidHoneycomb.SharedPreferences.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>(), cohortSharedPref));
+            prefixes = ((MuzimaApplication)getApplicationContext()).getPreferenceHelper().getStringSet(COHORT_PREFIX_PREF_KEY, cohortSharedPref);
         }
         return prefixes;
     }

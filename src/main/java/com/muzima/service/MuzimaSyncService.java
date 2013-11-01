@@ -8,14 +8,12 @@ import com.muzima.api.context.Context;
 import com.muzima.api.model.*;
 import com.muzima.controller.*;
 import com.muzima.utils.Constants;
-import com.muzima.utils.PreAndroidHoneycomb;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
 import java.net.ConnectException;
 import java.util.*;
 
-import static com.muzima.utils.Constants.CONCEPT_PREF_KEY;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
 
 public class MuzimaSyncService {
@@ -322,7 +320,7 @@ public class MuzimaSyncService {
             prefixes = cohortSharedPref.getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>());
         } else {
 //            prefixes = PreAndroidHoneycomb.SharedPreferences.getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>(), cohortSharedPref);
-            prefixes = muzimaApplication.getPreferenceHelper().getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>(), cohortSharedPref);
+            prefixes = muzimaApplication.getPreferenceHelper().getStringSet(Constants.CONCEPT_PREF_KEY, cohortSharedPref);
         }
         return new ArrayList<String>(prefixes);
 
