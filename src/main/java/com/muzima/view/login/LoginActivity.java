@@ -21,6 +21,7 @@ import com.muzima.R;
 import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.utils.StringUtils;
 import com.muzima.view.MainActivity;
 import com.muzima.view.cohort.CohortPrefixWizardActivity;
 
@@ -136,17 +137,17 @@ public class LoginActivity extends SherlockActivity {
                             ));
                 } else {
                     int errorColor = getResources().getColor(R.color.error_text_color);
-                    if (serverUrlText.getText().toString().isEmpty()) {
+                    if (StringUtils.isEmpty(serverUrlText.getText().toString())) {
                         serverUrlText.setHint("Please Enter Server URL");
                         serverUrlText.setHintTextColor(errorColor);
                     }
 
-                    if (usernameText.getText().toString().isEmpty()) {
+                    if (StringUtils.isEmpty(usernameText.getText().toString())) {
                         usernameText.setHint("Please Enter Username");
                         usernameText.setHintTextColor(errorColor);
                     }
 
-                    if (passwordText.getText().toString().isEmpty()) {
+                    if (StringUtils.isEmpty(passwordText.getText().toString())) {
                         passwordText.setHint("Please Enter Password");
                         passwordText.setHintTextColor(errorColor);
                     }
@@ -156,9 +157,9 @@ public class LoginActivity extends SherlockActivity {
     }
 
     private boolean validInput() {
-        if (serverUrlText.getText().toString().isEmpty()
-                || usernameText.getText().toString().isEmpty()
-                || passwordText.getText().toString().isEmpty()) {
+        if (StringUtils.isEmpty(serverUrlText.getText().toString())
+                || StringUtils.isEmpty(usernameText.getText().toString())
+                || StringUtils.isEmpty(passwordText.getText().toString())) {
             return false;
         }
         return true;

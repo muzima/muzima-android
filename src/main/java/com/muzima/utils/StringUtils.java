@@ -26,7 +26,7 @@ public class StringUtils {
         return Arrays.asList(values);
     }
 
-    public static boolean isEmpty(String description) {
-        return (description == null || description.isEmpty());
+    public static boolean isEmpty(String string) {
+        return (string == null || string.trim().length() == 0);
     }
 }

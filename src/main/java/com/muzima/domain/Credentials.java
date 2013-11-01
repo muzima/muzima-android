@@ -48,6 +48,6 @@ public class Credentials {
     }
 
     public boolean isEmpty() {
-        return getServerUrl().isEmpty() || getPassword().isEmpty();
+        return getServerUrl().trim().length() == 0 || getPassword().trim().length() == 0;
     }
 }
