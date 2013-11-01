@@ -97,6 +97,7 @@ public class PreferenceHelper {
                 cohortsList.add(jsonArray.get(i).toString());
             }
         } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         return cohortsList;
     }
