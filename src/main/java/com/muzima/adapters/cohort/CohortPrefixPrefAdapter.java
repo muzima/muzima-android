@@ -16,6 +16,8 @@ public class CohortPrefixPrefAdapter extends SettingsBaseAdapter {
     @Override
     public void reloadData() {
         clear();
-        addAll(cohortPrefixPreferenceService.getCohortPrefixes());
+        for (String prefix : cohortPrefixPreferenceService.getCohortPrefixes()) {
+            add(prefix);
+        }
     }
 }
