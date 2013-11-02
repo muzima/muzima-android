@@ -77,6 +77,10 @@ public class CohortPreferenceActivity extends BaseActivity implements Preference
 
     public void addPrefix(View view) {
         String newPrefix = cohortPrefix.getText().toString();
+        if(newPrefix.length()==0){
+            Toast.makeText(this, "You can't add an empty prefix", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if(!preferenceService.addCohortPrefix(newPrefix)){
             Toast.makeText(this, "Prefix already exists", Toast.LENGTH_SHORT).show();
         }
