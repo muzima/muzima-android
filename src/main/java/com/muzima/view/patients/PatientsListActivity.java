@@ -1,6 +1,7 @@
 package com.muzima.view.patients;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
@@ -52,29 +53,56 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // TODO: Refactor this, the only difference is the switch of the type of searchView
+        //      from android.widget.SearchView to com.actionbarsherlock.widget.SearchView
         getSupportMenuInflater().inflate(R.menu.client_list, menu);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search)
-                .getActionView();
-        searchView.setQueryHint("Search clients");
-        setupNoSearchResultDataView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            SearchView searchView = (SearchView) menu.findItem(R.id.search)
+                    .getActionView();
+            searchView.setQueryHint("Search clients");
+            setupNoSearchResultDataView();
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    return false;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                cohortPatientsAdapter.search(s);
-                return true;
-            }
-        });
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    cohortPatientsAdapter.search(s);
+                    return true;
+                }
+            });
 
-        if (quickSearch) {
-            searchView.setIconified(false);
-            searchView.requestFocus();
-        } else
-            searchView.setIconified(true);
+            if (quickSearch) {
+                searchView.setIconified(false);
+                searchView.requestFocus();
+            } else
+                searchView.setIconified(true);
+        } else {
+            com.actionbarsherlock.widget.SearchView searchView = (com.actionbarsherlock.widget.SearchView) menu.findItem(R.id.search)
+                    .getActionView();
+            searchView.setQueryHint("Search clients");
+            setupNoSearchResultDataView();
+            searchView.setOnQueryTextListener(new com.actionbarsherlock.widget.SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    cohortPatientsAdapter.search(s);
+                    return true;
+                }
+            });
+
+            if (quickSearch) {
+                searchView.setIconified(false);
+                searchView.requestFocus();
+            } else
+                searchView.setIconified(true);
+        }
         return true;
     }
 

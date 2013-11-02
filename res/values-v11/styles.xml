@@ -5,4 +5,8 @@
     <!-- Application theme. -->
     <style name="WizardTheme" parent="android:Theme.Holo.DialogWhenLarge.NoActionBar">
     </style>
+
+    <style name="SearchView">
+        <item name="android:actionViewClass">android.widget.SearchView</item>
+    </style>
 </resources>

@@ -577,4 +577,8 @@
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>
 
+    <style name="SearchView">
+        <item name="android:actionViewClass">com.actionbarsherlock.widget.SearchView</item>
+    </style>
+
 </resources>
