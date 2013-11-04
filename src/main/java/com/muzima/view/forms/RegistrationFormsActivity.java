@@ -24,25 +24,42 @@ public class RegistrationFormsActivity extends SherlockActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_form_list);
-        MuzimaApplication applicationContext = (MuzimaApplication) getApplicationContext();
-        FormController formController = applicationContext.getFormController();
+
+        FormController formController = ((MuzimaApplication) getApplicationContext()).getFormController();
         AvailableForms availableForms = getRegistrationForms(formController);
-        registrationFormsAdapter = new RegistrationFormsAdapter(applicationContext, R.layout.item_forms_list, formController, availableForms);
+        if (isOnlyOneRegistrationForm(availableForms)) {
+            startRegistrationView(availableForms.get(0));
+        } else {
+            prepareRegistrationAdapter(formController, availableForms);
+        }
+    }
+
+    private void prepareRegistrationAdapter(FormController formController, AvailableForms availableForms) {
+        registrationFormsAdapter = new RegistrationFormsAdapter(getApplicationContext(), R.layout.item_forms_list,
+                formController, availableForms);
         list = (ListView) findViewById(R.id.list);
-        list.setOnItemClickListener(startFormViewIntent());
+        list.setOnItemClickListener(startRegistrationOnClick());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         list.setAdapter(registrationFormsAdapter);
         registrationFormsAdapter.reloadData();
     }
 
-    private AdapterView.OnItemClickListener startFormViewIntent() {
+    private boolean isOnlyOneRegistrationForm(AvailableForms availableForms) {
+        return availableForms.size() == 1;
+    }
+
+    private AdapterView.OnItemClickListener startRegistrationOnClick() {
         return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AvailableForm form = registrationFormsAdapter.getItem(position);
-                startActivity(new FormViewIntent(RegistrationFormsActivity.this, form, new Patient()));
+                startRegistrationView(form);
             }
         };
+    }
+
+    private void startRegistrationView(AvailableForm form) {
+        startActivity(new FormViewIntent(this, form, new Patient()));
     }
 
     private AvailableForms getRegistrationForms(FormController formController) {
