@@ -2,7 +2,7 @@
 
     <item
         android:id="@+id/search"
-        android:actionViewClass="android.widget.SearchView"
+        android:actionViewClass="com.actionbarsherlock.widget.SearchView"
         android:icon="@drawable/ic_search"
         android:showAsAction="always"
         android:title="@string/observation_search"/>

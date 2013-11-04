@@ -3,9 +3,9 @@ package com.muzima.view.patients;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.widget.SearchView;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.SearchView;
 import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsPagerAdapter;
 import com.muzima.api.model.Patient;
@@ -53,9 +53,9 @@ public class ObservationsActivity extends BroadcastListenerActivity {
      * Set up the {@link android.app.ActionBar}.
      */
     private void setupActionBar() {
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Patient patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
-        getActionBar().setTitle(patient.getSummary());
+        getSupportActionBar().setTitle(patient.getSummary());
     }
 
     @Override
