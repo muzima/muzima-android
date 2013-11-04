@@ -183,7 +183,7 @@
         </activity>
 
         <activity android:name=".view.forms.RegistrationFormsActivity"
-                  android:label="Select Registration Form"/>
+                  android:label="Select Registration Form" android:noHistory="true"/>
 
         <activity android:name=".view.forms.RegistrationBarcodeActivity"
                   android:label="Enter patient ID">

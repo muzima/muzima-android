@@ -2,6 +2,7 @@ package com.muzima.view.forms;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,13 +18,12 @@ import java.util.Arrays;
 
 public class RegistrationBarcodeActivity extends BaseActivity {
 
-    private String SELECTED_REG_FORM = "selected_registration_form";
+    public static String SELECTED_REG_FORM = "selected_registration_form";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_barcode);
-
 
         Button barcodeButton = (Button) findViewById(R.id.patient_id_barcode_btn);
         barcodeButton.setOnClickListener(startBarCodeIntent());
@@ -58,6 +58,7 @@ public class RegistrationBarcodeActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 BaseForm selectedForm = (BaseForm) getIntent().getSerializableExtra(SELECTED_REG_FORM);
+                Log.e("Prasanna", selectedForm.getName());
                 TextView patientBarCode = (TextView) findViewById(R.id.patient_id_barcode);
                 Patient patient = new Patient();
                 if (patientBarCode.getText() != null) {
@@ -66,7 +67,7 @@ public class RegistrationBarcodeActivity extends BaseActivity {
                     patientIdentifier.setPreferred(true);
                     patient.setIdentifiers(Arrays.asList(patientIdentifier));
                 }
-                new FormViewIntent(new RegistrationFormsActivity(), selectedForm, patient);
+                startActivity(new FormViewIntent(RegistrationBarcodeActivity.this, selectedForm, patient));
             }
         };
     }

@@ -1,5 +1,6 @@
 package com.muzima.view.forms;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,7 +11,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.RegistrationFormsAdapter;
-import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
@@ -28,7 +28,7 @@ public class RegistrationFormsActivity extends SherlockActivity {
         FormController formController = ((MuzimaApplication) getApplicationContext()).getFormController();
         AvailableForms availableForms = getRegistrationForms(formController);
         if (isOnlyOneRegistrationForm(availableForms)) {
-            startRegistrationView(availableForms.get(0));
+            startBarcodeActivity(availableForms.get(0));
         } else {
             prepareRegistrationAdapter(formController, availableForms);
         }
@@ -53,13 +53,15 @@ public class RegistrationFormsActivity extends SherlockActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AvailableForm form = registrationFormsAdapter.getItem(position);
-                startRegistrationView(form);
+                startBarcodeActivity(form);
             }
         };
     }
 
-    private void startRegistrationView(AvailableForm form) {
-        startActivity(new FormViewIntent(this, form, new Patient()));
+    private void startBarcodeActivity(AvailableForm form) {
+        Intent intent = new Intent(this, RegistrationBarcodeActivity.class);
+        intent.putExtra(RegistrationBarcodeActivity.SELECTED_REG_FORM, form);
+        startActivity(intent);
     }
 
     private AvailableForms getRegistrationForms(FormController formController) {
