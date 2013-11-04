@@ -2,12 +2,13 @@ package com.muzima.view.cohort;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.TextView;
+import android.widget.CheckedTextView;
 import android.widget.Toast;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
@@ -30,7 +31,7 @@ public class AllCohortsListFragment extends CohortListFragment {
     private ActionMode actionMode;
     private boolean actionModeActive = false;
     private OnCohortDataDownloadListener cohortDataDownloadListener;
-    private TextView syncText;
+    private CheckedTextView syncText;
     private boolean cohortsSyncInProgress;
 
     public static AllCohortsListFragment newInstance(CohortController cohortController) {
@@ -52,7 +53,7 @@ public class AllCohortsListFragment extends CohortListFragment {
     @Override
     protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
         View view = inflater.inflate(R.layout.layout_synced_list, container, false);
-        syncText = (TextView) view.findViewById(R.id.sync_text);
+        syncText = (CheckedTextView) view.findViewById(R.id.sync_text);
         updateSyncText();
         return view;
     }
@@ -69,11 +70,15 @@ public class AllCohortsListFragment extends CohortListFragment {
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        if (!actionModeActive && ((CheckedLinearLayout) view).isChecked()) {
+        boolean isChecked = ((CheckedLinearLayout) view).isChecked();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+            isChecked = !isChecked;
+        }
+        if (!actionModeActive && isChecked) {
             actionMode = getSherlockActivity().startActionMode(new AllCohortsActionModeCallback());
             actionModeActive = true;
         }
-        ((AllCohortsAdapter) listAdapter).onListItemClick(position,((CheckedLinearLayout) view).isChecked());
+        ((AllCohortsAdapter) listAdapter).onListItemClick(position, isChecked);
         int numOfSelectedCohorts = ((AllCohortsAdapter) listAdapter).numberOfCohorts();
         if (numOfSelectedCohorts == 0 && actionModeActive) {
             actionMode.finish();

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.muzima.view.CheckedLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
@@ -9,7 +9,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
-    <TextView
+    <CheckedTextView
             android:id="@+id/sync_text"
             android:layout_width="match_parent"
             android:layout_height="@dimen/sync_bar_height"
@@ -17,4 +17,4 @@
             android:gravity="center"
             android:textColor="@android:color/white"
             android:background="#222222"/>
-</LinearLayout>
+</com.muzima.view.CheckedLinearLayout>
