@@ -2,17 +2,16 @@ package com.muzima.service;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
-
-import com.muzima.search.api.util.StringUtil;
-import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.utils.Constants;
+import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.cohort.AllCohortsListFragment;
 import com.muzima.view.forms.AllAvailableFormsListFragment;
 
@@ -197,6 +196,7 @@ public class DataSyncService extends IntentService {
     private void showNotification(String title, String msg) {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
+                        .setContentIntent(PendingIntent.getActivity(this, 0, new Intent(), 0))
                         .setSmallIcon(R.drawable.ic_launcher_logo)
                         .setContentTitle(title)
                         .setContentText(msg);
