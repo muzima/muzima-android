@@ -393,6 +393,17 @@ public class FormController {
         }
     }
 
+    public AvailableForms getRecommendedForms() throws FormFetchException {
+        AvailableForms result = new AvailableForms();
+
+        for (AvailableForm form : getAvailableFormByTags(null)) {
+            if (form.isDownloaded() && !form.isRegistrationForm()) {
+                result.add(form);
+            }
+        }
+        return result;
+    }
+
 
     public static class UploadFormDataException extends Throwable{
         public UploadFormDataException(Throwable throwable) {

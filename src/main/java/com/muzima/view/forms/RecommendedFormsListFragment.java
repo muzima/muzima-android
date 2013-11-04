@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import com.muzima.R;
-import com.muzima.adapters.forms.DownloadedFormsAdapter;
+import com.muzima.adapters.forms.RecommendedFormsAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.DownloadedForm;
@@ -22,9 +22,9 @@ public class RecommendedFormsListFragment extends FormsListFragment implements A
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        listAdapter = new DownloadedFormsAdapter(getActivity(), R.layout.item_forms_list, formController);
-        noDataMsg = getActivity().getResources().getString(R.string.no_downloaded_form_msg);
-        noDataTip = getActivity().getResources().getString(R.string.no_downloaded_form_tip);
+        listAdapter = new RecommendedFormsAdapter(getActivity(), R.layout.item_forms_list, formController);
+        noDataMsg = getActivity().getResources().getString(R.string.no_recommended_form_msg);
+        noDataTip = getActivity().getResources().getString(R.string.no_recommended_form_tip);
         super.onCreate(savedInstanceState);
     }
 
