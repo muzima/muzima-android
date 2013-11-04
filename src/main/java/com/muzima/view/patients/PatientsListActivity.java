@@ -93,7 +93,6 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
                 try {
                     AvailableForms registrationForms = applicationContext.getFormController().getDownloadedRegistrationForms();
                     if (registrationForms.size() == 1) {
-
                         startActivity(new FormViewIntent(PatientsListActivity.this, registrationForms.get(0), new Patient()));
                     } else {
                         startActivity(new Intent(this, RegistrationFormsActivity.class));

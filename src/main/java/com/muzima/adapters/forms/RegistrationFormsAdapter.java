@@ -1,19 +1,19 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
-public class RegistrationFormsAdapter extends FormsAdapter<AvailableForm>{
+public class RegistrationFormsAdapter extends FormsAdapter<AvailableForm> {
     private static final String TAG = "RegistrationFormsAdapter";
+    private AvailableForms availableForms;
 
 
-    public RegistrationFormsAdapter(Context context, int textViewResourceId, FormController formController) {
+    public RegistrationFormsAdapter(Context context, int textViewResourceId, FormController formController, AvailableForms availableForms) {
         super(context, textViewResourceId, formController);
+        this.availableForms = availableForms;
     }
 
     @Override
@@ -29,17 +29,7 @@ public class RegistrationFormsAdapter extends FormsAdapter<AvailableForm>{
 
         @Override
         protected AvailableForms doInBackground(Void... voids) {
-            AvailableForms registrationForm = null;
-            if (adapterWeakReference.get() != null) {
-                try {
-                    FormsAdapter formsAdapter = adapterWeakReference.get();
-                    registrationForm = formsAdapter.getFormController().getDownloadedRegistrationForms();
-                    Log.i(TAG, "#Forms: " + registrationForm.size());
-                } catch (FormController.FormFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local forms " + e);
-                }
-            }
-            return registrationForm;
+            return availableForms;
         }
     }
 
