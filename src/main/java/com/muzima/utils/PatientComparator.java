@@ -8,6 +8,12 @@ public class PatientComparator implements Comparator<Patient> {
 
     @Override
     public int compare(Patient patient1, Patient patient2) {
+        if (patient1 == null) {
+            patient1 = new Patient();
+        }
+        if (patient2 == null) {
+            patient2 = new Patient();
+        }
         int familyNameCompareResult = patient1.getFamilyName().compareTo(patient2.getFamilyName());
         if (familyNameCompareResult != 0) {
             return familyNameCompareResult;

@@ -266,12 +266,16 @@ public class FormController {
         try {
             List<FormData> allFormData = formService.getAllFormData(STATUS_INCOMPLETE);
             for (FormData formData : allFormData) {
-                Patient patient = patientService.getPatientByUuid(formData.getPatientUuid());
+                String patientUuid = formData.getPatientUuid();
+                Patient patient = null;
+                if (patientUuid != null) {
+                    patient = patientService.getPatientByUuid(patientUuid);
+                }
                 incompleteForms.add(new IncompleteFormWithPatientDataBuilder()
-                        .withForm(formService.getFormByUuid(formData.getTemplateUuid()))
-                        .withFormDataUuid(formData.getUuid())
-                        .withPatient(patient)
-                        .build());
+                    .withForm(formService.getFormByUuid(formData.getTemplateUuid()))
+                    .withFormDataUuid(formData.getUuid())
+                    .withPatient(patient)
+                    .build());
             }
         } catch (IOException e) {
             throw new FormFetchException(e);

@@ -49,9 +49,12 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
         }
 
         Patient patient = patients.get(getSectionForPosition(position));
-        holder.patientName.setText(patient.getDisplayName());
-        holder.patientIdentifier.setText(patient.getIdentifier());
-
+        if (patient != null) {
+            holder.patientName.setText(patient.getDisplayName());
+            holder.patientIdentifier.setText(patient.getIdentifier());
+        } else {
+            holder.patientName.setText("Registration Forms");
+        }
         return convertView;
     }
 
