@@ -3,8 +3,6 @@ package com.muzima.view.forms;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -22,6 +20,7 @@ import com.muzima.adapters.forms.FormsPagerAdapter;
 import com.muzima.adapters.forms.TagsListAdapter;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
+import com.muzima.service.TagPreferenceService;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
 
@@ -33,8 +32,6 @@ import java.util.Set;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
-import static com.muzima.utils.Constants.FORM_TAG_PREF;
-import static com.muzima.utils.Constants.FORM_TAG_PREF_KEY;
 
 
 public class FormsActivity extends FormsActivityBase {
@@ -50,6 +47,7 @@ public class FormsActivity extends FormsActivityBase {
     private MenuItem tagsButton;
     private boolean syncInProgress;
     private MenuItem menuUpload;
+    private TagPreferenceService tagPreferenceService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +55,7 @@ public class FormsActivity extends FormsActivityBase {
         setContentView(mainLayout);
         super.onCreate(savedInstanceState);
         formController = ((MuzimaApplication) getApplication()).getFormController();
+        tagPreferenceService = new TagPreferenceService(this);
         initDrawer();
         setupActionbar();
     }
@@ -110,11 +109,7 @@ public class FormsActivity extends FormsActivityBase {
         for (Tag selectedTag : formController.getSelectedTags()) {
             newSelectedTags.add(selectedTag.getName());
         }
-
-        SharedPreferences cohortSharedPref = getSharedPreferences(FORM_TAG_PREF, MODE_PRIVATE);
-        SharedPreferences.Editor editor = cohortSharedPref.edit();
-        editor.putStringSet(FORM_TAG_PREF_KEY, newSelectedTags);
-        editor.commit();
+        tagPreferenceService.saveSelectedTags(newSelectedTags);
     }
 
     @Override
@@ -253,28 +248,23 @@ public class FormsActivity extends FormsActivityBase {
     }
 
     private void initSelectedTags() {
-        SharedPreferences cohortSharedPref = getSharedPreferences(FORM_TAG_PREF, MODE_PRIVATE);
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            Set<String> selectedTagsInPref = cohortSharedPref.getStringSet(FORM_TAG_PREF_KEY, new HashSet<String>());
-            List<Tag> allTags = null;
-            try {
-                allTags = formController.getAllTags();
-            } catch (FormController.FormFetchException e) {
-                Log.e(TAG, "Error occurred while get all tags from local repository\n" + e);
-            }
-            List<Tag> selectedTags = new ArrayList<Tag>();
+        List<String> selectedTagsInPref = tagPreferenceService.getSelectedTags();
+        List<Tag> allTags = null;
+        try {
+            allTags = formController.getAllTags();
+        } catch (FormController.FormFetchException e) {
+            Log.e(TAG, "Error occurred while get all tags from local repository\n" + e);
+        }
+        List<Tag> selectedTags = new ArrayList<Tag>();
 
-            if (selectedTagsInPref != null) {
-                for (Tag tag : allTags) {
-                    if (selectedTagsInPref.contains(tag.getName())) {
-                        selectedTags.add(tag);
-                    }
+        if (selectedTagsInPref != null) {
+            for (Tag tag : allTags) {
+                if (selectedTagsInPref.contains(tag.getName())) {
+                    selectedTags.add(tag);
                 }
             }
-            formController.setSelectedTags(selectedTags);
-        } else {
-//            TODO for FROYO
         }
+        formController.setSelectedTags(selectedTags);
     }
 
     @Override
