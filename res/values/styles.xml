@@ -4,7 +4,7 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="Theme.Sherlock.Light.DarkActionBar">
+    <style name="AppBaseTheme" parent="Theme.Sherlock">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
@@ -576,9 +576,4 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>
-
-    <style name="SearchView">
-        <item name="android:actionViewClass">com.actionbarsherlock.widget.SearchView</item>
-    </style>
-
 </resources>

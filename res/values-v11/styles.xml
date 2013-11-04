@@ -1,12 +1,5 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <style name="AppBaseTheme" parent="android:Theme.Holo">
-    </style>
-
     <!-- Application theme. -->
     <style name="WizardTheme" parent="android:Theme.Holo.DialogWhenLarge.NoActionBar">
-    </style>
-
-    <style name="SearchView">
-        <item name="android:actionViewClass">android.widget.SearchView</item>
     </style>
 </resources>
