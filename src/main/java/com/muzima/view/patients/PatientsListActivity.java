@@ -17,7 +17,10 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsAdapter;
 import com.muzima.api.model.Patient;
+import com.muzima.controller.FormController;
+import com.muzima.model.collections.AvailableForms;
 import com.muzima.utils.Fonts;
+import com.muzima.view.forms.FormViewIntent;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
@@ -86,12 +89,21 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_client_add:
-                Intent intent = new Intent(this, RegistrationFormsActivity.class);
-                startActivity(intent);
+                MuzimaApplication applicationContext = (MuzimaApplication) getApplicationContext();
+                try {
+                    AvailableForms registrationForms = applicationContext.getFormController().getDownloadedRegistrationForms();
+                    if (registrationForms.size() == 1) {
+
+                        startActivity(new FormViewIntent(PatientsListActivity.this, registrationForms.get(0), new Patient()));
+                    } else {
+                        startActivity(new Intent(this, RegistrationFormsActivity.class));
+                    }
+                } catch (FormController.FormFetchException e) {
+                    e.printStackTrace();
+                }
                 return true;
             case R.id.action_settings:
-                intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             case android.R.id.home:
                 finish();
