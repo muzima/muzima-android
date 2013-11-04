@@ -1,0 +1,37 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/WizardContainer">
+
+    <TextView android:layout_height="wrap_content"
+              android:layout_width="fill_parent"
+              android:id="@+id/help_text_for_bar_code"
+              android:layout_alignParentTop="true"
+              android:text="If you have barcode information please choose scan or simply click on proceed to enter the form"/>
+
+    <LinearLayout android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:layout_below="@+id/help_text_for_bar_code">
+
+
+        <EditText android:layout_height="wrap_content"
+                  android:id="@+id/patient_id_barcode"
+                  android:enabled="false"
+                  android:hint="Patient ID"
+                  android:layout_width="fill_parent"
+                  android:textColor="@android:color/white"/>
+
+        <Button android:layout_height="wrap_content"
+                android:id="@+id/patient_id_barcode_btn"
+                android:layout_margin="20dp"
+                android:background="@drawable/next_button_selector"
+                android:text="Scan the patient ID"
+                android:layout_width="fill_parent"/>
+    </LinearLayout>
+
+    <Button android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:id="@+id/bar_code_proceed_btn"
+            android:layout_alignParentBottom="true"
+            android:text="Proceed"
+            android:background="@drawable/next_button_selector"/>
+</RelativeLayout>

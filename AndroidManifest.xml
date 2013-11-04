@@ -185,6 +185,10 @@
         <activity android:name=".view.forms.RegistrationFormsActivity"
                   android:label="Select Registration Form"/>
 
+        <activity android:name=".view.forms.RegistrationBarcodeActivity"
+                  android:label="Enter patient ID">
+        </activity>
+
         <!--Wizard Activities Start-->
         <activity android:name=".view.cohort.CohortWizardActivity"
                   android:configChanges="orientation|screenSize"
