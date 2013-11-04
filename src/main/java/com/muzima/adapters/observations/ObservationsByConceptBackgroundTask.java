@@ -1,10 +1,10 @@
 package com.muzima.adapters.observations;
 
 import android.os.AsyncTask;
-import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 import com.muzima.controller.ObservationController;
+import com.muzima.model.observation.ConceptWithObservations;
 import com.muzima.model.observation.Concepts;
 
 public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Void, Concepts> {
@@ -37,10 +37,9 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Void, C
         }
 
         observationsByConceptAdapter.clear();
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            observationsByConceptAdapter.addAll(conceptsWithObservations);
-        } else {
-//            TODO for FROYO
+
+        for (ConceptWithObservations conceptsWithObservation : conceptsWithObservations) {
+            observationsByConceptAdapter.add(conceptsWithObservation);
         }
         observationsByConceptAdapter.notifyDataSetChanged();
     }
