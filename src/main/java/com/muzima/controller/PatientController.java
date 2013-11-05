@@ -4,12 +4,13 @@ import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.Patient;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.PatientService;
-
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.apache.commons.lang.StringUtils.isEmpty;
 
 public class PatientController {
 
@@ -50,16 +51,6 @@ public class PatientController {
         }
     }
 
-    public List<Patient> searchPatient(String searchString) throws PatientLoadException {
-        try {
-            return patientService.searchPatients(searchString);
-        } catch (IOException e) {
-            throw new PatientLoadException(e);
-        } catch (ParseException e) {
-            throw new PatientLoadException(e);
-        }
-    }
-
     public int getTotalPatientsCount() throws PatientLoadException {
         try {
             return patientService.countAllPatients();
@@ -76,9 +67,11 @@ public class PatientController {
         }
     }
 
-    public List<Patient> searchPatient(String term, String cohortUuid) throws PatientLoadException {
+    public List<Patient> searchPatientLocally(String term, String cohortUuid) throws PatientLoadException {
         try {
-            return patientService.searchPatients(term, cohortUuid);
+            return isEmpty(cohortUuid)
+                    ? patientService.searchPatients(term)
+                    : patientService.searchPatients(term, cohortUuid);
         } catch (IOException e) {
             throw new PatientLoadException(e);
         } catch (ParseException e) {

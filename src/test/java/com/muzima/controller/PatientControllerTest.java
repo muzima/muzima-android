@@ -4,7 +4,7 @@ import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.Patient;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.PatientService;
-
+import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,11 +15,7 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class PatientControllerTest {
 
@@ -28,10 +24,10 @@ public class PatientControllerTest {
     private CohortService cohortService;
 
     @Before
-    public void setup(){
+    public void setup() {
         patientService = mock(PatientService.class);
         cohortService = mock(CohortService.class);
-        patientController = new PatientController(patientService,cohortService );
+        patientController = new PatientController(patientService, cohortService);
     }
 
     @Test
@@ -90,13 +86,39 @@ public class PatientControllerTest {
     }
 
     @Test
-    public void searchPatient_shouldReturnSearchedPatients() throws IOException, ParseException, PatientController.PatientLoadException {
-        String serachString = "searchString";
+    public void shouldSearchWithOutCohortUUIDIsNull() throws IOException, ParseException, PatientController.PatientLoadException {
+        String searchString = "searchString";
         List<Patient> patients = new ArrayList<Patient>();
 
-        when(patientService.searchPatients(serachString)).thenReturn(patients);
+        when(patientService.searchPatients(searchString)).thenReturn(patients);
 
-        assertThat(patientController.searchPatient(serachString), is(patients));
+        assertThat(patientController.searchPatientLocally(searchString, null), is(patients));
+        verify(patientService).searchPatients(searchString);
+
+    }
+
+    @Test
+    public void shouldSearchWithOutCohortUUIDIsEmpty() throws IOException, ParseException, PatientController.PatientLoadException {
+        String searchString = "searchString";
+        List<Patient> patients = new ArrayList<Patient>();
+
+        when(patientService.searchPatients(searchString)).thenReturn(patients);
+
+        assertThat(patientController.searchPatientLocally(searchString, StringUtils.EMPTY), is(patients));
+        verify(patientService).searchPatients(searchString);
+
+    }
+
+    @Test
+    public void shouldCallSearchPatientWithCohortIDIfPresent() throws Exception, PatientController.PatientLoadException {
+        String searchString = "searchString";
+        String cohortUUID = "cohortUUID";
+        List<Patient> patients = new ArrayList<Patient>();
+
+        when(patientService.searchPatients(searchString, cohortUUID)).thenReturn(patients);
+        assertThat(patientController.searchPatientLocally(searchString, cohortUUID), is(patients));
+
+        verify(patientService).searchPatients(searchString, cohortUUID);
     }
 
     private List<CohortMember> buildCohortMembers(String cohortId) {

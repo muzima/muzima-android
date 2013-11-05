@@ -9,18 +9,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
-import com.muzima.utils.StringUtils;
 
 import java.util.List;
 
 import static com.muzima.utils.DateUtils.getFormattedDate;
 
-public class PatientsAdapter extends ListAdapter<Patient>{
+public class PatientsAdapter extends ListAdapter<Patient> {
     private static final String TAG = "PatientsAdapter";
     public static final String SEARCH = "search";
     private PatientController patientController;
@@ -73,7 +71,7 @@ public class PatientsAdapter extends ListAdapter<Patient>{
         new BackgroundQueryTask().execute(cohortId);
     }
 
-    public void search(String text){
+    public void search(String text) {
         new BackgroundQueryTask().execute(text, SEARCH);
     }
 
@@ -91,20 +89,16 @@ public class PatientsAdapter extends ListAdapter<Patient>{
         @Override
         protected void onPreExecute() {
             mStartingTime = System.currentTimeMillis();
-            if(backgroundListQueryTaskListener != null){
+            if (backgroundListQueryTaskListener != null) {
                 backgroundListQueryTaskListener.onQueryTaskStarted();
             }
         }
 
         @Override
         protected List<Patient> doInBackground(String... params) {
-            if(isSearch(params)){
+            if (isSearch(params)) {
                 try {
-                    if (StringUtils.isEmpty(cohortId)) {
-                        return patientController.searchPatient(params[0]);
-                    } else {
-                        return patientController.searchPatient(params[0], cohortId);
-                    }
+                    return patientController.searchPatientLocally(params[0], cohortId);
                 } catch (PatientController.PatientLoadException e) {
                     Log.w(TAG, "Exception occurred while searching patients for " + params[0] + " search string. " + e);
                 }
@@ -132,7 +126,7 @@ public class PatientsAdapter extends ListAdapter<Patient>{
 
         @Override
         protected void onPostExecute(List<Patient> patients) {
-            if(patients == null){
+            if (patients == null) {
                 Toast.makeText(getContext(), "Something went wrong while fetching patients from local repo", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -145,9 +139,9 @@ public class PatientsAdapter extends ListAdapter<Patient>{
             notifyDataSetChanged();
 
             long currentTime = System.currentTimeMillis();
-            Log.d(TAG, "Time taken in fetching patients from local repo: " + (currentTime - mStartingTime)/1000 + " sec");
+            Log.d(TAG, "Time taken in fetching patients from local repo: " + (currentTime - mStartingTime) / 1000 + " sec");
 
-            if(backgroundListQueryTaskListener != null){
+            if (backgroundListQueryTaskListener != null) {
                 backgroundListQueryTaskListener.onQueryTaskFinish();
             }
         }
