@@ -404,6 +404,9 @@ public class FormController {
         return result;
     }
 
+    public int getRecommendedFormsCount() throws FormFetchException {
+            return getRecommendedForms().size();
+    }
 
     public static class UploadFormDataException extends Throwable{
         public UploadFormDataException(Throwable throwable) {

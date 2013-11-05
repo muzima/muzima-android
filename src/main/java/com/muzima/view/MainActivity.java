@@ -119,8 +119,6 @@ public class MainActivity extends BroadcastListenerActivity {
                 homeActivityMetadata.totalCohorts = cohortController.getTotalCohortsCount();
                 homeActivityMetadata.syncedCohorts = cohortController.getSyncedCohortsCount();
                 homeActivityMetadata.syncedPatients = patientController.getTotalPatientsCount();
-                homeActivityMetadata.totalForms = formController.getTotalFormCount();
-                homeActivityMetadata.downloadedForms = formController.getDownloadedFormsCount();
                 homeActivityMetadata.incompleteForms = formController.getAllIncompleteFormsSize();
                 homeActivityMetadata.completeAndUnsyncedForms = formController.getAllCompleteFormsSize();
             } catch (CohortController.CohortFetchException e) {
@@ -156,8 +154,7 @@ public class MainActivity extends BroadcastListenerActivity {
         int syncedPatients;
         int incompleteForms;
         int completeAndUnsyncedForms;
-        int downloadedForms;
-        int totalForms;
+
     }
 
     @Override

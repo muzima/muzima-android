@@ -134,7 +134,7 @@ public class PatientSummaryActivity extends SherlockActivity {
             PatientController patientController = muzimaApplication.getPatientController();
             FormController formController = muzimaApplication.getFormController();
             try {
-                patientSummaryActivityMetadata.recommendedForms = formController.getDownloadedFormsCount();
+                patientSummaryActivityMetadata.recommendedForms = formController.getRecommendedFormsCount();
                 patientSummaryActivityMetadata.completeForms = formController.getCompleteFormsCountForPatient(patient.getUuid());
                 patientSummaryActivityMetadata.incompleteForms = formController.getIncompleteFormsCountForPatient(patient.getUuid());
             } catch (FormController.FormFetchException e) {
