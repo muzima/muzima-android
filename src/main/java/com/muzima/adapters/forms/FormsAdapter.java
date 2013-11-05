@@ -35,7 +35,7 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             convertView = layoutInflater.inflate(
-                    R.layout.item_forms_list, parent, false);
+                    getFormItemLayout(), parent, false);
             holder = new ViewHolder();
             holder.name = (CheckedTextView) convertView
                     .findViewById(R.id.form_name);
@@ -62,6 +62,10 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
         holder.description.setTypeface(Fonts.roboto_light(getContext()));
 
         return convertView;
+    }
+
+    protected int getFormItemLayout() {
+        return R.layout.item_forms_list;
     }
 
     protected List<String> getSelectedTagUuids() {

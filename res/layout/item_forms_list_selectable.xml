@@ -1,11 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_height="wrap_content"
                 android:checkable="true"
+                android:background="@drawable/list_multi_selector_blue"
                 android:layout_width="match_parent">
     <com.muzima.view.CheckedLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="100"
+            android:background="@drawable/list_multi_selector_blue"
             android:id="@+id/form_name_layout"
             android:orientation="horizontal">
 
@@ -14,9 +16,10 @@
                 android:layout_weight="80"
                 android:layout_width="0dp"
                 android:checkMark="@null"
-                style="@style/ListViewText"/>
+                style="@style/ListViewSelectableText"/>
 
         <ImageView
+                android:background="@drawable/list_multi_selector_blue"
                 android:id="@+id/downloadImg"
                 android:layout_weight="20"
                 android:layout_width="0dp"
@@ -32,13 +35,14 @@
             android:id="@+id/form_description"
             android:layout_below="@+id/form_name_layout"
             android:paddingTop="5dp"
-            style="@style/ListViewText">
+            style="@style/ListViewSelectableText">
     </CheckedTextView>
     <com.muzima.view.CheckedRelativeLayout
             android:id="@+id/tags_scroller"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/tag_selected_height"
             android:clickable="true"
+            android:background="@drawable/list_multi_selector_blue"
             android:layout_below="@+id/form_description"
             android:layout_alignParentRight="true">
 
@@ -48,6 +52,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:layout_alignParentRight="true"
+                android:background="@drawable/list_multi_selector_blue"
                 android:gravity="center_vertical">
         </LinearLayout>
     </com.muzima.view.CheckedRelativeLayout>

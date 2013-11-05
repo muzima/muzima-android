@@ -49,6 +49,11 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
         return convertView;
     }
 
+    @Override
+    protected int getFormItemLayout() {
+        return R.layout.item_forms_list_selectable;
+    }
+
     private void markIfDownloaded(View convertView, AvailableForm form) {
         ImageView imageView = (ImageView) convertView.findViewById(R.id.downloadImg);
         if(form.isDownloaded()){

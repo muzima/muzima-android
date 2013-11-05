@@ -44,7 +44,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if (listAdapter == null) {
-            listAdapter = new AllAvailableFormsAdapter(getActivity(), R.layout.item_forms_list, formController);
+            listAdapter = new AllAvailableFormsAdapter(getActivity(), R.layout.item_forms_list_selectable, formController);
         }
         noDataMsg = getActivity().getResources().getString(R.string.no_new_form_msg);
         noDataTip = getActivity().getResources().getString(R.string.no_new_form_tip);
