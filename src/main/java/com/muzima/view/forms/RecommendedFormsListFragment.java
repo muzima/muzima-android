@@ -3,11 +3,12 @@ package com.muzima.view.forms;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+
 import com.muzima.R;
 import com.muzima.adapters.forms.RecommendedFormsAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
-import com.muzima.model.DownloadedForm;
+import com.muzima.model.AvailableForm;
 
 public class RecommendedFormsListFragment extends FormsListFragment implements AllAvailableFormsListFragment.OnTemplateDownloadComplete {
     private static String TAG = "RecommendedFormsListFragment";
@@ -30,7 +31,7 @@ public class RecommendedFormsListFragment extends FormsListFragment implements A
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        FormViewIntent intent = new FormViewIntent(getActivity(), (DownloadedForm) listAdapter.getItem(position), patient);
+        FormViewIntent intent = new FormViewIntent(getActivity(), (AvailableForm) listAdapter.getItem(position), patient);
         getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 
