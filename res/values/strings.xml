@@ -50,9 +50,8 @@
         clients
     </string>
 
-    <string name="no_clients_matched">No clients matched your search</string>
-    <string name="no_clients_matched_tip">Please note that your search includes client id, given name, middle name and
-        family name
+    <string name="no_clients_matched_locally">No clients matched your search locally</string>
+    <string name="no_clients_matched_tip_locally"> Your search includes client id, given name, middle name and family name and searched only in the device
     </string>
 
     <string name="action_settings">Settings</string>

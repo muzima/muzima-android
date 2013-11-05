@@ -36,7 +36,7 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_list);
+        setContentView(R.layout.activity_patient_list);
         Bundle intentExtras = getIntent().getExtras();
         if(intentExtras != null){
             quickSearch = intentExtras.getBoolean(QUICK_SEARCH);
@@ -48,7 +48,6 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
         }
 
         progressBarContainer = (FrameLayout) findViewById(R.id.progressbarContainer);
-
         setupActionbar();
         setupNoDataView();
         setupListView(cohortId);
@@ -141,9 +140,9 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
 
     private void setupNoSearchResultDataView() {
         TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
-        noDataMsgTextView.setText(getResources().getText(R.string.no_clients_matched));
+        noDataMsgTextView.setText(getResources().getText(R.string.no_clients_matched_locally));
         TextView noDataTipTextView = (TextView) findViewById(R.id.no_data_tip);
-        noDataTipTextView.setText(R.string.no_clients_matched_tip);
+        noDataTipTextView.setText(R.string.no_clients_matched_tip_locally);
     }
 
     @Override
