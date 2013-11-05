@@ -1,5 +1,6 @@
 package com.muzima.view.forms;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +20,8 @@ import com.muzima.controller.FormController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
 import com.muzima.view.BroadcastListenerActivity;
+import com.muzima.view.patients.PatientSummaryActivity;
+
 import org.json.JSONException;
 
 import java.util.UUID;
@@ -171,5 +174,10 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         return webView.getSettings();
     }
 
+    public void startPatientSummaryView(Patient patient) {
+        Intent intent = new Intent(this, PatientSummaryActivity.class);
+        intent.putExtra(PatientSummaryActivity.PATIENT, patient);
+        startActivity(intent);
+    }
 }
 
