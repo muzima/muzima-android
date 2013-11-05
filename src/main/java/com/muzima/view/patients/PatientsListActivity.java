@@ -3,10 +3,7 @@ package com.muzima.view.patients;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
@@ -32,6 +29,7 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
     private PatientsAdapter cohortPatientsAdapter;
     private FrameLayout progressBarContainer;
     private View noDataView;
+    private String searchString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +45,20 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
             }
         }
 
+
         progressBarContainer = (FrameLayout) findViewById(R.id.progressbarContainer);
         setupActionbar();
         setupNoDataView();
         setupListView(cohortId);
+
+
+        Button searchServerBtn = (Button) findViewById(R.id.search_server_btn);
+        searchServerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cohortPatientsAdapter.searchPatientOnServer(searchString);
+            }
+        });
     }
 
     @Override
@@ -68,6 +76,7 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
 
             @Override
             public boolean onQueryTextChange(String s) {
+                searchString = s;
                 cohortPatientsAdapter.search(s);
                 return true;
             }
@@ -128,6 +137,7 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
     }
 
     private void setupNoDataView() {
+
         noDataView = findViewById(R.id.no_data_layout);
 
         TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);

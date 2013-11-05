@@ -71,6 +71,10 @@ public class PatientsAdapter extends ListAdapter<Patient> {
         new BackgroundQueryTask().execute(cohortId);
     }
 
+    public void searchPatientOnServer(String searchString) {
+        new ServerSearchBackgroundTask().execute(searchString);
+    }
+
     public void search(String text) {
         new BackgroundQueryTask().execute(text, SEARCH);
     }
@@ -83,16 +87,35 @@ public class PatientsAdapter extends ListAdapter<Patient> {
         this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
     }
 
+    private class ServerSearchBackgroundTask extends AsyncTask<String, Void, List<Patient>> {
+        long startingTime;
+
+        @Override
+        protected void onPreExecute() {
+            startingTime = preExecuteSearch();
+        }
+
+        @Override
+        protected void onPostExecute(List<Patient> patients) {
+            postExecuteSearch(patients,startingTime);
+        }
+
+        @Override
+        protected List<Patient> doInBackground(String... strings) {
+
+            return patientController.searchPatientOnServer(strings[0]);
+        }
+    }
+
+
     private class BackgroundQueryTask extends AsyncTask<String, Void, List<Patient>> {
         long mStartingTime;
 
         @Override
         protected void onPreExecute() {
-            mStartingTime = System.currentTimeMillis();
-            if (backgroundListQueryTaskListener != null) {
-                backgroundListQueryTaskListener.onQueryTaskStarted();
-            }
+            mStartingTime = preExecuteSearch();
         }
+
 
         @Override
         protected List<Patient> doInBackground(String... params) {
@@ -126,24 +149,36 @@ public class PatientsAdapter extends ListAdapter<Patient> {
 
         @Override
         protected void onPostExecute(List<Patient> patients) {
-            if (patients == null) {
-                Toast.makeText(getContext(), "Something went wrong while fetching patients from local repo", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            postExecuteSearch(patients,mStartingTime);
+        }
+    }
 
-            PatientsAdapter.this.clear();
+    private long preExecuteSearch() {
+        if (backgroundListQueryTaskListener != null) {
+            backgroundListQueryTaskListener.onQueryTaskStarted();
+        }
+        return System.currentTimeMillis();
 
-            for (Patient patient : patients) {
-                add(patient);
-            }
-            notifyDataSetChanged();
+    }
 
-            long currentTime = System.currentTimeMillis();
-            Log.d(TAG, "Time taken in fetching patients from local repo: " + (currentTime - mStartingTime) / 1000 + " sec");
+    private void postExecuteSearch(List<Patient> patients,long startingTime) {
+        if (patients == null) {
+            Toast.makeText(getContext(), "Something went wrong while fetching patients from local repo", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-            if (backgroundListQueryTaskListener != null) {
-                backgroundListQueryTaskListener.onQueryTaskFinish();
-            }
+        PatientsAdapter.this.clear();
+
+        for (Patient patient : patients) {
+            add(patient);
+        }
+        notifyDataSetChanged();
+
+        long currentTime = System.currentTimeMillis();
+        Log.d(TAG, "Time taken in fetching patients from local repo: " + (currentTime - startingTime) / 1000 + " sec");
+
+        if (backgroundListQueryTaskListener != null) {
+            backgroundListQueryTaskListener.onQueryTaskFinish();
         }
     }
 

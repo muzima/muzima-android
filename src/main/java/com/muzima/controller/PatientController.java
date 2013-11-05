@@ -14,6 +14,7 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
 
 public class PatientController {
 
+    public static final String TAG = "PatientController";
     private PatientService patientService;
     private CohortService cohortService;
 
@@ -79,6 +80,7 @@ public class PatientController {
         }
     }
 
+
     public List<Patient> getPatientsForCohorts(String[] cohortUuids) throws PatientLoadException {
         List<Patient> allPatients = new ArrayList<Patient>();
         for (String cohortUuid : cohortUuids) {
@@ -90,6 +92,15 @@ public class PatientController {
             }
         }
         return allPatients;
+    }
+
+    public List<Patient> searchPatientOnServer(String name) {
+        try {
+            return patientService.downloadPatientsByName(name);
+        } catch (IOException e) {
+            //            TODO: Need to log it and should able to make the test pass.
+        }
+        return new ArrayList<Patient>();
     }
 
     public static class PatientReplaceException extends Throwable {

@@ -150,6 +150,24 @@ public class PatientControllerTest {
         assertThat(patientController.getPatientByUuid(uuid), is(patient));
     }
 
+    @Test
+    public void shouldSearchOnServerForPatientByNames() throws Exception {
+        String name = "name";
+        List<Patient> patients = new ArrayList<Patient>();
+
+        when(patientService.downloadPatientsByName(name)).thenReturn(patients);
+        assertThat(patientController.searchPatientOnServer(name), is(patients));
+        verify(patientService).downloadPatientsByName(name);
+    }
+
+    @Test
+    public void shouldReturnEmptyListIsExceptionThrown() throws Exception {
+        String searchString = "name";
+        doThrow(new IOException()).when(patientService).downloadPatientsByName(searchString);
+
+        assertThat(patientController.searchPatientOnServer(searchString).size(), is(0));
+    }
+
     private List<Patient> buildPatients() {
         ArrayList<Patient> patients = new ArrayList<Patient>();
         Patient patient1 = new Patient();
