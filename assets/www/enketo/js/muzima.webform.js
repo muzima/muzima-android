@@ -21,6 +21,7 @@ var /**@type {*}*/fileManager;
 
 $(document).ready(function () {
     'use strict';
+    try{
     var existingInstanceJ, instanceToEdit, loadErrors, jDataO,
         queryParams = {id:"", formName:""},
         formDataController = new FormDataController(queryParams);
@@ -37,6 +38,9 @@ $(document).ready(function () {
     form = new Form('form.jr:eq(0)', modelStr, instanceToEdit);
 
     loadErrors = form.init();
+    }catch(error){
+        alert("Something went wrong when loading the form!");
+    }
 
     function save(status) {
         var jData = jDataO.get();
