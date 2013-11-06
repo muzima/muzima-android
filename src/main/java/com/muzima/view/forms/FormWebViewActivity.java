@@ -165,7 +165,6 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
         webView.addJavascriptInterface(new FormDataStore(this, formController, formData), REPOSITORY);
         webView.addJavascriptInterface(new ZiggyFileLoader("www/ziggy", getApplicationContext().getAssets(), formInstance.getModelJson()), ZIGGY_FILE_LOADER);
-        webView.addJavascriptInterface(new MuzimaProgressDialog(this), "progressDialog");
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.loadUrl("file:///android_asset/www/enketo/template.html");
     }
