@@ -1,6 +1,8 @@
 package com.muzima.view.forms;
 
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.PatientIdentifier;
+import com.muzima.api.model.PatientIdentifierType;
 import com.muzima.api.model.PersonName;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,11 +47,23 @@ public class PatientJSONMapper {
 
     private Patient patient(Map<String, String> paramsMap) {
         Patient patient = new Patient();
-        patient.setUuid(String.valueOf(UUID.randomUUID()));
+        String uuid = String.valueOf(UUID.randomUUID());
+        patient.setIdentifiers(asList(patientIdentifier(uuid)));
+        patient.setUuid(uuid);
         patient.setNames(asList(personName(paramsMap)));
         patient.setGender(paramsMap.get("patient.sex"));
         patient.setBirthdate(getDate(paramsMap, "patient.birthdate"));
         return patient;
+    }
+
+    private PatientIdentifier patientIdentifier(String uuid) {
+        PatientIdentifier patientIdentifier = new PatientIdentifier();
+        PatientIdentifierType identifierType = new PatientIdentifierType();
+        identifierType.setName("LocalPatient");
+        patientIdentifier.setPreferred(true);
+        patientIdentifier.setIdentifierType(identifierType);
+        patientIdentifier.setIdentifier(uuid);
+        return patientIdentifier;
     }
 
     private Date getDate(Map<String, String> paramsMap, String property) {
