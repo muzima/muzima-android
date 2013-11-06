@@ -1,6 +1,7 @@
 package com.muzima.adapters.patients;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
+import static com.muzima.utils.Constants.LOCAL_SEARCH_MODE;
+import static com.muzima.utils.Constants.PATIENT_SEARCH_PREF;
+import static com.muzima.utils.Constants.PATIENT_SEARCH_PREF_KEY;
+import static com.muzima.utils.Constants.SERVER_SEARCH_MODE;
 import static com.muzima.utils.DateUtils.getFormattedDate;
 
 public class PatientsAdapter extends ListAdapter<Patient> {
@@ -107,6 +112,8 @@ public class PatientsAdapter extends ListAdapter<Patient> {
         @Override
         protected List<Patient> doInBackground(String... strings) {
             MuzimaApplication applicationContext = (MuzimaApplication) getContext();
+            addSearchModeToSharedPref(SERVER_SEARCH_MODE);
+
             Credentials credentials = new Credentials(getContext());
             try {
                 int authenticateResult = applicationContext.getMuzimaSyncService().authenticate(credentials.getCredentialsArray());
@@ -123,7 +130,6 @@ public class PatientsAdapter extends ListAdapter<Patient> {
         }
     }
 
-
     private class BackgroundQueryTask extends AsyncTask<String, Void, List<Patient>> {
         long mStartingTime;
 
@@ -137,6 +143,7 @@ public class PatientsAdapter extends ListAdapter<Patient> {
         protected List<Patient> doInBackground(String... params) {
             if (isSearch(params)) {
                 try {
+                    addSearchModeToSharedPref(LOCAL_SEARCH_MODE);
                     return patientController.searchPatientLocally(params[0], cohortId);
                 } catch (PatientController.PatientLoadException e) {
                     Log.w(TAG, "Exception occurred while searching patients for " + params[0] + " search string. " + e);
@@ -196,6 +203,13 @@ public class PatientsAdapter extends ListAdapter<Patient> {
         if (backgroundListQueryTaskListener != null) {
             backgroundListQueryTaskListener.onQueryTaskFinish();
         }
+    }
+
+    private void addSearchModeToSharedPref(String searchMode) {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(PATIENT_SEARCH_PREF, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PATIENT_SEARCH_PREF_KEY, searchMode);
+        editor.commit();
     }
 
     private class ViewHolder {

@@ -37,9 +37,21 @@
                 android:padding="10dp"
                 style="@style/NextButton"
                 android:text="Search Server"
+                android:visibility="invisible"
                 android:layout_height="wrap_content">
-
         </Button>
+
+        <Button android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/create_patient_btn"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                style="@style/NextButton"
+                android:text="Create Client"
+                android:visibility="invisible"
+                android:layout_height="wrap_content">
+        </Button>
+
     </LinearLayout>
 
     <include layout="@layout/progress_bar"/>

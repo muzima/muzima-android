@@ -1,9 +1,14 @@
 package com.muzima.view.patients;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
@@ -18,7 +23,13 @@ import com.muzima.utils.Fonts;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
-public class  PatientsListActivity extends SherlockActivity implements AdapterView.OnItemClickListener, ListAdapter.BackgroundListQueryTaskListener {
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+import static com.muzima.utils.Constants.LOCAL_SEARCH_MODE;
+import static com.muzima.utils.Constants.PATIENT_SEARCH_PREF;
+import static com.muzima.utils.Constants.PATIENT_SEARCH_PREF_KEY;
+
+public class PatientsListActivity extends SherlockActivity implements AdapterView.OnItemClickListener, ListAdapter.BackgroundListQueryTaskListener {
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
     public static final String QUICK_SEARCH = "quickSearch";
@@ -26,7 +37,7 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
     private ListView listView;
     private boolean quickSearch = false;
     private String cohortId = null;
-    private PatientsAdapter cohortPatientsAdapter;
+    private PatientsAdapter patientAdapter;
     private FrameLayout progressBarContainer;
     private View noDataView;
     private String searchString;
@@ -36,11 +47,11 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_list);
         Bundle intentExtras = getIntent().getExtras();
-        if(intentExtras != null){
+        if (intentExtras != null) {
             quickSearch = intentExtras.getBoolean(QUICK_SEARCH);
             cohortId = intentExtras.getString(COHORT_ID);
             String title = intentExtras.getString(COHORT_NAME);
-            if(title!=null){
+            if (title != null) {
                 setTitle(title);
             }
         }
@@ -56,7 +67,15 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
         searchServerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cohortPatientsAdapter.searchPatientOnServer(searchString);
+                patientAdapter.searchPatientOnServer(searchString);
+            }
+        });
+
+        Button createPatientBtn = (Button) findViewById(R.id.create_patient_btn);
+        createPatientBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PatientsListActivity.this, RegistrationFormsActivity.class));
             }
         });
     }
@@ -67,7 +86,6 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
         SearchView searchView = (SearchView) menu.findItem(R.id.search)
                 .getActionView();
         searchView.setQueryHint("Search clients");
-        setupNoSearchResultDataView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -77,7 +95,7 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
             @Override
             public boolean onQueryTextChange(String s) {
                 searchString = s;
-                cohortPatientsAdapter.search(s);
+                patientAdapter.search(s);
                 return true;
             }
         });
@@ -115,7 +133,7 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
     @Override
     protected void onResume() {
         super.onResume();
-        cohortPatientsAdapter.reloadData();
+        patientAdapter.reloadData();
     }
 
     private void setupActionbar() {
@@ -127,12 +145,12 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
     private void setupListView(String cohortId) {
         listView = (ListView) findViewById(R.id.list);
         listView.setEmptyView(findViewById(R.id.no_data_layout));
-        cohortPatientsAdapter = new PatientsAdapter(getApplicationContext(),
+        patientAdapter = new PatientsAdapter(getApplicationContext(),
                 R.layout.layout_list,
                 ((MuzimaApplication) getApplicationContext()).getPatientController(),
                 cohortId);
-        cohortPatientsAdapter.setBackgroundListQueryTaskListener(this);
-        listView.setAdapter(cohortPatientsAdapter);
+        patientAdapter.setBackgroundListQueryTaskListener(this);
+        listView.setAdapter(patientAdapter);
         listView.setOnItemClickListener(this);
     }
 
@@ -148,31 +166,55 @@ public class  PatientsListActivity extends SherlockActivity implements AdapterVi
         noDataTipTextView.setTypeface(Fonts.roboto_light(this));
     }
 
-    private void setupNoSearchResultDataView() {
-        TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
-        noDataMsgTextView.setText(getResources().getText(R.string.no_clients_matched_locally));
-        TextView noDataTipTextView = (TextView) findViewById(R.id.no_data_tip);
-        noDataTipTextView.setText(R.string.no_clients_matched_tip_locally);
-    }
-
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        Patient patient = cohortPatientsAdapter.getItem(position);
+        Patient patient = patientAdapter.getItem(position);
         Intent intent = new Intent(this, PatientSummaryActivity.class);
-        intent.putExtra(PatientSummaryActivity.PATIENT,patient);
+        intent.putExtra(PatientSummaryActivity.PATIENT, patient);
         startActivity(intent);
     }
 
     @Override
     public void onQueryTaskStarted() {
-        listView.setVisibility(View.INVISIBLE);
-        noDataView.setVisibility(View.INVISIBLE);
-        progressBarContainer.setVisibility(View.VISIBLE);
+        listView.setVisibility(INVISIBLE);
+        noDataView.setVisibility(INVISIBLE);
+        progressBarContainer.setVisibility(VISIBLE);
     }
 
     @Override
     public void onQueryTaskFinish() {
-        listView.setVisibility(View.VISIBLE);
-        progressBarContainer.setVisibility(View.INVISIBLE);
+        if (localSearch()) {
+            setUpNoDataViewForLocalSearch();
+        } else {
+            setUpNoDataViewForServerSearch();
+        }
+        listView.setVisibility(VISIBLE);
+        progressBarContainer.setVisibility(INVISIBLE);
+    }
+
+    private void setUpNoDataViewForServerSearch() {
+        noDataView = findViewById(R.id.no_data_layout);
+        setNoDataMessages(R.string.no_clients_matched_remotely, R.string.no_clients_matched_tip_remotely);
+        noDataView.findViewById(R.id.create_patient_btn).setVisibility(VISIBLE);
+        noDataView.findViewById(R.id.search_server_btn).setVisibility(INVISIBLE);
+    }
+
+    private void setUpNoDataViewForLocalSearch() {
+        noDataView = findViewById(R.id.no_data_layout);
+        setNoDataMessages(R.string.no_clients_matched_locally, R.string.no_clients_matched_tip_locally);
+        noDataView.findViewById(R.id.search_server_btn).setVisibility(VISIBLE);
+        noDataView.findViewById(R.id.create_patient_btn).setVisibility(INVISIBLE);
+    }
+
+    private void setNoDataMessages(int noDataMsg, int noDataMsgTip) {
+        TextView noDataMsgTextView = (TextView) noDataView.findViewById(R.id.no_data_msg);
+        noDataMsgTextView.setText(getResources().getText(noDataMsg));
+        TextView noDataTipTextView = (TextView) noDataView.findViewById(R.id.no_data_tip);
+        noDataTipTextView.setText(noDataMsgTip);
+    }
+
+    private boolean localSearch() {
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(PATIENT_SEARCH_PREF, MODE_PRIVATE);
+        return (sharedPreferences.getString(PATIENT_SEARCH_PREF_KEY, LOCAL_SEARCH_MODE).equals(LOCAL_SEARCH_MODE));
     }
 }
