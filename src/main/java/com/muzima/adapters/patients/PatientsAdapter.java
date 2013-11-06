@@ -9,13 +9,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
+import com.muzima.domain.Credentials;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
 import static com.muzima.utils.DateUtils.getFormattedDate;
 
 public class PatientsAdapter extends ListAdapter<Patient> {
@@ -97,13 +101,25 @@ public class PatientsAdapter extends ListAdapter<Patient> {
 
         @Override
         protected void onPostExecute(List<Patient> patients) {
-            postExecuteSearch(patients,startingTime);
+            postExecuteSearch(patients, startingTime);
         }
 
         @Override
         protected List<Patient> doInBackground(String... strings) {
-
-            return patientController.searchPatientOnServer(strings[0]);
+            MuzimaApplication applicationContext = (MuzimaApplication) getContext();
+            Credentials credentials = new Credentials(getContext());
+            try {
+                int authenticateResult = applicationContext.getMuzimaSyncService().authenticate(credentials.getCredentialsArray());
+                if (authenticateResult == AUTHENTICATION_SUCCESS) {
+                    return patientController.searchPatientOnServer(strings[0]);
+                }
+            } catch (Throwable t) {
+                Log.e(TAG, "Error while searching for patient in the server : " + t);
+            } finally {
+                applicationContext.getMuzimaContext().closeSession();
+            }
+            Log.e(TAG, "Authentication failure !! Returning empty patient list");
+            return new ArrayList<Patient>();
         }
     }
 
@@ -149,7 +165,7 @@ public class PatientsAdapter extends ListAdapter<Patient> {
 
         @Override
         protected void onPostExecute(List<Patient> patients) {
-            postExecuteSearch(patients,mStartingTime);
+            postExecuteSearch(patients, mStartingTime);
         }
     }
 
@@ -161,7 +177,7 @@ public class PatientsAdapter extends ListAdapter<Patient> {
 
     }
 
-    private void postExecuteSearch(List<Patient> patients,long startingTime) {
+    private void postExecuteSearch(List<Patient> patients, long startingTime) {
         if (patients == null) {
             Toast.makeText(getContext(), "Something went wrong while fetching patients from local repo", Toast.LENGTH_SHORT).show();
             return;
