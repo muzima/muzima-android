@@ -2,19 +2,24 @@ package com.muzima.view.forms;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
 import com.muzima.R;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
+import com.muzima.api.model.PatientIdentifierType;
 import com.muzima.model.BaseForm;
 import com.muzima.utils.barcode.IntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
 import com.muzima.view.BaseActivity;
 
 import java.util.Arrays;
+import java.util.UUID;
+
+import static java.lang.String.valueOf;
+
 
 public class RegistrationBarcodeActivity extends BaseActivity {
 
@@ -58,13 +63,16 @@ public class RegistrationBarcodeActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 BaseForm selectedForm = (BaseForm) getIntent().getSerializableExtra(SELECTED_REG_FORM);
-                Log.e("Prasanna", selectedForm.getName());
                 TextView patientBarCode = (TextView) findViewById(R.id.patient_id_barcode);
                 Patient patient = new Patient();
                 if (patientBarCode.getText() != null) {
                     PatientIdentifier patientIdentifier = new PatientIdentifier();
-                    patientIdentifier.setIdentifier(String.valueOf(patientBarCode.getText()));
+                    patientIdentifier.setIdentifier(valueOf(patientBarCode.getText()));
                     patientIdentifier.setPreferred(true);
+                    PatientIdentifierType identifierType = new PatientIdentifierType();
+                    identifierType.setName("OpenMRS Identifier");
+                    identifierType.setUuid(valueOf(UUID.randomUUID()));
+                    patientIdentifier.setIdentifierType(identifierType);
                     patient.setIdentifiers(Arrays.asList(patientIdentifier));
                 }
                 startActivity(new FormViewIntent(RegistrationBarcodeActivity.this, selectedForm, patient));

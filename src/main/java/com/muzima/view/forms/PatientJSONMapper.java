@@ -50,7 +50,7 @@ public class PatientJSONMapper {
     private Patient patient(Map<String, String> paramsMap) {
         Patient patient = new Patient();
         String uuid = String.valueOf(UUID.randomUUID());
-        patient.setIdentifiers(asList(patientIdentifier(uuid)));
+        patient.setIdentifiers(asList(patientIdentifier(uuid), preferredIdentifier(paramsMap)));
         patient.setUuid(uuid);
         patient.setNames(asList(personName(paramsMap)));
         patient.setGender(paramsMap.get("patient.sex"));
@@ -58,11 +58,16 @@ public class PatientJSONMapper {
         return patient;
     }
 
+    private PatientIdentifier preferredIdentifier(Map<String, String> paramsMap) {
+        PatientIdentifier patientIdentifier = patientIdentifier(paramsMap.get("patient.medical_record_number"));
+        patientIdentifier.setPreferred(true);
+        return patientIdentifier;
+    }
+
     private PatientIdentifier patientIdentifier(String uuid) {
         PatientIdentifier patientIdentifier = new PatientIdentifier();
         PatientIdentifierType identifierType = new PatientIdentifierType();
         identifierType.setName(Constants.LOCAL_PATIENT);
-        patientIdentifier.setPreferred(true);
         patientIdentifier.setIdentifierType(identifierType);
         patientIdentifier.setIdentifier(uuid);
         return patientIdentifier;
