@@ -371,6 +371,8 @@ public class FormController {
                 Log.e(TAG, e.toString());
             } catch (IOException e) {
                 Log.e(TAG, e.toString());
+            }catch (Exception e) {
+                Log.e(TAG, e.toString());
             }
         return null;
     }
