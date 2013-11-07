@@ -2,8 +2,12 @@ package com.muzima.controller;
 
 import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.PatientIdentifier;
+import com.muzima.api.model.PatientIdentifierType;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.PatientService;
+import com.muzima.utils.Constants;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
@@ -13,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
@@ -166,6 +171,30 @@ public class PatientControllerTest {
         doThrow(new IOException()).when(patientService).downloadPatientsByName(searchString);
 
         assertThat(patientController.searchPatientOnServer(searchString).size(), is(0));
+    }
+
+    @Test
+    public void getAllLocalPatients_shouldGetAllPatientsAndReturnOnlyLocalPatients() throws Exception, PatientController.PatientLoadException {
+
+        final Patient patientRemote1 = new Patient();
+        final Patient patientRemote2 = new Patient();
+        PatientIdentifierType patientIdentifierType = new PatientIdentifierType();
+        patientIdentifierType.setName(Constants.LOCAL_PATIENT);
+
+        final Patient patientLocal = mock(Patient.class);
+        PatientIdentifier patientIdentifier = mock(PatientIdentifier.class);
+
+        List<Patient> patients = new ArrayList<Patient>(){{
+            add(patientRemote1);
+            add(patientRemote2);
+            add(patientLocal);
+        }};
+        when(patientController.getAllPatients()).thenReturn(patients);
+
+        when(patientIdentifier.getIdentifierType()).thenReturn(patientIdentifierType);
+        when(patientLocal.getIdentifiers()).thenReturn(asList(patientIdentifier));
+
+        assertThat(patientController.getAllLocalPatients().size(), is(1));
     }
 
     private List<Patient> buildPatients() {

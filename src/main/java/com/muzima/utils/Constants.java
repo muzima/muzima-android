@@ -14,6 +14,7 @@ public class Constants {
     public static final String STATUS_INCOMPLETE = "incomplete";
     public static final String STATUS_COMPLETE = "complete";
     public static final String STATUS_UPLOADED = "uploaded";
+    public static String LOCAL_PATIENT = "LocalPatient";
 
     public static final String FORM_DISCRIMINATOR_ENCOUNTER = "uploaded";
     public static final String FORM_DISCRIMINATOR_REGISTRATION = "registration";

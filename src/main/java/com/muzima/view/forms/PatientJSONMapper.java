@@ -4,6 +4,8 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientIdentifierType;
 import com.muzima.api.model.PersonName;
+import com.muzima.utils.Constants;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,7 +61,7 @@ public class PatientJSONMapper {
     private PatientIdentifier patientIdentifier(String uuid) {
         PatientIdentifier patientIdentifier = new PatientIdentifier();
         PatientIdentifierType identifierType = new PatientIdentifierType();
-        identifierType.setName("LocalPatient");
+        identifierType.setName(Constants.LOCAL_PATIENT);
         patientIdentifier.setPreferred(true);
         patientIdentifier.setIdentifierType(identifierType);
         patientIdentifier.setIdentifier(uuid);

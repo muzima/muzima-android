@@ -2,8 +2,11 @@ package com.muzima.controller;
 
 import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.PatientService;
+import com.muzima.utils.Constants;
+
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -101,6 +104,24 @@ public class PatientController {
             //            TODO: Need to log it and should able to make the test pass.
         }
         return new ArrayList<Patient>();
+    }
+
+    public List<Patient> getAllLocalPatients() throws PatientLoadException {
+        //TODO: Try to replace this google guava
+        try {
+            ArrayList<Patient> localPatients = new ArrayList<Patient>();
+            List<Patient> allPatients = getAllPatients();
+            for (Patient patient : allPatients) {
+               for (PatientIdentifier patientIdentifier : patient.getIdentifiers()) {
+                   if (patientIdentifier.getIdentifierType().getName().equals(Constants.LOCAL_PATIENT)) {
+                       localPatients.add(patient);
+                   }
+               }
+            }
+            return localPatients;
+        } catch (PatientLoadException e) {
+            throw e;
+        }
     }
 
     public static class PatientReplaceException extends Throwable {
