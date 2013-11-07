@@ -1,12 +1,12 @@
 package com.muzima.controller;
 
+import android.util.Log;
 import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.PatientService;
 import com.muzima.utils.Constants;
-
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class PatientController {
     public List<Patient> getPatients(String cohortId) throws PatientLoadException {
         try {
             List<CohortMember> cohortMembers = cohortService.getCohortMembers(cohortId);
-            ArrayList<Patient> patients = new ArrayList<Patient>();
+            List<Patient> patients = new ArrayList<Patient>();
             for (CohortMember member : cohortMembers) {
                 patients.add(patientService.getPatientByUuid(member.getPatientUuid()));
             }
@@ -101,28 +101,39 @@ public class PatientController {
         try {
             return patientService.downloadPatientsByName(name);
         } catch (IOException e) {
-            //            TODO: Need to log it and should able to make the test pass.
+            Log.e(TAG, "Error while searching for patients in the server");
         }
         return new ArrayList<Patient>();
     }
 
-    public List<Patient> getAllLocalPatients() throws PatientLoadException {
+    public List<Patient> getAllLocalPatients() {
         //TODO: Try to replace this google guava
         try {
-            ArrayList<Patient> localPatients = new ArrayList<Patient>();
+            List<Patient> localPatients = new ArrayList<Patient>();
             List<Patient> allPatients = getAllPatients();
             for (Patient patient : allPatients) {
-               for (PatientIdentifier patientIdentifier : patient.getIdentifiers()) {
-                   if (patientIdentifier.getIdentifierType().getName().equals(Constants.LOCAL_PATIENT)) {
-                       localPatients.add(patient);
-                   }
-               }
+                for (PatientIdentifier patientIdentifier : patient.getIdentifiers()) {
+                    if (patientIdentifier.getIdentifierType().getName().equals(Constants.LOCAL_PATIENT)) {
+                        localPatients.add(patient);
+                    }
+                }
             }
             return localPatients;
         } catch (PatientLoadException e) {
-            throw e;
+            Log.e(TAG, "Error while loading local patients");
         }
+        return new ArrayList<Patient>();
     }
+
+    public Patient consolidateTemporaryPatient(Patient patient) {
+        try {
+            return patientService.consolidateTemporaryPatient(patient);
+        } catch (IOException e) {
+            Log.e(TAG, "Error while consolidating the temporary patient.");
+        }
+        return null;
+    }
+
 
     public static class PatientReplaceException extends Throwable {
         public PatientReplaceException(Throwable throwable) {
