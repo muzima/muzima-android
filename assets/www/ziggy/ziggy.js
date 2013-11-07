@@ -618,7 +618,7 @@ enketo.FormDefinitionLoader = function () {
 
     return {
         load: function (formName) {
-            return JSON.parse(ziggyFileLoader.loadAppData());
+            return JSON.parse(ziggyFileLoader.loadAppData()+"");
         }
     };
 };
