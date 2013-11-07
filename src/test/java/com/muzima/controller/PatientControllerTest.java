@@ -196,7 +196,7 @@ public class PatientControllerTest {
         when(patientIdentifier.getIdentifierType()).thenReturn(patientIdentifierType);
         when(patientLocal.getIdentifiers()).thenReturn(asList(patientIdentifier));
 
-        assertThat(patientController.getAllLocalPatients().size(), is(1));
+        assertThat(patientController.getAllPatientsCreatedLocally().size(), is(1));
     }
 
     @Test

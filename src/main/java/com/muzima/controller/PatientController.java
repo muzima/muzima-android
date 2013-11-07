@@ -106,7 +106,7 @@ public class PatientController {
         return new ArrayList<Patient>();
     }
 
-    public List<Patient> getAllLocalPatients() {
+    public List<Patient> getAllPatientsCreatedLocally() {
         //TODO: Try to replace this google guava
         try {
             List<Patient> localPatients = new ArrayList<Patient>();
@@ -139,6 +139,8 @@ public class PatientController {
             patientService.savePatient(patient);
         } catch (IOException e) {
             Log.e(TAG, "Error while saving the patient : " + patient.getUuid());
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
     }
 

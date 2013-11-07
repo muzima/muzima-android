@@ -85,7 +85,7 @@ public class DataSyncService extends IntentService {
                 String[] cohortIds = intent.getStringArrayExtra(COHORT_IDS);
                 updateNotificationMsg("Downloading Patients");
                 if(authenticationSuccessful(credentials, broadcastIntent)){
-                    DownloadPatients(broadcastIntent, cohortIds);
+                    downloadPatients(broadcastIntent, cohortIds);
                     downloadObservationsAndEncounters(broadcastIntent, cohortIds);
                 }
                 break;
@@ -93,7 +93,7 @@ public class DataSyncService extends IntentService {
                 String[] cohortIdsToDownload = intent.getStringArrayExtra(COHORT_IDS);
                 updateNotificationMsg("Downloading Patients");
                 if(authenticationSuccessful(credentials, broadcastIntent)){
-                    DownloadPatients(broadcastIntent, cohortIdsToDownload);
+                    downloadPatients(broadcastIntent, cohortIdsToDownload);
                 }
                 break;
             case SYNC_PATIENTS_DATA_ONLY:
@@ -131,7 +131,7 @@ public class DataSyncService extends IntentService {
         broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, SYNC_ENCOUNTERS);
     }
 
-    private void DownloadPatients(Intent broadcastIntent, String[] cohortIds) {
+    private void downloadPatients(Intent broadcastIntent, String[] cohortIds) {
         int[] resultForPatients = muzimaSyncService.downloadPatientsForCohorts(cohortIds);
         String msgForPatients = "Downloaded " + resultForPatients[1] + " patients";
         prepareBroadcastMsg(broadcastIntent, resultForPatients, msgForPatients);
