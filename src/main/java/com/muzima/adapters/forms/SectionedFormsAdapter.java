@@ -111,11 +111,8 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
         Collections.sort(forms, alphabaticalComparator);
         setNotifyOnChange(false);
         clear();
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            addAll(forms);
-        } else {
-//            TODO for FROYO
-        }
+        addAll(forms);
+
         StickyListHeadersSectionIndexerAdapterWrapper adapter = (StickyListHeadersSectionIndexerAdapterWrapper) listView.getAdapter();
         adapter.notifyDataSetChanged();
     }

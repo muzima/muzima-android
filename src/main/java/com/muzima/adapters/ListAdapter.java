@@ -3,6 +3,8 @@ package com.muzima.adapters;
 import android.content.Context;
 import android.widget.ArrayAdapter;
 
+import java.util.Collection;
+
 public abstract class ListAdapter<T> extends ArrayAdapter<T>{
 
     public ListAdapter(Context context, int textViewResourceId) {
@@ -14,5 +16,13 @@ public abstract class ListAdapter<T> extends ArrayAdapter<T>{
     public interface BackgroundListQueryTaskListener{
         public void onQueryTaskStarted();
         public void onQueryTaskFinish();
+    }
+
+    // addAll is not supported in API 8, so overwrite it
+    @Override
+    public final void addAll(Collection<? extends T> collection) {
+        for (T t : collection) {
+            add(t);
+        }
     }
 }

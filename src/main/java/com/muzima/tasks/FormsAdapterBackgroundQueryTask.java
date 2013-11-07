@@ -61,14 +61,7 @@ public abstract class FormsAdapterBackgroundQueryTask<T extends BaseForm> extend
                 return;
             }
             formsAdapter.clear();
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                formsAdapter.addAll(forms);
-            } else {
-//              TODO for FROYO
-                for (T form : forms) {
-                    formsAdapter.add(form);
-                }
-            }
+            formsAdapter.addAll(forms);
             formsAdapter.notifyDataSetChanged();
         }
     }

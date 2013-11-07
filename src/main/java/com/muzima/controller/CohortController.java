@@ -64,7 +64,6 @@ public class CohortController {
                 List<Cohort> cohorts = cohortService.downloadCohortsByName(cohortPrefix);
                 List<Cohort> filteredCohortsForPrefix = filterCohortsByPrefix(cohorts, cohortPrefix);
                 addUniqueCohorts(filteredCohorts, filteredCohortsForPrefix);
-//                filteredCohorts.addAll(filteredCohortsForPrefix);
             }
         } catch (IOException e) {
             throw new CohortDownloadException(e);
