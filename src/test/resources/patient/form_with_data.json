@@ -34,7 +34,8 @@
         },
         {
             "name": "patient.medical_record_number",
-            "bind": "/model/instance/form/patient/patient.medical_record_number"
+            "bind": "/model/instance/form/patient/patient.medical_record_number",
+            "value": "78899-Z"
         },
         {
             "name": "patient.birthdate",
