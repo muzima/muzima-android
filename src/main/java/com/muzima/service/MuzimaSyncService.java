@@ -10,7 +10,9 @@ import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
 import java.net.ConnectException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
 
@@ -130,16 +132,6 @@ public class MuzimaSyncService {
         return result;
     }
 
-    private List<Concept> getRelatedConcepts(List<FormTemplate> formTemplates) throws ConceptController.ConceptDownloadException {
-        HashSet<Concept> concepts = new HashSet<Concept>();
-        ConceptParser utils = new ConceptParser();
-        for (FormTemplate formTemplate : formTemplates) {
-            List<String> names = utils.parse(formTemplate.getModel());
-            concepts.addAll(conceptController.downloadConceptsByNames(names));
-        }
-        return new ArrayList<Concept>(concepts);
-    }
-
     public int[] downloadCohorts() {
         int[] result = new int[2];
         try {
@@ -168,15 +160,14 @@ public class MuzimaSyncService {
         return result;
     }
 
-    private List<Cohort> downloadCohortsList() throws CohortController.CohortDownloadException {
-        List<String> cohortPrefixes = cohortPrefixPreferenceService.getCohortPrefixes();
-        List<Cohort> cohorts;
-        if (cohortPrefixes.isEmpty()){
-            cohorts = cohortController.downloadAllCohorts();
-        } else {
-            cohorts = cohortController.downloadCohortsByPrefix(cohortPrefixes);
+    private List<Concept> getRelatedConcepts(List<FormTemplate> formTemplates) throws ConceptController.ConceptDownloadException {
+        HashSet<Concept> concepts = new HashSet<Concept>();
+        ConceptParser utils = new ConceptParser();
+        for (FormTemplate formTemplate : formTemplates) {
+            List<String> names = utils.parse(formTemplate.getModel());
+            concepts.addAll(conceptController.downloadConceptsByNames(names));
         }
-        return cohorts;
+        return new ArrayList<Concept>(concepts);
     }
 
     public int[] downloadPatientsForCohorts(String[] cohortUuids) {
@@ -304,6 +295,17 @@ public class MuzimaSyncService {
             result[0] = UPLOAD_ERROR;
         }
         return result;
+    }
+
+    private List<Cohort> downloadCohortsList() throws CohortController.CohortDownloadException {
+        List<String> cohortPrefixes = cohortPrefixPreferenceService.getCohortPrefixes();
+        List<Cohort> cohorts;
+        if (cohortPrefixes.isEmpty()) {
+            cohorts = cohortController.downloadAllCohorts();
+        } else {
+            cohorts = cohortController.downloadCohortsByPrefix(cohortPrefixes);
+        }
+        return cohorts;
     }
 
     private List<Observation> downloadAllObservations(List<String> patientUuids) throws ObservationController.DownloadObservationException {
