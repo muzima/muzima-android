@@ -134,6 +134,22 @@ public class PatientController {
         return null;
     }
 
+    public void savePatient(Patient patient) {
+        try {
+            patientService.savePatient(patient);
+        } catch (IOException e) {
+            Log.e(TAG, "Error while saving the patient : " + patient.getUuid());
+        }
+    }
+
+    public void deletePatient(Patient localPatient) {
+        try {
+            patientService.deletePatient(localPatient);
+        } catch (IOException e) {
+            Log.e(TAG, "Error while deleting local patient : " + localPatient.getUuid());
+        }
+    }
+
 
     public static class PatientReplaceException extends Throwable {
         public PatientReplaceException(Throwable throwable) {

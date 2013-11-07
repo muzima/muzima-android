@@ -20,6 +20,7 @@ import static com.muzima.controller.ObservationController.ReplaceObservationExce
 import static com.muzima.utils.Constants.COHORT_PREFIX_PREF;
 import static com.muzima.utils.Constants.COHORT_PREFIX_PREF_KEY;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
+import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyList;
@@ -27,7 +28,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 @RunWith(CustomTestRunner.class)
-public class DownloadServiceTest {
+public class MuzimaSyncServiceTest {
 
     private MuzimaSyncService muzimaSyncService;
     private MuzimaApplication muzimaApplication;
@@ -424,8 +425,8 @@ public class DownloadServiceTest {
 
         when(patientController.getPatientsForCohorts(cohortUuids)).thenReturn(patients);
         when(muzimaApplication.getSharedPreferences(Constants.CONCEPT_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
-        List<String> patientUuids = Arrays.asList(new String[]{"patient1", "patient2"});
-        List<String> conceptUuids = Arrays.asList(new String[]{"weight","temp"});
+        List<String> patientUuids = asList(new String[]{"patient1", "patient2"});
+        List<String> conceptUuids = asList(new String[]{"weight", "temp"});
         when(observationController.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids))
                 .thenReturn(allObservations);
         when(concetpPreferenceService.getConcepts()).thenReturn(conceptUuids);
@@ -455,9 +456,9 @@ public class DownloadServiceTest {
         }};
 
         when(patientController.getPatientsForCohorts(cohortUuids)).thenReturn(patients);
-        List<String> conceptUuids = Arrays.asList(new String[]{"weight"});
+        List<String> conceptUuids = asList(new String[]{"weight"});
         when(concetpPreferenceService.getConcepts()).thenReturn(conceptUuids);
-        when(observationController.downloadObservationsByPatientUuidsAndConceptUuids(Arrays.asList(new String[]{"patient1"}), conceptUuids))
+        when(observationController.downloadObservationsByPatientUuidsAndConceptUuids(asList(new String[]{"patient1"}), conceptUuids))
                 .thenReturn(allObservations);
 
         int[] result = muzimaSyncService.downloadObservationsForPatients(cohortUuids);
@@ -521,7 +522,7 @@ public class DownloadServiceTest {
         }};
 
         when(patientController.getPatientsForCohorts(cohortUuids)).thenReturn(patients);
-        List<String> patientUuids = Arrays.asList(new String[]{"patient1"});
+        List<String> patientUuids = asList(new String[]{"patient1"});
         when(encounterController.downloadEncountersByPatientUuids(patientUuids)).thenReturn(encounters);
 
         muzimaSyncService.downloadEncountersForPatients(cohortUuids);
@@ -531,4 +532,19 @@ public class DownloadServiceTest {
         verifyNoMoreInteractions(observationController);
     }
 
+    @Test
+    public void consolidatePatients_shouldGetAllPatientsConsolidateSavePatientFromServerAndDeleteLocalPatient() throws Exception {
+        Patient localPatient = mock(Patient.class);
+        Patient remotePatient = mock(Patient.class);
+
+        when(patientController.consolidateTemporaryPatient(localPatient)).thenReturn(remotePatient);
+        when(patientController.getAllLocalPatients()).thenReturn(asList(localPatient));
+
+        muzimaSyncService.consolidatePatients();
+
+        verify(patientController).getAllLocalPatients();
+        verify(patientController).consolidateTemporaryPatient(localPatient);
+        verify(patientController).savePatient(remotePatient);
+        verify(patientController).deletePatient(localPatient);
+    }
 }

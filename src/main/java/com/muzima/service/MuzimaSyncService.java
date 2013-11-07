@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
+import static com.muzima.utils.Constants.LOCAL_PATIENT;
 
 public class MuzimaSyncService {
     private static final String TAG = "MuzimaSyncService";
@@ -295,6 +296,18 @@ public class MuzimaSyncService {
             result[0] = UPLOAD_ERROR;
         }
         return result;
+    }
+
+    public void consolidatePatients() {
+        List<Patient> allLocalPatients = patientController.getAllLocalPatients();
+        for (Patient localPatient : allLocalPatients) {
+            Patient patientFromServer = patientController.consolidateTemporaryPatient(localPatient);
+            if (patientFromServer != null) {
+                patientFromServer.addIdentifier(localPatient.getIdentifier(LOCAL_PATIENT));
+                patientController.deletePatient(localPatient);
+                patientController.savePatient(patientFromServer);
+            }
+        }
     }
 
     private List<Cohort> downloadCohortsList() throws CohortController.CohortDownloadException {
