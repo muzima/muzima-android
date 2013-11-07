@@ -1,5 +1,6 @@
 package com.muzima.adapters.forms;
 
+import android.content.Context;
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
@@ -13,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 
+import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
 import static com.muzima.adapters.forms.CompleteFormsAdapter.BackgroundQueryTask;
@@ -31,7 +33,13 @@ public class CompleteFormsAdapterTest {
     @Before
     public void setUp() throws Exception {
         formController = mock(FormController.class);
-        formsAdapter = new CompleteFormsAdapter(null, 0, formController);
+        Context context = mock(Context.class);
+        formsAdapter = new CompleteFormsAdapter(context, 0, formController){
+            @Override
+            public void addAll(Collection<? extends CompleteFormWithPatientData> collection) {
+
+            }
+        };
 
         Robolectric.getBackgroundScheduler().pause();
         Robolectric.getUiThreadScheduler().pause();
