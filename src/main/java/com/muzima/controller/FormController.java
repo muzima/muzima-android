@@ -11,6 +11,7 @@ import com.muzima.model.collections.*;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.CustomColor;
 import com.muzima.view.forms.PatientJSONMapper;
+import org.apache.lucene.queryParser.ParseException;
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -370,6 +371,8 @@ public class FormController {
             } catch (JSONException e) {
                 Log.e(TAG, e.toString());
             } catch (IOException e) {
+                Log.e(TAG, e.toString());
+            } catch (ParseException e) {
                 Log.e(TAG, e.toString());
             }
         return null;
