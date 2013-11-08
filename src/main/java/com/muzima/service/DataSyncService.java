@@ -156,8 +156,6 @@ public class DataSyncService extends IntentService {
         }
     }
 
-
-
     private void saveFormsSyncTime(int[] result) {
         if (result[0] == SyncStatusConstants.SUCCESS) {
             SharedPreferences pref = getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);

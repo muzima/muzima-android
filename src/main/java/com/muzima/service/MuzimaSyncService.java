@@ -299,7 +299,7 @@ public class MuzimaSyncService {
     }
 
     public void consolidatePatients() {
-        List<Patient> allLocalPatients = patientController.getAllPatientsCreatedLocally();
+        List<Patient> allLocalPatients = patientController.getAllPatientsCreatedLocallyAndNotSynced();
         for (Patient localPatient : allLocalPatients) {
             Patient patientFromServer = patientController.consolidateTemporaryPatient(localPatient);
             if (patientFromServer != null) {

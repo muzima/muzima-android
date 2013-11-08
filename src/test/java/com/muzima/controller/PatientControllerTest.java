@@ -7,7 +7,6 @@ import com.muzima.api.model.PatientIdentifierType;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.PatientService;
 import com.muzima.utils.Constants;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
@@ -176,27 +175,33 @@ public class PatientControllerTest {
     }
 
     @Test
-    public void getAllLocalPatients_shouldGetAllPatientsAndReturnOnlyLocalPatients() throws Exception, PatientController.PatientLoadException {
+    public void shouldGetAllLocalPatients() throws Exception, PatientController.PatientLoadException {
+        Patient patientRemote1 = patient("remoteUUID1",null);
+        Patient patientRemote2 = patient("remoteUUID2",null);
+        Patient patientLocal = patient("localUUID1",patientIdentifier("localUUID1"));
+        Patient localPatientButSyncedLater = patient("remoteUUID3",patientIdentifier("localUUID2"));
 
-        final Patient patientRemote1 = new Patient();
-        final Patient patientRemote2 = new Patient();
-        PatientIdentifierType patientIdentifierType = new PatientIdentifierType();
-        patientIdentifierType.setName(Constants.LOCAL_PATIENT);
+        when(patientService.getAllPatients()).thenReturn(asList(patientLocal,patientRemote1,patientRemote2,localPatientButSyncedLater));
 
-        final Patient patientLocal = mock(Patient.class);
-        PatientIdentifier patientIdentifier = mock(PatientIdentifier.class);
+        assertThat(patientController.getAllPatientsCreatedLocallyAndNotSynced().size(), is(1));
+    }
 
-        List<Patient> patients = new ArrayList<Patient>(){{
-            add(patientRemote1);
-            add(patientRemote2);
-            add(patientLocal);
-        }};
-        when(patientController.getAllPatients()).thenReturn(patients);
+    private Patient patient(String uuid, PatientIdentifier patientIdentifier) {
+        Patient patient = new Patient();
+        patient.setUuid(uuid);
+        if (patientIdentifier != null) {
+            patient.setIdentifiers(asList(patientIdentifier));
+        }
+        return patient;
+    }
 
-        when(patientIdentifier.getIdentifierType()).thenReturn(patientIdentifierType);
-        when(patientLocal.getIdentifiers()).thenReturn(asList(patientIdentifier));
-
-        assertThat(patientController.getAllPatientsCreatedLocally().size(), is(1));
+    private PatientIdentifier patientIdentifier(String identifier) {
+        PatientIdentifier patientIdentifier = new PatientIdentifier();
+        PatientIdentifierType identifierType = new PatientIdentifierType();
+        identifierType.setName(Constants.LOCAL_PATIENT);
+        patientIdentifier.setIdentifierType(identifierType);
+        patientIdentifier.setIdentifier(identifier);
+        return patientIdentifier;
     }
 
     @Test
@@ -204,7 +209,7 @@ public class PatientControllerTest {
         Patient tempPatient = mock(Patient.class);
         Patient patient = mock(Patient.class);
         when(patientService.consolidateTemporaryPatient(tempPatient)).thenReturn(patient);
-        assertThat(patient,is(patientController.consolidateTemporaryPatient(tempPatient)));
+        assertThat(patient, is(patientController.consolidateTemporaryPatient(tempPatient)));
     }
 
     private List<Patient> buildPatients() {

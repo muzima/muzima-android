@@ -538,11 +538,11 @@ public class MuzimaSyncServiceTest {
         Patient remotePatient = mock(Patient.class);
 
         when(patientController.consolidateTemporaryPatient(localPatient)).thenReturn(remotePatient);
-        when(patientController.getAllPatientsCreatedLocally()).thenReturn(asList(localPatient));
+        when(patientController.getAllPatientsCreatedLocallyAndNotSynced()).thenReturn(asList(localPatient));
 
         muzimaSyncService.consolidatePatients();
 
-        verify(patientController).getAllPatientsCreatedLocally();
+        verify(patientController).getAllPatientsCreatedLocallyAndNotSynced();
         verify(patientController).consolidateTemporaryPatient(localPatient);
         verify(patientController).savePatient(remotePatient);
         verify(patientController).deletePatient(localPatient);
