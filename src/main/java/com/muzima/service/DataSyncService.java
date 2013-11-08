@@ -79,6 +79,7 @@ public class DataSyncService extends IntentService {
                     String msg = "Downloaded " + result[1] + " cohorts";
                     prepareBroadcastMsg(broadcastIntent, result, msg);
                     saveCohortsSyncTime(result);
+                    muzimaSyncService.consolidatePatients();
                 }
                 break;
             case SYNC_PATIENTS_FULL_DATA:
