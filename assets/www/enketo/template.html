@@ -22,6 +22,23 @@
 		<script type="text/javascript" src="js/widgets.js"></script>
 
 		<script type="text/javascript" src="../ziggy/ziggy.js"></script>
+        <script type="text/javascript">
+            // Date.parse("yyyy-MM-dd"), new Date("yyyy-MM-dd") is not supported in android 2.2. Added this patch for libraries-all-min.js to fix it.
+            var ecmaScriptDateParse = Date.parse;
+            Date.parse = function(dateString){
+                if(!dateString){
+                    return;
+                }
+                var date = ecmaScriptDateParse(dateString);
+                if(isNaN(date)){
+                    var dateParts = dateString.split("-");
+                    date = new Date(dateParts[0], (dateParts[1] - 1), dateParts[2]).getTime();
+                }
+                return date;
+            }
+
+            DateType.prototype.toDate=function(){var date=new Date(this.value);if(!isNaN(date.getTime())) return date;return new Date(Date.parse(this.value))}
+        </script>
 		<script type="text/javascript">
             window.onerror = function (m, u, l) {
         	    console.error("Javascript Error: , msg: {0}, url: {1}, line: {2}".format(m, u, l));
