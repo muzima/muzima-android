@@ -3,14 +3,11 @@ package com.muzima.view.preferences;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
-import android.preference.PreferenceActivity;
-import android.view.Menu;
-import android.view.MenuItem;
-
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.muzima.R;
 import com.muzima.search.api.util.StringUtil;
 
-public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsActivity extends SherlockPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private String serverPreferenceKey;
     private String usernamePreferenceKey;
@@ -97,18 +94,18 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
      * Set up the {@link android.app.ActionBar}.
      */
     private void setupActionBar() {
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.settings, menu);
+        getSupportMenuInflater().inflate(R.menu.settings, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();

@@ -30,7 +30,7 @@
 
     </style>
 
-    <style name="PreferencesTheme" parent="android:Theme.Holo">
+    <style name="PreferencesTheme" parent="Theme.Sherlock">
         <item name="android:windowBackground">@color/theme_color</item>
     </style>
 
