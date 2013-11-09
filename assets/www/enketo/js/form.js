@@ -1328,6 +1328,9 @@ function Form (formSelector, dataStr, dataStrToEdit){
                 if ( type === 'date' || type === 'datetime'){
                     //convert current value (loaded from instance) to a value that a native datepicker understands
                     //TODO test for IE, FF, Safari when those browsers start including native datepickers
+
+                    // On Android 2.2, dates with '-' are not properly converted, so replace '-' with '/'
+                    value = value.replace(/-/g, "/");
                     value = data.node().convert(value, type);
 
                     console.debug('converting date before setting input field to: '+value);
