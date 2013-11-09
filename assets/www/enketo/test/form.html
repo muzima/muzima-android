@@ -2,7 +2,7 @@
 <!--This form was created by transforming a javaRosa-style (X)Form using an XSLT sheet created
                     by Aid Web Solutions.
                 --><section class="form-logo"> </section>
-<h3 id="form-title">CCSP Histopathology Form</h3>
+<h3 id="form-title">CCSP PAP Smear Form</h3>
 
 
 <fieldset class="jr-group ">
@@ -53,23 +53,19 @@
     </label>
 </fieldset>
 <!--end of group
-   --><label class="jr-branch pre-init ">
-    <span lang="" class=" active">Cervical cancer screening cannot be done on a male. This form will be closed</span>
-    <input autocomplete="off" type="text" name="/form/patient/no_male" data-relevant="../patient/patient.sex= 'M'" data-type-xml="string" readonly="readonly"/>
-</label>
-<fieldset class="jr-group jr-branch pre-init jr-appearance-field-list" name="/form/encounter" data-relevant="../patient/patient.sex= 'F'">
+   --><fieldset class="jr-group jr-branch pre-init jr-appearance-field-list" name="/form/encounter" data-relevant="../patient/patient.sex= 'F'">
     <h4>
         <span lang="" class=" active">Encounter Details</span>
     </h4>
     <label class="">
-        <span lang="" class=" active">Date Pathology Sample Was Taken</span>
+        <span lang="" class=" active">Encounter Date</span>
         <span class="required">*</span>
         <input autocomplete="off" type="date" name="/form/encounter/encounter.encounter_datetime" required="required" data-constraint=". &lt;=today()" data-type-xml="date"/>
     </label>
     <fieldset class="restoring-sanity-to-legends ">
         <fieldset>
             <legend>
-                <span lang="" class=" active">Clinic Location Where Sample Was Taken</span>
+                <span lang="" class=" active">Screening Site</span>
                 <span class="required">*</span>
             </legend>
             <label class="clearfix ">
@@ -201,206 +197,168 @@
     </fieldset>
 </fieldset>
 <!--end of group
-   --><fieldset class="jr-group jr-appearance-field-list">
-    <h4>
-        <span lang="" class=" active">Procedures Done This Visit</span>
-    </h4>
-    <fieldset class="jr-repeat " name="/form/obs/procedures_done_this_visit_detailed">
-        <fieldset class="restoring-sanity-to-legends ">
-            <fieldset>
-                <legend>
-                    <span lang="" class=" active">Body Part Where Specimen Was Collected?</span>
-                    <span class="required">*</span>
-                </legend>
-                <label class="clearfix ">
-                    <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/body_part/value" value="8279^CERVIX^99DCT" required="required" data-type-xml="string"/>
-                    <span lang="" class=" active">Cervix</span>
-                </label>
-                <label class="clearfix ">
-                    <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/body_part/value" value="8280^VAGINA^99DCT" required="required" data-type-xml="string"/>
-                    <span lang="" class=" active">Vagina</span>
-                </label>
-                <label class="clearfix ">
-                    <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/body_part/value" value="8281^VULVA^99DCT" required="required" data-type-xml="string"/>
-                    <span lang="" class=" active">Vulva</span>
-                </label>
-            </fieldset>
-        </fieldset>
-        <fieldset class="restoring-sanity-to-legends ">
-            <fieldset>
-                <legend>
-                    <span lang="" class=" active">How Was Specimen Collected?</span>
-                    <span class="required">*</span>
-                </legend>
-                <label class="clearfix ">
-                    <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/procedures_done_this_visit/value" value="7147^LOOP ELECTROSURGICAL EXCISION PROCEDURE^99DCT" required="required" data-type-xml="string"/>
-                    <span lang="" class=" active">LEEP</span>
-                </label>
-                <label class="clearfix ">
-                    <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/procedures_done_this_visit/value" value="6511^EXCISIONAL OR SURGICAL BIOPSY^99DCT" required="required" data-type-xml="string"/>
-                    <span lang="" class=" active">Cervical punch/excisional Biopsy</span>
-                </label>
-                <label class="clearfix ">
-                    <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/procedures_done_this_visit/value" value="7478^ENDOCERVICAL CURETTAGE ^99DCT" required="required" data-type-xml="string"/>
-                    <span lang="" class=" active">Endocervical curretage (ECC)</span>
-                </label>
-            </fieldset>
-        </fieldset>
-        <fieldset class="restoring-sanity-to-legends jr-branch pre-init ">
-            <fieldset>
-                <legend>
-                    <span lang="" class=" active">Provide Location Of Specimen</span>
-                </legend>
-                <label class="clearfix ">
-                    <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/anatomic_location_description/value" value="8266^SUPERFICIAL^99DCT" data-relevant="../../procedures_done_this_visit/value = '7147^LOOP ELECTROSURGICAL EXCISION PROCEDURE^99DCT'" data-type-xml="string"/>
-                    <span lang="" class=" active">Superficial</span>
-                </label>
-                <label class="clearfix ">
-                    <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/anatomic_location_description/value" value="8267^DEEP^99DCT" data-relevant="../../procedures_done_this_visit/value = '7147^LOOP ELECTROSURGICAL EXCISION PROCEDURE^99DCT'" data-type-xml="string"/>
-                    <span lang="" class=" active">Deep</span>
-                </label>
-                <label class="clearfix ">
-                    <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/anatomic_location_description/value" value="5622^OTHER NON-CODED^99DCT" data-relevant="../../procedures_done_this_visit/value = '7147^LOOP ELECTROSURGICAL EXCISION PROCEDURE^99DCT'" data-type-xml="string"/>
-                    <span lang="" class=" active">Other non-coded</span>
-                </label>
-            </fieldset>
-        </fieldset>
-        <label class="jr-branch pre-init ">
-            <span lang="" class=" active">Provide location where biopsy for specimen was done: __O’clock</span>
-            <input autocomplete="off" type="number
-            " name="/form/obs/procedures_done_this_visit_detailed/clock_face_cervical_biopsy_location/value" data-constraint=". &gt;= 1 and . &lt;= 12" data-relevant="../../procedures_done_this_visit/value != '7147^LOOP ELECTROSURGICAL EXCISION PROCEDURE^99DCT'" data-type-xml="int"/>
+   --><label class="">
+    <span lang="" class=" active">First Day Of Your Last Period (LMP)</span>
+    <input autocomplete="off" type="date" name="/form/obs/last_menstrual_period_date/value" data-constraint=". &lt;=today()" data-type-xml="date"/>
+</label>
+<fieldset class="restoring-sanity-to-legends ">
+    <fieldset>
+        <legend>
+            <span lang="" class=" active">Complaints (Select all symptoms that best describe complaints)</span>
+            <span class="required">*</span>
+        </legend>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="symptomatic" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
+            <span lang="" class=" active">Symptomatic</span>
         </label>
-        <fieldset class="jr-appearance-field-list">
-            <fieldset class="restoring-sanity-to-legends jr-branch pre-init ">
-                <fieldset>
-                    <legend>
-                        <span lang="" class=" active">Pathological Diagnosis for Cervical Specimen</span>
-                        <span class="required">*</span>
-                    </legend>
-                    <label class="clearfix ">
-                        <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/pathological_diagnosis_added_cervix" value="1115^NORMAL^99DCT" required="required" data-relevant="../body_part/value='8279^CERVIX^99DCT'" data-type-xml="string"/>
-                        <span lang="" class=" active">Normal</span>
-                    </label>
-                    <label class="clearfix ">
-                        <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/pathological_diagnosis_added_cervix" value="149^CERVICITIS^99DCT" required="required" data-relevant="../body_part/value='8279^CERVIX^99DCT'" data-type-xml="string"/>
-                        <span lang="" class=" active">Cervicitis</span>
-                    </label>
-                    <label class="clearfix ">
-                        <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/pathological_diagnosis_added_cervix" value="8282^CERVICAL SQUAMOUS METAPLASIA^99DCT" required="required" data-relevant="../body_part/value='8279^CERVIX^99DCT'" data-type-xml="string"/>
-                        <span lang="" class=" active">Cervical squamous metaplasia</span>
-                    </label>
-                    <label class="clearfix ">
-                        <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/pathological_diagnosis_added_cervix" value="7424^CERVICAL INTRAEPITHELIAL NEOPLASIA GRADE 1^99DCT" required="required" data-relevant="../body_part/value='8279^CERVIX^99DCT'" data-type-xml="string"/>
-                        <span lang="" class=" active">Mild cervical intraepithelial neoplasia (CIN 1)</span>
-                    </label>
-                    <label class="clearfix ">
-                        <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/pathological_diagnosis_added_cervix" value="7425^CERVICAL INTRAEPITHELIAL NEOPLASIA GRADE 2^99DCT" required="required" data-relevant="../body_part/value='8279^CERVIX^99DCT'" data-type-xml="string"/>
-                        <span lang="" class=" active">Moderate cervical intraepithelial neoplasia (CIN 2)</span>
-                    </label>
-                    <label class="clearfix ">
-                        <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/pathological_diagnosis_added_cervix" value="7216^CERVICAL INTRAEPITHELIAL NEOPLASIA GRADE 3^99DCT" required="required" data-relevant="../body_part/value='8279^CERVIX^99DCT'" data-type-xml="string"/>
-                        <span lang="" class=" active">Severe cervical intraepithelial neoplasia (CIN 3)</span>
-                    </label>
-                    <label class="clearfix ">
-                        <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/pathological_diagnosis_added_cervix" value="8275^CERVICAL ADENOCARCINOMA^99DCT" required="required" data-relevant="../body_part/value='8279^CERVIX^99DCT'" data-type-xml="string"/>
-                        <span lang="" class=" active">Cervical adenocarcinoma</span>
-                    </label>
-                    <label class="clearfix ">
-                        <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/pathological_diagnosis_added_cervix" value="8275^CERVICAL ADENOCARCINOMA^99DCT" required="required" data-relevant="../body_part/value='8279^CERVIX^99DCT'" data-type-xml="string"/>
-                        <span lang="" class=" active">Cervical squamous cell carcinoma</span>
-                    </label>
-                    <label class="clearfix ">
-                        <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/pathological_diagnosis_added_cervix" value="5622^OTHER NON-CODED^99DCT" required="required" data-relevant="../body_part/value='8279^CERVIX^99DCT'" data-type-xml="string"/>
-                        <span lang="" class=" active">Other non-coded</span>
-                    </label>
-                </fieldset>
-            </fieldset>
-        </fieldset>
-        <!--end of group
-     --><fieldset class="restoring-sanity-to-legends jr-branch pre-init ">
-        <fieldset>
-            <legend>
-                <span lang="" class=" active">Pathological Diagnosis for Vaginal Specimen</span>
-                <span class="required">*</span>
-            </legend>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/pathological_diagnosis_added_vagina" value="1115^NORMAL^99DCT" required="required" data-relevant="../body_part/value='8280^VAGINA^99DCT'" data-type-xml="string"/>
-                <span lang="" class=" active">Normal</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/pathological_diagnosis_added_vagina" value="7492^VAGINAL INTRAEPITHELIAL NEOPLASIA GRADE 1^99DCT" required="required" data-relevant="../body_part/value='8280^VAGINA^99DCT'" data-type-xml="string"/>
-                <span lang="" class=" active">Mild vaginal intraepithelial neoplasia (VAIN1)</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/pathological_diagnosis_added_vagina" value="7491^VAGINAL INTRAEPITHELIAL NEOPLASIA GRADE 2 ^99DCT" required="required" data-relevant="../body_part/value='8280^VAGINA^99DCT'" data-type-xml="string"/>
-                <span lang="" class=" active">Moderate vaginal intraepithelial neoplasia (VAIN 2)</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/pathological_diagnosis_added_vagina" value="7435^VAGINAL INTRAEPITHELIAL NEOPLASIA GRADE 3^99DCT" required="required" data-relevant="../body_part/value='8280^VAGINA^99DCT'" data-type-xml="string"/>
-                <span lang="" class=" active">Severe vaginal intraepithelial neoplasia (VAIN 3)</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/pathological_diagnosis_added_vagina" value="5622^OTHER NON-CODED^99DCT" required="required" data-relevant="../body_part/value='8280^VAGINA^99DCT'" data-type-xml="string"/>
-                <span lang="" class=" active">Other non-coded</span>
-            </label>
-        </fieldset>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="asymptomatic" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
+            <span lang="" class=" active">Asymptomatic</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="having_hypoglycemia_symptoms_in_past_month" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
+            <span lang="" class=" active">Having hypoglycemia symptoms in past month</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="vaginal_discharge" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
+            <span lang="" class=" active">Vaginal discharge</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="vaginal_bleeding" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
+            <span lang="" class=" active">Vaginal bleeding</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="dysfunctional_uterine_bleeding" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
+            <span lang="" class=" active">Dysfunctional uterine bleeding</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="menorrhagia" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
+            <span lang="" class=" active">Menorrhagia</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="postmenopausal_bleeding" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
+            <span lang="" class=" active">Postmenopausal bleeding</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="dysparunia" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
+            <span lang="" class=" active">Dysparunia</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="postcoital_bleeding" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
+            <span lang="" class=" active">Postcoital bleeding</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="other_non-coded" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
+            <span lang="" class=" active">Other non-coded</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="none" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
+            <span lang="" class=" active">None</span>
+        </label>
     </fieldset>
-        <fieldset class="restoring-sanity-to-legends jr-branch pre-init ">
-            <fieldset>
-                <legend>
-                    <span lang="" class=" active">Pathological Diagnosis for Vulval Specimen</span>
-                    <span class="required">*</span>
-                </legend>
-                <label class="clearfix ">
-                    <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/pathological_diagnosis_added_vulva" value="1115^NORMAL^99DCT" required="required" data-relevant="../body_part/value='8281^VULVA^99DCT'" data-type-xml="string"/>
-                    <span lang="" class=" active">Normal</span>
-                </label>
-                <label class="clearfix ">
-                    <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/pathological_diagnosis_added_vulva" value="7489^CONDYLOMA OR VULVAR INTRAEPITHELIAL NEOPLASIA GRADE 1^99DCT" required="required" data-relevant="../body_part/value='8281^VULVA^99DCT'" data-type-xml="string"/>
-                    <span lang="" class=" active">Condyloma / Mild vulva intraepithelial neoplasia (VIN1)</span>
-                </label>
-                <label class="clearfix ">
-                    <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/pathological_diagnosis_added_vulva" value="7488^VULVAR INTRAEPITHELIAL NEOPLASIA GRADE 2^99DCT" required="required" data-relevant="../body_part/value='8281^VULVA^99DCT'" data-type-xml="string"/>
-                    <span lang="" class=" active">Moderate vulva intraepithelial neoplasia (VIN 2)</span>
-                </label>
-                <label class="clearfix ">
-                    <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/pathological_diagnosis_added_vulva" value="7483^VULVAR INTRAEPITHELIAL NEOPLASIA GRADE 3^99DCT" required="required" data-relevant="../body_part/value='8281^VULVA^99DCT'" data-type-xml="string"/>
-                    <span lang="" class=" active">Severe vulva intraepithelial neoplasia (VIN 3)</span>
-                </label>
-                <label class="clearfix ">
-                    <input autocomplete="off" type="radio" name="/form/obs/procedures_done_this_visit_detailed/pathological_diagnosis_added_vulva" value="5622^OTHER NON-CODED^99DCT" required="required" data-relevant="../body_part/value='8281^VULVA^99DCT'" data-type-xml="string"/>
-                    <span lang="" class=" active">Other non-coded</span>
-                </label>
-            </fieldset>
-        </fieldset>
+</fieldset>
+<fieldset class="restoring-sanity-to-legends ">
+    <fieldset>
+        <legend>
+            <span lang="" class=" active">Current Family Planning Method</span>
+            <span class="required">*</span>
+        </legend>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/method_of_family_planning/xforms_value" value="Condoms" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
+            <span lang="" class=" active">Condoms</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/method_of_family_planning/xforms_value" value="Female_sterilization" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
+            <span lang="" class=" active">Sterilization/Hysterectomy</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/method_of_family_planning/xforms_value" value="Intrauterine_device" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
+            <span lang="" class=" active">Intrauterine device</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/method_of_family_planning/xforms_value" value="Diaphragm" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
+            <span lang="" class=" active">Diaphragm/Cervical cap</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/method_of_family_planning/xforms_value" value="Family_planning_via_oral_contraceptive_pills" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
+            <span lang="" class=" active">Oral contraceptive pills</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/method_of_family_planning/xforms_value" value="Natural_family_planning" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
+            <span lang="" class=" active">Natural family planning</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/method_of_family_planning/xforms_value" value="injectable_contraceptives" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
+            <span lang="" class=" active">Injectable hormones</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/method_of_family_planning/xforms_value" value="Other_non-coded" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
+            <span lang="" class=" active">Other non-coded</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/method_of_family_planning/xforms_value" value="none" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
+            <span lang="" class=" active">None</span>
+        </label>
     </fieldset>
-    <!--end of repeat fieldset with name
-    -->
 </fieldset>
-<!--end of group
-   --><fieldset class="jr-appearance-field-list">
-    <label class="">
-        <span lang="" class=" active">Comments</span>
-        <input autocomplete="off" type="text" name="/form/obs/freetext_general/value" data-type-xml="string"/>
-    </label>
-    <label class="">
-        <span lang="" class=" active">Return Visit Date</span>
-        <span class="required">*</span>
-        <input autocomplete="off" type="date" name="/form/obs/return_visit_date/value" required="required" data-constraint=". &gt; today()" data-type-xml="date"/>
-    </label>
+<fieldset class="restoring-sanity-to-legends ">
+    <fieldset>
+        <legend>
+            <span lang="" class=" active">Most Recent Papacicolaou Smear Result</span>
+            <span class="required">*</span>
+        </legend>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/most_recent_papanicolaou_smear_result/xforms_value" value="normal" required="required" data-constraint="not((selected(., 'normal') or selected(., 'do_not_know') or selected(., 'not_applicable'))and count-selected(.) &gt; 1)" data-type-xml="string"/>
+            <span lang="" class=" active">Normal</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/most_recent_papanicolaou_smear_result/xforms_value" value="atypical_squamous_cells_of_undetermined_significance" required="required" data-constraint="not((selected(., 'normal') or selected(., 'do_not_know') or selected(., 'not_applicable'))and count-selected(.) &gt; 1)" data-type-xml="string"/>
+            <span lang="" class=" active">Atypical squamous cells of undetermined significance</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/most_recent_papanicolaou_smear_result/xforms_value" value="atypical_glandular_cells_of_undetermined_significance" required="required" data-constraint="not((selected(., 'normal') or selected(., 'do_not_know') or selected(., 'not_applicable'))and count-selected(.) &gt; 1)" data-type-xml="string"/>
+            <span lang="" class=" active">Atypical glandular cells of undetermined significance</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/most_recent_papanicolaou_smear_result/xforms_value" value="low_grade_squamous_intraepithelial_lesion" required="required" data-constraint="not((selected(., 'normal') or selected(., 'do_not_know') or selected(., 'not_applicable'))and count-selected(.) &gt; 1)" data-type-xml="string"/>
+            <span lang="" class=" active">Low grade squamous intraepithelial lesion</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/most_recent_papanicolaou_smear_result/xforms_value" value="high_grade_squamous_intraepithelial_lesion" required="required" data-constraint="not((selected(., 'normal') or selected(., 'do_not_know') or selected(., 'not_applicable'))and count-selected(.) &gt; 1)" data-type-xml="string"/>
+            <span lang="" class=" active">High grade squamous intraepithelial lesion</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/most_recent_papanicolaou_smear_result/xforms_value" value="squamous_cell_carcinoma_not_otherwise_specified" required="required" data-constraint="not((selected(., 'normal') or selected(., 'do_not_know') or selected(., 'not_applicable'))and count-selected(.) &gt; 1)" data-type-xml="string"/>
+            <span lang="" class=" active">Squamous cell carcinoma</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/most_recent_papanicolaou_smear_result/xforms_value" value="adenocarcinoma" required="required" data-constraint="not((selected(., 'normal') or selected(., 'do_not_know') or selected(., 'not_applicable'))and count-selected(.) &gt; 1)" data-type-xml="string"/>
+            <span lang="" class=" active">Adenocarcinoma</span>
+        </label>
+        <label class="clearfix ">
+            <input autocomplete="off" type="checkbox" name="/form/obs/most_recent_papanicolaou_smear_result/xforms_value" value="do_not_know" required="required" data-constraint="not((selected(., 'normal') or selected(., 'do_not_know') or selected(., 'not_applicable'))and count-selected(.) &gt; 1)" data-type-xml="string"/>
+            <span lang="" class=" active">Don't know</span>
+        </label>
+    </fieldset>
 </fieldset>
-<!--end of group
-   -->
+<label class="jr-branch pre-init ">
+    <span lang="" class=" active">Date Of Most Recent PAP Result</span>
+    <input autocomplete="off" type="date" name="/form/obs/date_most_recent_papanicolaou_smear_performed/value" data-constraint=". &lt;=today()" data-relevant="not(selected(../../most_recent_papanicolaou_smear_result/xforms_value,'do_not_know'))" data-type-xml="date"/>
+</label>
+<label class="">
+    <span lang="" class=" active">Comments</span>
+    <input autocomplete="off" type="text" name="/form/obs/freetext_general/value" data-type-xml="string"/>
+</label>
 </fieldset>
 <!--end of group
       -->
 
 <fieldset id="jr-calculated-items" style="display:none;">
     <label class="">
-        <input autocomplete="off" type="hidden" name="/form/patient/patient_identifier.identifier_type_id" data-calculate="3" data-type-xml="integer"/>
+        <input autocomplete="off" type="hidden" name="/form/obs/start_now" data-calculate="now()" data-type-xml="time"/>
     </label>
     <label class="">
-        <input autocomplete="off" type="hidden" name="/form/obs/procedures_done_this_visit_detailed/pathological_diagnosis_added/value" data-calculate="if(../../body_part/value='8279^CERVIX^99DCT',../../pathological_diagnosis_added_cervix,          if(../../body_part/value='8280^VAGINA^99DCT',../../pathological_diagnosis_added_vagina,../../pathological_diagnosis_added_vulva))" data-type-xml="string"/>
+        <input autocomplete="off" type="hidden" name="/form/patient/patient_identifier.identifier_type_id" data-calculate="3" data-type-xml="integer"/>
     </label>
 </fieldset>
 </form>
