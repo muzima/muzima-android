@@ -25,13 +25,13 @@ $(document).ready(function(){
 	gui = new GUI();
 	gui.init();
 	// avoid windows console errors
-	if (typeof console == "undefined") {console = {log: function(){}};}
-	if (typeof window.console.debug == "undefined") {console.debug = console.log;}
-
-	if (!settings.debug){
-		window.console.log = function(){};
-		window.console.debug = function(){};
-	}
+//	if (typeof console == "undefined") {console = {log: function(){}};}
+//	if (typeof window.console.debug == "undefined") {console.debug = console.log;}
+//
+//	if (!settings.debug){
+//		window.console.log = function(){};
+//		window.console.debug = function(){};
+//	}
 	//override Modernizr's detection (for development purposes)
 	if (settings.touch){
 		Modernizr.touch = true;
