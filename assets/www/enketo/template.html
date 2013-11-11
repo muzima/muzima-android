@@ -31,8 +31,8 @@
                 }
                 var date = ecmaScriptDateParse(dateString);
                 if(isNaN(date)){
-                    var dateParts = dateString.split("-");
-                    date = new Date(dateParts[0], (dateParts[1] - 1), dateParts[2]).getTime();
+                    dateString = dateString.replace(/-/g, "/");
+                    date = ecmaScriptDateParse(dateString);
                 }
                 return date;
             }

@@ -465,13 +465,9 @@ function Form (formSelector, dataStr, dataStrToEdit){
                 convert : function(x){
                     var pattern = /([0-9]{4})([\-]|[\/])([0-9]{2})([\-]|[\/])([0-9]{2})/,
                         segments = pattern.exec(x),
-                        date = new Date(x);
-                    // On Android 2.2, dates with '-' are not properly converted, so replace '-' with '/'
-                    if(isNaN(date.getTime()) && typeof(x)==="string"){
-                        x = x.replace(/-/g, "/");
-                        date = new Date(x);
-                    }
-                    if (new Date(x).toString() == 'Invalid Date'){
+                        date = new Date(Date.parse(x));
+
+                    if (date.toString() == 'Invalid Date'){
                         //this code is really only meant for the Rhino and PhantomJS engines, in browsers it may never be reached
                         if (segments && Number(segments[1]) > 0 && Number(segments[3]) >=0 && Number(segments[3]) < 12 && Number(segments[5]) < 32){
                             date = new Date(Number(segments[1]), (Number(segments[3])-1), Number(segments[5]));
@@ -479,7 +475,7 @@ function Form (formSelector, dataStr, dataStrToEdit){
                     }
                     //date.setUTCHours(0,0,0,0);
                     //return date.toUTCString();//.getUTCFullYear(), datetime.getUTCMonth(), datetime.getUTCDate());
-                    return date.getUTCFullYear().toString().pad(4)+'-'+(date.getUTCMonth()+1).toString().pad(2)+'-'+date.getUTCDate().toString().pad(2);
+                    return date.getFullYear().toString().pad(4)+'-'+(date.getMonth()+1).toString().pad(2)+'-'+date.getDate().toString().pad(2);
                 }
             },
             'datetime' : {
