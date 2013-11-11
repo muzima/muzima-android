@@ -466,6 +466,11 @@ function Form (formSelector, dataStr, dataStrToEdit){
                     var pattern = /([0-9]{4})([\-]|[\/])([0-9]{2})([\-]|[\/])([0-9]{2})/,
                         segments = pattern.exec(x),
                         date = new Date(x);
+                    // On Android 2.2, dates with '-' are not properly converted, so replace '-' with '/'
+                    if(isNaN(date.getTime()) && typeof(x)==="string"){
+                        x = x.replace(/-/g, "/");
+                        date = new Date(x);
+                    }
                     if (new Date(x).toString() == 'Invalid Date'){
                         //this code is really only meant for the Rhino and PhantomJS engines, in browsers it may never be reached
                         if (segments && Number(segments[1]) > 0 && Number(segments[3]) >=0 && Number(segments[3]) < 12 && Number(segments[5]) < 32){
@@ -1329,8 +1334,6 @@ function Form (formSelector, dataStr, dataStrToEdit){
                     //convert current value (loaded from instance) to a value that a native datepicker understands
                     //TODO test for IE, FF, Safari when those browsers start including native datepickers
 
-                    // On Android 2.2, dates with '-' are not properly converted, so replace '-' with '/'
-                    value = value.replace(/-/g, "/");
                     value = data.node().convert(value, type);
 
                     console.debug('converting date before setting input field to: '+value);
