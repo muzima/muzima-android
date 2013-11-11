@@ -547,4 +547,27 @@ public class MuzimaSyncServiceTest {
         verify(patientController).savePatient(remotePatient);
         verify(patientController).deletePatient(localPatient);
     }
+
+    @Test
+    public void shouldUpdatePatientsThatAreNotInCohorts() throws Exception, PatientController.PatientReplaceException {
+        Patient localPatient1 = patient("patientUUID1");
+        Patient localPatient2 = patient("patientUUID2");
+        Patient serverPatient1 = patient("patientUUID3");
+        when(patientController.getPatientsNotInCohorts()).thenReturn(asList(localPatient1,localPatient2));
+        when(patientController.downloadPatientByUUID("patientUUID1")).thenReturn(serverPatient1);
+        when(patientController.downloadPatientByUUID("patientUUID2")).thenReturn(null);
+
+        muzimaSyncService.updatePatientsNotPartOfCohorts();
+
+        verify(patientController).downloadPatientByUUID("patientUUID1");
+        verify(patientController).downloadPatientByUUID("patientUUID2");
+        verify(patientController).replacePatients(asList(serverPatient1));
+    }
+
+    private Patient patient(String patientUUID) {
+        Patient patient1 = new Patient();
+        patient1.setUuid(patientUUID);
+        return patient1;
+    }
+
 }

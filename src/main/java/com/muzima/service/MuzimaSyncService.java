@@ -16,6 +16,7 @@ import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
 import static com.muzima.utils.Constants.LOCAL_PATIENT;
+import static java.util.Collections.singleton;
 
 public class MuzimaSyncService {
     private static final String TAG = "MuzimaSyncService";
@@ -298,7 +299,12 @@ public class MuzimaSyncService {
         return result;
     }
 
-    public void consolidatePatients() {
+    public void updatePatients() {
+        consolidatePatients();
+        updatePatientsNotPartOfCohorts();
+    }
+
+    void consolidatePatients() {
         List<Patient> allLocalPatients = patientController.getAllPatientsCreatedLocallyAndNotSynced();
         for (Patient localPatient : allLocalPatients) {
             Patient patientFromServer = patientController.consolidateTemporaryPatient(localPatient);
@@ -307,6 +313,20 @@ public class MuzimaSyncService {
                 patientController.deletePatient(localPatient);
                 patientController.savePatient(patientFromServer);
             }
+        }
+    }
+
+    void updatePatientsNotPartOfCohorts() {
+        List<Patient> patientsNotInCohorts = patientController.getPatientsNotInCohorts();
+        List<Patient> downloadedPatients = new ArrayList<Patient>();
+        for (Patient patient : patientsNotInCohorts) {
+            downloadedPatients.add(patientController.downloadPatientByUUID(patient.getUuid()));
+        }
+        downloadedPatients.removeAll(singleton(null));
+        try {
+            patientController.replacePatients(downloadedPatients);
+        } catch (PatientController.PatientReplaceException e) {
+            Log.e(TAG, "Exception thrown while updating patients from server" + e);
         }
     }
 
@@ -338,5 +358,4 @@ public class MuzimaSyncService {
         }
         return patientUuids;
     }
-
 }

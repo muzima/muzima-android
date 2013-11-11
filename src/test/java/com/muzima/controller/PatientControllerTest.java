@@ -135,16 +135,6 @@ public class PatientControllerTest {
         return cohortMembers;
     }
 
-    @Test(expected = PatientController.PatientLoadException.class)
-    public void getPatientsInCohort_shouldThrowLoadPatientExceptionIfExceptionThrownByService() throws IOException, PatientController.PatientLoadException {
-        String cohortId = "cohortId";
-        List<CohortMember> members = buildCohortMembers(cohortId);
-        when(cohortService.getCohortMembers(cohortId)).thenReturn(members);
-        doThrow(new IOException()).when(patientService).getPatientByUuid(members.get(0).getPatientUuid());
-
-        patientController.getPatients(cohortId);
-    }
-
     @Test
     public void getPatientByUuid_shouldReturnPatientForId() throws Exception, PatientController.PatientLoadException {
         Patient patient = new Patient();

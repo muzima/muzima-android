@@ -152,6 +152,24 @@ public class PatientController {
         }
     }
 
+    public List<Patient> getPatientsNotInCohorts() {
+        try {
+            patientService.getPatientsNotInCohorts();
+        } catch (IOException e) {
+            Log.e(TAG, "Error while getting patients that are not in Cohorts");
+        }
+        return new ArrayList<Patient>();
+    }
+
+    public Patient downloadPatientByUUID(String uuid) {
+        try {
+            patientService.downloadPatientByUuid(uuid);
+        } catch (IOException e) {
+            Log.e(TAG, "Error while downloading patient with UUID : " + uuid + " from server");
+        }
+        return null;
+    }
+
 
     public static class PatientReplaceException extends Throwable {
         public PatientReplaceException(Throwable throwable) {
