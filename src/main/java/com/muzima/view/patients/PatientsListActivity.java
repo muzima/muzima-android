@@ -1,7 +1,6 @@
 package com.muzima.view.patients;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
@@ -21,7 +20,7 @@ import com.muzima.view.preferences.SettingsActivity;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
-import static com.muzima.utils.Constants.*;
+import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
 
 public class PatientsListActivity extends SherlockActivity implements AdapterView.OnItemClickListener, ListAdapter.BackgroundListQueryTaskListener {
     public static final String COHORT_ID = "cohortId";
@@ -70,13 +69,6 @@ public class PatientsListActivity extends SherlockActivity implements AdapterVie
             }
         });
 
-        Button createPatientBtn = (Button) findViewById(R.id.create_patient_btn);
-        createPatientBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(PatientsListActivity.this, RegistrationFormsActivity.class));
-            }
-        });
     }
 
     @Override
@@ -158,9 +150,9 @@ public class PatientsListActivity extends SherlockActivity implements AdapterVie
         noDataView = findViewById(R.id.no_data_layout);
 
         TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
-        noDataMsgTextView.setText(getResources().getText(R.string.no_clients_downloaded));
+        noDataMsgTextView.setText(getResources().getText(R.string.no_clients_matched_locally));
         TextView noDataTipTextView = (TextView) findViewById(R.id.no_data_tip);
-        noDataTipTextView.setText(R.string.no_clients_downloaded_tip);
+        noDataTipTextView.setText(R.string.no_clients_matched_tip_locally);
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
         noDataTipTextView.setTypeface(Fonts.roboto_light(this));
     }
@@ -182,38 +174,8 @@ public class PatientsListActivity extends SherlockActivity implements AdapterVie
 
     @Override
     public void onQueryTaskFinish() {
-        if (localSearch()) {
-            setUpNoDataViewForLocalSearch();
-        } else {
-            setUpNoDataViewForServerSearch();
-        }
+
         listView.setVisibility(VISIBLE);
         progressBarContainer.setVisibility(INVISIBLE);
-    }
-
-    private void setUpNoDataViewForServerSearch() {
-        noDataView = findViewById(R.id.no_data_layout);
-        setNoDataMessages(R.string.no_clients_matched_remotely, R.string.no_clients_matched_tip_remotely);
-        noDataView.findViewById(R.id.create_patient_btn).setVisibility(VISIBLE);
-        noDataView.findViewById(R.id.search_server_btn).setVisibility(INVISIBLE);
-    }
-
-    private void setUpNoDataViewForLocalSearch() {
-        noDataView = findViewById(R.id.no_data_layout);
-        setNoDataMessages(R.string.no_clients_matched_locally, R.string.no_clients_matched_tip_locally);
-        noDataView.findViewById(R.id.search_server_btn).setVisibility(VISIBLE);
-        noDataView.findViewById(R.id.create_patient_btn).setVisibility(INVISIBLE);
-    }
-
-    private void setNoDataMessages(int noDataMsg, int noDataMsgTip) {
-        TextView noDataMsgTextView = (TextView) noDataView.findViewById(R.id.no_data_msg);
-        noDataMsgTextView.setText(getResources().getText(noDataMsg));
-        TextView noDataTipTextView = (TextView) noDataView.findViewById(R.id.no_data_tip);
-        noDataTipTextView.setText(noDataMsgTip);
-    }
-
-    private boolean localSearch() {
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(PATIENT_SEARCH_PREF, MODE_PRIVATE);
-        return (sharedPreferences.getString(PATIENT_SEARCH_PREF_KEY, LOCAL_SEARCH_MODE).equals(LOCAL_SEARCH_MODE));
     }
 }

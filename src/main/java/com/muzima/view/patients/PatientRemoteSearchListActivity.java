@@ -1,9 +1,9 @@
 package com.muzima.view.patients;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.*;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
@@ -12,7 +12,11 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsRemoteSearchAdapter;
+import com.muzima.utils.Fonts;
+import com.muzima.view.forms.RegistrationFormsActivity;
 
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
 
 public class PatientRemoteSearchListActivity extends SherlockActivity implements AdapterView.OnItemClickListener,
@@ -20,6 +24,9 @@ public class PatientRemoteSearchListActivity extends SherlockActivity implements
     private PatientsRemoteSearchAdapter patientAdapter;
     private ListView listView;
     private String searchString;
+    private FrameLayout progressBarContainer;
+
+    private View noDataView;
     private ActionMode actionMode;
 
     private boolean actionModeActive = false;
@@ -33,9 +40,18 @@ public class PatientRemoteSearchListActivity extends SherlockActivity implements
         if (intentExtras != null) {
             searchString = intentExtras.getString(SEARCH_STRING_BUNDLE_KEY);
         }
-        setUpListView(searchString);
+        progressBarContainer = (FrameLayout) findViewById(R.id.progressbarContainer);
 
+        setUpListView(searchString);
+        setupNoDataView();
         patientAdapter.reloadData();
+        Button createPatientBtn = (Button) findViewById(R.id.create_patient_btn);
+        createPatientBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PatientRemoteSearchListActivity.this, RegistrationFormsActivity.class));
+            }
+        });
 
     }
 
@@ -61,10 +77,29 @@ public class PatientRemoteSearchListActivity extends SherlockActivity implements
 
     @Override
     public void onQueryTaskStarted() {
+        listView.setVisibility(INVISIBLE);
+        noDataView.setVisibility(INVISIBLE);
+        progressBarContainer.setVisibility(VISIBLE);
+    }
+
+    private void setupNoDataView() {
+
+        noDataView = findViewById(R.id.no_data_layout);
+
+        TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
+        noDataMsgTextView.setText(getResources().getText(R.string.no_clients_matched_remotely));
+
+        TextView noDataTipTextView = (TextView) findViewById(R.id.no_data_tip);
+        noDataTipTextView.setText(R.string.no_clients_matched_tip_remotely);
+
+        noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
+        noDataTipTextView.setTypeface(Fonts.roboto_light(this));
     }
 
     @Override
     public void onQueryTaskFinish() {
+        listView.setVisibility(VISIBLE);
+        progressBarContainer.setVisibility(INVISIBLE);
     }
 
     @Override
