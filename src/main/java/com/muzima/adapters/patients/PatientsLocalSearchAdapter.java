@@ -3,12 +3,10 @@ package com.muzima.adapters.patients;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
@@ -16,45 +14,25 @@ import com.muzima.controller.PatientController;
 
 import java.util.List;
 
-import static com.muzima.utils.DateUtils.getFormattedDate;
-
 public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
     private static final String TAG = "PatientsLocalSearchAdapter";
     public static final String SEARCH = "search";
+    private final PatientAdapterHelper patientAdapterHelper;
     private PatientController patientController;
     private final String cohortId;
     protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
 
-    public PatientsLocalSearchAdapter(Context context, int textViewResourceId, PatientController patientController, String cohortId) {
+    public PatientsLocalSearchAdapter(Context context, int textViewResourceId,
+                                      PatientController patientController, String cohortId) {
         super(context, textViewResourceId);
         this.patientController = patientController;
         this.cohortId = cohortId;
+        this.patientAdapterHelper = new PatientAdapterHelper(context,textViewResourceId);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        if (convertView == null) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            convertView = layoutInflater.inflate(
-                    R.layout.item_patients_list, parent, false);
-            holder = new ViewHolder();
-            holder.genderImg = (ImageView) convertView.findViewById(R.id.genderImg);
-            holder.name = (TextView) convertView.findViewById(R.id.name);
-            holder.dateOfBirth = (TextView) convertView.findViewById(R.id.dateOfBirth);
-            holder.identifier = (TextView) convertView.findViewById(R.id.identifier);
-            convertView.setTag(holder);
-        }
-
-        holder = (ViewHolder) convertView.getTag();
-
-        Patient patient = getItem(position);
-
-        holder.dateOfBirth.setText("DOB: " + getFormattedDate(patient.getBirthdate()));
-        holder.identifier.setText(patient.getIdentifier());
-        holder.name.setText(getPatientFullName(patient));
-        holder.genderImg.setImageResource(getGenderImage(patient.getGender()));
-        return convertView;
+       return patientAdapterHelper.createPatientRow(getItem(position),convertView,parent,getContext());
     }
 
     private String getPatientFullName(Patient patient) {
@@ -65,6 +43,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
         return gender.equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
     }
 
+
     @Override
     public void reloadData() {
         new BackgroundQueryTask().execute(cohortId);
@@ -74,26 +53,17 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
         new BackgroundQueryTask().execute(text, SEARCH);
     }
 
-    public BackgroundListQueryTaskListener getBackgroundListQueryTaskListener() {
-        return backgroundListQueryTaskListener;
-    }
-
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
         this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
     }
 
 
     private class BackgroundQueryTask extends AsyncTask<String, Void, List<Patient>> {
-        long mStartingTime;
 
         @Override
         protected void onPreExecute() {
-            if (backgroundListQueryTaskListener != null) {
-                backgroundListQueryTaskListener.onQueryTaskStarted();
-            }
-            mStartingTime = System.currentTimeMillis();
+            patientAdapterHelper.onPreExecute(backgroundListQueryTaskListener);
         }
-
 
         @Override
         protected List<Patient> doInBackground(String... params) {
@@ -109,10 +79,8 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
             try {
                 if (cohortUuid != null) {
                     patients = patientController.getPatients(cohortUuid);
-                    Log.i(TAG, "#Patients in the cohort " + cohortUuid + ": " + patients.size());
                 } else {
                     patients = patientController.getAllPatients();
-                    Log.i(TAG, "#All patients: " + patients.size());
                 }
 
             } catch (PatientController.PatientLoadException e) {
@@ -127,27 +95,9 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
 
         @Override
         protected void onPostExecute(List<Patient> patients) {
-            if (patients == null) {
-                Toast.makeText(getContext(), "Something went wrong while fetching patients from local repo", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            PatientsLocalSearchAdapter.this.clear();
-
-            for (Patient patient : patients) {
-                add(patient);
-            }
-            notifyDataSetChanged();
-
-            long currentTime = System.currentTimeMillis();
-            Log.d(TAG, "Time taken in fetching patients from local repo: " + (currentTime - mStartingTime) / 1000 + " sec");
-
-            if (backgroundListQueryTaskListener != null) {
-                backgroundListQueryTaskListener.onQueryTaskFinish();
-            }
+            patientAdapterHelper.onPostExecute(patients,PatientsLocalSearchAdapter.this,backgroundListQueryTaskListener);
         }
     }
-
     private class ViewHolder {
         ImageView genderImg;
         TextView name;
