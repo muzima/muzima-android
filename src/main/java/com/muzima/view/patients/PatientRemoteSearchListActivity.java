@@ -4,16 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.widget.SearchView;
+import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsRemoteSearchAdapter;
 import com.muzima.utils.Fonts;
 import com.muzima.view.forms.RegistrationFormsActivity;
+import com.muzima.view.preferences.SettingsActivity;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
@@ -44,6 +46,7 @@ public class PatientRemoteSearchListActivity extends SherlockActivity implements
 
         setUpListView(searchString);
         setupNoDataView();
+        setupActionbar();
         patientAdapter.reloadData();
         Button createPatientBtn = (Button) findViewById(R.id.create_patient_btn);
         createPatientBtn.setOnClickListener(new View.OnClickListener() {
@@ -67,19 +70,21 @@ public class PatientRemoteSearchListActivity extends SherlockActivity implements
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.client_remote_list, menu);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search)
-                .getActionView();
-        searchView.setQueryHint("Search clients on server");
-        return true;
-    }
-
-    @Override
     public void onQueryTaskStarted() {
         listView.setVisibility(INVISIBLE);
         noDataView.setVisibility(INVISIBLE);
         progressBarContainer.setVisibility(VISIBLE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    private void setupActionbar() {
+        ActionBar supportActionBar = getSupportActionBar();
+        supportActionBar.setDisplayShowTitleEnabled(true);
+        supportActionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     private void setupNoDataView() {
@@ -100,6 +105,25 @@ public class PatientRemoteSearchListActivity extends SherlockActivity implements
     public void onQueryTaskFinish() {
         listView.setVisibility(VISIBLE);
         progressBarContainer.setVisibility(INVISIBLE);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    private int getSelectedItems() {
+        return listView.getCheckedItemCount();
     }
 
     @Override
@@ -128,6 +152,10 @@ public class PatientRemoteSearchListActivity extends SherlockActivity implements
 
         @Override
         public boolean onActionItemClicked(ActionMode actionMode, com.actionbarsherlock.view.MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.menu_download:
+                    return false;
+            }
             return false;
         }
 

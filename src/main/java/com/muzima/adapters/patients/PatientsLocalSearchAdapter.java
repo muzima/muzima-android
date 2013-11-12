@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
@@ -34,15 +33,6 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
     public View getView(int position, View convertView, ViewGroup parent) {
        return patientAdapterHelper.createPatientRow(getItem(position),convertView,parent,getContext());
     }
-
-    private String getPatientFullName(Patient patient) {
-        return patient.getFamilyName() + ", " + patient.getGivenName() + " " + patient.getMiddleName();
-    }
-
-    private int getGenderImage(String gender) {
-        return gender.equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
-    }
-
 
     @Override
     public void reloadData() {
