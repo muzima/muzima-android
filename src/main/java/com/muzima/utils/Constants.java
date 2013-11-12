@@ -1,6 +1,7 @@
 package com.muzima.utils;
 
 //TODO: This class should be burnt and flushed. Constants in an anti-pattern and and a sure sign that your abstractions are wrong: Zabil
+//TODO: Burnt?? Maybe or may not be - Prasanna
 public class Constants {
     public static final String SYNC_PREF = "SyncMetaData";
     public static final String COHORT_PREFIX_PREF = "CohortPrefixPref";
@@ -14,6 +15,7 @@ public class Constants {
     public static final String STATUS_INCOMPLETE = "incomplete";
     public static final String STATUS_COMPLETE = "complete";
     public static final String STATUS_UPLOADED = "uploaded";
+    public static final String SEARCH_STRING_BUNDLE_KEY = "SearchString";
     public static String LOCAL_PATIENT = "LocalPatient";
 
     public static final String FORM_DISCRIMINATOR_ENCOUNTER = "uploaded";

@@ -132,6 +132,11 @@
         </activity>
 
         <activity
+                android:name=".view.patients.PatientRemoteSearchListActivity"
+                android:label="@string/title_activity_clients_list">
+        </activity>
+
+        <activity
                 android:name=".view.forms.FormsActivity"
                 android:label="@string/title_activity_form_list"
                 android:parentActivityName="com.muzima.view.MainActivity">

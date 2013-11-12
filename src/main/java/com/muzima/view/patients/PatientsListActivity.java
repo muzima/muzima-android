@@ -4,11 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
@@ -25,9 +21,7 @@ import com.muzima.view.preferences.SettingsActivity;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
-import static com.muzima.utils.Constants.LOCAL_SEARCH_MODE;
-import static com.muzima.utils.Constants.PATIENT_SEARCH_PREF;
-import static com.muzima.utils.Constants.PATIENT_SEARCH_PREF_KEY;
+import static com.muzima.utils.Constants.*;
 
 public class PatientsListActivity extends SherlockActivity implements AdapterView.OnItemClickListener, ListAdapter.BackgroundListQueryTaskListener {
     public static final String COHORT_ID = "cohortId";
@@ -37,6 +31,7 @@ public class PatientsListActivity extends SherlockActivity implements AdapterVie
     private ListView listView;
     private boolean quickSearch = false;
     private String cohortId = null;
+
     private PatientsAdapter patientAdapter;
     private FrameLayout progressBarContainer;
     private View noDataView;
@@ -67,7 +62,11 @@ public class PatientsListActivity extends SherlockActivity implements AdapterVie
         searchServerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                patientAdapter.searchPatientOnServer(searchString);
+                Intent intent = new Intent(PatientsListActivity.this, PatientRemoteSearchListActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(SEARCH_STRING_BUNDLE_KEY, searchString);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
 
