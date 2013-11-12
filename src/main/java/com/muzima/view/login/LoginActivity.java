@@ -179,9 +179,7 @@ public class LoginActivity extends SherlockActivity {
         @Override
         protected void onPreExecute() {
             if (loginButton.getVisibility() == View.VISIBLE) {
-                if (honeycombOrGreater) {
-                    flipFromLoginToAuthAnimator.start();
-                }
+                flipFromLoginToAuthAnimator.start();
             }
         }
 
@@ -201,11 +199,9 @@ public class LoginActivity extends SherlockActivity {
                 startNextActivity();
             } else {
                 Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
-                if (honeycombOrGreater) {
-                    if (authenticatingText.getVisibility() == View.VISIBLE || flipFromLoginToAuthAnimator.isRunning()) {
-                        flipFromLoginToAuthAnimator.cancel();
-                        flipFromAuthToLoginAnimator.start();
-                    }
+                if (authenticatingText.getVisibility() == View.VISIBLE || flipFromLoginToAuthAnimator.isRunning()) {
+                    flipFromLoginToAuthAnimator.cancel();
+                    flipFromAuthToLoginAnimator.start();
                 }
             }
 
@@ -269,19 +265,15 @@ public class LoginActivity extends SherlockActivity {
 
     private void onConnected() {
         if (noConnectivityText.getVisibility() == View.VISIBLE) {
-            if (honeycombOrGreater) {
-                flipFromNoConnToLoginAnimator.start();
-            }
+            flipFromNoConnToLoginAnimator.start();
         }
     }
 
     private void onDisconnected() {
-        if (honeycombOrGreater) {
-            if (loginButton.getVisibility() == View.VISIBLE) {
-                flipFromLoginToNoConnAnimator.start();
-            } else if (authenticatingText.getVisibility() == View.VISIBLE) {
-                flipFromAuthToNoConnAnimator.start();
-            }
+        if (loginButton.getVisibility() == View.VISIBLE) {
+            flipFromLoginToNoConnAnimator.start();
+        } else if (authenticatingText.getVisibility() == View.VISIBLE) {
+            flipFromAuthToNoConnAnimator.start();
         }
 
         if (backgroundAuthenticationTask != null && backgroundAuthenticationTask.getStatus() == AsyncTask.Status.RUNNING) {
@@ -317,11 +309,15 @@ public class LoginActivity extends SherlockActivity {
                         to.setVisibility(View.VISIBLE);
                     }
                 } else if (to.getVisibility() == View.VISIBLE) {
-                    to.setRotationX(-180 * (1 - animatedFraction));
+                    if(honeycombOrGreater){
+                        to.setRotationX(-180 * (1 - animatedFraction));
+                    }
                 }
 
                 if (from.getVisibility() == View.VISIBLE) {
-                    from.setRotationX(180 * animatedFraction);
+                    if(honeycombOrGreater){
+                        from.setRotationX(180 * animatedFraction);
+                    }
                 }
             }
         });
