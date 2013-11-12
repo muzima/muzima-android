@@ -91,38 +91,6 @@
                     android:value="com.muzima.view.DashboardActivity"/>
         </activity>
         <activity
-                android:name="com.muzima.view.LogoutActivity"
-                android:label="@string/title_activity_logout"
-                android:parentActivityName="com.muzima.view.MainActivity">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.muzima.view.DashboardActivity"/>
-        </activity>
-        <activity
-                android:name="com.muzima.view.RegisterClientActivity"
-                android:label="@string/title_activity_register_client"
-                android:parentActivityName="com.muzima.view.ClientListActivity">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.muzima.view.ClientListActivity"/>
-        </activity>
-        <activity
-                android:name="com.muzima.view.SyncActivity"
-                android:label="@string/title_activity_sync"
-                android:parentActivityName="com.muzima.view.MainActivity">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.muzima.view.DashboardActivity"/>
-        </activity>
-        <activity
-                android:name="com.muzima.view.FormListActivity"
-                android:label="@string/title_activity_form_list"
-                android:parentActivityName="com.muzima.view.MainActivity">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.muzima.view.DashboardActivity"/>
-        </activity>
-        <activity
                 android:name=".view.patients.PatientsListActivity"
                 android:label="@string/title_activity_clients_list"
                 android:parentActivityName="com.muzima.view.MainActivity">
@@ -151,14 +119,6 @@
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.forms.FormsActivity"/>
-        </activity>
-        <activity
-                android:name="com.muzima.view.NoticeListActivity"
-                android:label="@string/title_activity_notice_list"
-                android:parentActivityName="com.muzima.view.MainActivity">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.muzima.view.DashboardActivity"/>
         </activity>
         <activity
                 android:name=".view.patients.PatientSummaryActivity"

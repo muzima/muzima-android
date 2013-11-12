@@ -91,14 +91,6 @@ public class MainActivity extends BroadcastListenerActivity {
     }
 
     /**
-     * Called when the user clicks the Notices area
-     */
-    public void noticesList(View view) {
-        Intent intent = new Intent(this, NoticeListActivity.class);
-        startActivity(intent);
-    }
-
-    /**
      * Called when the user clicks the Register Client Button
      */
     public void registerClient(View view) {

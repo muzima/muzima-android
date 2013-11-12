@@ -1,13 +1,13 @@
 package com.muzima.view;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.TextView;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
 
-public class HelpActivity extends Activity {
+public class HelpActivity extends SherlockActivity {
 
     public static final String HELP_TYPE = "HELP_TYPE";
     public static final int COHORT_WIZARD_HELP = 1;
@@ -48,14 +48,14 @@ public class HelpActivity extends Activity {
 	 */
 	private void setupActionBar() {
 
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.help, menu);
+		getSupportMenuInflater().inflate(R.menu.help, menu);
 		return true;
 	}
 
