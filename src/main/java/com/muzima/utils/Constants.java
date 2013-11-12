@@ -10,8 +10,6 @@ public class Constants {
     public static final String FORM_TAG_PREF_KEY = "FormTagPrefKey";
     public static final String CONCEPT_PREF = "ConceptPref";
     public static final String CONCEPT_PREF_KEY = "ConceptPrefKey";
-    public static final String PATIENT_SEARCH_PREF = "PatientSearchPref";
-    public static final String PATIENT_SEARCH_PREF_KEY = "PatientSearchPrefKey";
     public static final String STATUS_INCOMPLETE = "incomplete";
     public static final String STATUS_COMPLETE = "complete";
     public static final String STATUS_UPLOADED = "uploaded";
@@ -20,8 +18,6 @@ public class Constants {
 
     public static final String FORM_DISCRIMINATOR_ENCOUNTER = "uploaded";
     public static final String FORM_DISCRIMINATOR_REGISTRATION = "registration";
-    public static final String SERVER_SEARCH_MODE = "ServerSearchMode";
-    public static final String LOCAL_SEARCH_MODE = "LocalSearchMode";
 
     public static class DataSyncServiceConstants {
         public static final String SYNC_TYPE = "sync_type";

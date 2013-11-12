@@ -12,7 +12,7 @@ import com.actionbarsherlock.widget.SearchView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
-import com.muzima.adapters.patients.PatientsAdapter;
+import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.Fonts;
 import com.muzima.view.forms.RegistrationFormsActivity;
@@ -31,7 +31,7 @@ public class PatientsListActivity extends SherlockActivity implements AdapterVie
     private boolean quickSearch = false;
     private String cohortId = null;
 
-    private PatientsAdapter patientAdapter;
+    private PatientsLocalSearchAdapter patientAdapter;
     private FrameLayout progressBarContainer;
     private View noDataView;
     private String searchString;
@@ -136,7 +136,7 @@ public class PatientsListActivity extends SherlockActivity implements AdapterVie
     private void setupListView(String cohortId) {
         listView = (ListView) findViewById(R.id.list);
         listView.setEmptyView(findViewById(R.id.no_data_layout));
-        patientAdapter = new PatientsAdapter(getApplicationContext(),
+        patientAdapter = new PatientsLocalSearchAdapter(getApplicationContext(),
                 R.layout.layout_list,
                 ((MuzimaApplication) getApplicationContext()).getPatientController(),
                 cohortId);

@@ -1,7 +1,6 @@
 package com.muzima.adapters.patients;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,12 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
-import static com.muzima.utils.Constants.*;
 import static com.muzima.utils.DateUtils.getFormattedDate;
 
 public class PatientsRemoteSearchAdapter extends ListAdapter<Patient> {
-    private static final String TAG = "PatientsAdapter";
-    public static final String SEARCH = "search";
+    private static final String TAG = "PatientsRemoteSearchAdapter";
     private PatientController patientController;
     private final String searchString;
     protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
@@ -122,7 +119,6 @@ public class PatientsRemoteSearchAdapter extends ListAdapter<Patient> {
         @Override
         protected List<Patient> doInBackground(String... strings) {
             MuzimaApplication applicationContext = (MuzimaApplication) getContext();
-            addSearchModeToSharedPref(SERVER_SEARCH_MODE);
 
             Credentials credentials = new Credentials(getContext());
             try {
@@ -138,14 +134,6 @@ public class PatientsRemoteSearchAdapter extends ListAdapter<Patient> {
             Log.e(TAG, "Authentication failure !! Returning empty patient list");
             return new ArrayList<Patient>();
         }
-    }
-
-
-    private void addSearchModeToSharedPref(String searchMode) {
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(PATIENT_SEARCH_PREF, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(PATIENT_SEARCH_PREF_KEY, searchMode);
-        editor.commit();
     }
 
     private class ViewHolder {
