@@ -244,7 +244,7 @@ public class MuzimaSyncService {
         List<Patient> patients;
         try {
             patients = patientController.getPatientsForCohorts(cohortUuids);
-            result = downloadObservationsForPatients(patients);
+            result = downloadObservationsForPatients(getPatientUuids(patients));
         } catch (PatientController.PatientLoadException e) {
             Log.e(TAG, "Exception thrown while loading patients" + e);
             result[0] = LOAD_ERROR;
@@ -252,11 +252,9 @@ public class MuzimaSyncService {
         return result;
     }
 
-    private int[] downloadObservationsForPatients(List<Patient> patients) {
+    public int[] downloadObservationsForPatients(List<String> patientUuids) {
         int[] result = new int[2];
         try {
-            List<String> patientUuids = getPatientUuids(patients);
-
             long startDownloadObservations = System.currentTimeMillis();
             List<Observation> allObservations = observationController.downloadObservationsByPatientUuidsAndConceptUuids
                     (patientUuids, conceptPreferenceService.getConcepts());
@@ -287,7 +285,7 @@ public class MuzimaSyncService {
         List<Patient> patients;
         try {
             patients = patientController.getPatientsForCohorts(cohortUuids);
-            result = downloadEncounterForPatients(patients);
+            result = downloadEncounterForPatients(getPatientUuids(patients));
         } catch (PatientController.PatientLoadException e) {
             Log.e(TAG, "Exception thrown while loading patients" + e);
             result[0] = LOAD_ERROR;
@@ -295,11 +293,9 @@ public class MuzimaSyncService {
         return result;
     }
 
-    private int[] downloadEncounterForPatients(List<Patient> patients) {
+    private int[] downloadEncounterForPatients(List<String> patientUuids) {
         int[] result = new int[2];
         try {
-            List<String> patientUuids = getPatientUuids(patients);
-
             long startDownloadEncounters = System.currentTimeMillis();
             List<Encounter> allEncounters = encounterController.downloadEncountersByPatientUuids(patientUuids);
             long endDownloadObservations = System.currentTimeMillis();
@@ -313,7 +309,7 @@ public class MuzimaSyncService {
 
             result[0] = SUCCESS;
             result[1] = allEncounters.size();
-        }  catch (EncounterController.DownloadEncounterException e) {
+        } catch (EncounterController.DownloadEncounterException e) {
             Log.e(TAG, "Exception thrown while downloading encounters" + e);
             result[0] = DOWNLOAD_ERROR;
         } catch (EncounterController.ReplaceEncounterException e) {

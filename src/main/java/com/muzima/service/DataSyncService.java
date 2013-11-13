@@ -15,9 +15,12 @@ import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.cohort.AllCohortsListFragment;
 import com.muzima.view.forms.AllAvailableFormsListFragment;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
+import static java.util.Arrays.asList;
 
 public class DataSyncService extends IntentService {
 
@@ -115,9 +118,7 @@ public class DataSyncService extends IntentService {
             case DOWNLOAD_PATIENT_ONLY:
                 String[] patientsToBeDownloaded = intent.getStringArrayExtra(PATIENT_UUID_FOR_DOWNLOAD);
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
-                    int[] result = muzimaSyncService.downloadPatients(patientsToBeDownloaded);
-                    String msg = "Downloaded " + result[1] + " patients";
-                    prepareBroadcastMsg(broadcastIntent, result, msg);
+                    downloadPatientsWithObsAndEncounters(broadcastIntent, patientsToBeDownloaded);
                 }
             default:
                 break;
@@ -125,25 +126,50 @@ public class DataSyncService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
 
+    private void downloadPatientsWithObsAndEncounters(Intent broadcastIntent, String[] patientUUIDs) {
+        int[] resultForPatients = muzimaSyncService.downloadPatients(patientUUIDs);
+        broadCastMessageForPatients(broadcastIntent, resultForPatients);
+        List<String> patientUuids = new ArrayList<String>(asList(patientUUIDs));
+        if (isSuccess(resultForPatients)) {
+            int[] resultForObs = muzimaSyncService.downloadObservationsForPatients(patientUuids);
+            broadCastMessageForObservationDownload(broadcastIntent, resultForObs);
+
+            int[] resultForEncounters = muzimaSyncService.downloadEncountersForPatients(patientUUIDs);
+            broadCastMessageForEncounters(broadcastIntent, resultForEncounters);
+        }
+    }
+
     private void downloadObservationsAndEncounters(Intent broadcastIntent, String[] savedCohortIds) {
         int[] resultForObservations = muzimaSyncService.downloadObservationsForPatients(savedCohortIds);
-        String msgForObservations = "Downloaded " + resultForObservations[1] + " observations";
-        prepareBroadcastMsg(broadcastIntent, resultForObservations, msgForObservations);
-        broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, SYNC_OBSERVATIONS);
-
-        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+        broadCastMessageForObservationDownload(broadcastIntent, resultForObservations);
 
         int[] resultForEncounters = muzimaSyncService.downloadEncountersForPatients(savedCohortIds);
-        String msgForEncounters = "Downloaded " + resultForEncounters[1] + " encounters";
-        prepareBroadcastMsg(broadcastIntent, resultForEncounters, msgForEncounters);
-        broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, SYNC_ENCOUNTERS);
+        broadCastMessageForEncounters(broadcastIntent, resultForEncounters);
     }
 
     private void downloadPatients(Intent broadcastIntent, String[] cohortIds) {
         int[] resultForPatients = muzimaSyncService.downloadPatientsForCohorts(cohortIds);
+        broadCastMessageForPatients(broadcastIntent, resultForPatients);
+    }
+
+    private void broadCastMessageForEncounters(Intent broadcastIntent, int[] resultForEncounters) {
+        String msgForEncounters = "Downloaded " + resultForEncounters[1] + " encounters";
+        prepareBroadcastMsg(broadcastIntent, resultForEncounters, msgForEncounters);
+        broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, SYNC_ENCOUNTERS);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+    }
+
+    private void broadCastMessageForObservationDownload(Intent broadcastIntent, int[] resultForObservations) {
+        String msgForObservations = "Downloaded " + resultForObservations[1] + " observations";
+        prepareBroadcastMsg(broadcastIntent, resultForObservations, msgForObservations);
+        broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, SYNC_OBSERVATIONS);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+    }
+
+    private void broadCastMessageForPatients(Intent broadcastIntent, int[] resultForPatients) {
         String msgForPatients = "Downloaded " + resultForPatients[1] + " patients";
         prepareBroadcastMsg(broadcastIntent, resultForPatients, msgForPatients);
-        if (resultForPatients[0] == SyncStatusConstants.SUCCESS) {
+        if (isSuccess(resultForPatients) && resultForPatients.length > 2) {
             broadcastIntent.putExtra(Constants.DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, resultForPatients[2]);
         }
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
@@ -151,21 +177,25 @@ public class DataSyncService extends IntentService {
 
     private void prepareBroadcastMsg(Intent broadcastIntent, int[] result, String msg) {
         broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_STATUS, result[0]);
-        if (result[0] == SyncStatusConstants.SUCCESS) {
+        if (isSuccess(result)) {
             broadcastIntent.putExtra(Constants.DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, result[1]);
             updateNotificationMsg(msg);
         }
     }
 
+    private boolean isSuccess(int[] result) {
+        return result[0] == SyncStatusConstants.SUCCESS;
+    }
+
     private void prepareBroadcastMsgForFormUpload(Intent broadcastIntent, int[] result, String msg) {
         broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_STATUS, result[0]);
-        if (result[0] == SyncStatusConstants.SUCCESS) {
+        if (isSuccess(result)) {
             updateNotificationMsg(msg);
         }
     }
 
     private void saveFormsSyncTime(int[] result) {
-        if (result[0] == SyncStatusConstants.SUCCESS) {
+        if (isSuccess(result)) {
             SharedPreferences pref = getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
             Date date = new Date();
@@ -175,7 +205,7 @@ public class DataSyncService extends IntentService {
     }
 
     private void saveCohortsSyncTime(int[] result) {
-        if (result[0] == SyncStatusConstants.SUCCESS) {
+        if (isSuccess(result)) {
             SharedPreferences pref = getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
             Date date = new Date();
