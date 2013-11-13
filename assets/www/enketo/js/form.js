@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+/**
+ * @preserve Edited on November 2013
+ * This file was edited by muzima-dev@googlegroups.com
+ * to have it work properly on Android 2.2 devices
+ *
+ * Contact us if you want to know more
+ */
+
 /*jslint browser:true, devel:true, jquery:true, smarttabs:true, trailing:false*//*global XPathJS, XMLSerializer:true, Profiler, Modernizr, google, settings, connection, fileManager, xPathEvalTime*/
 
 /**
