@@ -2,6 +2,7 @@
 package com.muzima;
 
 import android.app.Application;
+import android.os.Build;
 import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
 import com.muzima.api.service.ConceptService;
@@ -43,6 +44,9 @@ public class MuzimaApplication extends Application{
     @Override
     public void onCreate() {
         ACRA.init(this);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.FROYO) {
+            System.setProperty("http.keepAlive", "false");
+        }
         super.onCreate();
         try {
             ContextFactory.setProperty(Constants.RESOURCE_CONFIGURATION_STRING, getConfigurationString());
