@@ -258,7 +258,8 @@ public class MuzimaSyncService {
             List<String> patientUuids = getPatientUuids(patients);
 
             long startDownloadObservations = System.currentTimeMillis();
-            List<Observation> allObservations = downloadAllObservations(patientUuids);
+            List<Observation> allObservations = observationController.downloadObservationsByPatientUuidsAndConceptUuids
+                    (patientUuids, conceptPreferenceService.getConcepts());
             long endDownloadObservations = System.currentTimeMillis();
             Log.i(TAG, "Observations download successful with " + allObservations.size() + " observations");
 
@@ -300,7 +301,7 @@ public class MuzimaSyncService {
             List<String> patientUuids = getPatientUuids(patients);
 
             long startDownloadEncounters = System.currentTimeMillis();
-            List<Encounter> allEncounters = downloadAllEncounters(patientUuids);
+            List<Encounter> allEncounters = encounterController.downloadEncountersByPatientUuids(patientUuids);
             long endDownloadObservations = System.currentTimeMillis();
             Log.i(TAG, "Encounters download successful with " + allEncounters.size() + " encounters");
 
@@ -389,16 +390,6 @@ public class MuzimaSyncService {
             cohorts = cohortController.downloadCohortsByPrefix(cohortPrefixes);
         }
         return cohorts;
-    }
-
-    private List<Observation> downloadAllObservations(List<String> patientUuids) throws ObservationController.DownloadObservationException {
-        ObservationController observationController = muzimaApplication.getObservationController();
-        return observationController.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptPreferenceService.getConcepts());
-    }
-
-    private List<Encounter> downloadAllEncounters(List<String> patientUuids) throws EncounterController.DownloadEncounterException {
-        EncounterController encounterController = muzimaApplication.getEncounterController();
-        return encounterController.downloadEncountersByPatientUuids(patientUuids);
     }
 
     List<String> getPatientUuids(List<Patient> patients) {
