@@ -30,6 +30,7 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
 import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
+import static java.lang.String.valueOf;
 
 public class PatientRemoteSearchListActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener,
         ListAdapter.BackgroundListQueryTaskListener {
@@ -143,6 +144,7 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         } else if (listView.getCheckedItemCount() == 0) {
             actionMode.finish();
         }
+        actionMode.setTitle(valueOf(listView.getCheckedItemCount()));
     }
 
 
