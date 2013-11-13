@@ -26,8 +26,10 @@ public class MuzimaSyncService {
     private ConceptController conceptController;
     private CohortController cohortController;
     private PatientController patientController;
+    private ObservationController observationController;
     private final CohortPrefixPreferenceService cohortPrefixPreferenceService;
     private final ConceptPreferenceService conceptPreferenceService;
+    private EncounterController encounterController;
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
         this.muzimaApplication = muzimaContext;
@@ -37,6 +39,8 @@ public class MuzimaSyncService {
         conceptController = muzimaApplication.getConceptController();
         cohortController = muzimaApplication.getCohortController();
         patientController = muzimaApplication.getPatientController();
+        observationController = muzimaApplication.getObservationController();
+        encounterController = muzimaApplication.getEncounterController();
     }
 
     public int authenticate(String[] credentials) {
@@ -237,10 +241,20 @@ public class MuzimaSyncService {
 
     public int[] downloadObservationsForPatients(String[] cohortUuids) {
         int[] result = new int[2];
-
-        ObservationController observationController = muzimaApplication.getObservationController();
+        List<Patient> patients;
         try {
-            List<Patient> patients = patientController.getPatientsForCohorts(cohortUuids);
+            patients = patientController.getPatientsForCohorts(cohortUuids);
+            result = downloadObservationsForPatients(patients);
+        } catch (PatientController.PatientLoadException e) {
+            Log.e(TAG, "Exception thrown while loading patients" + e);
+            result[0] = LOAD_ERROR;
+        }
+        return result;
+    }
+
+    private int[] downloadObservationsForPatients(List<Patient> patients) {
+        int[] result = new int[2];
+        try {
             List<String> patientUuids = getPatientUuids(patients);
 
             long startDownloadObservations = System.currentTimeMillis();
@@ -256,9 +270,6 @@ public class MuzimaSyncService {
 
             result[0] = SUCCESS;
             result[1] = allObservations.size();
-        } catch (PatientController.PatientLoadException e) {
-            Log.e(TAG, "Exception thrown while loading patients" + e);
-            result[0] = LOAD_ERROR;
         } catch (ObservationController.DownloadObservationException e) {
             Log.e(TAG, "Exception thrown while downloading observations" + e);
             result[0] = DOWNLOAD_ERROR;
@@ -272,11 +283,20 @@ public class MuzimaSyncService {
 
     public int[] downloadEncountersForPatients(String[] cohortUuids) {
         int[] result = new int[2];
-
-        PatientController patientController = muzimaApplication.getPatientController();
-        EncounterController encounterController = muzimaApplication.getEncounterController();
+        List<Patient> patients;
         try {
-            List<Patient> patients = patientController.getPatientsForCohorts(cohortUuids);
+            patients = patientController.getPatientsForCohorts(cohortUuids);
+            result = downloadEncounterForPatients(patients);
+        } catch (PatientController.PatientLoadException e) {
+            Log.e(TAG, "Exception thrown while loading patients" + e);
+            result[0] = LOAD_ERROR;
+        }
+        return result;
+    }
+
+    private int[] downloadEncounterForPatients(List<Patient> patients) {
+        int[] result = new int[2];
+        try {
             List<String> patientUuids = getPatientUuids(patients);
 
             long startDownloadEncounters = System.currentTimeMillis();
@@ -292,17 +312,13 @@ public class MuzimaSyncService {
 
             result[0] = SUCCESS;
             result[1] = allEncounters.size();
-        } catch (PatientController.PatientLoadException e) {
-            Log.e(TAG, "Exception thrown while loading patients" + e);
-            result[0] = LOAD_ERROR;
-        } catch (EncounterController.DownloadEncounterException e) {
+        }  catch (EncounterController.DownloadEncounterException e) {
             Log.e(TAG, "Exception thrown while downloading encounters" + e);
             result[0] = DOWNLOAD_ERROR;
         } catch (EncounterController.ReplaceEncounterException e) {
             Log.e(TAG, "Exception thrown while replacing encounters" + e);
             result[0] = REPLACE_ERROR;
         }
-
         return result;
     }
 
