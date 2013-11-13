@@ -29,12 +29,8 @@
                 if(!dateString){
                     return;
                 }
-                var date = ecmaScriptDateParse(dateString);
-                if(isNaN(date)){
-                    dateString = dateString.replace(/-/g, "/");
-                    date = ecmaScriptDateParse(dateString);
-                }
-                return date;
+                dateString = dateString.replace(/-/g, "/");
+                return ecmaScriptDateParse(dateString);
             }
 
             DateType.prototype.toDate=function(){var date=new Date(this.value);if(!isNaN(date.getTime())) return date;return new Date(Date.parse(this.value))}
