@@ -1,11 +1,12 @@
 package com.muzima.view.patients;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.*;
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -13,31 +14,43 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsRemoteSearchAdapter;
+import com.muzima.api.model.Patient;
+import com.muzima.controller.PatientController;
 import com.muzima.utils.Fonts;
+import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
 import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
 
-public class PatientRemoteSearchListActivity extends SherlockActivity implements AdapterView.OnItemClickListener,
+public class PatientRemoteSearchListActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener,
         ListAdapter.BackgroundListQueryTaskListener {
     private PatientsRemoteSearchAdapter patientAdapter;
     private ListView listView;
     private String searchString;
     private FrameLayout progressBarContainer;
+    private PatientController patientController;
 
     private View noDataView;
     private ActionMode actionMode;
 
     private boolean actionModeActive = false;
+    private boolean syncInProgress;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_remote_search_list);
+        patientController = ((MuzimaApplication) getApplicationContext()).getPatientController();
         Bundle intentExtras = getIntent().getExtras();
         if (intentExtras != null) {
             searchString = intentExtras.getString(SEARCH_STRING_BUNDLE_KEY);
@@ -122,10 +135,6 @@ public class PatientRemoteSearchListActivity extends SherlockActivity implements
     }
 
 
-    private int getSelectedItems() {
-        return listView.getCheckedItemCount();
-    }
-
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         if (!actionModeActive && listView.getCheckedItemCount() > 0) {
@@ -134,6 +143,26 @@ public class PatientRemoteSearchListActivity extends SherlockActivity implements
         } else if (listView.getCheckedItemCount() == 0) {
             actionMode.finish();
         }
+    }
+
+
+    @Override
+    protected void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+        int syncStatus = intent.getIntExtra(SYNC_STATUS, UNKNOWN_ERROR);
+        int syncType = intent.getIntExtra(SYNC_TYPE, -1);
+
+        if (syncType == DOWNLOAD_PATIENT_ONLY) {
+            syncInProgress = false;
+            if (syncStatus == SUCCESS) {
+                startActivity(new Intent(PatientRemoteSearchListActivity.this, PatientsListActivity.class));
+            }
+        }
+    }
+
+    private void downloadPatients(String[] patientUUIDs) {
+        syncInProgress = true;
+        new PatientDownloadIntent(this, patientUUIDs).start();
     }
 
     private class DownloadPatientMode implements ActionMode.Callback {
@@ -154,7 +183,7 @@ public class PatientRemoteSearchListActivity extends SherlockActivity implements
         public boolean onActionItemClicked(ActionMode actionMode, com.actionbarsherlock.view.MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.menu_download:
-                    return false;
+                    downloadPatients(getSelectedPatientsUuid());
             }
             return false;
         }
@@ -165,5 +194,16 @@ public class PatientRemoteSearchListActivity extends SherlockActivity implements
             for (int i = 0; i < listView.getChildCount(); i++)
                 listView.setItemChecked(i, false);
         }
+    }
+
+    private String[] getSelectedPatientsUuid() {
+        List<String> patientUUIDs = new ArrayList<String>();
+        SparseBooleanArray checkedItemPositions = listView.getCheckedItemPositions();
+        for (int i = 0; i < checkedItemPositions.size(); i++) {
+            if (checkedItemPositions.valueAt(i)) {
+                patientUUIDs.add(((Patient) listView.getItemAtPosition(checkedItemPositions.keyAt(i))).getUuid());
+            }
+        }
+        return patientUUIDs.toArray(new String[patientUUIDs.size()]);
     }
 }

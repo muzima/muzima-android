@@ -210,9 +210,27 @@ public class MuzimaSyncService {
         } catch (CohortController.CohortReplaceException e) {
             Log.e(TAG, "Exception thrown while replacing cohort data" + e);
             result[0] = REPLACE_ERROR;
-        } catch (PatientController.PatientReplaceException e) {
+        } catch (PatientController.PatientSaveException e) {
             Log.e(TAG, "Exception thrown while replacing patients" + e);
             result[0] = REPLACE_ERROR;
+        }
+        return result;
+    }
+
+    public int[] downloadPatients(String[] patientUUIDs) {
+        int[] result = new int[2];
+        List<Patient> downloadedPatients;
+        try {
+            downloadedPatients = downloadPatientsByUUID(patientUUIDs);
+            patientController.savePatients(downloadedPatients);
+            result[0] = SUCCESS;
+            result[1] = downloadedPatients.size();
+        } catch (PatientController.PatientDownloadException e) {
+            Log.e(TAG, "Error while downloading patients" + e);
+            result[0] = DOWNLOAD_ERROR;
+        } catch (PatientController.PatientSaveException e) {
+            Log.e(TAG, "Error while saving patients" + e);
+            result[0] = DOWNLOAD_ERROR;
         }
         return result;
     }
@@ -311,7 +329,11 @@ public class MuzimaSyncService {
             if (patientFromServer != null) {
                 patientFromServer.addIdentifier(localPatient.getIdentifier(LOCAL_PATIENT));
                 patientController.deletePatient(localPatient);
-                patientController.savePatient(patientFromServer);
+                try {
+                    patientController.savePatient(patientFromServer);
+                } catch (PatientController.PatientSaveException e) {
+                    Log.e(TAG, "Error while saving patients" + e);
+                }
             }
         }
     }
@@ -319,15 +341,27 @@ public class MuzimaSyncService {
     void updatePatientsNotPartOfCohorts() {
         List<Patient> patientsNotInCohorts = patientController.getPatientsNotInCohorts();
         List<Patient> downloadedPatients = new ArrayList<Patient>();
-        for (Patient patient : patientsNotInCohorts) {
-            downloadedPatients.add(patientController.downloadPatientByUUID(patient.getUuid()));
+        try {
+            for (Patient patient : patientsNotInCohorts) {
+                downloadedPatients.add(patientController.downloadPatientByUUID(patient.getUuid()));
+            }
+            downloadedPatients.removeAll(singleton(null));
+            patientController.replacePatients(downloadedPatients);
+        } catch (PatientController.PatientSaveException e) {
+            Log.e(TAG, "Exception thrown while updating patients from server" + e);
+        } catch (PatientController.PatientDownloadException e) {
+            Log.e(TAG, "Exception thrown while downloading patients from server" + e);
+        }
+    }
+
+    private List<Patient> downloadPatientsByUUID(String[] patientUUIDs) throws PatientController.PatientDownloadException {
+        List<Patient> downloadedPatients = new ArrayList<Patient>();
+        for (String patientUUID : patientUUIDs) {
+            Log.i(TAG, "Downloading patient with UUID: " + patientUUID);
+            downloadedPatients.add(patientController.downloadPatientByUUID(patientUUID));
         }
         downloadedPatients.removeAll(singleton(null));
-        try {
-            patientController.replacePatients(downloadedPatients);
-        } catch (PatientController.PatientReplaceException e) {
-            Log.e(TAG, "Exception thrown while updating patients from server" + e);
-        }
+        return downloadedPatients;
     }
 
     private List<Cohort> downloadCohortsList() throws CohortController.CohortDownloadException {

@@ -57,7 +57,7 @@ public class PatientControllerTest {
     }
 
     @Test
-    public void replacePatients_shouldReplaceAllExistingPatientsAndAddNewPatients() throws IOException, PatientController.PatientReplaceException {
+    public void replacePatients_shouldReplaceAllExistingPatientsAndAddNewPatients() throws IOException, PatientController.PatientSaveException {
         List<Patient> patients = buildPatients();
 
         patientController.replacePatients(patients);
@@ -66,8 +66,8 @@ public class PatientControllerTest {
         verifyNoMoreInteractions(patientService);
     }
 
-    @Test(expected = PatientController.PatientReplaceException.class)
-    public void replacePatients_shouldThrowPatientReplaceExceptionIfExceptionThrownByService() throws IOException, PatientController.PatientReplaceException {
+    @Test(expected = PatientController.PatientSaveException.class)
+    public void replacePatients_shouldThrowPatientReplaceExceptionIfExceptionThrownByService() throws IOException, PatientController.PatientSaveException {
         List<Patient> patients = buildPatients();
 
         doThrow(new IOException()).when(patientService).updatePatients(patients);

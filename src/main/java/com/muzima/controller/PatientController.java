@@ -26,11 +26,11 @@ public class PatientController {
         this.cohortService = cohortService;
     }
 
-    public void replacePatients(List<Patient> patients) throws PatientReplaceException {
+    public void replacePatients(List<Patient> patients) throws PatientSaveException {
         try {
             patientService.updatePatients(patients);
         } catch (IOException e) {
-            throw new PatientReplaceException(e);
+            throw new PatientSaveException(e);
         }
     }
 
@@ -134,13 +134,24 @@ public class PatientController {
         return null;
     }
 
-    public void savePatient(Patient patient) {
+    public void savePatient(Patient patient) throws PatientSaveException {
         try {
             patientService.savePatient(patient);
         } catch (IOException e) {
             Log.e(TAG, "Error while saving the patient : " + patient.getUuid());
+            throw new PatientSaveException(e);
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error while saving the patient : " + patient.getUuid());
+            throw new PatientSaveException(e);
+        }
+    }
+
+    public void savePatients(List<Patient> patients) throws PatientSaveException {
+        try {
+            patientService.savePatients(patients);
+        } catch (IOException e) {
+            Log.e(TAG, "Error while saving the patient list");
+            throw new PatientSaveException(e);
         }
     }
 
@@ -161,18 +172,24 @@ public class PatientController {
         return new ArrayList<Patient>();
     }
 
-    public Patient downloadPatientByUUID(String uuid) {
+    public Patient downloadPatientByUUID(String uuid) throws PatientDownloadException {
         try {
-            patientService.downloadPatientByUuid(uuid);
+            return patientService.downloadPatientByUuid(uuid);
         } catch (IOException e) {
             Log.e(TAG, "Error while downloading patient with UUID : " + uuid + " from server");
+            throw new PatientDownloadException(e);
         }
-        return null;
     }
 
 
-    public static class PatientReplaceException extends Throwable {
-        public PatientReplaceException(Throwable throwable) {
+    public static class PatientSaveException extends Throwable {
+        public PatientSaveException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+
+    public static class PatientDownloadException extends Throwable {
+        public PatientDownloadException(Throwable throwable) {
             super(throwable);
         }
     }

@@ -35,7 +35,7 @@ public class DataSyncService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-        muzimaSyncService = ((MuzimaApplication)getApplication()).getMuzimaSyncService();
+        muzimaSyncService = ((MuzimaApplication) getApplication()).getMuzimaSyncService();
         updateNotificationMsg("Sync service started");
     }
 
@@ -85,7 +85,7 @@ public class DataSyncService extends IntentService {
             case SYNC_PATIENTS_FULL_DATA:
                 String[] cohortIds = intent.getStringArrayExtra(COHORT_IDS);
                 updateNotificationMsg("Downloading Patients");
-                if(authenticationSuccessful(credentials, broadcastIntent)){
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
                     downloadPatients(broadcastIntent, cohortIds);
                     downloadObservationsAndEncounters(broadcastIntent, cohortIds);
                 }
@@ -93,14 +93,14 @@ public class DataSyncService extends IntentService {
             case SYNC_PATIENTS_ONLY:
                 String[] cohortIdsToDownload = intent.getStringArrayExtra(COHORT_IDS);
                 updateNotificationMsg("Downloading Patients");
-                if(authenticationSuccessful(credentials, broadcastIntent)){
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
                     downloadPatients(broadcastIntent, cohortIdsToDownload);
                 }
                 break;
             case SYNC_PATIENTS_DATA_ONLY:
                 String[] savedCohortIds = intent.getStringArrayExtra(COHORT_IDS);
                 updateNotificationMsg("Downloading Patients data");
-                if(authenticationSuccessful(credentials, broadcastIntent)){
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
                     downloadObservationsAndEncounters(broadcastIntent, savedCohortIds);
                 }
                 break;
@@ -112,6 +112,13 @@ public class DataSyncService extends IntentService {
                     prepareBroadcastMsgForFormUpload(broadcastIntent, result, "Uploaded the forms Successfully");
                 }
                 break;
+            case DOWNLOAD_PATIENT_ONLY:
+                String[] patientsToBeDownloaded = intent.getStringArrayExtra(PATIENT_UUID_FOR_DOWNLOAD);
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    int[] result = muzimaSyncService.downloadPatients(patientsToBeDownloaded);
+                    String msg = "Downloaded " + result[1] + " patients";
+                    prepareBroadcastMsg(broadcastIntent, result, msg);
+                }
             default:
                 break;
         }

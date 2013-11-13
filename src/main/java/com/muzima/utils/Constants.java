@@ -27,6 +27,7 @@ public class Constants {
         public static final String DOWNLOAD_COUNT_SECONDARY = "donwload_count_secondary";
         public static final String FORM_IDS = "formIds";
         public static final String COHORT_IDS = "cohortIds";
+        public static final String PATIENT_UUID_FOR_DOWNLOAD = "patientUUIDForDownload";
 
         public static final int SYNC_FORMS = 0;
         public static final int SYNC_TEMPLATES = 1;
@@ -37,6 +38,7 @@ public class Constants {
         public static final int SYNC_PATIENTS_ONLY = 6;
         public static final int SYNC_PATIENTS_DATA_ONLY = 7;
         public static final int SYNC_UPLOAD_FORMS = 8;
+        public static final int DOWNLOAD_PATIENT_ONLY = 9;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;
