@@ -2,6 +2,7 @@ package com.muzima.view.patients;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.View;
@@ -138,13 +139,24 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        if (!actionModeActive && listView.getCheckedItemCount() > 0) {
+        if (!actionModeActive && getCheckedItemCount(listView) > 0) {
             actionMode = this.startActionMode(new DownloadPatientMode());
             actionModeActive = true;
-        } else if (listView.getCheckedItemCount() == 0) {
+        } else if (getCheckedItemCount(listView) == 0) {
             actionMode.finish();
         }
-        actionMode.setTitle(valueOf(listView.getCheckedItemCount()));
+        actionMode.setTitle(valueOf(getCheckedItemCount(listView)));
+    }
+
+    private int getCheckedItemCount(ListView listView) {
+        if (Build.VERSION.SDK_INT >= 11) return listView.getCheckedItemCount();
+        else
+        {
+            int count = 0;
+            for (int i = listView.getCount() - 1; i >= 0; i--)
+                if (listView.isItemChecked(i)) count++;
+            return count;
+        }
     }
 
 
