@@ -97,9 +97,9 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
              } else{
                  results[0] = SUCCESS;
              }
-            int[] downloadObservationsResult = muzimaSyncService.downloadObservationsForPatients(cohortsUuidDownloaded);
+            int[] downloadObservationsResult = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortsUuidDownloaded);
 
-            int[] downloadEncountersResult = muzimaSyncService.downloadEncountersForPatients(cohortsUuidDownloaded);
+            int[] downloadEncountersResult = muzimaSyncService.downloadEncountersForPatientsByCohortUUIDs(cohortsUuidDownloaded);
 
             results[1] = downloadObservationsResult[0];
             results[2] = downloadEncountersResult[0];

@@ -239,12 +239,12 @@ public class MuzimaSyncService {
         return result;
     }
 
-    public int[] downloadObservationsForPatients(String[] cohortUuids) {
+    public int[] downloadObservationsForPatientsByCohortUUIDs(String[] cohortUuids) {
         int[] result = new int[2];
         List<Patient> patients;
         try {
             patients = patientController.getPatientsForCohorts(cohortUuids);
-            result = downloadObservationsForPatients(getPatientUuids(patients));
+            result = downloadObservationsForPatientsByPatientUUIDs(getPatientUuids(patients));
         } catch (PatientController.PatientLoadException e) {
             Log.e(TAG, "Exception thrown while loading patients" + e);
             result[0] = LOAD_ERROR;
@@ -252,7 +252,7 @@ public class MuzimaSyncService {
         return result;
     }
 
-    public int[] downloadObservationsForPatients(List<String> patientUuids) {
+    public int[] downloadObservationsForPatientsByPatientUUIDs(List<String> patientUuids) {
         int[] result = new int[2];
         try {
             long startDownloadObservations = System.currentTimeMillis();
@@ -280,12 +280,12 @@ public class MuzimaSyncService {
         return result;
     }
 
-    public int[] downloadEncountersForPatients(String[] cohortUuids) {
+    public int[] downloadEncountersForPatientsByCohortUUIDs(String[] cohortUuids) {
         int[] result = new int[2];
         List<Patient> patients;
         try {
             patients = patientController.getPatientsForCohorts(cohortUuids);
-            result = downloadEncounterForPatients(getPatientUuids(patients));
+            result = downloadEncountersForPatientsByPatientUUIDs(getPatientUuids(patients));
         } catch (PatientController.PatientLoadException e) {
             Log.e(TAG, "Exception thrown while loading patients" + e);
             result[0] = LOAD_ERROR;
@@ -293,7 +293,7 @@ public class MuzimaSyncService {
         return result;
     }
 
-    private int[] downloadEncounterForPatients(List<String> patientUuids) {
+    public int[] downloadEncountersForPatientsByPatientUUIDs(List<String> patientUuids) {
         int[] result = new int[2];
         try {
             long startDownloadEncounters = System.currentTimeMillis();
@@ -330,12 +330,7 @@ public class MuzimaSyncService {
         return result;
     }
 
-    public void updatePatients() {
-        consolidatePatients();
-        updatePatientsNotPartOfCohorts();
-    }
-
-    void consolidatePatients() {
+    public void consolidatePatients() {
         List<Patient> allLocalPatients = patientController.getAllPatientsCreatedLocallyAndNotSynced();
         for (Patient localPatient : allLocalPatients) {
             Patient patientFromServer = patientController.consolidateTemporaryPatient(localPatient);
@@ -351,7 +346,7 @@ public class MuzimaSyncService {
         }
     }
 
-    void updatePatientsNotPartOfCohorts() {
+    public List<Patient> updatePatientsNotPartOfCohorts() {
         List<Patient> patientsNotInCohorts = patientController.getPatientsNotInCohorts();
         List<Patient> downloadedPatients = new ArrayList<Patient>();
         try {
@@ -365,6 +360,7 @@ public class MuzimaSyncService {
         } catch (PatientController.PatientDownloadException e) {
             Log.e(TAG, "Exception thrown while downloading patients from server" + e);
         }
+        return downloadedPatients;
     }
 
     private List<Patient> downloadPatientsByUUID(String[] patientUUIDs) throws PatientController.PatientDownloadException {

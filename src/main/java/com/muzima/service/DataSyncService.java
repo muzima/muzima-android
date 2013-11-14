@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.model.Patient;
 import com.muzima.utils.Constants;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.cohort.AllCohortsListFragment;
@@ -82,7 +83,7 @@ public class DataSyncService extends IntentService {
                     String msg = "Downloaded " + result[1] + " cohorts";
                     prepareBroadcastMsg(broadcastIntent, result, msg);
                     saveCohortsSyncTime(result);
-                    muzimaSyncService.updatePatients();
+                    consolidateAndSyncIndependentPatients(broadcastIntent);
                 }
                 break;
             case SYNC_PATIENTS_FULL_DATA:
@@ -126,24 +127,32 @@ public class DataSyncService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
 
+    private void consolidateAndSyncIndependentPatients(Intent broadcastIntent) {
+        muzimaSyncService.consolidatePatients();
+        List<Patient> patients = muzimaSyncService.updatePatientsNotPartOfCohorts();
+
+        List<String> patientUuids = muzimaSyncService.getPatientUuids(patients);
+        downloadPatientsWithObsAndEncounters(broadcastIntent,patientUuids.toArray(new String[patientUuids.size()]));
+    }
+
     private void downloadPatientsWithObsAndEncounters(Intent broadcastIntent, String[] patientUUIDs) {
         int[] resultForPatients = muzimaSyncService.downloadPatients(patientUUIDs);
         broadCastMessageForPatients(broadcastIntent, resultForPatients);
-        List<String> patientUuids = new ArrayList<String>(asList(patientUUIDs));
+        List<String> patientUUIDList = new ArrayList<String>(asList(patientUUIDs));
         if (isSuccess(resultForPatients)) {
-            int[] resultForObs = muzimaSyncService.downloadObservationsForPatients(patientUuids);
+            int[] resultForObs = muzimaSyncService.downloadObservationsForPatientsByPatientUUIDs(patientUUIDList);
             broadCastMessageForObservationDownload(broadcastIntent, resultForObs);
 
-            int[] resultForEncounters = muzimaSyncService.downloadEncountersForPatients(patientUUIDs);
+            int[] resultForEncounters = muzimaSyncService.downloadEncountersForPatientsByPatientUUIDs(patientUUIDList);
             broadCastMessageForEncounters(broadcastIntent, resultForEncounters);
         }
     }
 
     private void downloadObservationsAndEncounters(Intent broadcastIntent, String[] savedCohortIds) {
-        int[] resultForObservations = muzimaSyncService.downloadObservationsForPatients(savedCohortIds);
+        int[] resultForObservations = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(savedCohortIds);
         broadCastMessageForObservationDownload(broadcastIntent, resultForObservations);
 
-        int[] resultForEncounters = muzimaSyncService.downloadEncountersForPatients(savedCohortIds);
+        int[] resultForEncounters = muzimaSyncService.downloadEncountersForPatientsByCohortUUIDs(savedCohortIds);
         broadCastMessageForEncounters(broadcastIntent, resultForEncounters);
     }
 

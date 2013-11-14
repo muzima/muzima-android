@@ -434,7 +434,7 @@ public class MuzimaSyncServiceTest {
                 .thenReturn(allObservations);
         when(concetpPreferenceService.getConcepts()).thenReturn(conceptUuids);
 
-        muzimaSyncService.downloadObservationsForPatients(cohortUuids);
+        muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortUuids);
 
         verify(observationController).downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids);
         verify(observationController).replaceObservations(muzimaSyncService.getPatientUuids(patients), allObservations);
@@ -464,7 +464,7 @@ public class MuzimaSyncServiceTest {
         when(observationController.downloadObservationsByPatientUuidsAndConceptUuids(asList("patient1"), conceptUuids))
                 .thenReturn(allObservations);
 
-        int[] result = muzimaSyncService.downloadObservationsForPatients(cohortUuids);
+        int[] result = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortUuids);
 
         assertThat(result[0], is(SUCCESS));
         assertThat(result[1], is(2));
@@ -476,7 +476,7 @@ public class MuzimaSyncServiceTest {
 
         doThrow(new PatientController.PatientLoadException(null)).when(patientController).getPatientsForCohorts(cohortUuids);
 
-        int[] result = muzimaSyncService.downloadObservationsForPatients(cohortUuids);
+        int[] result = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortUuids);
         assertThat(result[0], is(LOAD_ERROR));
     }
 
@@ -497,7 +497,7 @@ public class MuzimaSyncServiceTest {
         when(sharedPref.getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>())).thenReturn(concepts);
         doThrow(new ObservationController.DownloadObservationException(null)).when(observationController).downloadObservationsByPatientUuidsAndConceptUuids(anyList(), anyList());
 
-        int[] result = muzimaSyncService.downloadObservationsForPatients(cohortUuids);
+        int[] result = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortUuids);
         assertThat(result[0], is(DOWNLOAD_ERROR));
     }
 
@@ -507,7 +507,7 @@ public class MuzimaSyncServiceTest {
 
         doThrow(new ObservationController.ReplaceObservationException(null)).when(observationController).replaceObservations(anyList(), anyList());
 
-        int[] result = muzimaSyncService.downloadObservationsForPatients(cohortUuids);
+        int[] result = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortUuids);
         assertThat(result[0], is(REPLACE_ERROR));
     }
 
@@ -528,7 +528,7 @@ public class MuzimaSyncServiceTest {
         List<String> patientUuids = asList(new String[]{"patient1"});
         when(encounterController.downloadEncountersByPatientUuids(patientUuids)).thenReturn(encounters);
 
-        muzimaSyncService.downloadEncountersForPatients(cohortUuids);
+        muzimaSyncService.downloadEncountersForPatientsByCohortUUIDs(cohortUuids);
 
         verify(encounterController).downloadEncountersByPatientUuids(patientUuids);
         verify(encounterController).replaceEncounters(patientUuids, encounters);
