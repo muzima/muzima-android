@@ -25,7 +25,7 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(context);
-            convertView = layoutInflater.inflate(R.layout.item_patients_list, parent, false);
+            convertView = layoutInflater.inflate(R.layout.item_patients_list_multi_checkable, parent, false);
             holder = new ViewHolder();
             holder.genderImg = (ImageView) convertView.findViewById(R.id.genderImg);
             holder.name = (TextView) convertView.findViewById(R.id.name);
