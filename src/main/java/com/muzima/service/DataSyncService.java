@@ -136,6 +136,9 @@ public class DataSyncService extends IntentService {
     }
 
     private void downloadPatientsWithObsAndEncounters(Intent broadcastIntent, String[] patientUUIDs) {
+        if(patientUUIDs.length == 0){
+            return;
+        }
         int[] resultForPatients = muzimaSyncService.downloadPatients(patientUUIDs);
         broadCastMessageForPatients(broadcastIntent, resultForPatients);
         List<String> patientUUIDList = new ArrayList<String>(asList(patientUUIDs));

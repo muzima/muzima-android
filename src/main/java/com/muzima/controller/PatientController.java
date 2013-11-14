@@ -165,7 +165,7 @@ public class PatientController {
 
     public List<Patient> getPatientsNotInCohorts() {
         try {
-            patientService.getPatientsNotInCohorts();
+            return patientService.getPatientsNotInCohorts();
         } catch (IOException e) {
             Log.e(TAG, "Error while getting patients that are not in Cohorts");
         }
