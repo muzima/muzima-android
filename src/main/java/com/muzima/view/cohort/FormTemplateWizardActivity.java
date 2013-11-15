@@ -188,7 +188,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
 
     @Override
     public void onQueryTaskStarted() {
-        progressDialog.show("Loading Forms...");
+        progressDialog.show("Loading Forms. This might take a while...");
     }
 
     @Override
