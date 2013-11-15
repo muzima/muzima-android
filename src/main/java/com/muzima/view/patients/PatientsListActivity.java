@@ -86,7 +86,9 @@ public class PatientsListActivity extends SherlockActivity implements AdapterVie
             @Override
             public boolean onQueryTextChange(String s) {
                 searchString = s;
-                patientAdapter.search(s);
+                if (searchString.trim().length() > 0) {
+                    patientAdapter.search(s.trim());
+                }
                 return true;
             }
         });
