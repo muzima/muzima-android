@@ -41,6 +41,7 @@
         <activity
                 android:name="com.muzima.view.cohort.CohortActivity"
                 android:label="@string/title_activity_cohort_list"
+                android:configChanges="orientation|screenSize"
                 android:parentActivityName="com.muzima.view.MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -107,6 +108,7 @@
         <activity
                 android:name=".view.forms.FormsActivity"
                 android:label="@string/title_activity_form_list"
+                android:configChanges="orientation|screenSize"
                 android:parentActivityName="com.muzima.view.MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -115,6 +117,7 @@
         <activity
                 android:name=".view.forms.FormWebViewActivity"
                 android:label="@string/title_activity_form_webview"
+                android:configChanges="orientation|screenSize"
                 android:parentActivityName="com.muzima.view.forms.FormsActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
