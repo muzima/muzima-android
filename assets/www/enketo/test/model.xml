@@ -1,114 +1,85 @@
 <model>
     <instance>
         <form xmlns="http://www.w3.org/2002/xforms">
-            <header>
-                <enterer/>
-                <date_entered/>
-                <session/>
-                <uid/>
-            </header>
-            <patient>
-                <patient.patient_id openmrs_table="patient" openmrs_attribute="patient_id"/>
-                <patient_identifier.identifier_type_id openmrs_table="patient_identifier" openmrs_attribute="identifier_type_id"/>
-                <patient.medical_record_number openmrs_table="patient_identifier" openmrs_attribute="identifier"/>
-                <patient.birthdate openmrs_table="patient" openmrs_attribute="birthdate"/>
-                <patient.birthdate_estimated openmrs_table="patient" openmrs_attribute="birthdate_estimated"/>
-                <patient.family_name openmrs_table="patient_name" openmrs_attribute="family_name"/>
-                <patient.given_name openmrs_table="patient_name" openmrs_attribute="given_name"/>
-                <patient.middle_name openmrs_table="patient_name" openmrs_attribute="middle_name"/>
-                <patient.sex openmrs_table="patient" openmrs_attribute="gender"/>
-                <no_male/>
-            </patient>
-            <encounter>
-                <encounter.encounter_datetime openmrs_table="encounter" openmrs_attribute="encounter_datetime"/>
-                <encounter.location_id openmrs_table="encounter" openmrs_attribute="location_id"/>
-                <encounter.provider_id openmrs_table="encounter" openmrs_attribute="provider_id"/>
-            </encounter>
-            <obs openmrs_concept="1238^MEDICAL RECORD OBSERVATIONS^99DCT" openmrs_datatype="ZZ">
-                <temporary.registration.uuid openmrs_concept="9000^TEMPORARY REGISTRATION UUID^99DCT" openmrs_datatype="CWE"/>
-                <start_time openmrs_concept="1693^START TIME^99DCT" openmrs_datatype="TM">
-                    <value/>
-                </start_time>
-                <start_now/>
-                <end_time openmrs_concept="1694^END TIME^99DCT" openmrs_datatype="TM">
-                    <value/>
-                </end_time>
-                <current_sit_type openmrs_concept="1839^CURRENT SIT TYPE^99DCT" openmrs_datatype="CWE">
-                    <value/>
-                </current_sit_type>
-                <last_menstrual_period_date openmrs_concept="1836^LAST MENSTRUAL PERIOD DATE^99DCT" openmrs_datatype="DT">
-                    <date/>
-                    <time/>
-                    <value/>
-                </last_menstrual_period_date>
-                <chief_complaint openmrs_concept="5219^CHIEF COMPLAINT^99DCT" openmrs_datatype="CWE" template="1">
-                    <date/>
-                    <time/>
-                    <symptomatic openmrs_concept="1068^SYMPTOMATIC^99DCT">false</symptomatic>
-                    <asymptomatic openmrs_concept="5006^ASYMPTOMATIC^99DCT">false</asymptomatic>
-                    <having_hypoglycemia_symptoms_in_past_month openmrs_concept="8008^HAVING HYPOGLYCEMIA SYMPTOMS IN PAST MONTH^99DCT">false</having_hypoglycemia_symptoms_in_past_month>
-                    <none openmrs_concept="1107^NONE^99DCT">false</none>
-                    <vaginal_discharge openmrs_concept="5993^VAGINAL DISCHARGE^99DCT">false</vaginal_discharge>
-                    <vaginal_bleeding openmrs_concept="1489^VAGINAL BLEEDING^99DCT">false</vaginal_bleeding>
-                    <dysfunctional_uterine_bleeding openmrs_concept="6497^DYSFUNCTIONAL UTERINE BLEEDING^99DCT">false</dysfunctional_uterine_bleeding>
-                    <menorrhagia openmrs_concept="1461^MENORRHAGIA^99DCT">false</menorrhagia>
 
-                    <postmenopausal_bleeding openmrs_concept="8274^POSTMENOPAUSAL BLEEDING^99DCT">false</postmenopausal_bleeding>
-                    <other_non-coded openmrs_concept="5622^OTHER NON-CODED^99DCT">false</other_non-coded>
-                    <postcoital_bleeding openmrs_concept="8273^POSTCOITAL BLEEDING^99DCT">false</postcoital_bleeding>
-                    <xforms_value/>
-                </chief_complaint>
-                <method_of_family_planning openmrs_concept="374^METHOD OF FAMILY PLANNING^99DCT" openmrs_datatype="CWE" template="1">
-                    <date/>
-                    <time/>
-                    <injectable_contraceptives openmrs_concept="5279^INJECTABLE CONTRACEPTIVES^99DCT">false</injectable_contraceptives>
-                    <diaphragm openmrs_concept="5278^DIAPHRAGM^99DCT">false</diaphragm>
-                    <intrauterine_device openmrs_concept="5275^INTRAUTERINE DEVICE^99DCT">false</intrauterine_device>
-                    <other_non-coded openmrs_concept="5622^OTHER NON-CODED^99DCT">false</other_non-coded>
-                    <female_sterilization openmrs_concept="5276^FEMALE STERILIZATION^99DCT">false</female_sterilization>
-                    <condoms openmrs_concept="190^CONDOMS^99DCT">false</condoms>
-                    <oral_contraception openmrs_concept="780^ORAL CONTRACEPTION^99DCT">false</oral_contraception>
-                    <natural_family_planning openmrs_concept="5277^NATURAL FAMILY PLANNING^99DCT">false</natural_family_planning>
-                    <medroxyprogesterone_acetate openmrs_concept="907^MEDROXYPROGESTERONE ACETATE^99DCT">false</medroxyprogesterone_acetate>
-                    <none openmrs_concept="1107^NONE^99DCT">false</none>
-                    <contraceptive_implant openmrs_concept="6220^CONTRACEPTIVE IMPLANT^99DCT">false</contraceptive_implant>
-                    <combined_hormone_oral_contraceptive_pill openmrs_concept="6218^COMBINED HORMONE ORAL CONTRACEPTIVE PILL^99DCT">false</combined_hormone_oral_contraceptive_pill>
-                    <abstinence openmrs_concept="6219^ABSTINENCE^99DCT">false</abstinence>
-                    <progestin_pills openmrs_concept="6217^PROGESTIN PILLS^99DCT">false</progestin_pills>
-                    <tubal_ligation openmrs_concept="6700^TUBAL LIGATION^99DCT">false</tubal_ligation>
-                    <vasectomy openmrs_concept="6701^VASECTOMY^99DCT">false</vasectomy>
-                    <herbal_traditional_medications openmrs_concept="5841^HERBAL TRADITIONAL MEDICATIONS^99DCT">false</herbal_traditional_medications>
-                    <female_condoms openmrs_concept="6717^FEMALE CONDOMS^99DCT">false</female_condoms>
-                    <male_condoms openmrs_concept="6718^MALE CONDOMS^99DCT">false</male_condoms>
-                    <emergency_contraceptive_pills openmrs_concept="6725^EMERGENCY CONTRACEPTIVE PILLS^99DCT">false</emergency_contraceptive_pills>
-                    <contraceptive_sponge openmrs_concept="8134^CONTRACEPTIVE SPONGE^99DCT">false</contraceptive_sponge>
-                    <family_planning_via_oral_contraceptive_pills openmrs_concept="5274^FAMILY PLANNING VIA ORAL CONTRACEPTIVE PILLS^99DCT">false</family_planning_via_oral_contraceptive_pills>
-                    <do_not_know openmrs_concept="1624^DO NOT KNOW^99DCT">false</do_not_know>
-                    <xforms_value/>
-                </method_of_family_planning>
-                <most_recent_papanicolaou_smear_result openmrs_concept="7423^MOST RECENT PAPANICOLAOU SMEAR RESULT^99DCT" openmrs_datatype="CWE" template="1">
-                    <date/>
-                    <time/>
-                    <normal openmrs_concept="1115^NORMAL^99DCT">false</normal>
-                    <atypical_squamous_cells_of_undetermined_significance openmrs_concept="7417^ATYPICAL SQUAMOUS CELLS OF UNDETERMINED SIGNIFICANCE ^99DCT">false</atypical_squamous_cells_of_undetermined_significance>
-                    <atypical_glandular_cells_of_undetermined_significance openmrs_concept="7418^ATYPICAL GLANDULAR CELLS OF UNDETERMINED SIGNIFICANCE ^99DCT">false</atypical_glandular_cells_of_undetermined_significance>
-                    <low_grade_squamous_intraepithelial_lesion openmrs_concept="7419^LOW GRADE SQUAMOUS INTRAEPITHELIAL LESION^99DCT">false</low_grade_squamous_intraepithelial_lesion>
-                    <high_grade_squamous_intraepithelial_lesion openmrs_concept="7420^HIGH GRADE SQUAMOUS INTRAEPITHELIAL LESION^99DCT">false</high_grade_squamous_intraepithelial_lesion>
-                    <squamous_cell_carcinoma_not_otherwise_specified openmrs_concept="7421^SQUAMOUS CELL CARCINOMA, NOT OTHERWISE SPECIFIED ^99DCT">false</squamous_cell_carcinoma_not_otherwise_specified>
-                    <adenocarcinoma openmrs_concept="7422^ADENOCARCINOMA ^99DCT">false</adenocarcinoma>
-                    <xforms_value/>
-                </most_recent_papanicolaou_smear_result>
-                <date_most_recent_papanicolaou_smear_performed openmrs_concept="6727^DATE MOST RECENT PAPANICOLAOU SMEAR PERFORMED^99DCT" openmrs_datatype="DT">
-                    <date/>
-                    <time/>
-                    <value/>
-                </date_most_recent_papanicolaou_smear_performed>
-                <freetext_general openmrs_concept="1915^FREETEXT GENERAL^99DCT" openmrs_datatype="ST">
-                    <date/>
-                    <time/>
-                    <value/>
-                </freetext_general>
+            <header>
+
+                <enterer/>
+
+                <date_entered/>
+
+                <session/>
+
+                <uid/>
+
+            </header>
+
+            <patient>
+
+                <patient.patient_id openmrs_table="patient" openmrs_attribute="patient_id"/>
+
+                <patient_identifier.identifier_type_id openmrs_table="patient_identifier" openmrs_attribute="identifier_type_id"/>
+
+                <patient.medical_record_number openmrs_table="patient_identifier" openmrs_attribute="identifier"/>
+
+                <patient.birthdate openmrs_table="patient" openmrs_attribute="birthdate"/>
+
+                <patient.birthdate_estimated openmrs_table="patient" openmrs_attribute="birthdate_estimated"/>
+
+                <patient.family_name openmrs_table="patient_name" openmrs_attribute="family_name"/>
+
+                <patient.given_name openmrs_table="patient_name" openmrs_attribute="given_name"/>
+
+                <patient.middle_name openmrs_table="patient_name" openmrs_attribute="middle_name"/>
+
+                <patient.sex openmrs_table="patient" openmrs_attribute="gender"/>
+
+                <person_attribute10 openmrs_table="" openmrs_attribute=""/>
+
+                <tmp>
+
+                    <amrs_id_scan/>
+
+                    <amrs_id_manual/>
+
+                    <amrs_id_manual_confirm/>
+
+                    <birthdate_type/>
+
+                    <age/>
+
+                    <age_in_years/>
+
+                    <birth_date/>
+
+                    <birthdate_estimated/>
+
+                </tmp>
+
+            </patient>
+
+            <encounter>
+
+                <encounter.encounter_datetime openmrs_table="encounter" openmrs_attribute="encounter_datetime"/>
+
+                <encounter.location_id openmrs_table="encounter" openmrs_attribute="location_id"/>
+
+                <encounter.provider_id openmrs_table="encounter" openmrs_attribute="provider_id"/>
+
+                <tmp>
+
+                    <provider_id_select/>
+
+                    <provider_id_text/>
+
+                </tmp>
+
+            </encounter>
+
+            <obs openmrs_concept="1238^MEDICAL RECORD OBSERVATIONS^99DCT" openmrs_datatype="ZZ">
+
             </obs>
+
         </form>
     </instance>
 </model>

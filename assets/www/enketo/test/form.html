@@ -1,364 +1,177 @@
 <form class="jr" autocomplete="off" id="_">
-<!--This form was created by transforming a javaRosa-style (X)Form using an XSLT sheet created
-                    by Aid Web Solutions.
-                --><section class="form-logo"> </section>
-<h3 id="form-title">CCSP PAP Smear Form</h3>
+    <!--This form was created by transforming a javaRosa-style (X)Form using an XSLT sheet created
+                        by Aid Web Solutions.
+                    --><section class="form-logo"> </section>
+    <h3 id="form-title">Registration Form</h3>
 
 
-<fieldset class="jr-group ">
-<h4>
-    <span lang="" class=" active">Cervical Cancer Screening</span>
-</h4>
-<fieldset class="jr-group jr-appearance-field-list" name="/form/patient">
-    <h4>
-        <span lang="" class=" active">Patient Demographics</span>
-    </h4>
-    <label class="">
-        <span lang="" class=" active">Given Name</span>
-        <span class="required">*</span>
-        <input autocomplete="off" type="text" name="/form/patient/patient.given_name" required="required" data-type-xml="string"/>
-    </label>
-    <label class="">
-        <span lang="" class=" active">Family Name</span>
-        <span class="required">*</span>
-        <input autocomplete="off" type="text" name="/form/patient/patient.family_name" required="required" data-type-xml="string"/>
-    </label>
-    <label class="">
-        <span lang="" class=" active">Middle Name</span>
-        <input autocomplete="off" type="text" name="/form/patient/patient.middle_name" data-type-xml="string"/>
-    </label>
-    <label class="">
-        <span lang="" class=" active">AMRS ID Number</span>
-        <input autocomplete="off" type="text" name="/form/patient/patient.medical_record_number" data-type-xml="string"/>
-    </label>
-    <fieldset class="restoring-sanity-to-legends ">
-        <fieldset>
-            <legend>
-                <span lang="" class=" active">Gender</span>
+
+
+
+    <fieldset class="jr-group ">
+        <h4>
+            <span lang="" class=" active">Registration Form</span>
+        </h4>
+        <fieldset class="jr-group jr-appearance-field-list" name="/form/patient">
+            <h4>
+                <span lang="" class=" active">Demographics</span>
+            </h4>
+            <label class="">
+                <span lang="" class=" active">AMRS ID SCAN</span>
+                <input autocomplete="off" type="text" name="/form/patient/tmp/amrs_id_scan" data-type-xml="barcode"/>
+            </label>
+            <label class="jr-branch pre-init ">
+                <span lang="" class=" active">AMRS ID</span>
                 <span class="required">*</span>
-            </legend>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/patient/patient.sex" value="M" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Male</span>
+                <input autocomplete="off" type="text" name="/form/patient/tmp/amrs_id_manual" required="required" data-constraint="regex(., '^\w+[-]?\d{1}') and checkdigit(.)" data-relevant="../amrs_id_scan = ''" data-type-xml="string"/>
             </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/patient/patient.sex" value="F" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Female</span>
+            <label class="jr-branch pre-init ">
+                <span lang="" class=" active">AMRS ID (CONFIRM)</span>
+                <span class="required">*</span>
+                <input autocomplete="off" type="text" name="/form/patient/tmp/amrs_id_manual_confirm" required="required" data-constraint=". = ../amrs_id_manual" data-relevant="../amrs_id_manual != ''" data-type-xml="string"/>
             </label>
+            <label class="">
+                <span lang="" class=" active">AMRS Identifier</span>
+                <input autocomplete="off" type="text" name="/form/patient/patient.medical_record_number" data-calculate="if (../tmp/amrs_id_scan != '',../tmp/amrs_id_scan,../tmp/amrs_id_manual)" data-type-xml="string" readonly="readonly"/>
+            </label>
+            <label class="">
+                <span lang="" class=" active">Family Name</span>
+                <span class="required">*</span>
+                <input autocomplete="off" type="text" name="/form/patient/patient.family_name" required="required" data-type-xml="string"/>
+            </label>
+            <label class="">
+                <span lang="" class=" active">Given Name</span>
+                <span class="required">*</span>
+                <input autocomplete="off" type="text" name="/form/patient/patient.given_name" required="required" data-type-xml="string"/>
+            </label>
+            <label class="">
+                <span lang="" class=" active">Middle Name</span>
+                <input autocomplete="off" type="text" name="/form/patient/patient.middle_name" data-type-xml="string"/>
+            </label>
+            <fieldset class="restoring-sanity-to-legends ">
+                <fieldset>
+                    <legend>
+                        <span lang="" class=" active">Sex</span>
+                        <span class="required">*</span>
+                    </legend>
+                    <label class="clearfix ">
+                        <input autocomplete="off" type="radio" name="/form/patient/patient.sex" value="M" required="required" data-type-xml="string"/>
+                        <span lang="" class=" active">Male</span>
+                    </label>
+                    <label class="clearfix ">
+                        <input autocomplete="off" type="radio" name="/form/patient/patient.sex" value="F" required="required" data-type-xml="string"/>
+                        <span lang="" class=" active">Female</span>
+                    </label>
+                </fieldset>
+            </fieldset>
+            <fieldset class="restoring-sanity-to-legends ">
+                <fieldset>
+                    <legend>
+                        <span lang="" class=" active">Will Record Date of Birth...</span>
+                        <span class="required">*</span>
+                    </legend>
+                    <label class="clearfix ">
+                        <input autocomplete="off" type="radio" name="/form/patient/tmp/birthdate_type" value="age" required="required" data-type-xml="string"/>
+                        <span lang="" class=" active">By Age</span>
+                    </label>
+                    <label class="clearfix ">
+                        <input autocomplete="off" type="radio" name="/form/patient/tmp/birthdate_type" value="birthdate" required="required" data-type-xml="string"/>
+                        <span lang="" class=" active">By Birth-Date</span>
+                    </label>
+                </fieldset>
+            </fieldset>
+            <label class="jr-branch pre-init ">
+                <span lang="" class=" active">How old are you now?</span>
+                <span class="required">*</span>
+                <input autocomplete="off" type="number
+            " name="/form/patient/tmp/age" required="required" data-constraint=". &gt;= 18 and . &lt;=125" data-relevant="../birthdate_type = 'age'" data-type-xml="int"/>
+            </label>
+            <label class="jr-branch pre-init ">
+                <span lang="" class=" active">Select Birthdate</span>
+                <span class="required">*</span>
+                <input autocomplete="off" type="date" name="/form/patient/tmp/birth_date" required="required" data-constraint=". &lt;= today()" data-relevant="../birthdate_type = 'birthdate'" data-type-xml="date"/>
+            </label>
+            <fieldset class="restoring-sanity-to-legends jr-branch pre-init ">
+                <fieldset>
+                    <legend>
+                        <span lang="" class=" active">Is this birthdate an estimate?</span>
+                        <span class="required">*</span>
+                    </legend>
+                    <label class="clearfix ">
+                        <input autocomplete="off" type="radio" name="/form/patient/tmp/birthdate_estimated" value="true" required="required" data-relevant="../birthdate_type = 'birthdate'" data-type-xml="string"/>
+                        <span lang="" class=" active">Yes</span>
+                    </label>
+                    <label class="clearfix ">
+                        <input autocomplete="off" type="radio" name="/form/patient/tmp/birthdate_estimated" value="false" required="required" data-relevant="../birthdate_type = 'birthdate'" data-type-xml="string"/>
+                        <span lang="" class=" active">No</span>
+                    </label>
+                </fieldset>
+            </fieldset>
         </fieldset>
-    </fieldset>
-    <label class="">
-        <span lang="" class=" active">Date Of Birth</span>
-        <input autocomplete="off" type="date" name="/form/patient/patient.birthdate" data-constraint=". &lt;=today()" data-type-xml="date"/>
-    </label>
-</fieldset>
-<!--end of group
-   --><fieldset class="jr-group jr-branch pre-init jr-appearance-field-list" name="/form/encounter" data-relevant="../patient/patient.sex= 'F'">
-    <h4>
-        <span lang="" class=" active">Encounter Details</span>
-    </h4>
-    <label class="">
-        <span lang="" class=" active">Encounter Date</span>
-        <span class="required">*</span>
-        <input autocomplete="off" type="date" name="/form/encounter/encounter.encounter_datetime" required="required" data-constraint=". &lt;=today()" data-type-xml="date"/>
-    </label>
-    <fieldset class="restoring-sanity-to-legends ">
+        <!--end of group
+           --><fieldset class="restoring-sanity-to-legends ">
         <fieldset>
             <legend>
-                <span lang="" class=" active">Screening Site</span>
+                <span lang="" class=" active">Encounter Location</span>
                 <span class="required">*</span>
             </legend>
             <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.location_id" value="7" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Chulaimbo</span>
+                <input autocomplete="off" type="radio" name="/form/encounter/encounter.location_id" value="2" required="required" data-type-xml="string"/>
+                <span lang="" class=" active">Mosoriot Health Centre</span>
             </label>
             <label class="clearfix ">
                 <input autocomplete="off" type="radio" name="/form/encounter/encounter.location_id" value="3" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Turbo</span>
+                <span lang="" class=" active">Turbo Health Centre</span>
             </label>
             <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.location_id" value="17" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Iten</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.location_id" value="2" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Mosoriot</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.location_id" value="8" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Webuye</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.location_id" value="9" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">AMPATH MTRH</span>
+                <input autocomplete="off" type="radio" name="/form/encounter/encounter.location_id" value="12" required="required" data-type-xml="string"/>
+                <span lang="" class=" active">Teso District Hospital</span>
             </label>
         </fieldset>
     </fieldset>
-    <fieldset class="restoring-sanity-to-legends ">
-        <fieldset>
-            <legend>
-                <span lang="" class=" active">Provider For This Encounter</span>
-                <span class="required">*</span>
-            </legend>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="3419-9" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Daurine Achieng Agumba</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="3420-7" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Irene Chepkosgei	Kurgat</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="3421-5" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Rose	Cheruto	Toroitich</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="3422-3" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Mary	Kipkurui Kimosop</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="3423-1" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Jacqueline Chemom Ndiema</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="3424-9" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Grace Wanjiru Mwangi </span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="3425-6" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Collette	Mabia Palapala</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="3426-4" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Dorice Erima	Wekesa	Female </span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="120-6" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Agnes Kagure	Boen</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="3427-2" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Linet Kerubo	Onyancha</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="1208-8" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Delinah Muchai Tanui</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="1208-8" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Hellen Mushimbi Indumbwe	</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="1525-5" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Lydia Cherugut Samoei </span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="1529-7" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Ruth	Kalunda	Nzili</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="3428-0" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Lucy	Cheruto	Birgen</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="1409-2" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Gratiah Nafuna Khaemba</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="1357-3" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Leonida Chemutai	Mengich</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="1412-6" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Ann Wangoi Maina	</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="1474-6" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Elkanah Omenge Orango</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="1478-7" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Peter Mukhanadale Istura	</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="1476-1" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Hillary Mabeya</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="1237-7" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Astrid Christoffersen Deb </span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.provider_id" value="1485-7" required="required" data-type-xml="string"/>
-                     <span lang="" class=" active">Philip Kipkirui Tonui
-				    </span>
-            </label>
-        </fieldset>
-    </fieldset>
-</fieldset>
-<!--end of group
-   --><label class="">
-    <span lang="" class=" active">First Day Of Your Last Period (LMP)</span>
-    <input autocomplete="off" type="date" name="/form/obs/last_menstrual_period_date/value" data-constraint=". &lt;=today()" data-type-xml="date"/>
-</label>
-<fieldset class="restoring-sanity-to-legends ">
-    <fieldset>
-        <legend>
-            <span lang="" class=" active">Complaints (Select all symptoms that best describe complaints)</span>
+        <label class="jr-appearance-autocomplete">
+            <span lang="" class=" active">Provider ID</span>
+            <select name="/form/encounter/tmp/provider_id_select" data-type-xml="select1">
+                <option value="">...</option>
+                <option value="1">Super User</option>
+            </select>
+            <span class="jr-option-translations" style="display:none;">
+                </span>
+        </label>
+        <label class="jr-branch pre-init ">
+            <span lang="" class=" active">Enter provider's system-id</span>
             <span class="required">*</span>
-        </legend>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="symptomatic" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
-            <span lang="" class=" active">Symptomatic</span>
+            <input autocomplete="off" type="text" name="/form/encounter/tmp/provider_id_text" required="required" data-constraint="regex(., '^\w+[-]?\d{1}') and (checkdigit(.))" data-relevant="../provider_id_select = ''" data-type-xml="string"/>
         </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="asymptomatic" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
-            <span lang="" class=" active">Asymptomatic</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="having_hypoglycemia_symptoms_in_past_month" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
-            <span lang="" class=" active">Having hypoglycemia symptoms in past month</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="vaginal_discharge" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
-            <span lang="" class=" active">Vaginal discharge</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="vaginal_bleeding" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
-            <span lang="" class=" active">Vaginal bleeding</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="dysfunctional_uterine_bleeding" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
-            <span lang="" class=" active">Dysfunctional uterine bleeding</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="menorrhagia" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
-            <span lang="" class=" active">Menorrhagia</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="postmenopausal_bleeding" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
-            <span lang="" class=" active">Postmenopausal bleeding</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="dysparunia" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
-            <span lang="" class=" active">Dysparunia</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="postcoital_bleeding" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
-            <span lang="" class=" active">Postcoital bleeding</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="other_non-coded" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
-            <span lang="" class=" active">Other non-coded</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/chief_complaint/xforms_value" value="none" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
-            <span lang="" class=" active">None</span>
-        </label>
-    </fieldset>
-</fieldset>
-<fieldset class="restoring-sanity-to-legends ">
-    <fieldset>
-        <legend>
-            <span lang="" class=" active">Current Family Planning Method</span>
+        <label class="">
+            <span lang="" class=" active">Encounter Date</span>
             <span class="required">*</span>
-        </legend>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/method_of_family_planning/xforms_value" value="Condoms" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
-            <span lang="" class=" active">Condoms</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/method_of_family_planning/xforms_value" value="Female_sterilization" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
-            <span lang="" class=" active">Sterilization/Hysterectomy</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/method_of_family_planning/xforms_value" value="Intrauterine_device" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
-            <span lang="" class=" active">Intrauterine device</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/method_of_family_planning/xforms_value" value="Diaphragm" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
-            <span lang="" class=" active">Diaphragm/Cervical cap</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/method_of_family_planning/xforms_value" value="Family_planning_via_oral_contraceptive_pills" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
-            <span lang="" class=" active">Oral contraceptive pills</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/method_of_family_planning/xforms_value" value="Natural_family_planning" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
-            <span lang="" class=" active">Natural family planning</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/method_of_family_planning/xforms_value" value="injectable_contraceptives" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
-            <span lang="" class=" active">Injectable hormones</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/method_of_family_planning/xforms_value" value="Other_non-coded" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
-            <span lang="" class=" active">Other non-coded</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/method_of_family_planning/xforms_value" value="none" required="required" data-constraint="not(selected(., 'none') and count-selected(.)&gt;1)" data-type-xml="string"/>
-            <span lang="" class=" active">None</span>
+            <input autocomplete="off" type="date" name="/form/encounter/encounter.encounter_datetime" required="required" data-constraint=". &lt;= today()" data-type-xml="date"/>
         </label>
     </fieldset>
-</fieldset>
-<fieldset class="restoring-sanity-to-legends ">
-    <fieldset>
-        <legend>
-            <span lang="" class=" active">Most Recent Papacicolaou Smear Result</span>
-            <span class="required">*</span>
-        </legend>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/most_recent_papanicolaou_smear_result/xforms_value" value="normal" required="required" data-constraint="not((selected(., 'normal') or selected(., 'do_not_know') or selected(., 'not_applicable'))and count-selected(.) &gt; 1)" data-type-xml="string"/>
-            <span lang="" class=" active">Normal</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/most_recent_papanicolaou_smear_result/xforms_value" value="atypical_squamous_cells_of_undetermined_significance" required="required" data-constraint="not((selected(., 'normal') or selected(., 'do_not_know') or selected(., 'not_applicable'))and count-selected(.) &gt; 1)" data-type-xml="string"/>
-            <span lang="" class=" active">Atypical squamous cells of undetermined significance</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/most_recent_papanicolaou_smear_result/xforms_value" value="atypical_glandular_cells_of_undetermined_significance" required="required" data-constraint="not((selected(., 'normal') or selected(., 'do_not_know') or selected(., 'not_applicable'))and count-selected(.) &gt; 1)" data-type-xml="string"/>
-            <span lang="" class=" active">Atypical glandular cells of undetermined significance</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/most_recent_papanicolaou_smear_result/xforms_value" value="low_grade_squamous_intraepithelial_lesion" required="required" data-constraint="not((selected(., 'normal') or selected(., 'do_not_know') or selected(., 'not_applicable'))and count-selected(.) &gt; 1)" data-type-xml="string"/>
-            <span lang="" class=" active">Low grade squamous intraepithelial lesion</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/most_recent_papanicolaou_smear_result/xforms_value" value="high_grade_squamous_intraepithelial_lesion" required="required" data-constraint="not((selected(., 'normal') or selected(., 'do_not_know') or selected(., 'not_applicable'))and count-selected(.) &gt; 1)" data-type-xml="string"/>
-            <span lang="" class=" active">High grade squamous intraepithelial lesion</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/most_recent_papanicolaou_smear_result/xforms_value" value="squamous_cell_carcinoma_not_otherwise_specified" required="required" data-constraint="not((selected(., 'normal') or selected(., 'do_not_know') or selected(., 'not_applicable'))and count-selected(.) &gt; 1)" data-type-xml="string"/>
-            <span lang="" class=" active">Squamous cell carcinoma</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/most_recent_papanicolaou_smear_result/xforms_value" value="adenocarcinoma" required="required" data-constraint="not((selected(., 'normal') or selected(., 'do_not_know') or selected(., 'not_applicable'))and count-selected(.) &gt; 1)" data-type-xml="string"/>
-            <span lang="" class=" active">Adenocarcinoma</span>
-        </label>
-        <label class="clearfix ">
-            <input autocomplete="off" type="checkbox" name="/form/obs/most_recent_papanicolaou_smear_result/xforms_value" value="do_not_know" required="required" data-constraint="not((selected(., 'normal') or selected(., 'do_not_know') or selected(., 'not_applicable'))and count-selected(.) &gt; 1)" data-type-xml="string"/>
-            <span lang="" class=" active">Don't know</span>
-        </label>
-    </fieldset>
-</fieldset>
-<label class="jr-branch pre-init ">
-    <span lang="" class=" active">Date Of Most Recent PAP Result</span>
-    <input autocomplete="off" type="date" name="/form/obs/date_most_recent_papanicolaou_smear_performed/value" data-constraint=". &lt;=today()" data-relevant="not(selected(../../most_recent_papanicolaou_smear_result/xforms_value,'do_not_know'))" data-type-xml="date"/>
-</label>
-<label class="">
-    <span lang="" class=" active">Comments</span>
-    <input autocomplete="off" type="text" name="/form/obs/freetext_general/value" data-type-xml="string"/>
-</label>
-</fieldset>
-<!--end of group
-      -->
+    <!--end of group
+          -->
 
-<fieldset id="jr-calculated-items" style="display:none;">
-    <label class="">
-        <input autocomplete="off" type="hidden" name="/form/obs/start_now" data-calculate="now()" data-type-xml="time"/>
-    </label>
-    <label class="">
-        <input autocomplete="off" type="hidden" name="/form/patient/patient_identifier.identifier_type_id" data-calculate="3" data-type-xml="integer"/>
-    </label>
-</fieldset>
+
+
+    <fieldset id="jr-calculated-items" style="display:none;">
+        <label class="">
+            <input autocomplete="off" type="hidden" name="/form/patient/patient_identifier.identifier_type_id" data-calculate="3" data-type-xml="integer"/>
+        </label>
+        <label class="">
+            <input autocomplete="off" type="hidden" name="/form/patient/patient.medical_record_number" data-calculate="if (../tmp/amrs_id_scan != '',../tmp/amrs_id_scan,../tmp/amrs_id_manual)" data-type-xml="string"/>
+        </label>
+        <label class="">
+            <input autocomplete="off" type="hidden" name="/form/patient/patient.birthdate" data-calculate="if(../tmp/birthdate_type = 'age',  date(today() - (../tmp/age) * 365.2425), ../tmp/birth_date)" data-type-xml="date"/>
+        </label>
+        <label class="">
+            <input autocomplete="off" type="hidden" name="/form/patient/tmp/age_in_years" data-calculate="if(../birthdate_type = 'age', ../age, int(today() - ../../patient.birthdate))" data-type-xml="decimal" step="any"/>
+        </label>
+        <label class="">
+            <input autocomplete="off" type="hidden" name="/form/patient/patient.birthdate_estimated" data-calculate="if(../tmp/birthdate_type = 'age', 'true', ../tmp/birthdate_estimated)" data-type-xml="string"/>
+        </label>
+        <label class="">
+            <input autocomplete="off" type="hidden" name="/form/encounter/encounter.provider_id" data-calculate="if(../tmp/provider_id_select != '',../tmp/provider_id_select,../tmp/provider_id_text)" data-type-xml="string"/>
+        </label>
+    </fieldset>
 </form>
