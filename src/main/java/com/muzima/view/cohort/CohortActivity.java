@@ -121,6 +121,9 @@ public class CohortActivity extends BroadcastListenerActivity {
     }
 
     private void onPageChange(int position) {
+        if (menubarLoadButton == null) {
+            return;
+        }
         switch (position) {
             case CohortPagerAdapter.TAB_SYNCED:
                 menubarLoadButton.setVisible(false);
