@@ -125,9 +125,7 @@ public class AllCohortsListFragment extends CohortListFragment {
                 case R.id.menu_download:
                     if (cohortsSyncInProgress) {
                         Toast.makeText(getActivity(), "Action not allowed while sync is in progress", Toast.LENGTH_SHORT).show();
-                        if (AllCohortsListFragment.this.actionMode != null) {
-                            AllCohortsListFragment.this.actionMode.finish();
-                        }
+                        endActionMode();
                         break;
                     }
 
@@ -138,9 +136,7 @@ public class AllCohortsListFragment extends CohortListFragment {
 
                     syncPatientsAndObservationsInBackgroundService();
 
-                    if (AllCohortsListFragment.this.actionMode != null) {
-                        AllCohortsListFragment.this.actionMode.finish();
-                    }
+                    endActionMode();
                     return true;
             }
             return false;
@@ -151,6 +147,12 @@ public class AllCohortsListFragment extends CohortListFragment {
             actionModeActive = false;
             ((AllCohortsAdapter) listAdapter).clearSelectedCohorts();
             unselectAllItems(list);
+        }
+    }
+
+    public void endActionMode() {
+        if (this.actionMode != null) {
+            this.actionMode.finish();
         }
     }
 

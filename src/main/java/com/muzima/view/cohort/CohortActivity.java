@@ -125,10 +125,10 @@ public class CohortActivity extends BroadcastListenerActivity {
         }
         switch (position) {
             case CohortPagerAdapter.TAB_SYNCED:
+                cohortPagerAdapter.reinitializeAllCohortsTab();
                 menubarLoadButton.setVisible(false);
                 break;
             case CohortPagerAdapter.TAB_All:
-                cohortPagerAdapter.unselectListItems();
                 menubarLoadButton.setVisible(true);
                 break;
         }
