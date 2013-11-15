@@ -120,9 +120,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
                 case R.id.menu_download:
                     if (newFormsSyncInProgress) {
                         Toast.makeText(getActivity(), "Action not allowed while sync is in progress", Toast.LENGTH_SHORT).show();
-                        if (AllAvailableFormsListFragment.this.actionMode != null) {
-                            AllAvailableFormsListFragment.this.actionMode.finish();
-                        }
+                        endActionMode();
                         break;
                     }
 
@@ -133,9 +131,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
 
                     syncAllFormTemplatesInBackgroundService();
 
-                    if (AllAvailableFormsListFragment.this.actionMode != null) {
-                        AllAvailableFormsListFragment.this.actionMode.finish();
-                    }
+                    endActionMode();
                     return true;
             }
             return false;
@@ -145,6 +141,12 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
             ((AllAvailableFormsAdapter) listAdapter).clearSelectedForms();
+        }
+    }
+
+    private void endActionMode() {
+        if (actionMode != null) {
+            actionMode.finish();
         }
     }
 
