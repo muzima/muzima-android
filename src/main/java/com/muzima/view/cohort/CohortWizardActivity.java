@@ -39,7 +39,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.show("Downloading demographic information for clients. This may take a while...");
+                progressDialog.show("Downloading clients demographic...");
                 new AsyncTask<Void, Void, int[]>() {
                     @Override
                     protected int[] doInBackground(Void... voids) {
