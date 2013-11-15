@@ -269,6 +269,7 @@ public class FormsActivity extends FormsActivityBase {
 
     @Override
     protected void onPageChange(int position) {
+        ((FormsPagerAdapter) formsPagerAdapter).endActionMode();
         if (tagsButton == null || menuUpload == null || menubarLoadButton == null) {
             return;
         }

@@ -144,7 +144,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         }
     }
 
-    private void endActionMode() {
+    public void endActionMode() {
         if (actionMode != null) {
             actionMode.finish();
         }
