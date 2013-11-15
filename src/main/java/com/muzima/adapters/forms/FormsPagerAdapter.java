@@ -64,4 +64,8 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements TagsListAda
     public void endActionMode() {
         ((AllAvailableFormsListFragment)pagers[TAB_All].fragment).endActionMode();
     }
+
+    public void unselectList() {
+        pagers[TAB_All].fragment.unselectAllItems();
+    }
 }

@@ -45,12 +45,6 @@ public abstract class CohortListFragment extends MuzimaListFragment implements L
         return inflater.inflate(R.layout.layout_list, container, false);
     }
 
-    protected void unselectAllItems(ListView listView) {
-        for (int i = listView.getCount() - 1; i >= 0; i--){
-            listView.setItemChecked(i, false);
-        }
-    }
-
     protected abstract String getSuccessMsg(Integer[] status);
 
     @Override

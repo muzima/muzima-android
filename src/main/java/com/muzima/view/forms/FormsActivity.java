@@ -276,6 +276,7 @@ public class FormsActivity extends FormsActivityBase {
         switch (position) {
             case FormsPagerAdapter.TAB_All:
                 showButtons(true, true, false);
+                ((FormsPagerAdapter) formsPagerAdapter).unselectList();
                 break;
             case FormsPagerAdapter.TAB_COMPLETE:
                 showButtons(false, false, true);

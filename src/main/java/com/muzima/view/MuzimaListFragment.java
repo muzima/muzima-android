@@ -1,7 +1,6 @@
 package com.muzima.view;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -47,6 +46,19 @@ public abstract class MuzimaListFragment extends SherlockFragment implements Ada
     public void reloadData() {
         if(listAdapter != null){
             listAdapter.reloadData();
+        }
+    }
+
+    public void unselectAllItems() {
+        unselectAllItems(list);
+    }
+
+    public void unselectAllItems(ListView listView) {
+        if(listView==null){
+            return;
+        }
+        for (int i = listView.getCount() - 1; i >= 0; i--){
+            listView.setItemChecked(i, false);
         }
     }
 }
