@@ -60,14 +60,6 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
             }
         });
 
-        Button previousButton = (Button) findViewById(R.id.previous);
-        previousButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigateToPreviousActivity();
-            }
-        });
-
         progressDialog = new MuzimaProgressDialog(this);
 
         cohortsAdapter.setBackgroundListQueryTaskListener(this);
@@ -84,12 +76,6 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
 
         cohortsAdapter.downloadCohortAndReload();
         listView.setAdapter(cohortsAdapter);
-    }
-
-    private void navigateToPreviousActivity() {
-        Intent intent = new Intent(getApplicationContext(), CohortPrefixWizardActivity.class);
-        startActivity(intent);
-        finish();
     }
 
     private int[] downloadAndSavePatients(AllCohortsAdapter cohortsAdapter) {

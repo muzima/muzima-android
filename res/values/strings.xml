@@ -121,9 +121,9 @@
     <string name="preference_cohort_prefix">cohortPrefixesPreference</string>
 
     <string name="add_cohort_prefixes">Step 1: Add Cohort Prefix</string>
-    <string name="download_cohort">Step 2: Download Cohort(s)</string>
-    <string name="download_form">Step 3: Download Form(s)</string>
-    <string name="add_concept_prefixes">Step 4: Add Concept</string>
+    <string name="download_cohort">Step 1: Download Cohort(s)</string>
+    <string name="download_form">Step 2: Download Form(s)</string>
+    <string name="add_concept_prefixes">Step 3: Add Concept</string>
 
     <string name="no_cohort_prefixes_added">No Cohort Prefixes Added</string>
     <string name="no_cohort_prefixes_msg">Please click on add button to add a cohort prefix</string>

@@ -23,7 +23,7 @@ import com.muzima.service.MuzimaSyncService;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.MainActivity;
-import com.muzima.view.cohort.CohortPrefixWizardActivity;
+import com.muzima.view.cohort.CohortWizardActivity;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
 
@@ -212,7 +212,7 @@ public class LoginActivity extends SherlockActivity {
             if (isWizardFinished()) {
                 intent = new Intent(getApplicationContext(), MainActivity.class);
             } else {
-                intent = new Intent(getApplicationContext(), CohortPrefixWizardActivity.class);
+                intent = new Intent(getApplicationContext(), CohortWizardActivity.class);
             }
             startActivity(intent);
             finish();
