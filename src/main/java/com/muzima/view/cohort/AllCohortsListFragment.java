@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckedTextView;
+import android.widget.ListView;
 import android.widget.Toast;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
@@ -33,6 +34,7 @@ public class AllCohortsListFragment extends CohortListFragment {
     private OnCohortDataDownloadListener cohortDataDownloadListener;
     private CheckedTextView syncText;
     private boolean cohortsSyncInProgress;
+    private ListView listView;
 
     public static AllCohortsListFragment newInstance(CohortController cohortController) {
         AllCohortsListFragment f = new AllCohortsListFragment();
@@ -54,6 +56,7 @@ public class AllCohortsListFragment extends CohortListFragment {
     protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
         View view = inflater.inflate(R.layout.layout_synced_list, container, false);
         syncText = (CheckedTextView) view.findViewById(R.id.sync_text);
+        listView = (ListView) view.findViewById(R.id.list);
         updateSyncText();
         return view;
     }
@@ -150,6 +153,13 @@ public class AllCohortsListFragment extends CohortListFragment {
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
             ((AllCohortsAdapter) listAdapter).clearSelectedCohorts();
+            unselectAllItems(listView);
+        }
+    }
+
+    private void unselectAllItems(ListView listView) {
+        for (int i = listView.getCount() - 1; i >= 0; i--){
+            listView.setItemChecked(i, false);
         }
     }
 
