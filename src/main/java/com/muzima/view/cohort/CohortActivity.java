@@ -87,7 +87,6 @@ public class CohortActivity extends BroadcastListenerActivity {
         }
     }
 
-
     public void hideProgressbar() {
         menubarLoadButton.setActionView(null);
     }
@@ -129,6 +128,7 @@ public class CohortActivity extends BroadcastListenerActivity {
                 menubarLoadButton.setVisible(false);
                 break;
             case CohortPagerAdapter.TAB_All:
+                cohortPagerAdapter.unselectListItems();
                 menubarLoadButton.setVisible(true);
                 break;
         }
