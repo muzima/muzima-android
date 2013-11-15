@@ -3,6 +3,7 @@ package com.muzima.service;
 import android.util.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.context.Context;
+import com.muzima.api.exception.AuthenticationException;
 import com.muzima.api.model.*;
 import com.muzima.controller.*;
 import com.muzima.utils.Constants;
@@ -10,6 +11,7 @@ import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
 import java.net.ConnectException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -60,14 +62,19 @@ public class MuzimaSyncService {
         } catch (ParseException e) {
             Log.e(TAG, "ParseException Exception thrown while authentication " + e.getMessage());
             return PARSING_ERROR;
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "IOException Exception thrown while authentication " + e.getMessage());
+            return MALFORMED_URL_ERROR;
         } catch (IOException e) {
             Log.e(TAG, "IOException Exception thrown while authentication " + e.getMessage());
             return AUTHENTICATION_ERROR;
+        } catch (AuthenticationException e) {
+            Log.e(TAG, "Exception thrown while authentication " + e.getMessage());
+            return INVALID_CREDENTIALS_ERROR;
         } finally {
             if (muzimaContext != null)
                 muzimaContext.closeSession();
         }
-
         return AUTHENTICATION_SUCCESS;
     }
 

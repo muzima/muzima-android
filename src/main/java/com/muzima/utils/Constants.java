@@ -54,6 +54,8 @@ public class Constants {
             public static final int LOAD_ERROR = 10;
             public static final int UNKNOWN_ERROR = 11;
             public static final int UPLOAD_ERROR = 12;
+            public static final int MALFORMED_URL_ERROR = 13;
+            public static final int INVALID_CREDENTIALS_ERROR = 14;
         }
     }
 }

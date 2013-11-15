@@ -25,7 +25,7 @@ import com.muzima.utils.StringUtils;
 import com.muzima.view.MainActivity;
 import com.muzima.view.cohort.CohortWizardActivity;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
 
 public class LoginActivity extends SherlockActivity {
     private static final String TAG = "LoginActivity";
@@ -198,13 +198,25 @@ public class LoginActivity extends SherlockActivity {
 
                 startNextActivity();
             } else {
-                Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getErrorText(result), Toast.LENGTH_SHORT).show();
                 if (authenticatingText.getVisibility() == View.VISIBLE || flipFromLoginToAuthAnimator.isRunning()) {
                     flipFromLoginToAuthAnimator.cancel();
                     flipFromAuthToLoginAnimator.start();
                 }
             }
+        }
 
+        private String getErrorText(Result result) {
+            switch (result.status) {
+                case MALFORMED_URL_ERROR:
+                    return "Invalid Server URL.";
+                case INVALID_CREDENTIALS_ERROR:
+                    return "Invalid Username, Password, Server combination.";
+                case CONNECTION_ERROR:
+                    return "Error while connecting your server.";
+                default:
+                    return "Authentication failed";
+            }
         }
 
         private void startNextActivity() {
@@ -219,7 +231,6 @@ public class LoginActivity extends SherlockActivity {
         }
 
         private boolean isWizardFinished() {
-//            return false;
             SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
             String wizardFinishedKey = getResources().getString(R.string.preference_wizard_finished);
 
@@ -309,13 +320,13 @@ public class LoginActivity extends SherlockActivity {
                         to.setVisibility(View.VISIBLE);
                     }
                 } else if (to.getVisibility() == View.VISIBLE) {
-                    if(honeycombOrGreater){
+                    if (honeycombOrGreater) {
                         to.setRotationX(-180 * (1 - animatedFraction));
                     }
                 }
 
                 if (from.getVisibility() == View.VISIBLE) {
-                    if(honeycombOrGreater){
+                    if (honeycombOrGreater) {
                         from.setRotationX(180 * animatedFraction);
                     }
                 }
