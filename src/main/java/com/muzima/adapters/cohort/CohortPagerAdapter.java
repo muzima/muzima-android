@@ -12,8 +12,8 @@ import com.muzima.view.cohort.SyncedCohortsListFragment;
 public class CohortPagerAdapter extends MuzimaPagerAdapter {
     private static final String TAG = "CohortPagerAdapter";
 
-    private static final int TAB_SYNCED = 0;
-    private static final int TAB_All = 1;
+    public static final int TAB_SYNCED = 0;
+    public static final int TAB_All = 1;
 
     public CohortPagerAdapter(Context context, FragmentManager supportFragmentManager) {
         super(context, supportFragmentManager);

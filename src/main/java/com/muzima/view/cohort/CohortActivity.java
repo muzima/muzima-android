@@ -40,6 +40,7 @@ public class CohortActivity extends BroadcastListenerActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.cohort_list_menu, menu);
         menubarLoadButton = menu.findItem(R.id.menu_load);
+        menubarLoadButton.setVisible(false);
         return true;
     }
 
@@ -111,6 +112,23 @@ public class CohortActivity extends BroadcastListenerActivity {
         pagerTabsLayout.setViewPager(viewPager);
         viewPager.setCurrentItem(0);
         pagerTabsLayout.markCurrentSelected(0);
+        pagerTabsLayout.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+            @Override
+            public void onPageSelected(int position) {
+                onPageChange(position);
+            }
+        });
+    }
+
+    private void onPageChange(int position) {
+        switch (position) {
+            case CohortPagerAdapter.TAB_SYNCED:
+                menubarLoadButton.setVisible(false);
+                break;
+            case CohortPagerAdapter.TAB_All:
+                menubarLoadButton.setVisible(true);
+                break;
+        }
     }
 
     private void syncCohortsInBackgroundService() {
