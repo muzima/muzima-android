@@ -39,7 +39,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.show("Downloading clients...");
+                progressDialog.show("Downloading demographic information for clients. This may take a while...");
                 new AsyncTask<Void, Void, int[]>() {
                     @Override
                     protected int[] doInBackground(Void... voids) {
@@ -52,7 +52,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
                             progressDialog.dismiss();
 
                         if (result[0] != SUCCESS) {
-                            Toast.makeText(CohortWizardActivity.this, "Could not download patients", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CohortWizardActivity.this, "Could not download clients", Toast.LENGTH_SHORT).show();
                         }
                         navigateToNextActivity();
                     }
