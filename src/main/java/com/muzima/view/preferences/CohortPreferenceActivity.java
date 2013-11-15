@@ -40,7 +40,7 @@ public class CohortPreferenceActivity extends BaseActivity implements Preference
 
 
         cohortPrefix = (AutoCompleteTextView)findViewById(R.id.prefix_add_prefix);
-        autoCompleteCohortPrefixAdapter = new AutoCompleteCohortPrefixAdapter(getApplicationContext(), R.layout.item_concept_autocomplete);
+        autoCompleteCohortPrefixAdapter = new AutoCompleteCohortPrefixAdapter(getApplicationContext(), R.layout.item_option_autocomplete, cohortPrefix);
         cohortPrefix.setAdapter(autoCompleteCohortPrefixAdapter);
 
         cohortPrefix.setOnItemClickListener(new AdapterView.OnItemClickListener() {

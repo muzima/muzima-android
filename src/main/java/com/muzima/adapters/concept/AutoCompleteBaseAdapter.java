@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Filter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,9 +41,13 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
     private static final String TAG = AutoCompleteBaseAdapter.class.getSimpleName();
     protected WeakReference<MuzimaApplication> muzimaApplicationWeakReference;
     private final MuzimaSyncService muzimaSyncService;
+    private String previousConstraint = null;
+    private List<T> previousResult = null;
+    private AutoCompleteTextView autoCompleteTextView;
 
-    public AutoCompleteBaseAdapter(Context context, int textViewResourceId) {
+    public AutoCompleteBaseAdapter(Context context, int textViewResourceId, AutoCompleteTextView autoCompleteTextView) {
         super(context, textViewResourceId);
+        this.autoCompleteTextView = autoCompleteTextView;
         muzimaApplicationWeakReference = new WeakReference<MuzimaApplication>((MuzimaApplication) context);
         muzimaSyncService = getMuzimaApplicationContext().getMuzimaSyncService();
     }
@@ -65,22 +70,12 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
             protected FilterResults performFiltering(final CharSequence constraint) {
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null && constraint.length() > 2) {
-                    Credentials credentials = new Credentials(getContext());
 
-                    MuzimaApplication muzimaApplicationContext = getMuzimaApplicationContext();
-                    List<T> options = new ArrayList<T>();
-                    try {
-                        if (muzimaSyncService.authenticate(credentials.getCredentialsArray()) == AUTHENTICATION_SUCCESS) {
-                            options = getOptions(constraint);
-                        } else {
-                            Toast.makeText(getMuzimaApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
-                        }
-
-                        Log.i(TAG, "Downloaded: " + options.size());
-                    } catch (Throwable t) {
-                        Log.e(TAG, "Unable to download cohorts!", t);
-                    } finally {
-                        muzimaApplicationContext.getMuzimaContext().closeSession();
+                    List<T> options;
+                    if (hasResultStored(constraint)) {
+                        options = filterOptionsLocally(constraint);
+                    } else {
+                        options = downloadOptions(constraint);
                     }
                     filterResults.values = options;
                     filterResults.count = options.size();
@@ -88,15 +83,57 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
                 return filterResults;
             }
 
+            private List<T> downloadOptions(CharSequence constraint) {
+                List<T> options = new ArrayList<T>();
+                Credentials credentials = new Credentials(getContext());
+                MuzimaApplication muzimaApplicationContext = getMuzimaApplicationContext();
+                try {
+                    if (muzimaSyncService.authenticate(credentials.getCredentialsArray()) == AUTHENTICATION_SUCCESS) {
+                        options = getOptions(constraint);
+                        previousConstraint = constraint.toString();
+                        previousResult = options;
+                    } else {
+                        Toast.makeText(getMuzimaApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
+                    }
+
+                    Log.i(TAG, "Downloaded: " + options.size());
+                } catch (Throwable t) {
+                    Log.e(TAG, "Unable to download options!", t);
+                } finally {
+                    muzimaApplicationContext.getMuzimaContext().closeSession();
+                }
+                return options;
+            }
+
+            protected List<T> filterOptionsLocally(CharSequence constraint) {
+                List<T> result = new ArrayList<T>();
+                for (T t : previousResult) {
+                    if (getOptionName(t).toLowerCase().startsWith(constraint.toString().toLowerCase())) {
+                        result.add(t);
+                    }
+                }
+                return result;
+            }
+
+            private boolean hasResultStored(CharSequence constraint) {
+                return previousConstraint != null &&
+                        previousResult != null &&
+                        constraint.toString().toLowerCase().startsWith(previousConstraint.toLowerCase());
+            }
+
             @Override
             protected void publishResults(final CharSequence constraint, final FilterResults results) {
-                List<T> cohortList = (List<T>) results.values;
-                if (cohortList != null && cohortList.size() > 0) {
-                    clear();
-                    for (T c : cohortList) {
-                        add(c);
+                if (constraint != null && constraint.toString().equals(autoCompleteTextView.getText().toString())) {
+                    List<T> optionList = (List<T>) results.values;
+                    if (optionList != null && optionList.size() > 0) {
+                        clear();
+                        for (T c : optionList) {
+                            add(c);
+                        }
+                        notifyDataSetChanged();
                     }
-                    notifyDataSetChanged();
+                }else{
+                    clear();
                 }
             }
         };
@@ -116,16 +153,16 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            convertView = layoutInflater.inflate(R.layout.item_concept_autocomplete, parent, false);
+            convertView = layoutInflater.inflate(R.layout.item_option_autocomplete, parent, false);
             holder = new ViewHolder();
-            holder.name = (TextView) convertView.findViewById(R.id.concept_autocomplete_name);
+            holder.name = (TextView) convertView.findViewById(R.id.option_autocomplete_name);
             convertView.setTag(holder);
         }
         holder = (ViewHolder) convertView.getTag();
         T option = getItem(position);
-        holder.name.setText(getOptionDisplay(option));
+        holder.name.setText(getOptionName(option));
         return convertView;
     }
 
-    protected abstract String getOptionDisplay(T option);
+    protected abstract String getOptionName(T option);
 }

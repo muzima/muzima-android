@@ -7,7 +7,7 @@
               android:orientation="vertical">
 
     <TextView
-            android:id="@+id/concept_autocomplete_name"
+            android:id="@+id/option_autocomplete_name"
             style="@style/ListHeader"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"

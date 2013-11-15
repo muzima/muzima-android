@@ -17,6 +17,8 @@ package com.muzima.adapters.concept;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.AutoCompleteTextView;
+
 import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
 
@@ -27,8 +29,8 @@ public class AutoCompleteCohortPrefixAdapter extends AutoCompleteBaseAdapter<Coh
 
     private static final String TAG = AutoCompleteCohortPrefixAdapter.class.getSimpleName();
 
-    public AutoCompleteCohortPrefixAdapter(Context context, int textViewResourceId) {
-        super(context, textViewResourceId);
+    public AutoCompleteCohortPrefixAdapter(Context context, int textViewResourceId, AutoCompleteTextView cohortPrefix) {
+        super(context, textViewResourceId, cohortPrefix);
     }
 
     @Override
@@ -42,9 +44,8 @@ public class AutoCompleteCohortPrefixAdapter extends AutoCompleteBaseAdapter<Coh
         return new ArrayList<Cohort>();
     }
 
-
     @Override
-    protected String getOptionDisplay(Cohort cohort) {
+    protected String getOptionName(Cohort cohort) {
         return cohort.getName();
     }
 }

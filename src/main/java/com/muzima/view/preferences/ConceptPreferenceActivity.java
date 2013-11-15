@@ -40,7 +40,7 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
         selectedConceptListView.setEmptyView(findViewById(R.id.no_concept_added));
 
         autoCompleteConceptTextView = (AutoCompleteTextView) findViewById(R.id.concept_add_concept);
-        autoCompleteConceptAdapter = new AutoCompleteConceptAdapter(getApplicationContext(), R.layout.item_concept_autocomplete);
+        autoCompleteConceptAdapter = new AutoCompleteConceptAdapter(getApplicationContext(), R.layout.item_option_autocomplete, autoCompleteConceptTextView);
         autoCompleteConceptTextView.setAdapter(autoCompleteConceptAdapter);
         autoCompleteConceptTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

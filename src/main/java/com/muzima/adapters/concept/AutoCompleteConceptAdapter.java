@@ -17,6 +17,8 @@ package com.muzima.adapters.concept;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.AutoCompleteTextView;
+
 import com.muzima.api.model.Concept;
 import com.muzima.controller.ConceptController;
 
@@ -26,8 +28,8 @@ import java.util.List;
 public class AutoCompleteConceptAdapter extends AutoCompleteBaseAdapter<Concept> {
     private static final String TAG = AutoCompleteConceptAdapter.class.getSimpleName();
 
-    public AutoCompleteConceptAdapter(Context context, int textViewResourceId) {
-        super(context, textViewResourceId);
+    public AutoCompleteConceptAdapter(Context context, int textViewResourceId, AutoCompleteTextView autoCompleteConceptTextView) {
+        super(context, textViewResourceId, autoCompleteConceptTextView);
     }
 
     @Override
@@ -42,7 +44,7 @@ public class AutoCompleteConceptAdapter extends AutoCompleteBaseAdapter<Concept>
     }
 
     @Override
-    protected String getOptionDisplay(Concept concept) {
+    protected String getOptionName(Concept concept) {
         return concept.getName();
     }
 }
