@@ -23,7 +23,7 @@ public class MuzimaProgressDialogTest {
 
         verify(progressDialog).setCancelable(false);
         verify(progressDialog).setTitle("title");
-        verify(progressDialog).setMessage("Please wait");
+        verify(progressDialog).setMessage("This might take a while");
         verify(progressDialog).show();
     }
 

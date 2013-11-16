@@ -19,7 +19,7 @@ public class MuzimaProgressDialog {
     @JavascriptInterface
     public void show(String title) {
         dialog.setTitle(title);
-        dialog.setMessage("Please wait");
+        dialog.setMessage("This might take a while");
         dialog.show();
     }
 
