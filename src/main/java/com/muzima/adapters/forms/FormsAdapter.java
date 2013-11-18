@@ -4,10 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckedTextView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.*;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Tag;
@@ -44,6 +41,8 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
             holder.tagsScroller = (RelativeLayout) convertView.findViewById(R.id.tags_scroller);
             holder.tagsLayout = (LinearLayout) convertView.findViewById(R.id.menu_tags);
             holder.tags = new ArrayList<TextView>();
+            holder.downloadedImg = (ImageView) convertView.findViewById(R.id.downloadImg);
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -79,6 +78,7 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
 
     protected static class ViewHolder {
         CheckedTextView name;
+        ImageView downloadedImg;
         TextView description;
         RelativeLayout tagsScroller;
         LinearLayout tagsLayout;

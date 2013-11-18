@@ -49,7 +49,19 @@ public class AllCohortsAdapter extends CohortsAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return super.getView(position, convertView, parent);
+        View view = super.getView(position, convertView, parent);
+        ViewHolder holder = (ViewHolder) view.getTag();
+        Cohort cohort = getItem(position);
+        try {
+            if(cohortController.getSyncedCohorts().contains(cohort)){
+                holder.downloadedImage.setVisibility(View.VISIBLE);
+            } else{
+                holder.downloadedImage.setVisibility(View.GONE);
+            }
+        } catch (CohortController.CohortFetchException e) {
+            Log.e(TAG, "Error occurred while fetching downloaded cohorts " + e);
+        }
+        return view;
     }
 
     public void onListItemClick(int position, boolean selected) {

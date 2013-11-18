@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 
+import android.widget.ImageView;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Cohort;
@@ -29,6 +30,7 @@ public abstract class CohortsAdapter extends ListAdapter<Cohort> {
             convertView = layoutInflater.inflate(
                     R.layout.item_cohorts_list, parent, false);
             holder = new ViewHolder();
+            holder.downloadedImage = (ImageView)convertView.findViewById(R.id.downloadImg);
             holder.name = (CheckedTextView) convertView
                     .findViewById(R.id.cohort_name);
             convertView.setTag(holder);
@@ -46,6 +48,7 @@ public abstract class CohortsAdapter extends ListAdapter<Cohort> {
 
     protected static class ViewHolder {
         CheckedTextView name;
+        ImageView downloadedImage;
     }
 
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {

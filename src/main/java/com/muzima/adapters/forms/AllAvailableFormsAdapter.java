@@ -43,8 +43,9 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
         convertView = super.getView(position, convertView, parent);
 
         highlightIfSelected(convertView, getItem(position));
-        addTags((ViewHolder) convertView.getTag(), getItem(position));
-        markIfDownloaded(convertView, getItem(position));
+        ViewHolder viewHolder = (ViewHolder) convertView.getTag();
+        addTags(viewHolder, getItem(position));
+        markIfDownloaded(viewHolder.downloadedImg, getItem(position));
 
         return convertView;
     }
@@ -54,12 +55,11 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
         return R.layout.item_forms_list_selectable;
     }
 
-    private void markIfDownloaded(View convertView, AvailableForm form) {
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.downloadImg);
+    private void markIfDownloaded(View downloadedImg, AvailableForm form) {
         if(form.isDownloaded()){
-            imageView.setVisibility(View.VISIBLE);
+            downloadedImg.setVisibility(View.VISIBLE);
         }else{
-            imageView.setVisibility(View.GONE);
+            downloadedImg.setVisibility(View.GONE);
         }
     }
 
