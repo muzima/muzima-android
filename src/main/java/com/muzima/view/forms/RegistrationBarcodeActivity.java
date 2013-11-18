@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.ActionBar;
 import com.muzima.R;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
@@ -14,7 +13,7 @@ import com.muzima.api.model.PatientIdentifierType;
 import com.muzima.model.BaseForm;
 import com.muzima.utils.barcode.IntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
-import com.muzima.view.BaseActivity;
+import com.muzima.view.BaseFragmentActivity;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -22,7 +21,7 @@ import java.util.UUID;
 import static java.lang.String.valueOf;
 
 
-public class RegistrationBarcodeActivity extends BaseActivity {
+public class RegistrationBarcodeActivity extends BaseFragmentActivity {
 
     public static String SELECTED_REG_FORM = "selected_registration_form";
 
@@ -30,10 +29,6 @@ public class RegistrationBarcodeActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_barcode);
-
-        ActionBar supportActionBar = getSupportActionBar();
-        supportActionBar.setDisplayShowTitleEnabled(true);
-        supportActionBar.setDisplayHomeAsUpEnabled(true);
 
         Button barcodeButton = (Button) findViewById(R.id.patient_id_barcode_btn);
         barcodeButton.setOnClickListener(startBarCodeIntent());

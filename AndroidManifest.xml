@@ -161,9 +161,6 @@
         <activity android:name=".view.cohort.CohortWizardActivity"
                   android:configChanges="orientation|screenSize"
                   android:theme="@style/WizardTheme"/>
-        <activity android:name=".view.cohort.CohortPrefixWizardActivity"
-                  android:configChanges="orientation|screenSize"
-                  android:theme="@style/WizardTheme"/>
         <activity android:name=".view.cohort.FormTemplateWizardActivity"
                   android:configChanges="orientation|screenSize"
                   android:theme="@style/WizardTheme"/>

@@ -14,12 +14,12 @@ import com.muzima.adapters.cohort.PreferenceClickListener;
 import com.muzima.adapters.concept.AutoCompleteCohortPrefixAdapter;
 import com.muzima.api.model.Cohort;
 import com.muzima.service.CohortPrefixPreferenceService;
-import com.muzima.view.BaseActivity;
+import com.muzima.view.BaseFragmentActivity;
 import com.muzima.view.HelpActivity;
 
 import java.util.Set;
 
-public class CohortPreferenceActivity extends BaseActivity implements PreferenceClickListener {
+public class CohortPreferenceActivity extends BaseFragmentActivity implements PreferenceClickListener {
     protected CohortPrefixPrefAdapter prefAdapter;
     private AutoCompleteCohortPrefixAdapter autoCompleteCohortPrefixAdapter;
     private AutoCompleteTextView cohortPrefix;

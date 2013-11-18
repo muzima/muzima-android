@@ -21,18 +21,8 @@ public class PatientFormsActivity extends FormsActivityBase {
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_with_pager);
         Intent intent = getIntent();
-        patient = (Patient)intent.getSerializableExtra(PatientSummaryActivity.PATIENT);
+        patient = (Patient) intent.getSerializableExtra(PatientSummaryActivity.PATIENT);
         super.onCreate(savedInstanceState);
-        try {
-            setupActionbar();
-        } catch (PatientController.PatientLoadException e) {
-            Toast.makeText(this, "An error occurred while fetching patient", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-    }
-
-    private void setupActionbar() throws PatientController.PatientLoadException {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(patient.getFamilyName() + ", " + patient.getGivenName() + " " + patient.getMiddleName());
     }
 

@@ -53,7 +53,6 @@ public class ObservationsActivity extends BroadcastListenerActivity {
      * Set up the {@link android.app.ActionBar}.
      */
     private void setupActionBar() {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Patient patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
         getSupportActionBar().setTitle(patient.getSummary());
     }

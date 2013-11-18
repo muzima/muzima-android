@@ -30,7 +30,6 @@ public class CohortActivity extends BroadcastListenerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_with_pager);
         initPager();
         initPagerIndicator();

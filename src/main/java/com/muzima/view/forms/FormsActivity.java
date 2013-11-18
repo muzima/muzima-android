@@ -57,16 +57,11 @@ public class FormsActivity extends FormsActivityBase {
         formController = ((MuzimaApplication) getApplication()).getFormController();
         tagPreferenceService = new TagPreferenceService(this);
         initDrawer();
-        setupActionbar();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-    }
-
-    private void setupActionbar() {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

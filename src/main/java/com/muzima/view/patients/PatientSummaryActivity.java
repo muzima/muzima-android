@@ -8,19 +8,18 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
+import com.muzima.view.BaseActivity;
 import com.muzima.view.forms.PatientFormsActivity;
 
 import static com.muzima.utils.DateUtils.getFormattedDate;
 
-public class PatientSummaryActivity extends SherlockActivity {
+public class PatientSummaryActivity extends BaseActivity {
     private static final String TAG = "PatientSummaryActivity";
     public static final String PATIENT = "patient";
 
@@ -38,7 +37,6 @@ public class PatientSummaryActivity extends SherlockActivity {
             patient = (Patient) intentExtras.getSerializable(PATIENT);
         }
 
-        setupActionbar();
         try {
             setupPatientMetadata();
         } catch (PatientController.PatientLoadException e) {
@@ -59,10 +57,6 @@ public class PatientSummaryActivity extends SherlockActivity {
             mBackgroundQueryTask.cancel(true);
         }
         super.onStop();
-    }
-
-    private void setupActionbar() {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void setupPatientMetadata() throws PatientController.PatientLoadException {
@@ -88,16 +82,6 @@ public class PatientSummaryActivity extends SherlockActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     public void showForms(View v) {
         Intent intent = new Intent(this, PatientFormsActivity.class);
         intent.putExtra(PATIENT, patient);
@@ -107,15 +91,6 @@ public class PatientSummaryActivity extends SherlockActivity {
     public void showObservations(View v) {
         Intent intent = new Intent(this, ObservationsActivity.class);
         intent.putExtra(PATIENT, patient);
-        startActivity(intent);
-    }
-
-
-    /**
-     * Called when the user clicks the Clients Encounters Button or Search Clients Observations Button
-     */
-    public void clientObservations(View view) {
-        Intent intent = new Intent(this, ObservationsActivity.class);
         startActivity(intent);
     }
 

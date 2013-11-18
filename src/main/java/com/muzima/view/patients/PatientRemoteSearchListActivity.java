@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.*;
-import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -16,7 +15,6 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsRemoteSearchAdapter;
 import com.muzima.api.model.Patient;
-import com.muzima.controller.PatientController;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
@@ -39,20 +37,17 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
     private ListView listView;
     private String searchString;
     private FrameLayout progressBarContainer;
-    private PatientController patientController;
 
     private View noDataView;
     private ActionMode actionMode;
 
     private boolean actionModeActive = false;
-    private boolean syncInProgress;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_remote_search_list);
-        patientController = ((MuzimaApplication) getApplicationContext()).getPatientController();
         Bundle intentExtras = getIntent().getExtras();
         if (intentExtras != null) {
             searchString = intentExtras.getString(SEARCH_STRING_BUNDLE_KEY);
@@ -61,7 +56,6 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
 
         setUpListView(searchString);
         setupNoDataView();
-        setupActionbar();
         patientAdapter.reloadData();
         Button createPatientBtn = (Button) findViewById(R.id.create_patient_btn);
         createPatientBtn.setOnClickListener(new View.OnClickListener() {
@@ -94,12 +88,6 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-    }
-
-    private void setupActionbar() {
-        ActionBar supportActionBar = getSupportActionBar();
-        supportActionBar.setDisplayShowTitleEnabled(true);
-        supportActionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     private void setupNoDataView() {
@@ -167,7 +155,6 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         int syncType = intent.getIntExtra(SYNC_TYPE, -1);
 
         if (syncType == DOWNLOAD_PATIENT_ONLY) {
-            syncInProgress = false;
             if (syncStatus == SUCCESS) {
                 startActivity(new Intent(PatientRemoteSearchListActivity.this, PatientsListActivity.class));
             }
@@ -175,7 +162,6 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
     }
 
     private void downloadPatients(String[] patientUUIDs) {
-        syncInProgress = true;
         new PatientDownloadIntent(this, patientUUIDs).start();
     }
 

@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
@@ -15,6 +13,7 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.Fonts;
+import com.muzima.view.BaseActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
@@ -22,7 +21,7 @@ import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
 
-public class PatientsListActivity extends SherlockActivity implements AdapterView.OnItemClickListener, ListAdapter.BackgroundListQueryTaskListener {
+public class PatientsListActivity extends BaseActivity implements AdapterView.OnItemClickListener, ListAdapter.BackgroundListQueryTaskListener {
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
     public static final String QUICK_SEARCH = "quickSearch";
@@ -52,7 +51,6 @@ public class PatientsListActivity extends SherlockActivity implements AdapterVie
 
 
         progressBarContainer = (FrameLayout) findViewById(R.id.progressbarContainer);
-        setupActionbar();
         setupNoDataView();
         setupListView(cohortId);
 
@@ -110,9 +108,6 @@ public class PatientsListActivity extends SherlockActivity implements AdapterVie
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
-            case android.R.id.home:
-                finish();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -127,12 +122,6 @@ public class PatientsListActivity extends SherlockActivity implements AdapterVie
     protected void onResume() {
         super.onResume();
         patientAdapter.reloadData();
-    }
-
-    private void setupActionbar() {
-        ActionBar supportActionBar = getSupportActionBar();
-        supportActionBar.setDisplayShowTitleEnabled(true);
-        supportActionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     private void setupListView(String cohortId) {
