@@ -11,7 +11,7 @@
                 android:layout_weight="1"
                 android:textColor="@color/primary_blue"
                 android:textColorHint="@color/hint_text_grey"
-                android:textCursorDrawable="@color/primary_blue"
+                android:textCursorDrawable="@null"
                 android:hint="Enter concept name ...">
             <requestFocus/>
         </AutoCompleteTextView>
