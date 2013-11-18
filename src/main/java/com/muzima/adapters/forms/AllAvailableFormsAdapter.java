@@ -222,7 +222,7 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
             if (adapterWeakReference.get() != null) {
                 try {
                     FormsAdapter formsAdapter = adapterWeakReference.get();
-                    allForms = formsAdapter.getFormController().getAvailableFormByTags(getSelectedTagUuids());
+                    allForms = formsAdapter.getFormController().getAvailableFormByTags(getSelectedTagUuids(), true);
                     Log.i(TAG, "#Forms: " + allForms.size());
                 } catch (FormController.FormFetchException e) {
                     Log.w(TAG, "Exception occurred while fetching local forms " + e);

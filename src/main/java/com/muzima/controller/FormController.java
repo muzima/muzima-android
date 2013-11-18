@@ -24,6 +24,7 @@ import static com.muzima.utils.Constants.STATUS_UPLOADED;
 public class FormController {
 
     private static final String TAG = "FormController";
+    private final String REGISTRATION = "registration";
     private FormService formService;
     private PatientService patientService;
     private Map<String, Integer> tagColors;
@@ -61,9 +62,13 @@ public class FormController {
     }
 
     public AvailableForms getAvailableFormByTags(List<String> tagsUuid) throws FormFetchException {
+        return getAvailableFormByTags(tagsUuid, false);
+    }
+
+    public AvailableForms getAvailableFormByTags(List<String> tagsUuid, boolean alwaysIncludeRegistrationForms) throws FormFetchException {
         try {
             List<Form> allForms = formService.getAllForms();
-            List<Form> filteredForms = filterFormsByTags(allForms, tagsUuid);
+            List<Form> filteredForms = filterFormsByTags(allForms, tagsUuid, alwaysIncludeRegistrationForms);
             AvailableForms availableForms = new AvailableForms();
             for (Form filteredForm : filteredForms) {
                 boolean downloadStatus = formService.isFormTemplateDownloaded(filteredForm.getUuid());
@@ -78,7 +83,7 @@ public class FormController {
         }
     }
 
-    private List<Form> filterFormsByTags(List<Form> forms, List<String> tagsUuid) {
+    private List<Form> filterFormsByTags(List<Form> forms, List<String> tagsUuid, boolean alwaysIncludeRegistrationForms) {
         if (tagsUuid == null || tagsUuid.isEmpty()) {
             return forms;
         }
@@ -86,7 +91,8 @@ public class FormController {
         for (Form form : forms) {
             Tag[] formTags = form.getTags();
             for (Tag formTag : formTags) {
-                if (tagsUuid.contains(formTag.getUuid())) {
+                if (tagsUuid.contains(formTag.getUuid()) ||
+                        (alwaysIncludeRegistrationForms && isRegistrationTag(formTag))) {
                     filteredForms.add(form);
                     break;
                 }
@@ -112,6 +118,17 @@ public class FormController {
         }
         return allTags;
     }
+
+    public List<Tag> getAllTagsExcludingRegistrationTag() throws FormFetchException {
+        List<Tag> allTags = new ArrayList<Tag>();
+        for (Tag tag : getAllTags()) {
+            if (!isRegistrationTag(tag)) {
+                allTags.add(tag);
+            }
+        }
+        return allTags;
+    }
+
 
     public DownloadedForms getAllDownloadedForms() throws FormFetchException {
         DownloadedForms downloadedFormsByTags = new DownloadedForms();
@@ -409,6 +426,10 @@ public class FormController {
 
     public int getRecommendedFormsCount() throws FormFetchException {
             return getRecommendedForms().size();
+    }
+
+    private boolean isRegistrationTag(Tag formTag) {
+        return REGISTRATION.equalsIgnoreCase(formTag.getName());
     }
 
     public static class UploadFormDataException extends Throwable{
