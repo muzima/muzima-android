@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.muzima.R;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
@@ -29,6 +30,10 @@ public class RegistrationBarcodeActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_barcode);
+
+        ActionBar supportActionBar = getSupportActionBar();
+        supportActionBar.setDisplayShowTitleEnabled(true);
+        supportActionBar.setDisplayHomeAsUpEnabled(true);
 
         Button barcodeButton = (Button) findViewById(R.id.patient_id_barcode_btn);
         barcodeButton.setOnClickListener(startBarCodeIntent());
