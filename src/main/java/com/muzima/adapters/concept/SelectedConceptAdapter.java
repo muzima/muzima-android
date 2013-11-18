@@ -93,8 +93,11 @@ public class SelectedConceptAdapter extends ArrayAdapter<Concept> {
 
     @Override
     public void add(final Concept concept) {
-        super.add(concept);
-        new BackgroundSaveTask().execute(concept);
+        if (!conceptPreferenceService.getConcepts().contains(concept.getUuid())) {
+            addConcept(concept);
+        } else {
+            Toast.makeText(getContext(), "Concept " + concept.getName() + " has already been added", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -153,7 +156,7 @@ public class SelectedConceptAdapter extends ArrayAdapter<Concept> {
 
             clear();
             for (Concept concept : concepts) {
-                add(concept);
+                addConcept(concept);
             }
             notifyDataSetChanged();
         }
@@ -176,5 +179,10 @@ public class SelectedConceptAdapter extends ArrayAdapter<Concept> {
             synonymBuilder.append(" (").append(conceptNames.size() - 2).append(" more.)");
         }
         return synonymBuilder.toString();
+    }
+
+    private void addConcept(Concept concept) {
+        super.add(concept);
+        new BackgroundSaveTask().execute(concept);
     }
 }
