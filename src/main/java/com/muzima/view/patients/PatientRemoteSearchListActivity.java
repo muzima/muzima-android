@@ -198,6 +198,7 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
             switch (menuItem.getItemId()) {
                 case R.id.menu_download:
                     downloadPatients(getSelectedPatientsUuid());
+                    finish();
             }
             return false;
         }
