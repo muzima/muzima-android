@@ -74,7 +74,8 @@ public class ConceptParser {
                         tempParent = parentConcept.peek();
                     }
                     //Adding the current tag as parent to the next one.
-                    parentConcept.push(parser.getText());
+                    String openmrsConcept = parser.getAttributeValue(null, "openmrs_concept");
+                    parentConcept.push(openmrsConcept != null ? openmrsConcept : parser.getName());
                     break;
                 case XmlPullParser.END_TAG:
                     if (!parentConcept.isEmpty()) {
