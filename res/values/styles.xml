@@ -18,7 +18,7 @@
     </style>
 
     <!-- Application theme. -->
-    <style name="WizardTheme" parent="Theme.Sherlock.Light.NoActionBar">
+    <style name="WizardTheme" parent="Theme.Sherlock.NoActionBar">
     </style>
 
     <!-- Application theme. -->
