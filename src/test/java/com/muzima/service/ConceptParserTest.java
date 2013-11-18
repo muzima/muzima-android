@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Scanner;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.hasItem;
 
@@ -33,11 +34,18 @@ public class ConceptParserTest {
     }
 
     @Test
-    public void shouldParseConceptsInConcepts() throws Exception {
+    public void shouldNotAddItToConceptUnLessBothDateAndTimeArePresentInChildren() throws Exception {
         List<String> conceptNames = utils.parse(getModel("concepts_in_concept.xml"));
-        assertThat(conceptNames, hasItem("PROBLEM LIST"));
+        assertThat(conceptNames.size(), is(2));
         assertThat(conceptNames, hasItem("PROBLEM ADDED"));
         assertThat(conceptNames, hasItem("PROBLEM RESOLVED"));
+    }
+
+    @Test
+    public void shouldNotConsiderOptionsAsConcepts() throws Exception {
+        List<String> conceptNames = utils.parse(getModel("concepts_with_options.xml"));
+        assertThat(conceptNames.size(), is(1));
+        assertThat(conceptNames, hasItem("MOST RECENT PAPANICOLAOU SMEAR RESULT"));
     }
 
     @Test(expected = ConceptParser.ParseConceptException.class)
