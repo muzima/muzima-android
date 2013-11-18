@@ -21,11 +21,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.muzima.R;
+import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.ConceptName;
 import com.muzima.controller.ConceptController;
@@ -33,14 +33,12 @@ import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.ConceptPreferenceService;
 import com.muzima.utils.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * TODO: Write brief description about the class here.
  */
-public class SelectedConceptAdapter extends ArrayAdapter<Concept> {
+public class SelectedConceptAdapter extends ListAdapter<Concept> {
     private final String TAG = SelectedConceptAdapter.class.getSimpleName();
     private final ConceptPreferenceService conceptPreferenceService;
     protected ConceptController conceptController;
@@ -111,6 +109,7 @@ public class SelectedConceptAdapter extends ArrayAdapter<Concept> {
         }
     }
 
+    @Override
     public void reloadData() {
         new BackgroundQueryTask().execute();
     }
@@ -144,6 +143,13 @@ public class SelectedConceptAdapter extends ArrayAdapter<Concept> {
                 }
                 Log.i(TAG, "#Concepts: " + concepts.size());
             }
+
+            Collections.sort(concepts, new Comparator<Concept>() {
+                @Override
+                public int compare(Concept lhs, Concept rhs) {
+                    return lhs.getName().toLowerCase().compareTo(rhs.getName().toLowerCase());
+                }
+            });
             return concepts;
         }
 
@@ -155,9 +161,8 @@ public class SelectedConceptAdapter extends ArrayAdapter<Concept> {
             }
 
             clear();
-            for (Concept concept : concepts) {
-                addConcept(concept);
-            }
+
+            addAll(concepts);
             notifyDataSetChanged();
         }
     }

@@ -1,7 +1,12 @@
 package com.muzima.adapters.cohort;
 
 import android.content.Context;
+import com.muzima.api.model.Concept;
 import com.muzima.service.CohortPrefixPreferenceService;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class CohortPrefixPrefAdapter extends SettingsBaseAdapter {
 
@@ -16,8 +21,13 @@ public class CohortPrefixPrefAdapter extends SettingsBaseAdapter {
     @Override
     public void reloadData() {
         clear();
-        for (String prefix : cohortPrefixPreferenceService.getCohortPrefixes()) {
-            add(prefix);
-        }
+        List<String> cohortPrefixes = cohortPrefixPreferenceService.getCohortPrefixes();
+        Collections.sort(cohortPrefixes, new Comparator<String>() {
+            @Override
+            public int compare(String lhs, String rhs) {
+                return lhs.toLowerCase().compareTo(rhs.toLowerCase());
+            }
+        });
+        addAll(cohortPrefixes);
     }
 }
