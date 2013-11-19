@@ -12,18 +12,19 @@ import static com.muzima.utils.Constants.FORM_TAG_PREF_KEY;
 
 public class TagPreferenceService extends PreferenceService {
 
+    private SharedPreferences tagSharedPreferences;
+
     public TagPreferenceService(Context context) {
         super(context);
+        tagSharedPreferences = context.getSharedPreferences(FORM_TAG_PREF, MODE_PRIVATE);
     }
 
     public void saveSelectedTags(Set<String> selectedTags) {
-        SharedPreferences cohortSharedPref = context.getSharedPreferences(FORM_TAG_PREF, MODE_PRIVATE);
-        SharedPreferences.Editor editor = cohortSharedPref.edit();
+        SharedPreferences.Editor editor = tagSharedPreferences.edit();
         putStringSet(FORM_TAG_PREF_KEY, selectedTags, editor);
     }
 
     public List<String> getSelectedTags(){
-        SharedPreferences cohortSharedPref = context.getSharedPreferences(FORM_TAG_PREF, MODE_PRIVATE);
-        return deserialize(cohortSharedPref.getString(FORM_TAG_PREF_KEY, null));
+        return deserialize(tagSharedPreferences.getString(FORM_TAG_PREF_KEY, null));
     }
 }

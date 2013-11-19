@@ -2,9 +2,8 @@ package com.muzima.service;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
+
 import com.muzima.api.model.Concept;
-import com.muzima.utils.Constants;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -17,8 +16,11 @@ import static com.muzima.utils.Constants.CONCEPT_PREF_KEY;
 
 public class ConceptPreferenceService extends PreferenceService {
 
+    private final SharedPreferences conceptSharedPreferences;
+
     public ConceptPreferenceService(Context context) {
         super(context);
+        conceptSharedPreferences = context.getSharedPreferences(CONCEPT_PREF, MODE_PRIVATE);
     }
 
     public void addConcepts(List<Concept> concepts) {
@@ -36,14 +38,16 @@ public class ConceptPreferenceService extends PreferenceService {
     }
 
     public List<String> getConcepts(){
-        SharedPreferences cohortSharedPref = context.getSharedPreferences(Constants.CONCEPT_PREF, android.content.Context.MODE_PRIVATE);
-        return deserialize(cohortSharedPref.getString(CONCEPT_PREF_KEY, null));
+        return deserialize(conceptSharedPreferences.getString(CONCEPT_PREF_KEY, null));
     }
 
     private void saveConcepts(Set<String> copyOfUuidSet) {
-        SharedPreferences conceptSharedPreferences = context.getSharedPreferences(CONCEPT_PREF, MODE_PRIVATE);
         SharedPreferences.Editor editor = conceptSharedPreferences.edit();
         putStringSet(CONCEPT_PREF_KEY, copyOfUuidSet, editor);
         editor.commit();
+    }
+
+    public void clearConcepts() {
+        saveConcepts(null);
     }
 }

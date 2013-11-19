@@ -1,11 +1,26 @@
 package com.muzima.view.preferences;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
+import android.preference.Preference;
+
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.muzima.R;
+import com.muzima.api.context.ContextFactory;
+import com.muzima.domain.Credentials;
 import com.muzima.search.api.util.StringUtil;
+import com.muzima.service.CohortPrefixPreferenceService;
+import com.muzima.service.ConceptPreferenceService;
+import com.muzima.service.CredentialsPreferenceService;
+import com.muzima.service.WizardFinishPreferenceService;
+import com.muzima.view.login.LoginActivity;
+
+import java.io.File;
 
 public class SettingsActivity extends SherlockPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -27,6 +42,31 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         serverPreference = (EditTextPreference) getPreferenceScreen().findPreference(serverPreferenceKey);
         serverPreference.setSummary(serverPreference.getText());
 
+        serverPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(final Preference preference, final Object newValue) {
+
+                if (!serverPreference.getText().equalsIgnoreCase(newValue.toString())) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
+                    Dialog changeMaxCountConfirmationDialog = builder
+                            .setCancelable(true)
+                            .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                            .setTitle(getResources().getString(R.string.caution))
+                            .setMessage(getResources().getString(R.string.switch_server_message))
+                            .setPositiveButton("Yes", new Dialog.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    resetData(newValue.toString());
+                                    launchLoginActivity(true);
+                                }
+
+                            }).setNegativeButton("No", null)
+                            .create();
+                    changeMaxCountConfirmationDialog.show();
+                }
+                return true;
+            }
+        });
         usernamePreferenceKey = getResources().getString(R.string.preference_username);
         usernamePreference = (EditTextPreference) getPreferenceScreen().findPreference(usernamePreferenceKey);
         usernamePreference.setSummary(usernamePreference.getText());
@@ -54,6 +94,9 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
      */
     @Override
     public void onSharedPreferenceChanged(final SharedPreferences sharedPreferences, final String key) {
+        if (key.equalsIgnoreCase("wizardFinished")) {
+           return;
+        }
         String value = sharedPreferences.getString(key, StringUtil.EMPTY);
         if (StringUtil.equals(key, serverPreferenceKey)) {
             serverPreference.setSummary(value);
@@ -112,6 +155,49 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private void resetData(String newUrl) {
+        clearApplicationData();
+        SettingsActivity context = SettingsActivity.this;
+        new WizardFinishPreferenceService(context).resetWizard();
+        new CredentialsPreferenceService(context).saveCredentials(new Credentials(newUrl, null, null));
+        new ConceptPreferenceService(context).clearConcepts();
+        new CohortPrefixPreferenceService(context).clearPrefixes();
+    }
+
+    private void clearApplicationData() {
+        try {
+            File dir = new File(ContextFactory.APP_DIR);
+            if (dir != null && dir.isDirectory()) {
+                deleteDir(dir);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to clear the application data", e);
+        }
+    }
+
+
+    private static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (String child:children) {
+                boolean success = deleteDir(new File(dir, child));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+
+        return dir.delete();
+    }
+
+    protected void launchLoginActivity(boolean isFirstLaunch) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra(LoginActivity.isFirstLaunch, isFirstLaunch);
+        startActivity(intent);
+        finish();
     }
 
 }

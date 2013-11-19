@@ -182,5 +182,9 @@
     </string>
     <string name="install_barcode_scanner_btn_text">Check Barcode Scanner</string>
     <string name="scanner_app_exists_text">Barcode Scanner application is already been installed !!</string>
+    <string name="caution">Caution!</string>
+    <string name="switch_server_message">Switching Server: This will clear all mUzima data on your
+        device. Are you sure you want to change this setting?
+    </string>
 
 </resources>

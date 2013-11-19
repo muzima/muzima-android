@@ -1,14 +1,13 @@
 package com.muzima.view.cohort;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
 import com.actionbarsherlock.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -16,6 +15,7 @@ import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.view.InstallBarCodeWizardActivity;
 import com.muzima.view.forms.MuzimaProgressDialog;
 import com.muzima.view.preferences.ConceptPreferenceActivity;
@@ -23,7 +23,9 @@ import com.muzima.view.preferences.ConceptPreferenceActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
 
 public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
@@ -61,7 +63,7 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
                                 Toast.makeText(CustomConceptWizardActivity.this, "Could not download encounters for patients", Toast.LENGTH_SHORT).show();
                             }
                         }
-                        markWizardHasEnded();
+                        new WizardFinishPreferenceService(CustomConceptWizardActivity.this).finishWizard();
                         navigateToNextActivity();
                     }
                 }.execute();
@@ -132,14 +134,6 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
     @Override
     protected int getContentView() {
         return R.layout.activity_custom_concept_wizard;
-    }
-
-    private void markWizardHasEnded() {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        String wizardFinishedKey = getResources().getString(R.string.preference_wizard_finished);
-        settings.edit()
-                .putBoolean(wizardFinishedKey, true)
-                .commit();
     }
 
     private void navigateToNextActivity() {

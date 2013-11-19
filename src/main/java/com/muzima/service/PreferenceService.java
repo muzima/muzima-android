@@ -16,9 +16,12 @@ abstract class PreferenceService {
         this.context = context;
     }
 
-    protected String serialize(Collection<String> cohortPrefixes) {
+    protected String serialize(Collection<String> values) {
+        if(values == null){
+            return null;
+        }
         JSONArray jsonArray = new JSONArray();
-        for (String cohort : cohortPrefixes) {
+        for (String cohort : values) {
             jsonArray.put(cohort);
         }
         return jsonArray.toString();
@@ -40,9 +43,8 @@ abstract class PreferenceService {
         return cohortsList;
     }
 
-    public void putStringSet(String key, Set<String> values, android.content.SharedPreferences.Editor editor) {
+    protected void putStringSet(String key, Set<String> values, android.content.SharedPreferences.Editor editor) {
         editor.putString(key, serialize(values));
         editor.commit();
     }
-
 }
