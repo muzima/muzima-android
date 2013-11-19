@@ -36,27 +36,11 @@ public class ConceptController {
         }
     }
 
-    public List<Concept> getConceptByName(String name) throws ConceptFetchException {
-        try {
-            return conceptService.getConceptsByName(name);
-        } catch (IOException e) {
-            throw new ConceptFetchException(e);
-        }
-    }
-
     public Concept getConceptByUuid(String uuid) throws ConceptFetchException {
         try {
             return conceptService.getConceptByUuid(uuid);
         } catch (IOException e) {
             throw new ConceptFetchException(e);
-        }
-    }
-
-    public void saveConcept(Concept concept) throws ConceptSaveException {
-        try {
-            conceptService.saveConcept(concept);
-        } catch (IOException e) {
-            throw new ConceptSaveException(e);
         }
     }
 
@@ -113,12 +97,6 @@ public class ConceptController {
 
     public static class ConceptDeleteException extends Throwable {
         public ConceptDeleteException(Throwable throwable) {
-            super(throwable);
-        }
-    }
-
-    public static class ConceptReplaceException extends Throwable {
-        public ConceptReplaceException(Throwable throwable) {
             super(throwable);
         }
     }

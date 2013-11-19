@@ -14,14 +14,6 @@ public class EncounterController {
         this.encounterService = encounterService;
     }
 
-    public List<Encounter> downloadEncounters(String patientUuid) throws DownloadEncounterException {
-        try {
-            return encounterService.downloadEncountersByPatientUuid(patientUuid);
-        } catch (IOException e) {
-            throw new DownloadEncounterException(e);
-        }
-    }
-
     public void replaceEncounters(List<String> patientUuids, List<Encounter> allEncounters) throws ReplaceEncounterException {
         try {
             for (String patientUuid : patientUuids) {

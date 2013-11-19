@@ -145,14 +145,6 @@ public class FormController {
         return downloadedFormsByTags;
     }
 
-    public int getDownloadedFormsCount() throws FormFetchException {
-        try {
-            return formService.countAllFormTemplates();
-        } catch (IOException e) {
-            throw new FormFetchException(e);
-        }
-    }
-
     public List<Form> downloadAllForms() throws FormFetchException {
         try {
             return formService.downloadFormsByName(StringUtil.EMPTY);
@@ -235,15 +227,6 @@ public class FormController {
 
     public void setSelectedTags(List<Tag> selectedTags) {
         this.selectedTags = selectedTags;
-    }
-
-    public List<Form> downloadFormsByTags(List<String> tags) throws FormFetchException {
-        try {
-            //TODO replace with downloadFormsByTags later
-            return formService.downloadFormsByName(StringUtil.EMPTY);
-        } catch (IOException e) {
-            throw new FormFetchException(e);
-        }
     }
 
     public FormData getFormDataByUuid(String formDataUuid) throws FormDataFetchException {

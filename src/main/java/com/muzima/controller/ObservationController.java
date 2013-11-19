@@ -94,14 +94,6 @@ public class ObservationController {
         }
     }
 
-    public List<Observation> downloadObservations(String patientUuid, String conceptUuid) throws DownloadObservationException {
-        try {
-            return observationService.downloadObservationsByPatientAndConcept(patientUuid, conceptUuid);
-        } catch (IOException e) {
-            throw new DownloadObservationException(e);
-        }
-    }
-
     public Concepts searchObservationsGroupedByConcepts(String term, String patientUuid) throws LoadObservationException {
         try {
             return groupByConcepts(observationService.searchObservations(patientUuid, term));
@@ -163,5 +155,4 @@ public class ObservationController {
             super(e);
         }
     }
-
 }
