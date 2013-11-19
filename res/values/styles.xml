@@ -481,6 +481,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@android:color/white</item>
+        <item name="android:padding">6dp</item>
         <item name="android:text">A Button</item>
     </style>
 
