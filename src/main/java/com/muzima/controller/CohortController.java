@@ -121,14 +121,22 @@ public class CohortController {
             List<Cohort> cohorts = cohortService.getAllCohorts();
             List<Cohort> syncedCohorts = new ArrayList<Cohort>();
             for (Cohort cohort : cohorts) {
-            //TODO: Have a has members method to make this more explicit
-            if (cohortService.countCohortMembers(cohort.getUuid()) > 0) {
+                //TODO: Have a has members method to make this more explicit
+                if (isDownloaded(cohort)) {
                     syncedCohorts.add(cohort);
                 }
             }
             return syncedCohorts;
         } catch (IOException e) {
             throw new CohortFetchException(e);
+        }
+    }
+
+    public boolean isDownloaded(Cohort cohort) {
+        try {
+            return cohortService.countCohortMembers(cohort.getUuid()) > 0;
+        } catch (IOException e) {
+            return false;
         }
     }
 
@@ -145,7 +153,7 @@ public class CohortController {
 
     }
 
-    public void addCohortMembers(List<CohortMember> cohortMembers) throws  CohortReplaceException {
+    public void addCohortMembers(List<CohortMember> cohortMembers) throws CohortReplaceException {
         try {
             cohortService.saveCohortMembers(cohortMembers);
         } catch (IOException e) {

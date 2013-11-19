@@ -52,14 +52,8 @@ public class AllCohortsAdapter extends CohortsAdapter {
         View view = super.getView(position, convertView, parent);
         ViewHolder holder = (ViewHolder) view.getTag();
         Cohort cohort = getItem(position);
-        try {
-            if(cohortController.getSyncedCohorts().contains(cohort)){
-                holder.downloadedImage.setVisibility(View.VISIBLE);
-            } else{
-                holder.downloadedImage.setVisibility(View.GONE);
-            }
-        } catch (CohortController.CohortFetchException e) {
-            Log.e(TAG, "Error occurred while fetching downloaded cohorts " + e);
+        if (cohortController.isDownloaded(cohort)) {
+            holder.downloadedImage.setVisibility(View.VISIBLE);
         }
         return view;
     }
