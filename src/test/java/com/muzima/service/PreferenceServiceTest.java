@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.muzima.utils.Constants.COHORT_PREFIX_PREF;
 import static com.muzima.utils.Constants.COHORT_PREFIX_PREF_KEY;
 import static org.hamcrest.core.Is.is;
@@ -28,21 +29,18 @@ public class PreferenceServiceTest {
     public void setUp() throws Exception {
         muzimaApplication = mock(MuzimaApplication.class);
         sharedPref = mock(SharedPreferences.class);
-        preferenceService = new CohortPrefixPreferenceService(muzimaApplication);
-
+        when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, MODE_PRIVATE)).thenReturn(sharedPref);
         when(muzimaApplication.getSharedPreferences(anyString(), anyInt())).thenReturn(sharedPref);
+        preferenceService = new CohortPrefixPreferenceService(muzimaApplication);
     }
 
     @Test
     public void getCohorts_shouldReturnEmptyListWhenNoCohortsInPreferences() throws Exception {
-        when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
-
         assertThat(preferenceService.getCohortPrefixes().isEmpty(), is(true));
     }
 
     @Test
     public void getCohorts_shouldReturnCohortPrefixesInListWhenCohortsPrefixesDefinedInPreferences() throws Exception {
-        when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
         when(sharedPref.getString(COHORT_PREFIX_PREF_KEY, "")).thenReturn("[\"Prefix1\",\"Prefix2\",\"Prefix3\"]");
 
         assertThat(preferenceService.getCohortPrefixes().size(), is(3));
