@@ -63,6 +63,7 @@ $(document).ready(function () {
             }
         }
     };
+    $('input[type="barcode"]').after("<input type='button' class='barcode_img'>");
 
     //controller for submission of data to drishti
 //    $(document).on('click', 'button#draft-form', document.saveDraft);
