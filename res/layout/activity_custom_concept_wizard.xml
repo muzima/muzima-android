@@ -23,11 +23,11 @@
                   android:layout_alignParentBottom="true">
         <Button
                 android:id="@+id/previous"
-                style="@style/PreviousButton"
+                style="@style/Button.Previous"
                 android:layout_weight=".3"/>
         <Button
                 android:id="@+id/next"
-                style="@style/NextButton"
+                style="@style/Button.Next"
                 android:layout_weight=".3"/>
     </LinearLayout>
 

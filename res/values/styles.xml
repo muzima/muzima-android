@@ -477,20 +477,21 @@
         <item name="android:background">@drawable/login_button_selector</item>
     </style>
 
-    <style name="PreviousButton">
+    <style name="Button">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:text">Previous</item>
-        <item name="android:background">@drawable/previous_button_selector</item>
+        <item name="android:text">A Button</item>
     </style>
 
-    <style name="NextButton">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:text">Next</item>
+    <style name="Button.Previous">
+        <item name="android:background">@drawable/previous_button_selector</item>
+        <item name="android:text">Previous</item>
+    </style>
+
+    <style name="Button.Next">
         <item name="android:background">@drawable/next_button_selector</item>
+        <item name="android:text">Next</item>
     </style>
 
     <style name="LoginActivityNoConnectionView">

@@ -35,7 +35,7 @@
                   android:layout_alignParentBottom="true">
         <Button
                 android:id="@+id/next"
-                style="@style/NextButton"/>
+                style="@style/Button.Next"/>
     </LinearLayout>
 </RelativeLayout>
 

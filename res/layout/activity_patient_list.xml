@@ -36,7 +36,7 @@
                 android:id="@+id/search_server_btn"
                 android:layout_marginTop="20dp"
                 android:padding="10dp"
-                style="@style/NextButton"
+                style="@style/Button.Next"
                 android:text="Search Server"
                 android:layout_height="wrap_content">
         </Button>

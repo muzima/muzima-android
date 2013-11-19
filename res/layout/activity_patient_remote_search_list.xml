@@ -36,7 +36,7 @@
                 android:id="@+id/create_patient_btn"
                 android:layout_marginTop="20dp"
                 android:padding="10dp"
-                style="@style/NextButton"
+                style="@style/Button.Next"
                 android:text="Create Client"
                 android:layout_height="wrap_content">
         </Button>
