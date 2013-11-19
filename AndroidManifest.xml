@@ -118,6 +118,7 @@
                 android:name=".view.forms.FormWebViewActivity"
                 android:label="@string/title_activity_form_webview"
                 android:configChanges="orientation|screenSize"
+                android:windowSoftInputMode="adjustResize"
                 android:parentActivityName="com.muzima.view.forms.FormsActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
