@@ -168,6 +168,10 @@
                   android:label="Define Custom Concept"
                   android:configChanges="orientation|screenSize"
                   android:theme="@style/WizardTheme"/>
+        <activity android:name=".view.InstallBarCodeWizardActivity"
+                  android:label="Install Barcode Scanner"
+                  android:configChanges="orientation|screenSize"
+                  android:theme="@style/WizardTheme"/>
         <!--Wizard Activities End-->
 
         <service android:name=".service.DataSyncService"

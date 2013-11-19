@@ -26,7 +26,8 @@
     <string name="no_downloaded_form_msg">No Forms Have Been Downloaded</string>
     <string name="no_recommended_form_msg">No Forms Have Been Downloaded</string>
     <string name="no_downloaded_form_tip">Please select forms from all forms list and click download</string>
-    <string name="no_recommended_form_tip">Please select non registration forms from all forms list and click download</string>
+    <string name="no_recommended_form_tip">Please select non registration forms from all forms list and click download
+    </string>
     <string name="no_incomplete_form_msg">No Incomplete Forms On Device</string>
     <string name="no_incomplete_client_form_msg">No Incomplete Forms</string>
     <string name="no_incomplete_form_tip">Incomplete forms are available only if you have saved a partially filled
@@ -51,10 +52,12 @@
     </string>
 
     <string name="no_clients_matched_locally">No clients matched your search locally</string>
-    <string name="no_clients_matched_tip_locally"> Your search includes client id, given name, middle name and family name and searched only in the device
+    <string name="no_clients_matched_tip_locally">Your search includes client id, given name, middle name and family
+        name and searched only in the device
     </string>
     <string name="no_clients_matched_remotely">No clients matched your search on server</string>
-    <string name="no_clients_matched_tip_remotely"> Your search includes client id, given name, middle name and family name and searched only in the device
+    <string name="no_clients_matched_tip_remotely">Your search includes client id, given name, middle name and family
+        name and searched only in the device
     </string>
 
     <string name="action_settings">Settings</string>
@@ -124,6 +127,8 @@
     <string name="download_cohort">Step 1: Download Cohort(s)</string>
     <string name="download_form">Step 2: Download Form(s)</string>
     <string name="add_concept_prefixes">Step 3: Add Concept</string>
+    <string name="check_barcode_scanner_header">Step 4: Check for BarCode Scanner</string>
+
 
     <string name="no_cohort_prefixes_added">No Cohort Prefixes Added</string>
     <string name="no_cohort_prefixes_msg">Please click on add button to add a cohort prefix</string>
@@ -164,10 +169,18 @@
     <string name="server_hint_text">Server URL</string>
     <string name="username_hint_text">Username</string>
     <string name="password_hint_text">Password</string>
-    <string name="add_cohort_pref_desc">Type the first few letters of the cohort you are interested in downloading</string>
-    <string name="download_cohort_desc">Select one or more of the cohorts from the list and click on \'Next\' to download data relevant to these cohorts.</string>
+    <string name="add_cohort_pref_desc">Type the first few letters of the cohort you are interested in downloading
+    </string>
+    <string name="download_cohort_desc">Select one or more of the cohorts from the list and click on \'Next\' to
+        download data relevant to these cohorts.
+    </string>
     <string name="download_form_desc">Select one or more forms from the list and click on \'Next\' to download</string>
     <string name="downloaded_image">Downloaded Image</string>
     <string name="add_concept_pref_desc">Add concepts for which you would want observations to be downloaded.</string>
+    <string name="install_barcode_scanner_description">You need a barcode scanner application to register clients from
+        mobile. Please check whether it\'s been installed in your device or not.
+    </string>
+    <string name="install_barcode_scanner_btn_text">Check Barcode Scanner</string>
+    <string name="scanner_app_exists_text">Barcode Scanner application is already been installed !!</string>
 
 </resources>

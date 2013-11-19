@@ -82,8 +82,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         MuzimaSyncService muzimaSyncService = ((MuzimaApplication)getApplicationContext()).getMuzimaSyncService();
 
         List<String> selectedCohortsArray = cohortsAdapter.getSelectedCohorts();
-        int[] result = muzimaSyncService.downloadPatientsForCohorts(selectedCohortsArray.toArray(new String[selectedCohortsArray.size()]));
-        return result;
+        return muzimaSyncService.downloadPatientsForCohorts(selectedCohortsArray.toArray(new String[selectedCohortsArray.size()]));
     }
 
     private void navigateToNextActivity() {

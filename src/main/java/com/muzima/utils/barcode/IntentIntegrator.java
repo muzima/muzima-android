@@ -101,6 +101,14 @@ import java.util.*;
  * @author Brad Drehmer
  * @author gcstang
  */
+
+/**
+ * Have modified the TARGET_ALL_KNOWN order, to show up which app will get precedence.
+ * Added an explicit method to check whether application is present or not.
+ *
+ * @author Prasanna V(ThoughtWorks)
+ */
+
 public class IntentIntegrator {
 
     public static final int REQUEST_CODE = 0x0000c0de; // Only use bottom 16 bits
@@ -263,6 +271,21 @@ public class IntentIntegrator {
         intentScan.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         attachMoreExtras(intentScan);
         startActivityForResult(intentScan, REQUEST_CODE);
+        return null;
+    }
+
+    /**
+     * Checks whether the scanner application is already present and
+     *
+     * @return AlertDialog to download the application from PlayStore or null if the app already exists.
+     */
+    public final AlertDialog checkForScannerAppInstallation() {
+        Intent intentScan = new Intent(BS_PACKAGE + ".SCAN");
+        intentScan.addCategory(Intent.CATEGORY_DEFAULT);
+        String targetAppPackage = findTargetAppPackage(intentScan);
+        if (targetAppPackage == null) {
+            return showDownloadDialog();
+        }
         return null;
     }
 

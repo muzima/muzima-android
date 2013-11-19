@@ -16,7 +16,7 @@ import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaSyncService;
-import com.muzima.view.MainActivity;
+import com.muzima.view.InstallBarCodeWizardActivity;
 import com.muzima.view.forms.MuzimaProgressDialog;
 import com.muzima.view.preferences.ConceptPreferenceActivity;
 
@@ -143,7 +143,7 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
     }
 
     private void navigateToNextActivity() {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), InstallBarCodeWizardActivity.class);
         startActivity(intent);
         finish();
     }
