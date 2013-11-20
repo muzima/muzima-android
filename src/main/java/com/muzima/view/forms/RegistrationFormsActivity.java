@@ -1,6 +1,5 @@
 package com.muzima.view.forms;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +8,7 @@ import android.widget.ListView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.RegistrationFormsAdapter;
+import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
@@ -27,7 +27,7 @@ public class RegistrationFormsActivity extends BaseActivity {
         FormController formController = ((MuzimaApplication) getApplicationContext()).getFormController();
         AvailableForms availableForms = getRegistrationForms(formController);
         if (isOnlyOneRegistrationForm(availableForms)) {
-            startBarcodeActivity(availableForms.get(0));
+            startWebViewActivity(availableForms.get(0));
         } else {
             prepareRegistrationAdapter(formController, availableForms);
         }
@@ -51,15 +51,13 @@ public class RegistrationFormsActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AvailableForm form = registrationFormsAdapter.getItem(position);
-                startBarcodeActivity(form);
+                startWebViewActivity(form);
             }
         };
     }
 
-    private void startBarcodeActivity(AvailableForm form) {
-        Intent intent = new Intent(this, RegistrationBarcodeActivity.class);
-        intent.putExtra(RegistrationBarcodeActivity.SELECTED_REG_FORM, form);
-        startActivity(intent);
+    private void startWebViewActivity(AvailableForm form) {
+        startActivity(new FormViewIntent(this, form, new Patient()));
     }
 
     private AvailableForms getRegistrationForms(FormController formController) {

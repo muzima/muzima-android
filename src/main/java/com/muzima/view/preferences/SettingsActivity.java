@@ -170,7 +170,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
     private void clearApplicationData() {
         try {
             File dir = new File(ContextFactory.APP_DIR);
-            if (dir != null && dir.isDirectory()) {
+            if (dir.isDirectory()) {
                 deleteDir(dir);
             }
         } catch (Exception e) {
