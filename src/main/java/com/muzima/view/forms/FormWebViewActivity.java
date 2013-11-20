@@ -1,6 +1,5 @@
 package com.muzima.view.forms;
 
-import com.actionbarsherlock.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +8,7 @@ import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
@@ -20,11 +20,15 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
+import com.muzima.utils.barcode.IntentIntegrator;
+import com.muzima.utils.barcode.IntentResult;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
-
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
@@ -38,6 +42,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     public static final String PATIENT = "patient";
     public static final String FORM_INSTANCE = "formInstance";
     public static final String REPOSITORY = "formDataRepositoryContext";
+    public static final String BARCODE = "barCodeComponent";
     public static final String ZIGGY_FILE_LOADER = "ziggyFileLoader";
     public static final String FORM = "form";
 
@@ -47,6 +52,9 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     private FormTemplate formTemplate;
     private MuzimaProgressDialog progressDialog;
     private FormData formData;
+    private Patient patient;
+    private BarCodeComponent barCodeComponent;
+    private Map<String, String> scanResultMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +63,12 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
+        scanResultMap = new HashMap<String, String>();
         setContentView(R.layout.activity_form_webview);
         progressDialog = new MuzimaProgressDialog(this);
         progressDialog.show("Loading... ");
         try {
-            Patient patient = (Patient) getIntent().getSerializableExtra(PATIENT);
+            patient = (Patient) getIntent().getSerializableExtra(PATIENT);
             setupFormData(patient);
             setupWebView();
         } catch (FormFetchException e) {
@@ -89,6 +98,14 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     }
 
     @Override
+    protected void onResume() {
+        String jsonMap = new JSONObject(scanResultMap).toString();
+        Log.e(TAG,jsonMap);
+        webView.loadUrl("javascript:document.populateBarCode(" + jsonMap + ")");
+        super.onResume();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.form_save_as_draft:
@@ -113,7 +130,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         if (formObject.hasData()) {
             formData = formController.getFormDataByUuid(((FormWithData) formObject).getFormDataUuid());
         } else {
-            formData = createNewFormData(patient.getUuid(), formId, patient,formTemplate);
+            formData = createNewFormData(patient.getUuid(), formId, patient, formTemplate);
         }
     }
 
@@ -142,7 +159,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             @Override
             public void onProgressChanged(WebView view, int progress) {
                 FormWebViewActivity.this.setProgress(progress * 1000);
-                if (progress == 100){
+                if (progress == 100) {
                     progressDialog.dismiss();
                 }
             }
@@ -169,9 +186,20 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         webView.addJavascriptInterface(formInstance, FORM_INSTANCE);
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
         webView.addJavascriptInterface(new FormDataStore(this, formController, formData), REPOSITORY);
+        barCodeComponent = new BarCodeComponent(this);
+        webView.addJavascriptInterface(barCodeComponent, BARCODE);
         webView.addJavascriptInterface(new ZiggyFileLoader("www/ziggy", getApplicationContext().getAssets(), formInstance.getModelJson()), ZIGGY_FILE_LOADER);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+
         webView.loadUrl("file:///android_asset/www/enketo/template.html");
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if (scanResult != null) {
+            scanResultMap.put(barCodeComponent.getFieldName(), scanResult.getContents());
+        }
     }
 
     private WebSettings getSettings() {
