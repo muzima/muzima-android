@@ -15,7 +15,6 @@
  */
 package com.muzima.adapters.concept;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Concept;
@@ -43,10 +43,10 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
     private final ConceptPreferenceService conceptPreferenceService;
     protected ConceptController conceptController;
 
-    public SelectedConceptAdapter(Context context, int textViewResourceId, ConceptController conceptController) {
+    public SelectedConceptAdapter(MuzimaApplication context, int textViewResourceId, ConceptController conceptController) {
         super(context, textViewResourceId);
         this.conceptController = conceptController;
-        conceptPreferenceService = new ConceptPreferenceService(context);
+        conceptPreferenceService = context.getConceptPreferenceService();
     }
 
     private class ViewHolder {

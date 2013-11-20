@@ -2,7 +2,6 @@ package com.muzima.service;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import com.muzima.api.model.Concept;
 
 import java.util.HashSet;
@@ -39,6 +38,10 @@ public class ConceptPreferenceService extends PreferenceService {
 
     public List<String> getConcepts(){
         return deserialize(conceptSharedPreferences.getString(CONCEPT_PREF_KEY, null));
+    }
+
+    public boolean isConceptAlreadyExists(Concept concept) {
+        return getConcepts().contains(concept.getUuid());
     }
 
     private void saveConcepts(Set<String> copyOfUuidSet) {
