@@ -91,11 +91,7 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
 
     @Override
     public void add(final Concept concept) {
-        if (!conceptPreferenceService.getConcepts().contains(concept.getUuid())) {
-            addConcept(concept);
-        } else {
-            Toast.makeText(getContext(), "Concept " + concept.getName() + " has already been added", Toast.LENGTH_SHORT).show();
-        }
+        addConcept(concept);
     }
 
     @Override
