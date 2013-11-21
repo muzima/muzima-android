@@ -70,6 +70,7 @@ public class LoginActivity extends SherlockActivity {
         if (!isFirstLaunch) {
             removeServerUrlAsInput();
         }
+
         useSavedServerUrl();
 
         //Hack to get it to use default font space.
@@ -84,7 +85,10 @@ public class LoginActivity extends SherlockActivity {
     private void useSavedServerUrl() {
         Credentials credentials;
         credentials = new Credentials(this);
-        serverUrlText.setText(credentials.getServerUrl());
+        String serverUrl = credentials.getServerUrl();
+        if(!StringUtils.isEmpty(serverUrl)){
+            serverUrlText.setText(serverUrl);
+        }
     }
 
     @Override
