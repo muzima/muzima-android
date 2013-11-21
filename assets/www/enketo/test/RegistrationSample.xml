@@ -1,416 +1,201 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <xf:xforms xmlns:xf="http://www.w3.org/2002/xforms" xmlns:h="http://www.w3.org/1999/xhtml"
-
            xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jr="http://openrosa.org/javarosa">
-
     <xf:head>
-
         <xf:title>Registration Form</xf:title>
-
         <xf:model id="openmrs_model">
-
             <xf:instance id="openmrs_model_instance">
-
                 <form id="1" name="Registration Form" version="0.1" xmlns:openmrs="/moduleServlet/formentry/forms/schema/4-1" xmlns:xd="http://schemas.microsoft.com/office/infopath/2003">
-
                     <header>
-
                         <enterer/>
-
                         <date_entered/>
-
                         <session/>
-
                         <uid/>
-
                     </header>
-
                     <patient>
-
                         <patient.patient_id openmrs_table="patient" openmrs_attribute="patient_id"/>
-
                         <patient_identifier.identifier_type_id openmrs_table="patient_identifier" openmrs_attribute="identifier_type_id"/>
-
                         <patient.medical_record_number openmrs_table="patient_identifier" openmrs_attribute="identifier"/>
-
                         <patient.birthdate openmrs_table="patient" openmrs_attribute="birthdate"/>
-
                         <patient.birthdate_estimated openmrs_table="patient" openmrs_attribute="birthdate_estimated"/>
-
                         <patient.family_name openmrs_table="patient_name" openmrs_attribute="family_name"/>
-
                         <patient.given_name openmrs_table="patient_name" openmrs_attribute="given_name"/>
-
                         <patient.middle_name openmrs_table="patient_name" openmrs_attribute="middle_name"/>
-
                         <patient.sex openmrs_table="patient" openmrs_attribute="gender"/>
-
-                        <person_attribute10 openmrs_table="" openmrs_attribute=""/>
-
+                        <person_attribute4 openmrs_table="" openmrs_attribute=""/>
                         <tmp>
-
                             <amrs_id_scan/>
-
                             <amrs_id_manual/>
-
                             <amrs_id_manual_confirm/>
-
-                            <birthdate_type/>
-
-                            <age/>
-
+                            <birthdate_type>birthdate</birthdate_type>
+                            <age>0</age>
+                            <birth_date_temp/>
                             <age_in_years/>
-
                             <birth_date/>
-
                             <birthdate_estimated/>
-
                         </tmp>
-
                     </patient>
-
                     <encounter>
-
                         <encounter.encounter_datetime openmrs_table="encounter" openmrs_attribute="encounter_datetime"/>
-
                         <encounter.location_id openmrs_table="encounter" openmrs_attribute="location_id"/>
-
                         <encounter.provider_id openmrs_table="encounter" openmrs_attribute="provider_id"/>
-
                         <tmp>
-
                             <provider_id_select/>
-
                             <provider_id_text/>
-
                         </tmp>
-
                     </encounter>
-
                     <obs openmrs_concept="1238^MEDICAL RECORD OBSERVATIONS^99DCT" openmrs_datatype="ZZ">
-
                     </obs>
-
                 </form>
-
             </xf:instance>
-
             <bind id="patient" nodeset="/form/patient"/>
-
             <bind id="patient.patient_id" nodeset="/form/patient/patient.patient_id" type="int" required="true()"/>
-
             <bind id="patient_identifier.identifier_type_id" nodeset="/form/patient/patient_identifier.identifier_type_id" calculate="3" type="integer" />
-
             <!-- UNCOMMENT TO ENTER PATIENT IDENTIFIER -->
-
             <bind id="amrs_id_scan" nodeset="/form/patient/tmp/amrs_id_scan" type="barcode"/>
-
             <bind id="amrs_id_manual" nodeset="/form/patient/tmp/amrs_id_manual" type="string" required="true()" relevant="../amrs_id_scan = ''"
-
-                  constraint="regex(., '^\w+[-]?\d{1}') and checkdigit(.)" jr:constraintMsg="Invalid identifier by format. Check your check digit."/>
-
+                  constraint="regex(., '^\w+[-]?\d{1}')" jr:constraintMsg="Invalid identifier by format. Check your check digit."/>
             <bind id="amrs_id_manual_confirm" nodeset="/form/patient/tmp/amrs_id_manual_confirm" type="string" required="true()" relevant="../amrs_id_manual != ''"
-
                   constraint=". = ../amrs_id_manual" jr:constraintMsg="Entered ID's did not match!"/>
-
             <bind id="patient.medical_record_number" nodeset="/form/patient/patient.medical_record_number" type="string" readonly="true()"
-
                   calculate="if (../tmp/amrs_id_scan != '',../tmp/amrs_id_scan,../tmp/amrs_id_manual)"/>
 
-
-
-
-
             <!--  Birth Date Calculations -->
-
             <!-- UNCOMMENTED TO CALCULATE DATE (IF NOT USING mCLINIC OR REGISTERING PATIENTS) -->
-
             <bind id="birthdate_type" nodeset="/form/patient/tmp/birthdate_type" type="string" required="true()"/>
-
             <bind id="age" nodeset="/form/patient/tmp/age" type="int" relevant="../birthdate_type = 'age'" required="true()"
-
-                  constraint=". &gt;= 18 and . &lt;=125" jr:constraintMsg="Allowed ages is between 18 and 125 years"/>
-
+                  constraint=". &gt;= 0 and . &lt;=125" jr:constraintMsg="Allowed ages is between 0 and 125 years"/>
             <bind id="birthdate" nodeset="/form/patient/tmp/birth_date" type="date" relevant="../birthdate_type = 'birthdate'" required="true()"
-
                   constraint=". &lt;= today()" jr:constraintMsg="Birthdate cannot be in the future"/>
-
             <bind id="birthdate_estimated" nodeset="/form/patient/tmp/birthdate_estimated" relevant="../birthdate_type = 'birthdate'" required="true()"/>
-
-            <bind id="patient.birthdate" nodeset="/form/patient/patient.birthdate" type="date"
-
-                  calculate="if(../tmp/birthdate_type = 'age',  date(today() - (../tmp/age) * 365.2425), ../tmp/birth_date)"/>
-
+            <bind id="birth_date_temp" nodeset="/form/patient/tmp/birth_date_temp" type="string" readonly="true()"
+                  calculate="concat(format-date(date(today() - (../age) * 365.2425), '%Y'),'/01/01')"/>
+            <bind id="patient.birthdate" nodeset="/form/patient/patient.birthdate" type="date" readonly="true()"
+                  calculate="if(../tmp/birthdate_type = 'age', date(../tmp/birth_date_temp), ../tmp/birth_date)"/>
             <bind id="age_in_years" nodeset="/form/patient/tmp/age_in_years" type="decimal"
-
                   calculate="if(../birthdate_type = 'age', ../age, int(today() - ../../patient.birthdate))"/>
-
             <bind id="patient.birthdate_estimated" nodeset="/form/patient/patient.birthdate_estimated" type="string"
-
                   calculate="if(../tmp/birthdate_type = 'age', 'true', ../tmp/birthdate_estimated)"/>
-
-            <!-- <bind id="patient.birthdate" nodeset="/form/patient/patient.birthdate" type="date"/>
-
-            <bind id="patient.birthdate_estimated" nodeset="/form/patient/patient.birthdate_estimated" type="string" readonly="true()"/> -->
-
-
-
             <bind id="patient.family_name" nodeset="/form/patient/patient.family_name" required="true()" type="string" />
-
             <bind id="patient.given_name" nodeset="/form/patient/patient.given_name" required="true()" type="string"/>
-
             <bind id="patient.middle_name" nodeset="/form/patient/patient.middle_name" type="string"/>
-
             <bind id="patient.sex" nodeset="/form/patient/patient.sex" required="true()" type="string"/>
-
             <bind id="encounter.encounter_datetime" nodeset="/form/encounter/encounter.encounter_datetime" type="date"
-
                   constraint=". &lt;= today()" jr:constraintMsg="Encounter date cannot be in the future" required="true()"/>
-
             <bind id="encounter.location_id" nodeset="/form/encounter/encounter.location_id" type="string" required="true()"/>
-
             <bind id="provider_id_select" nodeset="/form/encounter/tmp/provider_id_select" type="select1"/>
-
             <bind id="provider_id_text" nodeset="/form/encounter/tmp/provider_id_text" type="string" required="true()"
-
                   relevant="../provider_id_select = ''" constraint="regex(., '^\w+[-]?\d{1}') and (checkdigit(.))"
-
                   jr:constraintMsg="Invalid ID format and/or CheckDigit. Please Re-enter your ID."/>
-
             <bind id="encounter.provider_id" nodeset="/form/encounter/encounter.provider_id" type="string"
-
                   calculate="if(../tmp/provider_id_select != '',../tmp/provider_id_select,../tmp/provider_id_text)"/>
-
-            <bind id="phone" nodeset="/form/patient/person_attribute10" type="string" constraint="regex(., '^\d{8,12}$')" jr:constraintMsg="Invalid Phone Number. Please check and re-enter."/>
-
+            <bind id="mothers_name" nodeset="/form/patient/person_attribute4" type="string"/>
         </xf:model>
-
     </xf:head>
-
     <xf:body>
-
         <group>
-
             <label>Registration Form</label>
-
             <!-- Demographics -->
-
             <group appearance="field-list" bind="patient">
-
                 <label>Demographics</label>
-
                 <input bind="amrs_id_scan">
-
                     <label>AMRS ID SCAN</label>
-
                     <hint>The scanned barcode AMRS ID.</hint>
-
                 </input>
-
                 <input bind="amrs_id_manual">
-
                     <label>AMRS ID</label>
-
                     <hint>The manually entered AMRS ID.</hint>
-
                 </input>
-
-                <input bind="amrs_id_manual_confirm">
-
-                    <label>AMRS ID (CONFIRM)</label>
-
-                    <hint>Confirm the manually entered AMRS ID.</hint>
-
-                </input>
-
-                <input bind="patient.medical_record_number">
-
-                    <label>AMRS Identifier</label>
-
-                </input>
-
                 <input bind="patient.family_name">
-
                     <label>Family Name</label>
-
                 </input>
-
                 <input bind="patient.given_name">
-
                     <label>Given Name</label>
-
                 </input>
-
                 <input bind="patient.middle_name">
-
                     <label>Middle Name</label>
-
                 </input>
-
                 <select1 bind="patient.sex">
-
                     <label>Sex</label>
-
                     <item>
-
                         <label>Male</label>
-
                         <value>M</value>
-
                     </item>
-
                     <item>
-
                         <label>Female</label>
-
                         <value>F</value>
-
                     </item>
-
                 </select1>
-
-                <select1 bind="birthdate_type">
-
-                    <label>Will Record Date of Birth...</label>
-
-                    <hint>How will you capture the patients birth-date?</hint>
-
-                    <item>
-
-                        <label>By Age</label>
-
-                        <value>age</value>
-
-                    </item>
-
-                    <item>
-
-                        <label>By Birth-Date</label>
-
-                        <value>birthdate</value>
-
-                    </item>
-
-                </select1>
-
-                <input bind="age">
-
-                    <label>How old are you now?</label>
-
-                    <hint>Age in complete years</hint>
-
+                <input bind="mothers_name">
+                    <label>Enter Mothers Name</label>
                 </input>
-
-                <input bind="birthdate">
-
-                    <label>Select Birthdate</label>
-
-                </input>
-
-                <select1 bind="birthdate_estimated">
-
-                    <label>Is this birthdate an estimate?</label>
-
-                    <item>
-
-                        <label>Yes</label>
-
-                        <value>true</value>
-
-                    </item>
-
-                    <item>
-
-                        <label>No</label>
-
-                        <value>false</value>
-
-                    </item>
-
-                </select1>
-
-                <!--<input bind="patient.sex">
-
-                    <label>Sex</label>
-
-                </input>
-
-                <input bind="patient.birthdate">
-
-                    <label>Birthdate</label>
-
-                </input>
-
-                <input bind="patient.birthdate_estimated">
-
-                    <label>Birthdate Estimated?</label>
-
-                </input> -->
 
             </group>
-
+            <group appearance="field-list">
+                <input bind="amrs_id_manual_confirm">
+                    <label>AMRS ID (CONFIRM)</label>
+                    <hint>Confirm the manually entered AMRS ID.</hint>
+                </input>
+                <select1 bind="birthdate_type">
+                    <label>Will Record Date of Birth...</label>
+                    <hint>How will you capture the patients birth-date?</hint>
+                    <item>
+                        <label>By Birth-Date</label>
+                        <value>birthdate</value>
+                    </item>
+                    <item>
+                        <label>By Age</label>
+                        <value>age</value>
+                    </item>
+                </select1>
+                <input bind="age">
+                    <label>How old are you now?</label>
+                    <hint>Age in complete years</hint>
+                </input>
+                <input bind="birthdate">
+                    <label>Select Birthdate</label>
+                </input>
+                <select1 bind="birthdate_estimated">
+                    <label>Is this birthdate an estimate?</label>
+                    <item>
+                        <label>Yes</label>
+                        <value>true</value>
+                    </item>
+                    <item>
+                        <label>No</label>
+                        <value>false</value>
+                    </item>
+                </select1>
+            </group>
             <select1 bind="encounter.location_id">
-
                 <label>Encounter Location</label>
-
                 <item>
-
                     <label>Mosoriot Health Centre</label>
-
                     <value>2</value>
-
                 </item>
-
                 <item>
-
                     <label>Turbo Health Centre</label>
-
                     <value>3</value>
-
                 </item>
-
                 <item>
-
                     <label>Teso District Hospital</label>
-
                     <value>12</value>
-
                 </item>
-
             </select1>
-
             <select1 appearance="autocomplete" bind="provider_id_select">
-
                 <label>Provider ID</label>
-
                 <item>
-
                     <label>Super User</label>
-
                     <value>1</value>
-
                 </item>
-
             </select1>
-
             <input bind="provider_id_text">
-
                 <label>Enter provider's system-id</label>
-
             </input>
-
             <input bind="encounter.encounter_datetime">
-
                 <label>Encounter Date</label>
-
             </input>
-
         </group>
-
     </xf:body>
-
 </xf:xforms>
-
