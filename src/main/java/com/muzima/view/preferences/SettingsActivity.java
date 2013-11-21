@@ -64,7 +64,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
                             .create();
                     changeMaxCountConfirmationDialog.show();
                 }
-                return true;
+                return false;
             }
         });
         usernamePreferenceKey = getResources().getString(R.string.preference_username);
