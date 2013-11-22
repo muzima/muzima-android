@@ -11,8 +11,6 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
@@ -28,12 +26,12 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
         super(context, textViewResourceId);
         this.patientController = patientController;
         this.cohortId = cohortId;
-        this.patientAdapterHelper = new PatientAdapterHelper(context,textViewResourceId);
+        this.patientAdapterHelper = new PatientAdapterHelper(context, textViewResourceId);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-       return patientAdapterHelper.createPatientRow(getItem(position),convertView,parent,getContext());
+        return patientAdapterHelper.createPatientRow(getItem(position), convertView, parent, getContext());
     }
 
     @Override
@@ -74,13 +72,6 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
                 } else {
                     patients = patientController.getAllPatients();
                 }
-
-                Collections.sort(patients,new Comparator<Patient>() {
-                    @Override
-                    public int compare(Patient lhs, Patient rhs) {
-                        return lhs.getDisplayName().toLowerCase().compareTo(rhs.getDisplayName().toLowerCase());
-                    }
-                });
             } catch (PatientController.PatientLoadException e) {
                 Log.w(TAG, "Exception occurred while fetching patients" + e);
             }
@@ -93,9 +84,10 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
 
         @Override
         protected void onPostExecute(List<Patient> patients) {
-            patientAdapterHelper.onPostExecute(patients,PatientsLocalSearchAdapter.this,backgroundListQueryTaskListener);
+            patientAdapterHelper.onPostExecute(patients, PatientsLocalSearchAdapter.this, backgroundListQueryTaskListener);
         }
     }
+
     private class ViewHolder {
         ImageView genderImg;
         TextView name;
