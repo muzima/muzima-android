@@ -2,13 +2,13 @@ package com.muzima.view.preferences;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
-
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.muzima.R;
 import com.muzima.api.context.ContextFactory;
@@ -18,6 +18,8 @@ import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.ConceptPreferenceService;
 import com.muzima.service.CredentialsPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
+import com.muzima.tasks.ValidateURLTask;
+import com.muzima.utils.NetworkUtils;
 import com.muzima.view.login.LoginActivity;
 
 import java.io.File;
@@ -32,12 +34,14 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
     private EditTextPreference usernamePreference;
     private EditTextPreference passwordPreference;
 
+    private ProgressDialog progressDialog;
+    private String newURL;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preference);
-
         serverPreferenceKey = getResources().getString(R.string.preference_server);
         serverPreference = (EditTextPreference) getPreferenceScreen().findPreference(serverPreferenceKey);
         serverPreference.setSummary(serverPreference.getText());
@@ -45,24 +49,16 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         serverPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(final Preference preference, final Object newValue) {
-
-                if (!serverPreference.getText().equalsIgnoreCase(newValue.toString())) {
+                newURL =newValue.toString();
+                if (!serverPreference.getText().equalsIgnoreCase(newURL)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
-                    Dialog changeMaxCountConfirmationDialog = builder
+                    builder
                             .setCancelable(true)
                             .setIcon(getResources().getDrawable(R.drawable.ic_warning))
                             .setTitle(getResources().getString(R.string.caution))
                             .setMessage(getResources().getString(R.string.switch_server_message))
-                            .setPositiveButton("Yes", new Dialog.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    resetData(newValue.toString());
-                                    launchLoginActivity(true);
-                                }
-
-                            }).setNegativeButton("No", null)
-                            .create();
-                    changeMaxCountConfirmationDialog.show();
+                            .setPositiveButton("Yes", positiveClickListener())
+                            .setNegativeButton("No", null).create().show();
                 }
                 return false;
             }
@@ -95,7 +91,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
     @Override
     public void onSharedPreferenceChanged(final SharedPreferences sharedPreferences, final String key) {
         if (key.equalsIgnoreCase("wizardFinished")) {
-           return;
+            return;
         }
         String value = sharedPreferences.getString(key, StringUtil.EMPTY);
         if (StringUtil.equals(key, serverPreferenceKey)) {
@@ -104,6 +100,46 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
             usernamePreference.setSummary(value);
         } else if (StringUtil.equals(key, passwordPreferenceKey)) {
             passwordPreference.setSummary(value.replaceAll(".", "*"));
+        }
+    }
+
+    public void validationURLResult(boolean result) {
+        if (result) {
+            progressDialog.setMessage("Step 2: Resetting Data");
+            resetData();
+            progressDialog.dismiss();
+            launchLoginActivity(true);
+        } else {
+            progressDialog.dismiss();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder
+                    .setCancelable(true)
+                    .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                    .setTitle("Invalid")
+                    .setMessage("The URL you have provided is invalid")
+                    .setPositiveButton("Ok", null);
+            builder.create().show();
+        }
+    }
+
+    private Dialog.OnClickListener positiveClickListener() {
+        return new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                changeServerURL(dialog);
+            }
+
+        };
+    }
+
+
+    private void changeServerURL(DialogInterface dialog) {
+        dialog.dismiss();
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Step 1: Validating URL");
+        progressDialog.show();
+        if (NetworkUtils.isConnectedToNetwork(this)) {
+            new ValidateURLTask(this).execute(newURL);
         }
     }
 
@@ -158,11 +194,11 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
     }
 
 
-    private void resetData(String newUrl) {
+    private void resetData() {
         clearApplicationData();
         SettingsActivity context = SettingsActivity.this;
         new WizardFinishPreferenceService(context).resetWizard();
-        new CredentialsPreferenceService(context).saveCredentials(new Credentials(newUrl, null, null));
+        new CredentialsPreferenceService(context).saveCredentials(new Credentials(newURL, null, null));
         new ConceptPreferenceService(context).clearConcepts();
         new CohortPrefixPreferenceService(context).clearPrefixes();
     }
@@ -182,14 +218,13 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
     private static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
-            for (String child:children) {
+            for (String child : children) {
                 boolean success = deleteDir(new File(dir, child));
                 if (!success) {
                     return false;
                 }
             }
         }
-
         return dir.delete();
     }
 
