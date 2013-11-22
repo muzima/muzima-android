@@ -11,6 +11,8 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
@@ -73,6 +75,12 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
                     patients = patientController.getAllPatients();
                 }
 
+                Collections.sort(patients,new Comparator<Patient>() {
+                    @Override
+                    public int compare(Patient lhs, Patient rhs) {
+                        return lhs.getDisplayName().toLowerCase().compareTo(rhs.getDisplayName().toLowerCase());
+                    }
+                });
             } catch (PatientController.PatientLoadException e) {
                 Log.w(TAG, "Exception occurred while fetching patients" + e);
             }
