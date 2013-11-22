@@ -83,7 +83,7 @@ public class PatientControllerTest {
 
         Patient patient = new Patient();
         patient.setUuid(members.get(0).getPatientUuid());
-        when(patientService.getPatientByUuid(patient.getUuid())).thenReturn(patient);
+        when(patientService.getPatientsFromCohortMembers(members)).thenReturn(asList(patient));
 
         List<Patient> patients = patientController.getPatients(cohortId);
 

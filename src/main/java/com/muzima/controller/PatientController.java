@@ -37,12 +37,7 @@ public class PatientController {
     public List<Patient> getPatients(String cohortId) throws PatientLoadException {
         try {
             List<CohortMember> cohortMembers = cohortService.getCohortMembers(cohortId);
-            //TODO: Replace this with Google Guava
-            List<Patient> patients = new ArrayList<Patient>();
-            for (CohortMember member : cohortMembers) {
-                patients.add(member.getPatient());
-            }
-            return patients;
+            return patientService.getPatientsFromCohortMembers(cohortMembers);
         } catch (IOException e) {
             throw new PatientLoadException(e);
         }
