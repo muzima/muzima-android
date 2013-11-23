@@ -98,6 +98,7 @@ public class PatientsListActivity extends BaseActivity implements AdapterView.On
             searchView.requestFocus();
         } else
             searchView.setIconified(true);
+        super.onCreateOptionsMenu(menu);
         return true;
     }
 
