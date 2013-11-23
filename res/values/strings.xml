@@ -51,7 +51,7 @@
         clients
     </string>
 
-    <string name="no_clients_matched_locally">No clients matched your search locally</string>
+    <string name="no_clients_matched_locally">No clients matched your search locally. Enter at least 3 characters for remote search.</string>
     <string name="no_clients_matched_tip_locally">Your search includes client id, given name, middle name and family
         name and searched only in the device
     </string>

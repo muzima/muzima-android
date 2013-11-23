@@ -34,6 +34,7 @@ public class PatientsListActivity extends BaseActivity implements AdapterView.On
     private FrameLayout progressBarContainer;
     private View noDataView;
     private String searchString;
+    private Button searchServerBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class PatientsListActivity extends BaseActivity implements AdapterView.On
         setupListView(cohortId);
 
 
-        Button searchServerBtn = (Button) findViewById(R.id.search_server_btn);
+        searchServerBtn = (Button) findViewById(R.id.search_server_btn);
         searchServerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,6 +85,7 @@ public class PatientsListActivity extends BaseActivity implements AdapterView.On
             @Override
             public boolean onQueryTextChange(String s) {
                 searchString = s;
+                activateRemoteAfterThreeCharacterEntered(s);
                 if (searchString.trim().length() > 0) {
                     patientAdapter.search(s.trim());
                 }
@@ -97,6 +99,14 @@ public class PatientsListActivity extends BaseActivity implements AdapterView.On
         } else
             searchView.setIconified(true);
         return true;
+    }
+
+    private void activateRemoteAfterThreeCharacterEntered(String searchString) {
+        if(searchString.trim().length()<3){
+            searchServerBtn.setVisibility(View.GONE);
+        } else {
+            searchServerBtn.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
