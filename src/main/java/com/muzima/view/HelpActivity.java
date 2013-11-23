@@ -3,6 +3,7 @@ package com.muzima.view;
 import android.os.Bundle;
 import android.widget.TextView;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
 
 public class HelpActivity extends BaseActivity {
@@ -40,8 +41,14 @@ public class HelpActivity extends BaseActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getSupportMenuInflater().inflate(R.menu.help, menu);
-		return true;
+        super.onCreateOptionsMenu(menu);
+        removeHelpMenu(menu);
+        return true;
 	}
+
+    private void removeHelpMenu(Menu menu) {
+        MenuItem menuSettings = menu.findItem(R.id.action_help);
+        menuSettings.setVisible(false);
+    }
 }
