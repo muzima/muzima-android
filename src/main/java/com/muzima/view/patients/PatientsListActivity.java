@@ -50,11 +50,9 @@ public class PatientsListActivity extends BaseActivity implements AdapterView.On
             }
         }
 
-
         progressBarContainer = (FrameLayout) findViewById(R.id.progressbarContainer);
         setupNoDataView();
         setupListView(cohortId);
-
 
         searchServerBtn = (Button) findViewById(R.id.search_server_btn);
         searchServerBtn.setOnClickListener(new View.OnClickListener() {
