@@ -11,19 +11,19 @@ import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.context.ContextFactory;
 import com.muzima.domain.Credentials;
 import com.muzima.search.api.util.StringUtil;
-import com.muzima.service.CohortPrefixPreferenceService;
-import com.muzima.service.ConceptPreferenceService;
-import com.muzima.service.CredentialsPreferenceService;
-import com.muzima.service.WizardFinishPreferenceService;
+import com.muzima.service.*;
 import com.muzima.tasks.ValidateURLTask;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.login.LoginActivity;
 
 import java.io.File;
+
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
 public class SettingsActivity extends SherlockPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -37,6 +37,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
 
     private ProgressDialog progressDialog;
     private String newURL;
+    private MuzimaSyncService muzimaSyncService;
 
 
     @Override
@@ -76,6 +77,8 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
 
         // Show the Up button in the action bar.
         setupActionBar();
+
+        muzimaSyncService = ((MuzimaApplication) getApplication()).getMuzimaSyncService();
     }
 
     /**
@@ -106,7 +109,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
 
     public void validationURLResult(boolean result) {
         if (result) {
-            new ResetDataTask(this).execute();
+            new SyncFormDataTask(this).execute();
         } else {
             progressDialog.dismiss();
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -120,6 +123,27 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         }
     }
 
+    public void SyncedFormData(boolean result){
+        if(result){
+            new ResetDataTask(this).execute();
+        } else{
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder
+                    .setCancelable(true)
+                    .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                    .setTitle("Failure")
+                    .setMessage("Failed to Sync Form data to the current server. Do you still want to continue?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            new ResetDataTask(SettingsActivity.this).execute();
+                        }
+                    })
+            .setNegativeButton("No", null);
+            builder.create().show();
+        }
+    }
+
     private Dialog.OnClickListener positiveClickListener() {
         return new Dialog.OnClickListener() {
             @Override
@@ -129,7 +153,6 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
 
         };
     }
-
 
     private void changeServerURL(DialogInterface dialog) {
         dialog.dismiss();
@@ -230,7 +253,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         finish();
     }
 
-    private class ResetDataTask extends AsyncTask<String, Void, Void> {
+    public class ResetDataTask extends AsyncTask<String, Void, Void> {
         private SettingsActivity settingsActivity;
 
         public ResetDataTask(SettingsActivity settingsActivity) {
@@ -247,7 +270,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = new ProgressDialog(settingsActivity);
-            progressDialog.setMessage("Step 2: Resetting Data");
+            progressDialog.setMessage("Step 3: Resetting Data");
             progressDialog.show();
         }
 
@@ -256,6 +279,36 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
             progressDialog.dismiss();
             super.onPostExecute(v);
             launchLoginActivity(true);
+        }
+    }
+
+    private class SyncFormDataTask extends AsyncTask<String, Void, Boolean>{
+        private SettingsActivity settingsActivity;
+
+        public SyncFormDataTask(SettingsActivity settingsActivity) {
+            this.settingsActivity = settingsActivity;
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            int[] result = muzimaSyncService.uploadAllCompletedForms();
+            return result[0] == SUCCESS;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(settingsActivity);
+            progressDialog.setMessage("Step 2: Synchronising Local Data");
+
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean r) {
+            super.onPostExecute(r);
+            progressDialog.dismiss();
+            settingsActivity.SyncedFormData(r);
         }
     }
 }
