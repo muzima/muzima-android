@@ -101,7 +101,13 @@ function JData(data){
 				}
 			}
 		}
-		return (new XMLSerializer()).serializeToString($instance.find('instance>*:first')[0]);
+        try {
+            var elementLookUp = $instance.find('instance>*:first')[0];
+            var serializeToString = (new XMLSerializer()).serializeToString(elementLookUp);
+        } catch (err) {
+            console.log(err);
+        }
+        return  serializeToString;
 	};
 
 	/**
