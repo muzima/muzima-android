@@ -2,28 +2,20 @@ package com.muzima.view.preferences;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
-import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.api.context.ContextFactory;
-import com.muzima.domain.Credentials;
 import com.muzima.search.api.util.StringUtil;
-import com.muzima.service.*;
 import com.muzima.tasks.ValidateURLTask;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.login.LoginActivity;
-
-import java.io.File;
-
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+import com.muzima.view.preferences.settings.ResetDataTask;
+import com.muzima.view.preferences.settings.SyncFormDataTask;
 
 public class SettingsActivity extends SherlockPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -35,9 +27,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
     private EditTextPreference usernamePreference;
     private EditTextPreference passwordPreference;
 
-    private ProgressDialog progressDialog;
     private String newURL;
-    private MuzimaSyncService muzimaSyncService;
 
 
     @Override
@@ -77,8 +67,6 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
 
         // Show the Up button in the action bar.
         setupActionBar();
-
-        muzimaSyncService = ((MuzimaApplication) getApplication()).getMuzimaSyncService();
     }
 
     /**
@@ -111,7 +99,6 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         if (result) {
             new SyncFormDataTask(this).execute();
         } else {
-            progressDialog.dismiss();
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder
                     .setCancelable(true)
@@ -125,7 +112,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
 
     public void SyncedFormData(boolean result){
         if(result){
-            new ResetDataTask(this).execute();
+            new ResetDataTask(this, newURL).execute();
         } else{
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder
@@ -136,7 +123,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            new ResetDataTask(SettingsActivity.this).execute();
+                            new ResetDataTask(SettingsActivity.this, newURL).execute();
                         }
                     })
             .setNegativeButton("No", null);
@@ -211,104 +198,10 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         return super.onOptionsItemSelected(item);
     }
 
-
-    private void resetData() {
-        clearApplicationData();
-        SettingsActivity context = SettingsActivity.this;
-        new WizardFinishPreferenceService(context).resetWizard();
-        new CredentialsPreferenceService(context).saveCredentials(new Credentials(newURL, null, null));
-        new ConceptPreferenceService(context).clearConcepts();
-        new CohortPrefixPreferenceService(context).clearPrefixes();
-    }
-
-    private void clearApplicationData() {
-        try {
-            File dir = new File(ContextFactory.APP_DIR);
-            if (dir.isDirectory()) {
-                deleteDir(dir);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to clear the application data", e);
-        }
-    }
-
-
-    private static boolean deleteDir(File dir) {
-        if (dir != null && dir.isDirectory()) {
-            String[] children = dir.list();
-            for (String child : children) {
-                boolean success = deleteDir(new File(dir, child));
-                if (!success) {
-                    return false;
-                }
-            }
-        }
-        return dir.delete();
-    }
-
-    protected void launchLoginActivity(boolean isFirstLaunch) {
+    public void launchLoginActivity(boolean isFirstLaunch) {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.putExtra(LoginActivity.isFirstLaunch, isFirstLaunch);
         startActivity(intent);
         finish();
-    }
-
-    public class ResetDataTask extends AsyncTask<String, Void, Void> {
-        private SettingsActivity settingsActivity;
-
-        public ResetDataTask(SettingsActivity settingsActivity) {
-            this.settingsActivity = settingsActivity;
-        }
-
-        @Override
-        protected Void doInBackground(String... params) {
-            settingsActivity.resetData();
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(settingsActivity);
-            progressDialog.setMessage("Step 3: Resetting Data");
-            progressDialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(Void v) {
-            progressDialog.dismiss();
-            super.onPostExecute(v);
-            launchLoginActivity(true);
-        }
-    }
-
-    private class SyncFormDataTask extends AsyncTask<String, Void, Boolean>{
-        private SettingsActivity settingsActivity;
-
-        public SyncFormDataTask(SettingsActivity settingsActivity) {
-            this.settingsActivity = settingsActivity;
-        }
-
-        @Override
-        protected Boolean doInBackground(String... params) {
-            int[] result = muzimaSyncService.uploadAllCompletedForms();
-            return result[0] == SUCCESS;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(settingsActivity);
-            progressDialog.setMessage("Step 2: Synchronising Local Data");
-
-            progressDialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(Boolean r) {
-            super.onPostExecute(r);
-            progressDialog.dismiss();
-            settingsActivity.SyncedFormData(r);
-        }
     }
 }

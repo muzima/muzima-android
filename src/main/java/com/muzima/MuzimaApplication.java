@@ -15,10 +15,7 @@ import com.muzima.util.Constants;
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.security.Security;
 
 @ReportsCrashes(formKey = "ACRA_FORM_KEY")
@@ -39,6 +36,30 @@ public class MuzimaApplication extends Application{
     }
 
     private ConceptPreferenceService conceptPreferenceService;
+
+    public void clearApplicationData() {
+        try {
+            File dir = new File(ContextFactory.APP_DIR);
+            if (dir.isDirectory()) {
+                deleteDir(dir);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to clear the application data", e);
+        }
+    }
+
+    private static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (String child : children) {
+                boolean success = deleteDir(new File(dir, child));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+        return dir.delete();
+    }
 
 
     @Override
