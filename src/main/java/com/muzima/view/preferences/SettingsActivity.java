@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
@@ -105,10 +106,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
 
     public void validationURLResult(boolean result) {
         if (result) {
-            progressDialog.setMessage("Step 2: Resetting Data");
-            resetData();
-            progressDialog.dismiss();
-            launchLoginActivity(true);
+            new ResetDataTask(this).execute();
         } else {
             progressDialog.dismiss();
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -135,9 +133,6 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
 
     private void changeServerURL(DialogInterface dialog) {
         dialog.dismiss();
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Step 1: Validating URL");
-        progressDialog.show();
         if (NetworkUtils.isConnectedToNetwork(this)) {
             new ValidateURLTask(this).execute(newURL);
         }
@@ -235,4 +230,32 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         finish();
     }
 
+    private class ResetDataTask extends AsyncTask<String, Void, Void> {
+        private SettingsActivity settingsActivity;
+
+        public ResetDataTask(SettingsActivity settingsActivity) {
+            this.settingsActivity = settingsActivity;
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+            settingsActivity.resetData();
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(settingsActivity);
+            progressDialog.setMessage("Step 2: Resetting Data");
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void v) {
+            progressDialog.dismiss();
+            super.onPostExecute(v);
+            launchLoginActivity(true);
+        }
+    }
 }
