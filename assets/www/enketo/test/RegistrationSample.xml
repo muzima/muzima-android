@@ -94,8 +94,6 @@
         </xf:model>
     </xf:head>
     <xf:body>
-        <group>
-            <label>Registration Form</label>
             <!-- Demographics -->
             <group appearance="field-list" bind="patient">
                 <label>Demographics</label>
@@ -196,6 +194,5 @@
             <input bind="encounter.encounter_datetime">
                 <label>Encounter Date</label>
             </input>
-        </group>
     </xf:body>
 </xf:xforms>
