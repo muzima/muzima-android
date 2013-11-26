@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
 import com.muzima.search.api.util.StringUtil;
@@ -52,5 +53,10 @@ public class DefaultMenuDropDownHelper {
             default:
                 return false;
         }
+    }
+
+    public void removeSettingsMenu(Menu menu) {
+        MenuItem menuSettings = menu.findItem(R.id.action_settings);
+        menuSettings.setVisible(false);
     }
 }

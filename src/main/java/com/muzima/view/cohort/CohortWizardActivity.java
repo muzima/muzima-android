@@ -94,7 +94,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        disableSettingsMenu(menu);
+        removeSettingsMenu(menu);
         return true;
     }
 

@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import com.actionbarsherlock.view.Menu;
 import com.muzima.R;
 import com.muzima.utils.barcode.IntentIntegrator;
+import com.muzima.view.cohort.CustomConceptWizardActivity;
 
 public class InstallBarCodeWizardActivity extends BaseActivity {
 
@@ -16,6 +18,26 @@ public class InstallBarCodeWizardActivity extends BaseActivity {
         setContentView(R.layout.activity_install_barcode_wizard);
         attachCheckScannerAction();
         attachNextActivityListener();
+        Button previousButton = (Button) findViewById(R.id.previous);
+        previousButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToPreviousActivity();
+            }
+        });
+    }
+
+    private void navigateToPreviousActivity() {
+        Intent intent = new Intent(getApplicationContext(), CustomConceptWizardActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        removeSettingsMenu(menu);
+        return true;
     }
 
     private void attachCheckScannerAction() {

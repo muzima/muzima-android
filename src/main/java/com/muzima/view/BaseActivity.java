@@ -41,4 +41,8 @@ public class BaseActivity extends SherlockActivity {
             return super.onOptionsItemSelected(item);
         }
     }
+
+    protected void removeSettingsMenu(Menu menu) {
+        dropDownHelper.removeSettingsMenu(menu);
+    }
 }

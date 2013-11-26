@@ -82,7 +82,7 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        disableSettingsMenu(menu);
+        removeSettingsMenu(menu);
         return true;
     }
 

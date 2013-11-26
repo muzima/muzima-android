@@ -5,7 +5,6 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.muzima.R;
 import com.muzima.domain.Credentials;
 
 public class BaseFragmentActivity extends SherlockFragmentActivity {
@@ -47,8 +46,7 @@ public class BaseFragmentActivity extends SherlockFragmentActivity {
         }
     }
 
-    protected void disableSettingsMenu(Menu menu) {
-        MenuItem menuSettings = menu.findItem(R.id.action_settings);
-        menuSettings.setEnabled(false);
+    protected void removeSettingsMenu(Menu menu) {
+        dropDownHelper.removeSettingsMenu(menu);
     }
 }
