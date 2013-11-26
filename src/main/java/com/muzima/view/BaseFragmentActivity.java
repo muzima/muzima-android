@@ -14,12 +14,16 @@ public class BaseFragmentActivity extends SherlockFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setActionBar();
+        dropDownHelper = new DefaultMenuDropDownHelper(this);
+    }
+
+    private void setActionBar() {
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setDisplayShowTitleEnabled(true);
         }
-        dropDownHelper = new DefaultMenuDropDownHelper(this);
     }
 
     @Override
@@ -39,11 +43,7 @@ public class BaseFragmentActivity extends SherlockFragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         boolean result = dropDownHelper.onOptionsItemSelected(item);
-        if(result){
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
+        return result || super.onOptionsItemSelected(item);
     }
 
     protected void removeSettingsMenu(Menu menu) {

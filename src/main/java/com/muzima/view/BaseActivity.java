@@ -35,11 +35,7 @@ public class BaseActivity extends SherlockActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         boolean result = dropDownHelper.onOptionsItemSelected(item);
-        if(result){
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
+        return result || super.onOptionsItemSelected(item);
     }
 
     protected void removeSettingsMenu(Menu menu) {
