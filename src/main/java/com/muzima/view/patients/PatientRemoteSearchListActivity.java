@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.*;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
@@ -18,7 +17,6 @@ import com.muzima.api.model.Patient;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
-import com.muzima.view.preferences.SettingsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,21 +107,6 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         listView.setVisibility(VISIBLE);
         progressBarContainer.setVisibility(INVISIBLE);
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
-                return true;
-            case android.R.id.home:
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {

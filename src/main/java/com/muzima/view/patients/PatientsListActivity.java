@@ -15,7 +15,6 @@ import com.muzima.api.model.Patient;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
-import com.muzima.view.preferences.SettingsActivity;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
@@ -113,9 +112,6 @@ public class PatientsListActivity extends BaseActivity implements AdapterView.On
         switch (item.getItemId()) {
             case R.id.menu_client_add:
                 startActivity(new Intent(this, RegistrationFormsActivity.class));
-                return true;
-            case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

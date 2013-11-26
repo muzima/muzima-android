@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsPagerAdapter;
@@ -65,16 +64,5 @@ public class ObservationsActivity extends BroadcastListenerActivity {
         searchView.setQueryHint("Search observations");
         searchView.setOnQueryTextListener(cohortPagerAdapter);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 }
