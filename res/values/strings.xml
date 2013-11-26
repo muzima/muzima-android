@@ -51,7 +51,9 @@
         clients
     </string>
 
-    <string name="no_clients_matched_locally">No clients matched your search locally. Enter at least 3 characters for remote search.</string>
+    <string name="no_clients_matched_locally">No clients matched your search locally. Enter at least 3 characters for
+        remote search.
+    </string>
     <string name="no_clients_matched_tip_locally">Your search includes client id, given name, middle name and family
         name and searched only in the device
     </string>
@@ -183,6 +185,8 @@
     <string name="install_barcode_scanner_btn_text">Check Barcode Scanner</string>
     <string name="scanner_app_exists_text">Barcode Scanner application is already been installed !!</string>
     <string name="caution">Caution!</string>
+    <string name="session_timed_out_header">Alert!</string>
+    <string name="session_timed_out_msg">Your session had been timed out. Please log in again to proceed.</string>
     <string name="switch_server_message">Switching Server: This will clear all mUzima data on your
         device. Are you sure you want to change this setting?
     </string>

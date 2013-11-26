@@ -12,14 +12,17 @@ import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.ConceptPreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.util.Constants;
+import com.muzima.view.preferences.MuzimaTimer;
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
 
 import java.io.*;
 import java.security.Security;
 
+import static com.muzima.view.preferences.MuzimaTimer.getTimer;
+
 @ReportsCrashes(formKey = "ACRA_FORM_KEY")
-public class MuzimaApplication extends Application{
+public class MuzimaApplication extends Application {
     private Context muzimaContext;
     private FormController formController;
     private CohortController cohortController;
@@ -29,6 +32,7 @@ public class MuzimaApplication extends Application{
     private EncounterController encounterController;
     private MuzimaSyncService muzimaSyncService;
     private CohortPrefixPreferenceService prefixesPreferenceService;
+    private MuzimaTimer muzimaTimer;
 
     static {
         // see http://rtyley.github.io/spongycastle/
@@ -68,6 +72,7 @@ public class MuzimaApplication extends Application{
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.FROYO) {
             System.setProperty("http.keepAlive", "false");
         }
+        muzimaTimer = getTimer(this);
         super.onCreate();
         try {
             ContextFactory.setProperty(Constants.RESOURCE_CONFIGURATION_STRING, getConfigurationString());
@@ -79,7 +84,7 @@ public class MuzimaApplication extends Application{
         }
     }
 
-    public Context getMuzimaContext(){
+    public Context getMuzimaContext() {
         return muzimaContext;
     }
 
@@ -94,8 +99,8 @@ public class MuzimaApplication extends Application{
         return conceptController;
     }
 
-    public FormController getFormController(){
-        if(formController == null){
+    public FormController getFormController() {
+        if (formController == null) {
             try {
                 formController = new FormController(muzimaContext.getFormService(), muzimaContext.getPatientService());
             } catch (IOException e) {
@@ -105,8 +110,8 @@ public class MuzimaApplication extends Application{
         return formController;
     }
 
-    public CohortController getCohortController(){
-        if(cohortController == null){
+    public CohortController getCohortController() {
+        if (cohortController == null) {
             try {
                 cohortController = new CohortController(muzimaContext.getCohortService());
             } catch (IOException e) {
@@ -117,9 +122,9 @@ public class MuzimaApplication extends Application{
     }
 
     public PatientController getPatientController() {
-        if(patientConroller == null){
+        if (patientConroller == null) {
             try {
-                patientConroller = new PatientController(muzimaContext.getPatientService(),muzimaContext.getCohortService() );
+                patientConroller = new PatientController(muzimaContext.getPatientService(), muzimaContext.getCohortService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -128,7 +133,7 @@ public class MuzimaApplication extends Application{
     }
 
     public ObservationController getObservationController() {
-        if(observationController == null){
+        if (observationController == null) {
             try {
                 observationController = new ObservationController(muzimaContext.getObservationService(),
                         muzimaContext.getService(ConceptService.class),
@@ -141,7 +146,7 @@ public class MuzimaApplication extends Application{
     }
 
     public EncounterController getEncounterController() {
-        if(encounterController == null){
+        if (encounterController == null) {
             try {
                 encounterController = new EncounterController(muzimaContext.getService(EncounterService.class));
             } catch (IOException e) {
@@ -152,7 +157,7 @@ public class MuzimaApplication extends Application{
     }
 
     public MuzimaSyncService getMuzimaSyncService() {
-        if(muzimaSyncService == null){
+        if (muzimaSyncService == null) {
             muzimaSyncService = new MuzimaSyncService(this);
         }
         return muzimaSyncService;
@@ -172,7 +177,7 @@ public class MuzimaApplication extends Application{
     }
 
     public CohortPrefixPreferenceService getCohortPrefixesPreferenceService() {
-        if(prefixesPreferenceService == null) {
+        if (prefixesPreferenceService == null) {
             prefixesPreferenceService = new CohortPrefixPreferenceService(this);
         }
         return prefixesPreferenceService;
@@ -183,5 +188,9 @@ public class MuzimaApplication extends Application{
             conceptPreferenceService = new ConceptPreferenceService(this);
         }
         return conceptPreferenceService;
+    }
+
+    public void restartTimer() {
+        muzimaTimer.restart();
     }
 }

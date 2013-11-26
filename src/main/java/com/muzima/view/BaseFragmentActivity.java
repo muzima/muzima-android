@@ -1,10 +1,12 @@
 package com.muzima.view;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.muzima.MuzimaApplication;
 import com.muzima.domain.Credentials;
 
 public class BaseFragmentActivity extends SherlockFragmentActivity {
@@ -24,6 +26,12 @@ public class BaseFragmentActivity extends SherlockFragmentActivity {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setDisplayShowTitleEnabled(true);
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        ((MuzimaApplication) getApplication()).restartTimer();
+        return super.dispatchTouchEvent(event);
     }
 
     @Override

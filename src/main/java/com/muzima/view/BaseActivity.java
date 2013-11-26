@@ -1,10 +1,12 @@
 package com.muzima.view;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 
 public class BaseActivity extends SherlockActivity {
@@ -12,18 +14,24 @@ public class BaseActivity extends SherlockActivity {
     private DefaultMenuDropDownHelper dropDownHelper;
 
     @Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setupActionBar();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setupActionBar();
         dropDownHelper = new DefaultMenuDropDownHelper(this);
     }
 
-	private void setupActionBar() {
+    private void setupActionBar() {
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setDisplayShowTitleEnabled(true);
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        ((MuzimaApplication) getApplication()).restartTimer();
+        return super.dispatchTouchEvent(event);
     }
 
     @Override

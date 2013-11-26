@@ -8,7 +8,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
+import android.view.MotionEvent;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.tasks.ValidateURLTask;
@@ -29,6 +31,12 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
 
     private String newURL;
 
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        ((MuzimaApplication) getApplication()).restartTimer();
+        return super.dispatchTouchEvent(event);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

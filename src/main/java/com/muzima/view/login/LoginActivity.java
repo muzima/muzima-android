@@ -1,5 +1,7 @@
 package com.muzima.view.login;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,15 +27,16 @@ import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
-import com.muzima.view.BaseActivity;
 import com.muzima.view.MainActivity;
 import com.muzima.view.cohort.CohortWizardActivity;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
 
-public class LoginActivity extends BaseActivity {
+//This class shouldn't extend BaseActivity. Since it is independent of the application's context
+public class LoginActivity extends Activity {
     private static final String TAG = "LoginActivity";
     public static final String isFirstLaunch = "isFirstLaunch";
+    public static final String sessionTimeOut = "SessionTimeOut";
     private EditText serverUrlText;
     private EditText usernameText;
     private EditText passwordText;
@@ -54,6 +57,7 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        showSessionTimeOutPopUpIfNeeded();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             honeycombOrGreater = true;
         }
@@ -73,6 +77,18 @@ public class LoginActivity extends BaseActivity {
         passwordText.setTypeface(Typeface.DEFAULT);
     }
 
+    private void showSessionTimeOutPopUpIfNeeded() {
+        if (getIntent().getBooleanExtra(LoginActivity.sessionTimeOut, false)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder
+                    .setCancelable(true)
+                    .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                    .setTitle(getResources().getString(R.string.session_timed_out_header))
+                    .setMessage(getResources().getString(R.string.session_timed_out_msg))
+                    .setPositiveButton("Ok", null).show();
+        }
+    }
+
     private void removeServerUrlAsInput() {
         serverUrlText.setVisibility(View.GONE);
         findViewById(R.id.server_url_divider).setVisibility(View.GONE);
@@ -82,13 +98,13 @@ public class LoginActivity extends BaseActivity {
         Credentials credentials;
         credentials = new Credentials(this);
         String serverUrl = credentials.getServerUrl();
-        if(!StringUtils.isEmpty(serverUrl)){
+        if (!StringUtils.isEmpty(serverUrl)) {
             serverUrlText.setText(serverUrl);
         }
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
         setupStatusView();
@@ -205,7 +221,7 @@ public class LoginActivity extends BaseActivity {
         protected void onPostExecute(Result result) {
             if (result.status == AUTHENTICATION_SUCCESS) {
                 new CredentialsPreferenceService(getApplicationContext()).saveCredentials(result.credentials);
-
+                ((MuzimaApplication) getApplication()).restartTimer();
                 startNextActivity();
             } else {
                 Toast.makeText(getApplicationContext(), getErrorText(result), Toast.LENGTH_SHORT).show();
