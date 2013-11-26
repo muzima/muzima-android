@@ -141,6 +141,15 @@ public class PatientController {
         }
     }
 
+    public void updatePatient(Patient patient) throws PatientSaveException {
+        try {
+            patientService.updatePatient(patient);
+        } catch (IOException e) {
+            Log.e(TAG, "Error while updating the patient : " + patient.getUuid());
+            throw new PatientSaveException(e);
+        }
+    }
+
     public void savePatients(List<Patient> patients) throws PatientSaveException {
         try {
             patientService.savePatients(patients);

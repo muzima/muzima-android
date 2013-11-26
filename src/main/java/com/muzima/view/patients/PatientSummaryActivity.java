@@ -1,5 +1,7 @@
 package com.muzima.view.patients;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,8 +14,10 @@ import com.actionbarsherlock.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.PatientIdentifier;
 import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
+import com.muzima.utils.Constants;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.forms.PatientFormsActivity;
 
@@ -39,9 +43,35 @@ public class PatientSummaryActivity extends BaseActivity {
 
         try {
             setupPatientMetadata();
+            notifyOfIdChange();
         } catch (PatientController.PatientLoadException e) {
             Toast.makeText(this, "An error occurred while fetching patient", Toast.LENGTH_SHORT).show();
             finish();
+        }
+    }
+
+    private void notifyOfIdChange() {
+        PatientIdentifier localIdentifier = patient.getIdentifier(Constants.LOCAL_PATIENT);
+        if(localIdentifier==null){
+            return;
+        }
+        if(!patient.getIdentifier().equals(localIdentifier)){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(true)
+                    .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                    .setTitle("Notice")
+                    .setMessage("Client Identifier changed on server. The new identifier will be used going forward.")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            patient.removeIdentifier(Constants.LOCAL_PATIENT);
+                            try {
+                                ((MuzimaApplication) getApplication()).getPatientController().updatePatient(patient);
+                            } catch (PatientController.PatientSaveException e) {
+                                Log.e(TAG, "Error occurred while saving patient which has local identifier removed!");
+                            }
+                        }
+                    }).create().show();
         }
     }
 
