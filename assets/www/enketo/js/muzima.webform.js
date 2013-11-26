@@ -77,7 +77,7 @@ $(document).ready(function () {
     var $barcodeInput = $('input[type="barcode"]');
 
     $barcodeInput.after("<input type='button' class='barcode_img'>");
-    $barcodeInput.click(function () {
+    $('.barcode_img').click(function () {
         //barCodeComponent is defined in FormWebViewActivity.java
         barCodeComponent.startBarCodeIntent($barcodeInput.attr('name'));
     });

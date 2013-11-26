@@ -92,14 +92,6 @@
             <!-- Demographics -->
             <group appearance="field-list" bind="patient">
                 <label>Demographics</label>
-                <input bind="amrs_id_scan">
-                    <label>AMRS ID SCAN</label>
-                    <hint>The scanned barcode AMRS ID.</hint>
-                </input>
-                <input bind="amrs_id_manual">
-                    <label>AMRS ID</label>
-                    <hint>The manually entered AMRS ID.</hint>
-                </input>
                 <input bind="patient.family_name">
                     <label>Family Name</label>
                 </input>
@@ -123,7 +115,14 @@
                 <input bind="mothers_name">
                     <label>Enter Mothers Name</label>
                 </input>
-
+                <input bind="amrs_id_scan">
+                    <label>AMRS ID SCAN</label>
+                    <hint>The scanned barcode AMRS ID.</hint>
+                </input>
+                <input bind="amrs_id_manual">
+                    <label>Client’s Existing AMRS Identifier</label>
+                    <hint>The manually entered AMRS ID.</hint>
+                </input>
             </group>
             <group appearance="field-list">
                 <input bind="amrs_id_manual_confirm">
