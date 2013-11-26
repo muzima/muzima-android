@@ -16,8 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.internal.nineoldandroids.animation.ValueAnimator;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -27,15 +25,13 @@ import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
+import com.muzima.view.BaseActivity;
 import com.muzima.view.MainActivity;
 import com.muzima.view.cohort.CohortWizardActivity;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.CONNECTION_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.INVALID_CREDENTIALS_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.MALFORMED_URL_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
 
-public class LoginActivity extends SherlockActivity {
+public class LoginActivity extends BaseActivity {
     private static final String TAG = "LoginActivity";
     public static final String isFirstLaunch = "isFirstLaunch";
     private EditText serverUrlText;

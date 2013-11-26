@@ -48,18 +48,7 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.DashboardActivity"/>
         </activity>
-        <activity
-                android:name="com.muzima.view.SearchResultsActivity"
-                android:label="@string/title_activity_search_results"
-                android:parentActivityName="com.muzima.view.ClientListActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH"/>
-            </intent-filter>
 
-            <meta-data
-                    android:name="android.app.searchable"
-                    android:resource="@xml/searchable"/>
-        </activity>
         <activity
                 android:name=".view.preferences.SettingsActivity"
                 android:theme="@style/PreferencesTheme"
