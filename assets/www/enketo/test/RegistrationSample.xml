@@ -84,12 +84,7 @@
             <bind id="encounter.encounter_datetime" nodeset="/form/encounter/encounter.encounter_datetime" type="date"
                   constraint=". &lt;= today()" jr:constraintMsg="Encounter date cannot be in the future" required="true()"/>
             <bind id="encounter.location_id" nodeset="/form/encounter/encounter.location_id" type="string" required="true()"/>
-            <bind id="provider_id_select" nodeset="/form/encounter/tmp/provider_id_select" type="select1"/>
-            <bind id="provider_id_text" nodeset="/form/encounter/tmp/provider_id_text" type="string" required="true()"
-                  relevant="../provider_id_select = ''" constraint="regex(., '^\w+[-]?\d{1}') and (checkdigit(.))"
-                  jr:constraintMsg="Invalid ID format and/or CheckDigit. Please Re-enter your ID."/>
-            <bind id="encounter.provider_id" nodeset="/form/encounter/encounter.provider_id" type="string"
-                  calculate="if(../tmp/provider_id_select != '',../tmp/provider_id_select,../tmp/provider_id_text)"/>
+            <bind id="encounter.provider_id" nodeset="/form/encounter/encounter.provider_id" type="select1" required="true()"/>
             <bind id="mothers_name" nodeset="/form/patient/person_attribute4" type="string"/>
         </xf:model>
     </xf:head>
@@ -181,16 +176,13 @@
                     <value>12</value>
                 </item>
             </select1>
-            <select1 appearance="autocomplete" bind="provider_id_select">
+            <select1 appearance="autocomplete" bind="encounter.provider_id">
                 <label>Provider ID</label>
                 <item>
                     <label>Super User</label>
                     <value>1</value>
                 </item>
             </select1>
-            <input bind="provider_id_text">
-                <label>Enter provider's system-id</label>
-            </input>
             <input bind="encounter.encounter_datetime">
                 <label>Encounter Date</label>
             </input>
