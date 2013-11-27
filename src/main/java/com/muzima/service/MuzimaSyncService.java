@@ -342,6 +342,7 @@ public class MuzimaSyncService {
         for (Patient localPatient : allLocalPatients) {
             Patient patientFromServer = patientController.consolidateTemporaryPatient(localPatient);
             if (patientFromServer != null) {
+                checkChangeInPatientId(localPatient, patientFromServer);
                 patientFromServer.addIdentifier(localPatient.getIdentifier(LOCAL_PATIENT));
                 patientController.deletePatient(localPatient);
                 try {
@@ -349,6 +350,19 @@ public class MuzimaSyncService {
                 } catch (PatientController.PatientSaveException e) {
                     Log.e(TAG, "Error while saving patients" + e);
                 }
+            }
+        }
+    }
+
+    private void checkChangeInPatientId(Patient localPatient, Patient patientFromServer) {
+        String patientIdentifier = patientFromServer.getIdentifier();
+        String localPatientIdentifier = localPatient.getIdentifier();
+        if(!patientIdentifier.equals(localPatientIdentifier)){
+            JSONInputOutputToDisk jsonInputOutputToDisk = new JSONInputOutputToDisk(muzimaApplication);
+            try {
+                jsonInputOutputToDisk.add(patientIdentifier);
+            } catch (IOException e) {
+                Log.e(TAG, "Exception thrown when writing to phone disk" + e);
             }
         }
     }

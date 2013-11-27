@@ -14,12 +14,15 @@ import com.actionbarsherlock.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Patient;
-import com.muzima.api.model.PatientIdentifier;
 import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
+import com.muzima.service.JSONInputOutputToDisk;
 import com.muzima.utils.Constants;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.forms.PatientFormsActivity;
+
+import java.io.IOException;
+import java.util.List;
 
 import static com.muzima.utils.DateUtils.getFormattedDate;
 
@@ -43,7 +46,7 @@ public class PatientSummaryActivity extends BaseActivity {
 
         try {
             setupPatientMetadata();
-//            notifyOfIdChange();
+            notifyOfIdChange();
         } catch (PatientController.PatientLoadException e) {
             Toast.makeText(this, "An error occurred while fetching patient", Toast.LENGTH_SHORT).show();
             finish();
@@ -51,11 +54,19 @@ public class PatientSummaryActivity extends BaseActivity {
     }
 
     private void notifyOfIdChange() {
-        PatientIdentifier localIdentifier = patient.getIdentifier(Constants.LOCAL_PATIENT);
-        if(localIdentifier==null){
+        final JSONInputOutputToDisk jsonInputOutputToDisk = new JSONInputOutputToDisk(getApplication());
+        List list = null;
+        try {
+            list = jsonInputOutputToDisk.readList();
+        } catch (IOException e) {
+            Log.e(TAG, "Exception thrown when reading to phone disk" + e);
+        }
+        if(list.size()==0){
             return;
         }
-        if(!patient.getIdentifier().equals(localIdentifier)){
+
+        final String patientIdentifier = patient.getIdentifier();
+        if(list.contains(patientIdentifier)){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(true)
                     .setIcon(getResources().getDrawable(R.drawable.ic_warning))
@@ -66,8 +77,8 @@ public class PatientSummaryActivity extends BaseActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             patient.removeIdentifier(Constants.LOCAL_PATIENT);
                             try {
-                                ((MuzimaApplication) getApplication()).getPatientController().updatePatient(patient);
-                            } catch (PatientController.PatientSaveException e) {
+                                jsonInputOutputToDisk.remove(patientIdentifier);
+                            } catch (IOException e) {
                                 Log.e(TAG, "Error occurred while saving patient which has local identifier removed!");
                             }
                         }
