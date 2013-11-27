@@ -979,13 +979,13 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     background: white;
     height: 18px;
     line-height: 18px;
-    padding: 12px;
-    margin: 2px;
+    padding: 16px 23px;
+    margin-right: 14px !important;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     background-image: url("../images/barcode_icon.png");
     background-repeat: no-repeat;
-    background-position: right;
+    background-position: center;
 }
 
 input, textarea, .uneditable-input {

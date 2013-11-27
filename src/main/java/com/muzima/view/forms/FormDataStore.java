@@ -26,6 +26,7 @@ public class FormDataStore {
 
     @JavascriptInterface
     public void save(String data, String status) {
+        Log.d(TAG, data);
         Patient newPatient = null;
         if(isRegistrationComplete(status)){
             newPatient = formController.createNewPatient(data);
