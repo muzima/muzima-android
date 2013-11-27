@@ -2,12 +2,15 @@
 package com.muzima;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
 import com.muzima.controller.*;
+import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.ConceptPreferenceService;
 import com.muzima.service.MuzimaSyncService;
@@ -163,19 +166,6 @@ public class MuzimaApplication extends Application {
         return muzimaSyncService;
     }
 
-    private String getConfigurationString() throws IOException {
-        InputStream inputStream = getResources().openRawResource(R.raw.configuration);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-
-        String line;
-        StringBuilder builder = new StringBuilder();
-        while ((line = reader.readLine()) != null) {
-            builder.append(line);
-        }
-        reader.close();
-        return builder.toString();
-    }
-
     public CohortPrefixPreferenceService getCohortPrefixesPreferenceService() {
         if (prefixesPreferenceService == null) {
             prefixesPreferenceService = new CohortPrefixPreferenceService(this);
@@ -193,4 +183,24 @@ public class MuzimaApplication extends Application {
     public void restartTimer() {
         muzimaTimer.restart();
     }
+
+    public void logOut() {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String passwordKey = getResources().getString(R.string.preference_password);
+        settings.edit().putString(passwordKey, StringUtil.EMPTY).commit();
+    }
+
+    private String getConfigurationString() throws IOException {
+        InputStream inputStream = getResources().openRawResource(R.raw.configuration);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+        String line;
+        StringBuilder builder = new StringBuilder();
+        while ((line = reader.readLine()) != null) {
+            builder.append(line);
+        }
+        reader.close();
+        return builder.toString();
+    }
+
 }

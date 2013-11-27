@@ -37,6 +37,7 @@ public class MainActivity extends BroadcastListenerActivity {
         setupActionbar();
     }
 
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         return super.onKeyDown(keyCode, event);
@@ -63,6 +64,7 @@ public class MainActivity extends BroadcastListenerActivity {
 
     @Override
     protected void onDestroy() {
+        ((MuzimaApplication) getApplication()).logOut();
         super.onDestroy();
     }
 

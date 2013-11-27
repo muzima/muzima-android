@@ -1,7 +1,6 @@
 package com.muzima.view;
 
 import android.os.Bundle;
-import android.view.MotionEvent;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -29,9 +28,9 @@ public class BaseFragmentActivity extends SherlockFragmentActivity {
     }
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
+    public void onUserInteraction() {
         ((MuzimaApplication) getApplication()).restartTimer();
-        return super.dispatchTouchEvent(event);
+        super.onUserInteraction();
     }
 
     @Override

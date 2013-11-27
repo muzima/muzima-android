@@ -1,13 +1,8 @@
 package com.muzima.view.preferences;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.CountDownTimer;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import com.muzima.MuzimaApplication;
-import com.muzima.R;
-import com.muzima.search.api.util.StringUtil;
 import com.muzima.view.login.LoginActivity;
 
 public class MuzimaTimer extends CountDownTimer {
@@ -31,13 +26,13 @@ public class MuzimaTimer extends CountDownTimer {
 
     @Override
     public void onTick(long l) {
-        Log.e("MuzimaTimer", "About to timeout ");
     }
 
 
     @Override
     public void onFinish() {
         logOut();
+
     }
 
     public void restart() {
@@ -46,10 +41,7 @@ public class MuzimaTimer extends CountDownTimer {
     }
 
     private void logOut() {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(muzimaApplication);
-        String passwordKey = muzimaApplication.getResources().getString(R.string.preference_password);
-        settings.edit().putString(passwordKey, StringUtil.EMPTY).commit();
-
+        muzimaApplication.logOut();
         launchLoginActivity();
     }
 

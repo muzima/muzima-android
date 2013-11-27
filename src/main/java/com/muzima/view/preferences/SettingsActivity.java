@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
-import android.view.MotionEvent;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -33,9 +32,9 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
 
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
+    public void onUserInteraction() {
         ((MuzimaApplication) getApplication()).restartTimer();
-        return super.dispatchTouchEvent(event);
+        super.onUserInteraction();
     }
 
     @Override
