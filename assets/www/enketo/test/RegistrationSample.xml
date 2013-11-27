@@ -25,9 +25,7 @@
                         <patient.sex openmrs_table="patient" openmrs_attribute="gender"/>
                         <person_attribute4 openmrs_table="" openmrs_attribute=""/>
                         <tmp>
-                            <amrs_id_scan/>
-                            <amrs_id_manual/>
-                            <amrs_id_manual_confirm/>
+                            <amrs_id/>
                             <birthdate_type>birthdate</birthdate_type>
                             <age>0</age>
                             <birth_date_temp/>
@@ -53,13 +51,9 @@
             <bind id="patient.patient_id" nodeset="/form/patient/patient.patient_id" type="int" required="true()"/>
             <bind id="patient_identifier.identifier_type_id" nodeset="/form/patient/patient_identifier.identifier_type_id" calculate="3" type="integer" />
             <!-- UNCOMMENT TO ENTER PATIENT IDENTIFIER -->
-            <bind id="amrs_id_scan" nodeset="/form/patient/tmp/amrs_id_scan" type="barcode"/>
-            <bind id="amrs_id_manual" nodeset="/form/patient/tmp/amrs_id_manual" type="string" required="true()" relevant="../amrs_id_scan = ''"
-                  constraint="regex(., '^\w+[-]?\d{1}')" jr:constraintMsg="Invalid identifier by format. Check your check digit."/>
-            <bind id="amrs_id_manual_confirm" nodeset="/form/patient/tmp/amrs_id_manual_confirm" type="string" required="true()" relevant="../amrs_id_manual != ''"
-                  constraint=". = ../amrs_id_manual" jr:constraintMsg="Entered ID's did not match!"/>
+            <bind id="amrs_id" nodeset="/form/patient/tmp/amrs_id" type="barcode" required="true()"/>
             <bind id="patient.medical_record_number" nodeset="/form/patient/patient.medical_record_number" type="string" readonly="true()"
-                  calculate="../tmp/amrs_id_scan"/>
+                  calculate="../tmp/amrs_id"/>
 
             <!--  Birth Date Calculations -->
             <!-- UNCOMMENTED TO CALCULATE DATE (IF NOT USING mCLINIC OR REGISTERING PATIENTS) -->
@@ -115,17 +109,9 @@
                 <input bind="mothers_name">
                     <label>Enter Mothers Name</label>
                 </input>
-                <input bind="amrs_id_scan">
-                    <label>AMRS ID SCAN</label>
-                    <hint>The scanned barcode AMRS ID.</hint>
-                </input>
-                <input bind="amrs_id_manual">
-                    <label>Client’s Existing AMRS Identifier</label>
-                    <hint>The manually entered AMRS ID.</hint>
-                </input>
-                <input bind="amrs_id_manual_confirm">
-                    <label>AMRS ID (CONFIRM)</label>
-                    <hint>Confirm the manually entered AMRS ID.</hint>
+                <input bind="amrs_id">
+                    <label>AMRS Universal ID Assigned</label>
+                    <hint>The AMRS ID by barcode scanning or client input.</hint>
                 </input>
             </group>
             <group appearance="field-list">
