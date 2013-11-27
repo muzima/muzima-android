@@ -59,7 +59,7 @@
             <bind id="amrs_id_manual_confirm" nodeset="/form/patient/tmp/amrs_id_manual_confirm" type="string" required="true()" relevant="../amrs_id_manual != ''"
                   constraint=". = ../amrs_id_manual" jr:constraintMsg="Entered ID's did not match!"/>
             <bind id="patient.medical_record_number" nodeset="/form/patient/patient.medical_record_number" type="string" readonly="true()"
-                  calculate="if (../tmp/amrs_id_scan != '',../tmp/amrs_id_scan,../tmp/amrs_id_manual)"/>
+                  calculate="../tmp/amrs_id_scan"/>
 
             <!--  Birth Date Calculations -->
             <!-- UNCOMMENTED TO CALCULATE DATE (IF NOT USING mCLINIC OR REGISTERING PATIENTS) -->
@@ -123,12 +123,12 @@
                     <label>Client’s Existing AMRS Identifier</label>
                     <hint>The manually entered AMRS ID.</hint>
                 </input>
-            </group>
-            <group appearance="field-list">
                 <input bind="amrs_id_manual_confirm">
                     <label>AMRS ID (CONFIRM)</label>
                     <hint>Confirm the manually entered AMRS ID.</hint>
                 </input>
+            </group>
+            <group appearance="field-list">
                 <select1 bind="birthdate_type">
                     <label>Will Record Date of Birth...</label>
                     <hint>How will you capture the patients birth-date?</hint>
