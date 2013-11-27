@@ -357,6 +357,9 @@ public class MuzimaSyncService {
     private void checkChangeInPatientId(Patient localPatient, Patient patientFromServer) {
         String patientIdentifier = patientFromServer.getIdentifier();
         String localPatientIdentifier = localPatient.getIdentifier();
+        if(patientFromServer==null || localPatientIdentifier == null){
+            return;
+        }
         if(!patientIdentifier.equals(localPatientIdentifier)){
             JSONInputOutputToDisk jsonInputOutputToDisk = new JSONInputOutputToDisk(muzimaApplication);
             try {
