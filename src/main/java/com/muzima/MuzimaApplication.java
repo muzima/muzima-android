@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
 import com.muzima.api.service.ConceptService;
@@ -178,6 +179,11 @@ public class MuzimaApplication extends Application {
             conceptPreferenceService = new ConceptPreferenceService(this);
         }
         return conceptPreferenceService;
+    }
+
+    public void setTimeOutInMillis(int value) {
+        Log.e("SetTimeOutMillis", String.valueOf(value));
+        muzimaTimer.setTimeOutInMillis(value);
     }
 
     public void restartTimer() {

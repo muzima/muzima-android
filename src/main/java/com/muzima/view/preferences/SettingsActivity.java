@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
+import android.util.Log;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -22,10 +23,12 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
 
     private String serverPreferenceKey;
     private String usernamePreferenceKey;
+    private String timeoutPreferenceKey;
     private String passwordPreferenceKey;
 
     private EditTextPreference serverPreference;
     private EditTextPreference usernamePreference;
+    private EditTextPreference timeoutPreference;
     private EditTextPreference passwordPreference;
 
     private String newURL;
@@ -48,7 +51,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         serverPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(final Preference preference, final Object newValue) {
-                newURL =newValue.toString();
+                newURL = newValue.toString();
                 if (!serverPreference.getText().equalsIgnoreCase(newURL)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
                     builder
@@ -65,6 +68,18 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         usernamePreferenceKey = getResources().getString(R.string.preference_username);
         usernamePreference = (EditTextPreference) getPreferenceScreen().findPreference(usernamePreferenceKey);
         usernamePreference.setSummary(usernamePreference.getText());
+
+        timeoutPreferenceKey = getResources().getString(R.string.preference_timeout);
+        timeoutPreference = (EditTextPreference) getPreferenceScreen().findPreference(timeoutPreferenceKey);
+        timeoutPreference.setSummary(timeoutPreference.getText());
+        timeoutPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                Integer timeOutInMin = Integer.valueOf(o.toString());
+                ((MuzimaApplication) getApplication()).setTimeOutInMillis(timeOutInMin);
+                return true;
+            }
+        });
 
         passwordPreferenceKey = getResources().getString(R.string.preference_password);
         passwordPreference = (EditTextPreference) getPreferenceScreen().findPreference(passwordPreferenceKey);
@@ -99,6 +114,9 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
             usernamePreference.setSummary(value);
         } else if (StringUtil.equals(key, passwordPreferenceKey)) {
             passwordPreference.setSummary(value.replaceAll(".", "*"));
+        } else if (StringUtil.equals(key, timeoutPreferenceKey)) {
+            Log.e("Tag","Inside shared pref");
+            timeoutPreference.setSummary(value);
         }
     }
 
@@ -117,10 +135,10 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         }
     }
 
-    public void SyncedFormData(boolean result){
-        if(result){
+    public void SyncedFormData(boolean result) {
+        if (result) {
             new ResetDataTask(this, newURL).execute();
-        } else{
+        } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder
                     .setCancelable(true)
@@ -133,7 +151,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
                             new ResetDataTask(SettingsActivity.this, newURL).execute();
                         }
                     })
-            .setNegativeButton("No", null);
+                    .setNegativeButton("No", null);
             builder.create().show();
         }
     }

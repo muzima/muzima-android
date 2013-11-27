@@ -112,9 +112,12 @@
     <string name="preference_server_title">Server</string>
     <string name="preference_server_desc">Enter the OpenMRS Server</string>
     <string name="preference_server">serverPreference</string>
+    <string name="preference_timeout_title">Timeout</string>
+    <string name="preference_timeout_desc">Enter the Timeout value in minutes</string>
+    <string name="preference_timeout">timeoutPreference</string>
+    <string name="preference_username">usernamePreference</string>
     <string name="preference_username_title">Username</string>
     <string name="preference_username_desc">Enter the OpenMRS username</string>
-    <string name="preference_username">usernamePreference</string>
     <string name="preference_password_title">Password</string>
     <string name="preference_password_desc">Enter the OpenMRS password</string>
     <string name="preference_password">passwordPreference</string>
