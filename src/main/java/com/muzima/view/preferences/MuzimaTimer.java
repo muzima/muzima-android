@@ -10,7 +10,7 @@ import com.muzima.view.login.LoginActivity;
 
 public class MuzimaTimer extends CountDownTimer {
 
-    private static int DEFAULT_TIMEOUT_IN_MIN = 2;
+    private static int DEFAULT_TIMEOUT_IN_MIN = 5;
     private MuzimaApplication muzimaApplication;
     private static MuzimaTimer muzimaTimer;
 
@@ -22,7 +22,7 @@ public class MuzimaTimer extends CountDownTimer {
 
     public static MuzimaTimer getTimer(MuzimaApplication muzimaApplication) {
         if (muzimaTimer == null) {
-            muzimaTimer = new MuzimaTimer(getTimeInMillis(DEFAULT_TIMEOUT_IN_MIN) , getTimeInMillis(DEFAULT_TIMEOUT_IN_MIN) / 100, muzimaApplication);
+            muzimaTimer = new MuzimaTimer(getTimeInMillis(DEFAULT_TIMEOUT_IN_MIN) , getTimeInMillis(DEFAULT_TIMEOUT_IN_MIN), muzimaApplication);
         }
         return muzimaTimer;
     }
