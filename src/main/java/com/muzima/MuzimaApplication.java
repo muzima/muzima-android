@@ -13,7 +13,6 @@ import com.muzima.api.service.EncounterService;
 import com.muzima.controller.*;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.CohortPrefixPreferenceService;
-import com.muzima.service.ConceptPreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.util.Constants;
 import com.muzima.view.preferences.MuzimaTimer;
@@ -42,8 +41,6 @@ public class MuzimaApplication extends Application {
         // see http://rtyley.github.io/spongycastle/
         Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
     }
-
-    private ConceptPreferenceService conceptPreferenceService;
 
     public void clearApplicationData() {
         try {
@@ -172,13 +169,6 @@ public class MuzimaApplication extends Application {
             prefixesPreferenceService = new CohortPrefixPreferenceService(this);
         }
         return prefixesPreferenceService;
-    }
-
-    public ConceptPreferenceService getConceptPreferenceService() {
-        if (conceptPreferenceService == null) {
-            conceptPreferenceService = new ConceptPreferenceService(this);
-        }
-        return conceptPreferenceService;
     }
 
     public void setTimeOutInMillis(int value) {

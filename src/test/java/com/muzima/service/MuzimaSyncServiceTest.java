@@ -44,7 +44,6 @@ public class MuzimaSyncServiceTest {
     private ConceptController conceptController;
     private EncounterController encounterController;
     private CohortPrefixPreferenceService prefixesPreferenceService;
-    private ConceptPreferenceService concetpPreferenceService;
 
     @Before
     public void setUp() throws Exception {
@@ -58,7 +57,6 @@ public class MuzimaSyncServiceTest {
         conceptController = mock(ConceptController.class);
         encounterController = mock(EncounterController.class);
         prefixesPreferenceService = mock(CohortPrefixPreferenceService.class);
-        concetpPreferenceService = mock(ConceptPreferenceService.class);
 
         when(muzimaApplication.getMuzimaContext()).thenReturn(muzimaContext);
         when(muzimaApplication.getFormController()).thenReturn(formContorller);
@@ -68,7 +66,6 @@ public class MuzimaSyncServiceTest {
         when(muzimaApplication.getConceptController()).thenReturn(conceptController);
         when(muzimaApplication.getEncounterController()).thenReturn(encounterController);
         when(muzimaApplication.getCohortPrefixesPreferenceService()).thenReturn(prefixesPreferenceService);
-        when(muzimaApplication.getConceptPreferenceService()).thenReturn(concetpPreferenceService);
         when(muzimaApplication.getSharedPreferences(anyString(), anyInt())).thenReturn(sharedPref);
         muzimaSyncService = new MuzimaSyncService(muzimaApplication);
     }
@@ -406,7 +403,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadObservationsForPatients_shouldDownloadObservationsForGiveCohortIdsAndSavedConcepts() throws Exception, PatientController.PatientLoadException, ObservationController.DownloadObservationException, ObservationController.ReplaceObservationException {
+    public void downloadObservationsForPatients_shouldDownloadObservationsForGiveCohortIdsAndSavedConcepts() throws Exception, PatientController.PatientLoadException, ObservationController.DownloadObservationException, ObservationController.ReplaceObservationException, ConceptController.ConceptFetchException {
         String[] cohortUuids = new String[]{"uuid1", "uuid2"};
         List<Patient> patients = new ArrayList<Patient>() {{
             add(new Patient() {{
@@ -415,10 +412,6 @@ public class MuzimaSyncServiceTest {
             add(new Patient() {{
                 setUuid("patient2");
             }});
-        }};
-        Set<String> concepts = new HashSet<String>() {{
-            add("weight");
-            add("temp");
         }};
 
         List<Observation> allObservations = new ArrayList<Observation>() {{
@@ -432,7 +425,11 @@ public class MuzimaSyncServiceTest {
         List<String> conceptUuids = asList(new String[]{"weight", "temp"});
         when(observationController.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids))
                 .thenReturn(allObservations);
-        when(concetpPreferenceService.getConcepts()).thenReturn(conceptUuids);
+        Concept conceptWeight = new Concept();
+        conceptWeight.setUuid("weight");
+        Concept conceptTemp = new Concept();
+        conceptTemp.setUuid("temp");
+        when(conceptController.getConcepts()).thenReturn(asList(conceptWeight,conceptTemp));
 
         muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortUuids);
 
@@ -442,15 +439,12 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadObservationsForPatients_shouldReturnSuccessAndCountWhenDownloadingObservationsForPatient() throws Exception, PatientController.PatientLoadException, ObservationController.DownloadObservationException {
+    public void downloadObservationsForPatients_shouldReturnSuccessAndCountWhenDownloadingObservationsForPatient() throws Exception, PatientController.PatientLoadException, ObservationController.DownloadObservationException, ConceptController.ConceptFetchException {
         String[] cohortUuids = new String[]{"uuid1"};
         List<Patient> patients = new ArrayList<Patient>() {{
             add(new Patient() {{
                 setUuid("patient1");
             }});
-        }};
-        Set<String> concepts = new HashSet<String>() {{
-            add("weight");
         }};
 
         List<Observation> allObservations = new ArrayList<Observation>() {{
@@ -460,7 +454,9 @@ public class MuzimaSyncServiceTest {
 
         when(patientController.getPatientsForCohorts(cohortUuids)).thenReturn(patients);
         List<String> conceptUuids = asList("weight");
-        when(concetpPreferenceService.getConcepts()).thenReturn(conceptUuids);
+        Concept conceptWeight = new Concept();
+        conceptWeight.setUuid("weight");
+        when(conceptController.getConcepts()).thenReturn(asList(conceptWeight));
         when(observationController.downloadObservationsByPatientUuidsAndConceptUuids(asList("patient1"), conceptUuids))
                 .thenReturn(allObservations);
 

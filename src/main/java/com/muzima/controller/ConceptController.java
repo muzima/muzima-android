@@ -36,14 +36,6 @@ public class ConceptController {
         }
     }
 
-    public Concept getConceptByUuid(String uuid) throws ConceptFetchException {
-        try {
-            return conceptService.getConceptByUuid(uuid);
-        } catch (IOException e) {
-            throw new ConceptFetchException(e);
-        }
-    }
-
     public void deleteConcept(Concept concept) throws ConceptDeleteException {
         try {
             conceptService.deleteConcept(concept);
@@ -75,6 +67,16 @@ public class ConceptController {
             result.addAll(concepts);
         }
         return new ArrayList<Concept>(result);
+    }
+
+    public List<Concept> getConcepts() throws ConceptFetchException {
+        try {
+            List<Concept> allConcepts = conceptService.getAllConcepts();
+            Collections.sort(allConcepts);
+            return allConcepts;
+        } catch (IOException e) {
+            throw new ConceptFetchException(e);
+        }
     }
 
     public static class ConceptDownloadException extends Throwable {

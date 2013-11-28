@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import com.muzima.MuzimaApplication;
 import com.muzima.domain.Credentials;
 import com.muzima.service.CohortPrefixPreferenceService;
-import com.muzima.service.ConceptPreferenceService;
 import com.muzima.service.CredentialsPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.view.preferences.SettingsActivity;
@@ -30,7 +29,6 @@ public class ResetDataTask extends AsyncTask<String, Void, Void> {
         ((MuzimaApplication)settingsActivity.getApplication()).clearApplicationData();
         SettingsActivity context = settingsActivity;
         new WizardFinishPreferenceService(context).resetWizard();
-        new ConceptPreferenceService(context).clearConcepts();
         new CohortPrefixPreferenceService(context).clearPrefixes();
     }
 

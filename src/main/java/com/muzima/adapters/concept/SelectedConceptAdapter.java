@@ -30,23 +30,31 @@ import com.muzima.api.model.Concept;
 import com.muzima.api.model.ConceptName;
 import com.muzima.controller.ConceptController;
 import com.muzima.search.api.util.StringUtil;
-import com.muzima.service.ConceptPreferenceService;
 import com.muzima.utils.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * TODO: Write brief description about the class here.
  */
 public class SelectedConceptAdapter extends ListAdapter<Concept> {
     private final String TAG = SelectedConceptAdapter.class.getSimpleName();
-    private final ConceptPreferenceService conceptPreferenceService;
     protected ConceptController conceptController;
 
     public SelectedConceptAdapter(MuzimaApplication context, int textViewResourceId, ConceptController conceptController) {
         super(context, textViewResourceId);
         this.conceptController = conceptController;
-        conceptPreferenceService = context.getConceptPreferenceService();
+    }
+
+    public boolean doesConceptAlreadyExist(Concept selectedConcept) {
+        try {
+            return conceptController.getConcepts().contains(selectedConcept);
+        } catch (ConceptController.ConceptFetchException e) {
+            Log.e(TAG, "Error while loading concepts", e);
+        }
+        return false;
     }
 
     private class ViewHolder {
@@ -90,16 +98,10 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
     }
 
     @Override
-    public void add(final Concept concept) {
-        addConcept(concept);
-    }
-
-    @Override
     public void remove(Concept concept) {
         super.remove(concept);
         try {
             conceptController.deleteConcept(concept);
-            conceptPreferenceService.removeConcept(concept);
         } catch (ConceptController.ConceptDeleteException e) {
             Log.e(TAG, "Error while deleting the concept", e);
         }
@@ -107,46 +109,27 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
 
     @Override
     public void reloadData() {
-        new BackgroundQueryTask().execute();
+        new BackgroundSaveAndQueryTask().execute();
     }
 
-    public class BackgroundSaveTask extends AsyncTask<Concept, Void, Void> {
+    public class BackgroundSaveAndQueryTask extends AsyncTask<Concept, Void, List<Concept>> {
 
         @Override
-        protected Void doInBackground(Concept... concepts) {
+        protected List<Concept> doInBackground(Concept... concepts) {
+            List<Concept> selectedConcepts = null;
             List<Concept> conceptList = Arrays.asList(concepts);
             try {
-                conceptController.saveConcepts(conceptList);
+                if (concepts != null) {
+                    conceptController.saveConcepts(conceptList);
+                }
+                selectedConcepts = conceptController.getConcepts();
             } catch (ConceptController.ConceptSaveException e) {
                 Log.w(TAG, "Exception occurred while saving concept to local data repository!", e);
+            } catch (ConceptController.ConceptFetchException e) {
+                Log.w(TAG, "Exception occurred while fetching concepts from local data repository!", e);
             }
-            conceptPreferenceService.addConcepts(conceptList);
-            return null;
-        }
-    }
-
-    public class BackgroundQueryTask extends AsyncTask<Void, Void, List<Concept>> {
-
-        @Override
-        protected List<Concept> doInBackground(Void... voids) {
-            List<Concept> concepts = new ArrayList<Concept>();
-            List<String> conceptUuids = conceptPreferenceService.getConcepts();
-            for (String conceptUuid : conceptUuids) {
-                try {
-                    concepts.add(conceptController.getConceptByUuid(conceptUuid));
-                } catch (ConceptController.ConceptFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local concept!", e);
-                }
-                Log.i(TAG, "#Concepts: " + concepts.size());
-            }
-
-            Collections.sort(concepts, new Comparator<Concept>() {
-                @Override
-                public int compare(Concept lhs, Concept rhs) {
-                    return lhs.getName().toLowerCase().compareTo(rhs.getName().toLowerCase());
-                }
-            });
-            return concepts;
+            Log.i(TAG, "#Concepts: " + selectedConcepts.size());
+            return selectedConcepts;
         }
 
         @Override
@@ -155,9 +138,7 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
                 Toast.makeText(getContext(), "Something went wrong while fetching concepts from local repo", Toast.LENGTH_SHORT).show();
                 return;
             }
-
             clear();
-
             addAll(concepts);
             notifyDataSetChanged();
         }
@@ -182,8 +163,7 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
         return synonymBuilder.toString();
     }
 
-    private void addConcept(Concept concept) {
-        super.add(concept);
-        new BackgroundSaveTask().execute(concept);
+    public void addConcept(Concept concept) {
+        new BackgroundSaveAndQueryTask().execute(concept);
     }
 }

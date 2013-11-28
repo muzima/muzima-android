@@ -16,11 +16,12 @@ import com.muzima.adapters.concept.AutoCompleteConceptAdapter;
 import com.muzima.adapters.concept.SelectedConceptAdapter;
 import com.muzima.api.model.Concept;
 import com.muzima.search.api.util.StringUtil;
-import com.muzima.service.ConceptPreferenceService;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_STATUS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TEMPLATES;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
 
@@ -30,7 +31,6 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
     private ListView selectedConceptListView;
     private AutoCompleteTextView autoCompleteConceptTextView;
     private AutoCompleteConceptAdapter autoCompleteConceptAdapter;
-    private ConceptPreferenceService conceptPreferenceService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,6 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
                 (applicationContext).getConceptController());
         selectedConceptListView.setAdapter(selectedConceptAdapter);
         selectedConceptListView.setEmptyView(findViewById(R.id.no_concept_added));
-        conceptPreferenceService = applicationContext.getConceptPreferenceService();
         autoCompleteConceptTextView = (AutoCompleteTextView) findViewById(R.id.concept_add_concept);
         autoCompleteConceptAdapter = new AutoCompleteConceptAdapter(applicationContext, R.layout.item_option_autocomplete, autoCompleteConceptTextView);
         autoCompleteConceptTextView.setAdapter(autoCompleteConceptAdapter);
@@ -55,11 +54,11 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
             @Override
             public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
                 Concept selectedConcept = (Concept) parent.getItemAtPosition(position);
-                if (conceptPreferenceService.isConceptAlreadyExists(selectedConcept)) {
+                if (selectedConceptAdapter.doesConceptAlreadyExist(selectedConcept)) {
                     Log.e(TAG, "Concept Already exists");
                     Toast.makeText(ConceptPreferenceActivity.this, "Concept " + selectedConcept.getName() + " already exists", Toast.LENGTH_SHORT).show();
                 } else {
-                    selectedConceptAdapter.add(selectedConcept);
+                    selectedConceptAdapter.addConcept(selectedConcept);
                     selectedConceptAdapter.notifyDataSetChanged();
                 }
                 autoCompleteConceptTextView.setText(StringUtil.EMPTY);

@@ -30,13 +30,11 @@ public class MuzimaSyncService {
     private PatientController patientController;
     private ObservationController observationController;
     private final CohortPrefixPreferenceService cohortPrefixPreferenceService;
-    private final ConceptPreferenceService conceptPreferenceService;
     private EncounterController encounterController;
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
         this.muzimaApplication = muzimaContext;
         cohortPrefixPreferenceService = muzimaApplication.getCohortPrefixesPreferenceService();
-        conceptPreferenceService = muzimaApplication.getConceptPreferenceService();
         formController = muzimaApplication.getFormController();
         conceptController = muzimaApplication.getConceptController();
         cohortController = muzimaApplication.getCohortController();
@@ -120,7 +118,6 @@ public class MuzimaSyncService {
             List<Concept> concepts = getRelatedConcepts(formTemplates);
             conceptController.saveConcepts(concepts);
 
-            conceptPreferenceService.addConcepts(concepts);
             Log.i(TAG, "Form templates replaced");
 
             result[0] = SUCCESS;
@@ -264,7 +261,7 @@ public class MuzimaSyncService {
         try {
             long startDownloadObservations = System.currentTimeMillis();
             List<Observation> allObservations = observationController.downloadObservationsByPatientUuidsAndConceptUuids
-                    (patientUuids, conceptPreferenceService.getConcepts());
+                    (patientUuids, getConceptUuidsFromConcepts(conceptController.getConcepts()));
             long endDownloadObservations = System.currentTimeMillis();
             Log.i(TAG, "Observations download successful with " + allObservations.size() + " observations");
 
@@ -282,6 +279,9 @@ public class MuzimaSyncService {
         } catch (ObservationController.ReplaceObservationException e) {
             Log.e(TAG, "Exception thrown while replacing observations" + e);
             result[0] = REPLACE_ERROR;
+        } catch (ConceptController.ConceptFetchException e) {
+            Log.e(TAG, "Exception thrown while loading concepts" + e);
+            result[0] = LOAD_ERROR;
         }
 
         return result;
@@ -385,6 +385,14 @@ public class MuzimaSyncService {
             Log.e(TAG, "Exception thrown while downloading patients from server" + e);
         }
         return downloadedPatients;
+    }
+
+    private List<String> getConceptUuidsFromConcepts(List<Concept> concepts) {
+        List<String> conceptUuids = new ArrayList<String>();
+        for (Concept concept : concepts) {
+            conceptUuids.add(concept.getUuid());
+        }
+        return conceptUuids;
     }
 
     private List<Patient> downloadPatientsByUUID(String[] patientUUIDs) throws PatientController.PatientDownloadException {
