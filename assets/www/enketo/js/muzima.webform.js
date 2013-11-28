@@ -76,12 +76,20 @@ $(document).ready(function () {
 
     var $barcodeInput = $('input[type="barcode"]');
 
-    $barcodeInput.after("<input type='button' class='barcode_img'>");
+    // !!Please keep the isFromInput flag. In WebView, if the .barcode_img is before the input, the click on the input
+    // would trigger the event of click on the .barcode_img.
+    var isFromInput = false;
+    $barcodeInput.before("<input type='button' class='barcode_img'>");
     $('.barcode_img').click(function () {
         //barCodeComponent is defined in FormWebViewActivity.java
-        barCodeComponent.startBarCodeIntent($barcodeInput.attr('name'));
+        if(!isFromInput){
+            barCodeComponent.startBarCodeIntent($barcodeInput.attr('name'));
+        }
+        isFromInput = false;
     });
-
+    $barcodeInput.click(function (e){
+        isFromInput = true;
+    });
     /*End- BarCode Functionality*/
 
 });
