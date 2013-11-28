@@ -1,11 +1,11 @@
 
 package com.muzima;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
 import com.muzima.api.service.ConceptService;
@@ -15,6 +15,7 @@ import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.util.Constants;
+import com.muzima.view.forms.FormWebViewActivity;
 import com.muzima.view.preferences.MuzimaTimer;
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
@@ -27,6 +28,7 @@ import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 @ReportsCrashes(formKey = "ACRA_FORM_KEY")
 public class MuzimaApplication extends Application {
     private Context muzimaContext;
+    private Activity currentActivity;
     private FormController formController;
     private CohortController cohortController;
     private PatientController patientConroller;
@@ -172,7 +174,6 @@ public class MuzimaApplication extends Application {
     }
 
     public void setTimeOutInMillis(int value) {
-        Log.e("SetTimeOutMillis", String.valueOf(value));
         muzimaTimer.setTimeOutInMillis(value);
     }
 
@@ -181,9 +182,24 @@ public class MuzimaApplication extends Application {
     }
 
     public void logOut() {
+        saveBeforeExit();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String passwordKey = getResources().getString(R.string.preference_password);
         settings.edit().putString(passwordKey, StringUtil.EMPTY).commit();
+    }
+
+    public void cancelTimer() {
+        muzimaTimer.cancel();
+    }
+
+    public void setCurrentActivity(Activity currentActivity) {
+        this.currentActivity = currentActivity;
+    }
+
+    private void saveBeforeExit() {
+        if (currentActivity instanceof FormWebViewActivity) {
+            ((FormWebViewActivity) currentActivity).saveDraft();
+        }
     }
 
     private String getConfigurationString() throws IOException {
@@ -198,5 +214,4 @@ public class MuzimaApplication extends Application {
         reader.close();
         return builder.toString();
     }
-
 }

@@ -34,6 +34,12 @@ public class BaseActivity extends SherlockActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        ((MuzimaApplication) getApplication()).setCurrentActivity(this);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.dashboard, menu);
         return true;

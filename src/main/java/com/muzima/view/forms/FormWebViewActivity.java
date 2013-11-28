@@ -109,7 +109,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.form_save_as_draft:
-                webView.loadUrl("javascript:document.saveDraft()");
+                saveDraft();
                 return true;
             case R.id.form_submit:
                 webView.loadUrl("javascript:document.submit()");
@@ -117,6 +117,10 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void saveDraft() {
+        webView.loadUrl("javascript:document.saveDraft()");
     }
 
     private void setupFormData(Patient patient) throws FormFetchException, FormController.FormDataFetchException, FormController.FormDataSaveException {
