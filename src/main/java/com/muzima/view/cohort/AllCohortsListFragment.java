@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +72,7 @@ public class AllCohortsListFragment extends CohortListFragment {
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         boolean isChecked = ((CheckedLinearLayout) view).isChecked();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
             isChecked = !isChecked;
         }
         if (!actionModeActive && isChecked) {
@@ -83,7 +84,9 @@ public class AllCohortsListFragment extends CohortListFragment {
         if (numOfSelectedCohorts == 0 && actionModeActive) {
             actionMode.finish();
         }
+        Log.d(TAG, "isnull:" + String.valueOf(actionMode==null));
         actionMode.setTitle(String.valueOf(numOfSelectedCohorts));
+
     }
 
     public void setCohortDataDownloadListener(OnCohortDataDownloadListener cohortDataDownloadListener) {
