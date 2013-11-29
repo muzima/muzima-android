@@ -2737,6 +2737,13 @@ XPathJS = (function () {
             );
         },
 
+        pow: function (left, right) {
+            return new NumberType(
+                Math.pow(evaluateExpressionTree(this, left).toNumber(),
+                    evaluateExpressionTree(this, right).toNumber())
+            );
+        },
+
         mod: function (left, right) {
             return new NumberType(
                 evaluateExpressionTree(this, left).toNumber()
@@ -7003,6 +7010,17 @@ XPathJS._parser = (function () {
                                     result3 = null;
                                     if (reportFailures === 0) {
                                         matchFailed("\"mod\"");
+                                    }
+                                }
+                            }
+                            if (result3 === null) {
+                                if (input.substr(pos, 3) === "pow") {
+                                    result3 = "pow";
+                                    pos += 3;
+                                } else {
+                                    result3 = null;
+                                    if (reportFailures === 0) {
+                                        matchFailed("\"pow\"");
                                     }
                                 }
                             }
