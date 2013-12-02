@@ -14,6 +14,9 @@ import com.muzima.service.MuzimaSyncService;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Responsible to populate all cohorts fetched from DB in the AllCohortsListFragment page.
+ */
 public class AllCohortsAdapter extends CohortsAdapter {
     private static final String TAG = "AllCohortsAdapter";
     private final MuzimaSyncService muzimaSyncService;
@@ -53,7 +56,7 @@ public class AllCohortsAdapter extends CohortsAdapter {
         ViewHolder holder = (ViewHolder) view.getTag();
         Cohort cohort = getItem(position);
         if (cohortController.isDownloaded(cohort)) {
-            holder.downloadedImage.setVisibility(View.VISIBLE);
+            holder.displayDownloadImage();
         }
         return view;
     }
@@ -72,7 +75,10 @@ public class AllCohortsAdapter extends CohortsAdapter {
         return getSelectedCohorts().size();
     }
 
-    public class LoadBackgroundQueryTask extends AsyncTask<Void, Void, List<Cohort>> {
+    /**
+     * Responsible to define contract to CohortBackgroundQueryTasks.
+     */
+    public abstract class CohortBackgroundQueryTask extends AsyncTask<Void, Void, List<Cohort>> {
         @Override
         protected void onPreExecute() {
             if (backgroundListQueryTaskListener != null) {
@@ -81,37 +87,49 @@ public class AllCohortsAdapter extends CohortsAdapter {
         }
 
         @Override
-        protected List<Cohort> doInBackground(Void... voids) {
-            List<Cohort> allCohorts = null;
-            try {
-                allCohorts = cohortController.getAllCohorts();
-                Log.i(TAG, "#Cohorts: " + allCohorts.size());
-            } catch (CohortController.CohortFetchException e) {
-                Log.w(TAG, "Exception occurred while fetching local cohorts " + e);
-            }
-            return allCohorts;
-        }
-
-        @Override
         protected void onPostExecute(List<Cohort> cohorts) {
             if (cohorts == null) {
                 Toast.makeText(getContext(), "Something went wrong while fetching cohorts from local repo", Toast.LENGTH_SHORT).show();
                 return;
             }
-
+            //Removes the current items from the list.
             AllCohortsAdapter.this.clear();
-            for (Cohort cohort : cohorts) {
-                add(cohort);
-            }
+            //Adds recently fetched items to the list.
+            addAll(cohorts);
+            //Send a data change request to the list, so the page can be reloaded.
             notifyDataSetChanged();
 
             if (backgroundListQueryTaskListener != null) {
                 backgroundListQueryTaskListener.onQueryTaskFinish();
             }
         }
+
+        protected abstract List<Cohort> doInBackground(Void... voids);
     }
 
-    public class DownloadBackgroundQueryTask extends LoadBackgroundQueryTask {
+    /**
+     * Responsible to load cohorts from database. Runs in Background.
+     */
+    public class LoadBackgroundQueryTask extends CohortBackgroundQueryTask {
+
+        @Override
+        protected List<Cohort> doInBackground(Void... voids) {
+            List<Cohort> allCohorts = null;
+            try {
+                Log.i(TAG, "Fetching Cohorts from Database...");
+                allCohorts = cohortController.getAllCohorts();
+                Log.d(TAG, "#Retrieved " + allCohorts.size() + " Cohorts from Database.");
+            } catch (CohortController.CohortFetchException e) {
+                Log.w(TAG, "Exception occurred while fetching local cohorts " + e);
+            }
+            return allCohorts;
+        }
+    }
+
+    /**
+     * Responsible to download Cohorts from server and to reload the contents from DB. Runs in BackGround.
+     */
+    public class DownloadBackgroundQueryTask extends CohortBackgroundQueryTask {
         @Override
         protected List<Cohort> doInBackground(Void... voids) {
             List<Cohort> allCohorts = null;
@@ -124,7 +142,5 @@ public class AllCohortsAdapter extends CohortsAdapter {
             }
             return allCohorts;
         }
-
-
     }
 }

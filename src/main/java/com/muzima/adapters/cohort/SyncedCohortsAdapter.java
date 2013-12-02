@@ -10,6 +10,9 @@ import com.muzima.controller.CohortController;
 
 import java.util.List;
 
+/**
+ * Responsible to populate synced cohorts fetched from DB in the SyncedCohortsListFragment page.
+ */
 public class SyncedCohortsAdapter extends CohortsAdapter{
     private static final String TAG = "SyncedCohortsAdapter";
 

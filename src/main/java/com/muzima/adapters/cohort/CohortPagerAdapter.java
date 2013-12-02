@@ -9,6 +9,9 @@ import com.muzima.controller.CohortController;
 import com.muzima.view.cohort.AllCohortsListFragment;
 import com.muzima.view.cohort.SyncedCohortsListFragment;
 
+/**
+ * Responsible to hold all the cohort fragments as multiple pages/tabs.
+ */
 public class CohortPagerAdapter extends MuzimaPagerAdapter {
     private static final String TAG = "CohortPagerAdapter";
 
@@ -34,7 +37,6 @@ public class CohortPagerAdapter extends MuzimaPagerAdapter {
 
     public void onCohortDownloadStart() {
         ((AllCohortsListFragment)pagers[TAB_All].fragment).onCohortDownloadStart();
-
     }
 
     public void onCohortDownloadFinish() {

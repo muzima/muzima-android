@@ -56,7 +56,7 @@ public abstract class SettingsBaseAdapter extends ListAdapter<String> {
     private class OnPrefChangeListener implements View.OnClickListener {
         private int position;
 
-        OnPrefChangeListener(int position) {
+        private OnPrefChangeListener(int position) {
             this.position = position;
         }
 
@@ -71,7 +71,7 @@ public abstract class SettingsBaseAdapter extends ListAdapter<String> {
     private class OnPrefDeleteListener implements View.OnClickListener {
         private int position;
 
-        OnPrefDeleteListener(int position) {
+        private OnPrefDeleteListener(int position) {
             this.position = position;
         }
 

@@ -85,7 +85,7 @@ public class CohortPreferenceActivity extends BaseFragmentActivity implements Pr
             Toast.makeText(this, "Prefix already exists", Toast.LENGTH_SHORT).show();
         }
         prefAdapter.reloadData();
-        cohortPrefix.setText("");
+        cohortPrefix.clearListSelection();
     }
 
 

@@ -1,13 +1,15 @@
 package com.muzima.adapters.cohort;
 
 import android.content.Context;
-import com.muzima.api.model.Concept;
 import com.muzima.service.CohortPrefixPreferenceService;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Responsible to display CohortPrefixes in the CohortPreferenceActivity
+ */
 public class CohortPrefixPrefAdapter extends SettingsBaseAdapter {
 
     private final CohortPrefixPreferenceService cohortPrefixPreferenceService;
