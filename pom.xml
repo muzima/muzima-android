@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+        >
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.muzima</groupId>
     <artifactId>muzima-android</artifactId>
@@ -19,13 +20,13 @@
             <id>local-project-libraries-snapshot-github-search</id>
             <name>Local project libraries</name>
             <url>https://raw.github.com/muzima/muzima-maven/search-api</url>
-            <snapshots />
+            <snapshots/>
         </repository>
         <repository>
             <id>local-project-libraries-snapshot-github-api</id>
             <name>Local project libraries</name>
             <url>https://raw.github.com/muzima/muzima-maven/muzima-api</url>
-            <snapshots />
+            <snapshots/>
         </repository>
     </repositories>
 
@@ -166,31 +167,22 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.6</version>
-                <configuration>
-                    <instrumentation>
-                        <ignores>
-                            <ignore>com.actionbarsherlock.*</ignore>
-                        </ignores>
-                        <includes>
-                            <include>**/*.class</include>
-                        </includes>
-                    </instrumentation>
-                    <check />
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>cobertura</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>give_sdk</id>
+            <properties>
+                <android.sdk.path>/Users/akani/Development/bundles/adt-bundle-mac-x86_64-20130729/sdk</android.sdk.path>
+            </properties>
+        </profile>
+        <profile>
+            <id>akani_sdk</id>
+            <properties>
+                <android.sdk.path>/Users/akani/Development/bundles/adt-bundle-mac-x86_64-20130729/sdk</android.sdk.path>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>
