@@ -6,172 +6,134 @@
 
 
 
-
-
-    <fieldset class="jr-group ">
+    <fieldset class="jr-group jr-appearance-field-list" name="/form/patient">
         <h4>
-            <span lang="" class=" active">Registration Form</span>
+            <span lang="" class=" active">Demographics</span>
         </h4>
-        <fieldset class="jr-group jr-appearance-field-list" name="/form/patient">
-            <h4>
-                <span lang="" class=" active">Demographics</span>
-            </h4>
-            <label class="">
-                <span lang="" class=" active">AMRS ID SCAN</span>
-                <input autocomplete="off" type="barcode" name="/form/patient/tmp/amrs_id_scan" data-type-xml="barcode"/>
-            </label>
-            <label class="jr-branch pre-init ">
-                <span lang="" class=" active">AMRS ID</span>
-                <span class="required">*</span>
-                <input autocomplete="off" type="text" name="/form/patient/tmp/amrs_id_manual" required="required" data-constraint="regex(., '^\w+[-]?\d{1}') and checkdigit(.)" data-relevant="../amrs_id_scan = ''" data-type-xml="string"/>
-            </label>
-            <label class="jr-branch pre-init ">
-                <span lang="" class=" active">AMRS ID (CONFIRM)</span>
-                <span class="required">*</span>
-                <input autocomplete="off" type="text" name="/form/patient/tmp/amrs_id_manual_confirm" required="required" data-constraint=". = ../amrs_id_manual" data-relevant="../amrs_id_manual != ''" data-type-xml="string"/>
-            </label>
-            <label class="">
-                <span lang="" class=" active">AMRS Identifier</span>
-                <input autocomplete="off" type="text" name="/form/patient/patient.medical_record_number" data-calculate="if (../tmp/amrs_id_scan != '',../tmp/amrs_id_scan,../tmp/amrs_id_manual)" data-type-xml="string" readonly="readonly"/>
-            </label>
-            <label class="">
-                <span lang="" class=" active">Family Name</span>
-                <span class="required">*</span>
-                <input autocomplete="off" type="text" name="/form/patient/patient.family_name" required="required" data-type-xml="string"/>
-            </label>
-            <label class="">
-                <span lang="" class=" active">Given Name</span>
-                <span class="required">*</span>
-                <input autocomplete="off" type="text" name="/form/patient/patient.given_name" required="required" data-type-xml="string"/>
-            </label>
-            <label class="">
-                <span lang="" class=" active">Middle Name</span>
-                <input autocomplete="off" type="text" name="/form/patient/patient.middle_name" data-type-xml="string"/>
-            </label>
-            <fieldset class="restoring-sanity-to-legends ">
-                <fieldset>
-                    <legend>
-                        <span lang="" class=" active">Sex</span>
-                        <span class="required">*</span>
-                    </legend>
-                    <label class="clearfix ">
-                        <input autocomplete="off" type="radio" name="/form/patient/patient.sex" value="M" required="required" data-type-xml="string"/>
-                        <span lang="" class=" active">Male</span>
-                    </label>
-                    <label class="clearfix ">
-                        <input autocomplete="off" type="radio" name="/form/patient/patient.sex" value="F" required="required" data-type-xml="string"/>
-                        <span lang="" class=" active">Female</span>
-                    </label>
-                </fieldset>
-            </fieldset>
-            <fieldset class="restoring-sanity-to-legends ">
-                <fieldset>
-                    <legend>
-                        <span lang="" class=" active">Will Record Date of Birth...</span>
-                        <span class="required">*</span>
-                    </legend>
-                    <label class="clearfix ">
-                        <input autocomplete="off" type="radio" name="/form/patient/tmp/birthdate_type" value="age" required="required" data-type-xml="string"/>
-                        <span lang="" class=" active">By Age</span>
-                    </label>
-                    <label class="clearfix ">
-                        <input autocomplete="off" type="radio" name="/form/patient/tmp/birthdate_type" value="birthdate" required="required" data-type-xml="string"/>
-                        <span lang="" class=" active">By Birth-Date</span>
-                    </label>
-                </fieldset>
-            </fieldset>
-            <label class="jr-branch pre-init ">
-                <span lang="" class=" active">How old are you now?</span>
-                <span class="required">*</span>
-                <input autocomplete="off" type="number
-            " name="/form/patient/tmp/age" required="required" data-constraint=". &gt;= 18 and . &lt;=125" data-relevant="../birthdate_type = 'age'" data-type-xml="int"/>
-            </label>
-            <label class="jr-branch pre-init ">
-                <span lang="" class=" active">Select Birthdate</span>
-                <span class="required">*</span>
-                <input autocomplete="off" type="date" name="/form/patient/tmp/birth_date" required="required" data-constraint=". &lt;= today()" data-relevant="../birthdate_type = 'birthdate'" data-type-xml="date"/>
-            </label>
-            <fieldset class="restoring-sanity-to-legends jr-branch pre-init ">
-                <fieldset>
-                    <legend>
-                        <span lang="" class=" active">Is this birthdate an estimate?</span>
-                        <span class="required">*</span>
-                    </legend>
-                    <label class="clearfix ">
-                        <input autocomplete="off" type="radio" name="/form/patient/tmp/birthdate_estimated" value="true" required="required" data-relevant="../birthdate_type = 'birthdate'" data-type-xml="string"/>
-                        <span lang="" class=" active">Yes</span>
-                    </label>
-                    <label class="clearfix ">
-                        <input autocomplete="off" type="radio" name="/form/patient/tmp/birthdate_estimated" value="false" required="required" data-relevant="../birthdate_type = 'birthdate'" data-type-xml="string"/>
-                        <span lang="" class=" active">No</span>
-                    </label>
-                </fieldset>
-            </fieldset>
-        </fieldset>
-        <!--end of group
-           --><fieldset class="restoring-sanity-to-legends ">
-        <fieldset>
-            <legend>
-                <span lang="" class=" active">Encounter Location</span>
-                <span class="required">*</span>
-            </legend>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.location_id" value="2" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Mosoriot Health Centre</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.location_id" value="3" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Turbo Health Centre</span>
-            </label>
-            <label class="clearfix ">
-                <input autocomplete="off" type="radio" name="/form/encounter/encounter.location_id" value="12" required="required" data-type-xml="string"/>
-                <span lang="" class=" active">Teso District Hospital</span>
-            </label>
-        </fieldset>
-    </fieldset>
-        <label class="jr-appearance-autocomplete">
-            <span lang="" class=" active">Provider ID</span>
-            <select name="/form/encounter/tmp/provider_id_select" data-type-xml="select1">
+        <label class="">
+            <span lang="" class=" active">Family Name</span>
+            <span class="required">*</span>
+            <input autocomplete="off" type="text" name="/form/patient/patient.family_name" required="required" data-type-xml="string"/>
+        </label>
+        <label class="">
+            <span lang="" class=" active">Given Name</span>
+            <span class="required">*</span>
+            <input autocomplete="off" type="text" name="/form/patient/patient.given_name" required="required" data-type-xml="string"/>
+        </label>
+        <label class="">
+            <span lang="" class=" active">Middle Name</span>
+            <input autocomplete="off" type="text" name="/form/patient/patient.middle_name" data-type-xml="string"/>
+        </label>
+        <label class="">
+            <span lang="" class=" active">Sex</span>
+            <span class="required">*</span>
+            <select name="/form/patient/patient.sex" required="required" data-type-xml="string">
                 <option value="">...</option>
-                <option value="1">Super User</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </select>
+            <span class="jr-option-translations" style="display:none;">
+                </span>
+        </label>
+        <label class="">
+            <span lang="" class=" active">Phone Number</span>
+            <input autocomplete="off" type="text" name="/form/patient/patient.phone_number" data-type-xml="string"/>
+        </label>
+        <label class="">
+            <span lang="" class=" active">Mothers Name</span>
+            <input autocomplete="off" type="text" name="/form/patient/person_attribute4" data-type-xml="string"/>
+        </label>
+        <label class="">
+            <span lang="" class=" active">AMRS Universal ID Assigned</span>
+            <span class="required">*</span>
+            <input autocomplete="off" type="barcode" name="/form/patient/tmp/amrs_id" required="required" data-type-xml="barcode"/>
+        </label>
+    </fieldset>
+    <!--end of group
+          -->
+    <fieldset class="jr-appearance-field-list">
+        <label class="">
+            <span lang="" class=" active">Will Record Date of Birth...</span>
+            <span class="required">*</span>
+            <select name="/form/patient/tmp/birthdate_type" required="required" data-type-xml="string">
+                <option value="">...</option>
+                <option value="birthdate">By Birth-Date</option>
+                <option value="age">By Age</option>
             </select>
             <span class="jr-option-translations" style="display:none;">
                 </span>
         </label>
         <label class="jr-branch pre-init ">
-            <span lang="" class=" active">Enter provider's system-id</span>
+            <span lang="" class=" active">How old are you now?</span>
             <span class="required">*</span>
-            <input autocomplete="off" type="text" name="/form/encounter/tmp/provider_id_text" required="required" data-constraint="regex(., '^\w+[-]?\d{1}') and (checkdigit(.))" data-relevant="../provider_id_select = ''" data-type-xml="string"/>
+            <input autocomplete="off" type="number
+            " name="/form/patient/tmp/age" required="required" data-constraint=". &gt;= 0 and . &lt;=125" data-relevant="../birthdate_type = 'age'" data-type-xml="int"/>
         </label>
-        <label class="">
-            <span lang="" class=" active">Encounter Date</span>
+        <label class="jr-branch pre-init ">
+            <span lang="" class=" active">Select Birthdate</span>
             <span class="required">*</span>
-            <input autocomplete="off" type="date" name="/form/encounter/encounter.encounter_datetime" required="required" data-constraint=". &lt;= today()" data-type-xml="date"/>
+            <input autocomplete="off" type="date" name="/form/patient/tmp/birth_date" required="required" data-constraint=". &lt;= today()" data-relevant="../birthdate_type = 'birthdate'" data-type-xml="date"/>
+        </label>
+        <label class=" jr-branch pre-init ">
+            <span lang="" class=" active">Is this birthdate an estimate?</span>
+            <span class="required">*</span>
+            <select name="/form/patient/tmp/birthdate_estimated" required="required" data-relevant="../birthdate_type = 'birthdate'" data-type-xml="string">
+                <option value="">...</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+            <span class="jr-option-translations" style="display:none;">
+                </span>
         </label>
     </fieldset>
     <!--end of group
           -->
-
-
+    <label class="">
+        <span lang="" class=" active">Encounter Location</span>
+        <span class="required">*</span>
+        <select name="/form/encounter/encounter.location_id" required="required" data-type-xml="string">
+            <option value="">...</option>
+            <option value="2">Mosoriot Health Centre</option>
+            <option value="3">Turbo Health Centre</option>
+            <option value="12">Teso District Hospital</option>
+        </select>
+         <span class="jr-option-translations" style="display:none;">
+                </span>
+    </label>
+    <label class="jr-appearance-autocomplete">
+        <span lang="" class=" active">Provider ID</span>
+        <span class="required">*</span>
+        <select name="/form/encounter/encounter.provider_id" required="required" data-type-xml="select1">
+            <option value="">...</option>
+            <option value="1">Super User</option>
+        </select>
+         <span class="jr-option-translations" style="display:none;">
+                </span>
+    </label>
+    <label class="">
+        <span lang="" class=" active">Encounter Date</span>
+        <span class="required">*</span>
+        <input autocomplete="off" type="date" name="/form/encounter/encounter.encounter_datetime" required="required" data-constraint=". &lt;= today()" data-type-xml="date"/>
+    </label>
 
     <fieldset id="jr-calculated-items" style="display:none;">
         <label class="">
             <input autocomplete="off" type="hidden" name="/form/patient/patient_identifier.identifier_type_id" data-calculate="3" data-type-xml="integer"/>
         </label>
         <label class="">
-            <input autocomplete="off" type="hidden" name="/form/patient/patient.medical_record_number" data-calculate="if (../tmp/amrs_id_scan != '',../tmp/amrs_id_scan,../tmp/amrs_id_manual)" data-type-xml="string"/>
+            <input autocomplete="off" type="hidden" name="/form/patient/patient.medical_record_number" data-calculate="../tmp/amrs_id" data-type-xml="string"/>
         </label>
         <label class="">
-            <input autocomplete="off" type="hidden" name="/form/patient/patient.birthdate" data-calculate="if(../tmp/birthdate_type = 'age',  date(today() - (../tmp/age) * 365.2425), ../tmp/birth_date)" data-type-xml="date"/>
+            <input autocomplete="off" type="hidden" name="/form/patient/tmp/birth_date_temp" data-calculate="concat(format-date(date(today() - (../age) * 365.2425), '%Y'),'/01/01')" data-type-xml="string"/>
+        </label>
+        <label class="">
+            <input autocomplete="off" type="hidden" name="/form/patient/patient.birthdate" data-calculate="if(../tmp/birthdate_type = 'age', date(../tmp/birth_date_temp), ../tmp/birth_date)" data-type-xml="date"/>
         </label>
         <label class="">
             <input autocomplete="off" type="hidden" name="/form/patient/tmp/age_in_years" data-calculate="if(../birthdate_type = 'age', ../age, int(today() - ../../patient.birthdate))" data-type-xml="decimal" step="any"/>
         </label>
         <label class="">
             <input autocomplete="off" type="hidden" name="/form/patient/patient.birthdate_estimated" data-calculate="if(../tmp/birthdate_type = 'age', 'true', ../tmp/birthdate_estimated)" data-type-xml="string"/>
-        </label>
-        <label class="">
-            <input autocomplete="off" type="hidden" name="/form/encounter/encounter.provider_id" data-calculate="if(../tmp/provider_id_select != '',../tmp/provider_id_select,../tmp/provider_id_text)" data-type-xml="string"/>
         </label>
     </fieldset>
 </form>

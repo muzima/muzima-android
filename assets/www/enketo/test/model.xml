@@ -1,85 +1,45 @@
 <model>
     <instance>
         <form xmlns="http://www.w3.org/2002/xforms">
-
             <header>
-
                 <enterer/>
-
                 <date_entered/>
-
                 <session/>
-
                 <uid/>
-
             </header>
-
             <patient>
-
                 <patient.patient_id openmrs_table="patient" openmrs_attribute="patient_id"/>
-
                 <patient_identifier.identifier_type_id openmrs_table="patient_identifier" openmrs_attribute="identifier_type_id"/>
-
                 <patient.medical_record_number openmrs_table="patient_identifier" openmrs_attribute="identifier"/>
-
                 <patient.birthdate openmrs_table="patient" openmrs_attribute="birthdate"/>
-
                 <patient.birthdate_estimated openmrs_table="patient" openmrs_attribute="birthdate_estimated"/>
-
                 <patient.family_name openmrs_table="patient_name" openmrs_attribute="family_name"/>
-
                 <patient.given_name openmrs_table="patient_name" openmrs_attribute="given_name"/>
-
                 <patient.middle_name openmrs_table="patient_name" openmrs_attribute="middle_name"/>
-
                 <patient.sex openmrs_table="patient" openmrs_attribute="gender"/>
-
-                <person_attribute10 openmrs_table="" openmrs_attribute=""/>
-
+                <patient.phone_number openmrs_table="patient" openmrs_attribute="phone_number"/>
+                <person_attribute4 openmrs_table="" openmrs_attribute=""/>
                 <tmp>
-
-                    <amrs_id_scan/>
-
-                    <amrs_id_manual/>
-
-                    <amrs_id_manual_confirm/>
-
-                    <birthdate_type/>
-
-                    <age/>
-
+                    <amrs_id/>
+                    <birthdate_type>birthdate</birthdate_type>
+                    <age>0</age>
+                    <birth_date_temp/>
                     <age_in_years/>
-
                     <birth_date/>
-
                     <birthdate_estimated/>
-
                 </tmp>
-
             </patient>
-
             <encounter>
-
                 <encounter.encounter_datetime openmrs_table="encounter" openmrs_attribute="encounter_datetime"/>
-
                 <encounter.location_id openmrs_table="encounter" openmrs_attribute="location_id"/>
-
                 <encounter.provider_id openmrs_table="encounter" openmrs_attribute="provider_id"/>
-
                 <tmp>
-
                     <provider_id_select/>
-
                     <provider_id_text/>
-
                 </tmp>
-
             </encounter>
-
             <obs openmrs_concept="1238^MEDICAL RECORD OBSERVATIONS^99DCT" openmrs_datatype="ZZ">
-
             </obs>
-
         </form>
     </instance>
 </model>
