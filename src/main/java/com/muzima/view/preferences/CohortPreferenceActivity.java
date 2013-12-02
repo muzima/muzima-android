@@ -10,16 +10,13 @@ import android.widget.Toast;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortPrefixPrefAdapter;
-import com.muzima.adapters.cohort.PreferenceClickListener;
 import com.muzima.adapters.concept.AutoCompleteCohortPrefixAdapter;
 import com.muzima.api.model.Cohort;
 import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.view.BaseFragmentActivity;
 import com.muzima.view.HelpActivity;
 
-import java.util.Set;
-
-public class CohortPreferenceActivity extends BaseFragmentActivity implements PreferenceClickListener {
+public class CohortPreferenceActivity extends BaseFragmentActivity {
     protected CohortPrefixPrefAdapter prefAdapter;
     private AutoCompleteCohortPrefixAdapter autoCompleteCohortPrefixAdapter;
     private AutoCompleteTextView cohortPrefix;
@@ -33,13 +30,12 @@ public class CohortPreferenceActivity extends BaseFragmentActivity implements Pr
         preferenceService = new CohortPrefixPreferenceService(this);
 
         ListView cohortPrefList = (ListView) findViewById(R.id.cohort_pref_list);
-        prefAdapter = new CohortPrefixPrefAdapter(this, R.layout.item_preference);
-        prefAdapter.setPreferenceClickListener(this);
+        prefAdapter = new CohortPrefixPrefAdapter(this, R.layout.item_preference, this);
         cohortPrefList.setEmptyView(findViewById(R.id.no_data_msg));
         cohortPrefList.setAdapter(prefAdapter);
 
 
-        cohortPrefix = (AutoCompleteTextView)findViewById(R.id.prefix_add_prefix);
+        cohortPrefix = (AutoCompleteTextView) findViewById(R.id.prefix_add_prefix);
         autoCompleteCohortPrefixAdapter = new AutoCompleteCohortPrefixAdapter(getApplicationContext(), R.layout.item_option_autocomplete, cohortPrefix);
         cohortPrefix.setAdapter(autoCompleteCohortPrefixAdapter);
 
@@ -77,11 +73,11 @@ public class CohortPreferenceActivity extends BaseFragmentActivity implements Pr
 
     public void addPrefix(View view) {
         String newPrefix = cohortPrefix.getText().toString();
-        if(newPrefix.length()==0){
+        if (newPrefix.length() == 0) {
             Toast.makeText(this, "You can't add an empty prefix", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(!preferenceService.addCohortPrefix(newPrefix)){
+        if (!preferenceService.addCohortPrefix(newPrefix)) {
             Toast.makeText(this, "Prefix already exists", Toast.LENGTH_SHORT).show();
         }
         prefAdapter.reloadData();
@@ -89,22 +85,8 @@ public class CohortPreferenceActivity extends BaseFragmentActivity implements Pr
     }
 
 
-    @Override
     public void onDeletePreferenceClick(String pref) {
         preferenceService.deleteCohortPrefix(pref);
         prefAdapter.reloadData();
     }
-
-    @Override
-    public void onChangePreferenceClick(String pref) {
-        //save prefix
-        //notify list
-    }
-
-    private boolean validPrefix(Set<String> prefixes, String newPrefix) {
-        return !prefixes.contains(newPrefix);
-    }
-
-
-
 }
