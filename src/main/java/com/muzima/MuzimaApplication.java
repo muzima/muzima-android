@@ -79,6 +79,7 @@ public class MuzimaApplication extends Application {
         muzimaTimer = getTimer(this);
         super.onCreate();
         try {
+            ContextFactory.setProperty(Constants.LUCENE_DIRECTORY_PATH, APP_DIR);
             ContextFactory.setProperty(Constants.RESOURCE_CONFIGURATION_STRING, getConfigurationString());
             muzimaContext = ContextFactory.createContext();
         } catch (IOException e) {
