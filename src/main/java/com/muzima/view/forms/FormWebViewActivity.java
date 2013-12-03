@@ -1,8 +1,12 @@
 package com.muzima.view.forms;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
@@ -206,8 +210,20 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         }
     }
 
-    private WebSettings getSettings() {
-        return webView.getSettings();
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(FormWebViewActivity.this);
+            builder
+                    .setCancelable(true)
+                    .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                    .setTitle(getResources().getString(R.string.caution))
+                    .setMessage(getResources().getString(R.string.exit_form_message))
+                    .setPositiveButton("Yes", positiveClickListener())
+                    .setNegativeButton("No", null).create().show();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     public void startPatientSummaryView(Patient patient) {
@@ -215,5 +231,23 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         intent.putExtra(PatientSummaryActivity.PATIENT, patient);
         startActivity(intent);
     }
+
+    private WebSettings getSettings() {
+        return webView.getSettings();
+    }
+
+    private Dialog.OnClickListener positiveClickListener() {
+        return new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                processBackButtonPressed();
+            }
+        };
+    }
+
+    private void processBackButtonPressed(){
+        super.onBackPressed();
+    }
+
 }
 

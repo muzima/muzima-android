@@ -193,5 +193,7 @@
     <string name="switch_server_message">Switching Server: This will clear all mUzima data on your
         device. Are you sure you want to change this setting?
     </string>
+    <string name="exit_form_message">Closing Form: This will discard all your changes.  Are you sure you would like to do this?
+    </string>
 
 </resources>
