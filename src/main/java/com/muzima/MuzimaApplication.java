@@ -38,6 +38,7 @@ public class MuzimaApplication extends Application {
     private MuzimaSyncService muzimaSyncService;
     private CohortPrefixPreferenceService prefixesPreferenceService;
     private MuzimaTimer muzimaTimer;
+    public static final String APP_DIR = "/data/data/com.muzima";
 
     static {
         // see http://rtyley.github.io/spongycastle/
@@ -46,7 +47,7 @@ public class MuzimaApplication extends Application {
 
     public void clearApplicationData() {
         try {
-            File dir = new File(ContextFactory.APP_DIR);
+            File dir = new File(APP_DIR);
             if (dir.isDirectory()) {
                 deleteDir(dir);
             }

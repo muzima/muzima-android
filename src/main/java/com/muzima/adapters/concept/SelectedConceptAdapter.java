@@ -27,17 +27,13 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Concept;
-import com.muzima.api.model.ConceptName;
 import com.muzima.controller.ConceptController;
-import com.muzima.search.api.util.StringUtil;
-import com.muzima.utils.StringUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * TODO: Write brief description about the class here.
+ * Responsible to display Concepts in the Settings page.
  */
 public class SelectedConceptAdapter extends ListAdapter<Concept> {
     private final String TAG = SelectedConceptAdapter.class.getSimpleName();
@@ -91,7 +87,7 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
         Concept concept = getItem(position);
         if (concept != null) {
             holder.name.setText(concept.getName());
-            holder.synonyms.setText(getSynonyms(concept));
+            holder.synonyms.setText(concept.getSynonyms());
             holder.deleteButton.setOnClickListener(holder.deleteConceptListener(position));
         }
         return convertView;
@@ -112,6 +108,9 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
         new BackgroundSaveAndQueryTask().execute();
     }
 
+    /**
+     * Responsible to save the concept into DB on selection from AutoComplete. And also fetches to Concepts from DB to display in the page.
+     */
     public class BackgroundSaveAndQueryTask extends AsyncTask<Concept, Void, List<Concept>> {
 
         @Override
@@ -119,7 +118,8 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
             List<Concept> selectedConcepts = null;
             List<Concept> conceptList = Arrays.asList(concepts);
             try {
-                if (concepts != null) {
+                if (concepts.length > 0) {
+                    // Called with Concept which is selected in the AutoComplete menu.
                     conceptController.saveConcepts(conceptList);
                 }
                 selectedConcepts = conceptController.getConcepts();
@@ -128,7 +128,6 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
             } catch (ConceptController.ConceptFetchException e) {
                 Log.w(TAG, "Exception occurred while fetching concepts from local data repository!", e);
             }
-            Log.i(TAG, "#Concepts: " + selectedConcepts.size());
             return selectedConcepts;
         }
 
@@ -142,25 +141,6 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
             addAll(concepts);
             notifyDataSetChanged();
         }
-    }
-
-    private String getSynonyms(Concept concept) {
-        int counter = 0;
-        List<String> synonyms = new ArrayList<String>();
-        List<ConceptName> conceptNames = concept.getConceptNames();
-        while (counter < conceptNames.size() && synonyms.size() < 1) {
-            ConceptName conceptName = conceptNames.get(counter++);
-            String name = conceptName.getName();
-            if (!synonyms.contains(name) && !StringUtil.equals(name, concept.getName())) {
-                synonyms.add(name);
-            }
-        }
-        StringBuilder synonymBuilder = new StringBuilder();
-        synonymBuilder.append(StringUtils.getCommaSeparatedStringFromList(synonyms));
-        if (conceptNames.size() > 2) {
-            synonymBuilder.append(" (").append(conceptNames.size() - 2).append(" more.)");
-        }
-        return synonymBuilder.toString();
     }
 
     public void addConcept(Concept concept) {
