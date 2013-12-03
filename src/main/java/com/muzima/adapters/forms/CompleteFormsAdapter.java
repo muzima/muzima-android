@@ -1,3 +1,19 @@
+/**
+ * Copyright 2012 Muzima Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.muzima.adapters.forms;
 
 import android.content.Context;
@@ -9,7 +25,10 @@ import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
 import java.util.List;
 
-public class CompleteFormsAdapter extends SectionedFormsAdapter<CompleteFormWithPatientData>{
+/**
+ * Responsible to list down all the completed forms in the Device.
+ */
+public class CompleteFormsAdapter extends SectionedFormsAdapter<CompleteFormWithPatientData> {
     private static final String TAG = "CompleteFormsAdapter";
 
     public CompleteFormsAdapter(Context context, int textViewResourceId, FormController formController) {
@@ -21,6 +40,9 @@ public class CompleteFormsAdapter extends SectionedFormsAdapter<CompleteFormWith
         new BackgroundQueryTask(this).execute();
     }
 
+    /**
+     * Responsible to get all the completed forms from the DB.
+     */
     public static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<CompleteFormWithPatientData> {
 
         public BackgroundQueryTask(FormsAdapter formsAdapter) {
@@ -47,7 +69,8 @@ public class CompleteFormsAdapter extends SectionedFormsAdapter<CompleteFormWith
         @Override
         protected void onPostExecute(List<CompleteFormWithPatientData> forms) {
             if (adapterWeakReference.get() != null) {
-                SectionedFormsAdapter formsAdapter = (SectionedFormsAdapter)adapterWeakReference.get();
+                // Forms have to be displayed in sorted fashion by Patient. And forms' don't have a direct relationship with patient.
+                SectionedFormsAdapter formsAdapter = (SectionedFormsAdapter) adapterWeakReference.get();
                 formsAdapter.setPatients(formsAdapter.buildPatientsList(forms));
                 formsAdapter.sortFormsByPatientName(forms);
                 notifyListener();

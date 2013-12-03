@@ -1,9 +1,23 @@
+/**
+ * Copyright 2012 Muzima Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.muzima.adapters.forms;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.ListView;
-
 import com.muzima.controller.FormController;
 import com.muzima.model.IncompleteFormWithPatientData;
 import com.muzima.model.collections.IncompleteFormsWithPatientData;
@@ -11,6 +25,9 @@ import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
 import java.util.List;
 
+/**
+ * Responsible to display all the incomplete forms.
+ */
 public class IncompleteFormsAdapter extends SectionedFormsAdapter<IncompleteFormWithPatientData> {
     private static final String TAG = "IncompleteFormsAdapter";
 
@@ -23,6 +40,9 @@ public class IncompleteFormsAdapter extends SectionedFormsAdapter<IncompleteForm
         new BackgroundQueryTask(this).execute();
     }
 
+    /**
+     * Responsible to fetch all the incomplete forms from the DB.
+     */
     public static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<IncompleteFormWithPatientData> {
 
         public BackgroundQueryTask(FormsAdapter formsAdapter) {

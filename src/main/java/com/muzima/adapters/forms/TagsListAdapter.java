@@ -1,3 +1,19 @@
+/**
+ * Copyright 2012 Muzima Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.muzima.adapters.forms;
 
 import android.content.Context;
@@ -21,6 +37,9 @@ import com.muzima.controller.FormController;
 
 import java.util.List;
 
+/**
+ * Responsible to list down the tags in the TagDrawer.
+ */
 public class TagsListAdapter extends ListAdapter<Tag> implements AdapterView.OnItemClickListener {
     private static final String TAG = "TagsListAdapter";
     private FormController formController;
@@ -126,6 +145,9 @@ public class TagsListAdapter extends ListAdapter<Tag> implements AdapterView.OnI
         ImageView icon;
     }
 
+    /**
+     * Responsible to fetch all the tags that are available in the DB.
+     */
     private class BackgroundQueryTask extends AsyncTask<Void, Void, List<Tag>> {
         @Override
         protected List<Tag> doInBackground(Void... voids) {

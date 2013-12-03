@@ -1,3 +1,19 @@
+/**
+ * Copyright 2012 Muzima Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.muzima.adapters.forms;
 
 import android.content.Context;
@@ -7,7 +23,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.muzima.MuzimaApplication;
@@ -25,6 +40,9 @@ import com.muzima.view.CheckedRelativeLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Responsible to list down all the available forms in the server including Tags and img to indicate whether downloaded or not.
+ */
 public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implements TagsListAdapter.TagsChangedListener{
     private static final String TAG = "AllAvailableFormsAdapter";
     private List<String> selectedFormsUuid;
@@ -43,6 +61,7 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
         convertView = super.getView(position, convertView, parent);
 
         highlightIfSelected(convertView, getItem(position));
+
         ViewHolder viewHolder = (ViewHolder) convertView.getTag();
         addTags(viewHolder, getItem(position));
         markIfDownloaded(viewHolder.downloadedImg, getItem(position));
@@ -176,6 +195,9 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
         return false;
     }
 
+    /**
+     * Responsible to download all the form names based on Tags from Server.
+     */
     public class DownloadBackgroundQueryTask extends FormsAdapterBackgroundQueryTask<AvailableForm> {
 
         public DownloadBackgroundQueryTask(FormsAdapter adapter) {
@@ -209,7 +231,9 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
         }
     }
 
-
+    /**
+     * Responsible to fetch the forms from the local DB based on the selected tags.
+     */
     public class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<AvailableForm> {
 
         public BackgroundQueryTask(FormsAdapter formsAdapter) {
