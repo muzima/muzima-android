@@ -36,6 +36,10 @@ import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
 
+/**
+ * Responsible to display auto-complete menu for Concept and Cohort.
+ * @param <T> T can be of Type Concept or Cohort. Objects displayed in the auto-complete menu.
+ */
 public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
 
     private static final String TAG = AutoCompleteBaseAdapter.class.getSimpleName();
@@ -60,9 +64,6 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -145,9 +146,6 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
         TextView name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;

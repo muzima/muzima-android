@@ -25,6 +25,9 @@ import com.muzima.controller.CohortController;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Responsible to display and select auto-complete menu of CohortPrefix.
+ */
 public class AutoCompleteCohortPrefixAdapter extends AutoCompleteBaseAdapter<Cohort> {
 
     private static final String TAG = AutoCompleteCohortPrefixAdapter.class.getSimpleName();

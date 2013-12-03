@@ -25,6 +25,10 @@ import com.muzima.controller.ConceptController;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Responsible to display and select auto-complete menu of Concept while adding new Concept.
+ */
+
 public class AutoCompleteConceptAdapter extends AutoCompleteBaseAdapter<Concept> {
     private static final String TAG = AutoCompleteConceptAdapter.class.getSimpleName();
 
