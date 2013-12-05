@@ -147,7 +147,6 @@ public class PatientSummaryActivity extends BaseActivity {
         protected PatientSummaryActivityMetadata doInBackground(Void... voids) {
             MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
             PatientSummaryActivityMetadata patientSummaryActivityMetadata = new PatientSummaryActivityMetadata();
-            PatientController patientController = muzimaApplication.getPatientController();
             FormController formController = muzimaApplication.getFormController();
             try {
                 patientSummaryActivityMetadata.recommendedForms = formController.getRecommendedFormsCount();

@@ -22,7 +22,6 @@ import com.muzima.MuzimaApplication;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
-import com.muzima.controller.PatientController;
 import com.muzima.view.forms.CompletePatientsFormsListFragment;
 import com.muzima.view.forms.IncompletePatientsFormsListFragment;
 import com.muzima.view.forms.RecommendedFormsListFragment;
@@ -45,7 +44,6 @@ public class PatientFormsPagerAdapter extends MuzimaPagerAdapter {
     public void initPagerViews() {
         pagers = new PagerView[3];
         FormController formController = ((MuzimaApplication) context.getApplicationContext()).getFormController();
-        PatientController patientController = ((MuzimaApplication) context.getApplicationContext()).getPatientController();
 
         IncompletePatientsFormsListFragment incompleteFormsListFragment = IncompletePatientsFormsListFragment.newInstance(formController, patient);
         RecommendedFormsListFragment recommendedFormsListFragment = RecommendedFormsListFragment.newInstance(formController, patient);

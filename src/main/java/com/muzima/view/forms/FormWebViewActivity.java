@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
@@ -38,6 +39,7 @@ import java.util.UUID;
 import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
 import static com.muzima.controller.FormController.FormFetchException;
 import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_ENCOUNTER;
+import static com.muzima.utils.Constants.STATUS_COMPLETE;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 import static java.text.MessageFormat.format;
 
@@ -97,7 +99,11 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.form_save_menu, menu);
+        if (isFormComplete()) {
+            getSupportMenuInflater().inflate(R.menu.form_close, menu);
+        } else {
+            getSupportMenuInflater().inflate(R.menu.form_save_menu, menu);
+        }
         return true;
     }
 
@@ -118,6 +124,9 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             case R.id.form_submit:
                 webView.loadUrl("javascript:document.submit()");
                 return true;
+            case R.id.form_close:
+                processBackButtonPressed();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -125,6 +134,40 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
 
     public void saveDraft() {
         webView.loadUrl("javascript:document.saveDraft()");
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if (scanResult != null) {
+            scanResultMap.put(barCodeComponent.getFieldName(), scanResult.getContents());
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(FormWebViewActivity.this);
+            builder
+                    .setCancelable(true)
+                    .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                    .setTitle(getResources().getString(R.string.caution))
+                    .setMessage(getResources().getString(R.string.exit_form_message))
+                    .setPositiveButton("Yes", positiveClickListener())
+                    .setNegativeButton("No", null).create().show();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void startPatientSummaryView(Patient patient) {
+        Intent intent = new Intent(this, PatientSummaryActivity.class);
+        intent.putExtra(PatientSummaryActivity.PATIENT, patient);
+        startActivity(intent);
+    }
+
+    private boolean isFormComplete() {
+        return formData.getStatus().equalsIgnoreCase(STATUS_COMPLETE);
     }
 
     private void setupFormData(Patient patient) throws FormFetchException, FormController.FormDataFetchException, FormController.FormDataSaveException {
@@ -163,7 +206,29 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
 
     private void setupWebView() {
         webView = (WebView) findViewById(R.id.webView);
-        webView.setWebChromeClient(new WebChromeClient() {
+        webView.setWebChromeClient(createWebChromeClient());
+
+        getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+        getSettings().setJavaScriptEnabled(true);
+        getSettings().setDatabaseEnabled(true);
+        getSettings().setDomStorageEnabled(true);
+
+        FormInstance formInstance = new FormInstance(form, formTemplate);
+        webView.addJavascriptInterface(formInstance, FORM_INSTANCE);
+        FormController formController = ((MuzimaApplication) getApplication()).getFormController();
+        webView.addJavascriptInterface(new FormDataStore(this, formController, formData), REPOSITORY);
+        barCodeComponent = new BarCodeComponent(this);
+        webView.addJavascriptInterface(barCodeComponent, BARCODE);
+        webView.addJavascriptInterface(new ZiggyFileLoader("www/ziggy", getApplicationContext().getAssets(), formInstance.getModelJson()), ZIGGY_FILE_LOADER);
+        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        if (isFormComplete()) {
+            webView.setOnTouchListener(createCompleteFormListenerToDisableInput());
+        }
+        webView.loadUrl("file:///android_asset/www/enketo/template.html");
+    }
+
+    private WebChromeClient createWebChromeClient() {
+        return new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int progress) {
                 FormWebViewActivity.this.setProgress(progress * 1000);
@@ -183,53 +248,21 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
                 }
                 return true;
             }
-        });
-
-        getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-        getSettings().setJavaScriptEnabled(true);
-        getSettings().setDatabaseEnabled(true);
-        getSettings().setDomStorageEnabled(true);
-
-        FormInstance formInstance = new FormInstance(form, formTemplate);
-        webView.addJavascriptInterface(formInstance, FORM_INSTANCE);
-        FormController formController = ((MuzimaApplication) getApplication()).getFormController();
-        webView.addJavascriptInterface(new FormDataStore(this, formController, formData), REPOSITORY);
-        barCodeComponent = new BarCodeComponent(this);
-        webView.addJavascriptInterface(barCodeComponent, BARCODE);
-        webView.addJavascriptInterface(new ZiggyFileLoader("www/ziggy", getApplicationContext().getAssets(), formInstance.getModelJson()), ZIGGY_FILE_LOADER);
-        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-
-        webView.loadUrl("file:///android_asset/www/enketo/template.html");
+        };
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        if (scanResult != null) {
-            scanResultMap.put(barCodeComponent.getFieldName(), scanResult.getContents());
-        }
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(FormWebViewActivity.this);
-            builder
-                    .setCancelable(true)
-                    .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                    .setTitle(getResources().getString(R.string.caution))
-                    .setMessage(getResources().getString(R.string.exit_form_message))
-                    .setPositiveButton("Yes", positiveClickListener())
-                    .setNegativeButton("No", null).create().show();
-            return false;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    public void startPatientSummaryView(Patient patient) {
-        Intent intent = new Intent(this, PatientSummaryActivity.class);
-        intent.putExtra(PatientSummaryActivity.PATIENT, patient);
-        startActivity(intent);
+    private View.OnTouchListener createCompleteFormListenerToDisableInput() {
+        return new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() != MotionEvent.ACTION_MOVE) {
+                    view.setFocusable(false);
+                    view.setEnabled(false);
+                    return true;
+                }
+                return false;
+            }
+        };
     }
 
     private WebSettings getSettings() {
@@ -246,8 +279,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     }
 
     private void processBackButtonPressed(){
-        super.onBackPressed();
+        onBackPressed();
     }
-
 }
 
