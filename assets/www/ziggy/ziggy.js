@@ -706,8 +706,10 @@ enketo.FormDataRepository = function () {
         queryList: function (sql) {
             return repository.queryList(sql);
         },
-        saveFormSubmission: function (jsonData,xmlData, status) {
-            return repository.save(JSON.stringify(jsonData), xmlData,status);
+        saveFormSubmission: function (data, status) {
+            var payload = JSON.stringify(data);
+            console.log("The payload saved is:"+payload);
+            return repository.save(payload, status);
         },
         saveEntity: function (entityType, entity) {
             return repository.saveEntity(entityType, JSON.stringify(entity));
