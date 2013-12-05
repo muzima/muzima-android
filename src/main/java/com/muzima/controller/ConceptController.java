@@ -16,7 +16,6 @@
 package com.muzima.controller;
 
 import com.muzima.api.model.Concept;
-import com.muzima.api.model.ConceptName;
 import com.muzima.api.service.ConceptService;
 
 import java.io.IOException;
@@ -61,26 +60,13 @@ public class ConceptController {
             Iterator<Concept> iterator = concepts.iterator();
             while (iterator.hasNext()){
                 Concept next = iterator.next();
-                boolean found = containsNameIgnoreLowerCase(name, next);
-                if(!found){
+                if(!next.containsNameIgnoreLowerCase(name)){
                     iterator.remove();
                 }
             }
             result.addAll(concepts);
         }
         return new ArrayList<Concept>(result);
-    }
-
-    private boolean containsNameIgnoreLowerCase(String name, Concept next) {
-        List<ConceptName> conceptNames = next.getConceptNames();
-        int index = 0;
-        ConceptName conceptName = conceptNames.get(index);
-        boolean found = name.equalsIgnoreCase(conceptName.getName());
-        while (!found & index<conceptNames.size()){
-            conceptName = conceptNames.get(index++);
-            found = name.equalsIgnoreCase(conceptName.getName());
-        }
-        return found;
     }
 
     public List<Concept> getConcepts() throws ConceptFetchException {
