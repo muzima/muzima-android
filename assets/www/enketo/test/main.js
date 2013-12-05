@@ -27,7 +27,7 @@ var formDataRepositoryContext = formDataRepositoryContext || {
     getFormPayload: function () {
         return getDataFromFile('payload.json');
     },
-    saveFormSubmission: function (data) {
+    saveFormSubmission: function (data, xmlData, status) {
         console.log(JSON.stringify(data));
     }
 

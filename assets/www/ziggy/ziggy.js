@@ -706,8 +706,8 @@ enketo.FormDataRepository = function () {
         queryList: function (sql) {
             return repository.queryList(sql);
         },
-        saveFormSubmission: function (data, status) {
-            return repository.save(JSON.stringify(data), status);
+        saveFormSubmission: function (jsonData,xmlData, status) {
+            return repository.save(JSON.stringify(jsonData), xmlData,status);
         },
         saveEntity: function (entityType, entity) {
             return repository.saveEntity(entityType, JSON.stringify(entity));
@@ -762,8 +762,8 @@ enketo.FormDataController = function (entityRelationshipLoader, formDefinitionLo
         return formModelMapper.mapToFormModel(self.entityDefinitions, self.formDefinition, params);
     };
 
-    self.save = function (data, status) {
-        formDataRepository.saveFormSubmission(data, status);
+    self.save = function (jsonData,xmlData, status) {
+        formDataRepository.saveFormSubmission(jsonData,xmlData, status);
     };
 
     self.createOrUpdateEntity = function (params, data) {

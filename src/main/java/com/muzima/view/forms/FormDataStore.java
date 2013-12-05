@@ -3,7 +3,6 @@ package com.muzima.view.forms;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
-
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
@@ -25,16 +24,16 @@ public class FormDataStore {
     }
 
     @JavascriptInterface
-    public void save(String data, String status) {
-        Log.d(TAG, data);
+    public void save(String jsonData, String xmlData, String status) {
         Patient newPatient = null;
-        if(isRegistrationComplete(status)){
-            newPatient = formController.createNewPatient(data);
+        if (isRegistrationComplete(status)) {
+            newPatient = formController.createNewPatient(jsonData);
             formData.setPatientUuid(newPatient.getUuid());
             formData.setDiscriminator(FORM_DISCRIMINATOR_REGISTRATION);
             formWebViewActivity.startPatientSummaryView(newPatient);
         }
-        formData.setPayload(data);
+        formData.setXmlPayload(xmlData);
+        formData.setJsonPayload(jsonData);
         formData.setStatus(status);
         try {
             formController.saveFormData(formData);
@@ -52,7 +51,7 @@ public class FormDataStore {
 
     @JavascriptInterface
     public String getFormPayload() {
-        return formData.getPayload();
+        return formData.getJsonPayload();
     }
 
     public boolean isRegisterPatient() {

@@ -4,7 +4,6 @@ import com.muzima.api.model.FormData;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.testSupport.CustomTestRunner;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,23 +31,23 @@ public class FormDataStoreTest {
 
     @Test
     public void save_shouldSaveFormDataWithStatus() throws Exception, FormController.FormDataSaveException {
-        store.save("data", "status");
+        store.save("data", "xmldata", "status");
         verify(controller).saveFormData(formData);
         verify(activity).finish();
-        assertThat(formData.getPayload(), is("data"));
+        assertThat(formData.getJsonPayload(), is("data"));
         assertThat(formData.getStatus(), is("status"));
     }
 
     @Test
     public void save_shouldNotFinishTheActivityIfThereIsAnExceptionWhileSaving() throws Exception, FormController.FormDataSaveException {
         doThrow(new FormController.FormDataSaveException(null)).when(controller).saveFormData(formData);
-        store.save("data", "status");
+        store.save("data", "xmldata", "status");
         verify(activity, times(0)).finish();
     }
 
     @Test
     public void getFormPayload_shouldGetTheFormDataPayload() throws Exception {
-        formData.setPayload("payload");
+        formData.setJsonPayload("payload");
         assertThat(store.getFormPayload(), is("payload"));
     }
 
@@ -59,7 +58,8 @@ public class FormDataStoreTest {
         Patient patient = new Patient();
         patient.setUuid(tempUUIDAssignedByDevice);
         when(controller.createNewPatient("data")).thenReturn(patient);
-        store.save("data","complete");
-        assertThat(formData.getPatientUuid(),is(tempUUIDAssignedByDevice));
+        store.save("data", "xmlData", "complete");
+        assertThat(formData.getXmlPayload(), is("xmlData"));
+        assertThat(formData.getPatientUuid(), is(tempUUIDAssignedByDevice));
     }
 }

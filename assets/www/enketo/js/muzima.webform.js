@@ -39,9 +39,10 @@ $(document).ready(function () {
     loadErrors = form.init();
 
     function save(status) {
-        var jData = jDataO.get();
-        delete jData.errors;
-        formDataController.save(jData, status);
+        var jsonData = jDataO.get();
+        var xmlData = jDataO.toXML();
+        delete jsonData.errors;
+        formDataController.save(jsonData, xmlData, status);
     }
 
     document.saveDraft = function () {
@@ -82,12 +83,12 @@ $(document).ready(function () {
     $barcodeInput.before("<input type='button' class='barcode_img'>");
     $('.barcode_img').click(function () {
         //barCodeComponent is defined in FormWebViewActivity.java
-        if(!isFromInput){
+        if (!isFromInput) {
             barCodeComponent.startBarCodeIntent($barcodeInput.attr('name'));
         }
         isFromInput = false;
     });
-    $barcodeInput.click(function (e){
+    $barcodeInput.click(function (e) {
         isFromInput = true;
     });
     /*End- BarCode Functionality*/
