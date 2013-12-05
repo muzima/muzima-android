@@ -133,7 +133,9 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     }
 
     public void saveDraft() {
-        webView.loadUrl("javascript:document.saveDraft()");
+        if (!isFormComplete()) {
+            webView.loadUrl("javascript:document.saveDraft()");
+        }
     }
 
     @Override
