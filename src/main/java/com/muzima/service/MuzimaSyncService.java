@@ -55,19 +55,19 @@ public class MuzimaSyncService {
                 muzimaContext.authenticate(username, password, server);
             }
         } catch (ConnectException e) {
-            Log.e(TAG, "ConnectException Exception thrown while authentication " + e.getMessage());
+            Log.e(TAG, "ConnectException Exception thrown while authentication.", e);
             return CONNECTION_ERROR;
         } catch (ParseException e) {
-            Log.e(TAG, "ParseException Exception thrown while authentication " + e.getMessage());
+            Log.e(TAG, "ParseException Exception thrown while authentication.", e);
             return PARSING_ERROR;
         } catch (MalformedURLException e) {
-            Log.e(TAG, "IOException Exception thrown while authentication " + e.getMessage());
+            Log.e(TAG, "IOException Exception thrown while authentication.", e);
             return MALFORMED_URL_ERROR;
         } catch (IOException e) {
-            Log.e(TAG, "IOException Exception thrown while authentication " + e.getMessage());
+            Log.e(TAG, "IOException Exception thrown while authentication.", e);
             return AUTHENTICATION_ERROR;
         } catch (AuthenticationException e) {
-            Log.e(TAG, "Exception thrown while authentication " + e.getMessage());
+            Log.e(TAG, "Exception thrown while authentication.", e);
             return INVALID_CREDENTIALS_ERROR;
         } finally {
             if (muzimaContext != null)
@@ -155,15 +155,15 @@ public class MuzimaSyncService {
             result[0] = SUCCESS;
             result[1] = cohorts.size();
         } catch (CohortController.CohortDownloadException e) {
-            Log.e(TAG, "Exception when trying to download cohorts");
+            Log.e(TAG, "Exception when trying to download cohorts", e);
             result[0] = DOWNLOAD_ERROR;
             return result;
         } catch (CohortController.CohortSaveException e) {
-            Log.e(TAG, "Exception when trying to save cohorts");
+            Log.e(TAG, "Exception when trying to save cohorts", e);
             result[0] = SAVE_ERROR;
             return result;
         } catch (CohortController.CohortDeleteException e) {
-            Log.e(TAG, "Exception when trying to delete cohorts");
+            Log.e(TAG, "Exception when trying to delete cohorts", e);
             result[0] = DELETE_ERROR;
             return result;
         }
@@ -213,13 +213,13 @@ public class MuzimaSyncService {
             result[1] = patientCount;
             result[2] = cohortDataList.size();
         } catch (CohortController.CohortDownloadException e) {
-            Log.e(TAG, "Exception thrown while downloading cohort data" + e);
+            Log.e(TAG, "Exception thrown while downloading cohort data.", e);
             result[0] = DOWNLOAD_ERROR;
         } catch (CohortController.CohortReplaceException e) {
-            Log.e(TAG, "Exception thrown while replacing cohort data" + e);
+            Log.e(TAG, "Exception thrown while replacing cohort data.", e);
             result[0] = REPLACE_ERROR;
         } catch (PatientController.PatientSaveException e) {
-            Log.e(TAG, "Exception thrown while replacing patients" + e);
+            Log.e(TAG, "Exception thrown while replacing patients.", e);
             result[0] = REPLACE_ERROR;
         }
         return result;
@@ -234,10 +234,10 @@ public class MuzimaSyncService {
             result[0] = SUCCESS;
             result[1] = downloadedPatients.size();
         } catch (PatientController.PatientDownloadException e) {
-            Log.e(TAG, "Error while downloading patients" + e);
+            Log.e(TAG, "Error while downloading patients.", e);
             result[0] = DOWNLOAD_ERROR;
         } catch (PatientController.PatientSaveException e) {
-            Log.e(TAG, "Error while saving patients" + e);
+            Log.e(TAG, "Error while saving patients.", e);
             result[0] = DOWNLOAD_ERROR;
         }
         return result;
@@ -250,7 +250,7 @@ public class MuzimaSyncService {
             patients = patientController.getPatientsForCohorts(cohortUuids);
             result = downloadObservationsForPatientsByPatientUUIDs(getPatientUuids(patients));
         } catch (PatientController.PatientLoadException e) {
-            Log.e(TAG, "Exception thrown while loading patients" + e);
+            Log.e(TAG, "Exception thrown while loading patients.", e);
             result[0] = LOAD_ERROR;
         }
         return result;
@@ -274,13 +274,13 @@ public class MuzimaSyncService {
             result[0] = SUCCESS;
             result[1] = allObservations.size();
         } catch (ObservationController.DownloadObservationException e) {
-            Log.e(TAG, "Exception thrown while downloading observations" + e);
+            Log.e(TAG, "Exception thrown while downloading observations.", e);
             result[0] = DOWNLOAD_ERROR;
         } catch (ObservationController.ReplaceObservationException e) {
-            Log.e(TAG, "Exception thrown while replacing observations" + e);
+            Log.e(TAG, "Exception thrown while replacing observations.", e);
             result[0] = REPLACE_ERROR;
         } catch (ConceptController.ConceptFetchException e) {
-            Log.e(TAG, "Exception thrown while loading concepts" + e);
+            Log.e(TAG, "Exception thrown while loading concepts.", e);
             result[0] = LOAD_ERROR;
         }
 
@@ -294,7 +294,7 @@ public class MuzimaSyncService {
             patients = patientController.getPatientsForCohorts(cohortUuids);
             result = downloadEncountersForPatientsByPatientUUIDs(getPatientUuids(patients));
         } catch (PatientController.PatientLoadException e) {
-            Log.e(TAG, "Exception thrown while loading patients" + e);
+            Log.e(TAG, "Exception thrown while loading patients.", e);
             result[0] = LOAD_ERROR;
         }
         return result;
@@ -317,10 +317,10 @@ public class MuzimaSyncService {
             result[0] = SUCCESS;
             result[1] = allEncounters.size();
         } catch (EncounterController.DownloadEncounterException e) {
-            Log.e(TAG, "Exception thrown while downloading encounters" + e);
+            Log.e(TAG, "Exception thrown while downloading encounters.", e);
             result[0] = DOWNLOAD_ERROR;
         } catch (EncounterController.ReplaceEncounterException e) {
-            Log.e(TAG, "Exception thrown while replacing encounters" + e);
+            Log.e(TAG, "Exception thrown while replacing encounters.", e);
             result[0] = REPLACE_ERROR;
         }
         return result;
@@ -331,7 +331,7 @@ public class MuzimaSyncService {
         try {
             result[0] = formController.uploadAllCompletedForms() ? SUCCESS : UPLOAD_ERROR;
         } catch (FormController.UploadFormDataException e) {
-            Log.e(TAG, "Exception thrown while uploading forms " + e);
+            Log.e(TAG, "Exception thrown while uploading forms.", e);
             result[0] = UPLOAD_ERROR;
         }
         return result;
@@ -348,7 +348,7 @@ public class MuzimaSyncService {
                 try {
                     patientController.savePatient(patientFromServer);
                 } catch (PatientController.PatientSaveException e) {
-                    Log.e(TAG, "Error while saving patients" + e);
+                    Log.e(TAG, "Error while saving patients.", e);
                 }
             }
         }
@@ -365,7 +365,7 @@ public class MuzimaSyncService {
             try {
                 jsonInputOutputToDisk.add(patientIdentifier);
             } catch (IOException e) {
-                Log.e(TAG, "Exception thrown when writing to phone disk" + e);
+                Log.e(TAG, "Exception thrown when writing to phone disk.", e);
             }
         }
     }
@@ -380,9 +380,9 @@ public class MuzimaSyncService {
             downloadedPatients.removeAll(singleton(null));
             patientController.replacePatients(downloadedPatients);
         } catch (PatientController.PatientSaveException e) {
-            Log.e(TAG, "Exception thrown while updating patients from server" + e);
+            Log.e(TAG, "Exception thrown while updating patients from server.", e);
         } catch (PatientController.PatientDownloadException e) {
-            Log.e(TAG, "Exception thrown while downloading patients from server" + e);
+            Log.e(TAG, "Exception thrown while downloading patients from server.", e);
         }
         return downloadedPatients;
     }

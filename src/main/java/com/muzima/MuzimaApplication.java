@@ -20,7 +20,11 @@ import com.muzima.view.preferences.MuzimaTimer;
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.security.Security;
 
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
@@ -75,6 +79,9 @@ public class MuzimaApplication extends Application {
         ACRA.init(this);
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.FROYO) {
             System.setProperty("http.keepAlive", "false");
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            Security.removeProvider("AndroidOpenSSL");
         }
         muzimaTimer = getTimer(this);
         super.onCreate();
