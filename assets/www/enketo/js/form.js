@@ -300,7 +300,11 @@ function Form (formSelector, dataStr, dataStrToEdit){
                 $target.text(newVal);
                 //then return validation result
                 success = this.validate(expr, xmlDataType);
-                $form.trigger('dataupdate', $target.prop('nodeName'));
+                var originalSelector = this.originalSelector;
+                var nodeNameMatch = originalSelector.match(/\/\w+\/value$/);
+                var nodeName = nodeNameMatch?nodeNameMatch[0]:$target.prop('nodeName');
+
+                $form.trigger('dataupdate', nodeName);
                 //add type="file" attribute for file references
                 if (xmlDataType === 'binary'){
                     if (newVal.length > 0 ){
