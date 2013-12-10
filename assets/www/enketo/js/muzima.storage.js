@@ -57,7 +57,7 @@ function JData(data) {
      * @return {?string}            XML string
      */
     this.toXML = function () {
-        var i, j, k, field, path, value, subForm, repeatInstance, defaultPath, repeatNodeName,
+        var i, j, k, field, path, value, concept, subForm, repeatInstance, defaultPath, repeatNodeName,
             $instance = $($.parseXML('<root />'));
 
         if (typeof data !== 'object') {
@@ -73,6 +73,11 @@ function JData(data) {
                 value = field.value;
                 addXMLNodeAndValue($instance, path, value);
                 //console.log('added path: '+path+' with value: "'+value+'"');
+            }
+            if (typeof field.concept !== 'undefined') {
+                path = (typeof field.bind === 'undefined') ? defaultPath + field.name : field.bind;
+                concept = field.concept;
+                addConceptAttributeNodeValue($instance, path, concept);
             }
         }
         //repeats:
@@ -269,6 +274,31 @@ function JData(data) {
 
             if (j === (nodeNames.length - 1)) {
                 $current.text(value);
+            }
+        }
+        return $doc;
+    }
+
+    function addConceptAttributeNodeValue($doc, path, concept, repeatO) {
+        var j, $node,
+            $current = $doc.find('root'),
+            nodeNames = path.substring(1).split('/'),
+            r = repeatO || {};
+
+        for (j = 0; j < nodeNames.length; j++) {
+            if ($current.children(nodeNames[j]).length === 0 ||
+                (r.name && r.index && nodeNames[j] === r.name && $current.children(nodeNames[j]).eq(r.index).length === 0)) {
+                //console.log('nodeName does not exist, going to create it as child of ', $current[0]);
+                $node = $($.parseXML('<' + nodeNames[j] + '/>').documentElement).clone();
+                $current.append($node);
+                $current = $node;
+            }
+            else {
+                $current = ( r.index && nodeNames[j] === r.name ) ? $current.children(nodeNames[j]).eq(r.index) : $current.children(nodeNames[j]);
+            }
+
+            if (j === (nodeNames.length - 1)) {
+                $current.attr("concept", concept);
             }
         }
         return $doc;
