@@ -32,7 +32,9 @@ public class FormDataStore {
             formData.setDiscriminator(FORM_DISCRIMINATOR_REGISTRATION);
             formWebViewActivity.startPatientSummaryView(newPatient);
         }
+        Log.d(TAG,"xml data is:"+xmlData);
         formData.setXmlPayload(xmlData);
+        Log.d(TAG,"json data is:"+xmlData);
         formData.setJsonPayload(jsonData);
         formData.setStatus(status);
         try {
