@@ -265,7 +265,7 @@ public class MuzimaSyncService {
             long endDownloadObservations = System.currentTimeMillis();
             Log.i(TAG, "Observations download successful with " + allObservations.size() + " observations");
 
-            observationController.replaceObservations(patientUuids, allObservations);
+            observationController.replaceObservations(allObservations);
             long replacedObservations = System.currentTimeMillis();
 
             Log.d(TAG, "In Downloading observations : " + (endDownloadObservations - startDownloadObservations) / 1000 + " sec\n" +
@@ -308,7 +308,7 @@ public class MuzimaSyncService {
             long endDownloadObservations = System.currentTimeMillis();
             Log.i(TAG, "Encounters download successful with " + allEncounters.size() + " encounters");
 
-            encounterController.replaceEncounters(patientUuids, allEncounters);
+            encounterController.replaceEncounters(allEncounters);
             long replacedEncounters = System.currentTimeMillis();
 
             Log.d(TAG, "In Downloading encounters : " + (endDownloadObservations - startDownloadEncounters) / 1000 + " sec\n" +

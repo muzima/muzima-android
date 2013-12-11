@@ -14,13 +14,9 @@ public class EncounterController {
         this.encounterService = encounterService;
     }
 
-    public void replaceEncounters(List<String> patientUuids, List<Encounter> allEncounters) throws ReplaceEncounterException {
+    public void replaceEncounters(List<Encounter> allEncounters) throws ReplaceEncounterException {
         try {
-            for (String patientUuid : patientUuids) {
-                List<Encounter> encountersByPatient = encounterService.getEncountersByPatientUuid(patientUuid);
-                encounterService.deleteEncounters(encountersByPatient);
-            }
-            encounterService.saveEncounters(allEncounters);
+            encounterService.updateEncounters(allEncounters);
         } catch (IOException e) {
             throw new ReplaceEncounterException(e);
         }

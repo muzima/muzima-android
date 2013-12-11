@@ -82,13 +82,9 @@ public class ObservationController {
         return conceptColors.get(uuid);
     }
 
-    public void replaceObservations(List<String> patientUuids, List<Observation> allObservations) throws ReplaceObservationException {
+    public void replaceObservations(List<Observation> allObservations) throws ReplaceObservationException {
         try {
-            for (String patientUuid : patientUuids) {
-                List<Observation> observationsByPatient = observationService.getObservationsByPatient(patientUuid);
-                observationService.deleteObservations(observationsByPatient);
-            }
-            observationService.saveObservations(allObservations);
+            observationService.updateObservations(allObservations);
         } catch (IOException e) {
             throw new ReplaceObservationException(e);
         }

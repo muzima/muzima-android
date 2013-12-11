@@ -434,7 +434,7 @@ public class MuzimaSyncServiceTest {
         muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortUuids);
 
         verify(observationController).downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids);
-        verify(observationController).replaceObservations(muzimaSyncService.getPatientUuids(patients), allObservations);
+        verify(observationController).replaceObservations(allObservations);
         verifyNoMoreInteractions(observationController);
     }
 
@@ -501,7 +501,7 @@ public class MuzimaSyncServiceTest {
     public void downloadObservationsForPatients_shouldReturnReplaceErrorWhenReplaceExceptionIsThrownForObservations() throws Exception, ReplaceObservationException {
         String[] cohortUuids = new String[]{};
 
-        doThrow(new ObservationController.ReplaceObservationException(null)).when(observationController).replaceObservations(anyList(), anyList());
+        doThrow(new ObservationController.ReplaceObservationException(null)).when(observationController).replaceObservations(anyList());
 
         int[] result = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortUuids);
         assertThat(result[0], is(REPLACE_ERROR));
@@ -527,7 +527,7 @@ public class MuzimaSyncServiceTest {
         muzimaSyncService.downloadEncountersForPatientsByCohortUUIDs(cohortUuids);
 
         verify(encounterController).downloadEncountersByPatientUuids(patientUuids);
-        verify(encounterController).replaceEncounters(patientUuids, encounters);
+        verify(encounterController).replaceEncounters(encounters);
         verifyNoMoreInteractions(observationController);
     }
 
