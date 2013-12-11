@@ -71,13 +71,13 @@ function JData(data) {
             if (typeof field.value !== 'undefined') {
                 path = (typeof field.bind === 'undefined') ? defaultPath + field.name : field.bind;
                 value = field.value;
-                addXMLNodeAndValue($instance, path, value);
+                addXMLNode($instance, path, function($node){$node.text(value);});
                 //console.log('added path: '+path+' with value: "'+value+'"');
             }
             if (typeof field.concept !== 'undefined') {
                 path = (typeof field.bind === 'undefined') ? defaultPath + field.name : field.bind;
                 concept = field.concept;
-                addConceptAttributeNodeValue($instance, path, concept);
+                addXMLNode($instance, path, function($node){$node.attr("concept", concept);});
             }
         }
         //repeats:
@@ -98,7 +98,7 @@ function JData(data) {
                                 path = (typeof field.bind === 'undefined') ? defaultPath + field.name : field.bind;
                                 value = repeatInstance[field.name];
                                 //note: also if the value is empty it is added!
-                                addXMLNodeAndValue($instance, path, value, {name: repeatNodeName, index: j});
+                                addXMLNode($instance, path, function($node){$node.text(value);}, {name: repeatNodeName, index: j});
                                 console.log('added path: ' + path + ' with value: "' + value + '", repeat NodeName: ' + repeatNodeName + ' and repeat index: ' + j);
                             }
                         }
@@ -250,11 +250,11 @@ function JData(data) {
      * [addXMLNode description]
      * @param {jQuery} $doc                                jQuery doc with root element to add nodes to
      * @param {string} path                                path of node to be added when not present starting with /
-     * @param {string} value                            value of node
+     * @param {function} setNode                           the function to set the value or set the attribute for the node
      * @param {{name: string, index: number}=} repeatO    repeatObject with repeat nodeName and 0-based index of repeat parent of node to be added
      * @return {jQuery}                                    jQuery doc with added node and value
      */
-    function addXMLNodeAndValue($doc, path, value, repeatO) {
+    function addXMLNode($doc, path, setNode, repeatO) {
         var j, $node,
             $current = $doc.find('root'),
             nodeNames = path.substring(1).split('/'),
@@ -273,32 +273,7 @@ function JData(data) {
             }
 
             if (j === (nodeNames.length - 1)) {
-                $current.text(value);
-            }
-        }
-        return $doc;
-    }
-
-    function addConceptAttributeNodeValue($doc, path, concept, repeatO) {
-        var j, $node,
-            $current = $doc.find('root'),
-            nodeNames = path.substring(1).split('/'),
-            r = repeatO || {};
-
-        for (j = 0; j < nodeNames.length; j++) {
-            if ($current.children(nodeNames[j]).length === 0 ||
-                (r.name && r.index && nodeNames[j] === r.name && $current.children(nodeNames[j]).eq(r.index).length === 0)) {
-                //console.log('nodeName does not exist, going to create it as child of ', $current[0]);
-                $node = $($.parseXML('<' + nodeNames[j] + '/>').documentElement).clone();
-                $current.append($node);
-                $current = $node;
-            }
-            else {
-                $current = ( r.index && nodeNames[j] === r.name ) ? $current.children(nodeNames[j]).eq(r.index) : $current.children(nodeNames[j]);
-            }
-
-            if (j === (nodeNames.length - 1)) {
-                $current.attr("concept", concept);
+                setNode($current);
             }
         }
         return $doc;
