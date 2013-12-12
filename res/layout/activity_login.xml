@@ -20,7 +20,6 @@
                 style="@style/LoginInfoEditText"
                 android:inputType="textUri"
                 android:nextFocusDown="@+id/username"
-                android:text="http://10.25.3.66:8081/openmrs-standalone"
                 android:hint="@string/server_hint_text"/>
 
         <View style="@style/LoginInfoLayoutDivider" android:id = "@+id/server_url_divider"/>
@@ -30,7 +29,6 @@
                 style="@style/LoginInfoEditText"
                 android:inputType="textShortMessage"
                 android:nextFocusDown="@+id/password"
-                android:text="admin"
                 android:hint="@string/username_hint_text"/>
 
         <View style="@style/LoginInfoLayoutDivider"/>
@@ -39,7 +37,6 @@
                 android:id="@+id/password"
                 android:hint="@string/password_hint_text"
                 style="@style/LoginInfoEditText"
-                android:text="test"
                 android:nextFocusDown="@+id/login"
                 android:inputType="textPassword"/>
 
