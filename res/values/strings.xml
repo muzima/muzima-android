@@ -167,9 +167,9 @@
     <string name="cohort_prefix_help_title">Define Cohorts Prefix(es) Help</string>
     <string name="custom_concept_help_title">Concepts Help</string>
 
-    <string name="form_save_as_draft">Save</string>
+    <string name="form_save_as_draft">Draft</string>
     <string name="form_close">Close</string>
-    <string name="form_submit">Submit</string>
+    <string name="form_submit">Save</string>
     <string name="delete_text">Delete</string>
     <string name="logo_alt_text">MuzimaLogo</string>
     <string name="server_hint_text">Server URL</string>
