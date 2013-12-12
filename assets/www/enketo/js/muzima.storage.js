@@ -84,6 +84,9 @@ function JData(data) {
         if (data.form.sub_forms) {
             for (i = 0; i < data.form.sub_forms.length; i++) {
                 subForm = data.form.sub_forms[i];
+                if (typeof subForm.concept !== 'undefined') {
+                    addXMLNode($instance, subForm.default_bind_path, function($node){$node.attr("concept", subForm.concept);});
+                }
                 defaultPath = defaultPathFixed(subForm.default_bind_path);
                 repeatNodeName = defaultPath.match(/.*\/([^\/]*)\/$/)[1];
                 if (!subForm.bind_type) {
@@ -99,7 +102,11 @@ function JData(data) {
                                 value = repeatInstance[field.name];
                                 //note: also if the value is empty it is added!
                                 addXMLNode($instance, path, function($node){$node.text(value);}, {name: repeatNodeName, index: j});
-                                console.log('added path: ' + path + ' with value: "' + value + '", repeat NodeName: ' + repeatNodeName + ' and repeat index: ' + j);
+
+                                concept = field.concept;
+                                if(typeof concept !== 'undefined'){
+                                    addXMLNode($instance, path, function($node){$node.attr("concept", concept);}, {name: repeatNodeName, index: j});
+                                }
                             }
                         }
                     }
