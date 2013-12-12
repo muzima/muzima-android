@@ -95,17 +95,19 @@ function JData(data) {
                 else {
                     for (j = 0; j < subForm.instances.length; j++) {
                         repeatInstance = subForm.instances[j];
+                        var xformsValue = repeatInstance["xforms_value"];
                         for (k = 0; k < subForm.fields.length; k++) {
                             field = subForm.fields[k];
                             if (typeof repeatInstance[field.name] !== 'undefined' && unboundSubformInstanceProps.indexOf(field.name) == -1) {
                                 path = (typeof field.bind === 'undefined') ? defaultPath + field.name : field.bind;
                                 value = repeatInstance[field.name];
                                 //note: also if the value is empty it is added!
-                                addXMLNode($instance, path, function($node){$node.text(value);}, {name: repeatNodeName, index: j});
-
-                                concept = field.concept;
-                                if(typeof concept !== 'undefined'){
-                                    addXMLNode($instance, path, function($node){$node.attr("concept", concept);}, {name: repeatNodeName, index: j});
+                                if(field.name ==="xforms_value" || !xformsValue || xformsValue.indexOf(field.name) > -1){
+                                    addXMLNode($instance, path, function($node){$node.text(value);}, {name: repeatNodeName, index: j});
+                                    concept = field.concept;
+                                    if(typeof concept !== 'undefined'){
+                                        addXMLNode($instance, path, function($node){$node.attr("concept", concept);}, {name: repeatNodeName, index: j});
+                                    }
                                 }
                             }
                         }

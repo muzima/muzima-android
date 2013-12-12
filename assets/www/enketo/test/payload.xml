@@ -9,7 +9,7 @@
         <patient.sex>F</patient.sex>
         <person_attribute10>4663553243</person_attribute10>
         <tmp>
-            <age_in_years>57.00423862770396</age_in_years>
+            <age_in_years>57.00456222834829</age_in_years>
         </tmp>
     </patient>
     <encounter>
@@ -126,26 +126,7 @@
                 <value>1162^MOST^99DCT</value>
             </number_of_pills_taken_in_the_last_week_any_medication>
             <missed_medication_reason concept="1668^MISSED MEDICATION REASON^99DCT">
-                <side_effects_from_taking_medications
-                        concept="1664^SIDE EFFECTS FROM TAKING MEDICATIONS^99DCT"></side_effects_from_taking_medications>
-                <time_for_a_break concept="1665^TIME FOR A BREAK^99DCT"></time_for_a_break>
-                <do_not_know concept="1624^DO NOT KNOW^99DCT"></do_not_know>
-                <forgot_to_take_medicine concept="1648^FORGOT TO TAKE MEDICINE^99DCT"></forgot_to_take_medicine>
-                <other_non-coded concept="5622^OTHER NON-CODED^99DCT"></other_non-coded>
-                <other_treatment concept="1667^OTHER TREATMENT^99DCT"></other_treatment>
-                <could_not_get_medicine concept="1662^COULD NOT GET MEDICINE^99DCT"></could_not_get_medicine>
-                <medicine_not_useful concept="1663^MEDICINE NOT USEFUL^99DCT"></medicine_not_useful>
                 <healed_by_faith concept="1587^HEALED BY FAITH^99DCT"></healed_by_faith>
-                <stigma concept="1666^STIGMA^99DCT"></stigma>
-                <did_not_miss_any_doses concept="1714^DID NOT MISS ANY DOSES^99DCT"></did_not_miss_any_doses>
-                <missed_appointment concept="1448^MISSED APPOINTMENT^99DCT"></missed_appointment>
-                <run_out_drugs concept="6100^RUN OUT DRUGS^99DCT"></run_out_drugs>
-                <transport_problems concept="820^TRANSPORT PROBLEMS^99DCT"></transport_problems>
-                <travel concept="1546^TRAVEL^99DCT"></travel>
-                <stopped concept="1679^STOPPED^99DCT"></stopped>
-                <patient_refusal concept="1504^PATIENT REFUSAL^99DCT"></patient_refusal>
-                <facility_stocked_out_of_medication
-                        concept="7043^FACILITY STOCKED OUT OF MEDICATION^99DCT"></facility_stocked_out_of_medication>
                 <financial_barrier concept="6295^FINANCIAL BARRIER^99DCT"></financial_barrier>
                 <xforms_value>financial_barrier healed_by_faith</xforms_value>
             </missed_medication_reason>
@@ -160,26 +141,7 @@
                 <value>1162^MOST^99DCT</value>
             </number_of_pills_taken_in_the_last_week_any_medication>
             <missed_medication_reason concept="1668^MISSED MEDICATION REASON^99DCT">
-                <side_effects_from_taking_medications
-                        concept="1664^SIDE EFFECTS FROM TAKING MEDICATIONS^99DCT"></side_effects_from_taking_medications>
-                <time_for_a_break concept="1665^TIME FOR A BREAK^99DCT"></time_for_a_break>
-                <do_not_know concept="1624^DO NOT KNOW^99DCT"></do_not_know>
-                <forgot_to_take_medicine concept="1648^FORGOT TO TAKE MEDICINE^99DCT"></forgot_to_take_medicine>
-                <other_non-coded concept="5622^OTHER NON-CODED^99DCT"></other_non-coded>
-                <other_treatment concept="1667^OTHER TREATMENT^99DCT"></other_treatment>
-                <could_not_get_medicine concept="1662^COULD NOT GET MEDICINE^99DCT"></could_not_get_medicine>
-                <medicine_not_useful concept="1663^MEDICINE NOT USEFUL^99DCT"></medicine_not_useful>
                 <healed_by_faith concept="1587^HEALED BY FAITH^99DCT"></healed_by_faith>
-                <stigma concept="1666^STIGMA^99DCT"></stigma>
-                <did_not_miss_any_doses concept="1714^DID NOT MISS ANY DOSES^99DCT"></did_not_miss_any_doses>
-                <missed_appointment concept="1448^MISSED APPOINTMENT^99DCT"></missed_appointment>
-                <run_out_drugs concept="6100^RUN OUT DRUGS^99DCT"></run_out_drugs>
-                <transport_problems concept="820^TRANSPORT PROBLEMS^99DCT"></transport_problems>
-                <travel concept="1546^TRAVEL^99DCT"></travel>
-                <stopped concept="1679^STOPPED^99DCT"></stopped>
-                <patient_refusal concept="1504^PATIENT REFUSAL^99DCT"></patient_refusal>
-                <facility_stocked_out_of_medication
-                        concept="7043^FACILITY STOCKED OUT OF MEDICATION^99DCT"></facility_stocked_out_of_medication>
                 <financial_barrier concept="6295^FINANCIAL BARRIER^99DCT"></financial_barrier>
                 <xforms_value>financial_barrier healed_by_faith</xforms_value>
             </missed_medication_reason>
@@ -194,24 +156,6 @@
                 <value></value>
             </number_of_pills_taken_in_the_last_week_any_medication>
             <missed_medication_reason concept="1668^MISSED MEDICATION REASON^99DCT">
-                <side_effects_from_taking_medications
-                        concept="1664^SIDE EFFECTS FROM TAKING MEDICATIONS^99DCT"></side_effects_from_taking_medications>
-                <time_for_a_break concept="1665^TIME FOR A BREAK^99DCT"></time_for_a_break>
-                <do_not_know concept="1624^DO NOT KNOW^99DCT"></do_not_know>
-                <forgot_to_take_medicine concept="1648^FORGOT TO TAKE MEDICINE^99DCT"></forgot_to_take_medicine>
-                <other_non-coded concept="5622^OTHER NON-CODED^99DCT"></other_non-coded>
-                <other_treatment concept="1667^OTHER TREATMENT^99DCT"></other_treatment>
-                <could_not_get_medicine concept="1662^COULD NOT GET MEDICINE^99DCT"></could_not_get_medicine>
-                <medicine_not_useful concept="1663^MEDICINE NOT USEFUL^99DCT"></medicine_not_useful>
-                <healed_by_faith concept="1587^HEALED BY FAITH^99DCT"></healed_by_faith>
-                <stigma concept="1666^STIGMA^99DCT"></stigma>
-                <did_not_miss_any_doses concept="1714^DID NOT MISS ANY DOSES^99DCT"></did_not_miss_any_doses>
-                <missed_appointment concept="1448^MISSED APPOINTMENT^99DCT"></missed_appointment>
-                <run_out_drugs concept="6100^RUN OUT DRUGS^99DCT"></run_out_drugs>
-                <transport_problems concept="820^TRANSPORT PROBLEMS^99DCT"></transport_problems>
-                <travel concept="1546^TRAVEL^99DCT"></travel>
-                <stopped concept="1679^STOPPED^99DCT"></stopped>
-                <patient_refusal concept="1504^PATIENT REFUSAL^99DCT"></patient_refusal>
                 <facility_stocked_out_of_medication
                         concept="7043^FACILITY STOCKED OUT OF MEDICATION^99DCT"></facility_stocked_out_of_medication>
                 <financial_barrier concept="6295^FINANCIAL BARRIER^99DCT"></financial_barrier>
@@ -228,26 +172,7 @@
                 <value></value>
             </number_of_pills_taken_in_the_last_week_any_medication>
             <missed_medication_reason concept="1668^MISSED MEDICATION REASON^99DCT">
-                <side_effects_from_taking_medications
-                        concept="1664^SIDE EFFECTS FROM TAKING MEDICATIONS^99DCT"></side_effects_from_taking_medications>
-                <time_for_a_break concept="1665^TIME FOR A BREAK^99DCT"></time_for_a_break>
-                <do_not_know concept="1624^DO NOT KNOW^99DCT"></do_not_know>
-                <forgot_to_take_medicine concept="1648^FORGOT TO TAKE MEDICINE^99DCT"></forgot_to_take_medicine>
-                <other_non-coded concept="5622^OTHER NON-CODED^99DCT"></other_non-coded>
-                <other_treatment concept="1667^OTHER TREATMENT^99DCT"></other_treatment>
-                <could_not_get_medicine concept="1662^COULD NOT GET MEDICINE^99DCT"></could_not_get_medicine>
-                <medicine_not_useful concept="1663^MEDICINE NOT USEFUL^99DCT"></medicine_not_useful>
                 <healed_by_faith concept="1587^HEALED BY FAITH^99DCT"></healed_by_faith>
-                <stigma concept="1666^STIGMA^99DCT"></stigma>
-                <did_not_miss_any_doses concept="1714^DID NOT MISS ANY DOSES^99DCT"></did_not_miss_any_doses>
-                <missed_appointment concept="1448^MISSED APPOINTMENT^99DCT"></missed_appointment>
-                <run_out_drugs concept="6100^RUN OUT DRUGS^99DCT"></run_out_drugs>
-                <transport_problems concept="820^TRANSPORT PROBLEMS^99DCT"></transport_problems>
-                <travel concept="1546^TRAVEL^99DCT"></travel>
-                <stopped concept="1679^STOPPED^99DCT"></stopped>
-                <patient_refusal concept="1504^PATIENT REFUSAL^99DCT"></patient_refusal>
-                <facility_stocked_out_of_medication
-                        concept="7043^FACILITY STOCKED OUT OF MEDICATION^99DCT"></facility_stocked_out_of_medication>
                 <financial_barrier concept="6295^FINANCIAL BARRIER^99DCT"></financial_barrier>
                 <xforms_value>financial_barrier healed_by_faith</xforms_value>
             </missed_medication_reason>
@@ -262,26 +187,7 @@
                 <value></value>
             </number_of_pills_taken_in_the_last_week_any_medication>
             <missed_medication_reason concept="1668^MISSED MEDICATION REASON^99DCT">
-                <side_effects_from_taking_medications
-                        concept="1664^SIDE EFFECTS FROM TAKING MEDICATIONS^99DCT"></side_effects_from_taking_medications>
-                <time_for_a_break concept="1665^TIME FOR A BREAK^99DCT"></time_for_a_break>
-                <do_not_know concept="1624^DO NOT KNOW^99DCT"></do_not_know>
-                <forgot_to_take_medicine concept="1648^FORGOT TO TAKE MEDICINE^99DCT"></forgot_to_take_medicine>
-                <other_non-coded concept="5622^OTHER NON-CODED^99DCT"></other_non-coded>
-                <other_treatment concept="1667^OTHER TREATMENT^99DCT"></other_treatment>
-                <could_not_get_medicine concept="1662^COULD NOT GET MEDICINE^99DCT"></could_not_get_medicine>
                 <medicine_not_useful concept="1663^MEDICINE NOT USEFUL^99DCT"></medicine_not_useful>
-                <healed_by_faith concept="1587^HEALED BY FAITH^99DCT"></healed_by_faith>
-                <stigma concept="1666^STIGMA^99DCT"></stigma>
-                <did_not_miss_any_doses concept="1714^DID NOT MISS ANY DOSES^99DCT"></did_not_miss_any_doses>
-                <missed_appointment concept="1448^MISSED APPOINTMENT^99DCT"></missed_appointment>
-                <run_out_drugs concept="6100^RUN OUT DRUGS^99DCT"></run_out_drugs>
-                <transport_problems concept="820^TRANSPORT PROBLEMS^99DCT"></transport_problems>
-                <travel concept="1546^TRAVEL^99DCT"></travel>
-                <stopped concept="1679^STOPPED^99DCT"></stopped>
-                <patient_refusal concept="1504^PATIENT REFUSAL^99DCT"></patient_refusal>
-                <facility_stocked_out_of_medication
-                        concept="7043^FACILITY STOCKED OUT OF MEDICATION^99DCT"></facility_stocked_out_of_medication>
                 <financial_barrier concept="6295^FINANCIAL BARRIER^99DCT"></financial_barrier>
                 <xforms_value>financial_barrier medicine_not_useful</xforms_value>
             </missed_medication_reason>
@@ -296,27 +202,7 @@
                 <value></value>
             </number_of_pills_taken_in_the_last_week_any_medication>
             <missed_medication_reason concept="1668^MISSED MEDICATION REASON^99DCT">
-                <side_effects_from_taking_medications
-                        concept="1664^SIDE EFFECTS FROM TAKING MEDICATIONS^99DCT"></side_effects_from_taking_medications>
-                <time_for_a_break concept="1665^TIME FOR A BREAK^99DCT"></time_for_a_break>
-                <do_not_know concept="1624^DO NOT KNOW^99DCT"></do_not_know>
-                <forgot_to_take_medicine concept="1648^FORGOT TO TAKE MEDICINE^99DCT"></forgot_to_take_medicine>
-                <other_non-coded concept="5622^OTHER NON-CODED^99DCT"></other_non-coded>
-                <other_treatment concept="1667^OTHER TREATMENT^99DCT"></other_treatment>
-                <could_not_get_medicine concept="1662^COULD NOT GET MEDICINE^99DCT"></could_not_get_medicine>
-                <medicine_not_useful concept="1663^MEDICINE NOT USEFUL^99DCT"></medicine_not_useful>
-                <healed_by_faith concept="1587^HEALED BY FAITH^99DCT"></healed_by_faith>
-                <stigma concept="1666^STIGMA^99DCT"></stigma>
-                <did_not_miss_any_doses concept="1714^DID NOT MISS ANY DOSES^99DCT"></did_not_miss_any_doses>
                 <missed_appointment concept="1448^MISSED APPOINTMENT^99DCT"></missed_appointment>
-                <run_out_drugs concept="6100^RUN OUT DRUGS^99DCT"></run_out_drugs>
-                <transport_problems concept="820^TRANSPORT PROBLEMS^99DCT"></transport_problems>
-                <travel concept="1546^TRAVEL^99DCT"></travel>
-                <stopped concept="1679^STOPPED^99DCT"></stopped>
-                <patient_refusal concept="1504^PATIENT REFUSAL^99DCT"></patient_refusal>
-                <facility_stocked_out_of_medication
-                        concept="7043^FACILITY STOCKED OUT OF MEDICATION^99DCT"></facility_stocked_out_of_medication>
-                <financial_barrier concept="6295^FINANCIAL BARRIER^99DCT"></financial_barrier>
                 <xforms_value>missed_appointment</xforms_value>
             </missed_medication_reason>
         </missed_medication_for_past_week_5>
@@ -515,68 +401,16 @@
         </other_medication_order_6>
         <return_visit_date concept="5096^RETURN VISIT DATE^99DCT"/>
         <review_of_systems_general concept="1069^REVIEW OF SYSTEMS, GENERAL^99DCT">
-            <congenital_disorders concept="81^CONGENITAL DISORDERS^99DCT"></congenital_disorders>
-            <rash concept="512^RASH^99DCT"></rash>
-            <weight_loss concept="832^WEIGHT LOSS^99DCT"></weight_loss>
-            <chills concept="871^CHILLS^99DCT"></chills>
-            <weight_gain concept="5544^WEIGHT GAIN^99DCT"></weight_gain>
-            <fever concept="5945^FEVER^99DCT"></fever>
-            <fatigue concept="5949^FATIGUE^99DCT"></fatigue>
-            <history_of_jaundice concept="5986^HISTORY OF JAUNDICE^99DCT"></history_of_jaundice>
-            <delayed_milestones concept="6022^DELAYED MILESTONES^99DCT"></delayed_milestones>
-            <irritability concept="6023^IRRITABILITY^99DCT"></irritability>
-            <night_sweats concept="6029^NIGHT SWEATS^99DCT"></night_sweats>
-            <negative concept="664^NEGATIVE^99DCT"></negative>
-            <poor_weight_gain concept="1396^POOR WEIGHT GAIN^99DCT"></poor_weight_gain>
-            <chigoe_flea concept="6847^CHIGOE FLEA^99DCT"></chigoe_flea>
-            <scabies concept="140^SCABIES^99DCT"></scabies>
             <diarrhea concept="16^DIARRHEA^99DCT"></diarrhea>
-            <cough_for_more_than_two_weeks
-                    concept="6171^COUGH FOR MORE THAN TWO WEEKS^99DCT"></cough_for_more_than_two_weeks>
-            <other_non-coded concept="5622^OTHER NON-CODED^99DCT"></other_non-coded>
-            <presence_of_pain concept="7032^PRESENCE OF PAIN^99DCT"></presence_of_pain>
-            <dermatophytosis concept="937^DERMATOPHYTOSIS^99DCT"></dermatophytosis>
             <edema_legs concept="590^EDEMA, LEGS^99DCT"></edema_legs>
-            <shortness_of_breath_with_exertion
-                    concept="5963^SHORTNESS OF BREATH WITH EXERTION^99DCT"></shortness_of_breath_with_exertion>
-            <focal_weakness concept="6005^FOCAL WEAKNESS^99DCT"></focal_weakness>
-            <oliguria concept="6021^OLIGURIA^99DCT"></oliguria>
-            <heart_racing concept="7044^HEART RACING^99DCT"></heart_racing>
-            <dizziness concept="877^DIZZINESS^99DCT"></dizziness>
-            <fainting concept="7045^FAINTING^99DCT"></fainting>
-            <unconscious concept="2295^UNCONSCIOUS^99DCT"></unconscious>
-            <vision_difficulties concept="5953^VISION DIFFICULTIES^99DCT"></vision_difficulties>
-            <foot_complaints concept="7046^FOOT COMPLAINTS^99DCT"></foot_complaints>
-            <none concept="1107^NONE^99DCT"></none>
-            <nausea concept="5978^NAUSEA^99DCT"></nausea>
-            <vomiting concept="5980^VOMITING^99DCT"></vomiting>
-            <abdominal_pain concept="151^ABDOMINAL PAIN^99DCT"></abdominal_pain>
-            <constipation concept="996^CONSTIPATION^99DCT"></constipation>
-            <chronic_cough concept="1470^CHRONIC COUGH^99DCT"></chronic_cough>
-            <hypoglycemia concept="7047^HYPOGLYCEMIA^99DCT"></hypoglycemia>
             <xforms_value>edema_legs diarrhea</xforms_value>
         </review_of_systems_general>
         <patient_education_received_this_visit concept="6327^PATIENT EDUCATION RECEIVED THIS VISIT^99DCT">
-            <nutritional_support concept="5484^NUTRITIONAL SUPPORT^99DCT"></nutritional_support>
             <alcohol_counseling concept="1288^ALCOHOL COUNSELING^99DCT"></alcohol_counseling>
-            <diabetic_diet concept="7051^DIABETIC DIET^99DCT"></diabetic_diet>
-            <diabetic_danger_signs concept="7052^DIABETIC DANGER SIGNS^99DCT"></diabetic_danger_signs>
-            <salt_reduction concept="7053^SALT REDUCTION^99DCT"></salt_reduction>
-            <smoking_cessation concept="7054^SMOKING CESSATION^99DCT"></smoking_cessation>
-            <exercise concept="7055^EXERCISE^99DCT"></exercise>
-            <weight_loss concept="832^WEIGHT LOSS^99DCT"></weight_loss>
-            <adherence_counseling concept="5488^ADHERENCE COUNSELING^99DCT"></adherence_counseling>
-            <none concept="1107^NONE^99DCT"></none>
             <xforms_value>alcohol_counseling</xforms_value>
         </patient_education_received_this_visit>
         <referrals_ordered concept="1272^REFERRALS ORDERED^99DCT">
             <referred_to_clinic concept="7056^REFERRED TO CLINIC^99DCT"></referred_to_clinic>
-            <dispensary concept="6436^DISPENSARY^99DCT"></dispensary>
-            <routine_dispensary_antenatal_clinic
-                    concept="7057^ROUTINE DISPENSARY ANTENATAL CLINIC^99DCT"></routine_dispensary_antenatal_clinic>
-            <antenatal_care_service concept="1865^ANTENATAL CARE SERVICE^99DCT"></antenatal_care_service>
-            <high_risk_antenatal_clinic concept="7058^HIGH RISK ANTENATAL CLINIC^99DCT"></high_risk_antenatal_clinic>
-            <none concept="1107^NONE^99DCT"></none>
             <xforms_value>referred_to_clinic</xforms_value>
         </referrals_ordered>
     </obs>
