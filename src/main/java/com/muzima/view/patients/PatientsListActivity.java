@@ -83,9 +83,7 @@ public class PatientsListActivity extends BaseActivity implements AdapterView.On
             public boolean onQueryTextChange(String s) {
                 searchString = s;
                 activateRemoteAfterThreeCharacterEntered(s);
-                if (searchString.trim().length() >= 0) {
-                    patientAdapter.search(s.trim());
-                }
+                patientAdapter.search(s.trim());
                 return true;
             }
         });
