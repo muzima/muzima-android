@@ -8231,15 +8231,10 @@ fieldset .remove {
     padding: 9px 5px 7px 5px;
 }
 
-.form-buttons{
-    width: 100%;
-    text-align: center;
-}
-
-.form-buttons input{
-    background-color: black;
-    color: white;
-    border-color: black;
-    font-size: 16px;
-    width: 100%
+.form-buttons .form-button{
+    background-color: #12A5F4 !important;
+    color: white !important;
+    border-color: black !important;
+    font-size: 16px !important;
+    width: 49% !important;
 }

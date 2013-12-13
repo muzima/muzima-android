@@ -111,8 +111,11 @@
 
 				<script>
 					document.write(formInstance.getHTML());
-                    $("form").append('<table class="form-buttons"><tr><td><input type="button" value="DRAFT" onclick="javascript:document.saveDraft()"></td><td><input type="button" value="SAVE" onclick="javascript:document.submit()"></td></tr></table>');
 				</script>
+                <div class="form-buttons">
+                    <input type="button" value="Save as Draft" class="form-button" onclick="javascript:document.saveDraft()">
+                    <input type="button" value="Save as Complete" class="form-button" onclick="javascript:document.submit()">
+                </div>
             </div>
 		</div>
 	</body>
