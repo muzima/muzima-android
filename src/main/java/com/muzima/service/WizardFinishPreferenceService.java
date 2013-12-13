@@ -29,7 +29,7 @@ public class WizardFinishPreferenceService extends PreferenceService {
         setWizardFinished(false);
     }
 
-    public void setWizardFinished(boolean wizardFinished) {
+    private void setWizardFinished(boolean wizardFinished) {
         String wizardFinishedKey = context.getResources().getString(R.string.preference_wizard_finished);
         settings.edit()
                 .putBoolean(wizardFinishedKey, wizardFinished)
