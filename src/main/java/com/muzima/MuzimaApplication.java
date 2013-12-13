@@ -187,8 +187,8 @@ public class MuzimaApplication extends Application {
         return prefixesPreferenceService;
     }
 
-    public void setTimeOutInMillis(int value) {
-        muzimaTimer.setTimeOutInMillis(value);
+    public void resetTimer(int timeOutInMin) {
+        muzimaTimer = muzimaTimer.resetTimer(timeOutInMin);
     }
 
     public void restartTimer() {

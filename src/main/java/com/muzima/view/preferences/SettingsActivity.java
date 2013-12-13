@@ -76,7 +76,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 Integer timeOutInMin = Integer.valueOf(o.toString());
-                ((MuzimaApplication) getApplication()).setTimeOutInMillis(timeOutInMin);
+                ((MuzimaApplication) getApplication()).resetTimer(timeOutInMin);
                 return true;
             }
         });

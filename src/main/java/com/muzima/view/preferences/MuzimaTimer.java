@@ -1,36 +1,35 @@
 package com.muzima.view.preferences;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.CountDownTimer;
-import android.preference.PreferenceManager;
 import com.muzima.MuzimaApplication;
-import com.muzima.R;
+import com.muzima.service.TimeoutPreferenceService;
 import com.muzima.view.login.LoginActivity;
 
 public class MuzimaTimer extends CountDownTimer {
 
-    private static int DEFAULT_TIMEOUT_IN_MIN = 5;
     private MuzimaApplication muzimaApplication;
     private static MuzimaTimer muzimaTimer;
 
     private MuzimaTimer(long millisInFuture, long countDownInterval, MuzimaApplication muzimaApplication) {
         super(millisInFuture, countDownInterval);
         this.muzimaApplication = muzimaApplication;
-        setDefaultTimeOut();
     }
 
     public static MuzimaTimer getTimer(MuzimaApplication muzimaApplication) {
         if (muzimaTimer == null) {
-            muzimaTimer = new MuzimaTimer(getTimeInMillis(DEFAULT_TIMEOUT_IN_MIN) , getTimeInMillis(DEFAULT_TIMEOUT_IN_MIN), muzimaApplication);
+            int timeout = new TimeoutPreferenceService(muzimaApplication).getTimeout();
+            muzimaTimer = new MuzimaTimer(getTimeInMillis(timeout) , getTimeInMillis(timeout), muzimaApplication);
         }
         return muzimaTimer;
     }
 
-    public void setTimeOutInMillis(int timeOutInMin) {
+
+    public MuzimaTimer resetTimer(int timeOutInMin) {
         muzimaTimer.cancel();
         muzimaTimer = new MuzimaTimer(getTimeInMillis(timeOutInMin), getTimeInMillis(timeOutInMin), muzimaApplication);
         muzimaTimer.start();
+        return muzimaTimer;
     }
 
     @Override
@@ -62,14 +61,7 @@ public class MuzimaTimer extends CountDownTimer {
         muzimaApplication.startActivity(intent);
     }
 
-    private void setDefaultTimeOut() {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(muzimaApplication);
-        String passwordKey = muzimaApplication.getResources().getString(R.string.preference_timeout);
-        settings.edit().putString(passwordKey, String.valueOf(DEFAULT_TIMEOUT_IN_MIN)).commit();
-    }
-
     private static long getTimeInMillis(int timeOutInMin) {
         return timeOutInMin * 60 * 1000;
     }
-
 }
