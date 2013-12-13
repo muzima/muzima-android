@@ -53,6 +53,13 @@ public class ConceptParserTest {
         utils.parse(getModel("concept_no_end_tag.xml"));
     }
 
+    @Test
+    public void shouldParseConceptTM() throws Exception {
+        List<String> conceptNames = utils.parse(getModel("dispensary_concept_in_obs.xml"));
+        assertThat(conceptNames, hasItem("START TIME"));
+        assertThat(conceptNames, hasItem("END TIME"));
+    }
+
     public String getModel(String modelFileName) {
         InputStream fileStream = getClass().getClassLoader().getResourceAsStream("xml/" + modelFileName);
         Scanner s = new Scanner(fileStream).useDelimiter("\\A");
