@@ -1972,6 +1972,17 @@ function Form (formSelector, dataStr, dataStrToEdit){
             });
 
         });
+
+        // This dynamically update read only calculated fields in the form
+        $form.find('.readOnlyCalculated').find(cleverSelector.join()).each(function(){
+            name = $(this).attr('name');
+            expr = $(this).attr('data-calculate');
+            dataType = $(this).attr('data-type-xml');
+            constraint = $(this).attr('data-constraint'); //obsolete?
+            relevantExpr = $(this).attr('data-relevant');
+            relevant = (relevantExpr) ? data.evaluate(relevantExpr, 'boolean', name) : true;
+            $(this).parent().find('.note-value')[0].innerHTML= data.evaluate(expr, 'string', name, 0);
+        });
     };
 
     FormHTML.prototype.bootstrapify = function(){               
@@ -2309,10 +2320,17 @@ function Form (formSelector, dataStr, dataStrToEdit){
                         name = 'name="'+$(this).find('input').attr('name')+'"',
                         attributes = (typeof relevant !== 'undefined') ? 'data-relevant="'+relevant+'" '+name : name,
                         value = $(this).find('input, select, textarea').val(),
-                         html = $(this).markdownToHtml().html();
-                    $('<fieldset class="trigger'+branch+'" '+attributes+'></fieldset>')
-                        .insertBefore($(this)).append(html).append('<div class="note-value">'+value+'</div>').find('input').remove(); 
-                    $(this).remove();
+                         html = $(this).markdownToHtml().html(),
+                        dataCalculate= $(this).find('input').attr('data-calculate')+'"';;
+                    if(dataCalculate === 'undefined'){
+                        $('<fieldset class="trigger'+branch+'" '+attributes+'></fieldset>')
+                            .insertBefore($(this)).append(html).append('<div class="note-value">'+value+'</div>').find('input').remove();
+                        $(this).remove();
+                    } else{
+                        $('<fieldset class="readOnlyCalculated trigger'+branch+'" '+attributes+'></fieldset>')
+                            .insertBefore($(this)).append(html).append('<div class="note-value">'+value+'</div>').find('input').attr('type', 'hidden');
+                            $(this).remove();
+                    }
                 });
             }
         },
