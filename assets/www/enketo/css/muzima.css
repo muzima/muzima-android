@@ -911,10 +911,6 @@ pre code {
     overflow-y: scroll;
 }
 
-form {
-    margin: 0 0 22px;
-}
-
 fieldset {
     padding: 5px;
     margin: 0;
@@ -8233,4 +8229,17 @@ fieldset .remove {
 
 .input-append .add-on {
     padding: 9px 5px 7px 5px;
+}
+
+.form-buttons{
+    width: 100%;
+    text-align: center;
+}
+
+.form-buttons input{
+    background-color: black;
+    color: white;
+    border-color: black;
+    font-size: 16px;
+    width: 100%
 }

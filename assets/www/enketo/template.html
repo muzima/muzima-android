@@ -108,12 +108,12 @@
 		<div class="main">
 			<div class="paper">
 				<div class="form-header clearfix"><span class="form-language-selector"><span>Choose Language</span></span></div>
-				
+
 				<script>
 					document.write(formInstance.getHTML());
+                    $("form").append('<table class="form-buttons"><tr><td><input type="button" value="DRAFT" onclick="javascript:document.saveDraft()"></td><td><input type="button" value="SAVE" onclick="javascript:document.submit()"></td></tr></table>');
 				</script>
-
-			</div>
+            </div>
 		</div>
 	</body>
 </html>
