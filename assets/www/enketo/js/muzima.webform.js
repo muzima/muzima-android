@@ -97,31 +97,48 @@ $(document).ready(function () {
     /* Multi select Hack - Start */
 
     var checkboxParent = $("form input:checkbox").parent();
-    function selectedSiblings($siblingLabels) {
-        var selected = 0;
-        $siblingLabels.each(function (i, element) {
+
+    //Set all the checkboxes to be hidden at init.
+    checkboxParent.hide();
+
+    // Gets the appropriate button text.
+    var getButtonText = function (allOptions) {
+        var selectedText = selectedOptions(allOptions);
+        return selectedText.length == 0 ? 'Show Options' : selectedText.join();
+    };
+
+    // Returns an array of selected checkbox values.
+    var selectedOptions = function (allOptions) {
+        var selected = new Array();
+        allOptions.each(function (i, element) {
             if ($(element).attr('data-checked') == 'true') {
-                selected += 1;
+                selected.push($(element).find('span').text());
             }
         });
         return selected;
-    }
+    };
 
-    checkboxParent.hide();
-    checkboxParent.parent()
-        .append("<input class='toggle_chk_btn' value='Show Options' type ='button'>");
+    // Iterates all the checkbox questions and adds a button to toggle its options.
+    checkboxParent.parent().each(function (i, element) {
+        var $btn = $($.parseHTML("<input class='toggle_chk_btn' type ='button'>"));
+        $btn.val(getButtonText($(element).find('label')))
+        $(element).append($btn)
+    });
 
+    // Perform option toggling.
     $('.toggle_chk_btn').click(function (e) {
         var $showHideBtn = $(e.target);
         var $siblingLabels = $showHideBtn.siblings("label");
         $siblingLabels.toggle();
+        // Get back the focus on the selected question. A necessary step in mobile devices.
         $('html, body').animate({
             scrollTop: $showHideBtn.parent().offset().top
         }, 100);
+
         if ($siblingLabels.first().is(':visible')) {
             $showHideBtn.val("Hide Options");
         } else {
-            $showHideBtn.val("Show Options (" + selectedSiblings($siblingLabels) + " selected)");
+            $showHideBtn.val(getButtonText($siblingLabels));
         }
     });
 

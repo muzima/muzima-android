@@ -8242,3 +8242,10 @@ fieldset .remove {
     font-size: 16px !important;
     width: 49% !important;
 }
+
+
+.toggle_chk_btn{
+    white-space: normal;
+    height: auto !important;
+    font-size: 60%;
+}
