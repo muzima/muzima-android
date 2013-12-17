@@ -39,6 +39,7 @@ $(document).ready(function () {
     loadErrors = form.init();
 
     function save(status) {
+        formDataRepositoryContext.showSaveProgressBar();
         var jsonData = jDataO.get();
         var xmlData = jDataO.toXML();
         delete jsonData.errors;

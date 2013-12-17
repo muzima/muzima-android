@@ -61,6 +61,11 @@ public class FormDataStore {
         return formData.getStatus();
     }
 
+    @JavascriptInterface
+     public void showSaveProgressBar() {
+        formWebViewActivity.showProgressBar("Saving...");
+    }
+
     public boolean isRegisterPatient() {
         return formData.getPatientUuid() == null;
     }

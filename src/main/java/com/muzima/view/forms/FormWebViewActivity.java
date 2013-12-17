@@ -72,7 +72,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         scanResultMap = new HashMap<String, String>();
         setContentView(R.layout.activity_form_webview);
         progressDialog = new MuzimaProgressDialog(this);
-        progressDialog.show("Loading... ");
+        showProgressBar("Loading...");
         try {
             patient = (Patient) getIntent().getSerializableExtra(PATIENT);
             setupFormData(patient);
@@ -282,6 +282,14 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
 
     private void processBackButtonPressed(){
         onBackPressed();
+    }
+
+    public void showProgressBar(final String message) {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                progressDialog.show(message);
+            }
+        });
     }
 }
 
