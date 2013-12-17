@@ -56,6 +56,11 @@ public class FormDataStore {
         return formData.getJsonPayload();
     }
 
+    @JavascriptInterface
+    public String getFormStatus() {
+        return formData.getStatus();
+    }
+
     public boolean isRegisterPatient() {
         return formData.getPatientUuid() == null;
     }

@@ -8231,6 +8231,10 @@ fieldset .remove {
     padding: 9px 5px 7px 5px;
 }
 
+.form-buttons{
+    text-align:center;
+}
+
 .form-buttons .form-button{
     background-color: #12A5F4 !important;
     color: white !important;

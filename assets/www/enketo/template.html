@@ -116,6 +116,11 @@
                     <input type="button" value="Save as Draft" class="form-button" onclick="javascript:document.saveDraft()">
                     <input type="button" value="Save as Complete" class="form-button" onclick="javascript:document.submit()">
                 </div>
+                <script>
+                    if(formDataRepositoryContext.getFormStatus()==="complete"){
+                        $(".form-buttons").hide();
+                    }
+                </script>
             </div>
 		</div>
 	</body>
