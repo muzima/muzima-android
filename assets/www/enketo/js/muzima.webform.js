@@ -93,4 +93,36 @@ $(document).ready(function () {
     });
     /*End- BarCode Functionality*/
 
+    /* Multi select Hack - Start */
+
+    var checkboxParent = $("form input:checkbox").parent();
+    function selectedSiblings($siblingLabels) {
+        var selected = 0;
+        $siblingLabels.each(function (i, element) {
+            if ($(element).attr('data-checked') == 'true') {
+                selected += 1;
+            }
+        });
+        return selected;
+    }
+
+    checkboxParent.hide();
+    checkboxParent.parent()
+        .append("<input class='toggle_chk_btn' value='Show Options' type ='button'>");
+
+    $('.toggle_chk_btn').click(function (e) {
+        var $showHideBtn = $(e.target);
+        var $siblingLabels = $showHideBtn.siblings("label");
+        $siblingLabels.toggle();
+        $('html, body').animate({
+            scrollTop: $showHideBtn.parent().offset().top
+        }, 100);
+        if ($siblingLabels.first().is(':visible')) {
+            $showHideBtn.val("Hide Options");
+        } else {
+            $showHideBtn.val("Show Options (" + selectedSiblings($siblingLabels) + " selected)");
+        }
+    });
+
+    /* Multi select Hack - End */
 });
