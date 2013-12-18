@@ -1,4 +1,4 @@
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -59,7 +59,6 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">3dp</item>
-        <item name="android:textAlignment">center</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/primary_blue</item>
@@ -339,7 +338,6 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_weight">.4</item>
-        <item name="android:textAlignment">center</item>
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:paddingTop">8dp</item>
@@ -468,7 +466,7 @@
         <item name="android:paddingRight">12dp</item>
         <item name="android:typeface">normal</item>
         <item name="android:cursorVisible">true</item>
-        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:textCursorDrawable" tools:ignore="NewApi">@null</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
 

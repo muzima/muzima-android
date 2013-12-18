@@ -8,11 +8,14 @@
                 android:id="@+id/concept_add_concept"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
                 android:layout_weight="1"
                 android:textColor="@color/primary_blue"
                 android:textColorHint="@color/hint_text_grey"
                 android:textCursorDrawable="@null"
-                android:hint="Enter concept name ...">
+                android:hint="Enter concept name ..."
+                android:background="@color/primary_black">
             <requestFocus/>
         </AutoCompleteTextView>
 
