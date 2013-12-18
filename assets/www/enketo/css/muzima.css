@@ -923,7 +923,7 @@ fieldset fieldset {
 }
 
 fieldset.restoring-sanity-to-legends {
-    border: 1;
+        border-top: 1px solid #cccccc;
 }
 
 legend {
