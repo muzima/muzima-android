@@ -73,6 +73,7 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements TagsListAda
         IncompleteFormsListFragment incompleteFormsListFragment = IncompleteFormsListFragment.newInstance(formController);
 
         allAvailableFormsListFragment.setTemplateDownloadCompleteListener(downloadedFormsListFragment);
+        downloadedFormsListFragment.setAllAvailableFormsCompleteListener(allAvailableFormsListFragment);
 
         pagers[TAB_All] = new PagerView("All", allAvailableFormsListFragment);
         pagers[TAB_DOWNLOADED] = new PagerView("Downloaded", downloadedFormsListFragment);

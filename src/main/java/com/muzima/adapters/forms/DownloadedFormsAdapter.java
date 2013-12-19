@@ -28,7 +28,6 @@ import com.muzima.model.DownloadedForm;
 import com.muzima.model.collections.DownloadedForms;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 import com.muzima.view.CheckedLinearLayout;
-import com.muzima.view.CheckedRelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +48,12 @@ public class DownloadedFormsAdapter extends FormsAdapter<DownloadedForm> {
         convertView = super.getView(position, convertView, parent);
 
         highlightIfSelected(convertView, getItem(position));
-
+        hideTagScroller(convertView);
         return convertView;
+    }
+
+    private void hideTagScroller(View convertView) {
+        convertView.findViewById(R.id.tags_scroller).setVisibility(View.GONE);
     }
 
     private void highlightIfSelected(View convertView, DownloadedForm form) {
@@ -66,17 +69,14 @@ public class DownloadedFormsAdapter extends FormsAdapter<DownloadedForm> {
             convertView.findViewById(R.id.form_name_layout).setActivated(selected);
             convertView.findViewById(R.id.form_description).setActivated(selected);
             convertView.findViewById(R.id.form_name).setActivated(selected);
-            convertView.findViewById(R.id.tags_scroller).setActivated(selected);
         }
         ((CheckedLinearLayout) convertView.findViewById(R.id.form_name_layout)).setChecked(selected);
         ((CheckedTextView)convertView.findViewById(R.id.form_name)).setChecked(selected);
         ((CheckedTextView)convertView.findViewById(R.id.form_description)).setChecked(selected);
-        ((CheckedRelativeLayout) convertView.findViewById(R.id.tags_scroller)).setChecked(selected);
 
         convertView.findViewById(R.id.form_name_layout).setSelected(selected);
         convertView.findViewById(R.id.form_name).setSelected(selected);
         convertView.findViewById(R.id.form_description).setSelected(selected);
-        convertView.findViewById(R.id.tags_scroller).setSelected(selected);
     }
 
     @Override
@@ -101,6 +101,10 @@ public class DownloadedFormsAdapter extends FormsAdapter<DownloadedForm> {
 
     public List<String> getSelectedForms() {
         return selectedFormsUuid;
+    }
+
+    public void clearSelectedForms() {
+        selectedFormsUuid.clear();
     }
 
     /**

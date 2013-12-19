@@ -15,11 +15,12 @@ import org.apache.lucene.queryParser.ParseException;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import static com.muzima.utils.Constants.STATUS_COMPLETE;
-import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
-import static com.muzima.utils.Constants.STATUS_UPLOADED;
+import static com.muzima.utils.Constants.*;
 
 public class FormController {
 
@@ -185,6 +186,14 @@ public class FormController {
         }
     }
 
+    public void deleteFormTemplatesByUUID(List<String> formTemplateUUIDs) throws FormDeleteException {
+        try {
+            formService.deleteFormTemplateByUUIDs(formTemplateUUIDs);
+        } catch (IOException e) {
+            throw new FormDeleteException(e);
+        }
+    }
+
     public void replaceFormTemplates(List<FormTemplate> formTemplates) throws FormSaveException {
         for (FormTemplate formTemplate : formTemplates) {
             FormTemplate existingFormTemplate = null;
@@ -273,10 +282,10 @@ public class FormController {
                     patient = patientService.getPatientByUuid(patientUuid);
                 }
                 incompleteForms.add(new IncompleteFormWithPatientDataBuilder()
-                    .withForm(formService.getFormByUuid(formData.getTemplateUuid()))
-                    .withFormDataUuid(formData.getUuid())
-                    .withPatient(patient)
-                    .build());
+                        .withForm(formService.getFormByUuid(formData.getTemplateUuid()))
+                        .withFormDataUuid(formData.getUuid())
+                        .withPatient(patient)
+                        .build());
             }
         } catch (IOException e) {
             throw new FormFetchException(e);
@@ -364,17 +373,17 @@ public class FormController {
     }
 
     public Patient createNewPatient(String data) {
-            try {
-                Patient patient = new PatientJSONMapper(data).getPatient();
-                patientService.savePatient(patient);
-                return patient;
-            } catch (JSONException e) {
-                Log.e(TAG, e.toString());
-            } catch (IOException e) {
-                Log.e(TAG, e.toString());
-            } catch (ParseException e) {
-                Log.e(TAG, e.toString());
-            }
+        try {
+            Patient patient = new PatientJSONMapper(data).getPatient();
+            patientService.savePatient(patient);
+            return patient;
+        } catch (JSONException e) {
+            Log.e(TAG, e.toString());
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        } catch (ParseException e) {
+            Log.e(TAG, e.toString());
+        }
         return null;
     }
 
@@ -408,14 +417,14 @@ public class FormController {
     }
 
     public int getRecommendedFormsCount() throws FormFetchException {
-            return getRecommendedForms().size();
+        return getRecommendedForms().size();
     }
 
     private boolean isRegistrationTag(Tag formTag) {
         return REGISTRATION.equalsIgnoreCase(formTag.getName());
     }
 
-    public static class UploadFormDataException extends Throwable{
+    public static class UploadFormDataException extends Throwable {
         public UploadFormDataException(Throwable throwable) {
             super(throwable);
         }
