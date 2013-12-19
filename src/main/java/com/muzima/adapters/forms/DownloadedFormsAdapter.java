@@ -17,13 +17,20 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
-
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CheckedTextView;
+import com.muzima.R;
 import com.muzima.controller.FormController;
 import com.muzima.model.DownloadedForm;
 import com.muzima.model.collections.DownloadedForms;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
+import com.muzima.view.CheckedLinearLayout;
+import com.muzima.view.CheckedRelativeLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,14 +38,69 @@ import java.util.List;
  */
 public class DownloadedFormsAdapter extends FormsAdapter<DownloadedForm> {
     private static final String TAG = "DownloadedFormsAdapter";
+    private List<String> selectedFormsUuid = new ArrayList<String>();
 
     public DownloadedFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
     }
 
     @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        convertView = super.getView(position, convertView, parent);
+
+        highlightIfSelected(convertView, getItem(position));
+
+        return convertView;
+    }
+
+    private void highlightIfSelected(View convertView, DownloadedForm form) {
+        if (selectedFormsUuid.contains(form.getFormUuid())) {
+            setSelected(convertView, true);
+        } else {
+            setSelected(convertView, false);
+        }
+    }
+
+    private void setSelected(View convertView, boolean selected) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            convertView.findViewById(R.id.form_name_layout).setActivated(selected);
+            convertView.findViewById(R.id.form_description).setActivated(selected);
+            convertView.findViewById(R.id.form_name).setActivated(selected);
+            convertView.findViewById(R.id.tags_scroller).setActivated(selected);
+        }
+        ((CheckedLinearLayout) convertView.findViewById(R.id.form_name_layout)).setChecked(selected);
+        ((CheckedTextView)convertView.findViewById(R.id.form_name)).setChecked(selected);
+        ((CheckedTextView)convertView.findViewById(R.id.form_description)).setChecked(selected);
+        ((CheckedRelativeLayout) convertView.findViewById(R.id.tags_scroller)).setChecked(selected);
+
+        convertView.findViewById(R.id.form_name_layout).setSelected(selected);
+        convertView.findViewById(R.id.form_name).setSelected(selected);
+        convertView.findViewById(R.id.form_description).setSelected(selected);
+        convertView.findViewById(R.id.tags_scroller).setSelected(selected);
+    }
+
+    @Override
+    protected int getFormItemLayout() {
+        return R.layout.item_forms_list_selectable;
+    }
+
+    @Override
     public void reloadData() {
         new BackgroundQueryTask(this).execute();
+    }
+
+    public void onListItemClick(int position) {
+        DownloadedForm form = getItem(position);
+        if (selectedFormsUuid.contains(form.getFormUuid())) {
+            selectedFormsUuid.remove(form.getFormUuid());
+        } else {
+            selectedFormsUuid.add(form.getFormUuid());
+        }
+        notifyDataSetChanged();
+    }
+
+    public List<String> getSelectedForms() {
+        return selectedFormsUuid;
     }
 
     /**
