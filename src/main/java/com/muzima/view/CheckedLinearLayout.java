@@ -7,6 +7,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Checkable;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 public class CheckedLinearLayout extends LinearLayout implements Checkable {
@@ -45,8 +46,10 @@ public class CheckedLinearLayout extends LinearLayout implements Checkable {
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
             final View child = getChildAt(i);
-            if(child instanceof Checkable) {
-                ((Checkable)child).setChecked(checked);
+            if (child instanceof Checkable) {
+                ((Checkable) child).setChecked(checked);
+            } else if (child instanceof ImageView) {
+                child.setSelected(checked);
             }
         }
     }

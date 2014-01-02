@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.muzima.view.CheckedRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:background="@drawable/list_multi_selector_blue"
@@ -56,4 +56,4 @@
                 android:gravity="center_vertical">
         </LinearLayout>
     </com.muzima.view.CheckedRelativeLayout>
-</RelativeLayout>
+</com.muzima.view.CheckedRelativeLayout>

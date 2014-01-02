@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Checkable;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 public class CheckedRelativeLayout extends RelativeLayout implements Checkable {
@@ -45,6 +46,8 @@ public class CheckedRelativeLayout extends RelativeLayout implements Checkable {
             final View child = getChildAt(i);
             if(child instanceof Checkable) {
                 ((Checkable)child).setChecked(checked);
+            }else if(child instanceof ImageView){
+                child.setSelected(checked);
             }
         }
     }
