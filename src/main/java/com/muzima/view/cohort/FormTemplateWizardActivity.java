@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.*;
 import com.actionbarsherlock.view.MenuItem;
@@ -15,12 +16,14 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.forms.AllAvailableFormsAdapter;
 import com.muzima.adapters.forms.TagsListAdapter;
 import com.muzima.controller.FormController;
+import com.muzima.model.AvailableForm;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.forms.MuzimaProgressDialog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
@@ -37,6 +40,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
     private FormController formController;
     private AllAvailableFormsAdapter allAvailableFormsAdapter;
     private MuzimaProgressDialog progressDialog;
+    private ListView listView;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -44,16 +48,10 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
         mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_form_templates_wizard, null);
         setContentView(mainLayout);
         formController = ((MuzimaApplication) getApplication()).getFormController();
-        ListView listView = getListView();
+        listView = getListView();
         progressDialog = new MuzimaProgressDialog(this);
         allAvailableFormsAdapter = createAllFormsAdapter();
         allAvailableFormsAdapter.setBackgroundListQueryTaskListener(this);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                allAvailableFormsAdapter.onListItemClick(position);
-            }
-        });
         ImageButton tags = (ImageButton) findViewById(R.id.form_tags);
         tags.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +70,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(! allAvailableFormsAdapter.hasRegistrationFormSelected()){
+                if (!hasRegistrationFormSelected()) {
                     Toast.makeText(FormTemplateWizardActivity.this, "Please select at least one registration form!", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -108,6 +106,20 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
         initDrawer();
     }
 
+    private boolean hasRegistrationFormSelected() {
+        SparseBooleanArray checkedItemPositions = listView.getCheckedItemPositions();
+        boolean registrationFormSelected = false;
+        for (int i = 0; i < checkedItemPositions.size(); i++) {
+            if (checkedItemPositions.valueAt(i)) {
+                AvailableForm selectedForm = (AvailableForm) listView.getItemAtPosition(checkedItemPositions.keyAt(i));
+                if (selectedForm.isRegistrationForm()) {
+                    registrationFormSelected = true;
+                }
+            }
+        }
+        return registrationFormSelected;
+    }
+
     private void navigateToPreviousActivity() {
         Intent intent = new Intent(getApplicationContext(), CohortWizardActivity.class);
         startActivity(intent);
@@ -115,7 +127,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
     }
 
     private int[] downloadFormTemplates() {
-        List<String> selectedFormIdsArray = allAvailableFormsAdapter.getSelectedForms();
+        List<String> selectedFormIdsArray = getSelectedForms();
         MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
         return muzimaSyncService.downloadFormTemplates(selectedFormIdsArray.toArray(new String[selectedFormIdsArray.size()]));
     }
@@ -184,6 +196,17 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
 
         tagsNoDataMsg = (TextView) findViewById(R.id.tags_no_data_msg);
         tagsNoDataMsg.setTypeface(Fonts.roboto_bold_condensed(this));
+    }
+
+    private List<String> getSelectedForms() {
+        List<String> formUUIDs = new ArrayList<String>();
+        SparseBooleanArray checkedItemPositions = listView.getCheckedItemPositions();
+        for (int i = 0; i < checkedItemPositions.size(); i++) {
+            if (checkedItemPositions.valueAt(i)) {
+                formUUIDs.add(((AvailableForm) listView.getItemAtPosition(checkedItemPositions.keyAt(i))).getFormUuid());
+            }
+        }
+        return formUUIDs;
     }
 
     @Override

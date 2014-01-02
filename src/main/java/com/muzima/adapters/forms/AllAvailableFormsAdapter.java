@@ -17,12 +17,10 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
-import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.muzima.MuzimaApplication;
@@ -34,8 +32,6 @@ import com.muzima.model.collections.AvailableForms;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
-import com.muzima.view.CheckedLinearLayout;
-import com.muzima.view.CheckedRelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,24 +39,20 @@ import java.util.List;
 /**
  * Responsible to list down all the available forms in the server including Tags and img to indicate whether downloaded or not.
  */
-public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implements TagsListAdapter.TagsChangedListener{
+public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implements TagsListAdapter.TagsChangedListener {
     private static final String TAG = "AllAvailableFormsAdapter";
-    private List<String> selectedFormsUuid;
     private final MuzimaSyncService muzimaSyncService;
 
 
     public AllAvailableFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
-        selectedFormsUuid = new ArrayList<String>();
-        muzimaSyncService = ((MuzimaApplication)(getContext().getApplicationContext())).getMuzimaSyncService();
+        muzimaSyncService = ((MuzimaApplication) (getContext().getApplicationContext())).getMuzimaSyncService();
 
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = super.getView(position, convertView, parent);
-
-        highlightIfSelected(convertView, getItem(position));
 
         ViewHolder viewHolder = (ViewHolder) convertView.getTag();
         addTags(viewHolder, getItem(position));
@@ -75,9 +67,9 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
     }
 
     private void markIfDownloaded(View downloadedImg, AvailableForm form) {
-        if(form.isDownloaded()){
+        if (form.isDownloaded()) {
             downloadedImg.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             downloadedImg.setVisibility(View.GONE);
         }
     }
@@ -126,48 +118,7 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
         return textView;
     }
 
-    private void highlightIfSelected(View convertView, AvailableForm form) {
-            if (selectedFormsUuid.contains(form.getFormUuid())) {
-                setSelected(convertView, true);
-            } else {
-                setSelected(convertView, false);
-            }
-    }
-
-    private void setSelected(View convertView, boolean selected) {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            convertView.findViewById(R.id.form_name_layout).setActivated(selected);
-            convertView.findViewById(R.id.form_description).setActivated(selected);
-            convertView.findViewById(R.id.form_name).setActivated(selected);
-            convertView.findViewById(R.id.tags_scroller).setActivated(selected);
-        }
-        ((CheckedLinearLayout) convertView.findViewById(R.id.form_name_layout)).setChecked(selected);
-        ((CheckedTextView)convertView.findViewById(R.id.form_name)).setChecked(selected);
-        ((CheckedTextView)convertView.findViewById(R.id.form_description)).setChecked(selected);
-        ((CheckedRelativeLayout) convertView.findViewById(R.id.tags_scroller)).setChecked(selected);
-
-        convertView.findViewById(R.id.form_name_layout).setSelected(selected);
-        convertView.findViewById(R.id.form_name).setSelected(selected);
-        convertView.findViewById(R.id.form_description).setSelected(selected);
-        convertView.findViewById(R.id.tags_scroller).setSelected(selected);
-    }
-
-    public void onListItemClick(int position) {
-        AvailableForm form = getItem(position);
-        if (selectedFormsUuid.contains(form.getFormUuid())) {
-            selectedFormsUuid.remove(form.getFormUuid());
-        } else {
-            selectedFormsUuid.add(form.getFormUuid());
-        }
-        notifyDataSetChanged();
-    }
-
-    public List<String> getSelectedForms() {
-        return selectedFormsUuid;
-    }
-
     public void clearSelectedForms() {
-        selectedFormsUuid.clear();
         notifyDataSetChanged();
     }
 
@@ -183,16 +134,6 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
     @Override
     public void onTagsChanged() {
         reloadData();
-    }
-
-    public boolean hasRegistrationFormSelected() {
-        for (int i = 0; i < getCount(); i++) {
-            AvailableForm item = getItem(i);
-            if (item.isRegistrationForm() && selectedFormsUuid.contains(getItem(i).getFormUuid())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -212,22 +153,12 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
                     FormsAdapter formsAdapter = adapterWeakReference.get();
                     muzimaSyncService.downloadForms();
                     allForms = formsAdapter.getFormController().getAvailableFormByTags(getSelectedTagUuids());
-                    selectRegistrationForm(allForms);
                     Log.i(TAG, "#Forms: " + allForms.size());
                 } catch (FormController.FormFetchException e) {
                     Log.w(TAG, "Exception occurred while fetching local forms " + e);
                 }
             }
             return allForms;
-        }
-
-        private void selectRegistrationForm(AvailableForms allForms) {
-            for (AvailableForm form : allForms) {
-                if(form.isRegistrationForm()) {
-                    selectedFormsUuid.add(form.getFormUuid());
-                    Log.d(TAG, "isRegistrationForm size:" + selectedFormsUuid.size());
-                }
-            }
         }
     }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,12 @@ import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
 import com.muzima.adapters.forms.AllAvailableFormsAdapter;
 import com.muzima.controller.FormController;
+import com.muzima.model.AvailableForm;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -52,7 +55,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         // this can happen on orientation change
         if (actionModeActive) {
             actionMode = getSherlockActivity().startActionMode(new NewFormsActionModeCallback());
-            actionMode.setTitle(String.valueOf(((AllAvailableFormsAdapter) listAdapter).getSelectedForms().size()));
+            actionMode.setTitle(String.valueOf(getSelectedForms().size()));
         }
         super.onCreate(savedInstanceState);
     }
@@ -76,8 +79,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
             actionMode = getSherlockActivity().startActionMode(new NewFormsActionModeCallback());
             actionModeActive = true;
         }
-        ((AllAvailableFormsAdapter) listAdapter).onListItemClick(position);
-        int numOfSelectedForms = ((AllAvailableFormsAdapter) listAdapter).getSelectedForms().size();
+        int numOfSelectedForms = getSelectedForms().size();
         if (numOfSelectedForms == 0 && actionModeActive) {
             actionMode.finish();
         }
@@ -164,7 +166,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     }
 
     private String[] getSelectedFormsArray() {
-        List<String> selectedForms = ((AllAvailableFormsAdapter) listAdapter).getSelectedForms();
+        List<String> selectedForms = getSelectedForms();
         String[] selectedFormUuids = new String[selectedForms.size()];
         return selectedForms.toArray(selectedFormUuids);
     }
@@ -178,5 +180,16 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         }
         Log.d(TAG, lastSyncedMsg);
         syncText.setText(lastSyncedMsg);
+    }
+
+    private List<String> getSelectedForms(){
+        List<String> formUUIDs = new ArrayList<String>();
+        SparseBooleanArray checkedItemPositions = list.getCheckedItemPositions();
+        for (int i = 0; i < checkedItemPositions.size(); i++) {
+            if (checkedItemPositions.valueAt(i)) {
+                formUUIDs.add(((AvailableForm) list.getItemAtPosition(checkedItemPositions.keyAt(i))).getFormUuid());
+            }
+        }
+        return formUUIDs;
     }
 }
