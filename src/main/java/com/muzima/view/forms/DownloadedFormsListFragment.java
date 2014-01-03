@@ -2,6 +2,7 @@ package com.muzima.view.forms;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,9 @@ import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
 import com.muzima.adapters.forms.DownloadedFormsAdapter;
 import com.muzima.controller.FormController;
+import com.muzima.model.DownloadedForm;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DownloadedFormsListFragment extends FormsListFragment implements AllAvailableFormsListFragment.OnTemplateDownloadComplete {
@@ -38,7 +41,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
         // this can happen on orientation change
         if (actionModeActive) {
             actionMode = getSherlockActivity().startActionMode(new DeleteFormsActionModeCallback());
-            actionMode.setTitle(String.valueOf(((DownloadedFormsAdapter) listAdapter).getSelectedForms().size()));
+            actionMode.setTitle(String.valueOf(getSelectedForms().size()));
         }
 
         super.onCreate(savedInstanceState);
@@ -50,8 +53,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
             actionMode = getSherlockActivity().startActionMode(new DeleteFormsActionModeCallback());
             actionModeActive = true;
         }
-        ((DownloadedFormsAdapter) listAdapter).onListItemClick(position);
-        int numOfSelectedForms = ((DownloadedFormsAdapter) listAdapter).getSelectedForms().size();
+        int numOfSelectedForms = getSelectedForms().size();
         if (numOfSelectedForms == 0 && actionModeActive) {
             actionMode.finish();
         }
@@ -90,7 +92,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.menu_delete:
-                    List<String> selectedFormsUUIDs = ((DownloadedFormsAdapter) listAdapter).getSelectedForms();
+                    List<String> selectedFormsUUIDs = getSelectedForms();
                     try {
                         formController.deleteFormTemplatesByUUID(selectedFormsUUIDs);
                         onCompleteOfFormDelete();
@@ -117,8 +119,17 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
-            ((DownloadedFormsAdapter) listAdapter).clearSelectedForms();
         }
     }
 
+    private List<String> getSelectedForms(){
+        List<String> formUUIDs = new ArrayList<String>();
+        SparseBooleanArray checkedItemPositions = list.getCheckedItemPositions();
+        for (int i = 0; i < checkedItemPositions.size(); i++) {
+            if (checkedItemPositions.valueAt(i)) {
+                formUUIDs.add(((DownloadedForm) list.getItemAtPosition(checkedItemPositions.keyAt(i))).getFormUuid());
+            }
+        }
+        return formUUIDs;
+    }
 }

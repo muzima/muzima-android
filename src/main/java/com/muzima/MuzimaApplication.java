@@ -10,12 +10,7 @@ import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
-import com.muzima.controller.CohortController;
-import com.muzima.controller.ConceptController;
-import com.muzima.controller.EncounterController;
-import com.muzima.controller.FormController;
-import com.muzima.controller.ObservationController;
-import com.muzima.controller.PatientController;
+import com.muzima.controller.*;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.MuzimaSyncService;
@@ -25,11 +20,7 @@ import com.muzima.view.preferences.MuzimaTimer;
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.security.Security;
 
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
