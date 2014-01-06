@@ -67,7 +67,25 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
         listView.setAdapter(allAvailableFormsAdapter);
 
         Button nextButton = (Button) findViewById(R.id.next);
-        nextButton.setOnClickListener(new View.OnClickListener() {
+        nextButton.setOnClickListener(nextButtonListener());
+
+        Button previousButton = (Button) findViewById(R.id.previous);
+        previousButton.setOnClickListener(previousButtonListener());
+
+        initDrawer();
+    }
+
+    private View.OnClickListener previousButtonListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToPreviousActivity();
+            }
+        };
+    }
+
+    private View.OnClickListener nextButtonListener() {
+        return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!hasRegistrationFormSelected()) {
@@ -93,17 +111,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
                     }
                 }.execute();
             }
-        });
-
-        Button previousButton = (Button) findViewById(R.id.previous);
-        previousButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigateToPreviousActivity();
-            }
-        });
-
-        initDrawer();
+        };
     }
 
     private boolean hasRegistrationFormSelected() {
@@ -158,7 +166,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
     }
 
     private AllAvailableFormsAdapter createAllFormsAdapter() {
-        return new AllAvailableFormsAdapter(getApplicationContext(), R.layout.item_forms_list, ((MuzimaApplication) getApplicationContext()).getFormController());
+        return new AllAvailableFormsAdapter(getApplicationContext(), R.layout.item_forms_list_selectable, ((MuzimaApplication) getApplicationContext()).getFormController());
     }
 
     private ListView getListView() {
