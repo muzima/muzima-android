@@ -870,6 +870,9 @@ function Form (formSelector, dataStr, dataStrToEdit){
      * @return {?(number|string|boolean|jQuery)}            [description]
      */
     DataXML.prototype.evaluate = function(expr, resTypeStr, selector, index){
+        if(expr == undefined){
+            return false;
+        }
         var i, j, error, context, contextDoc, instances, id, resTypeNum, resultTypes, result, $result, attr, 
             $collection, $contextWrapNodes, $repParents;
 
