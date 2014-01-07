@@ -17,12 +17,10 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
-import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.muzima.MuzimaApplication;
@@ -34,8 +32,6 @@ import com.muzima.model.collections.AvailableForms;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
-import com.muzima.view.CheckedLinearLayout;
-import com.muzima.view.CheckedRelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,29 +57,9 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
         ViewHolder viewHolder = (ViewHolder) convertView.getTag();
         addTags(viewHolder, getItem(position));
         markIfDownloaded(viewHolder.downloadedImg, getItem(position));
-        setRegistrationFormSelected(convertView, getItem(position));
         return convertView;
     }
 
-    private void setRegistrationFormSelected(View convertView, AvailableForm item) {
-        if (item.isRegistrationForm()) {
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                convertView.findViewById(R.id.form_name_layout).setActivated(true);
-                convertView.findViewById(R.id.form_description).setActivated(true);
-                convertView.findViewById(R.id.form_name).setActivated(true);
-                convertView.findViewById(R.id.tags_scroller).setActivated(true);
-            }
-            ((CheckedLinearLayout) convertView.findViewById(R.id.form_name_layout)).setChecked(true);
-            ((CheckedTextView)convertView.findViewById(R.id.form_name)).setChecked(true);
-            ((CheckedTextView)convertView.findViewById(R.id.form_description)).setChecked(true);
-            ((CheckedRelativeLayout) convertView.findViewById(R.id.tags_scroller)).setChecked(true);
-
-            convertView.findViewById(R.id.form_name_layout).setSelected(true);
-            convertView.findViewById(R.id.form_name).setSelected(true);
-            convertView.findViewById(R.id.form_description).setSelected(true);
-            convertView.findViewById(R.id.tags_scroller).setSelected(true);
-        }
-    }
 
     @Override
     protected int getFormItemLayout() {
