@@ -459,4 +459,12 @@ public class FormController {
             super(throwable);
         }
     }
+
+    public List<FormData> getFormDataByTemplateUUID(String templateUUID) throws FormDataFetchException {
+        try {
+            return formService.getFormDataByTemplateUUID(templateUUID);
+        } catch (IOException e) {
+            throw new FormDataFetchException(e);
+        }
+    }
 }

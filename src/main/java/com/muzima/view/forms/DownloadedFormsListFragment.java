@@ -92,10 +92,19 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.menu_delete:
-                    List<String> selectedFormsUUIDs = getSelectedForms();
+                    List<DownloadedForm> selectedForms = getSelectedForms();
+                    List<String> selectedFormsUUIDs = getFormUUIDs(selectedForms);
                     try {
-                        formController.deleteFormTemplatesByUUID(selectedFormsUUIDs);
-                        onCompleteOfFormDelete();
+                        List<String> formTemplatesWithAssociatedFormData =
+                                formTemplatesWithAssociatedFormData(selectedFormsUUIDs);
+                        if (formTemplatesWithAssociatedFormData.isEmpty()) {
+                            formController.deleteFormTemplatesByUUID(selectedFormsUUIDs);
+                            onCompleteOfFormDelete();
+                        } else {
+                            Toast.makeText(getActivity(), getCommaSeparatedFormNames(selectedForms, formTemplatesWithAssociatedFormData)
+                                    + " contains some associated forms with it. Please complete and sync those forms before deleting them.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     } catch (FormController.FormDeleteException e) {
                         Log.e(TAG, "Error while deleting forms");
                     }
@@ -122,12 +131,44 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
         }
     }
 
-    private List<String> getSelectedForms(){
+    private String getCommaSeparatedFormNames(List<DownloadedForm> selectedForms, List<String> formUUIDs) {
+        StringBuilder commaSeparatedFormNames = new StringBuilder();
+        for (DownloadedForm selectedForm : selectedForms) {
+            if (formUUIDs.contains(selectedForm.getFormUuid())) {
+                commaSeparatedFormNames.append(selectedForm.getName()).append(", ");
+            }
+        }
+        return commaSeparatedFormNames.toString();
+    }
+
+    private List<String> getFormUUIDs(List<DownloadedForm> selectedForms) {
         List<String> formUUIDs = new ArrayList<String>();
+        for (DownloadedForm selectedForm : selectedForms) {
+            formUUIDs.add(selectedForm.getFormUuid());
+        }
+        return formUUIDs;
+    }
+
+    private List<String> formTemplatesWithAssociatedFormData(List<String> selectedFormsUUIDs) {
+        List<String> formsWithAssociatedData = new ArrayList<String>();
+        for (String selectedFormsUUID : selectedFormsUUIDs) {
+            try {
+                if (!formController.getFormDataByTemplateUUID(selectedFormsUUID).isEmpty()) {
+                    formsWithAssociatedData.add(selectedFormsUUID);
+                }
+            } catch (FormController.FormDataFetchException e) {
+                Log.e(TAG, "Error while fetching FormData");
+            }
+        }
+        return formsWithAssociatedData;
+    }
+
+    private List<DownloadedForm> getSelectedForms() {
+        List<DownloadedForm> formUUIDs = new ArrayList<DownloadedForm>();
         SparseBooleanArray checkedItemPositions = list.getCheckedItemPositions();
         for (int i = 0; i < checkedItemPositions.size(); i++) {
             if (checkedItemPositions.valueAt(i)) {
-                formUUIDs.add(((DownloadedForm) list.getItemAtPosition(checkedItemPositions.keyAt(i))).getFormUuid());
+                formUUIDs.add(((DownloadedForm) list.getItemAtPosition(checkedItemPositions.keyAt(i))));
             }
         }
         return formUUIDs;
