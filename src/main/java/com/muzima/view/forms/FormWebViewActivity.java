@@ -38,7 +38,6 @@ import java.util.UUID;
 
 import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
 import static com.muzima.controller.FormController.FormFetchException;
-import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_ENCOUNTER;
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 import static java.text.MessageFormat.format;
@@ -51,6 +50,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     public static final String BARCODE = "barCodeComponent";
     public static final String ZIGGY_FILE_LOADER = "ziggyFileLoader";
     public static final String FORM = "form";
+    public static final String DISCRIMINATOR = "discriminator";
 
 
     private WebView webView;
@@ -194,7 +194,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             setUserUuid("userUuid");
             setStatus(STATUS_INCOMPLETE);
             setTemplateUuid(formUuid);
-            setDiscriminator(FORM_DISCRIMINATOR_ENCOUNTER);
+            setDiscriminator(getIntent().getStringExtra(DISCRIMINATOR));
         }};
         try {
             PatientJSONMapper mapper = new PatientJSONMapper(formTemplate.getModelJson());

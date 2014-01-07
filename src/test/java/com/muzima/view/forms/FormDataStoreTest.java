@@ -12,6 +12,8 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
+import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_REGISTRATION;
+
 @RunWith(CustomTestRunner.class)
 public class FormDataStoreTest {
 
@@ -55,6 +57,7 @@ public class FormDataStoreTest {
     public void shouldCreateANewPatientAndStoreHisUUIDAsPatientUUID() throws Exception {
         String tempUUIDAssignedByDevice = "newUUID";
         formData.setPatientUuid(null);
+        formData.setDiscriminator(FORM_DISCRIMINATOR_REGISTRATION);
         Patient patient = new Patient();
         patient.setUuid(tempUUIDAssignedByDevice);
         when(controller.createNewPatient("data")).thenReturn(patient);

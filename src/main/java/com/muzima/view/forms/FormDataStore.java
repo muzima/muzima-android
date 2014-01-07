@@ -29,7 +29,6 @@ public class FormDataStore {
         if (isRegistrationComplete(status)) {
             newPatient = formController.createNewPatient(jsonData);
             formData.setPatientUuid(newPatient.getUuid());
-            formData.setDiscriminator(FORM_DISCRIMINATOR_REGISTRATION);
             formWebViewActivity.startPatientSummaryView(newPatient);
         }
         Log.d(TAG,"xml data is:"+xmlData);
@@ -48,7 +47,7 @@ public class FormDataStore {
     }
 
     private boolean isRegistrationComplete(String status) {
-        return isRegisterPatient() && status.equals(STATUS_COMPLETE);
+        return isRegistrationForm() && status.equals(STATUS_COMPLETE);
     }
 
     @JavascriptInterface
@@ -66,7 +65,8 @@ public class FormDataStore {
         formWebViewActivity.showProgressBar("Saving...");
     }
 
-    public boolean isRegisterPatient() {
-        return formData.getPatientUuid() == null;
+    public boolean isRegistrationForm() {
+        return (formData.getDiscriminator() == null) ? false :
+                formData.getDiscriminator().equals(FORM_DISCRIMINATOR_REGISTRATION);
     }
 }

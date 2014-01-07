@@ -49,9 +49,8 @@ public class PatientJSONMapper {
 
     private Patient patient(Map<String, String> paramsMap) {
         Patient patient = new Patient();
-        String uuid = String.valueOf(UUID.randomUUID());
-        patient.setIdentifiers(asList(patientIdentifier(uuid), preferredIdentifier(paramsMap)));
-        patient.setUuid(uuid);
+        patient.setUuid(paramsMap.get("patient.uuid"));
+        patient.setIdentifiers(asList(patientIdentifier(patient.getUuid()), preferredIdentifier(paramsMap)));
         patient.setNames(asList(personName(paramsMap)));
         patient.setGender(paramsMap.get("patient.sex"));
         patient.setBirthdate(getDate(paramsMap, "patient.birthdate"));
@@ -110,6 +109,7 @@ public class PatientJSONMapper {
         patientValueMap.put("patient.given_name", defaultString(patient.getGivenName()));
         patientValueMap.put("patient.middle_name", defaultString(patient.getMiddleName()));
         patientValueMap.put("patient.sex", defaultString(patient.getGender()));
+        patientValueMap.put("patient.uuid", defaultString(patient.getUuid()));
         if (patient.getBirthdate() != null) {
             patientValueMap.put("patient.birthdate", getFormattedDate(patient.getBirthdate()));
         }

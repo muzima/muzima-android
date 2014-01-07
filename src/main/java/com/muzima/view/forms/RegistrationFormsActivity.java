@@ -13,6 +13,9 @@ import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.view.BaseActivity;
+import java.util.UUID;
+
+import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_REGISTRATION;
 
 public class RegistrationFormsActivity extends BaseActivity {
     private ListView list;
@@ -57,7 +60,10 @@ public class RegistrationFormsActivity extends BaseActivity {
     }
 
     private void startWebViewActivity(AvailableForm form) {
-        startActivity(new FormViewIntent(this, form, new Patient()));
+        Patient patient = new Patient();
+        String uuid = String.valueOf(UUID.randomUUID());
+        patient.setUuid(uuid);
+        startActivity(new FormViewIntent(this, form, patient, FORM_DISCRIMINATOR_REGISTRATION));
     }
 
     private AvailableForms getRegistrationForms(FormController formController) {
@@ -65,7 +71,7 @@ public class RegistrationFormsActivity extends BaseActivity {
         try {
             availableForms = formController.getDownloadedRegistrationForms();
         } catch (FormController.FormFetchException e) {
-            Log.e(TAG, "Error while retireving registration forms from Lucene");
+            Log.e(TAG, "Error while retrieving registration forms from Lucene");
         }
         return availableForms;
     }
