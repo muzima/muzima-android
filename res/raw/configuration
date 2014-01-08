@@ -420,6 +420,21 @@
                 "patientUuid": "$['person']['uuid']",
                 "conceptUuid": "$['concept']['uuid']"
             }
+        },
+        {
+            "resource.name": "Uuid Registration Resource",
+            "node.root": "$",
+            "resource.object": "com.muzima.api.model.Patient",
+            "algorithm.class": "com.muzima.api.model.algorithm.PatientAlgorithm",
+            "resolver.class": "com.muzima.api.model.resolver.UuidRegistrationResolver",
+            "field.unique": "uuid",
+            "field.searchable": {
+                "uuid": "$['uuid']",
+                "givenName": "$['names'][*]['givenName']",
+                "middleName": "$['names'][*]['middleName']",
+                "familyName": "$['names'][*]['familyName']",
+                "identifier": "$['identifiers'][*]['identifier']"
+            }
         }
     ]
 }
