@@ -153,7 +153,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
         List<String> formsWithAssociatedData = new ArrayList<String>();
         for (String selectedFormsUUID : selectedFormsUUIDs) {
             try {
-                if (!formController.getFormDataByTemplateUUID(selectedFormsUUID).isEmpty()) {
+                if (!formController.getUnUploadedFormData(selectedFormsUUID).isEmpty()) {
                     formsWithAssociatedData.add(selectedFormsUUID);
                 }
             } catch (FormController.FormDataFetchException e) {

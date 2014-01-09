@@ -31,6 +31,7 @@ import static com.muzima.controller.FormController.FormFetchException;
 import static com.muzima.controller.FormController.FormSaveException;
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
+import static com.muzima.utils.Constants.STATUS_UPLOADED;
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -484,6 +485,21 @@ public class FormControllerTest {
         doThrow(new IOException()).when(formService).getFormDataByPatient(anyString(),anyString());
 
         formController.getAllIncompleteFormsForPatientUuid("patientUuid");
+    }
+
+    @Test
+    public void shouldFilterOutUploadedFormData() throws Exception, FormDataFetchException {
+        String templateUUID = "templateUUID";
+        when(formService.getFormDataByTemplateUUID(templateUUID)).thenReturn(asList(formDataWithStatus(STATUS_COMPLETE),formDataWithStatus(STATUS_UPLOADED)));
+        List<FormData> formDataByTemplateUUID = formController.getUnUploadedFormData(templateUUID);
+        assertThat(formDataByTemplateUUID.size(),is(1));
+        assertThat(formDataByTemplateUUID.get(0).getStatus(),is(STATUS_COMPLETE));
+    }
+
+    private FormData formDataWithStatus(String status) {
+        FormData formData = new FormData();
+        formData.setStatus(status);
+        return formData;
     }
 
     private List<Form> buildForms() {

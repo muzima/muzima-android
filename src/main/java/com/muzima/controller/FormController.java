@@ -460,9 +460,16 @@ public class FormController {
         }
     }
 
-    public List<FormData> getFormDataByTemplateUUID(String templateUUID) throws FormDataFetchException {
+    public List<FormData> getUnUploadedFormData(String templateUUID) throws FormDataFetchException {
+        List<FormData> incompleteFormData = new ArrayList<FormData>();
         try {
-            return formService.getFormDataByTemplateUUID(templateUUID);
+            List<FormData> formDataByTemplateUUID = formService.getFormDataByTemplateUUID(templateUUID);
+            for (FormData formData : formDataByTemplateUUID) {
+                if (!formData.getStatus().equals(STATUS_UPLOADED)) {
+                    incompleteFormData.add(formData);
+                }
+            }
+            return incompleteFormData;
         } catch (IOException e) {
             throw new FormDataFetchException(e);
         }
