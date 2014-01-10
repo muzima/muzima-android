@@ -4,11 +4,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.*;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
@@ -35,6 +34,32 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         setContentView(R.layout.activity_cohort_wizard);
         ListView listView = getListView();
         final AllCohortsAdapter cohortsAdapter = createAllCohortsAdapter();
+
+        final EditText filterCohortText = (EditText) findViewById(R.id.filter_cohorts_txt);
+        filterCohortText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                cohortsAdapter.filterItems(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        ImageButton cancelFilterButton = (ImageButton) findViewById(R.id.cancel_filter_txt);
+        cancelFilterButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                filterCohortText.setText("");
+            }
+        });
         Button nextButton = (Button) findViewById(R.id.next);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override

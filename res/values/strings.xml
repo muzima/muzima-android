@@ -197,5 +197,6 @@
     </string>
     <string name="exit_form_message">Closing Form: This will discard all your changes.  Are you sure you would like to do this?
     </string>
+    <string name="filter_cohort_hint">Start typing to filter the cohorts...</string>
 
 </resources>

@@ -36,6 +36,7 @@ public class AllCohortsAdapter extends CohortsAdapter {
     private static final String TAG = "AllCohortsAdapter";
     private final MuzimaSyncService muzimaSyncService;
     private List<String> selectedCohortsUuid;
+    private List<Cohort> cohorts;
 
     public AllCohortsAdapter(Context context, int textViewResourceId, CohortController cohortController) {
         super(context, textViewResourceId, cohortController);
@@ -90,6 +91,21 @@ public class AllCohortsAdapter extends CohortsAdapter {
         return getSelectedCohorts().size();
     }
 
+    public void filterItems(String filterText) {
+        //Removes the current items from the list.
+        AllCohortsAdapter.this.clear();
+        //Add filtered items to the list.
+        List <Cohort> cohortsFiltered = new ArrayList<Cohort>();
+        for (Cohort cohort : cohorts) {
+            if (cohort.getName().toLowerCase().contains(filterText.toLowerCase())) {
+                cohortsFiltered.add(cohort);
+            }
+        }
+        addAll(cohortsFiltered);
+        //Send a data change request to the list, so the page can be reloaded.
+        notifyDataSetChanged();
+    }
+
     /**
      * Responsible to define contract to CohortBackgroundQueryTasks.
      */
@@ -102,7 +118,8 @@ public class AllCohortsAdapter extends CohortsAdapter {
         }
 
         @Override
-        protected void onPostExecute(List<Cohort> cohorts) {
+        protected void onPostExecute(List<Cohort> allCohorts) {
+            cohorts = allCohorts;
             if (cohorts == null) {
                 Toast.makeText(getContext(), "Something went wrong while fetching cohorts from local repo", Toast.LENGTH_SHORT).show();
                 return;

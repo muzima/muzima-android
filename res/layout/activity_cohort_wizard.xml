@@ -18,6 +18,19 @@
                 android:text="@string/download_cohort_desc">
         </TextView>
 
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <EditText android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="10dp"
+                      android:layout_marginBottom="10dp"
+                      android:hint="@string/filter_cohort_hint"
+                      android:id="@+id/filter_cohorts_txt"/>
+            <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                       android:id="@+id/cancel_filter_txt"
+                       android:layout_alignParentRight="true" android:src="@drawable/ic_cancel"/>
+        </RelativeLayout>
+
+
     </LinearLayout>
 
     <LinearLayout style="@style/WizardContainer"
