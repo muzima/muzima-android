@@ -391,15 +391,8 @@ public class FormController {
         try {
             boolean result = true;
             List<FormData> allFormData = formService.getAllFormData(STATUS_COMPLETE);
-            for (FormData formData : allFormData) {
-                if (formService.syncFormData(formData)) {
-                    formData.setStatus(STATUS_UPLOADED);
-                    formService.saveFormData(formData);
-                } else {
-                    result = false;
-                }
-            }
-            return result;
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_DISCRIMINATOR_REGISTRATION), result);
+            return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_DISCRIMINATOR_ENCOUNTER), result);
         } catch (IOException e) {
             throw new UploadFormDataException(e);
         }
@@ -407,7 +400,6 @@ public class FormController {
 
     public AvailableForms getRecommendedForms() throws FormFetchException {
         AvailableForms result = new AvailableForms();
-
         for (AvailableForm form : getAvailableFormByTags(null)) {
             if (form.isDownloaded() && !form.isRegistrationForm()) {
                 result.add(form);
@@ -473,5 +465,27 @@ public class FormController {
         } catch (IOException e) {
             throw new FormDataFetchException(e);
         }
+    }
+
+    private List<FormData> getFormsWithDiscriminator(List<FormData> allFormData, String discriminator) {
+        List<FormData> requeiredForms = new ArrayList<FormData>();
+        for (FormData formData : allFormData) {
+            if (formData.getDiscriminator().equals(discriminator)) {
+                requeiredForms.add(formData);
+            }
+        }
+        return requeiredForms;
+    }
+
+    boolean uploadFormDataToServer(List<FormData> allFormData, boolean result) throws IOException {
+        for (FormData formData : allFormData) {
+            if (formService.syncFormData(formData)) {
+                formData.setStatus(STATUS_UPLOADED);
+                formService.saveFormData(formData);
+            } else {
+                result = false;
+            }
+        }
+        return result;
     }
 }

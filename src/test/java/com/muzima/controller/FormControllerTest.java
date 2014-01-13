@@ -16,9 +16,11 @@ import com.muzima.model.collections.AvailableForms;
 import com.muzima.model.collections.DownloadedForms;
 import com.muzima.search.api.util.StringUtil;
 
+import com.muzima.utils.Constants;
 import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InOrder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,20 +31,13 @@ import static com.muzima.controller.FormController.FormDataSaveException;
 import static com.muzima.controller.FormController.FormDeleteException;
 import static com.muzima.controller.FormController.FormFetchException;
 import static com.muzima.controller.FormController.FormSaveException;
-import static com.muzima.utils.Constants.STATUS_COMPLETE;
-import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
-import static com.muzima.utils.Constants.STATUS_UPLOADED;
+import static com.muzima.utils.Constants.*;
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.matchers.JUnitMatchers.hasItem;
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class FormControllerTest {
     private FormController formController;
@@ -490,15 +485,35 @@ public class FormControllerTest {
     @Test
     public void shouldFilterOutUploadedFormData() throws Exception, FormDataFetchException {
         String templateUUID = "templateUUID";
-        when(formService.getFormDataByTemplateUUID(templateUUID)).thenReturn(asList(formDataWithStatus(STATUS_COMPLETE),formDataWithStatus(STATUS_UPLOADED)));
+        when(formService.getFormDataByTemplateUUID(templateUUID)).thenReturn(asList(
+                formDataWithStatusAndDiscriminator(STATUS_COMPLETE, FORM_DISCRIMINATOR_ENCOUNTER),
+                formDataWithStatusAndDiscriminator(STATUS_UPLOADED, FORM_DISCRIMINATOR_ENCOUNTER)));
         List<FormData> formDataByTemplateUUID = formController.getUnUploadedFormData(templateUUID);
         assertThat(formDataByTemplateUUID.size(),is(1));
         assertThat(formDataByTemplateUUID.get(0).getStatus(),is(STATUS_COMPLETE));
     }
 
-    private FormData formDataWithStatus(String status) {
+    @Test
+    public void shouldUploadRegistrationFormsBeforeEncounterForms() throws Exception, FormController.UploadFormDataException {
+        FormData registrationFormData = formDataWithStatusAndDiscriminator(STATUS_COMPLETE, FORM_DISCRIMINATOR_REGISTRATION);
+        FormData encounterFormData = formDataWithStatusAndDiscriminator(STATUS_COMPLETE, FORM_DISCRIMINATOR_ENCOUNTER);
+        when(formService.getAllFormData(Constants.STATUS_COMPLETE)).thenReturn(asList(registrationFormData,encounterFormData));
+
+        FormController spyController = spy(formController);
+        when(spyController.uploadFormDataToServer(asList(registrationFormData),true)).thenReturn(true);
+
+        InOrder inOrder = inOrder(spyController);
+
+        spyController.uploadAllCompletedForms();
+
+        inOrder.verify(spyController).uploadFormDataToServer(asList(registrationFormData), true);
+        inOrder.verify(spyController).uploadFormDataToServer(asList(encounterFormData),true);
+    }
+
+    private FormData formDataWithStatusAndDiscriminator(String status, String formDiscriminatorEncounter) {
         FormData formData = new FormData();
         formData.setStatus(status);
+        formData.setDiscriminator(formDiscriminatorEncounter);
         return formData;
     }
 
