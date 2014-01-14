@@ -35,13 +35,13 @@ import java.util.List;
 public abstract class FormsWithDataAdapter<T extends FormWithData> extends FormsAdapter<T> {
     private static final String TAG = "FormsWithDataAdapter";
 
-    private List<String> selectedIncompleteFormsUuid;
+    private List<String> selectedFormsUuid;
     private MuzimaClickListener muzimaClickListener;
 
 
     public FormsWithDataAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
-        selectedIncompleteFormsUuid = new ArrayList<String>();
+        selectedFormsUuid = new ArrayList<String>();
     }
 
     @Override
@@ -59,17 +59,17 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
                 checkedLinearLayout.toggle();
                 boolean selected = checkedLinearLayout.isChecked();
 
-                FormWithData incompleteFormWithPatientData = getItem(position);
-                if (selected && !selectedIncompleteFormsUuid.contains(incompleteFormWithPatientData.getFormDataUuid())) {
-                    selectedIncompleteFormsUuid.add(incompleteFormWithPatientData.getFormDataUuid());
+                FormWithData formWithPatientData = getItem(position);
+                if (selected && !selectedFormsUuid.contains(formWithPatientData.getFormDataUuid())) {
+                    selectedFormsUuid.add(formWithPatientData.getFormDataUuid());
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
                         checkedLinearLayout.setChecked(true);
                     } else {
                         checkedLinearLayout.setActivated(true);
 
                     }
-                } else if (!selected && selectedIncompleteFormsUuid.contains(incompleteFormWithPatientData.getFormDataUuid())) {
-                    selectedIncompleteFormsUuid.remove(incompleteFormWithPatientData.getFormDataUuid());
+                } else if (!selected && selectedFormsUuid.contains(formWithPatientData.getFormDataUuid())) {
+                    selectedFormsUuid.remove(formWithPatientData.getFormDataUuid());
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
                         checkedLinearLayout.setChecked(false);
                     } else {
@@ -95,12 +95,12 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
         this.muzimaClickListener = muzimaClickListener;
     }
 
-    public List<String> getSelectedIncompleteFormsUuid() {
-        return selectedIncompleteFormsUuid;
+    public List<String> getSelectedFormsUuid() {
+        return selectedFormsUuid;
     }
 
-    public void clearSelectedIncompleteFormsUuid() {
-        selectedIncompleteFormsUuid.clear();
+    public void clearSelectedFormsUuid() {
+        selectedFormsUuid.clear();
     }
 
 }

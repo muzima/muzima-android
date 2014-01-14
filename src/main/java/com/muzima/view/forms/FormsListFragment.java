@@ -14,7 +14,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
 import com.muzima.adapters.forms.FormsAdapter;
-import com.muzima.adapters.forms.PatientIncompleteFormsAdapter;
+import com.muzima.adapters.forms.FormsWithDataAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.view.MuzimaListFragment;
 
@@ -89,11 +89,11 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.menu_delete:
-                    List<String> selectedFormsUUIDs = ((PatientIncompleteFormsAdapter) listAdapter).getSelectedIncompleteFormsUuid();
+                    List<String> selectedFormsUUIDs = ((FormsWithDataAdapter) listAdapter).getSelectedFormsUuid();
                     try {
-                        formController.deleteIncompleteForms(selectedFormsUUIDs);
+                        formController.deleteCompleteAndIncompleteForms(selectedFormsUUIDs);
                         onCompleteOfFormDelete();
-                        ((PatientIncompleteFormsAdapter) listAdapter).clearSelectedIncompleteFormsUuid();
+                        ((FormsWithDataAdapter) listAdapter).clearSelectedFormsUuid();
                     } catch (FormController.FormDeleteException e) {
                     }
             }

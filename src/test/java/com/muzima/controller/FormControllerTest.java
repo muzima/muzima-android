@@ -490,7 +490,7 @@ public class FormControllerTest {
                 formDataWithStatusAndDiscriminator(STATUS_UPLOADED, FORM_DISCRIMINATOR_ENCOUNTER)));
         List<FormData> formDataByTemplateUUID = formController.getUnUploadedFormData(templateUUID);
         assertThat(formDataByTemplateUUID.size(),is(1));
-        assertThat(formDataByTemplateUUID.get(0).getStatus(),is(STATUS_COMPLETE));
+        assertThat(formDataByTemplateUUID.get(0).getStatus(), is(STATUS_COMPLETE));
     }
 
     @Test
@@ -518,24 +518,26 @@ public class FormControllerTest {
     }
 
     @Test
-    public void deleteIncompleteForms_shouldDeleteIncompleteForm() throws Exception, FormDataFetchException, FormDeleteException {
+    public void deleteCompleteAndIncompleteForms_shouldDeleteIncompleteForm() throws Exception, FormDataFetchException, FormDeleteException {
         FormData incompleteFormToDelete = new FormData();
         String uuid = "uuid";
         incompleteFormToDelete.setUuid(uuid);
+        incompleteFormToDelete.setStatus(STATUS_INCOMPLETE);
         when(formController.getFormDataByUuid(anyString())).thenReturn(incompleteFormToDelete);
 
-        formController.deleteIncompleteForms(asList(uuid));
+        formController.deleteCompleteAndIncompleteForms(asList(uuid));
         verify(formService).deleteFormData(asList(incompleteFormToDelete));
     }
 
     @Test
-    public void deleteCompleteForms_shouldDeleteCompleteForm() throws Exception, FormDataFetchException, FormDeleteException {
+    public void deleteCompleteAndIncompleteForms_shouldDeleteCompleteForm() throws Exception, FormDataFetchException, FormDeleteException {
         FormData completeFormToDelete = new FormData();
         String uuid = "uuid";
         completeFormToDelete.setUuid(uuid);
+        completeFormToDelete.setStatus(STATUS_COMPLETE);
         when(formController.getFormDataByUuid(anyString())).thenReturn(completeFormToDelete);
 
-        formController.deleteCompleteForms(asList(uuid));
+        formController.deleteCompleteAndIncompleteForms(asList(uuid));
         verify(formService).deleteFormData(asList(completeFormToDelete));
 
     }

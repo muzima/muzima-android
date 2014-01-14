@@ -30,7 +30,7 @@ public class IncompletePatientsFormsListFragment extends FormsListFragment imple
 
         if (actionModeActive) {
             actionMode = getSherlockActivity().startActionMode(new DeleteFormsActionModeCallback());
-            actionMode.setTitle(String.valueOf(((PatientIncompleteFormsAdapter)listAdapter).getSelectedIncompleteFormsUuid().size()));
+            actionMode.setTitle(String.valueOf(((PatientIncompleteFormsAdapter)listAdapter).getSelectedFormsUuid().size()));
         }
 
         super.onCreate(savedInstanceState);
@@ -46,7 +46,7 @@ public class IncompletePatientsFormsListFragment extends FormsListFragment imple
             actionMode = getSherlockActivity().startActionMode(new DeleteFormsActionModeCallback());
             actionModeActive = true;
         }
-        int numOfSelectedForms = ((PatientIncompleteFormsAdapter)listAdapter).getSelectedIncompleteFormsUuid().size();
+        int numOfSelectedForms = ((PatientIncompleteFormsAdapter)listAdapter).getSelectedFormsUuid().size();
         if (numOfSelectedForms == 0 && actionModeActive) {
             actionMode.finish();
         }

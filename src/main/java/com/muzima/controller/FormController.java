@@ -416,25 +416,11 @@ public class FormController {
         return REGISTRATION.equalsIgnoreCase(formTag.getName());
     }
 
-    public void deleteIncompleteForms(List<String> selectedIncompleteFormsUuids) throws FormDeleteException{
+    public void deleteCompleteAndIncompleteForms(List<String> selectedIncompleteFormsUuids) throws FormDeleteException{
         try {
             List<FormData> selectedFormsData = new ArrayList<FormData>();
             for (String selectedIncompleteFormsUuid : selectedIncompleteFormsUuids) {
                 selectedFormsData.add(getFormDataByUuid(selectedIncompleteFormsUuid));
-            }
-            formService.deleteFormData(selectedFormsData);
-        } catch (IOException e) {
-            throw new FormDeleteException(e);
-        } catch (FormDataFetchException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void deleteCompleteForms(List<String> selectedCompleteFormsUuids) throws FormDeleteException{
-        try {
-            List<FormData> selectedFormsData = new ArrayList<FormData>();
-            for (String selectedCompleteFormsUuid : selectedCompleteFormsUuids) {
-                selectedFormsData.add(getFormDataByUuid(selectedCompleteFormsUuid));
             }
             formService.deleteFormData(selectedFormsData);
         } catch (IOException e) {
