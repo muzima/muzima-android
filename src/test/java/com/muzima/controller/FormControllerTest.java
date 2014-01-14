@@ -517,6 +517,29 @@ public class FormControllerTest {
         return formData;
     }
 
+    @Test
+    public void deleteIncompleteForms_shouldDeleteIncompleteForm() throws Exception, FormDataFetchException, FormDeleteException {
+        FormData incompleteFormToDelete = new FormData();
+        String uuid = "uuid";
+        incompleteFormToDelete.setUuid(uuid);
+        when(formController.getFormDataByUuid(anyString())).thenReturn(incompleteFormToDelete);
+
+        formController.deleteIncompleteForms(asList(uuid));
+        verify(formService).deleteFormData(asList(incompleteFormToDelete));
+    }
+
+    @Test
+    public void deleteCompleteForms_shouldDeleteCompleteForm() throws Exception, FormDataFetchException, FormDeleteException {
+        FormData completeFormToDelete = new FormData();
+        String uuid = "uuid";
+        completeFormToDelete.setUuid(uuid);
+        when(formController.getFormDataByUuid(anyString())).thenReturn(completeFormToDelete);
+
+        formController.deleteCompleteForms(asList(uuid));
+        verify(formService).deleteFormData(asList(completeFormToDelete));
+
+    }
+
     private List<Form> buildForms() {
         List<Form> forms = new ArrayList<Form>();
         Tag tag1 = TagBuilder.tag().withName("Patient").withUuid("tag1").build();
