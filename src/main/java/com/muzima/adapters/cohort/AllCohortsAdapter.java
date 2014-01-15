@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import com.muzima.MuzimaApplication;
+import com.muzima.R;
 import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
 import com.muzima.service.MuzimaSyncService;
@@ -74,14 +75,23 @@ public class AllCohortsAdapter extends CohortsAdapter {
         if (cohortController.isDownloaded(cohort)) {
             holder.displayDownloadImage();
         }
+        highlightCohorts(cohort,view);
         return view;
     }
 
-    public void onListItemClick(int position, boolean selected) {
+    private void highlightCohorts(Cohort cohort, View view) {
+       if(selectedCohortsUuid.contains(cohort.getUuid())){
+           view.setBackgroundResource(R.color.primary_blue);
+       }else{
+           view.setBackgroundResource(R.color.primary_black);
+       }
+    }
+
+    public void onListItemClick(int position) {
         Cohort cohort = getItem(position);
-        if (selected && !selectedCohortsUuid.contains(cohort.getUuid())) {
+        if (!selectedCohortsUuid.contains(cohort.getUuid())) {
             selectedCohortsUuid.add(cohort.getUuid());
-        } else if (!selected && selectedCohortsUuid.contains(cohort.getUuid())) {
+        } else if (selectedCohortsUuid.contains(cohort.getUuid())) {
             selectedCohortsUuid.remove(cohort.getUuid());
         }
         notifyDataSetChanged();

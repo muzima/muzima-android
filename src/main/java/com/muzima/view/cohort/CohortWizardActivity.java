@@ -95,7 +95,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
                     checkedLinearLayout.toggle();
                 }
-                cohortsAdapter.onListItemClick(position, checkedLinearLayout.isChecked());
+                cohortsAdapter.onListItemClick(position);
             }
         });
 
