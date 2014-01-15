@@ -72,6 +72,10 @@
             "bind": "/model/instance/form/encounter"
         },
         {
+            "name": "encounter.form_uuid",
+            "bind": "/model/instance/form/encounter/encounter.form_uuid"
+        },
+        {
             "name": "encounter.encounter_datetime",
             "bind": "/model/instance/form/encounter/encounter.encounter_datetime"
         },

@@ -1,9 +1,6 @@
 package com.muzima.view.forms;
 
-import com.muzima.api.model.Patient;
-import com.muzima.api.model.PatientIdentifier;
-import com.muzima.api.model.PatientIdentifierType;
-import com.muzima.api.model.PersonName;
+import com.muzima.api.model.*;
 import com.muzima.utils.Constants;
 
 import org.json.JSONArray;
@@ -26,8 +23,8 @@ public class PatientJSONMapper {
         model = new JSONObject(modelJSON);
     }
 
-    public String map(Patient patient) throws JSONException {
-        Map<String, String> valueMap = convert(patient);
+    public String map(Patient patient, FormData formData) throws JSONException {
+        Map<String, String> valueMap = convert(patient,formData);
         JSONObject form = model.getJSONObject("form");
         JSONArray fields = form.getJSONArray("fields");
         for (int i = 0; i < fields.length(); i++) {
@@ -102,7 +99,7 @@ public class PatientJSONMapper {
         return patientParamsMap;
     }
 
-    private Map<String, String> convert(Patient patient) {
+    private Map<String, String> convert(Patient patient, FormData formData) {
         Map<String, String> patientValueMap = new HashMap<String, String>();
         patientValueMap.put("patient.medical_record_number", defaultString(patient.getIdentifier()));
         patientValueMap.put("patient.family_name", defaultString(patient.getFamilyName()));
@@ -110,6 +107,7 @@ public class PatientJSONMapper {
         patientValueMap.put("patient.middle_name", defaultString(patient.getMiddleName()));
         patientValueMap.put("patient.sex", defaultString(patient.getGender()));
         patientValueMap.put("patient.uuid", defaultString(patient.getUuid()));
+        patientValueMap.put("encounter.form_uuid",defaultString(formData.getTemplateUuid()));
         if (patient.getBirthdate() != null) {
             patientValueMap.put("patient.birthdate", getFormattedDate(patient.getBirthdate()));
         }

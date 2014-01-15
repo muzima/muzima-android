@@ -198,7 +198,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         }};
         try {
             PatientJSONMapper mapper = new PatientJSONMapper(formTemplate.getModelJson());
-            formData.setJsonPayload(mapper.map(patient));
+            formData.setJsonPayload(mapper.map(patient,formData));
         } catch (JSONException e) {
             Log.e(TAG, "Error while converting Model JSON");
         }
