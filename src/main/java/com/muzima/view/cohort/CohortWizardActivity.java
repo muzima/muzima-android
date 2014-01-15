@@ -25,7 +25,7 @@ import java.util.List;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
 
-public class CohortWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener{
+public class CohortWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
 
     private MuzimaProgressDialog progressDialog;
 
@@ -36,85 +36,22 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         final AllCohortsAdapter cohortsAdapter = createAllCohortsAdapter();
 
         final EditText filterCohortText = (EditText) findViewById(R.id.filter_cohorts_txt);
-        filterCohortText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                cohortsAdapter.filterItems(charSequence.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
+        filterCohortText.addTextChangedListener(textWatcherForFilterText(cohortsAdapter));
 
         ImageButton cancelFilterButton = (ImageButton) findViewById(R.id.cancel_filter_txt);
-        cancelFilterButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                filterCohortText.setText("");
-            }
-        });
+        cancelFilterButton.setOnClickListener(cancelFilterTextEventHandler(filterCohortText));
         Button nextButton = (Button) findViewById(R.id.next);
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                progressDialog.show("Downloading clients demographic...");
-                new AsyncTask<Void, Void, int[]>() {
-                    @Override
-                    protected int[] doInBackground(Void... voids) {
-                        return downloadAndSavePatients(cohortsAdapter);
-                    }
-
-                    @Override
-                    protected void onPostExecute(int[] result) {
-                        if(progressDialog != null)
-                            progressDialog.dismiss();
-
-                        if (result[0] != SUCCESS) {
-                            Toast.makeText(CohortWizardActivity.this, "Could not download clients", Toast.LENGTH_SHORT).show();
-                        }
-                        navigateToNextActivity();
-                    }
-                }.execute();
-            }
-        });
+        nextButton.setOnClickListener(nextButtonClickListener(cohortsAdapter));
 
         progressDialog = new MuzimaProgressDialog(this);
 
         cohortsAdapter.setBackgroundListQueryTaskListener(this);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CheckedLinearLayout checkedLinearLayout = (CheckedLinearLayout) view;
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                    checkedLinearLayout.toggle();
-                }
-                cohortsAdapter.onListItemClick(position);
-            }
-        });
+        listView.setOnItemClickListener(listViewClickListener(cohortsAdapter));
 
         cohortsAdapter.downloadCohortAndReload();
         listView.setAdapter(cohortsAdapter);
     }
 
-    private int[] downloadAndSavePatients(AllCohortsAdapter cohortsAdapter) {
-        MuzimaSyncService muzimaSyncService = ((MuzimaApplication)getApplicationContext()).getMuzimaSyncService();
-
-        List<String> selectedCohortsArray = cohortsAdapter.getSelectedCohorts();
-        return muzimaSyncService.downloadPatientsForCohorts(selectedCohortsArray.toArray(new String[selectedCohortsArray.size()]));
-    }
-
-    private void navigateToNextActivity() {
-        Intent intent = new Intent(getApplicationContext(), FormTemplateWizardActivity.class);
-        startActivity(intent);
-        finish();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -136,6 +73,87 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         }
     }
 
+    private View.OnClickListener cancelFilterTextEventHandler(final EditText filterCohortText) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                filterCohortText.setText("");
+            }
+        };
+    }
+
+    private AdapterView.OnItemClickListener listViewClickListener(final AllCohortsAdapter cohortsAdapter) {
+        return new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                CheckedLinearLayout checkedLinearLayout = (CheckedLinearLayout) view;
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                    checkedLinearLayout.toggle();
+                }
+                cohortsAdapter.onListItemClick(position);
+            }
+        };
+    }
+
+    private View.OnClickListener nextButtonClickListener(final AllCohortsAdapter cohortsAdapter) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressDialog.show("Downloading clients demographic...");
+                new AsyncTask<Void, Void, int[]>() {
+                    @Override
+                    protected int[] doInBackground(Void... voids) {
+                        return downloadAndSavePatients(cohortsAdapter);
+                    }
+
+                    @Override
+                    protected void onPostExecute(int[] result) {
+                        if (progressDialog != null)
+                            progressDialog.dismiss();
+
+                        if (result[0] != SUCCESS) {
+                            Toast.makeText(CohortWizardActivity.this, "Could not download clients", Toast.LENGTH_SHORT).show();
+                        }
+                        navigateToNextActivity();
+                    }
+                }.execute();
+            }
+        };
+    }
+
+    private TextWatcher textWatcherForFilterText(final AllCohortsAdapter cohortsAdapter) {
+        return new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                cohortsAdapter.filterItems(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        };
+    }
+
+    private int[] downloadAndSavePatients(AllCohortsAdapter cohortsAdapter) {
+        MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
+
+        List<String> selectedCohortsArray = cohortsAdapter.getSelectedCohorts();
+        return muzimaSyncService.downloadPatientsForCohorts(selectedCohortsArray.toArray(new String[selectedCohortsArray.size()]));
+    }
+
+    private void navigateToNextActivity() {
+        Intent intent = new Intent(getApplicationContext(), FormTemplateWizardActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+
     private AllCohortsAdapter createAllCohortsAdapter() {
         return new AllCohortsAdapter(getApplicationContext(), R.layout.item_cohorts_list, ((MuzimaApplication) getApplicationContext()).getCohortController());
     }
@@ -155,9 +173,9 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
-        if(progressDialog != null)
+        if (progressDialog != null)
             progressDialog.dismiss();
     }
 }
