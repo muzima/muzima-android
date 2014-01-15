@@ -22,12 +22,19 @@
             <EditText android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:layout_marginTop="10dp"
+                      android:background="@color/primary_black"
+                      android:textColor="@color/primary_blue"
+                      android:cursorVisible="true"
                       android:layout_marginBottom="10dp"
                       android:hint="@string/filter_cohort_hint"
                       android:id="@+id/filter_cohorts_txt"/>
             <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
                        android:id="@+id/cancel_filter_txt"
-                       android:layout_alignParentRight="true" android:src="@drawable/ic_cancel"/>
+                       android:src="@drawable/ic_cancel"
+                       android:background="@android:color/transparent"
+                       android:layout_alignTop="@+id/filter_cohorts_txt"
+                       android:layout_alignBottom="@+id/filter_cohorts_txt"
+                       android:layout_alignParentRight="true"/>
         </RelativeLayout>
 
 
