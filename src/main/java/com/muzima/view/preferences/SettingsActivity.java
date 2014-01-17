@@ -135,7 +135,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         }
     }
 
-    public void SyncedFormData(boolean result) {
+    public void syncedFormData(boolean result) {
         if (result) {
             new ResetDataTask(this, newURL).execute();
         } else {

@@ -37,6 +37,6 @@ public class SyncFormDataTask extends AsyncTask<String, Void, Boolean> {
     protected void onPostExecute(Boolean r) {
         super.onPostExecute(r);
         progressDialog.dismiss();
-        settingsActivity.SyncedFormData(r);
+        settingsActivity.syncedFormData(r);
     }
 }
