@@ -57,6 +57,11 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
     }
 
     @Override
+    protected int getFormItemLayout() {
+        return R.layout.item_forms_list_selectable;
+    }
+
+    @Override
     public View getHeaderView(int position, View convertView, ViewGroup parent) {
         HeaderViewHolder holder;
         if (convertView == null) {
