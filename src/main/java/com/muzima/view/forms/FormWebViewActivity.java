@@ -25,6 +25,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
+import com.muzima.utils.Constants;
 import com.muzima.utils.barcode.IntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
 import com.muzima.view.BroadcastListenerActivity;
@@ -61,10 +62,12 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     private Patient patient;
     private BarCodeComponent barCodeComponent;
     private Map<String, String> scanResultMap;
+    private FormController formController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        formController = ((MuzimaApplication) this.getApplicationContext()).getFormController();
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
@@ -99,10 +102,12 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (isFormComplete()) {
-            getSupportMenuInflater().inflate(R.menu.form_close, menu);
+        if (isFormComplete() && isEncounterForm()) {
+            getSupportMenuInflater().inflate(R.menu.menu_completed_encounter_form, menu);
+        } else if (isFormComplete() && !isEncounterForm()) {
+            getSupportMenuInflater().inflate(R.menu.menu_completed_registration_form, menu);
         } else {
-            getSupportMenuInflater().inflate(R.menu.form_save_menu, menu);
+            getSupportMenuInflater().inflate(R.menu.menu_save_form, menu);
         }
         return true;
     }
@@ -110,7 +115,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     @Override
     protected void onResume() {
         String jsonMap = new JSONObject(scanResultMap).toString();
-        Log.e(TAG,jsonMap);
+        Log.e(TAG, jsonMap);
         webView.loadUrl("javascript:document.populateBarCode(" + jsonMap + ")");
         super.onResume();
     }
@@ -126,6 +131,15 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
                 return true;
             case R.id.form_close:
                 processBackButtonPressed();
+                return true;
+            case R.id.form_back_to_draft:
+                try {
+                    formData.setStatus(STATUS_INCOMPLETE);
+                    formController.saveFormData(formData);
+                } catch (FormController.FormDataSaveException e) {
+                    Log.e(TAG, "Error while saving the form data");
+                }
+                startIncompleteFormListActivity();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -168,6 +182,10 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         startActivity(intent);
     }
 
+    public void startIncompleteFormListActivity() {
+        startActivity(new Intent(this, FormsActivity.class));
+    }
+
     private boolean isFormComplete() {
         return formData.getStatus().equalsIgnoreCase(STATUS_COMPLETE);
     }
@@ -198,7 +216,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         }};
         try {
             PatientJSONMapper mapper = new PatientJSONMapper(formTemplate.getModelJson());
-            formData.setJsonPayload(mapper.map(patient));
+            formData.setJsonPayload(mapper.map(patient, formData));
         } catch (JSONException e) {
             Log.e(TAG, "Error while converting Model JSON");
         }
@@ -280,7 +298,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         };
     }
 
-    private void processBackButtonPressed(){
+    private void processBackButtonPressed() {
         onBackPressed();
     }
 
@@ -290,6 +308,10 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
                 progressDialog.show(message);
             }
         });
+    }
+
+    private boolean isEncounterForm() {
+        return getIntent().getStringExtra(DISCRIMINATOR).equals(Constants.FORM_DISCRIMINATOR_ENCOUNTER);
     }
 }
 

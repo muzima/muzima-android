@@ -18,14 +18,23 @@ import com.muzima.util.Constants;
 import com.muzima.view.forms.FormWebViewActivity;
 import com.muzima.view.preferences.MuzimaTimer;
 import org.acra.ACRA;
+import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
+import org.acra.sender.HttpSender;
 
 import java.io.*;
 import java.security.Security;
 
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 
-@ReportsCrashes(formKey = "ACRA_FORM_KEY")
+@ReportsCrashes(
+        formKey = "",
+        formUri = "http://prasann.cloudant.com/acra-muzima/_design/acra-storage/_update/report",
+        reportType = HttpSender.Type.JSON,
+        httpMethod = HttpSender.Method.PUT,
+        formUriBasicAuthLogin = "utionermsedeastagesinibl",
+        formUriBasicAuthPassword = "QJi5kBCe36wGC6jeMeWfSB4q",
+        mode = ReportingInteractionMode.TOAST)
 public class MuzimaApplication extends Application {
     private Context muzimaContext;
     private Activity currentActivity;
