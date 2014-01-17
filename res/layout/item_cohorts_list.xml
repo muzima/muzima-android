@@ -2,13 +2,13 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:weightSum="100"
-              android:background="@drawable/list_selector_blue"
               android:orientation="horizontal">
 
     <CheckedTextView
             android:id="@+id/cohort_name"
             android:checkMark="@null"
             style="@style/ListViewSelectableText"
+            android:background="@null"
             android:layout_weight="80"
             android:layout_width="0dp"/>
     <ImageView

@@ -80,7 +80,7 @@ public class AllCohortsListFragment extends CohortListFragment {
             actionMode = getSherlockActivity().startActionMode(new AllCohortsActionModeCallback());
             actionModeActive = true;
         }
-        ((AllCohortsAdapter) listAdapter).onListItemClick(position, isChecked);
+        ((AllCohortsAdapter) listAdapter).onListItemClick(position);
         int numOfSelectedCohorts = ((AllCohortsAdapter) listAdapter).numberOfCohorts();
         if (numOfSelectedCohorts == 0 && actionModeActive) {
             actionMode.finish();
