@@ -57,7 +57,7 @@ $(document).ready(function () {
         }, "Please enter digits that matches CheckDigit algorithm."
     );
 
-    // connect it to a css class
+    // attach 'checkDigit' class to perform validation.
     jQuery.validator.addClassRules({
         checkDigit : { checkDigit : true }
     });
@@ -69,7 +69,6 @@ $(document).ready(function () {
         for (var i = 0; i < number.length; i++) {
             var ch = number.charAt(number.length - i - 1);
             if (validChars.indexOf(ch) < 0) {
-                alert("Invalid character(s) found!");
                 return false;
             }
             var digit = ch.charCodeAt(0) - 48;
