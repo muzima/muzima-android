@@ -1,3 +1,24 @@
+.section {
+    padding: 10px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    margin: 10px 5px;
+}
+
+.required {
+    color: red;
+}
+
+.error {
+    color: red;
+    font-weight: normal;
+}
+
+input.error {
+    border: 1px solid red;
+    color: black;
+}
+
 .barcode_btn {
     height: 18px;
     width: 7%;
@@ -8,7 +29,8 @@
     border-radius: 4px;
     background: #ffffff url("../images/barcode_icon.png") no-repeat center;
 }
-.barcode_text{
+
+.barcode_text {
     display: inline-block;
     width: 90%;
 }

@@ -3,29 +3,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/muzima.css" rel="stylesheet">
     <link href="css/ui-darkness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
-    <style>
-        .section {
-            padding: 10px;
-            border: 1px solid #000000;
-            border-radius: 5px;
-            margin: 10px 5px;
-        }
 
-        .required {
-            color: red;
-        }
-
-        .error {
-            color: red;
-            font-weight: normal;
-        }
-
-        input.error {
-            border: 1px solid red;
-            color: black;
-        }
-
-    </style>
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery-ui-1.10.4.custom.min.js"></script>
     <script src="js/jquery.validate.min.js"></script>
@@ -73,7 +51,7 @@
 
             <div class="form-horizontal">
                 <input type="button" class='btn barcode_btn'>
-                <input class="barcode_text form-control" id="amrs_id" name="amrs_id" type="text" required="required">
+                <input class="barcode_text form-control checkDigit" id="amrs_id" name="amrs_id" type="text" required="required">
             </div>
         </div>
     </div>
@@ -138,7 +116,7 @@
     $(document).ready(function () {
         $('#registration_form').validate({
             submitHandler: function (form) {
-                $('#result').html(JSON.stringify($('form').serializeObject()));
+                $('#result').html(JSON.stringify($('form').serializeForm()));
                 return false;
             }
         });
@@ -156,30 +134,6 @@
                 $show_birth_date.show();
             }
         });
-
-        $.fn.serializeObject = function () {
-            var o = {};
-            var a = this.serializeArray();
-            $.each(a, function () {
-                if (o[this.name] !== undefined) {
-                    if (!o[this.name].push) {
-                        o[this.name] = [o[this.name]];
-                    }
-                    o[this.name].push(this.value || '');
-                } else {
-                    o[this.name] = this.value || '';
-                }
-            });
-            return o;
-        };
-
-
-        $('.datepicker').datepicker({
-            dateFormat: 'dd-M-yy',
-            changeMonth: true,
-            changeYear: true
-        });
-
     })
 </script>
 
