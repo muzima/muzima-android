@@ -19,6 +19,7 @@ package com.muzima.adapters.forms;
 import android.content.Context;
 import android.util.Log;
 
+import com.muzima.R;
 import com.muzima.controller.FormController;
 import com.muzima.model.CompleteForm;
 import com.muzima.model.CompleteFormWithPatientData;
@@ -28,7 +29,7 @@ import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 /**
  * Responsible to display all the completed forms for a specific patient.
  */
-public class PatientCompleteFormsAdapter extends FormsAdapter<CompleteFormWithPatientData> {
+public class PatientCompleteFormsAdapter extends FormsWithDataAdapter<CompleteFormWithPatientData> {
     private static final String TAG = "PatientCompleteFormsAdapter";
     private String patientId;
 
@@ -44,6 +45,11 @@ public class PatientCompleteFormsAdapter extends FormsAdapter<CompleteFormWithPa
 
     public String getPatientId() {
         return patientId;
+    }
+
+    @Override
+    protected int getFormItemLayout() {
+        return R.layout.item_forms_list_selectable;
     }
 
     /**
