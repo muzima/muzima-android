@@ -43,7 +43,7 @@ import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 import static java.text.MessageFormat.format;
 
 public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
-    private static final String TAG = "FormWebViewActivity";
+    private static final String TAG = "HTMLFormWebViewActivity";
     public static final String PATIENT = "patient";
     public static final String FORM_INSTANCE = "formInstance";
     public static final String REPOSITORY = "formDataRepositoryContext";
@@ -234,7 +234,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         if (isFormComplete()) {
             webView.setOnTouchListener(createCompleteFormListenerToDisableInput());
         }
-        webView.loadDataWithBaseURL("file:///android_asset/www/enketo/", formTemplate.getHtml(), "text/html", "UTF-8", "");
+        webView.loadDataWithBaseURL("file:///android_asset/www/forms/", formTemplate.getHtml(), "text/html", "UTF-8", "");
     }
 
     private WebChromeClient createWebChromeClient() {

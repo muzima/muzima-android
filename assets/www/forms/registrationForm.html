@@ -1,6 +1,7 @@
 <html>
 <head>
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/muzima.css" rel="stylesheet">
     <link href="css/ui-darkness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
     <style>
         .section {
@@ -29,6 +30,7 @@
     <script src="js/jquery-ui-1.10.4.custom.min.js"></script>
     <script src="js/jquery.validate.min.js"></script>
     <script src="js/additional-methods.min.js"></script>
+    <script src="js/muzima.js"></script>
 </head>
 <body class="col-md-8 col-md-offset-2">
 <div id="result"></div>
@@ -68,7 +70,11 @@
         </div>
         <div class="form-group">
             <label for="amrs_id">AMRS Universal ID Assigned: <span class="required">*</span></label>
-            <input class="form-control" id="amrs_id" name="amrs_id" type="text" required="required">
+
+            <div class="form-horizontal">
+                <input type="button" class='btn barcode_btn'>
+                <input class="barcode_text form-control" id="amrs_id" name="amrs_id" type="text" required="required">
+            </div>
         </div>
     </div>
     <div class="section">
@@ -82,7 +88,8 @@
         </div>
         <div class="form-group show_birthdate">
             <label for="birth_date">Select Birthdate <span class="required">*</span></label>
-            <input class="form-control datepicker" id="birth_date" name="birth_date" type="text" required="required" readonly="readonly">
+            <input class="form-control datepicker" id="birth_date" name="birth_date" type="text" required="required"
+                   readonly="readonly">
         </div>
         <div class="form-group show_birthdate">
             <label for="birthdate_estimated">Is this birthdate an estimate? <span class="required">*</span></label>
@@ -116,7 +123,8 @@
         </div>
         <div class="form-group">
             <label for="encounter_date">Encounter Date <span class="required">*</span></label>
-            <input class="form-control datepicker" readonly="readonly" id="encounter_date" name="encounter_date" type="text" required="required">
+            <input class="form-control datepicker" readonly="readonly" id="encounter_date" name="encounter_date"
+                   type="text" required="required">
         </div>
     </div>
     <div class="form-group text-center">

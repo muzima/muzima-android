@@ -1,0 +1,13 @@
+.barcode_btn {
+    height: 18px;
+    display: inline-block;
+    line-height: 18px;
+    padding: 16px 23px;
+    margin-right: 4px !important;
+    border-radius: 4px;
+    background: #ffffff url("../images/barcode_icon.png") no-repeat center;
+}
+.barcode_text{
+    display: inline-block;
+    width: 90%;
+}
