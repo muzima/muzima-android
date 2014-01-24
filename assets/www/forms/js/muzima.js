@@ -12,11 +12,9 @@ $(document).ready(function () {
     };
 
     $('.barcode_btn').click(function () {
-        console.log("Prasanna");
-        //barCodeComponent is defined in FormWebViewActivity.java
-
-        //barCodeComponent.startBarCodeIntent($barcodeInput.attr('name'));
+        barCodeComponent.startBarCodeIntent($(this).parent().find("input[type='text']").attr('name'));
     });
+
     /*End- BarCode Functionality*/
 
 });
