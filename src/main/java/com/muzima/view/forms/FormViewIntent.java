@@ -18,9 +18,9 @@ public class FormViewIntent extends Intent {
     }
 
     public FormViewIntent(Activity activity, BaseForm form, Patient patient, String discriminator) {
-        super(activity, FormWebViewActivity.class);
-        putExtra(FormWebViewActivity.FORM, form);
-        putExtra(FormWebViewActivity.PATIENT, patient);
-        putExtra(FormWebViewActivity.DISCRIMINATOR, discriminator);
+        super(activity, HTMLFormWebViewActivity.class);
+        putExtra(HTMLFormWebViewActivity.FORM, form);
+        putExtra(HTMLFormWebViewActivity.PATIENT, patient);
+        putExtra(HTMLFormWebViewActivity.DISCRIMINATOR, discriminator);
     }
 }

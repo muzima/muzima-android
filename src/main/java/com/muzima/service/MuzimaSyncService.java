@@ -115,14 +115,14 @@ public class MuzimaSyncService {
             Log.i(TAG, formTemplates.size() + " form template download successful");
 
             formController.replaceFormTemplates(formTemplates);
-            List<Concept> concepts = getRelatedConcepts(formTemplates);
-            conceptController.saveConcepts(concepts);
+            /*List<Concept> concepts = getRelatedConcepts(formTemplates);
+            conceptController.saveConcepts(concepts);*/
 
             Log.i(TAG, "Form templates replaced");
 
             result[0] = SUCCESS;
             result[1] = formTemplates.size();
-            result[2] = concepts.size();
+            result[2] = 0;
         } catch (FormController.FormSaveException e) {
             Log.e(TAG, "Exception when trying to save forms", e);
             result[0] = SAVE_ERROR;
@@ -131,13 +131,6 @@ public class MuzimaSyncService {
             Log.e(TAG, "Exception when trying to download forms", e);
             result[0] = DOWNLOAD_ERROR;
             return result;
-        } catch (ConceptController.ConceptSaveException e) {
-            Log.e(TAG, "Exception when trying to save concepts related to forms", e);
-            result[0] = SAVE_ERROR;
-            return result;
-        } catch (ConceptController.ConceptDownloadException e) {
-            Log.e(TAG, "Exception when trying to download concepts", e);
-            result[0] = DOWNLOAD_ERROR;
         }
         return result;
     }
