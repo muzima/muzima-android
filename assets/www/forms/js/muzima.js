@@ -2,6 +2,22 @@ $(document).ready(function () {
     'use strict';
     var dateFormat = "dd-M-yy";
 
+    /* Start - Function to save the form */
+    document.submit = function () {
+        save("complete");
+    };
+
+    document.saveDraft = function () {
+        save("incomplete");
+        return false;
+    };
+
+    var save = function (status) {
+        var jsonData = JSON.stringify($('form').serializeForm());
+        htmlDataStore.saveHTML(jsonData, status);
+    };
+    /* End - Function to save the form */
+
     /*Start- BarCode Functionality*/
 
     /* Called by the Activity WebViewActivity*/
@@ -61,7 +77,7 @@ $(document).ready(function () {
 
     // attach 'checkDigit' class to perform validation.
     jQuery.validator.addClassRules({
-        checkDigit : { checkDigit : true }
+        checkDigit: { checkDigit: true }
     });
 
     $.fn.luhnCheckDigit = function (number) {
@@ -91,7 +107,7 @@ $(document).ready(function () {
 
     $.fn.getTempBirthDate = function (years) {
         var currentYear = new Date().getFullYear();
-        var estimatedDate = new Date(currentYear - parseInt(years),0,1);
+        var estimatedDate = new Date(currentYear - parseInt(years), 0, 1);
         return $.datepicker.formatDate(dateFormat, estimatedDate);
     };
 

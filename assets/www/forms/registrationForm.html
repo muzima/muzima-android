@@ -14,11 +14,6 @@
 <div id="result"></div>
 <form id="registration_form" name="registration_form">
     <h2 class="text-center">Registration Form</h2>
-
-    <div id="pre_populate_data">
-        {"patient.family_name":"fmaily","patient.given_name":"given","patient.middle_name":"middle","patient.sex":"M","patient.phone_number":"90090","person_attribute4":"mom","patient.medical_record_number":"1234-4","tmp.birthdate_type":"age","patient.birth_date":"01-Jan-1995","patient.birthdate_estimated":"true","tmp.age_in_years":"19","encounter.location_id":"3","encounter.provider_id":"1","encounter.encounter_datetime":"01-Jan-2014"}
-    </div>
-
     <div class="section">
         <h3>Demographics</h3>
 
@@ -149,7 +144,6 @@
             }
         });
 
-        $('.show_age').hide();
         $('#tmp\\.birthdate_type').change(function () {
             var $show_birth_date = $('.show_birthdate');
             var $show_age = $('.show_age');
@@ -163,6 +157,8 @@
                 $show_birth_date.show();
             }
         });
+        $('#tmp\\.birthdate_type').trigger('change');
+
 
     })
 </script>
