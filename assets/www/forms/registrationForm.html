@@ -19,73 +19,80 @@
         <h3>Demographics</h3>
 
         <div class="form-group">
-            <label for="family_name">Family Name: <span class="required">*</span> </label>
-            <input class="form-control" id="family_name" name="family_name" type="text" required="required">
+            <label for="patient.family_name">Family Name: <span class="required">*</span> </label>
+            <input class="form-control" id="patient.family_name" name="patient.family_name" type="text"
+                   required="required">
         </div>
         <div class="form-group">
-            <label for="given_name">Given Name: <span class="required">*</span></label>
-            <input class="form-control" id="given_name" name="given_name" type="text" required="required">
+            <label for="patient.given_name">Given Name: <span class="required">*</span></label>
+            <input class="form-control" id="patient.given_name" name="patient.given_name" type="text"
+                   required="required">
         </div>
         <div class="form-group">
-            <label for="middle_name">Middle Name:</label>
-            <input class="form-control" id="middle_name" name="middle_name" type="text">
+            <label for="patient.middle_name">Middle Name:</label>
+            <input class="form-control" id="patient.middle_name" name="patient.middle_name" type="text">
         </div>
         <div class="form-group">
-            <label for="sex">Sex: <span class="required">*</span></label>
-            <select class="form-control" id="sex" name="sex" required="required">
+            <label for="patient.sex">Sex: <span class="required">*</span></label>
+            <select class="form-control" id="patient.sex" name="patient.sex" required="required">
                 <option value="">...</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
             </select>
         </div>
         <div class="form-group">
-            <label for="phone_number">Phone Number: </label>
-            <input class="form-control" id="phone_number" name="phone_number" type="tel">
+            <label for="patient.phone_number">Phone Number: </label>
+            <input class="form-control" id="patient.phone_number" name="patient.phone_number" type="tel">
         </div>
         <div class="form-group">
-            <label for="mothers_name">Mother's Name: </label>
-            <input class="form-control" id="mothers_name" name="mothers_name" type="text">
+            <label for="person_attribute4">Mother's Name: </label>
+            <input class="form-control" id="person_attribute4" name="person_attribute4" type="text">
         </div>
         <div class="form-group">
-            <label for="amrs_id">AMRS Universal ID Assigned: <span class="required">*</span></label>
+            <label for="patient.medical_record_number">AMRS Universal ID Assigned: <span
+                    class="required">*</span></label>
 
             <div class="form-horizontal">
                 <input type="button" class='btn barcode_btn'>
-                <input class="barcode_text form-control checkDigit" id="amrs_id" name="amrs_id" type="text" required="required">
+                <input class="barcode_text form-control checkDigit" id="patient.medical_record_number"
+                       name="patient.medical_record_number" type="text" required="required">
             </div>
         </div>
     </div>
     <div class="section">
         <div class="form-group">
-            <label for="birthdate_type">Will Record Date of Birth... <span class="required">*</span></label>
-            <select class="form-control" name="birthdate_type" id="birthdate_type" required="required">
+            <label for="tmp.birthdate_type">Will Record Date of Birth... <span class="required">*</span></label>
+            <select class="form-control" name="tmp.birthdate_type" id="tmp.birthdate_type" required="required">
                 <option value="">...</option>
                 <option value="birthdate">By Birth-date</option>
                 <option value="age">By Age</option>
             </select>
         </div>
         <div class="form-group show_birthdate">
-            <label for="birth_date">Select Birthdate <span class="required">*</span></label>
-            <input class="form-control datepicker" id="birth_date" name="birth_date" type="text" required="required"
+            <label for="patient.birth_date">Select Birthdate <span class="required">*</span></label>
+            <input class="form-control datepicker" id="patient.birth_date" name="patient.birth_date" type="text"
+                   required="required"
                    readonly="readonly">
         </div>
         <div class="form-group show_birthdate">
-            <label for="birthdate_estimated">Is this birthdate an estimate? <span class="required">*</span></label>
-            <select class="form-control" id="birthdate_estimated" name="birthdate_estimated" required="required">
+            <label for="patient.birthdate_estimated">Is this birthdate an estimate? <span
+                    class="required">*</span></label>
+            <select class="form-control" id="patient.birthdate_estimated" name="patient.birthdate_estimated"
+                    required="required">
                 <option>...</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
             </select>
         </div>
         <div class="form-group show_age">
-            <label for="age">How old are you in Years <span class="required">*</span></label>
-            <input class="form-control" id="age" name="age" type="number" required="required">
+            <label for="tmp.age_in_years">How old are you in Years <span class="required">*</span></label>
+            <input class="form-control" id="tmp.age_in_years" name="tmp.age_in_years" type="number" required="required">
         </div>
     </div>
     <div class="section">
         <div class="form-group">
-            <label for="encounter_location">Encounter Location <span class="required">*</span></label>
-            <select class="form-control" id="encounter_location" name="encounter_location" required="required">
+            <label for="encounter.location_id">Encounter Location <span class="required">*</span></label>
+            <select class="form-control" id="encounter.location_id" name="encounter.location_id" required="required">
                 <option>...</option>
                 <option value="2">Mosoriot Health Centre</option>
                 <option value="3">Turbo Health Centre</option>
@@ -93,15 +100,16 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="provider_id">Provider ID <span class="required">*</span></label>
-            <select class="form-control" id="provider_id" name="provider_id" required="required">
+            <label for="encounter.provider_id">Provider ID <span class="required">*</span></label>
+            <select class="form-control" id="encounter.provider_id" name="encounter.provider_id" required="required">
                 <option>...</option>
                 <option value="1">Super User</option>
             </select>
         </div>
         <div class="form-group">
-            <label for="encounter_date">Encounter Date <span class="required">*</span></label>
-            <input class="form-control datepicker" readonly="readonly" id="encounter_date" name="encounter_date"
+            <label for="encounter.encounter_datetime">Encounter Date <span class="required">*</span></label>
+            <input class="form-control datepicker" readonly="readonly" id="encounter.encounter_datetime"
+                   name="encounter.encounter_datetime"
                    type="text" required="required">
         </div>
     </div>
@@ -114,17 +122,27 @@
 </body>
 <script type="text/javascript">
     $(document).ready(function () {
+        $.fn.calculateFields = function () {
+            var tempAgeInYears = $.trim($("#tmp\\.age_in_years").val());
+            if (tempAgeInYears != '') {
+                $('#patient\\.birthdate_estimated').val('true');
+                $('#patient\\.birth_date').val($.getTempBirthDate(tempAgeInYears));
+            }
+        };
+
         $('#registration_form').validate({
             submitHandler: function (form) {
+                $.calculateFields();
                 $('#result').html(JSON.stringify($('form').serializeForm()));
                 return false;
             }
         });
+
         $('.show_age').hide();
-        $('#birthdate_type').change(function () {
+        $('#tmp\\.birthdate_type').change(function () {
             var $show_birth_date = $('.show_birthdate');
             var $show_age = $('.show_age');
-            if ($('#birthdate_type').val() == 'age') {
+            if ($('#tmp\\.birthdate_type').val() == 'age') {
                 $show_age.show();
                 $show_birth_date.find('input').val('');
                 $show_birth_date.hide();
@@ -134,6 +152,7 @@
                 $show_birth_date.show();
             }
         });
+
     })
 </script>
 

@@ -1,5 +1,7 @@
 $(document).ready(function () {
     'use strict';
+    var dateFormat = "dd-M-yy";
+
     /*Start- BarCode Functionality*/
 
     /* Called by the Activity WebViewActivity*/
@@ -39,7 +41,7 @@ $(document).ready(function () {
     /* Start - Initialize jQuery DatePicker */
 
     $('.datepicker').datepicker({
-        dateFormat: 'dd-M-yy',
+        dateFormat: dateFormat,
         changeMonth: true,
         changeYear: true
     });
@@ -87,5 +89,10 @@ $(document).ready(function () {
 
     /* End - CheckDigit Algorithm */
 
+    $.fn.getTempBirthDate = function (years) {
+        var currentYear = new Date().getFullYear();
+        var estimatedDate = new Date(currentYear - parseInt(years),0,1);
+        return $.datepicker.formatDate(dateFormat, estimatedDate);
+    };
 
 });
