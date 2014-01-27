@@ -31,6 +31,8 @@ import com.muzima.utils.barcode.IntentResult;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,7 +48,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private static final String TAG = "HTMLFormWebViewActivity";
     public static final String PATIENT = "patient";
     public static final String FORM_INSTANCE = "formInstance";
-    public static final String REPOSITORY = "formDataRepositoryContext";
+    public static final String HTML_DATA_STORE = "htmlDataStore";
     public static final String BARCODE = "barCodeComponent";
     public static final String ZIGGY_FILE_LOADER = "ziggyFileLoader";
     public static final String FORM = "form";
@@ -230,11 +232,23 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         barCodeComponent = new BarCodeComponent(this);
         webView.addJavascriptInterface(barCodeComponent, BARCODE);
         webView.addJavascriptInterface(new ZiggyFileLoader("www/ziggy", getApplicationContext().getAssets(), formInstance.getModelJson()), ZIGGY_FILE_LOADER);
+        webView.addJavascriptInterface(new HTMLFormDataStore(this, formController, formData), HTML_DATA_STORE);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         if (isFormComplete()) {
             webView.setOnTouchListener(createCompleteFormListenerToDisableInput());
         }
-        webView.loadDataWithBaseURL("file:///android_asset/www/forms/", formTemplate.getHtml(), "text/html", "UTF-8", "");
+        webView.loadDataWithBaseURL("file:///android_asset/www/forms/", prePopulateData(), "text/html", "UTF-8", "");
+    }
+
+    private String prePopulateData() {
+        if (formData.getJsonPayload() == null) {
+            return formTemplate.getHtml();
+        }
+        Document document = Jsoup.parse(formTemplate.getHtml());
+        String json = formData.getJsonPayload();
+        String htmlWithJSON = "<div id='pre_populate_data'>" + json + "</div>";
+        document.select("body").prepend(htmlWithJSON);
+        return document.toString();
     }
 
     private WebChromeClient createWebChromeClient() {
