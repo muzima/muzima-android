@@ -111,4 +111,20 @@ $(document).ready(function () {
         return $.datepicker.formatDate(dateFormat, estimatedDate);
     };
 
+    /* Start - Used for Sub-Forms */
+
+    $('.repeat')
+        .append("<input class='btn btn-primary add_section pull-left' type='button' value='+'/>")
+        .append("<input class='btn btn-primary remove_section pull-right' type='button' value='-'/><span class='clear'></span>");
+
+    $(document.body).on('click', '.add_section', function () {
+        $(this).parent().clone().insertAfter($(this).parent());
+    });
+
+    $(document.body).on('click', '.remove_section', function () {
+        $(this).parent().remove();
+    });
+
+    /* End - Used for Sub-Forms */
+
 });

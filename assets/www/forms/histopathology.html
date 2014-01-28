@@ -51,7 +51,7 @@
                    name="patient.birthdate" type="text" required="required" readonly="readonly">
         </div>
     </div>
-    <div class="section">
+    <div class="section repeat">
         <h3>Procedures Done This Visit</h3>
 
         <div class="form-group">
@@ -151,7 +151,7 @@
 
     <div class="section">
 
-        <div class="form-group show_birthdate">
+        <div class="form-group">
             <label for="freetext_general">Comments</label>
             <textarea class="form-control" name="freetext_general" id="freetext_general"
                       placeholder="Provider notes/comments."></textarea>
@@ -194,11 +194,11 @@
         $bodyPart.trigger('change');
 
         var $obs = $('#obs\\.procedures_done_this_visit_detailed');
-        $obs.change(function(){
-            if($('#obs\\.procedures_done_this_visit_detailed').val() == "7147^LOOP ELECTROSURGICAL EXCISION PROCEDURE^99DCT"){
+        $obs.change(function () {
+            if ($('#obs\\.procedures_done_this_visit_detailed').val() == "7147^LOOP ELECTROSURGICAL EXCISION PROCEDURE^99DCT") {
                 $('#obs\\.anatomic_location_description').parent().show();
                 $('#clock_face_cervical_biopsy_location').parent().hide();
-            }else{
+            } else {
                 $('#clock_face_cervical_biopsy_location').parent().show();
                 $('#obs\\.anatomic_location_description').parent().hide();
             }

@@ -38,3 +38,8 @@ input.error {
 #pre_populate_data{
     display: none;
 }
+
+span.clear{
+    display: block;
+    clear:left;
+}
