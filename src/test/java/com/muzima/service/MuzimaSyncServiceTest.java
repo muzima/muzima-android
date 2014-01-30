@@ -195,8 +195,10 @@ public class MuzimaSyncServiceTest {
         int[] result = new int[]{SUCCESS, 2, 0};
 
         List<FormTemplate> formTemplates = new ArrayList<FormTemplate>() {{
-            add(new FormTemplate());
-            add(new FormTemplate());
+            FormTemplate formTemplate = new FormTemplate();
+            formTemplate.setHtml("<html></html>");
+            add(formTemplate);
+            add(formTemplate);
         }};
 
         String[] formIds = {};
