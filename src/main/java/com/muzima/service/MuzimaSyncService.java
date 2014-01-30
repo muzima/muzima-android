@@ -173,9 +173,15 @@ public class MuzimaSyncService {
 
     private List<Concept> getRelatedConcepts(List<FormTemplate> formTemplates) throws ConceptController.ConceptDownloadException {
         HashSet<Concept> concepts = new HashSet<Concept>();
-        ConceptParser utils = new ConceptParser();
+        ConceptParser xmlParserUtils = new ConceptParser();
+        HTMLConceptParser htmlParserUtils = new HTMLConceptParser();
         for (FormTemplate formTemplate : formTemplates) {
-            List<String> names = utils.parse(formTemplate.getModel());
+            List<String> names = new ArrayList<String>();
+            if (formTemplate.isHTMLForm()) {
+                names = htmlParserUtils.parse(formTemplate.getHtml());
+            } else {
+                names = xmlParserUtils.parse(formTemplate.getModel());
+            }
             concepts.addAll(conceptController.downloadConceptsByNames(names));
         }
         return new ArrayList<Concept>(concepts);
@@ -358,10 +364,10 @@ public class MuzimaSyncService {
     private void checkChangeInPatientId(Patient localPatient, Patient patientFromServer) {
         String patientIdentifier = patientFromServer.getIdentifier();
         String localPatientIdentifier = localPatient.getIdentifier();
-        if(patientFromServer==null || localPatientIdentifier == null){
+        if (patientFromServer == null || localPatientIdentifier == null) {
             return;
         }
-        if(!patientIdentifier.equals(localPatientIdentifier)){
+        if (!patientIdentifier.equals(localPatientIdentifier)) {
             JSONInputOutputToDisk jsonInputOutputToDisk = new JSONInputOutputToDisk(muzimaApplication);
             try {
                 jsonInputOutputToDisk.add(patientIdentifier);
