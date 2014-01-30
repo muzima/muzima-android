@@ -14,7 +14,7 @@
 </head>
 <body class="col-md-8 col-md-offset-2">
 <div id="result"></div>
-<form id="registration_form" name="registration_form">
+<form id="dispensary_form" name="dispensary_form">
     <h2 class="text-center">Dispensary Confirmation Form</h2>
 
     <div class="section">
@@ -50,7 +50,7 @@
         </div>
         <div class="form-group">
             <label for="patient.birthdate">Date Of Birth:</label>
-            <input class="form-control datepicker" id="patient.birthdate" name="patient.birthdate" type="text"
+            <input class="form-control datepicker nonFutureDate" id="patient.birthdate" name="patient.birthdate" type="text"
                 readonly="readonly">
         </div>
     </div>
@@ -130,7 +130,7 @@
         </div>
         <div class="form-group">
             <label for="encounter.encounter_datetime">Encounter Date:<span class="required">*</span></label>
-            <input class="form-control datepicker" id="encounter.encounter_datetime" name="encounter.encounter_datetime"
+            <input class="form-control datepicker nonFutureDate" id="encounter.encounter_datetime" name="encounter.encounter_datetime"
                    type="text" readonly="readonly">
         </div>
         <div class="form-group">
@@ -154,7 +154,7 @@
 
         <div class="form-group">
             <label for="obs.date_of_initial_phct_encounter">pHCT Encounter Date:</label>
-            <input class="form-control datepicker" id="obs.date_of_initial_phct_encounter"
+            <input class="form-control datepicker nonFutureDate" id="obs.date_of_initial_phct_encounter"
                    name="obs.date_of_initial_phct_encounter" type="text" readonly="readonly">
         </div>
         <div class="form-group">
@@ -934,7 +934,7 @@
     <div class="section">
         <div class="form-group">
             <label for="obs.return_visit_date">Return Date to Dispensary:</label>
-            <input class="form-control datepicker" id="obs.return_visit_date" name="obs.return_visit_date" type="text"
+            <input class="form-control datepicker nonFutureDate" id="obs.return_visit_date" name="obs.return_visit_date" type="text"
                 readonly="readonly">
         </div>
     </div>
@@ -952,6 +952,8 @@
             $('#result').html(JSON.stringify($('form').serializeForm()));
             return false;
         });
+
+        $('#dispensary_form').validate();
 
         /* When a provider is selected from the provider list, hide the provider id text field */
 

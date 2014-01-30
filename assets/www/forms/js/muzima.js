@@ -105,6 +105,24 @@ $(document).ready(function () {
 
     /* End - CheckDigit Algorithm */
 
+    /* Start - Checking that the current date is not in the future */
+    $.validator.addMethod("nonFutureDate", function (value, element) {
+            var enteredDate = new Date(value);
+            var today = new Date();
+            if(enteredDate > today){
+                return false;
+            }
+            return true;
+        }, "Please enter a date prior or equal to today."
+    );
+
+    // attach 'nonFutureDate' class to perform validation.
+    jQuery.validator.addClassRules({
+        nonFutureDate: { nonFutureDate: true }
+    });
+
+    /* End - nonFutureDate*/
+
     $.fn.getTempBirthDate = function (years) {
         var currentYear = new Date().getFullYear();
         var estimatedDate = new Date(currentYear - parseInt(years), 0, 1);
