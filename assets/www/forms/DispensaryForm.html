@@ -122,11 +122,10 @@
                 <option value="3355-5">Clementine Ingosi Osiel</option>
             </select>
         </div>
-        <div class="form-group">
-            <label for="encounter.provider_id_text">Enter provider's system-id:</label>
-            <input class="form-control checkDigit" id="encounter.provider_id_text" name="encounter.provider_id_text"
-                   type="text"
-                    >
+        <div class="form-group show_provider_id_text">
+            <label for="encounter.provider_id">Enter provider's system-id:</label>
+            <input class="form-control checkDigit" id="encounter.provider_id" name="encounter.provider_id"
+                   type="text">
         </div>
         <div class="form-group">
             <label for="encounter.encounter_datetime">Encounter Date:<span class="required">*</span></label>
@@ -950,7 +949,22 @@
         $('form').submit(function(){
             $('#result').html(JSON.stringify($('form').serializeForm()));
             return false;
-        })
+        });
+
+        /* When a provider is selected from the provider list, hide the provider id text field */
+
+        $('#encounter\\.provider_id_select').change(function () {
+            var $show_provider_id_text = $('.show_provider_id_text');
+            var selected_value = $('#encounter\\.provider_id_select').val();
+            if (selected_value != '') {
+                $show_provider_id_text.hide();
+                $show_provider_id_text.find('input').val(selected_value);
+            }
+            else {
+                $show_provider_id_text.show();
+                $show_provider_id_text.find('input').val('');
+            }
+        });
     });
 
 </script>
