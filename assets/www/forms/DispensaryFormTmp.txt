@@ -6,3 +6,14 @@ obs/patient_reported_current_other_treatment/medication_frequency_per_day/value 
 /form/obs/missed_medication_for_past_week/number_of_pills_taken_in_the_last_week_any_medication/value      obs.medication_metformin.number_of_pills_taken
 /form/obs/missed_medication_for_past_week/missed_medication_reason/xforms_value     obs.medication_metformin.missed_medication_reason
 obs.htn_reminders.reminder_1        obs.htn_reminder_1
+
+2 DO
+    Make all date fields readonly.
+
+
+Find out what <output...> below is for
+
+
+						<input bind="omo_number_of_tablets_metformin">
+							<label>Number of [Metformin] <output value="../../omo_medication_frequency_per_day_metformin/value"/> tablets prescribed</label>
+						</input>

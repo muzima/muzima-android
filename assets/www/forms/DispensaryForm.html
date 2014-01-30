@@ -639,23 +639,21 @@
     <div class="section">
         <h3>Metformin Dispense</h3>
         <div class="form-group">
-            <label for="obs.medication_metformin.number_of_pills_taken">Number of scheduled [Metformin] you took:</label>
-            <select class="form-control" id="obs.medication_metformin.number_of_pills_taken" name="obs.medication_metformin.number_of_pills_taken">
+            <label for="obs.other_medication_order_metformin">Did you change the [Metformin] dosage?</label>
+            <select class="form-control" id="obs.other_medication_order_metformin" name="obs.other_medication_order_metformin">
                 <option value="">...</option>
-                <option value="1163^ALL^99DCT">All</option>
-                <option value="1162^MOST^99DCT">More than half</option>
-                <option value="1161^HALF^99DCT">Half</option>
-                <option value="1160^FEW^99DCT">Less than half</option>
-                <option value="1107^NONE^99DCT">None</option>
+                <option value="1065^YES^99DCT">Yes</option>
+                <option value="1066^NO^99DCT">No</option>
+                <option value="1624^DO NOT KNOW^99DCT">Do not know</option>
             </select>
         </div>
         <div class="form-group">
-            <label for="obs.medication_metformin.number_of_milligram">Metformin dose in Milligrams (mg):</label>
-            <input class="form-control" id="obs.medication_metformin.number_of_milligram" name="obs.medication_metformin.number_of_milligram" type="text">
+            <label for="obs.tmp_dosage_change_metformin">Prescribed [Metformin] dose in milligrams (mg):</label>
+            <input class="form-control" id="obs.tmp_dosage_change_metformin" name="obs.tmp_dosage_change_metformin" type="text">
         </div>
         <div class="form-group">
-            <label for="obs.medication_metformin.medication_frequency_per_day">Metformin frequency per day:</label>
-            <select class="form-control" id="obs.medication_metformin.medication_frequency_per_day" name="obs.medication_metformin.medication_frequency_per_day">
+            <label for="obs.omo_medication_frequency_per_day_metformin">[Metformin] frequency per day:</label>
+            <select class="form-control" id="obs.omo_medication_frequency_per_day_metformin" name="obs.omo_medication_frequency_per_day_metformin">
                 <option value="">...</option>
                 <option value="1639^MORNING^99DCT">Every Morning</option>
                 <option value="1730^EVENING^99DCT">Every Evening</option>
@@ -664,21 +662,282 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="obs.medication_metformin.missed_medication_reason">Specify the reason for missing some of your [Metformin] doses:</label>
-            <select class="form-control" id="obs.medication_metformin.missed_medication_reason" name="obs.medication_metformin.missed_medication_reason">
+            <label for="obs.omo_number_of_tablets_metformin">Number of [Metformin] tablets prescribed:</label>
+            <input class="form-control" id="obs.omo_number_of_tablets_metformin" name="obs.omo_number_of_tablets_metformin" type="text">
+        </div>
+        <div class="form-group">
+            <label for="obs.omo_medication_received_at_vist_metformin">[Metformin] picked-up at dispensary</label>
+            <select class="form-control" id="obs.omo_medication_received_at_vist_metformin" name="obs.omo_medication_received_at_vist_metformin">
                 <option value="">...</option>
-                <option value="financial_barrier">No money</option>
-                <option value="facility_stocked_out_of_medication">Facility stocked out of medication</option>
-                <option value="missed_appointment">Missed Appointment</option>
-                <option value="healed_by_faith">Healed by faith</option>
-                <option value="forgot_to_take_medicine">Forgot to take medicine</option>
-                <option value="medicine_not_useful">Medicine not useful</option>
-                <option value="side_effects_from_taking_medications">Side effects</option>
-                <option value="transport_problems">Lack of Transport</option>
-                <option value="other_non-coded">Other</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
             </select>
         </div>
     </div>
+    <div class="section">
+        <h3>Glibenclamide Dispense</h3>
+        <div class="form-group">
+            <label for="obs.other_medication_order_glibenclamide">Did you change the [Glibenclamide] dosage?</label>
+            <select class="form-control" id="obs.other_medication_order_glibenclamide" name="obs.other_medication_order_glibenclamide">
+                <option value="">...</option>
+                <option value="1065^YES^99DCT">Yes</option>
+                <option value="1066^NO^99DCT">No</option>
+                <option value="1624^DO NOT KNOW^99DCT">Do not know</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="obs.tmp_dosage_change_glibenclamide">Prescribed [Glibenclamide] dose in milligrams (mg):</label>
+            <input class="form-control" id="obs.tmp_dosage_change_glibenclamide" name="obs.tmp_dosage_change_glibenclamide" type="text">
+        </div>
+        <div class="form-group">
+            <label for="obs.omo_medication_frequency_per_day_glibenclamide">[Glibenclamide] frequency per day:</label>
+            <select class="form-control" id="obs.omo_medication_frequency_per_day_glibenclamide" name="obs.omo_medication_frequency_per_day_glibenclamide">
+                <option value="">...</option>
+                <option value="1639^MORNING^99DCT">Every Morning</option>
+                <option value="1730^EVENING^99DCT">Every Evening</option>
+                <option value="1891^ONCE A DAY^99DCT">Once Daily</option>
+                <option value="1888^TWICE A DAY^99DCT">Twice Daily</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="obs.omo_number_of_tablets_glibenclamide">Number of [Glibenclamide] tablets prescribed:</label>
+            <input class="form-control" id="obs.omo_number_of_tablets_glibenclamide" name="obs.omo_number_of_tablets_glibenclamide" type="text">
+        </div>
+        <div class="form-group">
+            <label for="obs.omo_medication_received_at_vist_glibenclamide">[Glibenclamide] picked-up at dispensary</label>
+            <select class="form-control" id="obs.omo_medication_received_at_vist_glibenclamide" name="obs.omo_medication_received_at_vist_glibenclamide">
+                <option value="">...</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+    </div>
+    <div class="section">
+        <h3>Enalapril Dispense</h3>
+        <div class="form-group">
+            <label for="obs.other_medication_order_enalapril">Did you change the [Enalapril] dosage?</label>
+            <select class="form-control" id="obs.other_medication_order_enalapril" name="obs.other_medication_order_enalapril">
+                <option value="">...</option>
+                <option value="1065^YES^99DCT">Yes</option>
+                <option value="1066^NO^99DCT">No</option>
+                <option value="1624^DO NOT KNOW^99DCT">Do not know</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="obs.tmp_dosage_change_enalapril">Prescribed [Enalapril] dose in milligrams (mg):</label>
+            <input class="form-control" id="obs.tmp_dosage_change_enalapril" name="obs.tmp_dosage_change_enalapril" type="text">
+        </div>
+        <div class="form-group">
+            <label for="obs.omo_medication_frequency_per_day_enalapril">[Enalapril] frequency per day:</label>
+            <select class="form-control" id="obs.omo_medication_frequency_per_day_enalapril" name="obs.omo_medication_frequency_per_day_enalapril">
+                <option value="">...</option>
+                <option value="1639^MORNING^99DCT">Every Morning</option>
+                <option value="1730^EVENING^99DCT">Every Evening</option>
+                <option value="1891^ONCE A DAY^99DCT">Once Daily</option>
+                <option value="1888^TWICE A DAY^99DCT">Twice Daily</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="obs.omo_number_of_tablets_enalapril">Number of [Enalapril] tablets prescribed:</label>
+            <input class="form-control" id="obs.omo_number_of_tablets_enalapril" name="obs.omo_number_of_tablets_enalapril" type="text">
+        </div>
+        <div class="form-group">
+            <label for="obs.omo_medication_received_at_vist_enalapril">[Enalapril] picked-up at dispensary</label>
+            <select class="form-control" id="obs.omo_medication_received_at_vist_enalapril" name="obs.omo_medication_received_at_vist_enalapril">
+                <option value="">...</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+    </div>
+    <div class="section">
+        <h3>HCTZ Dispense</h3>
+        <div class="form-group">
+            <label for="obs.other_medication_order_hctz">Did you change the [HCTZ] dosage?</label>
+            <select class="form-control" id="obs.other_medication_order_hctz" name="obs.other_medication_order_hctz">
+                <option value="">...</option>
+                <option value="1065^YES^99DCT">Yes</option>
+                <option value="1066^NO^99DCT">No</option>
+                <option value="1624^DO NOT KNOW^99DCT">Do not know</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="obs.tmp_dosage_change_hctz">Prescribed [HCTZ] dose in milligrams (mg):</label>
+            <input class="form-control" id="obs.tmp_dosage_change_hctz" name="obs.tmp_dosage_change_hctz" type="text">
+        </div>
+        <div class="form-group">
+            <label for="obs.omo_medication_frequency_per_day_hctz">[HCTZ] frequency per day:</label>
+            <select class="form-control" id="obs.omo_medication_frequency_per_day_hctz" name="obs.omo_medication_frequency_per_day_hctz">
+                <option value="">...</option>
+                <option value="1639^MORNING^99DCT">Every Morning</option>
+                <option value="1730^EVENING^99DCT">Every Evening</option>
+                <option value="1891^ONCE A DAY^99DCT">Once Daily</option>
+                <option value="1888^TWICE A DAY^99DCT">Twice Daily</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="obs.omo_number_of_tablets_hctz">Number of [HCTZ] tablets prescribed:</label>
+            <input class="form-control" id="obs.omo_number_of_tablets_hctz" name="obs.omo_number_of_tablets_hctz" type="text">
+        </div>
+        <div class="form-group">
+            <label for="obs.omo_medication_received_at_vist_hctz">[HCTZ] picked-up at dispensary</label>
+            <select class="form-control" id="obs.omo_medication_received_at_vist_hctz" name="obs.omo_medication_received_at_vist_hctz">
+                <option value="">...</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+    </div>
+    <div class="section">
+        <h3>Losartan Dispense</h3>
+        <div class="form-group">
+            <label for="obs.other_medication_order_losartan">Did you change the [Losartan] dosage?</label>
+            <select class="form-control" id="obs.other_medication_order_losartan" name="obs.other_medication_order_losartan">
+                <option value="">...</option>
+                <option value="1065^YES^99DCT">Yes</option>
+                <option value="1066^NO^99DCT">No</option>
+                <option value="1624^DO NOT KNOW^99DCT">Do not know</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="obs.tmp_dosage_change_losartan">Prescribed [Losartan] dose in milligrams (mg):</label>
+            <input class="form-control" id="obs.tmp_dosage_change_losartan" name="obs.tmp_dosage_change_losartan" type="text">
+        </div>
+        <div class="form-group">
+            <label for="obs.omo_medication_frequency_per_day_losartan">[Losartan] frequency per day:</label>
+            <select class="form-control" id="obs.omo_medication_frequency_per_day_losartan" name="obs.omo_medication_frequency_per_day_losartan">
+                <option value="">...</option>
+                <option value="1639^MORNING^99DCT">Every Morning</option>
+                <option value="1730^EVENING^99DCT">Every Evening</option>
+                <option value="1891^ONCE A DAY^99DCT">Once Daily</option>
+                <option value="1888^TWICE A DAY^99DCT">Twice Daily</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="obs.omo_number_of_tablets_losartan">Number of [Losartan] tablets prescribed:</label>
+            <input class="form-control" id="obs.omo_number_of_tablets_losartan" name="obs.omo_number_of_tablets_losartan" type="text">
+        </div>
+        <div class="form-group">
+            <label for="obs.omo_medication_received_at_vist_losartan">[Losartan] picked-up at dispensary</label>
+            <select class="form-control" id="obs.omo_medication_received_at_vist_losartan" name="obs.omo_medication_received_at_vist_losartan">
+                <option value="">...</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+    </div>
+    <div class="section">
+        <h3>Nifedipine Dispense</h3>
+        <div class="form-group">
+            <label for="obs.other_medication_order_nifedipine">Did you change the [Nifedipine] dosage?</label>
+            <select class="form-control" id="obs.other_medication_order_nifedipine" name="obs.other_medication_order_nifedipine">
+                <option value="">...</option>
+                <option value="1065^YES^99DCT">Yes</option>
+                <option value="1066^NO^99DCT">No</option>
+                <option value="1624^DO NOT KNOW^99DCT">Do not know</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="obs.tmp_dosage_change_nifedipine">Prescribed [Nifedipine] dose in milligrams (mg):</label>
+            <input class="form-control" id="obs.tmp_dosage_change_nifedipine" name="obs.tmp_dosage_change_nifedipine" type="text">
+        </div>
+        <div class="form-group">
+            <label for="obs.omo_medication_frequency_per_day_nifedipine">[Nifedipine] frequency per day:</label>
+            <select class="form-control" id="obs.omo_medication_frequency_per_day_nifedipine" name="obs.omo_medication_frequency_per_day_nifedipine">
+                <option value="">...</option>
+                <option value="1639^MORNING^99DCT">Every Morning</option>
+                <option value="1730^EVENING^99DCT">Every Evening</option>
+                <option value="1891^ONCE A DAY^99DCT">Once Daily</option>
+                <option value="1888^TWICE A DAY^99DCT">Twice Daily</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="obs.omo_number_of_tablets_nifedipine">Number of [Nifedipine] tablets prescribed:</label>
+            <input class="form-control" id="obs.omo_number_of_tablets_nifedipine" name="obs.omo_number_of_tablets_nifedipine" type="text">
+        </div>
+        <div class="form-group">
+            <label for="obs.omo_medication_received_at_vist_nifedipine">[Nifedipine] picked-up at dispensary</label>
+            <select class="form-control" id="obs.omo_medication_received_at_vist_nifedipine" name="obs.omo_medication_received_at_vist_nifedipine">
+                <option value="">...</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+    </div>
+    <div class="section">
+        <h3>Other Medication</h3>
+        <div class="form-group">
+            <label for="obs.omo_medication_name_freetext_other">Medication Name:</label>
+            <input class="form-control" id="obs.omo_medication_name_freetext_other" name="obs.omo_medication_name_freetext_other" type="text">
+        </div>
+        <div class="form-group">
+            <label for="obs.omo_number_of_milligram_other">Medication dose in Milligrams (mg):</label>
+            <input class="form-control" id="obs.omo_number_of_milligram_other" name="obs.omo_number_of_milligram_other" type="text">
+        </div>
+        <div class="form-group">
+            <label for="obs.omo_medication_frequency_per_day_other">Medication frequency per day:</label>
+            <select class="form-control" id="obs.omo_medication_frequency_per_day_other" name="obs.omo_medication_frequency_per_day_other">
+                <option value="">...</option>
+                <option value="1639^MORNING^99DCT">Every Morning</option>
+                <option value="1730^EVENING^99DCT">Every Evening</option>
+                <option value="1891^ONCE A DAY^99DCT">Once Daily</option>
+                <option value="1888^TWICE A DAY^99DCT">Twice Daily</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="obs.omo_number_of_tablets_other">Number of Medication tablets:</label>
+            <input class="form-control" id="obs.omo_number_of_tablets_other" name="obs.omo_number_of_tablets_other" type="text">
+        </div>
+    </div>
+    <div class="section">
+        <h3>Education</h3>
+        <label>Education Given:</label>
+        <div class="form-group">
+            <input id="obs.patient_education_received_this_visit.alcohol_counseling" type="checkbox" name="obs.patient_education_received_this_visit" value="alcohol_counseling">
+            <label for="obs.patient_education_received_this_visit.alcohol_counseling">Alcohol Reduction</label><br>
+            <input id="obs.patient_education_received_this_visit.nutritional_support" type="checkbox" name="obs.patient_education_received_this_visit" value="nutritional_support">
+            <label for="obs.patient_education_received_this_visit.nutritional_support">General Diet Education</label><br>
+            <input id="obs.patient_education_received_this_visit.diabetic_diet" type="checkbox" name="obs.patient_education_received_this_visit" value="diabetic_diet">
+            <label for="obs.patient_education_received_this_visit.diabetic_diet">Diabetic Diet Education</label><br>
+            <input id="obs.patient_education_received_this_visit.diabetic_danger_signs" type="checkbox" name="obs.patient_education_received_this_visit" value="diabetic_danger_signs">
+            <label for="obs.patient_education_received_this_visit.diabetic_danger_signs">Diabetic Danger Signs</label><br>
+            <input id="obs.patient_education_received_this_visit.salt_reduction" type="checkbox" name="obs.patient_education_received_this_visit" value="salt_reduction">
+            <label for="obs.patient_education_received_this_visit.salt_reduction">Salt Reduction</label><br>
+            <input id="obs.patient_education_received_this_visit.smoking_cessation" type="checkbox" name="obs.patient_education_received_this_visit" value="smoking_cessation">
+            <label for="obs.patient_education_received_this_visit.smoking_cessation">Smoking Cessation</label><br>
+            <input id="obs.patient_education_received_this_visit.exercise" type="checkbox" name="obs.patient_education_received_this_visit" value="exercise">
+            <label for="obs.patient_education_received_this_visit.exercise">Exercise</label><br>
+            <input id="obs.patient_education_received_this_visit.weight_loss" type="checkbox" name="obs.patient_education_received_this_visit" value="weight_loss">
+            <label for="obs.patient_education_received_this_visit.weight_loss">Weight Reduction</label><br>
+            <input id="obs.patient_education_received_this_visit.adherence_counseling" type="checkbox" name="obs.patient_education_received_this_visit" value="adherence_counseling">
+            <label for="obs.patient_education_received_this_visit.adherence_counseling">Adherence Counseling</label><br>
+            <input id="obs.patient_education_received_this_visit.none" type="checkbox" name="obs.patient_education_received_this_visit" value="none">
+            <label for="obs.patient_education_received_this_visit.none">None</label>
+        </div>
+    </div>
+    <div class="section">
+        <h3>Referrals Ordered</h3>
+        <label>Select all referrals made during this visit:</label>
+        <div class="form-group">
+            <input id="obs.referrals_ordered.referred_to_clinic" type="checkbox" name="obs.referrals_ordered" value="referred_to_clinic">
+            <label for="obs.referrals_ordered.referred_to_clinic">CO/Health Center</label><br>
+            <input id="obs.referrals_ordered.dispensary" type="checkbox" name="obs.referrals_ordered" value="dispensary">
+            <label for="obs.referrals_ordered.dispensary">Return to Dispensary</label><br>
+            <input id="obs.referrals_ordered.antenatal_care_service" type="checkbox" name="obs.referrals_ordered" value="antenatal_care_service">
+            <label for="obs.referrals_ordered.antenatal_care_service">ANC Clinic</label><br>
+            <input id="obs.referrals_ordered.high_risk_antenatal_clinic" type="checkbox" name="obs.referrals_ordered" value="high_risk_antenatal_clinic">
+            <label for="obs.referrals_ordered.high_risk_antenatal_clinic">High Risk ANC Clinic</label><br>
+            <input id="obs.referrals_ordered.none" type="checkbox" name="obs.referrals_ordered" value="none">
+            <label for="obs.referrals_ordered.none">None</label><br>
+        </div>
+    </div>
+    <div class="section">
+        <div class="form-group">
+            <label for="obs.return_visit_date">Return Date to Dispensary:</label>
+            <input class="form-control datepicker" id="obs.return_visit_date" name="obs.return_visit_date" type="text">
+        </div>
+    </div>
+
     <div class="form-group text-center">
         <input class="btn btn-primary" type="button" value="Save"/>
         <input class="btn btn-primary" type="submit" value="Submit"/>
