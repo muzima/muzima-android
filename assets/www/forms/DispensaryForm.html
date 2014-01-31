@@ -1122,23 +1122,22 @@
             return false;
         });
 
+        var numberBetween0And150 = {
+                range: [0, 150],
+                number: true
+        };
         $('#dispensary_form').validate({
             rules: {
                 systolic_blood_pressure_phct: {
                     range: [50, 300],
                     number: true
                 },
-            diastolic_blood_pressure_phct:{
-                range: [20, 150],
-                number: true
-            },
-            serum_glucose_fasting_phct:{
-                range: [0, 150],
-                number: true
-            },
-            serum_glucose_phct: {
-                range: [0, 150],
-                number: true}
+                diastolic_blood_pressure_phct:{
+                    range: [20, 150],
+                    number: true
+                },
+                serum_glucose_fasting_phct: numberBetween0And150,
+                serum_glucose_phct: numberBetween0And150
             }
         });
 
