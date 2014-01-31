@@ -154,6 +154,18 @@ $(document).ready(function () {
     });
 
     /* End - phoneNumber*/
+    /* Start - Checking that if 'none' is selected for referrals, nothing else is selected */
+    $('.checkNoneSelectedAlone').find('input[type="checkbox"]').change(function(){
+        var $fieldset = $(this).parent();
+        var totalSelected = $fieldset.find('input:checkbox:checked').length;
+        $.each($fieldset.find('input:checkbox:checked'),function(i,cBoxElement){
+            if($(cBoxElement).val() == 'none' && totalSelected >1){
+                console.log("Error");
+            }
+        });
+    });
+
+    /* End - checkNoneSelectedAlone*/
 
     $.fn.getTempBirthDate = function (years) {
         var currentYear = new Date().getFullYear();
