@@ -156,13 +156,21 @@ $(document).ready(function () {
     /* End - phoneNumber*/
     /* Start - Checking that if 'none' is selected for referrals, nothing else is selected */
     $('.checkNoneSelectedAlone').find('input[type="checkbox"]').change(function(){
+        var valid = true;
         var $fieldset = $(this).parent();
         var totalSelected = $fieldset.find('input:checkbox:checked').length;
         $.each($fieldset.find('input:checkbox:checked'),function(i,cBoxElement){
             if($(cBoxElement).val() == 'none' && totalSelected >1){
                 console.log("Error");
+                valid = false;
             }
         });
+        if (!valid) {
+            $fieldset.find('.error').text("If 'None' is selected, no other options can be selected.");
+        }
+        else {
+            $fieldset.find('.error').text("");
+        }
     });
 
     /* End - checkNoneSelectedAlone*/
