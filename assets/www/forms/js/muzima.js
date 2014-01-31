@@ -123,6 +123,24 @@ $(document).ready(function () {
 
     /* End - nonFutureDate*/
 
+    /* Start - Checking that the current date is in the future */
+    $.validator.addMethod("checkFutureDate", function (value, element) {
+            var enteredDate = new Date(value);
+            var today = new Date();
+            if(enteredDate <= today){
+                return false;
+            }
+            return true;
+        }, "Please enter a date in the future."
+    );
+
+    // attach 'checkFutureDate' class to perform validation.
+    jQuery.validator.addClassRules({
+        checkFutureDate: { checkFutureDate: true }
+    });
+
+    /* End - checkFutureDate*/
+
     $.fn.getTempBirthDate = function (years) {
         var currentYear = new Date().getFullYear();
         var estimatedDate = new Date(currentYear - parseInt(years), 0, 1);
