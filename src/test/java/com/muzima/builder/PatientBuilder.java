@@ -16,8 +16,16 @@ public class PatientBuilder {
     private String middleName;
     private String sex;
 
+
+    private String uuid;
+
     public static PatientBuilder patient() {
         return new PatientBuilder();
+    }
+
+    public PatientBuilder withUuid(String uuid) {
+        this.uuid = uuid;
+        return this;
     }
 
     public PatientBuilder withIdentifier(String identifier) {
@@ -55,6 +63,7 @@ public class PatientBuilder {
         patientIdentifier.setIdentifier(identifier);
         patientIdentifier.setPreferred(true);
         Patient patient = new Patient();
+        patient.setUuid(uuid);
         patient.addIdentifier(patientIdentifier);
         patient.setBirthdate(birthDate);
         PersonName personName = new PersonName();
