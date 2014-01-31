@@ -56,40 +56,41 @@
 </div>
 <div class="section">
     <h3>Encounter Details</h3>
-        <div class="form-group">
-            <label for="encounter.location_id">Name of Dispensary:</label>
-            <select class="form-control" id="encounter.location_id" name="encounter.location_id">
-                <option value="">...</option>
-                <option value="2">Mosoriot Health Centre</option>
-                <option value="3">Turbo Health Centre</option>
-                <option value="12">Teso District Hospital</option>
-                <option value="60">Chepsaita Dispensary</option>
-                <option value="65">Angurai Health Centre</option>
-                <option value="90">Changara Dispensary</option>
-                <option value="91">Malaba Dispensary</option>
-                <option value="106">Kamollo Dispensary</option>
-                <option value="110">Mogoget Dispensary</option>
-                <option value="111">Biribiriet Dispensary</option>
-                <option value="112">Itigo Dispensary</option>
-                <option value="113">Lelmokwo Dispensary</option>
-                <option value="114">Kokwet Dispensary</option>
-                <option value="115">Ngechek Dispensary</option>
-                <option value="116">Cheramei Dispensary</option>
-                <option value="117">Murgusi Dispensary</option>
-                <option value="118">Cheplasgei Dispensary</option>
-                <option value="119">Sigot Dispensary</option>
-                <option value="120">Sugoi A Dispensary</option>
-                <option value="121">Sugoi B Dispensary</option>
-                <option value="122">Chepkemel Dispensary</option>
-                <option value="124">Akichelesit Dispensary</option>
-                <option value="125">Aboloi Dispensary</option>
-                <option value="126">Moding Dispensary</option>
-                <option value="127">Sambut</option>
-                <option value="128">Ngenyilel</option>
-                <option value="129">Sosiani</option>
-            </select>
-        </div>
-        <div class="form-group">
+
+    <div class="form-group">
+        <label for="encounter.location_id">Name of Dispensary:</label>
+        <select class="form-control" id="encounter.location_id" name="encounter.location_id">
+            <option value="">...</option>
+            <option value="2">Mosoriot Health Centre</option>
+            <option value="3">Turbo Health Centre</option>
+            <option value="12">Teso District Hospital</option>
+            <option value="60">Chepsaita Dispensary</option>
+            <option value="65">Angurai Health Centre</option>
+            <option value="90">Changara Dispensary</option>
+            <option value="91">Malaba Dispensary</option>
+            <option value="106">Kamollo Dispensary</option>
+            <option value="110">Mogoget Dispensary</option>
+            <option value="111">Biribiriet Dispensary</option>
+            <option value="112">Itigo Dispensary</option>
+            <option value="113">Lelmokwo Dispensary</option>
+            <option value="114">Kokwet Dispensary</option>
+            <option value="115">Ngechek Dispensary</option>
+            <option value="116">Cheramei Dispensary</option>
+            <option value="117">Murgusi Dispensary</option>
+            <option value="118">Cheplasgei Dispensary</option>
+            <option value="119">Sigot Dispensary</option>
+            <option value="120">Sugoi A Dispensary</option>
+            <option value="121">Sugoi B Dispensary</option>
+            <option value="122">Chepkemel Dispensary</option>
+            <option value="124">Akichelesit Dispensary</option>
+            <option value="125">Aboloi Dispensary</option>
+            <option value="126">Moding Dispensary</option>
+            <option value="127">Sambut</option>
+            <option value="128">Ngenyilel</option>
+            <option value="129">Sosiani</option>
+        </select>
+    </div>
+    <div class="form-group">
         <label for="encounter.provider_id_select">Provider ID:</label>
         <select class="form-control" id="encounter.provider_id_select" name="encounter.provider_id_select">
             <option value="">...</option>
@@ -160,8 +161,8 @@
     </div>
     <div class="form-group">
 
-            <label for="systolic_blood_pressure_phct">Systolic Blood Pressure from pHCT Screening card:</label>
-            <input class="form-control" id="systolic_blood_pressure_phct" name="systolic_blood_pressure_phct"
+        <label for="systolic_blood_pressure_phct">Systolic Blood Pressure from pHCT Screening card:</label>
+        <input class="form-control" id="systolic_blood_pressure_phct" name="systolic_blood_pressure_phct"
                type="text">
     </div>
     <div class="form-group">
@@ -181,6 +182,7 @@
 </div>
 <div class="section">
     <h3>Your current medications</h3>
+
     <div class="form-group">
         <input id="obs.tmp_drugs.Metformin" type="checkbox" name="obs.tmp_drugs" value="Metformin">
         <label for="obs.tmp_drugs.Metformin">Metformin</label><br>
@@ -200,8 +202,9 @@
         <label for="obs.tmp_drugs.None">None</label>
     </div>
 </div>
-<div class="section">
+<div class="section" id="medication_metformin">
     <h3>Metformin</h3>
+
     <div class="form-group">
         <label for="obs.medication_metformin.number_of_milligram">Metformin dose in Milligrams (mg):</label>
         <input class="form-control" id="obs.medication_metformin.number_of_milligram"
@@ -248,8 +251,9 @@
         </select>
     </div>
 </div>
-<div class="section">
+<div class="section" id="medication_glibenclamide">
     <h3>Glibenclamide</h3>
+
     <div class="form-group">
         <label for="obs.medication_glibenclamide.number_of_milligram">Glibenclamide dose in Milligrams (mg):</label>
         <input class="form-control" id="obs.medication_glibenclamide.number_of_milligram"
@@ -297,8 +301,9 @@
         </select>
     </div>
 </div>
-<div class="section">
+<div class="section" id="medication_enalapril">
     <h3>Enalapril</h3>
+
     <div class="form-group">
         <label for="obs.medication_enalapril.number_of_milligram">Enalapril dose in Milligrams (mg):</label>
         <input class="form-control" id="obs.medication_enalapril.number_of_milligram"
@@ -345,8 +350,9 @@
         </select>
     </div>
 </div>
-<div class="section">
+<div class="section" id="medication_hctz">
     <h3>HCTZ</h3>
+
     <div class="form-group">
         <label for="obs.medication_hctz.number_of_milligram">HCTZ dose in Milligrams (mg):</label>
         <input class="form-control" id="obs.medication_hctz.number_of_milligram"
@@ -393,8 +399,9 @@
         </select>
     </div>
 </div>
-<div class="section">
+<div class="section" id="medication_losartan">
     <h3>Losartan</h3>
+
     <div class="form-group">
         <label for="obs.medication_losartan.number_of_milligram">Losartan dose in Milligrams (mg):</label>
         <input class="form-control" id="obs.medication_losartan.number_of_milligram"
@@ -441,7 +448,7 @@
         </select>
     </div>
 </div>
-<div class="section">
+<div class="section" id="medication_nifedipine">
     <h3>Nifedipine</h3>
 
     <div class="form-group">
@@ -490,7 +497,7 @@
         </select>
     </div>
 </div>
-    <div class="section">
+<div class="section" id="medication_other">
     <h3>Other Medication</h3>
 
     <div class="form-group">
@@ -649,27 +656,36 @@
 </div>
 <div class="section">
     <h3>Hypertension Reminders</h3>
-    <label class="alert alert-info" id="obs.htn_reminder_1">Good BP. Advise on Salt reduction, Weight reduction if BMI >30,
+    <label class="alert alert-info" id="obs.htn_reminder_1">Good BP. Advise on Salt reduction, Weight reduction if BMI
+        >30,
         Exercise, Smoking cessation and Alcohol reduction (if applicable). DISCHARGE HOME</label>
-    <label class="alert alert-info" id="obs.htn_reminder_2">Patient under 35 with elevated BP. Refer to CO/Health Center</label>
-    <label class="alert alert-info" id="obs.htn_reminder_3a">Advise on Salt reduction, Weight reduction if BMI >30, Exercise,
+    <label class="alert alert-info" id="obs.htn_reminder_2">Patient under 35 with elevated BP. Refer to CO/Health
+        Center</label>
+    <label class="alert alert-info" id="obs.htn_reminder_3a">Advise on Salt reduction, Weight reduction if BMI >30,
+        Exercise,
         Smoking cessation and Alcohol reduction (if applicable); RETURN to DISPENSARY in 1 month</label>
-    <label class="alert alert-info" id="obs.htn_reminder_3b">BP high on HTN meds. Advise on Salt reduction, Weight reduction if
+    <label class="alert alert-info" id="obs.htn_reminder_3b">BP high on HTN meds. Advise on Salt reduction, Weight
+        reduction if
         BMI >30, Exercise, Smoking cessation and Alcohol reduction (if applicable). REFER to CO/Clinic.</label>
-    <label class="alert alert-info" id="obs.htn_reminder_3c">Patient with both elevated blood pressure and blood sugar. REFER to
+    <label class="alert alert-info" id="obs.htn_reminder_3c">Patient with both elevated blood pressure and blood sugar.
+        REFER to
         CO/Clinic.</label>
-    <label class="alert alert-info" id="obs.htn_reminder_4">BP is very high. Advise on Salt reduction, Weight reduction if BMI
+    <label class="alert alert-info" id="obs.htn_reminder_4">BP is very high. Advise on Salt reduction, Weight reduction
+        if BMI
         >30, Exercise, Smoking cessation and Alcohol reduction (if applicable). REFER to CO immediately.</label>
     <label class="alert alert-info" id="obs.htn_reminder_5">REFER TO CO/ High Risk ANC</label>
     <label class="alert alert-info" id="obs.htn_reminder_6a">Start on HCTZ 25 mg a day. Advise on Salt reduction, Weight
         reduction if BMI >30, Exercise, Smoking cessation and Alcohol reduction (if applicable)</label>
-    <label class="alert alert-info" id="obs.htn_reminder_6b">Patient with elevated blood pressure and elevated blood sugar.
+    <label class="alert alert-info" id="obs.htn_reminder_6b">Patient with elevated blood pressure and elevated blood
+        sugar.
         REFER to CO/Clinic.</label>
     <label class="alert alert-info" id="obs.htn_reminder_7">Patient with Hypertension symptoms. REFER TO CO</label>
-    <label class="alert alert-info" id="obs.htn_reminder_8">BP good. Continue HCTZ 25mg a day. Advise on Salt reduction, Weight
+    <label class="alert alert-info" id="obs.htn_reminder_8">BP good. Continue HCTZ 25mg a day. Advise on Salt reduction,
+        Weight
         reduction if BMI >30, Exercise, Smoking cessation and Alcohol reduction (if applicable). RETURN TO DISPENSARY in
         4 months</label>
-    <label class="alert alert-info" id="obs.htn_reminder_9">BP elevated. If today is 3rd successive monthly return visit while
+    <label class="alert alert-info" id="obs.htn_reminder_9">BP elevated. If today is 3rd successive monthly return visit
+        while
         on HCTZ 25mg a day, REFER Pt to CO. Otherwise continue HCTZ 25mg a day, and monitor monthly. Advise on Salt
         reduction, Weight reduction if BMI >30, Exercise, Smoking cessation and Alcohol reduction (if
         applicable)</label>
@@ -679,28 +695,38 @@
     <h3>Diabetes Reminders</h3>
     <label class="alert alert-info" id="obs.diabetes_reminder_1">NORMAL blood sugar, educate on prevention. DISCHARGE or
         follow-up after a year as needed</label>
-    <label class="alert alert-info" id="obs.diabetes_reminder_2">Pregnant with Diabetes. Refer to High Risk ANC Clinic</label>
-    <label class="alert alert-info" id="obs.diabetes_reminder_3">Borderline high Blood sugar. Educate on lifestyle modification,
+    <label class="alert alert-info" id="obs.diabetes_reminder_2">Pregnant with Diabetes. Refer to High Risk ANC
+        Clinic</label>
+    <label class="alert alert-info" id="obs.diabetes_reminder_3">Borderline high Blood sugar. Educate on lifestyle
+        modification,
         review after 6 months</label>
-    <label class="alert alert-info" id="obs.diabetes_reminder_4">Diabetes CONFIRMED – Start Metformin 500mg twice a day (BD).
+    <label class="alert alert-info" id="obs.diabetes_reminder_4">Diabetes CONFIRMED – Start Metformin 500mg twice a day
+        (BD).
         Return to Dispensary in 2 weeks</label>
-    <label class="alert alert-info" id="obs.diabetes_reminder_5">Blood sugar is very high. REFER TO CO immediately. Educate on
+    <label class="alert alert-info" id="obs.diabetes_reminder_5">Blood sugar is very high. REFER TO CO immediately.
+        Educate on
         lifestyle modification</label>
-    <label class="alert alert-info" id="obs.diabetes_reminder_6">Patient has [symptom], [symptom] on Metformin. Likely side
+    <label class="alert alert-info" id="obs.diabetes_reminder_6">Patient has [symptom], [symptom] on Metformin. Likely
+        side
         effect. Refer to CO immediately</label>
-    <label class="alert alert-info" id="obs.diabetes_reminder_7">Patient has likely hypoglycemia on Glibenclamide. Refer to CO
+    <label class="alert alert-info" id="obs.diabetes_reminder_7">Patient has likely hypoglycemia on Glibenclamide. Refer
+        to CO
         immediately</label>
-    <label class="alert alert-info" id="obs.diabetes_reminder_8">Suboptimal Blood sugar control. Consider increasing Metformin
+    <label class="alert alert-info" id="obs.diabetes_reminder_8">Suboptimal Blood sugar control. Consider increasing
+        Metformin
         up to 750 mg twice a day (BD). Return to Dispensary after 2 weeks. Educate on lifestyle modification</label>
-    <label class="alert alert-info" id="obs.diabetes_reminder_9">Suboptimal Blood sugar control. Consider increasing Metformin
+    <label class="alert alert-info" id="obs.diabetes_reminder_9">Suboptimal Blood sugar control. Consider increasing
+        Metformin
         up to 1000 mg (1 gram) twice a day (BD). Return to Dispensary after 2 weeks. Educate on lifestyle
         modification</label>
-    <label class="alert alert-info" id="obs.diabetes_reminder_10">Suboptimal BS control on 1000 mg (1 gram) metformin. REFER to
+    <label class="alert alert-info" id="obs.diabetes_reminder_10">Suboptimal BS control on 1000 mg (1 gram) metformin.
+        REFER to
         CO immediately</label>
 </div>
 <div class="section">
     <h3>Medications Prescribed</h3>
-    <label class="alert alert-info">For Medications Prescribed, if there are different doses for the medication for different
+    <label class="alert alert-info">For Medications Prescribed, if there are different doses for the medication for
+        different
         times of day, you should enter each as a separate prescription using the 'Add Group' feature.</label>
     <label>Medications Prescribed:</label>
 
@@ -1096,16 +1122,16 @@
         });
 
         $('#dispensary_form').validate({
-          rules: {
-            systolic_blood_pressure_phct: {
-              range: [50, 300],
-              number: true
+            rules: {
+                systolic_blood_pressure_phct: {
+                    range: [50, 300],
+                    number: true
+                }
             }
-          }
         });
 
+        /*  Start - Based on Selected mediaction prescribed show dispensed fields */
         var selectCorrespondingDrugsDispensed = function (selectedElement) {
-
             var drugsArray = {"#obs\\.drugs_dispensed\\.Metformin": "#metformin_dispense",
                 "#obs\\.drugs_dispensed\\.Glibenclamide": "#glibenclamide_dispense",
                 "#obs\\.drugs_dispensed\\.Enalapril": "#enalapril_dispense",
@@ -1128,6 +1154,37 @@
             selectCorrespondingDrugsDispensed();
         });
         $obs_drugs_dispensed.trigger('change');
+        /*  End - Based on Selected mediaction prescribed show dispensed fields */
+
+        /*  Start - Based on Current mediaction prescribed show dosage fields */
+
+        var selectCorrespondingCurrentMedication = function (selectedElement) {
+            var drugsArray = {"#obs\\.tmp_drugs\\.Metformin": "#medication_metformin",
+                "#obs\\.tmp_drugs\\.Glibenclamide": "#medication_glibenclamide",
+                "#obs\\.tmp_drugs\\.Enalapril": "#medication_enalapril",
+                "#obs\\.tmp_drugs\\.HCTZ": "#medication_hctz",
+                "#obs\\.tmp_drugs\\.Losartan": "#medication_losartan",
+                "#obs\\.tmp_drugs\\.Nifedipine": "#medication_nifedipine",
+                "#obs\\.tmp_drugs\\.Other": "#medication_other"
+            };
+            $.each(drugsArray, function (k, v) {
+                if ($(k).is(':checked')) {
+                    $(v).show();
+                } else {
+                    $(v).hide();
+                }
+            })
+        };
+
+        var $obs_tmp_drugs = $('input[name="obs.tmp_drugs"]');
+        $obs_tmp_drugs.change(function () {
+            selectCorrespondingCurrentMedication();
+        });
+
+        $obs_tmp_drugs.trigger('change');
+
+
+        /*  End - Based on Current mediaction prescribed show dosage fields */
 
         /* When a provider is selected from the provider list, hide the provider id text field */
 
