@@ -158,8 +158,9 @@
                    name="obs.date_of_initial_phct_encounter" type="text" readonly="readonly">
         </div>
         <div class="form-group">
-            <label for="obs.systolic_blood_pressure_phct">Systolic Blood Pressure from pHCT Screening card:</label>
-            <input class="form-control" id="obs.systolic_blood_pressure_phct" name="obs.systolic_blood_pressure_phct"
+
+            <label for="systolic_blood_pressure_phct">Systolic Blood Pressure from pHCT Screening card:</label>
+            <input class="form-control" id="systolic_blood_pressure_phct" name="systolic_blood_pressure_phct"
                    type="text">
         </div>
         <div class="form-group">
@@ -953,7 +954,14 @@
             return false;
         });
 
-        $('#dispensary_form').validate();
+        $('#dispensary_form').validate({
+          rules: {
+            systolic_blood_pressure_phct: {
+              range: [50, 300],
+              number: true
+            }
+          }
+        });
 
         /* When a provider is selected from the provider list, hide the provider id text field */
 
