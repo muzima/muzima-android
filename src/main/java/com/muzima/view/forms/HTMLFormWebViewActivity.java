@@ -204,10 +204,11 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         } else {
             formData = createNewFormData(patient.getUuid(), formId, patient, formTemplate);
         }
+
     }
 
     private FormData createNewFormData(final String patientUuid, final String formUuid, Patient patient, FormTemplate formTemplate) throws FormController.FormDataSaveException {
-        return new FormData() {{
+        FormData formData = new FormData() {{
             setUuid(UUID.randomUUID().toString());
             setPatientUuid(patientUuid);
             setUserUuid("userUuid");
@@ -215,6 +216,8 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             setTemplateUuid(formUuid);
             setDiscriminator(getIntent().getStringExtra(DISCRIMINATOR));
         }};
+        formData.setJsonPayload(new HTMLPatientJSONMapper().map(patient, formData));
+        return formData;
     }
 
 
