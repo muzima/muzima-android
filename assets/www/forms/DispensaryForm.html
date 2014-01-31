@@ -171,8 +171,8 @@
                type="text">
     </div>
     <div class="form-group">
-        <label for="obs.serum_glucose_fasting_phct">Fasting Blood Sugar (FBS) from pHCT Screening card:</label>
-        <input class="form-control" id="obs.serum_glucose_fasting_phct" name="obs.serum_glucose_fasting_phct"
+        <label for="serum_glucose_fasting_phct">Fasting Blood Sugar (FBS) from pHCT Screening card:</label>
+        <input class="form-control" id="serum_glucose_fasting_phct" name="serum_glucose_fasting_phct"
                type="text">
     </div>
     <div class="form-group">
@@ -1129,6 +1129,10 @@
                 },
             diastolic_blood_pressure_phct:{
                 range: [20, 150],
+                number: true
+            },
+            serum_glucose_fasting_phct:{
+                range: [0, 150],
                 number: true
             }
           }
