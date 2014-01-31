@@ -141,6 +141,20 @@ $(document).ready(function () {
 
     /* End - checkFutureDate*/
 
+    /* Start - Checking that the entered value is a valid phone number */
+    $.validator.addMethod("phoneNumber", function (value, element) {
+            var inputLength = value.length;
+            return inputLength >= 8 && inputLength <= 12;
+        }, "Invalid Phone Number. Please check and re-enter."
+    );
+
+    // attach 'phoneNumber' class to perform validation.
+    jQuery.validator.addClassRules({
+        phoneNumber: { phoneNumber: true }
+    });
+
+    /* End - phoneNumber*/
+
     $.fn.getTempBirthDate = function (years) {
         var currentYear = new Date().getFullYear();
         var estimatedDate = new Date(currentYear - parseInt(years), 0, 1);
