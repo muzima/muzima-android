@@ -173,11 +173,12 @@
     <div class="form-group">
         <label for="serum_glucose_fasting_phct">Fasting Blood Sugar (FBS) from pHCT Screening card:</label>
         <input class="form-control" id="serum_glucose_fasting_phct" name="serum_glucose_fasting_phct"
-               type="text">
+               placeholder="Blood glucose is measured on a fasting basis (collected after an 8 to 10 hour fast)" type="text">
     </div>
     <div class="form-group">
-        <label for="obs.serum_glucose_phct">Random Blood Sugar (RBS) from pHCT Screening card:</label>
-        <input class="form-control" id="obs.serum_glucose_phct" name="obs.serum_glucose_phct" type="text">
+        <label for="serum_glucose_phct">Random Blood Sugar (RBS) from pHCT Screening card:</label>
+        <input class="form-control" id="serum_glucose_phct" name="serum_glucose_phct" 
+                placeholder="Laboratory measurement of the glucose level in the blood" type="text">
     </div>
 </div>
 <div class="section">
@@ -1134,8 +1135,11 @@
             serum_glucose_fasting_phct:{
                 range: [0, 150],
                 number: true
+            },
+            serum_glucose_phct: {
+                range: [0, 150],
+                number: true}
             }
-          }
         });
 
         /* Start - Checking that the diastolic blood pressure is less than the systolic blood pressure */
