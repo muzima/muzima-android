@@ -166,8 +166,8 @@
                type="text">
     </div>
     <div class="form-group">
-        <label for="obs.diastolic_blood_pressure_phct">Diastolic Blood Pressure from pHCT Screening card:</label>
-        <input class="form-control" id="obs.diastolic_blood_pressure_phct" name="obs.diastolic_blood_pressure_phct"
+        <label for="diastolic_blood_pressure_phct">Diastolic Blood Pressure from pHCT Screening card:</label>
+        <input class="form-control lessThankSystolic" id="diastolic_blood_pressure_phct" name="diastolic_blood_pressure_phct"
                type="text">
     </div>
     <div class="form-group">
@@ -1126,9 +1126,27 @@
                 systolic_blood_pressure_phct: {
                     range: [50, 300],
                     number: true
-                }
+                },
+            diastolic_blood_pressure_phct:{
+                range: [20, 150],
+                number: true
             }
+          }
         });
+
+        /* Start - Checking that the diastolic blood pressure is less than the systolic blood pressure */
+        $.validator.addMethod("lessThankSystolic", function (value, element) {
+                var systolicBloodPressure = parseInt($('#systolic_blood_pressure_phct').val());
+                return (parseInt(value) <= systolicBloodPressure);
+            }, "DBP cannot be more than Systolic Blood Pressure."
+        );
+
+        // attach 'lessThankSystolic' class to perform validation.
+        jQuery.validator.addClassRules({
+            lessThankSystolic: { lessThankSystolic: true }
+        });
+
+        /* End - lessThankSystolic*/
 
         /*  Start - Based on Selected mediaction prescribed show dispensed fields */
         var selectCorrespondingDrugsDispensed = function (selectedElement) {
