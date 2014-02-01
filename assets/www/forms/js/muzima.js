@@ -201,4 +201,12 @@ $(document).ready(function () {
 
     /* End - Used for Sub-Forms */
 
+    /**/
+    $.validator.addClassRules({
+        isDecimal: {
+            number: true
+        }
+    });
+    /**/
+
 });

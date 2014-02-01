@@ -209,7 +209,7 @@
 
     <div class="form-group">
         <label for="metformin_number_of_milligram">Metformin dose in Milligrams (mg):</label>
-        <input class="form-control" id="metformin_number_of_milligram"
+        <input class="form-control isDecimal" id="metformin_number_of_milligram"
                name="metformin_number_of_milligram" type="text">
     </div>
     <div class="form-group">
@@ -258,7 +258,7 @@
 
     <div class="form-group">
         <label for="glibenclamide_number_of_milligram">Glibenclamide dose in Milligrams (mg):</label>
-        <input class="form-control" id="glibenclamide_number_of_milligram"
+        <input class="form-control isDecimal" id="glibenclamide_number_of_milligram"
                name="glibenclamide_number_of_milligram" type="text">
     </div>
     <div class="form-group">
@@ -308,7 +308,7 @@
 
     <div class="form-group">
         <label for="enalapril_number_of_milligram">Enalapril dose in Milligrams (mg):</label>
-        <input class="form-control" id="enalapril_number_of_milligram"
+        <input class="form-control isDecimal" id="enalapril_number_of_milligram"
                name="enalapril_number_of_milligram" type="text">
     </div>
     <div class="form-group">
@@ -357,7 +357,7 @@
 
     <div class="form-group">
         <label for="hctz_number_of_milligram">HCTZ dose in Milligrams (mg):</label>
-        <input class="form-control" id="hctz_number_of_milligram"
+        <input class="form-control isDecimal" id="hctz_number_of_milligram"
                name="hctz_number_of_milligram" type="text">
     </div>
     <div class="form-group">
@@ -406,7 +406,7 @@
 
     <div class="form-group">
         <label for="losartan_number_of_milligram">Losartan dose in Milligrams (mg):</label>
-        <input class="form-control" id="losartan_number_of_milligram"
+        <input class="form-control isDecimal" id="losartan_number_of_milligram"
                name="losartan_number_of_milligram" type="text">
     </div>
     <div class="form-group">
@@ -455,7 +455,7 @@
 
     <div class="form-group">
         <label for="nifedipine_number_of_milligram">Nifedipine dose in Milligrams (mg):</label>
-        <input class="form-control" id="nifedipine_number_of_milligram"
+        <input class="form-control isDecimal" id="nifedipine_number_of_milligram"
                name="nifedipine_number_of_milligram" type="text">
     </div>
     <div class="form-group">
@@ -509,7 +509,7 @@
     </div>
     <div class="form-group">
         <label for="other_medication_number_of_milligram">Dose in Milligrams (mg):</label>
-        <input class="form-control" id="other_medication_number_of_milligram"
+        <input class="form-control isDecimal" id="other_medication_number_of_milligram"
                name="other_medication_number_of_milligram" type="text">
     </div>
     <div class="form-group">
@@ -525,7 +525,7 @@
     </div>
     <div class="form-group other_medication_number_of_milliliter_group">
         <label for="other_medication_number_of_milliliter">Dose in Milliliters (ml):</label>
-        <input class="form-control" id="other_medication_number_of_milliliter"
+        <input class="form-control isDecimal" id="other_medication_number_of_milliliter"
                name="other_medication_number_of_milliliter" type="text">
     </div>
 </div>
@@ -1145,15 +1145,7 @@
                     number: true
                 },
                 serum_glucose_fasting_phct: numberBetween0And150,
-                serum_glucose_phct: numberBetween0And150,
-                glibenclamide_number_of_milligram: isDecimal,
-                metformin_number_of_milligram: isDecimal,
-                enalapril_number_of_milligram: isDecimal,
-                hctz_number_of_milligram: isDecimal,
-                losartan_number_of_milligram: isDecimal,
-                nifedipine_number_of_milligram: isDecimal,
-                other_medication_number_of_milligram: isDecimal,
-                other_medication_number_of_milliliter: isDecimal
+                serum_glucose_phct: numberBetween0And150
             }
         });
 
