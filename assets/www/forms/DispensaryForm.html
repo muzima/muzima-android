@@ -1160,7 +1160,7 @@
 
         /* End - lessThankSystolic*/
 
-        /*  Start - Based on Selected mediaction prescribed show dispensed fields */
+        /*  Start - Based on Selected medication prescribed show dispensed fields */
         var selectCorrespondingDrugsDispensed = function (selectedElement) {
             var drugsArray = {"#obs\\.drugs_dispensed\\.Metformin": "#metformin_dispense",
                 "#obs\\.drugs_dispensed\\.Glibenclamide": "#glibenclamide_dispense",
@@ -1184,10 +1184,9 @@
             selectCorrespondingDrugsDispensed();
         });
         $obs_drugs_dispensed.trigger('change');
-        /*  End - Based on Selected mediaction prescribed show dispensed fields */
+        /*  End - Based on Selected medication prescribed show dispensed fields */
 
-        /*  Start - Based on Current mediaction prescribed show dosage fields */
-
+        /*  Start - Based on Current medication prescribed show dosage fields */
         var selectCorrespondingCurrentMedication = function (selectedElement) {
             var drugsArray = {"#obs\\.tmp_drugs\\.Metformin": "#medication_metformin",
                 "#obs\\.tmp_drugs\\.Glibenclamide": "#medication_glibenclamide",
@@ -1198,26 +1197,20 @@
                 "#obs\\.tmp_drugs\\.Other": "#medication_other"
             };
             $.each(drugsArray, function (k, v) {
-                if ($(k).is(':checked')) {
-                    $(v).show();
-                } else {
-                    $(v).hide();
-                }
+                $(k).change(function(){
+                    if ($(k).is(':checked')) {
+                        $(v).show();
+                    } else {
+                        $(v).hide();
+                    }
+                });
+                $(k).trigger('change');
             })
         };
-
-        var $obs_tmp_drugs = $('input[name="obs.tmp_drugs"]');
-        $obs_tmp_drugs.change(function () {
-            selectCorrespondingCurrentMedication();
-        });
-
-        $obs_tmp_drugs.trigger('change');
-
-
-        /*  End - Based on Current mediaction prescribed show dosage fields */
+        selectCorrespondingCurrentMedication();
+        /*  End - Based on Current medication prescribed show dosage fields */
 
         /* When a provider is selected from the provider list, hide the provider id text field */
-
         $('#encounter\\.provider_id_select').change(function () {
             var $show_provider_id_text = $('.show_provider_id_text');
             var selected_value = $('#encounter\\.provider_id_select').val();
