@@ -106,6 +106,7 @@ $(document).ready(function () {
     /* End - CheckDigit Algorithm */
 
     /* Start - Checking that the current date is not in the future */
+
     $.validator.addMethod("nonFutureDate", function (value, element) {
             var enteredDate = new Date(value);
             var today = new Date();
@@ -124,6 +125,7 @@ $(document).ready(function () {
     /* End - nonFutureDate*/
 
     /* Start - Checking that the current date is in the future */
+
     $.validator.addMethod("checkFutureDate", function (value, element) {
             var enteredDate = new Date(value);
             var today = new Date();
@@ -142,6 +144,7 @@ $(document).ready(function () {
     /* End - checkFutureDate*/
 
     /* Start - Checking that the entered value is a valid phone number */
+
     $.validator.addMethod("phoneNumber", function (value, element) {
             var inputLength = value.length;
             return inputLength >= 8 && inputLength <= 12;
@@ -154,6 +157,7 @@ $(document).ready(function () {
     });
 
     /* End - phoneNumber*/
+
     /* Start - Checking that if 'none' is selected for referrals, nothing else is selected */
     $('.checkNoneSelectedAlone').find('input[type="checkbox"]').change(function(){
         var valid = true;
