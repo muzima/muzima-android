@@ -285,7 +285,7 @@
             <option value="1107^NONE^99DCT">None</option>
         </select>
     </div>
-    <div class="form-group">
+    <div class="form-group glibenclamide_missed_medication_reason">
         <label for="obs.medication_glibenclamide.missed_medication_reason">Specify the reason for missing some of your
             [Glibenclamide] doses:</label>
         <select class="form-control" id="obs.medication_glibenclamide.missed_medication_reason"
@@ -334,7 +334,7 @@
             <option value="1107^NONE^99DCT">None</option>
         </select>
     </div>
-    <div class="form-group">
+    <div class="form-group enalapril_missed_medication_reason">
         <label for="obs.medication_enalapril.missed_medication_reason">Specify the reason for missing some of your
             [Enalapril] doses:</label>
         <select class="form-control" id="obs.medication_enalapril.missed_medication_reason"
@@ -383,7 +383,7 @@
             <option value="1107^NONE^99DCT">None</option>
         </select>
     </div>
-    <div class="form-group">
+    <div class="form-group hctz_missed_medication_reason">
         <label for="obs.medication_hctz.missed_medication_reason">Specify the reason for missing some of your [HCTZ]
             doses:</label>
         <select class="form-control" id="obs.medication_hctz.missed_medication_reason"
@@ -432,7 +432,7 @@
             <option value="1107^NONE^99DCT">None</option>
         </select>
     </div>
-    <div class="form-group">
+    <div class="form-group losartan_missed_medication_reason">
         <label for="obs.medication_losartan.missed_medication_reason">Specify the reason for missing some of your
             [Losartan] doses:</label>
         <select class="form-control" id="obs.medication_losartan.missed_medication_reason"
@@ -481,7 +481,7 @@
             <option value="1107^NONE^99DCT">None</option>
         </select>
     </div>
-    <div class="form-group">
+    <div class="form-group nifedipine_missed_medication_reason">
         <label for="obs.medication_nifedipine.missed_medication_reason">Specify the reason for missing some of your
             [Nifedipine] doses:</label>
         <select class="form-control" id="obs.medication_nifedipine.missed_medication_reason"
@@ -1231,22 +1231,31 @@
             }
         });
 
-        // We ask for reason of missing medication only if some medication was missed
-
-        var $metformin_medication_taken = $('#obs\\.medication_metformin\\.number_of_pills_taken');
-        $metformin_medication_taken.change(function () {
-            var selected_value = $metformin_medication_taken.val();
-            var $reason = $('.metformin_missed_medication_reason');
-            if (selected_value != '' && selected_value != '1163^ALL^99DCT') {
-                $reason.show();
-            }
-            else {
-                $reason.hide();
-            }
-        });
-        
-        $metformin_medication_taken.trigger('change');
-        
+        /*  Start - If some medication dose was missed, ask for reason */
+        var displayReasonForMissingMedicationWhenNeeded = function (selectedElement) {
+            var drugsArray = {"#obs\\.medication_metformin\\.number_of_pills_taken": ".metformin_missed_medication_reason",
+                "#obs\\.medication_glibenclamide\\.number_of_pills_taken": ".glibenclamide_missed_medication_reason",
+                "#obs\\.medication_enalapril\\.number_of_pills_taken": ".enalapril_missed_medication_reason",
+                "#obs\\.medication_hctz\\.number_of_pills_taken": ".hctz_missed_medication_reason",
+                "#obs\\.medication_losartan\\.number_of_pills_taken": ".losartan_missed_medication_reason",
+                "#obs\\.medication_nifedipine\\.number_of_pills_taken": ".nifedipine_missed_medication_reason"
+            };
+            $.each(drugsArray, function (pillsTaken, missedReason) {
+                $(pillsTaken).change(function(){
+                    var selected_value = $(pillsTaken).val();
+                    var $reason = $(missedReason);
+                    if (selected_value != '' && selected_value != '1163^ALL^99DCT') {
+                        $reason.show();
+                    }
+                    else {
+                        $reason.hide();
+                    }
+                });
+                $(pillsTaken).trigger('change');
+            })
+        };
+        displayReasonForMissingMedicationWhenNeeded();
+        /*  End - Start - If some medication dose was missed, ask for reason */
     });
 
 </script>
