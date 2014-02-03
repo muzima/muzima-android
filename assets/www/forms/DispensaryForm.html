@@ -162,7 +162,7 @@
     <div class="form-group">
 
         <label for="systolic_blood_pressure_phct">Systolic Blood Pressure from pHCT Screening card:</label>
-        <input class="form-control" id="systolic_blood_pressure_phct" name="systolic_blood_pressure_phct"
+        <input class="form-control systolicBloodPressure" id="systolic_blood_pressure_phct" name="systolic_blood_pressure_phct"
                type="text">
     </div>
     <div class="form-group">
@@ -607,7 +607,8 @@
     </div>
     <div class="form-group">
         <label for="obs.systolic_blood_pressure">Systolic Blood Pressure (mmHg):</label>
-        <input class="form-control" id="obs.systolic_blood_pressure" name="obs.systolic_blood_pressure" type="text">
+        <input class="form-control systolicBloodPressure" id="obs.systolic_blood_pressure" name="obs.systolic_blood_pressure" type="text"
+            placeholder="Please record today's SBP">
     </div>
     <div class="form-group">
         <label for="obs.diastolic_blood_pressure">Diastolic Blood Pressure (mmHg):</label>
@@ -1136,10 +1137,6 @@
         };
         $('#dispensary_form').validate({
             rules: {
-                systolic_blood_pressure_phct: {
-                    range: [50, 300],
-                    number: true
-                },
                 diastolic_blood_pressure_phct:{
                     range: [20, 150],
                     number: true
@@ -1278,6 +1275,15 @@
         });
         $patientSex.trigger('change');
         /* End - Ask for menstrual info only if the client is a woman*/
+
+        /* Start - Checks that a field is a decimal */
+        $.validator.addClassRules({
+            systolicBloodPressure: {
+                range: [50, 300],
+                number: true
+            }
+        });
+        /* End - Checks that a field is a decimal */
 
     });
 
