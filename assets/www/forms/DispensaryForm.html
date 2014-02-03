@@ -631,9 +631,9 @@
         <label for="height_cm">Height (CM):</label>
         <input class="form-control" id="height_cm" name="height_cm" type="text" placeholder="Please record today's height">
     </div>
-    <div class="form-group">
+    <div class="form-group bodyMassIndex">
         <label for="obs.body_mass_index">Body Mass Index:</label>
-        <input class="form-control" id="obs.body_mass_index" name="obs.body_mass_index" type="text">
+        <input class="form-control" id="obs.body_mass_index" name="obs.body_mass_index" type="text" readonly="readonly">
     </div>
     <div class="form-group">
         <label for="obs.serum_glucose_fasting">Fasting Blood Sugar (FBS):</label>
@@ -1295,6 +1295,31 @@
             }
         });
         /* End - Checks that a field is a decimal */
+
+        /* Start - Compute the BMI if the weight & height are provided */
+        var $weight = $('#weight_kg');
+        var $height = $('#height_cm');
+        var $bodyMassIndex = $('.bodyMassIndex');
+        var displayBMI = function(){
+            if(($weight.val() != '') && ($height.val() != '')){
+                $bodyMassIndex.find('input').val(computeBMI());
+                $bodyMassIndex.show();
+            } else {
+                $bodyMassIndex.hide();
+            }
+        };
+        var computeBMI = function(){
+            var weight = parseInt($weight.val());
+            var height = parseInt($height.val())/100;
+            return weight/(height*height);
+        };
+
+        $weight.change(displayBMI());
+        $weight.trigger('change');
+
+        $height.change(displayBMI);
+        $height.trigger('change');
+        /* End - Compute the BMI if the weight & height are provided */
 
     });
 
