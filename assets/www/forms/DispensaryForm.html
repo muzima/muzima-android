@@ -594,7 +594,7 @@
 <div class="section">
     <h3>Others</h3>
 
-    <div class="form-group">
+    <div class="form-group menstrualPeriod">
         <label for="obs.last_menstrual_period_qualitative">How long ago was the first day of your menstrual
             period?</label>
         <select class="form-control" id="obs.last_menstrual_period_qualitative"
@@ -1265,6 +1265,19 @@
         });
         $other_medication_number_of_milligram.trigger('change');
         /* End - Asks for the dosage of other medication in ml only if it is not provided in mg */
+
+        /* Start - Ask for menstrual info only if the client is a woman*/
+        var $patientSex = $('#patient\\.sex');
+        $patientSex.change(function(){
+            var $menstrualPeriod = $('.menstrualPeriod');
+            if($patientSex.val() != 'F'){
+                $menstrualPeriod.hide();
+            } else {
+                $menstrualPeriod.show();
+            }
+        });
+        $patientSex.trigger('change');
+        /* End - Ask for menstrual info only if the client is a woman*/
 
     });
 
