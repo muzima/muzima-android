@@ -612,11 +612,12 @@
     </div>
     <div class="form-group">
         <label for="obs.diastolic_blood_pressure">Diastolic Blood Pressure (mmHg):</label>
-        <input class="form-control" id="obs.diastolic_blood_pressure" name="obs.diastolic_blood_pressure" type="text">
+        <input class="form-control diastolicBloodPressure lessThankSystolic" id="obs.diastolic_blood_pressure" name="obs.diastolic_blood_pressure" type="text"
+            placeholder="Please record today's DBP">
     </div>
     <div class="form-group">
-        <label for="obs.pulse">Pulse Rate (per minute):</label>
-        <input class="form-control" id="obs.pulse" name="obs.pulse" type="text">
+        <label for="pulse">Pulse Rate (per minute):</label>
+        <input class="form-control" id="pulse" name="pulse" type="text" placeholder="Please record today's pulse">
     </div>
     <div class="form-group">
         <label for="obs.temperature_c">Temperature (centigrade):</label>
@@ -1129,17 +1130,14 @@
         });
 
         var numberBetween0And150 = {
-            range: [0, 150],
-            number: true
-        };
-        var isDecimal = {
-            number: true
+            number: true,
+            range: [0, 150]
         };
         $('#dispensary_form').validate({
             rules: {
-                diastolic_blood_pressure_phct:{
-                    range: [20, 150],
-                    number: true
+                pulse:{
+                    number: true,
+                    range: [0, 230]
                 },
                 serum_glucose_fasting_phct: numberBetween0And150,
                 serum_glucose_phct: numberBetween0And150
@@ -1148,7 +1146,7 @@
 
         /* Start - Checking that the diastolic blood pressure is less than the systolic blood pressure */
         $.validator.addMethod("lessThankSystolic", function (value, element) {
-                var systolicBloodPressure = parseInt($('#systolic_blood_pressure_phct').val());
+                var systolicBloodPressure = parseInt($(element).closest('.section').find('.systolicBloodPressure').val());
                 return (parseInt(value) <= systolicBloodPressure);
             }, "DBP cannot be more than Systolic Blood Pressure."
         );
@@ -1157,7 +1155,6 @@
         jQuery.validator.addClassRules({
             lessThankSystolic: { lessThankSystolic: true }
         });
-
         /* End - lessThankSystolic*/
 
         /*  Start - Based on Selected medication prescribed show dispensed fields */
@@ -1279,8 +1276,12 @@
         /* Start - Checks that a field is a decimal */
         $.validator.addClassRules({
             systolicBloodPressure: {
-                range: [50, 300],
-                number: true
+                number: true,
+                range: [50, 300]
+            },
+            diastolicBloodPressure:{
+                number: true,
+                range: [20, 150]
             }
         });
         /* End - Checks that a field is a decimal */

@@ -201,12 +201,14 @@ $(document).ready(function () {
 
     /* End - Used for Sub-Forms */
 
-    /**/
+    /* Start - Checks that a field is a decimal */
+
     $.validator.addClassRules({
         isDecimal: {
             number: true
         }
     });
-    /**/
+
+    /* End - Checks that a field is a decimal */
 
 });
