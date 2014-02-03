@@ -172,12 +172,12 @@
     </div>
     <div class="form-group">
         <label for="serum_glucose_fasting_phct">Fasting Blood Sugar (FBS) from pHCT Screening card:</label>
-        <input class="form-control" id="serum_glucose_fasting_phct" name="serum_glucose_fasting_phct"
+        <input class="form-control glucose" id="serum_glucose_fasting_phct" name="serum_glucose_fasting_phct"
                placeholder="Blood glucose is measured on a fasting basis (collected after an 8 to 10 hour fast)" type="text">
     </div>
     <div class="form-group">
         <label for="serum_glucose_phct">Random Blood Sugar (RBS) from pHCT Screening card:</label>
-        <input class="form-control" id="serum_glucose_phct" name="serum_glucose_phct" 
+        <input class="form-control glucose" id="serum_glucose_phct" name="serum_glucose_phct" 
                 placeholder="Laboratory measurement of the glucose level in the blood" type="text">
     </div>
 </div>
@@ -1129,18 +1129,12 @@
             return false;
         });
 
-        var numberBetween0And150 = {
-            number: true,
-            range: [0, 150]
-        };
         $('#dispensary_form').validate({
             rules: {
                 pulse:{
                     number: true,
                     range: [0, 230]
-                },
-                serum_glucose_fasting_phct: numberBetween0And150,
-                serum_glucose_phct: numberBetween0And150
+                }
             }
         });
 
@@ -1279,9 +1273,13 @@
                 number: true,
                 range: [50, 300]
             },
-            diastolicBloodPressure:{
+            diastolicBloodPressure: {
                 number: true,
                 range: [20, 150]
+            },
+            glucose: {
+                number: true,
+                range: [0, 150]
             }
         });
         /* End - Checks that a field is a decimal */
