@@ -1,0 +1,28 @@
+{
+    "patient.given_name": "Given",
+    "patient.family_name": "Family",
+    "patient.middle_name": "Middle",
+    "patient.medical_record_number": "1234-4",
+    "patient.sex": "M",
+    "patient.birthdate": "2004-02-18",
+    "7479^PROCEDURES DONE THIS VISIT^99DCT": [
+        {
+            "8265^BODY PART^99DCT": "8279^CERVIX^99DCT",
+            "7479^PROCEDURES DONE THIS VISIT^99DCT": "7147^LOOP ELECTROSURGICAL EXCISION PROCEDURE^99DCT",
+            "8268^ANATOMIC LOCATION DESCRIPTION^99DCT": "8267^DEEP^99DCT",
+            "8278^PATHOLOGICAL DIAGNOSIS ADDED^99DCT": "1115^NORMAL^99DCT"
+        },
+        {
+            "8265^BODY PART^99DCT": "8281^VULVA^99DCT",
+            "7479^PROCEDURES DONE THIS VISIT^99DCT": "7147^LOOP ELECTROSURGICAL EXCISION PROCEDURE^99DCT",
+            "8268^ANATOMIC LOCATION DESCRIPTION^99DCT": "8267^DEEP^99DCT",
+            "8278^PATHOLOGICAL DIAGNOSIS ADDED^99DCT": "149^CERVICITIS^99DCT"
+        }
+    ],
+    "1272^REFERRALS ORDERED^99DCT": [
+        "referred_to_clinic",
+        "dispensary"
+    ],
+    "1915^FREETEXT GENERAL^99DCT": "Testing",
+    "5096^RETURN VISIT DATE^99DCT": "2014-02-01"
+}
