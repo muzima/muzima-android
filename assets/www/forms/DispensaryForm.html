@@ -620,12 +620,12 @@
         <input class="form-control" id="pulse" name="pulse" type="text" placeholder="Please record today's pulse">
     </div>
     <div class="form-group">
-        <label for="obs.temperature_c">Temperature (centigrade):</label>
-        <input class="form-control" id="obs.temperature_c" name="obs.temperature_c" type="text">
+        <label for="temperature_c">Temperature (centigrade):</label>
+        <input class="form-control" id="temperature_c" name="temperature_c" type="text" placeholder="Please record today's temperature">
     </div>
     <div class="form-group">
-        <label for="obs.weight_kg">Weight (KG):</label>
-        <input class="form-control" id="obs.weight_kg" name="obs.weight_kg" type="text">
+        <label for="weight_kg">Weight (KG):</label>
+        <input class="form-control" id="weight_kg" name="weight_kg" type="text" placeholder="Please record today's weight">
     </div>
     <div class="form-group">
         <label for="obs.height_cm">Height (CM):</label>
@@ -1131,9 +1131,17 @@
 
         $('#dispensary_form').validate({
             rules: {
-                pulse:{
+                pulse: {
                     number: true,
                     range: [0, 230]
+                },
+                temperature_c: {
+                    number: true,
+                    range: [25, 43]
+                },
+                weight_kg: {
+                    number: true,
+                    range: [0, 250]
                 }
             }
         });
