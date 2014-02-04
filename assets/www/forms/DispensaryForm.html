@@ -646,10 +646,11 @@
             placeholder="Please record today's RBS">
     </div>
     <div class="form-group">
-        <label for="obs.glycosylated_hemoglobin">Hemoglobin:</label>
-        <input class="form-control" id="obs.glycosylated_hemoglobin" name="obs.glycosylated_hemoglobin" type="text">
+        <label for="glycosylated_hemoglobin">Hemoglobin A1C:</label>
+        <input class="form-control" id="glycosylated_hemoglobin" name="glycosylated_hemoglobin" type="text"
+            placeholder="Please record today's A1C">
     </div>
-    <div class="form-group">
+    <div class="form-group urinePregnancyTestQualitative">
         <label for="obs.urine_pregnancy_test_qualitative">Urine Pregnancy Test:</label>
         <select class="form-control" id="obs.urine_pregnancy_test_qualitative"
                 name="obs.urine_pregnancy_test_qualitative">
@@ -1148,6 +1149,10 @@
                 height_cm: {
                     number: true,
                     range: [10, 228]
+                },
+                glycosylated_hemoglobin: {
+                    number: true,
+                    range: [0, 20]
                 }
             }
         });
@@ -1268,18 +1273,23 @@
         $other_medication_number_of_milligram.trigger('change');
         /* End - Asks for the dosage of other medication in ml only if it is not provided in mg */
 
-        /* Start - Ask for menstrual info only if the client is a woman*/
+        /* Start - Ask for menstrual & urine pregnancy info only if the client is a woman*/
         var $patientSex = $('#patient\\.sex');
         $patientSex.change(function(){
             var $menstrualPeriod = $('.menstrualPeriod');
+            var $urinePregnancyTestQualitative = $('.urinePregnancyTestQualitative');
             if($patientSex.val() != 'F'){
                 $menstrualPeriod.hide();
+                $menstrualPeriod.find('select').val('');
+                $urinePregnancyTestQualitative.hide();
+                $urinePregnancyTestQualitative.find('select').val('');
             } else {
                 $menstrualPeriod.show();
+                $urinePregnancyTestQualitative.show();
             }
         });
         $patientSex.trigger('change');
-        /* End - Ask for menstrual info only if the client is a woman*/
+        /* End - Ask for menstrual & urine pregnancy info only if the client is a woman*/
 
         /* Start - Checks that a field is a decimal */
         $.validator.addClassRules({
