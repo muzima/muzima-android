@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Set;
 
 public class HTMLConceptParser {
-
     public static final String DATA_CONCEPT_TAG = "data-concept";
 
     public List<String> parse(String html) {

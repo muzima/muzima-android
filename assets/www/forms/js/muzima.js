@@ -105,6 +105,80 @@ $(document).ready(function () {
 
     /* End - CheckDigit Algorithm */
 
+    /* Start - Checking that the current date is not in the future */
+
+    $.validator.addMethod("nonFutureDate", function (value, element) {
+            var enteredDate = new Date(value);
+            var today = new Date();
+            if(enteredDate > today){
+                return false;
+            }
+            return true;
+        }, "Please enter a date prior or equal to today."
+    );
+
+    // attach 'nonFutureDate' class to perform validation.
+    jQuery.validator.addClassRules({
+        nonFutureDate: { nonFutureDate: true }
+    });
+
+    /* End - nonFutureDate*/
+
+    /* Start - Checking that the current date is in the future */
+
+    $.validator.addMethod("checkFutureDate", function (value, element) {
+            var enteredDate = new Date(value);
+            var today = new Date();
+            if(enteredDate <= today){
+                return false;
+            }
+            return true;
+        }, "Please enter a date in the future."
+    );
+
+    // attach 'checkFutureDate' class to perform validation.
+    jQuery.validator.addClassRules({
+        checkFutureDate: { checkFutureDate: true }
+    });
+
+    /* End - checkFutureDate*/
+
+    /* Start - Checking that the entered value is a valid phone number */
+
+    $.validator.addMethod("phoneNumber", function (value, element) {
+            var inputLength = value.length;
+            return inputLength >= 8 && inputLength <= 12;
+        }, "Invalid Phone Number. Please check and re-enter."
+    );
+
+    // attach 'phoneNumber' class to perform validation.
+    jQuery.validator.addClassRules({
+        phoneNumber: { phoneNumber: true }
+    });
+
+    /* End - phoneNumber*/
+
+    /* Start - Checking that if 'none' is selected for referrals, nothing else is selected */
+    $('.checkNoneSelectedAlone').find('input[type="checkbox"]').change(function(){
+        var valid = true;
+        var $fieldset = $(this).parent();
+        var totalSelected = $fieldset.find('input:checkbox:checked').length;
+        $.each($fieldset.find('input:checkbox:checked'),function(i,cBoxElement){
+            if($(cBoxElement).val() == 'none' && totalSelected >1){
+                console.log("Error");
+                valid = false;
+            }
+        });
+        if (!valid) {
+            $fieldset.find('.error').text("If 'None' is selected, no other options can be selected.");
+        }
+        else {
+            $fieldset.find('.error').text("");
+        }
+    });
+
+    /* End - checkNoneSelectedAlone*/
+
     $.fn.getTempBirthDate = function (years) {
         var currentYear = new Date().getFullYear();
         var estimatedDate = new Date(currentYear - parseInt(years), 0, 1);
@@ -126,5 +200,15 @@ $(document).ready(function () {
     });
 
     /* End - Used for Sub-Forms */
+
+    /* Start - Checks that a field is a decimal */
+
+    $.validator.addClassRules({
+        isDecimal: {
+            number: true
+        }
+    });
+
+    /* End - Checks that a field is a decimal */
 
 });

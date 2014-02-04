@@ -2,9 +2,13 @@ package com.muzima.service;
 
 import org.junit.Test;
 
+<<<<<<< HEAD
 import java.io.InputStream;
 import java.util.List;
 import java.util.Scanner;
+=======
+import java.util.List;
+>>>>>>> html_spike
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -15,7 +19,6 @@ public class HTMLConceptParserTest {
     @Test
     public void shouldReturnListOfConcepts() {
         String html = readFile();
-
         List<String> concepts = new HTMLConceptParser().parse(html);
         assertThat(concepts.size(),is(5));
         assertThat(concepts,hasItem("8265^BODY PART^99DCT"));

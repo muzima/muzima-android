@@ -204,7 +204,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         } else {
             formData = createNewFormData(patient.getUuid(), formId, patient, formTemplate);
         }
-
     }
 
     private FormData createNewFormData(final String patientUuid, final String formUuid, Patient patient, FormTemplate formTemplate) throws FormController.FormDataSaveException {

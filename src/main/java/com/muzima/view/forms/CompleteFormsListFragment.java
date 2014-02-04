@@ -7,10 +7,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import com.muzima.R;
 import com.muzima.adapters.forms.CompleteFormsAdapter;
+import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.controller.FormController;
-import com.muzima.model.FormWithData;
+import com.muzima.model.CompleteForm;
 
-public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAdapter {
+public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAdapter implements FormsAdapter.MuzimaClickListener{
 
     public static CompleteFormsListFragment newInstance(FormController formController) {
         CompleteFormsListFragment f = new CompleteFormsListFragment();
@@ -21,15 +22,20 @@ public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAda
     @Override
     public void onCreate(Bundle savedInstanceState) {
         listAdapter = new CompleteFormsAdapter(getActivity(), R.layout.item_forms_list, formController);
+        ((CompleteFormsAdapter)listAdapter).setMuzimaClickListener(this);
         noDataMsg = getActivity().getResources().getString(R.string.no_complete_form_msg);
         noDataTip = getActivity().getResources().getString(R.string.no_complete_form_tip);
+
+        if (actionModeActive) {
+            actionMode = getSherlockActivity().startActionMode(new DeleteFormsActionModeCallback());
+            actionMode.setTitle(String.valueOf(((CompleteFormsAdapter)listAdapter).getSelectedFormsUuid().size()));
+        }
+
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        FormViewIntent intent = new FormViewIntent(getActivity(), (FormWithData) listAdapter.getItem(position));
-        getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 
     @Override
@@ -39,5 +45,25 @@ public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAda
 
     public void onFormUploadFinish() {
         listAdapter.reloadData();
+    }
+
+    @Override
+    public boolean onItemLongClick() {
+        if (!actionModeActive) {
+            actionMode = getSherlockActivity().startActionMode(new DeleteFormsActionModeCallback());
+            actionModeActive = true;
+        }
+        int numOfSelectedForms = ((CompleteFormsAdapter)listAdapter).getSelectedFormsUuid().size();
+        if (numOfSelectedForms == 0 && actionModeActive) {
+            actionMode.finish();
+        }
+        actionMode.setTitle(String.valueOf(numOfSelectedForms));
+        return false;
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        FormViewIntent intent = new FormViewIntent(getActivity(), (CompleteForm) listAdapter.getItem(position));
+        getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 }
