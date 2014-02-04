@@ -708,13 +708,13 @@
     <label class="alert alert-info" id="obs.diabetes_reminder_3">Borderline high Blood sugar. Educate on lifestyle
         modification,
         review after 6 months</label>
-    <label class="alert alert-info" id="obs.diabetes_reminder_4">Diabetes CONFIRMED – Start Metformin 500mg twice a day
+    <label class="alert alert-info" id="obs.diabetes_reminder_4">Diabetes CONFIRMED - Start Metformin 500mg twice a day
         (BD).
         Return to Dispensary in 2 weeks</label>
     <label class="alert alert-info" id="obs.diabetes_reminder_5">Blood sugar is very high. REFER TO CO immediately.
         Educate on
         lifestyle modification</label>
-    <label class="alert alert-info" id="obs.diabetes_reminder_6">Patient has [symptom], [symptom] on Metformin. Likely
+    <label class="alert alert-info" id="obs.diabetes_reminder_6">Patient has symptoms [<label id="diabetes_reminder6_symptoms"></label>] on Metformin. Likely
         side
         effect. Refer to CO immediately</label>
     <label class="alert alert-info" id="obs.diabetes_reminder_7">Patient has likely hypoglycemia on Glibenclamide. Refer
@@ -1399,24 +1399,29 @@
         showOrHidePrescribedDosage();
         /*  End - Based on Selected medication prescribed show dispensed fields */
 
-        /* Start - Conditional display of HTN reminders */
+        /* Start - Define variables for conditional displays */
         var $systolicBloodPressure = $('#obs\\.systolic_blood_pressure');
         var $diastolicBloodPressure = $('#obs\\.diastolic_blood_pressure');
         var $currentVisitType = $('#obs\\.current_visit_type');
-
+        var $metforminCurrentMilligram = $('#metformin_number_of_milligram');
+        var $urinePregnancyTest = $('#obs\\.urine_pregnancy_test_qualitative');
+        var $serumGlucoseFasting = $('#obs\\.serum_glucose_fasting');
+        var $glycosylatedHemoglobin = $('#glycosylated_hemoglobin');
+        var $metforminFrequencyPerDay = $('#obs\\.medication_metformin\\.medication_frequency_per_day');
         var getCurrentMedicationValues = function() {
             return $('input[name="obs.tmp_drugs"]:checked').map(function() {return this.value;}).get();
         };
-
         var getReviewOfSystemsGeneralValues = function() {
             return $('input[name="obs.review_of_systems_general"]:checked').map(function() {return this.value;}).get();
         };
-
         var checkReviewOfSystemsGeneralForDisplay = function(){
             var reviewOfSystemsGeneral = getReviewOfSystemsGeneralValues();
             return reviewOfSystemsGeneral.indexOf("edema_legs") < 0 && reviewOfSystemsGeneral.indexOf("shortness_of_breath_with_exertion") < 0 &&
                 reviewOfSystemsGeneral.indexOf("oliguria") < 0 && reviewOfSystemsGeneral.indexOf("focal_weakness") < 0;
         };
+        /* End - Define variables for conditional displays */
+
+        /* Start - Conditional display of HTN reminders */
 
         var displayHTNReminder1 = function(){
             var $htn_reminder_1 = $('#htn_reminder_1');
@@ -1447,7 +1452,7 @@
             var birthdate = $birthdate.val();
             var ageInYears = $.fn.getAgeInYears(birthdate);
             var reviewOfSystemsGeneral = getReviewOfSystemsGeneralValues();
-            return ((selectedVisitType == '7034^FIRST DISPENSARY VISIT AFTER HCT^99DCT') && 
+            return ((selectedVisitType == '7034^FIRST DISPENSARY VISIT AFTER HCT^99DCT') &&
                 ((systolicBloodValue >= 140 && systolicBloodValue <= 180) || (diastolicBloodValue >= 90 && diastolicBloodValue <= 110)) &&
                 urinePregnancyTestQualitativeValue != '703^POSITIVE^99DCT' && ageInYears <= 35 &&
                 checkReviewOfSystemsGeneralForDisplay());
@@ -1478,44 +1483,271 @@
         };
         displayHTNReminder3a();
 
-        $serumGlucoseFasting.change(function(){
-            displayHTNReminder3a();
-        });
-        $glycosylatedHemoglobin.change(function(){
-            displayHTNReminder3a();
-        });
-        $systolicBloodPressure.change(function(){
-            displayHTNReminder1();
-            displayHTNReminder2();
-            displayHTNReminder3a();
-        });
-
-        $('input[name="obs.tmp_drugs"]').change(function() {
-            displayHTNReminder1();
-        });
-
-        $('input[name="obs.review_of_systems_general"]').change(function() {
-            displayHTNReminder1();
-            displayHTNReminder2();
-            displayHTNReminder3a();
-        });
-
-        $diastolicBloodPressure.change(function(){
-            displayHTNReminder1();
-            displayHTNReminder2();
-            displayHTNReminder3a();
-        });
-
-        $urinePregnancyTestQualitative.change(function(){
-            displayHTNReminder2();
-            displayHTNReminder3a();
-        });
-
-        $birthdate.change(function(){
-            displayHTNReminder2();
-            displayHTNReminder3a();
-        });
         /* End - Conditional display of HTN reminders */
+
+        /* Start - Conditional display of Diabetes reminders */
+
+        /* Start - DiabetesReminder1 */
+        var displayDiabetesReminder1 = function() {
+            var selectedVisitType = $currentVisitType.val();
+            var urinePregnancyTestVal = $urinePregnancyTest.val();
+            var serumGlucoseFastingVal = parseFloat($serumGlucoseFasting.val());
+            var currentMedication = getCurrentMedicationValues();
+            var glycosylatedHemoglobinVal = parseFloat($glycosylatedHemoglobin.val());
+
+            var shouldDisplay = (
+                    selectedVisitType in {'7034^FIRST DISPENSARY VISIT AFTER HCT^99DCT':1, '7035^SECOND DISPENSARY VISIT AFTER HCT ^99DCT':1} &&
+                            urinePregnancyTestVal != '703^POSITIVE^99DCT' &&
+                            currentMedication.indexOf("metformin") < 0 && currentMedication.indexOf("glibenclamide") < 0 &&
+                            (serumGlucoseFastingVal < 5.6 || glycosylatedHemoglobinVal < 5.7)
+                    )
+
+            if (shouldDisplay)
+                $('#obs\\.diabetes_reminder_1').show();
+            else
+                $('#obs\\.diabetes_reminder_1').hide();
+        }
+        displayDiabetesReminder1();
+        /* End - DiabetesReminder1 */
+
+        /* Start - DiabetesReminder2 */
+        var displayDiabetesReminder2 = function() {
+            var urinePregnancyTestVal = $urinePregnancyTest.val();
+            var serumGlucoseFastingVal = parseFloat($serumGlucoseFasting.val());
+            var glycosylatedHemoglobinVal = parseFloat($glycosylatedHemoglobin.val());
+
+            var shouldDisplay = (
+                    urinePregnancyTestVal == '703^POSITIVE^99DCT' &&
+                            (serumGlucoseFastingVal >= 5.6 || glycosylatedHemoglobinVal >= 5.7)
+                    )
+
+            if (shouldDisplay)
+                $('#obs\\.diabetes_reminder_2').show();
+            else
+                $('#obs\\.diabetes_reminder_2').hide();
+        }
+        displayDiabetesReminder2();
+        /* End - DiabetesReminder2 */
+
+        /* Start - DiabetesReminder3 */
+        var displayDiabetesReminder3 = function() {
+            var selectedVisitType = $currentVisitType.val();
+            var urinePregnancyTestVal = $urinePregnancyTest.val();
+            var currentMedication = getCurrentMedicationValues();
+            var serumGlucoseFastingVal = parseFloat($serumGlucoseFasting.val());
+            var glycosylatedHemoglobinVal = parseFloat($glycosylatedHemoglobin.val());
+            var systolicBloodValue = parseFloat($systolicBloodPressure.val());
+            var diastolicBloodValue = parseFloat($diastolicBloodPressure.val());
+
+            var shouldDisplay = (
+                    selectedVisitType in {'7034^FIRST DISPENSARY VISIT AFTER HCT^99DCT':1, '7035^SECOND DISPENSARY VISIT AFTER HCT ^99DCT':1} &&
+                            urinePregnancyTestVal != '703^POSITIVE^99DCT' &&
+                            currentMedication.indexOf("metformin") < 0 && currentMedication.indexOf("glibenclamide") < 0 &&
+                            ((serumGlucoseFastingVal >= 5.6 && serumGlucoseFastingVal <= 6.9) ||
+                                    (glycosylatedHemoglobinVal >=5.7 && glycosylatedHemoglobinVal <= 7.0) ||
+                                    (systolicBloodValue < 140 || diastolicBloodValue < 90))
+                    );
+
+            if (shouldDisplay)
+                $('#obs\\.diabetes_reminder_3').show();
+            else
+                $('#obs\\.diabetes_reminder_3').hide();
+        }
+        displayDiabetesReminder3();
+        /* End - DiabetesReminder3 */
+
+        /* Start - DiabetesReminder4 */
+        var displayDiabetesReminder4 = function() {
+            var selectedVisitType = $currentVisitType.val();
+            var urinePregnancyTestVal = $urinePregnancyTest.val();
+            var currentMedication = getCurrentMedicationValues();
+            var serumGlucoseFastingVal = parseFloat($serumGlucoseFasting.val());
+            var glycosylatedHemoglobinVal = parseFloat($glycosylatedHemoglobin.val());
+            var systolicBloodValue = parseFloat($systolicBloodPressure.val());
+            var diastolicBloodValue = parseFloat($diastolicBloodPressure.val());
+
+            var shouldDisplay = (
+                    selectedVisitType in {'7034^FIRST DISPENSARY VISIT AFTER HCT^99DCT':1, '7035^SECOND DISPENSARY VISIT AFTER HCT ^99DCT':1} &&
+                            urinePregnancyTestVal != '703^POSITIVE^99DCT' &&
+                            currentMedication.indexOf("metformin") < 0 && currentMedication.indexOf("glibenclamide") < 0 &&
+                            ((serumGlucoseFastingVal > 6.9 && serumGlucoseFastingVal <= 10) ||
+                                    (glycosylatedHemoglobinVal > 7 && glycosylatedHemoglobinVal <= 9) ||
+                                    (systolicBloodValue < 140 || diastolicBloodValue < 90))
+                    );
+
+            if (shouldDisplay)
+                $('#obs\\.diabetes_reminder_4').show();
+            else
+                $('#obs\\.diabetes_reminder_4').hide();
+        }
+        displayDiabetesReminder4();
+        /* End - DiabetesReminder4 */
+
+        /* Start - DiabetesReminder5 */
+        var displayDiabetesReminder5 = function() {
+            /*
+             relevant="(../../current_visit_type/value = '7034^FIRST DISPENSARY VISIT AFTER HCT^99DCT' or ../../current_visit_type/value = '7035^SECOND DISPENSARY VISIT AFTER HCT ^99DCT')
+             and ../../urine_pregnancy_test_qualitative/value != '703^POSITIVE^99DCT'
+             and not(selected(../../tmp_drugs, 'metformin') or
+             selected(../../tmp_drugs, 'glibenclamide'))
+             and (../../serum_glucose_fasting/value &gt; 10.0 or ../../glycosylated_hemoglobin/value &gt; 9.0)"/>
+             */
+            var selectedVisitType = $currentVisitType.val();
+            var urinePregnancyTestVal = $urinePregnancyTest.val();
+            var currentMedication = getCurrentMedicationValues();
+            var serumGlucoseFastingVal = parseFloat($serumGlucoseFasting.val());
+            var glycosylatedHemoglobinVal = parseFloat($glycosylatedHemoglobin.val());
+
+            var shouldDisplay = (
+                    selectedVisitType in {'7034^FIRST DISPENSARY VISIT AFTER HCT^99DCT':1, '7035^SECOND DISPENSARY VISIT AFTER HCT ^99DCT':1} &&
+                            urinePregnancyTestVal != '703^POSITIVE^99DCT' &&
+                            currentMedication.indexOf("metformin") < 0 && currentMedication.indexOf("glibenclamide") < 0 &&
+                            (serumGlucoseFastingVal > 10 || glycosylatedHemoglobinVal > 9)
+                    );
+
+            if (shouldDisplay)
+                $('#obs\\.diabetes_reminder_5').show();
+            else
+                $('#obs\\.diabetes_reminder_5').hide();
+        }
+        displayDiabetesReminder5();
+        /* End - DiabetesReminder5 */
+
+        /* Start - DiabetesReminder6 */
+        var displayDiabetesReminder6 = function() {
+            var currentMedication = getCurrentMedicationValues();
+            var reviewOfSystemsGeneral = getReviewOfSystemsGeneralValues();
+
+            var shouldDisplay = (
+                    currentMedication.indexOf("metformin") >= 0 &&
+                            (reviewOfSystemsGeneral.indexOf("nausea") >=0 ||
+                                    reviewOfSystemsGeneral.indexOf("vomiting") >=0 ||
+                                    reviewOfSystemsGeneral.indexOf("abdominal_pain") >=0 ||
+                                    reviewOfSystemsGeneral.indexOf("diarrhea") >=0 ||
+                                    reviewOfSystemsGeneral.indexOf("constipation") >=0)
+                    );
+
+            if (shouldDisplay) {
+                $('#obs\\.diabetes_reminder_6').show();
+                $('#diabetes_reminder6_symptoms').text(reviewOfSystemsGeneral.join(", "));
+            }
+            else
+                $('#obs\\.diabetes_reminder_6').hide();
+        }
+        displayDiabetesReminder6();
+        /* End - DiabetesReminder6 */
+
+        /* Start - DiabetesReminder7 */
+        var displayDiabetesReminder7 = function() {
+            var currentMedication = getCurrentMedicationValues();
+            var reviewOfSystemsGeneral = getReviewOfSystemsGeneralValues();
+
+            var shouldDisplay = (
+                    currentMedication.indexOf("glibenclamide") >= 0 &&
+                            reviewOfSystemsGeneral.indexOf("hypoglycemia") >=0
+                    );
+
+            if (shouldDisplay)
+                $('#obs\\.diabetes_reminder_7').show();
+            else
+                $('#obs\\.diabetes_reminder_7').hide();
+        }
+        displayDiabetesReminder7();
+        /* End - DiabetesReminder7 */
+
+        /* Start - DiabetesReminder8 */
+        var displayDiabetesReminder8 = function() {
+            var selectedVisitType = $currentVisitType.val();
+            var urinePregnancyTestVal = $urinePregnancyTest.val();
+            var serumGlucoseFastingVal = parseFloat($serumGlucoseFasting.val());
+            var reviewOfSystemsGeneral = getReviewOfSystemsGeneralValues();
+            var currentMedication = getCurrentMedicationValues();
+            var metforminCurrentMilligramVal = parseFloat($metforminCurrentMilligram.val());
+            var metforminFrequencyPerDayVal = $metforminFrequencyPerDay.val();
+
+            var shouldDisplay = (
+                    selectedVisitType == '7036^RETURN DISPENSARY VISIT^99DCT' &&
+                            urinePregnancyTestVal != '703^POSITIVE^99DCT' &&
+                            serumGlucoseFastingVal >= 8 &&
+                            reviewOfSystemsGeneral.indexOf("nausea") <0 &&
+                            reviewOfSystemsGeneral.indexOf("abdominal_pain") <0 &&
+                            reviewOfSystemsGeneral.indexOf("diarrhea") <0 &&
+                            reviewOfSystemsGeneral.indexOf("constipation") <0 &&
+                            currentMedication.indexOf("metformin") >= 0 &&
+                            metforminCurrentMilligramVal == 500 &&
+                            metforminFrequencyPerDayVal == '1888^TWICE A DAY^99DCT'
+                    )
+
+            if (shouldDisplay)
+                $('#obs\\.diabetes_reminder_8').show();
+            else
+                $('#obs\\.diabetes_reminder_8').hide();
+        }
+        displayDiabetesReminder8();
+        /* End - DiabetesReminder8 */
+
+        /* Start - DiabetesReminder9 */
+        var displayDiabetesReminder9 = function() {
+            var selectedVisitType = $currentVisitType.val();
+            var urinePregnancyTestVal = $urinePregnancyTest.val();
+            var serumGlucoseFastingVal = parseFloat($serumGlucoseFasting.val());
+            var reviewOfSystemsGeneral = getReviewOfSystemsGeneralValues();
+            var currentMedication = getCurrentMedicationValues();
+            var metforminCurrentMilligramVal = parseFloat($metforminCurrentMilligram.val());
+            var metforminFrequencyPerDayVal = $metforminFrequencyPerDay.val();
+
+            var shouldDisplay = (
+                    selectedVisitType == '7036^RETURN DISPENSARY VISIT^99DCT' &&
+                            urinePregnancyTestVal != '703^POSITIVE^99DCT' &&
+                            serumGlucoseFastingVal >= 8 &&
+                            reviewOfSystemsGeneral.indexOf("nausea") <0 &&
+                            reviewOfSystemsGeneral.indexOf("abdominal_pain") <0 &&
+                            reviewOfSystemsGeneral.indexOf("diarrhea") <0 &&
+                            reviewOfSystemsGeneral.indexOf("constipation") <0 &&
+                            currentMedication.indexOf("metformin") >= 0 &&
+                            metforminCurrentMilligramVal == 750 &&
+                            metforminFrequencyPerDayVal == '1888^TWICE A DAY^99DCT'
+                    )
+
+            if (shouldDisplay)
+                $('#obs\\.diabetes_reminder_9').show();
+            else
+                $('#obs\\.diabetes_reminder_9').hide();
+        }
+        displayDiabetesReminder9();
+        /* End - DiabetesReminder9 */
+
+        /* Start - DiabetesReminder10 */
+        var displayDiabetesReminder10 = function() {
+            var selectedVisitType = $currentVisitType.val();
+            var urinePregnancyTestVal = $urinePregnancyTest.val();
+            var serumGlucoseFastingVal = parseFloat($serumGlucoseFasting.val());
+            var reviewOfSystemsGeneral = getReviewOfSystemsGeneralValues();
+            var currentMedication = getCurrentMedicationValues();
+            var metforminCurrentMilligramVal = parseFloat($metforminCurrentMilligram.val());
+            var metforminFrequencyPerDayVal = $metforminFrequencyPerDay.val();
+
+            var shouldDisplay = (
+                    selectedVisitType == '7036^RETURN DISPENSARY VISIT^99DCT' &&
+                            urinePregnancyTestVal != '703^POSITIVE^99DCT' &&
+                            serumGlucoseFastingVal >= 8 &&
+                            reviewOfSystemsGeneral.indexOf("nausea") <0 &&
+                            reviewOfSystemsGeneral.indexOf("vomiting") <0 &&
+                            reviewOfSystemsGeneral.indexOf("abdominal_pain") <0 &&
+                            reviewOfSystemsGeneral.indexOf("diarrhea") <0 &&
+                            reviewOfSystemsGeneral.indexOf("constipation") <0 &&
+                            currentMedication.indexOf("metformin") >= 0 &&
+                            metforminCurrentMilligramVal == 1000
+                    )
+
+            if (shouldDisplay)
+                $('#obs\\.diabetes_reminder_10').show();
+            else
+                $('#obs\\.diabetes_reminder_10').hide();
+        }
+        displayDiabetesReminder10();
+        /* End - DiabetesReminder10 */
+        /* End - Conditional display of Diabetes reminders */
 
         /*  Start - Based on Selected current visit type show or hide fields */
         var displayPHCTReview = function(){
@@ -1527,14 +1759,104 @@
                 $("#phct_review").hide();
             }
         };
-        displayPHCTReview();
-        $currentVisitType.change(function () {
+        /*  End - Based on Selected current visit type show or hide fields */
+
+        /* Start - Reminder triggers */
+        $birthdate.change(function(){
+            displayHTNReminder2();
+            displayHTNReminder3a();
+        });
+        $currentVisitType.change(function() {
             displayPHCTReview();
             displayHTNReminder1();
             displayHTNReminder2();
             displayHTNReminder3a();
+            displayDiabetesReminder1();
+            displayDiabetesReminder3();
+            displayDiabetesReminder4();
+            displayDiabetesReminder5();
+            displayDiabetesReminder8();
+            displayDiabetesReminder9();
+            displayDiabetesReminder10();
         });
-        /*  End - Based on Selected current visit type show or hide fields */
+        $urinePregnancyTest.change(function() {
+            displayHTNReminder2();
+            displayHTNReminder3a();
+            displayDiabetesReminder1();
+            displayDiabetesReminder2();
+            displayDiabetesReminder3();
+            displayDiabetesReminder4();
+            displayDiabetesReminder5();
+            displayDiabetesReminder8();
+            displayDiabetesReminder9();
+            displayDiabetesReminder10();
+        })
+        $serumGlucoseFasting.change(function() {
+            displayHTNReminder3a();
+            displayDiabetesReminder1();
+            displayDiabetesReminder2();
+            displayDiabetesReminder3();
+            displayDiabetesReminder4();
+            displayDiabetesReminder5();
+            displayDiabetesReminder8();
+            displayDiabetesReminder9();
+            displayDiabetesReminder10();
+        })
+        $glycosylatedHemoglobin.change(function() {
+            displayHTNReminder3a();
+            displayDiabetesReminder1();
+            displayDiabetesReminder2();
+            displayDiabetesReminder3();
+            displayDiabetesReminder4();
+            displayDiabetesReminder5();
+        })
+        $systolicBloodPressure.change(function(){
+            displayHTNReminder1();
+            displayHTNReminder2();
+            displayHTNReminder3a();
+            displayDiabetesReminder3();
+            displayDiabetesReminder4();
+        });
+        $('input[name="obs.tmp_drugs"]').change(function() {
+            displayHTNReminder1();
+            displayDiabetesReminder1();
+            displayDiabetesReminder3();
+            displayDiabetesReminder4();
+            displayDiabetesReminder5();
+            displayDiabetesReminder6();
+            displayDiabetesReminder7();
+            displayDiabetesReminder8();
+            displayDiabetesReminder9();
+            displayDiabetesReminder10();
+        });
+        $('input[name="obs.review_of_systems_general"]').change(function() {
+            displayHTNReminder1();
+            displayHTNReminder2();
+            displayHTNReminder3a();
+            displayDiabetesReminder6();
+            displayDiabetesReminder7();
+            displayDiabetesReminder8();
+            displayDiabetesReminder9();
+            displayDiabetesReminder10();
+        });
+        $diastolicBloodPressure.change(function(){
+            displayHTNReminder1();
+            displayHTNReminder2();
+            displayHTNReminder3a();
+            displayDiabetesReminder3();
+            displayDiabetesReminder4();
+        });
+        $metforminCurrentMilligram.change(function(){
+            displayDiabetesReminder8();
+            displayDiabetesReminder9();
+            displayDiabetesReminder10();
+        });
+        $metforminFrequencyPerDay.change(function(){
+            displayDiabetesReminder8();
+            displayDiabetesReminder9();
+        });
+
+        /* End - Reminder triggers */
     });
 
 </script>
