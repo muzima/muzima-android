@@ -636,8 +636,8 @@
         <input class="form-control" id="obs.body_mass_index" name="obs.body_mass_index" type="text" readonly="readonly">
     </div>
     <div class="form-group">
-        <label for="obs.serum_glucose_fasting">Fasting Blood Sugar (FBS):</label>
-        <input class="form-control glucose" id="obs.serum_glucose_fasting" name="obs.serum_glucose_fasting" type="text" 
+        <label for="serum_glucose_fasting">Fasting Blood Sugar (FBS):</label>
+        <input class="form-control glucose" id="serum_glucose_fasting" name="serum_glucose_fasting" type="text" 
             placeholder="Please record today's FBS">
     </div>
     <div class="form-group">
@@ -669,13 +669,13 @@
         Exercise, Smoking cessation and Alcohol reduction (if applicable). DISCHARGE HOME</label>
     <label class="alert alert-info" id="htn_reminder_2">Patient under 35 with elevated BP. Refer to CO/Health
         Center</label>
-    <label class="alert alert-info" id="obs.htn_reminder_3a">Advise on Salt reduction, Weight reduction if BMI >30,
+    <label class="alert alert-info" id="htn_reminder_3a">Advise on Salt reduction, Weight reduction if BMI >30,
         Exercise,
         Smoking cessation and Alcohol reduction (if applicable); RETURN to DISPENSARY in 1 month</label>
-    <label class="alert alert-info" id="obs.htn_reminder_3b">BP high on HTN meds. Advise on Salt reduction, Weight
+    <label class="alert alert-info" id="htn_reminder_3b">BP high on HTN meds. Advise on Salt reduction, Weight
         reduction if
         BMI >30, Exercise, Smoking cessation and Alcohol reduction (if applicable). REFER to CO/Clinic.</label>
-    <label class="alert alert-info" id="obs.htn_reminder_3c">Patient with both elevated blood pressure and blood sugar.
+    <label class="alert alert-info" id="htn_reminder_3c">Patient with both elevated blood pressure and blood sugar.
         REFER to
         CO/Clinic.</label>
     <label class="alert alert-info" id="obs.htn_reminder_4">BP is very high. Advise on Salt reduction, Weight reduction
@@ -1439,8 +1439,7 @@
 
         var $urinePregnancyTestQualitative = $('#obs\\.urine_pregnancy_test_qualitative');
         var $birthdate = $('#patient\\.birthdate');
-        var displayHTNReminder2 = function(){
-            var $htn_reminder_2 = $('#htn_reminder_2');
+        var conditionToDisplayHTNReminder2 = function(){
             var selectedVisitType = $currentVisitType.val();
             var systolicBloodValue = parseFloat($systolicBloodPressure.val());
             var diastolicBloodValue = parseFloat($diastolicBloodPressure.val());
@@ -1448,10 +1447,14 @@
             var birthdate = $birthdate.val();
             var ageInYears = $.fn.getAgeInYears(birthdate);
             var reviewOfSystemsGeneral = getReviewOfSystemsGeneralValues();
-            if((selectedVisitType == '7034^FIRST DISPENSARY VISIT AFTER HCT^99DCT') && 
+            return ((selectedVisitType == '7034^FIRST DISPENSARY VISIT AFTER HCT^99DCT') && 
                 ((systolicBloodValue >= 140 && systolicBloodValue <= 180) || (diastolicBloodValue >= 90 && diastolicBloodValue <= 110)) &&
                 urinePregnancyTestQualitativeValue != '703^POSITIVE^99DCT' && ageInYears <= 35 &&
-                checkReviewOfSystemsGeneralForDisplay())
+                checkReviewOfSystemsGeneralForDisplay());
+        };
+        var displayHTNReminder2 = function(){
+            var $htn_reminder_2 = $('#htn_reminder_2');
+            if(conditionToDisplayHTNReminder2())
             {
                 $(htn_reminder_2).show();
             } else {
@@ -1460,9 +1463,31 @@
         };
         displayHTNReminder2();
 
+        var $serumGlucoseFasting = $('#serum_glucose_fasting');
+        var $glycosylatedHemoglobin = $('#glycosylated_hemoglobin');
+        var displayHTNReminder3a = function(){
+            var $htn_reminder_3a = $('#htn_reminder_3a');
+            var serumGlucoseFasting = parseFloat($serumGlucoseFasting.val());
+            var glycosylatedHemoglobin = parseFloat($glycosylatedHemoglobin.val());
+            if(conditionToDisplayHTNReminder2() && serumGlucoseFasting <= 5.6 && glycosylatedHemoglobin <= 5.7)
+            {
+                $(htn_reminder_3a).show();
+            } else {
+                $(htn_reminder_3a).hide();
+            }
+        };
+        displayHTNReminder3a();
+
+        $serumGlucoseFasting.change(function(){
+            displayHTNReminder3a();
+        });
+        $glycosylatedHemoglobin.change(function(){
+            displayHTNReminder3a();
+        });
         $systolicBloodPressure.change(function(){
             displayHTNReminder1();
             displayHTNReminder2();
+            displayHTNReminder3a();
         });
 
         $('input[name="obs.tmp_drugs"]').change(function() {
@@ -1472,19 +1497,23 @@
         $('input[name="obs.review_of_systems_general"]').change(function() {
             displayHTNReminder1();
             displayHTNReminder2();
+            displayHTNReminder3a();
         });
 
         $diastolicBloodPressure.change(function(){
             displayHTNReminder1();
             displayHTNReminder2();
+            displayHTNReminder3a();
         });
 
         $urinePregnancyTestQualitative.change(function(){
             displayHTNReminder2();
+            displayHTNReminder3a();
         });
 
         $birthdate.change(function(){
             displayHTNReminder2();
+            displayHTNReminder3a();
         });
         /* End - Conditional display of HTN reminders */
 
@@ -1503,6 +1532,7 @@
             displayPHCTReview();
             displayHTNReminder1();
             displayHTNReminder2();
+            displayHTNReminder3a();
         });
         /*  End - Based on Selected current visit type show or hide fields */
     });
