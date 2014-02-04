@@ -815,7 +815,7 @@
             <option value="1624^DO NOT KNOW^99DCT">Do not know</option>
         </select>
     </div>
-    <div class="form-group">
+    <div class="form-group" id="glibenclamide_prescribed_dosage">
         <label for="obs.tmp_dosage_change_glibenclamide">Prescribed [Glibenclamide] dose in milligrams (mg):</label>
         <input class="form-control" id="obs.tmp_dosage_change_glibenclamide" name="obs.tmp_dosage_change_glibenclamide"
                type="text">
@@ -859,7 +859,7 @@
             <option value="1624^DO NOT KNOW^99DCT">Do not know</option>
         </select>
     </div>
-    <div class="form-group">
+    <div class="form-group" id="enalapril_prescribed_dosage">
         <label for="obs.tmp_dosage_change_enalapril">Prescribed [Enalapril] dose in milligrams (mg):</label>
         <input class="form-control" id="obs.tmp_dosage_change_enalapril" name="obs.tmp_dosage_change_enalapril"
                type="text">
@@ -902,7 +902,7 @@
             <option value="1624^DO NOT KNOW^99DCT">Do not know</option>
         </select>
     </div>
-    <div class="form-group">
+    <div class="form-group" id="hctz_prescribed_dosage">
         <label for="obs.tmp_dosage_change_hctz">Prescribed [HCTZ] dose in milligrams (mg):</label>
         <input class="form-control" id="obs.tmp_dosage_change_hctz" name="obs.tmp_dosage_change_hctz" type="text">
     </div>
@@ -945,7 +945,7 @@
             <option value="1624^DO NOT KNOW^99DCT">Do not know</option>
         </select>
     </div>
-    <div class="form-group">
+    <div class="form-group" id="losartan_prescribed_dosage">
         <label for="obs.tmp_dosage_change_losartan">Prescribed [Losartan] dose in milligrams (mg):</label>
         <input class="form-control" id="obs.tmp_dosage_change_losartan" name="obs.tmp_dosage_change_losartan"
                type="text">
@@ -989,7 +989,7 @@
             <option value="1624^DO NOT KNOW^99DCT">Do not know</option>
         </select>
     </div>
-    <div class="form-group">
+    <div class="form-group" id="nifedipine_prescribed_dosage">
         <label for="obs.tmp_dosage_change_nifedipine">Prescribed [Nifedipine] dose in milligrams (mg):</label>
         <input class="form-control" id="obs.tmp_dosage_change_nifedipine" name="obs.tmp_dosage_change_nifedipine"
                type="text">
@@ -1358,17 +1358,17 @@
         }
 
         var selectCorrespondingDosageChanged = function (selectedElement) {
-            var drugsArray = {"#obs\\.tmp_drugs\\.Metformin #obs\\.drugs_dispensed\\.Metformin" : "#metformin_dosage_changed",
-                "#obs\\.tmp_drugs\\.Glibenclamide #obs\\.drugs_dispensed\\.Glibenclamide" : "#glibenclamide_dosage_changed",
-                "#obs\\.tmp_drugs\\.Enalapril #obs\\.drugs_dispensed\\.Enalapril" : "#enalapril_dosage_changed",
-                "#obs\\.tmp_drugs\\.HCTZ #obs\\.drugs_dispensed\\.HCTZ" : "#hctz_dosage_changed",
-                "#obs\\.tmp_drugs\\.Losartan #obs\\.drugs_dispensed\\.Losartan" : "#losartan_dosage_changed",
-                "#obs\\.tmp_drugs\\.Nifedipine #obs\\.drugs_dispensed\\.Nifedipine" : "#nifedipine_dosage_changed"
+            var drugsArray = {
+                "Metformin" : "#metformin_dosage_changed",
+                "Glibenclamide" : "#glibenclamide_dosage_changed",
+                "Enalapril" : "#enalapril_dosage_changed",
+                "HCTZ" : "#hctz_dosage_changed",
+                "Losartan" : "#losartan_dosage_changed",
+                "Nifedipine" : "#nifedipine_dosage_changed"
             };
             $.each(drugsArray, function (k, v) {
-                var elementArray = k.split(" ");
-                var drugCurrent = elementArray[0];
-                var drugDispensed = elementArray[1];
+                var drugCurrent = "#obs\\.tmp_drugs\\." + k;
+                var drugDispensed = "#obs\\.drugs_dispensed\\." + k;
                 var dosageChanged = v;
                 $(drugCurrent).change(function() {showOrHideDosageChanged(drugCurrent, drugDispensed, dosageChanged)});
                 $(drugDispensed).change(function() {showOrHideDosageChanged(drugCurrent, drugDispensed, dosageChanged)});
@@ -1380,17 +1380,25 @@
 
         /*  Start - Based on "Did you change the xx dosage" show or hide  "prescribed dosage" fields */
         var showOrHidePrescribedDosage = function (selectedElement) {
-            var drugsArray = {"#obs\\.other_medication_order_metformin": "#metformin_prescribed_dosage"
-            };
-            $.each(drugsArray, function (k, v) {
-                $(k).change(function() {
-                    if ($(k).val() == "1066^NO^99DCT") {
-                        $(v).hide();
+            var drugsArray = ["metformin","glibenclamide","enalapril","enalapril","hctz","losartan","nifedipine"];
+            $.each(drugsArray, function (index, v) {
+                var changeDosageSelect = "#obs\\.other_medication_order_" + v;
+                var prescribedDosage = "#" + v + "_prescribed_dosage";
+                var currentDosage = "#" + v + "_number_of_milligram";
+                $(changeDosageSelect).change(function() {
+                    if ($(changeDosageSelect).val() == "1066^NO^99DCT") {
+                        $(prescribedDosage).find('input').val($(currentDosage).val());
+                        $(prescribedDosage).hide();
                     } else {
-                        $(v).show();
+                        $(prescribedDosage).show();
                     }
                 });
-                $(k).trigger('change');
+                $(currentDosage).change(function() {
+                    if ($(changeDosageSelect).val() == "1066^NO^99DCT") {
+                        $(prescribedDosage).find('input').val($(currentDosage).val());
+                    }
+                })
+                $(changeDosageSelect).trigger('change');
             })
         };
         showOrHidePrescribedDosage();
