@@ -664,7 +664,7 @@
 </div>
 <div class="section">
     <h3>Hypertension Reminders</h3>
-    <label class="alert alert-info" id="obs.htn_reminder_1">Good BP. Advise on Salt reduction, Weight reduction if BMI
+    <label class="alert alert-info" id="htn_reminder_1">Good BP. Advise on Salt reduction, Weight reduction if BMI
         >30,
         Exercise, Smoking cessation and Alcohol reduction (if applicable). DISCHARGE HOME</label>
     <label class="alert alert-info" id="obs.htn_reminder_2">Patient under 35 with elevated BP. Refer to CO/Health
@@ -1341,19 +1341,6 @@
         $height.trigger('change');
         /* End - Compute the BMI if the weight & height are provided */
 
-        /*  Start - Based on Selected current visit type show or hide fields */
-        $('#obs\\.current_visit_type').change(function () {
-            var $show_provider_id_text = $("#phct_review");
-            var selected_visit_type = $('#obs\\.current_visit_type').val();
-            if (selected_visit_type == '7034^FIRST DISPENSARY VISIT AFTER HCT^99DCT') {
-                $("#phct_review").show();
-            } else {
-                $("#phct_review").hide();
-            }
-        });
-        $('#obs\\.current_visit_type').trigger('change');
-        /*  End - Based on Selected current visit type show or hide fields */
-
         /*  Start - Based on Current medication, and medication prescribed, show or hide "dosage changed" fields */
         var showOrHideDosageChanged = function(drugCurrent, drugDispensed, dosageChanged){
             if ($(drugCurrent).is(':checked') && $(drugDispensed).is(':checked')) {
@@ -1412,6 +1399,78 @@
         showOrHidePrescribedDosage();
         /*  End - Based on Selected medication prescribed show dispensed fields */
 
+
+
+        /*  Start - Based on Selected current visit type show or hide fields */
+        var displayPHCTReview = function(){
+            var $show_provider_id_text = $("#phct_review");
+            var selected_visit_type = $currentVisitType.val();
+            if (selected_visit_type == '7034^FIRST DISPENSARY VISIT AFTER HCT^99DCT') {
+                $("#phct_review").show();
+            } else {
+                $("#phct_review").hide();
+            }
+        };
+        $currentVisitType.change(function () {
+            displayPHCTReview();
+            displayHTNReminder1();
+        });
+        $currentVisitType.trigger('change');
+        /*  End - Based on Selected current visit type show or hide fields */
+
+        /* Start - Conditional display of HTN reminders */
+        var $systolicBloodPressure = $('#obs\\.systolic_blood_pressure');
+        var $diastolicBloodPressure = $('#obs\\.diastolic_blood_pressure');
+        var $currentVisitType = $('#obs\\.current_visit_type');
+
+        var getCurrentMedicationValues = function() {
+            return $('input[name="obs.tmp_drugs"]:checked').map(function() {return this.value;}).get();
+        };
+
+        var getReviewOfSystemsGeneralValues = function() {
+            return $('input[name="obs.review_of_systems_general"]:checked').map(function() {return this.value;}).get();
+        };
+
+        var displayHTNReminder1 = function(){
+            var $htn_reminder_1 = $('#htn_reminder_1');
+            var selectedVisitType = $currentVisitType.val();
+            var systolicBloodValue = parseFloat($systolicBloodPressure.val());
+            var diastolicBloodValue = parseFloat($diastolicBloodPressure.val());
+            var currentMedication = getCurrentMedicationValues();
+            var reviewOfSystemsGeneral = getReviewOfSystemsGeneralValues();
+            if( (selectedVisitType == '7034^FIRST DISPENSARY VISIT AFTER HCT^99DCT' || selectedVisitType == '7035^SECOND DISPENSARY VISIT AFTER HCT ^99DCT') &&
+                (systolicBloodValue >= 100 && systolicBloodValue <= 140) && (diastolicBloodValue >= 50 && diastolicBloodValue <= 90) &&
+                currentMedication.indexOf("enalapril") < 0 && currentMedication.indexOf("hctz") < 0 && currentMedication.indexOf("losartan") < 0
+                && currentMedication.indexOf("nifedipine") < 0 &&
+                reviewOfSystemsGeneral.indexOf("edema_legs") < 0 && reviewOfSystemsGeneral.indexOf("shortness_of_breath_with_exertion") < 0 &&
+                reviewOfSystemsGeneral.indexOf("oliguria") < 0 && reviewOfSystemsGeneral.indexOf("focal_weakness") < 0)
+            {
+                $(htn_reminder_1).show();
+            } else {
+                $(htn_reminder_1).hide();
+            }
+        };
+
+        $systolicBloodPressure.change(function(){
+            displayHTNReminder1();
+        });
+        $systolicBloodPressure.trigger('change');
+
+        $('input[name="obs.tmp_drugs"]').change(function() {
+            displayHTNReminder1();
+        });
+        $('obs.tmp_drugs.Metformin').trigger('change');
+
+        $('input[name="obs.review_of_systems_general"]').change(function() {
+            displayHTNReminder1();
+        });
+        $('obs.review_of_systems_general.edema_legs').trigger('change');
+
+        $diastolicBloodPressure.change(function(){
+            displayHTNReminder1();
+        });
+        $diastolicBloodPressure.trigger('change');
+        /* End - Conditional display of HTN reminders */
     });
 
 </script>
