@@ -171,6 +171,13 @@ $(document).ready(function () {
         return $.datepicker.formatDate(dateFormat, estimatedDate);
     };
 
+    $.fn.getAgeInYears = function(birthDateString){
+        var birthDate = new Date(birthDateString);
+        var today = new Date();
+        var milliSecondsInAYear = 1000*60*60*24*365.26;
+        return (today - birthDate)/milliSecondsInAYear;
+    };
+
     /* Start - Used for Sub-Forms */
 
     $('.repeat')
