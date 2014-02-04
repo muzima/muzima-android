@@ -160,7 +160,8 @@
 
         <div class="form-group">
             <label for="freetext_general">Comments</label>
-            <textarea class="form-control" name="freetext_general" id="freetext_general" data-concept="1915^FREETEXT GENERAL^99DCT"
+            <textarea class="form-control" name="freetext_general" id="freetext_general"
+                      data-concept="1915^FREETEXT GENERAL^99DCT"
                       placeholder="Provider notes/comments."></textarea>
         </div>
         <div class="form-group">
@@ -180,71 +181,11 @@
 </body>
 <script type="text/javascript">
     $(document).ready(function () {
-        $.fn.serializeNonConceptElements = function(){
-            var o = {};
-            var $input_elements = $('form').find('[name]:visible').not('[data-concept]');
-            $.each($input_elements, function (i, element) {
-                if (o[$(element).attr('name')] !== undefined) {
-                    if (!o[$(element).attr('name')].push) {
-                        o[$(element).attr('name')] = [o[$(element).attr('name')]];
-                    }
-                    o[$(element).attr('name')].push($(element).val() || '');
-                } else {
-                    o[$(element).attr('name')] = $(element).val() || '';
-                }
-            });
-            return o;
-        };
-
-        $.fn.serializeNestedConcepts = function () {
-            var result = {};
-            var parent_divs = $('form').find('div[data-concept]');
-            $.each(parent_divs, function (i, element) {
-                var $visibleConcepts = $(element).find('*[data-concept]:visible');
-                if (result[$(element).attr('data-concept')] !== undefined) {
-                    if (!result[$(element).attr('data-concept')].push) {
-                        result[$(element).attr('data-concept')] = [result[$(element).attr('data-concept')]];
-                    }
-                    result[$(element).attr('data-concept')].push(jsonify_concepts($visibleConcepts));
-                } else {
-                    result[$(element).attr('data-concept')] = jsonify_concepts($visibleConcepts);
-                }
-            });
-            return result;
-        };
-
-        $.fn.serializeConcepts = function () {
-            var o = {};
-            var allConcepts = $('form').find('*[data-concept]');
-            $.each(allConcepts, function (i, element) {
-                if ($(element).closest('.section').attr('data-concept') == undefined) {
-                    $.extend(o, jsonify_concepts($(element)));
-                }
-            });
-            return o;
-        };
-
-        var jsonify_concepts = function ($visibleConcepts) {
-            var o = {};
-            $.each($visibleConcepts, function (i, element) {
-                if (o[$(element).attr('data-concept')] !== undefined) {
-                    if (!o[$(element).attr('data-concept')].push) {
-                        o[$(element).attr('data-concept')] = [o[$(element).attr('data-concept')]];
-                    }
-                    o[$(element).attr('data-concept')].push($(element).val() || '');
-                } else {
-                    o[$(element).attr('data-concept')] = $(element).val() || '';
-                }
-            });
-            return o;
-        };
 
         $('form').validate({
             submitHandler: function (form) {
                 var $form = $('form');
-                var final_result = $form.serializeNonConceptElements();
-                $.extend(final_result, $form.serializeConcepts(), ($form.serializeNestedConcepts()));
-                $('#result').html(JSON.stringify(final_result));
+                $('#result').html(JSON.stringify($form.serializeForm()));
                 return false;
             }
         });
@@ -278,6 +219,7 @@
                 $('#obs\\.anatomic_location_description').parent().hide();
             }
         });
+        $obs.trigger('change');
     });
 </script>
 

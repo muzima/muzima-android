@@ -35,25 +35,6 @@ $(document).ready(function () {
 
     /*End- BarCode Functionality*/
 
-    /* Start - Serialise FormDate to JSON. With all name attrs being a key and value of input being a value */
-    $.fn.serializeForm = function () {
-        var o = {};
-        var a = this.serializeArray();
-        $.each(a, function () {
-            if (o[this.name] !== undefined) {
-                if (!o[this.name].push) {
-                    o[this.name] = [o[this.name]];
-                }
-                o[this.name].push(this.value || '');
-            } else {
-                o[this.name] = this.value || '';
-            }
-        });
-        return o;
-    };
-
-    /* End - Serialise FormDate to JSON. With all name attrs being a key and value of input being a value */
-
     /* Start - Initialize jQuery DatePicker */
 
     $('.datepicker').datepicker({
@@ -215,5 +196,101 @@ $(document).ready(function () {
     });
 
     /* End - Checks that a field is a decimal */
+
+    /* Start - JS to Prepopulate Data in the Form */
+
+    var populateDataConcepts = function ($div, value) {
+        $.each(value, function (k, v) {
+            $div.find('[data-concept="' + k + '"]').val(v);
+        });
+    };
+
+    var prePopulateData = $.trim($('#pre_populate_data').html());
+
+    if (prePopulateData != '') {
+        var prePopulateJSON = JSON.parse(prePopulateData);
+        $.each(prePopulateJSON, function (key, value) {
+            var $elementWithNameAttr = $('[name="' + key + '"]');
+            if (value instanceof Object) {
+                var $div = $('div[data-concept="' + key + '"]');
+                if (value instanceof Array) {
+                    $.each(value, function (i, elem) {
+                        var $newDiv = $div.clone();
+                        populateDataConcepts($newDiv, elem);
+                        console.log($newDiv.html());
+                        $div.after($newDiv);
+                    });
+                    $div.remove();
+                } else {
+                    populateDataConcepts($div, value);
+                }
+            }
+            else if ($elementWithNameAttr.length > 0) {
+                $elementWithNameAttr.val(value);
+            } else {
+                $('[data-concept="' + key + '"]').val(value);
+            }
+        });
+    }
+
+    /* End - JS to Prepopulate Data in the Form */
+
+    /* Start - Code to Serialize form along with Data-Concepts */
+    $.fn.serializeForm = function () {
+        return $.extend({}, serializeNonConceptElements(this), serializeConcepts(this), (serializeNestedConcepts(this)));
+    };
+
+    var serializeNonConceptElements = function ($form) {
+        var o = {};
+        var $input_elements = $form.find('[name]:visible').not('[data-concept]');
+        $.each($input_elements, function (i, element) {
+            o = pushIntoArray(o, $(element).attr('name'), $(element).val());
+        });
+        return o;
+    };
+
+    var serializeNestedConcepts = function ($form) {
+        var result = {};
+        var parent_divs = $form.find('div[data-concept]');
+        $.each(parent_divs, function (i, element) {
+            var $visibleConcepts = $(element).find('*[data-concept]:visible');
+            result = pushIntoArray(result, $(element).attr('data-concept'), jsonifyConcepts($visibleConcepts));
+        });
+        return result;
+    };
+
+    var serializeConcepts = function ($form) {
+        var o = {};
+        var allConcepts = $form.find('*[data-concept]');
+        $.each(allConcepts, function (i, element) {
+            if ($(element).closest('.section').attr('data-concept') == undefined) {
+                $.extend(o, jsonifyConcepts($(element)));
+            }
+        });
+        return o;
+    };
+
+    var jsonifyConcepts = function ($visibleConcepts) {
+        var o = {};
+        $.each($visibleConcepts, function (i, element) {
+            o = pushIntoArray(o, $(element).attr('data-concept'), $(element).val());
+        });
+        return o;
+    };
+
+    var pushIntoArray = function (obj, key, value) {
+        if (obj[key] !== undefined) {
+            if (!obj[key].push) {
+                obj[key] = [obj[key]];
+            }
+            obj[key].push(value || '');
+        } else {
+            obj[key] = value || '';
+        }
+        return obj;
+    };
+
+    /* End - Code to Serialize form along with Data-Concepts */
+
 
 });
