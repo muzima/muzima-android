@@ -41,7 +41,7 @@
                    name="patient.birthdate" type="text" required="required" readonly="readonly">
         </div>
     </div>
-    <div class="section repeat">
+    <div class="section repeat" data-concept="7480^PROCEDURES DONE THIS VISIT, DETAILED^99DCT">
         <h3>Procedures Done This Visit</h3>
 
         <div class="form-group">
@@ -79,7 +79,7 @@
         <div class="form-group">
             <label for="obs.clock_face_cervical_biopsy_location">Provide location where biopsy for specimen was done:
                 __O'clock</label>
-            <input class="form-control checkDigit" id="obs.clock_face_cervical_biopsy_location"
+            <input class="form-control" id="obs.clock_face_cervical_biopsy_location"
                    name="obs.clock_face_cervical_biopsy_location"
                    data-concept="7481^CLOCK FACE CERVICAL BIOPSY LOCATION ^99DCT" type="number">
         </div>
@@ -151,12 +151,13 @@
         <div class="form-group">
             <label for="freetext_general">Comments</label>
             <textarea class="form-control" name="freetext_general" id="freetext_general"
+                      data-concept="1915^FREETEXT GENERAL^99DCT"
                       placeholder="Provider notes/comments."></textarea>
         </div>
         <div class="form-group">
             <label for="return_visit_date">Encounter Date <span class="required">*</span></label>
             <input class="form-control datepicker" readonly="readonly" id="return_visit_date"
-                   name="return_visit_date"
+                   name="return_visit_date" data-concept="5096^RETURN VISIT DATE^99DCT"
                    type="text" required="required">
         </div>
     </div>

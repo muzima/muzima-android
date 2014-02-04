@@ -16,7 +16,8 @@ public class HTMLConceptParser {
     public List<String> parse(String html) {
         Set<String> concepts = new HashSet<String>();
         Document htmlDoc = Jsoup.parse(html);
-        Elements elements = htmlDoc.select("*[" + DATA_CONCEPT_TAG + "]");
+        //Select all elements containing data-concept attr and is not a div.
+        Elements elements = htmlDoc.select("*:not(div)[" + DATA_CONCEPT_TAG + "]");
         for (Element element : elements) {
             concepts.add(element.attr(DATA_CONCEPT_TAG));
         }
