@@ -105,16 +105,6 @@ $(document).ready(function () {
 
     /* End - CheckDigit Algorithm */
 
-    /* Start - Check number between 0 and 1000 */
-
-    $.validator.addMethod("valueRange0to1000", function (value, element) {
-            if (value < 0 || value > 1000) {
-                return false;
-            }
-            return true;
-        }, "Please enter a value between 0 and 1000."
-    );
-
     // attach 'checkDigit' class to perform validation.
     jQuery.validator.addClassRules({
         checkDigit: { checkDigit: true }
