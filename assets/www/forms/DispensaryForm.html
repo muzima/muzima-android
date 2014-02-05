@@ -1483,6 +1483,24 @@
         };
         displayHTNReminder3a();
 
+        $currentVisitType.val('7034^FIRST DISPENSARY VISIT AFTER HCT^99DCT');
+        $systolicBloodPressure.val('150');
+        $birthdate.val('2004-01-01');
+        var displayHTNReminder3b = function(){
+            var $htn_reminder_3b = $('#htn_reminder_3b');
+            var currentMedication = getCurrentMedicationValues();
+            if(conditionToDisplayHTNReminder2() &&
+                (currentMedication.indexOf("enalapril") >= 0 || currentMedication.indexOf("hctz") >= 0 || 
+                currentMedication.indexOf("losartan") >= 0 || currentMedication.indexOf("nifedipine") >= 0)
+                )
+            {
+                $(htn_reminder_3b).show();
+            } else {
+                $(htn_reminder_3b).hide();
+            }
+        };
+        displayHTNReminder3b();
+
         /* End - Conditional display of HTN reminders */
 
         /* Start - Conditional display of Diabetes reminders */
@@ -1765,12 +1783,14 @@
         $birthdate.change(function(){
             displayHTNReminder2();
             displayHTNReminder3a();
+            displayHTNReminder3b();
         });
         $currentVisitType.change(function() {
             displayPHCTReview();
             displayHTNReminder1();
             displayHTNReminder2();
             displayHTNReminder3a();
+            displayHTNReminder3b();
             displayDiabetesReminder1();
             displayDiabetesReminder3();
             displayDiabetesReminder4();
@@ -1782,6 +1802,7 @@
         $urinePregnancyTest.change(function() {
             displayHTNReminder2();
             displayHTNReminder3a();
+            displayHTNReminder3b();
             displayDiabetesReminder1();
             displayDiabetesReminder2();
             displayDiabetesReminder3();
@@ -1814,11 +1835,13 @@
             displayHTNReminder1();
             displayHTNReminder2();
             displayHTNReminder3a();
+            displayHTNReminder3b();
             displayDiabetesReminder3();
             displayDiabetesReminder4();
         });
         $('input[name="obs.tmp_drugs"]').change(function() {
             displayHTNReminder1();
+            displayHTNReminder3b();
             displayDiabetesReminder1();
             displayDiabetesReminder3();
             displayDiabetesReminder4();
@@ -1833,6 +1856,7 @@
             displayHTNReminder1();
             displayHTNReminder2();
             displayHTNReminder3a();
+            displayHTNReminder3b();
             displayDiabetesReminder6();
             displayDiabetesReminder7();
             displayDiabetesReminder8();
@@ -1843,6 +1867,7 @@
             displayHTNReminder1();
             displayHTNReminder2();
             displayHTNReminder3a();
+            displayHTNReminder3b();
             displayDiabetesReminder3();
             displayDiabetesReminder4();
         });
