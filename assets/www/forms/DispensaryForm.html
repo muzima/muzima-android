@@ -1435,9 +1435,9 @@
                 && currentMedication.indexOf("nifedipine") < 0 && checkReviewOfSystemsGeneralForDisplay()
                 )
             {
-                $(htn_reminder_1).show();
+                $htn_reminder_1.show();
             } else {
-                $(htn_reminder_1).hide();
+                $htn_reminder_1.hide();
             }
         };
         displayHTNReminder1();
@@ -1461,9 +1461,9 @@
             var ageInYears = $.fn.getAgeInYears(birthdate);
             if(conditionToDisplayHTNReminder2() && ageInYears <= 35)
             {
-                $(htn_reminder_2).show();
+                $htn_reminder_2.show();
             } else {
-                $(htn_reminder_2).hide();
+                $htn_reminder_2.hide();
             }
         };
         displayHTNReminder2();
@@ -1482,9 +1482,9 @@
             if(conditionToDisplayHTNReminder2() && serumGlucoseFasting <= 5.6 && 
                 glycosylatedHemoglobin <= 5.7 && isAtLeast35YearsOld())
             {
-                $(htn_reminder_3a).show();
+                $htn_reminder_3a.show();
             } else {
-                $(htn_reminder_3a).hide();
+                $htn_reminder_3a.hide();
             }
         };
         displayHTNReminder3a();
@@ -1497,9 +1497,9 @@
                 currentMedication.indexOf("losartan") >= 0 || currentMedication.indexOf("nifedipine") >= 0)
                 )
             {
-                $(htn_reminder_3b).show();
+                $htn_reminder_3b.show();
             } else {
-                $(htn_reminder_3b).hide();
+                $htn_reminder_3b.hide();
             }
         };
         displayHTNReminder3b();
@@ -1511,9 +1511,9 @@
             if(conditionToDisplayHTNReminder2() && serumGlucoseFasting >= 5.6 && 
                 glycosylatedHemoglobin >= 5.7 && isAtLeast35YearsOld())
             {
-                $(htn_reminder_3c).show();
+                $htn_reminder_3c.show();
             } else {
-                $(htn_reminder_3c).hide();
+                $htn_reminder_3c.hide();
             }
         };
         displayHTNReminder3c();
@@ -1526,9 +1526,9 @@
             if( (systolicBloodValue >= 180 || diastolicBloodValue >= 110) &&
                     urinePregnancyTestQualitativeValue != '703^POSITIVE^99DCT')
             {
-                $(htn_reminder_4).show();
+                $htn_reminder_4.show();
             } else {
-                $(htn_reminder_4).hide();
+                $htn_reminder_4.hide();
             }
         };
         displayHTNReminder4();
@@ -1541,9 +1541,9 @@
             if( (systolicBloodValue >= 140 || diastolicBloodValue >= 90) &&
                     urinePregnancyTestQualitativeValue == '703^POSITIVE^99DCT')
             {
-                $(htn_reminder_5).show();
+                $htn_reminder_5.show();
             } else {
-                $(htn_reminder_5).hide();
+                $htn_reminder_5.hide();
             }
         };
         displayHTNReminder5();
@@ -1672,6 +1672,19 @@
             displayHTNReminder8();
             displayHTNReminder9();
         });
+
+        var displayHTNReminder10 = function(){
+            var $htn_reminder_10 = $('#obs\\.htn_reminder_10');
+            var systolicBloodValue = parseFloat($systolicBloodPressure.val());
+            var diastolicBloodValue = parseFloat($diastolicBloodPressure.val());
+            if( systolicBloodValue <= 100 || diastolicBloodValue <= 50)
+            {
+                $htn_reminder_10.show();
+            } else {
+                $htn_reminder_10.hide();
+            }
+        };
+        displayHTNReminder10();
         /* End - Conditional display of HTN reminders */
 
         /* Start - Conditional display of Diabetes reminders */
@@ -2039,6 +2052,7 @@
             displayHTNReminder7();
             displayHTNReminder8();
             displayHTNReminder9();
+            displayHTNReminder10();
             displayDiabetesReminder3();
             displayDiabetesReminder4();
         });
@@ -2087,6 +2101,7 @@
             displayHTNReminder7();
             displayHTNReminder8();
             displayHTNReminder9();
+            displayHTNReminder10();
             displayDiabetesReminder3();
             displayDiabetesReminder4();
         });
