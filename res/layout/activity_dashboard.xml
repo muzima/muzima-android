@@ -103,6 +103,30 @@
 
             </RelativeLayout>
 
+            <RelativeLayout
+                    style="@style/ClickableGridItem"
+                    android:layout_weight="50"
+                    android:layout_marginRight="10dp"
+                    android:paddingRight="10dp"
+                    android:onClick="notificationsList">
+
+                <TextView
+                        style="@style/DashboardListItemPrimaryText"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:text="@string/notifications">
+                </TextView>
+
+                <TextView
+                        android:id="@+id/notificationDescription"
+                        style="@style/DashboardItemDescription"
+                        android:layout_alignParentBottom="true"
+                        android:text="## Inbox, ## Outbox">
+                </TextView>
+
+            </RelativeLayout>
+
         </LinearLayout>
     </LinearLayout>
 

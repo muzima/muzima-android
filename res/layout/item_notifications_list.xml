@@ -1,0 +1,29 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:layout_width="match_parent">
+    <com.muzima.view.CheckedLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="100"
+            android:id="@+id/subject_layout"
+            android:orientation="horizontal">
+
+        <CheckedTextView
+                android:id="@+id/subject"
+                android:layout_weight="80"
+                android:layout_width="0dp"
+                android:textSize="15sp"
+                android:checkMark="@null"
+                style="@style/ListViewText"/>
+    </com.muzima.view.CheckedLinearLayout>
+
+
+    <CheckedTextView
+            android:id="@+id/receiver"
+            android:layout_below="@+id/subject_layout"
+            android:paddingTop="5dp"
+            android:textSize="12sp"
+            style="@style/ListViewText">
+    </CheckedTextView>
+</RelativeLayout>

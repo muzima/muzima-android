@@ -15,11 +15,13 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
+import com.muzima.controller.NotificationController;
 import com.muzima.controller.PatientController;
 import com.muzima.service.JSONInputOutputToDisk;
 import com.muzima.utils.Constants;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.forms.PatientFormsActivity;
+import com.muzima.view.notifications.PatientNotificationActivity;
 
 import java.io.IOException;
 import java.util.List;
@@ -129,6 +131,12 @@ public class PatientSummaryActivity extends BaseActivity {
         startActivity(intent);
     }
 
+    public void showNotifications(View v) {
+        Intent intent = new Intent(this, PatientNotificationActivity.class);
+        intent.putExtra(PATIENT, patient);
+        startActivity(intent);
+    }
+
     public void showObservations(View v) {
         Intent intent = new Intent(this, ObservationsActivity.class);
         intent.putExtra(PATIENT, patient);
@@ -139,6 +147,7 @@ public class PatientSummaryActivity extends BaseActivity {
         int recommendedForms;
         int incompleteForms;
         int completeForms;
+        int notifications;
     }
 
     public class BackgroundQueryTask extends AsyncTask<Void, Void, PatientSummaryActivityMetadata> {
@@ -148,12 +157,17 @@ public class PatientSummaryActivity extends BaseActivity {
             MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
             PatientSummaryActivityMetadata patientSummaryActivityMetadata = new PatientSummaryActivityMetadata();
             FormController formController = muzimaApplication.getFormController();
+            NotificationController notificationController = muzimaApplication.getNotificationController();
+
             try {
                 patientSummaryActivityMetadata.recommendedForms = formController.getRecommendedFormsCount();
                 patientSummaryActivityMetadata.completeForms = formController.getCompleteFormsCountForPatient(patient.getUuid());
                 patientSummaryActivityMetadata.incompleteForms = formController.getIncompleteFormsCountForPatient(patient.getUuid());
+                patientSummaryActivityMetadata.notifications = notificationController.getNotificationsCountForPatient(patient.getUuid());
             } catch (FormController.FormFetchException e) {
                 Log.w(TAG, "FormFetchException occurred while fetching metadata in MainActivityBackgroundTask");
+            } catch (NotificationController.NotificationFetchException e) {
+                Log.w(TAG, "NotificationFetchException occurred while fetching metadata in MainActivityBackgroundTask");
             }
             return patientSummaryActivityMetadata;
         }
@@ -164,6 +178,9 @@ public class PatientSummaryActivity extends BaseActivity {
             formsDescription.setText(patientSummaryActivityMetadata.incompleteForms + " Incomplete, "
                     + patientSummaryActivityMetadata.completeForms + " Complete, "
                     + patientSummaryActivityMetadata.recommendedForms + " Recommended");
+
+            TextView notificationsDescription = (TextView) findViewById(R.id.notificationDescription);
+            notificationsDescription.setText(patientSummaryActivityMetadata.notifications + " Received");
         }
     }
 

@@ -18,13 +18,14 @@ public class Constants {
 
     public static final String FORM_DISCRIMINATOR_ENCOUNTER = "encounter";
     public static final String FORM_DISCRIMINATOR_REGISTRATION = "registration";
+    public static final String FORM_DISCRIMINATOR_CONSULTATION = "consultation";
 
     public static class DataSyncServiceConstants {
         public static final String SYNC_TYPE = "sync_type";
         public static final String CREDENTIALS = "credentials";
         public static final String SYNC_STATUS = "sync_status";
-        public static final String DOWNLOAD_COUNT_PRIMARY = "donwload_count_primary";
-        public static final String DOWNLOAD_COUNT_SECONDARY = "donwload_count_secondary";
+        public static final String DOWNLOAD_COUNT_PRIMARY = "download_count_primary";
+        public static final String DOWNLOAD_COUNT_SECONDARY = "download_count_secondary";
         public static final String FORM_IDS = "formIds";
         public static final String COHORT_IDS = "cohortIds";
         public static final String PATIENT_UUID_FOR_DOWNLOAD = "patientUUIDForDownload";
@@ -39,6 +40,7 @@ public class Constants {
         public static final int SYNC_PATIENTS_DATA_ONLY = 7;
         public static final int SYNC_UPLOAD_FORMS = 8;
         public static final int DOWNLOAD_PATIENT_ONLY = 9;
+        public static final int SYNC_NOTIFICATIONS = 10;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;

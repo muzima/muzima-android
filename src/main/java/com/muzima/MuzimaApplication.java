@@ -10,6 +10,7 @@ import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
+import com.muzima.api.service.NotificationService;
 import com.muzima.controller.*;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.CohortPrefixPreferenceService;
@@ -44,6 +45,7 @@ public class MuzimaApplication extends Application {
     private ConceptController conceptController;
     private ObservationController observationController;
     private EncounterController encounterController;
+    private NotificationController notificationController;
     private MuzimaSyncService muzimaSyncService;
     private CohortPrefixPreferenceService prefixesPreferenceService;
     private MuzimaTimer muzimaTimer;
@@ -171,6 +173,17 @@ public class MuzimaApplication extends Application {
             }
         }
         return encounterController;
+    }
+
+    public NotificationController getNotificationController() {
+        if (notificationController == null) {
+            try {
+                notificationController = new NotificationController(muzimaContext.getService(NotificationService.class), muzimaContext.getFormService());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return notificationController;
     }
 
     public MuzimaSyncService getMuzimaSyncService() {

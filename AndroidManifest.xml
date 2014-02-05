@@ -50,6 +50,16 @@
         </activity>
 
         <activity
+                android:name="com.muzima.view.notifications.NotificationActivity"
+                android:label="@string/title_activity_notification_list"
+                android:configChanges="orientation|screenSize"
+                android:parentActivityName="com.muzima.view.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.DashboardActivity"/>
+        </activity>
+
+        <activity
                 android:name=".view.preferences.SettingsActivity"
                 android:theme="@style/PreferencesTheme"
                 android:label="@string/title_activity_settings"
@@ -125,6 +135,15 @@
 
         <activity
                 android:name=".view.forms.PatientFormsActivity"
+                android:label="@string/title_activity_client_summary"
+                android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.patients.PatientSummaryActivity"/>
+        </activity>
+
+        <activity
+                android:name=".view.notifications.PatientNotificationActivity"
                 android:label="@string/title_activity_client_summary"
                 android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity">
             <meta-data
