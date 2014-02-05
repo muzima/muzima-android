@@ -1632,14 +1632,45 @@
         };
         displayHTNReminder8();
 
+        var displayHTNReminder9 = function(){
+            var selectedVisitType = $currentVisitType.val();
+            var $htn_reminder_9 = $('#obs\\.htn_reminder_9');
+            var systolicBloodValue = parseFloat($systolicBloodPressure.val());
+            var diastolicBloodValue = parseFloat($diastolicBloodPressure.val());
+            var urinePregnancyTestQualitativeValue = $urinePregnancyTestQualitative.val();
+            var reviewOfSystemsGeneral = getReviewOfSystemsGeneralValues();
+            var currentMedication = getCurrentMedicationValues();
+            var hctzNumberOfMilligram = parseFloat($hctzNumberOfMilligram.val());
+            var hctzFrequencyPerDay = $hctzFrequencyPerDay.val();
+            if(selectedVisitType == '7036^RETURN DISPENSARY VISIT^99DCT'  && 
+                ((systolicBloodValue >= 140 && systolicBloodValue <= 180)||
+                 (diastolicBloodValue >= 90 && diastolicBloodValue <= 110) ) &&
+                 urinePregnancyTestQualitativeValue != '703^POSITIVE^99DCT' && isAtLeast35YearsOld() &&
+                checkReviewOfSystemsGeneralForDisplay() && currentMedication.indexOf("hctz") >= 0 &&
+                hctzNumberOfMilligram == 25 &&
+                (hctzFrequencyPerDay == '1639^MORNING^99DCT' || hctzFrequencyPerDay == '1730^EVENING^99DCT' ||
+                    hctzFrequencyPerDay == '1891^ONCE A DAY^99DCT'
+                )
+               )
+            {
+                $htn_reminder_9.show();
+            } else {
+                $htn_reminder_9.hide();
+            }
+        };
+        displayHTNReminder9();
+
         $('#obs\\.tmp_drugs\\.HCTZ').change(function(){
             displayHTNReminder8();
+            displayHTNReminder9();
         });
         $hctzNumberOfMilligram.change(function(){
             displayHTNReminder8();
+            displayHTNReminder9();
         });
         $hctzFrequencyPerDay.change(function(){
             displayHTNReminder8();
+            displayHTNReminder9();
         });
         /* End - Conditional display of HTN reminders */
 
@@ -1928,6 +1959,7 @@
             displayHTNReminder6();
             displayHTNReminder6b();
             displayHTNReminder8();
+            displayHTNReminder9();
         });
         $currentVisitType.change(function() {
             displayPHCTReview();
@@ -1939,6 +1971,7 @@
             displayHTNReminder6();
             displayHTNReminder6b();
             displayHTNReminder8();
+            displayHTNReminder9();
             displayDiabetesReminder1();
             displayDiabetesReminder3();
             displayDiabetesReminder4();
@@ -1958,6 +1991,7 @@
             displayHTNReminder6b();
             displayHTNReminder7();
             displayHTNReminder8();
+            displayHTNReminder9();
             displayDiabetesReminder1();
             displayDiabetesReminder2();
             displayDiabetesReminder3();
@@ -2004,6 +2038,7 @@
             displayHTNReminder6b();
             displayHTNReminder7();
             displayHTNReminder8();
+            displayHTNReminder9();
             displayDiabetesReminder3();
             displayDiabetesReminder4();
         });
@@ -2032,6 +2067,7 @@
             displayHTNReminder6b();
             displayHTNReminder7();
             displayHTNReminder8();
+            displayHTNReminder9();
             displayDiabetesReminder6();
             displayDiabetesReminder7();
             displayDiabetesReminder8();
@@ -2050,6 +2086,7 @@
             displayHTNReminder6b();
             displayHTNReminder7();
             displayHTNReminder8();
+            displayHTNReminder9();
             displayDiabetesReminder3();
             displayDiabetesReminder4();
         });
