@@ -1,15 +1,12 @@
 package com.muzima.service;
 
 import com.muzima.api.model.Concept;
-import com.muzima.api.model.ConceptName;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
-
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.xmlpull.mxp1.MXParser;
@@ -18,7 +15,6 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -26,7 +22,6 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -49,7 +44,6 @@ public class FormParserTest {
         initMocks(this);
     }
 
-    @Ignore
     @Test
     public void shouldCreateObservations() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         String xml = readFile();
@@ -65,6 +59,7 @@ public class FormParserTest {
 
 
         List<Observation> observations = formParser.parseForm();
+        assertThat(observations.size(), is(6));
         for (Observation observation : observations) {
             assertThat((Patient) observation.getPerson(), is(patient));
             assertThat(observation.getUuid(), nullValue());
@@ -78,7 +73,6 @@ public class FormParserTest {
             }
         }
         assertThat(conceptPresent, is(true));
-        assertThat(observations.size(), is(6));
     }
 
 

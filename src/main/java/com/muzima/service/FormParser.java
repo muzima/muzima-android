@@ -8,7 +8,6 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.DateUtils;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -18,6 +17,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 
 import static android.util.Xml.newPullParser;
 
@@ -115,12 +115,20 @@ public class FormParser {
 
     private List<Observation> createObservations(XmlPullParser parser) throws XmlPullParserException, IOException, ConceptController.ConceptFetchException {
         List<Observation> observationList = new ArrayList<Observation>();
+        Stack<String> conceptNames = new Stack<String>();
         while (!isEndOf("obs")) {
             if (parser.getEventType() == XmlPullParser.START_TAG) {
                 String conceptName = parser.getAttributeValue("", "concept");
                 if (conceptName != null) {
-//                    System.out.println(conceptName);
-                    observationList.add(createObservation(parser, conceptName));
+                    conceptNames.push(conceptName);
+                }
+                if (isStartOf("value")) {
+                    observationList.add(createObservation(conceptNames.peek(), parser.nextText()));
+                }
+            }
+            if (parser.getEventType() == XmlPullParser.END_TAG && !conceptNames.empty()) {
+                if (!(parser.getName().equals("value") || parser.getName().equals("date") || parser.getName().equals("time"))) {
+                    conceptNames.pop();
                 }
             }
             parser.next();
@@ -129,8 +137,7 @@ public class FormParser {
         return observationList;
     }
 
-    private Observation createObservation(XmlPullParser parser, String conceptName) throws XmlPullParserException, IOException, ConceptController.ConceptFetchException {
-        String conceptValue = checkForValueInConcept(parser,conceptName);
+    private Observation createObservation(String conceptName, String conceptValue) throws XmlPullParserException, IOException, ConceptController.ConceptFetchException {
         if (conceptValue != null) {
             Concept concept = conceptController.getConceptByName(conceptName);
             if (concept == null) {
