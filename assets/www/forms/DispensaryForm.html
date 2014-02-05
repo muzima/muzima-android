@@ -1489,10 +1489,6 @@
         };
         displayHTNReminder3a();
 
-        $currentVisitType.val('7034^FIRST DISPENSARY VISIT AFTER HCT^99DCT');
-        $systolicBloodPressure.val('150');
-        $birthdate.val('1974-01-01');
-
         var displayHTNReminder3b = function(){
             var $htn_reminder_3b = $('#htn_reminder_3b');
             var currentMedication = getCurrentMedicationValues();
@@ -1507,6 +1503,20 @@
             }
         };
         displayHTNReminder3b();
+        
+        var displayHTNReminder3c = function(){
+            var $htn_reminder_3c = $('#htn_reminder_3c');
+            var serumGlucoseFasting = parseFloat($serumGlucoseFasting.val());
+            var glycosylatedHemoglobin = parseFloat($glycosylatedHemoglobin.val());
+            if(conditionToDisplayHTNReminder2() && serumGlucoseFasting >= 5.6 && 
+                glycosylatedHemoglobin >= 5.7 && isAtLeast35YearsOld())
+            {
+                $(htn_reminder_3c).show();
+            } else {
+                $(htn_reminder_3c).hide();
+            }
+        };
+        displayHTNReminder3c();
 
         /* End - Conditional display of HTN reminders */
 
@@ -1791,6 +1801,7 @@
             displayHTNReminder2();
             displayHTNReminder3a();
             displayHTNReminder3b();
+            displayHTNReminder3c();
         });
         $currentVisitType.change(function() {
             displayPHCTReview();
@@ -1798,6 +1809,7 @@
             displayHTNReminder2();
             displayHTNReminder3a();
             displayHTNReminder3b();
+            displayHTNReminder3c();
             displayDiabetesReminder1();
             displayDiabetesReminder3();
             displayDiabetesReminder4();
@@ -1810,6 +1822,7 @@
             displayHTNReminder2();
             displayHTNReminder3a();
             displayHTNReminder3b();
+            displayHTNReminder3c();
             displayDiabetesReminder1();
             displayDiabetesReminder2();
             displayDiabetesReminder3();
@@ -1821,6 +1834,7 @@
         })
         $serumGlucoseFasting.change(function() {
             displayHTNReminder3a();
+            displayHTNReminder3c();
             displayDiabetesReminder1();
             displayDiabetesReminder2();
             displayDiabetesReminder3();
@@ -1832,6 +1846,7 @@
         })
         $glycosylatedHemoglobin.change(function() {
             displayHTNReminder3a();
+            displayHTNReminder3c();
             displayDiabetesReminder1();
             displayDiabetesReminder2();
             displayDiabetesReminder3();
@@ -1843,6 +1858,7 @@
             displayHTNReminder2();
             displayHTNReminder3a();
             displayHTNReminder3b();
+            displayHTNReminder3c();
             displayDiabetesReminder3();
             displayDiabetesReminder4();
         });
@@ -1864,6 +1880,7 @@
             displayHTNReminder2();
             displayHTNReminder3a();
             displayHTNReminder3b();
+            displayHTNReminder3c();
             displayDiabetesReminder6();
             displayDiabetesReminder7();
             displayDiabetesReminder8();
@@ -1875,6 +1892,7 @@
             displayHTNReminder2();
             displayHTNReminder3a();
             displayHTNReminder3b();
+            displayHTNReminder3c();
             displayDiabetesReminder3();
             displayDiabetesReminder4();
         });
