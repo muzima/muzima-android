@@ -1449,17 +1449,17 @@
             var systolicBloodValue = parseFloat($systolicBloodPressure.val());
             var diastolicBloodValue = parseFloat($diastolicBloodPressure.val());
             var urinePregnancyTestQualitativeValue = $urinePregnancyTestQualitative.val();
-            var birthdate = $birthdate.val();
-            var ageInYears = $.fn.getAgeInYears(birthdate);
             var reviewOfSystemsGeneral = getReviewOfSystemsGeneralValues();
             return ((selectedVisitType == '7034^FIRST DISPENSARY VISIT AFTER HCT^99DCT') &&
                 ((systolicBloodValue >= 140 && systolicBloodValue <= 180) || (diastolicBloodValue >= 90 && diastolicBloodValue <= 110)) &&
-                urinePregnancyTestQualitativeValue != '703^POSITIVE^99DCT' && ageInYears <= 35 &&
+                urinePregnancyTestQualitativeValue != '703^POSITIVE^99DCT' &&
                 checkReviewOfSystemsGeneralForDisplay());
         };
         var displayHTNReminder2 = function(){
             var $htn_reminder_2 = $('#htn_reminder_2');
-            if(conditionToDisplayHTNReminder2())
+            var birthdate = $birthdate.val();
+            var ageInYears = $.fn.getAgeInYears(birthdate);
+            if(conditionToDisplayHTNReminder2() && ageInYears <= 35)
             {
                 $(htn_reminder_2).show();
             } else {
@@ -1470,11 +1470,17 @@
 
         var $serumGlucoseFasting = $('#serum_glucose_fasting');
         var $glycosylatedHemoglobin = $('#glycosylated_hemoglobin');
+        var isAtLeast35YearsOld = function(){
+            var birthdate = $birthdate.val();
+            var ageInYears = $.fn.getAgeInYears(birthdate);
+            return ageInYears>=35;
+        };
         var displayHTNReminder3a = function(){
             var $htn_reminder_3a = $('#htn_reminder_3a');
             var serumGlucoseFasting = parseFloat($serumGlucoseFasting.val());
             var glycosylatedHemoglobin = parseFloat($glycosylatedHemoglobin.val());
-            if(conditionToDisplayHTNReminder2() && serumGlucoseFasting <= 5.6 && glycosylatedHemoglobin <= 5.7)
+            if(conditionToDisplayHTNReminder2() && serumGlucoseFasting <= 5.6 && 
+                glycosylatedHemoglobin <= 5.7 && isAtLeast35YearsOld())
             {
                 $(htn_reminder_3a).show();
             } else {
@@ -1485,11 +1491,12 @@
 
         $currentVisitType.val('7034^FIRST DISPENSARY VISIT AFTER HCT^99DCT');
         $systolicBloodPressure.val('150');
-        $birthdate.val('2004-01-01');
+        $birthdate.val('1974-01-01');
+
         var displayHTNReminder3b = function(){
             var $htn_reminder_3b = $('#htn_reminder_3b');
             var currentMedication = getCurrentMedicationValues();
-            if(conditionToDisplayHTNReminder2() &&
+            if(conditionToDisplayHTNReminder2() && isAtLeast35YearsOld() &&
                 (currentMedication.indexOf("enalapril") >= 0 || currentMedication.indexOf("hctz") >= 0 || 
                 currentMedication.indexOf("losartan") >= 0 || currentMedication.indexOf("nifedipine") >= 0)
                 )
