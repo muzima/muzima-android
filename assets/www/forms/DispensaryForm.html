@@ -678,13 +678,13 @@
     <label class="alert alert-info" id="htn_reminder_3c">Patient with both elevated blood pressure and blood sugar.
         REFER to
         CO/Clinic.</label>
-    <label class="alert alert-info" id="obs.htn_reminder_4">BP is very high. Advise on Salt reduction, Weight reduction
+    <label class="alert alert-info" id="htn_reminder_4">BP is very high. Advise on Salt reduction, Weight reduction
         if BMI
         >30, Exercise, Smoking cessation and Alcohol reduction (if applicable). REFER to CO immediately.</label>
-    <label class="alert alert-info" id="obs.htn_reminder_5">REFER TO CO/ High Risk ANC</label>
-    <label class="alert alert-info" id="obs.htn_reminder_6a">Start on HCTZ 25 mg a day. Advise on Salt reduction, Weight
+    <label class="alert alert-info" id="htn_reminder_5">REFER TO CO/ High Risk ANC</label>
+    <label class="alert alert-info" id="htn_reminder_6a">Start on HCTZ 25 mg a day. Advise on Salt reduction, Weight
         reduction if BMI >30, Exercise, Smoking cessation and Alcohol reduction (if applicable)</label>
-    <label class="alert alert-info" id="obs.htn_reminder_6b">Patient with elevated blood pressure and elevated blood
+    <label class="alert alert-info" id="htn_reminder_6b">Patient with elevated blood pressure and elevated blood
         sugar.
         REFER to CO/Clinic.</label>
     <label class="alert alert-info" id="obs.htn_reminder_7">Patient with Hypertension symptoms. REFER TO CO</label>
@@ -1503,7 +1503,7 @@
             }
         };
         displayHTNReminder3b();
-        
+
         var displayHTNReminder3c = function(){
             var $htn_reminder_3c = $('#htn_reminder_3c');
             var serumGlucoseFasting = parseFloat($serumGlucoseFasting.val());
@@ -1517,6 +1517,21 @@
             }
         };
         displayHTNReminder3c();
+
+        var displayHTNReminder4 = function(){
+            var $htn_reminder_4 = $('#htn_reminder_4');
+            var systolicBloodValue = parseFloat($systolicBloodPressure.val());
+            var diastolicBloodValue = parseFloat($diastolicBloodPressure.val());
+            var urinePregnancyTestQualitativeValue = $urinePregnancyTestQualitative.val();
+            if( (systolicBloodValue >= 180 || diastolicBloodValue >= 110) &&
+                    urinePregnancyTestQualitativeValue != '703^POSITIVE^99DCT')
+            {
+                $(htn_reminder_4).show();
+            } else {
+                $(htn_reminder_4).hide();
+            }
+        };
+        displayHTNReminder4();
 
         /* End - Conditional display of HTN reminders */
 
@@ -1823,6 +1838,7 @@
             displayHTNReminder3a();
             displayHTNReminder3b();
             displayHTNReminder3c();
+            displayHTNReminder4();
             displayDiabetesReminder1();
             displayDiabetesReminder2();
             displayDiabetesReminder3();
@@ -1859,6 +1875,7 @@
             displayHTNReminder3a();
             displayHTNReminder3b();
             displayHTNReminder3c();
+            displayHTNReminder4();
             displayDiabetesReminder3();
             displayDiabetesReminder4();
         });
@@ -1893,6 +1910,7 @@
             displayHTNReminder3a();
             displayHTNReminder3b();
             displayHTNReminder3c();
+            displayHTNReminder4();
             displayDiabetesReminder3();
             displayDiabetesReminder4();
         });
