@@ -58,7 +58,7 @@
     <h3>Encounter Details</h3>
 
     <div class="form-group">
-        <label for="encounter.location_id">Name of Dispensary:</label>
+        <label for="encounter.location_id">Name of Dispensary:<span class="required">*</span></label>
         <select class="form-control" id="encounter.location_id" name="encounter.location_id" required="required">
             <option value="">...</option>
             <option value="2">Mosoriot Health Centre</option>
@@ -125,17 +125,18 @@
         </select>
     </div>
     <div class="form-group show_provider_id_text">
-        <label for="encounter.provider_id">Enter provider's system-id:</label>
+        <label for="encounter.provider_id">Enter provider's system-id:<span class="required">*</span></label>
         <input class="form-control checkDigit" id="encounter.provider_id" name="encounter.provider_id"
                type="text" required="required">
     </div>
     <div class="form-group">
         <label for="encounter.encounter_datetime">Encounter Date:<span class="required">*</span></label>
         <input class="form-control datepicker nonFutureDate" id="encounter.encounter_datetime"
-               name="encounter.encounter_datetime" type="text" readonly="readonly" encounter.encounter_datetime>
+               name="encounter.encounter_datetime" type="text" readonly="readonly" encounter.encounter_datetime
+               required="required">
     </div>
     <div class="form-group">
-        <label for="obs.current_visit_type">Visit Type:</label>
+        <label for="obs.current_visit_type">Visit Type:<span class="required">*</span></label>
         <select class="form-control" id="obs.current_visit_type" name="obs.current_visit_type"
             data-concept="1839^CURRENT VISIT TYPE^99DCT" required="required">
             <option value="">...</option>
@@ -186,7 +187,7 @@
 </div>
 <div class="section">
     <h3>Your current medications</h3>
-
+    <label>Do you take any of the following medications?</label>
     <div class="form-group checkNoneSelectedAlone">
         <label class="error"></label><br>
         <input id="obs.tmp_drugs.Metformin" type="checkbox" name="obs.tmp_drugs" value="metformin">
@@ -212,13 +213,13 @@
 
     <div class="form-group">
         <label for="metformin_number_of_milligram">Metformin dose in Milligrams (mg):</label>
-        <input class="form-control isDecimal" id="metformin_number_of_milligram"
+        <input class="form-control isDecimal" id="metformin_number_of_milligram" required="required"
                name="metformin_number_of_milligram" type="text">
     </div>
     <div class="form-group">
         <label for="obs.medication_metformin.medication_frequency_per_day">Metformin frequency per day:</label>
         <select class="form-control" id="obs.medication_metformin.medication_frequency_per_day"
-                name="obs.medication_metformin.medication_frequency_per_day">
+                name="obs.medication_metformin.medication_frequency_per_day" required="required">
             <option value="">...</option>
             <option value="1639^MORNING^99DCT">Every Morning</option>
             <option value="1730^EVENING^99DCT">Every Evening</option>
@@ -229,7 +230,7 @@
     <div class="form-group">
         <label for="obs.medication_metformin.number_of_pills_taken">Number of scheduled [Metformin] you took:</label>
         <select class="form-control" id="obs.medication_metformin.number_of_pills_taken"
-                name="obs.medication_metformin.number_of_pills_taken">
+                name="obs.medication_metformin.number_of_pills_taken" required="required">
             <option value="">...</option>
             <option value="1163^ALL^99DCT">All</option>
             <option value="1162^MOST^99DCT">More than half</option>
@@ -242,7 +243,8 @@
         <label for="obs.medication_metformin.missed_medication_reason">Specify the reason for missing some of your
             [Metformin] doses:</label>
         <select class="form-control" id="obs.medication_metformin.missed_medication_reason"
-                name="obs.medication_metformin.missed_medication_reason">
+                name="obs.medication_metformin.missed_medication_reason"
+                data-concept="1668^MISSED MEDICATION REASON^99DCT" required="required">
             <option value="">...</option>
             <option value="financial_barrier">No money</option>
             <option value="facility_stocked_out_of_medication">Facility stocked out of medication</option>
@@ -534,7 +536,7 @@
 </div>
 <div class="section">
     <h3>Symptoms</h3>
-    <label>Do you have any of the following symptoms:</label>
+    <label>Do you have any of the following symptoms?</label>
     <div class="form-group checkNoneSelectedAlone">
         <label class="error"></label><br>
         <input id="obs.review_of_systems_general.edema_legs" type="checkbox" name="obs.review_of_systems_general"
