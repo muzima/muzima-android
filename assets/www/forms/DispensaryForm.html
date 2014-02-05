@@ -1533,6 +1533,21 @@
         };
         displayHTNReminder4();
 
+        var displayHTNReminder5 = function(){
+            var $htn_reminder_5 = $('#htn_reminder_5');
+            var systolicBloodValue = parseFloat($systolicBloodPressure.val());
+            var diastolicBloodValue = parseFloat($diastolicBloodPressure.val());
+            var urinePregnancyTestQualitativeValue = $urinePregnancyTestQualitative.val();
+            if( (systolicBloodValue >= 140 || diastolicBloodValue >= 90) &&
+                    urinePregnancyTestQualitativeValue == '703^POSITIVE^99DCT')
+            {
+                $(htn_reminder_5).show();
+            } else {
+                $(htn_reminder_5).hide();
+            }
+        };
+        displayHTNReminder5();
+
         /* End - Conditional display of HTN reminders */
 
         /* Start - Conditional display of Diabetes reminders */
@@ -1839,6 +1854,7 @@
             displayHTNReminder3b();
             displayHTNReminder3c();
             displayHTNReminder4();
+            displayHTNReminder5();
             displayDiabetesReminder1();
             displayDiabetesReminder2();
             displayDiabetesReminder3();
@@ -1876,6 +1892,7 @@
             displayHTNReminder3b();
             displayHTNReminder3c();
             displayHTNReminder4();
+            displayHTNReminder5();
             displayDiabetesReminder3();
             displayDiabetesReminder4();
         });
@@ -1911,6 +1928,7 @@
             displayHTNReminder3b();
             displayHTNReminder3c();
             displayHTNReminder4();
+            displayHTNReminder5();
             displayDiabetesReminder3();
             displayDiabetesReminder4();
         });
