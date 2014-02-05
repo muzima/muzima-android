@@ -212,14 +212,16 @@
     <h3>Metformin</h3>
 
     <div class="form-group">
-        <label for="metformin_number_of_milligram">Metformin dose in Milligrams (mg):</label>
+        <label for="metformin_number_of_milligram">Metformin dose in Milligrams (mg):<span class="required">*</span></label>
         <input class="form-control isDecimal" id="metformin_number_of_milligram" required="required"
-               name="metformin_number_of_milligram" type="text">
+               name="metformin_number_of_milligram" type="text"
+               data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
-        <label for="obs.medication_metformin.medication_frequency_per_day">Metformin frequency per day:</label>
+        <label for="obs.medication_metformin.medication_frequency_per_day">Metformin frequency per day:<span class="required">*</span></label>
         <select class="form-control" id="obs.medication_metformin.medication_frequency_per_day"
-                name="obs.medication_metformin.medication_frequency_per_day" required="required">
+                name="obs.medication_metformin.medication_frequency_per_day" required="required"
+                data-concept="1896^MEDICATION FREQUENCY^99DCT">
             <option value="">...</option>
             <option value="1639^MORNING^99DCT">Every Morning</option>
             <option value="1730^EVENING^99DCT">Every Evening</option>
@@ -228,9 +230,10 @@
         </select>
     </div>
     <div class="form-group">
-        <label for="obs.medication_metformin.number_of_pills_taken">Number of scheduled [Metformin] you took:</label>
+        <label for="obs.medication_metformin.number_of_pills_taken">Number of scheduled [Metformin] you took:<span class="required">*</span></label>
         <select class="form-control" id="obs.medication_metformin.number_of_pills_taken"
-                name="obs.medication_metformin.number_of_pills_taken" required="required">
+                name="obs.medication_metformin.number_of_pills_taken" required="required"
+                data-concept="7059^NUMBER OF PILLS TAKEN IN THE LAST WEEK, ANY MEDICATION, QUALITATIVE^99DCT">
             <option value="">...</option>
             <option value="1163^ALL^99DCT">All</option>
             <option value="1162^MOST^99DCT">More than half</option>
@@ -241,7 +244,7 @@
     </div>
     <div class="form-group metformin_missed_medication_reason">
         <label for="obs.medication_metformin.missed_medication_reason">Specify the reason for missing some of your
-            [Metformin] doses:</label>
+            [Metformin] doses:<span class="required">*</span></label>
         <select class="form-control" id="obs.medication_metformin.missed_medication_reason"
                 name="obs.medication_metformin.missed_medication_reason"
                 data-concept="1668^MISSED MEDICATION REASON^99DCT" required="required">
@@ -262,14 +265,16 @@
     <h3>Glibenclamide</h3>
 
     <div class="form-group">
-        <label for="glibenclamide_number_of_milligram">Glibenclamide dose in Milligrams (mg):</label>
+        <label for="glibenclamide_number_of_milligram">Glibenclamide dose in Milligrams (mg):<span class="required">*</span></label>
         <input class="form-control isDecimal" id="glibenclamide_number_of_milligram"
-               name="glibenclamide_number_of_milligram" type="text">
+               name="glibenclamide_number_of_milligram" type="text" required="required"
+               data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
-        <label for="obs.medication_glibenclamide.medication_frequency_per_day">Glibenclamide frequency per day:</label>
+        <label for="obs.medication_glibenclamide.medication_frequency_per_day">Glibenclamide frequency per day:<span class="required">*</span></label>
         <select class="form-control" id="obs.medication_glibenclamide.medication_frequency_per_day"
-                name="obs.medication_glibenclamide.medication_frequency_per_day">
+                name="obs.medication_glibenclamide.medication_frequency_per_day" required="required"
+                data-concept="1896^MEDICATION FREQUENCY^99DCT">
             <option value="">...</option>
             <option value="1639^MORNING^99DCT">Every Morning</option>
             <option value="1730^EVENING^99DCT">Every Evening</option>
@@ -279,9 +284,10 @@
     </div>
     <div class="form-group">
         <label for="obs.medication_glibenclamide.number_of_pills_taken">Number of scheduled [Glibenclamide] you
-            took:</label>
+            took:<span class="required">*</span></label>
         <select class="form-control" id="obs.medication_glibenclamide.number_of_pills_taken"
-                name="obs.medication_glibenclamide.number_of_pills_taken">
+                name="obs.medication_glibenclamide.number_of_pills_taken" required="required"
+                data-concept="7059^NUMBER OF PILLS TAKEN IN THE LAST WEEK, ANY MEDICATION, QUALITATIVE^99DCT">
             <option value="">...</option>
             <option value="1163^ALL^99DCT">All</option>
             <option value="1162^MOST^99DCT">More than half</option>
@@ -292,9 +298,10 @@
     </div>
     <div class="form-group glibenclamide_missed_medication_reason">
         <label for="obs.medication_glibenclamide.missed_medication_reason">Specify the reason for missing some of your
-            [Glibenclamide] doses:</label>
+            [Glibenclamide] doses:<span class="required">*</span></label>
         <select class="form-control" id="obs.medication_glibenclamide.missed_medication_reason"
-                name="obs.medication_glibenclamide.missed_medication_reason">
+                name="obs.medication_glibenclamide.missed_medication_reason" required="required"
+                data-concept="1668^MISSED MEDICATION REASON^99DCT">
             <option value="">...</option>
             <option value="financial_barrier">No money</option>
             <option value="facility_stocked_out_of_medication">Facility stocked out of medication</option>
