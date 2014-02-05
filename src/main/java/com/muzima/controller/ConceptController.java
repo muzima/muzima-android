@@ -50,7 +50,20 @@ public class ConceptController {
         } catch (IOException e) {
             throw new ConceptSaveException(e);
         }
+    }
 
+    public Concept getConceptByName(String name) throws ConceptFetchException {
+        try {
+            List<Concept> concepts = conceptService.getConceptsByName(name);
+            for (Concept concept : concepts) {
+                if (concept.getName().equals(name)) {
+                    return concept;
+                }
+            }
+        } catch (IOException e) {
+            throw new ConceptFetchException(e);
+        }
+        return null;
     }
 
     public List<Concept> downloadConceptsByNames(List<String> names) throws ConceptDownloadException {
@@ -58,9 +71,9 @@ public class ConceptController {
         for (String name : names) {
             List<Concept> concepts = downloadConceptsByNamePrefix(name);
             Iterator<Concept> iterator = concepts.iterator();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 Concept next = iterator.next();
-                if(!next.containsNameIgnoreLowerCase(name)){
+                if (!next.containsNameIgnoreLowerCase(name)) {
                     iterator.remove();
                 }
             }

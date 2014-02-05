@@ -31,9 +31,9 @@ public class FormDataStore {
             formData.setPatientUuid(newPatient.getUuid());
             formWebViewActivity.startPatientSummaryView(newPatient);
         }
-        Log.d(TAG,"xml data is:"+xmlData);
+        Log.d(TAG, "xml data is:" + xmlData);
         formData.setXmlPayload(xmlData);
-        Log.d(TAG,"json data is:"+xmlData);
+        Log.d(TAG, "json data is:" + jsonData);
         formData.setJsonPayload(jsonData);
         formData.setStatus(status);
         try {
@@ -61,7 +61,7 @@ public class FormDataStore {
     }
 
     @JavascriptInterface
-     public void showSaveProgressBar() {
+    public void showSaveProgressBar() {
         formWebViewActivity.showProgressBar("Saving...");
     }
 
