@@ -17,7 +17,10 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Scanner;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.hamcrest.core.IsNull.nullValue;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -45,8 +48,16 @@ public class FormParserTest {
         formParser = new FormParser(xml, new MXParser(), patientController, conceptController, observationController);
         Patient patient = new Patient();
         when(patientController.getPatientByUuid("dd7963a8-1691-11df-97a5-7038c432aabf")).thenReturn(patient);
+        when(conceptController.getConceptByName("dd7963a8-1691-11df-97a5-7038c432aabf")).thenReturn(null);
         List<Observation> observations = formParser.parseForm();
-        assertEquals(6, observations.size());
+        for (Observation observation : observations) {
+            assertThat((Patient) observation.getPerson(), is(patient));
+            assertThat(observation.getUuid(), nullValue());
+            assertThat(observation.getConcept(), notNullValue());
+            assertThat(observation.getEncounter(), notNullValue());
+        }
+
+        assertThat(observations.size(), is(6));
     }
 
     public String readFile() {

@@ -28,6 +28,9 @@ public class FormParser {
     private final ObservationController observationController;
     private XmlPullParser parser;
 
+    private Patient patient;
+    private Encounter encounter;
+    private List<Observation> observations;
 
     public FormParser(String xml, PatientController patientController, ConceptController conceptController, ObservationController observationController) {
         this(xml, newPullParser(), patientController, conceptController, observationController);
@@ -56,17 +59,27 @@ public class FormParser {
         parser.nextTag();
         while (!isEndOf("form")) {
             if (isStartOf("patient")) {
-                getPatient(parser);
+                patient = getPatient(parser);
             }
             if (isStartOf("encounter")) {
-                createEncounter(parser);
+                encounter = createEncounter(parser);
             }
             if (isStartOf("obs")) {
-                return createObservations(parser);
+                observations = createObservations(parser);
             }
             parser.next();
         }
-        return null;
+        associatePatientsWithEncountersAndObservations();
+        return observations;
+    }
+
+    private void associatePatientsWithEncountersAndObservations() {
+        encounter.setPatient(patient);
+
+        for (Observation observation : observations) {
+            observation.setPerson(patient);
+            observation.setEncounter(encounter);
+        }
     }
 
     private Patient getPatient(XmlPullParser parser) throws XmlPullParserException, IOException, PatientController.PatientLoadException {
