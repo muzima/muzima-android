@@ -59,7 +59,7 @@
 
     <div class="form-group">
         <label for="encounter.location_id">Name of Dispensary:</label>
-        <select class="form-control" id="encounter.location_id" name="encounter.location_id">
+        <select class="form-control" id="encounter.location_id" name="encounter.location_id" required="required">
             <option value="">...</option>
             <option value="2">Mosoriot Health Centre</option>
             <option value="3">Turbo Health Centre</option>
@@ -127,17 +127,17 @@
     <div class="form-group show_provider_id_text">
         <label for="encounter.provider_id">Enter provider's system-id:</label>
         <input class="form-control checkDigit" id="encounter.provider_id" name="encounter.provider_id"
-               type="text">
+               type="text" required="required">
     </div>
     <div class="form-group">
         <label for="encounter.encounter_datetime">Encounter Date:<span class="required">*</span></label>
         <input class="form-control datepicker nonFutureDate" id="encounter.encounter_datetime"
-               name="encounter.encounter_datetime"
-               type="text" readonly="readonly">
+               name="encounter.encounter_datetime" type="text" readonly="readonly" encounter.encounter_datetime>
     </div>
     <div class="form-group">
         <label for="obs.current_visit_type">Visit Type:</label>
-        <select class="form-control" id="obs.current_visit_type" name="obs.current_visit_type">
+        <select class="form-control" id="obs.current_visit_type" name="obs.current_visit_type"
+            data-concept="1839^CURRENT VISIT TYPE^99DCT" required="required">
             <option value="">...</option>
             <option value="7034^FIRST DISPENSARY VISIT AFTER HCT^99DCT">First Dispensary Visit After pHCT</option>
             <option value="7035^SECOND DISPENSARY VISIT AFTER HCT ^99DCT">Second Dispensary Visit After pHCT
@@ -157,28 +157,31 @@
     <div class="form-group">
         <label for="obs.date_of_initial_phct_encounter">pHCT Encounter Date:</label>
         <input class="form-control datepicker nonFutureDate" id="obs.date_of_initial_phct_encounter"
-               name="obs.date_of_initial_phct_encounter" type="text" readonly="readonly">
+               name="obs.date_of_initial_phct_encounter" type="text" readonly="readonly"
+               data-concept="7038^DATE OF INITIAL HCT ENCOUNTER^99DCT">
     </div>
     <div class="form-group">
 
         <label for="systolic_blood_pressure_phct">Systolic Blood Pressure from pHCT Screening card:</label>
         <input class="form-control systolicBloodPressure" id="systolic_blood_pressure_phct" name="systolic_blood_pressure_phct"
-               type="text">
+               type="text" data-concept="5085^SYSTOLIC BLOOD PRESSURE^99DCT">
     </div>
     <div class="form-group">
         <label for="diastolic_blood_pressure_phct">Diastolic Blood Pressure from pHCT Screening card:</label>
         <input class="form-control lessThankSystolic" id="diastolic_blood_pressure_phct" name="diastolic_blood_pressure_phct"
-               type="text">
+               type="text" data-concept="5086^DIASTOLIC BLOOD PRESSURE^99DCT">
     </div>
     <div class="form-group">
         <label for="serum_glucose_fasting_phct">Fasting Blood Sugar (FBS) from pHCT Screening card:</label>
         <input class="form-control glucose" id="serum_glucose_fasting_phct" name="serum_glucose_fasting_phct"
-               placeholder="Blood glucose is measured on a fasting basis (collected after an 8 to 10 hour fast)" type="text">
+               placeholder="Blood glucose is measured on a fasting basis (collected after an 8 to 10 hour fast)" type="text"
+               data-concept="6252^SERUM GLUCOSE, FASTING^99DCT">
     </div>
     <div class="form-group">
         <label for="serum_glucose_phct">Random Blood Sugar (RBS) from pHCT Screening card:</label>
         <input class="form-control glucose" id="serum_glucose_phct" name="serum_glucose_phct" 
-                placeholder="Laboratory measurement of the glucose level in the blood" type="text">
+                placeholder="Laboratory measurement of the glucose level in the blood" type="text"
+                data-concept="887^SERUM GLUCOSE^99DCT">
     </div>
 </div>
 <div class="section">
