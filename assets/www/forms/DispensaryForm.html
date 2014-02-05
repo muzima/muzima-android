@@ -509,7 +509,7 @@
     </div>
     <div class="form-group">
         <label for="other_medication_number_of_milligram">Dose in Milligrams (mg):</label>
-        <input class="form-control isDecimal" id="other_medication_number_of_milligram"
+        <input class="form-control isDecimal otherMedicationNumberOfMilligram" id="other_medication_number_of_milligram"
                name="other_medication_number_of_milligram" type="text">
     </div>
     <div class="form-group">
@@ -1261,16 +1261,17 @@
         /*  End - Start - If some medication dose was missed, ask for reason */
 
         /* Start - Asks for the dosage of other medication in ml only if it is not provided in mg */
-        var $other_medication_number_of_milligram = $('#other_medication_number_of_milligram');
-        $other_medication_number_of_milligram.change(function(){
-            $other_medication_number_of_milliliter_group = $('.other_medication_number_of_milliliter_group');
-            if($other_medication_number_of_milligram.val() != ''){
+        $(document.body).on('change', '.otherMedicationNumberOfMilligram', function () {
+            $other_medication_number_of_milliliter_group = $(this).closest('.section').children('.other_medication_number_of_milliliter_group');
+            if($(this).val() != ''){
                 $other_medication_number_of_milliliter_group.hide();
+                $other_medication_number_of_milliliter_group.find('input').val('');
             } else {
                 $other_medication_number_of_milliliter_group.show();
             }
         });
-        $other_medication_number_of_milligram.trigger('change');
+
+        $('#other_medication_number_of_milligram').trigger('change');
         /* End - Asks for the dosage of other medication in ml only if it is not provided in mg */
 
         /* Start - Ask for menstrual & urine pregnancy info only if the client is a woman*/
