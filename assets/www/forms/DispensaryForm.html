@@ -1548,7 +1548,6 @@
         };
         displayHTNReminder5();
 
-
         var conditionToDisplayHTNReminder6 = function(){
             var selectedVisitType = $currentVisitType.val();
             var systolicBloodValue = parseFloat($systolicBloodPressure.val());
@@ -1585,6 +1584,24 @@
             }
         };
         displayHTNReminder6b();
+
+        var displayHTNReminder7 = function(){
+            var $htn_reminder_7 = $('#obs\\.htn_reminder_7');
+            var systolicBloodValue = parseFloat($systolicBloodPressure.val());
+            var diastolicBloodValue = parseFloat($diastolicBloodPressure.val());
+            var urinePregnancyTestQualitativeValue = $urinePregnancyTestQualitative.val();
+            var reviewOfSystemsGeneral = getReviewOfSystemsGeneralValues();
+            if(((systolicBloodValue >= 100 && systolicBloodValue <= 180) || (diastolicBloodValue >= 90 && diastolicBloodValue <= 110)) && 
+                urinePregnancyTestQualitativeValue != '703^POSITIVE^99DCT' &&
+                (reviewOfSystemsGeneral.indexOf("edema_legs") >= 0 || reviewOfSystemsGeneral.indexOf("shortness_of_breath_with_exertion") >= 0 ||
+                reviewOfSystemsGeneral.indexOf("oliguria") >= 0 || reviewOfSystemsGeneral.indexOf("focal_weakness") >= 0) )
+            {
+                $htn_reminder_7.show();
+            } else {
+                $htn_reminder_7.hide();
+            }
+        };
+        displayHTNReminder7();
         /* End - Conditional display of HTN reminders */
 
         /* Start - Conditional display of Diabetes reminders */
@@ -1898,6 +1915,7 @@
             displayHTNReminder5();
             displayHTNReminder6();
             displayHTNReminder6b();
+            displayHTNReminder7();
             displayDiabetesReminder1();
             displayDiabetesReminder2();
             displayDiabetesReminder3();
@@ -1942,6 +1960,7 @@
             displayHTNReminder5();
             displayHTNReminder6();
             displayHTNReminder6b();
+            displayHTNReminder7();
             displayDiabetesReminder3();
             displayDiabetesReminder4();
         });
@@ -1968,6 +1987,7 @@
             displayHTNReminder3c();
             displayHTNReminder6();
             displayHTNReminder6b();
+            displayHTNReminder7();
             displayDiabetesReminder6();
             displayDiabetesReminder7();
             displayDiabetesReminder8();
@@ -1984,6 +2004,7 @@
             displayHTNReminder5();
             displayHTNReminder6();
             displayHTNReminder6b();
+            displayHTNReminder7();
             displayDiabetesReminder3();
             displayDiabetesReminder4();
         });
