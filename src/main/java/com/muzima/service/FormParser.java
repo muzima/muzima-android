@@ -8,6 +8,7 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.DateUtils;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -118,6 +119,7 @@ public class FormParser {
             if (parser.getEventType() == XmlPullParser.START_TAG) {
                 String conceptName = parser.getAttributeValue("", "concept");
                 if (conceptName != null) {
+//                    System.out.println(conceptName);
                     observationList.add(createObservation(parser, conceptName));
                 }
             }
@@ -128,7 +130,7 @@ public class FormParser {
     }
 
     private Observation createObservation(XmlPullParser parser, String conceptName) throws XmlPullParserException, IOException, ConceptController.ConceptFetchException {
-        String conceptValue = checkForValueInConcept(parser);
+        String conceptValue = checkForValueInConcept(parser,conceptName);
         if (conceptValue != null) {
             Concept concept = conceptController.getConceptByName(conceptName);
             if (concept == null) {
@@ -146,8 +148,10 @@ public class FormParser {
         return new Concept();
     }
 
-    private String checkForValueInConcept(XmlPullParser parser) throws XmlPullParserException, IOException {
+    private String checkForValueInConcept(XmlPullParser parser, String conceptName) throws XmlPullParserException, IOException {
         String initConceptTagName = parser.getName();
+        System.out.println("Parser: " + parser.getName() + " Concept: " + conceptName);
+        System.out.println(initConceptTagName);
         while (!isEndOf(initConceptTagName)) {
             if (isStartOf("value")) {
                 return parser.nextText();
