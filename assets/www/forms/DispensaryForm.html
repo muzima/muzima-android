@@ -690,7 +690,7 @@
     </div>
     <div class="form-group urinePregnancyTestQualitative">
         <label for="obs.urine_pregnancy_test_qualitative">Urine Pregnancy Test:<span class="required">*</span></label>
-        <select class="form-control" id="obs.urine_pregnancy_test_qualitative"  required="required"
+        <select class="form-control" id="obs.urine_pregnancy_test_qualitative" required="required"
                 name="obs.urine_pregnancy_test_qualitative" data-concept="45^URINE PREGNANCY TEST, QUALITATIVE^99DCT">
             <option value="">...</option>
             <option value="703^POSITIVE^99DCT">Positive</option>
@@ -776,7 +776,7 @@
         times of day, you should enter each as a separate prescription using the 'Add Group' feature.</label>
     <label>Medications Prescribed:</label>
 
-    <div class="form-group checkNoneSelectedAlone">
+    <div class="form-group checkNoneSelectedAlone" data-concept="1901^OTHER MEDICATION ORDER^99DCT">
         <label class="error"></label><br>
         <input id="obs.drugs_dispensed.Metformin" type="checkbox" name="obs.drugs_dispensed" value="metformin">
         <label for="obs.drugs_dispensed.Metformin">Metformin</label><br>
@@ -796,13 +796,13 @@
         <label for="obs.drugs_dispensed.None">None</label>
     </div>
 </div>
-<div class="section" id="metformin_dispense">
+<div class="section repeat" id="metformin_dispense" data-concept="1901^OTHER MEDICATION ORDER^99DCT">
     <h3>Metformin Dispense</h3>
 
     <div class="form-group" id="metformin_dosage_changed">
-        <label for="obs.other_medication_order_metformin">Did you change the [Metformin] dosage?</label>
-        <select class="form-control" id="obs.other_medication_order_metformin"
-                name="obs.other_medication_order_metformin">
+        <label for="obs.other_medication_order_metformin">Did you change the [Metformin] dosage?<span class="required">*</span></label>
+        <select class="form-control" id="obs.other_medication_order_metformin" required="required"
+                name="obs.other_medication_order_metformin" data-concept="1931^DOSAGE CHANGE^99DCT">
             <option value="">...</option>
             <option value="1065^YES^99DCT">Yes</option>
             <option value="1066^NO^99DCT">No</option>
@@ -810,14 +810,14 @@
         </select>
     </div>
     <div class="form-group" id="metformin_prescribed_dosage">
-        <label for="obs.tmp_dosage_change_metformin">Prescribed [Metformin] dose in milligrams (mg):</label>
+        <label for="obs.tmp_dosage_change_metformin">Prescribed [Metformin] dose in milligrams (mg):<span class="required">*</span></label>
         <input class="form-control numberOfMilligrams" id="obs.tmp_dosage_change_metformin" name="obs.tmp_dosage_change_metformin"
-               type="text">
+               type="text" required="required">
     </div>
     <div class="form-group">
-        <label for="obs.omo_medication_frequency_per_day_metformin">[Metformin] frequency per day:</label>
-        <select class="form-control" id="obs.omo_medication_frequency_per_day_metformin"
-                name="obs.omo_medication_frequency_per_day_metformin">
+        <label for="obs.omo_medication_frequency_per_day_metformin">[Metformin] frequency per day:<span class="required">*</span></label>
+        <select class="form-control" id="obs.omo_medication_frequency_per_day_metformin" required="required"
+                name="obs.omo_medication_frequency_per_day_metformin" data-concept="1896^MEDICATION FREQUENCY^99DCT">
             <option value="">...</option>
             <option value="1639^MORNING^99DCT">Every Morning</option>
             <option value="1730^EVENING^99DCT">Every Evening</option>
@@ -826,21 +826,21 @@
         </select>
     </div>
     <div class="form-group">
-        <label for="obs.omo_number_of_tablets_metformin">Number of [Metformin] tablets prescribed:</label>
+        <label for="obs.omo_number_of_tablets_metformin">Number of [Metformin] tablets prescribed:<span class="required">*</span></label>
         <input class="form-control numberOfTablets" id="obs.omo_number_of_tablets_metformin" name="obs.omo_number_of_tablets_metformin"
-               type="text">
+               type="text" data-concept="1898^NUMBER OF TABLETS^99DCT" required="required">
     </div>
     <div class="form-group">
-        <label for="obs.omo_medication_received_at_vist_metformin">[Metformin] picked-up at dispensary</label>
-        <select class="form-control" id="obs.omo_medication_received_at_vist_metformin"
-                name="obs.omo_medication_received_at_vist_metformin">
+        <label for="obs.omo_medication_received_at_vist_metformin">[Metformin] picked-up at dispensary?<span class="required">*</span></label>
+        <select class="form-control" id="obs.omo_medication_received_at_vist_metformin" required="required"
+                name="obs.omo_medication_received_at_vist_metformin" data-concept="1276^MEDICATION RECEIVED AT VIST^99DCT">
             <option value="">...</option>
             <option value="true">Yes</option>
             <option value="false">No</option>
         </select>
     </div>
 </div>
-<div class="section" id="glibenclamide_dispense">
+<div class="section repeat" id="glibenclamide_dispense">
     <h3>Glibenclamide Dispense</h3>
 
     <div class="form-group" id="glibenclamide_dosage_changed">
@@ -875,7 +875,7 @@
                name="obs.omo_number_of_tablets_glibenclamide" type="text">
     </div>
     <div class="form-group">
-        <label for="obs.omo_medication_received_at_vist_glibenclamide">[Glibenclamide] picked-up at dispensary</label>
+        <label for="obs.omo_medication_received_at_vist_glibenclamide">[Glibenclamide] picked-up at dispensary?</label>
         <select class="form-control" id="obs.omo_medication_received_at_vist_glibenclamide"
                 name="obs.omo_medication_received_at_vist_glibenclamide">
             <option value="">...</option>
@@ -884,7 +884,7 @@
         </select>
     </div>
 </div>
-<div class="section" id="enalapril_dispense">
+<div class="section repeat" id="enalapril_dispense">
     <h3>Enalapril Dispense</h3>
 
     <div class="form-group" id="enalapril_dosage_changed">
@@ -919,7 +919,7 @@
                type="text">
     </div>
     <div class="form-group">
-        <label for="obs.omo_medication_received_at_vist_enalapril">[Enalapril] picked-up at dispensary</label>
+        <label for="obs.omo_medication_received_at_vist_enalapril">[Enalapril] picked-up at dispensary?</label>
         <select class="form-control" id="obs.omo_medication_received_at_vist_enalapril"
                 name="obs.omo_medication_received_at_vist_enalapril">
             <option value="">...</option>
@@ -928,7 +928,7 @@
         </select>
     </div>
 </div>
-<div class="section" id="hctz_dispense">
+<div class="section repeat" id="hctz_dispense">
     <h3>HCTZ Dispense</h3>
 
     <div class="form-group" id="hctz_dosage_changed">
@@ -961,7 +961,7 @@
                type="text">
     </div>
     <div class="form-group">
-        <label for="obs.omo_medication_received_at_vist_hctz">[HCTZ] picked-up at dispensary</label>
+        <label for="obs.omo_medication_received_at_vist_hctz">[HCTZ] picked-up at dispensary?</label>
         <select class="form-control" id="obs.omo_medication_received_at_vist_hctz"
                 name="obs.omo_medication_received_at_vist_hctz">
             <option value="">...</option>
@@ -970,7 +970,7 @@
         </select>
     </div>
 </div>
-<div class="section" id="losartan_dispense">
+<div class="section repeat" id="losartan_dispense">
     <h3>Losartan Dispense</h3>
 
     <div class="form-group" id="losartan_dosage_changed">
@@ -1005,7 +1005,7 @@
                type="text">
     </div>
     <div class="form-group">
-        <label for="obs.omo_medication_received_at_vist_losartan">[Losartan] picked-up at dispensary</label>
+        <label for="obs.omo_medication_received_at_vist_losartan">[Losartan] picked-up at dispensary?</label>
         <select class="form-control" id="obs.omo_medication_received_at_vist_losartan"
                 name="obs.omo_medication_received_at_vist_losartan">
             <option value="">...</option>
@@ -1014,7 +1014,7 @@
         </select>
     </div>
 </div>
-<div class="section" id="nifedipine_dispense">
+<div class="section repeat" id="nifedipine_dispense">
     <h3>Nifedipine Dispense</h3>
 
     <div class="form-group" id="nifedipine_dosage_changed">
@@ -1049,7 +1049,7 @@
                name="obs.omo_number_of_tablets_nifedipine" type="text">
     </div>
     <div class="form-group">
-        <label for="obs.omo_medication_received_at_vist_nifedipine">[Nifedipine] picked-up at dispensary</label>
+        <label for="obs.omo_medication_received_at_vist_nifedipine">[Nifedipine] picked-up at dispensary?</label>
         <select class="form-control" id="obs.omo_medication_received_at_vist_nifedipine"
                 name="obs.omo_medication_received_at_vist_nifedipine">
             <option value="">...</option>
@@ -1058,7 +1058,7 @@
         </select>
     </div>
 </div>
-<div class="section" id="other_medication">
+<div class="section repeat" id="other_medication">
     <h3>Other Medication</h3>
 
     <div class="form-group">
