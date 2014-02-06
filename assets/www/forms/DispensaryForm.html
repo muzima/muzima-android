@@ -562,7 +562,7 @@
                placeholder="You MUST provide dosage">
     </div>
 </div>
-<div class="section">
+<div class="section" data-concept="1069^REVIEW OF SYSTEMS, GENERAL^99DCT">
     <h3>Symptoms</h3>
     <label>Do you have any of the following symptoms?</label>
     <div class="form-group checkNoneSelectedAlone">
@@ -631,7 +631,7 @@
         <label for="obs.last_menstrual_period_qualitative">How long ago was the first day of your menstrual
             period?</label>
         <select class="form-control" id="obs.last_menstrual_period_qualitative"
-                name="obs.last_menstrual_period_qualitative">
+                name="obs.last_menstrual_period_qualitative" data-concept="7048^LAST MENSTRUAL PERIOD, QUALITATIVE^99DCT">
             <option value="">...</option>
             <option value="7049^LESS THAN 35 DAYS^99DCT">Less than 35 days ago</option>
             <option value="7050^MORE THAN 35 DAYS^99DCT">Over 35 days ago</option>
@@ -639,54 +639,59 @@
         </select>
     </div>
     <div class="form-group">
-        <label for="obs.systolic_blood_pressure">Systolic Blood Pressure (mmHg):</label>
+        <label for="obs.systolic_blood_pressure">Systolic Blood Pressure (mmHg):<span class="required">*</span></label>
         <input class="form-control systolicBloodPressure" id="obs.systolic_blood_pressure" name="obs.systolic_blood_pressure" type="text"
-            placeholder="Please record today's SBP">
+            placeholder="Please record today's SBP" data-concept="5085^SYSTOLIC BLOOD PRESSURE^99DCT" required="required">
     </div>
     <div class="form-group">
-        <label for="obs.diastolic_blood_pressure">Diastolic Blood Pressure (mmHg):</label>
+        <label for="obs.diastolic_blood_pressure">Diastolic Blood Pressure (mmHg):<span class="required">*</span></label>
         <input class="form-control diastolicBloodPressure lessThankSystolic" id="obs.diastolic_blood_pressure" name="obs.diastolic_blood_pressure" type="text"
-            placeholder="Please record today's DBP">
+            placeholder="Please record today's DBP" data-concept="5086^DIASTOLIC BLOOD PRESSURE^99DCT" required="required">
     </div>
     <div class="form-group">
         <label for="pulse">Pulse Rate (per minute):</label>
-        <input class="form-control" id="pulse" name="pulse" type="text" placeholder="Please record today's pulse">
+        <input class="form-control" id="pulse" name="pulse" type="text" placeholder="Please record today's pulse"
+            data-concept="5087^PULSE^99DCT">
     </div>
     <div class="form-group">
         <label for="temperature_c">Temperature (centigrade):</label>
-        <input class="form-control" id="temperature_c" name="temperature_c" type="text" placeholder="Please record today's temperature">
+        <input class="form-control" id="temperature_c" name="temperature_c" type="text" placeholder="Please record today's temperature"
+            data-concept="5088^TEMPERATURE (C)^99DCT">
     </div>
     <div class="form-group">
         <label for="weight_kg">Weight (KG):</label>
-        <input class="form-control" id="weight_kg" name="weight_kg" type="text" placeholder="Please record today's weight">
+        <input class="form-control" id="weight_kg" name="weight_kg" type="text" placeholder="Please record today's weight"
+            data-concept="5089^WEIGHT (KG)^99DCT">
     </div>
     <div class="form-group">
         <label for="height_cm">Height (CM):</label>
-        <input class="form-control" id="height_cm" name="height_cm" type="text" placeholder="Please record today's height">
+        <input class="form-control" id="height_cm" name="height_cm" type="text" placeholder="Please record today's height"
+            data-concept="5090^HEIGHT (CM)^99DCT">
     </div>
     <div class="form-group bodyMassIndex">
         <label for="obs.body_mass_index">Body Mass Index:</label>
-        <input class="form-control" id="obs.body_mass_index" name="obs.body_mass_index" type="text" readonly="readonly">
+        <input class="form-control" id="obs.body_mass_index" name="obs.body_mass_index" type="text" readonly="readonly"
+            data-concept="1342^BODY MASS INDEX^99DCT">
     </div>
     <div class="form-group">
         <label for="serum_glucose_fasting">Fasting Blood Sugar (FBS):</label>
         <input class="form-control glucose" id="serum_glucose_fasting" name="serum_glucose_fasting" type="text" 
-            placeholder="Please record today's FBS">
+            placeholder="Please record today's FBS" data-concept="6252^SERUM GLUCOSE, FASTING^99DCT">
     </div>
     <div class="form-group">
         <label for="obs.serum_glucose">Random Blood Sugar (RBS):</label>
         <input class="form-control glucose" id="obs.serum_glucose" name="obs.serum_glucose" type="text"
-            placeholder="Please record today's RBS">
+            placeholder="Please record today's RBS" data-concept="887^SERUM GLUCOSE^99DCT">
     </div>
     <div class="form-group">
         <label for="glycosylated_hemoglobin">Hemoglobin A1C:</label>
         <input class="form-control" id="glycosylated_hemoglobin" name="glycosylated_hemoglobin" type="text"
-            placeholder="Please record today's A1C">
+            placeholder="Please record today's A1C" data-concept="6126^GLYCOSYLATED HEMOGLOBIN^99DCT">
     </div>
     <div class="form-group urinePregnancyTestQualitative">
-        <label for="obs.urine_pregnancy_test_qualitative">Urine Pregnancy Test:</label>
-        <select class="form-control" id="obs.urine_pregnancy_test_qualitative"
-                name="obs.urine_pregnancy_test_qualitative">
+        <label for="obs.urine_pregnancy_test_qualitative">Urine Pregnancy Test:<span class="required">*</span></label>
+        <select class="form-control" id="obs.urine_pregnancy_test_qualitative"  required="required"
+                name="obs.urine_pregnancy_test_qualitative" data-concept="45^URINE PREGNANCY TEST, QUALITATIVE^99DCT">
             <option value="">...</option>
             <option value="703^POSITIVE^99DCT">Positive</option>
             <option value="664^NEGATIVE^99DCT">Negative</option>
