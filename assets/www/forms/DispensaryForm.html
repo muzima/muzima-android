@@ -531,9 +531,10 @@
     <h3>Other Medication</h3>
 
     <div class="form-group">
-        <label for="obs.medication_other.medication_name">Medication Name</label>
+        <label for="obs.medication_other.medication_name">Medication Name<span class="required">*</span></label>
         <input class="form-control" id="obs.medication_other.medication_name"
-               name="obs.medication_other.medication_name" type="text">
+               name="obs.medication_other.medication_name" type="text" required="required"
+               data-concept="1779^MEDICATION NAME, FREETEXT^99DCT">
     </div>
     <div class="form-group">
         <label for="other_medication_number_of_milligram">Dose in Milligrams (mg):</label>
@@ -542,9 +543,9 @@
                data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
-        <label for="obs.medication_other.medication_frequency_per_day">Frequency per day:</label>
+        <label for="obs.medication_other.medication_frequency_per_day">Frequency per day:<span class="required">*</span></label>
         <select class="form-control" id="obs.medication_other.medication_frequency_per_day"
-                name="obs.medication_other.medication_frequency_per_day"
+                name="obs.medication_other.medication_frequency_per_day" required="required"
                 data-concept="1896^MEDICATION FREQUENCY^99DCT">
             <option value="">...</option>
             <option value="1639^MORNING^99DCT">Every Morning</option>
@@ -556,7 +557,9 @@
     <div class="form-group other_medication_number_of_milliliter_group">
         <label for="other_medication_number_of_milliliter">Dose in Milliliters (ml):</label>
         <input class="form-control isDecimal" id="other_medication_number_of_milliliter"
-               name="other_medication_number_of_milliliter" type="text">
+               name="other_medication_number_of_milliliter" type="text"
+               data-concept="1940^NUMBER OF MILLILITER^99DCT"
+               placeholder="You MUST provide dosage">
     </div>
 </div>
 <div class="section">
