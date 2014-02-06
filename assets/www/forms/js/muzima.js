@@ -96,10 +96,8 @@ $(document).ready(function () {
     $.validator.addMethod("nonFutureDate", function (value, element) {
             var enteredDate = new Date(value);
             var today = new Date();
-            if(enteredDate > today){
-                return false;
-            }
-            return true;
+            return enteredDate <= today;
+
         }, "Please enter a date prior or equal to today."
     );
 
@@ -115,10 +113,8 @@ $(document).ready(function () {
     $.validator.addMethod("checkFutureDate", function (value, element) {
             var enteredDate = new Date(value);
             var today = new Date();
-            if(enteredDate <= today){
-                return false;
-            }
-            return true;
+            return enteredDate > today;
+
         }, "Please enter a date in the future."
     );
 
@@ -145,12 +141,12 @@ $(document).ready(function () {
     /* End - phoneNumber*/
 
     /* Start - Checking that if 'none' is selected for referrals, nothing else is selected */
-    $('.checkNoneSelectedAlone').find('input[type="checkbox"]').change(function(){
+    $('.checkNoneSelectedAlone').find('input[type="checkbox"]').change(function () {
         var valid = true;
         var $fieldset = $(this).parent();
         var totalSelected = $fieldset.find('input:checkbox:checked').length;
-        $.each($fieldset.find('input:checkbox:checked'),function(i,cBoxElement){
-            if($(cBoxElement).val() == 'none' && totalSelected >1){
+        $.each($fieldset.find('input:checkbox:checked'), function (i, cBoxElement) {
+            if ($(cBoxElement).val() == 'none' && totalSelected > 1) {
                 console.log("Error");
                 valid = false;
             }
@@ -171,11 +167,11 @@ $(document).ready(function () {
         return $.datepicker.formatDate(dateFormat, estimatedDate);
     };
 
-    $.fn.getAgeInYears = function(birthDateString){
+    $.fn.getAgeInYears = function (birthDateString) {
         var birthDate = new Date(birthDateString);
         var today = new Date();
-        var milliSecondsInAYear = 1000*60*60*24*365.26;
-        return (today - birthDate)/milliSecondsInAYear;
+        var milliSecondsInAYear = 1000 * 60 * 60 * 24 * 365.26;
+        return (today - birthDate) / milliSecondsInAYear;
     };
 
     /* Start - Used for Sub-Forms */
@@ -244,16 +240,28 @@ $(document).ready(function () {
 
     /* Start - Code to Serialize form along with Data-Concepts */
     $.fn.serializeForm = function () {
-        return $.extend({}, serializeNonConceptElements(this), serializeConcepts(this), (serializeNestedConcepts(this)));
+        return $.extend({}, serializeNonConceptElements(this), serializeConcepts(this), serializeNestedConcepts(this));
     };
 
     var serializeNonConceptElements = function ($form) {
         var o = {};
         var $input_elements = $form.find('[name]:visible').not('[data-concept]');
         $.each($input_elements, function (i, element) {
-            o = pushIntoArray(o, $(element).attr('name'), $(element).val());
+            if (isCheckBoxAndChecked($(element))) {
+                o = pushIntoArray(o, $(element).parent().attr('name'), $(element).val());
+            } else if (notACheckBoxOrFieldSet($(element))) {
+                o = pushIntoArray(o, $(element).attr('name'), $(element).val());
+            }
         });
         return o;
+    };
+
+    var isCheckBoxAndChecked = function ($element) {
+        return $element.attr('type') == 'checkbox' && $element.is(':checked');
+    };
+
+    var notACheckBoxOrFieldSet = function ($element) {
+        return $element.attr('type') != 'checkbox' && $element.prop('tagName') != 'FIELDSET';
     };
 
     var serializeNestedConcepts = function ($form) {
@@ -268,9 +276,10 @@ $(document).ready(function () {
 
     var serializeConcepts = function ($form) {
         var o = {};
-        var allConcepts = $form.find('*[data-concept]');
+        var allConcepts = $form.find('*[data-concept]:visible');
         $.each(allConcepts, function (i, element) {
             if ($(element).closest('.section').attr('data-concept') == undefined) {
+                console.log($(element).html());
                 $.extend(o, jsonifyConcepts($(element)));
             }
         });
@@ -286,6 +295,9 @@ $(document).ready(function () {
     };
 
     var pushIntoArray = function (obj, key, value) {
+        if($.isEmptyObject(value)){
+            return obj;
+        }
         if (obj[key] !== undefined) {
             if (!obj[key].push) {
                 obj[key] = [obj[key]];
@@ -298,6 +310,4 @@ $(document).ready(function () {
     };
 
     /* End - Code to Serialize form along with Data-Concepts */
-
-
 });
