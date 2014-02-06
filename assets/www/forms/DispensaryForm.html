@@ -812,7 +812,7 @@
     <div class="form-group" id="metformin_prescribed_dosage">
         <label for="obs.tmp_dosage_change_metformin">Prescribed [Metformin] dose in milligrams (mg):<span class="required">*</span></label>
         <input class="form-control numberOfMilligrams" id="obs.tmp_dosage_change_metformin" name="obs.tmp_dosage_change_metformin"
-               type="text" required="required">
+               type="text" required="required" data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
         <label for="obs.omo_medication_frequency_per_day_metformin">[Metformin] frequency per day:<span class="required">*</span></label>
@@ -856,7 +856,7 @@
     <div class="form-group" id="glibenclamide_prescribed_dosage">
         <label for="obs.tmp_dosage_change_glibenclamide">Prescribed [Glibenclamide] dose in milligrams (mg):<span class="required">*</span></label>
         <input class="form-control numberOfMilligrams" id="obs.tmp_dosage_change_glibenclamide" name="obs.tmp_dosage_change_glibenclamide"
-               type="text" required="required">
+               type="text" required="required" data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
         <label for="obs.omo_medication_frequency_per_day_glibenclamide">[Glibenclamide] frequency per day:<span class="required">*</span></label>
@@ -877,7 +877,7 @@
     <div class="form-group">
         <label for="obs.omo_medication_received_at_vist_glibenclamide">[Glibenclamide] picked-up at dispensary?<span class="required">*</span></label>
         <select class="form-control" id="obs.omo_medication_received_at_vist_glibenclamide" required="required"
-                name="obs.omo_medication_received_at_vist_glibenclamide" data-concept="1276^MEDICATION RECEIVED AT VIST^99DCT">>
+                name="obs.omo_medication_received_at_vist_glibenclamide" data-concept="1276^MEDICATION RECEIVED AT VIST^99DCT">
             <option value="">...</option>
             <option value="true">Yes</option>
             <option value="false">No</option>
@@ -900,7 +900,7 @@
     <div class="form-group" id="enalapril_prescribed_dosage">
         <label for="obs.tmp_dosage_change_enalapril">Prescribed [Enalapril] dose in milligrams (mg):<span class="required">*</span></label>
         <input class="form-control numberOfMilligrams" id="obs.tmp_dosage_change_enalapril" name="obs.tmp_dosage_change_enalapril"
-               type="text" required="required">
+               type="text" required="required" data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
         <label for="obs.omo_medication_frequency_per_day_enalapril">[Enalapril] frequency per day:<span class="required">*</span></label>
@@ -944,7 +944,7 @@
     <div class="form-group" id="hctz_prescribed_dosage">
         <label for="obs.tmp_dosage_change_hctz">Prescribed [HCTZ] dose in milligrams (mg):<span class="required">*</span></label>
         <input class="form-control numberOfMilligrams" id="obs.tmp_dosage_change_hctz" name="obs.tmp_dosage_change_hctz" type="text"
-             required="required">>
+             required="required" data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
         <label for="obs.omo_medication_frequency_per_day_hctz">[HCTZ] frequency per day:<span class="required">*</span></label>
@@ -988,7 +988,7 @@
     <div class="form-group" id="losartan_prescribed_dosage">
         <label for="obs.tmp_dosage_change_losartan">Prescribed [Losartan] dose in milligrams (mg):<span class="required">*</span></label>
         <input class="form-control numberOfMilligrams" id="obs.tmp_dosage_change_losartan" name="obs.tmp_dosage_change_losartan"
-               type="text" required="required">
+               type="text" required="required" data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
         <label for="obs.omo_medication_frequency_per_day_losartan">[Losartan] frequency per day:<span class="required">*</span></label>
@@ -1032,7 +1032,7 @@
     <div class="form-group" id="nifedipine_prescribed_dosage">
         <label for="obs.tmp_dosage_change_nifedipine">Prescribed [Nifedipine] dose in milligrams (mg):<span class="required">*</span></label>
         <input class="form-control numberOfMilligrams" id="obs.tmp_dosage_change_nifedipine" name="obs.tmp_dosage_change_nifedipine"
-               type="text" required="required">
+               type="text" required="required" data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
         <label for="obs.omo_medication_frequency_per_day_nifedipine">[Nifedipine] frequency per day:<span class="required">*</span></label>
@@ -1060,23 +1060,24 @@
         </select>
     </div>
 </div>
-<div class="section repeat" id="other_medication">
+<div class="section repeat" id="other_medication" data-concept="1901^OTHER MEDICATION ORDER^99DCT">
     <h3>Other Medication</h3>
 
     <div class="form-group">
-        <label for="obs.omo_medication_name_freetext_other">Medication Name:</label>
-        <input class="form-control" id="obs.omo_medication_name_freetext_other"
-               name="obs.omo_medication_name_freetext_other" type="text">
+        <label for="obs.omo_medication_name_freetext_other">Medication Name:<span class="required">*</span></label>
+        <input class="form-control" id="obs.omo_medication_name_freetext_other" required="required"
+               name="obs.omo_medication_name_freetext_other" type="text"
+               data-concept="1779^MEDICATION NAME, FREETEXT^99DCT">
     </div>
     <div class="form-group">
-        <label for="obs.omo_number_of_milligram_other">Medication dose in Milligrams (mg):</label>
+        <label for="obs.omo_number_of_milligram_other">Medication dose in Milligrams (mg):<span class="required">*</span></label>
         <input class="form-control numberOfMilligrams" id="obs.omo_number_of_milligram_other" name="obs.omo_number_of_milligram_other"
-               type="text">
+               type="text" data-concept="1899^NUMBER OF MILLIGRAM^99DCT" required="required">
     </div>
     <div class="form-group">
-        <label for="obs.omo_medication_frequency_per_day_other">Medication frequency per day:</label>
-        <select class="form-control" id="obs.omo_medication_frequency_per_day_other"
-                name="obs.omo_medication_frequency_per_day_other">
+        <label for="obs.omo_medication_frequency_per_day_other">Medication frequency per day:<span class="required">*</span></label>
+        <select class="form-control" id="obs.omo_medication_frequency_per_day_other" required="required"
+                name="obs.omo_medication_frequency_per_day_other" data-concept="1896^MEDICATION FREQUENCY^99DCT">
             <option value="">...</option>
             <option value="1639^MORNING^99DCT">Every Morning</option>
             <option value="1730^EVENING^99DCT">Every Evening</option>
@@ -1085,9 +1086,9 @@
         </select>
     </div>
     <div class="form-group">
-        <label for="obs.omo_number_of_tablets_other">Number of Medication tablets:</label>
+        <label for="obs.omo_number_of_tablets_other">Number of Medication tablets:<span class="required">*</span></label>
         <input class="form-control numberOfTablets" id="obs.omo_number_of_tablets_other" name="obs.omo_number_of_tablets_other"
-               type="text">
+               type="text" data-concept="1898^NUMBER OF TABLETS^99DCT" required="required">
     </div>
 </div>
 <div class="section">
