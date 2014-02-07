@@ -13,7 +13,7 @@ $(document).ready(function () {
     };
 
     var save = function (status) {
-        var jsonData = JSON.stringify($('form').serializeForm());
+        var jsonData = JSON.stringify($('form').serializeEncounterForm());
         htmlDataStore.saveHTML(jsonData, status);
     };
     /* End - Function to save the form */
@@ -208,19 +208,29 @@ $(document).ready(function () {
         });
     };
 
-    var prePopulateData = $.trim($('#pre_populate_data').html());
-
-    if (prePopulateData != '') {
-        var prePopulateJSON = JSON.parse(prePopulateData);
+    var populateNonConceptFields = function (prePopulateJSON) {
         $.each(prePopulateJSON, function (key, value) {
             var $elementWithNameAttr = $('[name="' + key + '"]');
+            $elementWithNameAttr.val(value);
+        });
+
+    };
+
+    var populateObservations = function (prePopulateJSON) {
+        $.each(prePopulateJSON, function (key, value) {
             if (value instanceof Object) {
                 var $div = $('div[data-concept="' + key + '"]');
-                if (value instanceof Array) {
+                if($div.length > 1){
+                    return;
+                }
+                if ($($('[name="' + key + '"]')[0]).prop('tagName') == 'FIELDSET') {
+                    $.each(value, function (i, val) {
+                        $("input[type=checkbox][value='"+ val +"']").attr('checked','true');
+                    });
+                } else if (value instanceof Array) {
                     $.each(value, function (i, elem) {
                         var $newDiv = $div.clone();
                         populateDataConcepts($newDiv, elem);
-                        console.log($newDiv.html());
                         $div.after($newDiv);
                     });
                     $div.remove();
@@ -228,13 +238,24 @@ $(document).ready(function () {
                     populateDataConcepts($div, value);
                 }
             }
-            else if ($elementWithNameAttr.length > 0) {
-                $elementWithNameAttr.val(value);
-            } else {
+            else {
                 $('[data-concept="' + key + '"]').val(value);
             }
         });
+    };
+
+    var prePopulateData = $.trim($('#pre_populate_data').html());
+
+    if (prePopulateData != '') {
+        console.time("Starting population");
+        var prePopulateJSON = JSON.parse(prePopulateData);
+        populateNonConceptFields(prePopulateJSON['patient']);
+        populateNonConceptFields(prePopulateJSON['encounter']);
+        populateObservations(prePopulateJSON['observation']);
+        console.timeEnd("Starting population");
+
     }
+
 
     /* End - JS to Prepopulate Data in the Form */
 

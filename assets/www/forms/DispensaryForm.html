@@ -13,12 +13,8 @@
     <title>Dispensary Form</title>
 </head>
 <body class="col-md-8 col-md-offset-2">
-<pre id="result"></pre>
+<div id="pre_populate_data"></div>
 <form id="dispensary_form" name="dispensary_form">
-<div class="form-group text-center">
-    <input class="btn btn-primary" type="button" value="Save"/>
-    <input class="btn btn-primary" type="submit" value="Submit"/>
-</div>
 
 <h2 class="text-center">Dispensary Confirmation Form</h2>
 
@@ -1260,6 +1256,10 @@
                readonly="readonly">
     </div>
 </div>
+<div class="form-group text-center">
+    <input class="btn btn-primary" id="save_draft" type="button" value="Save"/>
+    <input class="btn btn-primary" id="submit_form" type="submit" value="Submit"/>
+</div>
 
 </form>
 
@@ -1267,8 +1267,11 @@
 <script type="text/javascript">
 $(document).ready(function () {
     $('form').submit(function () {
-        $('#result').html(JSON.stringify($('form').serializeForm(), undefined, 2));
-        return false;
+        $.document.submit();
+    });
+
+    $('#save_draft').click(function(event){
+        $.document.saveDraft();
     });
 
     $('#dispensary_form').validate({
