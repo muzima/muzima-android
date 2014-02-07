@@ -19,6 +19,7 @@ import java.util.List;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class ObservationControllerTest {
@@ -86,6 +87,21 @@ public class ObservationControllerTest {
         assertThat(conceptWithObservations1.getObservations().get(1), is(observations.get(3)));
         assertThat(conceptWithObservations1.getObservations().get(2), is(observations.get(0)));
     }
+
+    @Test
+    public void saveObservations_shouldSaveObservationsForPatient() throws Exception, ObservationController.SaveObservationException {
+        final Concept concept1 = new Concept() {{
+            setUuid("concept1");
+        }};
+        final Concept concept2 = new Concept() {{
+            setUuid("concept2");
+        }};
+        final List<Observation> observations = buildObservations(concept1, concept2);
+
+        observationController.saveObservations(observations);
+        verify(observationService).saveObservations(observations);
+    }
+
 
     private List<Observation> buildObservations(final Concept concept1, final Concept concept2) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
+import java.util.UUID;
 
 import static android.util.Xml.newPullParser;
 
@@ -76,10 +77,12 @@ public class FormParser {
 
     private void associatePatientsWithEncountersAndObservations() {
         encounter.setPatient(patient);
+        encounter.setUuid("encounterUuid" + UUID.randomUUID());
 
         for (Observation observation : observations) {
             observation.setPerson(patient);
             observation.setEncounter(encounter);
+            observation.setUuid("observationUuid" + UUID.randomUUID());
         }
     }
 

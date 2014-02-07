@@ -134,6 +134,14 @@ public class ObservationController {
         }
     }
 
+    public void saveObservations(List<Observation> observations) throws SaveObservationException {
+        try {
+            observationService.saveObservations(observations);
+        } catch (IOException e) {
+            throw new SaveObservationException(e);
+        }
+    }
+
     public static class LoadObservationException extends Throwable {
         public LoadObservationException(Throwable e) {
             super(e);
@@ -148,6 +156,12 @@ public class ObservationController {
 
     public static class DownloadObservationException extends Throwable {
         public DownloadObservationException(Throwable e) {
+            super(e);
+        }
+    }
+
+    public static class SaveObservationException extends Throwable {
+        public SaveObservationException(Throwable e) {
             super(e);
         }
     }
