@@ -239,8 +239,29 @@ $(document).ready(function () {
     /* End - JS to Prepopulate Data in the Form */
 
     /* Start - Code to Serialize form along with Data-Concepts */
-    $.fn.serializeForm = function () {
-        return $.extend({}, serializeNonConceptElements(this), serializeConcepts(this), serializeNestedConcepts(this));
+    $.fn.serializeEncounterForm = function () {
+        console.time('WithOutExtraParsing');
+        console.time('WithParsing');
+        var jsonResult = $.extend({}, serializeNonConceptElements(this), serializeConcepts(this), serializeNestedConcepts(this));
+        console.timeEnd('WithOutExtraParsing');
+        var patient = {};
+        var encounter = {};
+        var observation = {};
+        $.each(jsonResult, function (k, v) {
+            if (k.indexOf('patient') === 0) {
+                patient[k] = v;
+            } else if (k.indexOf('encounter') === 0) {
+                encounter[k] = v;
+            } else {
+                observation[k] = v;
+            }
+        });
+        var finalResult = {};
+        finalResult['patient'] = patient;
+        finalResult['encounter'] = encounter;
+        finalResult['observation'] = observation;
+        console.timeEnd('WithParsing');
+        return  finalResult;
     };
 
     var serializeNonConceptElements = function ($form) {
@@ -279,7 +300,6 @@ $(document).ready(function () {
         var allConcepts = $form.find('*[data-concept]:visible');
         $.each(allConcepts, function (i, element) {
             if ($(element).closest('.section').attr('data-concept') == undefined) {
-                console.log($(element).html());
                 $.extend(o, jsonifyConcepts($(element)));
             }
         });
@@ -295,7 +315,7 @@ $(document).ready(function () {
     };
 
     var pushIntoArray = function (obj, key, value) {
-        if($.isEmptyObject(value)){
+        if ($.isEmptyObject(value)) {
             return obj;
         }
         if (obj[key] !== undefined) {
