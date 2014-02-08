@@ -1,5 +1,6 @@
 package com.muzima.service;
 
+import com.muzima.utils.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,8 +20,15 @@ public class HTMLConceptParser {
         //Select all elements containing data-concept attr and is not a div.
         Elements elements = htmlDoc.select("*:not(div)[" + DATA_CONCEPT_TAG + "]");
         for (Element element : elements) {
-            concepts.add(element.attr(DATA_CONCEPT_TAG));
+            concepts.add(getConceptName(element.attr(DATA_CONCEPT_TAG)));
         }
         return new ArrayList<String>(concepts);
+    }
+
+    private static String getConceptName(String conceptName) {
+        if (!StringUtils.isEmpty(conceptName) && conceptName.split("\\^").length > 1) {
+            return conceptName.split("\\^")[1];
+        }
+        return "";
     }
 }
