@@ -1266,7 +1266,13 @@
 </body>
 <script type="text/javascript">
 $(document).ready(function () {
+    $('form').submit(function () {
+        document.submit();
+    });
 
+    $('#save_draft').click(function(){
+        document.saveDraft();
+    });
 
     $('#dispensary_form').validate({
         rules: {
@@ -1987,7 +1993,7 @@ $(document).ready(function () {
             $('#obs\\.diabetes_reminder_7').show();
         else
             $('#obs\\.diabetes_reminder_7').hide();
-    }
+    };
     displayDiabetesReminder7();
     /* End - DiabetesReminder7 */
 
