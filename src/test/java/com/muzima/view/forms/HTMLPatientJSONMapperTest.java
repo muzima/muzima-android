@@ -24,6 +24,8 @@ public class HTMLPatientJSONMapperTest {
         FormData formData = new FormData();
         formData.setUuid("formUuid");
         String json = mapper.map(patient, formData);
+        assertThat(json, containsString("\"patient\":{"));
+        assertThat(json, containsString("\"encounter\":{"));
         assertThat(json, containsString("\"patient.given_name\":\"givenname\""));
         assertThat(json, containsString("\"patient.middle_name\":\"middlename\""));
         assertThat(json, containsString("\"patient.family_name\":\"familyname\""));

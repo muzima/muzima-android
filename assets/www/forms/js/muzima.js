@@ -201,13 +201,11 @@ $(document).ready(function () {
     /* End - Checks that a field is a decimal */
 
     /* Start - JS to Prepopulate Data in the Form */
-
     var populateDataConcepts = function ($div, value) {
         $.each(value, function (k, v) {
             $div.find('[data-concept="' + k + '"]').val(v);
         });
     };
-
     var populateNonConceptFields = function (prePopulateJSON) {
         $.each(prePopulateJSON, function (key, value) {
             var $elementWithNameAttr = $('[name="' + key + '"]');
@@ -215,7 +213,6 @@ $(document).ready(function () {
         });
 
     };
-
     var populateObservations = function (prePopulateJSON) {
         $.each(prePopulateJSON, function (key, value) {
             if (value instanceof Object) {
@@ -249,11 +246,10 @@ $(document).ready(function () {
     if (prePopulateData != '') {
         console.time("Starting population");
         var prePopulateJSON = JSON.parse(prePopulateData);
-        populateNonConceptFields(prePopulateJSON['patient']);
-        populateNonConceptFields(prePopulateJSON['encounter']);
-        populateObservations(prePopulateJSON['observation']);
+        populateNonConceptFields(prePopulateJSON['patient'] || {});
+        populateNonConceptFields(prePopulateJSON['encounter'] || {});
+        populateObservations(prePopulateJSON['observation'] || {});
         console.timeEnd("Starting population");
-
     }
 
 
