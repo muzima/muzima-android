@@ -81,7 +81,7 @@ public class FormDataStore {
     }
 
     public FormParser getFormParser(String xmlData) {
-        return new FormParser(xmlData, applicationContext.getPatientController(), applicationContext.getConceptController(), applicationContext.getObservationController());
+        return new FormParser(xmlData, applicationContext.getPatientController(), applicationContext.getConceptController());
     }
 
 

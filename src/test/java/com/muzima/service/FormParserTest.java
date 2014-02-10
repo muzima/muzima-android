@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Scanner;
 
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.matchers.JUnitMatchers.containsString;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -31,9 +31,6 @@ public class FormParserTest {
     private PatientController patientController;
 
     @Mock
-    private ObservationController observationController;
-
-    @Mock
     private ConceptController conceptController;
 
     @Before
@@ -42,42 +39,20 @@ public class FormParserTest {
     }
 
     @Test
-    public void shouldCreateObservations() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
+    public void shouldCreateMultipleObservations() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         String xml = readFile("xml/histo_xml_payload.xml");
-        formParser = new FormParser(xml, new MXParser(), patientController, conceptController, observationController);
-        Patient patient = new Patient();
-        when(patientController.getPatientByUuid("dd7963a8-1691-11df-97a5-7038c432aabf")).thenReturn(patient);
-        when(conceptController.getConceptByName("5096^RETURN VISIT DATE^99DCT")).thenReturn(null);
-        String conceptName = "8265^BODY PART^99DCT";
-        Concept concept = mock(Concept.class);
-        when(concept.getName()).thenReturn(conceptName);
-        when(concept.getUuid()).thenReturn("SpecialUUID");
-        when(conceptController.getConceptByName(conceptName)).thenReturn(concept);
-
+        formParser = new FormParser(xml, new MXParser(), patientController, conceptController);
 
         List<Observation> observations = formParser.parseForm();
         assertThat(observations.size(), is(6));
-        for (Observation observation : observations) {
-            assertThat((Patient) observation.getPerson(), is(patient));
-            assertThat(observation.getUuid(), notNullValue());
-            assertThat(observation.getConcept(), notNullValue());
-            assertThat(observation.getEncounter(), notNullValue());
-        }
-        boolean conceptPresent = false;
-        for (Observation observation : observations) {
-            if (conceptName.equals(observation.getConcept().getName()) && "SpecialUUID".equals(observation.getConcept().getUuid())) {
-                conceptPresent = true;
-            }
-        }
-        assertThat(conceptPresent, is(true));
     }
 
     @Test
     public void shouldAssociateCorrectConceptForObservation() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         String xml = readFile("xml/histo_xml_payload_one_observation.xml");
-        formParser = new FormParser(xml, new MXParser(), patientController, conceptController, observationController);
+        formParser = new FormParser(xml, new MXParser(), patientController, conceptController);
         Concept aConcept = mock(Concept.class);
-        String conceptName = "5096^RETURN VISIT DATE^99DCT";
+        String conceptName = "RETURN VISIT DATE";
         when(conceptController.getConceptByName(conceptName)).thenReturn(aConcept);
 
         List<Observation> observations = formParser.parseForm();
@@ -86,9 +61,18 @@ public class FormParserTest {
     }
 
     @Test
+    public void shouldPrefixCreatedObservationsUuidWithCustomPrefix() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
+        String xml = readFile("xml/histo_xml_payload_one_observation.xml");
+        formParser = new FormParser(xml, new MXParser(), patientController, conceptController);
+
+        List<Observation> observations = formParser.parseForm();
+        assertThat(observations.get(0).getUuid(), containsString("observationFromPhoneUuid"));
+    }
+
+    @Test
     public void shouldAssociateCorrectEncounterForObservation() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         String xml = readFile("xml/histo_xml_payload_one_observation.xml");
-        formParser = new FormParser(xml, new MXParser(), patientController, conceptController, observationController);
+        formParser = new FormParser(xml, new MXParser(), patientController, conceptController);
 
         List<Observation> observations = formParser.parseForm();
         assertThat(observations.get(0).getEncounter().getEncounterDatetime(), is(DateUtils.parse("2014-02-01")));
@@ -97,11 +81,13 @@ public class FormParserTest {
     @Test
     public void shouldAssociateCorrectPatient() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         String xml = readFile("xml/histo_xml_payload.xml");
-        formParser = new FormParser(xml, new MXParser(), patientController, conceptController, observationController);
+        formParser = new FormParser(xml, new MXParser(), patientController, conceptController);
         Patient patient = new Patient();
-        when(patientController.getPatientByUuid("dd7963a8-1691-11df-97a5-7038c432aabf")).thenReturn(patient);
+        String patientUuid = "dd7963a8-1691-11df-97a5-7038c432aabf";
+        when(patientController.getPatientByUuid(patientUuid)).thenReturn(patient);
 
         List<Observation> observations = formParser.parseForm();
+        verify(patientController).getPatientByUuid(patientUuid);
         assertThat(observations.get(0).getEncounter().getPatient(), is(patient));
         assertThat(observations.get(0).getPerson(), is((Person)patient));
     }

@@ -5,9 +5,9 @@ import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
-import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.DateUtils;
+import com.muzima.utils.StringUtils;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -27,20 +27,20 @@ public class FormParser {
     private final String xml;
     private final PatientController patientController;
     private final ConceptController conceptController;
-    private final ObservationController observationController;
     private XmlPullParser parser;
 
     private Patient patient;
     private Encounter encounter;
     private List<Observation> observations;
+    private String observationFromPhoneUuidPrefix = "observationFromPhoneUuid";
 
-    public FormParser(String xml, PatientController patientController, ConceptController conceptController, ObservationController observationController) {
-        this(xml, newPullParser(), patientController, conceptController, observationController);
+    public FormParser(String xml, PatientController patientController, ConceptController conceptController) {
+        this(xml, newPullParser(), patientController, conceptController);
 
     }
 
     public FormParser(String xml, XmlPullParser parser, PatientController patientController,
-                      ConceptController conceptController, ObservationController observationController) {
+                      ConceptController conceptController) {
         try {
             if (parser != null) {
                 parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
@@ -52,7 +52,6 @@ public class FormParser {
         this.xml = xml;
         this.patientController = patientController;
         this.conceptController = conceptController;
-        this.observationController = observationController;
     }
 
     public List<Observation> parseForm() throws XmlPullParserException, IOException,
@@ -82,7 +81,7 @@ public class FormParser {
         for (Observation observation : observations) {
             observation.setPerson(patient);
             observation.setEncounter(encounter);
-            observation.setUuid("observationUuid" + UUID.randomUUID());
+            observation.setUuid(observationFromPhoneUuidPrefix + UUID.randomUUID());
         }
     }
 
@@ -142,9 +141,10 @@ public class FormParser {
 
     private Observation createObservation(String conceptName, String conceptValue) throws XmlPullParserException, IOException, ConceptController.ConceptFetchException {
         if (conceptValue != null) {
-            Concept concept = conceptController.getConceptByName(conceptName);
+            String myConceptName = getConceptName(conceptName);
+            Concept concept = conceptController.getConceptByName(myConceptName);
             if (concept == null) {
-                concept = createDummyConcept(conceptName);
+                concept = createDummyConcept(myConceptName);
             }
             Observation observation = new Observation();
             observation.setConcept(concept);
@@ -177,5 +177,12 @@ public class FormParser {
         public ParseFormException(Exception e) {
             super(e);
         }
+    }
+
+    private static String getConceptName(String peek) {
+        if (!StringUtils.isEmpty(peek) && peek.split("\\^").length > 1) {
+            return peek.split("\\^")[1].trim();
+        }
+        return "";
     }
 }
