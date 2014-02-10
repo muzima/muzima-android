@@ -4,6 +4,7 @@ import com.muzima.api.model.*;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.DateUtils;
+import com.muzima.utils.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,26 +32,30 @@ public class HTMLFormParser {
         JSONObject responseJSON = new JSONObject(jsonResponse);
         patient = getPatient(responseJSON.getJSONObject("patient"));
         encounter = createEncounter(responseJSON.getJSONObject("encounter"));
-        return createObservation(responseJSON.getJSONObject("observation"));
+        return createObservations(responseJSON.getJSONObject("observation"));
     }
 
-    private List<Observation> createObservation(JSONObject observationJSON) throws ConceptController.ConceptFetchException, JSONException {
+    private List<Observation> createObservations(JSONObject observationJSON) throws ConceptController.ConceptFetchException, JSONException {
         List<Observation> observations = new ArrayList<Observation>();
         Iterator keys = observationJSON.keys();
-        while(keys.hasNext()){
-            String conceptName = (String)keys.next();
-            Concept concept = conceptController.getConceptByName(conceptName);
-            if (concept == null) {
-                concept = createNewConcept(conceptName);
-            }
-            Observation observation = new Observation();
-            observation.setConcept(concept);
-            observation.setEncounter(encounter);
-            observation.setPerson(patient);
-            observation.setValueText(observationJSON.getString(conceptName));
-            observations.add(observation);
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
+            observations.add(createObservation(getConceptName(key), observationJSON.getString(key)));
         }
         return observations;
+    }
+
+    private Observation createObservation(String conceptName, String value) throws JSONException, ConceptController.ConceptFetchException {
+        Concept concept = conceptController.getConceptByName(conceptName);
+        if (concept == null) {
+            concept = createNewConcept(conceptName);
+        }
+        Observation observation = new Observation();
+        observation.setConcept(concept);
+        observation.setEncounter(encounter);
+        observation.setPerson(patient);
+        observation.setValueText(value);
+        return observation;
     }
 
     private Concept createNewConcept(String conceptNameString) {
@@ -74,5 +79,12 @@ public class HTMLFormParser {
     private Patient getPatient(JSONObject patient) throws JSONException, PatientController.PatientLoadException {
         String uuid = patient.getString("patient.uuid");
         return patientController.getPatientByUuid(uuid);
+    }
+
+    private static String getConceptName(String conceptName) {
+        if (!StringUtils.isEmpty(conceptName) && conceptName.split("\\^").length > 1) {
+            return conceptName.split("\\^")[1].trim();
+        }
+        return "";
     }
 }
