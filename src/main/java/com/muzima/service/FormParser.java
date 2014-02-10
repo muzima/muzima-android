@@ -56,7 +56,7 @@ public class FormParser {
     }
 
     public List<Observation> parseForm() throws XmlPullParserException, IOException,
-            ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
+        ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         parser.setInput(new ByteArrayInputStream(xml.getBytes()), null);
         parser.nextTag();
         while (!isEndOf("form")) {

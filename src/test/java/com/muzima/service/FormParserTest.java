@@ -62,7 +62,7 @@ public class FormParserTest {
         assertThat(observations.size(), is(6));
         for (Observation observation : observations) {
             assertThat((Patient) observation.getPerson(), is(patient));
-            assertThat(observation.getUuid(), nullValue());
+            assertThat(observation.getUuid(), notNullValue());
             assertThat(observation.getConcept(), notNullValue());
             assertThat(observation.getEncounter(), notNullValue());
         }
