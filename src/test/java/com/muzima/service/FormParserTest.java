@@ -1,11 +1,10 @@
 package com.muzima.service;
 
-import com.muzima.api.model.Concept;
-import com.muzima.api.model.Observation;
-import com.muzima.api.model.Patient;
+import com.muzima.api.model.*;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
+import com.muzima.utils.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -20,10 +19,8 @@ import java.util.Scanner;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
-import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class FormParserTest {
@@ -46,7 +43,7 @@ public class FormParserTest {
 
     @Test
     public void shouldCreateObservations() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
-        String xml = readFile();
+        String xml = readFile("xml/histo_xml_payload.xml");
         formParser = new FormParser(xml, new MXParser(), patientController, conceptController, observationController);
         Patient patient = new Patient();
         when(patientController.getPatientByUuid("dd7963a8-1691-11df-97a5-7038c432aabf")).thenReturn(patient);
@@ -75,9 +72,43 @@ public class FormParserTest {
         assertThat(conceptPresent, is(true));
     }
 
+    @Test
+    public void shouldAssociateCorrectConceptForObservation() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
+        String xml = readFile("xml/histo_xml_payload_one_observation.xml");
+        formParser = new FormParser(xml, new MXParser(), patientController, conceptController, observationController);
+        Concept aConcept = mock(Concept.class);
+        String conceptName = "5096^RETURN VISIT DATE^99DCT";
+        when(conceptController.getConceptByName(conceptName)).thenReturn(aConcept);
 
-    public String readFile() {
-        InputStream fileStream = getClass().getClassLoader().getResourceAsStream("xml/histo_xml_payload.xml");
+        List<Observation> observations = formParser.parseForm();
+        verify(conceptController).getConceptByName(conceptName);
+        assertThat(observations.get(0).getConcept(), is(aConcept));
+    }
+
+    @Test
+    public void shouldAssociateCorrectEncounterForObservation() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
+        String xml = readFile("xml/histo_xml_payload_one_observation.xml");
+        formParser = new FormParser(xml, new MXParser(), patientController, conceptController, observationController);
+
+        List<Observation> observations = formParser.parseForm();
+        assertThat(observations.get(0).getEncounter().getEncounterDatetime(), is(DateUtils.parse("2014-02-01")));
+    }
+
+    @Test
+    public void shouldAssociateCorrectPatient() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
+        String xml = readFile("xml/histo_xml_payload.xml");
+        formParser = new FormParser(xml, new MXParser(), patientController, conceptController, observationController);
+        Patient patient = new Patient();
+        when(patientController.getPatientByUuid("dd7963a8-1691-11df-97a5-7038c432aabf")).thenReturn(patient);
+
+        List<Observation> observations = formParser.parseForm();
+        assertThat(observations.get(0).getEncounter().getPatient(), is(patient));
+        assertThat(observations.get(0).getPerson(), is((Person)patient));
+    }
+
+
+    public String readFile(String fileName) {
+        InputStream fileStream = getClass().getClassLoader().getResourceAsStream(fileName);
         Scanner s = new Scanner(fileStream).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "{}";
     }
