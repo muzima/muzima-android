@@ -5,6 +5,7 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -40,7 +41,20 @@ public class HTMLFormParser {
         Iterator keys = observationJSON.keys();
         while (keys.hasNext()) {
             String key = (String) keys.next();
-            observations.add(createObservation(getConceptName(key), observationJSON.getString(key)));
+            if (observationJSON.get(key) instanceof JSONArray) {
+                observations.addAll(createMultipleObservation(getConceptName(key), observationJSON.getJSONArray(key)));
+            } else {
+                observations.add(createObservation(getConceptName(key), observationJSON.getString(key)));
+            }
+        }
+        return observations;
+    }
+
+    private List<Observation> createMultipleObservation(String conceptName, JSONArray jsonArray) throws JSONException,
+            ConceptController.ConceptFetchException {
+        List<Observation> observations = new ArrayList<Observation>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            observations.add(createObservation(conceptName, jsonArray.getString(i)));
         }
         return observations;
     }
@@ -60,6 +74,9 @@ public class HTMLFormParser {
 
     private Concept createNewConcept(String conceptNameString) {
         Concept concept = new Concept();
+        ConceptType conceptType = new ConceptType();
+        conceptType.setName("ConceptCreatedOnDevice");
+        concept.setConceptType(conceptType);
         ConceptName conceptName = new ConceptName();
         conceptName.setName(conceptNameString);
         conceptName.setPreferred(true);
