@@ -6,11 +6,9 @@ import android.widget.Toast;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.FormData;
-import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
-import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.service.FormParser;
 
@@ -18,7 +16,6 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.List;
 
 import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_REGISTRATION;
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
@@ -58,15 +55,11 @@ public class FormDataStore {
             formWebViewActivity.finish();
 
             FormParser formParser = getFormParser();
-            List<Observation> observations = formParser.parseAndSaveObservations(xmlData);
+            formParser.parseAndSaveObservations(xmlData);
 
-            applicationContext.getObservationController().saveObservations(observations);
         } catch (FormController.FormDataSaveException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving the form", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while saving form data" + e);
-        } catch (ObservationController.SaveObservationException e) {
-            Toast.makeText(formWebViewActivity, "An error occurred while saving the observations", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Exception occurred while saving observations data" + e);
         } catch (ConceptController.ConceptFetchException e) {
             e.printStackTrace();
         } catch (XmlPullParserException e) {

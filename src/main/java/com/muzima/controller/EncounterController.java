@@ -4,6 +4,7 @@ import com.muzima.api.model.Encounter;
 import com.muzima.api.service.EncounterService;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EncounterController {
@@ -37,6 +38,12 @@ public class EncounterController {
             throw new SaveEncounterException(e);
         }
 
+    }
+
+    public void saveEncounter(Encounter encounter) throws SaveEncounterException {
+        ArrayList<Encounter> encounters = new ArrayList<Encounter>();
+        encounters.add(encounter);
+        saveEncounters(encounters);
     }
 
     public class DownloadEncounterException extends Throwable {

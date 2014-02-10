@@ -2,22 +2,16 @@ package com.muzima.view.forms;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.FormData;
-import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
-import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.ObservationController;
-import com.muzima.controller.PatientController;
 import com.muzima.service.FormParser;
 import com.muzima.testSupport.CustomTestRunner;
-import com.muzima.utils.Constants;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-
-import java.util.ArrayList;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -92,17 +86,5 @@ public class FormDataStoreTest {
         store.save("data", "xmlData", "complete");
         assertThat(formData.getXmlPayload(), is("xmlData"));
         assertThat(formData.getPatientUuid(), is(tempUUIDAssignedByDevice));
-    }
-
-    @Test
-    public void shouldSaveObservationsInProvidedPayloadWhenSavingAsFinal() throws Exception, ObservationController.SaveObservationException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
-        ArrayList<Observation> observations = new ArrayList<Observation>();
-        String payload = "xmldata";
-        when(formParser.parseAndSaveObservations(payload)).thenReturn(observations);
-
-        store.save("data", payload, Constants.STATUS_COMPLETE);
-
-        verify(formParser).parseAndSaveObservations(payload);
-        verify(obsController).saveObservations(observations);
     }
 }

@@ -1,9 +1,6 @@
 package com.muzima.service;
 
-import com.muzima.api.model.Concept;
-import com.muzima.api.model.Encounter;
-import com.muzima.api.model.Observation;
-import com.muzima.api.model.Patient;
+import com.muzima.api.model.*;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
@@ -28,6 +25,8 @@ public class FormParser {
 
     private final PatientController patientController;
     private final ConceptController conceptController;
+    private final EncounterController encounterController;
+    private final ObservationController observationController;
     private XmlPullParser parser;
 
     private Patient patient;
@@ -42,6 +41,8 @@ public class FormParser {
 
     public FormParser(XmlPullParser parser, PatientController patientController,
                       ConceptController conceptController, EncounterController encounterController, ObservationController observationController) {
+        this.encounterController = encounterController;
+        this.observationController = observationController;
         try {
             if (parser != null) {
                 parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
@@ -83,6 +84,15 @@ public class FormParser {
             observation.setEncounter(encounter);
             observation.setUuid(observationFromPhoneUuidPrefix + UUID.randomUUID());
         }
+
+        try {
+            encounterController.saveEncounter(encounter);
+            observationController.saveObservations(observations);
+        } catch (EncounterController.SaveEncounterException e) {
+            e.printStackTrace();
+        } catch (ObservationController.SaveObservationException e) {
+            e.printStackTrace();
+        }
     }
 
     private Patient getPatient(XmlPullParser parser) throws XmlPullParserException, IOException, PatientController.PatientLoadException {
@@ -101,10 +111,34 @@ public class FormParser {
         while (!isEndOf("encounter")) {
             if (isStartOf("encounter.encounter_datetime")) {
                 encounter.setEncounterDatetime(DateUtils.parse(parser.nextText()));
+                encounter.setProvider(getDummyProvider());
+                encounter.setLocation(getDummyLocation());
+                encounter.setEncounterType(getDummyEncounterType());
             }
             parser.next();
         }
         return encounter;
+    }
+
+    private EncounterType getDummyEncounterType() {
+        EncounterType encounterType = new EncounterType();
+        encounterType.setUuid("encounterTypeForObservationsCreatedOnPhone");
+        encounterType.setName("encounterTypeForObservationsCreatedOnPhone");
+        return encounterType;
+    }
+
+    private Location getDummyLocation() {
+        Location dummyLocation = new Location();
+        dummyLocation.setUuid("locationForObservationsCreatedOnPhone");
+        dummyLocation.setName("locationForObservationsCreatedOnPhone");
+        return dummyLocation;
+    }
+
+    private Person getDummyProvider() {
+        Person provider = new Person();
+        provider.setUuid("providerForObservationsCreatedOnPhone");
+        provider.setGender("NA");
+        return provider;
     }
 
     private boolean isEndOf(String tagName) throws XmlPullParserException {

@@ -83,6 +83,59 @@ public class FormParserTest {
     }
 
     @Test
+    public void shouldAssociateEncountersToDummyProvider() throws ConceptController.ConceptFetchException, XmlPullParserException, PatientController.PatientLoadException, ParseException, IOException {
+        String xml = readFile("xml/histo_xml_payload_one_observation.xml");
+        formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
+
+        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        Person provider = observations.get(0).getEncounter().getProvider();
+        assertThat(provider.getUuid(), is("providerForObservationsCreatedOnPhone"));
+        assertThat(provider.getGender(), is("NA"));
+    }
+
+    @Test
+    public void shouldAssociateEncountersToDummyLocation() throws ConceptController.ConceptFetchException, XmlPullParserException, PatientController.PatientLoadException, ParseException, IOException {
+        String xml = readFile("xml/histo_xml_payload_one_observation.xml");
+        formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
+
+        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        Location location = observations.get(0).getEncounter().getLocation();
+        assertThat(location.getUuid(), is("locationForObservationsCreatedOnPhone"));
+        assertThat(location.getName(), is("locationForObservationsCreatedOnPhone"));
+    }
+
+    @Test
+    public void shouldAssociateEncountersToDummyEncounterType() throws ConceptController.ConceptFetchException, XmlPullParserException, PatientController.PatientLoadException, ParseException, IOException {
+        String xml = readFile("xml/histo_xml_payload_one_observation.xml");
+        formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
+
+        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        EncounterType encounterType = observations.get(0).getEncounter().getEncounterType();
+        assertThat(encounterType.getUuid(), is("encounterTypeForObservationsCreatedOnPhone"));
+        assertThat(encounterType.getName(), is("encounterTypeForObservationsCreatedOnPhone"));
+    }
+
+    @Test
+    public void shouldSaveAssociateCorrectEncounterForObservation() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, EncounterController.SaveEncounterException {
+        String xml = readFile("xml/histo_xml_payload_one_observation.xml");
+        formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
+
+        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        final Encounter encounter = observations.get(0).getEncounter();
+        assertThat(encounter.getEncounterDatetime(), is(DateUtils.parse("2014-02-01")));
+        verify(encounterController).saveEncounter(encounter);
+    }
+
+    @Test
+    public void shouldSaveCreatedObservation() throws IOException, XmlPullParserException, ParseException, ObservationController.SaveObservationException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
+        String xml = readFile("xml/histo_xml_payload.xml");
+        formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
+
+        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        verify(observationController).saveObservations(observations);
+    }
+
+    @Test
     public void shouldAssociateCorrectPatient() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         String xml = readFile("xml/histo_xml_payload.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
