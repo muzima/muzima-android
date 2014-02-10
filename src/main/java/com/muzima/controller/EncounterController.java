@@ -30,16 +30,29 @@ public class EncounterController {
         }
     }
 
+    public void saveEncounters(List<Encounter> encounters) throws SaveEncounterException {
+        try {
+            encounterService.saveEncounters(encounters);
+        } catch (IOException e) {
+            throw new SaveEncounterException(e);
+        }
+
+    }
+
     public class DownloadEncounterException extends Throwable {
         public DownloadEncounterException(IOException e) {
             super(e);
         }
-
-
     }
 
     public class ReplaceEncounterException extends Throwable {
         public ReplaceEncounterException(IOException e) {
+            super(e);
+        }
+    }
+
+    public class SaveEncounterException extends Throwable {
+        public SaveEncounterException(IOException e) {
             super(e);
         }
     }

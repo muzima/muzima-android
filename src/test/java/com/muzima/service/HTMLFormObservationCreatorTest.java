@@ -1,13 +1,18 @@
 package com.muzima.service;
 
 import com.muzima.api.model.Concept;
+import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
+import com.muzima.controller.EncounterController;
+import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 
 import java.io.InputStream;
@@ -23,11 +28,12 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.matchers.JUnitMatchers.hasItem;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class HTMLFormParserTest {
-    private HTMLFormParser htmlFormParser;
+public class HTMLFormObservationCreatorTest {
+    private HTMLFormObservationCreator htmlFormObservationCreator;
 
     @Mock
     private PatientController patientController;
@@ -36,7 +42,22 @@ public class HTMLFormParserTest {
     private ConceptController conceptController;
 
     @Mock
+    private EncounterController encounterController;
+
+    @Mock
+    private ObservationController observationController;
+
+    @Mock
     private Patient patient;
+
+    @Captor
+    ArgumentCaptor<List<Encounter>> encounterArgumentCaptor;
+
+    @Captor
+    ArgumentCaptor<List<Observation>> observationArgumentCaptor;
+
+    @Captor
+    ArgumentCaptor<List<Concept>> conceptArgumentCaptor;
 
     private String mockConceptName;
     private String mockConceptUUID;
@@ -45,7 +66,7 @@ public class HTMLFormParserTest {
     @Before
     public void setUp() throws PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         initMocks(this);
-        htmlFormParser = new HTMLFormParser(patientController, conceptController);
+        htmlFormObservationCreator = new HTMLFormObservationCreator(patientController, conceptController, encounterController, observationController);
 
         when(patientController.getPatientByUuid("9090900-asdsa-asdsannidj-qwnkika")).thenReturn(patient);
 
@@ -62,14 +83,15 @@ public class HTMLFormParserTest {
     public void shouldParseJSONResponseAndCreateObservation() throws PatientController.PatientLoadException,
             JSONException, ParseException, ConceptController.ConceptFetchException {
 
-        List<Observation> observations = htmlFormParser.parse(readFile());
-
+        htmlFormObservationCreator.createAndPersistObservations(readFile());
+        List<Observation> observations = htmlFormObservationCreator.getObservations();
         assertThat(observations.size(), is(18));
     }
 
     @Test
     public void shouldCheckIfAllObservationsHaveEncounterAndPatient() throws Exception, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
-        List<Observation> observations = htmlFormParser.parse(readFile());
+        htmlFormObservationCreator.createAndPersistObservations(readFile());
+        List<Observation> observations = htmlFormObservationCreator.getObservations();
 
         for (Observation observation : observations) {
             assertThat((Patient) observation.getPerson(), is(patient));
@@ -79,7 +101,8 @@ public class HTMLFormParserTest {
 
     @Test
     public void shouldCheckIfAllObservationsHasEitherAFetchedConceptOrNewConcept() throws Exception, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
-        List<Observation> observations = htmlFormParser.parse(readFile());
+        htmlFormObservationCreator.createAndPersistObservations(readFile());
+        List<Observation> observations = htmlFormObservationCreator.getObservations();
 
         boolean conceptUuidAsserted = false;
         for (Observation observation : observations) {
@@ -92,7 +115,8 @@ public class HTMLFormParserTest {
     @Test
     public void shouldCheckIfMultipleObservationsAreCreatedForMultiValuedConcepts() throws Exception, PatientController.PatientLoadException,
             ConceptController.ConceptFetchException {
-        List<Observation> observations = htmlFormParser.parse(readFile());
+        htmlFormObservationCreator.createAndPersistObservations(readFile());
+        List<Observation> observations = htmlFormObservationCreator.getObservations();
         List<Observation> multiValuedObservations = new ArrayList<Observation>();
         for (Observation observation : observations) {
             if (observation.getConcept().getName().equals("REFERRALS ORDERED")) {
@@ -103,8 +127,22 @@ public class HTMLFormParserTest {
         assertThat(multiValuedObservations.size(), is(2));
         assertThat(expectedValues, hasItem(multiValuedObservations.get(0).getValueText()));
         assertThat(expectedValues, hasItem(multiValuedObservations.get(1).getValueText()));
-
     }
+
+    @Test
+    public void shouldVerifyAllObservationsAndRelatedEntitiesAreSaved() throws EncounterController.SaveEncounterException, ConceptController.ConceptSaveException, ObservationController.SaveObservationException {
+        htmlFormObservationCreator.createAndPersistObservations(readFile());
+
+        verify(encounterController).saveEncounters(encounterArgumentCaptor.capture());
+        assertThat(encounterArgumentCaptor.getValue().size(), is(1));
+
+        verify(conceptController).saveConcepts(conceptArgumentCaptor.capture());
+        assertThat(conceptArgumentCaptor.getValue().size(), is(15));
+
+        verify(observationController).saveObservations(observationArgumentCaptor.capture());
+        assertThat(observationArgumentCaptor.getValue().size(), is(18));
+    }
+
 
     private boolean isMockConceptPresent(String mockConceptName, String mockConceptUUID,
                                          boolean conceptUuidAsserted, Observation observation) {

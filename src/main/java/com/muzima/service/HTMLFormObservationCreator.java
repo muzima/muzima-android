@@ -1,7 +1,10 @@
 package com.muzima.service;
 
+import android.util.Log;
 import com.muzima.api.model.*;
 import com.muzima.controller.ConceptController;
+import com.muzima.controller.EncounterController;
+import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
@@ -16,24 +19,67 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-public class HTMLFormParser {
+public class HTMLFormObservationCreator {
 
     private PatientController patientController;
     private ConceptController conceptController;
+    private EncounterController encounterController;
+    private ObservationController observationController;
 
     private Patient patient;
     private Encounter encounter;
+    private List<Observation> observations;
+    private List<Concept> newConcepts;
+    private String TAG = "HTMLFormObservationCreator";
 
-    public HTMLFormParser(PatientController patientController, ConceptController conceptController) {
+    public HTMLFormObservationCreator(PatientController patientController, ConceptController conceptController,
+                                      EncounterController encounterController, ObservationController observationController) {
         this.patientController = patientController;
         this.conceptController = conceptController;
+        this.encounterController = encounterController;
+        this.observationController = observationController;
+        this.newConcepts = new ArrayList<Concept>();
     }
 
-    public List<Observation> parse(String jsonResponse) throws JSONException, PatientController.PatientLoadException, ParseException, ConceptController.ConceptFetchException {
-        JSONObject responseJSON = new JSONObject(jsonResponse);
-        patient = getPatient(responseJSON.getJSONObject("patient"));
-        encounter = createEncounter(responseJSON.getJSONObject("encounter"));
-        return createObservations(responseJSON.getJSONObject("observation"));
+    public void createAndPersistObservations(String jsonResponse) {
+        parseJSONResponse(jsonResponse);
+        try {
+            saveObservationsAndRelatedEntities();
+        } catch (ConceptController.ConceptSaveException e) {
+            Log.e(TAG, "Error while saving concept");
+        } catch (EncounterController.SaveEncounterException e) {
+            Log.e(TAG, "Error while saving Encounter");
+        } catch (ObservationController.SaveObservationException e) {
+            Log.e(TAG, "Error while saving Observation");
+        }
+    }
+
+    public List<Observation> getObservations() {
+        return observations;
+    }
+
+    private void parseJSONResponse(String jsonResponse) {
+        try {
+            JSONObject responseJSON = new JSONObject(jsonResponse);
+            patient = getPatient(responseJSON.getJSONObject("patient"));
+            encounter = createEncounter(responseJSON.getJSONObject("encounter"));
+            observations = createObservations(responseJSON.getJSONObject("observation"));
+        } catch (PatientController.PatientLoadException e) {
+            Log.e(TAG, "Error while fetching Patient");
+        } catch (ConceptController.ConceptFetchException e) {
+            Log.e(TAG, "Error while fetching Concept");
+        } catch (JSONException e) {
+            Log.e(TAG, "Error while parsing response JSON");
+        } catch (ParseException e) {
+            Log.e(TAG, "Error while parsing response JSON");
+        }
+    }
+
+    private void saveObservationsAndRelatedEntities() throws EncounterController.SaveEncounterException,
+            ObservationController.SaveObservationException, ConceptController.ConceptSaveException {
+        encounterController.saveEncounters(asList(encounter));
+        conceptController.saveConcepts(newConcepts);
+        observationController.saveObservations(observations);
     }
 
     private List<Observation> createObservations(JSONObject observationJSON) throws ConceptController.ConceptFetchException, JSONException {
@@ -62,7 +108,11 @@ public class HTMLFormParser {
     private Observation createObservation(String conceptName, String value) throws JSONException, ConceptController.ConceptFetchException {
         Concept concept = conceptController.getConceptByName(conceptName);
         if (concept == null) {
-            concept = createNewConcept(conceptName);
+            concept = findConceptInNewConcepts(conceptName);
+            if (concept == null) {
+                concept = createNewConcept(conceptName);
+                newConcepts.add(concept);
+            }
         }
         Observation observation = new Observation();
         observation.setConcept(concept);
@@ -70,6 +120,14 @@ public class HTMLFormParser {
         observation.setPerson(patient);
         observation.setValueText(value);
         return observation;
+    }
+
+    private Concept findConceptInNewConcepts(String conceptName) {
+        for (Concept newConcept : newConcepts) {
+            if (newConcept.getName().equals(conceptName))
+                return newConcept;
+        }
+        return null;
     }
 
     private Concept createNewConcept(String conceptNameString) {
