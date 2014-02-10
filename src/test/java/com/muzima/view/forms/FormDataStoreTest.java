@@ -53,7 +53,7 @@ public class FormDataStoreTest {
         when(activity.getApplicationContext()).thenReturn(muzimaApplication);
         store = new FormDataStore(activity, controller, formData){
             @Override
-            public FormParser getFormParser(String xmlData) {
+            public FormParser getFormParser() {
                 return formParser;
             }
         };
@@ -97,11 +97,11 @@ public class FormDataStoreTest {
     @Test
     public void shouldSaveObservationsInProvidedPayloadWhenSavingAsFinal() throws Exception, ObservationController.SaveObservationException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         ArrayList<Observation> observations = new ArrayList<Observation>();
-        when(formParser.parseForm()).thenReturn(observations);
+        when(formParser.parseForm("xmldata")).thenReturn(observations);
 
         store.save("data", "xmldata", Constants.STATUS_COMPLETE);
 
-        verify(formParser).parseForm();
+        verify(formParser).parseForm("xmldata");
         verify(obsController).saveObservations(observations);
     }
 }

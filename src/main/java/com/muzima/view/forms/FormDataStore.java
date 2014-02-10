@@ -57,8 +57,8 @@ public class FormDataStore {
             formWebViewActivity.setResult(FormsActivity.RESULT_OK);
             formWebViewActivity.finish();
 
-            FormParser formParser = getFormParser(xmlData);
-            List<Observation> observations = formParser.parseForm();
+            FormParser formParser = getFormParser();
+            List<Observation> observations = formParser.parseForm(xmlData);
 
             applicationContext.getObservationController().saveObservations(observations);
         } catch (FormController.FormDataSaveException e) {
@@ -80,8 +80,8 @@ public class FormDataStore {
         }
     }
 
-    public FormParser getFormParser(String xmlData) {
-        return new FormParser(xmlData, applicationContext.getPatientController(), applicationContext.getConceptController());
+    public FormParser getFormParser() {
+        return new FormParser(applicationContext.getPatientController(), applicationContext.getConceptController(), applicationContext.getEncounterController(), applicationContext.getObservationController());
     }
 
 

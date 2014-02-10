@@ -5,6 +5,8 @@ import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
+import com.muzima.controller.EncounterController;
+import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
@@ -24,7 +26,6 @@ import static android.util.Xml.newPullParser;
 
 public class FormParser {
 
-    private final String xml;
     private final PatientController patientController;
     private final ConceptController conceptController;
     private XmlPullParser parser;
@@ -34,13 +35,13 @@ public class FormParser {
     private List<Observation> observations;
     private String observationFromPhoneUuidPrefix = "observationFromPhoneUuid";
 
-    public FormParser(String xml, PatientController patientController, ConceptController conceptController) {
-        this(xml, newPullParser(), patientController, conceptController);
+    public FormParser(PatientController patientController, ConceptController conceptController, EncounterController encounterController, ObservationController observationController) {
+        this(newPullParser(), patientController, conceptController, encounterController, observationController);
 
     }
 
-    public FormParser(String xml, XmlPullParser parser, PatientController patientController,
-                      ConceptController conceptController) {
+    public FormParser(XmlPullParser parser, PatientController patientController,
+                      ConceptController conceptController, EncounterController encounterController, ObservationController observationController) {
         try {
             if (parser != null) {
                 parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
@@ -49,12 +50,11 @@ public class FormParser {
             throw new ParseFormException(e);
         }
         this.parser = parser;
-        this.xml = xml;
         this.patientController = patientController;
         this.conceptController = conceptController;
     }
 
-    public List<Observation> parseForm() throws XmlPullParserException, IOException,
+    public List<Observation> parseForm(String xml) throws XmlPullParserException, IOException,
         ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         parser.setInput(new ByteArrayInputStream(xml.getBytes()), null);
         parser.nextTag();
@@ -181,7 +181,7 @@ public class FormParser {
 
     private static String getConceptName(String peek) {
         if (!StringUtils.isEmpty(peek) && peek.split("\\^").length > 1) {
-            return peek.split("\\^")[1].trim();
+            return peek.split("\\^")[1];
         }
         return "";
     }
