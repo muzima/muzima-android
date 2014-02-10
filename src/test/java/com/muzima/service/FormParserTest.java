@@ -47,7 +47,7 @@ public class FormParserTest {
         String xml = readFile("xml/histo_xml_payload.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
 
-        List<Observation> observations = formParser.parseForm(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml);
         assertThat(observations.size(), is(6));
     }
 
@@ -59,7 +59,7 @@ public class FormParserTest {
         String conceptName = "RETURN VISIT DATE";
         when(conceptController.getConceptByName(conceptName)).thenReturn(aConcept);
 
-        List<Observation> observations = formParser.parseForm(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml);
         verify(conceptController).getConceptByName(conceptName);
         assertThat(observations.get(0).getConcept(), is(aConcept));
     }
@@ -69,7 +69,7 @@ public class FormParserTest {
         String xml = readFile("xml/histo_xml_payload_one_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
 
-        List<Observation> observations = formParser.parseForm(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml);
         assertThat(observations.get(0).getUuid(), containsString("observationFromPhoneUuid"));
     }
 
@@ -78,7 +78,7 @@ public class FormParserTest {
         String xml = readFile("xml/histo_xml_payload_one_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
 
-        List<Observation> observations = formParser.parseForm(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml);
         assertThat(observations.get(0).getEncounter().getEncounterDatetime(), is(DateUtils.parse("2014-02-01")));
     }
 
@@ -90,7 +90,7 @@ public class FormParserTest {
         String patientUuid = "dd7963a8-1691-11df-97a5-7038c432aabf";
         when(patientController.getPatientByUuid(patientUuid)).thenReturn(patient);
 
-        List<Observation> observations = formParser.parseForm(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml);
         verify(patientController).getPatientByUuid(patientUuid);
         assertThat(observations.get(0).getEncounter().getPatient(), is(patient));
         assertThat(observations.get(0).getPerson(), is((Person)patient));

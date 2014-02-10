@@ -58,7 +58,7 @@ public class FormDataStore {
             formWebViewActivity.finish();
 
             FormParser formParser = getFormParser();
-            List<Observation> observations = formParser.parseForm(xmlData);
+            List<Observation> observations = formParser.parseAndSaveObservations(xmlData);
 
             applicationContext.getObservationController().saveObservations(observations);
         } catch (FormController.FormDataSaveException e) {

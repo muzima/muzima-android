@@ -97,11 +97,12 @@ public class FormDataStoreTest {
     @Test
     public void shouldSaveObservationsInProvidedPayloadWhenSavingAsFinal() throws Exception, ObservationController.SaveObservationException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         ArrayList<Observation> observations = new ArrayList<Observation>();
-        when(formParser.parseForm("xmldata")).thenReturn(observations);
+        String payload = "xmldata";
+        when(formParser.parseAndSaveObservations(payload)).thenReturn(observations);
 
-        store.save("data", "xmldata", Constants.STATUS_COMPLETE);
+        store.save("data", payload, Constants.STATUS_COMPLETE);
 
-        verify(formParser).parseForm("xmldata");
+        verify(formParser).parseAndSaveObservations(payload);
         verify(obsController).saveObservations(observations);
     }
 }

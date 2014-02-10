@@ -54,7 +54,7 @@ public class FormParser {
         this.conceptController = conceptController;
     }
 
-    public List<Observation> parseForm(String xml) throws XmlPullParserException, IOException,
+    public List<Observation> parseAndSaveObservations(String xml) throws XmlPullParserException, IOException,
         ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         parser.setInput(new ByteArrayInputStream(xml.getBytes()), null);
         parser.nextTag();
