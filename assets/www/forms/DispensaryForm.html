@@ -139,7 +139,7 @@
     <div class="form-group">
         <label for="obs.current_visit_type">Visit Type:<span class="required">*</span></label>
         <select class="form-control" id="obs.current_visit_type" name="obs.current_visit_type"
-            data-concept="1839^CURRENT VISIT TYPE^99DCT" required="required">
+                data-concept="1839^CURRENT VISIT TYPE^99DCT" required="required">
             <option value="">...</option>
             <option value="7034^FIRST DISPENSARY VISIT AFTER HCT^99DCT">First Dispensary Visit After pHCT</option>
             <option value="7035^SECOND DISPENSARY VISIT AFTER HCT ^99DCT">Second Dispensary Visit After pHCT
@@ -165,25 +165,28 @@
     <div class="form-group">
 
         <label for="systolic_blood_pressure_phct">Systolic Blood Pressure from pHCT Screening card:</label>
-        <input class="form-control systolicBloodPressure" id="systolic_blood_pressure_phct" name="systolic_blood_pressure_phct"
+        <input class="form-control systolicBloodPressure" id="systolic_blood_pressure_phct"
+               name="systolic_blood_pressure_phct"
                type="text" data-concept="5085^SYSTOLIC BLOOD PRESSURE^99DCT">
     </div>
     <div class="form-group">
         <label for="diastolic_blood_pressure_phct">Diastolic Blood Pressure from pHCT Screening card:</label>
-        <input class="form-control lessThankSystolic" id="diastolic_blood_pressure_phct" name="diastolic_blood_pressure_phct"
+        <input class="form-control lessThankSystolic" id="diastolic_blood_pressure_phct"
+               name="diastolic_blood_pressure_phct"
                type="text" data-concept="5086^DIASTOLIC BLOOD PRESSURE^99DCT">
     </div>
     <div class="form-group">
         <label for="serum_glucose_fasting_phct">Fasting Blood Sugar (FBS) from pHCT Screening card:</label>
         <input class="form-control glucose" id="serum_glucose_fasting_phct" name="serum_glucose_fasting_phct"
-               placeholder="Blood glucose is measured on a fasting basis (collected after an 8 to 10 hour fast)" type="text"
+               placeholder="Blood glucose is measured on a fasting basis (collected after an 8 to 10 hour fast)"
+               type="text"
                data-concept="6252^SERUM GLUCOSE, FASTING^99DCT">
     </div>
     <div class="form-group">
         <label for="serum_glucose_phct">Random Blood Sugar (RBS) from pHCT Screening card:</label>
         <input class="form-control glucose" id="serum_glucose_phct" name="serum_glucose_phct"
-                placeholder="Laboratory measurement of the glucose level in the blood" type="text"
-                data-concept="887^SERUM GLUCOSE^99DCT">
+               placeholder="Laboratory measurement of the glucose level in the blood" type="text"
+               data-concept="887^SERUM GLUCOSE^99DCT">
     </div>
 </div>
 <div class="section">
@@ -925,9 +928,9 @@
     <div class="form-group">
         <label for="obs.omo_number_of_tablets_glibenclamide">Number of [Glibenclamide] tablets prescribed:<<span
                 class="required">*</span></label>
-            <input class="form-control numberOfTablets" id="obs.omo_number_of_tablets_glibenclamide"
-                   name="obs.omo_number_of_tablets_glibenclamide" type="text"
-                   data-concept="1898^NUMBER OF TABLETS^99DCT" required="required">
+        <input class="form-control numberOfTablets" id="obs.omo_number_of_tablets_glibenclamide"
+               name="obs.omo_number_of_tablets_glibenclamide" type="text"
+               data-concept="1898^NUMBER OF TABLETS^99DCT" required="required">
     </div>
     <div class="form-group">
         <label for="obs.omo_medication_received_at_vist_glibenclamide">[Glibenclamide] picked-up at dispensary?<span
@@ -1186,8 +1189,9 @@
     <h3>Education</h3>
     <label>Education Given:</label>
 
-    <div class="form-group checkNoneSelectedAlone" >
-        <fieldset name="6327^PATIENT EDUCATION RECEIVED THIS VISIT^99DCT" data-concept="6327^PATIENT EDUCATION RECEIVED THIS VISIT^99DCT">
+    <div class="form-group checkNoneSelectedAlone">
+        <fieldset name="6327^PATIENT EDUCATION RECEIVED THIS VISIT^99DCT"
+                  data-concept="6327^PATIENT EDUCATION RECEIVED THIS VISIT^99DCT">
             <label class="error"></label><br>
             <input id="obs.patient_education_received_this_visit.alcohol_counseling" type="checkbox"
                    name="obs.patient_education_received_this_visit" value="1288^ALCOHOL COUNSELING^99DCT">
@@ -1248,11 +1252,11 @@
         </fieldset>
     </div>
 </div>
-<div class="section" data-concept="5096^RETURN VISIT DATE^99DCT">
+<div class="section">
     <div class="form-group">
         <label for="obs.return_visit_date">Return Date to Dispensary:</label>
-        <input class="form-control datepicker checkFutureDate" id="obs.return_visit_date" name="obs.return_visit_date"
-               type="text"
+        <input class="form-control datepicker checkFutureDate" data-concept="5096^RETURN VISIT DATE^99DCT"
+               id="obs.return_visit_date" name="obs.return_visit_date" type="text"
                readonly="readonly">
     </div>
 </div>
@@ -1270,7 +1274,7 @@ $(document).ready(function () {
         document.submit();
     });
 
-    $('#save_draft').click(function(){
+    $('#save_draft').click(function () {
         document.saveDraft();
     });
 
