@@ -27,7 +27,7 @@ public class HTMLConceptParser {
 
     private static String getConceptName(String conceptName) {
         if (!StringUtils.isEmpty(conceptName) && conceptName.split("\\^").length > 1) {
-            return conceptName.split("\\^")[1].trim();
+            return conceptName.split("\\^")[1];
         }
         return "";
     }

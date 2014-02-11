@@ -17,10 +17,11 @@ public class HTMLConceptParserTest {
         String html = readFile();
         List<String> concepts = new HTMLConceptParser().parse(html);
         assertThat(concepts.size(),is(7));
+
         assertThat(concepts,hasItem("BODY PART"));
         assertThat(concepts,hasItem("PROCEDURES DONE THIS VISIT"));
         assertThat(concepts,hasItem("ANATOMIC LOCATION DESCRIPTION"));
-        assertThat(concepts,hasItem("CLOCK FACE CERVICAL BIOPSY LOCATION"));
+        assertThat(concepts,hasItem("CLOCK FACE CERVICAL BIOPSY LOCATION "));
         assertThat(concepts,hasItem("PATHOLOGICAL DIAGNOSIS ADDED"));
         assertThat(concepts,hasItem("FREETEXT GENERAL"));
         assertThat(concepts,hasItem("RETURN VISIT DATE"));
