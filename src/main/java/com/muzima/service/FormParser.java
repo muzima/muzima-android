@@ -82,6 +82,7 @@ public class FormParser {
         for (Observation observation : observations) {
             observation.setPerson(patient);
             observation.setEncounter(encounter);
+            observation.setObservationDatetime(encounter.getEncounterDatetime());
             observation.setUuid(observationFromPhoneUuidPrefix + UUID.randomUUID());
         }
 
@@ -149,7 +150,7 @@ public class FormParser {
         return parser.getEventType() == XmlPullParser.START_TAG && tagName.equals(parser.getName());
     }
 
-    private List<Observation> createObservations(XmlPullParser parser) throws XmlPullParserException, IOException, ConceptController.ConceptFetchException {
+    private List<Observation> createObservations(XmlPullParser parser) throws XmlPullParserException, IOException, ConceptController.ConceptFetchException, ParseException {
         List<Observation> observationList = new ArrayList<Observation>();
         Stack<String> conceptNames = new Stack<String>();
         while (!isEndOf("obs")) {
@@ -173,38 +174,55 @@ public class FormParser {
         return observationList;
     }
 
-    private Observation createObservation(String conceptName, String conceptValue) throws XmlPullParserException, IOException, ConceptController.ConceptFetchException {
+    private Observation createObservation(String rawConceptName, String conceptValue) throws XmlPullParserException, IOException, ConceptController.ConceptFetchException, ParseException {
         if (conceptValue != null) {
-            String myConceptName = getConceptName(conceptName);
-            Concept concept = conceptController.getConceptByName(myConceptName);
-            if (concept == null) {
-                concept = createDummyConcept(myConceptName);
-            }
+            Concept concept = buildConcept(rawConceptName);
+
             Observation observation = new Observation();
             observation.setConcept(concept);
-            observation.setValueText(conceptValue);
+
+            // Default value
+            Concept valueCoded = new Concept();
+            valueCoded.setConceptType(new ConceptType());
+            observation.setValueCoded(valueCoded);
+            if(concept.isCoded()){
+                String observedConceptName = getConceptName(conceptValue);
+                Concept observedConcept = conceptController.getConceptByName(observedConceptName);
+                if(observedConcept != null){
+                    observation.setValueCoded(observedConcept);
+                } else {
+                    observedConcept = buildDummyConcept(observedConceptName);
+                    observation.setValueCoded(observedConcept);
+                }
+            } else {
+                observation.setValueText(conceptValue);
+            }
             return observation;
         }
         return null;
     }
 
-    private Concept createDummyConcept(String conceptName) {
-        return new Concept();
+    private Concept buildDummyConcept(String conceptName) {
+        Concept concept;
+        concept = new Concept();
+        ConceptName dummyConceptName = new ConceptName();
+        dummyConceptName.setName(conceptName);
+        dummyConceptName.setPreferred(true);
+        ArrayList<ConceptName> dummyConceptNames = new ArrayList<ConceptName>();
+        dummyConceptNames.add(dummyConceptName);
+        concept.setConceptNames(dummyConceptNames);
+        concept.setConceptType(new ConceptType());
+        return concept;
     }
 
-    private String checkForValueInConcept(XmlPullParser parser, String conceptName) throws XmlPullParserException, IOException {
-        String initConceptTagName = parser.getName();
-        System.out.println("Parser: " + parser.getName() + " Concept: " + conceptName);
-        System.out.println(initConceptTagName);
-        while (!isEndOf(initConceptTagName)) {
-            if (isStartOf("value")) {
-                return parser.nextText();
-            }
-            parser.next();
+    private Concept buildConcept(String conceptName) throws ConceptController.ConceptFetchException {
+        String myConceptName = getConceptName(conceptName);
+        Concept concept = conceptController.getConceptByName(myConceptName);
+        if (concept == null) {
+            concept = buildDummyConcept(myConceptName);
         }
-        return null;
+        return concept;
     }
-
 
     public class ParseFormException extends RuntimeException {
 
