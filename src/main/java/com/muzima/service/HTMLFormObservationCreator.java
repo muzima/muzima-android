@@ -25,6 +25,7 @@ public class HTMLFormObservationCreator {
     private ConceptController conceptController;
     private EncounterController encounterController;
     private ObservationController observationController;
+    private ObservationParserUtility observationParserUtility;
 
     private Patient patient;
     private Encounter encounter;
@@ -39,6 +40,7 @@ public class HTMLFormObservationCreator {
         this.encounterController = encounterController;
         this.observationController = observationController;
         this.newConcepts = new ArrayList<Concept>();
+        this.observationParserUtility = ObservationParserUtility.getInstance();
     }
 
     public void createAndPersistObservations(String jsonResponse) {
@@ -143,13 +145,9 @@ public class HTMLFormObservationCreator {
     }
 
     private Encounter createEncounter(JSONObject encounterJSON) throws JSONException, ParseException {
-        Encounter encounter = new Encounter();
-        EncounterType encounterType = new EncounterType();
-        encounterType.setName("EncounterCreatedOnDevice");
-        encounter.setEncounterType(encounterType);
-        encounter.setEncounterDatetime(DateUtils.parse(encounterJSON.getString("encounter.encounter_datetime")));
-        return encounter;
+        return observationParserUtility.getEncounterEntity(DateUtils.parse(encounterJSON.getString("encounter.encounter_datetime")));
     }
+
 
     private Patient getPatient(JSONObject patient) throws JSONException, PatientController.PatientLoadException {
         String uuid = patient.getString("patient.uuid");

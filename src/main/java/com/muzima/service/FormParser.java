@@ -24,6 +24,8 @@ public class FormParser {
     private final ConceptController conceptController;
     private final EncounterController encounterController;
     private final ObservationController observationController;
+    private final ObservationParserUtility observationParserUtility;
+
     private XmlPullParser parser;
 
     private Patient patient;
@@ -50,10 +52,11 @@ public class FormParser {
         this.parser = parser;
         this.patientController = patientController;
         this.conceptController = conceptController;
+        this.observationParserUtility = ObservationParserUtility.getInstance();
     }
 
     public List<Observation> parseAndSaveObservations(String xml) throws XmlPullParserException, IOException,
-        ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
+            ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         parser.setInput(new ByteArrayInputStream(xml.getBytes()), null);
         parser.nextTag();
         while (!isEndOf("form")) {
@@ -74,7 +77,7 @@ public class FormParser {
 
     private void associatePatientsWithEncountersAndObservations() {
         encounter.setPatient(patient);
-        encounter.setUuid("encounterUuid" + UUID.randomUUID());
+        encounter.setUuid(observationParserUtility.getEncounterUUID());
 
         for (Observation observation : observations) {
             observation.setPerson(patient);
@@ -109,42 +112,13 @@ public class FormParser {
         while (!isEndOf("encounter")) {
             if (isStartOf("encounter.encounter_datetime")) {
                 encounter.setEncounterDatetime(DateUtils.parse(parser.nextText()));
-                encounter.setProvider(getDummyProvider());
-                encounter.setLocation(getDummyLocation());
-                encounter.setEncounterType(getDummyEncounterType());
+                encounter.setProvider(observationParserUtility.getDummyProvider());
+                encounter.setLocation(observationParserUtility.getDummyLocation());
+                encounter.setEncounterType(observationParserUtility.getDummyEncounterType());
             }
             parser.next();
         }
         return encounter;
-    }
-
-    private EncounterType getDummyEncounterType() {
-        EncounterType encounterType = new EncounterType();
-        encounterType.setUuid("encounterTypeForObservationsCreatedOnPhone");
-        encounterType.setName("encounterTypeForObservationsCreatedOnPhone");
-        return encounterType;
-    }
-
-    private Location getDummyLocation() {
-        Location dummyLocation = new Location();
-        dummyLocation.setUuid("locationForObservationsCreatedOnPhone");
-        dummyLocation.setName("Created On Phone");
-        return dummyLocation;
-    }
-
-    private Person getDummyProvider() {
-        Person provider = new Person();
-        provider.setUuid("providerForObservationsCreatedOnPhone");
-        provider.setGender("NA");
-        PersonName personName = new PersonName();
-        personName.setFamilyName("Taken");
-        personName.setGivenName(" on");
-        personName.setMiddleName("phone");
-        personName.setPreferred(true);
-        ArrayList<PersonName> names = new ArrayList<PersonName>();
-        names.add(personName);
-        provider.setNames(names);
-        return provider;
     }
 
     private boolean isEndOf(String tagName) throws XmlPullParserException {
