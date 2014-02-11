@@ -5,6 +5,7 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
+import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
 import org.xmlpull.v1.XmlPullParser;
@@ -13,11 +14,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
-import java.util.UUID;
+import java.util.*;
 
 import static android.util.Xml.newPullParser;
 
@@ -131,7 +128,7 @@ public class FormParser {
     private Location getDummyLocation() {
         Location dummyLocation = new Location();
         dummyLocation.setUuid("locationForObservationsCreatedOnPhone");
-        dummyLocation.setName("locationForObservationsCreatedOnPhone");
+        dummyLocation.setName("Created On Phone");
         return dummyLocation;
     }
 
@@ -139,6 +136,14 @@ public class FormParser {
         Person provider = new Person();
         provider.setUuid("providerForObservationsCreatedOnPhone");
         provider.setGender("NA");
+        PersonName personName = new PersonName();
+        personName.setFamilyName("Taken");
+        personName.setGivenName(" on");
+        personName.setMiddleName("phone");
+        personName.setPreferred(true);
+        ArrayList<PersonName> names = new ArrayList<PersonName>();
+        names.add(personName);
+        provider.setNames(names);
         return provider;
     }
 
@@ -160,7 +165,8 @@ public class FormParser {
                     conceptNames.push(conceptName);
                 }
                 if (isStartOf("value")) {
-                    observationList.add(createObservation(conceptNames.peek(), parser.nextText()));
+                    Observation newObservation = createObservation(conceptNames.peek(), parser.nextText());
+                    observationList.add(newObservation);
                 }
             }
             if (parser.getEventType() == XmlPullParser.END_TAG && !conceptNames.empty()) {
@@ -175,31 +181,34 @@ public class FormParser {
     }
 
     private Observation createObservation(String rawConceptName, String conceptValue) throws XmlPullParserException, IOException, ConceptController.ConceptFetchException, ParseException {
-        if (conceptValue != null) {
-            Concept concept = buildConcept(rawConceptName);
-
-            Observation observation = new Observation();
-            observation.setConcept(concept);
-
-            // Default value
-            Concept valueCoded = new Concept();
-            valueCoded.setConceptType(new ConceptType());
-            observation.setValueCoded(valueCoded);
-            if(concept.isCoded()){
-                String observedConceptName = getConceptName(conceptValue);
-                Concept observedConcept = conceptController.getConceptByName(observedConceptName);
-                if(observedConcept != null){
-                    observation.setValueCoded(observedConcept);
-                } else {
-                    observedConcept = buildDummyConcept(observedConceptName);
-                    observation.setValueCoded(observedConcept);
-                }
-            } else {
-                observation.setValueText(conceptValue);
-            }
-            return observation;
+        if(StringUtil.isEmpty(conceptValue)) {
+            return null;
         }
-        return null;
+        Concept concept = buildConcept(rawConceptName);
+
+        Observation observation = new Observation();
+        observation.setConcept(concept);
+
+        // Default value
+        Concept valueCoded = new Concept();
+        valueCoded.setConceptType(new ConceptType());
+        observation.setValueCoded(valueCoded);
+        if(concept.isCoded()){
+            Concept observedConcept = buildConcept(conceptValue);
+            observation.setValueCoded(observedConcept);
+        } else {
+            observation.setValueText(conceptValue);
+        }
+        return observation;
+    }
+
+    private Concept buildConcept(String conceptValue) throws ConceptController.ConceptFetchException {
+        String observedConceptName = getConceptName(conceptValue);
+        Concept observedConcept = conceptController.getConceptByName(observedConceptName);
+        if(observedConcept == null){
+            observedConcept = buildDummyConcept(observedConceptName);
+        }
+        return observedConcept;
     }
 
     private Concept buildDummyConcept(String conceptName) {
@@ -208,19 +217,9 @@ public class FormParser {
         ConceptName dummyConceptName = new ConceptName();
         dummyConceptName.setName(conceptName);
         dummyConceptName.setPreferred(true);
-        ArrayList<ConceptName> dummyConceptNames = new ArrayList<ConceptName>();
-        dummyConceptNames.add(dummyConceptName);
-        concept.setConceptNames(dummyConceptNames);
+        concept.setConceptNames(Arrays.asList(dummyConceptName));
+        concept.setConceptNames(Arrays.asList(dummyConceptName));
         concept.setConceptType(new ConceptType());
-        return concept;
-    }
-
-    private Concept buildConcept(String conceptName) throws ConceptController.ConceptFetchException {
-        String myConceptName = getConceptName(conceptName);
-        Concept concept = conceptController.getConceptByName(myConceptName);
-        if (concept == null) {
-            concept = buildDummyConcept(myConceptName);
-        }
         return concept;
     }
 

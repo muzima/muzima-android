@@ -80,6 +80,17 @@ public class FormParserTest {
     }
 
     @Test
+    public void shouldNotCreateObservationWithEmptyValue() throws ConceptController.ConceptFetchException, XmlPullParserException, PatientController.PatientLoadException, ParseException, IOException {
+        String xml = readFile("xml/observation_with_empty_value.xml");
+        formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
+        Concept aConcept = mock(Concept.class);
+        when(conceptController.getConceptByName("BODY PART")).thenReturn(aConcept);
+
+        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        assertThat(observations.size(), is(0));
+    }
+
+    @Test
     public void shouldBuildDummyConceptForObservationOfTypeConcept() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         String xml = readFile("xml/value_concept_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
@@ -93,7 +104,7 @@ public class FormParserTest {
         Observation observation = observations.get(0);
         Concept actuallyObservedConcept = observation.getValueCoded();
         assertThat(actuallyObservedConcept.getName(), is(observedConceptName));
-        assertThat(actuallyObservedConcept.getConceptType() != null, is (true));
+        assertThat(actuallyObservedConcept.getConceptType() != null, is(true));
     }
 
     @Test
@@ -132,6 +143,9 @@ public class FormParserTest {
         Person provider = observations.get(0).getEncounter().getProvider();
         assertThat(provider.getUuid(), is("providerForObservationsCreatedOnPhone"));
         assertThat(provider.getGender(), is("NA"));
+        assertThat(provider.getFamilyName(), is("Taken"));
+        assertThat(provider.getGivenName(), is(" on"));
+        assertThat(provider.getMiddleName(), is("phone"));
     }
 
     @Test
@@ -142,7 +156,7 @@ public class FormParserTest {
         List<Observation> observations = formParser.parseAndSaveObservations(xml);
         Location location = observations.get(0).getEncounter().getLocation();
         assertThat(location.getUuid(), is("locationForObservationsCreatedOnPhone"));
-        assertThat(location.getName(), is("locationForObservationsCreatedOnPhone"));
+        assertThat(location.getName(), is("Created On Phone"));
     }
 
     @Test
