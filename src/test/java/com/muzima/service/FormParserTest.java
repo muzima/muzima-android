@@ -91,6 +91,36 @@ public class FormParserTest {
     }
 
     @Test
+    public void shouldParseNonPreciseNumericObservation() throws ConceptController.ConceptFetchException, XmlPullParserException, PatientController.PatientLoadException, ParseException, IOException {
+        String xml = readFile("xml/numeric_observation.xml");
+        formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
+        Concept aConcept = mock(Concept.class);
+        when(conceptController.getConceptByName("WEIGHT (KG)")).thenReturn(aConcept);
+        when(aConcept.isNumeric()).thenReturn(true);
+        when(aConcept.isPrecise()).thenReturn(false);
+
+        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        Observation observation = observations.get(0);
+        assertThat(observation.getValueNumeric().intValue(), is(42));
+    }
+
+    @Test
+    public void shouldParsePreciseNumericObservationToTwoDecimalPlaces() throws ConceptController.ConceptFetchException, XmlPullParserException, PatientController.PatientLoadException, ParseException, IOException {
+        String xml = readFile("xml/numeric_observation.xml");
+        formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
+        Concept aConcept = mock(Concept.class);
+        when(conceptController.getConceptByName("BODY SURFACE AREA")).thenReturn(aConcept);
+        when(aConcept.isNumeric()).thenReturn(true);
+        when(aConcept.isPrecise()).thenReturn(false);
+
+        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        Observation observation = observations.get(1);
+        assertThat(observation.getValueNumeric(), is(1.45));
+    }
+
+
+
+    @Test
     public void shouldBuildDummyConceptForObservationOfTypeConcept() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         String xml = readFile("xml/value_concept_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);

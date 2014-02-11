@@ -13,6 +13,8 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.util.*;
 
@@ -170,6 +172,13 @@ public class FormParser {
         if(concept.isCoded()){
             Concept observedConcept = buildConcept(conceptValue);
             observation.setValueCoded(observedConcept);
+        } else if(concept.isNumeric())
+        {
+            double valueNumeric = Double.parseDouble(conceptValue);
+            BigDecimal bigDecimal = new BigDecimal(valueNumeric);
+            bigDecimal = bigDecimal.setScale(2, RoundingMode.HALF_UP);
+
+            observation.setValueNumeric(bigDecimal.doubleValue());
         } else {
             observation.setValueText(conceptValue);
         }

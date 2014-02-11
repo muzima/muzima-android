@@ -17,14 +17,11 @@
             <provider_id_select>3-4</provider_id_select>
         </tmp>
     </encounter>
-
-    <obs concept="1238^MEDICAL RECORD OBSERVATIONS^99DCT">
-        <procedures_done_this_visit_detailed concept="7480^PROCEDURES DONE THIS VISIT, DETAILED^99DCT">
-            <body_part concept="8265^BODY PART^99DCT">
-                <date></date>
-                <time></time>
-                <value>8279^CERVIX^99DCT</value>
-            </body_part>
-        </procedures_done_this_visit_detailed>
-    </obs>
+    <obs>
+        <weight_kg concept="5089^WEIGHT (KG)^99DCT">
+            <value>42</value>
+        </weight_kg>
+        <body_surface_area concept="980^BODY SURFACE AREA^99DCT">
+            <value>1.449137674618944</value>
+        </body_surface_area>    </obs>
 </form>
