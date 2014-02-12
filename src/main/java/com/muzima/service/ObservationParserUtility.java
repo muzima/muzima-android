@@ -16,7 +16,7 @@ import static java.util.Arrays.asList;
 public class ObservationParserUtility {
 
     private static ObservationParserUtility OBSERVATION_PARSER_UTILITY;
-    public static String OBSERVATION_ON_PHONE_UUID_PREFIX = "observationFromPhoneUuid";
+    private static String OBSERVATION_ON_PHONE_UUID_PREFIX = "observationFromPhoneUuid";
 
     private ObservationParserUtility() {
     }
@@ -135,6 +135,10 @@ public class ObservationParserUtility {
 
     public String getEncounterName() {
         return "EncounterCreatedOnDevice";
+    }
+
+    public String getObservationUuid() {
+        return OBSERVATION_ON_PHONE_UUID_PREFIX + UUID.randomUUID();
     }
 }
 

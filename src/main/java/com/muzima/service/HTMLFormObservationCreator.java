@@ -18,7 +18,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 
 import static java.util.Arrays.asList;
 
@@ -118,7 +117,7 @@ public class HTMLFormObservationCreator {
         observation.setEncounter(encounter);
         observation.setPerson(patient);
         observation.setObservationDatetime(encounter.getEncounterDatetime());
-        observation.setUuid(observationParserUtility.OBSERVATION_ON_PHONE_UUID_PREFIX + UUID.randomUUID());
+        observation.setUuid(observationParserUtility.getObservationUuid());
         return observation;
     }
 
@@ -127,7 +126,6 @@ public class HTMLFormObservationCreator {
         encounterEntity.setPatient(patient);
         return encounterEntity;
     }
-
 
     private Patient getPatient(JSONObject patient) throws JSONException, PatientController.PatientLoadException {
         String uuid = patient.getString("patient.uuid");

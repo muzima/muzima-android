@@ -82,7 +82,7 @@ public class FormParser {
             observation.setPerson(patient);
             observation.setEncounter(encounter);
             observation.setObservationDatetime(encounter.getEncounterDatetime());
-            observation.setUuid(observationParserUtility.OBSERVATION_ON_PHONE_UUID_PREFIX + UUID.randomUUID());
+            observation.setUuid(observationParserUtility.getObservationUuid());
         }
 
         try {
