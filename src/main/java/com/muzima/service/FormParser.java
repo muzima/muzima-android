@@ -55,7 +55,7 @@ public class FormParser {
     }
 
     public List<Observation> parseAndSaveObservations(String xml) throws XmlPullParserException, IOException,
-            ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
+            ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
         parser.setInput(new ByteArrayInputStream(xml.getBytes()), null);
         parser.nextTag();
         while (!isEndOf("form")) {
@@ -128,7 +128,7 @@ public class FormParser {
         return parser.getEventType() == XmlPullParser.START_TAG && tagName.equals(parser.getName());
     }
 
-    private List<Observation> createObservations(XmlPullParser parser) throws XmlPullParserException, IOException, ConceptController.ConceptFetchException, ParseException {
+    private List<Observation> createObservations(XmlPullParser parser) throws XmlPullParserException, IOException, ConceptController.ConceptFetchException, ParseException, ConceptController.ConceptSaveException {
         List<Observation> observationList = new ArrayList<Observation>();
         Stack<String> conceptNames = new Stack<String>();
         while (!isEndOf("obs")) {

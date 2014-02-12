@@ -8,9 +8,10 @@ import com.muzima.utils.StringUtils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
+
+import static java.util.Arrays.asList;
 
 public class ObservationParserUtility {
 
@@ -69,11 +70,11 @@ public class ObservationParserUtility {
         return provider;
     }
 
-    public Observation createObservation(String rawConceptName, String value, ConceptController conceptController) throws ConceptController.ConceptFetchException {
+    public Observation createObservation(String rawConceptName, String value, ConceptController conceptController) throws ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
         if(StringUtil.isEmpty(value)) {
             return null;
         }
-        Concept concept = buildConcept(rawConceptName, conceptController);
+        Concept concept = buildConcept(rawConceptName, conceptController, true);
 
         Observation observation = new Observation();
         observation.setConcept(concept);
@@ -83,7 +84,7 @@ public class ObservationParserUtility {
         valueCoded.setConceptType(new ConceptType());
         observation.setValueCoded(valueCoded);
         if(concept.isCoded()){
-            Concept observedConcept = buildConcept(value, conceptController);
+            Concept observedConcept = buildConcept(value, conceptController, false);
             observation.setValueCoded(observedConcept);
         } else if(concept.isNumeric())
         {
@@ -98,11 +99,14 @@ public class ObservationParserUtility {
         return observation;
     }
 
-    private Concept buildConcept(String conceptValue, ConceptController conceptController) throws ConceptController.ConceptFetchException {
+    private Concept buildConcept(String conceptValue, ConceptController conceptController, boolean isNewConcept) throws ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
         String observedConceptName = getConceptName(conceptValue);
         Concept observedConcept = conceptController.getConceptByName(observedConceptName);
         if(observedConcept == null){
             observedConcept = buildDummyConcept(observedConceptName);
+            if (isNewConcept) {
+                conceptController.saveConcepts(asList(observedConcept));
+            }
         }
         return observedConcept;
     }
@@ -113,8 +117,7 @@ public class ObservationParserUtility {
         ConceptName dummyConceptName = new ConceptName();
         dummyConceptName.setName(conceptName);
         dummyConceptName.setPreferred(true);
-        concept.setConceptNames(Arrays.asList(dummyConceptName));
-        concept.setConceptNames(Arrays.asList(dummyConceptName));
+        concept.setConceptNames(asList(dummyConceptName));
         concept.setConceptType(new ConceptType());
         return concept;
     }
@@ -133,7 +136,5 @@ public class ObservationParserUtility {
     public String getEncounterName() {
         return "EncounterCreatedOnDevice";
     }
-
-
 }
 

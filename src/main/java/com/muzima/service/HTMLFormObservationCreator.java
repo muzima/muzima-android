@@ -77,6 +77,8 @@ public class HTMLFormObservationCreator {
             Log.e(TAG, "Error while parsing response JSON");
         } catch (ParseException e) {
             Log.e(TAG, "Error while parsing response JSON");
+        } catch (ConceptController.ConceptSaveException e) {
+            Log.e(TAG, "Error while saving newly created concept");
         }
     }
 
@@ -87,7 +89,7 @@ public class HTMLFormObservationCreator {
         observationController.saveObservations(observations);
     }
 
-    private List<Observation> createObservations(JSONObject observationJSON) throws ConceptController.ConceptFetchException, JSONException {
+    private List<Observation> createObservations(JSONObject observationJSON) throws ConceptController.ConceptFetchException, JSONException, ConceptController.ConceptSaveException {
         List<Observation> observations = new ArrayList<Observation>();
         Iterator keys = observationJSON.keys();
         while (keys.hasNext()) {
@@ -102,7 +104,7 @@ public class HTMLFormObservationCreator {
     }
 
     private List<Observation> createMultipleObservation(String conceptName, JSONArray jsonArray) throws JSONException,
-            ConceptController.ConceptFetchException {
+            ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
         List<Observation> observations = new ArrayList<Observation>();
         for (int i = 0; i < jsonArray.length(); i++) {
             observations.add(createObservation(conceptName, jsonArray.getString(i)));
@@ -110,7 +112,7 @@ public class HTMLFormObservationCreator {
         return observations;
     }
 
-    private Observation createObservation(String conceptName, String value) throws JSONException, ConceptController.ConceptFetchException {
+    private Observation createObservation(String conceptName, String value) throws JSONException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
         Observation observation = observationParserUtility.createObservation(conceptName, value, conceptController);
 
         observation.setEncounter(encounter);

@@ -70,6 +70,8 @@ public class FormDataStore {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (ConceptController.ConceptSaveException e) {
+            e.printStackTrace();
         }
     }
 
