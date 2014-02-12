@@ -31,7 +31,6 @@ public class FormParser {
     private Patient patient;
     private Encounter encounter;
     private List<Observation> observations;
-    private String observationFromPhoneUuidPrefix = "observationFromPhoneUuid";
 
     public FormParser(PatientController patientController, ConceptController conceptController, EncounterController encounterController, ObservationController observationController) {
         this(newPullParser(), patientController, conceptController, encounterController, observationController);
@@ -83,7 +82,7 @@ public class FormParser {
             observation.setPerson(patient);
             observation.setEncounter(encounter);
             observation.setObservationDatetime(encounter.getEncounterDatetime());
-            observation.setUuid(observationFromPhoneUuidPrefix + UUID.randomUUID());
+            observation.setUuid(observationParserUtility.OBSERVATION_ON_PHONE_UUID_PREFIX + UUID.randomUUID());
         }
 
         try {

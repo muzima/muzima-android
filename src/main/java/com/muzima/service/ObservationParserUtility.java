@@ -15,6 +15,7 @@ import java.util.UUID;
 public class ObservationParserUtility {
 
     private static ObservationParserUtility OBSERVATION_PARSER_UTILITY;
+    public static String OBSERVATION_ON_PHONE_UUID_PREFIX = "observationFromPhoneUuid";
 
     private ObservationParserUtility() {
     }

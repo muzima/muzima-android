@@ -1,13 +1,15 @@
 package com.muzima.service;
 
 import android.util.Log;
-import com.muzima.api.model.*;
+import com.muzima.api.model.Concept;
+import com.muzima.api.model.Encounter;
+import com.muzima.api.model.Observation;
+import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.DateUtils;
-import com.muzima.utils.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,6 +18,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import static java.util.Arrays.asList;
 
@@ -90,9 +93,9 @@ public class HTMLFormObservationCreator {
         while (keys.hasNext()) {
             String key = (String) keys.next();
             if (observationJSON.get(key) instanceof JSONArray) {
-                observations.addAll(createMultipleObservation(getConceptName(key), observationJSON.getJSONArray(key)));
+                observations.addAll(createMultipleObservation(key, observationJSON.getJSONArray(key)));
             } else {
-                observations.add(createObservation(getConceptName(key), observationJSON.getString(key)));
+                observations.add(createObservation(key, observationJSON.getString(key)));
             }
         }
         return observations;
@@ -108,44 +111,13 @@ public class HTMLFormObservationCreator {
     }
 
     private Observation createObservation(String conceptName, String value) throws JSONException, ConceptController.ConceptFetchException {
-        Concept concept = conceptController.getConceptByName(conceptName);
-        if (concept == null) {
-            concept = findConceptInNewConcepts(conceptName);
-            if (concept == null) {
-                concept = createNewConcept(conceptName);
-                newConcepts.add(concept);
-            }
-        }
-        Observation observation = new Observation();
-        observation.setConcept(concept);
+        Observation observation = observationParserUtility.createObservation(conceptName, value, conceptController);
+
         observation.setEncounter(encounter);
         observation.setPerson(patient);
-        observation.setValueText(value);
-        Concept valueCoded = new Concept();
-        valueCoded.setConceptType( new ConceptType());
-        observation.setValueCoded(valueCoded);
         observation.setObservationDatetime(encounter.getEncounterDatetime());
+        observation.setUuid(observationParserUtility.OBSERVATION_ON_PHONE_UUID_PREFIX + UUID.randomUUID());
         return observation;
-    }
-
-    private Concept findConceptInNewConcepts(String conceptName) {
-        for (Concept newConcept : newConcepts) {
-            if (newConcept.getName().equals(conceptName))
-                return newConcept;
-        }
-        return null;
-    }
-
-    private Concept createNewConcept(String conceptNameString) {
-        Concept concept = new Concept();
-        ConceptType conceptType = new ConceptType();
-        conceptType.setName("ConceptCreatedOnDevice");
-        concept.setConceptType(conceptType);
-        ConceptName conceptName = new ConceptName();
-        conceptName.setName(conceptNameString);
-        conceptName.setPreferred(true);
-        concept.setConceptNames(asList(conceptName));
-        return concept;
     }
 
     private Encounter createEncounter(JSONObject encounterJSON) throws JSONException, ParseException {
@@ -158,12 +130,5 @@ public class HTMLFormObservationCreator {
     private Patient getPatient(JSONObject patient) throws JSONException, PatientController.PatientLoadException {
         String uuid = patient.getString("patient.uuid");
         return patientController.getPatientByUuid(uuid);
-    }
-
-    private static String getConceptName(String conceptName) {
-        if (!StringUtils.isEmpty(conceptName) && conceptName.split("\\^").length > 1) {
-            return conceptName.split("\\^")[1].trim();
-        }
-        return "";
     }
 }
