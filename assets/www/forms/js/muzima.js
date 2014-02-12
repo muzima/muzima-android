@@ -145,7 +145,6 @@ $(document).ready(function () {
     /* Start - checkNoneSelectedAlone*/
 
     $.validator.addMethod("checkNoneSelectedAlone", function (value, element) {
-            console.log("Element is " + $(element).attr('name'));
             var $fieldset = $(element);
             if ($fieldset.prop('tagName') != 'FIELDSET') {
                 return true;
