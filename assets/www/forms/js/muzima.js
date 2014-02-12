@@ -4,7 +4,9 @@ $(document).ready(function () {
 
     /* Start - Function to save the form */
     document.submit = function () {
-        save("complete");
+        if($("form").valid()){
+            save("complete");
+        }
     };
 
     document.saveDraft = function () {

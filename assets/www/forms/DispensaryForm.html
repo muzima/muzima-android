@@ -1270,9 +1270,6 @@
 </body>
 <script type="text/javascript">
 $(document).ready(function () {
-    $('form').submit(function () {
-        document.submit();
-    });
 
     $('#save_draft').click(function () {
         document.saveDraft();
@@ -1300,6 +1297,9 @@ $(document).ready(function () {
                 number: true,
                 range: [0, 20]
             }
+        },
+        submitHandler: function (form) {
+            document.submit();
         }
     });
 
