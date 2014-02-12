@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     /* Start - Function to save the form */
     document.submit = function () {
-        if($("form").valid()){
+        if ($("form").valid()) {
             save("complete");
         }
     };
@@ -142,24 +142,26 @@ $(document).ready(function () {
 
     /* End - phoneNumber*/
 
-    /* Start - Checking that if 'none' is selected for referrals, nothing else is selected */
-    $('.checkNoneSelectedAlone').find('input[type="checkbox"]').change(function () {
-        var valid = true;
-        var $fieldset = $(this).parent();
-        var totalSelected = $fieldset.find('input:checkbox:checked').length;
-        $.each($fieldset.find('input:checkbox:checked'), function (i, cBoxElement) {
-            if ($(cBoxElement).val() == 'none' && totalSelected > 1) {
-                console.log("Error");
-                valid = false;
+    /* Start - checkNoneSelectedAlone*/
+
+    $.validator.addMethod("checkNoneSelectedAlone", function (value, element) {
+            console.log("Element is " + $(element).attr('name'));
+            var $fieldset = $(element);
+            if ($fieldset.prop('tagName') != 'FIELDSET') {
+                return true;
             }
-        });
-        if (!valid) {
-            $fieldset.find('.error').text("If 'None' is selected, no other options can be selected.");
-        }
-        else {
-            $fieldset.find('.error').text("");
-        }
-    });
+            var valid = true;
+            var totalSelected = $fieldset.find('input:checkbox:checked').length;
+            $.each($fieldset.find('input:checkbox:checked'), function (i, cBoxElement) {
+                console.log($(cBoxElement).val());
+                if (($(cBoxElement).val() == 'none' || $(cBoxElement).val() == '1107^NONE^99DCT')
+                    && totalSelected > 1) {
+                    valid = false;
+                }
+            });
+            return valid;
+        }, "If 'None' is selected, no other options can be selected."
+    );
 
     /* End - checkNoneSelectedAlone*/
 
@@ -219,12 +221,12 @@ $(document).ready(function () {
         $.each(prePopulateJSON, function (key, value) {
             if (value instanceof Object) {
                 var $div = $('div[data-concept="' + key + '"]');
-                if($div.length > 1){
+                if ($div.length > 1) {
                     return;
                 }
                 if ($($('[name="' + key + '"]')[0]).prop('tagName') == 'FIELDSET') {
                     $.each(value, function (i, val) {
-                        $("input[type=checkbox][value='"+ val +"']").attr('checked','true');
+                        $("input[type=checkbox][value='" + val + "']").attr('checked', 'true');
                     });
                 } else if (value instanceof Array) {
                     $.each(value, function (i, elem) {
