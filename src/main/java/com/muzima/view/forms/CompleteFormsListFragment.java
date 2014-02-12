@@ -10,6 +10,7 @@ import com.muzima.adapters.forms.CompleteFormsAdapter;
 import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.model.CompleteForm;
+import com.muzima.model.CompleteFormWithPatientData;
 
 public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAdapter implements FormsAdapter.MuzimaClickListener{
 
@@ -63,7 +64,7 @@ public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAda
 
     @Override
     public void onItemClick(int position) {
-        FormViewIntent intent = new FormViewIntent(getActivity(), (CompleteForm) listAdapter.getItem(position));
+        FormViewIntent intent = new FormViewIntent(getActivity(), (CompleteFormWithPatientData) listAdapter.getItem(position));
         getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 }
