@@ -89,14 +89,27 @@ public class HTMLFormObservationCreatorTest {
     }
 
     @Test
-    public void shouldCheckIfAllObservationsHaveEncounterAndPatient() throws Exception, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
+    public void shouldCheckIfAllObservationsHaveEncounterObservationTimeAndPatient() throws Exception, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         htmlFormObservationCreator.createAndPersistObservations(readFile());
         List<Observation> observations = htmlFormObservationCreator.getObservations();
 
         for (Observation observation : observations) {
             assertThat((Patient) observation.getPerson(), is(patient));
             assertThat(observation.getEncounter(), notNullValue());
+            assertThat(observation.getObservationDatetime(), notNullValue());
+            assertThat(observation.getValueCoded(), notNullValue());
+            assertThat(observation.getValueCoded().getConceptType(), notNullValue());
         }
+    }
+
+    @Test
+    public void shouldCheckIfEncounterHasMinimumAttributes() throws Exception, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
+        htmlFormObservationCreator.createAndPersistObservations(readFile());
+        Encounter encounter = htmlFormObservationCreator.getObservations().get(0).getEncounter();
+        assertThat(encounter.getEncounterDatetime(), notNullValue());
+        assertThat(encounter.getPatient(), notNullValue());
+        assertThat(encounter.getProvider(), notNullValue());
+        assertThat(encounter.getLocation(), notNullValue());
     }
 
     @Test

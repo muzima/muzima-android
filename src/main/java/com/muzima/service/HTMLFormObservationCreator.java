@@ -121,6 +121,10 @@ public class HTMLFormObservationCreator {
         observation.setEncounter(encounter);
         observation.setPerson(patient);
         observation.setValueText(value);
+        Concept valueCoded = new Concept();
+        valueCoded.setConceptType( new ConceptType());
+        observation.setValueCoded(valueCoded);
+        observation.setObservationDatetime(encounter.getEncounterDatetime());
         return observation;
     }
 
@@ -145,7 +149,9 @@ public class HTMLFormObservationCreator {
     }
 
     private Encounter createEncounter(JSONObject encounterJSON) throws JSONException, ParseException {
-        return observationParserUtility.getEncounterEntity(DateUtils.parse(encounterJSON.getString("encounter.encounter_datetime")));
+        Encounter encounterEntity = observationParserUtility.getEncounterEntity(DateUtils.parse(encounterJSON.getString("encounter.encounter_datetime")));
+        encounterEntity.setPatient(patient);
+        return encounterEntity;
     }
 
 

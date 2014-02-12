@@ -3,8 +3,10 @@ package com.muzima.view.forms;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
+import com.muzima.MuzimaApplication;
 import com.muzima.api.model.FormData;
 import com.muzima.controller.FormController;
+import com.muzima.service.HTMLFormObservationCreator;
 
 public class HTMLFormDataStore {
     private static final String TAG = "FormDataStore";
@@ -24,6 +26,8 @@ public class HTMLFormDataStore {
         formData.setJsonPayload(jsonPayload);
         formData.setStatus(status);
         try {
+            getFormParser().createAndPersistObservations(jsonPayload);
+
             formController.saveFormData(formData);
             formWebViewActivity.setResult(FormsActivity.RESULT_OK);
             formWebViewActivity.finish();
@@ -31,5 +35,11 @@ public class HTMLFormDataStore {
             Toast.makeText(formWebViewActivity, "An error occurred while saving the form", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while saving form data" + e);
         }
+    }
+
+    public HTMLFormObservationCreator getFormParser(){
+        MuzimaApplication applicationContext = (MuzimaApplication)formWebViewActivity.getApplicationContext();
+        return new HTMLFormObservationCreator(applicationContext.getPatientController(), applicationContext.getConceptController(),
+        applicationContext.getEncounterController(), applicationContext.getObservationController());
     }
 }
