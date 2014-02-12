@@ -1,8 +1,14 @@
 package com.muzima.service;
 
 import com.muzima.api.model.*;
+import com.muzima.controller.ConceptController;
+import com.muzima.search.api.util.StringUtil;
+import com.muzima.utils.StringUtils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
@@ -62,6 +68,62 @@ public class ObservationParserUtility {
         return provider;
     }
 
+    public Observation createObservation(String rawConceptName, String value, ConceptController conceptController) throws ConceptController.ConceptFetchException {
+        if(StringUtil.isEmpty(value)) {
+            return null;
+        }
+        Concept concept = buildConcept(rawConceptName, conceptController);
+
+        Observation observation = new Observation();
+        observation.setConcept(concept);
+
+        // Default value
+        Concept valueCoded = new Concept();
+        valueCoded.setConceptType(new ConceptType());
+        observation.setValueCoded(valueCoded);
+        if(concept.isCoded()){
+            Concept observedConcept = buildConcept(value, conceptController);
+            observation.setValueCoded(observedConcept);
+        } else if(concept.isNumeric())
+        {
+            double valueNumeric = Double.parseDouble(value);
+            BigDecimal bigDecimal = new BigDecimal(valueNumeric);
+            bigDecimal = bigDecimal.setScale(2, RoundingMode.HALF_UP);
+
+            observation.setValueNumeric(bigDecimal.doubleValue());
+        } else {
+            observation.setValueText(value);
+        }
+        return observation;
+    }
+
+    private Concept buildConcept(String conceptValue, ConceptController conceptController) throws ConceptController.ConceptFetchException {
+        String observedConceptName = getConceptName(conceptValue);
+        Concept observedConcept = conceptController.getConceptByName(observedConceptName);
+        if(observedConcept == null){
+            observedConcept = buildDummyConcept(observedConceptName);
+        }
+        return observedConcept;
+    }
+
+    private Concept buildDummyConcept(String conceptName) {
+        Concept concept;
+        concept = new Concept();
+        ConceptName dummyConceptName = new ConceptName();
+        dummyConceptName.setName(conceptName);
+        dummyConceptName.setPreferred(true);
+        concept.setConceptNames(Arrays.asList(dummyConceptName));
+        concept.setConceptNames(Arrays.asList(dummyConceptName));
+        concept.setConceptType(new ConceptType());
+        return concept;
+    }
+
+    private static String getConceptName(String peek) {
+        if (!StringUtils.isEmpty(peek) && peek.split("\\^").length > 1) {
+            return peek.split("\\^")[1];
+        }
+        return "";
+    }
 
     public String getEncounterUUID() {
         return "encounterUuid" + UUID.randomUUID();

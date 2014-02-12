@@ -1,20 +1,18 @@
 package com.muzima.service;
 
-import com.muzima.api.model.*;
+import com.muzima.api.model.Encounter;
+import com.muzima.api.model.Observation;
+import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
-import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.DateUtils;
-import com.muzima.utils.StringUtils;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.ParseException;
 import java.util.*;
 
@@ -141,7 +139,7 @@ public class FormParser {
                     conceptNames.push(conceptName);
                 }
                 if (isStartOf("value")) {
-                    Observation newObservation = createObservation(conceptNames.peek(), parser.nextText());
+                    Observation newObservation = observationParserUtility.createObservation(conceptNames.peek(), parser.nextText(), conceptController);
                     observationList.add(newObservation);
                 }
             }
@@ -156,67 +154,9 @@ public class FormParser {
         return observationList;
     }
 
-    private Observation createObservation(String rawConceptName, String conceptValue) throws XmlPullParserException, IOException, ConceptController.ConceptFetchException, ParseException {
-        if(StringUtil.isEmpty(conceptValue)) {
-            return null;
-        }
-        Concept concept = buildConcept(rawConceptName);
-
-        Observation observation = new Observation();
-        observation.setConcept(concept);
-
-        // Default value
-        Concept valueCoded = new Concept();
-        valueCoded.setConceptType(new ConceptType());
-        observation.setValueCoded(valueCoded);
-        if(concept.isCoded()){
-            Concept observedConcept = buildConcept(conceptValue);
-            observation.setValueCoded(observedConcept);
-        } else if(concept.isNumeric())
-        {
-            double valueNumeric = Double.parseDouble(conceptValue);
-            BigDecimal bigDecimal = new BigDecimal(valueNumeric);
-            bigDecimal = bigDecimal.setScale(2, RoundingMode.HALF_UP);
-
-            observation.setValueNumeric(bigDecimal.doubleValue());
-        } else {
-            observation.setValueText(conceptValue);
-        }
-        return observation;
-    }
-
-    private Concept buildConcept(String conceptValue) throws ConceptController.ConceptFetchException {
-        String observedConceptName = getConceptName(conceptValue);
-        Concept observedConcept = conceptController.getConceptByName(observedConceptName);
-        if(observedConcept == null){
-            observedConcept = buildDummyConcept(observedConceptName);
-        }
-        return observedConcept;
-    }
-
-    private Concept buildDummyConcept(String conceptName) {
-        Concept concept;
-        concept = new Concept();
-        ConceptName dummyConceptName = new ConceptName();
-        dummyConceptName.setName(conceptName);
-        dummyConceptName.setPreferred(true);
-        concept.setConceptNames(Arrays.asList(dummyConceptName));
-        concept.setConceptNames(Arrays.asList(dummyConceptName));
-        concept.setConceptType(new ConceptType());
-        return concept;
-    }
-
     public class ParseFormException extends RuntimeException {
-
         public ParseFormException(Exception e) {
             super(e);
         }
-    }
-
-    private static String getConceptName(String peek) {
-        if (!StringUtils.isEmpty(peek) && peek.split("\\^").length > 1) {
-            return peek.split("\\^")[1];
-        }
-        return "";
     }
 }
