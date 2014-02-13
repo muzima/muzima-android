@@ -137,7 +137,24 @@ public class FormParser {
                 if (conceptName != null) {
                     conceptNames.push(conceptName);
                 }
-                if (isStartOf("value")) {
+                String multipleSelect = parser.getAttributeValue("", "multipleSelect");
+                boolean isMultipleSelect = false;
+                if(multipleSelect != null){
+                    isMultipleSelect = multipleSelect.equalsIgnoreCase("true");
+                    if(isMultipleSelect){
+                        String questionConceptname = parser.getName();
+                        while (!isEndOf(questionConceptname)){
+                            parser.next();
+                            if (parser.getEventType() == XmlPullParser.START_TAG) {
+                                String codedObservationName = parser.getAttributeValue("", "concept");
+                                if (codedObservationName != null) {
+                                    Observation codeObservation = observationParserUtility.createObservation(conceptNames.peek(), codedObservationName, conceptController);
+                                    observationList.add(codeObservation);
+                                    }
+                                }
+                        }
+                    }
+                } else if (isStartOf("value")) {
                     Observation newObservation = observationParserUtility.createObservation(conceptNames.peek(), parser.nextText(), conceptController);
                     observationList.add(newObservation);
                 }

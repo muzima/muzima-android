@@ -80,6 +80,21 @@ public class FormParserTest {
     }
 
     @Test
+    public void shouldParsePayloadWithMultipleSelectObservations() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
+        String xml = readFile("xml/multiple_select_value_concept_observation.xml");
+        formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
+        Concept aConcept = mock(Concept.class);
+        when(conceptController.getConceptByName(anyString())).thenReturn(aConcept);
+
+        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        assertThat(observations.size(), is(6));
+        assertThat(observations.get(0).getValueText(), is("testing"));
+        assertThat(observations.get(1).getValueText(), is("5963^SHORTNESS OF BREATH WITH EXERTION^99DCT"));
+        assertThat(observations.get(4).getValueText(), is("1470^CHRONIC COUGH^99DCT"));
+        assertThat(observations.get(5).getValueText(), is("2014-03-01"));
+    }
+
+    @Test
     public void shouldNotCreateObservationWithEmptyValue() throws ConceptController.ConceptFetchException, XmlPullParserException, PatientController.PatientLoadException, ParseException, IOException, ConceptController.ConceptSaveException {
         String xml = readFile("xml/observation_with_empty_value.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
