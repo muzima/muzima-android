@@ -1,11 +1,14 @@
 package com.muzima.service;
 
 import com.muzima.api.model.Concept;
+import com.muzima.api.model.Observation;
 import com.muzima.controller.ConceptController;
 import com.muzima.testSupport.CustomTestRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Mockito.*;
 
@@ -18,8 +21,9 @@ public class ObservationParserUtilityTest {
         ConceptController conceptController = mock(ConceptController.class);
         when(conceptController.getConceptByName("ConceptName")).thenReturn(null);
 
-        observationParserUtility.createObservation("id^ConceptName^mm", "observation", conceptController);
+        Observation observation = observationParserUtility.createObservation("id^ConceptName^mm", "observation", conceptController);
         verify(conceptController).saveConcepts(anyList());
+        assertThat(observation.getConcept().getUuid(), notNullValue());
     }
 
     @Test

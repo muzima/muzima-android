@@ -114,6 +114,7 @@ public class ObservationParserUtility {
     private Concept buildDummyConcept(String conceptName) {
         Concept concept;
         concept = new Concept();
+        concept.setUuid("ConceptCreatedOnPhone" + UUID.randomUUID());
         ConceptName dummyConceptName = new ConceptName();
         dummyConceptName.setName(conceptName);
         dummyConceptName.setPreferred(true);
