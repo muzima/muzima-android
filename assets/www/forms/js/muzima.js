@@ -282,7 +282,7 @@ $(document).ready(function () {
 
     var serializeNonConceptElements = function ($form) {
         var o = {};
-        var $input_elements = $form.find('[name]:visible').not('[data-concept]');
+        var $input_elements = $form.find('[name]').not('[data-concept]');
         $.each($input_elements, function (i, element) {
             if (isCheckBoxAndChecked($(element))) {
                 o = pushIntoArray(o, $(element).parent().attr('name'), $(element).val());
