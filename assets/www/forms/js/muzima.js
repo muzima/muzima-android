@@ -260,10 +260,7 @@ $(document).ready(function () {
 
     /* Start - Code to Serialize form along with Data-Concepts */
     $.fn.serializeEncounterForm = function () {
-        console.time('WithOutExtraParsing');
-        console.time('WithParsing');
         var jsonResult = $.extend({}, serializeNonConceptElements(this), serializeConcepts(this), serializeNestedConcepts(this));
-        console.timeEnd('WithOutExtraParsing');
         var patient = {};
         var encounter = {};
         var observation = {};
@@ -280,7 +277,6 @@ $(document).ready(function () {
         finalResult['patient'] = patient;
         finalResult['encounter'] = encounter;
         finalResult['observation'] = observation;
-        console.timeEnd('WithParsing');
         return  finalResult;
     };
 
@@ -335,7 +331,7 @@ $(document).ready(function () {
     };
 
     var pushIntoArray = function (obj, key, value) {
-        if ($.isEmptyObject(value)) {
+        if (JSON.stringify(value) == '{}' || value == "") {
             return obj;
         }
         if (obj[key] !== undefined) {
