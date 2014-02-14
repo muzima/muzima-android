@@ -85,7 +85,8 @@ public class HTMLFormObservationCreatorTest {
 
         htmlFormObservationCreator.createAndPersistObservations(readFile());
         List<Observation> observations = htmlFormObservationCreator.getObservations();
-        assertThat(observations.size(), is(18));
+
+        assertThat(observations.size(), is(30));
     }
 
     @Test
@@ -150,7 +151,7 @@ public class HTMLFormObservationCreatorTest {
         assertThat(encounterArgumentCaptor.getValue().size(), is(1));
 
         verify(conceptController).saveConcepts(conceptArgumentCaptor.capture());
-        assertThat(conceptArgumentCaptor.getValue().size(), is(15));
+        assertThat(conceptArgumentCaptor.getValue().size(), is(22));
 
         verify(observationController).saveObservations(observationArgumentCaptor.capture());
         assertThat(observationArgumentCaptor.getValue().size(), is(18));

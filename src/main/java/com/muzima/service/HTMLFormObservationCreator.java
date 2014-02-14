@@ -67,7 +67,7 @@ public class HTMLFormObservationCreator {
             JSONObject responseJSON = new JSONObject(jsonResponse);
             patient = getPatient(responseJSON.getJSONObject("patient"));
             encounter = createEncounter(responseJSON.getJSONObject("encounter"));
-            observations = createObservations(responseJSON.getJSONObject("observation"));
+            observations = extractObservationFromJSONObject(responseJSON.getJSONObject("observation"));
         } catch (PatientController.PatientLoadException e) {
             Log.e(TAG, "Error while fetching Patient");
         } catch (ConceptController.ConceptFetchException e) {
@@ -88,25 +88,34 @@ public class HTMLFormObservationCreator {
         observationController.saveObservations(observations);
     }
 
-    private List<Observation> createObservations(JSONObject observationJSON) throws ConceptController.ConceptFetchException, JSONException, ConceptController.ConceptSaveException {
+    private List<Observation> extractObservationFromJSONObject(JSONObject jsonObject) throws JSONException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
         List<Observation> observations = new ArrayList<Observation>();
-        Iterator keys = observationJSON.keys();
+        Iterator keys = jsonObject.keys();
         while (keys.hasNext()) {
             String key = (String) keys.next();
-            if (observationJSON.get(key) instanceof JSONArray) {
-                observations.addAll(createMultipleObservation(key, observationJSON.getJSONArray(key)));
-            } else {
-                observations.add(createObservation(key, observationJSON.getString(key)));
-            }
+            observations.addAll(extractBasedOnType(jsonObject, key));
         }
         return observations;
+    }
+
+    private List<Observation> extractBasedOnType(JSONObject jsonObject, String key) throws JSONException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
+        if (jsonObject.get(key) instanceof JSONArray) {
+            return createMultipleObservation(key, jsonObject.getJSONArray(key));
+        } else if (jsonObject.get(key) instanceof JSONObject) {
+            return extractObservationFromJSONObject(jsonObject.getJSONObject(key));
+        }
+        return asList(createObservation(key, jsonObject.getString(key)));
     }
 
     private List<Observation> createMultipleObservation(String conceptName, JSONArray jsonArray) throws JSONException,
             ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
         List<Observation> observations = new ArrayList<Observation>();
         for (int i = 0; i < jsonArray.length(); i++) {
-            observations.add(createObservation(conceptName, jsonArray.getString(i)));
+            if (jsonArray.get(i) instanceof JSONObject) {
+                observations.addAll(extractObservationFromJSONObject(jsonArray.getJSONObject(i)));
+            } else {
+                observations.add(createObservation(conceptName, jsonArray.getString(i)));
+            }
         }
         return observations;
     }
