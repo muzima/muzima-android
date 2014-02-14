@@ -119,7 +119,9 @@ public class ObservationParserUtility {
         dummyConceptName.setName(conceptName);
         dummyConceptName.setPreferred(true);
         concept.setConceptNames(asList(dummyConceptName));
-        concept.setConceptType(new ConceptType());
+        ConceptType conceptType = new ConceptType();
+        conceptType.setName("ConceptTypeCreatedOnThePhone");
+        concept.setConceptType(conceptType);
         return concept;
     }
 
