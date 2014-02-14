@@ -346,4 +346,10 @@ $(document).ready(function () {
     };
 
     /* End - Code to Serialize form along with Data-Concepts */
+
+    /* Start- Initialize Autocomplete */
+
+    $(".autocomplete-select").combobox();
+
+    /* End- Initialize Autocomplete */
 });

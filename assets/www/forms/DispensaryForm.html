@@ -66,6 +66,7 @@
     <div class="form-group">
         <label for="encounter.location_id">Name of Dispensary:<span class="required">*</span></label>
         <select class="form-control autocomplete-select" id="encounter.location_id" name="encounter.location_id"
+                placeholder="Start typing in  Dispensary name..."
                 required="required">
             <option value=""></option>
             <option value="2">Mosoriot Health Centre</option>
@@ -99,8 +100,8 @@
     </div>
     <div class="form-group">
         <label for="encounter.provider_id_select">Provider ID:</label>
-        <select class="form-control" id="encounter.provider_id_select" name="encounter.provider_id_select">
-            <option value="">...</option>
+        <select class="form-control autocomplete-select" id="encounter.provider_id_select" name="encounter.provider_id_select">
+            <option value=""></option>
             <option value="3356-3">David S. Pamba</option>
             <option value="237-8">Ariya Patrick</option>
             <option value="3331-6">Benjamin Osiya Ekirapa</option>
@@ -1289,7 +1290,6 @@ $(document).ready(function () {
     $('#save_draft').click(function () {
         document.saveDraft();
     });
-    $(".autocomplete-select").combobox();
     $('#dispensary_form').validate({
         rules: {
             pulse: {
