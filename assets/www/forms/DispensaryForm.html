@@ -8,7 +8,7 @@
     <script src="js/jquery-ui-1.10.4.custom.min.js"></script>
     <script src="js/jquery.validate.min.js"></script>
     <script src="js/additional-methods.min.js"></script>
-    <script src="js/jquery-autocomplete.js"></script>
+    <script src="js/jquery-autocomplete-min.js"></script>
     <script src="js/muzima.js"></script>
 
     <title>Dispensary Form</title>
@@ -65,7 +65,8 @@
 
     <div class="form-group">
         <label for="encounter.location_id">Name of Dispensary:<span class="required">*</span></label>
-        <select class="form-control autocomplete-select" id="encounter.location_id" name="encounter.location_id" required="required">
+        <select class="form-control autocomplete-select" id="encounter.location_id" name="encounter.location_id"
+                required="required">
             <option value=""></option>
             <option value="2">Mosoriot Health Centre</option>
             <option value="3">Turbo Health Centre</option>
@@ -596,7 +597,8 @@
 
     <div class="form-group">
         <fieldset data-concept="1069^REVIEW OF SYSTEMS, GENERAL^99DCT" name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT">
-            <input id="obs.review_of_systems_general.edema_legs" type="checkbox" name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
+            <input id="obs.review_of_systems_general.edema_legs" type="checkbox"
+                   name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
                    value="590^EDEMA, LEGS^99DCT">
             <label for="obs.review_of_systems_general.edema_legs">Leg Swelling (Oedema)</label><br>
             <input id="obs.review_of_systems_general.shortness_of_breath_with_exertion" type="checkbox"
@@ -607,19 +609,24 @@
                    name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
                    value="6005^FOCAL WEAKNESS^99DCT">
             <label for="obs.review_of_systems_general.focal_weakness">Weakness in one part of the body</label><br>
-            <input id="obs.review_of_systems_general.oliguria" type="checkbox" name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
+            <input id="obs.review_of_systems_general.oliguria" type="checkbox"
+                   name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
                    value="6021^OLIGURIA^99DCT">
             <label for="obs.review_of_systems_general.oliguria">Reduced urine output</label><br>
-            <input id="obs.review_of_systems_general.heart_racing" type="checkbox" name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
+            <input id="obs.review_of_systems_general.heart_racing" type="checkbox"
+                   name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
                    value="7044^HEART RACING^99DCT">
             <label for="obs.review_of_systems_general.heart_racing">Heart Racing</label><br>
-            <input id="obs.review_of_systems_general.dizziness" type="checkbox" name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
+            <input id="obs.review_of_systems_general.dizziness" type="checkbox"
+                   name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
                    value="877^DIZZINESS^99DCT">
             <label for="obs.review_of_systems_general.dizziness">Recurrent Dizziness</label><br>
-            <input id="obs.review_of_systems_general.fainting" type="checkbox" name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
+            <input id="obs.review_of_systems_general.fainting" type="checkbox"
+                   name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
                    value="7045^FAINTING^99DCT">
             <label for="obs.review_of_systems_general.fainting">Fainting</label><br>
-            <input id="obs.review_of_systems_general.unconscious" type="checkbox" name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
+            <input id="obs.review_of_systems_general.unconscious" type="checkbox"
+                   name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
                    value="2295^UNCONSCIOUS^99DCT">
             <label for="obs.review_of_systems_general.unconscious">Loss of consciousness</label><br>
             <input id="obs.review_of_systems_general.vision_difficulties" type="checkbox"
@@ -629,26 +636,32 @@
                    name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
                    value="7046^FOOT COMPLAINTS^99DCT">
             <label for="obs.review_of_systems_general.foot_complaints">Foot Complaints</label><br>
-            <input id="obs.review_of_systems_general.nausea" type="checkbox" name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
+            <input id="obs.review_of_systems_general.nausea" type="checkbox"
+                   name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
                    value="5978^NAUSEA^99DCT">
             <label for="obs.review_of_systems_general.nausea">Nausea</label><br>
-            <input id="obs.review_of_systems_general.vomiting" type="checkbox" name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
+            <input id="obs.review_of_systems_general.vomiting" type="checkbox"
+                   name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
                    value="5980^VOMITING^99DCT">
             <label for="obs.review_of_systems_general.vomiting">Vomiting</label><br>
             <input id="obs.review_of_systems_general.abdominal_pain" type="checkbox"
                    name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
                    value="151^ABDOMINAL PAIN^99DCT">
             <label for="obs.review_of_systems_general.abdominal_pain">Abdominal Discomfort</label><br>
-            <input id="obs.review_of_systems_general.diarrhea" type="checkbox" name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
+            <input id="obs.review_of_systems_general.diarrhea" type="checkbox"
+                   name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
                    value="16^DIARRHEA^99DCT">
             <label for="obs.review_of_systems_general.diarrhea">Diarrhea</label><br>
-            <input id="obs.review_of_systems_general.constipation" type="checkbox" name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
+            <input id="obs.review_of_systems_general.constipation" type="checkbox"
+                   name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
                    value="996^CONSTIPATION^99DCT">
             <label for="obs.review_of_systems_general.constipation">Constipation</label><br>
-            <input id="obs.review_of_systems_general.chronic_cough" type="checkbox" name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
+            <input id="obs.review_of_systems_general.chronic_cough" type="checkbox"
+                   name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
                    value="1470^CHRONIC COUGH^99DCT">
             <label for="obs.review_of_systems_general.chronic_cough">Recurrent Cough</label><br>
-            <input id="obs.review_of_systems_general.hypoglycemia" type="checkbox" name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
+            <input id="obs.review_of_systems_general.hypoglycemia" type="checkbox"
+                   name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
                    value="7047^HYPOGLYCEMIA^99DCT">
             <label for="obs.review_of_systems_general.hypoglycemia">Hunger, Sweating, dizziness and shaking</label><br>
             <input id="obs.review_of_systems_general.none" type="checkbox" name="1069^REVIEW OF SYSTEMS, GENERAL^99DCT"
@@ -1244,10 +1257,12 @@
             <input id="obs.referrals_ordered.antenatal_care_service" type="checkbox" name="1272^REFERRALS ORDERED^99DCT"
                    value="1865^ANTENATAL CARE SERVICE^99DCT">
             <label for="obs.referrals_ordered.antenatal_care_service">ANC Clinic</label><br>
-            <input id="obs.referrals_ordered.high_risk_antenatal_clinic" type="checkbox" name="1272^REFERRALS ORDERED^99DCT"
+            <input id="obs.referrals_ordered.high_risk_antenatal_clinic" type="checkbox"
+                   name="1272^REFERRALS ORDERED^99DCT"
                    value="7058^HIGH RISK ANTENATAL CLINIC^99DCT">
             <label for="obs.referrals_ordered.high_risk_antenatal_clinic">High Risk ANC Clinic</label><br>
-            <input id="obs.referrals_ordered.none" type="checkbox" name="1272^REFERRALS ORDERED^99DCT" value="1107^NONE^99DCT">
+            <input id="obs.referrals_ordered.none" type="checkbox" name="1272^REFERRALS ORDERED^99DCT"
+                   value="1107^NONE^99DCT">
             <label for="obs.referrals_ordered.none">None</label><br>
         </fieldset>
     </div>
@@ -1297,19 +1312,19 @@ $(document).ready(function () {
                 number: true,
                 range: [0, 20]
             },
-            'obs.tmp_drugs' : {
+            'obs.tmp_drugs': {
                 checkNoneSelectedAlone: true
             },
-            '1069^REVIEW OF SYSTEMS, GENERAL^99DCT' : {
+            '1069^REVIEW OF SYSTEMS, GENERAL^99DCT': {
                 checkNoneSelectedAlone: true
             },
-            'obs.drugs_dispensed' : {
+            'obs.drugs_dispensed': {
                 checkNoneSelectedAlone: true
             },
-            '6327^PATIENT EDUCATION RECEIVED THIS VISIT^99DCT' : {
+            '6327^PATIENT EDUCATION RECEIVED THIS VISIT^99DCT': {
                 checkNoneSelectedAlone: true
             },
-            '1272^REFERRALS ORDERED^99DCT' : {
+            '1272^REFERRALS ORDERED^99DCT': {
                 checkNoneSelectedAlone: true
             }
         },
