@@ -151,10 +151,12 @@ public class HTMLFormObservationCreatorTest {
         assertThat(encounterArgumentCaptor.getValue().size(), is(1));
 
         verify(conceptController).saveConcepts(conceptArgumentCaptor.capture());
-        assertThat(conceptArgumentCaptor.getValue().size(), is(22));
+
+        List<Concept> value = conceptArgumentCaptor.getValue();
+        assertThat(value.size(), is(22));
 
         verify(observationController).saveObservations(observationArgumentCaptor.capture());
-        assertThat(observationArgumentCaptor.getValue().size(), is(18));
+        assertThat(observationArgumentCaptor.getValue().size(), is(30));
     }
 
 

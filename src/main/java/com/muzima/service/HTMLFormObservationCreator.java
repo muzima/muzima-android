@@ -9,7 +9,6 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
-import com.muzima.utils.DateUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.muzima.utils.DateUtils.parse;
 import static java.util.Arrays.asList;
 
 public class HTMLFormObservationCreator {
@@ -32,7 +32,6 @@ public class HTMLFormObservationCreator {
     private Patient patient;
     private Encounter encounter;
     private List<Observation> observations;
-    private List<Concept> newConcepts;
     private String TAG = "HTMLFormObservationCreator";
 
     public HTMLFormObservationCreator(PatientController patientController, ConceptController conceptController,
@@ -41,8 +40,7 @@ public class HTMLFormObservationCreator {
         this.conceptController = conceptController;
         this.encounterController = encounterController;
         this.observationController = observationController;
-        this.newConcepts = new ArrayList<Concept>();
-        this.observationParserUtility = ObservationParserUtility.getInstance();
+        this.observationParserUtility = new ObservationParserUtility(conceptController);
     }
 
     public void createAndPersistObservations(String jsonResponse) {
@@ -84,7 +82,7 @@ public class HTMLFormObservationCreator {
     private void saveObservationsAndRelatedEntities() throws EncounterController.SaveEncounterException,
             ObservationController.SaveObservationException, ConceptController.ConceptSaveException {
         encounterController.saveEncounters(asList(encounter));
-        conceptController.saveConcepts(newConcepts);
+        conceptController.saveConcepts(observationParserUtility.getNewConceptList());
         observationController.saveObservations(observations);
     }
 
@@ -121,19 +119,16 @@ public class HTMLFormObservationCreator {
     }
 
     private Observation createObservation(String conceptName, String value) throws JSONException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
-        Observation observation = observationParserUtility.createObservation(conceptName, value, conceptController);
-
+        Concept concept = observationParserUtility.getConceptEntity(conceptName);
+        Observation observation = observationParserUtility.getObservationEntity(concept, value);
         observation.setEncounter(encounter);
         observation.setPerson(patient);
         observation.setObservationDatetime(encounter.getEncounterDatetime());
-        observation.setUuid(observationParserUtility.getObservationUuid());
         return observation;
     }
 
     private Encounter createEncounter(JSONObject encounterJSON) throws JSONException, ParseException {
-        Encounter encounterEntity = observationParserUtility.getEncounterEntity(DateUtils.parse(encounterJSON.getString("encounter.encounter_datetime")));
-        encounterEntity.setPatient(patient);
-        return encounterEntity;
+        return observationParserUtility.getEncounterEntity(parse(encounterJSON.getString("encounter.encounter_datetime")), patient);
     }
 
     private Patient getPatient(JSONObject patient) throws JSONException, PatientController.PatientLoadException {

@@ -9,26 +9,24 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
+import static com.muzima.util.Constants.CONCEPT_CREATED_ON_PHONE;
 import static java.util.Arrays.asList;
 
 public class ObservationParserUtility {
 
-    private static ObservationParserUtility OBSERVATION_PARSER_UTILITY;
     private static String OBSERVATION_ON_PHONE_UUID_PREFIX = "observationFromPhoneUuid";
+    private ConceptController conceptController;
+    private List<Concept> newConceptList;
 
-    private ObservationParserUtility() {
+    public ObservationParserUtility(ConceptController conceptController) {
+        this.conceptController = conceptController;
+        this.newConceptList = new ArrayList<Concept>();
     }
 
-    public static ObservationParserUtility getInstance() {
-        if (OBSERVATION_PARSER_UTILITY == null) {
-            OBSERVATION_PARSER_UTILITY = new ObservationParserUtility();
-        }
-        return OBSERVATION_PARSER_UTILITY;
-    }
-
-    public Encounter getEncounterEntity(Date encounterDateTime) {
+    public Encounter getEncounterEntity(Date encounterDateTime, Patient patient) {
         Encounter encounter = new Encounter();
         EncounterType encounterType = new EncounterType();
         encounter.setEncounterType(encounterType);
@@ -38,24 +36,74 @@ public class ObservationParserUtility {
         encounter.setLocation(getDummyLocation());
         encounter.setEncounterType(getDummyEncounterType());
         encounter.setEncounterDatetime(encounterDateTime);
+        encounter.setPatient(patient);
         return encounter;
     }
 
-    public EncounterType getDummyEncounterType() {
+    public Concept getConceptEntity(String rawConceptName) throws ConceptController.ConceptFetchException {
+        String conceptName = getConceptName(rawConceptName);
+        Concept conceptFromExistingList = getConceptFromExistingList(conceptName);
+        if (conceptFromExistingList != null) {
+            return conceptFromExistingList;
+        }
+        Concept observedConcept = conceptController.getConceptByName(conceptName);
+        if (observedConcept == null) {
+            observedConcept = buildDummyConcept(conceptName);
+            newConceptList.add(observedConcept);
+        }
+        return observedConcept;
+    }
+
+    public Observation getObservationEntity(Concept concept, String value) throws ConceptController.ConceptFetchException {
+        if (StringUtil.isEmpty(value)) {
+            return null;
+        }
+        Observation observation = new Observation();
+        observation.setUuid(getObservationUuid());
+        observation.setConcept(concept);
+        observation.setValueCoded(defaultValueCodedConcept());
+        if (concept.isCoded()) {
+            observation.setValueCoded(getConceptEntity(value));
+        } else if (concept.isNumeric()) {
+            observation.setValueNumeric(getDoubleValue(value));
+        } else {
+            observation.setValueText(value);
+        }
+        return observation;
+    }
+
+    public List<Concept> getNewConceptList() {
+        return newConceptList;
+    }
+
+    private double getDoubleValue(String value) {
+        double valueNumeric = Double.parseDouble(value);
+        BigDecimal bigDecimal = new BigDecimal(valueNumeric);
+        bigDecimal = bigDecimal.setScale(2, RoundingMode.HALF_UP);
+        return bigDecimal.doubleValue();
+    }
+
+    private Concept defaultValueCodedConcept() {
+        Concept valueCoded = new Concept();
+        valueCoded.setConceptType(new ConceptType());
+        return valueCoded;
+    }
+
+    private EncounterType getDummyEncounterType() {
         EncounterType encounterType = new EncounterType();
         encounterType.setUuid("encounterTypeForObservationsCreatedOnPhone");
         encounterType.setName("encounterTypeForObservationsCreatedOnPhone");
         return encounterType;
     }
 
-    public Location getDummyLocation() {
+    private Location getDummyLocation() {
         Location dummyLocation = new Location();
         dummyLocation.setUuid("locationForObservationsCreatedOnPhone");
         dummyLocation.setName("Created On Phone");
         return dummyLocation;
     }
 
-    public Person getDummyProvider() {
+    private Person getDummyProvider() {
         Person provider = new Person();
         provider.setUuid("providerForObservationsCreatedOnPhone");
         provider.setGender("NA");
@@ -70,51 +118,9 @@ public class ObservationParserUtility {
         return provider;
     }
 
-    public Observation createObservation(String rawConceptName, String value, ConceptController conceptController) throws ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
-        if(StringUtil.isEmpty(value)) {
-            return null;
-        }
-        Concept concept = buildConcept(rawConceptName, conceptController, true);
-
-        Observation observation = new Observation();
-        observation.setConcept(concept);
-
-        // Default value
-        Concept valueCoded = new Concept();
-        valueCoded.setConceptType(new ConceptType());
-        observation.setValueCoded(valueCoded);
-        if(concept.isCoded()){
-            Concept observedConcept = buildConcept(value, conceptController, false);
-            observation.setValueCoded(observedConcept);
-        } else if(concept.isNumeric())
-        {
-            double valueNumeric = Double.parseDouble(value);
-            BigDecimal bigDecimal = new BigDecimal(valueNumeric);
-            bigDecimal = bigDecimal.setScale(2, RoundingMode.HALF_UP);
-
-            observation.setValueNumeric(bigDecimal.doubleValue());
-        } else {
-            observation.setValueText(value);
-        }
-        return observation;
-    }
-
-    private Concept buildConcept(String conceptValue, ConceptController conceptController, boolean isNewConcept) throws ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
-        String observedConceptName = getConceptName(conceptValue);
-        Concept observedConcept = conceptController.getConceptByName(observedConceptName);
-        if(observedConcept == null){
-            observedConcept = buildDummyConcept(observedConceptName);
-            if (isNewConcept) {
-                conceptController.saveConcepts(asList(observedConcept));
-            }
-        }
-        return observedConcept;
-    }
-
     private Concept buildDummyConcept(String conceptName) {
-        Concept concept;
-        concept = new Concept();
-        concept.setUuid("ConceptCreatedOnPhone" + UUID.randomUUID());
+        Concept concept = new Concept();
+        concept.setUuid(CONCEPT_CREATED_ON_PHONE + UUID.randomUUID());
         ConceptName dummyConceptName = new ConceptName();
         dummyConceptName.setName(conceptName);
         dummyConceptName.setPreferred(true);
@@ -125,6 +131,15 @@ public class ObservationParserUtility {
         return concept;
     }
 
+    private Concept getConceptFromExistingList(String conceptName) {
+        for (Concept concept : newConceptList) {
+            if (conceptName.equals(concept.getName())) {
+                return concept;
+            }
+        }
+        return null;
+    }
+
     private static String getConceptName(String peek) {
         if (!StringUtils.isEmpty(peek) && peek.split("\\^").length > 1) {
             return peek.split("\\^")[1];
@@ -132,11 +147,11 @@ public class ObservationParserUtility {
         return "";
     }
 
-    public String getEncounterUUID() {
+    private String getEncounterUUID() {
         return "encounterUuid" + UUID.randomUUID();
     }
 
-    public String getEncounterName() {
+    private String getEncounterName() {
         return "EncounterCreatedOnDevice";
     }
 

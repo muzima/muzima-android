@@ -1,5 +1,6 @@
 package com.muzima.service;
 
+import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
@@ -14,7 +15,10 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Stack;
 
 import static android.util.Xml.newPullParser;
 
@@ -51,7 +55,7 @@ public class FormParser {
         this.parser = parser;
         this.patientController = patientController;
         this.conceptController = conceptController;
-        this.observationParserUtility = ObservationParserUtility.getInstance();
+        this.observationParserUtility = new ObservationParserUtility(conceptController);
     }
 
     public List<Observation> parseAndSaveObservations(String xml) throws XmlPullParserException, IOException,
@@ -76,7 +80,6 @@ public class FormParser {
 
     private void associatePatientsWithEncountersAndObservations() {
         encounter.setPatient(patient);
-        encounter.setUuid(observationParserUtility.getEncounterUUID());
 
         for (Observation observation : observations) {
             observation.setPerson(patient);
@@ -87,10 +90,13 @@ public class FormParser {
 
         try {
             encounterController.saveEncounter(encounter);
+            conceptController.saveConcepts(observationParserUtility.getNewConceptList());
             observationController.saveObservations(observations);
         } catch (EncounterController.SaveEncounterException e) {
             e.printStackTrace();
         } catch (ObservationController.SaveObservationException e) {
+            e.printStackTrace();
+        } catch (ConceptController.ConceptSaveException e) {
             e.printStackTrace();
         }
     }
@@ -107,13 +113,10 @@ public class FormParser {
     }
 
     private Encounter createEncounter(XmlPullParser parser) throws XmlPullParserException, IOException, ParseException {
-        Encounter encounter = new Encounter();
+        Encounter encounter = null;
         while (!isEndOf("encounter")) {
             if (isStartOf("encounter.encounter_datetime")) {
-                encounter.setEncounterDatetime(DateUtils.parse(parser.nextText()));
-                encounter.setProvider(observationParserUtility.getDummyProvider());
-                encounter.setLocation(observationParserUtility.getDummyLocation());
-                encounter.setEncounterType(observationParserUtility.getDummyEncounterType());
+                encounter = observationParserUtility.getEncounterEntity(DateUtils.parse(parser.nextText()), patient);
             }
             parser.next();
         }
@@ -139,24 +142,22 @@ public class FormParser {
                 }
                 String multipleSelect = parser.getAttributeValue("", "multipleSelect");
                 boolean isMultipleSelect = false;
-                if(multipleSelect != null){
+                if (multipleSelect != null) {
                     isMultipleSelect = multipleSelect.equalsIgnoreCase("true");
-                    if(isMultipleSelect){
-                        String questionConceptname = parser.getName();
-                        while (!isEndOf(questionConceptname)){
+                    if (isMultipleSelect) {
+                        String questionConceptName = parser.getName();
+                        while (!isEndOf(questionConceptName)) {
                             parser.next();
                             if (parser.getEventType() == XmlPullParser.START_TAG) {
                                 String codedObservationName = parser.getAttributeValue("", "concept");
                                 if (codedObservationName != null) {
-                                    Observation codeObservation = observationParserUtility.createObservation(conceptNames.peek(), codedObservationName, conceptController);
-                                    observationList.add(codeObservation);
-                                    }
+                                    observationList.add(getObservation(conceptNames, codedObservationName));
                                 }
+                            }
                         }
                     }
                 } else if (isStartOf("value")) {
-                    Observation newObservation = observationParserUtility.createObservation(conceptNames.peek(), parser.nextText(), conceptController);
-                    observationList.add(newObservation);
+                    observationList.add(getObservation(conceptNames, parser.nextText()));
                 }
             }
             if (parser.getEventType() == XmlPullParser.END_TAG && !conceptNames.empty()) {
@@ -168,6 +169,11 @@ public class FormParser {
         }
         observationList.removeAll(Collections.singleton(null));
         return observationList;
+    }
+
+    private Observation getObservation(Stack<String> conceptNames, String codedObservationName) throws ConceptController.ConceptFetchException {
+        Concept conceptEntity = observationParserUtility.getConceptEntity(conceptNames.peek());
+        return observationParserUtility.getObservationEntity(conceptEntity, codedObservationName);
     }
 
     public class ParseFormException extends RuntimeException {
