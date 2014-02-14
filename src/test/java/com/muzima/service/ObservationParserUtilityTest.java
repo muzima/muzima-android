@@ -1,19 +1,24 @@
 package com.muzima.service;
 
 import com.muzima.api.model.Concept;
+import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
+import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
 import com.muzima.testSupport.CustomTestRunner;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 
+import java.util.Date;
+
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyList;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(CustomTestRunner.class)
@@ -23,6 +28,9 @@ public class ObservationParserUtilityTest {
     @Mock
     private ConceptController conceptController;
 
+    @Mock
+    private Patient patient;
+
     @Before
     public void setUp() {
         initMocks(this);
@@ -31,25 +39,83 @@ public class ObservationParserUtilityTest {
     }
 
     @Test
-    @Ignore
-    public void shouldCreateAndSaveUnknownConceptForObservation() throws ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
-        ConceptController conceptController = mock(ConceptController.class);
-        when(conceptController.getConceptByName("ConceptName")).thenReturn(null);
-
-        Observation observation = observationParserUtility.getObservationEntity(null, null);
-        verify(conceptController).saveConcepts(anyList());
-        assertThat(observation.getConcept().getUuid(), notNullValue());
+    public void shouldCreateEncounterEntityWithAppropriateValues() throws Exception {
+        Date encounterDateTime = new Date();
+        Encounter encounter = observationParserUtility.getEncounterEntity(encounterDateTime, patient);
+        assertTrue(encounter.getUuid().startsWith("encounterUuid"));
+        assertThat(encounter.getEncounterType().getUuid(), is("encounterTypeForObservationsCreatedOnPhone"));
+        assertThat(encounter.getProvider().getUuid(), is("providerForObservationsCreatedOnPhone"));
+        assertThat(encounter.getEncounterDatetime(), is(encounterDateTime));
     }
 
     @Test
-    @Ignore
-    public void shouldCreateAndNotSaveUnknownConceptForCodedObservation() throws ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
-        ConceptController conceptController = mock(ConceptController.class);
-        Concept aConcept = mock(Concept.class);
-        when(conceptController.getConceptByName("ConceptName")).thenReturn(aConcept);
-        when(aConcept.isCoded()).thenReturn(true);
+    public void shouldCreateNewConceptEntityAndAddItToListIfNotInDB() throws Exception, ConceptController.ConceptFetchException {
+        observationParserUtility = new ObservationParserUtility(conceptController);
+        when(conceptController.getConceptByName("ConceptName")).thenReturn(null);
+        Concept concept = observationParserUtility.getConceptEntity("id^ConceptName^mm");
+        assertThat(concept.getName(), is("ConceptName"));
+        assertThat(concept.getConceptType().getName(), is("ConceptTypeCreatedOnThePhone"));
+        assertThat(concept.isCreatedOnDevice(), is(true));
+        assertThat(observationParserUtility.getNewConceptList().size(), is(1));
+    }
 
-//        observationParserUtility.getObservationEntity("id^ConceptName^mm", "id^observation^kk", conceptController);
-        verify(conceptController, times(0)).saveConcepts(anyList());
+    @Test
+    public void shouldNotCreateConceptIfAlreadyExistsInDB() throws Exception, ConceptController.ConceptFetchException {
+        observationParserUtility = new ObservationParserUtility(conceptController);
+        Concept mockConcept = mock(Concept.class);
+        when(conceptController.getConceptByName("ConceptName")).thenReturn(mockConcept);
+
+        Concept concept = observationParserUtility.getConceptEntity("id^ConceptName^mm");
+
+        assertThat(concept, is(mockConcept));
+        assertThat(concept.isCreatedOnDevice(), is(false));
+        assertThat(observationParserUtility.getNewConceptList().isEmpty(), is(true));
+    }
+
+    @Test
+    public void shouldCreateOnlyOneConceptForRepeatedConceptNames() throws Exception, ConceptController.ConceptFetchException {
+        observationParserUtility = new ObservationParserUtility(conceptController);
+        when(conceptController.getConceptByName("ConceptName")).thenReturn(null);
+
+        Concept concept1 = observationParserUtility.getConceptEntity("id^ConceptName^mm");
+        Concept concept2 = observationParserUtility.getConceptEntity("id^ConceptName^mm");
+
+        assertThat(concept1, is(concept2));
+        assertThat(concept1.isCreatedOnDevice(), is(true));
+        assertThat(concept2.isCreatedOnDevice(), is(true));
+        assertThat(observationParserUtility.getNewConceptList().size(), is(1));
+    }
+
+    @Test
+    public void shouldCreateNumericObservation() throws Exception, ConceptController.ConceptFetchException {
+        Concept concept = mock(Concept.class);
+        when(concept.isNumeric()).thenReturn(true);
+        when(concept.isCoded()).thenReturn(false);
+        Observation observation = observationParserUtility.getObservationEntity(concept, "20.0");
+        assertThat(observation.getValueNumeric(), is(20.0));
+        assertTrue(observation.getUuid().startsWith("observationFromPhoneUuid"));
+    }
+
+    @Test
+    public void shouldCreateValueCodedObsAndShouldAddItToNewConceptList() throws Exception, ConceptController.ConceptFetchException {
+        observationParserUtility = new ObservationParserUtility(conceptController);
+        Concept concept = mock(Concept.class);
+        when(concept.isNumeric()).thenReturn(false);
+        when(concept.isCoded()).thenReturn(true);
+        Observation observation = observationParserUtility.getObservationEntity(concept, "id^obs_value^mm");
+
+        assertThat(observation.getValueCoded(), is(notNullValue()));
+        assertThat(observationParserUtility.getNewConceptList().size(), is(1));
+    }
+
+    @Test
+    public void shouldCreateObsWithStringForNonNumericNonCodedConcept() throws Exception, ConceptController.ConceptFetchException {
+        observationParserUtility = new ObservationParserUtility(conceptController);
+        Concept concept = mock(Concept.class);
+        when(concept.getName()).thenReturn("SomeConcept");
+        when(concept.isNumeric()).thenReturn(false);
+        when(concept.isCoded()).thenReturn(false);
+        Observation observation = observationParserUtility.getObservationEntity(concept, "someString");
+        assertThat(observation.getValueAsString(), is("someString"));
     }
 }

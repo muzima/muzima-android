@@ -17,7 +17,6 @@ import static java.util.Arrays.asList;
 
 public class ObservationParserUtility {
 
-    private static String OBSERVATION_ON_PHONE_UUID_PREFIX = "observationFromPhoneUuid";
     private ConceptController conceptController;
     private List<Concept> newConceptList;
 
@@ -28,9 +27,6 @@ public class ObservationParserUtility {
 
     public Encounter getEncounterEntity(Date encounterDateTime, Patient patient) {
         Encounter encounter = new Encounter();
-        EncounterType encounterType = new EncounterType();
-        encounter.setEncounterType(encounterType);
-        encounterType.setName(getEncounterName());
         encounter.setProvider(getDummyProvider());
         encounter.setUuid(getEncounterUUID());
         encounter.setLocation(getDummyLocation());
@@ -156,7 +152,7 @@ public class ObservationParserUtility {
     }
 
     public String getObservationUuid() {
-        return OBSERVATION_ON_PHONE_UUID_PREFIX + UUID.randomUUID();
+        return "observationFromPhoneUuid" + UUID.randomUUID();
     }
 }
 
