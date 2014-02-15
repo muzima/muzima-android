@@ -85,7 +85,20 @@ function JData(data) {
             for (i = 0; i < data.form.sub_forms.length; i++) {
                 subForm = data.form.sub_forms[i];
                 if (typeof subForm.concept !== 'undefined') {
-                    addXMLNode($instance, subForm.default_bind_path, function($node){$node.attr("concept", subForm.concept);});
+                    //Check for multiple checkboxes
+                    var multiple = false;
+                    for (j = 0; j < subForm.fields.length; j++) {
+                        curField = subForm.fields[j];
+                        if ((typeof curField.concept !== 'undefined') && (curField.value === false || curField.value === true)) {
+                            multiple = true;
+                            break;
+                        }
+                    }
+                    if (multiple) {
+                        addXMLNode($instance, subForm.default_bind_path, function($node){$node.attr("concept", subForm.concept).attr("multipleSelect", "true"); });
+                    } else {
+                        addXMLNode($instance, subForm.default_bind_path, function($node){$node.attr("concept", subForm.concept);});
+                    }
                 }
                 defaultPath = defaultPathFixed(subForm.default_bind_path);
                 repeatNodeName = defaultPath.match(/.*\/([^\/]*)\/$/)[1];
@@ -103,10 +116,21 @@ function JData(data) {
                                 value = repeatInstance[field.name];
                                 //note: also if the value is empty it is added!
                                 if(field.name ==="xforms_value" || !xformsValue || xformsValue.indexOf(field.name) > -1){
-                                    addXMLNode($instance, path, function($node){$node.text(value);}, {name: repeatNodeName, index: j});
-                                    concept = field.concept;
-                                    if(typeof concept !== 'undefined'){
-                                        addXMLNode($instance, path, function($node){$node.attr("concept", concept);}, {name: repeatNodeName, index: j});
+                                    var multiple = false;
+                                    for (jj = 0; jj < subForm.fields.length; jj++) {
+                                        curField = subForm.fields[jj];
+                                        if ((typeof curField.concept !== 'undefined') && (curField.value === false || curField.value === true)) {
+                                            multiple = true;
+                                            break;
+                                        }
+                                    }
+                                    if(!xformsValue && multiple){}
+                                    else{
+                                        addXMLNode($instance, path, function($node){$node.text(value);}, {name: repeatNodeName, index: j});
+                                        concept = field.concept;
+                                        if(typeof concept !== 'undefined'){
+                                            addXMLNode($instance, path, function($node){$node.attr("concept", concept);}, {name: repeatNodeName, index: j});
+                                        }
                                     }
                                 }
                             }
