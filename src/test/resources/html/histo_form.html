@@ -1,0 +1,172 @@
+<!--This is Used by an Unit Test -->
+<html>
+<body class="col-md-8 col-md-offset-2">
+<div id="result"></div>
+<form id="registration_form" name="registration_form">
+    <h2 class="text-center">CCSP Histopathology Form</h2>
+
+    <div class="section">
+        <h3>Patient Demographics</h3>
+
+        <div class="form-group">
+            <label for="patient.given_name">Given Name: <span class="required">*</span></label>
+            <input class="form-control" id="patient.given_name" name="patient.given_name" type="text"
+                   required="required">
+        </div>
+        <div class="form-group">
+            <label for="patient.family_name">Family Name: <span class="required">*</span> </label>
+            <input class="form-control" id="patient.family_name" name="patient.family_name" type="text"
+                   required="required">
+        </div>
+        <div class="form-group">
+            <label for="patient.middle_name">Middle Name:</label>
+            <input class="form-control" id="patient.middle_name" name="patient.middle_name" type="text">
+        </div>
+        <div class="form-group">
+            <label for="patient.medical_record_number">AMRS ID Number</label>
+            <input class="form-control checkDigit" id="patient.medical_record_number"
+                   name="patient.medical_record_number" type="text" required="required">
+        </div>
+        <div class="form-group">
+            <label for="patient.sex">Gender: <span class="required">*</span></label>
+            <select class="form-control" id="patient.sex" name="patient.sex" required="required">
+                <option value="">...</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="patient.birthdate">Date Of Birth</label>
+            <input class="form-control datepicker" id="patient.birthdate"
+                   name="patient.birthdate" type="text" required="required" readonly="readonly">
+        </div>
+    </div>
+    <div class="section repeat" data-concept="7480^PROCEDURES DONE THIS VISIT, DETAILED^99DCT">
+        <h3>Procedures Done This Visit</h3>
+
+        <div class="form-group">
+            <label for="obs.body_part">Body Part Where Specimen Was Collected? <span class="required">*</span></label>
+            <select class="form-control" name="obs.body_part" id="obs.body_part" data-concept="8265^BODY PART^99DCT"
+                    required="required">
+                <option value="">...</option>
+                <option value="8279^CERVIX^99DCT">Cervix</option>
+                <option value="8280^VAGINA^99DCT">Vagina</option>
+                <option value="8281^VULVA^99DCT">Vulva</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="obs.procedures_done_this_visit_detailed">How was specimen collected?</label>
+            <select class="form-control" name="obs.procedures_done_this_visit_detailed"
+                    data-concept="7479^PROCEDURES DONE THIS VISIT^99DCT"
+                    id="obs.procedures_done_this_visit_detailed" required="required">
+                <option value="">...</option>
+                <option value="7147^LOOP ELECTROSURGICAL EXCISION PROCEDURE^99DCT">LEEP</option>
+                <option value="6511^EXCISIONAL OR SURGICAL BIOPSY^99DCT">Cervical punch/excisional Biopsy</option>
+                <option value="7478^ENDOCERVICAL CURETTAGE ^99DCT">Endocervical curretage (ECC)</option>
+            </select>
+        </div>
+        <div class="form-group ">
+            <label for="obs.anatomic_location_description">Provide Location Of Specimen</label>
+            <select class="form-control" name="obs.anatomic_location_description"
+                    data-concept="8268^ANATOMIC LOCATION DESCRIPTION^99DCT" id="obs.anatomic_location_description"
+                    required="required">
+                <option value="">...</option>
+                <option value="8266^SUPERFICIAL^99DCT">Superficial</option>
+                <option value="8267^DEEP^99DCT">Deep</option>
+                <option value="5622^OTHER NON-CODED^99DCT">Other non-coded</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="obs.clock_face_cervical_biopsy_location">Provide location where biopsy for specimen was done:
+                __O'clock</label>
+            <input class="form-control" id="obs.clock_face_cervical_biopsy_location"
+                   name="obs.clock_face_cervical_biopsy_location"
+                   data-concept="7481^CLOCK FACE CERVICAL BIOPSY LOCATION ^99DCT" type="number">
+        </div>
+        <div class="form-group">
+            <label for="obs.pathological_diagnosis_added_cervix">Pathological Diagnosis for Cervical Specimen</label>
+            <select class="form-control" data-concept="8278^PATHOLOGICAL DIAGNOSIS ADDED^99DCT"
+                    name="obs.pathological_diagnosis_added_cervix"
+                    id="obs.pathological_diagnosis_added_cervix" required="required">
+                <option>...</option>
+                <option value="1115^NORMAL^99DCT">Normal</option>
+                <option value="149^CERVICITIS^99DCT">Cervicitis</option>
+                <option value="8282^CERVICAL SQUAMOUS METAPLASIA^99DCT">Cervical squamous metaplasia</option>
+                <option value="7424^CERVICAL INTRAEPITHELIAL NEOPLASIA GRADE 1^99DCT">Mild cervical intraepithelial
+                    neoplasia (CIN 1)
+                </option>
+                <option value="7425^CERVICAL INTRAEPITHELIAL NEOPLASIA GRADE 2^99DCT">Moderate cervical intraepithelial
+                    neoplasia (CIN 2)
+                </option>
+                <option value="7216^CERVICAL INTRAEPITHELIAL NEOPLASIA GRADE 3^99DCT">Severe cervical intraepithelial
+                    neoplasia (CIN 3)
+                </option>
+                <option value="8275^CERVICAL ADENOCARCINOMA^99DCT">Cervical adenocarcinoma</option>
+                <option value="8275^CERVICAL ADENOCARCINOMA^99DCT">Cervical squamous cell carcinoma</option>
+                <option value="5622^OTHER NON-CODED^99DCT">Other non-coded</option>
+            </select>
+        </div>
+        <div class="form-group concept">
+            <label for="obs.pathological_diagnosis_added_vagina">Pathological Diagnosis for Vaginal Specimen</label>
+            <select class="form-control" data-concept="8278^PATHOLOGICAL DIAGNOSIS ADDED^99DCT"
+                    name="obs.pathological_diagnosis_added_vagina"
+                    id="obs.pathological_diagnosis_added_vagina" required="required">
+                <option>...</option>
+                <option value="1115^NORMAL^99DCT">Normal</option>
+                <option value="7492^VAGINAL INTRAEPITHELIAL NEOPLASIA GRADE 1^99DCT">Mild vaginal intraepithelial
+                    neoplasia (VAIN1)
+                </option>
+                <option value="7491^VAGINAL INTRAEPITHELIAL NEOPLASIA GRADE 2 ^99DCT">Moderate vaginal intraepithelial
+                    neoplasia (VAIN 2)
+                </option>
+                <option value="7435^VAGINAL INTRAEPITHELIAL NEOPLASIA GRADE 3^99DCT">Severe vaginal intraepithelial
+                    neoplasia (VAIN 3)
+                </option>
+                <option value="5622^OTHER NON-CODED^99DCT">Other non-coded</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="obs.pathological_diagnosis_added_vulva">Pathological Diagnosis for Vulval Specimen</label>
+            <select class="form-control" data-concept="8278^PATHOLOGICAL DIAGNOSIS ADDED^99DCT"
+                    name="obs.pathological_diagnosis_added_vulva"
+                    id="obs.pathological_diagnosis_added_vulva" required="required">
+                <option>...</option>
+                <option value="1115^NORMAL^99DCT">Normal</option>
+                <option value="7489^CONDYLOMA OR VULVAR INTRAEPITHELIAL NEOPLASIA GRADE 1^99DCT">Condyloma / Mild vulva
+                    intraepithelial neoplasia (VIN1)
+                </option>
+                <option value="7488^VULVAR INTRAEPITHELIAL NEOPLASIA GRADE 2^99DCT">Moderate vulva intraepithelial
+                    neoplasia (VIN 2)
+                </option>
+                <option value="7483^VULVAR INTRAEPITHELIAL NEOPLASIA GRADE 3^99DCT">Severe vulva intraepithelial
+                    neoplasia (VIN 3)
+                </option>
+                <option value="5622^OTHER NON-CODED^99DCT">Other non-coded</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="section">
+
+        <div class="form-group">
+            <label for="freetext_general">Comments</label>
+            <textarea class="form-control" name="freetext_general" id="freetext_general"
+                      data-concept="1915^FREETEXT GENERAL^99DCT"
+                      placeholder="Provider notes/comments."></textarea>
+        </div>
+        <div class="form-group">
+            <label for="return_visit_date">Encounter Date <span class="required">*</span></label>
+            <input class="form-control datepicker" readonly="readonly" id="return_visit_date"
+                   name="return_visit_date" data-concept="5096^RETURN VISIT DATE^99DCT"
+                   type="text" required="required">
+        </div>
+    </div>
+
+    <div class="form-group text-center">
+        <input class="btn btn-primary" type="button" value="Save"/>
+        <input class="btn btn-primary" type="submit" value="Submit"/>
+    </div>
+</form>
+
+</body>
+</html>

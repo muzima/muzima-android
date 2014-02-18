@@ -122,7 +122,7 @@ public class MuzimaSyncService {
 
             result[0] = SUCCESS;
             result[1] = formTemplates.size();
-            result[2] = concepts.size();
+            result[2] = 0;
         } catch (FormController.FormSaveException e) {
             Log.e(TAG, "Exception when trying to save forms", e);
             result[0] = SAVE_ERROR;
@@ -131,13 +131,14 @@ public class MuzimaSyncService {
             Log.e(TAG, "Exception when trying to download forms", e);
             result[0] = DOWNLOAD_ERROR;
             return result;
-        } catch (ConceptController.ConceptSaveException e) {
-            Log.e(TAG, "Exception when trying to save concepts related to forms", e);
-            result[0] = SAVE_ERROR;
-            return result;
         } catch (ConceptController.ConceptDownloadException e) {
-            Log.e(TAG, "Exception when trying to download concepts", e);
+            Log.e(TAG, "Exception while parsing Concepts", e);
             result[0] = DOWNLOAD_ERROR;
+            return result;
+        } catch (ConceptController.ConceptSaveException e) {
+            Log.e(TAG, "Exception when trying to download forms", e);
+            result[0] = DOWNLOAD_ERROR;
+            return result;
         }
         return result;
     }
@@ -172,9 +173,15 @@ public class MuzimaSyncService {
 
     private List<Concept> getRelatedConcepts(List<FormTemplate> formTemplates) throws ConceptController.ConceptDownloadException {
         HashSet<Concept> concepts = new HashSet<Concept>();
-        ConceptParser utils = new ConceptParser();
+        ConceptParser xmlParserUtils = new ConceptParser();
+        HTMLConceptParser htmlParserUtils = new HTMLConceptParser();
         for (FormTemplate formTemplate : formTemplates) {
-            List<String> names = utils.parse(formTemplate.getModel());
+            List<String> names = new ArrayList<String>();
+            if (formTemplate.isHTMLForm()) {
+                names = htmlParserUtils.parse(formTemplate.getHtml());
+            } else {
+                names = xmlParserUtils.parse(formTemplate.getModel());
+            }
             concepts.addAll(conceptController.downloadConceptsByNames(names));
         }
         return new ArrayList<Concept>(concepts);
@@ -357,10 +364,10 @@ public class MuzimaSyncService {
     private void checkChangeInPatientId(Patient localPatient, Patient patientFromServer) {
         String patientIdentifier = patientFromServer.getIdentifier();
         String localPatientIdentifier = localPatient.getIdentifier();
-        if(patientFromServer==null || localPatientIdentifier == null){
+        if (patientFromServer == null || localPatientIdentifier == null) {
             return;
         }
-        if(!patientIdentifier.equals(localPatientIdentifier)){
+        if (!patientIdentifier.equals(localPatientIdentifier)) {
             JSONInputOutputToDisk jsonInputOutputToDisk = new JSONInputOutputToDisk(muzimaApplication);
             try {
                 jsonInputOutputToDisk.add(patientIdentifier);

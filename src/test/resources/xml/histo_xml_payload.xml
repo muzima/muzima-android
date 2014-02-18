@@ -1,0 +1,60 @@
+<form>
+    <patient>
+        <patient_identifier.identifier_type_id>1</patient_identifier.identifier_type_id>
+        <patient.medical_record_number>2876CH-0</patient.medical_record_number>
+        <patient.birthdate>1956-12-11</patient.birthdate>
+        <patient.family_name>Kosabei</patient.family_name>
+        <patient.given_name>Everlyn</patient.given_name>
+        <patient.uuid>dd7963a8-1691-11df-97a5-7038c432aabf</patient.uuid>
+        <patient.middle_name>Some</patient.middle_name>
+        <patient.sex>F</patient.sex>
+    </patient>
+    <encounter>
+        <encounter.encounter_datetime>2014-02-01</encounter.encounter_datetime>
+        <encounter.location_id>7</encounter.location_id>
+        <encounter.provider_id>3-4</encounter.provider_id>
+        <tmp>
+            <provider_id_select>3-4</provider_id_select>
+        </tmp>
+    </encounter>
+    <obs concept="1238^MEDICAL RECORD OBSERVATIONS^99DCT">
+        <temporary.registration.uuid concept="9000^TEMPORARY REGISTRATION UUID^99DCT"/>
+        <start_time concept="1693^START TIME^99DCT"/>
+        <end_time concept="1694^END TIME^99DCT"/>
+        <return_visit_date concept="5096^RETURN VISIT DATE^99DCT">
+            <value>2014-03-01</value>
+        </return_visit_date>
+        <current_visit_type concept="1839^CURRENT VISIT TYPE^99DCT"/>
+        <freetext_general concept="1915^FREETEXT GENERAL^99DCT">
+            <value>testing</value>
+        </freetext_general>
+        <procedures_done_this_visit_detailed concept="7480^PROCEDURES DONE THIS VISIT, DETAILED^99DCT">
+            <number_of_specimen_collected concept="7482^NUMBER OF SPECIMEN COLLECTED^99DCT"/>
+            <clock_face_cervical_biopsy_location concept="7481^CLOCK FACE CERVICAL BIOPSY LOCATION ^99DCT"/>
+            <pathological_diagnosis_added_cervix>1115^NORMAL^99DCT</pathological_diagnosis_added_cervix>
+            <body_part concept="8265^BODY PART^99DCT">
+                <date></date>
+                <time></time>
+                <value>8279^CERVIX^99DCT</value>
+            </body_part>
+            <procedures_done_this_visit concept="7479^PROCEDURES DONE THIS VISIT^99DCT">
+                <date></date>
+                <time></time>
+                <value>7147^LOOP ELECTROSURGICAL EXCISION PROCEDURE^99DCT</value>
+            </procedures_done_this_visit>
+            <anatomic_location_description concept="8268^ANATOMIC LOCATION DESCRIPTION^99DCT">
+                <date></date>
+                <time></time>
+                <value>8267^DEEP^99DCT</value>
+            </anatomic_location_description>
+            <pathological_diagnosis_added concept="8278^PATHOLOGICAL DIAGNOSIS ADDED^99DCT">
+                <date></date>
+                <time></time>
+                <value>1115^NORMAL^99DCT</value>
+            </pathological_diagnosis_added>
+        </procedures_done_this_visit_detailed>
+        <ccsp_pathology_cervix concept="7645^Cervix^99DCT"/>
+        <ccsp_pathology_vulva concept="7646^Vulva^99DCT"/>
+        <ccsp_pathology_vagina concept="7647^Vagina^99DCT"/>
+    </obs>
+</form>

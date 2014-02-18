@@ -18,16 +18,17 @@ package com.muzima.adapters.forms;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.muzima.R;
 import com.muzima.controller.FormController;
 import com.muzima.model.IncompleteForm;
-import com.muzima.model.IncompleteFormWithPatientData;
 import com.muzima.model.collections.IncompleteForms;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
 /**
  * Responsible to list down all the incomplete forms for a specific patient.
  */
-public class PatientIncompleteFormsAdapter extends FormsAdapter<IncompleteFormWithPatientData> {
+public class PatientIncompleteFormsAdapter extends FormsWithDataAdapter<IncompleteForm> {
     private static final String TAG = "PatientIncompleteFormsAdapter";
     private String patientId;
 
@@ -44,6 +45,12 @@ public class PatientIncompleteFormsAdapter extends FormsAdapter<IncompleteFormWi
     public String getPatientId() {
         return patientId;
     }
+
+    @Override
+    protected int getFormItemLayout() {
+        return R.layout.item_forms_list_selectable;
+    }
+
 
     /**
      * Responsible to fetch all the incomplete forms for a specific patient.

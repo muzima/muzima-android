@@ -128,4 +128,12 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
     public FormController getFormController() {
         return formController;
     }
+
+    public  interface MuzimaClickListener {
+
+        boolean onItemLongClick() ;
+
+        void onItemClick(int position);
+    }
+
 }

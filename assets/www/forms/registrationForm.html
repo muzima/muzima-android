@@ -1,0 +1,166 @@
+<html>
+<head>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/muzima.css" rel="stylesheet">
+    <link href="css/ui-darkness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui-1.10.4.custom.min.js"></script>
+    <script src="js/jquery.validate.min.js"></script>
+    <script src="js/additional-methods.min.js"></script>
+    <script src="js/muzima.js"></script>
+</head>
+<body class="col-md-8 col-md-offset-2">
+<div id="result"></div>
+<form id="registration_form" name="registration_form">
+    <h2 class="text-center">Registration Form</h2>
+    <div class="section">
+        <h3>Demographics</h3>
+
+        <div class="form-group">
+            <label for="patient.family_name">Family Name: <span class="required">*</span> </label>
+            <input class="form-control" id="patient.family_name" name="patient.family_name" type="text"
+                   required="required">
+        </div>
+        <div class="form-group">
+            <label for="patient.given_name">Given Name: <span class="required">*</span></label>
+            <input class="form-control" id="patient.given_name" name="patient.given_name" type="text"
+                   required="required">
+        </div>
+        <div class="form-group">
+            <label for="patient.middle_name">Middle Name:</label>
+            <input class="form-control" id="patient.middle_name" name="patient.middle_name" type="text">
+        </div>
+        <div class="form-group">
+            <label for="patient.sex">Sex: <span class="required">*</span></label>
+            <select class="form-control" id="patient.sex" name="patient.sex" required="required">
+                <option value="">...</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="patient.phone_number">Phone Number: </label>
+            <input class="form-control" id="patient.phone_number" name="patient.phone_number" type="tel">
+        </div>
+        <div class="form-group">
+            <label for="person_attribute4">Mother's Name: </label>
+            <input class="form-control" id="person_attribute4" name="person_attribute4" type="text">
+        </div>
+        <div class="form-group">
+            <label for="patient.medical_record_number">AMRS Universal ID Assigned: <span
+                    class="required">*</span></label>
+
+            <div class="form-horizontal">
+                <input type="button" class='btn barcode_btn'>
+                <input class="barcode_text form-control checkDigit" id="patient.medical_record_number"
+                       name="patient.medical_record_number" type="text" required="required">
+            </div>
+        </div>
+    </div>
+    <div class="section">
+        <div class="form-group">
+            <label for="tmp.birthdate_type">Will Record Date of Birth... <span class="required">*</span></label>
+            <select class="form-control" name="tmp.birthdate_type" id="tmp.birthdate_type" required="required">
+                <option value="">...</option>
+                <option value="birthdate">By Birth-date</option>
+                <option value="age">By Age</option>
+            </select>
+        </div>
+        <div class="form-group show_birthdate">
+            <label for="patient.birth_date">Select Birthdate <span class="required">*</span></label>
+            <input class="form-control datepicker nonFutureDate" id="patient.birth_date" name="patient.birth_date" type="text"
+                   required="required"
+                   readonly="readonly">
+        </div>
+        <div class="form-group show_birthdate">
+            <label for="patient.birthdate_estimated">Is this birthdate an estimate? <span
+                    class="required">*</span></label>
+            <select class="form-control" id="patient.birthdate_estimated" name="patient.birthdate_estimated"
+                    required="required">
+                <option>...</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+        <div class="form-group show_age">
+            <label for="tmp.age_in_years">How old are you in Years <span class="required">*</span></label>
+            <input class="form-control" id="tmp.age_in_years" name="tmp.age_in_years" type="number" required="required">
+        </div>
+    </div>
+    <div class="section">
+        <div class="form-group">
+            <label for="encounter.location_id">Encounter Location <span class="required">*</span></label>
+            <select class="form-control" id="encounter.location_id" name="encounter.location_id" required="required">
+                <option>...</option>
+                <option value="2">Mosoriot Health Centre</option>
+                <option value="3">Turbo Health Centre</option>
+                <option value="12">Teso District Hospital</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="encounter.provider_id">Provider ID <span class="required">*</span></label>
+            <select class="form-control" id="encounter.provider_id" name="encounter.provider_id" required="required">
+                <option>...</option>
+                <option value="1">Super User</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="encounter.encounter_datetime">Encounter Date <span class="required">*</span></label>
+            <input class="form-control datepicker" readonly="readonly" id="encounter.encounter_datetime"
+                   name="encounter.encounter_datetime"
+                   type="text" required="required">
+        </div>
+    </div>
+    <div class="form-group text-center">
+        <input class="btn btn-primary" type="button" value="Save"/>
+        <input class="btn btn-primary" type="submit" value="Submit"/>
+    </div>
+</form>
+
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var prePopulateData = $.trim($('#pre_populate_data').html());
+        if (prePopulateData != '') {
+            var prePopulateJSON = JSON.parse(prePopulateData);
+            $.each(prePopulateJSON, function (key, value) {
+                $('[name="' + key + '"]').val(value);
+            });
+        }
+        $.fn.calculateFields = function () {
+            var tempAgeInYears = $.trim($("#tmp\\.age_in_years").val());
+            if (tempAgeInYears != '') {
+                $('#patient\\.birthdate_estimated').val('true');
+                $('#patient\\.birth_date').val($.fn.getTempBirthDate(tempAgeInYears));
+            }
+        };
+
+        $('#registration_form').validate({
+            submitHandler: function (form) {
+                $.fn.calculateFields();
+                $('#result').html(JSON.stringify($('form').serializeForm()));
+                return false;
+            }
+        });
+
+        $('#tmp\\.birthdate_type').change(function () {
+            var $show_birth_date = $('.show_birthdate');
+            var $show_age = $('.show_age');
+            if ($('#tmp\\.birthdate_type').val() == 'age') {
+                $show_age.show();
+                $show_birth_date.find('input').val('');
+                $show_birth_date.hide();
+            } else {
+                $show_age.hide();
+                $show_age.find('input').val('');
+                $show_birth_date.show();
+            }
+        });
+        $('#tmp\\.birthdate_type').trigger('change');
+
+
+    })
+</script>
+
+</html>

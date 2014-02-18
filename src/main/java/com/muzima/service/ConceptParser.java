@@ -77,7 +77,7 @@ public class ConceptParser {
 
     private static String getConceptName(String peek) {
         if (!StringUtils.isEmpty(peek) && peek.split("\\^").length > 1) {
-            return peek.split("\\^")[1];
+            return peek.split("\\^")[1].trim();
         }
         return "";
     }

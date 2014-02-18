@@ -6,11 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import com.muzima.R;
+import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.adapters.forms.IncompleteFormsAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.model.FormWithData;
 
-public class IncompleteFormsListFragment extends FormsFragmentWithSectionedListAdapter {
+public class IncompleteFormsListFragment extends FormsFragmentWithSectionedListAdapter implements FormsAdapter.MuzimaClickListener{
 
     public static IncompleteFormsListFragment newInstance(FormController formController) {
         IncompleteFormsListFragment f = new IncompleteFormsListFragment();
@@ -20,9 +21,16 @@ public class IncompleteFormsListFragment extends FormsFragmentWithSectionedListA
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        listAdapter = new IncompleteFormsAdapter(getActivity(), R.layout.item_forms_list, formController);
+        listAdapter = new IncompleteFormsAdapter(getActivity(), R.layout.item_forms_list_selectable, formController);
+        ((IncompleteFormsAdapter)listAdapter).setMuzimaClickListener(this);
         noDataMsg = getActivity().getResources().getString(R.string.no_incomplete_form_msg);
         noDataTip = getActivity().getResources().getString(R.string.no_incomplete_form_tip);
+
+        if (actionModeActive) {
+            actionMode = getSherlockActivity().startActionMode(new DeleteFormsActionModeCallback());
+            actionMode.setTitle(String.valueOf(((IncompleteFormsAdapter)listAdapter).getSelectedFormsUuid().size()));
+        }
+
         super.onCreate(savedInstanceState);
     }
 
@@ -35,5 +43,25 @@ public class IncompleteFormsListFragment extends FormsFragmentWithSectionedListA
     @Override
     protected View setupMainView(LayoutInflater inflater, ViewGroup container){
         return inflater.inflate(R.layout.layout_list_with_sections, container, false);
+    }
+
+    @Override
+    public boolean onItemLongClick() {
+        if (!actionModeActive) {
+            actionMode = getSherlockActivity().startActionMode(new DeleteFormsActionModeCallback());
+            actionModeActive = true;
+        }
+        int numOfSelectedForms = ((IncompleteFormsAdapter)listAdapter).getSelectedFormsUuid().size();
+        if (numOfSelectedForms == 0 && actionModeActive) {
+            actionMode.finish();
+        }
+        actionMode.setTitle(String.valueOf(numOfSelectedForms));
+        return false;
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        FormViewIntent intent = new FormViewIntent(getActivity(), (FormWithData) listAdapter.getItem(position));
+        getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 }

@@ -46,11 +46,19 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
     private List<Patient> patients;
     private ListView listView;
     private PatientComparator patientComparator;
+    private List<String> selectedFormsUuid;
+    private MuzimaClickListener muzimaClickListener;
 
     public SectionedFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
         patients = new ArrayList<Patient>();
         patientComparator = new PatientComparator();
+        selectedFormsUuid = new ArrayList<String>();
+    }
+
+    @Override
+    protected int getFormItemLayout() {
+        return R.layout.item_forms_list_selectable;
     }
 
     @Override
@@ -143,6 +151,51 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
     public void setPatients(List<Patient> patients) {
         this.patients = patients;
     }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        convertView = super.getView(position, convertView, parent);
+        setClickListenersOnView(position, convertView);
+        return convertView;
+    }
+
+    private void setClickListenersOnView(final int position, View convertView) {
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                FormWithData formWithPatientData = getItem(position);
+                if (!selectedFormsUuid.contains(formWithPatientData.getFormDataUuid())) {
+                    selectedFormsUuid.add(formWithPatientData.getFormDataUuid());
+                } else if (selectedFormsUuid.contains(formWithPatientData.getFormDataUuid())) {
+                    selectedFormsUuid.remove(formWithPatientData.getFormDataUuid());
+                }
+
+                muzimaClickListener.onItemLongClick();
+                return true;
+            }
+
+        });
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                muzimaClickListener.onItemClick(position);
+            }
+        });
+    }
+
+    public void setMuzimaClickListener(MuzimaClickListener muzimaClickListener) {
+        this.muzimaClickListener = muzimaClickListener;
+    }
+
+    public List<String> getSelectedFormsUuid() {
+        return selectedFormsUuid;
+    }
+
+    public void clearSelectedFormsUuid() {
+        selectedFormsUuid.clear();
+    }
+
 
     private static class HeaderViewHolder {
         TextView patientName;

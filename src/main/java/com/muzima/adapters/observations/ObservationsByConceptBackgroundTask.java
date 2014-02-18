@@ -22,7 +22,9 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Void, C
         Concepts concepts = null;
         try {
             concepts = conceptAction.get();
-            concepts.sortByDate();
+            if(concepts != null){
+                concepts.sortByDate();
+            }
         } catch (ObservationController.LoadObservationException e) {
             Log.w("Observations", String.format("Exception while loading observations for %s. Exception stack: %s", conceptAction, e));
         }
