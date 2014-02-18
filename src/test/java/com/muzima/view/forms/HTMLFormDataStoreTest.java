@@ -1,40 +1,50 @@
 package com.muzima.view.forms;
 
 import com.muzima.api.model.FormData;
-import com.muzima.controller.ConceptController;
-import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
-import com.muzima.controller.ObservationController;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.testSupport.CustomTestRunner;
 import com.muzima.utils.Constants;
-import org.json.JSONException;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.text.ParseException;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @RunWith(CustomTestRunner.class)
 public class HTMLFormDataStoreTest {
 
-    @Test
-    public void shouldParsedPayloadForCompletedForm() throws ObservationController.SaveObservationException, EncounterController.SaveEncounterException, ConceptController.ConceptSaveException, ParseException, JSONException {
-        FormController formController = mock(FormController.class);
-        HTMLFormWebViewActivity formWebViewActivity = mock(HTMLFormWebViewActivity.class);
-        FormData formData = mock(FormData.class);
-        final HTMLFormObservationCreator htmlFormObservationCreator = mock(HTMLFormObservationCreator.class);
-        final HTMLFormDataStore htmlFormDataStore = new HTMLFormDataStore(formWebViewActivity, formController, formData){
+    private FormController formController;
+    private HTMLFormWebViewActivity formWebViewActivity;
+    private FormData formData;
+    private HTMLFormObservationCreator htmlFormObservationCreator;
+    private HTMLFormDataStore htmlFormDataStore;
+
+    @Before
+    public void setUp() throws Exception {
+        formController = mock(FormController.class);
+        formWebViewActivity = mock(HTMLFormWebViewActivity.class);
+        formData = mock(FormData.class);
+        htmlFormObservationCreator = mock(HTMLFormObservationCreator.class);
+        htmlFormDataStore = new HTMLFormDataStore(formWebViewActivity, formController, formData){
             @Override
             public HTMLFormObservationCreator getFormParser(){
                 return htmlFormObservationCreator;
             }
         };
+    }
 
+    @Test
+    public void shouldParsedPayloadForCompletedForm() {
         String jsonPayLoad = "jsonPayLoad";
         htmlFormDataStore.saveHTML(jsonPayLoad, Constants.STATUS_COMPLETE);
         verify(htmlFormObservationCreator).createAndPersistObservations(jsonPayLoad);
+    }
+
+    @Test
+    public void shouldNotParseIncompletedForm() {
+        String jsonPayLoad = "jsonPayLoad";
+        htmlFormDataStore.saveHTML(jsonPayLoad, Constants.STATUS_INCOMPLETE);
+        verify(htmlFormObservationCreator, times(0)).createAndPersistObservations(jsonPayLoad);
     }
 }

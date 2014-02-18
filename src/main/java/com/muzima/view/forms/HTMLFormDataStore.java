@@ -7,6 +7,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.api.model.FormData;
 import com.muzima.controller.FormController;
 import com.muzima.service.HTMLFormObservationCreator;
+import com.muzima.utils.Constants;
 
 public class HTMLFormDataStore {
     private static final String TAG = "FormDataStore";
@@ -26,15 +27,21 @@ public class HTMLFormDataStore {
         formData.setJsonPayload(jsonPayload);
         formData.setStatus(status);
         try {
-            getFormParser().createAndPersistObservations(jsonPayload);
-
             formController.saveFormData(formData);
             formWebViewActivity.setResult(FormsActivity.RESULT_OK);
             formWebViewActivity.finish();
+            parseForm(jsonPayload, status);
         } catch (FormController.FormDataSaveException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving the form", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while saving form data" + e);
         }
+    }
+
+    private void parseForm(String jsonPayload, String status) {
+        if(status.equals(Constants.STATUS_INCOMPLETE)){
+            return;
+        }
+        getFormParser().createAndPersistObservations(jsonPayload);
     }
 
     public HTMLFormObservationCreator getFormParser(){
