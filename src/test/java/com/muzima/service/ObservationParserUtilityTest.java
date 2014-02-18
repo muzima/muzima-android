@@ -60,6 +60,12 @@ public class ObservationParserUtilityTest {
     }
 
     @Test
+    public void shouldNotCreateNewConceptOrObservationForInvalidConceptName() throws Exception, ConceptController.ConceptFetchException {
+        observationParserUtility = new ObservationParserUtility(conceptController);
+        assertThat(observationParserUtility.getNewConceptList().size(), is(0));
+    }
+
+    @Test
     public void shouldNotCreateConceptIfAlreadyExistsInDB() throws Exception, ConceptController.ConceptFetchException {
         observationParserUtility = new ObservationParserUtility(conceptController);
         Concept mockConcept = mock(Concept.class);
