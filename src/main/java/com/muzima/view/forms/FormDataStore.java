@@ -51,10 +51,10 @@ public class FormDataStore {
         formData.setJsonPayload(jsonData);
         formData.setStatus(status);
         try {
+            parseForm(xmlData, status);
             formController.saveFormData(formData);
             formWebViewActivity.setResult(FormsActivity.RESULT_OK);
             formWebViewActivity.finish();
-            parseForm(xmlData, status);
         } catch (FormController.FormDataSaveException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving the form", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while saving form data" + e);
