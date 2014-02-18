@@ -7,10 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.muzima.MuzimaApplication;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
+import com.muzima.controller.NotificationController;
 import com.muzima.controller.PatientController;
+import com.muzima.domain.Credentials;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
@@ -19,13 +23,17 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
     private final PatientAdapterHelper patientAdapterHelper;
     private PatientController patientController;
     private final String cohortId;
+    private boolean isNotificationsList;
+    private Context context;
     protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
 
     public PatientsLocalSearchAdapter(Context context, int textViewResourceId,
-                                      PatientController patientController, String cohortId) {
+                                      PatientController patientController, String cohortId, boolean isNotificationList) {
         super(context, textViewResourceId);
+        this.context = context;
         this.patientController = patientController;
         this.cohortId = cohortId;
+        this.isNotificationsList = isNotificationList;
         this.patientAdapterHelper = new PatientAdapterHelper(context, textViewResourceId);
     }
 
@@ -69,6 +77,8 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
             try {
                 if (cohortUuid != null) {
                     patients = patientController.getPatients(cohortUuid);
+                } else if (isNotificationsList) {
+                    patients = getPatientsWithNotifications();
                 } else {
                     patients = patientController.getAllPatients();
                 }
@@ -86,6 +96,28 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
         protected void onPostExecute(List<Patient> patients) {
             patientAdapterHelper.onPostExecute(patients, PatientsLocalSearchAdapter.this, backgroundListQueryTaskListener);
         }
+    }
+
+    private List<Patient> getPatientsWithNotifications() {
+        NotificationController notificationController = ((MuzimaApplication) context.getApplicationContext()).getNotificationController();
+        List<Patient> notificationPatients = null;
+        try {
+            List<Patient> allPatients = patientController.getAllPatients();
+
+            if (allPatients.size() >= 1)  {
+                notificationPatients = new ArrayList<Patient>();
+
+                for (Patient patient : allPatients)  {
+                    if (notificationController.patientHasNotifications(patient.getUuid(), new Credentials(context).getUserName(),"unread"))
+                        notificationPatients.add(patient) ;
+                }
+            }
+        } catch (PatientController.PatientLoadException e) {
+            Log.w(TAG, "Exception occurred while fetching patients" + e);
+        } catch (NotificationController.NotificationFetchException e) {
+            Log.w(TAG, "Exception occurred while fetching patients" + e);
+        }
+        return notificationPatients;
     }
 
     private class ViewHolder {

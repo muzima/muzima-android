@@ -178,7 +178,7 @@ public class MuzimaApplication extends Application {
     public NotificationController getNotificationController() {
         if (notificationController == null) {
             try {
-                notificationController = new NotificationController(muzimaContext.getService(NotificationService.class), muzimaContext.getFormService());
+                notificationController = new NotificationController(muzimaContext.getService(NotificationService.class), muzimaContext.getFormService(),muzimaContext.getPatientService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

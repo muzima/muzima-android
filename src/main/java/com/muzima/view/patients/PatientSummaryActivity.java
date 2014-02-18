@@ -17,6 +17,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.PatientController;
+import com.muzima.domain.Credentials;
 import com.muzima.service.JSONInputOutputToDisk;
 import com.muzima.utils.Constants;
 import com.muzima.view.BaseActivity;
@@ -163,7 +164,8 @@ public class PatientSummaryActivity extends BaseActivity {
                 patientSummaryActivityMetadata.recommendedForms = formController.getRecommendedFormsCount();
                 patientSummaryActivityMetadata.completeForms = formController.getCompleteFormsCountForPatient(patient.getUuid());
                 patientSummaryActivityMetadata.incompleteForms = formController.getIncompleteFormsCountForPatient(patient.getUuid());
-                patientSummaryActivityMetadata.notifications = notificationController.getNotificationsCountForPatient(patient.getUuid());
+                patientSummaryActivityMetadata.notifications =
+                        notificationController.getNotificationsCountForPatient(patient.getUuid(), new Credentials(PatientSummaryActivity.this).getUserName(), "unread");
             } catch (FormController.FormFetchException e) {
                 Log.w(TAG, "FormFetchException occurred while fetching metadata in MainActivityBackgroundTask");
             } catch (NotificationController.NotificationFetchException e) {
@@ -180,7 +182,7 @@ public class PatientSummaryActivity extends BaseActivity {
                     + patientSummaryActivityMetadata.recommendedForms + " Recommended");
 
             TextView notificationsDescription = (TextView) findViewById(R.id.notificationDescription);
-            notificationsDescription.setText(patientSummaryActivityMetadata.notifications + " Received");
+            notificationsDescription.setText(patientSummaryActivityMetadata.notifications + " New");
         }
     }
 

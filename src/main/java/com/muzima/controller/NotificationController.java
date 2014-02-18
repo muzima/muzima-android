@@ -1,11 +1,10 @@
 package com.muzima.controller;
 
-import com.muzima.api.model.Form;
-import com.muzima.api.model.FormData;
-import com.muzima.api.model.Notification;
-import com.muzima.api.model.Tag;
+import com.muzima.api.model.*;
 import com.muzima.api.service.FormService;
 import com.muzima.api.service.NotificationService;
+import com.muzima.api.service.PatientService;
+import com.muzima.search.api.util.StringUtil;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -18,86 +17,114 @@ import static com.muzima.utils.Constants.STATUS_UPLOADED;
 public class NotificationController {
     private NotificationService notificationService;
     private FormService formService;
+    private PatientService patientService;
 
-    public NotificationController(NotificationService notificationService, FormService formService) {
+    public NotificationController(NotificationService notificationService, FormService formService, PatientService patientService) {
         this.notificationService = notificationService;
         this.formService = formService;
+        this.patientService = patientService;
     }
 
     public Notification getNotificationByUuid(String uuid) throws NotificationFetchException, ParseException {
-        //WIN: Can we hide the ParseException from the service consumers
         try {
             return notificationService.getNotificationByUuid(uuid);
         } catch (IOException e) {
             throw new NotificationFetchException(e);
         }
     }
-    public List<Notification> getAllNotificationsBySender(String sender) throws NotificationFetchException, ParseException {
-        //WIN: Can we hide the ParseException from the service consumers
+
+    public List<Notification> getAllNotificationsBySender(String senderUuid, String status) throws NotificationFetchException, ParseException {
         try {
-            return notificationService.getNotificationBySender(sender);
-            //WIN: should we rename this method to getNotificationsBySender since we are returning a list?
+            return notificationService.getNotificationBySender(senderUuid, status);
         } catch (IOException e) {
             throw new NotificationFetchException(e);
         }
     }
 
-    public int getTotalNotificationsBySenderCount(String sender) throws NotificationFetchException, ParseException {
-        try {
-            //WIN: I think i will need this method [notificationService.countAllNotificationsBySender(sender)] on the service
-
-            // Hack use this before Win writes the service method
-            List<Notification> notifications =  notificationService.getNotificationBySender(sender);
-            if (notifications != null)
-                return  notifications.size();
-            else
-                return 0;
-        } catch (IOException e) {
-            throw new NotificationFetchException(e);
-        }
+    public int getAllNotificationsBySenderCount(String senderUuid, String status) throws NotificationFetchException, ParseException {
+        List<Notification> notifications =  getAllNotificationsBySender(senderUuid, status);
+        return   notifications == null ? 0 : notifications.size();
     }
 
-    public int getNotificationsCountForPatient(String patientUuid) throws NotificationFetchException {
-        System.out.println("am inside getNotificationsCountForPatient");
-        int count=0;
-        try {
-            List<FormData> allFormData = formService.getFormDataByPatient(patientUuid, STATUS_UPLOADED);
-            Form form;
-            for (FormData formData : allFormData) {
-                Notification notification = notificationService.getNotificationByUuid(formData.getUuid());                 form = formService.getFormByUuid(formData.getTemplateUuid());
-                if (isConsultationForm(form) && notification != null)
-                    count++;
-            }
-            return count;
-        } catch (IOException e) {
-            throw new NotificationFetchException(e);
-        }
-    }
-
-    public List<Notification> getNotificationsForPatient(String patientUuid) throws NotificationFetchException {
-        System.out.println("am inside getNotificationsForPatient");
+    public List<Notification> getNotificationsForPatient(String patientUuid, String senderUuid, String status) throws NotificationFetchException {
+        System.out.println(senderUuid +  " before hardcoding");
+        senderUuid = "suruwere";
         try {
             List<Notification> patientNotifications = new ArrayList<Notification>();
             List<FormData> allFormData = formService.getFormDataByPatient(patientUuid, STATUS_UPLOADED);
             Form form;
             for (FormData formData : allFormData) {
-                Notification notification = notificationService.getNotificationByUuid(formData.getUuid());                 form = formService.getFormByUuid(formData.getTemplateUuid());
-                if (isConsultationForm(form) && notification != null)
-                    patientNotifications.add(notification);
+                Notification notification = notificationService.getNotificationByUuid(formData.getUuid());
+                form = formService.getFormByUuid(formData.getTemplateUuid());
+                if (isConsultationForm(form) && notification != null) {
+
+                    //if senderUuid is null and status is null the we add the notification to list
+                    if (StringUtil.isEmpty(senderUuid) && StringUtil.isEmpty(status)) {
+                        // no filtering return all notifications for patient
+                        patientNotifications.add(notification);
+                    } else if (StringUtil.isEmpty(status))  {
+                        // status not passed filter by senderUuid only
+                        if (StringUtil.equals(notification.getSender().getUuid(), senderUuid))
+                            patientNotifications.add(notification);
+                    } else if (StringUtil.isEmpty(senderUuid)){
+                        // senderUuid not passed filter by status only
+                        if (StringUtil.equals(notification.getStatus(),status))
+                            patientNotifications.add(notification);
+                    } else {
+                         // filter by both senderUuid
+                        if (StringUtil.equals(notification.getSender().getUuid(), senderUuid) && StringUtil.equals(notification.getStatus(),status) )
+                            patientNotifications.add(notification);
+                    }
+                }
             }
-            if (patientNotifications.size() <  1)
-                patientNotifications = getTestInboxNotifications();
+
+            if (patientNotifications.size() < 1 )  {
+                Patient patient = patientService.getPatientByUuid(patientUuid);
+                if (patient != null)  {
+                    if (StringUtil.equals(patient.getFamilyName(),"Patient"))  {
+                        List<Notification> testPatientNotifications = new ArrayList<Notification>();
+                        testPatientNotifications = getTestInboxNotifications();
+                        for (Notification notification : testPatientNotifications) {
+                            //if senderUuid is null and status is null the we add the notification to list
+                            if (StringUtil.isEmpty(senderUuid) && StringUtil.isEmpty(status)) {
+                                // no filtering return all notifications for patient
+                                patientNotifications.add(notification);
+                            } else if (StringUtil.isEmpty(status))  {
+                                // status not passed filter by senderUuid only
+                                if (StringUtil.equals(notification.getSender().getUuid(), senderUuid))
+                                    patientNotifications.add(notification);
+                            } else if (StringUtil.isEmpty(senderUuid)){
+                                // senderUuid not passed filter by status only
+                                if (StringUtil.equals(notification.getStatus(),status))
+                                    patientNotifications.add(notification);
+                            } else {
+                                // filter by both senderUuid
+                                if (StringUtil.equals(notification.getSender().getUuid(), senderUuid) && StringUtil.equals(notification.getStatus(),status) )
+                                    patientNotifications.add(notification);
+                            }
+                        }
+                    }
+                }
+            }
             return patientNotifications;
         } catch (IOException e) {
             throw new NotificationFetchException(e);
         }
     }
 
-    public List<Notification> downloadNotificationBySender(String sender) throws NotificationDownloadException, ParseException {
-        //WIN: Can we hide the ParseException from the service consumers
+    public int getNotificationsCountForPatient(String patientUuid, String senderUuid, String status) throws NotificationFetchException {
+        List<Notification> notifications =  getNotificationsForPatient(patientUuid, senderUuid, status);
+        return   notifications == null ? 0 : notifications.size();
+    }
+
+    public boolean patientHasNotifications(String patientUuid, String senderUuid, String status) throws NotificationFetchException {
+        List<Notification> notifications =  getNotificationsForPatient(patientUuid, senderUuid, status);
+        return (notifications != null && notifications.size() > 0);
+    }
+
+    public List<Notification> downloadNotificationBySender(String senderUuid) throws NotificationDownloadException, ParseException {
         try {
-            return notificationService.downloadNotificationBySender(sender);
-            //WIN: should we rename this method to downloadNotificationsBySender since we are returning a list?
+            return notificationService.downloadNotificationBySender(senderUuid);
         } catch (IOException e) {
             throw new NotificationDownloadException(e);
         }
@@ -169,13 +196,15 @@ public class NotificationController {
 
     private List<Notification> getTestInboxNotifications() {
         List<Notification> notifications = new ArrayList<Notification>();
+        Person sender = new Person();
+        sender.setUuid("suruwere");
 
         for (int i=0; i<=3; i++) {
             Notification nt = new Notification();
             nt.setSubject("InboxMsg-" + i);
             nt.setPayload("Inbox Payload Message-" + i);
             nt.setUuid("Inbox UUID-" + i);
-            nt.setUri("Inbox URI-" + i);
+            nt.setSender(sender);
             if (i == 0 || i == 2)
                 nt.setStatus("read");
             else

@@ -19,7 +19,6 @@ import com.muzima.domain.Credentials;
 import com.muzima.view.cohort.CohortActivity;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
-import com.muzima.view.notifications.NotificationActivity;
 import com.muzima.view.patients.PatientsListActivity;
 import org.apache.lucene.queryParser.ParseException;
 
@@ -99,7 +98,8 @@ public class MainActivity extends BroadcastListenerActivity {
      * Called when the user clicks the Notifications area
      */
     public void notificationsList(View view) {
-        Intent intent = new Intent(this, NotificationActivity.class);
+        Intent intent = new Intent(this, PatientsListActivity.class);
+        intent.putExtra(PatientsListActivity.COHORT_NAME, PatientsListActivity.NOTIFICATIONS);
         startActivity(intent);
     }
 
@@ -129,7 +129,7 @@ public class MainActivity extends BroadcastListenerActivity {
                 homeActivityMetadata.completeAndUnsyncedForms = formController.getAllCompleteFormsSize();
 
                 // Notifications
-                homeActivityMetadata.notificationsReceived =  notificationController.getTotalNotificationsBySenderCount(credentials.getUserName()) ;
+                homeActivityMetadata.newNotifications =  notificationController.getAllNotificationsBySenderCount(credentials.getUserName(),null);
             } catch (CohortController.CohortFetchException e) {
                 Log.w(TAG, "CohortFetchException occurred while fetching metadata in MainActivityBackgroundTask");
             } catch (PatientController.PatientLoadException e) {
@@ -157,7 +157,7 @@ public class MainActivity extends BroadcastListenerActivity {
                     + homeActivityMetadata.completeAndUnsyncedForms + " Complete");
 
             TextView notificationsDescription = (TextView) mMainView.findViewById(R.id.notificationDescription);
-            notificationsDescription.setText(homeActivityMetadata.notificationsReceived + " Received");
+            notificationsDescription.setText(homeActivityMetadata.newNotifications + " New Notifications");
 
             TextView currentUser = (TextView) findViewById(R.id.currentUser);
             currentUser.setText(getResources().getString(R.string.currentUser) + " " + credentials.getUserName());
@@ -172,7 +172,7 @@ public class MainActivity extends BroadcastListenerActivity {
         int completeAndUnsyncedForms;
 
         // notifications
-        int notificationsReceived;
+        int newNotifications;
 
     }
 

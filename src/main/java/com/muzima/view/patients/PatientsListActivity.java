@@ -12,6 +12,7 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.Patient;
+import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
@@ -24,6 +25,8 @@ public class PatientsListActivity extends BaseActivity implements AdapterView.On
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
     public static final String QUICK_SEARCH = "quickSearch";
+    public static final String NOTIFICATIONS = "Notifications";
+    public static boolean isNotificationsList = false;
 
     private ListView listView;
     private boolean quickSearch = false;
@@ -45,9 +48,11 @@ public class PatientsListActivity extends BaseActivity implements AdapterView.On
             cohortId = intentExtras.getString(COHORT_ID);
             String title = intentExtras.getString(COHORT_NAME);
             if (title != null) {
+                isNotificationsList = StringUtil.equals(title, NOTIFICATIONS);
                 setTitle(title);
             }
-        }
+        }  else
+            isNotificationsList = false;
 
         progressBarContainer = (FrameLayout) findViewById(R.id.progressbarContainer);
         setupNoDataView();
@@ -64,7 +69,6 @@ public class PatientsListActivity extends BaseActivity implements AdapterView.On
                 startActivity(intent);
             }
         });
-
     }
 
     @Override
@@ -133,7 +137,7 @@ public class PatientsListActivity extends BaseActivity implements AdapterView.On
         patientAdapter = new PatientsLocalSearchAdapter(getApplicationContext(),
                 R.layout.layout_list,
                 ((MuzimaApplication) getApplicationContext()).getPatientController(),
-                cohortId);
+                cohortId, isNotificationsList);
         patientAdapter.setBackgroundListQueryTaskListener(this);
         listView.setAdapter(patientAdapter);
         listView.setOnItemClickListener(this);

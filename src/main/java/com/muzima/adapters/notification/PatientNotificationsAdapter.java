@@ -11,6 +11,7 @@ import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Notification;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.NotificationController;
+import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaSyncService;
 
 import java.util.List;
@@ -101,7 +102,7 @@ public class PatientNotificationsAdapter extends NotificationsAdapter {
             List<Notification> allNotifications = null;
             try {
                 Log.i(TAG, "Fetching inbox notifications from Database...");
-                allNotifications = notificationController.getNotificationsForPatient(patient.getUuid());
+                allNotifications = notificationController.getNotificationsForPatient(patient.getUuid(),new Credentials(getContext()).getUserName(), null);
                 Log.d(TAG, "#Retrieved " + allNotifications.size() + " inbox notifications from Database.");
             } catch (NotificationController.NotificationFetchException e) {
                 Log.w(TAG, "Exception occurred while fetching the inbox notifications" + e);
@@ -119,7 +120,7 @@ public class PatientNotificationsAdapter extends NotificationsAdapter {
             List<Notification> allNotifications = null;
             try {
                 //muzimaSyncService.downloadCohorts();
-                allNotifications = notificationController.getNotificationsForPatient(patient.getUuid());
+                allNotifications = notificationController.getNotificationsForPatient(patient.getUuid(), new Credentials(getContext()).getUserName(), null);
                 Log.i(TAG, "#Inbox: " + allNotifications.size());
             } catch (NotificationController.NotificationFetchException e) {
                 Log.w(TAG, "Exception occurred while fetching the inbox notifications" + e);
