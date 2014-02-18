@@ -12,6 +12,7 @@ import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
 import com.muzima.service.FormParser;
 
+import com.muzima.utils.Constants;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -53,10 +54,7 @@ public class FormDataStore {
             formController.saveFormData(formData);
             formWebViewActivity.setResult(FormsActivity.RESULT_OK);
             formWebViewActivity.finish();
-
-            FormParser formParser = getFormParser();
-            formParser.parseAndSaveObservations(xmlData);
-
+            parseForm(xmlData, status);
         } catch (FormController.FormDataSaveException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving the form", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while saving form data" + e);
@@ -79,6 +77,14 @@ public class FormDataStore {
             Toast.makeText(formWebViewActivity, "An error occurred while saving observations in the form", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "IOException occurred while saving observations parsed from the form data" + e);
         }
+    }
+
+    private void parseForm(String xmlData, String status) throws ConceptController.ConceptSaveException, ParseException, XmlPullParserException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, IOException {
+        if (status.equals(Constants.STATUS_INCOMPLETE)){
+            return;
+        }
+        FormParser formParser = getFormParser();
+        formParser.parseAndSaveObservations(xmlData);
     }
 
     public FormParser getFormParser() {

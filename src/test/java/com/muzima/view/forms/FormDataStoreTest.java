@@ -3,21 +3,26 @@ package com.muzima.view.forms;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Patient;
+import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.ObservationController;
+import com.muzima.controller.PatientController;
 import com.muzima.service.FormParser;
 import com.muzima.testSupport.CustomTestRunner;
-
+import com.muzima.utils.Constants;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.IOException;
+import java.text.ParseException;
+
+import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_REGISTRATION;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
-
-import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_REGISTRATION;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(CustomTestRunner.class)
@@ -86,5 +91,20 @@ public class FormDataStoreTest {
         store.save("data", "xmlData", "complete");
         assertThat(formData.getXmlPayload(), is("xmlData"));
         assertThat(formData.getPatientUuid(), is(tempUUIDAssignedByDevice));
+    }
+
+    @Test
+    public void shouldParseObservationsInProvidedPayloadWhenSavingAsFinal() throws ConceptController.ConceptSaveException, ParseException, XmlPullParserException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, IOException {
+        String xmlPayload = "xmldata";
+        store.save("data", xmlPayload, Constants.STATUS_COMPLETE);
+
+        verify(formParser).parseAndSaveObservations(xmlPayload);
+    }
+
+    @Test
+    public void shouldNotParseObservationsForIncompleteForm() throws ConceptController.ConceptSaveException, ParseException, XmlPullParserException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, IOException {
+        store.save("data", "xmldata", Constants.STATUS_INCOMPLETE);
+
+        verify(formParser, times(0)).parseAndSaveObservations(anyString());
     }
 }
