@@ -1,9 +1,12 @@
 package com.muzima.controller;
 
+import android.util.Log;
 import com.muzima.api.model.*;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.search.api.util.StringUtil;
+import com.muzima.service.SntpService;
+import com.muzima.utils.DateUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
@@ -12,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 public class CohortController {
+    private static final String TAG = "CohortController";
     private CohortService cohortService;
     private LastSyncTimeService lastSyncTimeService;
 
@@ -41,6 +45,7 @@ public class CohortController {
             List<Cohort> allCohorts = cohortService.downloadCohortsByNameAndSyncDate(StringUtil.EMPTY, getLastSyncDateOfCohorts());
 
             LastSyncTime lastSyncTime = buildDefaultLastSyncTime();
+
             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             return allCohorts;
         } catch (IOException e) {
@@ -50,13 +55,18 @@ public class CohortController {
 
     private Date getLastSyncDateOfCohorts() throws IOException {
         LastSyncTime lastSyncTimeForCohorts = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS);
+        if(lastSyncTimeForCohorts == null){
+            Log.i(TAG, "LastSyncTime for Cohorts is null");
+            return null;
+        }
+        Log.i(TAG,"LastSyncTime for Cohorts is : " + DateUtils.getFormattedDateTime(lastSyncTimeForCohorts.getLastSyncDate()));
         return lastSyncTimeForCohorts.getLastSyncDate();
     }
 
     private LastSyncTime buildDefaultLastSyncTime() {
         LastSyncTime lastSyncTime = new LastSyncTime();
         lastSyncTime.setApiName(APIName.DOWNLOAD_COHORTS);
-        lastSyncTime.setLastSyncDate(new java.util.Date());
+        lastSyncTime.setLastSyncDate(SntpService.getUTCTime());
         return lastSyncTime;
     }
 

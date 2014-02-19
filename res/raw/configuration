@@ -435,6 +435,19 @@
                 "familyName": "$['names'][*]['familyName']",
                 "identifier": "$['identifiers'][*]['identifier']"
             }
+        },
+        {
+             "resource.name": "Uuid Last Sync Time Resource",
+             "node.root": "$",
+             "resource.object": "com.muzima.api.model.LastSyncTime",
+             "algorithm.class": "com.muzima.api.model.algorithm.LastSyncTimeAlgorithm",
+             "resolver.class": "com.muzima.api.model.resolver.UuidRegistrationResolver",
+             "field.unique": "uuid",
+             "field.searchable": {
+                 "uuid": "$['uuid']",
+                 "apiName": "$['apiName']",
+                 "paramSignature": "$['paramSignature']"
+             }
         }
     ]
 }
