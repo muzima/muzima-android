@@ -130,7 +130,7 @@ public class MuzimaApplication extends Application {
     public CohortController getCohortController() {
         if (cohortController == null) {
             try {
-                cohortController = new CohortController(muzimaContext.getCohortService());
+                cohortController = new CohortController(muzimaContext.getCohortService(), muzimaContext.getLastSyncTimeService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
