@@ -65,39 +65,10 @@
 
     <div class="form-group">
         <label for="encounter.location_id">Name of Dispensary:<span class="required">*</span></label>
-        <select class="form-control autocomplete-select" id="encounter.location_id" name="encounter.location_id"
-                placeholder="Start typing in  Dispensary name..."
-                required="required">
-            <option value=""></option>
-            <option value="2">Mosoriot Health Centre</option>
-            <option value="3">Turbo Health Centre</option>
-            <option value="12">Teso District Hospital</option>
-            <option value="60">Chepsaita Dispensary</option>
-            <option value="65">Angurai Health Centre</option>
-            <option value="90">Changara Dispensary</option>
-            <option value="91">Malaba Dispensary</option>
-            <option value="106">Kamollo Dispensary</option>
-            <option value="110">Mogoget Dispensary</option>
-            <option value="111">Biribiriet Dispensary</option>
-            <option value="112">Itigo Dispensary</option>
-            <option value="113">Lelmokwo Dispensary</option>
-            <option value="114">Kokwet Dispensary</option>
-            <option value="115">Ngechek Dispensary</option>
-            <option value="116">Cheramei Dispensary</option>
-            <option value="117">Murgusi Dispensary</option>
-            <option value="118">Cheplasgei Dispensary</option>
-            <option value="119">Sigot Dispensary</option>
-            <option value="120">Sugoi A Dispensary</option>
-            <option value="121">Sugoi B Dispensary</option>
-            <option value="122">Chepkemel Dispensary</option>
-            <option value="124">Akichelesit Dispensary</option>
-            <option value="125">Aboloi Dispensary</option>
-            <option value="126">Moding Dispensary</option>
-            <option value="127">Sambut</option>
-            <option value="128">Ngenyilel</option>
-            <option value="129">Sosiani</option>
-        </select>
+        <input class="form-control" id="encounter.location_id" type="text" placeholder="Start typing something...">
+        <input class="form-control" name="encounter.location_id" type="hidden">
     </div>
+
     <div class="form-group">
         <label for="encounter.provider_id_select">Provider ID:</label>
         <select class="form-control autocomplete-select" id="encounter.provider_id_select" name="encounter.provider_id_select">
@@ -1332,7 +1303,43 @@ $(document).ready(function () {
             document.submit();
         }
     });
-
+    var dispensaryName = [
+        {"val": "2", "label": "Mosoriot Health Centre"},
+        {"val": "3", "label": "Turbo Health Centre"},
+        {"val": "12", "label": "Teso District Hospital"},
+        {"val": "60", "label": "Chepsaita Dispensary"},
+        {"val": "65", "label": "Angurai Health Centre"},
+        {"val": "90", "label": "Changara Dispensary"},
+        {"val": "91", "label": "Malaba Dispensary"},
+        {"val": "106", "label": "Kamollo Dispensary"},
+        {"val": "110", "label": "Mogoget Dispensary"},
+        {"val": "111", "label": "Biribiriet Dispensary"},
+        {"val": "112", "label": "Itigo Dispensary"},
+        {"val": "113", "label": "Lelmokwo Dispensary"},
+        {"val": "114", "label": "Kokwet Dispensary"},
+        {"val": "115", "label": "Ngechek Dispensary"},
+        {"val": "116", "label": "Cheramei Dispensary"},
+        {"val": "117", "label": "Murgusi Dispensary"},
+        {"val": "118", "label": "Cheplasgei Dispensary"},
+        {"val": "119", "label": "Sigot Dispensary"},
+        {"val": "120", "label": "Sugoi A Dispensary"},
+        {"val": "121", "label": "Sugoi B Dispensary"},
+        {"val": "122", "label": "Chepkemel Dispensary"},
+        {"val": "124", "label": "Akichelesit Dispensary"},
+        {"val": "125", "label": "Aboloi Dispensary"},
+        {"val": "126", "label": "Moding Dispensary"},
+        {"val": "127", "label": "Sambut"},
+        {"val": "128", "label": "Ngenyilel"},
+        {"val": "129", "label": "Sosiani"}
+    ];
+    $('#encounter\\.location_id').autocomplete({
+        source: dispensaryName,
+        select: function (event, ui) {
+            $('input[name="encounter\\.location_id"]').val(ui.item.val  );
+            $('#encounter\\.location_id').val(ui.item.label);
+            return false;
+        }
+    });
     /* Start - Checking that the diastolic blood pressure is less than the systolic blood pressure */
     $.validator.addMethod("lessThankSystolic", function (value, element) {
                 var systolicBloodPressure = parseInt($(element).closest('.section').find('.systolicBloodPressure').val());
