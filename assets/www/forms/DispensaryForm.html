@@ -1310,6 +1310,14 @@ $(document).ready(function () {
     ];
     $('#encounter\\.location_id').autocomplete({
         source: dispensaryName,
+        create: function(event,ui){
+            var location_val = $('input[name="encounter\\.location_id"]').val();
+            $.each(dispensaryName, function (i, elem) {
+                if (elem.val == location_val) {
+                    $('#encounter\\.location_id').val(elem.label)
+                }
+            });
+        },
         select: function (event, ui) {
             $('input[name="encounter\\.location_id"]').val(ui.item.val  );
             $('#encounter\\.location_id').val(ui.item.label);
@@ -1348,6 +1356,14 @@ $(document).ready(function () {
 
     $('#encounter\\.provider_id_select').autocomplete({
         source: provider,
+        create: function (event, ui) {
+            var provider_val = $('input[name="encounter\\.provider_id_select"]').val();
+            $.each(provider, function (i, elem) {
+                if (elem.val == provider_val) {
+                    $('#encounter\\.provider_id_select').val(elem.label)
+                }
+            });
+        },
         select: function (event, ui) {
             $('input[name="encounter\\.provider_id_select"]').val(ui.item.val);
             $('#encounter\\.provider_id_select').val(ui.item.label);
