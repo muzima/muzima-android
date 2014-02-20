@@ -124,16 +124,14 @@ public class FormControllerTest {
     public void downloadAllForms_shouldDownloadAllForms() throws IOException, ParseException, FormFetchException {
         List<Form> forms = new ArrayList<Form>();
         when(formService.downloadFormsByName(StringUtil.EMPTY)).thenReturn(forms);
-        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS)).thenReturn(lastSyncTime);
-        when(lastSyncTime.getLastSyncDate()).thenReturn(mockDate);
+        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS)).thenReturn(mockDate);
 
         assertThat(formController.downloadAllForms(), is(forms));
     }
 
     @Test
     public void shouldCheckForLastSynTimeOfFormWhenDownloadingAllForms() throws Exception, FormFetchException {
-        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS)).thenReturn(lastSyncTime);
-        when(lastSyncTime.getLastSyncDate()).thenReturn(mockDate);
+        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS)).thenReturn(mockDate);
 
         formController.downloadAllForms();
 
@@ -144,10 +142,8 @@ public class FormControllerTest {
 
     @Test
     public void shouldUpdateLastSyncTimeAfterDownloadingAllForms() throws Exception, FormFetchException {
-        LastSyncTime lastSyncTime = mock(LastSyncTime.class);
         Date mockDate = mock(Date.class);
-        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS)).thenReturn(lastSyncTime);
-        when(lastSyncTime.getLastSyncDate()).thenReturn(mockDate);
+        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS)).thenReturn(mockDate);
         Date otherMockDate = mock(Date.class);
         when(sntpService.getUTCTime()).thenReturn(otherMockDate);
 
@@ -163,8 +159,7 @@ public class FormControllerTest {
 
     @Test(expected = FormFetchException.class)
     public void downloadAllForms_shouldThrowExceptionThrownByFormService() throws IOException, ParseException, FormFetchException {
-        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS)).thenReturn(lastSyncTime);
-        when(lastSyncTime.getLastSyncDate()).thenReturn(mockDate);
+        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS)).thenReturn(mockDate);
         doThrow(new IOException()).when(formService).downloadFormsByName(StringUtil.EMPTY, mockDate);
         formController.downloadAllForms();
     }

@@ -151,8 +151,7 @@ public class FormController {
 
     public List<Form> downloadAllForms() throws FormFetchException {
         try {
-            LastSyncTime lastSyncTimeForForms = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS);
-            Date lastSyncDate = lastSyncTimeForForms.getLastSyncDate();
+            Date lastSyncDate = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS);
             List<Form> forms = formService.downloadFormsByName(StringUtil.EMPTY, lastSyncDate);
             LastSyncTime lastSyncTime = new LastSyncTime();
             lastSyncTime.setApiName(APIName.DOWNLOAD_FORMS);
