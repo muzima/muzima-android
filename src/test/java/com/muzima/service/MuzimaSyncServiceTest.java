@@ -235,7 +235,6 @@ public class MuzimaSyncServiceTest {
         muzimaSyncService.downloadCohorts();
 
         verify(cohortController).downloadAllCohorts();
-        verify(cohortController).deleteAllCohorts();
         verify(cohortController).saveAllCohorts(cohorts);
         verifyNoMoreInteractions(cohortController);
     }
@@ -255,7 +254,6 @@ public class MuzimaSyncServiceTest {
         muzimaSyncService.downloadCohorts();
 
         verify(cohortController).downloadCohortsByPrefix(cohortPrefixes);
-        verify(cohortController).deleteAllCohorts();
         verify(cohortController).saveAllCohorts(cohorts);
         verifyNoMoreInteractions(cohortController);
     }
@@ -294,15 +292,6 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadCohort_shouldReturnDeleteErrorIfDeleteExceptionOccurs() throws CohortController.CohortDeleteException {
-        when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
-        when(sharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
-        doThrow(new CohortController.CohortDeleteException(null)).when(cohortController).deleteAllCohorts();
-
-        assertThat(muzimaSyncService.downloadCohorts()[0], is(DELETE_ERROR));
-    }
-
-    @Test
     public void downloadPatientsForCohorts_shouldDownloadAndReplaceCohortMembersAndPatients() throws Exception, CohortController.CohortDownloadException, CohortController.CohortReplaceException, PatientController.PatientSaveException {
         String[] cohortUuids = new String[]{"uuid1", "uuid2"};
         List<CohortData> cohortDataList = new ArrayList<CohortData>() {{
@@ -321,8 +310,6 @@ public class MuzimaSyncServiceTest {
         muzimaSyncService.downloadPatientsForCohorts(cohortUuids);
 
         verify(cohortController).downloadCohortData(cohortUuids);
-        verify(cohortController).deleteCohortMembers(cohortUuids[0]);
-        verify(cohortController).deleteCohortMembers(cohortUuids[1]);
         verify(cohortController).addCohortMembers(cohortDataList.get(0).getCohortMembers());
         verify(cohortController).addCohortMembers(cohortDataList.get(1).getCohortMembers());
         verify(patientController).replacePatients(cohortDataList.get(0).getPatients());
