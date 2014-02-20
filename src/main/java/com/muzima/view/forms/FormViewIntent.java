@@ -9,15 +9,16 @@ import com.muzima.controller.FormController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
 
-import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_ENCOUNTER;
+import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER;
+import static com.muzima.utils.Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER;
 
 public class FormViewIntent extends Intent {
     public FormViewIntent(Activity activity, FormWithData form) {
-        this(activity, form, form.getPatient(), FORM_DISCRIMINATOR_ENCOUNTER);
+        this(activity, form, form.getPatient());
     }
 
     public FormViewIntent(Activity activity, BaseForm form, Patient patient) {
-        this(activity, form, patient, FORM_DISCRIMINATOR_ENCOUNTER);
+        this(activity,form,patient,getEncounterFormDiscriminatorBasedOnFormType(activity, form));
     }
 
     public FormViewIntent(Activity activity, BaseForm form, Patient patient, String discriminator) {
@@ -26,6 +27,7 @@ public class FormViewIntent extends Intent {
         putExtra(HTMLFormWebViewActivity.PATIENT, patient);
         putExtra(HTMLFormWebViewActivity.DISCRIMINATOR, discriminator);
     }
+
 
     private static Class getClassBasedOnFormType(Activity activity, BaseForm form) {
         FormController formController = ((MuzimaApplication) activity.getApplication()).getFormController();
@@ -37,5 +39,17 @@ public class FormViewIntent extends Intent {
             Log.e("FormIntent", "Error while identifying form to load it in WebView");
         }
         return FormWebViewActivity.class;
+    }
+
+    private static String getEncounterFormDiscriminatorBasedOnFormType(Activity activity, BaseForm baseForm){
+        FormController formController = ((MuzimaApplication) activity.getApplication()).getFormController();
+        try {
+            if (formController.getFormTemplateByUuid(baseForm.getFormUuid()).isHTMLForm()) {
+                return FORM_JSON_DISCRIMINATOR_ENCOUNTER;
+            }
+        } catch (FormController.FormFetchException e) {
+            Log.e("FormIntent", "Error while identifying form to load it in WebView");
+        }
+        return FORM_XML_DISCRIMINATOR_ENCOUNTER;
     }
 }
