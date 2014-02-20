@@ -1,12 +1,10 @@
 package com.muzima.controller;
 
-import android.util.Log;
 import com.muzima.api.model.*;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.SntpService;
-import com.muzima.utils.DateUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
@@ -18,10 +16,12 @@ public class CohortController {
     private static final String TAG = "CohortController";
     private CohortService cohortService;
     private LastSyncTimeService lastSyncTimeService;
+    private SntpService sntpService;
 
-    public CohortController(CohortService cohortService, LastSyncTimeService lastSyncTimeService) {
+    public CohortController(CohortService cohortService, LastSyncTimeService lastSyncTimeService, SntpService sntpService) {
         this.cohortService = cohortService;
         this.lastSyncTimeService = lastSyncTimeService;
+        this.sntpService = sntpService;
     }
 
     public List<Cohort> getAllCohorts() throws CohortFetchException {
@@ -56,17 +56,15 @@ public class CohortController {
     private Date getLastSyncDateOfCohorts() throws IOException {
         LastSyncTime lastSyncTimeForCohorts = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS);
         if(lastSyncTimeForCohorts == null){
-            Log.i(TAG, "LastSyncTime for Cohorts is null");
             return null;
         }
-        Log.i(TAG,"LastSyncTime for Cohorts is : " + DateUtils.getFormattedDateTime(lastSyncTimeForCohorts.getLastSyncDate()));
         return lastSyncTimeForCohorts.getLastSyncDate();
     }
 
     private LastSyncTime buildDefaultLastSyncTime() {
         LastSyncTime lastSyncTime = new LastSyncTime();
         lastSyncTime.setApiName(APIName.DOWNLOAD_COHORTS);
-        lastSyncTime.setLastSyncDate(SntpService.getUTCTime());
+        lastSyncTime.setLastSyncDate(sntpService.getUTCTime());
         return lastSyncTime;
     }
 
@@ -89,11 +87,13 @@ public class CohortController {
     public List<Cohort> downloadCohortsByPrefix(List<String> cohortPrefixes) throws CohortDownloadException {
         List<Cohort> filteredCohorts = new ArrayList<Cohort>();
         try {
-            Date lastSyncDateOfCohort;
+            Date lastSyncDateOfCohort = null;
             LastSyncTime lastSyncTime;
             for (String cohortPrefix : cohortPrefixes) {
                 lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS, cohortPrefix);
-                lastSyncDateOfCohort = lastSyncTime.getLastSyncDate();
+                if (lastSyncTime != null) {
+                    lastSyncDateOfCohort = lastSyncTime.getLastSyncDate();
+                }
                 List<Cohort> cohorts = cohortService.downloadCohortsByNameAndSyncDate(cohortPrefix, lastSyncDateOfCohort);
                 List<Cohort> filteredCohortsForPrefix = filterCohortsByPrefix(cohorts, cohortPrefix);
                 addUniqueCohorts(filteredCohorts, filteredCohortsForPrefix);

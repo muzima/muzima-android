@@ -7,6 +7,7 @@ import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.search.api.util.StringUtil;
+import com.muzima.service.SntpService;
 import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +19,6 @@ import java.util.Date;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -32,18 +32,19 @@ public class CohortControllerTest {
     private CohortService cohortService;
     private LastSyncTimeService lastSyncTimeService;
     private LastSyncTime lastSyncTime;
-    private Date aDate;
+    private Date anotherMockDate;
+    private SntpService sntpService;
+    private Date mockDate;
 
     @Before
     public void setup() throws IOException {
         cohortService = mock(CohortService.class);
         lastSyncTimeService = mock(LastSyncTimeService.class);
-        controller = new CohortController(cohortService, lastSyncTimeService);
-
+        sntpService = mock(SntpService.class);
+        controller = new CohortController(cohortService, lastSyncTimeService, sntpService);
         lastSyncTime = mock(LastSyncTime.class);
-        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS)).thenReturn(lastSyncTime);
-        aDate = mock(Date.class);
-        when(lastSyncTime.getLastSyncDate()).thenReturn(aDate);
+        anotherMockDate = mock(Date.class);
+        mockDate = mock(Date.class);
     }
 
     @Test
@@ -75,7 +76,7 @@ public class CohortControllerTest {
 
     @Test(expected = CohortController.CohortDownloadException.class)
     public void downloadAllCohorts_shouldThrowCohortDownloadExceptionIfExceptionIsThrownByCohortService() throws CohortController.CohortDownloadException, IOException {
-        doThrow(new IOException()).when(cohortService).downloadCohortsByNameAndSyncDate(StringUtil.EMPTY, aDate);
+        doThrow(new IOException()).when(cohortService).downloadCohortsByNameAndSyncDate(StringUtil.EMPTY, null);
 
         controller.downloadAllCohorts();
     }
@@ -83,14 +84,18 @@ public class CohortControllerTest {
     @Test
     public void shouldSaveLastSyncTimeAfterDownloadingAllCohorts() throws Exception, CohortController.CohortDownloadException {
         ArgumentCaptor<LastSyncTime> lastSyncCaptor = ArgumentCaptor.forClass(LastSyncTime.class);
+        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS)).thenReturn(lastSyncTime);
+        when(lastSyncTime.getLastSyncDate()).thenReturn(anotherMockDate);
+        when(sntpService.getUTCTime()).thenReturn(mockDate);
 
         controller.downloadAllCohorts();
         verify(lastSyncTimeService).saveLastSyncTime(lastSyncCaptor.capture());
         verify(lastSyncTimeService).getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS);
 
+
         LastSyncTime setLastSyncTime = lastSyncCaptor.getValue();
         assertThat(setLastSyncTime.getApiName(), is(APIName.DOWNLOAD_COHORTS));
-        assertThat(setLastSyncTime.getLastSyncDate(), notNullValue());
+        assertThat(setLastSyncTime.getLastSyncDate(), is(mockDate));
         assertThat(setLastSyncTime.getParamSignature(), nullValue());
     }
 
@@ -101,6 +106,10 @@ public class CohortControllerTest {
         when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS, "prefix1")).thenReturn(lastSyncTime);
         when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS, "prefix2")).thenReturn(lastSyncTime);
 
+        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS)).thenReturn(lastSyncTime);
+        when(lastSyncTime.getLastSyncDate()).thenReturn(anotherMockDate);
+        when(sntpService.getUTCTime()).thenReturn(mockDate);
+
         controller.downloadCohortsByPrefix(asList(new String[]{"prefix1", "prefix2"}));
         verify(lastSyncTimeService).saveLastSyncTime(lastSyncCaptor.capture());
         verify(lastSyncTimeService).getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS, "prefix1");
@@ -108,7 +117,7 @@ public class CohortControllerTest {
 
         LastSyncTime setLastSyncTime = lastSyncCaptor.getValue();
         assertThat(setLastSyncTime.getApiName(), is(APIName.DOWNLOAD_COHORTS));
-        assertThat(setLastSyncTime.getLastSyncDate(), notNullValue());
+        assertThat(setLastSyncTime.getLastSyncDate(), is(mockDate));
         assertThat(setLastSyncTime.getParamSignature(), is(prefixesAsString));
     }
 
@@ -185,17 +194,21 @@ public class CohortControllerTest {
         encounterPerfixedCohortList.add(cohort3);
         encounterPerfixedCohortList.add(cohort4);
 
-        when(cohortService.downloadCohortsByNameAndSyncDate(cohortPrefixes.get(0), aDate)).thenReturn(agePrefixedCohortList1);
-        when(cohortService.downloadCohortsByNameAndSyncDate(cohortPrefixes.get(1), aDate)).thenReturn(agePrefixedCohortList2);
-        when(cohortService.downloadCohortsByNameAndSyncDate(cohortPrefixes.get(2), aDate)).thenReturn(encounterPerfixedCohortList);
+        when(cohortService.downloadCohortsByNameAndSyncDate(cohortPrefixes.get(0), mockDate)).thenReturn(agePrefixedCohortList1);
+        when(cohortService.downloadCohortsByNameAndSyncDate(cohortPrefixes.get(1), anotherMockDate)).thenReturn(agePrefixedCohortList2);
+        when(cohortService.downloadCohortsByNameAndSyncDate(cohortPrefixes.get(2), anotherMockDate)).thenReturn(encounterPerfixedCohortList);
         when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS, cohortPrefixes.get(0))).thenReturn(lastSyncTime);
         when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS, cohortPrefixes.get(1))).thenReturn(lastSyncTime);
         when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS, cohortPrefixes.get(2))).thenReturn(lastSyncTime);
+        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS)).thenReturn(lastSyncTime);
+        when(lastSyncTime.getLastSyncDate()).thenReturn(anotherMockDate);
+        when(sntpService.getUTCTime()).thenReturn(mockDate);
 
-        assertThat(controller.downloadCohortsByPrefix(cohortPrefixes).size(), is(3));
-        assertTrue(controller.downloadCohortsByPrefix(cohortPrefixes).contains(cohort11));
-        assertTrue(controller.downloadCohortsByPrefix(cohortPrefixes).contains(cohort3));
-        assertTrue(controller.downloadCohortsByPrefix(cohortPrefixes).contains(cohort4));
+        List<Cohort> downloadedCohorts = controller.downloadCohortsByPrefix(cohortPrefixes);
+        assertThat(downloadedCohorts.size(), is(3));
+        assertTrue(downloadedCohorts.contains(cohort11));
+        assertTrue(downloadedCohorts.contains(cohort3));
+        assertTrue(downloadedCohorts.contains(cohort4));
     }
 
     @Test
