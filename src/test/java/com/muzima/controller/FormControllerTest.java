@@ -1,11 +1,8 @@
 package com.muzima.controller;
 
-import com.muzima.api.model.Form;
-import com.muzima.api.model.FormData;
-import com.muzima.api.model.FormTemplate;
-import com.muzima.api.model.Patient;
-import com.muzima.api.model.Tag;
+import com.muzima.api.model.*;
 import com.muzima.api.service.FormService;
+import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.PatientService;
 import com.muzima.builder.FormBuilder;
 import com.muzima.builder.FormTemplateBuilder;
@@ -15,25 +12,25 @@ import com.muzima.model.BaseForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.model.collections.DownloadedForms;
 import com.muzima.search.api.util.StringUtil;
-
+import com.muzima.service.SntpService;
 import com.muzima.utils.Constants;
+import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import static com.muzima.controller.FormController.FormDataFetchException;
-import static com.muzima.controller.FormController.FormDataSaveException;
-import static com.muzima.controller.FormController.FormDeleteException;
-import static com.muzima.controller.FormController.FormFetchException;
-import static com.muzima.controller.FormController.FormSaveException;
+import static com.muzima.controller.FormController.*;
 import static com.muzima.utils.Constants.*;
 import static java.util.Arrays.asList;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -44,12 +41,20 @@ public class FormControllerTest {
     private FormController formController;
     private FormService formService;
     private PatientService patientService;
+    private LastSyncTimeService lastSyncTimeService;
+    private SntpService sntpService;
+    private LastSyncTime lastSyncTime;
+    private Date mockDate;
 
     @Before
     public void setup() {
         formService = mock(FormService.class);
         patientService = mock(PatientService.class);
-        formController = new FormController(formService, patientService);
+        lastSyncTimeService = mock(LastSyncTimeService.class);
+        sntpService = mock(SntpService.class);
+        formController = new FormController(formService, patientService, lastSyncTimeService, sntpService);
+        lastSyncTime = mock(LastSyncTime.class);
+        mockDate = mock(Date.class);
     }
 
     @Test
@@ -119,16 +124,48 @@ public class FormControllerTest {
     public void downloadAllForms_shouldDownloadAllForms() throws IOException, ParseException, FormFetchException {
         List<Form> forms = new ArrayList<Form>();
         when(formService.downloadFormsByName(StringUtil.EMPTY)).thenReturn(forms);
+        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS)).thenReturn(lastSyncTime);
+        when(lastSyncTime.getLastSyncDate()).thenReturn(mockDate);
 
         assertThat(formController.downloadAllForms(), is(forms));
     }
 
-    @Test(expected = FormFetchException.class)
-    public void downloadAllForms_shouldThrowFormFetchExceptionIfExceptionThrownByFormService() throws IOException, ParseException, FormFetchException {
-        doThrow(new IOException()).when(formService).downloadFormsByName(StringUtil.EMPTY);
+    @Test
+    public void shouldCheckForLastSynTimeOfFormWhenDownloadingAllForms() throws Exception, FormFetchException {
+        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS)).thenReturn(lastSyncTime);
+        when(lastSyncTime.getLastSyncDate()).thenReturn(mockDate);
+
         formController.downloadAllForms();
 
-        doThrow(new ParseException()).when(formService).downloadFormsByName(StringUtil.EMPTY);
+        verify(lastSyncTimeService).getLastSyncTimeFor(APIName.DOWNLOAD_FORMS);
+        verify(formService, never()).downloadFormsByName(StringUtils.EMPTY);
+        verify(formService).downloadFormsByName(StringUtils.EMPTY, mockDate);
+    }
+
+    @Test
+    public void shouldUpdateLastSyncTimeAfterDownloadingAllForms() throws Exception, FormFetchException {
+        LastSyncTime lastSyncTime = mock(LastSyncTime.class);
+        Date mockDate = mock(Date.class);
+        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS)).thenReturn(lastSyncTime);
+        when(lastSyncTime.getLastSyncDate()).thenReturn(mockDate);
+        Date otherMockDate = mock(Date.class);
+        when(sntpService.getUTCTime()).thenReturn(otherMockDate);
+
+        formController.downloadAllForms();
+
+        ArgumentCaptor<LastSyncTime> argumentCaptor = ArgumentCaptor.forClass(LastSyncTime.class);
+        verify(lastSyncTimeService).saveLastSyncTime(argumentCaptor.capture());
+        LastSyncTime savedLastSyncTime = argumentCaptor.getValue();
+        assertThat(savedLastSyncTime.getApiName(), is(APIName.DOWNLOAD_FORMS));
+        assertThat(savedLastSyncTime.getParamSignature(), nullValue());
+        assertThat(savedLastSyncTime.getLastSyncDate(), is(otherMockDate));
+    }
+
+    @Test(expected = FormFetchException.class)
+    public void downloadAllForms_shouldThrowExceptionThrownByFormService() throws IOException, ParseException, FormFetchException {
+        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS)).thenReturn(lastSyncTime);
+        when(lastSyncTime.getLastSyncDate()).thenReturn(mockDate);
+        doThrow(new IOException()).when(formService).downloadFormsByName(StringUtil.EMPTY, mockDate);
         formController.downloadAllForms();
     }
 
