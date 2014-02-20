@@ -392,7 +392,8 @@ public class FormController {
             boolean result = true;
             List<FormData> allFormData = formService.getAllFormData(STATUS_COMPLETE);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_DISCRIMINATOR_REGISTRATION), result);
-            return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_DISCRIMINATOR_ENCOUNTER), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_XML_DISCRIMINATOR_ENCOUNTER), result);
+            return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_ENCOUNTER), result);
         } catch (IOException e) {
             throw new UploadFormDataException(e);
         }

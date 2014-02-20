@@ -317,7 +317,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     }
 
     private boolean isEncounterForm() {
-        return getIntent().getStringExtra(DISCRIMINATOR).equals(Constants.FORM_DISCRIMINATOR_ENCOUNTER);
+        return getIntent().getStringExtra(DISCRIMINATOR).equals(Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER);
     }
 }
 

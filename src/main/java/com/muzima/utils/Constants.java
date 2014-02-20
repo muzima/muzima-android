@@ -16,7 +16,8 @@ public class Constants {
     public static final String SEARCH_STRING_BUNDLE_KEY = "SearchString";
     public static String LOCAL_PATIENT = "LocalPatient";
 
-    public static final String FORM_DISCRIMINATOR_ENCOUNTER = "encounter";
+    public static final String FORM_XML_DISCRIMINATOR_ENCOUNTER = "xml-encounter";
+    public static final String FORM_JSON_DISCRIMINATOR_ENCOUNTER = "json-encounter";
     public static final String FORM_DISCRIMINATOR_REGISTRATION = "registration";
 
     public static class DataSyncServiceConstants {

@@ -487,8 +487,8 @@ public class FormControllerTest {
     public void shouldFilterOutUploadedFormData() throws Exception, FormDataFetchException {
         String templateUUID = "templateUUID";
         when(formService.getFormDataByTemplateUUID(templateUUID)).thenReturn(asList(
-                formDataWithStatusAndDiscriminator(STATUS_COMPLETE, FORM_DISCRIMINATOR_ENCOUNTER),
-                formDataWithStatusAndDiscriminator(STATUS_UPLOADED, FORM_DISCRIMINATOR_ENCOUNTER)));
+                formDataWithStatusAndDiscriminator(STATUS_COMPLETE, FORM_XML_DISCRIMINATOR_ENCOUNTER),
+                formDataWithStatusAndDiscriminator(STATUS_UPLOADED, FORM_XML_DISCRIMINATOR_ENCOUNTER)));
         List<FormData> formDataByTemplateUUID = formController.getUnUploadedFormData(templateUUID);
         assertThat(formDataByTemplateUUID.size(),is(1));
         assertThat(formDataByTemplateUUID.get(0).getStatus(), is(STATUS_COMPLETE));
@@ -498,7 +498,7 @@ public class FormControllerTest {
     @Ignore
     public void shouldUploadRegistrationFormsBeforeEncounterForms() throws Exception, FormController.UploadFormDataException {
         FormData registrationFormData = formDataWithStatusAndDiscriminator(STATUS_COMPLETE, FORM_DISCRIMINATOR_REGISTRATION);
-        FormData encounterFormData = formDataWithStatusAndDiscriminator(STATUS_COMPLETE, FORM_DISCRIMINATOR_ENCOUNTER);
+        FormData encounterFormData = formDataWithStatusAndDiscriminator(STATUS_COMPLETE, FORM_XML_DISCRIMINATOR_ENCOUNTER);
         when(formService.getAllFormData(Constants.STATUS_COMPLETE)).thenReturn(asList(registrationFormData,encounterFormData));
 
         FormController spyController = spy(formController);
