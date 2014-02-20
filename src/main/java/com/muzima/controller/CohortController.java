@@ -78,7 +78,18 @@ public class CohortController {
 
     public CohortData downloadCohortDataByUuid(String uuid) throws CohortDownloadException {
         try {
-            return cohortService.downloadCohortData(uuid, false);
+            LastSyncTime lastSyncTimeForCohort = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS_DATA, uuid);
+            Date lastSyncDate = null;
+            if(lastSyncTimeForCohort != null){
+                lastSyncDate = lastSyncTimeForCohort.getLastSyncDate();
+            }
+            CohortData cohortData = cohortService.downloadCohortDataAndSyncDate(uuid, false, lastSyncDate);
+            LastSyncTime lastSyncTime = new LastSyncTime();
+            lastSyncTime.setApiName(APIName.DOWNLOAD_COHORTS_DATA);
+            lastSyncTime.setLastSyncDate(sntpService.getUTCTime());
+            lastSyncTime.setParamSignature(uuid);
+            lastSyncTimeService.saveLastSyncTime(lastSyncTime);
+            return cohortData;
         } catch (IOException e) {
             throw new CohortDownloadException(e);
         }

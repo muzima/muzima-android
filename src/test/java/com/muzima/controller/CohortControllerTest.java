@@ -125,15 +125,46 @@ public class CohortControllerTest {
     public void downloadCohortDataByUuid_shouldDownloadCohortByUuid() throws IOException, CohortController.CohortDownloadException {
         CohortData cohortData = new CohortData();
         String uuid = "uuid";
-        when(cohortService.downloadCohortData(uuid, false)).thenReturn(cohortData);
+        when(cohortService.downloadCohortDataAndSyncDate(uuid, false, null)).thenReturn(cohortData);
 
         assertThat(controller.downloadCohortDataByUuid(uuid), is(cohortData));
     }
 
-    @Test(expected = CohortController.CohortDownloadException.class)
-    public void downloadFormTemplateByUuid_shouldThrowFormFetchExceptionIfExceptionThrownByFormService() throws IOException, CohortController.CohortDownloadException {
+    @Test
+    public void shouldGetLastSynchDateAndUseItWhenDownloadingData() throws IOException, CohortController.CohortDownloadException {
+        CohortData cohortData = mock(CohortData.class);
         String uuid = "uuid";
-        doThrow(new IOException()).when(cohortService).downloadCohortData(uuid, false);
+        when(cohortService.downloadCohortData(uuid, false)).thenReturn(cohortData);
+        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS_DATA, uuid)).thenReturn(lastSyncTime);
+        when(lastSyncTime.getLastSyncDate()).thenReturn(mockDate);
+        when(cohortService.downloadCohortDataAndSyncDate(uuid, false, mockDate)).thenReturn(cohortData);
+
+        controller.downloadCohortDataByUuid(uuid);
+
+        verify(lastSyncTimeService).getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS_DATA, uuid);
+        verify(cohortService,never()).downloadCohortData(uuid, false);
+    }
+
+    @Test
+    public void shouldSaveLastSyncTimeOfCohortData() throws Exception, CohortController.CohortDownloadException {
+        String uuid = "uuid";
+        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS_DATA, uuid)).thenReturn(lastSyncTime);
+        when(sntpService.getUTCTime()).thenReturn(mockDate);
+
+        controller.downloadCohortDataByUuid(uuid);
+
+        ArgumentCaptor<LastSyncTime> captor = ArgumentCaptor.forClass(LastSyncTime.class);
+        verify(lastSyncTimeService).saveLastSyncTime(captor.capture());
+        LastSyncTime savedLastSyncTime = captor.getValue();
+        assertThat(savedLastSyncTime.getApiName(), is(APIName.DOWNLOAD_COHORTS_DATA));
+        assertThat(savedLastSyncTime.getLastSyncDate(), is(mockDate));
+        assertThat(savedLastSyncTime.getParamSignature(), is(uuid));
+    }
+
+    @Test(expected = CohortController.CohortDownloadException.class)
+    public void downloadCohortDataByUuid_shouldThrowCohortDownloadExceptionIfExceptionThrownByCohortService() throws IOException, CohortController.CohortDownloadException {
+        String uuid = "uuid";
+        doThrow(new IOException()).when(cohortService).downloadCohortDataAndSyncDate(uuid, false, null);
         controller.downloadCohortDataByUuid(uuid);
     }
 
@@ -142,8 +173,8 @@ public class CohortControllerTest {
         String[] uuids = new String[]{"uuid1", "uuid2"};
         CohortData cohortData1 = new CohortData();
         CohortData cohortData2 = new CohortData();
-        when(cohortService.downloadCohortData(uuids[0], false)).thenReturn(cohortData1);
-        when(cohortService.downloadCohortData(uuids[1], false)).thenReturn(cohortData2);
+        when(cohortService.downloadCohortDataAndSyncDate(uuids[0], false, null)).thenReturn(cohortData1);
+        when(cohortService.downloadCohortDataAndSyncDate(uuids[1], false, null)).thenReturn(cohortData2);
 
         List<CohortData> allCohortData = controller.downloadCohortData(uuids);
         assertThat(allCohortData.size(), is(2));

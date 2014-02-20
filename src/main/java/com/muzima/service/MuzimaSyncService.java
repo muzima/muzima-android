@@ -192,10 +192,6 @@ public class MuzimaSyncService {
             long endDownloadCohortData = System.currentTimeMillis();
             Log.i(TAG, "Cohort data download successful with " + cohortDataList.size() + " cohorts");
 
-            for (String cohortUuid : cohortUuids) {
-                cohortController.deleteCohortMembers(cohortUuid);
-            }
-
             for (CohortData cohortData : cohortDataList) {
                 cohortController.addCohortMembers(cohortData.getCohortMembers());
                 patientController.replacePatients(cohortData.getPatients());
