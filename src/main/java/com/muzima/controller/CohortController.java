@@ -44,7 +44,7 @@ public class CohortController {
         try {
             List<Cohort> allCohorts = cohortService.downloadCohortsByNameAndSyncDate(StringUtil.EMPTY, getLastSyncDateOfCohorts());
 
-            LastSyncTime lastSyncTime = buildDefaultLastSyncTime();
+            LastSyncTime lastSyncTime = buildDefaultLastSyncTime(APIName.DOWNLOAD_COHORTS);
 
             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             return allCohorts;
@@ -55,15 +55,12 @@ public class CohortController {
 
     private Date getLastSyncDateOfCohorts() throws IOException {
         LastSyncTime lastSyncTimeForCohorts = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS);
-        if(lastSyncTimeForCohorts == null){
-            return null;
-        }
         return lastSyncTimeForCohorts.getLastSyncDate();
     }
 
-    private LastSyncTime buildDefaultLastSyncTime() {
+    private LastSyncTime buildDefaultLastSyncTime(APIName apiName) {
         LastSyncTime lastSyncTime = new LastSyncTime();
-        lastSyncTime.setApiName(APIName.DOWNLOAD_COHORTS);
+        lastSyncTime.setApiName(apiName);
         lastSyncTime.setLastSyncDate(sntpService.getUTCTime());
         return lastSyncTime;
     }
@@ -79,14 +76,9 @@ public class CohortController {
     public CohortData downloadCohortDataByUuid(String uuid) throws CohortDownloadException {
         try {
             LastSyncTime lastSyncTimeForCohort = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS_DATA, uuid);
-            Date lastSyncDate = null;
-            if(lastSyncTimeForCohort != null){
-                lastSyncDate = lastSyncTimeForCohort.getLastSyncDate();
-            }
+            Date lastSyncDate = lastSyncTimeForCohort.getLastSyncDate();
             CohortData cohortData = cohortService.downloadCohortDataAndSyncDate(uuid, false, lastSyncDate);
-            LastSyncTime lastSyncTime = new LastSyncTime();
-            lastSyncTime.setApiName(APIName.DOWNLOAD_COHORTS_DATA);
-            lastSyncTime.setLastSyncDate(sntpService.getUTCTime());
+            LastSyncTime lastSyncTime = buildDefaultLastSyncTime(APIName.DOWNLOAD_COHORTS_DATA);
             lastSyncTime.setParamSignature(uuid);
             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             return cohortData;
@@ -98,20 +90,18 @@ public class CohortController {
     public List<Cohort> downloadCohortsByPrefix(List<String> cohortPrefixes) throws CohortDownloadException {
         List<Cohort> filteredCohorts = new ArrayList<Cohort>();
         try {
-            Date lastSyncDateOfCohort = null;
+            Date lastSyncDateOfCohort;
             LastSyncTime lastSyncTime;
             for (String cohortPrefix : cohortPrefixes) {
                 lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS, cohortPrefix);
-                if (lastSyncTime != null) {
-                    lastSyncDateOfCohort = lastSyncTime.getLastSyncDate();
-                }
+                lastSyncDateOfCohort = lastSyncTime.getLastSyncDate();
                 List<Cohort> cohorts = cohortService.downloadCohortsByNameAndSyncDate(cohortPrefix, lastSyncDateOfCohort);
                 List<Cohort> filteredCohortsForPrefix = filterCohortsByPrefix(cohorts, cohortPrefix);
                 addUniqueCohorts(filteredCohorts, filteredCohortsForPrefix);
             }
 
-            lastSyncTime = buildDefaultLastSyncTime();
-            String pipeDelimitedCohortPrefixes = StringUtils.join(cohortPrefixes, "|");
+            lastSyncTime = buildDefaultLastSyncTime(APIName.DOWNLOAD_COHORTS);
+            String pipeDelimitedCohortPrefixes = StringUtils.join(cohortPrefixes, "|");//2 DO: This is called for each prefix...
             lastSyncTime.setParamSignature(pipeDelimitedCohortPrefixes);
             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
         } catch (IOException e) {
