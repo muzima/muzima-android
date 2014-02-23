@@ -146,10 +146,7 @@ public class MuzimaSyncService {
     public int[] downloadCohorts() {
         int[] result = new int[2];
         try {
-
             List<Cohort> cohorts = downloadCohortsList();
-            Log.i(TAG, "Cohort download successful");
-            cohortController.deleteAllCohorts();
             Log.i(TAG, "Old cohorts are deleted");
             cohortController.saveAllCohorts(cohorts);
             Log.i(TAG, "New cohorts are saved");
@@ -162,10 +159,6 @@ public class MuzimaSyncService {
         } catch (CohortController.CohortSaveException e) {
             Log.e(TAG, "Exception when trying to save cohorts", e);
             result[0] = SAVE_ERROR;
-            return result;
-        } catch (CohortController.CohortDeleteException e) {
-            Log.e(TAG, "Exception when trying to delete cohorts", e);
-            result[0] = DELETE_ERROR;
             return result;
         }
         return result;
@@ -198,10 +191,6 @@ public class MuzimaSyncService {
 
             long endDownloadCohortData = System.currentTimeMillis();
             Log.i(TAG, "Cohort data download successful with " + cohortDataList.size() + " cohorts");
-
-            for (String cohortUuid : cohortUuids) {
-                cohortController.deleteCohortMembers(cohortUuid);
-            }
 
             for (CohortData cohortData : cohortDataList) {
                 cohortController.addCohortMembers(cohortData.getCohortMembers());

@@ -8,7 +8,6 @@
     <script src="js/jquery-ui-1.10.4.custom.min.js"></script>
     <script src="js/jquery.validate.min.js"></script>
     <script src="js/additional-methods.min.js"></script>
-    <script src="js/jquery-autocomplete-min.js"></script>
     <script src="js/muzima.js"></script>
 
     <title>Dispensary Form</title>
@@ -65,73 +64,16 @@
 
     <div class="form-group">
         <label for="encounter.location_id">Name of Dispensary:<span class="required">*</span></label>
-        <select class="form-control autocomplete-select" id="encounter.location_id" name="encounter.location_id"
-                placeholder="Start typing in  Dispensary name..."
-                required="required">
-            <option value=""></option>
-            <option value="2">Mosoriot Health Centre</option>
-            <option value="3">Turbo Health Centre</option>
-            <option value="12">Teso District Hospital</option>
-            <option value="60">Chepsaita Dispensary</option>
-            <option value="65">Angurai Health Centre</option>
-            <option value="90">Changara Dispensary</option>
-            <option value="91">Malaba Dispensary</option>
-            <option value="106">Kamollo Dispensary</option>
-            <option value="110">Mogoget Dispensary</option>
-            <option value="111">Biribiriet Dispensary</option>
-            <option value="112">Itigo Dispensary</option>
-            <option value="113">Lelmokwo Dispensary</option>
-            <option value="114">Kokwet Dispensary</option>
-            <option value="115">Ngechek Dispensary</option>
-            <option value="116">Cheramei Dispensary</option>
-            <option value="117">Murgusi Dispensary</option>
-            <option value="118">Cheplasgei Dispensary</option>
-            <option value="119">Sigot Dispensary</option>
-            <option value="120">Sugoi A Dispensary</option>
-            <option value="121">Sugoi B Dispensary</option>
-            <option value="122">Chepkemel Dispensary</option>
-            <option value="124">Akichelesit Dispensary</option>
-            <option value="125">Aboloi Dispensary</option>
-            <option value="126">Moding Dispensary</option>
-            <option value="127">Sambut</option>
-            <option value="128">Ngenyilel</option>
-            <option value="129">Sosiani</option>
-        </select>
+        <input class="form-control" id="encounter.location_id" type="text" placeholder="Start typing something...">
+        <input class="form-control" name="encounter.location_id" type="hidden">
     </div>
+
     <div class="form-group">
         <label for="encounter.provider_id_select">Provider ID:</label>
-        <select class="form-control autocomplete-select" id="encounter.provider_id_select" name="encounter.provider_id_select">
-            <option value=""></option>
-            <option value="3356-3">David S. Pamba</option>
-            <option value="237-8">Ariya Patrick</option>
-            <option value="3331-6">Benjamin Osiya Ekirapa</option>
-            <option value="3332-4">Molly Omodek Aluku</option>
-            <option value="3333-2">Mercyline Lubisya Omusolo</option>
-            <option value="3334-0">Julita Auma Ndege</option>
-            <option value="3335-7">Caroline Fedha Injete</option>
-            <option value="3336-5">Nelly Nabwire Shiundu</option>
-            <option value="3337-3">Nicholas Dekkers Shitaha</option>
-            <option value="3338-1">Tezra Asangire Okaal</option>
-            <option value="3340-7">Sophy Ikarot Idele</option>
-            <option value="3339-9">Maureen Jacinta Muteitsi</option>
-            <option value="3341-5">Gibson Musera Mutira</option>
-            <option value="3342-3">Titus Chuma Khusua</option>
-            <option value="3343-1">Pamela Ekuriai Emukule</option>
-            <option value="3344-9">Rhoda Jeruto Kurgat</option>
-            <option value="3345-6">Zaitun Hassan Mohamed</option>
-            <option value="3346-4">Grace Gichanga Nyathogora</option>
-            <option value="3347-2">Gabriel Silas Okapes</option>
-            <option value="3348-0">Henry Samson Obonyo</option>
-            <option value="3349-8">Rebecca M. Wambura</option>
-            <option value="3350-6">Zeruya Amwatok Barua</option>
-            <option value="3351-4">Immaculate Otengo Namibia</option>
-            <option value="3352-2">Pamela Were Wamoyi</option>
-            <option value="3357-1">Caroline Wafula Nandisi</option>
-            <option value="3353-0">Markins Opuko Cresent</option>
-            <option value="3354-8">Benedict Kifufuli Wafula</option>
-            <option value="3355-5">Clementine Ingosi Osiel</option>
-        </select>
+        <input class="form-control" id="encounter.provider_id_select" type="text" placeholder="Start typing something...">
+        <input class="form-control" name="encounter.provider_id_select" type="hidden">
     </div>
+
     <div class="form-group show_provider_id_text">
         <label for="encounter.provider_id">Enter provider's system-id:<span class="required">*</span></label>
         <input class="form-control checkDigit" id="encounter.provider_id" name="encounter.provider_id"
@@ -142,6 +84,10 @@
         <input class="form-control datepicker nonFutureDate" id="encounter.encounter_datetime"
                name="encounter.encounter_datetime" type="text" readonly="readonly" encounter.encounter_datetime
                required="required">
+    </div>
+    <div class="form-group">
+        <input class="form-control" id="encounter.form_uuid" name="encounter.form_uuid"
+               type="hidden" required="required">
     </div>
     <div class="form-group">
         <label for="obs.current_visit_type">Visit Type:<span class="required">*</span></label>
@@ -195,6 +141,7 @@
                placeholder="Laboratory measurement of the glucose level in the blood" type="text"
                data-concept="887^SERUM GLUCOSE^99DCT">
     </div>
+
 </div>
 <div class="section">
     <h3>Your current medications</h3>
@@ -1329,10 +1276,86 @@ $(document).ready(function () {
             }
         },
         submitHandler: function (form) {
-            document.submit();
+            $('#result').html(JSON.stringify($('form').serializeEncounterForm(),undefined,2));
+        }
+    });
+    var dispensaryName = [
+        {"val": "2", "label": "Mosoriot Health Centre"},
+        {"val": "3", "label": "Turbo Health Centre"},
+        {"val": "12", "label": "Teso District Hospital"},
+        {"val": "60", "label": "Chepsaita Dispensary"},
+        {"val": "65", "label": "Angurai Health Centre"},
+        {"val": "90", "label": "Changara Dispensary"},
+        {"val": "91", "label": "Malaba Dispensary"},
+        {"val": "106", "label": "Kamollo Dispensary"},
+        {"val": "110", "label": "Mogoget Dispensary"},
+        {"val": "111", "label": "Biribiriet Dispensary"},
+        {"val": "112", "label": "Itigo Dispensary"},
+        {"val": "113", "label": "Lelmokwo Dispensary"},
+        {"val": "114", "label": "Kokwet Dispensary"},
+        {"val": "115", "label": "Ngechek Dispensary"},
+        {"val": "116", "label": "Cheramei Dispensary"},
+        {"val": "117", "label": "Murgusi Dispensary"},
+        {"val": "118", "label": "Cheplasgei Dispensary"},
+        {"val": "119", "label": "Sigot Dispensary"},
+        {"val": "120", "label": "Sugoi A Dispensary"},
+        {"val": "121", "label": "Sugoi B Dispensary"},
+        {"val": "122", "label": "Chepkemel Dispensary"},
+        {"val": "124", "label": "Akichelesit Dispensary"},
+        {"val": "125", "label": "Aboloi Dispensary"},
+        {"val": "126", "label": "Moding Dispensary"},
+        {"val": "127", "label": "Sambut"},
+        {"val": "128", "label": "Ngenyilel"},
+        {"val": "129", "label": "Sosiani"}
+    ];
+    $('#encounter\\.location_id').autocomplete({
+        source: dispensaryName,
+        select: function (event, ui) {
+            $('input[name="encounter\\.location_id"]').val(ui.item.val  );
+            $('#encounter\\.location_id').val(ui.item.label);
+            return false;
         }
     });
 
+    var provider = [{"val":"3356-3","label":"David S. Pamba"},
+        {"val":"237-8","label":"Ariya Patrick"},
+        {"val":"3331-6","label":"Benjamin Osiya Ekirapa"},
+        {"val":"3332-4","label":"Molly Omodek Aluku"},
+        {"val":"3333-2","label":"Mercyline Lubisya Omusolo"},
+        {"val":"3334-0","label":"Julita Auma Ndege"},
+        {"val":"3335-7","label":"Caroline Fedha Injete"},
+        {"val":"3336-5","label":"Nelly Nabwire Shiundu"},
+        {"val":"3337-3","label":"Nicholas Dekkers Shitaha"},
+        {"val":"3338-1","label":"Tezra Asangire Okaal"},
+        {"val":"3340-7","label":"Sophy Ikarot Idele"},
+        {"val":"3339-9","label":"Maureen Jacinta Muteitsi"},
+        {"val":"3341-5","label":"Gibson Musera Mutira"},
+        {"val":"3342-3","label":"Titus Chuma Khusua"},
+        {"val":"3343-1","label":"Pamela Ekuriai Emukule"},
+        {"val":"3344-9","label":"Rhoda Jeruto Kurgat"},
+        {"val":"3345-6","label":"Zaitun Hassan Mohamed"},
+        {"val":"3346-4","label":"Grace Gichanga Nyathogora"},
+        {"val":"3347-2","label":"Gabriel Silas Okapes"},
+        {"val":"3348-0","label":"Henry Samson Obonyo"},
+        {"val":"3349-8","label":"Rebecca M. Wambura"},
+        {"val":"3350-6","label":"Zeruya Amwatok Barua"},
+        {"val":"3351-4","label":"Immaculate Otengo Namibia"},
+        {"val":"3352-2","label":"Pamela Were Wamoyi"},
+        {"val":"3357-1","label":"Caroline Wafula Nandisi"},
+        {"val":"3353-0","label":"Markins Opuko Cresent"},
+        {"val":"3354-8","label":"Benedict Kifufuli Wafula"},
+        {"val":"3355-5","label":"Clementine Ingosi Osiel"}];
+
+    $('#encounter\\.provider_id_select').autocomplete({
+        source: provider,
+        select: function (event, ui) {
+            $('input[name="encounter\\.provider_id_select"]').val(ui.item.val);
+            $('#encounter\\.provider_id_select').val(ui.item.label);
+            $('#encounter\\.provider_id').val(ui.item.val);
+            $('.show_provider_id_text').hide();
+            return false;
+        }
+    });
     /* Start - Checking that the diastolic blood pressure is less than the systolic blood pressure */
     $.validator.addMethod("lessThankSystolic", function (value, element) {
                 var systolicBloodPressure = parseInt($(element).closest('.section').find('.systolicBloodPressure').val());
@@ -1395,20 +1418,6 @@ $(document).ready(function () {
     };
     selectCorrespondingCurrentMedication();
     /*  End - Based on Current medication prescribed show dosage fields */
-
-    /* When a provider is selected from the provider list, hide the provider id text field */
-    $('#encounter\\.provider_id_select').change(function () {
-        var $show_provider_id_text = $('.show_provider_id_text');
-        var selected_value = $('#encounter\\.provider_id_select').val();
-        if (selected_value != '') {
-            $show_provider_id_text.hide();
-            $show_provider_id_text.find('input').val(selected_value);
-        }
-        else {
-            $show_provider_id_text.show();
-            $show_provider_id_text.find('input').val('');
-        }
-    });
 
     /*  Start - If some medication dose was missed, ask for reason */
     var displayReasonForMissingMedicationWhenNeeded = function (selectedElement) {

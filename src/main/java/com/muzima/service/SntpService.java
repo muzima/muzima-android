@@ -1,14 +1,12 @@
 package com.muzima.service;
 
-import com.muzima.utils.DateUtils;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
 public class SntpService {
 
-    public String getUTCTime(){
+        public Date getUTCTime(){
         long nowAsPerDeviceTimeZone = 0;
         SntpClient sntpClient = new SntpClient();
 
@@ -19,6 +17,6 @@ public class SntpService {
             int differentialOfTimeZones = timeZoneInDevice.getOffset(System.currentTimeMillis());
             nowAsPerDeviceTimeZone -= differentialOfTimeZones;
         }
-        return DateUtils.getFormattedDateTime(new Date(nowAsPerDeviceTimeZone));
+        return new Date(nowAsPerDeviceTimeZone);
     }
 }

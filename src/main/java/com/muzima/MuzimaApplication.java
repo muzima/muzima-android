@@ -15,6 +15,7 @@ import com.muzima.controller.*;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.service.SntpService;
 import com.muzima.util.Constants;
 import com.muzima.view.forms.FormWebViewActivity;
 import com.muzima.view.preferences.MuzimaTimer;
@@ -50,6 +51,7 @@ public class MuzimaApplication extends Application {
     private CohortPrefixPreferenceService prefixesPreferenceService;
     private MuzimaTimer muzimaTimer;
     public static final String APP_DIR = "/data/data/com.muzima";
+    private SntpService sntpService;
 
     static {
         // see http://rtyley.github.io/spongycastle/
@@ -121,7 +123,7 @@ public class MuzimaApplication extends Application {
     public FormController getFormController() {
         if (formController == null) {
             try {
-                formController = new FormController(muzimaContext.getFormService(), muzimaContext.getPatientService());
+                formController = new FormController(muzimaContext.getFormService(), muzimaContext.getPatientService(), muzimaContext.getLastSyncTimeService(), sntpService);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -132,12 +134,19 @@ public class MuzimaApplication extends Application {
     public CohortController getCohortController() {
         if (cohortController == null) {
             try {
-                cohortController = new CohortController(muzimaContext.getCohortService());
+                cohortController = new CohortController(muzimaContext.getCohortService(), muzimaContext.getLastSyncTimeService(), getSntpService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
         return cohortController;
+    }
+
+    public SntpService getSntpService() {
+        if (sntpService == null) {
+            sntpService = new SntpService();
+        }
+        return sntpService;
     }
 
     public PatientController getPatientController() {

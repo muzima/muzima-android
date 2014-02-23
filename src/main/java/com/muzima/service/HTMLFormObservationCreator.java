@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -53,6 +54,8 @@ public class HTMLFormObservationCreator {
             Log.e(TAG, "Error while saving Encounter");
         } catch (ObservationController.SaveObservationException e) {
             Log.e(TAG, "Error while saving Observation");
+        } catch (Exception e) {
+            Log.e(TAG, "Unexpected Exception occurred" + e);
         }
     }
 
@@ -102,7 +105,10 @@ public class HTMLFormObservationCreator {
         } else if (jsonObject.get(key) instanceof JSONObject) {
             return extractObservationFromJSONObject(jsonObject.getJSONObject(key));
         }
-        return asList(createObservation(key, jsonObject.getString(key)));
+        ArrayList<Observation> observations = new ArrayList<Observation>();
+        observations.add(createObservation(key, jsonObject.getString(key)));
+        observations.removeAll(Collections.singleton(null));
+        return observations;
     }
 
     private List<Observation> createMultipleObservation(String conceptName, JSONArray jsonArray) throws JSONException,
@@ -120,6 +126,9 @@ public class HTMLFormObservationCreator {
 
     private Observation createObservation(String conceptName, String value) throws JSONException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
         Concept concept = observationParserUtility.getConceptEntity(conceptName);
+        if(concept == null){
+            return null;
+        }
         Observation observation = observationParserUtility.getObservationEntity(concept, value);
         observation.setEncounter(encounter);
         observation.setPerson(patient);

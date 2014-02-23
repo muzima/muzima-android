@@ -38,6 +38,9 @@ public class ObservationParserUtility {
 
     public Concept getConceptEntity(String rawConceptName) throws ConceptController.ConceptFetchException {
         String conceptName = getConceptName(rawConceptName);
+        if(StringUtil.isEmpty(conceptName)){
+            return null;
+        }
         Concept conceptFromExistingList = getConceptFromExistingList(conceptName);
         if (conceptFromExistingList != null) {
             return conceptFromExistingList;
@@ -145,10 +148,6 @@ public class ObservationParserUtility {
 
     private String getEncounterUUID() {
         return "encounterUuid" + UUID.randomUUID();
-    }
-
-    private String getEncounterName() {
-        return "EncounterCreatedOnDevice";
     }
 
     public String getObservationUuid() {

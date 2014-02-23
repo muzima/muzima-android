@@ -3,22 +3,21 @@ package com.muzima.controller;
 import android.util.Log;
 import com.muzima.api.model.*;
 import com.muzima.api.service.FormService;
+import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.PatientService;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.CompleteFormWithPatientData;
 import com.muzima.model.builders.*;
 import com.muzima.model.collections.*;
 import com.muzima.search.api.util.StringUtil;
+import com.muzima.service.SntpService;
 import com.muzima.utils.CustomColor;
 import com.muzima.view.forms.PatientJSONMapper;
 import org.apache.lucene.queryParser.ParseException;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.muzima.utils.Constants.*;
 
@@ -28,12 +27,16 @@ public class FormController {
     private final String REGISTRATION = "registration";
     private FormService formService;
     private PatientService patientService;
+    private LastSyncTimeService lastSyncTimeService;
+    private SntpService sntpService;
     private Map<String, Integer> tagColors;
     private List<Tag> selectedTags;
 
-    public FormController(FormService formService, PatientService patientService) {
+    public FormController(FormService formService, PatientService patientService, LastSyncTimeService lastSyncTimeService, SntpService sntpService) {
         this.formService = formService;
         this.patientService = patientService;
+        this.lastSyncTimeService = lastSyncTimeService;
+        this.sntpService = sntpService;
         tagColors = new HashMap<String, Integer>();
         selectedTags = new ArrayList<Tag>();
     }
@@ -148,7 +151,13 @@ public class FormController {
 
     public List<Form> downloadAllForms() throws FormFetchException {
         try {
-            return formService.downloadFormsByName(StringUtil.EMPTY);
+            Date lastSyncDate = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS);
+            List<Form> forms = formService.downloadFormsByName(StringUtil.EMPTY, lastSyncDate);
+            LastSyncTime lastSyncTime = new LastSyncTime();
+            lastSyncTime.setApiName(APIName.DOWNLOAD_FORMS);
+            lastSyncTime.setLastSyncDate(sntpService.getUTCTime());
+            lastSyncTimeService.saveLastSyncTime(lastSyncTime);
+            return forms;
         } catch (IOException e) {
             throw new FormFetchException(e);
         }
@@ -392,7 +401,8 @@ public class FormController {
             boolean result = true;
             List<FormData> allFormData = formService.getAllFormData(STATUS_COMPLETE);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_DISCRIMINATOR_REGISTRATION), result);
-            return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_DISCRIMINATOR_ENCOUNTER), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_XML_DISCRIMINATOR_ENCOUNTER), result);
+            return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_ENCOUNTER), result);
         } catch (IOException e) {
             throw new UploadFormDataException(e);
         }
