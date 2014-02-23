@@ -182,7 +182,7 @@ public class PatientSummaryActivity extends BaseActivity {
                     + patientSummaryActivityMetadata.recommendedForms + " Recommended");
 
             TextView notificationsDescription = (TextView) findViewById(R.id.notificationDescription);
-            notificationsDescription.setText(patientSummaryActivityMetadata.notifications + " New");
+            notificationsDescription.setText(patientSummaryActivityMetadata.notifications + " New Notifications");
         }
     }
 

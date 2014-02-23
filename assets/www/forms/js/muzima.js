@@ -37,6 +37,23 @@ $(document).ready(function () {
 
     /*End- BarCode Functionality*/
 
+    /*Start- Imaging Functionality*/
+
+    /* Called by the Activity WebViewActivity*/
+    document.populateImage = function (jsonString) {
+        $.each(jsonString, function (key, value) {
+            var $inputField = $("input[name='" + key + "']");
+            $inputField.val(value);
+            $inputField.trigger('change');  //Need this to trigger the event so image gets populated.
+        })
+    };
+
+    $('.image_btn').click(function () {
+        imagingComponent.startImageIntent($(this).parent().find("input[type='text']").attr('name'));
+    });
+
+    /*End- Imaging Functionality*/
+
     /* Start - Initialize jQuery DatePicker */
 
     $('.datepicker').datepicker({

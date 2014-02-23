@@ -204,5 +204,9 @@
     <string name="title_activity_notification_list">Notifications</string>
     <string name="no_notification_available">No Notifications Available</string>
     <string name="no_notification_available_tip">Make sure you have connectivity to server and press the load button</string>
+    <string name="new_notification_image">New Notification</string>
+    <string name="title_activity_image">Add Image</string>
+    <string name="capture_image">Capture Image</string>
+    <string name="choose_image">Choose Image</string>
 
 </resources>

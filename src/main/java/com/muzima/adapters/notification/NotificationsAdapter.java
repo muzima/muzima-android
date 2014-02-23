@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
@@ -30,8 +31,7 @@ public abstract class NotificationsAdapter extends ListAdapter<Notification> {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            convertView = layoutInflater.inflate(
-                    R.layout.item_notifications_list, parent, false);
+            convertView = layoutInflater.inflate(R.layout.item_notifications_list, parent, false);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         } else {
@@ -40,6 +40,7 @@ public abstract class NotificationsAdapter extends ListAdapter<Notification> {
         holder.setStatus(getItem(position).getStatus());
         holder.setSubject(getItem(position).getSubject());
         holder.setReceiver(getItem(position).getPayload());
+        holder.markUnreadNotification();
         return convertView;
     }
 
@@ -51,31 +52,37 @@ public abstract class NotificationsAdapter extends ListAdapter<Notification> {
         private CheckedTextView subject;
         private TextView receiver;
         private String status;
+        private ImageView newNotificationImg;
 
         public ViewHolder(View convertView) {
             this.subject = (CheckedTextView) convertView.findViewById(R.id.subject);
             this.receiver = (TextView) convertView.findViewById(R.id.receiver);
+            this.newNotificationImg = (ImageView) convertView.findViewById(R.id.newNotificationImg);
         }
 
         public void setSubject(String text) {
             subject.setText(text);
-            if (StringUtil.equals("read", status))
-                subject.setTypeface(Fonts.roboto_medium(getContext()));
-            else
-                subject.setTypeface(Fonts.roboto_light(getContext()));
-
         }
 
         public void setReceiver(String text) {
             receiver.setText(text);
-            if (StringUtil.equals("read", status))
-                receiver.setTypeface(Fonts.roboto_medium(getContext()));
-            else
-                receiver.setTypeface(Fonts.roboto_light(getContext()));
         }
 
         public void setStatus(String status) {
             this.status = status;
+        }
+
+        public void markUnreadNotification() {
+            if (StringUtil.equals("read", status)){
+                subject.setTypeface(Fonts.roboto_light(getContext()));
+                receiver.setTypeface(Fonts.roboto_light(getContext()));
+                newNotificationImg.setVisibility(View.GONE);
+            } else {
+                subject.setTypeface(Fonts.roboto_medium(getContext()));
+                receiver.setTypeface(Fonts.roboto_medium(getContext()));
+                newNotificationImg.setVisibility(View.VISIBLE);
+            }
+
         }
     }
 }

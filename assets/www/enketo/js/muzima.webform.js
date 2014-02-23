@@ -94,6 +94,34 @@ $(document).ready(function () {
     });
     /*End- BarCode Functionality*/
 
+    /*Start- Imaging Functionality*/
+
+    document.populateImage = function (jsonString) {
+        $.each(jsonString, function (key, value) {
+            var $inputField = $("input[name='" + key + "']");
+            $inputField.val(value);
+            $inputField.trigger('change');  //Need this to trigger the event so image id gets populated.
+        })
+    };
+
+    var $imageInput = $('input[type="image"]');
+
+    // !!Please keep the isFromInput flag. In WebView, if the .image_img is before the input, the click on the input
+    // would trigger the event of click on the .image_img.
+    var isFromInput = false;
+    $imageInput.before("<input type='button' class='image_img'>");
+    $('.image_img').click(function () {
+        //imagingComponent is defined in FormWebViewActivity.java
+        if (!isFromInput) {
+            imagingComponent.startImageIntent($imageInput.attr('name'));
+        }
+        isFromInput = false;
+    });
+    $imageInput.click(function (e) {
+        isFromInput = true;
+    });
+    /*End- Image Functionality*/
+
     /* Multi select Hack - Start */
 
     var checkboxParent = $("form input:checkbox").parent();
