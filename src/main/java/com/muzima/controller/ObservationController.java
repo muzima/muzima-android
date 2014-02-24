@@ -3,12 +3,16 @@ package com.muzima.controller;
 import com.muzima.api.model.*;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
+import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.model.observation.Concepts;
 import com.muzima.model.observation.Encounters;
+import com.muzima.service.SntpService;
 import com.muzima.utils.CustomColor;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,12 +22,18 @@ public class ObservationController {
     private ObservationService observationService;
     private ConceptService conceptService;
     private EncounterService encounterService;
+    private LastSyncTimeService lastSyncTimeService;
+    private SntpService sntpService;
     private Map<String, Integer> conceptColors;
 
-    public ObservationController(ObservationService observationService, ConceptService conceptService, EncounterService encounterService) {
+    public ObservationController(ObservationService observationService, ConceptService conceptService,
+                                 EncounterService encounterService, LastSyncTimeService lastSyncTimeService,
+                                 SntpService sntpService) {
         this.observationService = observationService;
         this.conceptService = conceptService;
         this.encounterService = encounterService;
+        this.lastSyncTimeService = lastSyncTimeService;
+        this.sntpService = sntpService;
         conceptColors = new HashMap<String, Integer>();
     }
 
@@ -127,11 +137,25 @@ public class ObservationController {
 
     public List<Observation> downloadObservationsByPatientUuidsAndConceptUuids(List<String> patientUuids, List<String> conceptUuids) throws DownloadObservationException {
         try {
-            List<Observation> observations = observationService.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids);
+            String paramSignature = buildParamSignature(patientUuids, conceptUuids);
+            Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_OBSERVATIONS, paramSignature);
+            List<Observation> observations = observationService.downloadObservations(patientUuids, conceptUuids, lastSyncTime);
+            LastSyncTime newLastSyncTime = new LastSyncTime();
+            newLastSyncTime.setApiName(APIName.DOWNLOAD_OBSERVATIONS);
+            newLastSyncTime.setLastSyncDate(sntpService.getUTCTime());
+            newLastSyncTime.setParamSignature(paramSignature);
+            lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
             return observations;
         } catch (IOException e) {
             throw new DownloadObservationException(e);
         }
+    }
+
+    private String buildParamSignature(List<String> patientUuids, List<String> conceptUuids) {
+        String paramSignature = StringUtils.join(patientUuids, ",");
+        paramSignature += "|";
+        paramSignature += StringUtils.join(conceptUuids, ",");
+        return paramSignature;
     }
 
     public void saveObservations(List<Observation> observations) throws SaveObservationException {

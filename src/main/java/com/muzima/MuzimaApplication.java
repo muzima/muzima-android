@@ -163,7 +163,8 @@ public class MuzimaApplication extends Application {
             try {
                 observationController = new ObservationController(muzimaContext.getObservationService(),
                         muzimaContext.getService(ConceptService.class),
-                        muzimaContext.getService(EncounterService.class));
+                        muzimaContext.getService(EncounterService.class),
+                        muzimaContext.getLastSyncTimeService(), sntpService);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
