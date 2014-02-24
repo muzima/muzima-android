@@ -83,8 +83,6 @@ public class MuzimaSyncService {
             List<Form> forms;
             forms = formController.downloadAllForms();
             Log.i(TAG, "Form download successful");
-            formController.deleteAllForms();
-            Log.i(TAG, "Old forms are deleted");
             formController.saveAllForms(forms);
             Log.i(TAG, "New forms are saved");
 
@@ -98,10 +96,6 @@ public class MuzimaSyncService {
         } catch (FormController.FormSaveException e) {
             Log.e(TAG, "Exception when trying to save forms", e);
             result[0] = SAVE_ERROR;
-            return result;
-        } catch (FormController.FormDeleteException e) {
-            Log.e(TAG, "Exception occurred while deleting existing forms", e);
-            result[0] = DELETE_ERROR;
             return result;
         }
         return result;
