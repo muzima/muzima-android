@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.muzima.api.model.APIName.DOWNLOAD_OBSERVATIONS;
+
 public class ObservationController {
 
     private ObservationService observationService;
@@ -138,12 +140,9 @@ public class ObservationController {
     public List<Observation> downloadObservationsByPatientUuidsAndConceptUuids(List<String> patientUuids, List<String> conceptUuids) throws DownloadObservationException {
         try {
             String paramSignature = buildParamSignature(patientUuids, conceptUuids);
-            Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_OBSERVATIONS, paramSignature);
+            Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_OBSERVATIONS, paramSignature);
             List<Observation> observations = observationService.downloadObservations(patientUuids, conceptUuids, lastSyncTime);
-            LastSyncTime newLastSyncTime = new LastSyncTime();
-            newLastSyncTime.setApiName(APIName.DOWNLOAD_OBSERVATIONS);
-            newLastSyncTime.setLastSyncDate(sntpService.getUTCTime());
-            newLastSyncTime.setParamSignature(paramSignature);
+            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_OBSERVATIONS, sntpService.getUTCTime(), paramSignature);
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
             return observations;
         } catch (IOException e) {

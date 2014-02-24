@@ -1,6 +1,5 @@
 package com.muzima.controller;
 
-import com.muzima.api.model.APIName;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.EncounterService;
@@ -12,6 +11,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static com.muzima.api.model.APIName.DOWNLOAD_ENCOUNTERS;
 
 public class EncounterController {
 
@@ -36,12 +37,10 @@ public class EncounterController {
     public List<Encounter> downloadEncountersByPatientUuids(List<String> patientUuids) throws DownloadEncounterException {
         try {
             String paramSignature = StringUtils.join(patientUuids, ",");
-            Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_ENCOUNTERS, paramSignature);
+            Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS, paramSignature);
             List<Encounter> encounters = encounterService.downloadEncountersByPatientUuidsAndSyncDate(patientUuids, lastSyncTime);
-            LastSyncTime newLastSyncTime = new LastSyncTime();
-            newLastSyncTime.setApiName(APIName.DOWNLOAD_ENCOUNTERS);
-            newLastSyncTime.setLastSyncDate(sntpService.getUTCTime());
-            newLastSyncTime.setParamSignature(paramSignature);
+
+            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_ENCOUNTERS, sntpService.getUTCTime(), paramSignature);
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
             return encounters;
         } catch (IOException e) {

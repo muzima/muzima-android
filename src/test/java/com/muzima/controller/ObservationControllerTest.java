@@ -1,6 +1,5 @@
 package com.muzima.controller;
 
-import com.muzima.api.model.APIName;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.Observation;
@@ -20,11 +19,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.muzima.api.model.APIName.DOWNLOAD_OBSERVATIONS;
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
-
 public class ObservationControllerTest {
 
     private ObservationController observationController;
@@ -49,7 +48,7 @@ public class ObservationControllerTest {
         List<String> patientUuids = asList(new String[]{"PatientUuid1", "PatientUuid2"});
         List<String> conceptUuids = asList(new String[]{"ConceptUuid1", "ConceptUuid2"});
         observationController.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids);
-        verify(lastSyncTimeService).getLastSyncTimeFor(APIName.DOWNLOAD_OBSERVATIONS, "PatientUuid1,PatientUuid2|ConceptUuid1,ConceptUuid2");
+        verify(lastSyncTimeService).getLastSyncTimeFor(DOWNLOAD_OBSERVATIONS, "PatientUuid1,PatientUuid2|ConceptUuid1,ConceptUuid2");
     }
 
     @Test
@@ -57,7 +56,7 @@ public class ObservationControllerTest {
         List<String> patientUuids = asList(new String[]{"PatientUuid1", "PatientUuid2"});
         List<String> conceptUuids = asList(new String[]{"ConceptUuid1", "ConceptUuid2"});
         Date lastSyncTime = mock(Date.class);
-        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_OBSERVATIONS, "PatientUuid1,PatientUuid2|ConceptUuid1,ConceptUuid2")).thenReturn(lastSyncTime);
+        when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_OBSERVATIONS, "PatientUuid1,PatientUuid2|ConceptUuid1,ConceptUuid2")).thenReturn(lastSyncTime);
 
         observationController.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids);
         verify(observationService, never()).downloadObservationsByPatientUuidsAndConceptUuids(anyList(), anyList());
@@ -75,7 +74,7 @@ public class ObservationControllerTest {
         ArgumentCaptor<LastSyncTime> argumentCaptor = ArgumentCaptor.forClass(LastSyncTime.class);
         verify(lastSyncTimeService).saveLastSyncTime(argumentCaptor.capture());
         LastSyncTime savedLastSyncTime = argumentCaptor.getValue();
-        assertThat(savedLastSyncTime.getApiName(), is(APIName.DOWNLOAD_OBSERVATIONS));
+        assertThat(savedLastSyncTime.getApiName(), is(DOWNLOAD_OBSERVATIONS));
         assertThat(savedLastSyncTime.getLastSyncDate(), is(currentDate));
         assertThat(savedLastSyncTime.getParamSignature(), is("PatientUuid1,PatientUuid2|ConceptUuid1,ConceptUuid2"));
     }

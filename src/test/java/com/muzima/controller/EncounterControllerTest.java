@@ -1,6 +1,5 @@
 package com.muzima.controller;
 
-import com.muzima.api.model.APIName;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.LastSyncTimeService;
@@ -12,6 +11,7 @@ import org.mockito.ArgumentCaptor;
 import java.util.Date;
 import java.util.List;
 
+import static com.muzima.api.model.APIName.DOWNLOAD_ENCOUNTERS;
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -41,13 +41,13 @@ public class EncounterControllerTest {
         List<String> patientUuids = asList(new String[]{"patientUuid1", "patientUuid2"});
         encounterController.downloadEncountersByPatientUuids(patientUuids);
 
-        verify(lastSyncTimeService).getLastSyncTimeFor(APIName.DOWNLOAD_ENCOUNTERS,"patientUuid1,patientUuid2");
+        verify(lastSyncTimeService).getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS,"patientUuid1,patientUuid2");
     }
 
     @Test
     public void shouldUseTheLastSyncTimeWhenDownloadingEncounters() throws Exception, EncounterController.DownloadEncounterException {
         Date lastSyncDate = mock(Date.class);
-        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_ENCOUNTERS,"patientUuid1,patientUuid2")).thenReturn(lastSyncDate);
+        when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS,"patientUuid1,patientUuid2")).thenReturn(lastSyncDate);
 
         List<String> patientUuids = asList(new String[]{"patientUuid1", "patientUuid2"});
         encounterController.downloadEncountersByPatientUuids(patientUuids);
@@ -65,7 +65,7 @@ public class EncounterControllerTest {
         ArgumentCaptor<LastSyncTime> argumentCaptor = ArgumentCaptor.forClass(LastSyncTime.class);
         verify(lastSyncTimeService).saveLastSyncTime(argumentCaptor.capture());
         LastSyncTime savedLastSyncTime = argumentCaptor.getValue();
-        assertThat(savedLastSyncTime.getApiName(), is(APIName.DOWNLOAD_ENCOUNTERS));
+        assertThat(savedLastSyncTime.getApiName(), is(DOWNLOAD_ENCOUNTERS));
         assertThat(savedLastSyncTime.getLastSyncDate(), is(updatedDate));
         assertThat(savedLastSyncTime.getParamSignature(), is("patientUuid1,patientUuid2"));
     }

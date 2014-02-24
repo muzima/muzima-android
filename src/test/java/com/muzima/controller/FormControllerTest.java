@@ -37,6 +37,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.matchers.JUnitMatchers.hasItem;
 import static org.mockito.Mockito.*;
 
+import static com.muzima.api.model.APIName.DOWNLOAD_FORMS;
+
 public class FormControllerTest {
     private FormController formController;
     private FormService formService;
@@ -124,18 +126,18 @@ public class FormControllerTest {
     public void downloadAllForms_shouldDownloadAllForms() throws IOException, ParseException, FormFetchException {
         List<Form> forms = new ArrayList<Form>();
         when(formService.downloadFormsByName(StringUtil.EMPTY)).thenReturn(forms);
-        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS)).thenReturn(mockDate);
+        when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_FORMS)).thenReturn(mockDate);
 
         assertThat(formController.downloadAllForms(), is(forms));
     }
 
     @Test
     public void shouldCheckForLastSynTimeOfFormWhenDownloadingAllForms() throws Exception, FormFetchException {
-        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS)).thenReturn(mockDate);
+        when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_FORMS)).thenReturn(mockDate);
 
         formController.downloadAllForms();
 
-        verify(lastSyncTimeService).getLastSyncTimeFor(APIName.DOWNLOAD_FORMS);
+        verify(lastSyncTimeService).getLastSyncTimeFor(DOWNLOAD_FORMS);
         verify(formService, never()).downloadFormsByName(StringUtils.EMPTY);
         verify(formService).downloadFormsByName(StringUtils.EMPTY, mockDate);
     }
@@ -143,7 +145,7 @@ public class FormControllerTest {
     @Test
     public void shouldUpdateLastSyncTimeAfterDownloadingAllForms() throws Exception, FormFetchException {
         Date mockDate = mock(Date.class);
-        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS)).thenReturn(mockDate);
+        when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_FORMS)).thenReturn(mockDate);
         Date otherMockDate = mock(Date.class);
         when(sntpService.getUTCTime()).thenReturn(otherMockDate);
 
@@ -152,14 +154,14 @@ public class FormControllerTest {
         ArgumentCaptor<LastSyncTime> argumentCaptor = ArgumentCaptor.forClass(LastSyncTime.class);
         verify(lastSyncTimeService).saveLastSyncTime(argumentCaptor.capture());
         LastSyncTime savedLastSyncTime = argumentCaptor.getValue();
-        assertThat(savedLastSyncTime.getApiName(), is(APIName.DOWNLOAD_FORMS));
+        assertThat(savedLastSyncTime.getApiName(), is(DOWNLOAD_FORMS));
         assertThat(savedLastSyncTime.getParamSignature(), nullValue());
         assertThat(savedLastSyncTime.getLastSyncDate(), is(otherMockDate));
     }
 
     @Test(expected = FormFetchException.class)
     public void downloadAllForms_shouldThrowExceptionThrownByFormService() throws IOException, ParseException, FormFetchException {
-        when(lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS)).thenReturn(mockDate);
+        when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_FORMS)).thenReturn(mockDate);
         doThrow(new IOException()).when(formService).downloadFormsByName(StringUtil.EMPTY, mockDate);
         formController.downloadAllForms();
     }
