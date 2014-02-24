@@ -141,7 +141,6 @@ public class MuzimaSyncServiceTest {
         muzimaSyncService.downloadForms();
 
         verify(formContorller).downloadAllForms();
-        verify(formContorller).deleteAllForms();
         verify(formContorller).saveAllForms(forms);
     }
 
@@ -168,12 +167,6 @@ public class MuzimaSyncServiceTest {
     public void downloadForms_shouldReturnSaveErrorIfSaveExceptionOccur() throws Exception, FormController.FormSaveException {
         doThrow(new FormController.FormSaveException(null)).when(formContorller).saveAllForms(anyList());
         assertThat(muzimaSyncService.downloadForms()[0], is(SAVE_ERROR));
-    }
-
-    @Test
-    public void downloadForms_shouldReturnDeleteErrorIfDeleteExceptionOccur() throws Exception, FormController.FormDeleteException {
-        doThrow(new FormController.FormDeleteException(null)).when(formContorller).deleteAllForms();
-        assertThat(muzimaSyncService.downloadForms()[0], is(DELETE_ERROR));
     }
 
     @Test
