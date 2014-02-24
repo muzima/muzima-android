@@ -164,7 +164,8 @@ public class MuzimaApplication extends Application {
                 observationController = new ObservationController(muzimaContext.getObservationService(),
                         muzimaContext.getService(ConceptService.class),
                         muzimaContext.getService(EncounterService.class),
-                        muzimaContext.getLastSyncTimeService(), sntpService);
+                        muzimaContext.getLastSyncTimeService(),
+                        getSntpService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -175,7 +176,8 @@ public class MuzimaApplication extends Application {
     public EncounterController getEncounterController() {
         if (encounterController == null) {
             try {
-                encounterController = new EncounterController(muzimaContext.getService(EncounterService.class));
+                encounterController = new EncounterController(muzimaContext.getService(EncounterService.class),
+                        muzimaContext.getLastSyncTimeService(), getSntpService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

@@ -1,18 +1,28 @@
 package com.muzima.controller;
 
+import com.muzima.api.model.APIName;
 import com.muzima.api.model.Encounter;
+import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.EncounterService;
+import com.muzima.api.service.LastSyncTimeService;
+import com.muzima.service.SntpService;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class EncounterController {
 
     private EncounterService encounterService;
+    private LastSyncTimeService lastSyncTimeService;
+    private SntpService sntpService;
 
-    public EncounterController(EncounterService encounterService) {
+    public EncounterController(EncounterService encounterService, LastSyncTimeService lastSyncTimeService, SntpService sntpService) {
         this.encounterService = encounterService;
+        this.lastSyncTimeService = lastSyncTimeService;
+        this.sntpService = sntpService;
     }
 
     public void replaceEncounters(List<Encounter> allEncounters) throws ReplaceEncounterException {
@@ -25,7 +35,15 @@ public class EncounterController {
 
     public List<Encounter> downloadEncountersByPatientUuids(List<String> patientUuids) throws DownloadEncounterException {
         try {
-            return encounterService.downloadEncountersByPatientUuids(patientUuids);
+            String paramSignature = StringUtils.join(patientUuids, ",");
+            Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_ENCOUNTERS, paramSignature);
+            List<Encounter> encounters = encounterService.downloadEncountersByPatientUuidsAndSyncDate(patientUuids, lastSyncTime);
+            LastSyncTime newLastSyncTime = new LastSyncTime();
+            newLastSyncTime.setApiName(APIName.DOWNLOAD_ENCOUNTERS);
+            newLastSyncTime.setLastSyncDate(sntpService.getUTCTime());
+            newLastSyncTime.setParamSignature(paramSignature);
+            lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
+            return encounters;
         } catch (IOException e) {
             throw new DownloadEncounterException(e);
         }
