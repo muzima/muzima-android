@@ -50,11 +50,6 @@
                 style="@style/LoginButton"/>
 
         <TextView
-                android:id="@+id/noConnectionText"
-                style="@style/LoginActivityNoConnectionView"
-                android:visibility="gone"/>
-
-        <TextView
                 android:id="@+id/authenticatingText"
                 style="@style/LoginActivityAuthenticatingView"
                 android:visibility="gone"/>
