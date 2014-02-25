@@ -84,9 +84,13 @@ public class HTMLFormObservationCreator {
 
     private void saveObservationsAndRelatedEntities() throws EncounterController.SaveEncounterException,
             ObservationController.SaveObservationException, ConceptController.ConceptSaveException {
-        encounterController.saveEncounters(asList(encounter));
-        conceptController.saveConcepts(observationParserUtility.getNewConceptList());
-        observationController.saveObservations(observations);
+        try {
+            encounterController.saveEncounters(asList(encounter));
+            conceptController.saveConcepts(observationParserUtility.getNewConceptList());
+            observationController.saveObservations(observations);
+        } catch (Exception e) {
+            Log.e(TAG, "Error while parsing and storing Observations.");
+        }
     }
 
     private List<Observation> extractObservationFromJSONObject(JSONObject jsonObject) throws JSONException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
@@ -126,7 +130,7 @@ public class HTMLFormObservationCreator {
 
     private Observation createObservation(String conceptName, String value) throws JSONException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
         Concept concept = observationParserUtility.getConceptEntity(conceptName);
-        if(concept == null){
+        if (concept == null) {
             return null;
         }
         Observation observation = observationParserUtility.getObservationEntity(concept, value);
