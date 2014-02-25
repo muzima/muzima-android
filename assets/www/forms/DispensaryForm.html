@@ -1237,6 +1237,11 @@ $(document).ready(function () {
     $('#save_draft').click(function () {
         document.saveDraft();
     });
+
+    $('#submit_form').submit(function(){
+        document.submit();
+    });
+
     $('#dispensary_form').validate({
         rules: {
             pulse: {
@@ -1258,27 +1263,20 @@ $(document).ready(function () {
             glycosylated_hemoglobin: {
                 number: true,
                 range: [0, 20]
-            },
-            'obs.tmp_drugs': {
-                checkNoneSelectedAlone: true
-            },
-            '1069^REVIEW OF SYSTEMS, GENERAL^99DCT': {
-                checkNoneSelectedAlone: true
-            },
-            'obs.drugs_dispensed': {
-                checkNoneSelectedAlone: true
-            },
-            '6327^PATIENT EDUCATION RECEIVED THIS VISIT^99DCT': {
-                checkNoneSelectedAlone: true
-            },
-            '1272^REFERRALS ORDERED^99DCT': {
-                checkNoneSelectedAlone: true
             }
         },
         submitHandler: function (form) {
             $('#result').html(JSON.stringify($('form').serializeEncounterForm(),undefined,2));
         }
     });
+
+    var name_array = ['obs\\.tmp_drugs', '1069^REVIEW OF SYSTEMS, GENERAL^99DCT', 'obs.drugs_dispensed',
+        '6327^PATIENT EDUCATION RECEIVED THIS VISIT^99DCT', '1272^REFERRALS ORDERED^99DCT'];
+
+    $.fn.customValidationCheck = function(){
+        return $.fn.checkNoneSelectedAlone(name_array);
+    };
+
     var dispensaryName = [
         {"val": "2", "label": "Mosoriot Health Centre"},
         {"val": "3", "label": "Turbo Health Centre"},
