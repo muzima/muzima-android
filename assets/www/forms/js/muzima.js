@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     /* Start - Function to save the form */
     document.submit = function () {
-        if ($("form").valid()) {
+        if ($("form").valid() && $.fn.customValidationCheck()) {
             save("complete");
         }
     };
@@ -144,23 +144,39 @@ $(document).ready(function () {
 
     /* Start - checkNoneSelectedAlone*/
 
-    $.validator.addMethod("checkNoneSelectedAlone", function (value, element) {
-            var $fieldset = $(element);
-            if ($fieldset.prop('tagName') != 'FIELDSET') {
-                return true;
+    $.fn.checkNoneSelectedAlone = function(name_array){
+        var $validator = $('form').validate();
+        var errors = {};
+        var final_result = true;
+        $.each(name_array, function (i, elem) {
+            var filedSetElem = $('fieldset[name="' + elem + '"]');
+            var result = isValidForNoneSelection(filedSetElem);
+            if (!result) {
+                errors[elem] = "If 'None' is selected, no other options can be selected.";
+                final_result = false;
             }
-            var valid = true;
-            var totalSelected = $fieldset.find('input:checkbox:checked').length;
-            $.each($fieldset.find('input:checkbox:checked'), function (i, cBoxElement) {
-                console.log($(cBoxElement).val());
-                if (($(cBoxElement).val() == 'none' || $(cBoxElement).val() == '1107^NONE^99DCT')
-                    && totalSelected > 1) {
-                    valid = false;
-                }
-            });
-            return valid;
-        }, "If 'None' is selected, no other options can be selected."
-    );
+        });
+        if (!final_result) {
+            $validator.showErrors(errors);
+        }
+        return final_result;
+    };
+
+    var isValidForNoneSelection = function (element) {
+        var $fieldset = $(element);
+        if ($fieldset.prop('tagName') != 'FIELDSET') {
+            return true;
+        }
+        var valid = true;
+        var totalSelected = $fieldset.find('input:checkbox:checked').length;
+        $.each($fieldset.find('input:checkbox:checked'), function (i, cBoxElement) {
+            if (($(cBoxElement).val() == 'none' || $(cBoxElement).val() == '1107^NONE^99DCT')
+                && totalSelected > 1) {
+                valid = false;
+            }
+        });
+        return valid;
+    };
 
     /* End - checkNoneSelectedAlone*/
 
