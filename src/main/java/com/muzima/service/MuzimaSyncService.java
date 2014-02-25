@@ -138,14 +138,17 @@ public class MuzimaSyncService {
     }
 
     public int[] downloadCohorts() {
-        int[] result = new int[2];
+        int[] result = new int[3];
         try {
             List<Cohort> cohorts = downloadCohortsList();
-            Log.i(TAG, "Old cohorts are deleted");
+            ArrayList<Cohort> voidedCohorts = deleteVoidedCohorts(cohorts);
+            cohorts.removeAll(voidedCohorts);
+
             cohortController.saveAllCohorts(cohorts);
             Log.i(TAG, "New cohorts are saved");
             result[0] = SUCCESS;
             result[1] = cohorts.size();
+            result[2] = voidedCohorts.size();
         } catch (CohortController.CohortDownloadException e) {
             Log.e(TAG, "Exception when trying to download cohorts", e);
             result[0] = DOWNLOAD_ERROR;
@@ -154,8 +157,24 @@ public class MuzimaSyncService {
             Log.e(TAG, "Exception when trying to save cohorts", e);
             result[0] = SAVE_ERROR;
             return result;
+        } catch (CohortController.CohortDeleteException e) {
+            Log.e(TAG, "Exception occurred while deleting voided cohorts", e);
+            result[0] = DELETE_ERROR;
+            return result;
         }
         return result;
+    }
+
+    private ArrayList<Cohort> deleteVoidedCohorts(List<Cohort> cohorts) throws CohortController.CohortDeleteException {
+        Log.i(TAG, "Voided cohorts are deleted");
+        ArrayList<Cohort> voidedCohorts = new ArrayList<Cohort>();
+        for( Cohort cohort : cohorts){
+            if(cohort.isVoided()){
+                voidedCohorts.add(cohort);
+            }
+        }
+        cohortController.deleteCohorts(voidedCohorts);
+        return voidedCohorts;
     }
 
     private List<Concept> getRelatedConcepts(List<FormTemplate> formTemplates) throws ConceptController.ConceptDownloadException {

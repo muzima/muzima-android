@@ -138,6 +138,14 @@ public class CohortController {
         }
     }
 
+    public void deleteCohorts(List<Cohort> cohorts) throws CohortDeleteException {
+        try {
+            cohortService.deleteCohorts(cohorts);
+        } catch (IOException e) {
+            throw new CohortDeleteException(e);
+        }
+    }
+
     public List<Cohort> getSyncedCohorts() throws CohortFetchException {
         try {
 

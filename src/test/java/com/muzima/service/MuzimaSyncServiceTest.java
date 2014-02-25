@@ -229,7 +229,27 @@ public class MuzimaSyncServiceTest {
 
         verify(cohortController).downloadAllCohorts();
         verify(cohortController).saveAllCohorts(cohorts);
+        verify(cohortController).deleteCohorts(new ArrayList<Cohort>());
         verifyNoMoreInteractions(cohortController);
+    }
+
+    @Test
+    public void shouldDeleteVoidedCohortsWhenDownloading() throws CohortController.CohortDownloadException, CohortController.CohortSaveException, CohortController.CohortDeleteException {
+        List<Cohort> cohorts = new ArrayList<Cohort>();
+        Cohort aCohort = mock(Cohort.class);
+        Cohort voidedCohort = mock(Cohort.class);
+        when(voidedCohort.isVoided()).thenReturn(true);
+        when(aCohort.isVoided()).thenReturn(false);
+        cohorts.add(aCohort);
+        cohorts.add(voidedCohort);
+
+        when(cohortController.downloadAllCohorts()).thenReturn(cohorts);
+        when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
+        when(sharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
+
+        muzimaSyncService.downloadCohorts();
+        verify(cohortController).deleteCohorts(asList(voidedCohort));
+        verify(cohortController).saveAllCohorts(asList(aCohort));
     }
 
     @Test
@@ -248,6 +268,7 @@ public class MuzimaSyncServiceTest {
 
         verify(cohortController).downloadCohortsByPrefix(cohortPrefixes);
         verify(cohortController).saveAllCohorts(cohorts);
+        verify(cohortController).deleteCohorts(new ArrayList<Cohort>());
         verifyNoMoreInteractions(cohortController);
     }
 
@@ -257,7 +278,7 @@ public class MuzimaSyncServiceTest {
             add(new Cohort());
             add(new Cohort());
         }};
-        int[] result = new int[]{SUCCESS, 2};
+        int[] result = new int[]{SUCCESS, 2, 0};
 
         when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
         when(sharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
