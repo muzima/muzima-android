@@ -115,14 +115,7 @@ public class LoginActivity extends Activity {
     }
 
     private void setupStatusView() {
-        if (!NetworkUtils.isConnectedToNetwork(this)) {
-            if (backgroundAuthenticationTask != null) {
-                backgroundAuthenticationTask.cancel(true);
-            }
-            noConnectivityText.setVisibility(View.VISIBLE);
-            loginButton.setVisibility(View.GONE);
-            authenticatingText.setVisibility(View.GONE);
-        } else if (backgroundAuthenticationTask != null && backgroundAuthenticationTask.getStatus() == AsyncTask.Status.RUNNING) {
+        if (backgroundAuthenticationTask != null && backgroundAuthenticationTask.getStatus() == AsyncTask.Status.RUNNING) {
             noConnectivityText.setVisibility(View.GONE);
             loginButton.setVisibility(View.GONE);
             authenticatingText.setVisibility(View.VISIBLE);
@@ -184,12 +177,9 @@ public class LoginActivity extends Activity {
     }
 
     private boolean validInput() {
-        if (StringUtils.isEmpty(serverUrlText.getText().toString())
+        return !(StringUtils.isEmpty(serverUrlText.getText().toString())
                 || StringUtils.isEmpty(usernameText.getText().toString())
-                || StringUtils.isEmpty(passwordText.getText().toString())) {
-            return false;
-        }
-        return true;
+                || StringUtils.isEmpty(passwordText.getText().toString()));
     }
 
     private void initViews() {
