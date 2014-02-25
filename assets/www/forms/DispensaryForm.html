@@ -1225,7 +1225,7 @@
 </div>
 <div class="form-group text-center">
     <input class="btn btn-primary" id="save_draft" type="button" value="Save"/>
-    <input class="btn btn-primary" id="submit_form" type="submit" value="Submit"/>
+    <input class="btn btn-primary" id="submit_form" type="button" value="Submit"/>
 </div>
 
 </form>
@@ -1238,7 +1238,7 @@ $(document).ready(function () {
         document.saveDraft();
     });
 
-    $('#submit_form').submit(function(){
+    $('#submit_form').click(function(){
         document.submit();
     });
 
