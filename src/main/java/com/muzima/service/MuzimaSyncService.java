@@ -333,6 +333,10 @@ public class MuzimaSyncService {
             List<Encounter> allEncounters = encounterController.downloadEncountersByPatientUuids(patientUuids);
             long endDownloadObservations = System.currentTimeMillis();
             Log.i(TAG, "Encounters download successful with " + allEncounters.size() + " encounters");
+            ArrayList<Encounter> voidedEncounters = getVoidedEncounters(allEncounters);
+            allEncounters.removeAll(voidedEncounters);
+            encounterController.deleteEncounters(voidedEncounters);
+            Log.i(TAG, "Voided encounters delete successful with " + allEncounters.size() + " encounters");
 
             encounterController.replaceEncounters(allEncounters);
             long replacedEncounters = System.currentTimeMillis();
@@ -348,8 +352,21 @@ public class MuzimaSyncService {
         } catch (EncounterController.ReplaceEncounterException e) {
             Log.e(TAG, "Exception thrown while replacing encounters.", e);
             result[0] = REPLACE_ERROR;
+        } catch (EncounterController.DeleteEncounterException e) {
+            Log.e(TAG, "Exception thrown while deleting encounters.", e);
+            result[0] = DELETE_ERROR;
         }
         return result;
+    }
+
+    private ArrayList<Encounter> getVoidedEncounters(List<Encounter> allEncounters) {
+        ArrayList<Encounter> voidedEncounters = new ArrayList<Encounter>();
+        for(Encounter encounter : allEncounters){
+            if(encounter.isVoided()){
+                voidedEncounters.add(encounter);
+            }
+        }
+        return voidedEncounters;
     }
 
     public int[] uploadAllCompletedForms() {

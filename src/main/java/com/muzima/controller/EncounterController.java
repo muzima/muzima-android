@@ -57,6 +57,14 @@ public class EncounterController {
 
     }
 
+    public void deleteEncounters(List<Encounter> encounters) throws DeleteEncounterException {
+        try {
+            encounterService.deleteEncounters(encounters);
+        } catch (IOException e) {
+            throw new DeleteEncounterException(e);
+        }
+    }
+
     public void saveEncounter(Encounter encounter) throws SaveEncounterException {
         ArrayList<Encounter> encounters = new ArrayList<Encounter>();
         encounters.add(encounter);
@@ -77,6 +85,12 @@ public class EncounterController {
 
     public class SaveEncounterException extends Throwable {
         public SaveEncounterException(IOException e) {
+            super(e);
+        }
+    }
+
+    public class DeleteEncounterException extends Throwable {
+        public DeleteEncounterException(IOException e) {
             super(e);
         }
     }

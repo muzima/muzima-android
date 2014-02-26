@@ -559,6 +559,19 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
+    public void shouldDeleteVoidedEncountersWhenDownloadingEncounters() throws EncounterController.DeleteEncounterException, EncounterController.DownloadEncounterException {
+        String[] patientUuids = new String[]{"patientUuid1", "patientUuid2"};
+        List<Encounter> encounters = new ArrayList<Encounter>();
+        encounters.add(new Encounter());
+        Encounter voidedEncounter = mock(Encounter.class);
+        when(voidedEncounter.isVoided()).thenReturn(true);
+        encounters.add(voidedEncounter);
+        when(encounterController.downloadEncountersByPatientUuids(asList(patientUuids))).thenReturn(encounters);
+        muzimaSyncService.downloadEncountersForPatientsByPatientUUIDs(asList(patientUuids));
+        verify(encounterController).deleteEncounters(asList(voidedEncounter));
+    }
+
+    @Test
     public void consolidatePatients_shouldGetAllPatientsConsolidateSavePatientFromServerAndDeleteLocalPatient() throws Exception, PatientController.PatientSaveException {
         Patient localPatient = mock(Patient.class);
         Patient remotePatient = mock(Patient.class);
