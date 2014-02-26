@@ -9,10 +9,12 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_ENCOUNTERS;
+import static java.util.Arrays.asList;
 
 public class EncounterController {
 
@@ -38,8 +40,28 @@ public class EncounterController {
         try {
             String paramSignature = StringUtils.join(patientUuids, ",");
             Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS, paramSignature);
-            List<Encounter> encounters = encounterService.downloadEncountersByPatientUuidsAndSyncDate(patientUuids, lastSyncTime);
+            List<Encounter> encounters = new ArrayList<Encounter>();
+            if(lastSyncTime==null){
+                LastSyncTime lastSyncTimeRecorded = lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_ENCOUNTERS);
+                if( lastSyncTimeRecorded != null){
+                    List<String> previousPatientsUuid = asList(lastSyncTimeRecorded.getParamSignature().split(","));
+                    ArrayList<String> newPatientUuids = new ArrayList<String>();
+                    newPatientUuids.addAll(patientUuids);
+                    newPatientUuids.removeAll(previousPatientsUuid);
 
+                    patientUuids = previousPatientsUuid;
+                    lastSyncTime = lastSyncTimeRecorded.getLastSyncDate();
+
+                    encounters = encounterService.downloadEncountersByPatientUuidsAndSyncDate(newPatientUuids, null);
+                    ArrayList<String> allPatientsUuids = new ArrayList<String>();
+                    allPatientsUuids.addAll(previousPatientsUuid);
+                    allPatientsUuids.addAll(newPatientUuids);
+                    Collections.sort(allPatientsUuids);
+                    paramSignature = StringUtils.join(allPatientsUuids,",");
+                }
+            }
+            List<Encounter> updatedEncounters = encounterService.downloadEncountersByPatientUuidsAndSyncDate(patientUuids, lastSyncTime);
+            encounters.addAll(updatedEncounters);
             LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_ENCOUNTERS, sntpService.getLocalTime(), paramSignature);
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
             return encounters;

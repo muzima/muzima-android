@@ -1,5 +1,6 @@
 package com.muzima.controller;
 
+import com.muzima.api.model.Encounter;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.LastSyncTimeService;
@@ -8,6 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +18,7 @@ import static com.muzima.api.model.APIName.DOWNLOAD_ENCOUNTERS;
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.internal.matchers.IsCollectionContaining.hasItems;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Mockito.*;
 
@@ -39,9 +43,12 @@ public class EncounterControllerTest {
     @Test
     public void shouldGetLastSyncTimeOfEncounter() throws Exception, EncounterController.DownloadEncounterException {
         List<String> patientUuids = asList(new String[]{"patientUuid1", "patientUuid2"});
+        Date aDate = mock(Date.class);
+        when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS,"patientUuid1,patientUuid2")).thenReturn(aDate);
         encounterController.downloadEncountersByPatientUuids(patientUuids);
 
         verify(lastSyncTimeService).getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS,"patientUuid1,patientUuid2");
+        verify(lastSyncTimeService, never()).getFullLastSyncTimeInfoFor(DOWNLOAD_ENCOUNTERS);
     }
 
     @Test
@@ -60,6 +67,8 @@ public class EncounterControllerTest {
         List<String> patientUuids = asList(new String[]{"patientUuid1", "patientUuid2"});
         Date updatedDate = mock(Date.class);
         when(sntpService.getLocalTime()).thenReturn(updatedDate);
+        Date lastSyncDate = mock(Date.class);
+        when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS,"patientUuid1,patientUuid2")).thenReturn(lastSyncDate);
         encounterController.downloadEncountersByPatientUuids(patientUuids);
 
         ArgumentCaptor<LastSyncTime> argumentCaptor = ArgumentCaptor.forClass(LastSyncTime.class);
@@ -68,5 +77,56 @@ public class EncounterControllerTest {
         assertThat(savedLastSyncTime.getApiName(), is(DOWNLOAD_ENCOUNTERS));
         assertThat(savedLastSyncTime.getLastSyncDate(), is(updatedDate));
         assertThat(savedLastSyncTime.getParamSignature(), is("patientUuid1,patientUuid2"));
+    }
+
+    @Test
+    public void shouldDistinguishBetweenPreviousPatientUuidsAndNewOnes() throws EncounterController.DownloadEncounterException, IOException {
+        List<String> patientUuids = asList(new String[]{"patientUuid1", "patientUuid2"});
+        List<String> previouslySynchedPatient = asList(new String[]{"patientUuid1", "patientUuid3"});
+        List<String> newPatients = asList(new String[]{"patientUuid2"});
+        when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS,"patientUuid1,patientUuid2")).thenReturn(null);
+        LastSyncTime fullLastSyncTime = mock(LastSyncTime.class);
+        when(fullLastSyncTime.getParamSignature()).thenReturn("patientUuid1,patientUuid3");
+        Date lastSyncTime = mock(Date.class);
+        when(fullLastSyncTime.getLastSyncDate()).thenReturn(lastSyncTime);
+        when(lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_ENCOUNTERS)).thenReturn(fullLastSyncTime);
+        Encounter anEncounter = mock(Encounter.class);
+        Encounter anotherEncounter = mock(Encounter.class);
+        ArrayList<Encounter> someEncounters = new ArrayList<Encounter>();
+        someEncounters.add(anEncounter);
+        ArrayList<Encounter> someOtherEncounters = new ArrayList<Encounter>();
+        someOtherEncounters.add(anotherEncounter);
+        when(encounterService.downloadEncountersByPatientUuidsAndSyncDate(previouslySynchedPatient, lastSyncTime)).thenReturn(someEncounters);
+        when(encounterService.downloadEncountersByPatientUuidsAndSyncDate(newPatients, null)).thenReturn(someOtherEncounters);
+
+        Date updatedDate = mock(Date.class);
+        when(sntpService.getLocalTime()).thenReturn(updatedDate);
+
+        List<Encounter> encounters = encounterController.downloadEncountersByPatientUuids(patientUuids);
+
+        verify(lastSyncTimeService).getFullLastSyncTimeInfoFor(DOWNLOAD_ENCOUNTERS);
+        verify(encounterService).downloadEncountersByPatientUuidsAndSyncDate(previouslySynchedPatient, lastSyncTime);
+        verify(encounterService).downloadEncountersByPatientUuidsAndSyncDate(newPatients, null);
+        assertThat(encounters, hasItems(anEncounter, anotherEncounter));
+        assertThat(encounters.size(), is(2));
+
+        ArgumentCaptor<LastSyncTime> argumentCaptor = ArgumentCaptor.forClass(LastSyncTime.class);
+        verify(lastSyncTimeService).saveLastSyncTime(argumentCaptor.capture());
+        LastSyncTime savedLastSyncTime = argumentCaptor.getValue();
+        assertThat(savedLastSyncTime.getApiName(), is(DOWNLOAD_ENCOUNTERS));
+        assertThat(savedLastSyncTime.getLastSyncDate(), is(updatedDate));
+        assertThat(savedLastSyncTime.getParamSignature(), is("patientUuid1,patientUuid2,patientUuid3"));
+    }
+
+    @Test
+    public void shouldRecognisedAnInitiallyNonInitialisedLastSyncTime() throws EncounterController.DownloadEncounterException, IOException {
+        List<String> newPatients = asList(new String[]{"patientUuid2"});
+        when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS,"patientUuid1,patientUuid2")).thenReturn(null);
+        when(lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_ENCOUNTERS)).thenReturn(null);
+
+        List<String> patientUuids = asList(new String[]{"patientUuid1", "patientUuid2"});
+        encounterController.downloadEncountersByPatientUuids(patientUuids);
+
+        verify(encounterService, never()).downloadEncountersByPatientUuidsAndSyncDate(newPatients, null);
     }
 }
