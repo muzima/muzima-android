@@ -194,7 +194,7 @@ public class MuzimaSyncService {
     }
 
     public int[] downloadPatientsForCohorts(String[] cohortUuids) {
-        int[] result = new int[3];
+        int[] result = new int[4];
 
         int patientCount = 0;
         try {
@@ -204,12 +204,17 @@ public class MuzimaSyncService {
 
             long endDownloadCohortData = System.currentTimeMillis();
             Log.i(TAG, "Cohort data download successful with " + cohortDataList.size() + " cohorts");
-
+            ArrayList<Patient> voidedPatients = new ArrayList<Patient>();
+            List<Patient> cohortPatients;
             for (CohortData cohortData : cohortDataList) {
                 cohortController.addCohortMembers(cohortData.getCohortMembers());
-                patientController.replacePatients(cohortData.getPatients());
+                cohortPatients = cohortData.getPatients();
+                getVoidedPatients(voidedPatients, cohortPatients);
+                cohortPatients.removeAll(voidedPatients);
+                patientController.replacePatients(cohortPatients);
                 patientCount += cohortData.getPatients().size();
             }
+            patientController.deletePatient(voidedPatients);
             long cohortMemberAndPatientReplaceTime = System.currentTimeMillis();
 
             Log.i(TAG, "Cohort data replaced");
@@ -221,6 +226,7 @@ public class MuzimaSyncService {
             result[0] = SUCCESS;
             result[1] = patientCount;
             result[2] = cohortDataList.size();
+            result[3] = voidedPatients.size();
         } catch (CohortController.CohortDownloadException e) {
             Log.e(TAG, "Exception thrown while downloading cohort data.", e);
             result[0] = DOWNLOAD_ERROR;
@@ -230,8 +236,19 @@ public class MuzimaSyncService {
         } catch (PatientController.PatientSaveException e) {
             Log.e(TAG, "Exception thrown while replacing patients.", e);
             result[0] = REPLACE_ERROR;
+        } catch (PatientController.PatientDeleteException e) {
+            Log.e(TAG, "Exception thrown while deleting patients.", e);
+            result[0] = DELETE_ERROR;
         }
         return result;
+    }
+
+    private void getVoidedPatients(ArrayList<Patient> voidedPatients, List<Patient> cohortPatients) {
+        for(Patient patient : cohortPatients){
+            if(patient.isVoided()){
+                voidedPatients.add(patient);
+            }
+        }
     }
 
     public int[] downloadPatients(String[] patientUUIDs) {

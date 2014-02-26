@@ -72,7 +72,7 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
                 msg += " new cohorts";
             } else if(syncType == SYNC_PATIENTS_FULL_DATA){
                 int downloadCountSec = intent.getIntExtra(DOWNLOAD_COUNT_SECONDARY, 0);
-                msg += " patients for " + downloadCountSec + " cohorts. Still downloading observations and encounters";
+                msg += " new patients for " + downloadCountSec + " cohorts. Still downloading observations and encounters";
             } else if(syncType == SYNC_PATIENTS_ONLY){
                 int downloadCountSec = intent.getIntExtra(DOWNLOAD_COUNT_SECONDARY, 0);
                 msg += " patients for " + downloadCountSec + " cohorts.";

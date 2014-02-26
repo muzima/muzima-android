@@ -179,7 +179,7 @@ public class DataSyncService extends IntentService {
     }
 
     private void broadCastMessageForPatients(Intent broadcastIntent, int[] resultForPatients) {
-        String msgForPatients = "Downloaded " + resultForPatients[1] + " patients";
+        String msgForPatients = "Downloaded " + resultForPatients[1] + " new patients";
         prepareBroadcastMsg(broadcastIntent, resultForPatients, msgForPatients);
         if (isSuccess(resultForPatients) && resultForPatients.length > 2) {
             broadcastIntent.putExtra(Constants.DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, resultForPatients[2]);

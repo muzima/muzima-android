@@ -167,6 +167,15 @@ public class PatientController {
         }
     }
 
+    public void deletePatient(List<Patient> localPatients) throws PatientDeleteException {
+        try {
+            patientService.deletePatients(localPatients);
+        } catch (IOException e) {
+            Log.e(TAG, "Error while deleting local patients ");
+            throw new PatientDeleteException(e);
+        }
+    }
+
     public List<Patient> getPatientsNotInCohorts() {
         try {
             return patientService.getPatientsNotInCohorts();
@@ -200,6 +209,12 @@ public class PatientController {
 
     public static class PatientLoadException extends Throwable {
         public PatientLoadException(Throwable e) {
+            super(e);
+        }
+    }
+
+    public static class PatientDeleteException extends Throwable {
+        public PatientDeleteException(Throwable e) {
             super(e);
         }
     }

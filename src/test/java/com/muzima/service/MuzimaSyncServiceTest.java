@@ -332,6 +332,30 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
+    public void shouldDeleteVoidedPatientsDuringPatientDownload() throws Exception, CohortController.CohortDownloadException, PatientController.PatientDeleteException {
+        String[] cohortUuids = new String[]{"uuid1", "uuid2"};
+        final Patient voidedPatient = mock(Patient.class);
+        when(voidedPatient.isVoided()).thenReturn(true);
+        List<CohortData> cohortDataList = new ArrayList<CohortData>() {{
+            add(new CohortData() {{
+                addCohortMember(new CohortMember());
+                addPatient(new Patient());
+                addPatient(voidedPatient);
+            }});
+            add(new CohortData() {{
+                addCohortMember(new CohortMember());
+                addPatient(new Patient());
+            }});
+        }};
+
+        when(cohortController.downloadCohortData(cohortUuids)).thenReturn(cohortDataList);
+
+        muzimaSyncService.downloadPatientsForCohorts(cohortUuids);
+
+        verify(patientController).deletePatient(asList(voidedPatient));
+    }
+
+    @Test
     public void downloadPatientsForCohorts_shouldReturnSuccessStatusAndCohortAndPatinetCountIfDownloadIsSuccessful() throws Exception, CohortController.CohortDownloadException {
         String[] cohortUuids = new String[]{"uuid1", "uuid2"};
         List<CohortData> cohortDataList = new ArrayList<CohortData>() {{
