@@ -121,12 +121,12 @@ $(document).ready(function () {
     // Iterates all the checkbox questions and adds a button to toggle its options.
     checkboxParent.parent().each(function (i, element) {
         var $btn = $($.parseHTML("<input class='toggle_chk_btn' type ='button'>"));
-        $btn.val(getButtonText($(element).find('label')))
+        $btn.val(getButtonText($(element).find('label')));
         $(element).append($btn)
     });
 
     // Perform option toggling.
-    $('.toggle_chk_btn').click(function (e) {
+     $(document).on('click','.toggle_chk_btn',function (e) {
         var $showHideBtn = $(e.target);
         var $siblingLabels = $showHideBtn.siblings("label");
         $siblingLabels.toggle();
