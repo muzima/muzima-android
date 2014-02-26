@@ -47,7 +47,7 @@ public class CohortController {
             Date lastSyncTimeForCohorts = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS);
             List<Cohort> allCohorts = cohortService.downloadCohortsByNameAndSyncDate(StringUtil.EMPTY, lastSyncTimeForCohorts);
 
-            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS, sntpService.getUTCTime());
+            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS, sntpService.getLocalTime());
             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             return allCohorts;
         } catch (IOException e) {
@@ -67,7 +67,7 @@ public class CohortController {
         try {
             Date lastSyncDate = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS_DATA, uuid);
             CohortData cohortData = cohortService.downloadCohortDataAndSyncDate(uuid, false, lastSyncDate);
-            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS_DATA, sntpService.getUTCTime(), uuid);
+            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS_DATA, sntpService.getLocalTime(), uuid);
             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             return cohortData;
         } catch (IOException e) {
@@ -85,7 +85,7 @@ public class CohortController {
                 List<Cohort> cohorts = cohortService.downloadCohortsByNameAndSyncDate(cohortPrefix, lastSyncDateOfCohort);
                 List<Cohort> filteredCohortsForPrefix = filterCohortsByPrefix(cohorts, cohortPrefix);
                 addUniqueCohorts(filteredCohorts, filteredCohortsForPrefix);
-                lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS, sntpService.getUTCTime(), cohortPrefix);
+                lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS, sntpService.getLocalTime(), cohortPrefix);
                 lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             }
         } catch (IOException e) {

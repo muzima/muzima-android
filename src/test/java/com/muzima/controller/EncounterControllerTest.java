@@ -59,7 +59,7 @@ public class EncounterControllerTest {
     public void shouldSaveTheUpdatedLastSyncTime() throws Exception, EncounterController.DownloadEncounterException {
         List<String> patientUuids = asList(new String[]{"patientUuid1", "patientUuid2"});
         Date updatedDate = mock(Date.class);
-        when(sntpService.getUTCTime()).thenReturn(updatedDate);
+        when(sntpService.getLocalTime()).thenReturn(updatedDate);
         encounterController.downloadEncountersByPatientUuids(patientUuids);
 
         ArgumentCaptor<LastSyncTime> argumentCaptor = ArgumentCaptor.forClass(LastSyncTime.class);

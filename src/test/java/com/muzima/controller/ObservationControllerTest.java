@@ -68,7 +68,7 @@ public class ObservationControllerTest {
         List<String> patientUuids = asList(new String[]{"PatientUuid1", "PatientUuid2"});
         List<String> conceptUuids = asList(new String[]{"ConceptUuid1", "ConceptUuid2"});
         Date currentDate = mock(Date.class);
-        when(sntpService.getUTCTime()).thenReturn(currentDate);
+        when(sntpService.getLocalTime()).thenReturn(currentDate);
 
         observationController.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids);
         ArgumentCaptor<LastSyncTime> argumentCaptor = ArgumentCaptor.forClass(LastSyncTime.class);

@@ -147,7 +147,7 @@ public class FormControllerTest {
         Date mockDate = mock(Date.class);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_FORMS)).thenReturn(mockDate);
         Date otherMockDate = mock(Date.class);
-        when(sntpService.getUTCTime()).thenReturn(otherMockDate);
+        when(sntpService.getLocalTime()).thenReturn(otherMockDate);
 
         formController.downloadAllForms();
 

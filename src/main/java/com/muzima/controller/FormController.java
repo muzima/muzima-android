@@ -154,7 +154,7 @@ public class FormController {
         try {
             Date lastSyncDate = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_FORMS);
             List<Form> forms = formService.downloadFormsByName(StringUtil.EMPTY, lastSyncDate);
-            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_FORMS, sntpService.getUTCTime());
+            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_FORMS, sntpService.getLocalTime());
             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             return forms;
         } catch (IOException e) {

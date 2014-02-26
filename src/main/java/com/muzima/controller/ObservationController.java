@@ -142,7 +142,7 @@ public class ObservationController {
             String paramSignature = buildParamSignature(patientUuids, conceptUuids);
             Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_OBSERVATIONS, paramSignature);
             List<Observation> observations = observationService.downloadObservations(patientUuids, conceptUuids, lastSyncTime);
-            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_OBSERVATIONS, sntpService.getUTCTime(), paramSignature);
+            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_OBSERVATIONS, sntpService.getLocalTime(), paramSignature);
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
             return observations;
         } catch (IOException e) {
