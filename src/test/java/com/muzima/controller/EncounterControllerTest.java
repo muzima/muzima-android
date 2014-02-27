@@ -81,7 +81,7 @@ public class EncounterControllerTest {
 
     @Test
     public void shouldDistinguishBetweenPreviousPatientUuidsAndNewOnes() throws EncounterController.DownloadEncounterException, IOException {
-        List<String> patientUuids = asList(new String[]{"patientUuid1", "patientUuid2"});
+        List<String> patientUuids = new ArrayList<String>(asList(new String[]{"patientUuid1", "patientUuid2"}));
         List<String> previouslySynchedPatient = asList(new String[]{"patientUuid1", "patientUuid3"});
         List<String> newPatients = asList(new String[]{"patientUuid2"});
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS,"patientUuid1,patientUuid2")).thenReturn(null);

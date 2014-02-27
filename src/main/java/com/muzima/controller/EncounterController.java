@@ -8,10 +8,7 @@ import com.muzima.service.SntpService;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_ENCOUNTERS;
 import static java.util.Arrays.asList;
@@ -41,33 +38,50 @@ public class EncounterController {
             String paramSignature = StringUtils.join(patientUuids, ",");
             Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS, paramSignature);
             List<Encounter> encounters = new ArrayList<Encounter>();
-            if(lastSyncTime==null){
-                LastSyncTime lastSyncTimeRecorded = lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_ENCOUNTERS);
-                if( lastSyncTimeRecorded != null){
-                    List<String> previousPatientsUuid = asList(lastSyncTimeRecorded.getParamSignature().split(","));
-                    ArrayList<String> newPatientUuids = new ArrayList<String>();
-                    newPatientUuids.addAll(patientUuids);
-                    newPatientUuids.removeAll(previousPatientsUuid);
-
-                    patientUuids = previousPatientsUuid;
-                    lastSyncTime = lastSyncTimeRecorded.getLastSyncDate();
-
-                    encounters = encounterService.downloadEncountersByPatientUuidsAndSyncDate(newPatientUuids, null);
-                    ArrayList<String> allPatientsUuids = new ArrayList<String>();
-                    allPatientsUuids.addAll(previousPatientsUuid);
-                    allPatientsUuids.addAll(newPatientUuids);
-                    Collections.sort(allPatientsUuids);
-                    paramSignature = StringUtils.join(allPatientsUuids,",");
-                }
+            List<String> previousPatientsUuid = new ArrayList<String>();
+            if (isThisCallHappenedBefore(lastSyncTime)) {
+                encounters.addAll(downloadEncounters(patientUuids, lastSyncTime));
+            } else {
+                previousPatientsUuid = updateEncountersAndReturnPrevPatientUUIDs(patientUuids, encounters, previousPatientsUuid);
             }
-            List<Encounter> updatedEncounters = encounterService.downloadEncountersByPatientUuidsAndSyncDate(patientUuids, lastSyncTime);
-            encounters.addAll(updatedEncounters);
-            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_ENCOUNTERS, sntpService.getLocalTime(), paramSignature);
+            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_ENCOUNTERS, sntpService.getLocalTime(), getUpdatedParam(patientUuids, previousPatientsUuid));
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
             return encounters;
         } catch (IOException e) {
             throw new DownloadEncounterException(e);
         }
+    }
+
+    private List<Encounter> downloadEncounters(List<String> patientUuids, Date lastSyncTime) throws IOException {
+        return encounterService.downloadEncountersByPatientUuidsAndSyncDate(patientUuids, lastSyncTime);
+    }
+
+    private List<String> updateEncountersAndReturnPrevPatientUUIDs(List<String> patientUuids, List<Encounter> encounters, List<String> previousPatientsUuid) throws IOException {
+        LastSyncTime lastSyncTimeRecorded = lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_ENCOUNTERS);
+        if (hasAnyDownloadHappened(lastSyncTimeRecorded)) {
+            previousPatientsUuid = asList(lastSyncTimeRecorded.getParamSignature().split(","));
+            encounters.addAll(downloadEncounters(previousPatientsUuid, lastSyncTimeRecorded.getLastSyncDate()));
+            patientUuids.removeAll(previousPatientsUuid);
+        }
+        encounters.addAll(downloadEncounters(patientUuids, null));
+        return previousPatientsUuid;
+    }
+
+    private boolean isThisCallHappenedBefore(Date lastSyncTime) {
+        return lastSyncTime != null;
+    }
+
+    private boolean hasAnyDownloadHappened(LastSyncTime lastSyncTimeRecorded) {
+        return lastSyncTimeRecorded != null;
+    }
+
+    private String getUpdatedParam(List<String> patientUuids, List<String> previousPatientsUuid) {
+        Set<String> allPatientUUIDs = new HashSet<String>();
+        allPatientUUIDs.addAll(patientUuids);
+        allPatientUUIDs.addAll(previousPatientsUuid);
+        List<String> allPatientUUIDList = new ArrayList<String>(allPatientUUIDs);
+        Collections.sort(allPatientUUIDList);
+        return StringUtils.join(allPatientUUIDList, ",");
     }
 
     public void saveEncounters(List<Encounter> encounters) throws SaveEncounterException {
