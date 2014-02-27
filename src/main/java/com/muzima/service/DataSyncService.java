@@ -80,7 +80,7 @@ public class DataSyncService extends IntentService {
                 updateNotificationMsg("Downloading Cohorts");
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = muzimaSyncService.downloadCohorts();
-                    String msg = "Downloaded " + result[1] + " new cohorts; " + "; and deleted " + result[2] + " cohorts";
+                    String msg = "Downloaded " + result[1] + " new cohorts" + "; and deleted " + result[2] + " cohorts";
                     prepareBroadcastMsg(broadcastIntent, result, msg);
                     saveCohortsSyncTime(result);
                     consolidateAndSyncIndependentPatients(broadcastIntent);
