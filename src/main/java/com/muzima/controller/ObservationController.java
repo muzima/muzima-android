@@ -152,8 +152,14 @@ public class ObservationController {
                     List<String> newConceptsUuids = new ArrayList<String>();
                     newConceptsUuids.addAll(conceptUuids);
                     newConceptsUuids.removeAll(knownConceptsUuid);
+                    ArrayList<String> allConceptsUuids = new ArrayList<String>();
+                    allConceptsUuids.addAll(knownConceptsUuid);
+                    allConceptsUuids.addAll(newConceptsUuids);
+                    Collections.sort(allConceptsUuids);
 
-                    observations = observationService.downloadObservations(newPatientsUuids, newConceptsUuids, null);
+                    observations = observationService.downloadObservations(newPatientsUuids, allConceptsUuids, null);
+                    List<Observation> knownPatientAndNewConceptObservations = observationService.downloadObservations(knownPatientsUuid, newConceptsUuids, null);
+                    observations.addAll(knownPatientAndNewConceptObservations);
 
                     patientUuids = knownPatientsUuid;
                     conceptUuids = knownConceptsUuid;
@@ -163,10 +169,6 @@ public class ObservationController {
                     allPatientsUuids.addAll(patientUuids);
                     allPatientsUuids.addAll(newPatientsUuids);
                     Collections.sort(allPatientsUuids);
-                    ArrayList<String> allConceptsUuids = new ArrayList<String>();
-                    allConceptsUuids.addAll(conceptUuids);
-                    allConceptsUuids.addAll(newConceptsUuids);
-                    Collections.sort(allConceptsUuids);
                     paramSignature = buildParamSignature(allPatientsUuids, allConceptsUuids);
                 }
             }

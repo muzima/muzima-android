@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -104,7 +105,11 @@ public class ObservationControllerTest {
         List<Observation> anotherObservationSet = new ArrayList<Observation>();
         Observation anotherObservation = mock(Observation.class);
         anotherObservationSet.add(anotherObservation);
-        when(observationService.downloadObservations(newPatientUuids, newConceptUuids, null)).thenReturn(anotherObservationSet);
+        List<String> allConceptUuids = new ArrayList<String>();
+        allConceptUuids.addAll(previousConceptUuids);
+        allConceptUuids.addAll(newConceptUuids);
+        Collections.sort(allConceptUuids);
+        when(observationService.downloadObservations(newPatientUuids, allConceptUuids, null)).thenReturn(anotherObservationSet);
         Date currentDate = mock(Date.class);
         when(sntpService.getLocalTime()).thenReturn(currentDate);
 
@@ -112,7 +117,8 @@ public class ObservationControllerTest {
 
         verify(lastSyncTimeService).getFullLastSyncTimeInfoFor(DOWNLOAD_OBSERVATIONS);
         verify(observationService).downloadObservations(previousPatientUuids, previousConceptUuids, aDate);
-        verify(observationService).downloadObservations(newPatientUuids, newConceptUuids, null);
+        verify(observationService).downloadObservations(previousPatientUuids, newConceptUuids, null);
+        verify(observationService).downloadObservations(newPatientUuids, allConceptUuids, null);
         assertThat(observations.size(), is(2));
         assertThat(observations, hasItems(anObservation, anotherObservation));
 
