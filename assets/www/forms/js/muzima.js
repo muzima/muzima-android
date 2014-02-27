@@ -204,7 +204,11 @@ $(document).ready(function () {
     });
 
     $(document.body).on('click', '.remove_section', function () {
-        $(this).parent().remove();
+        var $parent = $(this).parent();
+        var _id = $parent.attr('id');
+        if ($("." + _id).length > 1) {
+            $parent.remove();
+        }
     });
 
     /* End - Used for Sub-Forms */
