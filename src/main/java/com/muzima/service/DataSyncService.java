@@ -80,7 +80,7 @@ public class DataSyncService extends IntentService {
                 updateNotificationMsg("Downloading Cohorts");
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = muzimaSyncService.downloadCohorts();
-                    String msg = "Downloaded " + result[1] + " new cohorts; " + " deleted " + result[2] + " cohorts";
+                    String msg = "Downloaded " + result[1] + " new cohorts; " + "; and deleted " + result[2] + " cohorts";
                     prepareBroadcastMsg(broadcastIntent, result, msg);
                     saveCohortsSyncTime(result);
                     consolidateAndSyncIndependentPatients(broadcastIntent);
@@ -165,14 +165,16 @@ public class DataSyncService extends IntentService {
     }
 
     private void broadCastMessageForEncounters(Intent broadcastIntent, int[] resultForEncounters) {
-        String msgForEncounters = "Downloaded " + resultForEncounters[1] + " encounters";
+        String msgForEncounters = "Downloaded " + resultForEncounters[1] + " new encounters" +
+                "; and deleted " + resultForEncounters[2] + " encounters";
         prepareBroadcastMsg(broadcastIntent, resultForEncounters, msgForEncounters);
         broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, SYNC_ENCOUNTERS);
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
 
     private void broadCastMessageForObservationDownload(Intent broadcastIntent, int[] resultForObservations) {
-        String msgForObservations = "Downloaded " + resultForObservations[1] + " observations";
+        String msgForObservations = "Downloaded " + resultForObservations[1] + " new observations" +
+                "; and deleted " + resultForObservations[2] + " observations";
         prepareBroadcastMsg(broadcastIntent, resultForObservations, msgForObservations);
         broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, SYNC_OBSERVATIONS);
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);

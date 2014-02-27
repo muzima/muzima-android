@@ -283,19 +283,14 @@ public class MuzimaSyncService {
     }
 
     public int[] downloadObservationsForPatientsByPatientUUIDs(List<String> patientUuids) {
-        int[] result = new int[2];
+        int[] result = new int[3];
         try {
             long startDownloadObservations = System.currentTimeMillis();
             List<Observation> allObservations = observationController.downloadObservationsByPatientUuidsAndConceptUuids
                     (patientUuids, getConceptUuidsFromConcepts(conceptController.getConcepts()));
             long endDownloadObservations = System.currentTimeMillis();
             Log.i(TAG, "Observations download successful with " + allObservations.size() + " observations");
-            List<Observation> voidedObservations = new ArrayList<Observation>();
-            for(Observation observation : allObservations){
-                if(observation.isVoided()){
-                    voidedObservations.add(observation);
-                }
-            }
+            List<Observation> voidedObservations = getVoidedObservations(allObservations);
             observationController.deleteObservations(voidedObservations);
             allObservations.removeAll(voidedObservations);
             Log.i(TAG, "Voided observations delete successful with " + voidedObservations.size() + " observations");
@@ -307,6 +302,7 @@ public class MuzimaSyncService {
 
             result[0] = SUCCESS;
             result[1] = allObservations.size();
+            result[2] = voidedObservations.size();
         } catch (ObservationController.DownloadObservationException e) {
             Log.e(TAG, "Exception thrown while downloading observations.", e);
             result[0] = DOWNLOAD_ERROR;
@@ -324,6 +320,16 @@ public class MuzimaSyncService {
         return result;
     }
 
+    private List<Observation> getVoidedObservations(List<Observation> allObservations) {
+        List<Observation> voidedObservations = new ArrayList<Observation>();
+        for(Observation observation : allObservations){
+            if(observation.isVoided()){
+                voidedObservations.add(observation);
+            }
+        }
+        return voidedObservations;
+    }
+
     public int[] downloadEncountersForPatientsByCohortUUIDs(String[] cohortUuids) {
         int[] result = new int[2];
         List<Patient> patients;
@@ -338,7 +344,7 @@ public class MuzimaSyncService {
     }
 
     public int[] downloadEncountersForPatientsByPatientUUIDs(List<String> patientUuids) {
-        int[] result = new int[2];
+        int[] result = new int[3];
         try {
             long startDownloadEncounters = System.currentTimeMillis();
             List<Encounter> allEncounters = encounterController.downloadEncountersByPatientUuids(patientUuids);
@@ -357,6 +363,7 @@ public class MuzimaSyncService {
 
             result[0] = SUCCESS;
             result[1] = allEncounters.size();
+            result[2] = voidedEncounters.size();
         } catch (EncounterController.DownloadEncounterException e) {
             Log.e(TAG, "Exception thrown while downloading encounters.", e);
             result[0] = DOWNLOAD_ERROR;

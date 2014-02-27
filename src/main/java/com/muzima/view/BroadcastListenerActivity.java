@@ -77,9 +77,9 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
                 int downloadCountSec = intent.getIntExtra(DOWNLOAD_COUNT_SECONDARY, 0);
                 msg += " patients for " + downloadCountSec + " cohorts.";
             } else if(syncType == SYNC_OBSERVATIONS){
-                msg += " observations";
+                msg += " new observations";
             } else if(syncType == SYNC_ENCOUNTERS){
-                msg += " encounters";
+                msg += " new encounters";
             } else if(syncType == SYNC_UPLOAD_FORMS){
                 msg = "Upload forms success.";
             }
