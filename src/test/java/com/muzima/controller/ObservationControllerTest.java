@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import static com.muzima.api.model.APIName.DOWNLOAD_OBSERVATIONS;
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.matchers.JUnitMatchers.hasItems;
 import static org.mockito.Mockito.*;
 public class ObservationControllerTest {
 
@@ -47,8 +49,11 @@ public class ObservationControllerTest {
     public void shouldCheckLastSyncTimeBeforeDownloadingObservations() throws Exception, ObservationController.DownloadObservationException {
         List<String> patientUuids = asList(new String[]{"PatientUuid1", "PatientUuid2"});
         List<String> conceptUuids = asList(new String[]{"ConceptUuid1", "ConceptUuid2"});
+        Date aDate = mock(Date.class);
+        when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_OBSERVATIONS, "PatientUuid1,PatientUuid2|ConceptUuid1,ConceptUuid2")).thenReturn(aDate);
         observationController.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids);
         verify(lastSyncTimeService).getLastSyncTimeFor(DOWNLOAD_OBSERVATIONS, "PatientUuid1,PatientUuid2|ConceptUuid1,ConceptUuid2");
+        verify(lastSyncTimeService, never()).getFullLastSyncTimeInfoFor(DOWNLOAD_OBSERVATIONS);
     }
 
     @Test
@@ -77,6 +82,58 @@ public class ObservationControllerTest {
         assertThat(savedLastSyncTime.getApiName(), is(DOWNLOAD_OBSERVATIONS));
         assertThat(savedLastSyncTime.getLastSyncDate(), is(currentDate));
         assertThat(savedLastSyncTime.getParamSignature(), is("PatientUuid1,PatientUuid2|ConceptUuid1,ConceptUuid2"));
+    }
+
+    @Test
+    public void shouldProperlyProcessChangeInKnownPatientOrConcept() throws ObservationController.DownloadObservationException, IOException {
+        List<String> patientUuids = asList(new String[]{"PatientUuid1", "PatientUuid2"});
+        List<String> conceptUuids = asList(new String[]{"ConceptUuid1", "ConceptUuid2"});
+        List<String> previousPatientUuids = asList(new String[]{"PatientUuid1", "PatientUuid3"});
+        List<String> previousConceptUuids = asList(new String[]{"ConceptUuid1", "ConceptUuid3"});
+        List<String> newPatientUuids = asList(new String[]{"PatientUuid2"});
+        List<String> newConceptUuids = asList(new String[]{"ConceptUuid2"});
+        LastSyncTime lastSyncTimeInFull = mock(LastSyncTime.class);
+        when(lastSyncTimeInFull.getParamSignature()).thenReturn("PatientUuid1,PatientUuid3|ConceptUuid1,ConceptUuid3");
+        Date aDate =  mock(Date.class);
+        when(lastSyncTimeInFull.getLastSyncDate()).thenReturn(aDate);
+        when(lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_OBSERVATIONS)).thenReturn(lastSyncTimeInFull);
+        List<Observation> anObservationSet = new ArrayList<Observation>();
+        Observation anObservation = mock(Observation.class);
+        anObservationSet.add(anObservation);
+        when(observationService.downloadObservations(previousPatientUuids, previousConceptUuids, aDate)).thenReturn(anObservationSet);
+        List<Observation> anotherObservationSet = new ArrayList<Observation>();
+        Observation anotherObservation = mock(Observation.class);
+        anotherObservationSet.add(anotherObservation);
+        when(observationService.downloadObservations(newPatientUuids, newConceptUuids, null)).thenReturn(anotherObservationSet);
+        Date currentDate = mock(Date.class);
+        when(sntpService.getLocalTime()).thenReturn(currentDate);
+
+        List<Observation> observations = observationController.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids);
+
+        verify(lastSyncTimeService).getFullLastSyncTimeInfoFor(DOWNLOAD_OBSERVATIONS);
+        verify(observationService).downloadObservations(previousPatientUuids, previousConceptUuids, aDate);
+        verify(observationService).downloadObservations(newPatientUuids, newConceptUuids, null);
+        assertThat(observations.size(), is(2));
+        assertThat(observations, hasItems(anObservation, anotherObservation));
+
+        ArgumentCaptor<LastSyncTime> argumentCaptor = ArgumentCaptor.forClass(LastSyncTime.class);
+        verify(lastSyncTimeService).saveLastSyncTime(argumentCaptor.capture());
+        LastSyncTime savedLastSyncTime = argumentCaptor.getValue();
+        assertThat(savedLastSyncTime.getApiName(), is(DOWNLOAD_OBSERVATIONS));
+        assertThat(savedLastSyncTime.getLastSyncDate(), is(currentDate));
+        assertThat(savedLastSyncTime.getParamSignature(), is("PatientUuid1,PatientUuid2,PatientUuid3|ConceptUuid1,ConceptUuid2,ConceptUuid3"));
+    }
+
+    @Test
+    public void shouldRecognisedNonInitialisedLastSyncTime() throws ObservationController.DownloadObservationException, IOException {
+        List<String> patientUuids = asList(new String[]{"PatientUuid1", "PatientUuid2"});
+        List<String> conceptUuids = asList(new String[]{"ConceptUuid1", "ConceptUuid2"});
+        when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_OBSERVATIONS, "PatientUuid1,PatientUuid2|ConceptUuid1,ConceptUuid2")).thenReturn(null);
+        when(lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_OBSERVATIONS)).thenReturn(null);
+
+        observationController.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids);
+
+        verify(observationService).downloadObservations(patientUuids, conceptUuids, null);
     }
 
     @Test

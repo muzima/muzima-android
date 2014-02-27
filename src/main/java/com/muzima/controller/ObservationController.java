@@ -12,12 +12,10 @@ import com.muzima.utils.CustomColor;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_OBSERVATIONS;
+import static java.util.Arrays.asList;
 
 public class ObservationController {
 
@@ -141,7 +139,40 @@ public class ObservationController {
         try {
             String paramSignature = buildParamSignature(patientUuids, conceptUuids);
             Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_OBSERVATIONS, paramSignature);
-            List<Observation> observations = observationService.downloadObservations(patientUuids, conceptUuids, lastSyncTime);
+            List<Observation> observations = new ArrayList<Observation>();
+            if(lastSyncTime == null){
+                LastSyncTime fullLastSyncTimeInfo = lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_OBSERVATIONS);
+                if(fullLastSyncTimeInfo != null){
+                    String[] parameterSplit = fullLastSyncTimeInfo.getParamSignature().split("\\|", -1);
+                    List<String> knownPatientsUuid = asList(parameterSplit[0].split(","));
+                    List<String> knownConceptsUuid = asList(parameterSplit[1].split(","));
+                    List<String> newPatientsUuids = new ArrayList<String>();
+                    newPatientsUuids.addAll(patientUuids);
+                    newPatientsUuids.removeAll(knownPatientsUuid);
+                    List<String> newConceptsUuids = new ArrayList<String>();
+                    newConceptsUuids.addAll(conceptUuids);
+                    newConceptsUuids.removeAll(knownConceptsUuid);
+
+                    observations = observationService.downloadObservations(newPatientsUuids, newConceptsUuids, null);
+
+                    patientUuids = knownPatientsUuid;
+                    conceptUuids = knownConceptsUuid;
+                    lastSyncTime = fullLastSyncTimeInfo.getLastSyncDate();
+
+                    ArrayList<String> allPatientsUuids = new ArrayList<String>();
+                    allPatientsUuids.addAll(patientUuids);
+                    allPatientsUuids.addAll(newPatientsUuids);
+                    Collections.sort(allPatientsUuids);
+                    ArrayList<String> allConceptsUuids = new ArrayList<String>();
+                    allConceptsUuids.addAll(conceptUuids);
+                    allConceptsUuids.addAll(newConceptsUuids);
+                    Collections.sort(allConceptsUuids);
+                    paramSignature = buildParamSignature(allPatientsUuids, allConceptsUuids);
+                }
+            }
+
+            List<Observation> updatedObservations = observationService.downloadObservations(patientUuids, conceptUuids, lastSyncTime);
+            observations.addAll(updatedObservations);
             LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_OBSERVATIONS, sntpService.getLocalTime(), paramSignature);
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
             return observations;
