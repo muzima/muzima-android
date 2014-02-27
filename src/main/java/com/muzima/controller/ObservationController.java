@@ -196,6 +196,14 @@ public class ObservationController {
         }
     }
 
+    public void deleteObservations(List<Observation> observations) throws DeleteObservationException {
+        try {
+            observationService.deleteObservations(observations);
+        } catch (IOException e) {
+            throw new DeleteObservationException(e);
+        }
+    }
+
     public static class LoadObservationException extends Throwable {
         public LoadObservationException(Throwable e) {
             super(e);
@@ -216,6 +224,12 @@ public class ObservationController {
 
     public static class SaveObservationException extends Throwable {
         public SaveObservationException(Throwable e) {
+            super(e);
+        }
+    }
+
+    public static class DeleteObservationException extends Throwable {
+        public DeleteObservationException(Throwable e) {
             super(e);
         }
     }

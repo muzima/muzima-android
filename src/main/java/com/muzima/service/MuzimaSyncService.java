@@ -290,7 +290,15 @@ public class MuzimaSyncService {
                     (patientUuids, getConceptUuidsFromConcepts(conceptController.getConcepts()));
             long endDownloadObservations = System.currentTimeMillis();
             Log.i(TAG, "Observations download successful with " + allObservations.size() + " observations");
-
+            List<Observation> voidedObservations = new ArrayList<Observation>();
+            for(Observation observation : allObservations){
+                if(observation.isVoided()){
+                    voidedObservations.add(observation);
+                }
+            }
+            observationController.deleteObservations(voidedObservations);
+            allObservations.removeAll(voidedObservations);
+            Log.i(TAG, "Voided observations delete successful with " + voidedObservations.size() + " observations");
             observationController.replaceObservations(allObservations);
             long replacedObservations = System.currentTimeMillis();
 
@@ -308,6 +316,9 @@ public class MuzimaSyncService {
         } catch (ConceptController.ConceptFetchException e) {
             Log.e(TAG, "Exception thrown while loading concepts.", e);
             result[0] = LOAD_ERROR;
+        } catch (ObservationController.DeleteObservationException e) {
+            Log.e(TAG, "Exception thrown while deleting observations.", e);
+            result[0] = DELETE_ERROR;
         }
 
         return result;
