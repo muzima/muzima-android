@@ -12,6 +12,7 @@ import java.util.*;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_ENCOUNTERS;
 import static java.util.Arrays.asList;
+import static com.muzima.util.Constants.UUID_SEPARATOR;
 
 public class EncounterController {
 
@@ -35,7 +36,7 @@ public class EncounterController {
 
     public List<Encounter> downloadEncountersByPatientUuids(List<String> patientUuids) throws DownloadEncounterException {
         try {
-            String paramSignature = StringUtils.join(patientUuids, ",");
+            String paramSignature = StringUtils.join(patientUuids, UUID_SEPARATOR);
             Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS, paramSignature);
             List<Encounter> encounters = new ArrayList<Encounter>();
             List<String> previousPatientsUuid = new ArrayList<String>();
@@ -59,7 +60,7 @@ public class EncounterController {
     private List<String> updateEncountersAndReturnPrevPatientUUIDs(List<String> patientUuids, List<Encounter> encounters, List<String> previousPatientsUuid) throws IOException {
         LastSyncTime lastSyncTimeRecorded = lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_ENCOUNTERS);
         if (hasAnyDownloadHappened(lastSyncTimeRecorded)) {
-            previousPatientsUuid = asList(lastSyncTimeRecorded.getParamSignature().split(","));
+            previousPatientsUuid = asList(lastSyncTimeRecorded.getParamSignature().split(UUID_SEPARATOR));
             encounters.addAll(downloadEncounters(previousPatientsUuid, lastSyncTimeRecorded.getLastSyncDate()));
             patientUuids.removeAll(previousPatientsUuid);
         }
@@ -81,7 +82,7 @@ public class EncounterController {
         allPatientUUIDs.addAll(previousPatientsUuid);
         List<String> allPatientUUIDList = new ArrayList<String>(allPatientUUIDs);
         Collections.sort(allPatientUUIDList);
-        return StringUtils.join(allPatientUUIDList, ",");
+        return StringUtils.join(allPatientUUIDList, UUID_SEPARATOR);
     }
 
     public void saveEncounters(List<Encounter> encounters) throws SaveEncounterException {

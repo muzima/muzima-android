@@ -16,6 +16,8 @@ import java.util.*;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_OBSERVATIONS;
 import static java.util.Arrays.asList;
+import static com.muzima.util.Constants.UUID_SEPARATOR;
+import static com.muzima.util.Constants.UUID_TYPE_SEPARATOR;
 
 public class ObservationController {
 
@@ -143,9 +145,9 @@ public class ObservationController {
             if(lastSyncTime == null){
                 LastSyncTime fullLastSyncTimeInfo = lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_OBSERVATIONS);
                 if(fullLastSyncTimeInfo != null){
-                    String[] parameterSplit = fullLastSyncTimeInfo.getParamSignature().split("\\|", -1);
-                    List<String> knownPatientsUuid = asList(parameterSplit[0].split(","));
-                    List<String> knownConceptsUuid = asList(parameterSplit[1].split(","));
+                    String[] parameterSplit = fullLastSyncTimeInfo.getParamSignature().split(UUID_TYPE_SEPARATOR, -1);
+                    List<String> knownPatientsUuid = asList(parameterSplit[0].split(UUID_SEPARATOR));
+                    List<String> knownConceptsUuid = asList(parameterSplit[1].split(UUID_SEPARATOR));
                     List<String> newPatientsUuids = new ArrayList<String>();
                     newPatientsUuids.addAll(patientUuids);
                     newPatientsUuids.removeAll(knownPatientsUuid);
@@ -184,9 +186,9 @@ public class ObservationController {
     }
 
     private String buildParamSignature(List<String> patientUuids, List<String> conceptUuids) {
-        String paramSignature = StringUtils.join(patientUuids, ",");
-        paramSignature += "|";
-        paramSignature += StringUtils.join(conceptUuids, ",");
+        String paramSignature = StringUtils.join(patientUuids, UUID_SEPARATOR);
+        paramSignature += UUID_TYPE_SEPARATOR;
+        paramSignature += StringUtils.join(conceptUuids, UUID_SEPARATOR);
         return paramSignature;
     }
 
