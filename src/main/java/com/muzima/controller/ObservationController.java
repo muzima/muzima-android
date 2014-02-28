@@ -139,50 +139,60 @@ public class ObservationController {
 
     public List<Observation> downloadObservationsByPatientUuidsAndConceptUuids(List<String> patientUuids, List<String> conceptUuids) throws DownloadObservationException {
         try {
-            String paramSignature = buildParamSignature(patientUuids, conceptUuids);
+            List<String> allConceptsUuids = conceptUuids;
+            List<String> allPatientsUuids = patientUuids;
+            String paramSignature = buildParamSignature(allPatientsUuids, allConceptsUuids);
             Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_OBSERVATIONS, paramSignature);
             List<Observation> observations = new ArrayList<Observation>();
-            if(lastSyncTime == null){
+            if (hasExactCallBeenMadeBefore(lastSyncTime)) {
+                observations.addAll(observationService.downloadObservations(patientUuids, conceptUuids, lastSyncTime));
+            } else {
                 LastSyncTime fullLastSyncTimeInfo = lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_OBSERVATIONS);
-                if(fullLastSyncTimeInfo != null){
+                if (isFirstCallToDownloadObservationsEver(fullLastSyncTimeInfo)) {
+                    observations.addAll(observationService.downloadObservations(patientUuids, conceptUuids, null));
+                } else {
                     String[] parameterSplit = fullLastSyncTimeInfo.getParamSignature().split(UUID_TYPE_SEPARATOR, -1);
                     List<String> knownPatientsUuid = asList(parameterSplit[0].split(UUID_SEPARATOR));
+                    List<String> newPatientsUuids = getNewUuids(patientUuids, knownPatientsUuid);
                     List<String> knownConceptsUuid = asList(parameterSplit[1].split(UUID_SEPARATOR));
-                    List<String> newPatientsUuids = new ArrayList<String>();
-                    newPatientsUuids.addAll(patientUuids);
-                    newPatientsUuids.removeAll(knownPatientsUuid);
-                    List<String> newConceptsUuids = new ArrayList<String>();
-                    newConceptsUuids.addAll(conceptUuids);
-                    newConceptsUuids.removeAll(knownConceptsUuid);
-                    ArrayList<String> allConceptsUuids = new ArrayList<String>();
-                    allConceptsUuids.addAll(knownConceptsUuid);
-                    allConceptsUuids.addAll(newConceptsUuids);
-                    Collections.sort(allConceptsUuids);
-
-                    observations = observationService.downloadObservations(newPatientsUuids, allConceptsUuids, null);
-                    List<Observation> knownPatientAndNewConceptObservations = observationService.downloadObservations(knownPatientsUuid, newConceptsUuids, null);
-                    observations.addAll(knownPatientAndNewConceptObservations);
-
-                    patientUuids = knownPatientsUuid;
-                    conceptUuids = knownConceptsUuid;
-                    lastSyncTime = fullLastSyncTimeInfo.getLastSyncDate();
-
-                    ArrayList<String> allPatientsUuids = new ArrayList<String>();
-                    allPatientsUuids.addAll(patientUuids);
-                    allPatientsUuids.addAll(newPatientsUuids);
-                    Collections.sort(allPatientsUuids);
+                    List<String> newConceptsUuids = getNewUuids(conceptUuids, knownConceptsUuid);
+                    allConceptsUuids = getAllUuids(knownConceptsUuid, newConceptsUuids);
+                    allPatientsUuids = getAllUuids(knownPatientsUuid, newPatientsUuids);
                     paramSignature = buildParamSignature(allPatientsUuids, allConceptsUuids);
+                    observations = observationService.downloadObservations(newPatientsUuids, allConceptsUuids, null);
+                    observations.addAll(observationService.downloadObservations(knownPatientsUuid, newConceptsUuids, null));
+                    observations.addAll(observationService.downloadObservations(knownPatientsUuid, knownConceptsUuid, fullLastSyncTimeInfo.getLastSyncDate()));
                 }
             }
-
-            List<Observation> updatedObservations = observationService.downloadObservations(patientUuids, conceptUuids, lastSyncTime);
-            observations.addAll(updatedObservations);
             LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_OBSERVATIONS, sntpService.getLocalTime(), paramSignature);
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
             return observations;
         } catch (IOException e) {
             throw new DownloadObservationException(e);
         }
+    }
+
+    private ArrayList<String> getAllUuids(List<String> knownUuids, List<String> newUuids) {
+        HashSet<String> allUuids = new HashSet<String>(knownUuids);
+        allUuids.addAll(newUuids);
+        ArrayList<String> sortedUuids = new ArrayList<String>(allUuids);
+        Collections.sort(sortedUuids);
+        return sortedUuids;
+    }
+
+    private List<String> getNewUuids(List<String> patientUuids, List<String> knownPatientsUuid) {
+        List<String> newPatientsUuids = new ArrayList<String>();
+        newPatientsUuids.addAll(patientUuids);
+        newPatientsUuids.removeAll(knownPatientsUuid);
+        return newPatientsUuids;
+    }
+
+    private boolean isFirstCallToDownloadObservationsEver(LastSyncTime fullLastSyncTimeInfo) {
+        return fullLastSyncTimeInfo == null;
+    }
+
+    private boolean hasExactCallBeenMadeBefore(Date lastSyncTime) {
+        return lastSyncTime != null;
     }
 
     private String buildParamSignature(List<String> patientUuids, List<String> conceptUuids) {

@@ -40,7 +40,7 @@ public class EncounterController {
             Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS, paramSignature);
             List<Encounter> encounters = new ArrayList<Encounter>();
             List<String> previousPatientsUuid = new ArrayList<String>();
-            if (isThisCallHappenedBefore(lastSyncTime)) {
+            if (hasThisCallHappenedBefore(lastSyncTime)) {
                 encounters.addAll(downloadEncounters(patientUuids, lastSyncTime));
             } else {
                 previousPatientsUuid = updateEncountersAndReturnPrevPatientUUIDs(patientUuids, encounters, previousPatientsUuid);
@@ -68,7 +68,7 @@ public class EncounterController {
         return previousPatientsUuid;
     }
 
-    private boolean isThisCallHappenedBefore(Date lastSyncTime) {
+    private boolean hasThisCallHappenedBefore(Date lastSyncTime) {
         return lastSyncTime != null;
     }
 
