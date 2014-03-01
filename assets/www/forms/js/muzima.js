@@ -4,7 +4,11 @@ $(document).ready(function () {
 
     /* Start - Function to save the form */
     document.submit = function () {
-        if ($("form").valid() && $.fn.customValidationCheck()) {
+        var validForm = $("form").valid();
+        if(typeof $.fn.customValidationCheck !== 'undefined' && typeof $.fn.customValidationCheck === 'function'){
+            validForm = validForm && $.fn.customValidationCheck();
+        }
+        if ( validForm) {
             save("complete");
         }
     };
