@@ -2,7 +2,7 @@
 <head>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/muzima.css" rel="stylesheet">
-    <link href="css/ui-lightness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+    <link href="css/ui-darkness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
 
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery-ui-1.10.4.custom.min.js"></script>
@@ -504,7 +504,7 @@
         </select>
     </div>
 </div>
-<div class="section repeat" id="medication_other" data-concept="1919^PATIENT REPORTED CURRENT OTHER TREATMENT^99DCT">
+<div class="section repeat medication_other" id="medication_other" data-concept="1919^PATIENT REPORTED CURRENT OTHER TREATMENT^99DCT">
     <h3>Other Medication</h3>
 
     <div class="form-group">
@@ -802,7 +802,7 @@
         </fieldset>
     </div>
 </div>
-<div class="section repeat" id="metformin_dispense" data-concept="1901^OTHER MEDICATION ORDER^99DCT">
+<div class="section repeat metformin_dispense" id="metformin_dispense" data-counter="1" data-concept="1901^OTHER MEDICATION ORDER^99DCT">
     <h3>Metformin Dispense</h3>
 
     <div class="form-group" id="metformin_dosage_changed">
@@ -854,7 +854,7 @@
         </select>
     </div>
 </div>
-<div class="section repeat" id="glibenclamide_dispense" data-concept="1901^OTHER MEDICATION ORDER^99DCT">
+<div class="section repeat glibenclamide_dispense" id="glibenclamide_dispense" data-counter="1" data-concept="1901^OTHER MEDICATION ORDER^99DCT">
     <h3>Glibenclamide Dispense</h3>
 
     <div class="form-group" id="glibenclamide_dosage_changed">
@@ -907,7 +907,7 @@
         </select>
     </div>
 </div>
-<div class="section repeat" id="enalapril_dispense" data-concept="1901^OTHER MEDICATION ORDER^99DCT">
+<div class="section repeat enalapril_dispense" id="enalapril_dispense" data-counter="1" data-concept="1901^OTHER MEDICATION ORDER^99DCT">
     <h3>Enalapril Dispense</h3>
 
     <div class="form-group" id="enalapril_dosage_changed">
@@ -959,7 +959,7 @@
         </select>
     </div>
 </div>
-<div class="section repeat" id="hctz_dispense" data-concept="1901^OTHER MEDICATION ORDER^99DCT">
+<div class="section repeat hctz_dispense" id="hctz_dispense" data-counter="1" data-concept="1901^OTHER MEDICATION ORDER^99DCT">
     <h3>HCTZ Dispense</h3>
 
     <div class="form-group" id="hctz_dosage_changed">
@@ -1008,7 +1008,7 @@
         </select>
     </div>
 </div>
-<div class="section repeat" id="losartan_dispense" data-concept="1901^OTHER MEDICATION ORDER^99DCT">
+<div class="section repeat losartan_dispense" id="losartan_dispense" data-counter="1" data-concept="1901^OTHER MEDICATION ORDER^99DCT">
     <h3>Losartan Dispense</h3>
 
     <div class="form-group" id="losartan_dosage_changed">
@@ -1060,7 +1060,7 @@
         </select>
     </div>
 </div>
-<div class="section repeat" id="nifedipine_dispense" data-concept="1901^OTHER MEDICATION ORDER^99DCT">
+<div class="section repeat nifedipine_dispense" id="nifedipine_dispense" data-counter="1" data-concept="1901^OTHER MEDICATION ORDER^99DCT">
     <h3>Nifedipine Dispense</h3>
 
     <div class="form-group" id="nifedipine_dosage_changed">
@@ -1112,7 +1112,7 @@
         </select>
     </div>
 </div>
-<div class="section repeat" id="other_medication" data-concept="1901^OTHER MEDICATION ORDER^99DCT">
+<div class="section repeat other_medication" id="other_medication" data-counter="1" data-concept="1901^OTHER MEDICATION ORDER^99DCT">
     <h3>Other Medication</h3>
 
     <div class="form-group">
@@ -1225,7 +1225,7 @@
 </div>
 <div class="form-group text-center">
     <input class="btn btn-primary" id="save_draft" type="button" value="Save"/>
-    <input class="btn btn-primary" id="submit_form" type="submit" value="Submit"/>
+    <input class="btn btn-primary" id="submit_form" type="button" value="Submit"/>
 </div>
 
 </form>
@@ -1237,6 +1237,11 @@ $(document).ready(function () {
     $('#save_draft').click(function () {
         document.saveDraft();
     });
+
+    $('#submit_form').click(function(){
+        document.submit();
+    });
+
     $('#dispensary_form').validate({
         rules: {
             pulse: {
@@ -1258,27 +1263,20 @@ $(document).ready(function () {
             glycosylated_hemoglobin: {
                 number: true,
                 range: [0, 20]
-            },
-            'obs.tmp_drugs': {
-                checkNoneSelectedAlone: true
-            },
-            '1069^REVIEW OF SYSTEMS, GENERAL^99DCT': {
-                checkNoneSelectedAlone: true
-            },
-            'obs.drugs_dispensed': {
-                checkNoneSelectedAlone: true
-            },
-            '6327^PATIENT EDUCATION RECEIVED THIS VISIT^99DCT': {
-                checkNoneSelectedAlone: true
-            },
-            '1272^REFERRALS ORDERED^99DCT': {
-                checkNoneSelectedAlone: true
             }
         },
         submitHandler: function (form) {
             $('#result').html(JSON.stringify($('form').serializeEncounterForm(),undefined,2));
         }
     });
+
+    var name_array = ['obs\\.tmp_drugs', '1069^REVIEW OF SYSTEMS, GENERAL^99DCT', 'obs.drugs_dispensed',
+        '6327^PATIENT EDUCATION RECEIVED THIS VISIT^99DCT', '1272^REFERRALS ORDERED^99DCT'];
+
+    $.fn.customValidationCheck = function(){
+        return $.fn.checkNoneSelectedAlone(name_array);
+    };
+
     var dispensaryName = [
         {"val": "2", "label": "Mosoriot Health Centre"},
         {"val": "3", "label": "Turbo Health Centre"},
@@ -1310,6 +1308,14 @@ $(document).ready(function () {
     ];
     $('#encounter\\.location_id').autocomplete({
         source: dispensaryName,
+        create: function(event,ui){
+            var location_val = $('input[name="encounter\\.location_id"]').val();
+            $.each(dispensaryName, function (i, elem) {
+                if (elem.val == location_val) {
+                    $('#encounter\\.location_id').val(elem.label)
+                }
+            });
+        },
         select: function (event, ui) {
             $('input[name="encounter\\.location_id"]').val(ui.item.val  );
             $('#encounter\\.location_id').val(ui.item.label);
@@ -1348,6 +1354,14 @@ $(document).ready(function () {
 
     $('#encounter\\.provider_id_select').autocomplete({
         source: provider,
+        create: function (event, ui) {
+            var provider_val = $('input[name="encounter\\.provider_id_select"]').val();
+            $.each(provider, function (i, elem) {
+                if (elem.val == provider_val) {
+                    $('#encounter\\.provider_id_select').val(elem.label)
+                }
+            });
+        },
         select: function (event, ui) {
             $('input[name="encounter\\.provider_id_select"]').val(ui.item.val);
             $('#encounter\\.provider_id_select').val(ui.item.label);

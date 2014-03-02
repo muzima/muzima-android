@@ -69,17 +69,17 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
             }else if(syncType == SYNC_TEMPLATES){
                 msg += " form templates and " + intent.getIntExtra(DOWNLOAD_COUNT_SECONDARY, 0) + " related concepts";
             } else if(syncType == SYNC_COHORTS){
-                msg += " cohorts";
+                msg += " new cohorts";
             } else if(syncType == SYNC_PATIENTS_FULL_DATA){
                 int downloadCountSec = intent.getIntExtra(DOWNLOAD_COUNT_SECONDARY, 0);
-                msg += " patients for " + downloadCountSec + " cohorts. Still downloading observations and encounters";
+                msg += " new patients for " + downloadCountSec + " cohorts. Still downloading observations and encounters";
             } else if(syncType == SYNC_PATIENTS_ONLY){
                 int downloadCountSec = intent.getIntExtra(DOWNLOAD_COUNT_SECONDARY, 0);
                 msg += " patients for " + downloadCountSec + " cohorts.";
             } else if(syncType == SYNC_OBSERVATIONS){
-                msg += " observations";
+                msg += " new observations";
             } else if(syncType == SYNC_ENCOUNTERS){
-                msg += " encounters";
+                msg += " new encounters";
             } else if(syncType == SYNC_UPLOAD_FORMS){
                 msg = "Upload forms success.";
             }

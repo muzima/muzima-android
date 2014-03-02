@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.*;
 
 import static com.muzima.utils.Constants.*;
+import static com.muzima.api.model.APIName.DOWNLOAD_FORMS;
 
 public class FormController {
 
@@ -151,11 +152,9 @@ public class FormController {
 
     public List<Form> downloadAllForms() throws FormFetchException {
         try {
-            Date lastSyncDate = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS);
+            Date lastSyncDate = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_FORMS);
             List<Form> forms = formService.downloadFormsByName(StringUtil.EMPTY, lastSyncDate);
-            LastSyncTime lastSyncTime = new LastSyncTime();
-            lastSyncTime.setApiName(APIName.DOWNLOAD_FORMS);
-            lastSyncTime.setLastSyncDate(sntpService.getUTCTime());
+            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_FORMS, sntpService.getLocalTime());
             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             return forms;
         } catch (IOException e) {

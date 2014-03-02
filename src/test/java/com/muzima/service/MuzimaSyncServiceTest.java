@@ -141,7 +141,6 @@ public class MuzimaSyncServiceTest {
         muzimaSyncService.downloadForms();
 
         verify(formContorller).downloadAllForms();
-        verify(formContorller).deleteAllForms();
         verify(formContorller).saveAllForms(forms);
     }
 
@@ -168,12 +167,6 @@ public class MuzimaSyncServiceTest {
     public void downloadForms_shouldReturnSaveErrorIfSaveExceptionOccur() throws Exception, FormController.FormSaveException {
         doThrow(new FormController.FormSaveException(null)).when(formContorller).saveAllForms(anyList());
         assertThat(muzimaSyncService.downloadForms()[0], is(SAVE_ERROR));
-    }
-
-    @Test
-    public void downloadForms_shouldReturnDeleteErrorIfDeleteExceptionOccur() throws Exception, FormController.FormDeleteException {
-        doThrow(new FormController.FormDeleteException(null)).when(formContorller).deleteAllForms();
-        assertThat(muzimaSyncService.downloadForms()[0], is(DELETE_ERROR));
     }
 
     @Test
@@ -236,7 +229,27 @@ public class MuzimaSyncServiceTest {
 
         verify(cohortController).downloadAllCohorts();
         verify(cohortController).saveAllCohorts(cohorts);
+        verify(cohortController).deleteCohorts(new ArrayList<Cohort>());
         verifyNoMoreInteractions(cohortController);
+    }
+
+    @Test
+    public void shouldDeleteVoidedCohortsWhenDownloading() throws CohortController.CohortDownloadException, CohortController.CohortSaveException, CohortController.CohortDeleteException {
+        List<Cohort> cohorts = new ArrayList<Cohort>();
+        Cohort aCohort = mock(Cohort.class);
+        Cohort voidedCohort = mock(Cohort.class);
+        when(voidedCohort.isVoided()).thenReturn(true);
+        when(aCohort.isVoided()).thenReturn(false);
+        cohorts.add(aCohort);
+        cohorts.add(voidedCohort);
+
+        when(cohortController.downloadAllCohorts()).thenReturn(cohorts);
+        when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
+        when(sharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
+
+        muzimaSyncService.downloadCohorts();
+        verify(cohortController).deleteCohorts(asList(voidedCohort));
+        verify(cohortController).saveAllCohorts(asList(aCohort));
     }
 
     @Test
@@ -255,6 +268,7 @@ public class MuzimaSyncServiceTest {
 
         verify(cohortController).downloadCohortsByPrefix(cohortPrefixes);
         verify(cohortController).saveAllCohorts(cohorts);
+        verify(cohortController).deleteCohorts(new ArrayList<Cohort>());
         verifyNoMoreInteractions(cohortController);
     }
 
@@ -264,7 +278,7 @@ public class MuzimaSyncServiceTest {
             add(new Cohort());
             add(new Cohort());
         }};
-        int[] result = new int[]{SUCCESS, 2};
+        int[] result = new int[]{SUCCESS, 2, 0};
 
         when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
         when(sharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
@@ -315,6 +329,30 @@ public class MuzimaSyncServiceTest {
         verify(patientController).replacePatients(cohortDataList.get(0).getPatients());
         verify(patientController).replacePatients(cohortDataList.get(1).getPatients());
         verifyNoMoreInteractions(cohortController);
+    }
+
+    @Test
+    public void shouldDeleteVoidedPatientsDuringPatientDownload() throws Exception, CohortController.CohortDownloadException, PatientController.PatientDeleteException {
+        String[] cohortUuids = new String[]{"uuid1", "uuid2"};
+        final Patient voidedPatient = mock(Patient.class);
+        when(voidedPatient.isVoided()).thenReturn(true);
+        List<CohortData> cohortDataList = new ArrayList<CohortData>() {{
+            add(new CohortData() {{
+                addCohortMember(new CohortMember());
+                addPatient(new Patient());
+                addPatient(voidedPatient);
+            }});
+            add(new CohortData() {{
+                addCohortMember(new CohortMember());
+                addPatient(new Patient());
+            }});
+        }};
+
+        when(cohortController.downloadCohortData(cohortUuids)).thenReturn(cohortDataList);
+
+        muzimaSyncService.downloadPatientsForCohorts(cohortUuids);
+
+        verify(patientController).deletePatient(asList(voidedPatient));
     }
 
     @Test
@@ -392,7 +430,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadObservationsForPatients_shouldDownloadObservationsForGiveCohortIdsAndSavedConcepts() throws Exception, PatientController.PatientLoadException, ObservationController.DownloadObservationException, ObservationController.ReplaceObservationException, ConceptController.ConceptFetchException {
+    public void downloadObservationsForPatients_shouldDownloadObservationsForGiveCohortIdsAndSavedConcepts() throws Exception, PatientController.PatientLoadException, ObservationController.DownloadObservationException, ObservationController.ReplaceObservationException, ConceptController.ConceptFetchException, ObservationController.DeleteObservationException {
         String[] cohortUuids = new String[]{"uuid1", "uuid2"};
         List<Patient> patients = new ArrayList<Patient>() {{
             add(new Patient() {{
@@ -423,6 +461,7 @@ public class MuzimaSyncServiceTest {
         muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortUuids);
 
         verify(observationController).downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids);
+        verify(observationController).deleteObservations(new ArrayList<Observation>());
         verify(observationController).replaceObservations(allObservations);
         verifyNoMoreInteractions(observationController);
     }
@@ -521,6 +560,19 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
+    public void shouldDeleteVoidedEncountersWhenDownloadingEncounters() throws EncounterController.DeleteEncounterException, EncounterController.DownloadEncounterException {
+        String[] patientUuids = new String[]{"patientUuid1", "patientUuid2"};
+        List<Encounter> encounters = new ArrayList<Encounter>();
+        encounters.add(new Encounter());
+        Encounter voidedEncounter = mock(Encounter.class);
+        when(voidedEncounter.isVoided()).thenReturn(true);
+        encounters.add(voidedEncounter);
+        when(encounterController.downloadEncountersByPatientUuids(asList(patientUuids))).thenReturn(encounters);
+        muzimaSyncService.downloadEncountersForPatientsByPatientUUIDs(asList(patientUuids));
+        verify(encounterController).deleteEncounters(asList(voidedEncounter));
+    }
+
+    @Test
     public void consolidatePatients_shouldGetAllPatientsConsolidateSavePatientFromServerAndDeleteLocalPatient() throws Exception, PatientController.PatientSaveException {
         Patient localPatient = mock(Patient.class);
         Patient remotePatient = mock(Patient.class);
@@ -585,6 +637,25 @@ public class MuzimaSyncServiceTest {
         assertThat(result[1], is(0));
 
         verify(patientController).savePatients(asList(patient1));
+    }
+
+    @Test
+    public void shouldDeleteVoidedObservationsWhenDownloadingObservations() throws ObservationController.DeleteObservationException, ObservationController.DownloadObservationException, ReplaceObservationException {
+        List<String> patientUuids = asList(new String[]{"patientUuid"});
+        List<Observation> observations = new ArrayList<Observation>();
+        Observation anObservation = mock(Observation.class);
+        when(anObservation.isVoided()).thenReturn(false);
+        observations.add(anObservation);
+        Observation voidedObservation = mock(Observation.class);
+        when(voidedObservation.isVoided()).thenReturn(true);
+        observations.add(voidedObservation);
+        when(observationController.downloadObservationsByPatientUuidsAndConceptUuids
+                (eq(patientUuids), anyList())).thenReturn(observations);
+
+        muzimaSyncService.downloadObservationsForPatientsByPatientUUIDs(patientUuids);
+
+        verify(observationController).deleteObservations(asList(voidedObservation));
+        verify(observationController).replaceObservations(asList(anObservation));
     }
 
     private Patient patient(String patientUUID) {

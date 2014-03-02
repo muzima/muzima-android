@@ -85,8 +85,6 @@ public class MuzimaSyncService {
             List<Form> forms;
             forms = formController.downloadAllForms();
             Log.i(TAG, "Form download successful");
-            formController.deleteAllForms();
-            Log.i(TAG, "Old forms are deleted");
             formController.saveAllForms(forms);
             Log.i(TAG, "New forms are saved");
 
@@ -100,10 +98,6 @@ public class MuzimaSyncService {
         } catch (FormController.FormSaveException e) {
             Log.e(TAG, "Exception when trying to save forms", e);
             result[0] = SAVE_ERROR;
-            return result;
-        } catch (FormController.FormDeleteException e) {
-            Log.e(TAG, "Exception occurred while deleting existing forms", e);
-            result[0] = DELETE_ERROR;
             return result;
         }
         return result;
@@ -124,7 +118,7 @@ public class MuzimaSyncService {
 
             result[0] = SUCCESS;
             result[1] = formTemplates.size();
-            result[2] = 0;
+            result[2] = concepts.size();
         } catch (FormController.FormSaveException e) {
             Log.e(TAG, "Exception when trying to save forms", e);
             result[0] = SAVE_ERROR;
@@ -146,14 +140,17 @@ public class MuzimaSyncService {
     }
 
     public int[] downloadCohorts() {
-        int[] result = new int[2];
+        int[] result = new int[3];
         try {
             List<Cohort> cohorts = downloadCohortsList();
-            Log.i(TAG, "Old cohorts are deleted");
+            ArrayList<Cohort> voidedCohorts = deleteVoidedCohorts(cohorts);
+            cohorts.removeAll(voidedCohorts);
+
             cohortController.saveAllCohorts(cohorts);
             Log.i(TAG, "New cohorts are saved");
             result[0] = SUCCESS;
             result[1] = cohorts.size();
+            result[2] = voidedCohorts.size();
         } catch (CohortController.CohortDownloadException e) {
             Log.e(TAG, "Exception when trying to download cohorts", e);
             result[0] = DOWNLOAD_ERROR;
@@ -162,8 +159,24 @@ public class MuzimaSyncService {
             Log.e(TAG, "Exception when trying to save cohorts", e);
             result[0] = SAVE_ERROR;
             return result;
+        } catch (CohortController.CohortDeleteException e) {
+            Log.e(TAG, "Exception occurred while deleting voided cohorts", e);
+            result[0] = DELETE_ERROR;
+            return result;
         }
         return result;
+    }
+
+    private ArrayList<Cohort> deleteVoidedCohorts(List<Cohort> cohorts) throws CohortController.CohortDeleteException {
+        Log.i(TAG, "Voided cohorts are deleted");
+        ArrayList<Cohort> voidedCohorts = new ArrayList<Cohort>();
+        for( Cohort cohort : cohorts){
+            if(cohort.isVoided()){
+                voidedCohorts.add(cohort);
+            }
+        }
+        cohortController.deleteCohorts(voidedCohorts);
+        return voidedCohorts;
     }
 
     private List<Concept> getRelatedConcepts(List<FormTemplate> formTemplates) throws ConceptController.ConceptDownloadException {
@@ -183,7 +196,7 @@ public class MuzimaSyncService {
     }
 
     public int[] downloadPatientsForCohorts(String[] cohortUuids) {
-        int[] result = new int[3];
+        int[] result = new int[4];
 
         int patientCount = 0;
         try {
@@ -193,12 +206,17 @@ public class MuzimaSyncService {
 
             long endDownloadCohortData = System.currentTimeMillis();
             Log.i(TAG, "Cohort data download successful with " + cohortDataList.size() + " cohorts");
-
+            ArrayList<Patient> voidedPatients = new ArrayList<Patient>();
+            List<Patient> cohortPatients;
             for (CohortData cohortData : cohortDataList) {
                 cohortController.addCohortMembers(cohortData.getCohortMembers());
-                patientController.replacePatients(cohortData.getPatients());
+                cohortPatients = cohortData.getPatients();
+                getVoidedPatients(voidedPatients, cohortPatients);
+                cohortPatients.removeAll(voidedPatients);
+                patientController.replacePatients(cohortPatients);
                 patientCount += cohortData.getPatients().size();
             }
+            patientController.deletePatient(voidedPatients);
             long cohortMemberAndPatientReplaceTime = System.currentTimeMillis();
 
             Log.i(TAG, "Cohort data replaced");
@@ -210,6 +228,7 @@ public class MuzimaSyncService {
             result[0] = SUCCESS;
             result[1] = patientCount;
             result[2] = cohortDataList.size();
+            result[3] = voidedPatients.size();
         } catch (CohortController.CohortDownloadException e) {
             Log.e(TAG, "Exception thrown while downloading cohort data.", e);
             result[0] = DOWNLOAD_ERROR;
@@ -219,8 +238,19 @@ public class MuzimaSyncService {
         } catch (PatientController.PatientSaveException e) {
             Log.e(TAG, "Exception thrown while replacing patients.", e);
             result[0] = REPLACE_ERROR;
+        } catch (PatientController.PatientDeleteException e) {
+            Log.e(TAG, "Exception thrown while deleting patients.", e);
+            result[0] = DELETE_ERROR;
         }
         return result;
+    }
+
+    private void getVoidedPatients(ArrayList<Patient> voidedPatients, List<Patient> cohortPatients) {
+        for(Patient patient : cohortPatients){
+            if(patient.isVoided()){
+                voidedPatients.add(patient);
+            }
+        }
     }
 
     public int[] downloadPatients(String[] patientUUIDs) {
@@ -255,14 +285,17 @@ public class MuzimaSyncService {
     }
 
     public int[] downloadObservationsForPatientsByPatientUUIDs(List<String> patientUuids) {
-        int[] result = new int[2];
+        int[] result = new int[3];
         try {
             long startDownloadObservations = System.currentTimeMillis();
             List<Observation> allObservations = observationController.downloadObservationsByPatientUuidsAndConceptUuids
                     (patientUuids, getConceptUuidsFromConcepts(conceptController.getConcepts()));
             long endDownloadObservations = System.currentTimeMillis();
             Log.i(TAG, "Observations download successful with " + allObservations.size() + " observations");
-
+            List<Observation> voidedObservations = getVoidedObservations(allObservations);
+            observationController.deleteObservations(voidedObservations);
+            allObservations.removeAll(voidedObservations);
+            Log.i(TAG, "Voided observations delete successful with " + voidedObservations.size() + " observations");
             observationController.replaceObservations(allObservations);
             long replacedObservations = System.currentTimeMillis();
 
@@ -271,6 +304,7 @@ public class MuzimaSyncService {
 
             result[0] = SUCCESS;
             result[1] = allObservations.size();
+            result[2] = voidedObservations.size();
         } catch (ObservationController.DownloadObservationException e) {
             Log.e(TAG, "Exception thrown while downloading observations.", e);
             result[0] = DOWNLOAD_ERROR;
@@ -280,9 +314,22 @@ public class MuzimaSyncService {
         } catch (ConceptController.ConceptFetchException e) {
             Log.e(TAG, "Exception thrown while loading concepts.", e);
             result[0] = LOAD_ERROR;
+        } catch (ObservationController.DeleteObservationException e) {
+            Log.e(TAG, "Exception thrown while deleting observations.", e);
+            result[0] = DELETE_ERROR;
         }
 
         return result;
+    }
+
+    private List<Observation> getVoidedObservations(List<Observation> allObservations) {
+        List<Observation> voidedObservations = new ArrayList<Observation>();
+        for(Observation observation : allObservations){
+            if(observation.isVoided()){
+                voidedObservations.add(observation);
+            }
+        }
+        return voidedObservations;
     }
 
     public int[] downloadEncountersForPatientsByCohortUUIDs(String[] cohortUuids) {
@@ -299,12 +346,16 @@ public class MuzimaSyncService {
     }
 
     public int[] downloadEncountersForPatientsByPatientUUIDs(List<String> patientUuids) {
-        int[] result = new int[2];
+        int[] result = new int[3];
         try {
             long startDownloadEncounters = System.currentTimeMillis();
             List<Encounter> allEncounters = encounterController.downloadEncountersByPatientUuids(patientUuids);
             long endDownloadObservations = System.currentTimeMillis();
             Log.i(TAG, "Encounters download successful with " + allEncounters.size() + " encounters");
+            ArrayList<Encounter> voidedEncounters = getVoidedEncounters(allEncounters);
+            allEncounters.removeAll(voidedEncounters);
+            encounterController.deleteEncounters(voidedEncounters);
+            Log.i(TAG, "Voided encounters delete successful with " + allEncounters.size() + " encounters");
 
             encounterController.replaceEncounters(allEncounters);
             long replacedEncounters = System.currentTimeMillis();
@@ -314,14 +365,28 @@ public class MuzimaSyncService {
 
             result[0] = SUCCESS;
             result[1] = allEncounters.size();
+            result[2] = voidedEncounters.size();
         } catch (EncounterController.DownloadEncounterException e) {
             Log.e(TAG, "Exception thrown while downloading encounters.", e);
             result[0] = DOWNLOAD_ERROR;
         } catch (EncounterController.ReplaceEncounterException e) {
             Log.e(TAG, "Exception thrown while replacing encounters.", e);
             result[0] = REPLACE_ERROR;
+        } catch (EncounterController.DeleteEncounterException e) {
+            Log.e(TAG, "Exception thrown while deleting encounters.", e);
+            result[0] = DELETE_ERROR;
         }
         return result;
+    }
+
+    private ArrayList<Encounter> getVoidedEncounters(List<Encounter> allEncounters) {
+        ArrayList<Encounter> voidedEncounters = new ArrayList<Encounter>();
+        for(Encounter encounter : allEncounters){
+            if(encounter.isVoided()){
+                voidedEncounters.add(encounter);
+            }
+        }
+        return voidedEncounters;
     }
 
     public int[] uploadAllCompletedForms() {
