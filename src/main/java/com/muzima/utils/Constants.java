@@ -61,4 +61,10 @@ public class Constants {
             public static final int INVALID_CREDENTIALS_ERROR = 14;
         }
     }
+
+    public static class NotificationStatusConstants {
+        public static final String NOTIFICATION_READ = "read";
+        public static final String NOTIFICATION_UNREAD = "unread";
+        public static final String SENDER_UUID = "senderUuid";
+    }
 }

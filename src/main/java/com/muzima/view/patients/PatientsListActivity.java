@@ -1,5 +1,6 @@
 package com.muzima.view.patients;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,21 +13,28 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.User;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.Fonts;
-import com.muzima.view.BaseActivity;
+import com.muzima.utils.NetworkUtils;
+import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
+import com.muzima.view.notifications.SyncNotificationsIntent;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
 import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
 
-public class PatientsListActivity extends BaseActivity implements AdapterView.OnItemClickListener, ListAdapter.BackgroundListQueryTaskListener {
+public class PatientsListActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener, ListAdapter.BackgroundListQueryTaskListener {
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
     public static final String QUICK_SEARCH = "quickSearch";
     public static final String NOTIFICATIONS = "Notifications";
     public static boolean isNotificationsList = false;
+    private MenuItem menubarSyncButton;
+    private boolean notificationsSyncInProgress;
 
     private ListView listView;
     private boolean quickSearch = false;
@@ -97,6 +105,13 @@ public class PatientsListActivity extends BaseActivity implements AdapterView.On
             searchView.requestFocus();
         } else
             searchView.setIconified(true);
+
+        menubarSyncButton = menu.findItem(R.id.menu_load);
+        if (isNotificationsList)
+            menubarSyncButton.setVisible(true);
+        else
+            menubarSyncButton.setVisible(false);
+
         super.onCreateOptionsMenu(menu);
         return true;
     }
@@ -115,6 +130,18 @@ public class PatientsListActivity extends BaseActivity implements AdapterView.On
             case R.id.menu_client_add:
                 startActivity(new Intent(this, RegistrationFormsActivity.class));
                 return true;
+            case R.id.menu_load:
+                if (notificationsSyncInProgress) {
+                    Toast.makeText(this, "Action not allowed while sync is in progress", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+
+                if (!NetworkUtils.isConnectedToNetwork(this)) {
+                    Toast.makeText(this, "No connection found, please connect your device and try again", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+
+                syncAllNotificationsInBackgroundService();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -175,5 +202,48 @@ public class PatientsListActivity extends BaseActivity implements AdapterView.On
 
         listView.setVisibility(VISIBLE);
         progressBarContainer.setVisibility(INVISIBLE);
+    }
+
+    @Override
+    protected void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+
+        int syncStatus = intent.getIntExtra(SYNC_STATUS, UNKNOWN_ERROR);
+        int syncType = intent.getIntExtra(SYNC_TYPE, -1);
+
+        if (syncType == SYNC_NOTIFICATIONS) {
+            hideProgressbar();
+            onNotificationDownloadFinish();
+        }
+    }
+
+
+    public void hideProgressbar() {
+        menubarSyncButton.setActionView(null);
+    }
+
+    public void showProgressBar() {
+        menubarSyncButton.setActionView(R.layout.refresh_menuitem);
+    }
+
+    private void syncAllNotificationsInBackgroundService() {
+        notificationsSyncInProgress = true;
+        onNotificationDownloadStart();
+        showProgressBar();
+        User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
+        if (authenticatedUser != null)
+            new SyncNotificationsIntent(this, authenticatedUser.getUuid()).start();
+        else
+            new SyncNotificationsIntent(this, null).start();
+    }
+
+    public void onNotificationDownloadFinish() {
+        notificationsSyncInProgress = false;
+        patientAdapter.reloadData();
+        //updateSyncText();
+    }
+
+    public void onNotificationDownloadStart() {
+        notificationsSyncInProgress = true;
     }
 }

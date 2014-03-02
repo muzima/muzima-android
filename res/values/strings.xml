@@ -202,6 +202,7 @@
 
     <string name="notifications">Notifications</string>
     <string name="title_activity_notification_list">Notifications</string>
+    <string name="title_activity_notification">Notification</string>
     <string name="no_notification_available">No Notifications Available</string>
     <string name="no_notification_available_tip">Make sure you have connectivity to server and press the load button</string>
     <string name="new_notification_image">New Notification</string>

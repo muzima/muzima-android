@@ -7,12 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import com.muzima.MuzimaApplication;
-import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Notification;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.User;
 import com.muzima.controller.NotificationController;
-import com.muzima.domain.Credentials;
-import com.muzima.service.MuzimaSyncService;
 
 import java.util.List;
 
@@ -21,13 +19,11 @@ import java.util.List;
  */
 public class PatientNotificationsAdapter extends NotificationsAdapter {
     private static final String TAG = "PatientNotificationsAdapter";
-    private final MuzimaSyncService muzimaSyncService;
     private List<Notification> notifications;
     private Patient patient;
 
     public PatientNotificationsAdapter(Context context, int textViewResourceId, NotificationController notificationController, Patient patient) {
         super(context, textViewResourceId, notificationController);
-        muzimaSyncService = ((MuzimaApplication) (getContext().getApplicationContext())).getMuzimaSyncService();
         this.patient = patient;
     }
 
@@ -46,16 +42,7 @@ public class PatientNotificationsAdapter extends NotificationsAdapter {
         return view;
     }
 
-    private void highlightCohorts(Cohort cohort, View view) {
-    }
-
     public void onListItemClick(int position) {
-//        Cohort cohort = getItem(position);
-//        if (!selectedCohortsUuid.contains(cohort.getUuid())) {
-//            selectedCohortsUuid.add(cohort.getUuid());
-//        } else if (selectedCohortsUuid.contains(cohort.getUuid())) {
-//            selectedCohortsUuid.remove(cohort.getUuid());
-//        }
         notifyDataSetChanged();
     }
 
@@ -102,7 +89,9 @@ public class PatientNotificationsAdapter extends NotificationsAdapter {
             List<Notification> allNotifications = null;
             try {
                 Log.i(TAG, "Fetching inbox notifications from Database...");
-                allNotifications = notificationController.getNotificationsForPatient(patient.getUuid(),new Credentials(getContext()).getUserName(), null);
+                User authenticatedUser = ((MuzimaApplication) getContext()).getAuthenticatedUser();
+                if (authenticatedUser != null)
+                    allNotifications = notificationController.getNotificationsForPatient(patient.getUuid(), authenticatedUser.getUuid(), null);
                 Log.d(TAG, "#Retrieved " + allNotifications.size() + " inbox notifications from Database.");
             } catch (NotificationController.NotificationFetchException e) {
                 Log.w(TAG, "Exception occurred while fetching the inbox notifications" + e);
@@ -119,8 +108,9 @@ public class PatientNotificationsAdapter extends NotificationsAdapter {
         protected List<Notification> doInBackground(Void... voids) {
             List<Notification> allNotifications = null;
             try {
-                //muzimaSyncService.downloadCohorts();
-                allNotifications = notificationController.getNotificationsForPatient(patient.getUuid(), new Credentials(getContext()).getUserName(), null);
+                User authenticatedUser = ((MuzimaApplication) getContext()).getAuthenticatedUser();
+                if (authenticatedUser != null)
+                allNotifications = notificationController.getNotificationsForPatient(patient.getUuid(),authenticatedUser.getUuid(), null);
                 Log.i(TAG, "#Inbox: " + allNotifications.size());
             } catch (NotificationController.NotificationFetchException e) {
                 Log.w(TAG, "Exception occurred while fetching the inbox notifications" + e);

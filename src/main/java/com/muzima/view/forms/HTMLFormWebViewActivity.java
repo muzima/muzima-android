@@ -65,6 +65,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private BarCodeComponent barCodeComponent;
     private ImagingComponent imagingComponent;
     private Map<String, String> scanResultMap;
+    private Map<String, String> imageResultMap;
     private FormController formController;
 
     @Override
@@ -76,6 +77,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         scanResultMap = new HashMap<String, String>();
+        imageResultMap = new HashMap<String, String>();
         setContentView(R.layout.activity_form_webview);
         progressDialog = new MuzimaProgressDialog(this);
         showProgressBar("Loading...");
@@ -117,9 +119,19 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
     @Override
     protected void onResume() {
-        String jsonMap = new JSONObject(scanResultMap).toString();
-        Log.e(TAG, jsonMap);
-        webView.loadUrl("javascript:document.populateBarCode(" + jsonMap + ")");
+        if (scanResultMap != null && !scanResultMap.isEmpty()) {
+            String jsonMap = new JSONObject(scanResultMap).toString();
+            Log.d(TAG, jsonMap);
+            webView.loadUrl("javascript:document.populateBarCode(" + jsonMap + ")");
+        }
+
+        if (imageResultMap != null && !imageResultMap.isEmpty()) {
+            System.out.println(TAG + "---------------" + imageResultMap);
+            String jsonMap = new JSONObject(imageResultMap).toString();
+            Log.d(TAG, jsonMap);
+            webView.loadUrl("javascript:document.populateImage(" + jsonMap + ")");
+        }
+
         super.onResume();
     }
 
@@ -158,8 +170,13 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        if (scanResult != null) {
+        if (scanResult != null && barCodeComponent.getFieldName() != null && scanResult.getContents() != null ) {
             scanResultMap.put(barCodeComponent.getFieldName(), scanResult.getContents());
+        }
+
+        String imageResult = ImagingComponent.parseActivityResult(requestCode, resultCode, intent);
+        if (imageResult != null && imagingComponent.getFieldName() != null)  {
+            imageResultMap.put(imagingComponent.getFieldName(), imageResult);
         }
     }
 

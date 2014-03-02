@@ -12,6 +12,7 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Notification;
 import com.muzima.controller.NotificationController;
 import com.muzima.search.api.util.StringUtil;
+import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
 
 /**
@@ -73,7 +74,7 @@ public abstract class NotificationsAdapter extends ListAdapter<Notification> {
         }
 
         public void markUnreadNotification() {
-            if (StringUtil.equals("read", status)){
+            if (StringUtil.equals(Constants.NotificationStatusConstants.NOTIFICATION_READ, status)){
                 subject.setTypeface(Fonts.roboto_light(getContext()));
                 receiver.setTypeface(Fonts.roboto_light(getContext()));
                 newNotificationImg.setVisibility(View.GONE);

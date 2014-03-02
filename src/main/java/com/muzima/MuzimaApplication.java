@@ -8,10 +8,12 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
+import com.muzima.api.model.User;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.NotificationService;
 import com.muzima.controller.*;
+import com.muzima.domain.Credentials;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.MuzimaSyncService;
@@ -109,6 +111,32 @@ public class MuzimaApplication extends Application {
         return muzimaContext;
     }
 
+    public User getAuthenticatedUser() {
+        User authenticatedUser = null;
+        muzimaContext.openSession();
+        try {
+            if (muzimaContext.isAuthenticated())
+                authenticatedUser = muzimaContext.getAuthenticatedUser();
+            else    {
+                Credentials cred   = new Credentials(getApplicationContext()) ;
+                if (cred != null) {
+                    String[] credentials = cred.getCredentialsArray();
+
+                    String username = credentials[0];
+                    String password = credentials[1];
+                    String server = credentials[2];
+                    muzimaContext.authenticate(username, password, server);
+                    authenticatedUser = muzimaContext.getAuthenticatedUser();
+                }
+            }
+            muzimaContext.closeSession();
+        } catch (Exception e) {
+            muzimaContext.closeSession();
+            throw new RuntimeException(e);
+        }
+        return authenticatedUser;
+    }
+
     public ConceptController getConceptController() {
         if (conceptController == null) {
             try {
@@ -187,7 +215,7 @@ public class MuzimaApplication extends Application {
     public NotificationController getNotificationController() {
         if (notificationController == null) {
             try {
-                notificationController = new NotificationController(muzimaContext.getService(NotificationService.class), muzimaContext.getFormService(),muzimaContext.getPatientService());
+                notificationController = new NotificationController(muzimaContext.getService(NotificationService.class), muzimaContext.getFormService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

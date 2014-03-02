@@ -14,10 +14,10 @@ import com.actionbarsherlock.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.User;
 import com.muzima.controller.FormController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.PatientController;
-import com.muzima.domain.Credentials;
 import com.muzima.service.JSONInputOutputToDisk;
 import com.muzima.utils.Constants;
 import com.muzima.view.BaseActivity;
@@ -164,8 +164,14 @@ public class PatientSummaryActivity extends BaseActivity {
                 patientSummaryActivityMetadata.recommendedForms = formController.getRecommendedFormsCount();
                 patientSummaryActivityMetadata.completeForms = formController.getCompleteFormsCountForPatient(patient.getUuid());
                 patientSummaryActivityMetadata.incompleteForms = formController.getIncompleteFormsCountForPatient(patient.getUuid());
-                patientSummaryActivityMetadata.notifications =
-                        notificationController.getNotificationsCountForPatient(patient.getUuid(), new Credentials(PatientSummaryActivity.this).getUserName(), "unread");
+
+                User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
+                if (authenticatedUser != null)
+                    patientSummaryActivityMetadata.notifications =
+                        notificationController.getNotificationsCountForPatient(patient.getUuid(), authenticatedUser.getUuid(),
+                                Constants.NotificationStatusConstants.NOTIFICATION_UNREAD);
+                else
+                    patientSummaryActivityMetadata.notifications = 0;
             } catch (FormController.FormFetchException e) {
                 Log.w(TAG, "FormFetchException occurred while fetching metadata in MainActivityBackgroundTask");
             } catch (NotificationController.NotificationFetchException e) {

@@ -1,10 +1,12 @@
 package com.muzima.view.notifications;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import com.muzima.R;
 import com.muzima.adapters.notification.PatientNotificationsAdapter;
+import com.muzima.api.model.Notification;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.NotificationController;
 
@@ -34,22 +36,10 @@ public class PatientNotificationsListFragment extends NotificationListFragment {
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-//        CheckedLinearLayout checkedLinearLayout = (CheckedLinearLayout) view;
-//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-//            checkedLinearLayout.toggle();
-//        }
-//        boolean isChecked = checkedLinearLayout.isChecked();
-//        if (!actionModeActive && isChecked) {
-//            actionMode = getSherlockActivity().startActionMode(new InboxSyncActionModeCallback());
-//            actionModeActive = true;
-//        }
-//        ((AllCohortsAdapter) listAdapter).onListItemClick(position);
-//        int numOfSelectedCohorts = ((AllCohortsAdapter) listAdapter).numberOfCohorts();
-//        if (numOfSelectedCohorts == 0 && actionModeActive) {
-//            actionMode.finish();
-//        }
-//        Log.d(TAG, "isnull:" + String.valueOf(actionMode == null));
-//        actionMode.setTitle(String.valueOf(numOfSelectedCohorts));
+        Notification notification = (Notification) listAdapter.getItem(position);
+        Intent notificationIntent = new Intent(getActivity(), NotificationActivity.class);
+        notificationIntent.putExtra(NotificationActivity.NOTIFICATION, notification);
 
+        startActivity(notificationIntent);
     }
 }

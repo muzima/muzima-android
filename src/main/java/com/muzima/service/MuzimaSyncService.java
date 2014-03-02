@@ -31,6 +31,7 @@ public class MuzimaSyncService {
     private ObservationController observationController;
     private final CohortPrefixPreferenceService cohortPrefixPreferenceService;
     private EncounterController encounterController;
+    private NotificationController notificationController;
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
         this.muzimaApplication = muzimaContext;
@@ -41,6 +42,7 @@ public class MuzimaSyncService {
         patientController = muzimaApplication.getPatientController();
         observationController = muzimaApplication.getObservationController();
         encounterController = muzimaApplication.getEncounterController();
+        notificationController = muzimaApplication.getNotificationController();
     }
 
     public int authenticate(String[] credentials) {
@@ -419,4 +421,70 @@ public class MuzimaSyncService {
         }
         return patientUuids;
     }
+
+
+    public int[] downloadNotifications(String senderUuid) {
+        int[] result = new int[2];
+
+        try {
+            List<Notification> notifications;
+            notifications = notificationController.downloadNotificationBySender(senderUuid);
+            Log.i(TAG, "Notifications download successful");
+            notificationController.deleteAllNotifications(senderUuid);
+            Log.i(TAG, "Old notifications are deleted");
+            notificationController.saveNotifications(notifications);
+            Log.i(TAG, "New notifications are saved");
+
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+            result[1] = notifications.size();
+
+        } catch (NotificationController.NotificationDownloadException e) {
+            Log.e(TAG, "Exception when trying to download notifications", e);
+            result[0] = DOWNLOAD_ERROR;
+            return result;
+        } catch (NotificationController.NotificationDeleteException e) {
+            Log.e(TAG, "Exception occurred while deleting existing forms", e);
+            result[0] = DELETE_ERROR;
+            return result;
+        } catch (NotificationController.NotificationFetchException e) {
+            Log.e(TAG, "Exception occurred while fetching existing notifications", e);
+            result[0] = DOWNLOAD_ERROR;
+            return result;
+        } catch (NotificationController.NotificationSaveException e) {
+            Log.e(TAG, "Exception when trying to save notifications", e);
+            result[0] = SAVE_ERROR;
+            return result;
+        } catch (ParseException e) {
+            Log.e(TAG, "Exception when trying to download notifications", e);
+            result[0] = DOWNLOAD_ERROR;
+            return result;
+        }
+        return result;
+    }
+
+//    public int[] downloadEncountersForPatientsByPatientUUIDs(List<String> patientUuids) {
+//        int[] result = new int[2];
+//        try {
+//            long startDownloadEncounters = System.currentTimeMillis();
+//            List<Encounter> allEncounters = encounterController.downloadEncountersByPatientUuids(patientUuids);
+//            long endDownloadObservations = System.currentTimeMillis();
+//            Log.i(TAG, "Encounters download successful with " + allEncounters.size() + " encounters");
+//
+//            encounterController.replaceEncounters(allEncounters);
+//            long replacedEncounters = System.currentTimeMillis();
+//
+//            Log.d(TAG, "In Downloading encounters : " + (endDownloadObservations - startDownloadEncounters) / 1000 + " sec\n" +
+//                    "In Replacing encounters for patients: " + (replacedEncounters - endDownloadObservations) / 1000 + " sec");
+//
+//            result[0] = SUCCESS;
+//            result[1] = allEncounters.size();
+//        } catch (EncounterController.DownloadEncounterException e) {
+//            Log.e(TAG, "Exception thrown while downloading encounters.", e);
+//            result[0] = DOWNLOAD_ERROR;
+//        } catch (EncounterController.ReplaceEncounterException e) {
+//            Log.e(TAG, "Exception thrown while replacing encounters.", e);
+//            result[0] = REPLACE_ERROR;
+//        }
+//        return result;
+//    }
 }

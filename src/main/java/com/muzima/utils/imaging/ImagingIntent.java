@@ -28,7 +28,7 @@ import java.io.*;
 import java.nio.channels.FileChannel;
 
 public class ImagingIntent extends BaseActivity {
-	private final static String t = "CaptureImage";
+	private final static String t = "ImagingIntent";
     
     public static final int IMAGE_CAPTURE = 1;
     public static final int IMAGE_CHOOSER = 2;
@@ -113,7 +113,7 @@ public class ImagingIntent extends BaseActivity {
         		String imageUri = mInstanceFolder + "/" + mBinaryName;
                 if (mBinaryName != null) {
                     Intent i = new Intent();
-                    i.putExtra("IMAGESTRING", imageUri);
+                    i.putExtra("IMAGE_URI", imageUri);
                     setResult(RESULT_OK, i);
                 }
                 finish();

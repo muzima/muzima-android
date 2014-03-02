@@ -11,6 +11,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.model.User;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.NotificationController;
@@ -129,7 +130,11 @@ public class MainActivity extends BroadcastListenerActivity {
                 homeActivityMetadata.completeAndUnsyncedForms = formController.getAllCompleteFormsSize();
 
                 // Notifications
-                homeActivityMetadata.newNotifications =  notificationController.getAllNotificationsBySenderCount(credentials.getUserName(),null);
+                User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
+                if (authenticatedUser != null)
+                    homeActivityMetadata.newNotifications =  notificationController.getAllNotificationsBySenderCount(authenticatedUser.getUuid(),null);
+                else
+                    homeActivityMetadata.newNotifications =  notificationController.getAllNotificationsBySenderCount(null,null);
             } catch (CohortController.CohortFetchException e) {
                 Log.w(TAG, "CohortFetchException occurred while fetching metadata in MainActivityBackgroundTask");
             } catch (PatientController.PatientLoadException e) {

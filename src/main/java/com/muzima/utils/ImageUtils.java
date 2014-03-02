@@ -1,15 +1,19 @@
 package com.muzima.utils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-
+import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+
 public class ImageUtils {
-	private final static String t = "CaptureImage";
+	private final static String TAG = "ImageUtils";
 
 	public static boolean folderExists(String path) {
 		boolean made = true;
@@ -39,7 +43,7 @@ public class ImageUtils {
 		options.inSampleSize = scale;
 		Bitmap b = BitmapFactory.decodeFile(f.getAbsolutePath(), options);
 		if (b != null) {
-			Log.i(t,
+			Log.i(TAG,
 					"Screen is " + screenHeight + "x" + screenWidth
 							+ ".  Image has been scaled down by " + scale
 							+ " to " + b.getHeight() + "x" + b.getWidth());
@@ -78,5 +82,28 @@ public class ImageUtils {
 				decodedString.length);
 		return decodedByte;
 	}
+
+    public static void deleteImage(Context context, String imageUri) {
+        // get the file path and delete the file
+
+        String[] projection = {MediaStore.Images.ImageColumns._ID};
+
+        Cursor c = context.getContentResolver().query(
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
+                        "_data='" + imageUri + "'", null, null);
+        int del = 0;
+        if (c.getCount() > 0) {
+            c.moveToFirst();
+            String id = c.getString(c.getColumnIndex(MediaStore.Images.ImageColumns._ID));
+
+            Log.i(TAG,"attempting to delete: " + Uri.withAppendedPath(
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id));
+            del = context.getContentResolver().delete(Uri.withAppendedPath(
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id), null, null);
+        }
+        c.close();
+
+        Log.i(TAG, "Deleted " + del + " rows from media content provider");
+    }
 
 }

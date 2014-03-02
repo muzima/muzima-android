@@ -49,6 +49,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     public static final String FORM_INSTANCE = "formInstance";
     public static final String REPOSITORY = "formDataRepositoryContext";
     public static final String BARCODE = "barCodeComponent";
+    public static final String IMAGE = "imagingComponent";
     public static final String ZIGGY_FILE_LOADER = "ziggyFileLoader";
     public static final String FORM = "form";
     public static final String DISCRIMINATOR = "discriminator";
@@ -61,7 +62,9 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     private FormData formData;
     private Patient patient;
     private BarCodeComponent barCodeComponent;
+    private ImagingComponent imagingComponent;
     private Map<String, String> scanResultMap;
+    private Map<String, String> imageResultMap;
     private FormController formController;
 
     @Override
@@ -73,6 +76,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         scanResultMap = new HashMap<String, String>();
+        imageResultMap = new HashMap<String, String>();
         setContentView(R.layout.activity_form_webview);
         progressDialog = new MuzimaProgressDialog(this);
         showProgressBar("Loading...");
@@ -117,6 +121,10 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         String jsonMap = new JSONObject(scanResultMap).toString();
         Log.e(TAG, jsonMap);
         webView.loadUrl("javascript:document.populateBarCode(" + jsonMap + ")");
+
+        jsonMap = new JSONObject(imageResultMap).toString();
+        Log.e(TAG, jsonMap);
+        webView.loadUrl("javascript:document.populateImage(" + jsonMap + ")");
         super.onResume();
     }
 
@@ -157,6 +165,11 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanResult != null) {
             scanResultMap.put(barCodeComponent.getFieldName(), scanResult.getContents());
+        }
+
+        String imageResult = ImagingComponent.parseActivityResult(requestCode, resultCode, intent);
+        if (imageResult != null)  {
+            imageResultMap.put(imagingComponent.getFieldName(), imageResult);
         }
     }
 
@@ -238,7 +251,9 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
         webView.addJavascriptInterface(new FormDataStore(this, formController, formData), REPOSITORY);
         barCodeComponent = new BarCodeComponent(this);
+        imagingComponent = new ImagingComponent(this);
         webView.addJavascriptInterface(barCodeComponent, BARCODE);
+        webView.addJavascriptInterface(imagingComponent, IMAGE);
         webView.addJavascriptInterface(new ZiggyFileLoader("www/ziggy", getApplicationContext().getAssets(), formInstance.getModelJson()), ZIGGY_FILE_LOADER);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         if (isFormComplete()) {

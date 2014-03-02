@@ -1,9 +1,11 @@
 package com.muzima.controller;
 
-import com.muzima.api.model.*;
+import com.muzima.api.model.Form;
+import com.muzima.api.model.FormData;
+import com.muzima.api.model.Notification;
+import com.muzima.api.model.Tag;
 import com.muzima.api.service.FormService;
 import com.muzima.api.service.NotificationService;
-import com.muzima.api.service.PatientService;
 import com.muzima.search.api.util.StringUtil;
 import org.apache.lucene.queryParser.ParseException;
 
@@ -17,12 +19,10 @@ import static com.muzima.utils.Constants.STATUS_UPLOADED;
 public class NotificationController {
     private NotificationService notificationService;
     private FormService formService;
-    private PatientService patientService;
 
-    public NotificationController(NotificationService notificationService, FormService formService, PatientService patientService) {
+    public NotificationController(NotificationService notificationService, FormService formService) {
         this.notificationService = notificationService;
         this.formService = formService;
-        this.patientService = patientService;
     }
 
     public Notification getNotificationByUuid(String uuid) throws NotificationFetchException, ParseException {
@@ -47,8 +47,6 @@ public class NotificationController {
     }
 
     public List<Notification> getNotificationsForPatient(String patientUuid, String senderUuid, String status) throws NotificationFetchException {
-        System.out.println(senderUuid +  " before hardcoding");
-        senderUuid = "suruwere";
         try {
             List<Notification> patientNotifications = new ArrayList<Notification>();
             List<FormData> allFormData = formService.getFormDataByPatient(patientUuid, STATUS_UPLOADED);
@@ -78,34 +76,6 @@ public class NotificationController {
                 }
             }
 
-            if (patientNotifications.size() < 1 )  {
-                Patient patient = patientService.getPatientByUuid(patientUuid);
-                if (patient != null)  {
-                    if (StringUtil.equals(patient.getFamilyName(),"Patient"))  {
-                        List<Notification> testPatientNotifications = new ArrayList<Notification>();
-                        testPatientNotifications = getTestInboxNotifications();
-                        for (Notification notification : testPatientNotifications) {
-                            //if senderUuid is null and status is null the we add the notification to list
-                            if (StringUtil.isEmpty(senderUuid) && StringUtil.isEmpty(status)) {
-                                // no filtering return all notifications for patient
-                                patientNotifications.add(notification);
-                            } else if (StringUtil.isEmpty(status))  {
-                                // status not passed filter by senderUuid only
-                                if (StringUtil.equals(notification.getSender().getUuid(), senderUuid))
-                                    patientNotifications.add(notification);
-                            } else if (StringUtil.isEmpty(senderUuid)){
-                                // senderUuid not passed filter by status only
-                                if (StringUtil.equals(notification.getStatus(),status))
-                                    patientNotifications.add(notification);
-                            } else {
-                                // filter by both senderUuid
-                                if (StringUtil.equals(notification.getSender().getUuid(), senderUuid) && StringUtil.equals(notification.getStatus(),status) )
-                                    patientNotifications.add(notification);
-                            }
-                        }
-                    }
-                }
-            }
             return patientNotifications;
         } catch (IOException e) {
             throw new NotificationFetchException(e);
@@ -145,9 +115,18 @@ public class NotificationController {
             throw new NotificationSaveException(e);
         }
     }
+
    public void deleteNotifications(Notification notification) throws NotificationDeleteException {
         try {
             notificationService.deleteNotification(notification);
+        } catch (IOException e) {
+            throw new NotificationDeleteException(e);
+        }
+    }
+
+    public void deleteAllNotifications(String senderUuid) throws NotificationDeleteException, NotificationFetchException, ParseException {
+        try {
+            notificationService.deleteNotifications(getAllNotificationsBySender(senderUuid, null));
         } catch (IOException e) {
             throw new NotificationDeleteException(e);
         }
@@ -192,25 +171,5 @@ public class NotificationController {
         public NotificationDeleteException(Throwable throwable) {
             super(throwable);
         }
-    }
-
-    private List<Notification> getTestInboxNotifications() {
-        List<Notification> notifications = new ArrayList<Notification>();
-        Person sender = new Person();
-        sender.setUuid("suruwere");
-
-        for (int i=0; i<=3; i++) {
-            Notification nt = new Notification();
-            nt.setSubject("InboxMsg-" + i);
-            nt.setPayload("Inbox Payload Message-" + i);
-            nt.setUuid("Inbox UUID-" + i);
-            nt.setSender(sender);
-            if (i == 0 || i == 2)
-                nt.setStatus("read");
-            else
-                nt.setStatus("unread");
-            notifications.add(nt);
-        }
-        return notifications;
     }
 }

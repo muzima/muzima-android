@@ -26,7 +26,6 @@ public class PatientNotificationActivity extends NotificationActivityBase {
 
     @Override
     protected MuzimaPagerAdapter createNotificationsPagerAdapter() {
-        System.out.println("inside PatientNotificationActivity and patient =" + patient);
         return new NotificationPagerAdapter(getApplicationContext(), getSupportFragmentManager(), patient);
     }
 }
