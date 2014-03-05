@@ -89,7 +89,7 @@ public class PatientNotificationsAdapter extends NotificationsAdapter {
             List<Notification> allNotifications = null;
             try {
                 Log.i(TAG, "Fetching inbox notifications from Database...");
-                User authenticatedUser = ((MuzimaApplication) getContext()).getAuthenticatedUser();
+                User authenticatedUser = ((MuzimaApplication) getContext().getApplicationContext()).getAuthenticatedUser();
                 if (authenticatedUser != null)
                     allNotifications = notificationController.getNotificationsForPatient(patient.getUuid(), authenticatedUser.getUuid(), null);
                 Log.d(TAG, "#Retrieved " + allNotifications.size() + " inbox notifications from Database.");
@@ -108,7 +108,7 @@ public class PatientNotificationsAdapter extends NotificationsAdapter {
         protected List<Notification> doInBackground(Void... voids) {
             List<Notification> allNotifications = null;
             try {
-                User authenticatedUser = ((MuzimaApplication) getContext()).getAuthenticatedUser();
+                User authenticatedUser = ((MuzimaApplication) getContext().getApplicationContext()).getAuthenticatedUser();
                 if (authenticatedUser != null)
                 allNotifications = notificationController.getNotificationsForPatient(patient.getUuid(),authenticatedUser.getUuid(), null);
                 Log.i(TAG, "#Inbox: " + allNotifications.size());

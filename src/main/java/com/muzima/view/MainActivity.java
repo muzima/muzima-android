@@ -132,9 +132,9 @@ public class MainActivity extends BroadcastListenerActivity {
                 // Notifications
                 User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
                 if (authenticatedUser != null)
-                    homeActivityMetadata.newNotifications =  notificationController.getAllNotificationsBySenderCount(authenticatedUser.getUuid(),null);
+                    homeActivityMetadata.newNotifications =  notificationController.getAllNotificationsByReceiverCount(authenticatedUser.getUuid(),null);
                 else
-                    homeActivityMetadata.newNotifications =  notificationController.getAllNotificationsBySenderCount(null,null);
+                    homeActivityMetadata.newNotifications =  notificationController.getAllNotificationsByReceiverCount(null,null);
             } catch (CohortController.CohortFetchException e) {
                 Log.w(TAG, "CohortFetchException occurred while fetching metadata in MainActivityBackgroundTask");
             } catch (PatientController.PatientLoadException e) {

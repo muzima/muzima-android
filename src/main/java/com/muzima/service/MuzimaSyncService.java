@@ -493,7 +493,7 @@ public class MuzimaSyncService {
 
         try {
             List<Notification> notifications;
-            notifications = notificationController.downloadNotificationBySender(senderUuid);
+            notifications = notificationController.downloadNotificationByReceiver(senderUuid);
             Log.i(TAG, "Notifications download successful");
             notificationController.deleteAllNotifications(senderUuid);
             Log.i(TAG, "Old notifications are deleted");

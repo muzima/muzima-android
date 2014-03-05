@@ -33,20 +33,20 @@ public class NotificationController {
         }
     }
 
-    public List<Notification> getAllNotificationsBySender(String senderUuid, String status) throws NotificationFetchException, ParseException {
+    public List<Notification> getAllNotificationsByReceiver(String receiverUuid, String status) throws NotificationFetchException, ParseException {
         try {
-            return notificationService.getNotificationBySender(senderUuid, status);
+            return notificationService.getNotificationByReceiver(receiverUuid, status);
         } catch (IOException e) {
             throw new NotificationFetchException(e);
         }
     }
 
-    public int getAllNotificationsBySenderCount(String senderUuid, String status) throws NotificationFetchException, ParseException {
-        List<Notification> notifications =  getAllNotificationsBySender(senderUuid, status);
+    public int getAllNotificationsByReceiverCount(String receiverUuid, String status) throws NotificationFetchException, ParseException {
+        List<Notification> notifications =  getAllNotificationsByReceiver(receiverUuid, status);
         return   notifications == null ? 0 : notifications.size();
     }
 
-    public List<Notification> getNotificationsForPatient(String patientUuid, String senderUuid, String status) throws NotificationFetchException {
+    public List<Notification> getNotificationsForPatient(String patientUuid, String receiverUuid, String status) throws NotificationFetchException {
         try {
             List<Notification> patientNotifications = new ArrayList<Notification>();
             List<FormData> allFormData = formService.getFormDataByPatient(patientUuid, STATUS_UPLOADED);
@@ -56,21 +56,21 @@ public class NotificationController {
                 form = formService.getFormByUuid(formData.getTemplateUuid());
                 if (isConsultationForm(form) && notification != null) {
 
-                    //if senderUuid is null and status is null the we add the notification to list
-                    if (StringUtil.isEmpty(senderUuid) && StringUtil.isEmpty(status)) {
+                    //if receiverUuid is null and status is null the we add the notification to list
+                    if (StringUtil.isEmpty(receiverUuid) && StringUtil.isEmpty(status)) {
                         // no filtering return all notifications for patient
                         patientNotifications.add(notification);
                     } else if (StringUtil.isEmpty(status))  {
-                        // status not passed filter by senderUuid only
-                        if (StringUtil.equals(notification.getSender().getUuid(), senderUuid))
+                        // status not passed filter by receiverUuid only
+                        if (StringUtil.equals(notification.getReceiver().getUuid(), receiverUuid))
                             patientNotifications.add(notification);
-                    } else if (StringUtil.isEmpty(senderUuid)){
-                        // senderUuid not passed filter by status only
+                    } else if (StringUtil.isEmpty(receiverUuid)){
+                        // receiverUuid not passed filter by status only
                         if (StringUtil.equals(notification.getStatus(),status))
                             patientNotifications.add(notification);
                     } else {
-                         // filter by both senderUuid
-                        if (StringUtil.equals(notification.getSender().getUuid(), senderUuid) && StringUtil.equals(notification.getStatus(),status) )
+                         // filter by both receiverUuid
+                        if (StringUtil.equals(notification.getReceiver().getUuid(), receiverUuid) && StringUtil.equals(notification.getStatus(),status) )
                             patientNotifications.add(notification);
                     }
                 }
@@ -82,19 +82,19 @@ public class NotificationController {
         }
     }
 
-    public int getNotificationsCountForPatient(String patientUuid, String senderUuid, String status) throws NotificationFetchException {
-        List<Notification> notifications =  getNotificationsForPatient(patientUuid, senderUuid, status);
+    public int getNotificationsCountForPatient(String patientUuid, String receiverUuid, String status) throws NotificationFetchException {
+        List<Notification> notifications =  getNotificationsForPatient(patientUuid, receiverUuid, status);
         return   notifications == null ? 0 : notifications.size();
     }
 
-    public boolean patientHasNotifications(String patientUuid, String senderUuid, String status) throws NotificationFetchException {
-        List<Notification> notifications =  getNotificationsForPatient(patientUuid, senderUuid, status);
+    public boolean patientHasNotifications(String patientUuid, String receiverUuid, String status) throws NotificationFetchException {
+        List<Notification> notifications =  getNotificationsForPatient(patientUuid, receiverUuid, status);
         return (notifications != null && notifications.size() > 0);
     }
 
-    public List<Notification> downloadNotificationBySender(String senderUuid) throws NotificationDownloadException, ParseException {
+    public List<Notification> downloadNotificationByReceiver(String receiverUuid) throws NotificationDownloadException, ParseException {
         try {
-            return notificationService.downloadNotificationBySender(senderUuid);
+            return notificationService.downloadNotificationByReceiver(receiverUuid);
         } catch (IOException e) {
             throw new NotificationDownloadException(e);
         }
@@ -124,9 +124,9 @@ public class NotificationController {
         }
     }
 
-    public void deleteAllNotifications(String senderUuid) throws NotificationDeleteException, NotificationFetchException, ParseException {
+    public void deleteAllNotifications(String receiverUuid) throws NotificationDeleteException, NotificationFetchException, ParseException {
         try {
-            notificationService.deleteNotifications(getAllNotificationsBySender(senderUuid, null));
+            notificationService.deleteNotifications(getAllNotificationsByReceiver(receiverUuid, null));
         } catch (IOException e) {
             throw new NotificationDeleteException(e);
         }
