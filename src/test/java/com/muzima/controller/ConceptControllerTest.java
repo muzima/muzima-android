@@ -3,6 +3,7 @@ package com.muzima.controller;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.ConceptName;
 import com.muzima.api.service.ConceptService;
+import com.muzima.api.service.ObservationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -22,12 +23,15 @@ public class ConceptControllerTest {
     @Mock
     private ConceptService service;
 
+    @Mock
+    private ObservationService observationService;
+
     private ConceptController controller;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        controller = new ConceptController(service);
+        controller = new ConceptController(service,observationService);
     }
 
     @Test
