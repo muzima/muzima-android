@@ -13,6 +13,7 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.Person;
 import com.muzima.api.model.User;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.Fonts;
@@ -231,10 +232,17 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         onNotificationDownloadStart();
         showProgressBar();
         User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
-        if (authenticatedUser != null)
-            new SyncNotificationsIntent(this, authenticatedUser.getUuid()).start();
-        else
-            new SyncNotificationsIntent(this, null).start();
+        if (authenticatedUser != null)   {
+            Person user = authenticatedUser.getPerson();
+            System.out.println("gender " + user.getGender());
+            System.out.println("birthdate"+ user.getBirthdate());
+            System.out.println("names"+ user.getNames());
+
+            String receiverUuid = authenticatedUser.getPerson().getUuid();
+            System.out.println("Receiver UUID" + receiverUuid);
+            new SyncNotificationsIntent(this, authenticatedUser.getPerson().getUuid()).start();
+        } else
+            Toast.makeText(this, "Error downloading notifications", Toast.LENGTH_SHORT).show();
     }
 
     public void onNotificationDownloadFinish() {

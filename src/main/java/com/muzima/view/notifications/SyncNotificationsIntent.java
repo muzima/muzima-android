@@ -5,12 +5,12 @@ import com.muzima.view.SyncIntent;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_NOTIFICATIONS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
-import static com.muzima.utils.Constants.NotificationStatusConstants.SENDER_UUID;
+import static com.muzima.utils.Constants.NotificationStatusConstants.RECEIVER_UUID;
 
 public class SyncNotificationsIntent extends SyncIntent {
-    public SyncNotificationsIntent(Activity activity, String senderUuid) {
+    public SyncNotificationsIntent(Activity activity, String receiverUuid) {
         super(activity);
         putExtra(SYNC_TYPE, SYNC_NOTIFICATIONS);
-        putExtra(SENDER_UUID, senderUuid);
+        putExtra(RECEIVER_UUID, receiverUuid);
     }
 }

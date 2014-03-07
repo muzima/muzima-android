@@ -55,7 +55,8 @@
         <Button
                 android:id="@+id/viewNotification"
                 android:text="View Form"
-                style="@style/LoginButton"/>
+                style="@style/LoginButton"
+                android:onClick="formView"/>
     </FrameLayout>
 
 

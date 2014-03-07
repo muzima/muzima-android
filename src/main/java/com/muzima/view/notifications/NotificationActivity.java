@@ -3,6 +3,7 @@ package com.muzima.view.notifications;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -26,7 +27,7 @@ public class NotificationActivity extends BaseActivity {
         notification= (Notification) intent.getSerializableExtra(NOTIFICATION);
         if (notification != null) {
             displayNotification();
-            markAsRead();
+            //markAsRead();
         }
 	}
 
@@ -54,5 +55,12 @@ public class NotificationActivity extends BaseActivity {
         } catch (NotificationController.NotificationSaveException e) {
             Log.e(TAG, "Error updating notification " + e.getMessage());
         }
+    }
+
+    /**
+     * Called when the user clicks the Forms area
+     */
+    public void formView(View view) {
+        System.out.println("Clicking works");
     }
 }

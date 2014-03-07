@@ -65,6 +65,6 @@ public class Constants {
     public static class NotificationStatusConstants {
         public static final String NOTIFICATION_READ = "read";
         public static final String NOTIFICATION_UNREAD = "unread";
-        public static final String SENDER_UUID = "senderUuid";
+        public static final String RECEIVER_UUID = "receiverUuid";
     }
 }

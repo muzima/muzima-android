@@ -168,7 +168,7 @@ public class PatientSummaryActivity extends BaseActivity {
                 User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
                 if (authenticatedUser != null)
                     patientSummaryActivityMetadata.notifications =
-                        notificationController.getNotificationsCountForPatient(patient.getUuid(), authenticatedUser.getUuid(),
+                        notificationController.getNotificationsCountForPatient(patient.getUuid(), authenticatedUser.getPerson().getUuid(),
                                 Constants.NotificationStatusConstants.NOTIFICATION_UNREAD);
                 else
                     patientSummaryActivityMetadata.notifications = 0;

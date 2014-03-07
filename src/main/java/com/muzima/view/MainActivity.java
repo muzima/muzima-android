@@ -132,7 +132,7 @@ public class MainActivity extends BroadcastListenerActivity {
                 // Notifications
                 User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
                 if (authenticatedUser != null)
-                    homeActivityMetadata.newNotifications =  notificationController.getAllNotificationsByReceiverCount(authenticatedUser.getUuid(),null);
+                    homeActivityMetadata.newNotifications =  notificationController.getAllNotificationsByReceiverCount(authenticatedUser.getPerson().getUuid(),null);
                 else
                     homeActivityMetadata.newNotifications =  notificationController.getAllNotificationsByReceiverCount(null,null);
             } catch (CohortController.CohortFetchException e) {

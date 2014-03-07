@@ -91,7 +91,7 @@ public class PatientNotificationsAdapter extends NotificationsAdapter {
                 Log.i(TAG, "Fetching inbox notifications from Database...");
                 User authenticatedUser = ((MuzimaApplication) getContext().getApplicationContext()).getAuthenticatedUser();
                 if (authenticatedUser != null)
-                    allNotifications = notificationController.getNotificationsForPatient(patient.getUuid(), authenticatedUser.getUuid(), null);
+                    allNotifications = notificationController.getNotificationsForPatient(patient.getUuid(), authenticatedUser.getPerson().getUuid(), null);
                 Log.d(TAG, "#Retrieved " + allNotifications.size() + " inbox notifications from Database.");
             } catch (NotificationController.NotificationFetchException e) {
                 Log.w(TAG, "Exception occurred while fetching the inbox notifications" + e);
@@ -110,7 +110,7 @@ public class PatientNotificationsAdapter extends NotificationsAdapter {
             try {
                 User authenticatedUser = ((MuzimaApplication) getContext().getApplicationContext()).getAuthenticatedUser();
                 if (authenticatedUser != null)
-                allNotifications = notificationController.getNotificationsForPatient(patient.getUuid(),authenticatedUser.getUuid(), null);
+                allNotifications = notificationController.getNotificationsForPatient(patient.getUuid(),authenticatedUser.getPerson().getUuid(), null);
                 Log.i(TAG, "#Inbox: " + allNotifications.size());
             } catch (NotificationController.NotificationFetchException e) {
                 Log.w(TAG, "Exception occurred while fetching the inbox notifications" + e);

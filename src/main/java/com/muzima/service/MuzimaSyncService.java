@@ -488,14 +488,14 @@ public class MuzimaSyncService {
     }
 
 
-    public int[] downloadNotifications(String senderUuid) {
+    public int[] downloadNotifications(String receiverUuid) {
         int[] result = new int[2];
 
         try {
             List<Notification> notifications;
-            notifications = notificationController.downloadNotificationByReceiver(senderUuid);
+            notifications = notificationController.downloadNotificationByReceiver(receiverUuid);
             Log.i(TAG, "Notifications download successful");
-            notificationController.deleteAllNotifications(senderUuid);
+            notificationController.deleteAllNotifications(receiverUuid);
             Log.i(TAG, "Old notifications are deleted");
             notificationController.saveNotifications(notifications);
             Log.i(TAG, "New notifications are saved");

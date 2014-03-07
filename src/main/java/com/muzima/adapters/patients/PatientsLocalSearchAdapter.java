@@ -116,7 +116,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
                 User authenticatedUser = ((MuzimaApplication) context.getApplicationContext()).getAuthenticatedUser();
                 if (authenticatedUser != null) {
                     for (Patient patient : patientList)  {
-                        if (notificationController.patientHasNotifications(patient.getUuid(), authenticatedUser.getUuid(),
+                        if (notificationController.patientHasNotifications(patient.getUuid(), authenticatedUser.getPerson().getUuid(),
                                 Constants.NotificationStatusConstants.NOTIFICATION_UNREAD))
                             notificationPatients.add(patient) ;
                     }
