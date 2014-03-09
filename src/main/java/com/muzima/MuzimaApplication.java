@@ -8,12 +8,10 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
-import com.muzima.api.model.User;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
-import com.muzima.api.service.NotificationService;
+import com.muzima.api.service.ObservationService;
 import com.muzima.controller.*;
-import com.muzima.domain.Credentials;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.MuzimaSyncService;
@@ -113,7 +111,7 @@ public class MuzimaApplication extends Application {
     public ConceptController getConceptController() {
         if (conceptController == null) {
             try {
-                conceptController = new ConceptController(muzimaContext.getService(ConceptService.class));
+                conceptController = new ConceptController(muzimaContext.getService(ConceptService.class), muzimaContext.getService(ObservationService.class));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
