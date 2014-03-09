@@ -126,7 +126,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         }
 
         if (imageResultMap != null && !imageResultMap.isEmpty()) {
-            System.out.println(TAG + "---------------" + imageResultMap);
             String jsonMap = new JSONObject(imageResultMap).toString();
             Log.d(TAG, jsonMap);
             webView.loadUrl("javascript:document.populateImage(" + jsonMap + ")");

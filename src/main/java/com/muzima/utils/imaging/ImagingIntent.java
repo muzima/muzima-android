@@ -184,8 +184,7 @@ public class ImagingIntent extends BaseActivity {
                             Toast.makeText(getApplicationContext(),"activity_not_found view image",
                                 Toast.LENGTH_SHORT).show();
                         }
-                    }else
-                    	System.out.println("c.getcount = 0");
+                    }
                     c.close();
                 }
             });

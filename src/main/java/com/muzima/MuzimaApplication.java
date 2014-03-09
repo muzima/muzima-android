@@ -44,7 +44,7 @@ public class MuzimaApplication extends Application {
     private Activity currentActivity;
     private FormController formController;
     private CohortController cohortController;
-    private PatientController patientConroller;
+    private PatientController patientController;
     private ConceptController conceptController;
     private ObservationController observationController;
     private EncounterController encounterController;
@@ -121,7 +121,6 @@ public class MuzimaApplication extends Application {
                 Credentials cred   = new Credentials(getApplicationContext()) ;
                 if (cred != null) {
                     String[] credentials = cred.getCredentialsArray();
-
                     String username = credentials[0];
                     String password = credentials[1];
                     String server = credentials[2];
@@ -178,14 +177,14 @@ public class MuzimaApplication extends Application {
     }
 
     public PatientController getPatientController() {
-        if (patientConroller == null) {
+        if (patientController == null) {
             try {
-                patientConroller = new PatientController(muzimaContext.getPatientService(), muzimaContext.getCohortService());
+                patientController = new PatientController(muzimaContext.getPatientService(), muzimaContext.getCohortService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-        return patientConroller;
+        return patientController;
     }
 
     public ObservationController getObservationController() {
