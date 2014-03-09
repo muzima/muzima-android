@@ -16,15 +16,19 @@
 package com.muzima.controller;
 
 import com.muzima.api.model.Concept;
+import com.muzima.api.model.Observation;
 import com.muzima.api.service.ConceptService;
+import com.muzima.api.service.ObservationService;
 
 import java.io.IOException;
 import java.util.*;
 
 public class ConceptController {
     private ConceptService conceptService;
+    private ObservationService observationService;
 
-    public ConceptController(ConceptService conceptService) {
+    public ConceptController(ConceptService conceptService, ObservationService observationService) {
+        this.observationService = observationService;
         this.conceptService = conceptService;
     }
 
@@ -39,6 +43,8 @@ public class ConceptController {
     public void deleteConcept(Concept concept) throws ConceptDeleteException {
         try {
             conceptService.deleteConcept(concept);
+            List<Observation> observations = observationService.getObservations(concept);
+            observationService.deleteObservations(observations);
         } catch (IOException e) {
             throw new ConceptDeleteException(e);
         }

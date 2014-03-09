@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.muzima.util.Constants.CONCEPT_CREATED_ON_PHONE;
+import static com.muzima.util.Constants.OBSERVATION_CREATED_ON_PHONE;
 import static java.util.Arrays.asList;
 
 public class ObservationParserUtility {
@@ -151,7 +152,7 @@ public class ObservationParserUtility {
     }
 
     public String getObservationUuid() {
-        return "observationFromPhoneUuid" + UUID.randomUUID();
+        return OBSERVATION_CREATED_ON_PHONE + UUID.randomUUID();
     }
 }
 

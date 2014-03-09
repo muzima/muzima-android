@@ -172,6 +172,14 @@ public class ObservationController {
         }
     }
 
+    public void deleteObservationsCreatedOnDevice() throws DeleteObservationException {
+        try {
+            observationService.deleteObservationsCreatedOnDevice();
+        } catch (IOException e) {
+            throw new DeleteObservationException(e);
+        }
+    }
+
     private ArrayList<String> getAllUuids(List<String> knownUuids, List<String> newUuids) {
         HashSet<String> allUuids = new HashSet<String>(knownUuids);
         allUuids.addAll(newUuids);

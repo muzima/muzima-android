@@ -44,11 +44,10 @@ public class MuzimaApplication extends Application {
     private Activity currentActivity;
     private FormController formController;
     private CohortController cohortController;
-    private PatientController patientController;
+    private PatientController patientConroller;
     private ConceptController conceptController;
     private ObservationController observationController;
     private EncounterController encounterController;
-    private NotificationController notificationController;
     private MuzimaSyncService muzimaSyncService;
     private CohortPrefixPreferenceService prefixesPreferenceService;
     private MuzimaTimer muzimaTimer;
@@ -111,31 +110,6 @@ public class MuzimaApplication extends Application {
         return muzimaContext;
     }
 
-    public User getAuthenticatedUser() {
-        User authenticatedUser = null;
-        muzimaContext.openSession();
-        try {
-            if (muzimaContext.isAuthenticated())
-                authenticatedUser = muzimaContext.getAuthenticatedUser();
-            else    {
-                Credentials cred   = new Credentials(getApplicationContext()) ;
-                if (cred != null) {
-                    String[] credentials = cred.getCredentialsArray();
-                    String username = credentials[0];
-                    String password = credentials[1];
-                    String server = credentials[2];
-                    muzimaContext.authenticate(username, password, server);
-                    authenticatedUser = muzimaContext.getAuthenticatedUser();
-                }
-            }
-            muzimaContext.closeSession();
-        } catch (Exception e) {
-            muzimaContext.closeSession();
-            throw new RuntimeException(e);
-        }
-        return authenticatedUser;
-    }
-
     public ConceptController getConceptController() {
         if (conceptController == null) {
             try {
@@ -177,14 +151,14 @@ public class MuzimaApplication extends Application {
     }
 
     public PatientController getPatientController() {
-        if (patientController == null) {
+        if (patientConroller == null) {
             try {
-                patientController = new PatientController(muzimaContext.getPatientService(), muzimaContext.getCohortService());
+                patientConroller = new PatientController(muzimaContext.getPatientService(), muzimaContext.getCohortService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-        return patientController;
+        return patientConroller;
     }
 
     public ObservationController getObservationController() {
@@ -212,17 +186,6 @@ public class MuzimaApplication extends Application {
             }
         }
         return encounterController;
-    }
-
-    public NotificationController getNotificationController() {
-        if (notificationController == null) {
-            try {
-                notificationController = new NotificationController(muzimaContext.getService(NotificationService.class), muzimaContext.getFormService());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return notificationController;
     }
 
     public MuzimaSyncService getMuzimaSyncService() {

@@ -143,7 +143,7 @@ public class MuzimaSyncService {
         int[] result = new int[3];
         try {
             List<Cohort> cohorts = downloadCohortsList();
-            ArrayList<Cohort> voidedCohorts = deleteVoidedCohorts(cohorts);
+            List<Cohort> voidedCohorts = deleteVoidedCohorts(cohorts);
             cohorts.removeAll(voidedCohorts);
 
             cohortController.saveAllCohorts(cohorts);
@@ -167,9 +167,9 @@ public class MuzimaSyncService {
         return result;
     }
 
-    private ArrayList<Cohort> deleteVoidedCohorts(List<Cohort> cohorts) throws CohortController.CohortDeleteException {
+    private List<Cohort> deleteVoidedCohorts(List<Cohort> cohorts) throws CohortController.CohortDeleteException {
         Log.i(TAG, "Voided cohorts are deleted");
-        ArrayList<Cohort> voidedCohorts = new ArrayList<Cohort>();
+        List<Cohort> voidedCohorts = new ArrayList<Cohort>();
         for( Cohort cohort : cohorts){
             if(cohort.isVoided()){
                 voidedCohorts.add(cohort);
@@ -288,8 +288,9 @@ public class MuzimaSyncService {
         int[] result = new int[3];
         try {
             long startDownloadObservations = System.currentTimeMillis();
+            List<String> conceptUuidsFromConcepts = getConceptUuidsFromConcepts(conceptController.getConcepts());
             List<Observation> allObservations = observationController.downloadObservationsByPatientUuidsAndConceptUuids
-                    (patientUuids, getConceptUuidsFromConcepts(conceptController.getConcepts()));
+                    (patientUuids, conceptUuidsFromConcepts);
             long endDownloadObservations = System.currentTimeMillis();
             Log.i(TAG, "Observations download successful with " + allObservations.size() + " observations");
             List<Observation> voidedObservations = getVoidedObservations(allObservations);
@@ -393,9 +394,13 @@ public class MuzimaSyncService {
         int[] result = new int[1];
         try {
             result[0] = formController.uploadAllCompletedForms() ? SUCCESS : UPLOAD_ERROR;
+            observationController.deleteObservationsCreatedOnDevice();
         } catch (FormController.UploadFormDataException e) {
             Log.e(TAG, "Exception thrown while uploading forms.", e);
             result[0] = UPLOAD_ERROR;
+        } catch (ObservationController.DeleteObservationException e) {
+            Log.e(TAG, "Exception thrown while uploading forms.", e);
+            result[0] = SUCCESS;
         }
         return result;
     }
