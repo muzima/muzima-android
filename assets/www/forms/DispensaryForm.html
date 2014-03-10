@@ -120,25 +120,25 @@
         <label for="systolic_blood_pressure_phct">Systolic Blood Pressure from pHCT Screening card:</label>
         <input class="form-control systolicBloodPressure" id="systolic_blood_pressure_phct"
                name="systolic_blood_pressure_phct"
-               type="text" data-concept="5085^SYSTOLIC BLOOD PRESSURE^99DCT">
+               type="number" data-concept="5085^SYSTOLIC BLOOD PRESSURE^99DCT">
     </div>
     <div class="form-group">
         <label for="diastolic_blood_pressure_phct">Diastolic Blood Pressure from pHCT Screening card:</label>
         <input class="form-control lessThankSystolic" id="diastolic_blood_pressure_phct"
                name="diastolic_blood_pressure_phct"
-               type="text" data-concept="5086^DIASTOLIC BLOOD PRESSURE^99DCT">
+               type="number" data-concept="5086^DIASTOLIC BLOOD PRESSURE^99DCT">
     </div>
     <div class="form-group">
         <label for="serum_glucose_fasting_phct">Fasting Blood Sugar (FBS) from pHCT Screening card:</label>
         <input class="form-control glucose" id="serum_glucose_fasting_phct" name="serum_glucose_fasting_phct"
                placeholder="Blood glucose is measured on a fasting basis (collected after an 8 to 10 hour fast)"
-               type="text"
+               type="number"
                data-concept="6252^SERUM GLUCOSE, FASTING^99DCT">
     </div>
     <div class="form-group">
         <label for="serum_glucose_phct">Random Blood Sugar (RBS) from pHCT Screening card:</label>
         <input class="form-control glucose" id="serum_glucose_phct" name="serum_glucose_phct"
-               placeholder="Laboratory measurement of the glucose level in the blood" type="text"
+               placeholder="Laboratory measurement of the glucose level in the blood" type="number"
                data-concept="887^SERUM GLUCOSE^99DCT">
     </div>
 
@@ -175,7 +175,7 @@
         <label for="metformin_number_of_milligram">Metformin dose in Milligrams (mg):<span
                 class="required">*</span></label>
         <input class="form-control isDecimal" id="metformin_number_of_milligram" required="required"
-               name="metformin_number_of_milligram" type="text"
+               name="metformin_number_of_milligram" type="number"
                data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
@@ -231,7 +231,7 @@
         <label for="glibenclamide_number_of_milligram">Glibenclamide dose in Milligrams (mg):<span
                 class="required">*</span></label>
         <input class="form-control isDecimal" id="glibenclamide_number_of_milligram"
-               name="glibenclamide_number_of_milligram" type="text" required="required"
+               name="glibenclamide_number_of_milligram" type="number" required="required"
                data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
@@ -287,7 +287,7 @@
         <label for="enalapril_number_of_milligram">Enalapril dose in Milligrams (mg):<span
                 class="required">*</span></label>
         <input class="form-control isDecimal" id="enalapril_number_of_milligram"
-               name="enalapril_number_of_milligram" type="text" required="required"
+               name="enalapril_number_of_milligram" type="number" required="required"
                data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
@@ -342,7 +342,7 @@
     <div class="form-group">
         <label for="hctz_number_of_milligram">HCTZ dose in Milligrams (mg):<span class="required">*</span></label>
         <input class="form-control isDecimal" id="hctz_number_of_milligram"
-               name="hctz_number_of_milligram" type="text" required="required"
+               name="hctz_number_of_milligram" type="number" required="required"
                data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
@@ -398,7 +398,7 @@
         <label for="losartan_number_of_milligram">Losartan dose in Milligrams (mg):<span
                 class="required">*</span></label>
         <input class="form-control isDecimal" id="losartan_number_of_milligram"
-               name="losartan_number_of_milligram" type="text" required="required"
+               name="losartan_number_of_milligram" type="number" required="required"
                data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
@@ -455,7 +455,7 @@
         <label for="nifedipine_number_of_milligram">Nifedipine dose in Milligrams (mg):<span
                 class="required">*</span></label>
         <input class="form-control isDecimal" id="nifedipine_number_of_milligram"
-               name="nifedipine_number_of_milligram" type="text" required="required"
+               name="nifedipine_number_of_milligram" type="number" required="required"
                data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
@@ -516,7 +516,7 @@
     <div class="form-group">
         <label for="other_medication_number_of_milligram">Dose in Milligrams (mg):</label>
         <input class="form-control isDecimal otherMedicationNumberOfMilligram" id="other_medication_number_of_milligram"
-               name="other_medication_number_of_milligram" type="text"
+               name="other_medication_number_of_milligram" type="number"
                data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
@@ -534,7 +534,7 @@
     <div class="form-group other_medication_number_of_milliliter_group">
         <label for="other_medication_number_of_milliliter">Dose in Milliliters (ml):</label>
         <input class="form-control isDecimal" id="other_medication_number_of_milliliter"
-               name="other_medication_number_of_milliliter" type="text"
+               name="other_medication_number_of_milliliter" type="number"
                data-concept="1940^NUMBER OF MILLILITER^99DCT"
                placeholder="You MUST provide dosage">
     </div>
@@ -644,51 +644,51 @@
         <label for="obs.diastolic_blood_pressure">Diastolic Blood Pressure (mmHg):<span
                 class="required">*</span></label>
         <input class="form-control diastolicBloodPressure lessThankSystolic" id="obs.diastolic_blood_pressure"
-               name="obs.diastolic_blood_pressure" type="text"
+               name="obs.diastolic_blood_pressure" type="number"
                placeholder="Please record today's DBP" data-concept="5086^DIASTOLIC BLOOD PRESSURE^99DCT"
                required="required">
     </div>
     <div class="form-group">
         <label for="pulse">Pulse Rate (per minute):</label>
-        <input class="form-control" id="pulse" name="pulse" type="text" placeholder="Please record today's pulse"
+        <input class="form-control" id="pulse" name="pulse" type="number" placeholder="Please record today's pulse"
                data-concept="5087^PULSE^99DCT">
     </div>
     <div class="form-group">
         <label for="temperature_c">Temperature (centigrade):</label>
-        <input class="form-control" id="temperature_c" name="temperature_c" type="text"
+        <input class="form-control" id="temperature_c" name="temperature_c" type="number"
                placeholder="Please record today's temperature"
                data-concept="5088^TEMPERATURE (C)^99DCT">
     </div>
     <div class="form-group">
         <label for="weight_kg">Weight (KG):</label>
-        <input class="form-control" id="weight_kg" name="weight_kg" type="text"
+        <input class="form-control" id="weight_kg" name="weight_kg" type="number"
                placeholder="Please record today's weight"
                data-concept="5089^WEIGHT (KG)^99DCT">
     </div>
     <div class="form-group">
         <label for="height_cm">Height (CM):</label>
-        <input class="form-control" id="height_cm" name="height_cm" type="text"
+        <input class="form-control" id="height_cm" name="height_cm" type="number"
                placeholder="Please record today's height"
                data-concept="5090^HEIGHT (CM)^99DCT">
     </div>
     <div class="form-group bodyMassIndex">
         <label for="obs.body_mass_index">Body Mass Index:</label>
-        <input class="form-control" id="obs.body_mass_index" name="obs.body_mass_index" type="text" readonly="readonly"
+        <input class="form-control" id="obs.body_mass_index" name="obs.body_mass_index" type="number" readonly="readonly"
                data-concept="1342^BODY MASS INDEX^99DCT">
     </div>
     <div class="form-group">
         <label for="serum_glucose_fasting">Fasting Blood Sugar (FBS):</label>
-        <input class="form-control glucose" id="serum_glucose_fasting" name="serum_glucose_fasting" type="text"
+        <input class="form-control glucose" id="serum_glucose_fasting" name="serum_glucose_fasting" type="number"
                placeholder="Please record today's FBS" data-concept="6252^SERUM GLUCOSE, FASTING^99DCT">
     </div>
     <div class="form-group">
         <label for="obs.serum_glucose">Random Blood Sugar (RBS):</label>
-        <input class="form-control glucose" id="obs.serum_glucose" name="obs.serum_glucose" type="text"
+        <input class="form-control glucose" id="obs.serum_glucose" name="obs.serum_glucose" type="number"
                placeholder="Please record today's RBS" data-concept="887^SERUM GLUCOSE^99DCT">
     </div>
     <div class="form-group">
         <label for="glycosylated_hemoglobin">Hemoglobin A1C:</label>
-        <input class="form-control" id="glycosylated_hemoglobin" name="glycosylated_hemoglobin" type="text"
+        <input class="form-control" id="glycosylated_hemoglobin" name="glycosylated_hemoglobin" type="number"
                placeholder="Please record today's A1C" data-concept="6126^GLYCOSYLATED HEMOGLOBIN^99DCT">
     </div>
     <div class="form-group urinePregnancyTestQualitative">
@@ -821,7 +821,7 @@
                 class="required">*</span></label>
         <input class="form-control numberOfMilligrams" id="obs.tmp_dosage_change_metformin"
                name="obs.tmp_dosage_change_metformin"
-               type="text" required="required" data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
+               type="number" required="required" data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
         <label for="obs.omo_medication_frequency_per_day_metformin">[Metformin] frequency per day:<span
@@ -873,7 +873,7 @@
                 class="required">*</span></label>
         <input class="form-control numberOfMilligrams" id="obs.tmp_dosage_change_glibenclamide"
                name="obs.tmp_dosage_change_glibenclamide"
-               type="text" required="required" data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
+               type="number" required="required" data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
         <label for="obs.omo_medication_frequency_per_day_glibenclamide">[Glibenclamide] frequency per day:<span
@@ -892,7 +892,7 @@
         <label for="obs.omo_number_of_tablets_glibenclamide">Number of [Glibenclamide] tablets prescribed:<<span
                 class="required">*</span></label>
         <input class="form-control numberOfTablets" id="obs.omo_number_of_tablets_glibenclamide"
-               name="obs.omo_number_of_tablets_glibenclamide" type="text"
+               name="obs.omo_number_of_tablets_glibenclamide" type="number"
                data-concept="1898^NUMBER OF TABLETS^99DCT" required="required">
     </div>
     <div class="form-group">
@@ -926,7 +926,7 @@
                 class="required">*</span></label>
         <input class="form-control numberOfMilligrams" id="obs.tmp_dosage_change_enalapril"
                name="obs.tmp_dosage_change_enalapril"
-               type="text" required="required" data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
+               type="number" required="required" data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
         <label for="obs.omo_medication_frequency_per_day_enalapril">[Enalapril] frequency per day:<span
@@ -945,7 +945,7 @@
                 class="required">*</span></label>
         <input class="form-control numberOfTablets" id="obs.omo_number_of_tablets_enalapril"
                name="obs.omo_number_of_tablets_enalapril"
-               type="text" data-concept="1898^NUMBER OF TABLETS^99DCT" required="required">
+               type="number" data-concept="1898^NUMBER OF TABLETS^99DCT" required="required">
     </div>
     <div class="form-group">
         <label for="obs.omo_medication_received_at_vist_enalapril">[Enalapril] picked-up at dispensary?<span
@@ -977,7 +977,7 @@
         <label for="obs.tmp_dosage_change_hctz">Prescribed [HCTZ] dose in milligrams (mg):<span
                 class="required">*</span></label>
         <input class="form-control numberOfMilligrams" id="obs.tmp_dosage_change_hctz" name="obs.tmp_dosage_change_hctz"
-               type="text"
+               type="number"
                required="required" data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
@@ -1027,7 +1027,7 @@
                 class="required">*</span></label>
         <input class="form-control numberOfMilligrams" id="obs.tmp_dosage_change_losartan"
                name="obs.tmp_dosage_change_losartan"
-               type="text" required="required" data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
+               type="number" required="required" data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
         <label for="obs.omo_medication_frequency_per_day_losartan">[Losartan] frequency per day:<span
@@ -1079,7 +1079,7 @@
                 class="required">*</span></label>
         <input class="form-control numberOfMilligrams" id="obs.tmp_dosage_change_nifedipine"
                name="obs.tmp_dosage_change_nifedipine"
-               type="text" required="required" data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
+               type="number" required="required" data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
         <label for="obs.omo_medication_frequency_per_day_nifedipine">[Nifedipine] frequency per day:<span
@@ -1126,7 +1126,7 @@
                 class="required">*</span></label>
         <input class="form-control numberOfMilligrams" id="obs.omo_number_of_milligram_other"
                name="obs.omo_number_of_milligram_other"
-               type="text" data-concept="1899^NUMBER OF MILLIGRAM^99DCT" required="required">
+               type="number" data-concept="1899^NUMBER OF MILLIGRAM^99DCT" required="required">
     </div>
     <div class="form-group">
         <label for="obs.omo_medication_frequency_per_day_other">Medication frequency per day:<span
