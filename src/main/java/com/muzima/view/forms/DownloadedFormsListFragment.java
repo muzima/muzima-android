@@ -12,6 +12,7 @@ import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
+import com.muzima.adapters.forms.AllAvailableFormsAdapter;
 import com.muzima.adapters.forms.DownloadedFormsAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.model.DownloadedForm;
@@ -119,18 +120,18 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
             Toast.makeText(getActivity(), "Forms deleted successfully!!", Toast.LENGTH_SHORT).show();
         }
 
-        private void endActionMode() {
-            if (actionMode != null) {
-                actionMode.finish();
-            }
-        }
-
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
+            ((DownloadedFormsAdapter) listAdapter).clearSelectedForms();
         }
     }
 
+    public void endActionMode() {
+        if (actionMode != null) {
+            actionMode.finish();
+        }
+    }
     private String getCommaSeparatedFormNames(List<DownloadedForm> selectedForms, List<String> formUUIDs) {
         StringBuilder commaSeparatedFormNames = new StringBuilder();
         for (DownloadedForm selectedForm : selectedForms) {

@@ -50,6 +50,10 @@ public class DownloadedFormsAdapter extends FormsAdapter<DownloadedForm> {
         convertView.findViewById(R.id.tags_scroller).setVisibility(View.GONE);
     }
 
+    public void clearSelectedForms() {
+        notifyDataSetChanged();
+    }
+
     @Override
     protected int getFormItemLayout() {
         return R.layout.item_forms_list_selectable;
