@@ -149,7 +149,7 @@ public class MainActivity extends BroadcastListenerActivity {
             } catch (NotificationController.NotificationFetchException e) {
                 Log.w(TAG, "NotificationFetchException occurred while fetching metadata in MainActivityBackgroundTask");
             } catch (ParseException e) {
-                Log.w(TAG, "NotificationFetchException occurred while fetching metadata in MainActivityBackgroundTask");
+                Log.w(TAG, "ParseException occurred while fetching metadata in MainActivityBackgroundTask");
             }
             return homeActivityMetadata;
         }

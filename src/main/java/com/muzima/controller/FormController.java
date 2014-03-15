@@ -1,6 +1,9 @@
 package com.muzima.controller;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
+import com.muzima.MuzimaApplication;
 import com.muzima.api.model.*;
 import com.muzima.api.service.FormService;
 import com.muzima.api.service.LastSyncTimeService;
@@ -11,16 +14,22 @@ import com.muzima.model.builders.*;
 import com.muzima.model.collections.*;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.SntpService;
+import com.muzima.util.JsonUtils;
 import com.muzima.utils.CustomColor;
+import com.muzima.utils.ImageUtils;
+import com.muzima.utils.StringUtils;
 import com.muzima.view.forms.PatientJSONMapper;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.json.JSONException;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-import static com.muzima.utils.Constants.*;
 import static com.muzima.api.model.APIName.DOWNLOAD_FORMS;
+import static com.muzima.utils.Constants.*;
 
 public class FormController {
 
@@ -399,6 +408,7 @@ public class FormController {
         try {
             boolean result = true;
             List<FormData> allFormData = formService.getAllFormData(STATUS_COMPLETE);
+
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_DISCRIMINATOR_REGISTRATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_XML_DISCRIMINATOR_ENCOUNTER), result);
             return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_ENCOUNTER), result);
@@ -491,17 +501,18 @@ public class FormController {
     }
 
     private List<FormData> getFormsWithDiscriminator(List<FormData> allFormData, String discriminator) {
-        List<FormData> requeiredForms = new ArrayList<FormData>();
+        List<FormData> requiredForms = new ArrayList<FormData>();
         for (FormData formData : allFormData) {
             if (formData.getDiscriminator().equals(discriminator)) {
-                requeiredForms.add(formData);
+                requiredForms.add(formData);
             }
         }
-        return requeiredForms;
+        return requiredForms;
     }
 
     boolean uploadFormDataToServer(List<FormData> allFormData, boolean result) throws IOException {
         for (FormData formData : allFormData) {
+            formData = replaceImagePathWithImageString(formData);
             if (formService.syncFormData(formData)) {
                 formData.setStatus(STATUS_UPLOADED);
                 formService.saveFormData(formData);
@@ -510,5 +521,49 @@ public class FormController {
             }
         }
         return result;
+    }
+
+    private static FormData replaceImagePathWithImageString(FormData formData) {
+        String holder = "observation";
+        String image_discriminator = ".jpg";
+        Object obsObjectList = JsonUtils.readAsObject(formData.getJsonPayload(), "$['" + holder + "']");
+        Object[] obsItemPairs = obsObjectList.toString().split("\",\"");
+        for (int i=0;i< obsItemPairs.length; i++) {
+            String item = (String) obsItemPairs[i];
+            if (item.contains(image_discriminator)){
+                String key = item.split(":")[0].replace("\"", "");
+                String value = item.split(":")[1].replace("\"", "");
+                JSONParser jp =new JSONParser(JSONParser.MODE_PERMISSIVE);
+                try {
+                    JSONObject obj = (JSONObject)jp.parse(formData.getJsonPayload());
+                    JsonUtils.replaceAsString(obj, holder, key, getStringImage(value));
+                    formData.setJsonPayload(obj.toJSONString());
+                } catch (net.minidev.json.parser.ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return formData;
+    }
+
+    private static String getStringImage(String imageUri) {
+        String imageString = null;
+        if (!StringUtils.isEmpty(imageUri))  {
+            //fetch the image and convert it to @Base64 encoded string. Delete the image
+            File f = new File(imageUri) ;
+            if (f.exists()){
+                //convert image to Bitmap
+                Bitmap bmp = BitmapFactory.decodeFile(f.getAbsolutePath());
+                imageString = "image/jpeg:" + ImageUtils.getStringFromBitmap(bmp);
+                //ImageUtils.deleteImage(ctx, imageUri);
+            }
+        }
+        return imageString;
+    }
+
+
+
+    private FormData replaceVideoPathWithVideo(FormData formData) {
+       return null;
     }
 }

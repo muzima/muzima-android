@@ -75,10 +75,6 @@ public class NotificationController {
                     }
                 }
             }
-
-//            if (patientNotifications.size() < 1 ) {
-//                return getTestInboxNotifications();
-//            }
             return patientNotifications;
         } catch (IOException e) {
             throw new NotificationFetchException(e);
@@ -175,25 +171,4 @@ public class NotificationController {
             super(throwable);
         }
     }
-//
-//    private List<Notification> getTestInboxNotifications() {
-//        List<Notification> notifications = new ArrayList<Notification>();
-//        Person receiver = new Person();
-//        receiver.setUuid("suruwere");
-//
-//        for (int i=0; i<=3; i++) {
-//            Notification nt = new Notification();
-//            nt.setSubject("InboxMsg-" + i);
-//            nt.setPayload("Inbox Payload Message-" + i);
-//            nt.setDateCreated(new Date());
-//            nt.setUuid("Inbox UUID-" + i);
-//            nt.setReceiver(receiver);
-//            if (i == 0 || i == 2)
-//                nt.setStatus("read");
-//            else
-//                nt.setStatus("unread");
-//            notifications.add(nt);
-//        }
-//        return notifications;
-//    }
 }

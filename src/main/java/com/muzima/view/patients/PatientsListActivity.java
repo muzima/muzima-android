@@ -77,6 +77,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 startActivity(intent);
             }
         });
+        if (isNotificationsList)
+            searchServerBtn.setVisibility(View.GONE);
     }
 
     @Override
@@ -107,10 +109,13 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             searchView.setIconified(true);
 
         menubarSyncButton = menu.findItem(R.id.menu_load);
-        if (isNotificationsList)
+        if (isNotificationsList) {
             menubarSyncButton.setVisible(true);
-        else
+            searchView.setVisibility(View.GONE);
+        } else {
             menubarSyncButton.setVisible(false);
+            searchView.setVisibility(View.VISIBLE);
+        }
 
         super.onCreateOptionsMenu(menu);
         return true;
@@ -175,9 +180,18 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         noDataView = findViewById(R.id.no_data_layout);
 
         TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
-        noDataMsgTextView.setText(getResources().getText(R.string.no_clients_matched_locally));
+        if (isNotificationsList)
+            noDataMsgTextView.setText(getResources().getText(R.string.no_notification_available));
+        else
+            noDataMsgTextView.setText(getResources().getText(R.string.no_clients_matched_locally));
+
         TextView noDataTipTextView = (TextView) findViewById(R.id.no_data_tip);
-        noDataTipTextView.setText(R.string.no_clients_matched_tip_locally);
+
+        if (isNotificationsList)
+            noDataTipTextView.setText(R.string.no_notification_available_tip);
+        else
+            noDataTipTextView.setText(R.string.no_clients_matched_tip_locally);
+
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
         noDataTipTextView.setTypeface(Fonts.roboto_light(this));
     }

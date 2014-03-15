@@ -97,6 +97,8 @@
             "field.searchable": {
                 "uuid": "$['uuid']",
                 "subject": "$['subject']",
+                "source": "$['source']",
+                "status": "$['status']",
                 "payload": "$['payload']",
                 "receiverUuid": "$['receiver']['uuid']",
                 "senderUuid": "$['sender']['uuid']"
@@ -112,6 +114,8 @@
             "field.searchable": {
                 "uuid": "$['uuid']",
                 "subject": "$['subject']",
+                "source": "$['source']",
+                "status": "$['status']",
                 "payload": "$['payload']",
                 "receiverUuid": "$['receiver']['uuid']",
                 "senderUuid": "$['sender']['uuid']"
@@ -229,6 +233,8 @@
             "field.searchable": {
                 "uuid": "$['uuid']",
                 "subject": "$['subject']",
+                "source": "$['source']",
+                "status": "$['status']",
                 "receiverUuid": "$['receiver']['uuid']",
                 "senderUuid": "$['sender']['uuid']"
             }

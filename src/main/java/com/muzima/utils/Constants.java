@@ -1,5 +1,7 @@
 package com.muzima.utils;
 
+import android.os.Environment;
+
 //TODO: This class should be burnt and flushed. Constants in an anti-pattern and and a sure sign that your abstractions are wrong: Zabil
 //TODO: Burnt?? Maybe or may not be - Prasanna
 public class Constants {
@@ -20,6 +22,12 @@ public class Constants {
     public static final String FORM_JSON_DISCRIMINATOR_ENCOUNTER = "json-encounter";
     public static final String FORM_DISCRIMINATOR_REGISTRATION = "registration";
     public static final String FORM_DISCRIMINATOR_CONSULTATION = "consultation";
+
+    private static final String APP_EXTERNAL_DIR_ROOT =  Environment.getExternalStorageDirectory().getPath() + "/muzima";
+    private static final String APP_MEDIA_DIR = APP_EXTERNAL_DIR_ROOT + "/media";
+    public static final String APP_IMAGE_DIR = APP_MEDIA_DIR + "/image";
+    public static final String APP_VIDEO_DIR = APP_MEDIA_DIR + "/video";
+    public static final String TMP_FILE_PATH = APP_EXTERNAL_DIR_ROOT + "/.cache";
 
     public static class DataSyncServiceConstants {
         public static final String SYNC_TYPE = "sync_type";

@@ -53,7 +53,9 @@ $(document).ready(function () {
     };
 
     $('.image_btn').click(function () {
-        imagingComponent.startImageIntent($(this).parent().find("input[type='text']").attr('name'));
+        var $elem_form_uuid = $("input[name='encounter.form_uuid']");
+        var $form_uuid = $elem_form_uuid.val();
+        imagingComponent.startImageIntent($(this).parent().find("input[type='text']").attr('name'), $form_uuid);
     });
 
     /*End- Imaging Functionality*/
@@ -292,6 +294,7 @@ $(document).ready(function () {
         var prePopulateJSON = JSON.parse(prePopulateData);
         populateNonConceptFields(prePopulateJSON['patient'] || {});
         populateNonConceptFields(prePopulateJSON['encounter'] || {});
+        populateNonConceptFields(prePopulateJSON['observation'] || {});
         populateObservations(prePopulateJSON['observation'] || {});
         console.timeEnd("Starting population");
     }

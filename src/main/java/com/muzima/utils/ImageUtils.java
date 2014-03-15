@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import com.muzima.MuzimaApplication;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

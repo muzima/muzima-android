@@ -20,12 +20,17 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-import com.actionbarsherlock.R;
+import com.muzima.R;
 import com.muzima.utils.ImageUtils;
+import com.muzima.utils.StringUtils;
 import com.muzima.view.BaseActivity;
+import com.muzima.view.forms.ImagingComponent;
 
 import java.io.*;
 import java.nio.channels.FileChannel;
+
+import static com.muzima.utils.Constants.APP_IMAGE_DIR;
+import static com.muzima.utils.Constants.TMP_FILE_PATH;
 
 public class ImagingIntent extends BaseActivity {
 	private final static String t = "ImagingIntent";
@@ -33,7 +38,8 @@ public class ImagingIntent extends BaseActivity {
     public static final int IMAGE_CAPTURE = 1;
     public static final int IMAGE_CHOOSER = 2;
     
-    public static final String KEY_IMAGE_PATH = "imagepath";
+    public static final String KEY_IMAGE_PATH = "imagePath";
+    private String IMAGE_FOLDER;
 
     private Button mChooseButton;
     private Button mCaptureButton;
@@ -42,15 +48,17 @@ public class ImagingIntent extends BaseActivity {
     
     private String mBinaryName;
 
-    private final String mInstanceFolderRoot =  Environment.getExternalStorageDirectory().getPath();
-    private final String mInstanceFolder = mInstanceFolderRoot + "/thaiya";
-    private final String TMPFILE_PATH = mInstanceFolder + "/.cache";
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_imaging);
-        
+        Intent i = getIntent();
+        String formUuid = i.getStringExtra(ImagingComponent.FORM_UUID);
+        if (!StringUtils.isEmpty(formUuid))
+            IMAGE_FOLDER = APP_IMAGE_DIR + "/" + formUuid;
+        else
+            IMAGE_FOLDER = APP_IMAGE_DIR;
+
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(KEY_IMAGE_PATH)) {
                 mBinaryName = savedInstanceState.getString(KEY_IMAGE_PATH);
@@ -74,10 +82,8 @@ public class ImagingIntent extends BaseActivity {
                 // images returned by the camera in 1.6 (and earlier) are ~1/4
                 // the size. boo.
 
-                // if this gets modified, the onActivityResult in
-                // FormEntyActivity will also need to be updated.
                 i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,
-                    Uri.fromFile(new File(TMPFILE_PATH)));
+                    Uri.fromFile(new File(TMP_FILE_PATH)));
                 try {
                     startActivityForResult(i,IMAGE_CAPTURE);
                 } catch (ActivityNotFoundException e) {
@@ -110,7 +116,7 @@ public class ImagingIntent extends BaseActivity {
         mSaveImageButton.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
-        		String imageUri = mInstanceFolder + "/" + mBinaryName;
+        		String imageUri = IMAGE_FOLDER + "/" + mBinaryName;
                 if (mBinaryName != null) {
                     Intent i = new Intent();
                     i.putExtra("IMAGE_URI", imageUri);
@@ -141,7 +147,7 @@ public class ImagingIntent extends BaseActivity {
             int screenWidth = display.getWidth();
             int screenHeight = display.getHeight();
 
-            File f = new File(mInstanceFolder + "/" + mBinaryName);
+            File f = new File(IMAGE_FOLDER + "/" + mBinaryName);
 
             if (f.exists()) {
                 Bitmap bmp = ImageUtils.getBitmapScaledToDisplay(f, screenHeight, screenWidth);
@@ -162,7 +168,7 @@ public class ImagingIntent extends BaseActivity {
                         getApplicationContext().getContentResolver()
                                 .query(
                                     Images.Media.EXTERNAL_CONTENT_URI,
-                                    projection, "_data='" + mInstanceFolder + "/" + mBinaryName + "'",
+                                    projection, "_data='" + IMAGE_FOLDER + "/" + mBinaryName + "'",
                                     null, null);
                     if (c.getCount() > 0) {
                         c.moveToFirst();
@@ -204,9 +210,9 @@ public class ImagingIntent extends BaseActivity {
         Uri imageURI;
         switch (requestCode) {
             case IMAGE_CAPTURE:
-                File newImage = new File(TMPFILE_PATH);
+                File newImage = new File(TMP_FILE_PATH);
 
-                String s = mInstanceFolder + "/" + System.currentTimeMillis() + ".jpg";
+                String s = IMAGE_FOLDER + "/" + System.currentTimeMillis() + ".jpg";
 
                 File nf = new File(s);
                 if (!newImage.renameTo(nf)) {
@@ -248,11 +254,11 @@ public class ImagingIntent extends BaseActivity {
 
                 
                 // Copy file to sdcard
-                String destImagePath = mInstanceFolder + "/" + System.currentTimeMillis() + ".jpg";
+                String destImagePath = IMAGE_FOLDER + "/" + System.currentTimeMillis() + ".jpg";
 
                 File source = new File(sourceImagePath);
                 File chosenImage = new File(destImagePath);
-                if (ImageUtils.folderExists(mInstanceFolder))
+                if (ImageUtils.folderExists(IMAGE_FOLDER))
                 	copyFile(source, chosenImage);
                 
                 if (chosenImage.exists()) {
@@ -288,10 +294,10 @@ public class ImagingIntent extends BaseActivity {
                 src.close();
                 dst.close();
             } catch (FileNotFoundException e) {
-                Log.e(t, "FileNotFoundExeception while copying file");
+                Log.e(t, "FileNotFoundException while copying file");
                 e.printStackTrace();
             } catch (IOException e) {
-                Log.e(t, "IOExeception while copying file");
+                Log.e(t, "IOException while copying file");
                 e.printStackTrace();
             }
         } else {
