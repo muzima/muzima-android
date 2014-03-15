@@ -30,12 +30,4 @@ public class NotificationPagerAdapter extends MuzimaPagerAdapter {
 
         pagers[TAB_CONSULTATION] = new PagerView("Consultation", patientNotificationsListFragment);
     }
-
-    public void onNotificationDownloadStart() {
-        //((PatientNotificationsListFragment)pagers[TAB_CONSULTATION].fragment).onNotificationDownloadStart();
-    }
-
-    public void onNotificationDownloadFinish() {
-        //((PatientNotificationsListFragment)pagers[TAB_CONSULTATION].fragment).onNotificationDownloadFinish();
-    }
 }

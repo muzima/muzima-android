@@ -53,11 +53,10 @@
             style="@style/LoginButtonLayout">
 
         <Button
-                android:id="@+id/viewNotification"
+                android:id="@+id/viewNotificationForm"
                 android:text="View Form"
                 style="@style/LoginButton"
                 android:onClick="formView"/>
     </FrameLayout>
-
 
 </LinearLayout>

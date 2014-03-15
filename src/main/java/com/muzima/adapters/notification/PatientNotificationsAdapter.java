@@ -11,6 +11,7 @@ import com.muzima.api.model.Notification;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.User;
 import com.muzima.controller.NotificationController;
+import org.apache.lucene.queryParser.ParseException;
 
 import java.util.List;
 
@@ -47,9 +48,9 @@ public class PatientNotificationsAdapter extends NotificationsAdapter {
     }
 
     /**
-     * Responsible to define contract to InboxBackgroundQueryTask.
+     * Responsible to define contract to PatientNotificationsBackgroundQueryTask.
      */
-    public abstract class InboxBackgroundQueryTask extends AsyncTask<Void, Void, List<Notification>> {
+    public abstract class PatientNotificationsBackgroundQueryTask extends AsyncTask<Void, Void, List<Notification>> {
         @Override
         protected void onPreExecute() {
             if (backgroundListQueryTaskListener != null) {
@@ -58,8 +59,8 @@ public class PatientNotificationsAdapter extends NotificationsAdapter {
         }
 
         @Override
-        protected void onPostExecute(List<Notification> inboxNotifications) {
-            notifications = inboxNotifications;
+        protected void onPostExecute(List<Notification> patientNotifications) {
+            notifications = patientNotifications;
             if (notifications == null) {
                 Toast.makeText(getContext(), "Something went wrong while fetching notifications from local repo", Toast.LENGTH_SHORT).show();
                 return;
@@ -67,7 +68,7 @@ public class PatientNotificationsAdapter extends NotificationsAdapter {
             //Removes the current items from the list.
             PatientNotificationsAdapter.this.clear();
             //Adds recently fetched items to the list.
-            addAll(inboxNotifications);
+            addAll(patientNotifications);
             //Send a data change request to the list, so the page can be reloaded.
             notifyDataSetChanged();
 
@@ -82,40 +83,40 @@ public class PatientNotificationsAdapter extends NotificationsAdapter {
     /**
      * Responsible to load notifications from database. Runs in Background.
      */
-    public class LoadBackgroundQueryTask extends InboxBackgroundQueryTask {
+    public class LoadBackgroundQueryTask extends PatientNotificationsBackgroundQueryTask {
 
         @Override
         protected List<Notification> doInBackground(Void... voids) {
-            List<Notification> allNotifications = null;
+            List<Notification> patientNotifications = null;
             try {
-                Log.i(TAG, "Fetching inbox notifications from Database...");
+                Log.i(TAG, "Fetching notifications from Database...");
                 User authenticatedUser = ((MuzimaApplication) getContext().getApplicationContext()).getAuthenticatedUser();
                 if (authenticatedUser != null)
-                    allNotifications = notificationController.getNotificationsForPatient(patient.getUuid(), authenticatedUser.getPerson().getUuid(), null);
-                Log.d(TAG, "#Retrieved " + allNotifications.size() + " inbox notifications from Database.");
+                    patientNotifications = notificationController.getNotificationsForPatient(patient.getUuid(), authenticatedUser.getPerson().getUuid(), null);
+                Log.d(TAG, "#Retrieved " + patientNotifications.size() + " notifications from Database.");
             } catch (NotificationController.NotificationFetchException e) {
-                Log.w(TAG, "Exception occurred while fetching the inbox notifications" + e);
+                Log.w(TAG, "Exception occurred while fetching the notifications" + e);
             }
-            return allNotifications;
+            return patientNotifications;
         }
     }
 
     /**
      * Responsible to download Notifications from server and to reload the contents from DB. Runs in BackGround.
      */
-    public class DownloadBackgroundQueryTask extends InboxBackgroundQueryTask {
+    public class DownloadBackgroundQueryTask extends PatientNotificationsBackgroundQueryTask {
         @Override
         protected List<Notification> doInBackground(Void... voids) {
-            List<Notification> allNotifications = null;
+            List<Notification> patientNotifications = null;
             try {
                 User authenticatedUser = ((MuzimaApplication) getContext().getApplicationContext()).getAuthenticatedUser();
                 if (authenticatedUser != null)
-                allNotifications = notificationController.getNotificationsForPatient(patient.getUuid(),authenticatedUser.getPerson().getUuid(), null);
-                Log.i(TAG, "#Inbox: " + allNotifications.size());
+                    patientNotifications = notificationController.getNotificationsForPatient(patient.getUuid(),authenticatedUser.getPerson().getUuid(), null);
+                Log.i(TAG, "#Retrieved: " + patientNotifications.size());
             } catch (NotificationController.NotificationFetchException e) {
-                Log.w(TAG, "Exception occurred while fetching the inbox notifications" + e);
+                Log.w(TAG, "Exception occurred while fetching the notifications" + e);
             }
-            return allNotifications;
+            return patientNotifications;
         }
     }
 }

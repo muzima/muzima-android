@@ -263,6 +263,26 @@ public class FormController {
         }
     }
 
+    public CompleteFormWithPatientData getCompleteFormDataByUuid(String formDataUuid) throws FormDataFetchException, FormFetchException {
+        CompleteFormWithPatientData completeForm = null;
+
+        try {
+            FormData formData = formService.getFormDataByUuid(formDataUuid);
+            if (formData != null && StringUtil.equals(formData.getStatus(),STATUS_COMPLETE)) {
+                Patient patient = patientService.getPatientByUuid(formData.getPatientUuid());
+                completeForm = new CompleteFormWithPatientDataBuilder()
+                        .withForm(formService.getFormByUuid(formData.getTemplateUuid()))
+                        .withFormDataUuid(formData.getUuid())
+                        .withPatient(patient)
+                        .build();
+            }
+
+        } catch (IOException e) {
+            throw new FormFetchException(e);
+        }
+        return completeForm;
+    }
+
     public void saveFormData(FormData formData) throws FormDataSaveException {
         try {
             formService.saveFormData(formData);
