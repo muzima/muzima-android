@@ -392,13 +392,9 @@ public class MuzimaSyncService {
         int[] result = new int[1];
         try {
             result[0] = formController.uploadAllCompletedForms() ? SUCCESS : UPLOAD_ERROR;
-            observationController.deleteObservationsCreatedOnDevice();
         } catch (FormController.UploadFormDataException e) {
             Log.e(TAG, "Exception thrown while uploading forms.", e);
             result[0] = UPLOAD_ERROR;
-        } catch (ObservationController.DeleteObservationException e) {
-            Log.e(TAG, "Exception thrown while uploading forms.", e);
-            result[0] = SUCCESS;
         }
         return result;
     }
