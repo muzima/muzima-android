@@ -38,13 +38,13 @@ public class HTMLFormDataStoreTest {
     public void shouldParsedPayloadForCompletedForm() {
         String jsonPayLoad = "jsonPayLoad";
         htmlFormDataStore.saveHTML(jsonPayLoad, Constants.STATUS_COMPLETE);
-        verify(htmlFormObservationCreator).createAndPersistObservations(jsonPayLoad);
+        verify(htmlFormObservationCreator).createAndPersistObservations(jsonPayLoad,formData.getUuid());
     }
 
     @Test
     public void shouldNotParseIncompletedForm() {
         String jsonPayLoad = "jsonPayLoad";
         htmlFormDataStore.saveHTML(jsonPayLoad, Constants.STATUS_INCOMPLETE);
-        verify(htmlFormObservationCreator, times(0)).createAndPersistObservations(jsonPayLoad);
+        verify(htmlFormObservationCreator, times(0)).createAndPersistObservations(jsonPayLoad,formData.getUuid());
     }
 }

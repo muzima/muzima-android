@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Stack;
 
 import static android.util.Xml.newPullParser;
+import static com.muzima.utils.DateUtils.parse;
 
 public class FormParser {
 
@@ -58,7 +59,7 @@ public class FormParser {
         this.observationParserUtility = new ObservationParserUtility(conceptController);
     }
 
-    public List<Observation> parseAndSaveObservations(String xml) throws XmlPullParserException, IOException,
+    public List<Observation> parseAndSaveObservations(String xml, String formDataUuid) throws XmlPullParserException, IOException,
             ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
         parser.setInput(new ByteArrayInputStream(xml.getBytes()), null);
         parser.nextTag();
@@ -67,7 +68,7 @@ public class FormParser {
                 patient = getPatient(parser);
             }
             if (isStartOf("encounter")) {
-                encounter = createEncounter(parser);
+                encounter = createEncounter(parser,formDataUuid);
             }
             if (isStartOf("obs")) {
                 observations = createObservations(parser);
@@ -112,11 +113,11 @@ public class FormParser {
 
     }
 
-    private Encounter createEncounter(XmlPullParser parser) throws XmlPullParserException, IOException, ParseException {
+    private Encounter createEncounter(XmlPullParser parser, String formDataUuid) throws XmlPullParserException, IOException, ParseException {
         Encounter encounter = null;
         while (!isEndOf("encounter")) {
             if (isStartOf("encounter.encounter_datetime")) {
-                encounter = observationParserUtility.getEncounterEntity(DateUtils.parse(parser.nextText()), patient);
+                encounter = observationParserUtility.getEncounterEntity(parse(parser.nextText()), patient,formDataUuid);
             }
             parser.next();
         }

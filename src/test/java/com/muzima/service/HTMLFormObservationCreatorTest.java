@@ -61,6 +61,7 @@ public class HTMLFormObservationCreatorTest {
 
     private String mockConceptName;
     private String mockConceptUUID;
+    private String formDataUuid;
 
 
     @Before
@@ -77,13 +78,14 @@ public class HTMLFormObservationCreatorTest {
         when(concept.getUuid()).thenReturn(mockConceptUUID);
 
         when(conceptController.getConceptByName(mockConceptName)).thenReturn(concept);
+        formDataUuid = "formDataUuid";
     }
 
     @Test
     public void shouldParseJSONResponseAndCreateObservation() throws PatientController.PatientLoadException,
             JSONException, ParseException, ConceptController.ConceptFetchException {
 
-        htmlFormObservationCreator.createAndPersistObservations(readFile());
+        htmlFormObservationCreator.createAndPersistObservations(readFile(),formDataUuid);
         List<Observation> observations = htmlFormObservationCreator.getObservations();
 
         assertThat(observations.size(), is(30));
@@ -91,7 +93,7 @@ public class HTMLFormObservationCreatorTest {
 
     @Test
     public void shouldCheckIfAllObservationsHaveEncounterObservationTimeAndPatient() throws Exception, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
-        htmlFormObservationCreator.createAndPersistObservations(readFile());
+        htmlFormObservationCreator.createAndPersistObservations(readFile(),formDataUuid);
         List<Observation> observations = htmlFormObservationCreator.getObservations();
 
         for (Observation observation : observations) {
@@ -105,7 +107,7 @@ public class HTMLFormObservationCreatorTest {
 
     @Test
     public void shouldCheckIfEncounterHasMinimumAttributes() throws Exception, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
-        htmlFormObservationCreator.createAndPersistObservations(readFile());
+        htmlFormObservationCreator.createAndPersistObservations(readFile(),formDataUuid);
         Encounter encounter = htmlFormObservationCreator.getObservations().get(0).getEncounter();
         assertThat(encounter.getEncounterDatetime(), notNullValue());
         assertThat(encounter.getPatient(), notNullValue());
@@ -115,7 +117,7 @@ public class HTMLFormObservationCreatorTest {
 
     @Test
     public void shouldCheckIfAllObservationsHasEitherAFetchedConceptOrNewConcept() throws Exception, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
-        htmlFormObservationCreator.createAndPersistObservations(readFile());
+        htmlFormObservationCreator.createAndPersistObservations(readFile(),formDataUuid);
         List<Observation> observations = htmlFormObservationCreator.getObservations();
 
         boolean conceptUuidAsserted = false;
@@ -129,7 +131,7 @@ public class HTMLFormObservationCreatorTest {
     @Test
     public void shouldCheckIfMultipleObservationsAreCreatedForMultiValuedConcepts() throws Exception, PatientController.PatientLoadException,
             ConceptController.ConceptFetchException {
-        htmlFormObservationCreator.createAndPersistObservations(readFile());
+        htmlFormObservationCreator.createAndPersistObservations(readFile(),formDataUuid);
         List<Observation> observations = htmlFormObservationCreator.getObservations();
         List<Observation> multiValuedObservations = new ArrayList<Observation>();
         for (Observation observation : observations) {
@@ -145,7 +147,7 @@ public class HTMLFormObservationCreatorTest {
 
     @Test
     public void shouldVerifyAllObservationsAndRelatedEntitiesAreSaved() throws EncounterController.SaveEncounterException, ConceptController.ConceptSaveException, ObservationController.SaveObservationException {
-        htmlFormObservationCreator.createAndPersistObservations(readFile());
+        htmlFormObservationCreator.createAndPersistObservations(readFile(),formDataUuid);
 
         verify(encounterController).saveEncounters(encounterArgumentCaptor.capture());
         assertThat(encounterArgumentCaptor.getValue().size(), is(1));

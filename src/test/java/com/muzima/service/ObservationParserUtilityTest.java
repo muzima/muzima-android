@@ -31,17 +31,19 @@ public class ObservationParserUtilityTest {
     @Mock
     private Patient patient;
 
+    private String formDataUuid;
+
     @Before
     public void setUp() {
         initMocks(this);
         observationParserUtility = new ObservationParserUtility(conceptController);
-
+        formDataUuid = "formDataUuid";
     }
 
     @Test
     public void shouldCreateEncounterEntityWithAppropriateValues() throws Exception {
         Date encounterDateTime = new Date();
-        Encounter encounter = observationParserUtility.getEncounterEntity(encounterDateTime, patient);
+        Encounter encounter = observationParserUtility.getEncounterEntity(encounterDateTime, patient,formDataUuid);
         assertTrue(encounter.getUuid().startsWith("encounterUuid"));
         assertThat(encounter.getEncounterType().getUuid(), is("encounterTypeForObservationsCreatedOnPhone"));
         assertThat(encounter.getProvider().getUuid(), is("providerForObservationsCreatedOnPhone"));

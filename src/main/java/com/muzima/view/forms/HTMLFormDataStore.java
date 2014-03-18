@@ -44,7 +44,7 @@ public class HTMLFormDataStore {
         if(status.equals(Constants.STATUS_INCOMPLETE)){
             return;
         }
-        getFormParser().createAndPersistObservations(jsonPayload);
+        getFormParser().createAndPersistObservations(jsonPayload,formData.getUuid());
     }
 
     public HTMLFormObservationCreator getFormParser(){
