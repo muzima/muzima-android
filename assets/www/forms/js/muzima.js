@@ -294,6 +294,7 @@ $(document).ready(function () {
         var prePopulateJSON = JSON.parse(prePopulateData);
         populateNonConceptFields(prePopulateJSON['patient'] || {});
         populateNonConceptFields(prePopulateJSON['encounter'] || {});
+        populateNonConceptFields(prePopulateJSON['consultation'] || {});
         populateNonConceptFields(prePopulateJSON['observation'] || {});
         populateObservations(prePopulateJSON['observation'] || {});
         console.timeEnd("Starting population");
@@ -307,12 +308,15 @@ $(document).ready(function () {
         var jsonResult = $.extend({}, serializeNonConceptElements(this), serializeConcepts(this), serializeNestedConcepts(this));
         var patient = {};
         var encounter = {};
+        var consultation = {};
         var observation = {};
         $.each(jsonResult, function (k, v) {
             if (k.indexOf('patient') === 0) {
                 patient[k] = v;
             } else if (k.indexOf('encounter') === 0) {
                 encounter[k] = v;
+            } else if (k.indexOf('consultation') === 0) {
+                consultation[k] = v;
             } else {
                 observation[k] = v;
             }
@@ -320,6 +324,7 @@ $(document).ready(function () {
         var finalResult = {};
         finalResult['patient'] = patient;
         finalResult['encounter'] = encounter;
+        finalResult['consultation'] = consultation;
         finalResult['observation'] = observation;
         return  finalResult;
     };

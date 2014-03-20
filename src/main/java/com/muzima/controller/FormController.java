@@ -430,6 +430,7 @@ public class FormController {
             List<FormData> allFormData = formService.getAllFormData(STATUS_COMPLETE);
 
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_DISCRIMINATOR_REGISTRATION), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_CONSULTATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_XML_DISCRIMINATOR_ENCOUNTER), result);
             return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_ENCOUNTER), result);
         } catch (IOException e) {
