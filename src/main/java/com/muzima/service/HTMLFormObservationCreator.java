@@ -44,8 +44,8 @@ public class HTMLFormObservationCreator {
         this.observationParserUtility = new ObservationParserUtility(conceptController);
     }
 
-    public void createAndPersistObservations(String jsonResponse) {
-        parseJSONResponse(jsonResponse);
+    public void createAndPersistObservations(String jsonResponse,String formDataUuid) {
+        parseJSONResponse(jsonResponse,formDataUuid);
         try {
             saveObservationsAndRelatedEntities();
         } catch (ConceptController.ConceptSaveException e) {
@@ -63,11 +63,11 @@ public class HTMLFormObservationCreator {
         return observations;
     }
 
-    private void parseJSONResponse(String jsonResponse) {
+    private void parseJSONResponse(String jsonResponse, String formDataUuid) {
         try {
             JSONObject responseJSON = new JSONObject(jsonResponse);
             patient = getPatient(responseJSON.getJSONObject("patient"));
-            encounter = createEncounter(responseJSON.getJSONObject("encounter"));
+            encounter = createEncounter(responseJSON.getJSONObject("encounter"),formDataUuid);
             observations = extractObservationFromJSONObject(responseJSON.getJSONObject("observation"));
         } catch (PatientController.PatientLoadException e) {
             Log.e(TAG, "Error while fetching Patient");
@@ -140,8 +140,8 @@ public class HTMLFormObservationCreator {
         return observation;
     }
 
-    private Encounter createEncounter(JSONObject encounterJSON) throws JSONException, ParseException {
-        return observationParserUtility.getEncounterEntity(parse(encounterJSON.getString("encounter.encounter_datetime")), patient);
+    private Encounter createEncounter(JSONObject encounterJSON, String formDataUuid) throws JSONException, ParseException {
+        return observationParserUtility.getEncounterEntity(parse(encounterJSON.getString("encounter.encounter_datetime")), patient,formDataUuid);
     }
 
     private Patient getPatient(JSONObject patient) throws JSONException, PatientController.PatientLoadException {

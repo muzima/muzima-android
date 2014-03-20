@@ -27,6 +27,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class FormParserTest {
 
     private FormParser formParser;
+    private String formDataUuid;
 
     @Mock
     private PatientController patientController;
@@ -40,6 +41,7 @@ public class FormParserTest {
     @Before
     public void setUp() {
         initMocks(this);
+        formDataUuid = "formDataUuid";
     }
 
     @Test
@@ -47,7 +49,7 @@ public class FormParserTest {
         String xml = readFile("xml/histo_xml_payload.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
 
-        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml,formDataUuid);
         assertThat(observations.size(), is(6));
     }
 
@@ -59,7 +61,7 @@ public class FormParserTest {
         String conceptName = "RETURN VISIT DATE";
         when(conceptController.getConceptByName(conceptName)).thenReturn(aConcept);
 
-        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml,formDataUuid);
         verify(conceptController).getConceptByName(conceptName);
         assertThat(observations.get(0).getConcept(), is(aConcept));
     }
@@ -74,7 +76,7 @@ public class FormParserTest {
         when(conceptController.getConceptByName("CERVIX")).thenReturn(observedConcept);
         when(aConcept.isCoded()).thenReturn(true);
 
-        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml,formDataUuid);
         Observation observation = observations.get(0);
         assertThat(observation.getValueCoded(), is(observedConcept));
     }
@@ -86,7 +88,7 @@ public class FormParserTest {
         Concept aConcept = mock(Concept.class);
         when(conceptController.getConceptByName(anyString())).thenReturn(aConcept);
 
-        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml,formDataUuid);
         assertThat(observations.size(), is(6));
         assertThat(observations.get(0).getValueText(), is("testing"));
         assertThat(observations.get(1).getValueText(), is("5963^SHORTNESS OF BREATH WITH EXERTION^99DCT"));
@@ -101,7 +103,7 @@ public class FormParserTest {
         Concept aConcept = mock(Concept.class);
         when(conceptController.getConceptByName(anyString())).thenReturn(aConcept);
 
-        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml,formDataUuid);
         assertThat(observations.size(), is(0));
     }
 
@@ -112,7 +114,7 @@ public class FormParserTest {
         Concept aConcept = mock(Concept.class);
         when(conceptController.getConceptByName("BODY PART")).thenReturn(aConcept);
 
-        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml,formDataUuid);
         assertThat(observations.size(), is(0));
     }
 
@@ -125,7 +127,7 @@ public class FormParserTest {
         when(aConcept.isNumeric()).thenReturn(true);
         when(aConcept.isPrecise()).thenReturn(false);
 
-        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml,formDataUuid);
         Observation observation = observations.get(0);
         assertThat(observation.getValueNumeric().intValue(), is(42));
     }
@@ -139,7 +141,7 @@ public class FormParserTest {
         when(aConcept.isNumeric()).thenReturn(true);
         when(aConcept.isPrecise()).thenReturn(false);
 
-        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml,formDataUuid);
         Observation observation = observations.get(1);
         assertThat(observation.getValueNumeric(), is(1.45));
     }
@@ -156,7 +158,7 @@ public class FormParserTest {
         when(conceptController.getConceptByName(observedConceptName)).thenReturn(null);
         when(aConcept.isCoded()).thenReturn(true);
 
-        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml,formDataUuid);
         Observation observation = observations.get(0);
         Concept actuallyObservedConcept = observation.getValueCoded();
         assertThat(actuallyObservedConcept.getName(), is(observedConceptName));
@@ -168,7 +170,7 @@ public class FormParserTest {
         String xml = readFile("xml/one_date_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
 
-        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml,formDataUuid);
         assertThat(observations.get(0).getUuid(), containsString("observationFromPhoneUuid"));
     }
 
@@ -177,7 +179,7 @@ public class FormParserTest {
         String xml = readFile("xml/one_date_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
 
-        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml,formDataUuid);
         assertThat(observations.get(0).getEncounter().getEncounterDatetime(), is(DateUtils.parse("2014-02-01")));
     }
 
@@ -186,7 +188,7 @@ public class FormParserTest {
         String xml = readFile("xml/one_date_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
 
-        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml,formDataUuid);
         assertThat(observations.get(0).getObservationDatetime(), is(DateUtils.parse("2014-02-01")));
     }
 
@@ -195,7 +197,7 @@ public class FormParserTest {
         String xml = readFile("xml/one_date_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
 
-        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml,formDataUuid);
         Person provider = observations.get(0).getEncounter().getProvider();
         assertThat(provider.getUuid(), is("providerForObservationsCreatedOnPhone"));
         assertThat(provider.getGender(), is("NA"));
@@ -209,7 +211,7 @@ public class FormParserTest {
         String xml = readFile("xml/one_date_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
 
-        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml,formDataUuid);
         Location location = observations.get(0).getEncounter().getLocation();
         assertThat(location.getUuid(), is("locationForObservationsCreatedOnPhone"));
         assertThat(location.getName(), is("Created On Phone"));
@@ -220,7 +222,7 @@ public class FormParserTest {
         String xml = readFile("xml/one_date_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
 
-        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml,formDataUuid);
         EncounterType encounterType = observations.get(0).getEncounter().getEncounterType();
         assertThat(encounterType.getUuid(), is("encounterTypeForObservationsCreatedOnPhone"));
         assertThat(encounterType.getName(), is("encounterTypeForObservationsCreatedOnPhone"));
@@ -231,7 +233,7 @@ public class FormParserTest {
         String xml = readFile("xml/one_date_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
 
-        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml,formDataUuid);
         final Encounter encounter = observations.get(0).getEncounter();
         assertThat(encounter.getEncounterDatetime(), is(DateUtils.parse("2014-02-01")));
         verify(encounterController).saveEncounter(encounter);
@@ -242,7 +244,7 @@ public class FormParserTest {
         String xml = readFile("xml/histo_xml_payload.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
 
-        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml,formDataUuid);
         verify(observationController).saveObservations(observations);
     }
 
@@ -254,7 +256,7 @@ public class FormParserTest {
         String patientUuid = "dd7963a8-1691-11df-97a5-7038c432aabf";
         when(patientController.getPatientByUuid(patientUuid)).thenReturn(patient);
 
-        List<Observation> observations = formParser.parseAndSaveObservations(xml);
+        List<Observation> observations = formParser.parseAndSaveObservations(xml,formDataUuid);
         verify(patientController).getPatientByUuid(patientUuid);
         assertThat(observations.get(0).getEncounter().getPatient(), is(patient));
         assertThat(observations.get(0).getPerson(), is((Person)patient));

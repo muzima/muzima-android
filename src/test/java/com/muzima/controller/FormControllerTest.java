@@ -3,6 +3,7 @@ package com.muzima.controller;
 import com.muzima.api.model.*;
 import com.muzima.api.service.FormService;
 import com.muzima.api.service.LastSyncTimeService;
+import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PatientService;
 import com.muzima.builder.FormBuilder;
 import com.muzima.builder.FormTemplateBuilder;
@@ -44,6 +45,7 @@ public class FormControllerTest {
     private FormService formService;
     private PatientService patientService;
     private LastSyncTimeService lastSyncTimeService;
+    private ObservationService observationService;
     private SntpService sntpService;
     private LastSyncTime lastSyncTime;
     private Date mockDate;
@@ -54,7 +56,8 @@ public class FormControllerTest {
         patientService = mock(PatientService.class);
         lastSyncTimeService = mock(LastSyncTimeService.class);
         sntpService = mock(SntpService.class);
-        formController = new FormController(formService, patientService, lastSyncTimeService, sntpService);
+        observationService = mock(ObservationService.class);
+        formController = new FormController(formService, patientService, lastSyncTimeService, sntpService,observationService);
         lastSyncTime = mock(LastSyncTime.class);
         mockDate = mock(Date.class);
     }

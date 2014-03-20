@@ -225,6 +225,8 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
 
     public void launchLoginActivity(boolean isFirstLaunch) {
         Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(LoginActivity.isFirstLaunch, isFirstLaunch);
         startActivity(intent);
         finish();

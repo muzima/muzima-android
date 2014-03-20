@@ -98,13 +98,13 @@ public class FormDataStoreTest {
         String xmlPayload = "xmldata";
         store.save("data", xmlPayload, Constants.STATUS_COMPLETE);
 
-        verify(formParser).parseAndSaveObservations(xmlPayload);
+        verify(formParser).parseAndSaveObservations(xmlPayload,formData.getUuid());
     }
 
     @Test
     public void shouldNotParseObservationsForIncompleteForm() throws ConceptController.ConceptSaveException, ParseException, XmlPullParserException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, IOException {
         store.save("data", "xmldata", Constants.STATUS_INCOMPLETE);
 
-        verify(formParser, times(0)).parseAndSaveObservations(anyString());
+        verify(formParser, times(0)).parseAndSaveObservations(anyString(),anyString());
     }
 }

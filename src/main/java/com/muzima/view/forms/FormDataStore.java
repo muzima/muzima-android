@@ -84,7 +84,7 @@ public class FormDataStore {
             return;
         }
         FormParser formParser = getFormParser();
-        formParser.parseAndSaveObservations(xmlData);
+        formParser.parseAndSaveObservations(xmlData,formData.getUuid());
     }
 
     public FormParser getFormParser() {

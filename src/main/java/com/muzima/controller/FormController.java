@@ -7,6 +7,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.api.model.*;
 import com.muzima.api.service.FormService;
 import com.muzima.api.service.LastSyncTimeService;
+import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PatientService;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.CompleteFormWithPatientData;
@@ -39,14 +40,17 @@ public class FormController {
     private PatientService patientService;
     private LastSyncTimeService lastSyncTimeService;
     private SntpService sntpService;
+    private ObservationService observationService;
     private Map<String, Integer> tagColors;
     private List<Tag> selectedTags;
 
-    public FormController(FormService formService, PatientService patientService, LastSyncTimeService lastSyncTimeService, SntpService sntpService) {
+    public FormController(FormService formService, PatientService patientService, LastSyncTimeService lastSyncTimeService, SntpService sntpService,
+                          ObservationService observationService) {
         this.formService = formService;
         this.patientService = patientService;
         this.lastSyncTimeService = lastSyncTimeService;
         this.sntpService = sntpService;
+        this.observationService = observationService;
         tagColors = new HashMap<String, Integer>();
         selectedTags = new ArrayList<Tag>();
     }
@@ -537,6 +541,7 @@ public class FormController {
             if (formService.syncFormData(formData)) {
                 formData.setStatus(STATUS_UPLOADED);
                 formService.saveFormData(formData);
+                observationService.deleteObservationsByFormData(formData.getUuid());
             } else {
                 result = false;
             }

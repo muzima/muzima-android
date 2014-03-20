@@ -22,6 +22,8 @@ public class DefaultMenuDropDownHelper {
     public void launchLoginActivity(boolean isFirstLaunch) {
         Intent intent = new Intent(activity, LoginActivity.class);
         intent.putExtra(LoginActivity.isFirstLaunch, isFirstLaunch);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
         activity.finish();
     }
