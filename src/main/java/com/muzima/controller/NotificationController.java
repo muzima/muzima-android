@@ -52,7 +52,7 @@ public class NotificationController {
             List<FormData> allFormData = formService.getFormDataByPatient(patientUuid, STATUS_UPLOADED);
             Form form;
             for (FormData formData : allFormData) {
-                Notification notification = notificationService.getNotificationByUuid(formData.getUuid());
+                Notification notification = notificationService.getNotificationBySource(formData.getUuid());
                 form = formService.getFormByUuid(formData.getTemplateUuid());
                 if (isConsultationForm(form) && notification != null) {
 

@@ -53,9 +53,9 @@ $(document).ready(function () {
     };
 
     $('.image_btn').click(function () {
-        var $elem_form_uuid = $("input[name='encounter.form_uuid']");
-        var $form_uuid = $elem_form_uuid.val();
-        imagingComponent.startImageIntent($(this).parent().find("input[type='text']").attr('name'), $form_uuid);
+        imagingComponent.startImageIntent($(this).parent().find("input[type='text']").attr('name'),
+            $(this).parent().find("input[type='text']").val(),
+            $("input[name='encounter.form_uuid']").val());
     });
 
     /*End- Imaging Functionality*/
@@ -172,8 +172,8 @@ $(document).ready(function () {
         var errors = {};
         var final_result = true;
         $.each(name_array, function (i, elem) {
-            var filedSetElem = $('fieldset[name="' + elem + '"]');
-            var result = isValidForNoneSelection(filedSetElem);
+            var fieldSetElem = $('fieldset[name="' + elem + '"]');
+            var result = isValidForNoneSelection(fieldSetElem);
             if (!result) {
                 errors[elem] = "If 'None' is selected, no other options can be selected.";
                 final_result = false;
@@ -354,15 +354,15 @@ $(document).ready(function () {
         var result = {};
         var parent_divs = $form.find('div[data-concept]');
         $.each(parent_divs, function (i, element) {
-            var $visibleConcepts = $(element).find('*[data-concept]:visible');
-            result = pushIntoArray(result, $(element).attr('data-concept'), jsonifyConcepts($visibleConcepts));
+            var $allConcepts = $(element).find('*[data-concept]');
+            result = pushIntoArray(result, $(element).attr('data-concept'), jsonifyConcepts($allConcepts));
         });
         return result;
     };
 
     var serializeConcepts = function ($form) {
         var o = {};
-        var allConcepts = $form.find('*[data-concept]:visible');
+        var allConcepts = $form.find('*[data-concept]');
         $.each(allConcepts, function (i, element) {
             if ($(element).closest('.section').attr('data-concept') == undefined) {
                 $.extend(o, jsonifyConcepts($(element)));
@@ -371,9 +371,9 @@ $(document).ready(function () {
         return o;
     };
 
-    var jsonifyConcepts = function ($visibleConcepts) {
+    var jsonifyConcepts = function ($allConcepts) {
         var o = {};
-        $.each($visibleConcepts, function (i, element) {
+        $.each($allConcepts, function (i, element) {
             o = pushIntoArray(o, $(element).attr('data-concept'), $(element).val());
         });
         return o;

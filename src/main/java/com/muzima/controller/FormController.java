@@ -272,7 +272,8 @@ public class FormController {
 
         try {
             FormData formData = formService.getFormDataByUuid(formDataUuid);
-            if (formData != null && StringUtil.equals(formData.getStatus(),STATUS_COMPLETE)) {
+            if (formData != null && (StringUtil.equals(formData.getStatus(),STATUS_UPLOADED)) ||
+                    StringUtil.equals(formData.getStatus(),STATUS_COMPLETE)){
                 Patient patient = patientService.getPatientByUuid(formData.getPatientUuid());
                 completeForm = new CompleteFormWithPatientDataBuilder()
                         .withForm(formService.getFormByUuid(formData.getTemplateUuid()))
@@ -537,9 +538,19 @@ public class FormController {
 
     boolean uploadFormDataToServer(List<FormData> allFormData, boolean result) throws IOException {
         for (FormData formData : allFormData) {
+            String rawPayload = formData.getJsonPayload();
+
+            // replace image paths with base64 string
             formData = replaceImagePathWithImageString(formData);
+
+            // inject consultation.sourceUuid
+            formData = injectUuidToPayload(formData);
+
             if (formService.syncFormData(formData)) {
                 formData.setStatus(STATUS_UPLOADED);
+
+                //DO NOT save base64 string in DB
+                formData.setJsonPayload(rawPayload);
                 formService.saveFormData(formData);
                 observationService.deleteObservationsByFormData(formData.getUuid());
             } else {
@@ -547,6 +558,22 @@ public class FormController {
             }
         }
         return result;
+    }
+
+    private static FormData injectUuidToPayload(FormData formData) {
+
+        if (StringUtil.equals(formData.getDiscriminator(), FORM_JSON_DISCRIMINATOR_CONSULTATION)) {
+            try {
+                String base = "consultation";
+                JSONParser jp =new JSONParser(JSONParser.MODE_PERMISSIVE);
+                JSONObject obj = (JSONObject)jp.parse(formData.getJsonPayload());
+                JsonUtils.replaceAsString(obj, base, "consultation.sourceUuid", formData.getUuid());
+                formData.setJsonPayload(obj.toJSONString());
+            } catch (net.minidev.json.parser.ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return formData;
     }
 
     private static FormData replaceImagePathWithImageString(FormData formData) {
@@ -565,7 +592,7 @@ public class FormController {
                     JsonUtils.replaceAsString(obj, holder, key, getStringImage(value));
                     formData.setJsonPayload(obj.toJSONString());
                 } catch (net.minidev.json.parser.ParseException e) {
-                    e.printStackTrace();
+                   e.printStackTrace();
                 }
             }
         }
@@ -580,7 +607,7 @@ public class FormController {
             if (f.exists()){
                 //convert image to Bitmap
                 Bitmap bmp = BitmapFactory.decodeFile(f.getAbsolutePath());
-                imageString = "image/jpeg:" + ImageUtils.getStringFromBitmap(bmp);
+                imageString = ImageUtils.getStringFromBitmap(bmp);
                 //ImageUtils.deleteImage(ctx, imageUri);
             }
         }

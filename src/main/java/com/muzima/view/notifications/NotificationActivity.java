@@ -70,6 +70,7 @@ public class NotificationActivity extends BaseActivity {
         notification.setStatus(Constants.NotificationStatusConstants.NOTIFICATION_READ);
         try {
             notificationController.saveNotification(notification);
+            System.out.println("Just marked as read");
         } catch (NotificationController.NotificationSaveException e) {
             Log.e(TAG, "Error updating notification " + e.getMessage());
         }
@@ -89,7 +90,8 @@ public class NotificationActivity extends BaseActivity {
     private void getNotificationForm() {
         FormController formController = ((MuzimaApplication) getApplicationContext()).getFormController();
         try {
-            completeFormWithPatientData = formController.getCompleteFormDataByUuid(notification.getUuid());
+            // use source to get form
+            completeFormWithPatientData = formController.getCompleteFormDataByUuid(notification.getSource());
         } catch (FormController.FormDataFetchException e) {
             Log.e(TAG, "Error getting form data " + e.getMessage());
         } catch (FormController.FormFetchException e) {

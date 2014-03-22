@@ -60,7 +60,7 @@ public class ImageUtils {
 	 */
 	public static String getStringFromBitmap(Bitmap bitmapPicture) {
 		if (bitmapPicture != null ){
-			final int COMPRESSION_QUALITY = 100;
+			final int COMPRESSION_QUALITY = 80;
 			String encodedImage;
 			ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
 			bitmapPicture.compress(Bitmap.CompressFormat.JPEG, COMPRESSION_QUALITY,

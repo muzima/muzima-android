@@ -54,15 +54,20 @@ public class ImagingIntent extends BaseActivity {
         setContentView(R.layout.activity_imaging);
         Intent i = getIntent();
         String formUuid = i.getStringExtra(ImagingComponent.FORM_UUID);
+        String imagePath = i.getStringExtra(KEY_IMAGE_PATH);
+
         if (!StringUtils.isEmpty(formUuid))
             IMAGE_FOLDER = APP_IMAGE_DIR + "/" + formUuid;
         else
             IMAGE_FOLDER = APP_IMAGE_DIR;
 
         if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey(KEY_IMAGE_PATH)) {
+            if (savedInstanceState.containsKey(KEY_IMAGE_PATH))
                 mBinaryName = savedInstanceState.getString(KEY_IMAGE_PATH);
-            }
+        } else {
+            File image = new File(imagePath);
+            if (image.exists())
+                mBinaryName = image.getName();
         }
         
         mSaveImageButton = (Button) findViewById(R.id.saveImage);
@@ -112,7 +117,6 @@ public class ImagingIntent extends BaseActivity {
             }
         });
         
-        // launch capture intent on click
         mSaveImageButton.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
@@ -208,28 +212,30 @@ public class ImagingIntent extends BaseActivity {
 
         ContentValues values;
         Uri imageURI;
+        String destImagePath = IMAGE_FOLDER + "/" + System.currentTimeMillis() + ".jpg";
+
         switch (requestCode) {
             case IMAGE_CAPTURE:
-                File newImage = new File(TMP_FILE_PATH);
+                File tmpCapturedImage = new File(TMP_FILE_PATH);
 
-                String s = IMAGE_FOLDER + "/" + System.currentTimeMillis() + ".jpg";
+                File capturedImage = new File(destImagePath);
 
-                File nf = new File(s);
-                if (!newImage.renameTo(nf)) {
-                    Log.e(t, "Failed to rename " + newImage.getAbsolutePath());
-                } else {
-                    Log.i(t, "renamed " + newImage.getAbsolutePath() + " to " + nf.getAbsolutePath());
+                if (ImageUtils.folderExists(IMAGE_FOLDER)) {
+                    if (!tmpCapturedImage.renameTo(capturedImage))
+                        Log.e(t, "Failed to rename " + tmpCapturedImage.getAbsolutePath());
+                    else
+                        Log.i(t, "renamed " + tmpCapturedImage.getAbsolutePath() + " to " + capturedImage.getAbsolutePath());
                 }
 
                 // Add the new image to the Media content provider so that the
                 // viewing is fast in Android 2.0+
                 values = new ContentValues(6);
-                mBinaryName = nf.getName();
+                mBinaryName = capturedImage.getName();
                 values.put(Images.Media.TITLE, mBinaryName);
                 values.put(Images.Media.DISPLAY_NAME, mBinaryName);
                 values.put(Images.Media.DATE_TAKEN, System.currentTimeMillis());
                 values.put(Images.Media.MIME_TYPE, "image/jpeg");
-                values.put(Images.Media.DATA, nf.getAbsolutePath());
+                values.put(Images.Media.DATA, capturedImage.getAbsolutePath());
 
                 imageURI = getContentResolver().insert(Images.Media.EXTERNAL_CONTENT_URI, values);
                 Log.i(t, "Inserting image returned uri = " + imageURI.toString());
@@ -252,10 +258,7 @@ public class ImagingIntent extends BaseActivity {
                     sourceImagePath = cursor.getString(column_index);
                 }
 
-                
                 // Copy file to sdcard
-                String destImagePath = IMAGE_FOLDER + "/" + System.currentTimeMillis() + ".jpg";
-
                 File source = new File(sourceImagePath);
                 File chosenImage = new File(destImagePath);
                 if (ImageUtils.folderExists(IMAGE_FOLDER))
@@ -284,7 +287,7 @@ public class ImagingIntent extends BaseActivity {
         }
     }
     
-    private static void copyFile(File sourceFile, File destFile) {
+    private static boolean copyFile(File sourceFile, File destFile) {
         if (sourceFile.exists()) {
             FileChannel src;
             try {
@@ -293,6 +296,7 @@ public class ImagingIntent extends BaseActivity {
                 dst.transferFrom(src, 0, src.size());
                 src.close();
                 dst.close();
+                return true;
             } catch (FileNotFoundException e) {
                 Log.e(t, "FileNotFoundException while copying file");
                 e.printStackTrace();
@@ -303,7 +307,7 @@ public class ImagingIntent extends BaseActivity {
         } else {
             Log.e(t, "Source file does not exist: " + sourceFile.getAbsolutePath());
         }
-
+        return false;
     }
     
     @SuppressLint("NewApi")
