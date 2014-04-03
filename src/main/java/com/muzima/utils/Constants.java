@@ -57,6 +57,8 @@ public class Constants {
             public static final int UPLOAD_ERROR = 12;
             public static final int MALFORMED_URL_ERROR = 13;
             public static final int INVALID_CREDENTIALS_ERROR = 14;
+            public static final int INVALID_CHARACTER_IN_USERNAME = 15;
+            public static final String INVALID_CHARACTER_FOR_USERNAME = ",;.-/@#$%&*+='\"|~`<>";
         }
     }
 }

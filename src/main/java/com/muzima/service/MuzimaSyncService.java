@@ -50,6 +50,10 @@ public class MuzimaSyncService {
 
         Context muzimaContext = muzimaApplication.getMuzimaContext();
         try {
+            if(hasInvalidSpecialCharacter(username)){
+                return INVALID_CHARACTER_IN_USERNAME;
+            }
+
             muzimaContext.openSession();
             if (!muzimaContext.isAuthenticated()) {
                 muzimaContext.authenticate(username, password, server);
@@ -74,6 +78,17 @@ public class MuzimaSyncService {
                 muzimaContext.closeSession();
         }
         return AUTHENTICATION_SUCCESS;
+    }
+
+    private boolean hasInvalidSpecialCharacter(String username) {
+        String invalidCharacters = INVALID_CHARACTER_FOR_USERNAME;
+        for(int i = 0; i < invalidCharacters.length(); i++){
+            String substring = invalidCharacters.substring(i, i+1);
+            if(username.contains(substring)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public int[] downloadForms() {

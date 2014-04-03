@@ -219,6 +219,8 @@ public class LoginActivity extends Activity {
                     return "Invalid Server URL.";
                 case INVALID_CREDENTIALS_ERROR:
                     return "Invalid Username, Password, Server combination.";
+                case INVALID_CHARACTER_IN_USERNAME:
+                    return "Invalid Character in Username. These are not allowed: " + INVALID_CHARACTER_FOR_USERNAME ;
                 case CONNECTION_ERROR:
                     return "Error while connecting your server.";
                 default:
