@@ -12,14 +12,19 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
+import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.User;
+import com.muzima.controller.CohortController;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.notifications.SyncNotificationsIntent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
@@ -247,9 +252,27 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
         User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
         if (authenticatedUser != null)   {
-            new SyncNotificationsIntent(this, authenticatedUser.getPerson().getUuid()).start();
+            // get downloaded cohorts and sync obs and encounters
+            List<String> downloadedCohortsUuid = null;
+            List<Cohort> downloadedCohorts;
+            CohortController cohortController = ((MuzimaApplication) getApplicationContext()).getCohortController();
+            try {
+                downloadedCohorts = cohortController.getSyncedCohorts();
+                downloadedCohortsUuid = new ArrayList<String>();
+                for (Cohort cohort : downloadedCohorts) {
+                    downloadedCohortsUuid.add(cohort.getUuid());
+                }
+
+            } catch (CohortController.CohortFetchException e) {
+                e.printStackTrace();
+            }
+            new SyncNotificationsIntent(this, authenticatedUser.getPerson().getUuid(), getDownloadedCohortsArray(downloadedCohortsUuid)).start();
         } else
             Toast.makeText(this, "Error downloading notifications", Toast.LENGTH_SHORT).show();
+    }
+
+    private String[] getDownloadedCohortsArray(List<String> CohortUuids) {
+        return CohortUuids.toArray(new String[CohortUuids.size()]);
     }
 
     public void onNotificationDownloadFinish() {

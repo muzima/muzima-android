@@ -20,6 +20,7 @@ $(document).ready(function () {
 
     var save = function (status) {
         var jsonData = JSON.stringify($('form').serializeEncounterForm());
+        console.log(jsonData);
         htmlDataStore.saveHTML(jsonData, status);
     };
     /* End - Function to save the form */
@@ -44,16 +45,20 @@ $(document).ready(function () {
     /*Start- Imaging Functionality*/
 
     /* Called by the Activity WebViewActivity*/
-    document.populateImage = function (jsonString) {
+    document.populateImage = function (sectionName, jsonString) {
+        var $parent = $('div[data-name="' + sectionName + '"]');
         $.each(jsonString, function (key, value) {
-            var $inputField = $("input[name='" + key + "']");
+            var $inputField = $parent.find("input[name='" + key + "']");
             $inputField.val(value);
             $inputField.trigger('change');  //Need this to trigger the event so image gets populated.
         })
     };
 
     $('.image_btn').click(function () {
-        imagingComponent.startImageIntent($(this).parent().find("input[type='text']").attr('name'),
+        imagingComponent.startImageIntent($(this).parent().parent().attr('data-name'),
+            $(this).parent().find("input[type='hidden']").attr('name'),
+            $(this).parent().find("input[type='hidden']").val(),
+            $(this).parent().find("input[type='text']").attr('name'),
             $(this).parent().find("input[type='text']").val(),
             $("input[name='encounter.form_uuid']").val());
     });
@@ -222,8 +227,31 @@ $(document).ready(function () {
         .append("<input class='btn btn-primary add_section pull-left' type='button' value='+'/>")
         .append("<input class='btn btn-primary remove_section pull-right' type='button' value='-'/><span class='clear'></span>");
 
+    /* Modified by Sam to create active cloned buttons and separate sections by data-name */
     $(document.body).on('click', '.add_section', function () {
-        $(this).parent().clone().insertAfter($(this).parent());
+        var $clonedSection = $(this).parent().clone(true).insertAfter($(this).parent());
+        var parentName = $clonedSection.attr("id");
+
+        /* Get largest suffix so far */
+        var _id = $(this).parent().attr('id');
+        var $repeatedSections = $("." + _id);
+        var suffixInt=0;
+        $.each($repeatedSections, function (i, repeatedSection) {
+            var idnr = $(repeatedSection).attr("data-name").match(/\d+$/);
+            if (parseInt(idnr) > parseInt(suffixInt)){
+                suffixInt= idnr;
+            }
+        });
+        if ( parseInt(suffixInt) == 0){
+            parentName += "1";
+        } else {
+            parentName +=  parseInt(suffixInt)+1;
+        }
+        $clonedSection.attr("data-name", parentName);
+
+        /* clear values on cloned fields */
+        $clonedSection.find("input[type='text']").val('');
+        $clonedSection.find("input[type='hidden']").val('');
     });
 
     $(document.body).on('click', '.remove_section', function () {

@@ -6,6 +6,15 @@
             style="@style/ObservationValue">
     </TextView>
 
+    <ImageView
+            android:id="@+id/observation_complex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="Complex Obs"
+            android:src="@android:drawable/ic_menu_gallery"
+            android:visibility="gone"/>
+
     <View
             android:id="@+id/divider"
             android:layout_width="match_parent"

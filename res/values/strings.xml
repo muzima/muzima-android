@@ -209,5 +209,9 @@
     <string name="title_activity_image">Add Image</string>
     <string name="capture_image">Capture Image</string>
     <string name="choose_image">Choose Image</string>
+    <string name="image_caption">Image Caption</string>
+    <string name="accept_image">Accept Image</string>
+    <string name="cancel">Cancel</string>
+    <string name="notification_view_encounter">View Encounter</string>
 
 </resources>

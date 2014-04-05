@@ -34,6 +34,14 @@ public class EncounterController {
         }
     }
 
+    public List<Encounter>  getEncountersByPatientUuid(String patientUuid) throws DownloadEncounterException{
+        try {
+            return encounterService.getEncountersByPatientUuid(patientUuid);
+        } catch (IOException e) {
+            throw new DownloadEncounterException(e);
+        }
+    }
+
     public List<Encounter> downloadEncountersByPatientUuids(List<String> patientUuids) throws DownloadEncounterException {
         try {
             String paramSignature = StringUtils.join(patientUuids, UUID_SEPARATOR);

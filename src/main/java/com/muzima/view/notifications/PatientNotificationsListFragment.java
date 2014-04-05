@@ -39,6 +39,7 @@ public class PatientNotificationsListFragment extends NotificationListFragment {
         Notification notification = (Notification) listAdapter.getItem(position);
         Intent notificationIntent = new Intent(getActivity(), NotificationActivity.class);
         notificationIntent.putExtra(NotificationActivity.NOTIFICATION, notification);
+        notificationIntent.putExtra(NotificationActivity.PATIENT, patient);
 
         startActivity(notificationIntent);
     }

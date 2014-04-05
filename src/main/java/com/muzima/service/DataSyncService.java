@@ -124,11 +124,15 @@ public class DataSyncService extends IntentService {
                 }
             case SYNC_NOTIFICATIONS:
                 String receiverUUid = intent.getStringExtra(RECEIVER_UUID);
+                String[] downloadedCohortIds = intent.getStringArrayExtra(COHORT_IDS);
                 updateNotificationMsg("Downloading Notifications for receiver " + receiverUUid);
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = muzimaSyncService.downloadNotifications(receiverUUid);
                     String msg = "Downloaded " + result[1] + " notifications";
                     prepareBroadcastMsg(broadcastIntent, result, msg);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+
+                    downloadObservationsAndEncounters(broadcastIntent, downloadedCohortIds);
                 }
             default:
                 break;

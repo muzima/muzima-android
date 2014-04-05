@@ -28,6 +28,7 @@ import com.muzima.model.FormWithData;
 import com.muzima.utils.Constants;
 import com.muzima.utils.barcode.IntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
+import com.muzima.utils.imaging.ImageResult;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 import org.json.JSONException;
@@ -65,6 +66,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     private ImagingComponent imagingComponent;
     private Map<String, String> scanResultMap;
     private Map<String, String> imageResultMap;
+    private String imageSectionName;
     private FormController formController;
 
     @Override
@@ -118,14 +120,17 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
 
     @Override
     protected void onResume() {
-        String jsonMap = new JSONObject(scanResultMap).toString();
-        Log.e(TAG, jsonMap);
-        webView.loadUrl("javascript:document.populateBarCode(" + jsonMap + ")");
+        if (scanResultMap != null && !scanResultMap.isEmpty()) {
+            String jsonMap = new JSONObject(scanResultMap).toString();
+            Log.d(TAG, jsonMap);
+            webView.loadUrl("javascript:document.populateBarCode(" + jsonMap + ")");
+        }
 
-        jsonMap = new JSONObject(imageResultMap).toString();
-        Log.e(TAG, jsonMap);
-        webView.loadUrl("javascript:document.populateImage(" + jsonMap + ")");
-        super.onResume();
+        if (imageResultMap != null && !imageResultMap.isEmpty()) {
+            String jsonMap = new JSONObject(imageResultMap).toString();
+            Log.d(TAG, "Header:" + imageSectionName + "json:" + jsonMap);
+            webView.loadUrl("javascript:document.populateImage('" + imageSectionName + "', " + jsonMap + ")");
+        }
     }
 
     @Override
@@ -167,9 +172,11 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             scanResultMap.put(barCodeComponent.getFieldName(), scanResult.getContents());
         }
 
-        String imageResult = ImagingComponent.parseActivityResult(requestCode, resultCode, intent);
+        ImageResult imageResult = ImagingComponent.parseActivityResult(requestCode, resultCode, intent);
         if (imageResult != null)  {
-            imageResultMap.put(imagingComponent.getFieldName(), imageResult);
+            imageSectionName =  imageResult.getSectionName();
+            imageResultMap.put(imagingComponent.getImagePathField(), imageResult.getImageUri());
+            imageResultMap.put(imagingComponent.getImageCaptionField(), imageResult.getImageCaption());
         }
     }
 

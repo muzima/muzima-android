@@ -20,6 +20,7 @@ import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
 import com.muzima.util.Constants;
+import com.muzima.utils.StringUtils;
 import com.muzima.view.forms.FormWebViewActivity;
 import com.muzima.view.preferences.MuzimaTimer;
 import org.acra.ACRA;
@@ -125,7 +126,9 @@ public class MuzimaApplication extends Application {
                     String username = credentials[0];
                     String password = credentials[1];
                     String server = credentials[2];
-                    muzimaContext.authenticate(username, password, server);
+                    if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password) && !StringUtils.isEmpty(server))
+                        muzimaContext.authenticate(username, password, server);
+
                     authenticatedUser = muzimaContext.getAuthenticatedUser();
                 }
             }

@@ -19,7 +19,9 @@ import com.muzima.util.JsonUtils;
 import com.muzima.utils.CustomColor;
 import com.muzima.utils.ImageUtils;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.imaging.EnDeCrypt;
 import com.muzima.view.forms.PatientJSONMapper;
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
 import org.apache.lucene.queryParser.ParseException;
@@ -43,6 +45,7 @@ public class FormController {
     private ObservationService observationService;
     private Map<String, Integer> tagColors;
     private List<Tag> selectedTags;
+    private String jsonPayload;
 
     public FormController(FormService formService, PatientService patientService, LastSyncTimeService lastSyncTimeService, SntpService sntpService,
                           ObservationService observationService) {
@@ -576,25 +579,47 @@ public class FormController {
         return formData;
     }
 
-    private static FormData replaceImagePathWithImageString(FormData formData) {
-        String holder = "observation";
-        String image_discriminator = ".jpg";
-        Object obsObjectList = JsonUtils.readAsObject(formData.getJsonPayload(), "$['" + holder + "']");
-        Object[] obsItemPairs = obsObjectList.toString().split("\",\"");
-        for (int i=0;i< obsItemPairs.length; i++) {
-            String item = (String) obsItemPairs[i];
-            if (item.contains(image_discriminator)){
-                String key = item.split(":")[0].replace("\"", "");
-                String value = item.split(":")[1].replace("\"", "");
-                JSONParser jp =new JSONParser(JSONParser.MODE_PERMISSIVE);
-                try {
-                    JSONObject obj = (JSONObject)jp.parse(formData.getJsonPayload());
-                    JsonUtils.replaceAsString(obj, holder, key, getStringImage(value));
-                    formData.setJsonPayload(obj.toJSONString());
-                } catch (net.minidev.json.parser.ParseException e) {
-                   e.printStackTrace();
+    private void traverseJson(JSONObject json) {
+        Iterator<String> keys = json.keySet().iterator();
+        while(keys.hasNext()){
+            String key = keys.next();
+            String val = null;
+            try{
+                Object obj =  JsonUtils.readAsObject(json.toJSONString(), "$['" + key + "']");
+                if (obj instanceof JSONArray){
+                    JSONArray arr = (JSONArray) obj;
+                    for (Object object : arr) {
+                        traverseJson((JSONObject) object);
+                    }
+                } else {
+                    traverseJson((JSONObject)obj);
                 }
+            }catch(Exception e){
+                val = json.get(key).toString();
             }
+
+            if(val != null)
+                replaceImagePathWithImage(key, val);
+        }
+    }
+
+    private void replaceImagePathWithImage(String key, String value){
+        String image_discriminator = ".jpg";
+        if (value.contains(image_discriminator)) {
+            String keyValPair = "\"" + key + "\":\"" + value + "\"";
+            String keyValPairReplace = "\"" + key + "\":\"" + getStringImage(value) + "\"";
+            jsonPayload = jsonPayload.replace(keyValPair, keyValPairReplace);
+        }
+    }
+
+    private FormData replaceImagePathWithImageString(FormData formData) {
+        try {
+            jsonPayload = formData.getJsonPayload();
+            JSONParser jp =new JSONParser(JSONParser.MODE_PERMISSIVE);
+            traverseJson((JSONObject) jp.parse(jsonPayload));
+            formData.setJsonPayload(jsonPayload);
+        } catch (net.minidev.json.parser.ParseException e) {
+           e.printStackTrace();
         }
         return formData;
     }
@@ -605,16 +630,20 @@ public class FormController {
             //fetch the image and convert it to @Base64 encoded string. Delete the image
             File f = new File(imageUri) ;
             if (f.exists()){
-                //convert image to Bitmap
+
+                // here the image is encrypted so we decrypt it
+                EnDeCrypt.decrypt(f, "this-is-supposed-to-be-a-secure-key");
+
+                //convert the decrypted image to string
                 Bitmap bmp = BitmapFactory.decodeFile(f.getAbsolutePath());
                 imageString = ImageUtils.getStringFromBitmap(bmp);
-                //ImageUtils.deleteImage(ctx, imageUri);
+
+                // and encrypt again
+                EnDeCrypt.encrypt(f, "this-is-supposed-to-be-a-secure-key");
             }
         }
         return imageString;
     }
-
-
 
     private FormData replaceVideoPathWithVideo(FormData formData) {
        return null;

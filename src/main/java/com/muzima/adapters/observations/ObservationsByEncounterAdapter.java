@@ -4,6 +4,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.muzima.R;
@@ -12,8 +13,10 @@ import com.muzima.api.model.Observation;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.EncounterWithObservations;
+import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.StringUtils;
 
 public class ObservationsByEncounterAdapter extends ObservationsAdapter<EncounterWithObservations> {
     public ObservationsByEncounterAdapter(FragmentActivity activity, int item_observation_list, ConceptController conceptController, ObservationController observationController) {
@@ -80,10 +83,20 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
             View divider = layout.findViewById(R.id.divider1);
             divider.setBackgroundColor(conceptColor);
 
+            String observationConceptType = observation.getConcept().getConceptType().getName();
+
             TextView observationValue = (TextView) layout.findViewById(R.id.observation_value);
-            observationValue.setText(observation.getValueAsString());
-            observationValue.setTypeface(Fonts.roboto_medium(getContext()));
-            observationValue.setTextColor(conceptColor);
+            ImageView observationComplexHolder = (ImageView) layout.findViewById(R.id.observation_complex);
+            if (StringUtil.equals(observationConceptType, "Complex")){
+                observationValue.setVisibility(View.GONE);
+                observationComplexHolder.setVisibility(View.VISIBLE);
+            } else {
+                observationValue.setVisibility(View.VISIBLE);
+                observationComplexHolder.setVisibility(View.GONE);
+                observationValue.setText(observation.getValueAsString());
+                observationValue.setTypeface(Fonts.roboto_medium(getContext()));
+                observationValue.setTextColor(conceptColor);
+            }
 
             View divider2 = layout.findViewById(R.id.divider2);
             divider2.setBackgroundColor(conceptColor);

@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.muzima.R;
@@ -39,14 +40,19 @@ public class ImagingIntent extends BaseActivity {
     public static final int IMAGE_CHOOSER = 2;
     
     public static final String KEY_IMAGE_PATH = "imagePath";
+    public static final String KEY_IMAGE_CAPTION = "imageCaption";
+    public static final String KEY_SECTION_NAME = "sectionName";
     private String IMAGE_FOLDER;
 
-    private Button mChooseButton;
-    private Button mCaptureButton;
-    private Button mSaveImageButton;
     private ImageView mImagePreview;
+    private EditText mImageCaption;
+    private View mCaptionContainer;
+    private View mImageAcceptContainer;
+    private View mImageCaptureContainer;
     
+    private String mSectionName;
     private String mBinaryName;
+    private String mBinaryDescription;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,8 +61,10 @@ public class ImagingIntent extends BaseActivity {
         Intent i = getIntent();
         String formUuid = i.getStringExtra(ImagingComponent.FORM_UUID);
         String imagePath = i.getStringExtra(KEY_IMAGE_PATH);
+        mBinaryDescription  = i.getStringExtra(KEY_IMAGE_CAPTION);
+        mSectionName = i.getStringExtra(KEY_SECTION_NAME);
 
-        if (!StringUtils.isEmpty(formUuid))
+        if (formUuid != null)
             IMAGE_FOLDER = APP_IMAGE_DIR + "/" + formUuid;
         else
             IMAGE_FOLDER = APP_IMAGE_DIR;
@@ -64,79 +72,86 @@ public class ImagingIntent extends BaseActivity {
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(KEY_IMAGE_PATH))
                 mBinaryName = savedInstanceState.getString(KEY_IMAGE_PATH);
+
+            if (savedInstanceState.containsKey(KEY_IMAGE_CAPTION))
+                mBinaryDescription = savedInstanceState.getString(KEY_IMAGE_CAPTION);
+
+            if (savedInstanceState.containsKey(KEY_SECTION_NAME))
+                mSectionName = savedInstanceState.getString(KEY_SECTION_NAME);
+
         } else {
-            File image = new File(imagePath);
-            if (image.exists())
-                mBinaryName = image.getName();
-        }
-        
-        mSaveImageButton = (Button) findViewById(R.id.saveImage);
-        mImagePreview = (ImageView) findViewById(R.id.imagePreview);
-        mCaptureButton = (Button) findViewById(R.id.imageCapture);
-        mCaptureButton.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				
-				Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                // We give the camera an absolute filename/path where to put the
-                // picture because of bug:
-                // http://code.google.com/p/android/issues/detail?id=1480
-                // The bug appears to be fixed in Android 2.0+, but as of feb 2,
-                // 2010, G1 phones only run 1.6. Without specifying the path the
-                // images returned by the camera in 1.6 (and earlier) are ~1/4
-                // the size. boo.
-
-                i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,
-                    Uri.fromFile(new File(TMP_FILE_PATH)));
-                try {
-                    startActivityForResult(i,IMAGE_CAPTURE);
-                } catch (ActivityNotFoundException e) {
-                    Toast.makeText(getApplicationContext(),"image capture", Toast.LENGTH_SHORT).show();
-                }
-			}
-		});
-        
-        // setup chooser button
-        mChooseButton = (Button) findViewById(R.id.chooseImage);
-
-        // launch capture intent on click
-        mChooseButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                i.setType("image/*");
-
-                try {
-                    startActivityForResult(i,IMAGE_CHOOSER);
-                } catch (ActivityNotFoundException e) {
-                    Toast.makeText(getApplicationContext(),"Activity not found choose image",
-                        Toast.LENGTH_SHORT).show();
-                }
-
+            if (imagePath != null) {
+                File image = new File(imagePath);
+                if (image.exists())
+                    mBinaryName = image.getName();
             }
-        });
-        
-        mSaveImageButton.setOnClickListener(new OnClickListener() {
-        	@Override
-        	public void onClick(View v) {
-        		String imageUri = IMAGE_FOLDER + "/" + mBinaryName;
-                if (mBinaryName != null) {
-                    Intent i = new Intent();
-                    i.putExtra("IMAGE_URI", imageUri);
-                    setResult(RESULT_OK, i);
-                }
-                finish();
-        	}
-        });
-        
+        }
+
+        mImagePreview = (ImageView) findViewById(R.id.imagePreview);
+        mImageCaption = (EditText) findViewById(R.id.imageCaption);
+        mCaptionContainer = findViewById(R.id.captionContainer);
+        mImageAcceptContainer =  findViewById(R.id.imageAcceptContainer);
+        mImageCaptureContainer = findViewById(R.id.imageCaptureContainer);
+
         refreshImageView();
+    }
+    public void acceptImage(View view) {
+        String caption = mImageCaption.getText().toString();
+
+        if (caption == null || caption.length() < 1){
+            Toast.makeText(getApplicationContext(),"Please enter a caption for the image", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String imageUri = IMAGE_FOLDER + "/" + mBinaryName;
+        if (mBinaryName != null) {
+            Intent i = new Intent();
+            i.putExtra(KEY_SECTION_NAME, mSectionName);
+            i.putExtra(KEY_IMAGE_PATH, imageUri);
+            i.putExtra(KEY_IMAGE_CAPTION, caption);
+            setResult(RESULT_OK, i);
+        }
+        finish();
+    }
+
+    public void rejectImage(View view) {
+        mBinaryName=null;
+        mImagePreview.setImageResource(R.drawable.user_pic);
+        mImagePreview.getLayoutParams().height = (int) (150);
+        mImagePreview.getLayoutParams().width = (int) (120);
+        refreshImageView();
+    }
+
+    public void captureImage(View view) {
+        Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+
+        i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,
+                Uri.fromFile(new File(TMP_FILE_PATH)));
+        try {
+            startActivityForResult(i,IMAGE_CAPTURE);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(getApplicationContext(),"image capture", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void chooseImage(View view) {
+        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+        i.setType("image/*");
+
+        try {
+            startActivityForResult(i,IMAGE_CHOOSER);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(getApplicationContext(),"Activity not found choose image",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
     
     @Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
+		outState.putString(KEY_SECTION_NAME, mSectionName);
 		outState.putString(KEY_IMAGE_PATH, mBinaryName);
+		outState.putString(KEY_IMAGE_CAPTION, mBinaryDescription);
 	}
 
 	private void refreshImageView() {
@@ -198,7 +213,30 @@ public class ImagingIntent extends BaseActivity {
                     c.close();
                 }
             });
-        } 
+            // show accept view
+            mImageAcceptContainer.setVisibility(View.VISIBLE);
+
+            // show caption view
+            mCaptionContainer.setVisibility(View.VISIBLE);
+
+            //hide capture view
+            mImageCaptureContainer.setVisibility(View.GONE);
+
+            if (mBinaryDescription != null)
+                mImageCaption.setText(mBinaryDescription);
+
+        } else {
+            //no image do allot here
+            // show accept view
+            mImageAcceptContainer.setVisibility(View.GONE);
+
+            // show caption view
+            mCaptionContainer.setVisibility(View.GONE);
+
+            //hide capture view
+            mImageCaptureContainer.setVisibility(View.VISIBLE);
+
+        }
     }
 
 	@Override
@@ -223,23 +261,23 @@ public class ImagingIntent extends BaseActivity {
                 if (ImageUtils.folderExists(IMAGE_FOLDER)) {
                     if (!tmpCapturedImage.renameTo(capturedImage))
                         Log.e(t, "Failed to rename " + tmpCapturedImage.getAbsolutePath());
-                    else
+                    else {
                         Log.i(t, "renamed " + tmpCapturedImage.getAbsolutePath() + " to " + capturedImage.getAbsolutePath());
+                        // Add the new image to the Media content provider so that the
+                        // viewing is fast in Android 2.0+
+                        values = new ContentValues(6);
+                        mBinaryName = capturedImage.getName();
+                        values.put(Images.Media.TITLE, mBinaryName);
+                        values.put(Images.Media.DISPLAY_NAME, mBinaryName);
+                        values.put(Images.Media.DATE_TAKEN, System.currentTimeMillis());
+                        values.put(Images.Media.MIME_TYPE, "image/jpeg");
+                        values.put(Images.Media.DATA, capturedImage.getAbsolutePath());
+
+                        imageURI = getContentResolver().insert(Images.Media.EXTERNAL_CONTENT_URI, values);
+                        Log.i(t, "Inserting image returned uri = " + imageURI.toString());
+                        refreshImageView();
+                    }
                 }
-
-                // Add the new image to the Media content provider so that the
-                // viewing is fast in Android 2.0+
-                values = new ContentValues(6);
-                mBinaryName = capturedImage.getName();
-                values.put(Images.Media.TITLE, mBinaryName);
-                values.put(Images.Media.DISPLAY_NAME, mBinaryName);
-                values.put(Images.Media.DATE_TAKEN, System.currentTimeMillis());
-                values.put(Images.Media.MIME_TYPE, "image/jpeg");
-                values.put(Images.Media.DATA, capturedImage.getAbsolutePath());
-
-                imageURI = getContentResolver().insert(Images.Media.EXTERNAL_CONTENT_URI, values);
-                Log.i(t, "Inserting image returned uri = " + imageURI.toString());
-                refreshImageView();
 
                 break;
             case IMAGE_CHOOSER:
@@ -309,17 +347,16 @@ public class ImagingIntent extends BaseActivity {
         }
         return false;
     }
-    
+
     @SuppressLint("NewApi")
     private void resizeImageView() {
         int width, height;
-
         Display display = getWindowManager().getDefaultDisplay();
         if (android.os.Build.VERSION.SDK_INT >= 13) {
-             Point size = new Point();
-             display.getSize(size);
-             width = size.x;
-             height = size.y;
+            Point size = new Point();
+            display.getSize(size);
+            width = size.x;
+            height = size.y;
         } else {
             width = display.getWidth();  // @deprecated
             height = display.getHeight();  // @deprecated
@@ -330,10 +367,8 @@ public class ImagingIntent extends BaseActivity {
             mImagePreview.getLayoutParams().height = (int) (width * 0.8);
             mImagePreview.getLayoutParams().width = (int) (width * 0.8);
         } else {
-        	mImagePreview.getLayoutParams().height = (int) (height * 0.6);
-        	mImagePreview.getLayoutParams().width = (int) (height * 0.6);
+            mImagePreview.getLayoutParams().height = (int) (height * 0.58);
+            mImagePreview.getLayoutParams().width = (int) (height * 0.58);
         }
     }
-    
-    
 }

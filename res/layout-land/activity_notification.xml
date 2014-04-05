@@ -42,10 +42,10 @@
             style="@style/LoginButtonLayout">
 
             <Button
-                    android:id="@+id/viewNotificationForm"
-                    android:text="View Form"
+                    android:id="@+id/viewEncounter"
+                    android:text="@string/notification_view_encounter"
                     style="@style/LoginButton"
-                    android:onClick="formView"/>
+                    android:onClick="encounterView"/>
 
         </FrameLayout>
 
