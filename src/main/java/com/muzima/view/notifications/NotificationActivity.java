@@ -100,7 +100,7 @@ public class NotificationActivity extends BaseActivity {
             List<Encounter> encounters = encounterController.getEncountersByPatientUuid(patient.getUuid());
             for (Encounter encounter : encounters) {
                 String formDataUuid = encounter.getFormDataUuid();
-                if (formDataUuid != null && formDataUuid.equals(notification.getUuid()))
+                if (formDataUuid != null && formDataUuid.equals(notification.getSource()))
                     notificationEncounter =  encounter;
             }
         } catch (EncounterController.DownloadEncounterException e) {
