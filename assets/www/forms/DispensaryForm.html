@@ -1370,8 +1370,15 @@ $(document).ready(function () {
             return false;
         }
     });
+    $('#encounter\\.provider_id_select').change(function(){
+        if($('#encounter\\.provider_id_select').val() == ''){
+            $('#encounter\\.provider_id').val('');
+            $('.show_provider_id_text').show();
+        }
+    });
     /* Start - Checking that the diastolic blood pressure is less than the systolic blood pressure */
     $.validator.addMethod("lessThankSystolic", function (value, element) {
+                if($.fn.isNotRequiredAndEmpty(value,element)) return true;
                 var systolicBloodPressure = parseInt($(element).closest('.section').find('.systolicBloodPressure').val());
                 return (parseInt(value) <= systolicBloodPressure);
             }, "DBP cannot be more than Systolic Blood Pressure."

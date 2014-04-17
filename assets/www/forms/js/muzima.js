@@ -92,6 +92,10 @@ $(document).ready(function () {
 
     /* End - CheckDigit Algorithm */
 
+    $.fn.isNotRequiredAndEmpty = function(value,element){
+        if(!$(element).attr('required') && value == '') return true;
+    };
+
     // attach 'checkDigit' class to perform validation.
     jQuery.validator.addClassRules({
         checkDigit: { checkDigit: true }
@@ -100,6 +104,7 @@ $(document).ready(function () {
     /* Start - Checking that the current date is not in the future */
 
     $.validator.addMethod("nonFutureDate", function (value, element) {
+            if($.fn.isNotRequiredAndEmpty(value,element)) return true;
             var enteredDate = new Date(value);
             var today = new Date();
             return enteredDate <= today;
@@ -117,6 +122,7 @@ $(document).ready(function () {
     /* Start - Checking that the current date is in the future */
 
     $.validator.addMethod("checkFutureDate", function (value, element) {
+            if($.fn.isNotRequiredAndEmpty(value,element)) return true;
             var enteredDate = new Date(value);
             var today = new Date();
             return enteredDate > today;
@@ -134,6 +140,7 @@ $(document).ready(function () {
     /* Start - Checking that the entered value is a valid phone number */
 
     $.validator.addMethod("phoneNumber", function (value, element) {
+            if($.fn.isNotRequiredAndEmpty(value,element)) return true;
             var inputLength = value.length;
             return inputLength >= 8 && inputLength <= 12;
         }, "Invalid Phone Number. Please check and re-enter."
