@@ -1541,7 +1541,7 @@ $(document).ready(function () {
         return weight / (height * height);
     };
 
-    $weight.change(displayBMI());
+    $weight.change(displayBMI);
     $weight.trigger('change');
 
     $height.change(displayBMI);
