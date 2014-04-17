@@ -38,7 +38,7 @@ public class BaseFragmentActivity extends SherlockFragmentActivity {
         super.onResume();
         ((MuzimaApplication) getApplication()).setCurrentActivity(this);
         if (new Credentials(this).isEmpty()) {
-            dropDownHelper.launchLoginActivity(true);
+            dropDownHelper.launchLoginActivity(false);
         }
     }
 
