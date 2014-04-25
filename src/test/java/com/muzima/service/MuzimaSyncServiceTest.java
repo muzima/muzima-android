@@ -25,7 +25,9 @@ import static com.muzima.utils.Constants.COHORT_PREFIX_PREF_KEY;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
@@ -94,6 +96,146 @@ public class MuzimaSyncServiceTest {
         muzimaSyncService.authenticate(credentials);
 
         verify(muzimaContext).closeSession();
+    }
+
+    @Test
+    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsenameContainsComma() throws Exception {
+        String[] credentials = new String[]{"username,", "password", "url"};
+
+        assertThat(muzimaSyncService.authenticate(credentials), is(INVALID_CHARACTER_IN_USERNAME));
+    }
+
+    @Test
+    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsSemiColon() throws Exception {
+        String[] credentials = {"username;", "password", "url"};
+
+        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+    }
+
+    @Test
+    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsDot(){
+        String[] credentials = {"username.", "password", "url"};
+
+        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+    }
+
+    @Test
+    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsMinus(){
+        String[] credentials = {"username-", "password", "url"};
+
+        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+    }
+
+    @Test
+    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsForwardSlash(){
+        String[] credentials = {"username/", "password", "url"};
+
+        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+    }
+
+    @Test
+    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsAtSign(){
+        String[] credentials = {"username@", "password", "url"};
+
+        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+    }
+
+    @Test
+    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsAshSign(){
+        String[] credentials = {"username#", "password", "url"};
+
+        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+    }
+
+    @Test
+    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsDollarSign(){
+        String[] credentials = {"username$", "password", "url"};
+
+        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+    }
+
+    @Test
+    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsPercentageSign(){
+        String[] credentials = {"username%", "password", "url"};
+
+        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+    }
+
+    @Test
+    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsAndSign(){
+        String[] credentials = {"username&", "password", "url"};
+
+        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+    }
+
+    @Test
+    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsStarSign(){
+        String[] credentials = {"username*", "password", "url"};
+
+        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+    }
+
+    @Test
+    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsPlusSign(){
+        String[] credentials = {"username+", "password", "url"};
+
+        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+    }
+
+    @Test
+    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsEqualSign(){
+        String[] credentials = {"username=", "password", "url"};
+
+        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+    }
+
+    @Test
+    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsSingleQuote(){
+        String[] credentials = {"username'", "password", "url"};
+
+        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+    }
+
+    @Test
+    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsDoubleQuote(){
+        String[] credentials = {"username\"", "password", "url"};
+
+        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+    }
+
+    @Test
+    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsPipe(){
+        String[] credentials = {"username|", "password", "url"};
+
+        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+    }
+
+    @Test
+    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsTilde(){
+        String[] credentials = {"username~", "password", "url"};
+
+        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+    }
+
+    @Test
+    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsRevertedQuote(){
+        String[] credentials = {"username`", "password", "url"};
+
+        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+    }
+
+    @Test
+    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsRightAngleBracket(){
+        String[] credentials = {"username<", "password", "url"};
+
+        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+    }
+
+    @Test
+    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsLeftAngleBracket(){
+        String[] credentials = {"username>", "password", "url"};
+
+        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
     }
 
     @Test

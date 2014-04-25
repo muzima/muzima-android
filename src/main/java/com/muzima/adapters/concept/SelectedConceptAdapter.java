@@ -68,6 +68,7 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
             return new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    view.setClickable(false);
                     remove(getItem(position));
                 }
             };
