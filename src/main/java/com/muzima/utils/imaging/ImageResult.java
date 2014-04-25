@@ -2,8 +2,6 @@ package com.muzima.utils.imaging;
 
 public final class ImageResult {
 
-
-
     private final String sectionName;
     private final String imageUri;
     private final String imageCaption;
@@ -38,5 +36,4 @@ public final class ImageResult {
         dialogText.append("ImageCaption: ").append(imageCaption).append('\n');
         return dialogText.toString();
     }
-
 }

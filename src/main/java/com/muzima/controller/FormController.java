@@ -3,7 +3,6 @@ package com.muzima.controller;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
-import com.muzima.MuzimaApplication;
 import com.muzima.api.model.*;
 import com.muzima.api.service.FormService;
 import com.muzima.api.service.LastSyncTimeService;
@@ -17,9 +16,9 @@ import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.SntpService;
 import com.muzima.util.JsonUtils;
 import com.muzima.utils.CustomColor;
-import com.muzima.utils.ImageUtils;
+import com.muzima.utils.MediaUtils;
 import com.muzima.utils.StringUtils;
-import com.muzima.utils.imaging.EnDeCrypt;
+import com.muzima.utils.EnDeCrypt;
 import com.muzima.view.forms.PatientJSONMapper;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -636,7 +635,7 @@ public class FormController {
 
                 //convert the decrypted image to string
                 Bitmap bmp = BitmapFactory.decodeFile(f.getAbsolutePath());
-                imageString = ImageUtils.getStringFromBitmap(bmp);
+                imageString = MediaUtils.getStringFromBitmap(bmp);
 
                 // and encrypt again
                 EnDeCrypt.encrypt(f, "this-is-supposed-to-be-a-secure-key");

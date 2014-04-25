@@ -9,27 +9,23 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
+import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.muzima.R;
-import com.muzima.utils.ImageUtils;
-import com.muzima.utils.StringUtils;
+import com.muzima.utils.MediaUtils;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.forms.ImagingComponent;
-
 import java.io.*;
-import java.nio.channels.FileChannel;
-
 import static com.muzima.utils.Constants.APP_IMAGE_DIR;
 import static com.muzima.utils.Constants.TMP_FILE_PATH;
 
@@ -65,7 +61,7 @@ public class ImagingIntent extends BaseActivity {
         mSectionName = i.getStringExtra(KEY_SECTION_NAME);
 
         if (formUuid != null)
-            IMAGE_FOLDER = APP_IMAGE_DIR + "/" + formUuid;
+            IMAGE_FOLDER = APP_IMAGE_DIR + File.separator + formUuid;
         else
             IMAGE_FOLDER = APP_IMAGE_DIR;
 
@@ -103,7 +99,7 @@ public class ImagingIntent extends BaseActivity {
             return;
         }
 
-        String imageUri = IMAGE_FOLDER + "/" + mBinaryName;
+        String imageUri = IMAGE_FOLDER + File.separator + mBinaryName;
         if (mBinaryName != null) {
             Intent i = new Intent();
             i.putExtra(KEY_SECTION_NAME, mSectionName);
@@ -135,10 +131,16 @@ public class ImagingIntent extends BaseActivity {
     }
 
     public void chooseImage(View view) {
-        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-        i.setType("image/*");
+        Intent i;
+        final boolean isKitKat = Build.VERSION.SDK_INT >= 19;
+
+        if (isKitKat)
+            i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        else
+            i = new Intent(Intent.ACTION_GET_CONTENT);
 
         try {
+            i.setType("image/*");
             startActivityForResult(i,IMAGE_CHOOSER);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(getApplicationContext(),"Activity not found choose image",
@@ -166,10 +168,10 @@ public class ImagingIntent extends BaseActivity {
             int screenWidth = display.getWidth();
             int screenHeight = display.getHeight();
 
-            File f = new File(IMAGE_FOLDER + "/" + mBinaryName);
+            File f = new File(IMAGE_FOLDER + File.separator + mBinaryName);
 
             if (f.exists()) {
-                Bitmap bmp = ImageUtils.getBitmapScaledToDisplay(f, screenHeight, screenWidth);
+                Bitmap bmp = MediaUtils.getBitmapScaledToDisplay(f, screenHeight, screenWidth);
                 mImagePreview.setImageBitmap(bmp);
             } else {
                 mImagePreview.setImageBitmap(null);
@@ -187,7 +189,7 @@ public class ImagingIntent extends BaseActivity {
                         getApplicationContext().getContentResolver()
                                 .query(
                                     Images.Media.EXTERNAL_CONTENT_URI,
-                                    projection, "_data='" + IMAGE_FOLDER + "/" + mBinaryName + "'",
+                                    projection, "_data='" + IMAGE_FOLDER + File.separator + mBinaryName + "'",
                                     null, null);
                     if (c.getCount() > 0) {
                         c.moveToFirst();
@@ -250,7 +252,7 @@ public class ImagingIntent extends BaseActivity {
 
         ContentValues values;
         Uri imageURI;
-        String destImagePath = IMAGE_FOLDER + "/" + System.currentTimeMillis() + ".jpg";
+        String destImagePath = IMAGE_FOLDER + File.separator + System.currentTimeMillis() + ".jpg";
 
         switch (requestCode) {
             case IMAGE_CAPTURE:
@@ -258,7 +260,7 @@ public class ImagingIntent extends BaseActivity {
 
                 File capturedImage = new File(destImagePath);
 
-                if (ImageUtils.folderExists(IMAGE_FOLDER)) {
+                if (MediaUtils.folderExists(IMAGE_FOLDER)) {
                     if (!tmpCapturedImage.renameTo(capturedImage))
                         Log.e(t, "Failed to rename " + tmpCapturedImage.getAbsolutePath());
                     else {
@@ -283,24 +285,28 @@ public class ImagingIntent extends BaseActivity {
             case IMAGE_CHOOSER:
                 String sourceImagePath = null;
                 Uri selectedImage = intent.getData();
+                System.out.println("selectedImage=" + selectedImage);
                 if (selectedImage.toString().startsWith("file")) {
+                    System.out.println("Inside if part");
                     sourceImagePath = selectedImage.toString().substring(6);
                 } else {
+                    System.out.println("Inside Else Part");
                     String[] projection = {
-                        Images.Media.DATA
+                            MediaStore.Images.Media.DATA
                     };
                     Cursor cursor = managedQuery(selectedImage, projection, null, null, null);
                     startManagingCursor(cursor);
-                    int column_index = cursor.getColumnIndexOrThrow(Images.Media.DATA);
+                    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                     cursor.moveToFirst();
                     sourceImagePath = cursor.getString(column_index);
                 }
+                System.out.println("After if-else, sourceImagePath=" + sourceImagePath);
 
                 // Copy file to sdcard
                 File source = new File(sourceImagePath);
                 File chosenImage = new File(destImagePath);
-                if (ImageUtils.folderExists(IMAGE_FOLDER))
-                	copyFile(source, chosenImage);
+                if (MediaUtils.folderExists(IMAGE_FOLDER))
+                	MediaUtils.copyFile(source, chosenImage);
                 
                 if (chosenImage.exists()) {
                     // Add the new image to the Media content provider so that the
@@ -325,30 +331,6 @@ public class ImagingIntent extends BaseActivity {
         }
     }
     
-    private static boolean copyFile(File sourceFile, File destFile) {
-        if (sourceFile.exists()) {
-            FileChannel src;
-            try {
-                src = new FileInputStream(sourceFile).getChannel();
-                FileChannel dst = new FileOutputStream(destFile).getChannel();
-                dst.transferFrom(src, 0, src.size());
-                src.close();
-                dst.close();
-                return true;
-            } catch (FileNotFoundException e) {
-                Log.e(t, "FileNotFoundException while copying file");
-                e.printStackTrace();
-            } catch (IOException e) {
-                Log.e(t, "IOException while copying file");
-                e.printStackTrace();
-            }
-        } else {
-            Log.e(t, "Source file does not exist: " + sourceFile.getAbsolutePath());
-        }
-        return false;
-    }
-
-    @SuppressLint("NewApi")
     private void resizeImageView() {
         int width, height;
         Display display = getWindowManager().getDefaultDisplay();

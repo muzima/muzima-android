@@ -176,6 +176,17 @@
         </activity>
 
         <activity
+                android:name=".utils.video.VideoIntent"
+                android:label="@string/title_activity_video"
+                android:configChanges="orientation|screenSize"
+                android:windowSoftInputMode="adjustResize"
+                android:parentActivityName="com.muzima.view.forms.FormsActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.forms.FormsActivity"/>
+        </activity>
+
+        <activity
                 android:name=".view.notifications.NotificationActivity"
                 android:label="@string/title_activity_notification"
                 android:configChanges="orientation|screenSize"

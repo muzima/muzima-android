@@ -1,4 +1,4 @@
-package com.muzima.utils.imaging;
+package com.muzima.utils;
 
 import java.io.File;
 import java.io.FileInputStream;

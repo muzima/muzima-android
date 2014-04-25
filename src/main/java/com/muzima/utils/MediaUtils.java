@@ -1,5 +1,6 @@
 package com.muzima.utils;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -10,11 +11,13 @@ import android.util.Base64;
 import android.util.Log;
 import com.muzima.MuzimaApplication;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
+import java.io.*;
+import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ImageUtils {
-	private final static String TAG = "ImageUtils";
+public class MediaUtils {
+	private final static String TAG = "MediaUtils";
 
 	public static boolean folderExists(String path) {
 		boolean made = true;
@@ -84,6 +87,29 @@ public class ImageUtils {
 		return decodedByte;
 	}
 
+    public static boolean copyFile(File sourceFile, File destFile) {
+        if (sourceFile.exists()) {
+            FileChannel src;
+            try {
+                src = new FileInputStream(sourceFile).getChannel();
+                FileChannel dst = new FileOutputStream(destFile).getChannel();
+                dst.transferFrom(src, 0, src.size());
+                src.close();
+                dst.close();
+                return true;
+            } catch (FileNotFoundException e) {
+                Log.e(TAG, "FileNotFoundException while copying file");
+                e.printStackTrace();
+            } catch (IOException e) {
+                Log.e(TAG, "IOException while copying file");
+                e.printStackTrace();
+            }
+        } else {
+            Log.e(TAG, "Source file does not exist: " + sourceFile.getAbsolutePath());
+        }
+        return false;
+    }
+
     public static void deleteImage(Context context, String imageUri) {
         // get the file path and delete the file
 
@@ -107,4 +133,44 @@ public class ImageUtils {
         Log.i(TAG, "Deleted " + del + " rows from media content provider");
     }
 
+    public static int deleteVideoFileFromMediaProvider(Context context, String videoFile) {
+        ContentResolver cr = context.getContentResolver();
+        // video
+        int count = 0;
+        Cursor videoCursor = null;
+        try {
+            String select = MediaStore.Video.Media.DATA + "=?";
+            String[] selectArgs = { videoFile };
+
+            String[] projection = {MediaStore.Video.VideoColumns._ID};
+            videoCursor = cr.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                    projection, select, selectArgs, null);
+            if (videoCursor.getCount() > 0) {
+                videoCursor.moveToFirst();
+                List<Uri> videoToDelete = new ArrayList<Uri>();
+                do {
+                    String id = videoCursor.getString(videoCursor
+                            .getColumnIndex(MediaStore.Video.VideoColumns._ID));
+
+                    videoToDelete.add(Uri.withAppendedPath(
+                            MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id));
+                } while ( videoCursor.moveToNext());
+
+                for ( Uri uri : videoToDelete ) {
+                    Log.i(TAG,"attempting to delete: " + uri );
+                    count += cr.delete(uri, null, null);
+                }
+            }
+        } catch ( Exception e ) {
+            Log.e(TAG, e.toString());
+        } finally {
+            if ( videoCursor != null )
+                videoCursor.close();
+        }
+        File f = new File(videoFile);
+        if ( f.exists() )
+            f.delete();
+
+        return count;
+    }
 }

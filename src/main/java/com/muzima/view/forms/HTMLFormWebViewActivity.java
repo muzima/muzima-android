@@ -29,6 +29,7 @@ import com.muzima.utils.Constants;
 import com.muzima.utils.barcode.IntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
 import com.muzima.utils.imaging.ImageResult;
+import com.muzima.utils.video.VideoResult;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 import org.json.JSONObject;
@@ -52,6 +53,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     public static final String HTML_DATA_STORE = "htmlDataStore";
     public static final String BARCODE = "barCodeComponent";
     public static final String IMAGE = "imagingComponent";
+    public static final String VIDEO = "videoComponent";
     public static final String ZIGGY_FILE_LOADER = "ziggyFileLoader";
     public static final String FORM = "form";
     public static final String DISCRIMINATOR = "discriminator";
@@ -65,9 +67,11 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private Patient patient;
     private BarCodeComponent barCodeComponent;
     private ImagingComponent imagingComponent;
+    private VideoComponent videoComponent;
     private Map<String, String> scanResultMap;
     private Map<String, String> imageResultMap;
-    private String imageSectionName;
+    private Map<String, String> videoResultMap;
+    private String sectionName;
     private FormController formController;
 
     @Override
@@ -80,6 +84,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         scanResultMap = new HashMap<String, String>();
         imageResultMap = new HashMap<String, String>();
+        videoResultMap = new HashMap<String, String>();
         setContentView(R.layout.activity_form_webview);
         progressDialog = new MuzimaProgressDialog(this);
         showProgressBar("Loading...");
@@ -129,8 +134,14 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
         if (imageResultMap != null && !imageResultMap.isEmpty()) {
             String jsonMap = new JSONObject(imageResultMap).toString();
-            Log.d(TAG, "Header:" + imageSectionName + "json:" + jsonMap);
-            webView.loadUrl("javascript:document.populateImage('" + imageSectionName + "', " + jsonMap + ")");
+            Log.d(TAG, "Header:" + sectionName + "json:" + jsonMap);
+            webView.loadUrl("javascript:document.populateImage('" + sectionName + "', " + jsonMap + ")");
+        }
+
+        if (videoResultMap != null && !videoResultMap.isEmpty()) {
+            String jsonMap = new JSONObject(videoResultMap).toString();
+            Log.d(TAG, "Header:" + sectionName + "json:" + jsonMap);
+            webView.loadUrl("javascript:document.populateVideo('" + sectionName + "', " + jsonMap + ")");
         }
 
         super.onResume();
@@ -177,9 +188,16 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
         ImageResult imageResult = ImagingComponent.parseActivityResult(requestCode, resultCode, intent);
         if (imageResult != null)  {
-            imageSectionName =  imageResult.getSectionName();
+            sectionName =  imageResult.getSectionName();
             imageResultMap.put(imagingComponent.getImagePathField(), imageResult.getImageUri());
             imageResultMap.put(imagingComponent.getImageCaptionField(), imageResult.getImageCaption());
+        }
+
+        VideoResult videoResult = VideoComponent.parseActivityResult(requestCode, resultCode, intent);
+        if (videoResult != null)  {
+            sectionName =  videoResult.getSectionName();
+            videoResultMap.put(videoComponent.getVideoPathField(), videoResult.getVideoUri());
+            videoResultMap.put(videoComponent.getVideoCaptionField(), videoResult.getVideoCaption());
         }
     }
 
@@ -255,8 +273,10 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         webView.addJavascriptInterface(formInstance, FORM_INSTANCE);
         barCodeComponent = new BarCodeComponent(this);
         imagingComponent = new ImagingComponent(this);
+        videoComponent = new VideoComponent(this);
         webView.addJavascriptInterface(barCodeComponent, BARCODE);
         webView.addJavascriptInterface(imagingComponent, IMAGE);
+        webView.addJavascriptInterface(videoComponent, VIDEO);
         webView.addJavascriptInterface(new ZiggyFileLoader("www/ziggy", getApplicationContext().getAssets(), formInstance.getModelJson()), ZIGGY_FILE_LOADER);
         webView.addJavascriptInterface(new HTMLFormDataStore(this, formController, formData), HTML_DATA_STORE);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);

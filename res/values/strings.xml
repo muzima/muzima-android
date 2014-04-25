@@ -214,4 +214,12 @@
     <string name="cancel">Cancel</string>
     <string name="notification_view_encounter">View Encounter</string>
 
+    <string name="title_activity_video">Add Video</string>
+    <string name="video_caption">Video Caption</string>
+    <string name="accept_video">Accept Video</string>
+    <string name="choose_video">Choose Video</string>
+    <string name="record_video">Record Video</string>
+    <string name="preview_video">Preview Video</string>
+    <string name="record_video_prompt">Record or choose video</string>
+
 </resources>

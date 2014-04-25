@@ -36,14 +36,25 @@ input.error {
 }
 
 .image_btn {
-    height: 18px;
-    width: 7%;
+    height: 6%;
+    width: 12%;
     display: inline-block;
     line-height: 18px;
     padding: 16px 23px;
     margin-right: 4px !important;
     border-radius: 4px;
     background: #ffffff url("../images/imaging_icon.png") no-repeat center;
+}
+
+.video_record_btn {
+    height: 6%;
+    width: 12%;
+    display: inline-block;
+    line-height: 18px;
+    padding: 16px 23px;
+    margin-right: 4px !important;
+    border-radius: 4px;
+    background: #ffffff url("../images/video_record_icon.png") no-repeat center;
 }
 
 .image_text {

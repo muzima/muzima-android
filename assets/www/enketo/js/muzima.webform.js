@@ -122,6 +122,35 @@ $(document).ready(function () {
     });
     /*End- Image Functionality*/
 
+    /*Start- Video Functionality*/
+
+    document.populateVideo = function (jsonString) {
+        $.each(jsonString, function (key, value) {
+            var $inputField = $("input[name='" + key + "']");
+            $inputField.val(value);
+            $inputField.trigger('change');  //Need this to trigger the event so image id gets populated.
+        })
+    };
+
+    var $videoInput = $('input[type="video"]');
+
+    // !!Please keep the isFromInput flag. In WebView, if the .video_record is before the input, the click on the input
+    // would trigger the event of click on the .video_record.
+    var isFromInput = false;
+    $videoInput.before("<input type='button' class='video_record'>");
+    $('.video_record').click(function () {
+        //videoComponent is defined in FormWebViewActivity.java
+        if (!isFromInput) {
+            videoComponent.startVideoIntent($videoInput.attr('name'));
+        }
+        isFromInput = false;
+    });
+    $videoInput.click(function (e) {
+        isFromInput = true;
+    });
+    /*End- Video Functionality*/
+
+
     /* Multi select Hack - Start */
 
     var checkboxParent = $("form input:checkbox").parent();
