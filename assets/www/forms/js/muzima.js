@@ -280,11 +280,8 @@ $(document).ready(function () {
         $clonedSection.attr("data-name", parentName);
 
         /* clear values on cloned fields */
-        $clonedSection.find("input[type='text']").val('');
-        $clonedSection.find("input[type='hidden']").val('');
-        var $clonedElement = $(this).parent().clone();
-        $clonedElement.find('input:not(:button)').val('');
-        $clonedElement.insertAfter($(this).parent());
+        $clonedSection.find('input:not(:button)').val('');
+
     });
 
     $(document.body).on('click', '.remove_section', function () {

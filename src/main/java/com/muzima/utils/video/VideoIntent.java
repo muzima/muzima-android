@@ -190,6 +190,9 @@ public class VideoIntent extends Activity {
             
             // show accept view
             mVideoAcceptContainer.setVisibility(View.VISIBLE);
+
+            // show caption view
+            mVideoCaption.setVisibility(View.VISIBLE);
             
             //hide record view
             mVideoRecordContainer.setVisibility(View.GONE);
@@ -207,6 +210,9 @@ public class VideoIntent extends Activity {
             
             // hide accept view
             mVideoAcceptContainer.setVisibility(View.GONE);
+
+            // hide caption view
+            mVideoCaption.setVisibility(View.GONE);
             
             //show record view
             mVideoRecordContainer.setVisibility(View.VISIBLE);
