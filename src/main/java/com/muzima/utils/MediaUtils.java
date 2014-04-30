@@ -22,9 +22,9 @@ public class MediaUtils {
 	public static boolean folderExists(String path) {
 		boolean made = true;
 		File dir = new File(path);
-		if (!dir.exists()) {
+		if (!dir.exists())
 			made = dir.mkdirs();
-		}
+
 		return made;
 	}
 
@@ -46,12 +46,6 @@ public class MediaUtils {
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inSampleSize = scale;
 		Bitmap b = BitmapFactory.decodeFile(f.getAbsolutePath(), options);
-		if (b != null) {
-			Log.i(TAG,
-					"Screen is " + screenHeight + "x" + screenWidth
-							+ ".  Image has been scaled down by " + scale
-							+ " to " + b.getHeight() + "x" + b.getWidth());
-		}
 		return b;
 	}
 
@@ -104,9 +98,8 @@ public class MediaUtils {
                 Log.e(TAG, "IOException while copying file");
                 e.printStackTrace();
             }
-        } else {
+        } else
             Log.e(TAG, "Source file does not exist: " + sourceFile.getAbsolutePath());
-        }
         return false;
     }
 
@@ -171,6 +164,46 @@ public class MediaUtils {
         if ( f.exists() )
             f.delete();
 
+        return count;
+    }
+
+    public static final int deleteAudioFileFromMediaProvider(Context context, String audioFile) {
+        ContentResolver cr = context.getContentResolver();
+        // audio
+        int count = 0;
+        Cursor audioCursor = null;
+        try {
+            String select = MediaStore.Audio.Media.DATA + "=?";
+            String[] selectArgs = { audioFile };
+
+            String[] projection = {MediaStore.Audio.AudioColumns._ID};
+            audioCursor = cr.query(
+                    android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                    projection, select, selectArgs, null);
+            if (audioCursor.getCount() > 0) {
+                audioCursor.moveToFirst();
+                List<Uri> audioToDelete = new ArrayList<Uri>();
+                do {
+                    String id = audioCursor.getString(audioCursor.getColumnIndex(MediaStore.Audio.AudioColumns._ID));
+
+                    audioToDelete.add(Uri.withAppendedPath(
+                            android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id));
+                } while ( audioCursor.moveToNext());
+
+                for ( Uri uri : audioToDelete ) {
+                    Log.i(TAG,"attempting to delete: " + uri );
+                    count += cr.delete(uri, null, null);
+                }
+            }
+        } catch ( Exception e ) {
+            Log.e(TAG, e.toString());
+        } finally {
+            if ( audioCursor != null )
+                audioCursor.close();
+        }
+        File f = new File(audioFile);
+        if ( f.exists() )
+            f.delete();
         return count;
     }
 }

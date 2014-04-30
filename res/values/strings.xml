@@ -222,4 +222,12 @@
     <string name="preview_video">Preview Video</string>
     <string name="record_video_prompt">Record or choose video</string>
 
+    <string name="title_activity_audio">Add Audio</string>
+    <string name="audio_caption">Audio Caption</string>
+    <string name="accept_audio">Accept Audio</string>
+    <string name="choose_audio">Choose Audio</string>
+    <string name="record_audio">Record Audio</string>
+    <string name="preview_audio">Preview Audio</string>
+    <string name="record_audio_prompt">Record or choose audio</string>
+
 </resources>

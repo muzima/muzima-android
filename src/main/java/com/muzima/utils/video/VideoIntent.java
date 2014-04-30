@@ -1,12 +1,9 @@
 package com.muzima.utils.video;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -15,7 +12,6 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Video;
 import android.util.Log;
@@ -132,7 +128,7 @@ public class VideoIntent extends Activity {
 	
 	public void rejectVideo(View view) {
 		if (isNewVideo) 
-			deleteMedia();
+			deleteVideo();
 			
 		mBinaryName=null;
 		
@@ -222,16 +218,16 @@ public class VideoIntent extends Activity {
 		}
 	}
 
-    private void deleteMedia() {
+    private void deleteVideo() {
     	//delete from media provider
         int del = MediaUtils.deleteVideoFileFromMediaProvider(this, VIDEO_FOLDER + File.separator + mBinaryName);
     	Log.i(TAG, "Deleted " + del + " rows from media content provider");
     }
 
 	private String getPathFromUri(Uri uri) {
-		if (uri.toString().startsWith("file")) {
+		if (uri.toString().startsWith("file"))
 			return uri.toString().substring(6);
-		} else {
+		else {
 			String[] videoProjection = { Video.Media.DATA };
 			Cursor c = null;
 			try {
@@ -245,25 +241,23 @@ public class VideoIntent extends Activity {
 				}
 				return videoPath;
 			} finally {
-				if (c != null) {
+				if (c != null)
 					c.close();
-				}
 			}
 		}
 	}
 
-	public void setBinaryData(Object binaryUri) {
+	public void saveVideo(Object videoUri) {
 		// you are replacing an answer. remove the media.
-		if (mBinaryName != null) {
-			deleteMedia();
-		}
+		if (mBinaryName != null)
+			deleteVideo();
 
 		// get the file path and create a copy in the instance folder
-		String binaryPath = getPathFromUri((Uri) binaryUri);
-		String extension = binaryPath.substring(binaryPath.lastIndexOf("."));
+		String videoPath = getPathFromUri((Uri) videoUri);
+		String extension = videoPath.substring(videoPath.lastIndexOf("."));
 		String destVideoPath = VIDEO_FOLDER + File.separator + System.currentTimeMillis() + extension;
 
-		File source = new File(binaryPath);
+		File source = new File(videoPath);
 		File newVideo = new File(destVideoPath);
 		if (MediaUtils.folderExists(VIDEO_FOLDER))
             MediaUtils.copyFile(source, newVideo);
@@ -275,12 +269,11 @@ public class VideoIntent extends Activity {
 			values.put(Video.Media.DATE_ADDED, System.currentTimeMillis());
 			values.put(Video.Media.DATA, newVideo.getAbsolutePath());
 
-			Uri VideoURI = getContentResolver().insert(
+			Uri videoURI = getContentResolver().insert(
 					Video.Media.EXTERNAL_CONTENT_URI, values);
-			Log.i(TAG, "Inserting VIDEO returned uri = " + VideoURI.toString());
-		} else {
+			Log.i(TAG, "Inserting VIDEO returned uri = " + videoURI.toString());
+		} else
 			Log.e(TAG, "Inserting Video file FAILED");
-		}
 
 		mBinaryName = newVideo.getName();
 	}
@@ -288,8 +281,8 @@ public class VideoIntent extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (intent != null) {
-            Uri media = intent.getData();
-            setBinaryData(media);
+            Uri videoUri = intent.getData();
+            saveVideo(videoUri);
             refreshVideoView();
         }
 	}

@@ -64,6 +64,28 @@ $(document).ready(function () {
 
     /*End- Imaging Functionality*/
 
+    /*Start- Audio Capture Functionality*/
+
+    /* Called by the Activity WebViewActivity*/
+    document.populateAudio = function (sectionName, jsonString) {
+        var $parent = $('div[data-name="' + sectionName + '"]');
+        $.each(jsonString, function (key, value) {
+            var $inputField = $parent.find("input[name='" + key + "']");
+            $inputField.val(value);
+            $inputField.trigger('change');  //Need this to trigger the event so audio gets populated.
+        })
+    };
+
+    $('.audio_record_btn').click(function () {
+        audioComponent.startAudioIntent($(this).parent().parent().attr('data-name'),
+            $(this).parent().find("input[type='hidden']").attr('name'),
+            $(this).parent().find("input[type='hidden']").val(),
+            $(this).parent().find("input[type='text']").attr('name'),
+            $(this).parent().find("input[type='text']").val(),
+            $("input[name='encounter.form_uuid']").val());
+    });
+
+    /*End- Audio Capture Functionality*/
 
     /*Start- Video Capture Functionality*/
 
