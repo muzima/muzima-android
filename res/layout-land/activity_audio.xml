@@ -6,10 +6,12 @@
 
     <LinearLayout
         android:id="@+id/playerContainer"
-        style="@style/LoginInfoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_above="@+id/captionContainer"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/audioAcceptContainer"
+        android:layout_toLeftOf="@+id/audioRecordContainer"
         android:gravity="center_vertical|right" >
 
         <FrameLayout
@@ -53,10 +55,11 @@
 
     <LinearLayout
         android:id="@+id/captionContainer"
-        style="@style/LoginInfoLayout"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/audioAcceptContainer"
+        android:layout_alignRight="@+id/playerContainer"
         android:gravity="left"
         android:paddingTop="5dp" >
 
@@ -116,9 +119,7 @@
         android:layout_alignParentRight="true"
         android:background="@color/hint_text_grey"
         android:gravity="center_vertical|right"
-        android:orientation="vertical" 
-        
-        android:visibility="visible">
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/recordAudio"

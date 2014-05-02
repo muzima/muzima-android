@@ -153,6 +153,8 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             Log.d(TAG, "Header:" + sectionName + "json:" + jsonMap);
             webView.loadUrl("javascript:document.populateVideo('" + sectionName + "', " + jsonMap + ")");
         }
+
+        super.onResume();
     }
 
     @Override

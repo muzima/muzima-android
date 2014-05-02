@@ -6,7 +6,9 @@
 
     <LinearLayout
         android:id="@+id/playerContainer"
-        style="@style/LoginInfoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_above="@+id/controlsContainer"
         android:layout_alignParentTop="true"
         android:gravity="center_vertical|center" >
@@ -69,10 +71,7 @@
                 android:id="@+id/audioCaption"
                 style="@style/LoginInfoEditText"
                 android:ems="10"
-                android:hint="@string/audio_caption" >
-
-                <requestFocus />
-            </EditText>
+                android:hint="@string/audio_caption" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
