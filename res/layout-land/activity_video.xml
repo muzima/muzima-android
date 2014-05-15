@@ -96,7 +96,7 @@
             android:background="@drawable/sel_button_round"
             android:onClick="acceptVideo"
             android:padding="11dp"
-            android:text="@string/accept_video"
+            android:text="@string/accept"
             android:textColor="@android:color/white" />
 
         <Button

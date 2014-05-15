@@ -23,17 +23,17 @@ import com.muzima.R;
 import com.muzima.utils.MediaUtils;
 import com.muzima.view.forms.AudioComponent;
 
+import static com.muzima.utils.Constants.APP_AUDIO_DIR;
+
 public class AudioIntent extends Activity {
 	private final static String TAG = "AudioIntent";
 	
-	private final String APP_AUDIO_DIR = Environment.getExternalStorageDirectory().getPath() + "/thaiya";
-
 	public static final String KEY_AUDIO_PATH = "audioPath";
     public static final String KEY_AUDIO_CAPTION = "audioCaption";
     public static final String KEY_SECTION_NAME = "sectionName";
 
 	private final int AUDIO_CAPTURE = 1;
-	private final int AUDIO_CHOOSER = 2;
+	private final int AUDIO_CHOOSE = 2;
 	
     private String AUDIO_FOLDER;
     private boolean isNewAudio;
@@ -142,25 +142,27 @@ public class AudioIntent extends Activity {
 		try {
 			startActivityForResult(i, AUDIO_CAPTURE);
 		} catch (ActivityNotFoundException e) {
-			Toast.makeText(this,"activity_not_found - record audio", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this,"Error: Activity for recording audio not found", Toast.LENGTH_SHORT).show();
 		}		
 	}
-	
-	public void chooseAudio(View view) {
-		isNewAudio = false;
+
+    public void chooseAudio(View view) {
+        isNewAudio = false;
         Intent i;
         final boolean isKitKat = Build.VERSION.SDK_INT >= 19;
 
-        if (isKitKat)
-            i = new Intent(Intent.ACTION_PICK, Audio.Media.EXTERNAL_CONTENT_URI);
-        else
+        if (isKitKat){
+            i = new Intent(Intent.ACTION_GET_CONTENT, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+            i.addCategory(Intent.CATEGORY_OPENABLE);
+        } else
             i = new Intent(Intent.ACTION_GET_CONTENT);
 
         try {
-		    i.setType("audio/*");
-			startActivityForResult(i,AUDIO_CHOOSER);
-		} catch (ActivityNotFoundException e) {
-			Toast.makeText(this,"activity_not_found - choose audio", Toast.LENGTH_SHORT).show();
+            i.setType("audio/*");
+            startActivityForResult(i,AUDIO_CHOOSE);
+        } catch (ActivityNotFoundException e) {
+            Log.d(TAG,e.getMessage());
+			Toast.makeText(this,"Error: Activity for choosing audio not found", Toast.LENGTH_SHORT).show();
 		}
 	}
 	
@@ -171,7 +173,7 @@ public class AudioIntent extends Activity {
 		try {
 			startActivity(i);
 		} catch (ActivityNotFoundException e) {
-			Toast.makeText(AudioIntent.this,"activity_not_found - play audio", Toast.LENGTH_SHORT).show();
+			Toast.makeText(AudioIntent.this,"Error: Activity for playing audio not found", Toast.LENGTH_SHORT).show();
 		}
 	}
 	
@@ -220,36 +222,10 @@ public class AudioIntent extends Activity {
     	Log.i(TAG, "Deleted " + del + " rows from media content provider");
     }
 
-	private String getPathFromUri(Uri uri) {
-		if (uri.toString().startsWith("file"))
-			return uri.toString().substring(6);
-		else {
-			String[] audioProjection = { Audio.Media.DATA };
-			Cursor c = null;
-			try {
-				c = getContentResolver().query(uri,
-						audioProjection, null, null, null);
-				int column_index = c.getColumnIndexOrThrow(Audio.Media.DATA);
-				String audioPath = null;
-				if (c.getCount() > 0) {
-					c.moveToFirst();
-					audioPath = c.getString(column_index);
-				}
-				return audioPath;
-			} finally {
-				if (c != null)
-					c.close();
-			}
-		}
-	}
-
-	public void saveAudio(Object audioUri) {
-		// you are replacing an answer. remove the media.
+	public void saveAudio(String audioPath) {
 		if (mBinaryName != null)
 			deleteMedia();
 
-		// get the file path and create a copy in the instance folder
-		String audioPath = getPathFromUri((Uri) audioUri);
 		String extension = audioPath.substring(audioPath.lastIndexOf("."));
 		String destAudioPath = AUDIO_FOLDER + File.separator + System.currentTimeMillis() + extension;
 
@@ -267,7 +243,7 @@ public class AudioIntent extends Activity {
 
 			Uri AudioURI = getContentResolver().insert(
 					Audio.Media.EXTERNAL_CONTENT_URI, values);
-			Log.i(TAG, "Inserting AUDIO returned uri = " + AudioURI.toString());
+			Log.i(TAG, "Inserting Audio returned uri = " + AudioURI.toString());
 		} else
 			Log.e(TAG, "Inserting Audio file FAILED");
 
@@ -277,8 +253,15 @@ public class AudioIntent extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (intent != null) {
-            Uri audio = intent.getData();
-            saveAudio(audio);
+            final boolean isKitKat = Build.VERSION.SDK_INT >= 19;
+
+            boolean openDocument = false;
+            if (requestCode == AUDIO_CHOOSE)
+                openDocument = true;
+
+            // get the file path and create a copy in the instance folder
+            String audioPath = getPathFromUri((Uri) intent.getData(), isKitKat, openDocument);
+            saveAudio(audioPath);
             refreshAudioView();
         }
 	}
@@ -290,4 +273,43 @@ public class AudioIntent extends Activity {
         outState.putString(KEY_AUDIO_PATH, mBinaryName);
         outState.putString(KEY_AUDIO_CAPTION, mBinaryDescription);
 	}
+
+    private String getPathFromUri(Uri uri, boolean isKitKat, boolean isOpenDocument) {
+        if (uri.toString().startsWith("file"))
+            return uri.toString().substring(6);
+        else {
+            String[] audioProjection = {Audio.Media.DATA };
+            String audioSelection = null;
+            Cursor c = null;
+
+            try {
+                if (isKitKat && isOpenDocument) {
+                    String id = uri.getLastPathSegment().split(":")[1];
+                    audioSelection = Audio.Media._ID + "=" + id;
+                    uri = getUri();
+                }
+
+                c = getContentResolver().query(uri, audioProjection, audioSelection, null, null);
+                int column_index = c.getColumnIndexOrThrow(Audio.Media.DATA);
+                String audioPath = null;
+                if (c.getCount() > 0) {
+                    c.moveToFirst();
+                    audioPath = c.getString(column_index);
+                }
+                return audioPath;
+            } finally {
+                if (c != null)
+                    c.close();
+            }
+        }
+    }
+
+    // Get the Uri of Internal/External Storage for Media
+    private Uri getUri() {
+        String state = Environment.getExternalStorageState();
+        if(!state.equalsIgnoreCase(Environment.MEDIA_MOUNTED))
+            return MediaStore.Audio.Media.INTERNAL_CONTENT_URI;
+
+        return MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+    }
 }

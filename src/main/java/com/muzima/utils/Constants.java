@@ -27,6 +27,7 @@ public class Constants {
     private static final String APP_EXTERNAL_DIR_ROOT =  Environment.getExternalStorageDirectory().getPath() + "/muzima";
     private static final String APP_MEDIA_DIR = APP_EXTERNAL_DIR_ROOT + "/media";
     public static final String APP_IMAGE_DIR = APP_MEDIA_DIR + "/image";
+    public static final String APP_AUDIO_DIR = APP_MEDIA_DIR + "/audio";
     public static final String APP_VIDEO_DIR = APP_MEDIA_DIR + "/video";
     public static final String TMP_FILE_PATH = APP_EXTERNAL_DIR_ROOT + "/.cache";
 

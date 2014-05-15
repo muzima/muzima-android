@@ -90,7 +90,7 @@
                     android:background="@drawable/sel_button_round"
                     android:onClick="acceptAudio"
                     android:padding="11dp"
-                    android:text="@string/accept_audio"
+                    android:text="@string/accept"
                     android:textColor="@android:color/white" />
 
                 <Button

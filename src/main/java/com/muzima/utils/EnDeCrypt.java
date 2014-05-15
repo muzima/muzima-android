@@ -1,127 +1,176 @@
 package com.muzima.utils;
 
+import android.os.Build;
+import android.os.Environment;
+import android.util.Base64;
+import android.util.Log;
+
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.security.Key;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 
-import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
-import javax.crypto.CipherOutputStream;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
-
-import android.os.Build;
-import android.os.Environment;
-import android.util.Log;
-
 public class EnDeCrypt {
 	
-	public static final String CIPHER_ALGORITHM = "AES/ECB/PKCS5Padding";
-	public static final String KEY_ALGORITHM = "AES"; 
-	// This is the best algorithm but its not implemented in 2.2 and below
-	public static final String PASSWORD_HASH_ALGORITHM = "PBKDF2WithHmacSHA1";
-	
-	public static final String PASSWORD_HASH_ALGORITHM_FROYO = "SHA1PRNG";
-	public static final String TEMP_FOLDER =  Environment.getExternalStorageDirectory().getPath() + "/muzima/tmp/";
 	private static String TAG = "EnDeCrypt";
-	
-	public static void encrypt(File plainFile, String password) {
-		try {
-			File tmpFolder = new File(TEMP_FOLDER);
-			if (!tmpFolder.exists())
-				tmpFolder.mkdirs();
-			File tempFile = new File(TEMP_FOLDER + plainFile.getName());
-		    FileInputStream fis = new FileInputStream(plainFile);
-		    FileOutputStream fos = new FileOutputStream(tempFile);
-	
-		    Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
-		    //Froyo (API 8) and below have no implementation of the more secure PBKDF2 algorithm
-		    if (Build.VERSION.SDK_INT <= 8 )
-		    	cipher.init(Cipher.ENCRYPT_MODE, buildKeyFroyo(password));
-		    else
-		    	cipher.init(Cipher.ENCRYPT_MODE, buildKey(password));
-		    	
-		    CipherOutputStream cos = new CipherOutputStream(fos, cipher);
-		    int b;
-		    byte[] d = new byte[8];
-		    while((b = fis.read(d)) != -1) {
-		        cos.write(d, 0, b);
-		    }
-		    cos.flush();
-		    cos.close();
-		    fis.close();
-		    
-		    tempFile.renameTo(new File(plainFile.getAbsolutePath()));
-		    Log.i(TAG, "Encrypted " + plainFile.getAbsolutePath());
-		} catch (Exception e) {
-			Log.e(TAG, e.getMessage());
-		}
-	}
-	
-	public static void decrypt(File encryptedFile, String password) {
-		try {
-			File tmpFolder = new File(TEMP_FOLDER);
-			if (!tmpFolder.exists())
-				tmpFolder.mkdirs();
-			File tempFile = new File(TEMP_FOLDER + encryptedFile.getName());
-			FileInputStream fis = new FileInputStream(encryptedFile);
-		    FileOutputStream fos = new FileOutputStream(tempFile);
-		    
-		    Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
-		    //Froyo (API 8) and below have no implementation of the more secure PBKDF2 algorithm
-		    if (Build.VERSION.SDK_INT <= 8 )
-		    	cipher.init(Cipher.DECRYPT_MODE, buildKeyFroyo(password));
-		    else
-		    	cipher.init(Cipher.DECRYPT_MODE, buildKey(password));
-		    CipherInputStream cis = new CipherInputStream(fis, cipher);
-		    int b;
-		    byte[] d = new byte[8];
-		    while((b = cis.read(d)) != -1) {
-		        fos.write(d, 0, b);
-		    }
-		    fos.flush();
-		    fos.close();
-		    cis.close();
-		    tempFile.renameTo(encryptedFile);
-		    Log.i(TAG, "Decrypt " + encryptedFile.getAbsolutePath());
-		}catch (Exception e) {
-			Log.e(TAG, e.getMessage());
-		}
-	}
-	
-   private static Key buildKeyFroyo(String strPassword) throws Exception {
-	   byte[] password = strPassword.getBytes();
-       KeyGenerator kgen = KeyGenerator.getInstance(KEY_ALGORITHM);
-       SecureRandom sr = SecureRandom.getInstance(PASSWORD_HASH_ALGORITHM_FROYO);
-       sr.setSeed(password);
-       kgen.init(128, sr); // 192 and 256 bits may not be available
-       SecretKey skey = kgen.generateKey();
-       return new SecretKeySpec(skey.getEncoded(), KEY_ALGORITHM);
-   }
-   
-   private static Key buildKey(String password) throws Exception {
-   
-	   int iterationCount = 1000;
-	   int saltLength = 32; // bytes; should be the same size as the output (256 / 8 = 32)
-	   int keyLength = 256; // 256-bits for AES-256, 128-bits for AES-128, etc
-	   byte[] salt; // Should be of saltLength
-	
-	   /* When first creating the key, obtain a salt with this: */
-	   SecureRandom random = new SecureRandom();
-	   salt = new byte[saltLength];
-	   random.nextBytes(salt);
-	
-	   /* Use this to derive the key from the password: */
-	   KeySpec keySpec = new PBEKeySpec(password.toCharArray(), salt, iterationCount, keyLength);
-	   SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(PASSWORD_HASH_ALGORITHM);
-	   byte[] keyBytes = keyFactory.generateSecret(keySpec).getEncoded();
-	    
-	   return new SecretKeySpec(keyBytes, KEY_ALGORITHM);
-   }
+
+    private static final String CIPHER_ALGORITHM = "AES/CBC/PKCS5Padding";
+
+    private static final String KEY_ALGORITHM = "AES";
+
+    // This is the best algorithm but its not implemented in 2.2 and below
+    private static final String PASSWORD_HASH_ALGORITHM = "PBKDF2WithHmacSHA1";
+
+    private static final String PASSWORD_HASH_ALGORITHM_FROYO = "PBEWITHSHAAND256BITAES-CBC-BC";
+
+    private static final String TEMP_FOLDER = Environment.getExternalStorageDirectory().getPath() + "/muzima/tmp/";
+
+    private static final int SALT_LENGTH = 8;
+
+    private static SecureRandom random = new SecureRandom();
+
+    private static String DELIMITER = "]";
+
+
+    public static void encrypt(File plainFile, String password) {
+        try {
+            File tmpFolder = new File(TEMP_FOLDER);
+            if (!tmpFolder.exists())
+                tmpFolder.mkdirs();
+
+            File tempFile = new File(TEMP_FOLDER + plainFile.getName());
+            FileInputStream fis = new FileInputStream(plainFile);
+            FileOutputStream fos = new FileOutputStream(tempFile);
+
+            Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
+            byte[] iv;
+            byte[] salt;
+
+            salt = generateSalt();
+            iv = generateIv(cipher.getBlockSize());
+            IvParameterSpec ivParams = new IvParameterSpec(iv);
+            SecretKey key = deriveKey(password, salt);
+            cipher.init(Cipher.ENCRYPT_MODE, key, ivParams);
+
+            byte[] plainFileBytes = new byte[(int) plainFile.length()];
+            fis.read(plainFileBytes);
+            byte[] encryptedStream = cipher.doFinal(plainFileBytes);
+
+            String cipherText;
+            if (salt != null)
+                cipherText = String.format("%s%s%s%s%s", toBase64(salt), DELIMITER,
+                        toBase64(iv), DELIMITER, toBase64(encryptedStream));
+            else
+                cipherText = toBase64(encryptedStream);
+
+            // write the encrypted stream to file together with salt and IV
+            fos.write(cipherText.getBytes());
+
+            // and clean up
+            fos.flush();
+            fos.close();
+
+            // remove the temporary file by transferring the file as appropriate
+            tempFile.renameTo(new File(plainFile.getAbsolutePath()));
+            Log.i(TAG, "Encrypted " + plainFile.getAbsolutePath());
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+    public static void decrypt(File encryptedFile, String password) {
+        try {
+            File tmpFolder = new File(TEMP_FOLDER);
+            if (!tmpFolder.exists())
+                tmpFolder.mkdirs();
+
+            File tempFile = new File(TEMP_FOLDER + encryptedFile.getName());
+            FileInputStream fis = new FileInputStream(encryptedFile);
+            FileOutputStream fos = new FileOutputStream(tempFile);
+
+            String cipherText;
+            StringBuilder builder = new StringBuilder();
+            int ch;
+            while ((ch = fis.read()) != -1) {
+                builder.append((char) ch);
+            }
+
+            cipherText = builder.toString();
+
+            String[] fields = cipherText.split(DELIMITER);
+            if (fields.length != 3) {
+                throw new IllegalArgumentException("Invalid encrypted text format");
+            }
+
+            byte[] salt = fromBase64(fields[0]);
+            byte[] iv = fromBase64(fields[1]);
+            byte[] cipherBytes = fromBase64(fields[2]);
+
+            Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
+            IvParameterSpec ivParams = new IvParameterSpec(iv);
+            cipher.init(Cipher.DECRYPT_MODE, deriveKey(password, salt), ivParams);
+            byte[] plainText = cipher.doFinal(cipherBytes);
+
+            // write the decrypted stream to file
+            fos.write(plainText);
+
+            fos.flush();
+            fos.close();
+
+            tempFile.renameTo(encryptedFile);
+            Log.i(TAG, "Decrypted " + encryptedFile.getAbsolutePath());
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+    }
+
+    private static SecretKey deriveKey(String password, byte[] salt) throws Exception {
+        // minimum values recommended by PKCS#5
+        int ITERATION_COUNT = 1000;
+        int KEY_LENGTH = 256;
+
+		/* Use this to securely derive the key from the password: */
+        KeySpec keySpec = new PBEKeySpec(password.toCharArray(), salt, ITERATION_COUNT, KEY_LENGTH);
+
+        SecretKeyFactory keyFactory;
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.FROYO)
+            keyFactory = SecretKeyFactory.getInstance(PASSWORD_HASH_ALGORITHM_FROYO);
+        else
+            keyFactory = SecretKeyFactory.getInstance(PASSWORD_HASH_ALGORITHM);
+
+        byte[] keyBytes = keyFactory.generateSecret(keySpec).getEncoded();
+
+        return new SecretKeySpec(keyBytes, KEY_ALGORITHM);
+    }
+
+    private static byte[] generateIv(int length) {
+        byte[] ivBytes = new byte[length];
+        random.nextBytes(ivBytes);
+
+        return ivBytes;
+    }
+
+    private static byte[] generateSalt() {
+        byte[] saltBytes = new byte[SALT_LENGTH];
+        random.nextBytes(saltBytes);
+
+        return saltBytes;
+    }
+
+    private static String toBase64(byte[] bytes) {
+        return Base64.encodeToString(bytes, Base64.NO_WRAP);
+    }
+
+    private static byte[] fromBase64(String base64) {
+        return Base64.decode(base64, Base64.NO_WRAP);
+    }
 }

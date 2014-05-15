@@ -1,6 +1,5 @@
 package com.muzima.utils.imaging;
 
-import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Context;
@@ -30,10 +29,10 @@ import static com.muzima.utils.Constants.APP_IMAGE_DIR;
 import static com.muzima.utils.Constants.TMP_FILE_PATH;
 
 public class ImagingIntent extends BaseActivity {
-	private final static String t = "ImagingIntent";
+	private final static String TAG = "ImagingIntent";
     
     public static final int IMAGE_CAPTURE = 1;
-    public static final int IMAGE_CHOOSER = 2;
+    public static final int IMAGE_CHOOSE = 2;
     
     public static final String KEY_IMAGE_PATH = "imagePath";
     public static final String KEY_IMAGE_CAPTION = "imageCaption";
@@ -126,7 +125,7 @@ public class ImagingIntent extends BaseActivity {
         try {
             startActivityForResult(i,IMAGE_CAPTURE);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(getApplicationContext(),"image capture", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Error: Activity for capturing an image not found", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -141,10 +140,9 @@ public class ImagingIntent extends BaseActivity {
 
         try {
             i.setType("image/*");
-            startActivityForResult(i,IMAGE_CHOOSER);
+            startActivityForResult(i, IMAGE_CHOOSE);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(getApplicationContext(),"Activity not found choose image",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Error: Activity for choosing image not found", Toast.LENGTH_SHORT).show();
         }
     }
     
@@ -196,7 +194,7 @@ public class ImagingIntent extends BaseActivity {
                         String id = c.getString(c.getColumnIndex("_id"));
 
                         Log.i(
-                            t,
+                                TAG,
                             "setting view path to: "
                                     + Uri.withAppendedPath(
                                         Images.Media.EXTERNAL_CONTENT_URI,
@@ -262,9 +260,9 @@ public class ImagingIntent extends BaseActivity {
 
                 if (MediaUtils.folderExists(IMAGE_FOLDER)) {
                     if (!tmpCapturedImage.renameTo(capturedImage))
-                        Log.e(t, "Failed to rename " + tmpCapturedImage.getAbsolutePath());
+                        Log.e(TAG, "Failed to rename " + tmpCapturedImage.getAbsolutePath());
                     else {
-                        Log.i(t, "renamed " + tmpCapturedImage.getAbsolutePath() + " to " + capturedImage.getAbsolutePath());
+                        Log.i(TAG, "renamed " + tmpCapturedImage.getAbsolutePath() + " to " + capturedImage.getAbsolutePath());
                         // Add the new image to the Media content provider so that the
                         // viewing is fast in Android 2.0+
                         values = new ContentValues(6);
@@ -276,13 +274,13 @@ public class ImagingIntent extends BaseActivity {
                         values.put(Images.Media.DATA, capturedImage.getAbsolutePath());
 
                         imageURI = getContentResolver().insert(Images.Media.EXTERNAL_CONTENT_URI, values);
-                        Log.i(t, "Inserting image returned uri = " + imageURI.toString());
+                        Log.i(TAG, "Inserting image returned uri = " + imageURI.toString());
                         refreshImageView();
                     }
                 }
 
                 break;
-            case IMAGE_CHOOSER:
+            case IMAGE_CHOOSE:
                 String sourceImagePath = null;
                 Uri selectedImage = intent.getData();
                 System.out.println("selectedImage=" + selectedImage);
@@ -321,11 +319,11 @@ public class ImagingIntent extends BaseActivity {
 
                     imageURI =
                         getContentResolver().insert(Images.Media.EXTERNAL_CONTENT_URI, values);
-                    Log.i(t, "Inserting image returned uri = " + imageURI.toString());
+                    Log.i(TAG, "Inserting image returned uri = " + imageURI.toString());
                     refreshImageView();
 
                 } else {
-                    Log.e(t, "NO IMAGE EXISTS at: " + source.getAbsolutePath());
+                    Log.e(TAG, "NO IMAGE EXISTS at: " + source.getAbsolutePath());
                 }
                 break;
         }
@@ -346,8 +344,8 @@ public class ImagingIntent extends BaseActivity {
 
         // Calculate image sizes
         if (height > width) {
-            mImagePreview.getLayoutParams().height = (int) (width * 0.8);
-            mImagePreview.getLayoutParams().width = (int) (width * 0.8);
+            mImagePreview.getLayoutParams().height = (int) (width * 0.7);
+            mImagePreview.getLayoutParams().width = (int) (width * 0.7);
         } else {
             mImagePreview.getLayoutParams().height = (int) (height * 0.58);
             mImagePreview.getLayoutParams().width = (int) (height * 0.58);

@@ -33,8 +33,8 @@ public class VideoIntent extends Activity {
     public static final String KEY_VIDEO_CAPTION = "videoCaption";
     public static final String KEY_SECTION_NAME = "sectionName";
 
-	private final int VIDEO_CAPTURE = 1;
-	private final int VIDEO_CHOOSER = 2;
+	private final int VIDEO_RECORD = 1;
+	private final int VIDEO_CHOOSE = 2;
 	
     private String VIDEO_FOLDER;
     private boolean isNewVideo;
@@ -140,9 +140,9 @@ public class VideoIntent extends Activity {
 		Intent i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 		i.putExtra(MediaStore.EXTRA_OUTPUT, Video.Media.EXTERNAL_CONTENT_URI.toString());
 		try {
-			startActivityForResult(i, VIDEO_CAPTURE);
+			startActivityForResult(i, VIDEO_RECORD);
 		} catch (ActivityNotFoundException e) {
-			Toast.makeText(this,"activity_not_found - record video", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this,"Error: Activity for recording video not found", Toast.LENGTH_SHORT).show();
 		}		
 	}
 	
@@ -152,15 +152,15 @@ public class VideoIntent extends Activity {
         final boolean isKitKat = Build.VERSION.SDK_INT >= 19;
 
         if (isKitKat)
-            i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            i = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
         else
             i = new Intent(Intent.ACTION_GET_CONTENT);
 
         try {
 		    i.setType("video/*");
-			startActivityForResult(i,VIDEO_CHOOSER);
+			startActivityForResult(i,VIDEO_CHOOSE);
 		} catch (ActivityNotFoundException e) {
-			Toast.makeText(this,"activity_not_found - choose video", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this,"Error: Activity for choosing video not found", Toast.LENGTH_SHORT).show();
 		}
 	}
 	
@@ -171,7 +171,7 @@ public class VideoIntent extends Activity {
 		try {
 			startActivity(i);
 		} catch (ActivityNotFoundException e) {
-			Toast.makeText(VideoIntent.this,"activity_not_found - play video", Toast.LENGTH_SHORT).show();
+			Toast.makeText(VideoIntent.this,"Error: Activity for playing video not found", Toast.LENGTH_SHORT).show();
 		}
 	}
 	

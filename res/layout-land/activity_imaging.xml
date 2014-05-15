@@ -50,7 +50,7 @@
 		    android:background="@drawable/sel_button_round"
 		    android:padding="11dp"
 		    android:layout_marginBottom="3dp"
-		    android:text="@string/accept_image"
+		    android:text="@string/accept"
 		    android:textColor="@android:color/white"
 		    android:onClick="acceptImage" />
 		
