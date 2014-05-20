@@ -44,7 +44,7 @@ public class MuzimaSyncService {
     }
 
     public int authenticate(String[] credentials) {
-        String username = credentials[0];
+        String username = credentials[0].trim();
         String password = credentials[1];
         String server = credentials[2];
 
