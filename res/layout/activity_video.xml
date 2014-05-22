@@ -27,7 +27,7 @@
                 android:layout_gravity="center|center_vertical"
                 android:adjustViewBounds="true"
                 android:background="@drawable/pic_preview_border"
-                android:contentDescription="@string/preview_video"
+                android:contentDescription="@string/preview_media"
                 android:scaleType="fitXY"
                 android:src="@drawable/user_pic" />
 
@@ -38,7 +38,7 @@
                 android:layout_gravity="center|center_vertical"
                 android:adjustViewBounds="true"
                 android:background="@drawable/pic_preview_border"
-                android:contentDescription="@string/preview_video"
+                android:contentDescription="@string/preview_media"
                 android:onClick="playVideo"
                 android:scaleType="fitXY"
                 android:src="@android:drawable/ic_media_play" />
@@ -69,7 +69,7 @@
 
             <EditText
                 android:id="@+id/videoCaption"
-                style="@style/LoginInfoEditText"
+                style="@style/CaptionEditText"
                 android:ems="10"
                 android:hint="@string/video_caption" />
 

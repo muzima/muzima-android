@@ -27,7 +27,7 @@
                 android:layout_gravity="center|center_vertical"
                 android:adjustViewBounds="true"
                 android:background="@drawable/pic_preview_border"
-                android:contentDescription="@string/preview_video"
+                android:contentDescription="@string/preview_media"
                 android:scaleType="fitXY"
                 android:src="@drawable/user_pic" />
 
@@ -38,7 +38,7 @@
                 android:layout_gravity="center|center_vertical"
                 android:adjustViewBounds="true"
                 android:background="@drawable/pic_preview_border"
-                android:contentDescription="@string/preview_audio"
+                android:contentDescription="@string/preview_media"
                 android:onClick="playAudio"
                 android:scaleType="fitXY"
                 android:src="@android:drawable/ic_media_play" />
@@ -48,7 +48,7 @@
             android:id="@+id/noAudioMessage"
             style="@style/LoginActivityHeader"
             android:layout_gravity="center|center_vertical"
-            android:text="Record or choose Audio" />
+            android:text="@string/record_audio_prompt" />
     </LinearLayout>
 
     <LinearLayout
@@ -69,7 +69,7 @@
 
             <EditText
                 android:id="@+id/audioCaption"
-                style="@style/LoginInfoEditText"
+                style="@style/CaptionEditText"
                 android:ems="10"
                 android:hint="@string/audio_caption" />
 

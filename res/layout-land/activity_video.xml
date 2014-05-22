@@ -28,7 +28,7 @@
                 android:layout_gravity="center|center_vertical"
                 android:adjustViewBounds="true"
                 android:background="@drawable/pic_preview_border"
-                android:contentDescription="@string/preview_video"
+                android:contentDescription="@string/preview_media"
                 android:scaleType="fitXY"
                 android:src="@drawable/user_pic"/>
             
@@ -39,7 +39,7 @@
                 android:layout_gravity="center|center_vertical"
                 android:adjustViewBounds="true"
                 android:background="@drawable/pic_preview_border"
-                android:contentDescription="@string/preview_video"
+                android:contentDescription="@string/preview_media"
                 android:onClick="playVideo"
                 android:scaleType="fitXY"
                 android:src="@android:drawable/ic_media_play"/>

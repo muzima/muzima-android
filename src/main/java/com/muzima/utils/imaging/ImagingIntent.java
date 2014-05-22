@@ -41,7 +41,7 @@ public class ImagingIntent extends BaseActivity {
 
     private ImageView mImagePreview;
     private EditText mImageCaption;
-    private View mCaptionContainer;
+//    private View mCaptionContainer;
     private View mImageAcceptContainer;
     private View mImageCaptureContainer;
     
@@ -84,7 +84,7 @@ public class ImagingIntent extends BaseActivity {
 
         mImagePreview = (ImageView) findViewById(R.id.imagePreview);
         mImageCaption = (EditText) findViewById(R.id.imageCaption);
-        mCaptionContainer = findViewById(R.id.captionContainer);
+//        mCaptionContainer = findViewById(R.id.captionContainer);
         mImageAcceptContainer =  findViewById(R.id.imageAcceptContainer);
         mImageCaptureContainer = findViewById(R.id.imageCaptureContainer);
 
@@ -217,7 +217,7 @@ public class ImagingIntent extends BaseActivity {
             mImageAcceptContainer.setVisibility(View.VISIBLE);
 
             // show caption view
-            mCaptionContainer.setVisibility(View.VISIBLE);
+            mImageCaption.setVisibility(View.VISIBLE);
 
             //hide capture view
             mImageCaptureContainer.setVisibility(View.GONE);
@@ -231,7 +231,7 @@ public class ImagingIntent extends BaseActivity {
             mImageAcceptContainer.setVisibility(View.GONE);
 
             // show caption view
-            mCaptionContainer.setVisibility(View.GONE);
+            mImageCaption.setVisibility(View.GONE);
 
             //hide capture view
             mImageCaptureContainer.setVisibility(View.VISIBLE);
