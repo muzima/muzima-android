@@ -11,9 +11,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 
@@ -93,14 +91,14 @@ public class EnDeCrypt {
                 tmpFolder.mkdirs();
 
             File tempFile = new File(TEMP_FOLDER + encryptedFile.getName());
-            FileInputStream fis = new FileInputStream(encryptedFile);
             FileOutputStream fos = new FileOutputStream(tempFile);
 
-            String cipherText;
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(encryptedFile));
             StringBuilder builder = new StringBuilder();
-            int ch;
-            while ((ch = fis.read()) != -1) {
-                builder.append((char) ch);
+            String cipherText;
+            String line;
+            while ( (line = bufferedReader.readLine()) != null ) {
+                builder.append(line);
             }
 
             cipherText = builder.toString();
