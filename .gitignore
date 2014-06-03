@@ -10,4 +10,4 @@ tmp/
 *.iml
 classes/
 *.DS_Store
-
+*.swp
