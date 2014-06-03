@@ -11,3 +11,4 @@ tmp/
 classes/
 *.DS_Store
 *.swp
+*.apk
