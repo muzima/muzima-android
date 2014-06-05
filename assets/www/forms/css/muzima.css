@@ -43,3 +43,7 @@ span.clear{
     display: block;
     clear:left;
 }
+
+.datepicker{
+    background: white !important;
+}
