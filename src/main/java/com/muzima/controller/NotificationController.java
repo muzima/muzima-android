@@ -50,13 +50,10 @@ public class NotificationController {
         try {
             List<Notification> patientNotifications = new ArrayList<Notification>();
             List<FormData> allFormData = formService.getFormDataByPatient(patientUuid, STATUS_UPLOADED);
-            System.out.println("Patient UUID:" + patientUuid + " has " + allFormData.size() + " uploaded forms");
             Form form;
 
             for (FormData formData : allFormData) {
-                System.out.println("Current formData UUID:=" + formData.getUuid());
                 Notification notification = notificationService.getNotificationByUuid(formData.getUuid());
-                System.out.println("Notification found=" + notification);
                 form = formService.getFormByUuid(formData.getTemplateUuid());
                 if (isConsultationForm(form) && notification != null) {
 

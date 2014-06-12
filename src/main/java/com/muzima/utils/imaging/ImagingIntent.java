@@ -283,12 +283,9 @@ public class ImagingIntent extends BaseActivity {
             case IMAGE_CHOOSE:
                 String sourceImagePath = null;
                 Uri selectedImage = intent.getData();
-                System.out.println("selectedImage=" + selectedImage);
-                if (selectedImage.toString().startsWith("file")) {
-                    System.out.println("Inside if part");
+                if (selectedImage.toString().startsWith("file"))
                     sourceImagePath = selectedImage.toString().substring(6);
-                } else {
-                    System.out.println("Inside Else Part");
+                else {
                     String[] projection = {
                             MediaStore.Images.Media.DATA
                     };
@@ -298,7 +295,6 @@ public class ImagingIntent extends BaseActivity {
                     cursor.moveToFirst();
                     sourceImagePath = cursor.getString(column_index);
                 }
-                System.out.println("After if-else, sourceImagePath=" + sourceImagePath);
 
                 // Copy file to sdcard
                 File source = new File(sourceImagePath);
