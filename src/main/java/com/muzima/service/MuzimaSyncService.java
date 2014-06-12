@@ -46,7 +46,7 @@ public class MuzimaSyncService {
     }
 
     public int authenticate(String[] credentials) {
-        String username = credentials[0];
+        String username = credentials[0].trim();
         String password = credentials[1];
         String server = credentials[2];
 
@@ -299,13 +299,41 @@ public class MuzimaSyncService {
         return result;
     }
 
+    private List<List<String>> split(final List<String> strings) {
+        List<List<String>> lists = new ArrayList<List<String>>();
+
+        int count = 0;
+        boolean hasElements = !strings.isEmpty();
+        while(hasElements) {
+            int startElement = count * 50;
+            int endElement = ++count * 50;
+            hasElements = strings.size() > endElement;
+            if (hasElements) {
+                lists.add(strings.subList(startElement, endElement));
+            } else {
+                lists.add(strings.subList(startElement, strings.size()));
+            }
+        }
+
+        return lists;
+    }
+
     public int[] downloadObservationsForPatientsByPatientUUIDs(List<String> patientUuids) {
         int[] result = new int[3];
         try {
             long startDownloadObservations = System.currentTimeMillis();
             List<String> conceptUuidsFromConcepts = getConceptUuidsFromConcepts(conceptController.getConcepts());
-            List<Observation> allObservations = observationController.downloadObservationsByPatientUuidsAndConceptUuids
-                    (patientUuids, conceptUuidsFromConcepts);
+            List<List<String>> slicedPatientUuids = split(patientUuids);
+            List<List<String>> slicedConceptUuids = split(conceptUuidsFromConcepts);
+
+            List<Observation> allObservations = new ArrayList<Observation>();
+            for (List<String> slicedPatientUuid : slicedPatientUuids) {
+                for (List<String> slicedConceptUuid : slicedConceptUuids) {
+                    allObservations.addAll(
+                            observationController.downloadObservationsByPatientUuidsAndConceptUuids(
+                                    slicedPatientUuid, slicedConceptUuid));
+                }
+            }
             long endDownloadObservations = System.currentTimeMillis();
             Log.i(TAG, "Observations download successful with " + allObservations.size() + " observations");
             List<Observation> voidedObservations = getVoidedObservations(allObservations);
@@ -365,7 +393,11 @@ public class MuzimaSyncService {
         int[] result = new int[3];
         try {
             long startDownloadEncounters = System.currentTimeMillis();
-            List<Encounter> allEncounters = encounterController.downloadEncountersByPatientUuids(patientUuids);
+            List<Encounter> allEncounters = new ArrayList<Encounter>();
+            List<List<String>> slicedPatientUuids = split(patientUuids);
+            for (List<String> slicedPatientUuid : slicedPatientUuids) {
+                allEncounters.addAll(encounterController.downloadEncountersByPatientUuids(slicedPatientUuid));
+            }
             long endDownloadObservations = System.currentTimeMillis();
             Log.i(TAG, "Encounters download successful with " + allEncounters.size() + " encounters");
             ArrayList<Encounter> voidedEncounters = getVoidedEncounters(allEncounters);

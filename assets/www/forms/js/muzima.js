@@ -346,9 +346,10 @@ $(document).ready(function () {
                 if ($div.length > 1) {
                     return;
                 }
-                if ($($('[name="' + key + '"]')[0]).prop('tagName') == 'FIELDSET') {
+                var $dataElement = $($('[name="' + key + '"]')[0]);
+                if ($dataElement.prop('tagName') == 'FIELDSET') {
                     $.each(value, function (i, val) {
-                        $("input[type=checkbox][value='" + val + "']").attr('checked', 'true');
+                        $dataElement.find($("input[type=checkbox][value='" + val + "']")).attr('checked', 'true');
                     });
                 } else if (value instanceof Array) {
                     $.each(value, function (i, elem) {
@@ -362,7 +363,12 @@ $(document).ready(function () {
                 }
             }
             else {
-                $('[data-concept="' + key + '"]').val(value);
+                var $dataConceptElement = $('[data-concept="' + key + '"]');
+                if ( $dataConceptElement.prop('tagName') == 'FIELDSET') {
+                    $dataConceptElement.find($("input[type=checkbox][value='" + value + "']")).attr('checked', 'true');
+                }else{
+                    $dataConceptElement.val(value);
+                }
             }
         });
     };

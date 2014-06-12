@@ -135,6 +135,11 @@ public class LoginActivity extends Activity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
+
     private void setupListeners() {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
