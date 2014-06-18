@@ -32,6 +32,7 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
     private static final String TAG = "CustomConceptWizardActivity";
     private MuzimaProgressDialog muzimaProgressDialog;
     protected Credentials credentials;
+    private boolean isProcessDialogOn = false;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +43,7 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                muzimaProgressDialog.show("Downloading Observations and Encounters...");
+                turnOnProgressDialog("Downloading Observations and Encounters...");
                 new AsyncTask<Void, Void, int[]>() {
                     @Override
                     protected int[] doInBackground(Void... voids) {
@@ -51,8 +52,7 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
 
                     @Override
                     protected void onPostExecute(int[] results) {
-                        if(muzimaProgressDialog!=null)
-                            muzimaProgressDialog.dismiss();
+                        dismissProgressDialog();
                         if (results[0] != SUCCESS) {
                             Toast.makeText(CustomConceptWizardActivity.this, "Could not load cohorts", Toast.LENGTH_SHORT).show();
                         } else {
@@ -128,9 +128,17 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
     @Override
     public void onPause(){
         super.onPause();
-        if(muzimaProgressDialog!=null)
-            muzimaProgressDialog.dismiss();
+        dismissProgressDialog();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(isProcessDialogOn){
+            turnOnProgressDialog("Downloading Observations and Encounters...");
+        }
+    }
+
     @Override
     protected int getContentView() {
         return R.layout.activity_custom_concept_wizard;
@@ -146,5 +154,17 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
         Intent intent = new Intent(getApplicationContext(), FormTemplateWizardActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private void turnOnProgressDialog(String message){
+        muzimaProgressDialog.show(message);
+        isProcessDialogOn = true;
+    }
+
+    private void dismissProgressDialog(){
+        if (muzimaProgressDialog != null){
+            muzimaProgressDialog.dismiss();
+            isProcessDialogOn = false;
+        }
     }
 }

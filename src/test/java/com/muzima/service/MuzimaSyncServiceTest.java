@@ -647,11 +647,17 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadObservationsForPatients_shouldReturnDownloadErrorWhenDownloadExceptionIsThrownForObservations() throws Exception, ObservationController.DownloadObservationException, PatientController.PatientLoadException {
+    public void downloadObservationsForPatients_shouldReturnDownloadErrorWhenDownloadExceptionIsThrownForObservations() throws Exception, ObservationController.DownloadObservationException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         String[] cohortUuids = new String[]{"uuid1"};
         List<Patient> patients = new ArrayList<Patient>() {{
             add(new Patient() {{
                 setUuid("patient1");
+            }});
+        }};
+
+        List<Concept> conceptList = new ArrayList<Concept>(){{
+            add(new Concept(){{
+                setUuid("concept1");
             }});
         }};
         Set<String> concepts = new HashSet<String>() {{
@@ -659,6 +665,7 @@ public class MuzimaSyncServiceTest {
         }};
 
         when(patientController.getPatientsForCohorts(cohortUuids)).thenReturn(patients);
+        when(conceptController.getConcepts()).thenReturn(conceptList);
         when(muzimaApplication.getSharedPreferences(Constants.CONCEPT_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
         when(sharedPref.getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>())).thenReturn(concepts);
         doThrow(new ObservationController.DownloadObservationException(null)).when(observationController).downloadObservationsByPatientUuidsAndConceptUuids(anyList(), anyList());
@@ -782,7 +789,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void shouldDeleteVoidedObservationsWhenDownloadingObservations() throws ObservationController.DeleteObservationException, ObservationController.DownloadObservationException, ReplaceObservationException {
+    public void shouldDeleteVoidedObservationsWhenDownloadingObservations() throws ObservationController.DeleteObservationException, ObservationController.DownloadObservationException, ReplaceObservationException, ConceptController.ConceptFetchException {
         List<String> patientUuids = asList(new String[]{"patientUuid"});
         List<Observation> observations = new ArrayList<Observation>();
         Observation anObservation = mock(Observation.class);
@@ -791,8 +798,14 @@ public class MuzimaSyncServiceTest {
         Observation voidedObservation = mock(Observation.class);
         when(voidedObservation.isVoided()).thenReturn(true);
         observations.add(voidedObservation);
+        List<Concept> conceptList = new ArrayList<Concept>(){{
+            add(new Concept(){{
+                setUuid("concept1");
+            }});
+        }};
+        when(conceptController.getConcepts()).thenReturn(conceptList);
         when(observationController.downloadObservationsByPatientUuidsAndConceptUuids
-                (eq(patientUuids), anyList())).thenReturn(observations);
+                (eq(patientUuids), eq(asList("concept1")))).thenReturn(observations);
 
         muzimaSyncService.downloadObservationsForPatientsByPatientUUIDs(patientUuids);
 
