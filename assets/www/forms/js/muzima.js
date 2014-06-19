@@ -353,11 +353,14 @@ $(document).ready(function () {
                     });
                 } else if (value instanceof Array) {
                     $.each(value, function (i, elem) {
-                        var $newDiv = $div.clone();
-                        populateDataConcepts($newDiv, elem);
-                        $div.after($newDiv);
+                        if (i == 0) {
+                            populateDataConcepts($div, elem);
+                        } else {
+                            var $newDiv = $div.clone(true);
+                            populateDataConcepts($newDiv, elem);
+                            $div.after($newDiv);
+                        }
                     });
-                    $div.remove();
                 } else {
                     populateDataConcepts($div, value);
                 }

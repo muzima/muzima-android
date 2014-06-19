@@ -262,20 +262,11 @@ public class VideoIntent extends Activity {
 		if (MediaUtils.folderExists(VIDEO_FOLDER))
             MediaUtils.copyFile(source, newVideo);
 
-		if (newVideo.exists()) {
-			ContentValues values = new ContentValues(6);
-			values.put(Video.Media.TITLE, newVideo.getName());
-			values.put(Video.Media.DISPLAY_NAME, newVideo.getName());
-			values.put(Video.Media.DATE_ADDED, System.currentTimeMillis());
-			values.put(Video.Media.DATA, newVideo.getAbsolutePath());
-
-			Uri videoURI = getContentResolver().insert(
-					Video.Media.EXTERNAL_CONTENT_URI, values);
-			Log.i(TAG, "Inserting VIDEO returned uri = " + videoURI.toString());
-		} else
+		if (newVideo.exists())
+		    mBinaryName = newVideo.getName();
+		else
 			Log.e(TAG, "Inserting Video file FAILED");
 
-		mBinaryName = newVideo.getName();
 	}
 
 	@Override

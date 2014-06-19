@@ -84,7 +84,6 @@ public class ImagingIntent extends BaseActivity {
 
         mImagePreview = (ImageView) findViewById(R.id.imagePreview);
         mImageCaption = (EditText) findViewById(R.id.imageCaption);
-//        mCaptionContainer = findViewById(R.id.captionContainer);
         mImageAcceptContainer =  findViewById(R.id.imageAcceptContainer);
         mImageCaptureContainer = findViewById(R.id.imageCaptureContainer);
 
@@ -180,34 +179,23 @@ public class ImagingIntent extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent("android.intent.action.VIEW");
-                    String[] projection = {
-                        "_id"
-                    };
-                    Cursor c =
-                        getApplicationContext().getContentResolver()
-                                .query(
-                                    Images.Media.EXTERNAL_CONTENT_URI,
-                                    projection, "_data='" + IMAGE_FOLDER + File.separator + mBinaryName + "'",
-                                    null, null);
+                    String[] projection = {"_id"};
+                    Cursor c = getApplicationContext().getContentResolver()
+                                .query(Images.Media.EXTERNAL_CONTENT_URI,
+                                    projection, "_data='" + IMAGE_FOLDER + File.separator + mBinaryName + "'", null, null);
                     if (c.getCount() > 0) {
                         c.moveToFirst();
                         String id = c.getString(c.getColumnIndex("_id"));
 
-                        Log.i(
-                                TAG,
-                            "setting view path to: "
-                                    + Uri.withAppendedPath(
-                                        Images.Media.EXTERNAL_CONTENT_URI,
-                                        id));
+                        Log.i(TAG, "setting view path to: "  + Uri.withAppendedPath(
+                                        Images.Media.EXTERNAL_CONTENT_URI, id));
 
                         i.setDataAndType(Uri.withAppendedPath(
-                            Images.Media.EXTERNAL_CONTENT_URI, id),
-                            "image/*");
+                            Images.Media.EXTERNAL_CONTENT_URI, id), "image/*");
                         try {
                             ImagingIntent.this.startActivity(i);
                         } catch (ActivityNotFoundException e) {
-                            Toast.makeText(getApplicationContext(),"activity_not_found view image",
-                                Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),"activity_not_found view image", Toast.LENGTH_SHORT).show();
                         }
                     }
                     c.close();
@@ -235,7 +223,6 @@ public class ImagingIntent extends BaseActivity {
 
             //hide capture view
             mImageCaptureContainer.setVisibility(View.VISIBLE);
-
         }
     }
 
@@ -250,7 +237,7 @@ public class ImagingIntent extends BaseActivity {
 
         ContentValues values;
         Uri imageURI;
-        String destImagePath = IMAGE_FOLDER + File.separator + System.currentTimeMillis() + ".jpg";
+        String destImagePath = IMAGE_FOLDER + File.separator + System.currentTimeMillis();
 
         switch (requestCode) {
             case IMAGE_CAPTURE:
@@ -263,18 +250,7 @@ public class ImagingIntent extends BaseActivity {
                         Log.e(TAG, "Failed to rename " + tmpCapturedImage.getAbsolutePath());
                     else {
                         Log.i(TAG, "renamed " + tmpCapturedImage.getAbsolutePath() + " to " + capturedImage.getAbsolutePath());
-                        // Add the new image to the Media content provider so that the
-                        // viewing is fast in Android 2.0+
-                        values = new ContentValues(6);
                         mBinaryName = capturedImage.getName();
-                        values.put(Images.Media.TITLE, mBinaryName);
-                        values.put(Images.Media.DISPLAY_NAME, mBinaryName);
-                        values.put(Images.Media.DATE_TAKEN, System.currentTimeMillis());
-                        values.put(Images.Media.MIME_TYPE, "image/jpeg");
-                        values.put(Images.Media.DATA, capturedImage.getAbsolutePath());
-
-                        imageURI = getContentResolver().insert(Images.Media.EXTERNAL_CONTENT_URI, values);
-                        Log.i(TAG, "Inserting image returned uri = " + imageURI.toString());
                         refreshImageView();
                     }
                 }
@@ -286,9 +262,7 @@ public class ImagingIntent extends BaseActivity {
                 if (selectedImage.toString().startsWith("file"))
                     sourceImagePath = selectedImage.toString().substring(6);
                 else {
-                    String[] projection = {
-                            MediaStore.Images.Media.DATA
-                    };
+                    String[] projection = {MediaStore.Images.Media.DATA};
                     Cursor cursor = managedQuery(selectedImage, projection, null, null, null);
                     startManagingCursor(cursor);
                     int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -303,21 +277,8 @@ public class ImagingIntent extends BaseActivity {
                 	MediaUtils.copyFile(source, chosenImage);
                 
                 if (chosenImage.exists()) {
-                    // Add the new image to the Media content provider so that the
-                    // viewing is fast in Android 2.0+
                 	mBinaryName = chosenImage.getName();
-                    values = new ContentValues(6);
-                    values.put(Images.Media.TITLE, mBinaryName );
-                    values.put(Images.Media.DISPLAY_NAME, mBinaryName);
-                    values.put(Images.Media.DATE_TAKEN, System.currentTimeMillis());
-                    values.put(Images.Media.MIME_TYPE, "image/jpeg");
-                    values.put(Images.Media.DATA, chosenImage.getAbsolutePath());
-
-                    imageURI =
-                        getContentResolver().insert(Images.Media.EXTERNAL_CONTENT_URI, values);
-                    Log.i(TAG, "Inserting image returned uri = " + imageURI.toString());
                     refreshImageView();
-
                 } else {
                     Log.e(TAG, "NO IMAGE EXISTS at: " + source.getAbsolutePath());
                 }

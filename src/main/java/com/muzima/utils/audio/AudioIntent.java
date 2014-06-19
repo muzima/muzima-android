@@ -234,20 +234,11 @@ public class AudioIntent extends Activity {
 		if (MediaUtils.folderExists(AUDIO_FOLDER))
             MediaUtils.copyFile(source, newAudio);
 
-		if (newAudio.exists()) {
-			ContentValues values = new ContentValues(6);
-			values.put(Audio.Media.TITLE, newAudio.getName());
-			values.put(Audio.Media.DISPLAY_NAME, newAudio.getName());
-			values.put(Audio.Media.DATE_ADDED, System.currentTimeMillis());
-			values.put(Audio.Media.DATA, newAudio.getAbsolutePath());
-
-			Uri AudioURI = getContentResolver().insert(
-					Audio.Media.EXTERNAL_CONTENT_URI, values);
-			Log.i(TAG, "Inserting Audio returned uri = " + AudioURI.toString());
-		} else
+		if (newAudio.exists())
+		    mBinaryName = newAudio.getName();
+		else
 			Log.e(TAG, "Inserting Audio file FAILED");
 
-		mBinaryName = newAudio.getName();
 	}
 
 	@Override
