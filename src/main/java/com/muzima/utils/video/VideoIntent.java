@@ -55,15 +55,12 @@ public class VideoIntent extends Activity {
         setContentView(R.layout.activity_video);
         
         Intent i = getIntent();
-        String formUuid = i.getStringExtra(VideoComponent.FORM_UUID);
         String videoPath = i.getStringExtra(KEY_VIDEO_PATH);
         mBinaryDescription  = i.getStringExtra(KEY_VIDEO_CAPTION);
         mSectionName = i.getStringExtra(KEY_SECTION_NAME);
 
-        if (formUuid != null)
-        	VIDEO_FOLDER = APP_VIDEO_DIR + "/" + formUuid;
-        else
-        	VIDEO_FOLDER = APP_VIDEO_DIR;
+        // we are not using formUuid in the media path anymore
+        VIDEO_FOLDER = APP_VIDEO_DIR;
 
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(KEY_VIDEO_PATH))

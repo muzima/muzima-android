@@ -54,15 +54,12 @@ public class AudioIntent extends Activity {
         setContentView(R.layout.activity_audio);
         
         Intent i = getIntent();
-        String formUuid = i.getStringExtra(AudioComponent.FORM_UUID);
         String audioPath = i.getStringExtra(KEY_AUDIO_PATH);
         mBinaryDescription  = i.getStringExtra(KEY_AUDIO_CAPTION);
         mSectionName = i.getStringExtra(KEY_SECTION_NAME);
 
-        if (formUuid != null)
-        	AUDIO_FOLDER = APP_AUDIO_DIR + "/" + formUuid;
-        else
-        	AUDIO_FOLDER = APP_AUDIO_DIR;
+        // we are not using formUuid in the media path anymore
+        AUDIO_FOLDER = APP_AUDIO_DIR;
 
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(KEY_AUDIO_PATH))

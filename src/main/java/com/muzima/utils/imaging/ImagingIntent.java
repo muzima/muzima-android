@@ -54,15 +54,12 @@ public class ImagingIntent extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_imaging);
         Intent i = getIntent();
-        String formUuid = i.getStringExtra(ImagingComponent.FORM_UUID);
         String imagePath = i.getStringExtra(KEY_IMAGE_PATH);
         mBinaryDescription  = i.getStringExtra(KEY_IMAGE_CAPTION);
         mSectionName = i.getStringExtra(KEY_SECTION_NAME);
 
-        if (formUuid != null)
-            IMAGE_FOLDER = APP_IMAGE_DIR + File.separator + formUuid;
-        else
-            IMAGE_FOLDER = APP_IMAGE_DIR;
+        // we are not using formUuid in the media path anymore
+        IMAGE_FOLDER = APP_IMAGE_DIR;
 
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(KEY_IMAGE_PATH))
