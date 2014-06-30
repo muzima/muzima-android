@@ -41,7 +41,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
     private AllAvailableFormsAdapter allAvailableFormsAdapter;
     private MuzimaProgressDialog progressDialog;
     private ListView listView;
-
+    private boolean isProcessDialogOn = false;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +92,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
                     Toast.makeText(FormTemplateWizardActivity.this, "Please select at least one registration form!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                progressDialog.show("Downloading Form Templates...");
+                turnOnProgressDialog("Downloading Form Templates...");
 
                 new AsyncTask<Void, Void, int[]>() {
 
@@ -103,7 +103,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
 
                     @Override
                     protected void onPostExecute(int[] result) {
-                        progressDialog.dismiss();
+                        dismissProgressDialog();
                         if (result[0] != SUCCESS) {
                             Toast.makeText(FormTemplateWizardActivity.this, "Could not download form templates", Toast.LENGTH_SHORT).show();
                         }
@@ -150,6 +150,9 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
     protected void onResume() {
         super.onResume();
         tagsListAdapter.reloadData();
+        if(isProcessDialogOn){
+            turnOnProgressDialog("Downloading Form Templates...");
+        }
     }
 
     @Override
@@ -219,12 +222,24 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
 
     @Override
     public void onQueryTaskStarted() {
-        progressDialog.show("Loading Forms...");
+        turnOnProgressDialog("Loading Forms...");
     }
 
     @Override
     public void onQueryTaskFinish() {
-        progressDialog.dismiss();
+        dismissProgressDialog();
+    }
+
+    private void turnOnProgressDialog(String message){
+        progressDialog.show(message);
+        isProcessDialogOn = true;
+    }
+
+    private void dismissProgressDialog(){
+        if (progressDialog != null){
+            progressDialog.dismiss();
+            isProcessDialogOn = false;
+        }
     }
 }
 

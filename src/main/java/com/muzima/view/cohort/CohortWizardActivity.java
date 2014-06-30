@@ -28,6 +28,7 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 public class CohortWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
 
     private MuzimaProgressDialog progressDialog;
+    private boolean isProcessDialogOn = false;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +59,14 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         super.onCreateOptionsMenu(menu);
         removeSettingsMenu(menu);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(isProcessDialogOn){
+            turnOnProgressDialog("Loading Cohorts...");
+        }
     }
 
     @Override
@@ -99,7 +108,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.show("Downloading clients demographic...");
+                turnOnProgressDialog("Downloading clients demographic...");
                 new AsyncTask<Void, Void, int[]>() {
                     @Override
                     protected int[] doInBackground(Void... voids) {
@@ -108,9 +117,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
 
                     @Override
                     protected void onPostExecute(int[] result) {
-                        if (progressDialog != null)
-                            progressDialog.dismiss();
-
+                        dismissProgressDialog();
                         if (result[0] != SUCCESS) {
                             Toast.makeText(CohortWizardActivity.this, "Could not download clients", Toast.LENGTH_SHORT).show();
                         }
@@ -164,18 +171,30 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
 
     @Override
     public void onQueryTaskStarted() {
-        progressDialog.show("Loading Cohorts...");
+        turnOnProgressDialog("Loading Cohorts...");
     }
 
     @Override
     public void onQueryTaskFinish() {
-        progressDialog.dismiss();
+        dismissProgressDialog();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (progressDialog != null)
-            progressDialog.dismiss();
+        dismissProgressDialog();
     }
+
+    private void turnOnProgressDialog(String message){
+        progressDialog.show(message);
+        isProcessDialogOn = true;
+    }
+
+    private void dismissProgressDialog(){
+        if (progressDialog != null){
+            progressDialog.dismiss();
+            isProcessDialogOn = false;
+        }
+    }
+
 }
