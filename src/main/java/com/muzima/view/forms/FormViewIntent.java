@@ -10,6 +10,7 @@ import com.muzima.controller.FormController;
 import com.muzima.controller.NotificationController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
+import com.muzima.utils.Constants;
 
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER;
@@ -46,17 +47,12 @@ public class FormViewIntent extends Intent {
 
     private static String getEncounterFormDiscriminatorBasedOnFormType(Activity activity, BaseForm baseForm){
         FormController formController = ((MuzimaApplication) activity.getApplication()).getFormController();
-        NotificationController notificationController = ((MuzimaApplication) activity.getApplication()).getNotificationController();
         try {
-            if (formController.getFormTemplateByUuid(baseForm.getFormUuid()).isHTMLForm()) {
-                Form form = formController.getFormByUuid(baseForm.getFormUuid());
-                if (form != null && notificationController.isConsultationForm(form))
-                    return FORM_JSON_DISCRIMINATOR_CONSULTATION;
-                return FORM_JSON_DISCRIMINATOR_ENCOUNTER;
-            }
+            Form form = formController.getFormByUuid(baseForm.getFormUuid());
+            return form.getDiscriminator();
         } catch (FormController.FormFetchException e) {
-            Log.e("FormIntent", "Error while identifying form to load it in WebView");
+            Log.e("FormViewIntent", "Error while identifying form to load it in WebView", e);
         }
-        return FORM_XML_DISCRIMINATOR_ENCOUNTER;
+        return Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER;
     }
 }
