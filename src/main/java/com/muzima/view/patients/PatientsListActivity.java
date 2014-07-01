@@ -1,5 +1,6 @@
 package com.muzima.view.patients;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,19 +12,34 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
+import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.User;
+import com.muzima.controller.CohortController;
+import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.Fonts;
-import com.muzima.view.BaseActivity;
+import com.muzima.utils.NetworkUtils;
+import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
+import com.muzima.view.notifications.SyncNotificationsIntent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
 import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
 
-public class PatientsListActivity extends BaseActivity implements AdapterView.OnItemClickListener, ListAdapter.BackgroundListQueryTaskListener {
+public class PatientsListActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener, ListAdapter.BackgroundListQueryTaskListener {
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
     public static final String QUICK_SEARCH = "quickSearch";
+    public static final String NOTIFICATIONS = "Notifications";
+    public static boolean isNotificationsList = false;
+    private MenuItem menubarSyncButton;
+    private boolean notificationsSyncInProgress;
 
     private ListView listView;
     private boolean quickSearch = false;
@@ -45,9 +61,11 @@ public class PatientsListActivity extends BaseActivity implements AdapterView.On
             cohortId = intentExtras.getString(COHORT_ID);
             String title = intentExtras.getString(COHORT_NAME);
             if (title != null) {
+                isNotificationsList = StringUtil.equals(title, NOTIFICATIONS);
                 setTitle(title);
             }
-        }
+        }  else
+            isNotificationsList = false;
 
         progressBarContainer = (FrameLayout) findViewById(R.id.progressbarContainer);
         setupNoDataView();
@@ -64,7 +82,8 @@ public class PatientsListActivity extends BaseActivity implements AdapterView.On
                 startActivity(intent);
             }
         });
-
+        if (isNotificationsList)
+            searchServerBtn.setVisibility(View.GONE);
     }
 
     @Override
@@ -93,6 +112,16 @@ public class PatientsListActivity extends BaseActivity implements AdapterView.On
             searchView.requestFocus();
         } else
             searchView.setIconified(true);
+
+        menubarSyncButton = menu.findItem(R.id.menu_load);
+        if (isNotificationsList) {
+            menubarSyncButton.setVisible(true);
+            searchView.setVisibility(View.GONE);
+        } else {
+            menubarSyncButton.setVisible(false);
+            searchView.setVisibility(View.VISIBLE);
+        }
+
         super.onCreateOptionsMenu(menu);
         return true;
     }
@@ -111,6 +140,18 @@ public class PatientsListActivity extends BaseActivity implements AdapterView.On
             case R.id.menu_client_add:
                 startActivity(new Intent(this, RegistrationFormsActivity.class));
                 return true;
+            case R.id.menu_load:
+                if (notificationsSyncInProgress) {
+                    Toast.makeText(this, "Action not allowed while sync is in progress", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+
+                if (!NetworkUtils.isConnectedToNetwork(this)) {
+                    Toast.makeText(this, "No connection found, please connect your device and try again", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+
+                syncAllNotificationsInBackgroundService();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -133,7 +174,7 @@ public class PatientsListActivity extends BaseActivity implements AdapterView.On
         patientAdapter = new PatientsLocalSearchAdapter(getApplicationContext(),
                 R.layout.layout_list,
                 ((MuzimaApplication) getApplicationContext()).getPatientController(),
-                cohortId);
+                cohortId, isNotificationsList);
         patientAdapter.setBackgroundListQueryTaskListener(this);
         listView.setAdapter(patientAdapter);
         listView.setOnItemClickListener(this);
@@ -144,9 +185,18 @@ public class PatientsListActivity extends BaseActivity implements AdapterView.On
         noDataView = findViewById(R.id.no_data_layout);
 
         TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
-        noDataMsgTextView.setText(getResources().getText(R.string.no_clients_matched_locally));
+        if (isNotificationsList)
+            noDataMsgTextView.setText(getResources().getText(R.string.no_notification_available));
+        else
+            noDataMsgTextView.setText(getResources().getText(R.string.no_clients_matched_locally));
+
         TextView noDataTipTextView = (TextView) findViewById(R.id.no_data_tip);
-        noDataTipTextView.setText(R.string.no_clients_matched_tip_locally);
+
+        if (isNotificationsList)
+            noDataTipTextView.setText(R.string.no_notification_available_tip);
+        else
+            noDataTipTextView.setText(R.string.no_clients_matched_tip_locally);
+
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
         noDataTipTextView.setTypeface(Fonts.roboto_light(this));
     }
@@ -171,5 +221,67 @@ public class PatientsListActivity extends BaseActivity implements AdapterView.On
 
         listView.setVisibility(VISIBLE);
         progressBarContainer.setVisibility(INVISIBLE);
+    }
+
+    @Override
+    protected void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+
+        int syncStatus = intent.getIntExtra(SYNC_STATUS, UNKNOWN_ERROR);
+        int syncType = intent.getIntExtra(SYNC_TYPE, -1);
+
+        if (syncType == SYNC_NOTIFICATIONS) {
+            hideProgressbar();
+            onNotificationDownloadFinish();
+        }
+    }
+
+
+    public void hideProgressbar() {
+        menubarSyncButton.setActionView(null);
+    }
+
+    public void showProgressBar() {
+        menubarSyncButton.setActionView(R.layout.refresh_menuitem);
+    }
+
+    private void syncAllNotificationsInBackgroundService() {
+        notificationsSyncInProgress = true;
+        onNotificationDownloadStart();
+        showProgressBar();
+
+        User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
+        if (authenticatedUser != null)   {
+            // get downloaded cohorts and sync obs and encounters
+            List<String> downloadedCohortsUuid = null;
+            List<Cohort> downloadedCohorts;
+            CohortController cohortController = ((MuzimaApplication) getApplicationContext()).getCohortController();
+            try {
+                downloadedCohorts = cohortController.getSyncedCohorts();
+                downloadedCohortsUuid = new ArrayList<String>();
+                for (Cohort cohort : downloadedCohorts) {
+                    downloadedCohortsUuid.add(cohort.getUuid());
+                }
+
+            } catch (CohortController.CohortFetchException e) {
+                e.printStackTrace();
+            }
+            new SyncNotificationsIntent(this, authenticatedUser.getPerson().getUuid(), getDownloadedCohortsArray(downloadedCohortsUuid)).start();
+        } else
+            Toast.makeText(this, "Error downloading notifications", Toast.LENGTH_SHORT).show();
+    }
+
+    private String[] getDownloadedCohortsArray(List<String> CohortUuids) {
+        return CohortUuids.toArray(new String[CohortUuids.size()]);
+    }
+
+    public void onNotificationDownloadFinish() {
+        notificationsSyncInProgress = false;
+        patientAdapter.reloadData();
+        //updateSyncText();
+    }
+
+    public void onNotificationDownloadStart() {
+        notificationsSyncInProgress = true;
     }
 }

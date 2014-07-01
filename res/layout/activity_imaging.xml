@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+
+    <ScrollView
+            android:id="@+id/captionContainer"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@+id/controlsContainer"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:fillViewport="true">
+
+        <LinearLayout
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp">
+
+            <ImageView
+                    android:id="@+id/imagePreview"
+                    android:layout_width="120dp"
+                    android:layout_height="150dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/pic_preview_border"
+                    android:contentDescription="@string/preview_media"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/user_pic"/>
+
+            <EditText
+                    android:id="@+id/imageCaption"
+                    style="@style/CaptionEditText"
+                    android:visibility="gone"
+                    android:hint="@string/image_caption"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+            android:id="@+id/controlsContainer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+        <LinearLayout
+                android:id="@+id/imageAcceptContainer"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/hint_text_grey"
+                android:gravity="center_vertical|center_horizontal"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+            <Button
+                    android:id="@+id/acceptImage"
+                    style="@style/Button"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/sel_button_round"
+                    android:padding="11dp"
+                    android:layout_marginRight="2dp"
+                    android:text="@string/accept"
+                    android:textColor="@android:color/white"
+                    android:onClick="acceptImage"/>
+
+            <Button
+                    android:id="@+id/cancel"
+                    style="@style/Button"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/sel_button_round"
+                    android:padding="11dp"
+                    android:layout_marginLeft="2dp"
+                    android:text="@string/cancel"
+                    android:textColor="@android:color/white"
+                    android:onClick="rejectImage"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/imageCaptureContainer"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="11dp"
+                android:paddingBottom="11dp"
+                android:background="@color/hint_text_grey"
+                android:gravity="center_vertical|center_horizontal"
+                android:orientation="horizontal">
+
+            <Button
+                    android:id="@+id/imageCapture"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:padding="11dp"
+                    android:layout_marginRight="2dp"
+                    android:text="@string/capture_image"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/sel_button_round"
+                    style="@style/Button"
+                    android:onClick="captureImage"/>
+
+            <Button
+                    android:id="@+id/chooseImage"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:padding="11dp"
+                    android:layout_marginLeft="2dp"
+                    android:text="@string/choose_image"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/sel_button_round"
+                    style="@style/Button"
+                    android:onClick="chooseImage"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

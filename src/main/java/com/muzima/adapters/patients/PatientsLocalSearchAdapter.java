@@ -7,10 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.muzima.MuzimaApplication;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.User;
+import com.muzima.controller.NotificationController;
 import com.muzima.controller.PatientController;
+import com.muzima.utils.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
@@ -19,13 +24,17 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
     private final PatientAdapterHelper patientAdapterHelper;
     private PatientController patientController;
     private final String cohortId;
+    private boolean isNotificationsList;
+    private Context context;
     protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
 
     public PatientsLocalSearchAdapter(Context context, int textViewResourceId,
-                                      PatientController patientController, String cohortId) {
+                                      PatientController patientController, String cohortId, boolean isNotificationList) {
         super(context, textViewResourceId);
+        this.context = context;
         this.patientController = patientController;
         this.cohortId = cohortId;
+        this.isNotificationsList = isNotificationList;
         this.patientAdapterHelper = new PatientAdapterHelper(context, textViewResourceId);
     }
 
@@ -57,18 +66,25 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
 
         @Override
         protected List<Patient> doInBackground(String... params) {
+            List<Patient> patients = null;
             if (isSearch(params)) {
                 try {
-                    return patientController.searchPatientLocally(params[0], cohortId);
+                    if (isNotificationsList) {
+                        return filterPatientsWithNotifications(patientController.searchPatientLocally(params[0], cohortId));
+                    } else {
+                        return patientController.searchPatientLocally(params[0], cohortId);
+                    }
                 } catch (PatientController.PatientLoadException e) {
                     Log.w(TAG, "Exception occurred while searching patients for " + params[0] + " search string. " + e);
                 }
             }
-            List<Patient> patients = null;
+
             String cohortUuid = params[0];
             try {
                 if (cohortUuid != null) {
                     patients = patientController.getPatients(cohortUuid);
+                } else if (isNotificationsList) {
+                    patients = filterPatientsWithNotifications(null);
                 } else {
                     patients = patientController.getAllPatients();
                 }
@@ -86,6 +102,32 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
         protected void onPostExecute(List<Patient> patients) {
             patientAdapterHelper.onPostExecute(patients, PatientsLocalSearchAdapter.this, backgroundListQueryTaskListener);
         }
+    }
+
+    private List<Patient> filterPatientsWithNotifications(List<Patient> patientList) {
+        NotificationController notificationController = ((MuzimaApplication) context.getApplicationContext()).getNotificationController();
+        List<Patient> notificationPatients = null;
+        try {
+            if (patientList == null)
+                patientList = patientController.getAllPatients();
+
+            if (patientList.size() >= 1)  {
+                notificationPatients = new ArrayList<Patient>();
+                User authenticatedUser = ((MuzimaApplication) context.getApplicationContext()).getAuthenticatedUser();
+                if (authenticatedUser != null) {
+                    for (Patient patient : patientList)  {
+                        if (notificationController.patientHasNotifications(patient.getUuid(), authenticatedUser.getPerson().getUuid(),
+                                Constants.NotificationStatusConstants.NOTIFICATION_UNREAD))
+                            notificationPatients.add(patient) ;
+                    }
+                }
+            }
+        } catch (PatientController.PatientLoadException e) {
+            Log.w(TAG, "Exception occurred while fetching patients" + e);
+        } catch (NotificationController.NotificationFetchException e) {
+            Log.w(TAG, "Exception occurred while fetching patients" + e);
+        }
+        return notificationPatients;
     }
 
     private class ViewHolder {

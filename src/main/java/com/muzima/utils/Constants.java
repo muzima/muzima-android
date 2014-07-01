@@ -1,5 +1,7 @@
 package com.muzima.utils;
 
+import android.os.Environment;
+
 //TODO: This class should be burnt and flushed. Constants in an anti-pattern and and a sure sign that your abstractions are wrong: Zabil
 //TODO: Burnt?? Maybe or may not be - Prasanna
 public class Constants {
@@ -19,13 +21,22 @@ public class Constants {
     public static final String FORM_XML_DISCRIMINATOR_ENCOUNTER = "xml-encounter";
     public static final String FORM_JSON_DISCRIMINATOR_ENCOUNTER = "json-encounter";
     public static final String FORM_DISCRIMINATOR_REGISTRATION = "registration";
+    public static final String FORM_JSON_DISCRIMINATOR_CONSULTATION = "json-consultation";
+    public static final String FORM_DISCRIMINATOR_CONSULTATION = "consultation";
+
+    private static final String APP_EXTERNAL_DIR_ROOT =  Environment.getExternalStorageDirectory().getPath() + "/muzima";
+    private static final String APP_MEDIA_DIR = APP_EXTERNAL_DIR_ROOT + "/media";
+    public static final String APP_IMAGE_DIR = APP_MEDIA_DIR + "/image";
+    public static final String APP_AUDIO_DIR = APP_MEDIA_DIR + "/audio";
+    public static final String APP_VIDEO_DIR = APP_MEDIA_DIR + "/video";
+    public static final String TMP_FILE_PATH = APP_EXTERNAL_DIR_ROOT + "/.cache";
 
     public static class DataSyncServiceConstants {
         public static final String SYNC_TYPE = "sync_type";
         public static final String CREDENTIALS = "credentials";
         public static final String SYNC_STATUS = "sync_status";
-        public static final String DOWNLOAD_COUNT_PRIMARY = "donwload_count_primary";
-        public static final String DOWNLOAD_COUNT_SECONDARY = "donwload_count_secondary";
+        public static final String DOWNLOAD_COUNT_PRIMARY = "download_count_primary";
+        public static final String DOWNLOAD_COUNT_SECONDARY = "download_count_secondary";
         public static final String FORM_IDS = "formIds";
         public static final String COHORT_IDS = "cohortIds";
         public static final String PATIENT_UUID_FOR_DOWNLOAD = "patientUUIDForDownload";
@@ -40,6 +51,7 @@ public class Constants {
         public static final int SYNC_PATIENTS_DATA_ONLY = 7;
         public static final int SYNC_UPLOAD_FORMS = 8;
         public static final int DOWNLOAD_PATIENT_ONLY = 9;
+        public static final int SYNC_NOTIFICATIONS = 10;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;
@@ -60,5 +72,11 @@ public class Constants {
             public static final int INVALID_CHARACTER_IN_USERNAME = 15;
             public static final String INVALID_CHARACTER_FOR_USERNAME = ",;.-/@#$%&*+='\"|~`<>";
         }
+    }
+
+    public static class NotificationStatusConstants {
+        public static final String NOTIFICATION_READ = "read";
+        public static final String NOTIFICATION_UNREAD = "unread";
+        public static final String RECEIVER_UUID = "receiverUuid";
     }
 }

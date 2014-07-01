@@ -4,6 +4,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.muzima.R;
@@ -11,6 +12,7 @@ import com.muzima.api.model.Observation;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.ConceptWithObservations;
+import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
 
@@ -71,10 +73,20 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         protected void setObservation(LinearLayout layout, Observation observation) {
             int conceptColor = observationController.getConceptColor(observation.getConcept().getUuid());
 
+            String observationConceptType = observation.getConcept().getConceptType().getName();
+
             TextView observationValue = (TextView) layout.findViewById(R.id.observation_value);
-            observationValue.setText(observation.getValueAsString());
-            observationValue.setTypeface(Fonts.roboto_medium(getContext()));
-            observationValue.setTextColor(conceptColor);
+            ImageView observationComplexHolder = (ImageView) layout.findViewById(R.id.observation_complex);
+            if (StringUtil.equals(observationConceptType, "Complex")){
+                observationValue.setVisibility(View.GONE);
+                observationComplexHolder.setVisibility(View.VISIBLE);
+            } else {
+                observationValue.setVisibility(View.VISIBLE);
+                observationComplexHolder.setVisibility(View.GONE);
+                observationValue.setText(observation.getValueAsString());
+                observationValue.setTypeface(Fonts.roboto_medium(getContext()));
+                observationValue.setTextColor(conceptColor);
+            }
 
             View divider = layout.findViewById(R.id.divider);
             divider.setBackgroundColor(conceptColor);

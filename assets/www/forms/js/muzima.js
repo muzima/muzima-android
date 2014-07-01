@@ -41,6 +41,75 @@ $(document).ready(function () {
 
     /*End- BarCode Functionality*/
 
+    /*Start- Imaging Functionality*/
+
+    /* Called by the Activity WebViewActivity*/
+    document.populateImage = function (sectionName, jsonString) {
+        var $parent = $('div[data-name="' + sectionName + '"]');
+        $.each(jsonString, function (key, value) {
+            var $inputField = $parent.find("input[name='" + key + "']");
+            $inputField.val(value);
+            $inputField.trigger('change');  //Need this to trigger the event so image gets populated.
+        })
+    };
+
+    $('.image_btn').click(function () {
+        imagingComponent.startImageIntent($(this).parent().parent().attr('data-name'),
+            $(this).parent().find("input[type='hidden']").attr('name'),
+            $(this).parent().find("input[type='hidden']").val(),
+            $(this).parent().find("input[type='text']").attr('name'),
+            $(this).parent().find("input[type='text']").val(),
+            $("input[name='encounter.form_uuid']").val());
+    });
+
+    /*End- Imaging Functionality*/
+
+    /*Start- Audio Capture Functionality*/
+
+    /* Called by the Activity WebViewActivity*/
+    document.populateAudio = function (sectionName, jsonString) {
+        var $parent = $('div[data-name="' + sectionName + '"]');
+        $.each(jsonString, function (key, value) {
+            var $inputField = $parent.find("input[name='" + key + "']");
+            $inputField.val(value);
+            $inputField.trigger('change');  //Need this to trigger the event so audio gets populated.
+        })
+    };
+
+    $('.audio_record_btn').click(function () {
+        audioComponent.startAudioIntent($(this).parent().parent().attr('data-name'),
+            $(this).parent().find("input[type='hidden']").attr('name'),
+            $(this).parent().find("input[type='hidden']").val(),
+            $(this).parent().find("input[type='text']").attr('name'),
+            $(this).parent().find("input[type='text']").val(),
+            $("input[name='encounter.form_uuid']").val());
+    });
+
+    /*End- Audio Capture Functionality*/
+
+    /*Start- Video Capture Functionality*/
+
+    /* Called by the Activity WebViewActivity*/
+    document.populateVideo = function (sectionName, jsonString) {
+        var $parent = $('div[data-name="' + sectionName + '"]');
+        $.each(jsonString, function (key, value) {
+            var $inputField = $parent.find("input[name='" + key + "']");
+            $inputField.val(value);
+            $inputField.trigger('change');  //Need this to trigger the event so video gets populated.
+        })
+    };
+
+    $('.video_record_btn').click(function () {
+        videoComponent.startVideoIntent($(this).parent().parent().attr('data-name'),
+            $(this).parent().find("input[type='hidden']").attr('name'),
+            $(this).parent().find("input[type='hidden']").val(),
+            $(this).parent().find("input[type='text']").attr('name'),
+            $(this).parent().find("input[type='text']").val(),
+            $("input[name='encounter.form_uuid']").val());
+    });
+
+    /*End- Video Capture Functionality*/
+
     /* Start - Initialize jQuery DatePicker */
 
     $('.datepicker').datepicker({
@@ -160,8 +229,8 @@ $(document).ready(function () {
         var errors = {};
         var final_result = true;
         $.each(name_array, function (i, elem) {
-            var filedSetElem = $('fieldset[name="' + elem + '"]');
-            var result = isValidForNoneSelection(filedSetElem);
+            var fieldSetElem = $('fieldset[name="' + elem + '"]');
+            var result = isValidForNoneSelection(fieldSetElem);
             if (!result) {
                 errors[elem] = "If 'None' is selected, no other options can be selected.";
                 final_result = false;
@@ -210,10 +279,31 @@ $(document).ready(function () {
         .append("<input class='btn btn-primary add_section pull-left' type='button' value='+'/>")
         .append("<input class='btn btn-primary remove_section pull-right' type='button' value='-'/><span class='clear'></span>");
 
+    /* Modified by Sam to create active cloned buttons and separate sections by data-name */
     $(document.body).on('click', '.add_section', function () {
-        var $clonedElement = $(this).parent().clone();
-        $clonedElement.find('input:not(:button)').val('');
-        $clonedElement.insertAfter($(this).parent());
+        var $clonedSection = $(this).parent().clone(true).insertAfter($(this).parent());
+        var parentName = $clonedSection.attr("id");
+
+        /* Get largest suffix so far */
+        var _id = $(this).parent().attr('id');
+        var $repeatedSections = $("." + _id);
+        var suffixInt=0;
+        $.each($repeatedSections, function (i, repeatedSection) {
+            var idnr = $(repeatedSection).attr("data-name").match(/\d+$/);
+            if (parseInt(idnr) > parseInt(suffixInt)){
+                suffixInt= idnr;
+            }
+        });
+        if ( parseInt(suffixInt) == 0){
+            parentName += "1";
+        } else {
+            parentName +=  parseInt(suffixInt)+1;
+        }
+        $clonedSection.attr("data-name", parentName);
+
+        /* clear values on cloned fields */
+        $clonedSection.find('input:not(:button)').val('');
+
     });
 
     $(document.body).on('click', '.remove_section', function () {
@@ -263,11 +353,14 @@ $(document).ready(function () {
                     });
                 } else if (value instanceof Array) {
                     $.each(value, function (i, elem) {
-                        var $newDiv = $div.clone();
-                        populateDataConcepts($newDiv, elem);
-                        $div.after($newDiv);
+                        if (i == 0) {
+                            populateDataConcepts($div, elem);
+                        } else {
+                            var $newDiv = $div.clone(true);
+                            populateDataConcepts($newDiv, elem);
+                            $div.after($newDiv);
+                        }
                     });
-                    $div.remove();
                 } else {
                     populateDataConcepts($div, value);
                 }
@@ -290,6 +383,8 @@ $(document).ready(function () {
         var prePopulateJSON = JSON.parse(prePopulateData);
         populateNonConceptFields(prePopulateJSON['patient'] || {});
         populateNonConceptFields(prePopulateJSON['encounter'] || {});
+        populateNonConceptFields(prePopulateJSON['consultation'] || {});
+        populateNonConceptFields(prePopulateJSON['observation'] || {});
         populateObservations(prePopulateJSON['observation'] || {});
         console.timeEnd("Starting population");
     }
@@ -302,12 +397,15 @@ $(document).ready(function () {
         var jsonResult = $.extend({}, serializeNonConceptElements(this), serializeConcepts(this), serializeNestedConcepts(this));
         var patient = {};
         var encounter = {};
+        var consultation = {};
         var observation = {};
         $.each(jsonResult, function (k, v) {
             if (k.indexOf('patient') === 0) {
                 patient[k] = v;
             } else if (k.indexOf('encounter') === 0) {
                 encounter[k] = v;
+            } else if (k.indexOf('consultation') === 0) {
+                consultation[k] = v;
             } else {
                 observation[k] = v;
             }
@@ -315,6 +413,7 @@ $(document).ready(function () {
         var finalResult = {};
         finalResult['patient'] = patient;
         finalResult['encounter'] = encounter;
+        finalResult['consultation'] = consultation;
         finalResult['observation'] = observation;
         return  finalResult;
     };
@@ -344,15 +443,15 @@ $(document).ready(function () {
         var result = {};
         var parent_divs = $form.find('div[data-concept]');
         $.each(parent_divs, function (i, element) {
-            var $visibleConcepts = $(element).find('*[data-concept]:visible');
-            result = pushIntoArray(result, $(element).attr('data-concept'), jsonifyConcepts($visibleConcepts));
+            var $allConcepts = $(element).find('*[data-concept]');
+            result = pushIntoArray(result, $(element).attr('data-concept'), jsonifyConcepts($allConcepts));
         });
         return result;
     };
 
     var serializeConcepts = function ($form) {
         var o = {};
-        var allConcepts = $form.find('*[data-concept]:visible');
+        var allConcepts = $form.find('*[data-concept]');
         $.each(allConcepts, function (i, element) {
             if ($(element).closest('.section').attr('data-concept') == undefined) {
                 $.extend(o, jsonifyConcepts($(element)));
@@ -361,9 +460,9 @@ $(document).ready(function () {
         return o;
     };
 
-    var jsonifyConcepts = function ($visibleConcepts) {
+    var jsonifyConcepts = function ($allConcepts) {
         var o = {};
-        $.each($visibleConcepts, function (i, element) {
+        $.each($allConcepts, function (i, element) {
             o = pushIntoArray(o, $(element).attr('data-concept'), $(element).val());
         });
         return o;

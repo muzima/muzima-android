@@ -1,5 +1,7 @@
 package com.muzima.controller;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import com.muzima.api.model.*;
 import com.muzima.api.service.FormService;
@@ -12,16 +14,24 @@ import com.muzima.model.builders.*;
 import com.muzima.model.collections.*;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.SntpService;
+import com.muzima.util.JsonUtils;
 import com.muzima.utils.CustomColor;
+import com.muzima.utils.MediaUtils;
+import com.muzima.utils.StringUtils;
+import com.muzima.utils.EnDeCrypt;
 import com.muzima.view.forms.PatientJSONMapper;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.json.JSONException;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-import static com.muzima.utils.Constants.*;
 import static com.muzima.api.model.APIName.DOWNLOAD_FORMS;
+import static com.muzima.utils.Constants.*;
 
 public class FormController {
 
@@ -34,6 +44,7 @@ public class FormController {
     private ObservationService observationService;
     private Map<String, Integer> tagColors;
     private List<Tag> selectedTags;
+    private String jsonPayload;
 
     public FormController(FormService formService, PatientService patientService, LastSyncTimeService lastSyncTimeService, SntpService sntpService,
                           ObservationService observationService) {
@@ -258,6 +269,27 @@ public class FormController {
         }
     }
 
+    public CompleteFormWithPatientData getCompleteFormDataByUuid(String formDataUuid) throws FormDataFetchException, FormFetchException {
+        CompleteFormWithPatientData completeForm = null;
+
+        try {
+            FormData formData = formService.getFormDataByUuid(formDataUuid);
+            if (formData != null && (StringUtil.equals(formData.getStatus(),STATUS_UPLOADED)) ||
+                    StringUtil.equals(formData.getStatus(),STATUS_COMPLETE)){
+                Patient patient = patientService.getPatientByUuid(formData.getPatientUuid());
+                completeForm = new CompleteFormWithPatientDataBuilder()
+                        .withForm(formService.getFormByUuid(formData.getTemplateUuid()))
+                        .withFormDataUuid(formData.getUuid())
+                        .withPatient(patient)
+                        .build();
+            }
+
+        } catch (IOException e) {
+            throw new FormFetchException(e);
+        }
+        return completeForm;
+    }
+
     public void saveFormData(FormData formData) throws FormDataSaveException {
         try {
             formService.saveFormData(formData);
@@ -403,7 +435,9 @@ public class FormController {
         try {
             boolean result = true;
             List<FormData> allFormData = formService.getAllFormData(STATUS_COMPLETE);
+
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_DISCRIMINATOR_REGISTRATION), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_CONSULTATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_XML_DISCRIMINATOR_ENCOUNTER), result);
             return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_ENCOUNTER), result);
         } catch (IOException e) {
@@ -495,19 +529,30 @@ public class FormController {
     }
 
     private List<FormData> getFormsWithDiscriminator(List<FormData> allFormData, String discriminator) {
-        List<FormData> requeiredForms = new ArrayList<FormData>();
+        List<FormData> requiredForms = new ArrayList<FormData>();
         for (FormData formData : allFormData) {
             if (formData.getDiscriminator().equals(discriminator)) {
-                requeiredForms.add(formData);
+                requiredForms.add(formData);
             }
         }
-        return requeiredForms;
+        return requiredForms;
     }
 
     boolean uploadFormDataToServer(List<FormData> allFormData, boolean result) throws IOException {
         for (FormData formData : allFormData) {
+            String rawPayload = formData.getJsonPayload();
+
+            // replace image paths with base64 string
+            formData = replaceImagePathWithImageString(formData);
+
+            // inject consultation.sourceUuid
+            formData = injectUuidToPayload(formData);
+
             if (formService.syncFormData(formData)) {
                 formData.setStatus(STATUS_UPLOADED);
+
+                //DO NOT save base64 string in DB
+                formData.setJsonPayload(rawPayload);
                 formService.saveFormData(formData);
                 observationService.deleteObservationsByFormData(formData.getUuid());
             } else {
@@ -515,5 +560,91 @@ public class FormController {
             }
         }
         return result;
+    }
+
+    private static FormData injectUuidToPayload(FormData formData) {
+
+        if (StringUtil.equals(formData.getDiscriminator(), FORM_JSON_DISCRIMINATOR_CONSULTATION)) {
+            try {
+                String base = "consultation";
+                JSONParser jp =new JSONParser(JSONParser.MODE_PERMISSIVE);
+                JSONObject obj = (JSONObject)jp.parse(formData.getJsonPayload());
+                JsonUtils.replaceAsString(obj, base, "consultation.sourceUuid", formData.getUuid());
+                formData.setJsonPayload(obj.toJSONString());
+            } catch (net.minidev.json.parser.ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return formData;
+    }
+
+    private void traverseJson(JSONObject json) {
+        Iterator<String> keys = json.keySet().iterator();
+        while(keys.hasNext()){
+            String key = keys.next();
+            String val = null;
+            try{
+                Object obj =  JsonUtils.readAsObject(json.toJSONString(), "$['" + key + "']");
+                if (obj instanceof JSONArray){
+                    JSONArray arr = (JSONArray) obj;
+                    for (Object object : arr) {
+                        traverseJson((JSONObject) object);
+                    }
+                } else {
+                    traverseJson((JSONObject)obj);
+                }
+            }catch(Exception e){
+                val = json.get(key).toString();
+            }
+
+            if(val != null)
+                replaceImagePathWithImage(key, val);
+        }
+    }
+
+    private void replaceImagePathWithImage(String key, String value){
+        String image_discriminator = ".jpg";
+        if (value.contains(image_discriminator)) {
+            String keyValPair = "\"" + key + "\":\"" + value + "\"";
+            String keyValPairReplace = "\"" + key + "\":\"" + getStringImage(value) + "\"";
+            jsonPayload = jsonPayload.replace(keyValPair, keyValPairReplace);
+        }
+    }
+
+    private FormData replaceImagePathWithImageString(FormData formData) {
+        try {
+            jsonPayload = formData.getJsonPayload();
+            JSONParser jp =new JSONParser(JSONParser.MODE_PERMISSIVE);
+            traverseJson((JSONObject) jp.parse(jsonPayload));
+            formData.setJsonPayload(jsonPayload);
+        } catch (net.minidev.json.parser.ParseException e) {
+           e.printStackTrace();
+        }
+        return formData;
+    }
+
+    private static String getStringImage(String imageUri) {
+        String imageString = null;
+        if (!StringUtils.isEmpty(imageUri))  {
+            //fetch the image and convert it to @Base64 encoded string. Delete the image
+            File f = new File(imageUri) ;
+            if (f.exists()){
+
+                // here the image is encrypted so we decrypt it
+                EnDeCrypt.decrypt(f, "this-is-supposed-to-be-a-secure-key");
+
+                //convert the decrypted image to string
+                Bitmap bmp = BitmapFactory.decodeFile(f.getAbsolutePath());
+                imageString = MediaUtils.getStringFromBitmap(bmp);
+
+                // and encrypt again
+                EnDeCrypt.encrypt(f, "this-is-supposed-to-be-a-secure-key");
+            }
+        }
+        return imageString;
+    }
+
+    private FormData replaceVideoPathWithVideo(FormData formData) {
+       return null;
     }
 }

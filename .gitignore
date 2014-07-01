@@ -1,6 +1,7 @@
 local.properties
 project.properties
 .idea
+.settings
 gen/
 target/
 muzima-ui.iml
