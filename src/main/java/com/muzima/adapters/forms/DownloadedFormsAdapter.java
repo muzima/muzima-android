@@ -82,7 +82,7 @@ public class DownloadedFormsAdapter extends FormsAdapter<DownloadedForm> {
                     downloadedForms = formsAdapter.getFormController().getAllDownloadedForms();
                     Log.i(TAG, "#Forms with templates: " + downloadedForms.size());
                 } catch (FormController.FormFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local forms " + e);
+                    Log.w(TAG, "Exception occurred while fetching local forms ", e);
                 }
             }
             return downloadedForms;

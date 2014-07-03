@@ -10,7 +10,6 @@ import com.muzima.model.observation.Encounters;
 import com.muzima.service.SntpService;
 import com.muzima.utils.CustomColor;
 import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.DOMException;
 
 import java.io.IOException;
 import java.util.*;

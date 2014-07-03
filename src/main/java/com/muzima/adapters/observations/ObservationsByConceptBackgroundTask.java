@@ -26,7 +26,7 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Void, C
                 concepts.sortByDate();
             }
         } catch (ObservationController.LoadObservationException e) {
-            Log.w("Observations", String.format("Exception while loading observations for %s. Exception stack: %s", conceptAction, e));
+            Log.w("Observations", String.format("Exception while loading observations for %s.", conceptAction), e);
         }
         return concepts;
     }

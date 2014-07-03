@@ -59,7 +59,7 @@ public class PatientSummaryActivity extends BaseActivity {
         try {
             list = jsonInputOutputToDisk.readList();
         } catch (IOException e) {
-            Log.e(TAG, "Exception thrown when reading to phone disk" + e);
+            Log.e(TAG, "Exception thrown when reading to phone disk", e);
         }
         if(list.size()==0){
             return;
@@ -79,7 +79,7 @@ public class PatientSummaryActivity extends BaseActivity {
                             try {
                                 jsonInputOutputToDisk.remove(patientIdentifier);
                             } catch (IOException e) {
-                                Log.e(TAG, "Error occurred while saving patient which has local identifier removed!");
+                                Log.e(TAG, "Error occurred while saving patient which has local identifier removed!", e);
                             }
                         }
                     }).create().show();
@@ -153,7 +153,7 @@ public class PatientSummaryActivity extends BaseActivity {
                 patientSummaryActivityMetadata.completeForms = formController.getCompleteFormsCountForPatient(patient.getUuid());
                 patientSummaryActivityMetadata.incompleteForms = formController.getIncompleteFormsCountForPatient(patient.getUuid());
             } catch (FormController.FormFetchException e) {
-                Log.w(TAG, "FormFetchException occurred while fetching metadata in MainActivityBackgroundTask");
+                Log.w(TAG, "FormFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
             }
             return patientSummaryActivityMetadata;
         }

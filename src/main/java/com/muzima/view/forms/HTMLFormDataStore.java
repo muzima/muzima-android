@@ -33,10 +33,10 @@ public class HTMLFormDataStore {
             formWebViewActivity.finish();
         } catch (FormController.FormDataSaveException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving the form", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Exception occurred while saving form data" + e);
+            Log.e(TAG, "Exception occurred while saving form data", e);
         } catch (Exception e){
             Toast.makeText(formWebViewActivity, "An error occurred while saving the form", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Exception occurred while saving form data" + e);
+            Log.e(TAG, "Exception occurred while saving form data", e);
         }
     }
 

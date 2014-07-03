@@ -389,9 +389,9 @@ public class FormController {
             patientService.savePatient(patient);
             return patient;
         } catch (JSONException e) {
-            Log.e(TAG, e.toString());
+            Log.e(TAG, e.getMessage(), e);
         } catch (IOException e) {
-            Log.e(TAG, e.toString());
+            Log.e(TAG, e.getMessage(), e);
         }
         return null;
     }
@@ -436,7 +436,7 @@ public class FormController {
         } catch (IOException e) {
             throw new FormDeleteException(e);
         } catch (FormDataFetchException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Fetching form data throwing exception", e);
         }
     }
 

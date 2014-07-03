@@ -1,5 +1,6 @@
 package com.muzima.service;
 
+import android.util.Log;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
@@ -8,7 +9,6 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
-import com.muzima.utils.DateUtils;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -94,11 +94,11 @@ public class FormParser {
             conceptController.saveConcepts(observationParserUtility.getNewConceptList());
             observationController.saveObservations(observations);
         } catch (EncounterController.SaveEncounterException e) {
-            e.printStackTrace();
+            Log.e(this.getClass().getSimpleName(), "Saving encounter throwing exception!", e);
         } catch (ObservationController.SaveObservationException e) {
-            e.printStackTrace();
+            Log.e(this.getClass().getSimpleName(), "Saving encounter throwing exception!", e);
         } catch (ConceptController.ConceptSaveException e) {
-            e.printStackTrace();
+            Log.e(this.getClass().getSimpleName(), "Saving encounter throwing exception!", e);
         }
     }
 

@@ -116,11 +116,11 @@ public class MainActivity extends BroadcastListenerActivity {
                 homeActivityMetadata.incompleteForms = formController.getAllIncompleteFormsSize();
                 homeActivityMetadata.completeAndUnsyncedForms = formController.getAllCompleteFormsSize();
             } catch (CohortController.CohortFetchException e) {
-                Log.w(TAG, "CohortFetchException occurred while fetching metadata in MainActivityBackgroundTask");
+                Log.w(TAG, "CohortFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
             } catch (PatientController.PatientLoadException e) {
-                Log.w(TAG, "PatientLoadException occurred while fetching metadata in MainActivityBackgroundTask");
+                Log.w(TAG, "PatientLoadException occurred while fetching metadata in MainActivityBackgroundTask", e);
             } catch (FormController.FormFetchException e) {
-                Log.w(TAG, "FormFetchException occurred while fetching metadata in MainActivityBackgroundTask");
+                Log.w(TAG, "FormFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
             }
             return homeActivityMetadata;
         }

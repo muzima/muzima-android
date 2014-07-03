@@ -81,13 +81,13 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             setupFormData(patient);
             setupWebView();
         } catch (FormFetchException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage(), e);
             finish();
         } catch (FormController.FormDataFetchException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage(), e);
             finish();
         } catch (FormController.FormDataSaveException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage(), e);
             finish();
         }
     }
@@ -137,7 +137,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
                     formData.setStatus(STATUS_INCOMPLETE);
                     formController.saveFormData(formData);
                 } catch (FormController.FormDataSaveException e) {
-                    Log.e(TAG, "Error while saving the form data");
+                    Log.e(TAG, "Error while saving the form data", e);
                 }
                 startIncompleteFormListActivity();
                 return true;
@@ -218,7 +218,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             PatientJSONMapper mapper = new PatientJSONMapper(formTemplate.getModelJson());
             formData.setJsonPayload(mapper.map(patient, formData));
         } catch (JSONException e) {
-            Log.e(TAG, "Error while converting Model JSON");
+            Log.e(TAG, "Error while converting Model JSON", e);
         }
         return formData;
     }

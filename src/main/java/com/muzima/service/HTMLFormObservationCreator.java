@@ -49,13 +49,13 @@ public class HTMLFormObservationCreator {
         try {
             saveObservationsAndRelatedEntities();
         } catch (ConceptController.ConceptSaveException e) {
-            Log.e(TAG, "Error while saving concept");
+            Log.e(TAG, "Error while saving concept", e);
         } catch (EncounterController.SaveEncounterException e) {
-            Log.e(TAG, "Error while saving Encounter");
+            Log.e(TAG, "Error while saving Encounter", e);
         } catch (ObservationController.SaveObservationException e) {
-            Log.e(TAG, "Error while saving Observation");
+            Log.e(TAG, "Error while saving Observation", e);
         } catch (Exception e) {
-            Log.e(TAG, "Unexpected Exception occurred" + e);
+            Log.e(TAG, "Unexpected Exception occurred", e);
         }
     }
 
@@ -70,15 +70,15 @@ public class HTMLFormObservationCreator {
             encounter = createEncounter(responseJSON.getJSONObject("encounter"),formDataUuid);
             observations = extractObservationFromJSONObject(responseJSON.getJSONObject("observation"));
         } catch (PatientController.PatientLoadException e) {
-            Log.e(TAG, "Error while fetching Patient");
+            Log.e(TAG, "Error while fetching Patient", e);
         } catch (ConceptController.ConceptFetchException e) {
-            Log.e(TAG, "Error while fetching Concept");
+            Log.e(TAG, "Error while fetching Concept", e);
         } catch (JSONException e) {
-            Log.e(TAG, "Error while parsing response JSON");
+            Log.e(TAG, "Error while parsing response JSON", e);
         } catch (ParseException e) {
-            Log.e(TAG, "Error while parsing response JSON");
+            Log.e(TAG, "Error while parsing response JSON", e);
         } catch (ConceptController.ConceptSaveException e) {
-            Log.e(TAG, "Error while saving newly created concept");
+            Log.e(TAG, "Error while saving newly created concept", e);
         }
     }
 
@@ -89,7 +89,7 @@ public class HTMLFormObservationCreator {
             conceptController.saveConcepts(observationParserUtility.getNewConceptList());
             observationController.saveObservations(observations);
         } catch (Exception e) {
-            Log.e(TAG, "Error while parsing and storing Observations.");
+            Log.e(TAG, "Error while parsing and storing Observations.", e);
         }
     }
 

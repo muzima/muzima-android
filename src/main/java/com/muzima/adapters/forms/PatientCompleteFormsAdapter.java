@@ -73,7 +73,7 @@ public class PatientCompleteFormsAdapter extends FormsWithDataAdapter<CompleteFo
 
                     Log.i(TAG, "#Complete forms: " + completePatientForms.size());
                 } catch (FormController.FormFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local forms " + e);
+                    Log.w(TAG, "Exception occurred while fetching local forms ", e);
                 }
             }
 

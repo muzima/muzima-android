@@ -59,7 +59,7 @@ public class IncompleteFormsAdapter extends SectionedFormsAdapter<IncompleteForm
                     incompleteForms = formsAdapter.getFormController().getAllIncompleteForms();
                     Log.i(TAG, "#Incomplete forms: " + incompleteForms.size());
                 } catch (FormController.FormFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local forms " + e);
+                    Log.w(TAG, "Exception occurred while fetching local forms ", e);
                 }
             }
             return incompleteForms;
