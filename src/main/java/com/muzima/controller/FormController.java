@@ -23,7 +23,7 @@ import com.muzima.view.forms.PatientJSONMapper;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
-import org.apache.lucene.queryParser.ParseException;
+import net.minidev.json.parser.ParseException;
 import org.json.JSONException;
 
 import java.io.File;
@@ -425,8 +425,6 @@ public class FormController {
             Log.e(TAG, e.toString());
         } catch (IOException e) {
             Log.e(TAG, e.toString());
-        } catch (ParseException e) {
-            Log.e(TAG, e.toString());
         }
         return null;
     }
@@ -571,8 +569,8 @@ public class FormController {
                 JSONObject obj = (JSONObject)jp.parse(formData.getJsonPayload());
                 JsonUtils.replaceAsString(obj, base, "consultation.sourceUuid", formData.getUuid());
                 formData.setJsonPayload(obj.toJSONString());
-            } catch (net.minidev.json.parser.ParseException e) {
-                e.printStackTrace();
+            } catch (ParseException e) {
+                Log.e(TAG, "Parsing json throwing exception!", e);
             }
         }
         return formData;
@@ -617,8 +615,8 @@ public class FormController {
             JSONParser jp =new JSONParser(JSONParser.MODE_PERMISSIVE);
             traverseJson((JSONObject) jp.parse(jsonPayload));
             formData.setJsonPayload(jsonPayload);
-        } catch (net.minidev.json.parser.ParseException e) {
-           e.printStackTrace();
+        } catch (ParseException e) {
+            Log.e(TAG, "Parsing json throwing exception!", e);
         }
         return formData;
     }

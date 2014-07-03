@@ -135,9 +135,6 @@ public class PatientController {
         } catch (IOException e) {
             Log.e(TAG, "Error while saving the patient : " + patient.getUuid());
             throw new PatientSaveException(e);
-        } catch (ParseException e) {
-            Log.e(TAG, "Error while saving the patient : " + patient.getUuid());
-            throw new PatientSaveException(e);
         }
     }
 
