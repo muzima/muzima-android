@@ -11,7 +11,6 @@ import com.muzima.api.model.Notification;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.User;
 import com.muzima.controller.NotificationController;
-import org.apache.lucene.queryParser.ParseException;
 
 import java.util.List;
 
@@ -95,7 +94,7 @@ public class PatientNotificationsAdapter extends NotificationsAdapter {
                     patientNotifications = notificationController.getNotificationsForPatient(patient.getUuid(), authenticatedUser.getPerson().getUuid(), null);
                 Log.d(TAG, "#Retrieved " + patientNotifications.size() + " notifications from Database.");
             } catch (NotificationController.NotificationFetchException e) {
-                Log.w(TAG, "Exception occurred while fetching the notifications" + e);
+                Log.w(TAG, "Exception occurred while fetching the notifications", e);
             }
             return patientNotifications;
         }
@@ -114,7 +113,7 @@ public class PatientNotificationsAdapter extends NotificationsAdapter {
                     patientNotifications = notificationController.getNotificationsForPatient(patient.getUuid(),authenticatedUser.getPerson().getUuid(), null);
                 Log.i(TAG, "#Retrieved: " + patientNotifications.size());
             } catch (NotificationController.NotificationFetchException e) {
-                Log.w(TAG, "Exception occurred while fetching the notifications" + e);
+                Log.w(TAG, "Exception occurred while fetching the notifications", e);
             }
             return patientNotifications;
         }

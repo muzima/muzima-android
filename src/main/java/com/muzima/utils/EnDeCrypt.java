@@ -80,7 +80,7 @@ public class EnDeCrypt {
             Log.i(TAG, "Encrypted " + plainFile.getAbsolutePath());
 
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage(), e);
         }
     }
 
@@ -126,7 +126,7 @@ public class EnDeCrypt {
             tempFile.renameTo(encryptedFile);
             Log.i(TAG, "Decrypted " + encryptedFile.getAbsolutePath());
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage(), e);
         }
 
     }

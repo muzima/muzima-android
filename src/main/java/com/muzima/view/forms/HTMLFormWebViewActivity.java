@@ -98,13 +98,13 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             setupFormData(patient);
             setupWebView();
         } catch (FormFetchException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage(), e);
             finish();
         } catch (FormController.FormDataFetchException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage(), e);
             finish();
         } catch (FormController.FormDataSaveException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage(), e);
             finish();
         }
     }
@@ -175,7 +175,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                     formData.setStatus(STATUS_INCOMPLETE);
                     formController.saveFormData(formData);
                 } catch (FormController.FormDataSaveException e) {
-                    Log.e(TAG, "Error while saving the form data");
+                    Log.e(TAG, "Error while saving the form data", e);
                 }
                 startIncompleteFormListActivity();
                 return true;

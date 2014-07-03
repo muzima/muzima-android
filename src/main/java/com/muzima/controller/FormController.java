@@ -422,9 +422,9 @@ public class FormController {
             patientService.savePatient(patient);
             return patient;
         } catch (JSONException e) {
-            Log.e(TAG, e.toString());
+            Log.e(TAG, e.getMessage(), e);
         } catch (IOException e) {
-            Log.e(TAG, e.toString());
+            Log.e(TAG, e.getMessage(), e);
         }
         return null;
     }
@@ -471,7 +471,7 @@ public class FormController {
         } catch (IOException e) {
             throw new FormDeleteException(e);
         } catch (FormDataFetchException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Fetching form data throwing exception", e);
         }
     }
 
@@ -539,16 +539,12 @@ public class FormController {
     boolean uploadFormDataToServer(List<FormData> allFormData, boolean result) throws IOException {
         for (FormData formData : allFormData) {
             String rawPayload = formData.getJsonPayload();
-
             // replace image paths with base64 string
             formData = replaceImagePathWithImageString(formData);
-
             // inject consultation.sourceUuid
             formData = injectUuidToPayload(formData);
-
             if (formService.syncFormData(formData)) {
                 formData.setStatus(STATUS_UPLOADED);
-
                 //DO NOT save base64 string in DB
                 formData.setJsonPayload(rawPayload);
                 formService.saveFormData(formData);

@@ -156,7 +156,7 @@ public class TagsListAdapter extends ListAdapter<Tag> implements AdapterView.OnI
                 allTags = formController.getAllTagsExcludingRegistrationTag();
                 Log.i(TAG, "#Tags: " + allTags.size());
             } catch (FormController.FormFetchException e) {
-                Log.w(TAG, "Exception occurred while fetching tags" + e);
+                Log.w(TAG, "Exception occurred while fetching tags", e);
             }
             return allTags;
         }

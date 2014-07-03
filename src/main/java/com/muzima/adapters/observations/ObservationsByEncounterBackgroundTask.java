@@ -24,7 +24,7 @@ public class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Void,
             encounters = encounterAction.get();
             encounters.sortByDate();
         } catch (ObservationController.LoadObservationException e) {
-            Log.w("Observations", String.format("Exception while loading observations for %s. Exception stack: %s", encounterAction, e));
+            Log.w("Observations", String.format("Exception while loading observations for %s.", encounterAction), e);
         }
         return encounters;
     }

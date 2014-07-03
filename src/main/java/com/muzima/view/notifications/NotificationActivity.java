@@ -78,7 +78,7 @@ public class NotificationActivity extends BaseActivity {
         try {
             notificationController.saveNotification(notification);
         } catch (NotificationController.NotificationSaveException e) {
-            Log.e(TAG, "Error updating notification " + e.getMessage());
+            Log.e(TAG, "Error updating notification " + e.getMessage(), e);
         }
     }
 
@@ -104,7 +104,7 @@ public class NotificationActivity extends BaseActivity {
                     notificationEncounter =  encounter;
             }
         } catch (EncounterController.DownloadEncounterException e) {
-            Log.e(TAG, "Error getting encounter data " + e.getMessage());
+            Log.e(TAG, "Error getting encounter data " + e.getMessage(), e);
         }
     }
 }

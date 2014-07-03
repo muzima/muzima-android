@@ -115,7 +115,7 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
         try {
             allCohorts = cohortController.getAllCohorts();
         } catch (CohortController.CohortFetchException e) {
-            Log.w(TAG, "Exception occurred while fetching local cohorts " + e);
+            Log.w(TAG, "Exception occurred while fetching local cohorts ", e);
             return null;
         }
         ArrayList<String> cohortsUuid = new ArrayList<String>();

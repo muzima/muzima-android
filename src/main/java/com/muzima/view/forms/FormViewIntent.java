@@ -40,7 +40,7 @@ public class FormViewIntent extends Intent {
                 return HTMLFormWebViewActivity.class;
             }
         } catch (FormController.FormFetchException e) {
-            Log.e("FormIntent", "Error while identifying form to load it in WebView");
+            Log.e("FormIntent", "Error while identifying form to load it in WebView", e);
         }
         return FormWebViewActivity.class;
     }

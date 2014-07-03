@@ -158,7 +158,7 @@ public class AudioIntent extends Activity {
             i.setType("audio/*");
             startActivityForResult(i,AUDIO_CHOOSE);
         } catch (ActivityNotFoundException e) {
-            Log.d(TAG,e.getMessage());
+            Log.d(TAG,e.getMessage(), e);
 			Toast.makeText(this,"Error: Activity for choosing audio not found", Toast.LENGTH_SHORT).show();
 		}
 	}

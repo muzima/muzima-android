@@ -59,7 +59,7 @@ public class RecommendedFormsAdapter extends FormsAdapter<AvailableForm> {
                     recommendedForms = formsAdapter.getFormController().getRecommendedForms();
                     Log.i(TAG, "#Forms with templates: " + recommendedForms.size());
                 } catch (FormController.FormFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local forms " + e);
+                    Log.w(TAG, "Exception occurred while fetching local forms ", e);
                 }
             }
             return recommendedForms;

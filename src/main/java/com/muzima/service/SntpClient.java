@@ -119,7 +119,7 @@ public class SntpClient
             mNtpTimeReference = responseTicks;
             mRoundTripTime = roundTripTime;
         } catch (Exception e) {
-            if (false) Log.d(TAG, "request time failed: " + e);
+            Log.d(TAG, "request time failed: ", e);
             return false;
         } finally {
             if (socket != null) {

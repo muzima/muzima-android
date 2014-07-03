@@ -75,7 +75,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
                         return patientController.searchPatientLocally(params[0], cohortId);
                     }
                 } catch (PatientController.PatientLoadException e) {
-                    Log.w(TAG, "Exception occurred while searching patients for " + params[0] + " search string. " + e);
+                    Log.w(TAG, String.format("Exception occurred while searching patients for %s search string." , params[0]), e);
                 }
             }
 
@@ -89,7 +89,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
                     patients = patientController.getAllPatients();
                 }
             } catch (PatientController.PatientLoadException e) {
-                Log.w(TAG, "Exception occurred while fetching patients" + e);
+                Log.w(TAG, "Exception occurred while fetching patients", e);
             }
             return patients;
         }
@@ -123,9 +123,9 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
                 }
             }
         } catch (PatientController.PatientLoadException e) {
-            Log.w(TAG, "Exception occurred while fetching patients" + e);
+            Log.w(TAG, "Exception occurred while fetching patients", e);
         } catch (NotificationController.NotificationFetchException e) {
-            Log.w(TAG, "Exception occurred while fetching patients" + e);
+            Log.w(TAG, "Exception occurred while fetching patients", e);
         }
         return notificationPatients;
     }

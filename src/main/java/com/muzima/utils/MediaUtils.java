@@ -92,10 +92,10 @@ public class MediaUtils {
                 dst.close();
                 return true;
             } catch (FileNotFoundException e) {
-                Log.e(TAG, "FileNotFoundException while copying file");
+                Log.e(TAG, "FileNotFoundException while copying file", e);
                 e.printStackTrace();
             } catch (IOException e) {
-                Log.e(TAG, "IOException while copying file");
+                Log.e(TAG, "IOException while copying file", e);
                 e.printStackTrace();
             }
         } else
@@ -196,7 +196,7 @@ public class MediaUtils {
                 }
             }
         } catch ( Exception e ) {
-            Log.e(TAG, e.toString());
+            Log.e(TAG, e.toString(), e);
         } finally {
             if ( audioCursor != null )
                 audioCursor.close();

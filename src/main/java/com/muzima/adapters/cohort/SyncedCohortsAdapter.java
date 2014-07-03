@@ -56,7 +56,7 @@ public class SyncedCohortsAdapter extends CohortsAdapter{
                 syncedCohorts = cohortController.getSyncedCohorts();
                 Log.i(TAG, "#Synced Cohorts: " + syncedCohorts.size());
             } catch (CohortController.CohortFetchException e) {
-                Log.e(TAG, "Exception occurred while fetching local synced cohorts " + e);
+                Log.e(TAG, "Exception occurred while fetching local synced cohorts ", e);
             }
             return syncedCohorts;
         }

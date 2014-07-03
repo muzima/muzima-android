@@ -162,7 +162,7 @@ public class AllCohortsAdapter extends CohortsAdapter {
                 allCohorts = cohortController.getAllCohorts();
                 Log.d(TAG, "#Retrieved " + allCohorts.size() + " Cohorts from Database.");
             } catch (CohortController.CohortFetchException e) {
-                Log.w(TAG, "Exception occurred while fetching local cohorts " + e);
+                Log.w(TAG, "Exception occurred while fetching local cohorts ", e);
             }
             return allCohorts;
         }
@@ -180,7 +180,7 @@ public class AllCohortsAdapter extends CohortsAdapter {
                 allCohorts = cohortController.getAllCohorts();
                 Log.i(TAG, "#Cohorts: " + allCohorts.size());
             } catch (CohortController.CohortFetchException e) {
-                Log.w(TAG, "Exception occurred while fetching the downloaded cohorts" + e);
+                Log.w(TAG, "Exception occurred while fetching the downloaded cohorts", e);
             }
             return allCohorts;
         }

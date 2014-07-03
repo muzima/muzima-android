@@ -107,7 +107,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
                                     Toast.LENGTH_SHORT).show();
                         }
                     } catch (FormController.FormDeleteException e) {
-                        Log.e(TAG, "Error while deleting forms");
+                        Log.e(TAG, "Error while deleting forms", e);
                     }
             }
             return false;
@@ -158,7 +158,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
                     formsWithAssociatedData.add(selectedFormsUUID);
                 }
             } catch (FormController.FormDataFetchException e) {
-                Log.e(TAG, "Error while fetching FormData");
+                Log.e(TAG, "Error while fetching FormData", e);
             }
         }
         return formsWithAssociatedData;
