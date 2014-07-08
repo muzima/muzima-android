@@ -11,7 +11,12 @@ import com.muzima.api.context.ContextFactory;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.ObservationService;
-import com.muzima.controller.*;
+import com.muzima.controller.CohortController;
+import com.muzima.controller.ConceptController;
+import com.muzima.controller.EncounterController;
+import com.muzima.controller.FormController;
+import com.muzima.controller.ObservationController;
+import com.muzima.controller.PatientController;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.MuzimaSyncService;
@@ -24,7 +29,11 @@ import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpSender;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.security.Security;
 
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;

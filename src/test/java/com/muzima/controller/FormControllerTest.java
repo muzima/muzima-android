@@ -1,6 +1,11 @@
 package com.muzima.controller;
 
-import com.muzima.api.model.*;
+import com.muzima.api.model.Form;
+import com.muzima.api.model.FormData;
+import com.muzima.api.model.FormTemplate;
+import com.muzima.api.model.LastSyncTime;
+import com.muzima.api.model.Patient;
+import com.muzima.api.model.Tag;
 import com.muzima.api.service.FormService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.ObservationService;
@@ -15,7 +20,7 @@ import com.muzima.model.collections.DownloadedForms;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.SntpService;
 import com.muzima.utils.Constants;
-import org.apache.commons.lang.StringUtils;
+import com.muzima.utils.StringUtils;
 import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -28,17 +33,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.muzima.controller.FormController.*;
-import static com.muzima.utils.Constants.*;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.matchers.JUnitMatchers.hasItem;
-import static org.mockito.Mockito.*;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_FORMS;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 public class FormControllerTest {
     private FormController formController;
@@ -63,14 +74,14 @@ public class FormControllerTest {
     }
 
     @Test
-    public void getTotalFormCount_shouldReturnTotalAvailableForms() throws IOException, ParseException, FormFetchException {
+    public void getTotalFormCount_shouldReturnTotalAvailableForms() throws IOException, ParseException, FormController.FormFetchException {
         when(formService.countAllForms()).thenReturn(2);
 
         assertThat(formController.getTotalFormCount(), is(2));
     }
 
     @Test
-    public void getAllFormByTags_shouldFetchAllFormsWithGivenTags() throws IOException, ParseException, FormFetchException {
+    public void getAllFormByTags_shouldFetchAllFormsWithGivenTags() throws IOException, ParseException, FormController.FormFetchException {
         List<Form> forms = buildForms();
         when(formService.getAllForms()).thenReturn(forms);
 
@@ -90,7 +101,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void getAllFormByTags_shouldAssignDownloadStatusToForms() throws IOException, ParseException, FormFetchException {
+    public void getAllFormByTags_shouldAssignDownloadStatusToForms() throws IOException, ParseException, FormController.FormFetchException {
         List<Form> forms = buildForms();
         when(formService.getAllForms()).thenReturn(forms);
 
@@ -117,7 +128,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void getAllFormByTags_shouldFetchAllFormsIfNoTagsAreProvided() throws IOException, ParseException, FormFetchException {
+    public void getAllFormByTags_shouldFetchAllFormsIfNoTagsAreProvided() throws IOException, ParseException, FormController.FormFetchException {
         List<Form> forms = buildForms();
         when(formService.getAllForms()).thenReturn(forms);
 
@@ -126,7 +137,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void downloadAllForms_shouldDownloadAllForms() throws IOException, ParseException, FormFetchException {
+    public void downloadAllForms_shouldDownloadAllForms() throws IOException, ParseException, FormController.FormFetchException {
         List<Form> forms = new ArrayList<Form>();
         when(formService.downloadFormsByName(StringUtil.EMPTY)).thenReturn(forms);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_FORMS)).thenReturn(mockDate);
@@ -135,7 +146,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void shouldCheckForLastSynTimeOfFormWhenDownloadingAllForms() throws Exception, FormFetchException {
+    public void shouldCheckForLastSynTimeOfFormWhenDownloadingAllForms() throws Exception, FormController.FormFetchException {
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_FORMS)).thenReturn(mockDate);
 
         formController.downloadAllForms();
@@ -146,7 +157,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void shouldUpdateLastSyncTimeAfterDownloadingAllForms() throws Exception, FormFetchException {
+    public void shouldUpdateLastSyncTimeAfterDownloadingAllForms() throws Exception, FormController.FormFetchException {
         Date mockDate = mock(Date.class);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_FORMS)).thenReturn(mockDate);
         Date otherMockDate = mock(Date.class);
@@ -162,15 +173,15 @@ public class FormControllerTest {
         assertThat(savedLastSyncTime.getLastSyncDate(), is(otherMockDate));
     }
 
-    @Test(expected = FormFetchException.class)
-    public void downloadAllForms_shouldThrowExceptionThrownByFormService() throws IOException, ParseException, FormFetchException {
+    @Test(expected = FormController.FormFetchException.class)
+    public void downloadAllForms_shouldThrowExceptionThrownByFormService() throws IOException, ParseException, FormController.FormFetchException {
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_FORMS)).thenReturn(mockDate);
         doThrow(new IOException()).when(formService).downloadFormsByName(StringUtil.EMPTY, mockDate);
         formController.downloadAllForms();
     }
 
     @Test
-    public void downloadFormTemplateByUuid_shouldDownloadFormByUuid() throws IOException, FormFetchException {
+    public void downloadFormTemplateByUuid_shouldDownloadFormByUuid() throws IOException, FormController.FormFetchException {
         FormTemplate formTemplate = new FormTemplate();
         String uuid = "uuid";
         when(formService.downloadFormTemplateByUuid(uuid)).thenReturn(formTemplate);
@@ -178,15 +189,15 @@ public class FormControllerTest {
         assertThat(formController.downloadFormTemplateByUuid(uuid), is(formTemplate));
     }
 
-    @Test(expected = FormFetchException.class)
-    public void downloadFormTemplateByUuid_shouldThrowFormFetchExceptionIfExceptionThrownByFormService() throws IOException, FormFetchException {
+    @Test(expected = FormController.FormFetchException.class)
+    public void downloadFormTemplateByUuid_shouldThrowFormFetchExceptionIfExceptionThrownByFormService() throws IOException, FormController.FormFetchException {
         String uuid = "uuid";
         doThrow(new IOException()).when(formService).downloadFormTemplateByUuid(uuid);
         formController.downloadFormTemplateByUuid(uuid);
     }
 
     @Test
-    public void downloadFormTemplates_shouldDownloadAllFormTemplates() throws IOException, FormFetchException {
+    public void downloadFormTemplates_shouldDownloadAllFormTemplates() throws IOException, FormController.FormFetchException {
         List<Form> forms = buildForms();
         FormTemplate formTemplate1 = new FormTemplate();
         FormTemplate formTemplate2 = new FormTemplate();
@@ -200,7 +211,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void saveAllForms_shouldSaveAllForm() throws FormSaveException, IOException {
+    public void saveAllForms_shouldSaveAllForm() throws FormController.FormSaveException, IOException {
         List<Form> forms = buildForms();
 
         formController.saveAllForms(forms);
@@ -209,8 +220,8 @@ public class FormControllerTest {
         verifyNoMoreInteractions(formService);
     }
 
-    @Test(expected = FormSaveException.class)
-    public void saveAllForms_shouldThrowFormSaveExceptionIfExceptionThrownByFormService() throws FormSaveException, IOException {
+    @Test(expected = FormController.FormSaveException.class)
+    public void saveAllForms_shouldThrowFormSaveExceptionIfExceptionThrownByFormService() throws FormController.FormSaveException, IOException {
         List<Form> forms = buildForms();
         doThrow(new IOException()).when(formService).saveForms(forms);
 
@@ -218,7 +229,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void getAllTags_shouldFetchAllUsedTags() throws FormFetchException, IOException, ParseException {
+    public void getAllTags_shouldFetchAllUsedTags() throws FormController.FormFetchException, IOException, ParseException {
         when(formService.getAllForms()).thenReturn(buildForms());
 
         List<Tag> allTags = formController.getAllTags();
@@ -232,7 +243,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void deleteAllForms_shouldDeleteAllForms() throws FormDeleteException, IOException, ParseException, FormFetchException {
+    public void deleteAllForms_shouldDeleteAllForms() throws FormController.FormDeleteException, IOException, ParseException, FormController.FormFetchException {
         List<Form> forms = buildForms();
         when(formService.getAllForms()).thenReturn(forms);
 
@@ -243,8 +254,8 @@ public class FormControllerTest {
         verifyNoMoreInteractions(formService);
     }
 
-    @Test(expected = FormDeleteException.class)
-    public void deleteAllForms_shouldThrowFormSaveExceptionIfExceptionThrownByFormService() throws IOException, FormDeleteException, ParseException {
+    @Test(expected = FormController.FormDeleteException.class)
+    public void deleteAllForms_shouldThrowFormSaveExceptionIfExceptionThrownByFormService() throws IOException, FormController.FormDeleteException, ParseException {
         List<Form> forms = buildForms();
         when(formService.getAllForms()).thenReturn(forms);
         doThrow(new IOException()).when(formService).deleteForms(forms);
@@ -253,7 +264,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void replaceFormTemplates_shouldReplaceAnyExistingFormTemplateWithSameId() throws IOException, FormFetchException, FormSaveException {
+    public void replaceFormTemplates_shouldReplaceAnyExistingFormTemplateWithSameId() throws IOException, FormController.FormFetchException, FormController.FormSaveException {
         List<FormTemplate> newFormTemplates = buildFormTemplates();
 
         FormTemplate existingFormTemplate1 = FormTemplateBuilder.formTemplate().withUuid("uuid1").build();
@@ -274,7 +285,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void getAllDownloadedForms_shouldReturnOnlyDownloadedForms() throws IOException, ParseException, FormFetchException {
+    public void getAllDownloadedForms_shouldReturnOnlyDownloadedForms() throws IOException, ParseException, FormController.FormFetchException {
         List<Form> forms = buildForms();
 
         when(formService.getAllForms()).thenReturn(forms);
@@ -286,7 +297,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void getAllDownloadedForms_shouldReturnNoFormsIfNoTemplateIsDownloaded() throws IOException, ParseException, FormFetchException {
+    public void getAllDownloadedForms_shouldReturnNoFormsIfNoTemplateIsDownloaded() throws IOException, ParseException, FormController.FormFetchException {
         List<Form> forms = buildForms();
 
         when(formService.getAllForms()).thenReturn(forms);
@@ -298,7 +309,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void isFormDownloaded_shouldReturnTrueIfFromIsDownloaded() throws IOException, ParseException, FormFetchException {
+    public void isFormDownloaded_shouldReturnTrueIfFromIsDownloaded() throws IOException, ParseException, FormController.FormFetchException {
         List<Form> forms = buildForms();
         List<FormTemplate> formTemplates = buildFormTemplates();
 
@@ -308,7 +319,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void isFormDownloaded_shouldReturnFalseIfFromIsNotDownloaded() throws IOException, ParseException, FormFetchException {
+    public void isFormDownloaded_shouldReturnFalseIfFromIsNotDownloaded() throws IOException, ParseException, FormController.FormFetchException {
         List<Form> forms = buildForms();
         List<FormTemplate> formTemplates = buildFormTemplates();
 
@@ -318,7 +329,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void getFormTemplateByUuid_shouldReturnForm() throws IOException, FormFetchException {
+    public void getFormTemplateByUuid_shouldReturnForm() throws IOException, FormController.FormFetchException {
         List<FormTemplate> formTemplates = buildFormTemplates();
         String uuid = formTemplates.get(0).getUuid();
         when(formService.getFormTemplateByUuid(uuid)).thenReturn(formTemplates.get(0));
@@ -327,7 +338,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void getFormByUuid_shouldReturnForm() throws IOException, FormFetchException {
+    public void getFormByUuid_shouldReturnForm() throws IOException, FormController.FormFetchException {
         List<Form> forms = buildForms();
         String uuid = forms.get(0).getUuid();
         when(formService.getFormByUuid(uuid)).thenReturn(forms.get(0));
@@ -336,7 +347,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void getFormDataByUuid_shouldReturnFormDataForAGivenId() throws Exception, FormDataFetchException {
+    public void getFormDataByUuid_shouldReturnFormDataForAGivenId() throws Exception, FormController.FormDataFetchException {
         FormData formData = new FormData();
         String uuid = "uuid";
 
@@ -346,7 +357,7 @@ public class FormControllerTest {
     }
 
     @Test(expected = FormController.FormDataFetchException.class)
-    public void getFormDataByUuid_shouldThrowFormDataFetchExceptionIfFormServiceThrowAnException() throws Exception, FormDataFetchException {
+    public void getFormDataByUuid_shouldThrowFormDataFetchExceptionIfFormServiceThrowAnException() throws Exception, FormController.FormDataFetchException {
         String uuid = "uuid";
         doThrow(new IOException()).when(formService).getFormDataByUuid(uuid);
 
@@ -354,7 +365,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void saveFormData_shouldSaveFormData() throws Exception, FormDataSaveException {
+    public void saveFormData_shouldSaveFormData() throws Exception, FormController.FormDataSaveException {
         FormData formData = new FormData();
 
         formController.saveFormData(formData);
@@ -362,8 +373,8 @@ public class FormControllerTest {
         verify(formService).saveFormData(formData);
     }
 
-    @Test(expected = FormDataSaveException.class)
-    public void saveFormData_shouldThrowFormDataSaveExceptionIfExceptionThrownByFormService() throws Exception, FormDataSaveException {
+    @Test(expected = FormController.FormDataSaveException.class)
+    public void saveFormData_shouldThrowFormDataSaveExceptionIfExceptionThrownByFormService() throws Exception, FormController.FormDataSaveException {
         FormData formData = new FormData();
 
         doThrow(new IOException()).when(formService).saveFormData(formData);
@@ -371,7 +382,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void getAllFormData_shouldReturnListOfAllFormDatas() throws Exception, FormDataFetchException {
+    public void getAllFormData_shouldReturnListOfAllFormDatas() throws Exception, FormController.FormDataFetchException {
         FormData formData = new FormData();
         String status = "draft";
 
@@ -382,7 +393,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void getAllFormDataByPatientUuid_shouldReturnAllFormDataForPatientAndGivenStatus() throws Exception, FormDataFetchException {
+    public void getAllFormDataByPatientUuid_shouldReturnAllFormDataForPatientAndGivenStatus() throws Exception, FormController.FormDataFetchException {
         List<FormData> formDataList = new ArrayList<FormData>();
         String patientUuid = "patientUuid";
         String status = "status";
@@ -392,14 +403,14 @@ public class FormControllerTest {
         assertThat(formController.getAllFormDataByPatientUuid(patientUuid, status), is(formDataList));
     }
 
-    @Test (expected = FormDataFetchException.class)
-    public void getAllFormDataByPatientUuid_shouldThrowFormDataFetchExpetionIfExceptionThrownByService() throws Exception, FormDataFetchException {
+    @Test (expected = FormController.FormDataFetchException.class)
+    public void getAllFormDataByPatientUuid_shouldThrowFormDataFetchExpetionIfExceptionThrownByService() throws Exception, FormController.FormDataFetchException {
         doThrow(new IOException()).when(formService).getFormDataByPatient(anyString(), anyString());
         formController.getAllFormDataByPatientUuid("", "");
     }
 
     @Test
-    public void getAllIncompleteForms_shouldReturnAllIncompleteForms() throws Exception, FormFetchException {
+    public void getAllIncompleteForms_shouldReturnAllIncompleteForms() throws Exception, FormController.FormFetchException {
         final Form form1 = new Form(){{
             setUuid("form1");
         }};
@@ -423,7 +434,7 @@ public class FormControllerTest {
             add(formData2);
         }};
 
-        when(formService.getAllFormData(STATUS_INCOMPLETE)).thenReturn(formDataList);
+        when(formService.getAllFormData(Constants.STATUS_INCOMPLETE)).thenReturn(formDataList);
         when(formService.getFormByUuid(formData1.getTemplateUuid())).thenReturn(form1);
         when(formService.getFormByUuid(formData2.getTemplateUuid())).thenReturn(form2);
         when(patientService.getPatientByUuid(formData1.getPatientUuid())).thenReturn(new Patient());
@@ -433,15 +444,15 @@ public class FormControllerTest {
         assertTrue(containsFormWithUuid(formController.getAllIncompleteForms(), form2.getUuid()));
     }
 
-    @Test (expected = FormFetchException.class)
-    public void getAllIncompleteForms_shouldThrowFormFetchExceptionIfExceptionThrownByService() throws Exception, FormFetchException {
+    @Test (expected = FormController.FormFetchException.class)
+    public void getAllIncompleteForms_shouldThrowFormFetchExceptionIfExceptionThrownByService() throws Exception, FormController.FormFetchException {
         doThrow(new IOException()).when(formService).getAllFormData(anyString());
 
         formController.getAllIncompleteForms();
     }
 
     @Test
-    public void getAllIncompleteFormsForPatientUuid_shouldReturnAllIncompleteFormsForGivenPatient() throws Exception, FormFetchException {
+    public void getAllIncompleteFormsForPatientUuid_shouldReturnAllIncompleteFormsForGivenPatient() throws Exception, FormController.FormFetchException {
         final Form form1 = new Form(){{
             setUuid("form1");
         }};
@@ -465,7 +476,7 @@ public class FormControllerTest {
 
         String patientUuid = "patientUuid";
 
-        when(formService.getFormDataByPatient(patientUuid, STATUS_INCOMPLETE)).thenReturn(formDataList);
+        when(formService.getFormDataByPatient(patientUuid, Constants.STATUS_INCOMPLETE)).thenReturn(formDataList);
         when(formService.getFormByUuid(formData1.getTemplateUuid())).thenReturn(form1);
         when(formService.getFormByUuid(formData2.getTemplateUuid())).thenReturn(form2);
 
@@ -473,15 +484,15 @@ public class FormControllerTest {
         assertTrue(containsFormWithUuid(formController.getAllIncompleteFormsForPatientUuid(patientUuid), form2.getUuid()));
     }
 
-    @Test (expected = FormFetchException.class)
-    public void getAllCompleteFormsForPatientUuid_shouldThrowFormFetchExceptionIfExceptionThrownByService() throws Exception, FormFetchException {
+    @Test (expected = FormController.FormFetchException.class)
+    public void getAllCompleteFormsForPatientUuid_shouldThrowFormFetchExceptionIfExceptionThrownByService() throws Exception, FormController.FormFetchException {
         doThrow(new IOException()).when(formService).getFormDataByPatient(anyString(),anyString());
 
         formController.getAllCompleteFormsForPatientUuid("patientUuid");
     }
 
     @Test
-    public void getAllCompleteFormsForPatientUuid_shouldReturnAllCompleteFormsForGivenPatient() throws Exception, FormFetchException {
+    public void getAllCompleteFormsForPatientUuid_shouldReturnAllCompleteFormsForGivenPatient() throws Exception, FormController.FormFetchException {
         final Form form1 = new Form(){{
             setUuid("form1Uuid");
         }};
@@ -505,7 +516,7 @@ public class FormControllerTest {
 
         String patientUuid = "patientUuid";
 
-        when(formService.getFormDataByPatient(patientUuid, STATUS_COMPLETE)).thenReturn(formDataList);
+        when(formService.getFormDataByPatient(patientUuid, Constants.STATUS_COMPLETE)).thenReturn(formDataList);
         when(formService.getFormByUuid(formData1.getTemplateUuid())).thenReturn(form1);
         when(formService.getFormByUuid(formData2.getTemplateUuid())).thenReturn(form2);
 
@@ -513,35 +524,35 @@ public class FormControllerTest {
         assertTrue(containsFormWithUuid(formController.getAllCompleteFormsForPatientUuid(patientUuid), forms.get(1).getUuid()));
     }
 
-    @Test (expected = FormFetchException.class)
-    public void getAllIncompleteFormsForPatientUuid_shouldThrowFormFetchExceptionIfExceptionThrownByService() throws Exception, FormFetchException {
+    @Test (expected = FormController.FormFetchException.class)
+    public void getAllIncompleteFormsForPatientUuid_shouldThrowFormFetchExceptionIfExceptionThrownByService() throws Exception, FormController.FormFetchException {
         doThrow(new IOException()).when(formService).getFormDataByPatient(anyString(),anyString());
 
         formController.getAllIncompleteFormsForPatientUuid("patientUuid");
     }
 
     @Test
-    public void shouldFilterOutUploadedFormData() throws Exception, FormDataFetchException {
+    public void shouldFilterOutUploadedFormData() throws Exception, FormController.FormDataFetchException {
         String templateUUID = "templateUUID";
         when(formService.getFormDataByTemplateUUID(templateUUID)).thenReturn(asList(
-                formDataWithStatusAndDiscriminator(STATUS_COMPLETE, FORM_XML_DISCRIMINATOR_ENCOUNTER),
-                formDataWithStatusAndDiscriminator(STATUS_UPLOADED, FORM_XML_DISCRIMINATOR_ENCOUNTER)));
+                formDataWithStatusAndDiscriminator(Constants.STATUS_COMPLETE, Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER),
+                formDataWithStatusAndDiscriminator(Constants.STATUS_UPLOADED, Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER)));
         List<FormData> formDataByTemplateUUID = formController.getUnUploadedFormData(templateUUID);
         assertThat(formDataByTemplateUUID.size(),is(1));
-        assertThat(formDataByTemplateUUID.get(0).getStatus(), is(STATUS_COMPLETE));
+        assertThat(formDataByTemplateUUID.get(0).getStatus(), is(Constants.STATUS_COMPLETE));
     }
 
     @Test
     @Ignore
     public void shouldUploadRegistrationFormsBeforeEncounterForms() throws Exception, FormController.UploadFormDataException {
-        FormData registrationFormData = formDataWithStatusAndDiscriminator(STATUS_COMPLETE, FORM_DISCRIMINATOR_REGISTRATION);
-        FormData encounterFormData = formDataWithStatusAndDiscriminator(STATUS_COMPLETE, FORM_XML_DISCRIMINATOR_ENCOUNTER);
+        FormData registrationFormData = formDataWithStatusAndDiscriminator(Constants.STATUS_COMPLETE, Constants.FORM_DISCRIMINATOR_REGISTRATION);
+        FormData encounterFormData = formDataWithStatusAndDiscriminator(Constants.STATUS_COMPLETE, Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER);
         when(formService.getAllFormData(Constants.STATUS_COMPLETE)).thenReturn(asList(registrationFormData,encounterFormData));
 
         FormController spyController = spy(formController);
         when(spyController.uploadFormDataToServer(asList(registrationFormData),true)).thenReturn(true);
 
-        InOrder inOrder = inOrder(spyController);
+        InOrder inOrder = inOrder(spyController.uploadAllCompletedForms());
 
         spyController.uploadAllCompletedForms();
 
@@ -557,11 +568,11 @@ public class FormControllerTest {
     }
 
     @Test
-    public void deleteCompleteAndIncompleteForms_shouldDeleteIncompleteForm() throws Exception, FormDataFetchException, FormDeleteException {
+    public void deleteCompleteAndIncompleteForms_shouldDeleteIncompleteForm() throws Exception, FormController.FormDataFetchException, FormController.FormDeleteException {
         FormData incompleteFormToDelete = new FormData();
         String uuid = "uuid";
         incompleteFormToDelete.setUuid(uuid);
-        incompleteFormToDelete.setStatus(STATUS_INCOMPLETE);
+        incompleteFormToDelete.setStatus(Constants.STATUS_INCOMPLETE);
         when(formController.getFormDataByUuid(anyString())).thenReturn(incompleteFormToDelete);
 
         formController.deleteCompleteAndIncompleteForms(asList(uuid));
@@ -569,11 +580,11 @@ public class FormControllerTest {
     }
 
     @Test
-    public void deleteCompleteAndIncompleteForms_shouldDeleteCompleteForm() throws Exception, FormDataFetchException, FormDeleteException {
+    public void deleteCompleteAndIncompleteForms_shouldDeleteCompleteForm() throws Exception, FormController.FormDataFetchException, FormController.FormDeleteException {
         FormData completeFormToDelete = new FormData();
         String uuid = "uuid";
         completeFormToDelete.setUuid(uuid);
-        completeFormToDelete.setStatus(STATUS_COMPLETE);
+        completeFormToDelete.setStatus(Constants.STATUS_COMPLETE);
         when(formController.getFormDataByUuid(anyString())).thenReturn(completeFormToDelete);
 
         formController.deleteCompleteAndIncompleteForms(asList(uuid));

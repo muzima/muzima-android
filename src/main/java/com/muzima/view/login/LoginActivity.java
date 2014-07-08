@@ -22,11 +22,12 @@ import com.muzima.domain.Credentials;
 import com.muzima.service.CredentialsPreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
+import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.MainActivity;
 import com.muzima.view.cohort.CohortWizardActivity;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 //This class shouldn't extend BaseActivity. Since it is independent of the application's context
 public class LoginActivity extends Activity {
@@ -209,7 +210,7 @@ public class LoginActivity extends Activity {
 
         @Override
         protected void onPostExecute(Result result) {
-            if (result.status == AUTHENTICATION_SUCCESS) {
+            if (result.status == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
                 new CredentialsPreferenceService(getApplicationContext()).saveCredentials(result.credentials);
                 ((MuzimaApplication) getApplication()).restartTimer();
                 startNextActivity();
@@ -224,13 +225,13 @@ public class LoginActivity extends Activity {
 
         private String getErrorText(Result result) {
             switch (result.status) {
-                case MALFORMED_URL_ERROR:
+                case SyncStatusConstants.MALFORMED_URL_ERROR:
                     return "Invalid Server URL.";
-                case INVALID_CREDENTIALS_ERROR:
+                case SyncStatusConstants.INVALID_CREDENTIALS_ERROR:
                     return "Invalid Username, Password, Server combination.";
-                case INVALID_CHARACTER_IN_USERNAME:
-                    return "Invalid Character in Username. These are not allowed: " + INVALID_CHARACTER_FOR_USERNAME ;
-                case CONNECTION_ERROR:
+                case SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME:
+                    return "Invalid Character in Username. These are not allowed: " + SyncStatusConstants.INVALID_CHARACTER_FOR_USERNAME ;
+                case SyncStatusConstants.CONNECTION_ERROR:
                     return "Error while connecting your server.";
                 default:
                     return "Authentication failed";

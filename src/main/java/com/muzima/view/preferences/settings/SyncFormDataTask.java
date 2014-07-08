@@ -6,7 +6,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.view.preferences.SettingsActivity;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 public class SyncFormDataTask extends AsyncTask<String, Void, Boolean> {
     private SettingsActivity settingsActivity;
@@ -21,7 +21,7 @@ public class SyncFormDataTask extends AsyncTask<String, Void, Boolean> {
     @Override
     protected Boolean doInBackground(String... params) {
         int[] result = muzimaSyncService.uploadAllCompletedForms();
-        return result[0] == SUCCESS;
+        return result[0] == SyncStatusConstants.SUCCESS;
     }
 
     @Override

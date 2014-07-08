@@ -7,7 +7,12 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.Toast;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
@@ -22,7 +27,7 @@ import com.muzima.view.forms.MuzimaProgressDialog;
 
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 
 public class CohortWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
@@ -118,7 +123,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
                     @Override
                     protected void onPostExecute(int[] result) {
                         dismissProgressDialog();
-                        if (result[0] != SUCCESS) {
+                        if (result[0] != SyncStatusConstants.SUCCESS) {
                             Toast.makeText(CohortWizardActivity.this, "Could not download clients", Toast.LENGTH_SHORT).show();
                         }
                         navigateToNextActivity();

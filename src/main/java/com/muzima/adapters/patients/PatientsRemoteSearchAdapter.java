@@ -10,11 +10,12 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
+import com.muzima.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 public class PatientsRemoteSearchAdapter extends ListAdapter<Patient> {
     private static final String TAG = "PatientsRemoteSearchAdapter";
@@ -64,7 +65,7 @@ public class PatientsRemoteSearchAdapter extends ListAdapter<Patient> {
             Credentials credentials = new Credentials(getContext());
             try {
                 int authenticateResult = applicationContext.getMuzimaSyncService().authenticate(credentials.getCredentialsArray());
-                if (authenticateResult == AUTHENTICATION_SUCCESS) {
+                if (authenticateResult == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
                     return patientController.searchPatientOnServer(strings[0]);
                 }
             } catch (Throwable t) {

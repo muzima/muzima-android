@@ -56,13 +56,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.google.android</groupId>
-            <artifactId>android</artifactId>
-            <scope>system</scope>
-            <systemPath>${env.ANDROID_HOME}/platforms/android-18/android.jar</systemPath>
-            <version>4.3</version>
-        </dependency>
-        <dependency>
             <groupId>com.actionbarsherlock</groupId>
             <artifactId>actionbarsherlock</artifactId>
             <version>${actionBarSherlock.version}</version>
@@ -175,20 +168,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>give_sdk</id>
-            <properties>
-                <android.sdk.path>/Users/akani/Development/bundles/adt-bundle-mac-x86_64-20130729/sdk</android.sdk.path>
-            </properties>
-        </profile>
-        <profile>
-            <id>akani_sdk</id>
-            <properties>
-                <android.sdk.path>/Users/akani/Development/bundles/adt-bundle-mac-x86_64-20130729/sdk</android.sdk.path>
-            </properties>
-        </profile>
-    </profiles>
-
 </project>

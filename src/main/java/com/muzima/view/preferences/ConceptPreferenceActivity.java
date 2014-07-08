@@ -19,11 +19,8 @@ import com.muzima.search.api.util.StringUtil;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_STATUS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TEMPLATES;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 public class ConceptPreferenceActivity extends BroadcastListenerActivity {
     private static final String TAG = ConceptPreferenceActivity.class.getSimpleName();
@@ -93,11 +90,11 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
     protected void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
-        int syncStatus = intent.getIntExtra(SYNC_STATUS, UNKNOWN_ERROR);
-        int syncType = intent.getIntExtra(SYNC_TYPE, -1);
+        int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS, SyncStatusConstants.UNKNOWN_ERROR);
+        int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
 
-        if(syncType == SYNC_TEMPLATES){
-            if(syncStatus == SUCCESS){
+        if(syncType == DataSyncServiceConstants.SYNC_TEMPLATES){
+            if(syncStatus == SyncStatusConstants.SUCCESS){
                 selectedConceptAdapter.reloadData();
             }
         }

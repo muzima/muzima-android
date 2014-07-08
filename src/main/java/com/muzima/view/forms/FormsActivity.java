@@ -29,9 +29,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 
 public class FormsActivity extends FormsActivityBase {
@@ -111,26 +110,26 @@ public class FormsActivity extends FormsActivityBase {
     protected void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
-        int syncStatus = intent.getIntExtra(SYNC_STATUS, UNKNOWN_ERROR);
-        int syncType = intent.getIntExtra(SYNC_TYPE, -1);
+        int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS, SyncStatusConstants.UNKNOWN_ERROR);
+        int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
 
-        if (syncType == SYNC_FORMS) {
+        if (syncType == DataSyncServiceConstants.SYNC_FORMS) {
             hideProgressbar();
             syncInProgress = false;
-            if (syncStatus == SUCCESS) {
+            if (syncStatus == SyncStatusConstants.SUCCESS) {
                 tagsListAdapter.reloadData();
                 ((FormsPagerAdapter) formsPagerAdapter).onFormMetadataDownloadFinish();
             }
-        } else if (syncType == SYNC_UPLOAD_FORMS) {
+        } else if (syncType == DataSyncServiceConstants.SYNC_UPLOAD_FORMS) {
             menuUpload.setActionView(null);
             syncInProgress = false;
-            if (syncStatus == SUCCESS) {
+            if (syncStatus == SyncStatusConstants.SUCCESS) {
                 ((FormsPagerAdapter) formsPagerAdapter).onFormUploadFinish();
             }
 
-        }  else if (syncType == SYNC_TEMPLATES) {
+        }  else if (syncType == DataSyncServiceConstants.SYNC_TEMPLATES) {
             hideProgressbar();
-            if (syncStatus == SUCCESS) {
+            if (syncStatus == SyncStatusConstants.SUCCESS) {
                 ((FormsPagerAdapter) formsPagerAdapter).onFormTemplateDownloadFinish();
             }
         }

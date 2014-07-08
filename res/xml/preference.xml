@@ -3,7 +3,7 @@
 
     <PreferenceCategory android:title="@string/preference_category_openmrs">
         <EditTextPreference
-                android:defaultValue="http://192.168.2.4:8081/openmrs-standalone"
+                android:defaultValue="http://173.255.205.23:8081/openmrs-standalone"
                 android:dialogMessage="@string/preference_server_desc"
                 android:dialogTitle="@string/preference_server_title"
                 android:key="@string/preference_server"

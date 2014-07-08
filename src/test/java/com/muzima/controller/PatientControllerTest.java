@@ -7,7 +7,7 @@ import com.muzima.api.model.PatientIdentifierType;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.PatientService;
 import com.muzima.utils.Constants;
-import org.apache.commons.lang.StringUtils;
+import com.muzima.utils.StringUtils;
 import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -20,7 +20,11 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 public class PatientControllerTest {
 

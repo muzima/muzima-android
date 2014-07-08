@@ -1,15 +1,30 @@
 package com.muzima.controller;
 
 import android.util.Log;
-import com.muzima.api.model.*;
+import com.muzima.api.model.Form;
+import com.muzima.api.model.FormData;
+import com.muzima.api.model.FormTemplate;
+import com.muzima.api.model.LastSyncTime;
+import com.muzima.api.model.Patient;
+import com.muzima.api.model.Tag;
 import com.muzima.api.service.FormService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PatientService;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.CompleteFormWithPatientData;
-import com.muzima.model.builders.*;
-import com.muzima.model.collections.*;
+import com.muzima.model.builders.AvailableFormBuilder;
+import com.muzima.model.builders.CompleteFormBuilder;
+import com.muzima.model.builders.CompleteFormWithPatientDataBuilder;
+import com.muzima.model.builders.DownloadedFormBuilder;
+import com.muzima.model.builders.IncompleteFormBuilder;
+import com.muzima.model.builders.IncompleteFormWithPatientDataBuilder;
+import com.muzima.model.collections.AvailableForms;
+import com.muzima.model.collections.CompleteForms;
+import com.muzima.model.collections.CompleteFormsWithPatientData;
+import com.muzima.model.collections.DownloadedForms;
+import com.muzima.model.collections.IncompleteForms;
+import com.muzima.model.collections.IncompleteFormsWithPatientData;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.SntpService;
 import com.muzima.utils.CustomColor;
@@ -17,7 +32,11 @@ import com.muzima.view.forms.PatientJSONMapper;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.muzima.utils.Constants.*;
 import static com.muzima.api.model.APIName.DOWNLOAD_FORMS;

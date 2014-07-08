@@ -5,10 +5,15 @@ import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.service.SntpService;
-import org.apache.commons.lang.StringUtils;
+import com.muzima.utils.StringUtils;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_ENCOUNTERS;
 import static java.util.Arrays.asList;
@@ -36,7 +41,7 @@ public class EncounterController {
 
     public List<Encounter> downloadEncountersByPatientUuids(List<String> patientUuids) throws DownloadEncounterException {
         try {
-            String paramSignature = StringUtils.join(patientUuids, UUID_SEPARATOR);
+            String paramSignature = StringUtils.getCommaSeparatedStringFromList(patientUuids);
             Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS, paramSignature);
             List<Encounter> encounters = new ArrayList<Encounter>();
             List<String> previousPatientsUuid = new ArrayList<String>();
@@ -82,7 +87,7 @@ public class EncounterController {
         allPatientUUIDs.addAll(previousPatientsUuid);
         List<String> allPatientUUIDList = new ArrayList<String>(allPatientUUIDs);
         Collections.sort(allPatientUUIDList);
-        return StringUtils.join(allPatientUUIDList, UUID_SEPARATOR);
+        return StringUtils.getCommaSeparatedStringFromList(allPatientUUIDList);
     }
 
     public void saveEncounters(List<Encounter> encounters) throws SaveEncounterException {
