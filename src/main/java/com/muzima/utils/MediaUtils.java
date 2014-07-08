@@ -9,9 +9,13 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
-import com.muzima.MuzimaApplication;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,10 +97,8 @@ public class MediaUtils {
                 return true;
             } catch (FileNotFoundException e) {
                 Log.e(TAG, "FileNotFoundException while copying file", e);
-                e.printStackTrace();
             } catch (IOException e) {
                 Log.e(TAG, "IOException while copying file", e);
-                e.printStackTrace();
             }
         } else
             Log.e(TAG, "Source file does not exist: " + sourceFile.getAbsolutePath());

@@ -1,6 +1,15 @@
 package com.muzima.service;
 
-import com.muzima.api.model.*;
+import com.muzima.api.model.Concept;
+import com.muzima.api.model.ConceptName;
+import com.muzima.api.model.ConceptType;
+import com.muzima.api.model.Encounter;
+import com.muzima.api.model.EncounterType;
+import com.muzima.api.model.Location;
+import com.muzima.api.model.Observation;
+import com.muzima.api.model.Patient;
+import com.muzima.api.model.Person;
+import com.muzima.api.model.PersonName;
 import com.muzima.controller.ConceptController;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.StringUtils;

@@ -23,8 +23,9 @@ import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.utils.MediaUtils;
 import com.muzima.view.BaseActivity;
-import com.muzima.view.forms.ImagingComponent;
-import java.io.*;
+
+import java.io.File;
+
 import static com.muzima.utils.Constants.APP_IMAGE_DIR;
 import static com.muzima.utils.Constants.TMP_FILE_PATH;
 

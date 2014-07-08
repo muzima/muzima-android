@@ -23,9 +23,7 @@ import com.muzima.view.preferences.ConceptPreferenceActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 
 public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
@@ -53,13 +51,13 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
                     @Override
                     protected void onPostExecute(int[] results) {
                         dismissProgressDialog();
-                        if (results[0] != SUCCESS) {
+                        if (results[0] != SyncStatusConstants.SUCCESS) {
                             Toast.makeText(CustomConceptWizardActivity.this, "Could not load cohorts", Toast.LENGTH_SHORT).show();
                         } else {
-                            if (results[1] != SUCCESS) {
+                            if (results[1] != SyncStatusConstants.SUCCESS) {
                                 Toast.makeText(CustomConceptWizardActivity.this, "Could not download observations for patients", Toast.LENGTH_SHORT).show();
                             }
-                            if (results[2] != SUCCESS) {
+                            if (results[2] != SyncStatusConstants.SUCCESS) {
                                 Toast.makeText(CustomConceptWizardActivity.this, "Could not download encounters for patients", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -90,14 +88,14 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
         MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
 
         int[] results = new int[3];
-        if(muzimaSyncService.authenticate(credentials.getCredentialsArray())==AUTHENTICATION_SUCCESS){
+        if(muzimaSyncService.authenticate(credentials.getCredentialsArray()) == SyncStatusConstants.AUTHENTICATION_SUCCESS){
 
             String[] cohortsUuidDownloaded = getDownloadedCohortUuids();
              if(cohortsUuidDownloaded==null){
-                 results[0] = LOAD_ERROR;
+                 results[0] = SyncStatusConstants.LOAD_ERROR;
                  return results;
              } else{
-                 results[0] = SUCCESS;
+                 results[0] = SyncStatusConstants.SUCCESS;
              }
             int[] downloadObservationsResult = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortsUuidDownloaded);
 

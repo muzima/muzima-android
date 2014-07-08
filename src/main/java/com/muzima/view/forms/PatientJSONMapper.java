@@ -1,19 +1,25 @@
 package com.muzima.view.forms;
 
-import com.muzima.api.model.*;
+import com.muzima.api.model.FormData;
+import com.muzima.api.model.Patient;
+import com.muzima.api.model.PatientIdentifier;
+import com.muzima.api.model.PatientIdentifierType;
+import com.muzima.api.model.PersonName;
 import com.muzima.utils.Constants;
 
+import com.muzima.utils.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.muzima.utils.DateUtils.getFormattedDate;
 import static com.muzima.utils.DateUtils.parse;
 import static java.util.Arrays.asList;
-import static org.apache.commons.lang.StringUtils.defaultString;
 
 public class PatientJSONMapper {
 
@@ -101,13 +107,13 @@ public class PatientJSONMapper {
 
     private Map<String, String> convert(Patient patient, FormData formData) {
         Map<String, String> patientValueMap = new HashMap<String, String>();
-        patientValueMap.put("patient.medical_record_number", defaultString(patient.getIdentifier()));
-        patientValueMap.put("patient.family_name", defaultString(patient.getFamilyName()));
-        patientValueMap.put("patient.given_name", defaultString(patient.getGivenName()));
-        patientValueMap.put("patient.middle_name", defaultString(patient.getMiddleName()));
-        patientValueMap.put("patient.sex", defaultString(patient.getGender()));
-        patientValueMap.put("patient.uuid", defaultString(patient.getUuid()));
-        patientValueMap.put("encounter.form_uuid",defaultString(formData.getTemplateUuid()));
+        patientValueMap.put("patient.medical_record_number", StringUtils.defaultString(patient.getIdentifier()));
+        patientValueMap.put("patient.family_name", StringUtils.defaultString(patient.getFamilyName()));
+        patientValueMap.put("patient.given_name", StringUtils.defaultString(patient.getGivenName()));
+        patientValueMap.put("patient.middle_name", StringUtils.defaultString(patient.getMiddleName()));
+        patientValueMap.put("patient.sex", StringUtils.defaultString(patient.getGender()));
+        patientValueMap.put("patient.uuid", StringUtils.defaultString(patient.getUuid()));
+        patientValueMap.put("encounter.form_uuid", StringUtils.defaultString(formData.getTemplateUuid()));
         if (patient.getBirthdate() != null) {
             patientValueMap.put("patient.birthdate", getFormattedDate(patient.getBirthdate()));
         }

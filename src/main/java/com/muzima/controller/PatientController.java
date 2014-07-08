@@ -6,6 +6,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.PatientService;
+import com.muzima.utils.StringUtils;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -13,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.muzima.utils.Constants.LOCAL_PATIENT;
-import static org.apache.commons.lang.StringUtils.isEmpty;
 
 public class PatientController {
 
@@ -69,7 +69,7 @@ public class PatientController {
 
     public List<Patient> searchPatientLocally(String term, String cohortUuid) throws PatientLoadException {
         try {
-            return isEmpty(cohortUuid)
+            return StringUtils.isEmpty(cohortUuid)
                     ? patientService.searchPatients(term)
                     : patientService.searchPatients(term, cohortUuid);
         } catch (IOException e) {

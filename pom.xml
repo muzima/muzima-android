@@ -55,7 +55,6 @@
             <version>4.8.2</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>com.actionbarsherlock</groupId>
             <artifactId>actionbarsherlock</artifactId>
@@ -135,8 +134,6 @@
             <groupId>com.emilsjolander</groupId>
             <artifactId>stickylistheaders</artifactId>
             <version>1.0.0</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/stickylistheaders-1.0.0.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>xmlpull</groupId>
@@ -160,10 +157,6 @@
                     <proguard>
                         <skip>true</skip>
                     </proguard>
-                    <emulator>
-                        <avd>EmulatorICS</avd>
-                    </emulator>
-                    <undeployBeforeDeploy>false</undeployBeforeDeploy>
                 </configuration>
             </plugin>
             <plugin>
@@ -180,19 +173,13 @@
         <profile>
             <id>give_sdk</id>
             <properties>
-                <android.sdk.path>${env.ANDROID_HOME}</android.sdk.path>
+                <android.sdk.path>/Users/akani/Development/bundles/adt-bundle-mac-x86_64-20130729/sdk</android.sdk.path>
             </properties>
         </profile>
         <profile>
             <id>akani_sdk</id>
             <properties>
-                <android.sdk.path>${env.ANDROID_HOME}</android.sdk.path>
-            </properties>
-        </profile>
-        <profile>
-            <id>reagan_sdk</id>
-            <properties>
-                <android.sdk.path>/android_studio/sdk</android.sdk.path>
+                <android.sdk.path>/Users/akani/Development/bundles/adt-bundle-mac-x86_64-20130729/sdk</android.sdk.path>
             </properties>
         </profile>
     </profiles>

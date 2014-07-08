@@ -20,7 +20,7 @@
                     android:id="@+id/serverUrl"
                     style="@style/LoginInfoEditText"
                     android:inputType="textUri"
-                    android:text="http://10.0.2.2:8081/openmrs-standalone"
+                    android:text="http://173.255.205.23:8081/openmrs-standalone"
                     android:nextFocusDown="@+id/username"
                     android:hint="@string/server_hint_text"/>
 
