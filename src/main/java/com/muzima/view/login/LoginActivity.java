@@ -105,7 +105,7 @@ public class LoginActivity extends Activity {
         String versionText  = "" ;
         String versionCode = "" ;
         try {
-            versionCode = String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionCode);
+            versionCode = String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
             versionText = String.format(getResources().getString(R.string.version), versionCode) ;
         } catch (PackageManager.NameNotFoundException ex) {}
         return versionText ;
