@@ -227,4 +227,6 @@
     <string name="record_audio">Record Audio</string>
     <string name="record_audio_prompt">Record or choose audio</string>
 
+    <string name="version">Version %1$s</string>
+
 </resources>

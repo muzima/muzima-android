@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.actionbarsherlock.internal.nineoldandroids.animation.ValueAnimator;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -26,7 +28,12 @@ import com.muzima.utils.StringUtils;
 import com.muzima.view.MainActivity;
 import com.muzima.view.cohort.CohortWizardActivity;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.CONNECTION_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.INVALID_CHARACTER_FOR_USERNAME;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.INVALID_CREDENTIALS_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.MALFORMED_URL_ERROR;
 
 //This class shouldn't extend BaseActivity. Since it is independent of the application's context
 public class LoginActivity extends Activity {
@@ -37,6 +44,7 @@ public class LoginActivity extends Activity {
     private EditText usernameText;
     private EditText passwordText;
     private Button loginButton;
+    private TextView versionText ;
     private BackgroundAuthenticationTask backgroundAuthenticationTask;
     private TextView authenticatingText;
 
@@ -72,6 +80,7 @@ public class LoginActivity extends Activity {
 
         //Hack to get it to use default font space.
         passwordText.setTypeface(Typeface.DEFAULT);
+        versionText.setText(getApplicationVersion());
     }
 
     private void showSessionTimeOutPopUpIfNeeded() {
@@ -95,6 +104,16 @@ public class LoginActivity extends Activity {
         if (!StringUtils.isEmpty(serverUrl)) {
             serverUrlText.setText(serverUrl);
         }
+    }
+
+    private String getApplicationVersion() {
+        String versionText  = "" ;
+        String versionCode = "" ;
+        try {
+            versionCode = String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionCode);
+            versionText = String.format(getResources().getString(R.string.version), versionCode) ;
+        } catch (PackageManager.NameNotFoundException ex) {}
+        return versionText ;
     }
 
     private String getServerURL() {
@@ -188,6 +207,8 @@ public class LoginActivity extends Activity {
         passwordText = (EditText) findViewById(R.id.password);
         loginButton = (Button) findViewById(R.id.login);
         authenticatingText = (TextView) findViewById(R.id.authenticatingText);
+        versionText = (TextView) findViewById(R.id.version) ;
+
     }
 
     private class BackgroundAuthenticationTask extends AsyncTask<Credentials, Void, BackgroundAuthenticationTask.Result> {
