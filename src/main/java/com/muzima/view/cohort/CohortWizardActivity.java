@@ -1,11 +1,14 @@
 package com.muzima.view.cohort;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -13,6 +16,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.Toast;
+
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
@@ -34,6 +44,9 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
 
     private MuzimaProgressDialog progressDialog;
     private boolean isProcessDialogOn = false;
+    private final String TAG = "CohortWizardActivity" ;
+    private PowerManager powerManager = null;
+    private PowerManager.WakeLock wakeLock = null ;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +128,15 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
             public void onClick(View v) {
                 turnOnProgressDialog("Downloading clients demographic...");
                 new AsyncTask<Void, Void, int[]>() {
+
+
+                    @Override
+                    protected void onPreExecute() {
+                        Log.i(TAG, "Canceling timer") ;
+                        ((MuzimaApplication) getApplication()).cancelTimer();
+                        keepPhoneAwake(true) ;
+                    }
+
                     @Override
                     protected int[] doInBackground(Void... voids) {
                         return downloadAndSavePatients(cohortsAdapter);
@@ -126,11 +148,29 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
                         if (result[0] != SyncStatusConstants.SUCCESS) {
                             Toast.makeText(CohortWizardActivity.this, "Could not download clients", Toast.LENGTH_SHORT).show();
                         }
+                        Log.i(TAG, "restarting timer") ;
+                        ((MuzimaApplication) getApplication()).restartTimer();
+                        keepPhoneAwake(false) ;
                         navigateToNextActivity();
                     }
                 }.execute();
             }
         };
+    }
+
+    private void keepPhoneAwake(boolean awakeState) {
+        Log.d("", "launching wake state " + awakeState) ;
+        if (awakeState) {
+            powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                    "");
+            wakeLock.acquire();
+        } else {
+            if(wakeLock != null) {
+                wakeLock.release();
+            }
+        }
+
     }
 
     private TextWatcher textWatcherForFilterText(final AllCohortsAdapter cohortsAdapter) {
