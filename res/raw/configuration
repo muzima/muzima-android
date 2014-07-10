@@ -90,31 +90,35 @@
         {
             "resource.name": "Sender Notification Resource",
             "node.root": "$['results']",
-            "resource.object": "com.muzima.api.model.Cohort",
+            "resource.object": "com.muzima.api.model.Notification",
             "algorithm.class": "com.muzima.api.model.algorithm.NotificationAlgorithm",
             "resolver.class": "com.muzima.api.model.resolver.SenderNotificationResolver",
             "field.unique": "uuid",
             "field.searchable": {
                 "uuid": "$['uuid']",
                 "subject": "$['subject']",
+                "source": "$['source']",
+                "status": "$['status']",
                 "payload": "$['payload']",
-                "receiver": "$['receiver.uuid']",
-                "sender": "$['sender.uuid']"
+                "receiverUuid": "$['receiver']['uuid']",
+                "senderUuid": "$['sender']['uuid']"
             }
         },
         {
             "resource.name": "Receiver Notification Resource",
             "node.root": "$['results']",
-            "resource.object": "com.muzima.api.model.Cohort",
+            "resource.object": "com.muzima.api.model.Notification",
             "algorithm.class": "com.muzima.api.model.algorithm.NotificationAlgorithm",
-            "resolver.class": "com.muzima.api.model.resolver.SenderNotificationResolver",
+            "resolver.class": "com.muzima.api.model.resolver.ReceiverNotificationResolver",
             "field.unique": "uuid",
             "field.searchable": {
                 "uuid": "$['uuid']",
                 "subject": "$['subject']",
+                "source": "$['source']",
+                "status": "$['status']",
                 "payload": "$['payload']",
-                "receiver": "$['receiver.uuid']",
-                "sender": "$['sender.uuid']"
+                "receiverUuid": "$['receiver']['uuid']",
+                "senderUuid": "$['sender']['uuid']"
             }
         },
         {
@@ -229,8 +233,10 @@
             "field.searchable": {
                 "uuid": "$['uuid']",
                 "subject": "$['subject']",
-                "receiver": "$['receiver.uuid']",
-                "sender": "$['sender.uuid']"
+                "source": "$['source']",
+                "status": "$['status']",
+                "receiverUuid": "$['receiver']['uuid']",
+                "senderUuid": "$['sender']['uuid']"
             }
         },
         {
@@ -437,17 +443,17 @@
             }
         },
         {
-             "resource.name": "Uuid Last Sync Time Resource",
-             "node.root": "$",
-             "resource.object": "com.muzima.api.model.LastSyncTime",
-             "algorithm.class": "com.muzima.api.model.algorithm.LastSyncTimeAlgorithm",
-             "resolver.class": "com.muzima.api.model.resolver.UuidRegistrationResolver",
-             "field.unique": "uuid",
-             "field.searchable": {
-                 "uuid": "$['uuid']",
-                 "apiName": "$['apiName']",
-                 "paramSignature": "$['paramSignature']"
-             }
+            "resource.name": "Uuid Last Sync Time Resource",
+            "node.root": "$",
+            "resource.object": "com.muzima.api.model.LastSyncTime",
+            "algorithm.class": "com.muzima.api.model.algorithm.LastSyncTimeAlgorithm",
+            "resolver.class": "com.muzima.api.model.resolver.UuidRegistrationResolver",
+            "field.unique": "uuid",
+            "field.searchable": {
+                "uuid": "$['uuid']",
+                "apiName": "$['apiName']",
+                "paramSignature": "$['paramSignature']"
+            }
         }
     ]
 }

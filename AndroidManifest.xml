@@ -135,7 +135,7 @@
                 android:name=".view.patients.PatientSummaryActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/title_activity_client_summary"
-                android:parentActivityName="com.muzima.view.ClientListActivity">
+                android:parentActivityName="com.muzima.view.patients.PatientsListActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.ClientListActivity"/>
@@ -145,6 +145,15 @@
                 android:name=".view.forms.PatientFormsActivity"
                 android:label="@string/title_activity_client_summary"
                 android:configChanges="orientation|screenSize"
+                android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.patients.PatientSummaryActivity"/>
+        </activity>
+
+        <activity
+                android:name=".view.notifications.PatientNotificationActivity"
+                android:label="@string/title_activity_client_summary"
                 android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -164,6 +173,48 @@
         <activity android:name=".view.forms.RegistrationFormsActivity"
                   android:configChanges="orientation|screenSize"
                   android:label="Select Registration Form" android:noHistory="true"/>
+
+        <activity
+                android:name=".utils.imaging.ImagingIntent"
+                android:label="@string/title_activity_image"
+                android:parentActivityName="com.muzima.view.forms.FormsActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.forms.FormsActivity"/>
+        </activity>
+
+        <activity
+                android:name=".utils.audio.AudioIntent"
+                android:label="@string/title_activity_audio"
+                android:configChanges="orientation|screenSize"
+                android:windowSoftInputMode="adjustResize"
+                android:parentActivityName="com.muzima.view.forms.FormsActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.forms.FormsActivity"/>
+        </activity>
+
+        <activity
+                android:name=".utils.video.VideoIntent"
+                android:label="@string/title_activity_video"
+                android:configChanges="orientation|screenSize"
+                android:windowSoftInputMode="adjustResize"
+                android:parentActivityName="com.muzima.view.forms.FormsActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.forms.FormsActivity"/>
+        </activity>
+
+        <activity
+                android:name=".view.notifications.NotificationActivity"
+                android:label="@string/title_activity_notification"
+                android:configChanges="orientation|screenSize"
+                android:windowSoftInputMode="adjustResize"
+                android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.patients.PatientSummaryActivity"/>
+        </activity>
 
         <!--Wizard Activities Start-->
         <activity android:name=".view.cohort.CohortWizardActivity"

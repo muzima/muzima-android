@@ -26,8 +26,11 @@ import com.muzima.controller.FormController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
 import com.muzima.utils.Constants;
+import com.muzima.utils.audio.AudioResult;
 import com.muzima.utils.barcode.IntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
+import com.muzima.utils.imaging.ImageResult;
+import com.muzima.utils.video.VideoResult;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 import org.json.JSONException;
@@ -49,6 +52,9 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     public static final String FORM_INSTANCE = "formInstance";
     public static final String REPOSITORY = "formDataRepositoryContext";
     public static final String BARCODE = "barCodeComponent";
+    public static final String IMAGE = "imagingComponent";
+    public static final String AUDIO = "audioComponent";
+    public static final String VIDEO = "videoComponent";
     public static final String ZIGGY_FILE_LOADER = "ziggyFileLoader";
     public static final String FORM = "form";
     public static final String DISCRIMINATOR = "discriminator";
@@ -61,7 +67,14 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     private FormData formData;
     private Patient patient;
     private BarCodeComponent barCodeComponent;
+    private ImagingComponent imagingComponent;
+    private AudioComponent audioComponent;
+    private VideoComponent videoComponent;
     private Map<String, String> scanResultMap;
+    private Map<String, String> imageResultMap;
+    private Map<String, String> audioResultMap;
+    private Map<String, String> videoResultMap;
+    private String sectionName;
     private FormController formController;
 
     @Override
@@ -73,6 +86,9 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         scanResultMap = new HashMap<String, String>();
+        imageResultMap = new HashMap<String, String>();
+        audioResultMap = new HashMap<String, String>();
+        videoResultMap = new HashMap<String, String>();
         setContentView(R.layout.activity_form_webview);
         progressDialog = new MuzimaProgressDialog(this);
         showProgressBar("Loading...");
@@ -81,13 +97,13 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             setupFormData(patient);
             setupWebView();
         } catch (FormFetchException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage(), e);
             finish();
         } catch (FormController.FormDataFetchException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage(), e);
             finish();
         } catch (FormController.FormDataSaveException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage(), e);
             finish();
         }
     }
@@ -114,9 +130,30 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
 
     @Override
     protected void onResume() {
-        String jsonMap = new JSONObject(scanResultMap).toString();
-        Log.e(TAG, jsonMap);
-        webView.loadUrl("javascript:document.populateBarCode(" + jsonMap + ")");
+        if (scanResultMap != null && !scanResultMap.isEmpty()) {
+            String jsonMap = new JSONObject(scanResultMap).toString();
+            Log.d(TAG, jsonMap);
+            webView.loadUrl("javascript:document.populateBarCode(" + jsonMap + ")");
+        }
+
+        if (imageResultMap != null && !imageResultMap.isEmpty()) {
+            String jsonMap = new JSONObject(imageResultMap).toString();
+            Log.d(TAG, "Header:" + sectionName + "json:" + jsonMap);
+            webView.loadUrl("javascript:document.populateImage('" + sectionName + "', " + jsonMap + ")");
+        }
+
+        if (audioResultMap != null && !audioResultMap.isEmpty()) {
+            String jsonMap = new JSONObject(audioResultMap).toString();
+            Log.d(TAG, "Header:" + sectionName + "json:" + jsonMap);
+            webView.loadUrl("javascript:document.populateAudio('" + sectionName + "', " + jsonMap + ")");
+        }
+
+        if (videoResultMap != null && !videoResultMap.isEmpty()) {
+            String jsonMap = new JSONObject(videoResultMap).toString();
+            Log.d(TAG, "Header:" + sectionName + "json:" + jsonMap);
+            webView.loadUrl("javascript:document.populateVideo('" + sectionName + "', " + jsonMap + ")");
+        }
+
         super.onResume();
     }
 
@@ -137,7 +174,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
                     formData.setStatus(STATUS_INCOMPLETE);
                     formController.saveFormData(formData);
                 } catch (FormController.FormDataSaveException e) {
-                    Log.e(TAG, "Error while saving the form data");
+                    Log.e(TAG, "Error while saving the form data", e);
                 }
                 startIncompleteFormListActivity();
                 return true;
@@ -157,6 +194,27 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanResult != null) {
             scanResultMap.put(barCodeComponent.getFieldName(), scanResult.getContents());
+        }
+
+        ImageResult imageResult = ImagingComponent.parseActivityResult(requestCode, resultCode, intent);
+        if (imageResult != null)  {
+            sectionName =  imageResult.getSectionName();
+            imageResultMap.put(imagingComponent.getImagePathField(), imageResult.getImageUri());
+            imageResultMap.put(imagingComponent.getImageCaptionField(), imageResult.getImageCaption());
+        }
+
+        AudioResult audioResult = AudioComponent.parseActivityResult(requestCode, resultCode, intent);
+        if (audioResult != null)  {
+            sectionName =  audioResult.getSectionName();
+            audioResultMap.put(audioComponent.getAudioPathField(), audioResult.getAudioUri());
+            audioResultMap.put(audioComponent.getAudioCaptionField(), audioResult.getAudioCaption());
+        }
+
+        VideoResult videoResult = VideoComponent.parseActivityResult(requestCode, resultCode, intent);
+        if (videoResult != null)  {
+            sectionName =  videoResult.getSectionName();
+            videoResultMap.put(videoComponent.getVideoPathField(), videoResult.getVideoUri());
+            videoResultMap.put(videoComponent.getVideoCaptionField(), videoResult.getVideoCaption());
         }
     }
 
@@ -218,7 +276,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             PatientJSONMapper mapper = new PatientJSONMapper(formTemplate.getModelJson());
             formData.setJsonPayload(mapper.map(patient, formData));
         } catch (JSONException e) {
-            Log.e(TAG, "Error while converting Model JSON");
+            Log.e(TAG, "Error while converting Model JSON", e);
         }
         return formData;
     }
@@ -238,7 +296,13 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
         webView.addJavascriptInterface(new FormDataStore(this, formController, formData), REPOSITORY);
         barCodeComponent = new BarCodeComponent(this);
+        imagingComponent = new ImagingComponent(this);
+        audioComponent = new AudioComponent(this);
+        videoComponent = new VideoComponent(this);
         webView.addJavascriptInterface(barCodeComponent, BARCODE);
+        webView.addJavascriptInterface(imagingComponent, IMAGE);
+        webView.addJavascriptInterface(audioComponent, AUDIO);
+        webView.addJavascriptInterface(videoComponent, VIDEO);
         webView.addJavascriptInterface(new ZiggyFileLoader("www/ziggy", getApplicationContext().getAssets(), formInstance.getModelJson()), ZIGGY_FILE_LOADER);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         if (isFormComplete()) {
@@ -311,7 +375,8 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     }
 
     private boolean isEncounterForm() {
-        return getIntent().getStringExtra(DISCRIMINATOR).equals(Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER);
+        return getIntent().getStringExtra(DISCRIMINATOR).equals(Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER)
+            || getIntent().getStringExtra(DISCRIMINATOR).equals(Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION);
     }
 }
 

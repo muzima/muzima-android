@@ -4,11 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 import com.muzima.MuzimaApplication;
+import com.muzima.api.model.Form;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
+import com.muzima.controller.NotificationController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
+import com.muzima.utils.Constants;
 
+import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER;
 import static com.muzima.utils.Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER;
 
@@ -36,7 +40,7 @@ public class FormViewIntent extends Intent {
                 return HTMLFormWebViewActivity.class;
             }
         } catch (FormController.FormFetchException e) {
-            Log.e("FormIntent", "Error while identifying form to load it in WebView");
+            Log.e("FormIntent", "Error while identifying form to load it in WebView", e);
         }
         return FormWebViewActivity.class;
     }
@@ -44,12 +48,11 @@ public class FormViewIntent extends Intent {
     private static String getEncounterFormDiscriminatorBasedOnFormType(Activity activity, BaseForm baseForm){
         FormController formController = ((MuzimaApplication) activity.getApplication()).getFormController();
         try {
-            if (formController.getFormTemplateByUuid(baseForm.getFormUuid()).isHTMLForm()) {
-                return FORM_JSON_DISCRIMINATOR_ENCOUNTER;
-            }
+            Form form = formController.getFormByUuid(baseForm.getFormUuid());
+            return form.getDiscriminator();
         } catch (FormController.FormFetchException e) {
-            Log.e("FormIntent", "Error while identifying form to load it in WebView");
+            Log.e("FormViewIntent", "Error while identifying form to load it in WebView", e);
         }
-        return FORM_XML_DISCRIMINATOR_ENCOUNTER;
+        return Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER;
     }
 }

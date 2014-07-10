@@ -59,7 +59,7 @@ public class CompleteFormsAdapter extends SectionedFormsAdapter<CompleteFormWith
                     completeForms = formsAdapter.getFormController().getAllCompleteForms();
                     Log.i(TAG, "#Complete forms: " + completeForms.size());
                 } catch (FormController.FormFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local forms " + e);
+                    Log.w(TAG, "Exception occurred while fetching local forms ", e);
                 }
             }
 

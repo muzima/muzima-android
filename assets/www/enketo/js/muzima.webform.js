@@ -94,6 +94,90 @@ $(document).ready(function () {
     });
     /*End- BarCode Functionality*/
 
+    /*Start- Imaging Functionality*/
+
+    document.populateImage = function (jsonString) {
+        $.each(jsonString, function (key, value) {
+            var $inputField = $("input[name='" + key + "']");
+            $inputField.val(value);
+            $inputField.trigger('change');  //Need this to trigger the event so image id gets populated.
+        })
+    };
+
+    var $imageInput = $('input[type="image"]');
+
+    // !!Please keep the isFromInput flag. In WebView, if the .image_img is before the input, the click on the input
+    // would trigger the event of click on the .image_img.
+    var isFromInput = false;
+    $imageInput.before("<input type='button' class='image_img'>");
+    $('.image_img').click(function () {
+        //imagingComponent is defined in FormWebViewActivity.java
+        if (!isFromInput) {
+            imagingComponent.startImageIntent($imageInput.attr('name'));
+        }
+        isFromInput = false;
+    });
+    $imageInput.click(function (e) {
+        isFromInput = true;
+    });
+    /*End- Image Functionality*/
+
+    /*Start- Video Functionality*/
+
+    document.populateVideo = function (jsonString) {
+        $.each(jsonString, function (key, value) {
+            var $inputField = $("input[name='" + key + "']");
+            $inputField.val(value);
+            $inputField.trigger('change');  //Need this to trigger the event so video file gets populated.
+        })
+    };
+
+    var $videoInput = $('input[type="video"]');
+
+    // !!Please keep the isFromInput flag. In WebView, if the .video_record is before the input, the click on the input
+    // would trigger the event of click on the .video_record.
+    var isFromInput = false;
+    $videoInput.before("<input type='button' class='video_record'>");
+    $('.video_record').click(function () {
+        //videoComponent is defined in FormWebViewActivity.java
+        if (!isFromInput) {
+            videoComponent.startVideoIntent($videoInput.attr('name'));
+        }
+        isFromInput = false;
+    });
+    $videoInput.click(function (e) {
+        isFromInput = true;
+    });
+    /*End- Video Functionality*/
+
+    /*Start- Audio Functionality*/
+    document.populateAudio = function (jsonString) {
+        $.each(jsonString, function (key, value) {
+            var $inputField = $("input[name='" + key + "']");
+            $inputField.val(value);
+            $inputField.trigger('change');  //Need this to trigger the event so audio file path gets populated.
+        })
+    };
+
+    var $audioInput = $('input[type="audio"]');
+
+    // !!Please keep the isFromInput flag. In WebView, if the .audio_record is before the input, the click on the input
+    // would trigger the event of click on the .audio_record.
+    var isFromInput = false;
+    $audioInput.before("<input type='button' class='video_record'>");
+    $('.video_record').click(function () {
+        //audioComponent is defined in FormWebViewActivity.java
+        if (!isFromInput) {
+            audioComponent.startAudioIntent($audioInput.attr('name'));
+        }
+        isFromInput = false;
+    });
+    $audioInput.click(function (e) {
+        isFromInput = true;
+    });
+    /*End- Audio Functionality*/
+
+
     /* Multi select Hack - Start */
 
     var checkboxParent = $("form input:checkbox").parent();

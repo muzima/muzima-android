@@ -35,6 +35,54 @@ input.error {
     width: 90%;
 }
 
+.image_btn {
+    height: 6%;
+    width: 12%;
+    display: inline-block;
+    line-height: 18px;
+    padding: 16px 23px;
+    margin-right: 4px !important;
+    border-radius: 4px;
+    background: #ffffff url("../images/imaging_icon.png") no-repeat center;
+}
+
+.image_text {
+    display: inline-block;
+    width: 90%;
+}
+
+.audio_record_btn {
+    height: 6%;
+    width: 12%;
+    display: inline-block;
+    line-height: 18px;
+    padding: 16px 23px;
+    margin-right: 4px !important;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.09) url("../images/audio_record_icon.png") no-repeat center;
+}
+
+.audio_record_text {
+    display: inline-block;
+    width: 90%;
+}
+
+.video_record_btn {
+    height: 6%;
+    width: 12%;
+    display: inline-block;
+    line-height: 18px;
+    padding: 16px 23px;
+    margin-right: 4px !important;
+    border-radius: 4px;
+    background: #ffffff url("../images/video_record_icon.png") no-repeat center;
+}
+
+.video_record_text {
+    display: inline-block;
+    width: 90%;
+}
+
 #pre_populate_data{
     display: none;
 }

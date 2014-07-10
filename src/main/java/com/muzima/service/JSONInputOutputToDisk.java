@@ -20,7 +20,7 @@ public class JSONInputOutputToDisk extends PreferenceService{
             try {
                 write("");
             } catch (IOException error) {
-                Log.e(this.getClass().toString(), "Error thrown when initialising JSON file on device drive.");
+                Log.e(this.getClass().toString(), "Error thrown when initialising JSON file on device drive.", error);
             }
         }
     }

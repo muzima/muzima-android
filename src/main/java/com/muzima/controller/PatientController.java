@@ -97,7 +97,7 @@ public class PatientController {
         try {
             return patientService.downloadPatientsByName(name);
         } catch (IOException e) {
-            Log.e(TAG, "Error while searching for patients in the server");
+            Log.e(TAG, "Error while searching for patients in the server", e);
         }
         return new ArrayList<Patient>();
     }
@@ -115,7 +115,7 @@ public class PatientController {
             }
             return localPatients;
         } catch (PatientLoadException e) {
-            Log.e(TAG, "Error while loading local patients");
+            Log.e(TAG, "Error while loading local patients", e);
         }
         return new ArrayList<Patient>();
     }
@@ -124,7 +124,7 @@ public class PatientController {
         try {
             return patientService.consolidateTemporaryPatient(patient);
         } catch (IOException e) {
-            Log.e(TAG, "Error while consolidating the temporary patient.");
+            Log.e(TAG, "Error while consolidating the temporary patient.", e);
         }
         return null;
     }
@@ -133,10 +133,7 @@ public class PatientController {
         try {
             patientService.savePatient(patient);
         } catch (IOException e) {
-            Log.e(TAG, "Error while saving the patient : " + patient.getUuid());
-            throw new PatientSaveException(e);
-        } catch (ParseException e) {
-            Log.e(TAG, "Error while saving the patient : " + patient.getUuid());
+            Log.e(TAG, "Error while saving the patient : " + patient.getUuid(), e);
             throw new PatientSaveException(e);
         }
     }
@@ -145,7 +142,7 @@ public class PatientController {
         try {
             patientService.updatePatient(patient);
         } catch (IOException e) {
-            Log.e(TAG, "Error while updating the patient : " + patient.getUuid());
+            Log.e(TAG, "Error while updating the patient : " + patient.getUuid(), e);
             throw new PatientSaveException(e);
         }
     }
@@ -154,7 +151,7 @@ public class PatientController {
         try {
             patientService.savePatients(patients);
         } catch (IOException e) {
-            Log.e(TAG, "Error while saving the patient list");
+            Log.e(TAG, "Error while saving the patient list", e);
             throw new PatientSaveException(e);
         }
     }
@@ -163,7 +160,7 @@ public class PatientController {
         try {
             patientService.deletePatient(localPatient);
         } catch (IOException e) {
-            Log.e(TAG, "Error while deleting local patient : " + localPatient.getUuid());
+            Log.e(TAG, "Error while deleting local patient : " + localPatient.getUuid(), e);
         }
     }
 
@@ -171,7 +168,7 @@ public class PatientController {
         try {
             patientService.deletePatients(localPatients);
         } catch (IOException e) {
-            Log.e(TAG, "Error while deleting local patients ");
+            Log.e(TAG, "Error while deleting local patients ", e);
             throw new PatientDeleteException(e);
         }
     }
@@ -180,7 +177,7 @@ public class PatientController {
         try {
             return patientService.getPatientsNotInCohorts();
         } catch (IOException e) {
-            Log.e(TAG, "Error while getting patients that are not in Cohorts");
+            Log.e(TAG, "Error while getting patients that are not in Cohorts", e);
         }
         return new ArrayList<Patient>();
     }
@@ -189,7 +186,7 @@ public class PatientController {
         try {
             return patientService.downloadPatientByUuid(uuid);
         } catch (IOException e) {
-            Log.e(TAG, "Error while downloading patient with UUID : " + uuid + " from server");
+            Log.e(TAG, "Error while downloading patient with UUID : " + uuid + " from server", e);
             throw new PatientDownloadException(e);
         }
     }

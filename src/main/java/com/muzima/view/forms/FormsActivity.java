@@ -248,7 +248,7 @@ public class FormsActivity extends FormsActivityBase {
         try {
             allTags = formController.getAllTags();
         } catch (FormController.FormFetchException e) {
-            Log.e(TAG, "Error occurred while get all tags from local repository\n" + e);
+            Log.e(TAG, "Error occurred while get all tags from local repository", e);
         }
         List<Tag> selectedTags = new ArrayList<Tag>();
 

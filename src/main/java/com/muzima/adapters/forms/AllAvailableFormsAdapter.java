@@ -155,7 +155,7 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
                     allForms = formsAdapter.getFormController().getAvailableFormByTags(getSelectedTagUuids());
                     Log.i(TAG, "#Forms: " + allForms.size());
                 } catch (FormController.FormFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local forms " + e);
+                    Log.w(TAG, "Exception occurred while fetching local forms ", e);
                 }
             }
             return allForms;
@@ -180,7 +180,7 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
                     allForms = formsAdapter.getFormController().getAvailableFormByTags(getSelectedTagUuids(), true);
                     Log.i(TAG, "#Forms: " + allForms.size());
                 } catch (FormController.FormFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local forms " + e);
+                    Log.w(TAG, "Exception occurred while fetching local forms.", e);
                 }
             }
             return allForms;

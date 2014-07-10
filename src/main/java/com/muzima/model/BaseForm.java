@@ -5,6 +5,7 @@ import java.io.Serializable;
 public abstract class BaseForm implements Serializable {
     protected String name;
     protected String description;
+    protected String discriminator;
     protected String formUuid;
 
     public String getName() {
@@ -21,6 +22,14 @@ public abstract class BaseForm implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getDiscriminator() {
+        return discriminator;
+    }
+
+    public void setDiscriminator(final String discriminator) {
+        this.discriminator = discriminator;
     }
 
     public String getFormUuid() {

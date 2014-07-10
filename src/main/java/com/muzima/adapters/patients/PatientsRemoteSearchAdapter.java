@@ -68,7 +68,7 @@ public class PatientsRemoteSearchAdapter extends ListAdapter<Patient> {
                     return patientController.searchPatientOnServer(strings[0]);
                 }
             } catch (Throwable t) {
-                Log.e(TAG, "Error while searching for patient in the server : " + t);
+                Log.e(TAG, "Error while searching for patient in the server.", t);
             } finally {
                 applicationContext.getMuzimaContext().closeSession();
             }

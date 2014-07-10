@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
+import static com.muzima.utils.Constants.NotificationStatusConstants.RECEIVER_UUID;
 import static java.util.Arrays.asList;
 
 public class DataSyncService extends IntentService {
@@ -120,6 +121,18 @@ public class DataSyncService extends IntentService {
                 String[] patientsToBeDownloaded = intent.getStringArrayExtra(PATIENT_UUID_FOR_DOWNLOAD);
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     downloadPatientsWithObsAndEncounters(broadcastIntent, patientsToBeDownloaded);
+                }
+            case SYNC_NOTIFICATIONS:
+                String receiverUUid = intent.getStringExtra(RECEIVER_UUID);
+                String[] downloadedCohortIds = intent.getStringArrayExtra(COHORT_IDS);
+                updateNotificationMsg("Downloading Notifications for receiver " + receiverUUid);
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    int[] result = muzimaSyncService.downloadNotifications(receiverUUid);
+                    String msg = "Downloaded " + result[1] + " notifications";
+                    prepareBroadcastMsg(broadcastIntent, result, msg);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+
+                    downloadObservationsAndEncounters(broadcastIntent, downloadedCohortIds);
                 }
             default:
                 break;
