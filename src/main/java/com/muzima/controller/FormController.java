@@ -220,6 +220,14 @@ public class FormController {
         }
     }
 
+    public void updateAllForms(List<Form> forms) throws FormSaveException {
+        try {
+            formService.updateForms(forms);
+        } catch (IOException e) {
+            throw new FormSaveException(e);
+        }
+    }
+
     public void deleteAllForms() throws FormDeleteException {
         try {
             formService.deleteForms(formService.getAllForms());

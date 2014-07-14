@@ -111,10 +111,13 @@ public class MuzimaSyncService {
 
         try {
             List<Form> forms;
+            long startDownloadForms = System.currentTimeMillis();
             forms = formController.downloadAllForms();
-            Log.i(TAG, "Form download successful");
-            formController.saveAllForms(forms);
-            Log.i(TAG, "New forms are saved");
+            long endDownloadForms = System.currentTimeMillis();
+            formController.updateAllForms(forms);
+            long endSaveForms = System.currentTimeMillis();
+            Log.d(TAG, "In downloading forms: " + (endDownloadForms - startDownloadForms) / 1000 + " sec\n" +
+                    "In replacing forms: " + (endDownloadForms - endSaveForms) / 1000 + " sec");
 
             result[0] = SyncStatusConstants.SUCCESS;
             result[1] = forms.size();
@@ -249,8 +252,7 @@ public class MuzimaSyncService {
 
             Log.i(TAG, "Cohort data replaced");
             Log.i(TAG, "Patients downloaded " + patientCount);
-            Log.d(TAG, "Time Taken:\n " +
-                    "In Downloading cohort data: " + (endDownloadCohortData - startDownloadCohortData) / 1000 + " sec\n" +
+            Log.d(TAG, "In Downloading cohort data: " + (endDownloadCohortData - startDownloadCohortData) / 1000 + " sec\n" +
                     "In Replacing cohort members and patients: " + (cohortMemberAndPatientReplaceTime - endDownloadCohortData) / 1000 + " sec");
 
             result[0] = SyncStatusConstants.SUCCESS;
