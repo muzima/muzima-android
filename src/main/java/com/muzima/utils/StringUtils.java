@@ -1,6 +1,7 @@
 package com.muzima.utils;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import static android.text.TextUtils.split;
@@ -9,18 +10,18 @@ public class StringUtils {
 
     public static final String EMPTY = "";
 
-    public static String getCommaSeparatedStringFromList(List<String> values){
+    public static String getCommaSeparatedStringFromList(final List<String> values){
         if(values == null){
             return "";
         }
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < values.size(); i++){
-            stringBuilder.append(values.get(i));
-            if(i != values.size() - 1){
-                stringBuilder.append(",");
-            }
+        StringBuilder builder = new StringBuilder();
+        Iterator<String> valuesIterator = values.iterator();
+        while (valuesIterator.hasNext()) {
+            String next = valuesIterator.next();
+            builder.append(next).append(",");
         }
-        return stringBuilder.toString();
+        String commaSeparated = builder.toString();
+        return commaSeparated.substring(0, commaSeparated.length() - 1);
     }
 
     public static List<String> getListFromCommaSeparatedString(String value){
