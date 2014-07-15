@@ -1,8 +1,10 @@
 package com.muzima.view.cohort;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +33,8 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
     private MuzimaProgressDialog muzimaProgressDialog;
     protected Credentials credentials;
     private boolean isProcessDialogOn = false;
+    private PowerManager powerManager = null;
+    private PowerManager.WakeLock wakeLock = null ;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +47,14 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
             public void onClick(View v) {
                 turnOnProgressDialog("Downloading Observations and Encounters...");
                 new AsyncTask<Void, Void, int[]>() {
+
+                    @Override
+                    protected void onPreExecute() {
+                        Log.i(TAG, "Canceling timeout timer!") ;
+                        ((MuzimaApplication) getApplication()).cancelTimer();
+                        keepPhoneAwake(true) ;
+                    }
+
                     @Override
                     protected int[] doInBackground(Void... voids) {
                         return downloadObservationAndEncounter();
@@ -128,6 +140,19 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
         super.onResume();
         if(isProcessDialogOn){
             turnOnProgressDialog("Downloading Observations and Encounters...");
+        }
+    }
+
+    private void keepPhoneAwake(boolean awakeState) {
+        Log.d(TAG, "Launching wake state: " + awakeState) ;
+        if (awakeState) {
+            powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
+            wakeLock.acquire();
+        } else {
+            if(wakeLock != null) {
+                wakeLock.release();
+            }
         }
     }
 
