@@ -224,12 +224,6 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         dismissProgressDialog();
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        dismissProgressDialog();
-    }
-
     private void turnOnProgressDialog(String message){
         progressDialog.show(message);
         isProcessDialogOn = true;

@@ -124,12 +124,6 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
     }
 
     @Override
-    public void onPause(){
-        super.onPause();
-        dismissProgressDialog();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         if(isProcessDialogOn){
