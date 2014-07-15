@@ -122,7 +122,6 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
                 turnOnProgressDialog("Downloading clients demographic...");
                 new AsyncTask<Void, Void, int[]>() {
 
-
                     @Override
                     protected void onPreExecute() {
                         Log.i(TAG, "Canceling timer") ;
@@ -141,7 +140,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
                         if (result[0] != SUCCESS) {
                             Toast.makeText(CohortWizardActivity.this, "Could not download clients", Toast.LENGTH_SHORT).show();
                         }
-                        Log.i(TAG, "restarting timer") ;
+                        Log.i(TAG, "Restarting timeout timer!") ;
                         ((MuzimaApplication) getApplication()).restartTimer();
                         keepPhoneAwake(false) ;
                         navigateToNextActivity();
@@ -152,18 +151,16 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
     }
 
     private void keepPhoneAwake(boolean awakeState) {
-        Log.d("", "launching wake state " + awakeState) ;
+        Log.d(TAG, "Launching wake state: " + awakeState) ;
         if (awakeState) {
             powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-                    "");
+            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
             wakeLock.acquire();
         } else {
             if(wakeLock != null) {
                 wakeLock.release();
             }
         }
-
     }
 
     private TextWatcher textWatcherForFilterText(final AllCohortsAdapter cohortsAdapter) {
