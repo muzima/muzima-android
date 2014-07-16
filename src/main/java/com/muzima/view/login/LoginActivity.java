@@ -10,6 +10,7 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
@@ -24,7 +25,6 @@ import com.muzima.domain.Credentials;
 import com.muzima.service.CredentialsPreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
-import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.MainActivity;
 import com.muzima.view.cohort.CohortWizardActivity;
@@ -108,7 +108,9 @@ public class LoginActivity extends Activity {
         try {
             versionCode = String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
             versionText = String.format(getResources().getString(R.string.version), versionCode) ;
-        } catch (PackageManager.NameNotFoundException ex) {}
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(TAG, "Unable to read application version.", e);
+        }
         return versionText ;
     }
 
