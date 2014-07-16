@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
-import com.muzima.MuzimaApplication;
 
 import java.io.*;
 import java.nio.channels.FileChannel;
@@ -27,6 +26,14 @@ public class MediaUtils {
 
 		return made;
 	}
+
+    public static String toBase64(byte[] bytes) {
+        return Base64.encodeToString(bytes, Base64.NO_WRAP);
+    }
+
+    public static byte[] fromBase64(String base64) {
+        return Base64.decode(base64, Base64.NO_WRAP);
+    }
 
 	public static Bitmap getBitmapScaledToDisplay(File f, int screenHeight,
 			int screenWidth) {

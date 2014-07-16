@@ -1,7 +1,5 @@
 package com.muzima.controller;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 import com.muzima.api.model.*;
 import com.muzima.api.service.FormService;
@@ -16,17 +14,17 @@ import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.SntpService;
 import com.muzima.util.JsonUtils;
 import com.muzima.utils.CustomColor;
+import com.muzima.utils.EnDeCrypt;
 import com.muzima.utils.MediaUtils;
 import com.muzima.utils.StringUtils;
-import com.muzima.utils.EnDeCrypt;
 import com.muzima.view.forms.PatientJSONMapper;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
-import org.apache.lucene.queryParser.ParseException;
 import org.json.JSONException;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -425,8 +423,6 @@ public class FormController {
             Log.e(TAG, e.toString());
         } catch (IOException e) {
             Log.e(TAG, e.toString());
-        } catch (ParseException e) {
-            Log.e(TAG, e.toString());
         }
         return null;
     }
@@ -542,11 +538,11 @@ public class FormController {
         for (FormData formData : allFormData) {
             String rawPayload = formData.getJsonPayload();
 
-            // replace image paths with base64 string
-            formData = replaceImagePathWithImageString(formData);
-
             // inject consultation.sourceUuid
             formData = injectUuidToPayload(formData);
+
+            // replace media paths with base64 string
+            formData = replaceMediaPathWithBase64String(formData);
 
             if (formService.syncFormData(formData)) {
                 formData.setStatus(STATUS_UPLOADED);
@@ -598,20 +594,23 @@ public class FormController {
             }
 
             if(val != null)
-                replaceImagePathWithImage(key, val);
+                replaceMediaPathWithMedia(key, val);
         }
     }
 
-    private void replaceImagePathWithImage(String key, String value){
-        String image_discriminator = ".jpg";
-        if (value.contains(image_discriminator)) {
+    private void replaceMediaPathWithMedia(String key, String value){
+        String MEDIA_DISCRIMINATOR = "/muzima/media/";
+        if (value.contains(MEDIA_DISCRIMINATOR)) {
+            String newKeyValPair = "\"" + key + "\":\"" + getStringMedia(value) + "\"";
+            if (!jsonPayload.contains(value))
+                value = value.replace("/", "\\/");
             String keyValPair = "\"" + key + "\":\"" + value + "\"";
-            String keyValPairReplace = "\"" + key + "\":\"" + getStringImage(value) + "\"";
-            jsonPayload = jsonPayload.replace(keyValPair, keyValPairReplace);
+
+            jsonPayload = jsonPayload.replace(keyValPair, newKeyValPair);
         }
     }
 
-    private FormData replaceImagePathWithImageString(FormData formData) {
+    private FormData replaceMediaPathWithBase64String(FormData formData) {
         try {
             jsonPayload = formData.getJsonPayload();
             JSONParser jp =new JSONParser(JSONParser.MODE_PERMISSIVE);
@@ -623,28 +622,31 @@ public class FormController {
         return formData;
     }
 
-    private static String getStringImage(String imageUri) {
-        String imageString = null;
-        if (!StringUtils.isEmpty(imageUri))  {
-            //fetch the image and convert it to @Base64 encoded string. Delete the image
-            File f = new File(imageUri) ;
+    private static String getStringMedia(String mediaUri) {
+        String mediaString = null;
+        if (!StringUtils.isEmpty(mediaUri))  {
+            //fetch the media and convert it to @Base64 encoded string.
+            File f = new File(mediaUri) ;
             if (f.exists()){
 
-                // here the image is encrypted so we decrypt it
+                // here the media file is encrypted so we decrypt it
                 EnDeCrypt.decrypt(f, "this-is-supposed-to-be-a-secure-key");
 
-                //convert the decrypted image to string
-                Bitmap bmp = BitmapFactory.decodeFile(f.getAbsolutePath());
-                imageString = MediaUtils.getStringFromBitmap(bmp);
+                try {
+                    FileInputStream fis = new FileInputStream(f);
+                    byte[] fileBytes = new byte[(int) f.length()];
+                    fis.read(fileBytes);
+
+                    //convert the decrypted media to Base64 string
+                    mediaString = MediaUtils.toBase64(fileBytes);
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                }
 
                 // and encrypt again
                 EnDeCrypt.encrypt(f, "this-is-supposed-to-be-a-secure-key");
             }
         }
-        return imageString;
-    }
-
-    private FormData replaceVideoPathWithVideo(FormData formData) {
-       return null;
+        return mediaString != null? mediaString : mediaUri;
     }
 }
