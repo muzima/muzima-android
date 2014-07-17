@@ -53,7 +53,7 @@ public class NotificationController {
             Form form;
 
             for (FormData formData : allFormData) {
-                Notification notification = notificationService.getNotificationByUuid(formData.getUuid());
+                Notification notification = notificationService.getNotificationBySource(formData.getUuid());
                 form = formService.getFormByUuid(formData.getTemplateUuid());
                 if (isConsultationForm(form) && notification != null) {
 

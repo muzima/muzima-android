@@ -1,56 +1,32 @@
 package com.muzima.controller;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
-import com.muzima.api.model.APIName;
-import com.muzima.api.model.Form;
-import com.muzima.api.model.FormData;
-import com.muzima.api.model.FormTemplate;
-import com.muzima.api.model.LastSyncTime;
-import com.muzima.api.model.Patient;
-import com.muzima.api.model.Tag;
+import com.muzima.api.model.*;
 import com.muzima.api.service.FormService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PatientService;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.CompleteFormWithPatientData;
-import com.muzima.model.builders.AvailableFormBuilder;
-import com.muzima.model.builders.CompleteFormBuilder;
-import com.muzima.model.builders.CompleteFormWithPatientDataBuilder;
-import com.muzima.model.builders.DownloadedFormBuilder;
-import com.muzima.model.builders.IncompleteFormBuilder;
-import com.muzima.model.builders.IncompleteFormWithPatientDataBuilder;
-import com.muzima.model.collections.AvailableForms;
-import com.muzima.model.collections.CompleteForms;
-import com.muzima.model.collections.CompleteFormsWithPatientData;
-import com.muzima.model.collections.DownloadedForms;
-import com.muzima.model.collections.IncompleteForms;
-import com.muzima.model.collections.IncompleteFormsWithPatientData;
+import com.muzima.model.builders.*;
+import com.muzima.model.collections.*;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.SntpService;
 import com.muzima.util.JsonUtils;
-import com.muzima.utils.Constants;
-import com.muzima.utils.CustomColor;
-import com.muzima.utils.MediaUtils;
-import com.muzima.utils.StringUtils;
-import com.muzima.utils.EnDeCrypt;
+import com.muzima.utils.*;
 import com.muzima.view.forms.PatientJSONMapper;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
-import net.minidev.json.parser.ParseException;
 import org.json.JSONException;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION;
+import static com.muzima.utils.Constants.STATUS_UPLOADED;
 
 public class FormController {
 
@@ -566,12 +542,13 @@ public class FormController {
     boolean uploadFormDataToServer(List<FormData> allFormData, boolean result) throws IOException {
         for (FormData formData : allFormData) {
             String rawPayload = formData.getJsonPayload();
-            // replace image paths with base64 string
-            formData = replaceImagePathWithImageString(formData);
             // inject consultation.sourceUuid
             formData = injectUuidToPayload(formData);
+            // replace media paths with base64 string
+            formData = replaceMediaPathWithBase64String(formData);
             if (formService.syncFormData(formData)) {
-                formData.setStatus(Constants.STATUS_UPLOADED);
+                formData.setStatus(STATUS_UPLOADED);
+
                 //DO NOT save base64 string in DB
                 formData.setJsonPayload(rawPayload);
                 formService.saveFormData(formData);
@@ -585,15 +562,15 @@ public class FormController {
 
     private static FormData injectUuidToPayload(FormData formData) {
 
-        if (StringUtil.equals(formData.getDiscriminator(), Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION)) {
+        if (StringUtil.equals(formData.getDiscriminator(), FORM_JSON_DISCRIMINATOR_CONSULTATION)) {
             try {
                 String base = "consultation";
                 JSONParser jp =new JSONParser(JSONParser.MODE_PERMISSIVE);
                 JSONObject obj = (JSONObject)jp.parse(formData.getJsonPayload());
                 JsonUtils.replaceAsString(obj, base, "consultation.sourceUuid", formData.getUuid());
                 formData.setJsonPayload(obj.toJSONString());
-            } catch (ParseException e) {
-                Log.e(TAG, "Parsing json throwing exception!", e);
+            } catch (net.minidev.json.parser.ParseException e) {
+                e.printStackTrace();
             }
         }
         return formData;
@@ -619,53 +596,58 @@ public class FormController {
             }
 
             if(val != null)
-                replaceImagePathWithImage(key, val);
+                replaceMediaPathWithMedia(key, val);
         }
     }
 
-    private void replaceImagePathWithImage(String key, String value){
-        String image_discriminator = ".jpg";
-        if (value.contains(image_discriminator)) {
+    private void replaceMediaPathWithMedia(String key, String value){
+        if (value.contains("/muzima/media/")) {
+            String newKeyValPair = "\"" + key + "\":\"" + getStringMedia(value) + "\"";
+            if (!jsonPayload.contains(value))
+                value = value.replace("/", "\\/");
             String keyValPair = "\"" + key + "\":\"" + value + "\"";
-            String keyValPairReplace = "\"" + key + "\":\"" + getStringImage(value) + "\"";
-            jsonPayload = jsonPayload.replace(keyValPair, keyValPairReplace);
+
+            jsonPayload = jsonPayload.replace(keyValPair, newKeyValPair);
         }
     }
 
-    private FormData replaceImagePathWithImageString(FormData formData) {
+    private FormData replaceMediaPathWithBase64String(FormData formData) {
         try {
             jsonPayload = formData.getJsonPayload();
             JSONParser jp =new JSONParser(JSONParser.MODE_PERMISSIVE);
             traverseJson((JSONObject) jp.parse(jsonPayload));
             formData.setJsonPayload(jsonPayload);
-        } catch (ParseException e) {
-            Log.e(TAG, "Parsing json throwing exception!", e);
+        } catch (net.minidev.json.parser.ParseException e) {
+            e.printStackTrace();
         }
         return formData;
     }
 
-    private static String getStringImage(String imageUri) {
-        String imageString = null;
-        if (!StringUtils.isEmpty(imageUri))  {
-            //fetch the image and convert it to @Base64 encoded string. Delete the image
-            File f = new File(imageUri) ;
+    private static String getStringMedia(String mediaUri) {
+        String mediaString = null;
+        if (!StringUtils.isEmpty(mediaUri))  {
+            //fetch the media and convert it to @Base64 encoded string.
+            File f = new File(mediaUri) ;
             if (f.exists()){
 
-                // here the image is encrypted so we decrypt it
+                // here the media file is encrypted so we decrypt it
                 EnDeCrypt.decrypt(f, "this-is-supposed-to-be-a-secure-key");
 
-                //convert the decrypted image to string
-                Bitmap bmp = BitmapFactory.decodeFile(f.getAbsolutePath());
-                imageString = MediaUtils.getStringFromBitmap(bmp);
+                try {
+                    FileInputStream fis = new FileInputStream(f);
+                    byte[] fileBytes = new byte[(int) f.length()];
+                    fis.read(fileBytes);
+
+                    //convert the decrypted media to Base64 string
+                    mediaString = MediaUtils.toBase64(fileBytes);
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                }
 
                 // and encrypt again
                 EnDeCrypt.encrypt(f, "this-is-supposed-to-be-a-secure-key");
             }
         }
-        return imageString;
-    }
-
-    private FormData replaceVideoPathWithVideo(FormData formData) {
-       return null;
+        return mediaString != null? mediaString : mediaUri;
     }
 }

@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.actionbarsherlock.internal.nineoldandroids.animation.ValueAnimator;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -76,7 +75,7 @@ public class LoginActivity extends Activity {
 
         //Hack to get it to use default font space.
         passwordText.setTypeface(Typeface.DEFAULT);
-        versionText.setText(getApplicationVersion());
+        //versionText.setText(getApplicationVersion());
     }
 
     private void showSessionTimeOutPopUpIfNeeded() {
