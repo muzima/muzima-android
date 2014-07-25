@@ -100,6 +100,7 @@ public class HTMLFormObservationCreator {
             String key = (String) keys.next();
             observations.addAll(extractBasedOnType(jsonObject, key));
         }
+        observations.removeAll(Collections.singleton(null));
         return observations;
     }
 
@@ -111,7 +112,6 @@ public class HTMLFormObservationCreator {
         }
         ArrayList<Observation> observations = new ArrayList<Observation>();
         observations.add(createObservation(key, jsonObject.getString(key)));
-        observations.removeAll(Collections.singleton(null));
         return observations;
     }
 

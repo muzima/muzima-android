@@ -297,7 +297,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         webView.addJavascriptInterface(imagingComponent, IMAGE);
         webView.addJavascriptInterface(audioComponent, AUDIO);
         webView.addJavascriptInterface(videoComponent, VIDEO);
-        webView.addJavascriptInterface(new ZiggyFileLoader("www/ziggy", getApplicationContext().getAssets(), formInstance.getModelJson()), ZIGGY_FILE_LOADER);
         webView.addJavascriptInterface(new HTMLFormDataStore(this, formController, formData), HTML_DATA_STORE);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         if (isFormComplete()) {

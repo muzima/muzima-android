@@ -71,7 +71,7 @@ public class PatientIncompleteFormsAdapter extends FormsWithDataAdapter<Incomple
                     incompleteForms = formsAdapter.getFormController()
                             .getAllIncompleteFormsForPatientUuid(((PatientIncompleteFormsAdapter) formsAdapter).getPatientId());
 
-                    Log.i(TAG, "#Complete forms: " + incompleteForms.size());
+                    Log.i(TAG, "#Incomplete forms: " + incompleteForms.size());
                 } catch (FormController.FormFetchException e) {
                     Log.w(TAG, "Exception occurred while fetching local forms ", e);
                 }
