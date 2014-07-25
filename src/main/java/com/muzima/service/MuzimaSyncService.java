@@ -65,9 +65,9 @@ public class MuzimaSyncService {
 
         Context muzimaContext = muzimaApplication.getMuzimaContext();
         try {
-            if(hasInvalidSpecialCharacter(username)){
-                return SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME;
-            }
+//            if(hasInvalidSpecialCharacter(username)){
+//                return SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME;
+//            }
 
             muzimaContext.openSession();
             if (!muzimaContext.isAuthenticated()) {
@@ -110,11 +110,12 @@ public class MuzimaSyncService {
         int[] result = new int[2];
 
         try {
-            List<Form> forms;
             long startDownloadForms = System.currentTimeMillis();
-            forms = formController.downloadAllForms();
+            List<Form> forms = formController.downloadAllForms();
             long endDownloadForms = System.currentTimeMillis();
-            formController.updateAllForms(forms);
+            List<Form> voidedForms = deleteVoidedForms(forms);
+            forms.removeAll(voidedForms);
+            formController.saveAllForms(forms);
             long endSaveForms = System.currentTimeMillis();
             Log.d(TAG, "In downloading forms: " + (endDownloadForms - startDownloadForms) / 1000 + " sec\n" +
                     "In replacing forms: " + (endDownloadForms - endSaveForms) / 1000 + " sec");
@@ -130,8 +131,24 @@ public class MuzimaSyncService {
             Log.e(TAG, "Exception when trying to save forms", e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
             return result;
+        } catch (FormController.FormDeleteException e) {
+            Log.e(TAG, "Exception when trying to delete forms", e);
+            result[0] = SyncStatusConstants.DELETE_ERROR;
+            return result;
         }
         return result;
+    }
+
+    private List<Form> deleteVoidedForms(List<Form> forms) throws FormController.FormDeleteException {
+        Log.i(TAG, "Voided forms are deleted");
+        List<Form> voidedForms = new ArrayList<Form>();
+        for( Form form : forms){
+            if(form.isVoided()){
+                voidedForms.add(form);
+            }
+        }
+        formController.deleteForms(voidedForms);
+        return voidedForms;
     }
 
     public int[] downloadFormTemplates(String[] formIds) {
@@ -589,30 +606,4 @@ public class MuzimaSyncService {
         }
         return result;
     }
-
-//    public int[] downloadEncountersForPatientsByPatientUUIDs(List<String> patientUuids) {
-//        int[] result = new int[2];
-//        try {
-//            long startDownloadEncounters = System.currentTimeMillis();
-//            List<Encounter> allEncounters = encounterController.downloadEncountersByPatientUuids(patientUuids);
-//            long endDownloadObservations = System.currentTimeMillis();
-//            Log.i(TAG, "Encounters download successful with " + allEncounters.size() + " encounters");
-//
-//            encounterController.replaceEncounters(allEncounters);
-//            long replacedEncounters = System.currentTimeMillis();
-//
-//            Log.d(TAG, "In Downloading encounters : " + (endDownloadObservations - startDownloadEncounters) / 1000 + " sec\n" +
-//                    "In Replacing encounters for patients: " + (replacedEncounters - endDownloadObservations) / 1000 + " sec");
-//
-//            result[0] = SUCCESS;
-//            result[1] = allEncounters.size();
-//        } catch (EncounterController.DownloadEncounterException e) {
-//            Log.e(TAG, "Exception thrown while downloading encounters.", e);
-//            result[0] = DOWNLOAD_ERROR;
-//        } catch (EncounterController.ReplaceEncounterException e) {
-//            Log.e(TAG, "Exception thrown while replacing encounters.", e);
-//            result[0] = REPLACE_ERROR;
-//        }
-//        return result;
-//    }
 }

@@ -212,6 +212,14 @@ public class FormController {
         }
     }
 
+    public void deleteForms(List<Form> forms) throws FormDeleteException {
+        try {
+            formService.deleteForms(forms);
+        } catch (IOException e) {
+            throw new FormDeleteException(e);
+        }
+    }
+
     public void deleteFormTemplatesByUUID(List<String> formTemplateUUIDs) throws FormDeleteException {
         try {
             formService.deleteFormTemplateByUUIDs(formTemplateUUIDs);
