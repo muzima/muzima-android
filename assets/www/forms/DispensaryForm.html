@@ -508,9 +508,9 @@
     <h3>Other Medication</h3>
 
     <div class="form-group">
-        <label for="obs.medication_other.medication_name">Medication Name<span class="required">*</span></label>
+        <label for="obs.medication_other.medication_name">Medication Name</label>
         <input class="form-control" id="obs.medication_other.medication_name"
-               name="obs.medication_other.medication_name" type="text" required="required"
+               name="obs.medication_other.medication_name" type="text"
                data-concept="1779^MEDICATION NAME, FREETEXT^99DCT">
     </div>
     <div class="form-group">
@@ -520,9 +520,9 @@
                data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
-        <label for="obs.medication_other.medication_frequency_per_day">Frequency per day:<span class="required">*</span></label>
+        <label for="obs.medication_other.medication_frequency_per_day">Frequency per day:</label>
         <select class="form-control" id="obs.medication_other.medication_frequency_per_day"
-                name="obs.medication_other.medication_frequency_per_day" required="required"
+                name="obs.medication_other.medication_frequency_per_day"
                 data-concept="1896^MEDICATION FREQUENCY^99DCT">
             <option value="">...</option>
             <option value="1639^MORNING^99DCT">Every Morning</option>
@@ -1097,7 +1097,7 @@
         <label for="obs.omo_number_of_tablets_nifedipine">Number of [Nifedipine] tablets prescribed:<span
                 class="required">*</span></label>
         <input class="form-control numberOfTablets" id="obs.omo_number_of_tablets_nifedipine"
-               name="obs.omo_number_of_tablets_nifedipine" type="text" data-concept="1898^NUMBER OF TABLETS^99DCT"
+               name="obs.omo_number_of_tablets_nifedipine" type="number" data-concept="1898^NUMBER OF TABLETS^99DCT"
                required="required">
     </div>
     <div class="form-group">
@@ -1116,22 +1116,20 @@
     <h3>Other Medication</h3>
 
     <div class="form-group">
-        <label for="obs.omo_medication_name_freetext_other">Medication Name:<span class="required">*</span></label>
-        <input class="form-control" id="obs.omo_medication_name_freetext_other" required="required"
+        <label for="obs.omo_medication_name_freetext_other">Medication Name:</label>
+        <input class="form-control" id="obs.omo_medication_name_freetext_other"
                name="obs.omo_medication_name_freetext_other" type="text"
                data-concept="1779^MEDICATION NAME, FREETEXT^99DCT">
     </div>
     <div class="form-group">
-        <label for="obs.omo_number_of_milligram_other">Medication dose in Milligrams (mg):<span
-                class="required">*</span></label>
+        <label for="obs.omo_number_of_milligram_other">Medication dose in Milligrams (mg):</label>
         <input class="form-control numberOfMilligrams" id="obs.omo_number_of_milligram_other"
                name="obs.omo_number_of_milligram_other"
-               type="number" data-concept="1899^NUMBER OF MILLIGRAM^99DCT" required="required">
+               type="number" data-concept="1899^NUMBER OF MILLIGRAM^99DCT">
     </div>
     <div class="form-group">
-        <label for="obs.omo_medication_frequency_per_day_other">Medication frequency per day:<span
-                class="required">*</span></label>
-        <select class="form-control" id="obs.omo_medication_frequency_per_day_other" required="required"
+        <label for="obs.omo_medication_frequency_per_day_other">Medication frequency per day:</label>
+        <select class="form-control" id="obs.omo_medication_frequency_per_day_other"
                 name="obs.omo_medication_frequency_per_day_other" data-concept="1896^MEDICATION FREQUENCY^99DCT">
             <option value="">...</option>
             <option value="1639^MORNING^99DCT">Every Morning</option>
@@ -1141,11 +1139,10 @@
         </select>
     </div>
     <div class="form-group">
-        <label for="obs.omo_number_of_tablets_other">Number of Medication tablets:<span
-                class="required">*</span></label>
+        <label for="obs.omo_number_of_tablets_other">Number of Medication tablets:</label>
         <input class="form-control numberOfTablets" id="obs.omo_number_of_tablets_other"
                name="obs.omo_number_of_tablets_other"
-               type="number" data-concept="1898^NUMBER OF TABLETS^99DCT" required="required">
+               type="number" data-concept="1898^NUMBER OF TABLETS^99DCT">
     </div>
 </div>
 <div class="section">
