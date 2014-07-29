@@ -1,6 +1,9 @@
 package com.muzima.view.patients;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -55,6 +58,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private View noDataView;
     private String searchString;
     private Button searchServerBtn;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +98,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.client_list, menu);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search)
+         searchView = (SearchView) menu.findItem(R.id.search)
                 .getActionView();
         searchView.setQueryHint("Search clients");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -139,11 +143,46 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         }
     }
 
+    // Confirmation dialog for confirming if the patient have an existing ID
+    private void callConfirmationDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(PatientsListActivity.this);
+        builder
+                .setCancelable(true)
+                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                .setTitle(getResources().getString(R.string.confirm))
+                .setMessage(getResources().getString(R.string.patient_registration_id_card_question))
+                .setPositiveButton("Yes", yesClickListener())
+                .setNegativeButton("No", noClickListener()).create().show();
+
+
+    }
+
+    private Dialog.OnClickListener yesClickListener() {
+        return new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                searchView.setIconified(false);
+                searchView.requestFocus();
+            }
+        };
+    }
+
+    private Dialog.OnClickListener noClickListener() {
+        return new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(PatientsListActivity.this, RegistrationFormsActivity.class));
+            }
+        };
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_client_add:
-                startActivity(new Intent(this, RegistrationFormsActivity.class));
+                callConfirmationDialog();
                 return true;
             case R.id.menu_load:
                 if (notificationsSyncInProgress) {
