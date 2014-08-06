@@ -7,12 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
@@ -27,6 +22,8 @@ import com.muzima.controller.CohortController;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.utils.barcode.IntentIntegrator;
+import com.muzima.utils.barcode.IntentResult;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.notifications.SyncNotificationsIntent;
@@ -59,6 +56,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private String searchString;
     private Button searchServerBtn;
     private SearchView searchView;
+    private boolean intentBarcodeResults = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +71,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 isNotificationsList = StringUtil.equals(title, NOTIFICATIONS);
                 setTitle(title);
             }
-        }  else
+        } else
             isNotificationsList = false;
 
         progressBarContainer = (FrameLayout) findViewById(R.id.progressbarContainer);
@@ -98,7 +96,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.client_list, menu);
-         searchView = (SearchView) menu.findItem(R.id.search)
+        searchView = (SearchView) menu.findItem(R.id.search)
                 .getActionView();
         searchView.setQueryHint("Search clients");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -123,6 +121,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             searchView.setIconified(true);
 
         menubarSyncButton = menu.findItem(R.id.menu_load);
+
         if (isNotificationsList) {
             menubarSyncButton.setVisible(true);
             searchView.setVisibility(View.GONE);
@@ -136,7 +135,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     private void activateRemoteAfterThreeCharacterEntered(String searchString) {
-        if(searchString.trim().length()<3){
+        if (searchString.trim().length() < 3) {
             searchServerBtn.setVisibility(View.GONE);
         } else {
             searchServerBtn.setVisibility(View.VISIBLE);
@@ -184,6 +183,10 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             case R.id.menu_client_add:
                 callConfirmationDialog();
                 return true;
+
+            case R.id.scan:
+                invokeBarcodeScan();
+                return true;
             case R.id.menu_load:
                 if (notificationsSyncInProgress) {
                     Toast.makeText(this, "Action not allowed while sync is in progress", Toast.LENGTH_SHORT).show();
@@ -209,7 +212,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     protected void onResume() {
         super.onResume();
-        patientAdapter.reloadData();
+        if (!intentBarcodeResults)
+            patientAdapter.reloadData();
     }
 
     private void setupListView(String cohortId) {
@@ -295,7 +299,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         showProgressBar();
 
         User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
-        if (authenticatedUser != null)   {
+        if (authenticatedUser != null) {
             // get downloaded cohorts and sync obs and encounters
             List<String> downloadedCohortsUuid = null;
             List<Cohort> downloadedCohorts;
@@ -328,4 +332,28 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     public void onNotificationDownloadStart() {
         notificationsSyncInProgress = true;
     }
+
+
+    public void invokeBarcodeScan() {
+        IntentIntegrator scanIntegrator = new IntentIntegrator(this);
+
+        scanIntegrator.initiateScan();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
+
+
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
+        if (scanningResult != null) {
+            intentBarcodeResults = true;
+            searchView.setQuery(scanningResult.getContents(), false);
+
+        }
+
+
+    }
+
+
 }
