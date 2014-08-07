@@ -1,6 +1,20 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.controller;
 
-import com.muzima.api.model.*;
+import com.muzima.api.model.Concept;
+import com.muzima.api.model.Encounter;
+import com.muzima.api.model.LastSyncTime;
+import com.muzima.api.model.Location;
+import com.muzima.api.model.Observation;
+import com.muzima.api.model.Person;
+import com.muzima.api.model.PersonName;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.LastSyncTimeService;
@@ -9,11 +23,16 @@ import com.muzima.model.observation.Concepts;
 import com.muzima.model.observation.Encounters;
 import com.muzima.service.SntpService;
 import com.muzima.utils.CustomColor;
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.DOMException;
+import com.muzima.utils.StringUtils;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_OBSERVATIONS;
 import static java.util.Arrays.asList;
@@ -197,9 +216,9 @@ public class ObservationController {
     }
 
     private String buildParamSignature(List<String> patientUuids, List<String> conceptUuids) {
-        String paramSignature = StringUtils.join(patientUuids, UUID_SEPARATOR);
+        String paramSignature = StringUtils.getCommaSeparatedStringFromList(patientUuids);
         paramSignature += UUID_TYPE_SEPARATOR;
-        paramSignature += StringUtils.join(conceptUuids, UUID_SEPARATOR);
+        paramSignature += StringUtils.getCommaSeparatedStringFromList(conceptUuids);
         return paramSignature;
     }
 

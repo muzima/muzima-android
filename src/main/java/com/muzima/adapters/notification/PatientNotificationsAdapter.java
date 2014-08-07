@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.adapters.notification;
 
 import android.content.Context;
@@ -11,7 +19,6 @@ import com.muzima.api.model.Notification;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.User;
 import com.muzima.controller.NotificationController;
-import org.apache.lucene.queryParser.ParseException;
 
 import java.util.List;
 
@@ -95,7 +102,7 @@ public class PatientNotificationsAdapter extends NotificationsAdapter {
                     patientNotifications = notificationController.getNotificationsForPatient(patient.getUuid(), authenticatedUser.getPerson().getUuid(), null);
                 Log.d(TAG, "#Retrieved " + patientNotifications.size() + " notifications from Database.");
             } catch (NotificationController.NotificationFetchException e) {
-                Log.w(TAG, "Exception occurred while fetching the notifications" + e);
+                Log.w(TAG, "Exception occurred while fetching the notifications", e);
             }
             return patientNotifications;
         }
@@ -114,7 +121,7 @@ public class PatientNotificationsAdapter extends NotificationsAdapter {
                     patientNotifications = notificationController.getNotificationsForPatient(patient.getUuid(),authenticatedUser.getPerson().getUuid(), null);
                 Log.i(TAG, "#Retrieved: " + patientNotifications.size());
             } catch (NotificationController.NotificationFetchException e) {
-                Log.w(TAG, "Exception occurred while fetching the notifications" + e);
+                Log.w(TAG, "Exception occurred while fetching the notifications", e);
             }
             return patientNotifications;
         }

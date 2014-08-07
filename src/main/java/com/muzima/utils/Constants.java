@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.utils;
 
 import android.os.Environment;
@@ -25,7 +33,7 @@ public class Constants {
     public static final String FORM_DISCRIMINATOR_CONSULTATION = "consultation";
 
     private static final String APP_EXTERNAL_DIR_ROOT =  Environment.getExternalStorageDirectory().getPath() + "/muzima";
-    private static final String APP_MEDIA_DIR = APP_EXTERNAL_DIR_ROOT + "/media";
+    public static final String APP_MEDIA_DIR = APP_EXTERNAL_DIR_ROOT + "/media";
     public static final String APP_IMAGE_DIR = APP_MEDIA_DIR + "/image";
     public static final String APP_AUDIO_DIR = APP_MEDIA_DIR + "/audio";
     public static final String APP_VIDEO_DIR = APP_MEDIA_DIR + "/video";

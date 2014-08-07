@@ -1,10 +1,31 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.service;
 
 import android.content.SharedPreferences;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.context.Context;
-import com.muzima.api.model.*;
-import com.muzima.controller.*;
+import com.muzima.api.model.Cohort;
+import com.muzima.api.model.CohortData;
+import com.muzima.api.model.CohortMember;
+import com.muzima.api.model.Concept;
+import com.muzima.api.model.Encounter;
+import com.muzima.api.model.Form;
+import com.muzima.api.model.FormTemplate;
+import com.muzima.api.model.Observation;
+import com.muzima.api.model.Patient;
+import com.muzima.controller.CohortController;
+import com.muzima.controller.ConceptController;
+import com.muzima.controller.EncounterController;
+import com.muzima.controller.FormController;
+import com.muzima.controller.ObservationController;
+import com.muzima.controller.PatientController;
 import com.muzima.testSupport.CustomTestRunner;
 import com.muzima.utils.Constants;
 import org.apache.lucene.queryParser.ParseException;
@@ -21,16 +42,20 @@ import java.util.Set;
 
 import static com.muzima.controller.ObservationController.ReplaceObservationException;
 import static com.muzima.utils.Constants.COHORT_PREFIX_PREF;
-import static com.muzima.utils.Constants.COHORT_PREFIX_PREF_KEY;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 @RunWith(CustomTestRunner.class)
 public class MuzimaSyncServiceTest {
@@ -76,7 +101,7 @@ public class MuzimaSyncServiceTest {
     public void authenticate_shouldReturnSuccessStatusIfAuthenticated() throws Exception {
         String[] credentials = new String[]{"username", "password", "url"};
 
-        assertThat(muzimaSyncService.authenticate(credentials), is(AUTHENTICATION_SUCCESS));
+        assertThat(muzimaSyncService.authenticate(credentials), is(SyncStatusConstants.AUTHENTICATION_SUCCESS));
     }
 
     @Test
@@ -86,7 +111,7 @@ public class MuzimaSyncServiceTest {
         when(muzimaContext.isAuthenticated()).thenReturn(true);
 
         verify(muzimaContext, times(0)).authenticate(anyString(), anyString(), anyString());
-        assertThat(muzimaSyncService.authenticate(credentials), is(AUTHENTICATION_SUCCESS));
+        assertThat(muzimaSyncService.authenticate(credentials), is(SyncStatusConstants.AUTHENTICATION_SUCCESS));
     }
 
     @Test
@@ -102,140 +127,140 @@ public class MuzimaSyncServiceTest {
     public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsenameContainsComma() throws Exception {
         String[] credentials = new String[]{"username,", "password", "url"};
 
-        assertThat(muzimaSyncService.authenticate(credentials), is(INVALID_CHARACTER_IN_USERNAME));
+        assertThat(muzimaSyncService.authenticate(credentials), is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
     }
 
     @Test
     public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsSemiColon() throws Exception {
         String[] credentials = {"username;", "password", "url"};
 
-        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
     }
 
     @Test
     public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsDot(){
         String[] credentials = {"username.", "password", "url"};
 
-        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
     }
 
     @Test
     public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsMinus(){
         String[] credentials = {"username-", "password", "url"};
 
-        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
     }
 
     @Test
     public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsForwardSlash(){
         String[] credentials = {"username/", "password", "url"};
 
-        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
     }
 
     @Test
     public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsAtSign(){
         String[] credentials = {"username@", "password", "url"};
 
-        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
     }
 
     @Test
     public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsAshSign(){
         String[] credentials = {"username#", "password", "url"};
 
-        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
     }
 
     @Test
     public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsDollarSign(){
         String[] credentials = {"username$", "password", "url"};
 
-        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
     }
 
     @Test
     public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsPercentageSign(){
         String[] credentials = {"username%", "password", "url"};
 
-        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
     }
 
     @Test
     public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsAndSign(){
         String[] credentials = {"username&", "password", "url"};
 
-        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
     }
 
     @Test
     public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsStarSign(){
         String[] credentials = {"username*", "password", "url"};
 
-        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
     }
 
     @Test
     public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsPlusSign(){
         String[] credentials = {"username+", "password", "url"};
 
-        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
     }
 
     @Test
     public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsEqualSign(){
         String[] credentials = {"username=", "password", "url"};
 
-        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
     }
 
     @Test
     public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsSingleQuote(){
         String[] credentials = {"username'", "password", "url"};
 
-        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
     }
 
     @Test
     public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsDoubleQuote(){
         String[] credentials = {"username\"", "password", "url"};
 
-        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
     }
 
     @Test
     public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsPipe(){
         String[] credentials = {"username|", "password", "url"};
 
-        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
     }
 
     @Test
     public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsTilde(){
         String[] credentials = {"username~", "password", "url"};
 
-        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
     }
 
     @Test
     public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsRevertedQuote(){
         String[] credentials = {"username`", "password", "url"};
 
-        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
     }
 
     @Test
     public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsRightAngleBracket(){
         String[] credentials = {"username<", "password", "url"};
 
-        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
     }
 
     @Test
     public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsLeftAngleBracket(){
         String[] credentials = {"username>", "password", "url"};
 
-        assertThat(muzimaSyncService.authenticate(credentials),is(INVALID_CHARACTER_IN_USERNAME));
+        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
     }
 
     @Test
@@ -254,7 +279,7 @@ public class MuzimaSyncServiceTest {
 
         doThrow(new ParseException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2]);
 
-        assertThat(muzimaSyncService.authenticate(credentials), is(PARSING_ERROR));
+        assertThat(muzimaSyncService.authenticate(credentials), is(SyncStatusConstants.PARSING_ERROR));
     }
 
     @Test
@@ -263,7 +288,7 @@ public class MuzimaSyncServiceTest {
 
         doThrow(new ConnectException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2]);
 
-        assertThat(muzimaSyncService.authenticate(credentials), is(CONNECTION_ERROR));
+        assertThat(muzimaSyncService.authenticate(credentials), is(SyncStatusConstants.CONNECTION_ERROR));
     }
 
     @Test
@@ -272,7 +297,7 @@ public class MuzimaSyncServiceTest {
 
         doThrow(new IOException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2]);
 
-        assertThat(muzimaSyncService.authenticate(credentials), is(AUTHENTICATION_ERROR));
+        assertThat(muzimaSyncService.authenticate(credentials), is(SyncStatusConstants.AUTHENTICATION_ERROR));
     }
 
     @Test
@@ -288,7 +313,7 @@ public class MuzimaSyncServiceTest {
 
     @Test
     public void downloadForms_shouldReturnSuccessStatusAndDownloadCountIfSuccessful() throws Exception, FormController.FormFetchException {
-        int[] result = new int[]{SUCCESS, 2};
+        int[] result = new int[]{SyncStatusConstants.SUCCESS, 2};
 
         List<Form> forms = new ArrayList<Form>() {{
             add(new Form());
@@ -302,13 +327,13 @@ public class MuzimaSyncServiceTest {
     @Test
     public void downloadForms_shouldReturnDownloadErrorIfDownloadExceptionOccur() throws Exception, FormController.FormFetchException {
         doThrow(new FormController.FormFetchException(null)).when(formContorller).downloadAllForms();
-        assertThat(muzimaSyncService.downloadForms()[0], is(DOWNLOAD_ERROR));
+        assertThat(muzimaSyncService.downloadForms()[0], is(SyncStatusConstants.DOWNLOAD_ERROR));
     }
 
     @Test
     public void downloadForms_shouldReturnSaveErrorIfSaveExceptionOccur() throws Exception, FormController.FormSaveException {
         doThrow(new FormController.FormSaveException(null)).when(formContorller).saveAllForms(anyList());
-        assertThat(muzimaSyncService.downloadForms()[0], is(SAVE_ERROR));
+        assertThat(muzimaSyncService.downloadForms()[0], is(SyncStatusConstants.SAVE_ERROR));
     }
 
     @Test
@@ -327,7 +352,7 @@ public class MuzimaSyncServiceTest {
 
     @Test
     public void downloadFormTemplates_shouldReturnSuccessStatusAndDownloadCountIfSuccessful() throws FormController.FormFetchException {
-        int[] result = new int[]{SUCCESS, 2, 0};
+        int[] result = new int[]{SyncStatusConstants.SUCCESS, 2, 0};
 
         List<FormTemplate> formTemplates = new ArrayList<FormTemplate>() {{
             FormTemplate formTemplate = new FormTemplate();
@@ -348,14 +373,14 @@ public class MuzimaSyncServiceTest {
     public void downloadFormTemplates_shouldReturnDownloadErrorIfDownloadExceptionOccur() throws FormController.FormFetchException {
         String[] formUuids = {};
         doThrow(new FormController.FormFetchException(null)).when(formContorller).downloadFormTemplates(formUuids);
-        assertThat(muzimaSyncService.downloadFormTemplates(formUuids)[0], is(DOWNLOAD_ERROR));
+        assertThat(muzimaSyncService.downloadFormTemplates(formUuids)[0], is(SyncStatusConstants.DOWNLOAD_ERROR));
     }
 
     @Test
     public void downloadFormTemplates_shouldReturnSaveErrorIfSaveExceptionOccur() throws FormController.FormSaveException, FormController.FormFetchException {
         String[] formUuids = {};
         doThrow(new FormController.FormSaveException(null)).when(formContorller).replaceFormTemplates(anyList());
-        assertThat(muzimaSyncService.downloadFormTemplates(formUuids)[0], is(SAVE_ERROR));
+        assertThat(muzimaSyncService.downloadFormTemplates(formUuids)[0], is(SyncStatusConstants.SAVE_ERROR));
     }
 
 
@@ -365,7 +390,7 @@ public class MuzimaSyncServiceTest {
 
         when(cohortController.downloadAllCohorts()).thenReturn(cohorts);
         when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
-        when(sharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
+        when(sharedPref.getStringSet(Constants.COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
 
         muzimaSyncService.downloadCohorts();
 
@@ -387,7 +412,7 @@ public class MuzimaSyncServiceTest {
 
         when(cohortController.downloadAllCohorts()).thenReturn(cohorts);
         when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
-        when(sharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
+        when(sharedPref.getStringSet(Constants.COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
 
         muzimaSyncService.downloadCohorts();
         verify(cohortController).deleteCohorts(asList(voidedCohort));
@@ -420,10 +445,10 @@ public class MuzimaSyncServiceTest {
             add(new Cohort());
             add(new Cohort());
         }};
-        int[] result = new int[]{SUCCESS, 2, 0};
+        int[] result = new int[]{SyncStatusConstants.SUCCESS, 2, 0};
 
         when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
-        when(sharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
+        when(sharedPref.getStringSet(Constants.COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
         when(cohortController.downloadAllCohorts()).thenReturn(cohorts);
 
         assertThat(muzimaSyncService.downloadCohorts(), is(result));
@@ -432,19 +457,19 @@ public class MuzimaSyncServiceTest {
     @Test
     public void downloadCohort_shouldReturnDownloadErrorIfDownloadExceptionOccurs() throws Exception, CohortController.CohortDownloadException {
         when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
-        when(sharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
+        when(sharedPref.getStringSet(Constants.COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
         doThrow(new CohortController.CohortDownloadException(null)).when(cohortController).downloadAllCohorts();
 
-        assertThat(muzimaSyncService.downloadCohorts()[0], is(DOWNLOAD_ERROR));
+        assertThat(muzimaSyncService.downloadCohorts()[0], is(SyncStatusConstants.DOWNLOAD_ERROR));
     }
 
     @Test
     public void downloadCohort_shouldReturnSaveErrorIfSaveExceptionOccurs() throws Exception, CohortController.CohortSaveException {
         when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
-        when(sharedPref.getStringSet(COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
+        when(sharedPref.getStringSet(Constants.COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
         doThrow(new CohortController.CohortSaveException(null)).when(cohortController).saveAllCohorts(new ArrayList<Cohort>());
 
-        assertThat(muzimaSyncService.downloadCohorts()[0], is(SAVE_ERROR));
+        assertThat(muzimaSyncService.downloadCohorts()[0], is(SyncStatusConstants.SAVE_ERROR));
     }
 
     @Test
@@ -515,7 +540,7 @@ public class MuzimaSyncServiceTest {
         when(cohortController.downloadCohortData(cohortUuids)).thenReturn(cohortDataList);
 
         int[] result = muzimaSyncService.downloadPatientsForCohorts(cohortUuids);
-        assertThat(result[0], is(SUCCESS));
+        assertThat(result[0], is(SyncStatusConstants.SUCCESS));
         assertThat(result[1], is(3));
         assertThat(result[2], is(2));
     }
@@ -526,7 +551,7 @@ public class MuzimaSyncServiceTest {
 
         doThrow(new CohortController.CohortDownloadException(null)).when(cohortController).downloadCohortData(cohortUuids);
 
-        assertThat(muzimaSyncService.downloadPatientsForCohorts(cohortUuids)[0], is(DOWNLOAD_ERROR));
+        assertThat(muzimaSyncService.downloadPatientsForCohorts(cohortUuids)[0], is(SyncStatusConstants.DOWNLOAD_ERROR));
     }
 
     @Test
@@ -547,7 +572,7 @@ public class MuzimaSyncServiceTest {
         when(cohortController.downloadCohortData(cohortUuids)).thenReturn(cohortDataList);
         doThrow(new CohortController.CohortReplaceException(null)).when(cohortController).addCohortMembers(anyList());
 
-        assertThat(muzimaSyncService.downloadPatientsForCohorts(cohortUuids)[0], is(REPLACE_ERROR));
+        assertThat(muzimaSyncService.downloadPatientsForCohorts(cohortUuids)[0], is(SyncStatusConstants.REPLACE_ERROR));
     }
 
     @Test
@@ -568,7 +593,7 @@ public class MuzimaSyncServiceTest {
         when(cohortController.downloadCohortData(cohortUuids)).thenReturn(cohortDataList);
         doThrow(new PatientController.PatientSaveException(null)).when(patientController).replacePatients(anyList());
 
-        assertThat(muzimaSyncService.downloadPatientsForCohorts(cohortUuids)[0], is(REPLACE_ERROR));
+        assertThat(muzimaSyncService.downloadPatientsForCohorts(cohortUuids)[0], is(SyncStatusConstants.REPLACE_ERROR));
     }
 
     @Test
@@ -632,7 +657,7 @@ public class MuzimaSyncServiceTest {
 
         int[] result = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortUuids);
 
-        assertThat(result[0], is(SUCCESS));
+        assertThat(result[0], is(SyncStatusConstants.SUCCESS));
         assertThat(result[1], is(2));
     }
 
@@ -643,7 +668,7 @@ public class MuzimaSyncServiceTest {
         doThrow(new PatientController.PatientLoadException(null)).when(patientController).getPatientsForCohorts(cohortUuids);
 
         int[] result = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortUuids);
-        assertThat(result[0], is(LOAD_ERROR));
+        assertThat(result[0], is(SyncStatusConstants.LOAD_ERROR));
     }
 
     @Test
@@ -671,7 +696,7 @@ public class MuzimaSyncServiceTest {
         doThrow(new ObservationController.DownloadObservationException(null)).when(observationController).downloadObservationsByPatientUuidsAndConceptUuids(anyList(), anyList());
 
         int[] result = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortUuids);
-        assertThat(result[0], is(DOWNLOAD_ERROR));
+        assertThat(result[0], is(SyncStatusConstants.DOWNLOAD_ERROR));
     }
 
     @Test
@@ -681,7 +706,7 @@ public class MuzimaSyncServiceTest {
         doThrow(new ObservationController.ReplaceObservationException(null)).when(observationController).replaceObservations(anyList());
 
         int[] result = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortUuids);
-        assertThat(result[0], is(REPLACE_ERROR));
+        assertThat(result[0], is(SyncStatusConstants.REPLACE_ERROR));
     }
 
     @Test
@@ -765,7 +790,7 @@ public class MuzimaSyncServiceTest {
 
         int[] result = muzimaSyncService.downloadPatients(patientUUIDs);
 
-        assertThat(result[0], is(SUCCESS));
+        assertThat(result[0], is(SyncStatusConstants.SUCCESS));
         assertThat(result[1], is(2));
 
         verify(patientController).savePatients(asList(patient1, patient2));
@@ -782,7 +807,7 @@ public class MuzimaSyncServiceTest {
 
         int[] result = muzimaSyncService.downloadPatients(patientUUIDs);
 
-        assertThat(result[0], is(DOWNLOAD_ERROR));
+        assertThat(result[0], is(SyncStatusConstants.DOWNLOAD_ERROR));
         assertThat(result[1], is(0));
 
         verify(patientController).savePatients(asList(patient1));

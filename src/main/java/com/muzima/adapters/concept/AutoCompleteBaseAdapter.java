@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 /**
  * Copyright 2012 Muzima Team
  *
@@ -29,12 +37,13 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.utils.Constants;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 /**
  * Responsible to display auto-complete menu for Concept and Cohort.
@@ -89,7 +98,7 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
                 Credentials credentials = new Credentials(getContext());
                 MuzimaApplication muzimaApplicationContext = getMuzimaApplicationContext();
                 try {
-                    if (muzimaSyncService.authenticate(credentials.getCredentialsArray()) == AUTHENTICATION_SUCCESS) {
+                    if (muzimaSyncService.authenticate(credentials.getCredentialsArray()) == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
                         options = getOptions(constraint);
                         previousConstraint = constraint.toString();
                         previousResult = options;

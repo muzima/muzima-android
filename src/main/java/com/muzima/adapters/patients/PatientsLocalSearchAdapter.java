@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.adapters.patients;
 
 import android.content.Context;
@@ -75,7 +83,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
                         return patientController.searchPatientLocally(params[0], cohortId);
                     }
                 } catch (PatientController.PatientLoadException e) {
-                    Log.w(TAG, "Exception occurred while searching patients for " + params[0] + " search string. " + e);
+                    Log.w(TAG, String.format("Exception occurred while searching patients for %s search string." , params[0]), e);
                 }
             }
 
@@ -89,7 +97,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
                     patients = patientController.getAllPatients();
                 }
             } catch (PatientController.PatientLoadException e) {
-                Log.w(TAG, "Exception occurred while fetching patients" + e);
+                Log.w(TAG, "Exception occurred while fetching patients", e);
             }
             return patients;
         }
@@ -123,9 +131,9 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
                 }
             }
         } catch (PatientController.PatientLoadException e) {
-            Log.w(TAG, "Exception occurred while fetching patients" + e);
+            Log.w(TAG, "Exception occurred while fetching patients", e);
         } catch (NotificationController.NotificationFetchException e) {
-            Log.w(TAG, "Exception occurred while fetching patients" + e);
+            Log.w(TAG, "Exception occurred while fetching patients", e);
         }
         return notificationPatients;
     }

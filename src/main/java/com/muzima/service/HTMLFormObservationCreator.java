@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.service;
 
 import android.util.Log;
@@ -49,13 +57,13 @@ public class HTMLFormObservationCreator {
         try {
             saveObservationsAndRelatedEntities();
         } catch (ConceptController.ConceptSaveException e) {
-            Log.e(TAG, "Error while saving concept");
+            Log.e(TAG, "Error while saving concept", e);
         } catch (EncounterController.SaveEncounterException e) {
-            Log.e(TAG, "Error while saving Encounter");
+            Log.e(TAG, "Error while saving Encounter", e);
         } catch (ObservationController.SaveObservationException e) {
-            Log.e(TAG, "Error while saving Observation");
+            Log.e(TAG, "Error while saving Observation", e);
         } catch (Exception e) {
-            Log.e(TAG, "Unexpected Exception occurred" + e);
+            Log.e(TAG, "Unexpected Exception occurred", e);
         }
     }
 
@@ -70,15 +78,15 @@ public class HTMLFormObservationCreator {
             encounter = createEncounter(responseJSON.getJSONObject("encounter"),formDataUuid);
             observations = extractObservationFromJSONObject(responseJSON.getJSONObject("observation"));
         } catch (PatientController.PatientLoadException e) {
-            Log.e(TAG, "Error while fetching Patient");
+            Log.e(TAG, "Error while fetching Patient", e);
         } catch (ConceptController.ConceptFetchException e) {
-            Log.e(TAG, "Error while fetching Concept");
+            Log.e(TAG, "Error while fetching Concept", e);
         } catch (JSONException e) {
-            Log.e(TAG, "Error while parsing response JSON");
+            Log.e(TAG, "Error while parsing response JSON", e);
         } catch (ParseException e) {
-            Log.e(TAG, "Error while parsing response JSON");
+            Log.e(TAG, "Error while parsing response JSON", e);
         } catch (ConceptController.ConceptSaveException e) {
-            Log.e(TAG, "Error while saving newly created concept");
+            Log.e(TAG, "Error while saving newly created concept", e);
         }
     }
 
@@ -89,7 +97,7 @@ public class HTMLFormObservationCreator {
             conceptController.saveConcepts(observationParserUtility.getNewConceptList());
             observationController.saveObservations(observations);
         } catch (Exception e) {
-            Log.e(TAG, "Error while parsing and storing Observations.");
+            Log.e(TAG, "Error while parsing and storing Observations.", e);
         }
     }
 
@@ -100,6 +108,7 @@ public class HTMLFormObservationCreator {
             String key = (String) keys.next();
             observations.addAll(extractBasedOnType(jsonObject, key));
         }
+        observations.removeAll(Collections.singleton(null));
         return observations;
     }
 
@@ -111,7 +120,6 @@ public class HTMLFormObservationCreator {
         }
         ArrayList<Observation> observations = new ArrayList<Observation>();
         observations.add(createObservation(key, jsonObject.getString(key)));
-        observations.removeAll(Collections.singleton(null));
         return observations;
     }
 

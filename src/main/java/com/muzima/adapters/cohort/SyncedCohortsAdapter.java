@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 /**
  * Copyright 2012 Muzima Team
  *
@@ -56,7 +64,7 @@ public class SyncedCohortsAdapter extends CohortsAdapter{
                 syncedCohorts = cohortController.getSyncedCohorts();
                 Log.i(TAG, "#Synced Cohorts: " + syncedCohorts.size());
             } catch (CohortController.CohortFetchException e) {
-                Log.e(TAG, "Exception occurred while fetching local synced cohorts " + e);
+                Log.e(TAG, "Exception occurred while fetching local synced cohorts ", e);
             }
             return syncedCohorts;
         }

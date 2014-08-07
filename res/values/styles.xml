@@ -406,11 +406,6 @@
         <item name="android:text">mUzima Clinic</item>
     </style>
 
-    <style name="LoginActivityDivider">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
-    </style>
-
     <style name="LoginActivityDivider.Style">
         <item name="android:layout_marginTop">16dp</item>
         <item name="android:layout_marginBottom">16dp</item>

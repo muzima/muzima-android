@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.view;
 
 import android.content.BroadcastReceiver;
@@ -8,8 +16,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
+import static com.muzima.utils.Constants.DataSyncServiceConstants;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
     private static final String TAG = "BroadcastListenerActivity";
@@ -39,48 +47,49 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
     }
 
     private void displayToast(Intent intent) {
-        int syncStatus = intent.getIntExtra(SYNC_STATUS, UNKNOWN_ERROR);
+        int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS,
+                SyncStatusConstants.UNKNOWN_ERROR);
 
         String msg = "Download Complete with status " + syncStatus;
         Log.i(TAG, msg);
 
-        if (syncStatus == DOWNLOAD_ERROR) {
+        if (syncStatus == SyncStatusConstants.DOWNLOAD_ERROR) {
             msg = "An error occurred while downloading data form server";
-        } else if (syncStatus == AUTHENTICATION_ERROR) {
+        } else if (syncStatus == SyncStatusConstants.AUTHENTICATION_ERROR) {
             msg = "Authentication error occurred";
-        } else if (syncStatus == DELETE_ERROR) {
+        } else if (syncStatus == SyncStatusConstants.DELETE_ERROR) {
             msg = "An error occurred while deleting data from local repo";
-        } else if (syncStatus == SAVE_ERROR) {
+        } else if (syncStatus == SyncStatusConstants.SAVE_ERROR) {
             msg = "An error occurred while saving data to local repo";
-        } else if (syncStatus == CONNECTION_ERROR) {
+        } else if (syncStatus == SyncStatusConstants.CONNECTION_ERROR) {
             msg = "Connection error occurred while downloading data";
-        } else if (syncStatus == PARSING_ERROR) {
+        } else if (syncStatus == SyncStatusConstants.PARSING_ERROR) {
             msg = "Parse exception has been thrown while fetching data";
-        } else if (syncStatus == LOAD_ERROR) {
+        } else if (syncStatus == SyncStatusConstants.LOAD_ERROR) {
             msg = "Load exception has been thrown while loading data";
-        } else if (syncStatus == UPLOAD_ERROR) {
+        } else if (syncStatus == SyncStatusConstants.UPLOAD_ERROR) {
             msg = "Exception has been thrown while uploading data";
-        } else if(syncStatus == SUCCESS){
-            int syncType = intent.getIntExtra(SYNC_TYPE, -1);
-            int downloadCount = intent.getIntExtra(DOWNLOAD_COUNT_PRIMARY, 0);
+        } else if(syncStatus == SyncStatusConstants.SUCCESS){
+            int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
+            int downloadCount = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, 0);
             msg = "Downloaded " + downloadCount;
-            if(syncType == SYNC_FORMS){
+            if(syncType == DataSyncServiceConstants.SYNC_FORMS){
                 msg += " forms";
-            }else if(syncType == SYNC_TEMPLATES){
-                msg += " form templates and " + intent.getIntExtra(DOWNLOAD_COUNT_SECONDARY, 0) + " related concepts";
-            } else if(syncType == SYNC_COHORTS){
+            }else if(syncType == DataSyncServiceConstants.SYNC_TEMPLATES){
+                msg += " form templates and " + intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0) + " related concepts";
+            } else if(syncType == DataSyncServiceConstants.SYNC_COHORTS){
                 msg += " new cohorts";
-            } else if(syncType == SYNC_PATIENTS_FULL_DATA){
-                int downloadCountSec = intent.getIntExtra(DOWNLOAD_COUNT_SECONDARY, 0);
+            } else if(syncType == DataSyncServiceConstants.SYNC_PATIENTS_FULL_DATA){
+                int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
                 msg += " new patients for " + downloadCountSec + " cohorts. Still downloading observations and encounters";
-            } else if(syncType == SYNC_PATIENTS_ONLY){
-                int downloadCountSec = intent.getIntExtra(DOWNLOAD_COUNT_SECONDARY, 0);
+            } else if(syncType == DataSyncServiceConstants.SYNC_PATIENTS_ONLY){
+                int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
                 msg += " patients for " + downloadCountSec + " cohorts.";
-            } else if(syncType == SYNC_OBSERVATIONS){
+            } else if(syncType == DataSyncServiceConstants.SYNC_OBSERVATIONS){
                 msg += " new observations";
-            } else if(syncType == SYNC_ENCOUNTERS){
+            } else if(syncType == DataSyncServiceConstants.SYNC_ENCOUNTERS){
                 msg += " new encounters";
-            } else if(syncType == SYNC_UPLOAD_FORMS){
+            } else if(syncType == DataSyncServiceConstants.SYNC_UPLOAD_FORMS){
                 msg = "Upload forms success.";
             }
 

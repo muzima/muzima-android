@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
 
 package com.muzima;
 
@@ -13,7 +20,13 @@ import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.NotificationService;
 import com.muzima.api.service.ObservationService;
-import com.muzima.controller.*;
+import com.muzima.controller.CohortController;
+import com.muzima.controller.ConceptController;
+import com.muzima.controller.EncounterController;
+import com.muzima.controller.FormController;
+import com.muzima.controller.NotificationController;
+import com.muzima.controller.ObservationController;
+import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.CohortPrefixPreferenceService;
@@ -28,7 +41,11 @@ import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpSender;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.security.Security;
 
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
@@ -46,7 +63,7 @@ public class MuzimaApplication extends Application {
     private Activity currentActivity;
     private FormController formController;
     private CohortController cohortController;
-    private PatientController patientController;
+    private PatientController patientConroller;
     private ConceptController conceptController;
     private ObservationController observationController;
     private EncounterController encounterController;
@@ -182,14 +199,14 @@ public class MuzimaApplication extends Application {
     }
 
     public PatientController getPatientController() {
-        if (patientController == null) {
+        if (patientConroller == null) {
             try {
-                patientController = new PatientController(muzimaContext.getPatientService(), muzimaContext.getCohortService());
+                patientConroller = new PatientController(muzimaContext.getPatientService(), muzimaContext.getCohortService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-        return patientController;
+        return patientConroller;
     }
 
     public ObservationController getObservationController() {

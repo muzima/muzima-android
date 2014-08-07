@@ -1,8 +1,18 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.view.cohort;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,9 +33,7 @@ import com.muzima.view.preferences.ConceptPreferenceActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 
 public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
@@ -33,6 +41,8 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
     private MuzimaProgressDialog muzimaProgressDialog;
     protected Credentials credentials;
     private boolean isProcessDialogOn = false;
+    private PowerManager powerManager = null;
+    private PowerManager.WakeLock wakeLock = null ;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +55,14 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
             public void onClick(View v) {
                 turnOnProgressDialog("Downloading Observations and Encounters...");
                 new AsyncTask<Void, Void, int[]>() {
+
+                    @Override
+                    protected void onPreExecute() {
+                        Log.i(TAG, "Canceling timeout timer!") ;
+                        ((MuzimaApplication) getApplication()).cancelTimer();
+                        keepPhoneAwake(true) ;
+                    }
+
                     @Override
                     protected int[] doInBackground(Void... voids) {
                         return downloadObservationAndEncounter();
@@ -53,13 +71,13 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
                     @Override
                     protected void onPostExecute(int[] results) {
                         dismissProgressDialog();
-                        if (results[0] != SUCCESS) {
+                        if (results[0] != SyncStatusConstants.SUCCESS) {
                             Toast.makeText(CustomConceptWizardActivity.this, "Could not load cohorts", Toast.LENGTH_SHORT).show();
                         } else {
-                            if (results[1] != SUCCESS) {
+                            if (results[1] != SyncStatusConstants.SUCCESS) {
                                 Toast.makeText(CustomConceptWizardActivity.this, "Could not download observations for patients", Toast.LENGTH_SHORT).show();
                             }
-                            if (results[2] != SUCCESS) {
+                            if (results[2] != SyncStatusConstants.SUCCESS) {
                                 Toast.makeText(CustomConceptWizardActivity.this, "Could not download encounters for patients", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -90,14 +108,14 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
         MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
 
         int[] results = new int[3];
-        if(muzimaSyncService.authenticate(credentials.getCredentialsArray())==AUTHENTICATION_SUCCESS){
+        if(muzimaSyncService.authenticate(credentials.getCredentialsArray()) == SyncStatusConstants.AUTHENTICATION_SUCCESS){
 
             String[] cohortsUuidDownloaded = getDownloadedCohortUuids();
              if(cohortsUuidDownloaded==null){
-                 results[0] = LOAD_ERROR;
+                 results[0] = SyncStatusConstants.LOAD_ERROR;
                  return results;
              } else{
-                 results[0] = SUCCESS;
+                 results[0] = SyncStatusConstants.SUCCESS;
              }
             int[] downloadObservationsResult = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortsUuidDownloaded);
 
@@ -115,7 +133,7 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
         try {
             allCohorts = cohortController.getAllCohorts();
         } catch (CohortController.CohortFetchException e) {
-            Log.w(TAG, "Exception occurred while fetching local cohorts " + e);
+            Log.w(TAG, "Exception occurred while fetching local cohorts ", e);
             return null;
         }
         ArrayList<String> cohortsUuid = new ArrayList<String>();
@@ -126,16 +144,23 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
     }
 
     @Override
-    public void onPause(){
-        super.onPause();
-        dismissProgressDialog();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         if(isProcessDialogOn){
             turnOnProgressDialog("Downloading Observations and Encounters...");
+        }
+    }
+
+    private void keepPhoneAwake(boolean awakeState) {
+        Log.d(TAG, "Launching wake state: " + awakeState) ;
+        if (awakeState) {
+            powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
+            wakeLock.acquire();
+        } else {
+            if(wakeLock != null) {
+                wakeLock.release();
+            }
         }
     }
 

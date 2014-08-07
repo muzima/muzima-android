@@ -66,6 +66,7 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="client_search">Search Name or ID</string>
+	<string name="client_scan">Scan Clients ID</string>
     <string name="observation_search">Search Observations</string>
 
     <string name="title_activity_client_list">Clients</string>
@@ -226,5 +227,11 @@
     <string name="choose_audio">Choose Audio</string>
     <string name="record_audio">Record Audio</string>
     <string name="record_audio_prompt">Record or choose audio</string>
+
+    <string name="version">Version %1$s</string>
+	<string name="confirm">Confirmation!</string>
+
+	<string name="patient_registration_id_card_question">Does the patient already have existing ID?</string>
+
 
 </resources>

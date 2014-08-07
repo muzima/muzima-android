@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.view.preferences.settings;
 
 import android.app.ProgressDialog;
@@ -6,7 +14,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.view.preferences.SettingsActivity;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 public class SyncFormDataTask extends AsyncTask<String, Void, Boolean> {
     private SettingsActivity settingsActivity;
@@ -21,7 +29,7 @@ public class SyncFormDataTask extends AsyncTask<String, Void, Boolean> {
     @Override
     protected Boolean doInBackground(String... params) {
         int[] result = muzimaSyncService.uploadAllCompletedForms();
-        return result[0] == SUCCESS;
+        return result[0] == SyncStatusConstants.SUCCESS;
     }
 
     @Override

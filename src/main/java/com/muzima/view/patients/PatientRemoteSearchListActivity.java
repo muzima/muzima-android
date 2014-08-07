@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.view.patients;
 
 import android.content.Context;
@@ -6,7 +14,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.View;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.muzima.MuzimaApplication;
@@ -14,6 +26,7 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsRemoteSearchAdapter;
 import com.muzima.api.model.Patient;
+import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
@@ -23,9 +36,9 @@ import java.util.List;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
 import static java.lang.String.valueOf;
 
@@ -134,11 +147,11 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
     @Override
     protected void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        int syncStatus = intent.getIntExtra(SYNC_STATUS, UNKNOWN_ERROR);
-        int syncType = intent.getIntExtra(SYNC_TYPE, -1);
+        int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS, SyncStatusConstants.UNKNOWN_ERROR);
+        int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
 
-        if (syncType == DOWNLOAD_PATIENT_ONLY) {
-            if (syncStatus == SUCCESS) {
+        if (syncType == DataSyncServiceConstants.DOWNLOAD_PATIENT_ONLY) {
+            if (syncStatus == SyncStatusConstants.SUCCESS) {
                 startActivity(new Intent(PatientRemoteSearchListActivity.this, PatientsListActivity.class));
             }
         }

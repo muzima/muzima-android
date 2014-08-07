@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.adapters.patients;
 
 import android.content.Context;
@@ -10,11 +18,12 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
+import com.muzima.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 public class PatientsRemoteSearchAdapter extends ListAdapter<Patient> {
     private static final String TAG = "PatientsRemoteSearchAdapter";
@@ -64,11 +73,11 @@ public class PatientsRemoteSearchAdapter extends ListAdapter<Patient> {
             Credentials credentials = new Credentials(getContext());
             try {
                 int authenticateResult = applicationContext.getMuzimaSyncService().authenticate(credentials.getCredentialsArray());
-                if (authenticateResult == AUTHENTICATION_SUCCESS) {
+                if (authenticateResult == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
                     return patientController.searchPatientOnServer(strings[0]);
                 }
             } catch (Throwable t) {
-                Log.e(TAG, "Error while searching for patient in the server : " + t);
+                Log.e(TAG, "Error while searching for patient in the server.", t);
             } finally {
                 applicationContext.getMuzimaContext().closeSession();
             }

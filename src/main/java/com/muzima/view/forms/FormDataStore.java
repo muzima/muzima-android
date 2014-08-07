@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.view.forms;
 
 import android.util.Log;
@@ -57,25 +65,25 @@ public class FormDataStore {
             formWebViewActivity.finish();
         } catch (FormController.FormDataSaveException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving the form", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Exception occurred while saving form data" + e);
+            Log.e(TAG, "Exception occurred while saving form data", e);
         } catch (ConceptController.ConceptSaveException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving observations in the form", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Exception occurred while saving a concept parsed from the form data" + e);
+            Log.e(TAG, "Exception occurred while saving a concept parsed from the form data", e);
         } catch (ParseException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving observations in the form", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Exception occurred while parsing the xml payload" + e);
+            Log.e(TAG, "Exception occurred while parsing the xml payload", e);
         } catch (XmlPullParserException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving observations in the form", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Exception occurred while exploring the xml payload" + e);
+            Log.e(TAG, "Exception occurred while exploring the xml payload", e);
         } catch (PatientController.PatientLoadException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving observations in the form", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Exception occurred while loading a patient parsed from the form data" + e);
+            Log.e(TAG, "Exception occurred while loading a patient parsed from the form data", e);
         } catch (ConceptController.ConceptFetchException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving observations in the form", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Exception occurred while fetching a concept parsed from the form data" + e);
+            Log.e(TAG, "Exception occurred while fetching a concept parsed from the form data", e);
         } catch (IOException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving observations in the form", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "IOException occurred while saving observations parsed from the form data" + e);
+            Log.e(TAG, "IOException occurred while saving observations parsed from the form data", e);
         }
     }
 

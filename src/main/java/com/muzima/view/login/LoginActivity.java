@@ -1,14 +1,24 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.view.login;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
@@ -26,7 +36,7 @@ import com.muzima.utils.StringUtils;
 import com.muzima.view.MainActivity;
 import com.muzima.view.cohort.CohortWizardActivity;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.*;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 //This class shouldn't extend BaseActivity. Since it is independent of the application's context
 public class LoginActivity extends Activity {
@@ -37,6 +47,7 @@ public class LoginActivity extends Activity {
     private EditText usernameText;
     private EditText passwordText;
     private Button loginButton;
+    private TextView versionText ;
     private BackgroundAuthenticationTask backgroundAuthenticationTask;
     private TextView authenticatingText;
 
@@ -72,6 +83,7 @@ public class LoginActivity extends Activity {
 
         //Hack to get it to use default font space.
         passwordText.setTypeface(Typeface.DEFAULT);
+        //versionText.setText(getApplicationVersion());
     }
 
     private void showSessionTimeOutPopUpIfNeeded() {
@@ -95,6 +107,18 @@ public class LoginActivity extends Activity {
         if (!StringUtils.isEmpty(serverUrl)) {
             serverUrlText.setText(serverUrl);
         }
+    }
+
+    private String getApplicationVersion() {
+        String versionText  = "" ;
+        String versionCode = "" ;
+        try {
+            versionCode = String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
+            versionText = String.format(getResources().getString(R.string.version), versionCode) ;
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(TAG, "Unable to read application version.", e);
+        }
+        return versionText ;
     }
 
     private String getServerURL() {
@@ -188,6 +212,8 @@ public class LoginActivity extends Activity {
         passwordText = (EditText) findViewById(R.id.password);
         loginButton = (Button) findViewById(R.id.login);
         authenticatingText = (TextView) findViewById(R.id.authenticatingText);
+        versionText = (TextView) findViewById(R.id.version) ;
+
     }
 
     private class BackgroundAuthenticationTask extends AsyncTask<Credentials, Void, BackgroundAuthenticationTask.Result> {
@@ -209,7 +235,7 @@ public class LoginActivity extends Activity {
 
         @Override
         protected void onPostExecute(Result result) {
-            if (result.status == AUTHENTICATION_SUCCESS) {
+            if (result.status == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
                 new CredentialsPreferenceService(getApplicationContext()).saveCredentials(result.credentials);
                 ((MuzimaApplication) getApplication()).restartTimer();
                 startNextActivity();
@@ -224,13 +250,13 @@ public class LoginActivity extends Activity {
 
         private String getErrorText(Result result) {
             switch (result.status) {
-                case MALFORMED_URL_ERROR:
+                case SyncStatusConstants.MALFORMED_URL_ERROR:
                     return "Invalid Server URL.";
-                case INVALID_CREDENTIALS_ERROR:
+                case SyncStatusConstants.INVALID_CREDENTIALS_ERROR:
                     return "Invalid Username, Password, Server combination.";
-                case INVALID_CHARACTER_IN_USERNAME:
-                    return "Invalid Character in Username. These are not allowed: " + INVALID_CHARACTER_FOR_USERNAME ;
-                case CONNECTION_ERROR:
+                case SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME:
+                    return "Invalid Character in Username. These are not allowed: " + SyncStatusConstants.INVALID_CHARACTER_FOR_USERNAME ;
+                case SyncStatusConstants.CONNECTION_ERROR:
                     return "Error while connecting your server.";
                 default:
                     return "Authentication failed";

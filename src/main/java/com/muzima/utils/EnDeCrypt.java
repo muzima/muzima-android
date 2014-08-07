@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.utils;
 
 import android.os.Build;
@@ -10,7 +18,11 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 
@@ -79,7 +91,7 @@ public class EnDeCrypt {
             Log.i(TAG, "Encrypted " + plainFile.getAbsolutePath());
 
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage(), e);
         }
     }
 
@@ -125,7 +137,7 @@ public class EnDeCrypt {
             tempFile.renameTo(encryptedFile);
             Log.i(TAG, "Decrypted " + encryptedFile.getAbsolutePath());
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage(), e);
         }
 
     }

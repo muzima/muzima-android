@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 /**
  * Copyright 2012 Muzima Team
  *
@@ -155,7 +163,7 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
                     allForms = formsAdapter.getFormController().getAvailableFormByTags(getSelectedTagUuids());
                     Log.i(TAG, "#Forms: " + allForms.size());
                 } catch (FormController.FormFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local forms " + e);
+                    Log.w(TAG, "Exception occurred while fetching local forms ", e);
                 }
             }
             return allForms;
@@ -180,7 +188,7 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
                     allForms = formsAdapter.getFormController().getAvailableFormByTags(getSelectedTagUuids(), true);
                     Log.i(TAG, "#Forms: " + allForms.size());
                 } catch (FormController.FormFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local forms " + e);
+                    Log.w(TAG, "Exception occurred while fetching local forms.", e);
                 }
             }
             return allForms;

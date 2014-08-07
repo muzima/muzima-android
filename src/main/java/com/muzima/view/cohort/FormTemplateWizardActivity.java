@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.view.cohort;
 
 import android.content.Intent;
@@ -8,7 +16,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.SparseBooleanArray;
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -26,7 +38,7 @@ import com.muzima.view.forms.MuzimaProgressDialog;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 
 public class FormTemplateWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
@@ -104,7 +116,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
                     @Override
                     protected void onPostExecute(int[] result) {
                         dismissProgressDialog();
-                        if (result[0] != SUCCESS) {
+                        if (result[0] != SyncStatusConstants.SUCCESS) {
                             Toast.makeText(FormTemplateWizardActivity.this, "Could not download form templates", Toast.LENGTH_SHORT).show();
                         }
                         navigateToNextActivity();

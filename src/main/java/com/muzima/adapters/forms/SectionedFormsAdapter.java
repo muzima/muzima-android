@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 /**
  * Copyright 2012 Muzima Team
  *
@@ -75,12 +83,14 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
             holder = (HeaderViewHolder) convertView.getTag();
         }
 
-        Patient patient = patients.get(getSectionForPosition(position));
-        if (patient != null) {
-            holder.patientName.setText(patient.getDisplayName());
-            holder.patientIdentifier.setText(patient.getIdentifier());
-        } else {
-            holder.patientName.setText("Registration Forms");
+        if (!patients.isEmpty()) {
+            Patient patient = patients.get(getSectionForPosition(position));
+            if (patient != null) {
+                holder.patientName.setText(patient.getDisplayName());
+                holder.patientIdentifier.setText(patient.getIdentifier());
+            } else {
+                holder.patientName.setText("Registration Forms");
+            }
         }
         return convertView;
     }
@@ -91,7 +101,11 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
 
     @Override
     public long getHeaderId(int position) {
-        return patients.indexOf(getItem(position).getPatient());
+        int section = 0;
+        if (!patients.isEmpty()) {
+            section = patients.indexOf(getItem(position).getPatient());
+        }
+        return section;
     }
 
     @Override
@@ -130,7 +144,11 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
             position = 0;
         }
 
-        return patients.indexOf(getItem(position).getPatient());
+        int section = 0;
+        if (!patients.isEmpty()){
+            section = patients.indexOf(getItem(position).getPatient());
+        }
+        return section;
     }
 
     public void sortFormsByPatientName(List<T> forms) {

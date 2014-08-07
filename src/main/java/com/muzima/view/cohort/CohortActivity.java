@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.view.cohort;
 
 import android.content.Context;
@@ -15,9 +23,8 @@ import com.muzima.utils.NetworkUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.customViews.PagerSlidingTabStrip;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 public class CohortActivity extends BroadcastListenerActivity {
     private static final String TAG = "CohortActivity";
@@ -68,20 +75,20 @@ public class CohortActivity extends BroadcastListenerActivity {
     protected void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
-        int syncStatus = intent.getIntExtra(SYNC_STATUS, UNKNOWN_ERROR);
-        int syncType = intent.getIntExtra(SYNC_TYPE, -1);
+        int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS, SyncStatusConstants.UNKNOWN_ERROR);
+        int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
 
-        if (syncType == SYNC_COHORTS) {
+        if (syncType == DataSyncServiceConstants.SYNC_COHORTS) {
             hideProgressbar();
             syncInProgress = false;
-            if (syncStatus == SUCCESS) {
+            if (syncStatus == SyncStatusConstants.SUCCESS) {
                 cohortPagerAdapter.onCohortDownloadFinish();
             }
-        } else if (syncType == SYNC_PATIENTS_FULL_DATA) {
-            if (syncStatus == SUCCESS) {
+        } else if (syncType == DataSyncServiceConstants.SYNC_PATIENTS_FULL_DATA) {
+            if (syncStatus == SyncStatusConstants.SUCCESS) {
                 cohortPagerAdapter.onPatientsDownloadFinish();
             }
-        } else if (syncType == SYNC_ENCOUNTERS) {
+        } else if (syncType == DataSyncServiceConstants.SYNC_ENCOUNTERS) {
             hideProgressbar();
         }
     }

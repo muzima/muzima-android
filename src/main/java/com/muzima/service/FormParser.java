@@ -1,5 +1,14 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.service;
 
+import android.util.Log;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
@@ -8,7 +17,6 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
-import com.muzima.utils.DateUtils;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -94,11 +102,11 @@ public class FormParser {
             conceptController.saveConcepts(observationParserUtility.getNewConceptList());
             observationController.saveObservations(observations);
         } catch (EncounterController.SaveEncounterException e) {
-            e.printStackTrace();
+            Log.e(this.getClass().getSimpleName(), "Saving encounter throwing exception!", e);
         } catch (ObservationController.SaveObservationException e) {
-            e.printStackTrace();
+            Log.e(this.getClass().getSimpleName(), "Saving encounter throwing exception!", e);
         } catch (ConceptController.ConceptSaveException e) {
-            e.printStackTrace();
+            Log.e(this.getClass().getSimpleName(), "Saving encounter throwing exception!", e);
         }
     }
 

@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.view.patients;
 
 import android.app.AlertDialog;
@@ -62,7 +70,7 @@ public class PatientSummaryActivity extends BaseActivity {
         try {
             list = jsonInputOutputToDisk.readList();
         } catch (IOException e) {
-            Log.e(TAG, "Exception thrown when reading to phone disk" + e);
+            Log.e(TAG, "Exception thrown when reading to phone disk", e);
         }
         if(list.size()==0){
             return;
@@ -82,7 +90,7 @@ public class PatientSummaryActivity extends BaseActivity {
                             try {
                                 jsonInputOutputToDisk.remove(patientIdentifier);
                             } catch (IOException e) {
-                                Log.e(TAG, "Error occurred while saving patient which has local identifier removed!");
+                                Log.e(TAG, "Error occurred while saving patient which has local identifier removed!", e);
                             }
                         }
                     }).create().show();
@@ -173,9 +181,9 @@ public class PatientSummaryActivity extends BaseActivity {
                 else
                     patientSummaryActivityMetadata.notifications = 0;
             } catch (FormController.FormFetchException e) {
-                Log.w(TAG, "FormFetchException occurred while fetching metadata in MainActivityBackgroundTask");
+                Log.w(TAG, "FormFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
             } catch (NotificationController.NotificationFetchException e) {
-                Log.w(TAG, "NotificationFetchException occurred while fetching metadata in MainActivityBackgroundTask");
+                Log.w(TAG, "NotificationFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
             }
             return patientSummaryActivityMetadata;
         }

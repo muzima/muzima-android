@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.utils.imaging;
 
 import android.content.ActivityNotFoundException;
@@ -23,8 +31,9 @@ import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.utils.MediaUtils;
 import com.muzima.view.BaseActivity;
-import com.muzima.view.forms.ImagingComponent;
-import java.io.*;
+
+import java.io.File;
+
 import static com.muzima.utils.Constants.APP_IMAGE_DIR;
 import static com.muzima.utils.Constants.TMP_FILE_PATH;
 

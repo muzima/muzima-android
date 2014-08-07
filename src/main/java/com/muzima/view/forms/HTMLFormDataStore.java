@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.view.forms;
 
 import android.util.Log;
@@ -33,10 +41,10 @@ public class HTMLFormDataStore {
             formWebViewActivity.finish();
         } catch (FormController.FormDataSaveException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving the form", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Exception occurred while saving form data" + e);
+            Log.e(TAG, "Exception occurred while saving form data", e);
         } catch (Exception e){
             Toast.makeText(formWebViewActivity, "An error occurred while saving the form", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Exception occurred while saving form data" + e);
+            Log.e(TAG, "Exception occurred while saving form data", e);
         }
     }
 

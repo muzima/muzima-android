@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.controller;
 
 import com.muzima.api.model.Encounter;
@@ -5,10 +13,15 @@ import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.service.SntpService;
-import org.apache.commons.lang.StringUtils;
+import com.muzima.utils.StringUtils;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_ENCOUNTERS;
 import static java.util.Arrays.asList;
@@ -44,7 +57,7 @@ public class EncounterController {
 
     public List<Encounter> downloadEncountersByPatientUuids(List<String> patientUuids) throws DownloadEncounterException {
         try {
-            String paramSignature = StringUtils.join(patientUuids, UUID_SEPARATOR);
+            String paramSignature = StringUtils.getCommaSeparatedStringFromList(patientUuids);
             Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS, paramSignature);
             List<Encounter> encounters = new ArrayList<Encounter>();
             List<String> previousPatientsUuid = new ArrayList<String>();
@@ -90,7 +103,7 @@ public class EncounterController {
         allPatientUUIDs.addAll(previousPatientsUuid);
         List<String> allPatientUUIDList = new ArrayList<String>(allPatientUUIDs);
         Collections.sort(allPatientUUIDList);
-        return StringUtils.join(allPatientUUIDList, UUID_SEPARATOR);
+        return StringUtils.getCommaSeparatedStringFromList(allPatientUUIDList);
     }
 
     public void saveEncounters(List<Encounter> encounters) throws SaveEncounterException {

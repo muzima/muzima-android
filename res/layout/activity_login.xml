@@ -1,29 +1,36 @@
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        style="@style/LoginActivityLayout">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:background="@color/primary_black"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
 
-    <ImageView
-            android:id="@+id/logo"
-            style="@style/LoginActivityLogo"
-            android:contentDescription="@string/logo_alt_text"/>
+    <LinearLayout
+            android:orientation="vertical"
+            style="@style/LoginActivityLayout">
 
-    <TextView
-            android:id="@+id/title_login"
-            style="@style/LoginActivityHeader"/>
+        <ImageView
+                android:id="@+id/logo"
+                style="@style/LoginActivityLogo"
+                android:contentDescription="@string/logo_alt_text"/>
 
-    <View style="@style/LoginActivityDivider.Style"/>
-    <ScrollView android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <TextView
+                android:id="@+id/title_login"
+                style="@style/LoginActivityHeader"/>
+
+        <View style="@style/LoginActivityDivider.Style"/>
+
         <LinearLayout style="@style/LoginInfoLayout">
 
             <EditText
                     android:id="@+id/serverUrl"
                     style="@style/LoginInfoEditText"
                     android:inputType="textUri"
-                    android:text="http://192.168.1.2:8081/openmrs-standalone"
+                    android:text="http://173.255.205.23:8081/openmrs-standalone"
                     android:nextFocusDown="@+id/username"
                     android:hint="@string/server_hint_text"/>
 
-            <View style="@style/LoginInfoLayoutDivider" android:id="@+id/server_url_divider"/>
+            <View
+                    style="@style/LoginInfoLayoutDivider"
+                    android:id="@+id/server_url_divider"/>
 
             <EditText
                     android:id="@+id/username"
@@ -42,19 +49,25 @@
                     android:inputType="textPassword"/>
 
         </LinearLayout>
-    </ScrollView>
-    <FrameLayout
-            style="@style/LoginButtonLayout">
 
-        <Button
-                android:id="@+id/login"
-                style="@style/LoginButton"/>
+        <FrameLayout
+                style="@style/LoginButtonLayout">
+
+            <Button
+                    android:id="@+id/login"
+                    style="@style/LoginButton"/>
+
+            <TextView
+                    android:id="@+id/authenticatingText"
+                    style="@style/LoginActivityAuthenticatingView"
+                    android:visibility="gone"/>
+        </FrameLayout>
 
         <TextView
-                android:id="@+id/authenticatingText"
-                style="@style/LoginActivityAuthenticatingView"
-                android:visibility="gone"/>
-    </FrameLayout>
+                android:id="@+id/version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+    </LinearLayout>
 
-
-</LinearLayout>
+</ScrollView>

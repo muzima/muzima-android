@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 /**
  * Copyright 2012 Muzima Team
  *
@@ -162,7 +170,7 @@ public class AllCohortsAdapter extends CohortsAdapter {
                 allCohorts = cohortController.getAllCohorts();
                 Log.d(TAG, "#Retrieved " + allCohorts.size() + " Cohorts from Database.");
             } catch (CohortController.CohortFetchException e) {
-                Log.w(TAG, "Exception occurred while fetching local cohorts " + e);
+                Log.w(TAG, "Exception occurred while fetching local cohorts ", e);
             }
             return allCohorts;
         }
@@ -180,7 +188,7 @@ public class AllCohortsAdapter extends CohortsAdapter {
                 allCohorts = cohortController.getAllCohorts();
                 Log.i(TAG, "#Cohorts: " + allCohorts.size());
             } catch (CohortController.CohortFetchException e) {
-                Log.w(TAG, "Exception occurred while fetching the downloaded cohorts" + e);
+                Log.w(TAG, "Exception occurred while fetching the downloaded cohorts", e);
             }
             return allCohorts;
         }

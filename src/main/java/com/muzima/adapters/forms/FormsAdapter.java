@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 /**
  * Copyright 2012 Muzima Team
  *
@@ -20,7 +28,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.CheckedTextView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Tag;
@@ -68,17 +80,19 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        BaseForm form = getItem(position);
+        if (!isEmpty()) {
+            BaseForm form = getItem(position);
 
-        holder.name.setText(form.getName());
-        holder.name.setTypeface(Fonts.roboto_medium(getContext()));
+            holder.name.setText(form.getName());
+            holder.name.setTypeface(Fonts.roboto_medium(getContext()));
 
-        String description = form.getDescription();
-        if (StringUtils.isEmpty(description)) {
-            description = "No description available";
+            String description = form.getDescription();
+            if (StringUtils.isEmpty(description)) {
+                description = "No description available";
+            }
+            holder.description.setText(description);
+            holder.description.setTypeface(Fonts.roboto_light(getContext()));
         }
-        holder.description.setText(description);
-        holder.description.setTypeface(Fonts.roboto_light(getContext()));
 
         return convertView;
     }

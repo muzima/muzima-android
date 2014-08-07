@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.view.forms;
 
 import android.app.Activity;
@@ -10,6 +18,7 @@ import com.muzima.controller.FormController;
 import com.muzima.controller.NotificationController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
+import com.muzima.utils.Constants;
 
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER;
@@ -39,24 +48,19 @@ public class FormViewIntent extends Intent {
                 return HTMLFormWebViewActivity.class;
             }
         } catch (FormController.FormFetchException e) {
-            Log.e("FormIntent", "Error while identifying form to load it in WebView");
+            Log.e("FormIntent", "Error while identifying form to load it in WebView", e);
         }
         return FormWebViewActivity.class;
     }
 
     private static String getEncounterFormDiscriminatorBasedOnFormType(Activity activity, BaseForm baseForm){
         FormController formController = ((MuzimaApplication) activity.getApplication()).getFormController();
-        NotificationController notificationController = ((MuzimaApplication) activity.getApplication()).getNotificationController();
         try {
-            if (formController.getFormTemplateByUuid(baseForm.getFormUuid()).isHTMLForm()) {
-                Form form = formController.getFormByUuid(baseForm.getFormUuid());
-                if (form != null && notificationController.isConsultationForm(form))
-                    return FORM_JSON_DISCRIMINATOR_CONSULTATION;
-                return FORM_JSON_DISCRIMINATOR_ENCOUNTER;
-            }
+            Form form = formController.getFormByUuid(baseForm.getFormUuid());
+            return form.getDiscriminator();
         } catch (FormController.FormFetchException e) {
-            Log.e("FormIntent", "Error while identifying form to load it in WebView");
+            Log.e("FormViewIntent", "Error while identifying form to load it in WebView", e);
         }
-        return FORM_XML_DISCRIMINATOR_ENCOUNTER;
+        return Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER;
     }
 }

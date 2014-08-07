@@ -1,10 +1,26 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.view.patients;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
@@ -19,6 +35,8 @@ import com.muzima.controller.CohortController;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.utils.barcode.IntentIntegrator;
+import com.muzima.utils.barcode.IntentResult;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.notifications.SyncNotificationsIntent;
@@ -28,8 +46,8 @@ import java.util.List;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.*;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
 
 public class PatientsListActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener, ListAdapter.BackgroundListQueryTaskListener {
@@ -50,6 +68,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private View noDataView;
     private String searchString;
     private Button searchServerBtn;
+    private SearchView searchView;
+    private boolean intentBarcodeResults = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +84,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 isNotificationsList = StringUtil.equals(title, NOTIFICATIONS);
                 setTitle(title);
             }
-        }  else
+        } else
             isNotificationsList = false;
 
         progressBarContainer = (FrameLayout) findViewById(R.id.progressbarContainer);
@@ -89,7 +109,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.client_list, menu);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search)
+        searchView = (SearchView) menu.findItem(R.id.search)
                 .getActionView();
         searchView.setQueryHint("Search clients");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -114,6 +134,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             searchView.setIconified(true);
 
         menubarSyncButton = menu.findItem(R.id.menu_load);
+
         if (isNotificationsList) {
             menubarSyncButton.setVisible(true);
             searchView.setVisibility(View.GONE);
@@ -127,18 +148,57 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     private void activateRemoteAfterThreeCharacterEntered(String searchString) {
-        if(searchString.trim().length()<3){
+        if (searchString.trim().length() < 3) {
             searchServerBtn.setVisibility(View.GONE);
         } else {
             searchServerBtn.setVisibility(View.VISIBLE);
         }
     }
 
+    // Confirmation dialog for confirming if the patient have an existing ID
+    private void callConfirmationDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(PatientsListActivity.this);
+        builder
+                .setCancelable(true)
+                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                .setTitle(getResources().getString(R.string.confirm))
+                .setMessage(getResources().getString(R.string.patient_registration_id_card_question))
+                .setPositiveButton("Yes", yesClickListener())
+                .setNegativeButton("No", noClickListener()).create().show();
+
+
+    }
+
+    private Dialog.OnClickListener yesClickListener() {
+        return new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                searchView.setIconified(false);
+                searchView.requestFocus();
+            }
+        };
+    }
+
+    private Dialog.OnClickListener noClickListener() {
+        return new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(PatientsListActivity.this, RegistrationFormsActivity.class));
+            }
+        };
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_client_add:
-                startActivity(new Intent(this, RegistrationFormsActivity.class));
+                callConfirmationDialog();
+                return true;
+
+            case R.id.scan:
+                invokeBarcodeScan();
                 return true;
             case R.id.menu_load:
                 if (notificationsSyncInProgress) {
@@ -165,7 +225,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     protected void onResume() {
         super.onResume();
-        patientAdapter.reloadData();
+        if (!intentBarcodeResults)
+            patientAdapter.reloadData();
     }
 
     private void setupListView(String cohortId) {
@@ -227,10 +288,10 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     protected void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
-        int syncStatus = intent.getIntExtra(SYNC_STATUS, UNKNOWN_ERROR);
-        int syncType = intent.getIntExtra(SYNC_TYPE, -1);
+        int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS, SyncStatusConstants.UNKNOWN_ERROR);
+        int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
 
-        if (syncType == SYNC_NOTIFICATIONS) {
+        if (syncType == DataSyncServiceConstants.SYNC_NOTIFICATIONS) {
             hideProgressbar();
             onNotificationDownloadFinish();
         }
@@ -251,7 +312,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         showProgressBar();
 
         User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
-        if (authenticatedUser != null)   {
+        if (authenticatedUser != null) {
             // get downloaded cohorts and sync obs and encounters
             List<String> downloadedCohortsUuid = null;
             List<Cohort> downloadedCohorts;
@@ -284,4 +345,28 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     public void onNotificationDownloadStart() {
         notificationsSyncInProgress = true;
     }
+
+
+    public void invokeBarcodeScan() {
+        IntentIntegrator scanIntegrator = new IntentIntegrator(this);
+
+        scanIntegrator.initiateScan();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
+
+
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
+        if (scanningResult != null) {
+            intentBarcodeResults = true;
+            searchView.setQuery(scanningResult.getContents(), false);
+
+        }
+
+
+    }
+
+
 }

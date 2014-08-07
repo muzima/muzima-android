@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.view.forms;
 
 import android.app.AlertDialog;
@@ -98,13 +106,13 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             setupFormData(patient);
             setupWebView();
         } catch (FormFetchException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage(), e);
             finish();
         } catch (FormController.FormDataFetchException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage(), e);
             finish();
         } catch (FormController.FormDataSaveException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage(), e);
             finish();
         }
     }
@@ -175,7 +183,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                     formData.setStatus(STATUS_INCOMPLETE);
                     formController.saveFormData(formData);
                 } catch (FormController.FormDataSaveException e) {
-                    Log.e(TAG, "Error while saving the form data");
+                    Log.e(TAG, "Error while saving the form data", e);
                 }
                 startIncompleteFormListActivity();
                 return true;
@@ -297,7 +305,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         webView.addJavascriptInterface(imagingComponent, IMAGE);
         webView.addJavascriptInterface(audioComponent, AUDIO);
         webView.addJavascriptInterface(videoComponent, VIDEO);
-        webView.addJavascriptInterface(new ZiggyFileLoader("www/ziggy", getApplicationContext().getAssets(), formInstance.getModelJson()), ZIGGY_FILE_LOADER);
         webView.addJavascriptInterface(new HTMLFormDataStore(this, formController, formData), HTML_DATA_STORE);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         if (isFormComplete()) {

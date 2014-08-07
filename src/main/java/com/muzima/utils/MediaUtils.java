@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.utils;
 
 import android.content.ContentResolver;
@@ -10,7 +18,12 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,11 +112,9 @@ public class MediaUtils {
                 dst.close();
                 return true;
             } catch (FileNotFoundException e) {
-                Log.e(TAG, "FileNotFoundException while copying file");
-                e.printStackTrace();
+                Log.e(TAG, "FileNotFoundException while copying file", e);
             } catch (IOException e) {
-                Log.e(TAG, "IOException while copying file");
-                e.printStackTrace();
+                Log.e(TAG, "IOException while copying file", e);
             }
         } else
             Log.e(TAG, "Source file does not exist: " + sourceFile.getAbsolutePath());
@@ -203,7 +214,7 @@ public class MediaUtils {
                 }
             }
         } catch ( Exception e ) {
-            Log.e(TAG, e.toString());
+            Log.e(TAG, e.toString(), e);
         } finally {
             if ( audioCursor != null )
                 audioCursor.close();

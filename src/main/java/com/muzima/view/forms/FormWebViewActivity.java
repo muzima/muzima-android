@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.view.forms;
 
 import android.app.AlertDialog;
@@ -97,13 +105,13 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             setupFormData(patient);
             setupWebView();
         } catch (FormFetchException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage(), e);
             finish();
         } catch (FormController.FormDataFetchException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage(), e);
             finish();
         } catch (FormController.FormDataSaveException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage(), e);
             finish();
         }
     }
@@ -174,7 +182,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
                     formData.setStatus(STATUS_INCOMPLETE);
                     formController.saveFormData(formData);
                 } catch (FormController.FormDataSaveException e) {
-                    Log.e(TAG, "Error while saving the form data");
+                    Log.e(TAG, "Error while saving the form data", e);
                 }
                 startIncompleteFormListActivity();
                 return true;
@@ -276,7 +284,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             PatientJSONMapper mapper = new PatientJSONMapper(formTemplate.getModelJson());
             formData.setJsonPayload(mapper.map(patient, formData));
         } catch (JSONException e) {
-            Log.e(TAG, "Error while converting Model JSON");
+            Log.e(TAG, "Error while converting Model JSON", e);
         }
         return formData;
     }
