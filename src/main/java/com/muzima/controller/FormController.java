@@ -35,6 +35,7 @@ import com.muzima.model.collections.IncompleteForms;
 import com.muzima.model.collections.IncompleteFormsWithPatientData;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.SntpService;
+import com.muzima.utils.Constants;
 import com.muzima.utils.CustomColor;
 import com.muzima.view.forms.PatientJSONMapper;
 import org.json.JSONException;
@@ -46,7 +47,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.muzima.utils.Constants.*;
 import static com.muzima.api.model.APIName.DOWNLOAD_FORMS;
 
 public class FormController {
@@ -328,7 +328,7 @@ public class FormController {
         IncompleteFormsWithPatientData incompleteForms = new IncompleteFormsWithPatientData();
 
         try {
-            List<FormData> allFormData = formService.getAllFormData(STATUS_INCOMPLETE);
+            List<FormData> allFormData = formService.getAllFormData(Constants.STATUS_INCOMPLETE);
             for (FormData formData : allFormData) {
                 String patientUuid = formData.getPatientUuid();
                 Patient patient = null;
@@ -351,7 +351,7 @@ public class FormController {
         CompleteFormsWithPatientData completeForms = new CompleteFormsWithPatientData();
 
         try {
-            List<FormData> allFormData = formService.getAllFormData(STATUS_COMPLETE);
+            List<FormData> allFormData = formService.getAllFormData(Constants.STATUS_COMPLETE);
             for (FormData formData : allFormData) {
                 Patient patient = patientService.getPatientByUuid(formData.getPatientUuid());
                 CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder()
@@ -370,7 +370,7 @@ public class FormController {
     public IncompleteForms getAllIncompleteFormsForPatientUuid(String patientUuid) throws FormFetchException {
         IncompleteForms incompleteForms = new IncompleteForms();
         try {
-            List<FormData> allFormData = formService.getFormDataByPatient(patientUuid, STATUS_INCOMPLETE);
+            List<FormData> allFormData = formService.getFormDataByPatient(patientUuid, Constants.STATUS_INCOMPLETE);
             for (FormData formData : allFormData) {
                 incompleteForms.add(new IncompleteFormBuilder().withForm(formService.getFormByUuid(formData.getTemplateUuid()))
                         .withFormDataUuid(formData.getUuid())
@@ -385,7 +385,7 @@ public class FormController {
     public CompleteForms getAllCompleteFormsForPatientUuid(String patientUuid) throws FormFetchException {
         CompleteForms completePatientForms = new CompleteForms();
         try {
-            List<FormData> allFormData = formService.getFormDataByPatient(patientUuid, STATUS_COMPLETE);
+            List<FormData> allFormData = formService.getFormDataByPatient(patientUuid, Constants.STATUS_COMPLETE);
             for (FormData formData : allFormData) {
                 Form form = formService.getFormByUuid(formData.getTemplateUuid());
                 completePatientForms.add(new CompleteFormBuilder()
@@ -442,10 +442,10 @@ public class FormController {
     public boolean uploadAllCompletedForms() throws UploadFormDataException {
         try {
             boolean result = true;
-            List<FormData> allFormData = formService.getAllFormData(STATUS_COMPLETE);
-            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_DISCRIMINATOR_REGISTRATION), result);
-            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_XML_DISCRIMINATOR_ENCOUNTER), result);
-            return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_ENCOUNTER), result);
+            List<FormData> allFormData = formService.getAllFormData(Constants.STATUS_COMPLETE);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_DISCRIMINATOR_REGISTRATION), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER), result);
+            return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER), result);
         } catch (IOException e) {
             throw new UploadFormDataException(e);
         }
@@ -524,7 +524,7 @@ public class FormController {
         try {
             List<FormData> formDataByTemplateUUID = formService.getFormDataByTemplateUUID(templateUUID);
             for (FormData formData : formDataByTemplateUUID) {
-                if (!formData.getStatus().equals(STATUS_UPLOADED)) {
+                if (!formData.getStatus().equals(Constants.STATUS_UPLOADED)) {
                     incompleteFormData.add(formData);
                 }
             }
@@ -547,7 +547,7 @@ public class FormController {
     boolean uploadFormDataToServer(List<FormData> allFormData, boolean result) throws IOException {
         for (FormData formData : allFormData) {
             if (formService.syncFormData(formData)) {
-                formData.setStatus(STATUS_UPLOADED);
+                formData.setStatus(Constants.STATUS_UPLOADED);
                 formService.saveFormData(formData);
                 observationService.deleteObservationsByFormData(formData.getUuid());
             } else {
