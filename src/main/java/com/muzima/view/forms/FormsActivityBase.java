@@ -16,7 +16,7 @@ import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.customViews.PagerSlidingTabStrip;
+import com.muzima.view.custom.PagerSlidingTabStrip;
 
 
 public abstract class FormsActivityBase extends BroadcastListenerActivity {

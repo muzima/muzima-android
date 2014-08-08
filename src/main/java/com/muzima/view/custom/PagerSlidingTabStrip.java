@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.muzima.view.customViews;
+package com.muzima.view.custom;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
