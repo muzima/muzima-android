@@ -1,7 +1,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:background="@color/primary_black"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            style="@style/LoginActivityLayout"
+            android:padding="0dp">
 
     <LinearLayout
             android:orientation="vertical"

@@ -24,6 +24,11 @@
                 android:value="com.muzima.view.SearchResultsActivity"/>
 
         <activity
+                android:name=".view.DisclaimerActivity"
+                android:label="mUzima Disclaimer">
+        </activity>
+
+        <activity
                 android:name="com.muzima.view.MainActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/app_name">
