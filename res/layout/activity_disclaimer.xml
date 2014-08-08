@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+                  android:padding="5dp"
+                  android:layout_above="@+id/navigation">
+        <LinearLayout style="@style/NotClickableSummaryItem">
+            <TextView
+                    style="@style/SummaryHeader"
+                    android:text="@string/wizard_disclaimer_header"/>
+            <ScrollView android:background="@color/primary_black"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+                <TextView
+                        android:textColor="@android:color/white"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/wizard_disclaimer_desc"
+                        android:scrollbars="vertical"/>
+            </ScrollView>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/navigation"
+                  android:layout_alignParentBottom="true"
+                  style="@style/ButtonRow">
+        <Button
+                android:id="@+id/previous"
+                style="@style/Button.Previous"
+                android:text="Disagree"
+                android:layout_weight=".3"/>
+        <Button
+                android:id="@+id/next"
+                style="@style/Button.Next"
+                android:text="Agree"
+                android:layout_weight=".3"/>
+    </LinearLayout>
+
+</RelativeLayout>
