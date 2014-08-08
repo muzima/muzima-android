@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.view;
 
 import android.app.Activity;
@@ -7,7 +15,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import com.muzima.R;
+import com.muzima.view.custom.ScrollViewWithDetection;
 import com.muzima.view.login.LoginActivity;
 
 /**
@@ -19,7 +29,7 @@ public class DisclaimerActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_disclaimer);
 
-        Button nextButton = (Button) findViewById(R.id.next);
+        final Button nextButton = (Button) findViewById(R.id.next);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -32,6 +42,14 @@ public class DisclaimerActivity extends Activity {
             @Override
             public void onClick(final View v) {
                 finish();
+            }
+        });
+
+        ScrollViewWithDetection scrollViewWithDetection = (ScrollViewWithDetection) findViewById(R.id.disclaimer_scroller);
+        scrollViewWithDetection.setOnBottomReachedListener(new ScrollViewWithDetection.OnBottomReachedListener() {
+            @Override
+            public void onBottomReached() {
+                nextButton.setVisibility(View.VISIBLE);
             }
         });
     }

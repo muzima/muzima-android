@@ -11,9 +11,11 @@
             <TextView
                     style="@style/SummaryHeader"
                     android:text="@string/wizard_disclaimer_header"/>
-            <ScrollView android:background="@color/primary_black"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content">
+            <com.muzima.view.custom.ScrollViewWithDetection
+                    android:id="@+id/disclaimer_scroller"
+                    android:background="@color/primary_black"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
                 <TextView
                         android:textColor="@android:color/white"
                         android:textAlignment="center"
@@ -21,7 +23,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/wizard_disclaimer_desc"
                         android:scrollbars="vertical"/>
-            </ScrollView>
+            </com.muzima.view.custom.ScrollViewWithDetection>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout android:id="@+id/navigation"
@@ -35,8 +37,10 @@
         <Button
                 android:id="@+id/next"
                 style="@style/Button.Next"
+                android:visibility="invisible"
                 android:text="Agree"
-                android:layout_weight=".3"/>
+                android:layout_weight=".3"
+                android:enabled="false"/>
     </LinearLayout>
 
 </RelativeLayout>
