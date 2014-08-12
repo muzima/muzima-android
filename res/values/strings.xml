@@ -169,6 +169,9 @@
     <string name="cohort_wizard_help_title">Download Cohorts Help</string>
     <string name="cohort_prefix_help_title">Define Cohorts Prefix(es) Help</string>
     <string name="custom_concept_help_title">Concepts Help</string>
+    <string name="filling_patient_forms_help">Fill out forms for a patient</string>
+    <string name="muzima_initial_setup_guide">mUzima initial setup guide</string>
+    <string name="introduction_video">Video introduction to mUzima</string>
 
     <string name="form_save_as_draft">Draft</string>
     <string name="form_close">Close</string>
