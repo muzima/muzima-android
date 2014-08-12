@@ -123,7 +123,7 @@ public class MuzimaSyncService {
             long endDownloadForms = System.currentTimeMillis();
             List<Form> voidedForms = deleteVoidedForms(forms);
             forms.removeAll(voidedForms);
-            formController.saveAllForms(forms);
+            formController.updateAllForms(forms);
             long endSaveForms = System.currentTimeMillis();
             Log.d(TAG, "In downloading forms: " + (endDownloadForms - startDownloadForms) / 1000 + " sec\n" +
                     "In replacing forms: " + (endDownloadForms - endSaveForms) / 1000 + " sec");
