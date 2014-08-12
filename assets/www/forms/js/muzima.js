@@ -211,9 +211,9 @@ $(document).ready(function () {
         .append("<input class='btn btn-primary remove_section pull-right' type='button' value='-'/><span class='clear'></span>");
 
     $(document.body).on('click', '.add_section', function () {
-        var $clonedElement = $(this).parent().clone();
+        var $clonedElement = $(this).parent().clone(true).insertAfter($(this).parent());
         $clonedElement.find('input:not(:button)').val('');
-        $clonedElement.insertAfter($(this).parent());
+        $clonedElement.find('input:not(:button)').trigger('change');
     });
 
     $(document.body).on('click', '.remove_section', function () {
