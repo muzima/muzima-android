@@ -76,6 +76,8 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         usernamePreferenceKey = getResources().getString(R.string.preference_username);
         usernamePreference = (EditTextPreference) getPreferenceScreen().findPreference(usernamePreferenceKey);
         usernamePreference.setSummary(usernamePreference.getText());
+        usernamePreference.setEnabled(false);
+        usernamePreference.setSelectable(false);
 
         timeoutPreferenceKey = getResources().getString(R.string.preference_timeout);
         timeoutPreference = (EditTextPreference) getPreferenceScreen().findPreference(timeoutPreferenceKey);
@@ -94,6 +96,8 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         if (passwordPreference.getText() != null) {
             passwordPreference.setSummary(passwordPreference.getText().replaceAll(".", "*"));
         }
+        passwordPreference.setEnabled(false);
+        passwordPreference.setSelectable(false);
 
         // Show the Up button in the action bar.
         setupActionBar();
