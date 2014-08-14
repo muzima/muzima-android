@@ -2,9 +2,47 @@
               xmlns:android="http://schemas.android.com/apk/res/android"
               style="@style/DashboardWrapper"
               tools:context=".MainActivity">
+
     <TextView
             android:id="@+id/helpContent"
             style="@style/HelpContent"
             android:text="Help!"/>
-    
+
+    <LinearLayout
+            android:id="@+id/helpInfoMenu"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <TextView
+                android:id="@+id/fillingPatientFormLabel"
+                android:onClick="viewPatientFormFillingHelpContent"
+                style="@style/HelpContent"
+                android:text="HOW TO: Fill out forms for a patient"
+                android:clickable="true"/>
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:src="#555555"/>
+        <TextView
+                android:id="@+id/muzimaSetupGuideLabel"
+                android:onClick="viewMuzimaInitialSetupGuide"
+                style="@style/HelpContent"
+                android:text="HOW TO: Initial setup for mUzima"
+                android:clickable="true"/>
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:src="#555555"/>
+        <TextView
+                android:id="@+id/introductionVideoLabel"
+                android:onClick="viewIntroductionVideo"
+                style="@style/HelpContent"
+                android:text="Introduction to mUzima(video link)"
+                android:clickable="true"/>
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:src="#555555"/>
+    </LinearLayout>
+
 </LinearLayout>
