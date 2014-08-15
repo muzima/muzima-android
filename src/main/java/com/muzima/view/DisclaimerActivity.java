@@ -13,9 +13,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Html;
+import android.text.util.Linkify;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ScrollView;
+import android.widget.TextView;
 import com.muzima.R;
 import com.muzima.view.custom.ScrollViewWithDetection;
 import com.muzima.view.login.LoginActivity;
@@ -28,6 +30,11 @@ public class DisclaimerActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_disclaimer);
+
+        String disclaimerText = getResources().getString(R.string.wizard_disclaimer_desc);
+        final TextView disclaimerTextView = (TextView) findViewById(R.id.disclaimer_text_view);
+        disclaimerTextView.setText(Html.fromHtml(disclaimerText));
+        Linkify.addLinks(disclaimerTextView, Linkify.WEB_URLS);
 
         final Button nextButton = (Button) findViewById(R.id.next);
         nextButton.setOnClickListener(new View.OnClickListener() {
@@ -52,6 +59,15 @@ public class DisclaimerActivity extends Activity {
                 nextButton.setVisibility(View.VISIBLE);
             }
         });
+
+        int childHeight = disclaimerTextView.getHeight();
+        int scrollViewHeight = scrollViewWithDetection.getHeight();
+        int scrollViewPaddingTop = scrollViewWithDetection.getPaddingTop();
+        int scrollViewPaddingBottom = scrollViewWithDetection.getPaddingBottom();
+        boolean isScrollable = scrollViewHeight < childHeight + scrollViewPaddingTop + scrollViewPaddingBottom;
+        if (!isScrollable) {
+            nextButton.setVisibility(View.VISIBLE);
+        }
     }
 
     private void navigateToNextActivity() {
