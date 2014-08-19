@@ -8,6 +8,7 @@
 
 package com.muzima.view;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +17,7 @@ import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.util.Linkify;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.TextView;
 import com.muzima.R;
@@ -52,7 +54,7 @@ public class DisclaimerActivity extends Activity {
             }
         });
 
-        ScrollViewWithDetection scrollViewWithDetection = (ScrollViewWithDetection) findViewById(R.id.disclaimer_scroller);
+        final ScrollViewWithDetection scrollViewWithDetection = (ScrollViewWithDetection) findViewById(R.id.disclaimer_scroller);
         scrollViewWithDetection.setOnBottomReachedListener(new ScrollViewWithDetection.OnBottomReachedListener() {
             @Override
             public void onBottomReached() {
@@ -60,14 +62,28 @@ public class DisclaimerActivity extends Activity {
             }
         });
 
-        int childHeight = disclaimerTextView.getHeight();
-        int scrollViewHeight = scrollViewWithDetection.getHeight();
-        int scrollViewPaddingTop = scrollViewWithDetection.getPaddingTop();
-        int scrollViewPaddingBottom = scrollViewWithDetection.getPaddingBottom();
-        boolean isScrollable = scrollViewHeight < childHeight + scrollViewPaddingTop + scrollViewPaddingBottom;
-        if (!isScrollable) {
-            nextButton.setVisibility(View.VISIBLE);
-        }
+        scrollViewWithDetection.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @SuppressLint("NewApi")
+            @SuppressWarnings("deprecation")
+            @Override
+            public void onGlobalLayout() {
+                int textViewHeight = disclaimerTextView.getHeight();
+                int scrollViewHeight = scrollViewWithDetection.getHeight();
+                int scrollViewPaddingTop = scrollViewWithDetection.getPaddingTop();
+                int scrollViewPaddingBottom = scrollViewWithDetection.getPaddingBottom();
+                boolean scrollable = scrollViewHeight < textViewHeight + scrollViewPaddingTop + scrollViewPaddingBottom;
+                if (!scrollable) {
+                    nextButton.setVisibility(View.VISIBLE);
+                }
+
+                if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                    scrollViewWithDetection.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                } else {
+                    scrollViewWithDetection.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                }
+            }
+        });
+
     }
 
     private void navigateToNextActivity() {
