@@ -25,14 +25,18 @@ $(document).ready(function () {
         }
     };
 
+    document.autoSaveForm = function(){
+        save("incomplete", true);
+    }
+
     document.saveDraft = function () {
-        save("incomplete");
+        save("incomplete",false);
         return false;
     };
 
-    var save = function (status) {
+    var save = function (status, keepFormOpen) {
         var jsonData = JSON.stringify($('form').serializeEncounterForm());
-        htmlDataStore.saveHTML(jsonData, status);
+        htmlDataStore.saveHTML(jsonData, status, keepFormOpen);
     };
     /* End - Function to save the form */
 
