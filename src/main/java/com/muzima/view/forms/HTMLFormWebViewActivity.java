@@ -13,6 +13,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -85,6 +86,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private Map<String, String> videoResultMap;
     private String sectionName;
     private FormController formController;
+    final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +106,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         try {
             patient = (Patient) getIntent().getSerializableExtra(PATIENT);
             setupFormData(patient);
+            startAutoSaveProcess();
             setupWebView();
         } catch (FormFetchException e) {
             Log.e(TAG, e.getMessage(), e);
@@ -117,11 +120,30 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         }
     }
 
+    private void startAutoSaveProcess() {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    webView.loadUrl("javascript:document.autoSaveForm()");
+                }
+                catch (Exception e) {
+                    Log.e(TAG, "Error while auto saving the form data", e);
+                }
+                finally{
+                    handler.postDelayed(this, 2 * 60 * 1000);
+                }
+            }
+        };
+        handler.postDelayed(runnable, 2 * 60 * 1000);
+    }
+
     @Override
     protected void onDestroy() {
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
+        handler.removeCallbacksAndMessages(null);
         super.onDestroy();
     }
 
@@ -376,6 +398,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     }
 
     private void processBackButtonPressed() {
+        handler.removeCallbacksAndMessages(null);
         onBackPressed();
     }
 
