@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.TextView;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.view.custom.ScrollViewWithDetection;
 import com.muzima.view.login.LoginActivity;
@@ -84,6 +85,12 @@ public class DisclaimerActivity extends Activity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ((MuzimaApplication) getApplication()).cancelTimer();
     }
 
     private void navigateToNextActivity() {
