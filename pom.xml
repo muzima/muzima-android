@@ -175,20 +175,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>give_sdk</id>
-            <properties>
-                <android.sdk.path>/Users/akani/Development/bundles/adt-bundle-mac-x86_64-20130729/sdk</android.sdk.path>
-            </properties>
-        </profile>
-        <profile>
-            <id>akani_sdk</id>
-            <properties>
-                <android.sdk.path>/Users/akani/Development/bundles/adt-bundle-mac-x86_64-20130729/sdk</android.sdk.path>
-            </properties>
-        </profile>
-    </profiles>
-
 </project>
