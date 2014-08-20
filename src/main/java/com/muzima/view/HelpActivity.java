@@ -95,12 +95,6 @@ public class HelpActivity extends BaseActivity {
         startHelpContentDisplayActivity(MUZIMA_TRAINING_MANUAL,getText(R.string.muzima_training_manual).toString());
     }
 
-    public void viewIntroductionVideo(View view) {
-        Intent introductionVideo = new Intent(Intent.ACTION_VIEW);
-        introductionVideo.setData(Uri.parse(INTRODUCTION_VIDEO));
-        startActivity(introductionVideo);
-    }
-
     private void startHelpContentDisplayActivity(String filePath, String title) {
         Intent intent = new Intent(this, WebViewActivity.class);
         intent.putExtra(WebViewActivity.HELP_FILE_PATH_PARAM, filePath);
@@ -118,33 +112,33 @@ public class HelpActivity extends BaseActivity {
         menuSettings.setVisible(false);
     }
 
+    public void viewIntroductionVideo(View view) {
+        viewVideo(INTRODUCTION_VIDEO);
+    }
+
     public void viewSettingUpMuzimaVideo(View view) {
-        Intent settingUpMuzimaVideo = new Intent(Intent.ACTION_VIEW);
-        settingUpMuzimaVideo.setData(Uri.parse(SETTING_UP_MUZIMA_VIDEO));
-        startActivity(settingUpMuzimaVideo);
+        viewVideo(SETTING_UP_MUZIMA_VIDEO);
     }
 
     public void viewTaggingFormsVideo(View view) {
-        Intent taggingFormsVideo = new Intent(Intent.ACTION_VIEW);
-        taggingFormsVideo.setData(Uri.parse(TAGGING_FORMS_VIDEO));
-        startActivity(taggingFormsVideo);
+        viewVideo(TAGGING_FORMS_VIDEO);
     }
 
     public void viewDownloadingCohortsVideo(View view) {
-        Intent downloadingCohortsVideo = new Intent(Intent.ACTION_VIEW);
-        downloadingCohortsVideo.setData(Uri.parse(DOWNLOADING_COHORTS_VIDEO));
-        startActivity(downloadingCohortsVideo);
+        viewVideo(DOWNLOADING_COHORTS_VIDEO);
     }
 
     public void viewChangeSettingsVideo(View view) {
-        Intent changeSettingsVideo = new Intent(Intent.ACTION_VIEW);
-        changeSettingsVideo.setData(Uri.parse(CHANGE_SETTING_VIDEO));
-        startActivity(changeSettingsVideo);
+        viewVideo(CHANGE_SETTING_VIDEO);
     }
 
     public void viewDownloadingFormsVideo(View view) {
-        Intent downloadingFormsVideo = new Intent(Intent.ACTION_VIEW);
-        downloadingFormsVideo.setData(Uri.parse(DOWNLOADING_FORMS_VIDEO));
-        startActivity(downloadingFormsVideo);
+        viewVideo(DOWNLOADING_FORMS_VIDEO);
+    }
+
+    private void viewVideo(String videoUrl){
+        Intent playVideoIntent = new Intent(Intent.ACTION_VIEW);
+        playVideoIntent.setData(Uri.parse(videoUrl));
+        startActivity(playVideoIntent);
     }
 }
