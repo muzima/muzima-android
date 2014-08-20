@@ -33,7 +33,7 @@ public class HTMLPatientJSONMapper {
             if (patient.getBirthdate() != null) {
                 patientDetails.put("patient.birthdate", DateUtils.getFormattedDate(patient.getBirthdate()));
             }
-            encounterDetails.put("encounter.form_uuid", StringUtils.defaultString(formData.getUuid()));
+            encounterDetails.put("encounter.form_uuid", StringUtils.defaultString(formData.getTemplateUuid()));
             prepopulateJSON.put("patient",patientDetails);
             prepopulateJSON.put("encounter",encounterDetails);
         } catch (JSONException e) {
