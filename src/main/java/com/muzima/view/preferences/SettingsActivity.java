@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.muzima.MuzimaApplication;
@@ -33,11 +34,13 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
     private String usernamePreferenceKey;
     private String timeoutPreferenceKey;
     private String passwordPreferenceKey;
+    private String autoSavePreferenceKey;
 
     private EditTextPreference serverPreference;
     private EditTextPreference usernamePreference;
     private EditTextPreference timeoutPreference;
     private EditTextPreference passwordPreference;
+    private EditTextPreference autoSaveIntervalPreference;
 
     private String newURL;
 
@@ -91,6 +94,10 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
             }
         });
 
+        autoSavePreferenceKey = getResources().getString(R.string.preference_auto_save_interval);
+        autoSaveIntervalPreference = (EditTextPreference) getPreferenceScreen().findPreference(autoSavePreferenceKey);
+        autoSaveIntervalPreference.setSummary(autoSaveIntervalPreference.getText());
+
         passwordPreferenceKey = getResources().getString(R.string.preference_password);
         passwordPreference = (EditTextPreference) getPreferenceScreen().findPreference(passwordPreferenceKey);
         if (passwordPreference.getText() != null) {
@@ -126,7 +133,9 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
             usernamePreference.setSummary(value);
         } else if (StringUtil.equals(key, passwordPreferenceKey)) {
             passwordPreference.setSummary(value.replaceAll(".", "*"));
-        } else if (StringUtil.equals(key, timeoutPreferenceKey)) {
+        } else if (StringUtil.equals(key, autoSavePreferenceKey)) {
+            autoSaveIntervalPreference.setSummary(value);
+        }else if (StringUtil.equals(key, timeoutPreferenceKey)) {
             Log.e("Tag","Inside shared pref");
             timeoutPreference.setSummary(value);
         }

@@ -118,6 +118,10 @@
     <string name="preference_timeout_title">Timeout</string>
     <string name="preference_timeout_desc">Enter the Timeout value in minutes</string>
     <string name="preference_timeout">timeoutPreference</string>
+    <string name="preference_auto_save_interval_desc">Sets interval time for automatic save of forms.</string>
+    <string name="preference_auto_save_interval_title">Automatic form save interval</string>
+    <string name="preference_auto_save_interval">autoSaveIntervalPreference</string>
+    <string name="default_auto_save_interval_value">2</string>
     <string name="preference_username">usernamePreference</string>
     <string name="preference_username_title">Username</string>
     <string name="preference_username_desc">Enter the OpenMRS username</string>
@@ -283,6 +287,4 @@
         </p>
         ]]>
     </string>
-
-
 </resources>
