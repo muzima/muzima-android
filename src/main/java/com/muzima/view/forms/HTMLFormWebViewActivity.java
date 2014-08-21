@@ -12,8 +12,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -39,6 +41,7 @@ import com.muzima.utils.barcode.IntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
+import org.apache.commons.lang.time.DateUtils;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -62,6 +65,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     public static final String ZIGGY_FILE_LOADER = "ziggyFileLoader";
     public static final String FORM = "form";
     public static final String DISCRIMINATOR = "discriminator";
+    public static final String DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS =  "2";
 
 
     private WebView webView;
@@ -73,6 +77,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private BarCodeComponent barCodeComponent;
     private Map<String, String> scanResultMap;
     private FormController formController;
+    private String autoSaveIntervalPreference;
     final Handler handler = new Handler();
 
     @Override
@@ -86,6 +91,8 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         scanResultMap = new HashMap<String, String>();
         setContentView(R.layout.activity_form_webview);
         progressDialog = new MuzimaProgressDialog(this);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+        autoSaveIntervalPreference = preferences.getString("autoSaveIntervalPreference", DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS);
         showProgressBar("Loading...");
         try {
             patient = (Patient) getIntent().getSerializableExtra(PATIENT);
@@ -115,11 +122,11 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                     Log.e(TAG, "Error while auto saving the form data", e);
                 }
                 finally{
-                    handler.postDelayed(this, 2 * 60 * 1000);
+                    handler.postDelayed(this,  Integer.parseInt(autoSaveIntervalPreference) * DateUtils.MILLIS_PER_MINUTE);
                 }
             }
         };
-        handler.postDelayed(runnable, 2 * 60 * 1000);
+        handler.postDelayed(runnable, Integer.parseInt(autoSaveIntervalPreference) * DateUtils.MILLIS_PER_MINUTE);
     }
 
     @Override

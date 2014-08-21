@@ -49,6 +49,7 @@ public class HTMLFormDataStore {
             parseForm(jsonPayload, status);
             formController.saveFormData(formData);
             formWebViewActivity.setResult(FormsActivity.RESULT_OK);
+            Log.i(TAG, "AUTO SAVED FORM");
             if (!keepFormOpen) {
                 formWebViewActivity.finish();
             }
