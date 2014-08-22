@@ -100,6 +100,14 @@ public class FormController {
         return getAvailableFormByTags(tagsUuid, false);
     }
 
+    public List<Form> getAllAvailableForms() throws FormFetchException {
+        try {
+            return formService.getAllForms();
+        } catch (IOException e) {
+            throw new FormFetchException(e);
+        }
+    }
+
     public AvailableForms getAvailableFormByTags(List<String> tagsUuid, boolean alwaysIncludeRegistrationForms) throws FormFetchException {
         try {
             List<Form> allForms = formService.getAllForms();

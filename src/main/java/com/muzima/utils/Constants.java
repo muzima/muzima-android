@@ -32,8 +32,9 @@ public class Constants {
         public static final String SYNC_TYPE = "sync_type";
         public static final String CREDENTIALS = "credentials";
         public static final String SYNC_STATUS = "sync_status";
-        public static final String DOWNLOAD_COUNT_PRIMARY = "donwload_count_primary";
-        public static final String DOWNLOAD_COUNT_SECONDARY = "donwload_count_secondary";
+        public static final String DOWNLOAD_COUNT_PRIMARY = "download_count_primary";
+        public static final String DOWNLOAD_COUNT_SECONDARY = "download_count_secondary";
+        public static final String DELETED_COUNT_PRIMARY = "deleted_count_primary";
         public static final String FORM_IDS = "formIds";
         public static final String COHORT_IDS = "cohortIds";
         public static final String PATIENT_UUID_FOR_DOWNLOAD = "patientUUIDForDownload";

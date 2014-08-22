@@ -101,9 +101,9 @@ public class MuzimaSyncService {
 
     private boolean hasInvalidSpecialCharacter(String username) {
         String invalidCharacters = SyncStatusConstants.INVALID_CHARACTER_FOR_USERNAME;
-        for(int i = 0; i < invalidCharacters.length(); i++){
-            String substring = invalidCharacters.substring(i, i+1);
-            if(username.contains(substring)){
+        for (int i = 0; i < invalidCharacters.length(); i++) {
+            String substring = invalidCharacters.substring(i, i + 1);
+            if (username.contains(substring)) {
                 return true;
             }
         }
@@ -111,21 +111,24 @@ public class MuzimaSyncService {
     }
 
     public int[] downloadForms() {
-        int[] result = new int[2];
+        int[] result = new int[3];
 
         try {
             long startDownloadForms = System.currentTimeMillis();
-            List<Form> forms = formController.downloadAllForms();
+            List<Form> allDownloadedForms = formController.downloadAllForms();
+            List<Form> allForms = formController.getAllAvailableForms();
+            int deletedFormCount = getDeletedFormCount(allDownloadedForms, allForms);
             long endDownloadForms = System.currentTimeMillis();
-            List<Form> voidedForms = deleteVoidedForms(forms);
-            forms.removeAll(voidedForms);
-            formController.updateAllForms(forms);
+            List<Form> voidedForms = deleteVoidedForms(allDownloadedForms);
+            allDownloadedForms.removeAll(voidedForms);
+            formController.updateAllForms(allDownloadedForms);
             long endSaveForms = System.currentTimeMillis();
             Log.d(TAG, "In downloading forms: " + (endDownloadForms - startDownloadForms) / 1000 + " sec\n" +
                     "In replacing forms: " + (endDownloadForms - endSaveForms) / 1000 + " sec");
 
             result[0] = SyncStatusConstants.SUCCESS;
-            result[1] = forms.size();
+            result[1] = allDownloadedForms.size();
+            result[2] = deletedFormCount;
 
         } catch (FormController.FormFetchException e) {
             Log.e(TAG, "Exception when trying to download forms", e);
@@ -143,11 +146,24 @@ public class MuzimaSyncService {
         return result;
     }
 
+    private int getDeletedFormCount(List<Form> allDownloadedForms, List<Form> allForms) {
+        int deletedFormCount = 0;
+        for (Form form : allForms) {
+            for (Form downloadedForm : allDownloadedForms) {
+                if (form.getUuid().equals(downloadedForm.getUuid()) && downloadedForm.isVoided()) {
+                    deletedFormCount++;
+                }
+            }
+        }
+        return deletedFormCount;
+    }
+
+
     private List<Form> deleteVoidedForms(List<Form> forms) throws FormController.FormDeleteException {
         Log.i(TAG, "Voided forms are deleted");
         List<Form> voidedForms = new ArrayList<Form>();
-        for( Form form : forms){
-            if(form.isVoided()){
+        for (Form form : forms) {
+            if (form.isVoided()) {
                 voidedForms.add(form);
             }
         }
@@ -222,8 +238,8 @@ public class MuzimaSyncService {
     private List<Cohort> deleteVoidedCohorts(List<Cohort> cohorts) throws CohortController.CohortDeleteException {
         Log.i(TAG, "Voided cohorts are deleted");
         List<Cohort> voidedCohorts = new ArrayList<Cohort>();
-        for( Cohort cohort : cohorts){
-            if(cohort.isVoided()){
+        for (Cohort cohort : cohorts) {
+            if (cohort.isVoided()) {
                 voidedCohorts.add(cohort);
             }
         }
@@ -297,8 +313,8 @@ public class MuzimaSyncService {
     }
 
     private void getVoidedPatients(ArrayList<Patient> voidedPatients, List<Patient> cohortPatients) {
-        for(Patient patient : cohortPatients){
-            if(patient.isVoided()){
+        for (Patient patient : cohortPatients) {
+            if (patient.isVoided()) {
                 voidedPatients.add(patient);
             }
         }
@@ -340,7 +356,7 @@ public class MuzimaSyncService {
 
         int count = 0;
         boolean hasElements = !strings.isEmpty();
-        while(hasElements) {
+        while (hasElements) {
             int startElement = count * 50;
             int endElement = ++count * 50;
             hasElements = strings.size() > endElement;
@@ -367,7 +383,8 @@ public class MuzimaSyncService {
                 for (List<String> slicedConceptUuid : slicedConceptUuids) {
                     allObservations.addAll(
                             observationController.downloadObservationsByPatientUuidsAndConceptUuids(
-                                    slicedPatientUuid, slicedConceptUuid));
+                                    slicedPatientUuid, slicedConceptUuid)
+                    );
                 }
             }
             long endDownloadObservations = System.currentTimeMillis();
@@ -404,8 +421,8 @@ public class MuzimaSyncService {
 
     private List<Observation> getVoidedObservations(List<Observation> allObservations) {
         List<Observation> voidedObservations = new ArrayList<Observation>();
-        for(Observation observation : allObservations){
-            if(observation.isVoided()){
+        for (Observation observation : allObservations) {
+            if (observation.isVoided()) {
                 voidedObservations.add(observation);
             }
         }
@@ -465,8 +482,8 @@ public class MuzimaSyncService {
 
     private ArrayList<Encounter> getVoidedEncounters(List<Encounter> allEncounters) {
         ArrayList<Encounter> voidedEncounters = new ArrayList<Encounter>();
-        for(Encounter encounter : allEncounters){
-            if(encounter.isVoided()){
+        for (Encounter encounter : allEncounters) {
+            if (encounter.isVoided()) {
                 voidedEncounters.add(encounter);
             }
         }
