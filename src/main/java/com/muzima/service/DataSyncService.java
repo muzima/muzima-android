@@ -71,7 +71,7 @@ public class DataSyncService extends IntentService {
                 updateNotificationMsg("Downloading Forms Metadata");
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = muzimaSyncService.downloadForms();
-                    String msg = "Downloaded " + result[1] + " forms";
+                    String msg = "Downloaded " + result[1] + " forms and Deleted " + result[2] + " forms";
                     prepareBroadcastMsg(broadcastIntent, result, msg);
                     saveFormsSyncTime(result);
                 }
@@ -215,6 +215,7 @@ public class DataSyncService extends IntentService {
         broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_STATUS, result[0]);
         if (isSuccess(result)) {
             broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, result[1]);
+            broadcastIntent.putExtra(DataSyncServiceConstants.DELETED_COUNT_PRIMARY,result[2]);
             updateNotificationMsg(msg);
         }
     }

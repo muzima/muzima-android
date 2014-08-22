@@ -72,9 +72,13 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
         } else if(syncStatus == SyncStatusConstants.SUCCESS){
             int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
             int downloadCount = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, 0);
+            int deletedFormCount = intent.getIntExtra(DataSyncServiceConstants.DELETED_COUNT_PRIMARY,0);
             msg = "Downloaded " + downloadCount;
             if(syncType == DataSyncServiceConstants.SYNC_FORMS){
                 msg += " forms";
+                if(deletedFormCount > 0){
+                    msg += "  Deleted " + deletedFormCount + " forms";
+                }
             }else if(syncType == DataSyncServiceConstants.SYNC_TEMPLATES){
                 msg += " form templates and " + intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0) + " related concepts";
             } else if(syncType == DataSyncServiceConstants.SYNC_COHORTS){
