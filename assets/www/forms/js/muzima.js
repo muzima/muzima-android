@@ -310,8 +310,8 @@ $(document).ready(function () {
         $clonedSection.attr("data-name", parentName);
 
         /* clear values on cloned fields */
-        $clonedSection.find('input:not(:button)').val('');
-
+        $clonedSection.find(':input:not(:button)').val('');
+        $clonedSection.find(':input:not(:button)').trigger('change');
     });
 
     $(document.body).on('click', '.remove_section', function () {
@@ -471,7 +471,13 @@ $(document).ready(function () {
     var jsonifyConcepts = function ($allConcepts) {
         var o = {};
         $.each($allConcepts, function (i, element) {
-            o = pushIntoArray(o, $(element).attr('data-concept'), $(element).val());
+            if ($(element).is(':checkbox')) {
+                if ($(element).is(':checked')) {
+                    o = pushIntoArray(o, $(element).attr('data-concept'), $(element).val());
+                }
+            } else {
+                o = pushIntoArray(o, $(element).attr('data-concept'), $(element).val());
+            }
         });
         return o;
     };
