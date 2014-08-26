@@ -229,7 +229,7 @@
     <string name="record_audio_prompt">Record or choose audio</string>
 
     <string name="version">Version %1$s</string>
-    <string name="wizard_disclaimer_header">Additional Disclaimer of Warranty and Limitation of Liability</string>
+    <string name="wizard_disclaimer_header">Licensing, Disclaimer of Warranty and Limitation of Liability</string>
     <string name="wizard_disclaimer_desc">
         <![CDATA[
         <p>
