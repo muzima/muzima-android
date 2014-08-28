@@ -23,10 +23,10 @@ public class HelpActivity extends BaseActivity {
     public static final int COHORT_WIZARD_HELP = 1;
     public static final int COHORT_PREFIX_HELP = 2;
     public static final int CUSTOM_CONCEPT_HELP = 3;
-    public static final String MUZIMA_INITAL_SETUP_GUIDE = "file:///android_asset/help-content/mUzima_initial_setup.html";
-    public static final String PATIENT_FILLING_FORM = "file:///android_asset/help-content/filling-forms-for-a-patient.html";
-    public static final String MUZIMA_USER_GUIDE = "file:///android_asset/help-content/mUzima-user-guide.html";
-    public static final String MUZIMA_TRAINING_MANUAL = "file:///android_asset/help-content/mUzima-training-manual.html";
+    public static final String MUZIMA_INITAL_SETUP_GUIDE = "file:///android_asset/www/help-content/mUzima_initial_setup.html";
+    public static final String PATIENT_FILLING_FORM = "file:///android_asset/www/help-content/filling-forms-for-a-patient.html";
+    public static final String MUZIMA_USER_GUIDE = "file:///android_asset/www/help-content/mUzima-user-guide.html";
+    public static final String MUZIMA_TRAINING_MANUAL = "file:///android_asset/www/help-content/mUzima-training-manual.html";
     public static final String INTRODUCTION_VIDEO = "https://www.youtube.com/watch?v=xnFACOHGzKg";
     public static final String SETTING_UP_MUZIMA_VIDEO = "https://www.youtube.com/watch?v=nn7k1TL1qG0&feature=youtu.be";
     public static final String TAGGING_FORMS_VIDEO = "https://www.youtube.com/watch?v=Ls4qpSYRep8&feature=youtu.be";
