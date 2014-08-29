@@ -386,7 +386,7 @@ $(document).ready(function () {
                 } else {
                     if ($dataConceptElement.is(':checkbox') || $dataConceptElement.is(':radio')) {
                         if ($dataConceptElement.val() == value) {
-                            $dataConceptElement.find($("input[value='" + value + "']")).prop('checked', true);
+                            $dataConceptElement.prop('checked', true);
                         }
                     } else {
                         $dataConceptElement.val(value);
