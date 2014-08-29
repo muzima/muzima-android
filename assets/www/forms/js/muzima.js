@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 $(document).ready(function () {
     'use strict';
     var dateFormat = "yy-mm-dd";
@@ -5,10 +13,10 @@ $(document).ready(function () {
     /* Start - Function to save the form */
     document.submit = function () {
         var validForm = $("form").valid();
-        if(typeof $.fn.customValidationCheck !== 'undefined' && typeof $.fn.customValidationCheck === 'function'){
+        if (typeof $.fn.customValidationCheck !== 'undefined' && typeof $.fn.customValidationCheck === 'function') {
             validForm = validForm && $.fn.customValidationCheck();
         }
-        if ( validForm) {
+        if (validForm) {
             save("complete");
         }
     };
@@ -92,8 +100,8 @@ $(document).ready(function () {
 
     /* End - CheckDigit Algorithm */
 
-    $.fn.isNotRequiredAndEmpty = function(value,element){
-        if(!$(element).attr('required') && value == '') return true;
+    $.fn.isNotRequiredAndEmpty = function (value, element) {
+        if (!$(element).attr('required') && value == '') return true;
     };
 
     // attach 'checkDigit' class to perform validation.
@@ -104,7 +112,7 @@ $(document).ready(function () {
     /* Start - Checking that the current date is not in the future */
 
     $.validator.addMethod("nonFutureDate", function (value, element) {
-            if($.fn.isNotRequiredAndEmpty(value,element)) return true;
+            if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
             var enteredDate = new Date(value);
             var today = new Date();
             return enteredDate <= today;
@@ -122,7 +130,7 @@ $(document).ready(function () {
     /* Start - Checking that the current date is in the future */
 
     $.validator.addMethod("checkFutureDate", function (value, element) {
-            if($.fn.isNotRequiredAndEmpty(value,element)) return true;
+            if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
             var enteredDate = new Date(value);
             var today = new Date();
             return enteredDate > today;
@@ -140,7 +148,7 @@ $(document).ready(function () {
     /* Start - Checking that the entered value is a valid phone number */
 
     $.validator.addMethod("phoneNumber", function (value, element) {
-            if($.fn.isNotRequiredAndEmpty(value,element)) return true;
+            if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
             var inputLength = value.length;
             return inputLength >= 8 && inputLength <= 12;
         }, "Invalid Phone Number. Please check and re-enter."
@@ -155,13 +163,13 @@ $(document).ready(function () {
 
     /* Start - checkNoneSelectedAlone*/
 
-    $.fn.checkNoneSelectedAlone = function(name_array){
+    $.fn.checkNoneSelectedAlone = function (name_array) {
         var $validator = $('form').validate();
         var errors = {};
         var final_result = true;
         $.each(name_array, function (i, elem) {
-            var filedSetElem = $('fieldset[name="' + elem + '"]');
-            var result = isValidForNoneSelection(filedSetElem);
+            var fieldSetElem = $('fieldset[name="' + elem + '"]');
+            var result = isValidForNoneSelection(fieldSetElem);
             if (!result) {
                 errors[elem] = "If 'None' is selected, no other options can be selected.";
                 final_result = false;
@@ -259,7 +267,13 @@ $(document).ready(function () {
                 var $dataElement = $($('[name="' + key + '"]')[0]);
                 if ($dataElement.prop('tagName') == 'FIELDSET') {
                     $.each(value, function (i, val) {
-                        $dataElement.find($("input[type=checkbox][value='" + val + "']")).attr('checked', 'true');
+                        if (val instanceof Array) {
+                            $.each(val, function (i, v) {
+                                $dataElement.find($("input[type=checkbox][value='" + v + "']")).attr('checked', 'true');
+                            });
+                        } else {
+                            $dataElement.find($("input[type=checkbox][value='" + val + "']")).attr('checked', 'true');
+                        }
                     });
                 } else if (value instanceof Array) {
                     $.each(value, function (i, elem) {
@@ -274,10 +288,16 @@ $(document).ready(function () {
             }
             else {
                 var $dataConceptElement = $('[data-concept="' + key + '"]');
-                if ( $dataConceptElement.prop('tagName') == 'FIELDSET') {
+                if ($dataConceptElement.prop('tagName') == 'FIELDSET') {
                     $dataConceptElement.find($("input[type=checkbox][value='" + value + "']")).attr('checked', 'true');
-                }else{
-                    $dataConceptElement.val(value);
+                } else {
+                    if ($dataConceptElement.is(':checkbox') || $dataConceptElement.is(':radio')) {
+                        if ($dataConceptElement.val() == value) {
+                            $dataConceptElement.find($("input[value='" + value + "']")).prop('checked', true);
+                        }
+                    } else {
+                        $dataConceptElement.val(value);
+                    }
                 }
             }
         });
@@ -355,7 +375,19 @@ $(document).ready(function () {
         var allConcepts = $form.find('*[data-concept]:visible');
         $.each(allConcepts, function (i, element) {
             if ($(element).closest('.section').attr('data-concept') == undefined) {
-                $.extend(o, jsonifyConcepts($(element)));
+                var jsonifiedConcepts = jsonifyConcepts($(element));
+                if (JSON.stringify(jsonifiedConcepts) != '{}' && jsonifiedConcepts != "") {
+                    $.each(jsonifiedConcepts, function (key, value) {
+                        if (o[key] !== undefined) {
+                            if (!o[key].push) {
+                                o[key] = [o[key]];
+                            }
+                            o[key].push(value || '');
+                        } else {
+                            o[key] = value || '';
+                        }
+                    });
+                }
             }
         });
         return o;
@@ -364,7 +396,7 @@ $(document).ready(function () {
     var jsonifyConcepts = function ($visibleConcepts) {
         var o = {};
         $.each($visibleConcepts, function (i, element) {
-            if ($(element).is(':checkbox')) {
+            if ($(element).is(':checkbox') || $(element).is(':radio')) {
                 if ($(element).is(':checked')) {
                     o = pushIntoArray(o, $(element).attr('data-concept'), $(element).val());
                 }
