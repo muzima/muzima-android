@@ -95,3 +95,7 @@ span.clear{
 .datepicker{
     background: white !important;
 }
+
+.font-normal {
+    font-weight: normal;
+}
