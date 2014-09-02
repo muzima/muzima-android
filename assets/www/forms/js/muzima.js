@@ -163,22 +163,21 @@ $(document).ready(function () {
 
     /* Start - checkNoneSelectedAlone*/
 
-    $.fn.checkNoneSelectedAlone = function (name_array) {
+    $.fn.checkNoneSelectedAlone = function (nameArray) {
         var $validator = $('form').validate();
         var errors = {};
-        var final_result = true;
-        $.each(name_array, function (i, elem) {
-            var fieldSetElem = $('fieldset[name="' + elem + '"]');
-            var result = isValidForNoneSelection(fieldSetElem);
+        var result = true;
+        $.each(nameArray, function (i, element) {
+            var fieldSetElem = $('fieldset[name="' + element + '"]');
+            result = isValidForNoneSelection(fieldSetElem);
             if (!result) {
-                errors[elem] = "If 'None' is selected, no other options can be selected.";
-                final_result = false;
+                errors[element] = "If 'None' is selected, no other options can be selected.";
             }
         });
-        if (!final_result) {
+        if (!result) {
             $validator.showErrors(errors);
         }
-        return final_result;
+        return result;
     };
 
     var isValidForNoneSelection = function (element) {
@@ -222,7 +221,7 @@ $(document).ready(function () {
         var $clonedElement = $(this).parent().clone(true).insertAfter($(this).parent());
         $clonedElement.find('input:not(:button)').val('');
         $clonedElement.find('input:not(:button)').trigger('change');
-    });
+        });
 
     $(document.body).on('click', '.remove_section', function () {
         var $parent = $(this).parent();
@@ -250,55 +249,89 @@ $(document).ready(function () {
             $div.find('[data-concept="' + k + '"]').val(v);
         });
     };
-    var populateNonConceptFields = function (prePopulateJSON) {
-        $.each(prePopulateJSON, function (key, value) {
-            var $elementWithNameAttr = $('[name="' + key + '"]');
-            $elementWithNameAttr.val(value);
-        });
 
-    };
-    var populateObservations = function (prePopulateJSON) {
-        $.each(prePopulateJSON, function (key, value) {
-            if (value instanceof Object) {
-                var $div = $('div[data-concept="' + key + '"]');
-                if ($div.length > 1) {
-                    return;
+    var populateNonConceptFields = function (prePopulateJson) {
+        $.each(prePopulateJson, function (key, value) {
+            var $elements = $('[name="' + key + '"]');
+            $.each($elements, function (i, element) {
+                if ($(element).is(':checkbox') || $(element).is(':radio')) {
+                    if ($(element).val() == value) {
+                        $(element).prop('checked', true);
+                    }
+                } else {
+                    $(element).val(value);
                 }
-                var $dataElement = $($('[name="' + key + '"]')[0]);
-                if ($dataElement.prop('tagName') == 'FIELDSET') {
-                    $.each(value, function (i, val) {
-                        if (val instanceof Array) {
-                            $.each(val, function (i, v) {
-                                $dataElement.find($("input[type=checkbox][value='" + v + "']")).attr('checked', 'true');
+            });
+        });
+    };
+
+    var applyValue = function (element, value) {
+        if ($(element).is(':checkbox') || $(element).is(':radio')) {
+            if ($(element).val() == value) {
+                $(element).prop('checked', true);
+            }
+        } else {
+            $(element).val(value);
+        }
+    };
+
+    var populateObservations = function (prePopulateJson) {
+        $.each(prePopulateJson, function (key, value) {
+            if (value instanceof Object) {
+                // check if this is a grouping observation.
+                var $div = $('div[data-concept="' + key + '"]');
+                if ($div.length > 0) {
+                    // we are dealing with grouping
+                    if (value instanceof Array) {
+                        $.each(value, function (i, element) {
+                            if (i == 0) {
+                                populateDataConcepts($div, element);
+                            } else {
+                                var $clonedDiv = $div.clone(true);
+                                populateDataConcepts($clonedDiv, element);
+                                $div.after($clonedDiv);
+                            }
+                        });
+                    } else {
+                        populateDataConcepts($div, value);
+                    }
+                } else {
+                    // we are dealing with repeating
+                    if (value instanceof Array) {
+                        var elements = $('[data-concept="' + key + '"]');
+                        if (elements.length < value.length) {
+                            $.each(value, function (i, valueElement) {
+                                if (i == 0) {
+                                    $.each(elements, function(i, element) {
+                                        applyValue(element, valueElement);
+                                    });
+                                } else {
+                                    var $div = $(elements).closest('.repeat');
+                                    var $clonedDiv = $div.clone(true);
+                                    $div.after($clonedDiv);
+                                    elements = $clonedDiv.find('[data-concept="' + key + '"]');
+                                    $.each(elements, function(i, element) {
+                                        applyValue(element, valueElement);
+                                    });
+                                }
                             });
                         } else {
-                            $dataElement.find($("input[type=checkbox][value='" + val + "']")).attr('checked', 'true');
+                            $.each(value, function (i, valueElement) {
+                                $.each(elements, function(i, element) {
+                                    applyValue(element, valueElement);
+                                });
+                            });
                         }
-                    });
-                } else if (value instanceof Array) {
-                    $.each(value, function (i, elem) {
-                        var $newDiv = $div.clone();
-                        populateDataConcepts($newDiv, elem);
-                        $div.after($newDiv);
-                    });
-                    $div.remove();
-                } else {
-                    populateDataConcepts($div, value);
+                    } else {
+                        populateDataConcepts($div, value);
+                    }
                 }
             }
             else {
-                var $dataConceptElement = $('[data-concept="' + key + '"]');
-                if ($dataConceptElement.prop('tagName') == 'FIELDSET') {
-                    $dataConceptElement.find($("input[type=checkbox][value='" + value + "']")).attr('checked', 'true');
-                } else {
-                    if ($dataConceptElement.is(':checkbox') || $dataConceptElement.is(':radio')) {
-                        if ($dataConceptElement.val() == value) {
-                            $dataConceptElement.prop('checked', true);
-                        }
-                    } else {
-                        $dataConceptElement.val(value);
-                    }
-                }
+                var $elements = $('[data-concept="' + key + '"]');
+                $.each($elements, function (i, element) {
+                    applyValue(element, value);
+                });
             }
         });
     };
@@ -308,9 +341,13 @@ $(document).ready(function () {
     if (prePopulateData != '') {
         console.time("Starting population");
         var prePopulateJSON = JSON.parse(prePopulateData);
-        populateNonConceptFields(prePopulateJSON['patient'] || {});
-        populateNonConceptFields(prePopulateJSON['encounter'] || {});
-        populateObservations(prePopulateJSON['observation'] || {});
+        $.each(prePopulateJSON, function(key, value) {
+            if (key === 'observation') {
+                populateObservations(value);
+            } else {
+                populateNonConceptFields(value);
+            }
+        });
         console.timeEnd("Starting population");
     }
 
@@ -319,83 +356,77 @@ $(document).ready(function () {
 
     /* Start - Code to Serialize form along with Data-Concepts */
     $.fn.serializeEncounterForm = function () {
-        var jsonResult = $.extend({}, serializeNonConceptElements(this), serializeConcepts(this), serializeNestedConcepts(this));
-        var patient = {};
-        var encounter = {};
-        var observation = {};
+        var jsonResult = $.extend({}, serializeNonConceptElements(this),
+            serializeConcepts(this), serializeNestedConcepts(this));
+        var completeObject = {};
+        var defaultKey = "observation";
         $.each(jsonResult, function (k, v) {
-            if (k.indexOf('patient') === 0) {
-                patient[k] = v;
-            } else if (k.indexOf('encounter') === 0) {
-                encounter[k] = v;
-            } else {
-                observation[k] = v;
+            var key = defaultKey;
+            var dotIndex = k.indexOf(".");
+            if (dotIndex >= 0) {
+                key = k.substr(0, k.indexOf("."));
             }
+            var objects = completeObject[key];
+            if (objects === undefined) {
+                objects = {};
+                completeObject[key] = objects;
+            }
+            objects[k] = v;
         });
-        var finalResult = {};
-        finalResult['patient'] = patient;
-        finalResult['encounter'] = encounter;
-        finalResult['observation'] = observation;
-        return  finalResult;
+        return completeObject;
     };
 
     var serializeNonConceptElements = function ($form) {
-        var o = {};
-        var $input_elements = $form.find('[name]').not('[data-concept]');
-        $.each($input_elements, function (i, element) {
-            if (isCheckBoxAndChecked($(element))) {
-                o = pushIntoArray(o, $(element).parent().attr('name'), $(element).val());
-            } else if (notACheckBoxOrFieldSet($(element))) {
-                o = pushIntoArray(o, $(element).attr('name'), $(element).val());
+        var object = {};
+        var $inputElements = $form.find('[name]').not('[data-concept]');
+        $.each($inputElements, function (i, element) {
+            if ($(element).is(':checkbox') || $(element).is(':radio')) {
+                if ($(element).is(':checked')) {
+                    object = pushIntoArray(object, $(element).attr('name'), $(element).val());
+                }
+            } else {
+                object = pushIntoArray(object, $(element).attr('name'), $(element).val());
             }
         });
-        return o;
-    };
-
-    var isCheckBoxAndChecked = function ($element) {
-        return $element.attr('type') == 'checkbox' && $element.is(':checked');
-    };
-
-    var notACheckBoxOrFieldSet = function ($element) {
-        return $element.attr('type') != 'checkbox' && $element.prop('tagName') != 'FIELDSET';
+        return object;
     };
 
     var serializeNestedConcepts = function ($form) {
         var result = {};
-        var parent_divs = $form.find('div[data-concept]');
-        $.each(parent_divs, function (i, element) {
-            var $visibleConcepts = $(element).find('*[data-concept]:visible');
-            result = pushIntoArray(result, $(element).attr('data-concept'), jsonifyConcepts($visibleConcepts));
+        var parentDivs = $form.find('div[data-concept]');
+        $.each(parentDivs, function (i, element) {
+            var $allConcepts = $(element).find('*[data-concept]:visible');
+            result = pushIntoArray(result, $(element).attr('data-concept'), jsonifyConcepts($allConcepts));
         });
         return result;
     };
 
     var serializeConcepts = function ($form) {
-        var o = {};
+        var object = {};
         var allConcepts = $form.find('*[data-concept]:visible');
         $.each(allConcepts, function (i, element) {
             if ($(element).closest('.section').attr('data-concept') == undefined) {
                 var jsonifiedConcepts = jsonifyConcepts($(element));
                 if (JSON.stringify(jsonifiedConcepts) != '{}' && jsonifiedConcepts != "") {
                     $.each(jsonifiedConcepts, function (key, value) {
-                        if (o[key] !== undefined) {
-                            if (!o[key].push) {
-                                o[key] = [o[key]];
+                        if (object[key] !== undefined) {
+                            if (!object[key].push) {
+                                object[key] = [object[key]];
                             }
-                            o[key].push(value || '');
+                            object[key].push(value || '');
                         } else {
-                            o[key] = value || '';
+                            object[key] = value || '';
                         }
                     });
                 }
             }
         });
-        return o;
+        return object;
     };
 
-    var jsonifyConcepts = function ($visibleConcepts) {
+    var jsonifyConcepts = function ($allConcepts) {
         var o = {};
-        $.each($visibleConcepts, function (i, element) {
+        $.each($allConcepts, function (i, element) {
             if ($(element).is(':checkbox') || $(element).is(':radio')) {
                 if ($(element).is(':checked')) {
                     o = pushIntoArray(o, $(element).attr('data-concept'), $(element).val());
@@ -407,19 +438,19 @@ $(document).ready(function () {
         return o;
     };
 
-    var pushIntoArray = function (obj, key, value) {
+    var pushIntoArray = function (object, key, value) {
         if (JSON.stringify(value) == '{}' || value == "") {
-            return obj;
+            return object;
         }
-        if (obj[key] !== undefined) {
-            if (!obj[key].push) {
-                obj[key] = [obj[key]];
+        if (object[key] !== undefined) {
+            if (!object[key].push) {
+                object[key] = [object[key]];
             }
-            obj[key].push(value || '');
+            object[key].push(value || '');
         } else {
-            obj[key] = value || '';
+            object[key] = value || '';
         }
-        return obj;
+        return object;
     };
 
     /* End - Code to Serialize form along with Data-Concepts */
