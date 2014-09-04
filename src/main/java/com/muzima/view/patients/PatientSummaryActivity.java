@@ -22,6 +22,7 @@ import com.actionbarsherlock.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.PersonAttribute;
 import com.muzima.api.model.User;
 import com.muzima.controller.FormController;
 import com.muzima.controller.NotificationController;
@@ -58,6 +59,10 @@ public class PatientSummaryActivity extends BaseActivity {
         try {
             setupPatientMetadata();
             notifyOfIdChange();
+            if( !checkFingerprint())
+            {
+                Toast.makeText(this, "Fingerprint has not been captured ", Toast.LENGTH_SHORT).show();
+            }
         } catch (PatientController.PatientLoadException e) {
             Toast.makeText(this, "An error occurred while fetching patient", Toast.LENGTH_SHORT).show();
             finish();
@@ -203,5 +208,22 @@ public class PatientSummaryActivity extends BaseActivity {
     private void executeBackgroundTask() {
         mBackgroundQueryTask = new BackgroundQueryTask();
         mBackgroundQueryTask.execute();
+    }
+    private boolean checkFingerprint() {
+
+        boolean hasFingerprint=false;
+        List<PersonAttribute> personAttribute =patient.getAtributes();
+
+        for(PersonAttribute personAttribute1: personAttribute)
+        {
+            if(personAttribute1.getAttributeType().getName().equalsIgnoreCase("fingerprint"))
+            {
+                hasFingerprint=true;
+            }
+
+        }
+
+        return hasFingerprint;
+
     }
 }

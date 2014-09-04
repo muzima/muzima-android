@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical" >
+
+	<RelativeLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content" >
+
+		<Button
+				android:id="@+id/buttonEnroll"
+				style="@style/Button"
+				android:layout_width="150dp"
+				android:layout_height="38dp"
+				android:layout_marginLeft="5dp"
+				android:layout_marginTop="5dp"
+				android:text="Scan Finger" />
+
+		<Button
+				android:id="@+id/buttonVerify"
+				style="@style/Button"
+				android:layout_width="150dp"
+				android:layout_height="38dp"
+				android:layout_alignLeft="@id/buttonEnroll"
+				android:layout_below="@id/buttonEnroll"
+				android:text="Verify Patient" />
+
+		<Button
+				android:id="@+id/buttonIdentify"
+				android:layout_width="150dp"
+				style="@style/Button"
+				android:layout_height="38dp"
+				android:layout_alignLeft="@id/buttonEnroll"
+				android:layout_below="@id/buttonVerify"
+				android:text="Identify Patient" />
+
+		<Button
+				android:id="@+id/buttonStop"
+				style="@style/Button"
+				android:layout_width="150dp"
+				android:layout_height="38dp"
+				android:layout_alignLeft="@id/buttonEnroll"
+				android:layout_below="@id/buttonIdentify"
+				android:enabled="false"
+				android:text="Stop Process" />
+
+		<Button
+				android:id="@+id/buttonExit"
+				style="@style/Button"
+				android:layout_width="150dp"
+				android:layout_height="38dp"
+				android:layout_alignLeft="@id/buttonEnroll"
+				android:layout_below="@id/buttonStop"
+				android:text="Back " />
+
+		<ImageView
+				android:id="@+id/imageFinger"
+				android:layout_width="100dp"
+				android:layout_height="192dp"
+				android:layout_alignParentRight="true"
+				android:layout_alignTop="@id/buttonEnroll"
+				android:layout_marginRight="10dp"
+				android:contentDescription="fingerprint image"
+				/>
+	</RelativeLayout>
+
+	<TextView
+			android:id="@+id/txtMessage"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="5dp"
+			android:hint="Status"
+			android:textColor="#0000ff"
+			android:textSize="8pt" />
+
+
+	<Button
+			android:id="@+id/proceed"
+			style="@style/Button"
+			android:layout_width="wrap_content"
+			android:layout_height="36dp"
+			android:layout_gravity="center"
+			android:layout_marginBottom="5dp"
+			android:text="Continue"
+			android:textColor="@android:color/white"
+			android:textStyle="normal" />
+
+
+</LinearLayout>

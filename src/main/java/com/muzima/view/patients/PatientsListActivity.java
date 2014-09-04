@@ -15,12 +15,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
@@ -37,6 +32,7 @@ import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.barcode.IntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
+import com.muzima.utils.fingerprint.futronic.FingerprintIntent;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.notifications.SyncNotificationsIntent;
@@ -196,9 +192,11 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             case R.id.menu_client_add:
                 callConfirmationDialog();
                 return true;
-
             case R.id.scan:
                 invokeBarcodeScan();
+                return true;
+            case R.id.fingerprint:
+                invokeFingerprintScan();
                 return true;
             case R.id.menu_load:
                 if (notificationsSyncInProgress) {
@@ -352,7 +350,11 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
         scanIntegrator.initiateScan();
     }
-
+    public void invokeFingerprintScan() {
+        Intent i = new Intent(getApplicationContext(), FingerprintIntent.class);
+        i.putExtra("action", 2);
+        startActivity(i);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {

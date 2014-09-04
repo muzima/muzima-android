@@ -230,7 +230,15 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.patients.PatientSummaryActivity"/>
         </activity>
-
+	    <activity
+			    android:name=".utils.fingerprint.futronic.FingerprintIntent"
+			    android:label="@string/title_activity_clients_list"
+			    android:configChanges="orientation|screenSize"
+			    android:parentActivityName="com.muzima.view.MainActivity">
+		    <meta-data
+				    android:name="android.support.PARENT_ACTIVITY"
+				    android:value="com.muzima.view.DashboardActivity"/>
+	    </activity>
         <!--Wizard Activities Start-->
         <activity android:name=".view.cohort.CohortWizardActivity"
                   android:configChanges="orientation|screenSize"

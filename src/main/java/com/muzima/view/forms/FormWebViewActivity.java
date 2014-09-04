@@ -37,6 +37,7 @@ import com.muzima.utils.Constants;
 import com.muzima.utils.audio.AudioResult;
 import com.muzima.utils.barcode.IntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
+import com.muzima.utils.fingerprint.futronic.FingerprintResult;
 import com.muzima.utils.imaging.ImageResult;
 import com.muzima.utils.video.VideoResult;
 import com.muzima.view.BroadcastListenerActivity;
@@ -66,6 +67,8 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     public static final String ZIGGY_FILE_LOADER = "ziggyFileLoader";
     public static final String FORM = "form";
     public static final String DISCRIMINATOR = "discriminator";
+    public static final String FINGERPRINT = "fingerprintComponent";
+
 
 
     private WebView webView;
@@ -79,6 +82,8 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     private AudioComponent audioComponent;
     private VideoComponent videoComponent;
     private Map<String, String> scanResultMap;
+    private FingerprintComponent fingerprintComponent;
+    private Map<String, String> fingerprintResultMap;
     private Map<String, String> imageResultMap;
     private Map<String, String> audioResultMap;
     private Map<String, String> videoResultMap;
@@ -97,6 +102,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         imageResultMap = new HashMap<String, String>();
         audioResultMap = new HashMap<String, String>();
         videoResultMap = new HashMap<String, String>();
+        fingerprintResultMap = new HashMap<String, String>();
         setContentView(R.layout.activity_form_webview);
         progressDialog = new MuzimaProgressDialog(this);
         showProgressBar("Loading...");
@@ -161,6 +167,10 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             Log.d(TAG, "Header:" + sectionName + "json:" + jsonMap);
             webView.loadUrl("javascript:document.populateVideo('" + sectionName + "', " + jsonMap + ")");
         }
+        if (fingerprintResultMap != null && !fingerprintResultMap.isEmpty()) {
+            String jsonMap = new JSONObject(fingerprintResultMap).toString();
+            webView.loadUrl("javascript:document.populateFingeprint(" + jsonMap + ")");
+        }
 
         super.onResume();
     }
@@ -223,6 +233,11 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             sectionName =  videoResult.getSectionName();
             videoResultMap.put(videoComponent.getVideoPathField(), videoResult.getVideoUri());
             videoResultMap.put(videoComponent.getVideoCaptionField(), videoResult.getVideoCaption());
+        }
+
+        FingerprintResult fingerprintResult = FingerprintComponent.parseActivityResult(requestCode, resultCode, intent);
+        if (fingerprintResult != null) {
+            fingerprintResultMap.put(fingerprintResult.getSectionName(), fingerprintResult.getFingerprintString());
         }
     }
 
@@ -307,10 +322,12 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         imagingComponent = new ImagingComponent(this);
         audioComponent = new AudioComponent(this);
         videoComponent = new VideoComponent(this);
+        fingerprintComponent= new FingerprintComponent(this);
         webView.addJavascriptInterface(barCodeComponent, BARCODE);
         webView.addJavascriptInterface(imagingComponent, IMAGE);
         webView.addJavascriptInterface(audioComponent, AUDIO);
         webView.addJavascriptInterface(videoComponent, VIDEO);
+        webView.addJavascriptInterface(fingerprintComponent, FINGERPRINT);
         webView.addJavascriptInterface(new ZiggyFileLoader("www/ziggy", getApplicationContext().getAssets(), formInstance.getModelJson()), ZIGGY_FILE_LOADER);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         if (isFormComplete()) {
