@@ -493,7 +493,7 @@ $(document).ready(function () {
         var object = {};
         var allConcepts = $form.find('*[data-concept]').filter(':visible');
         $.each(allConcepts, function (i, element) {
-            if ($(element).closest('.section').attr('data-concept') == undefined) {
+            if ($(element).closest('.section, .concept-set').attr('data-concept') == undefined) {
                 var jsonifiedConcepts = jsonifyConcepts($(element));
                 if (JSON.stringify(jsonifiedConcepts) != '{}' && jsonifiedConcepts != "") {
                     $.each(jsonifiedConcepts, function (key, value) {
