@@ -231,7 +231,7 @@
                     android:value="com.muzima.view.patients.PatientSummaryActivity"/>
         </activity>
 	    <activity
-			    android:name=".utils.fingerprint.futronic.FingerprintIntent"
+			    android:name=".utils.fingerprint.futronic.FingerPrintActivity"
 			    android:label="@string/title_activity_clients_list"
 			    android:configChanges="orientation|screenSize"
 			    android:parentActivityName="com.muzima.view.MainActivity">

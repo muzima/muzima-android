@@ -42,22 +42,22 @@ public class HTMLFormDataStore {
         } catch (FormController.FormDataSaveException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving the form", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while saving form data", e);
-        } catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving the form", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while saving form data", e);
         }
     }
 
     private void parseForm(String jsonPayload, String status) {
-        if(status.equals(Constants.STATUS_INCOMPLETE)){
+        if (status.equals(Constants.STATUS_INCOMPLETE)) {
             return;
         }
-        getFormParser().createAndPersistObservations(jsonPayload,formData.getUuid());
+        getFormParser().createAndPersistObservations(jsonPayload, formData.getUuid());
     }
 
-    public HTMLFormObservationCreator getFormParser(){
-        MuzimaApplication applicationContext = (MuzimaApplication)formWebViewActivity.getApplicationContext();
+    public HTMLFormObservationCreator getFormParser() {
+        MuzimaApplication applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
         return new HTMLFormObservationCreator(applicationContext.getPatientController(), applicationContext.getConceptController(),
-        applicationContext.getEncounterController(), applicationContext.getObservationController());
+                applicationContext.getEncounterController(), applicationContext.getObservationController());
     }
 }

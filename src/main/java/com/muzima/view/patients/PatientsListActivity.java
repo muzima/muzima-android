@@ -15,7 +15,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.os.Handler;
+import com.futronictech.SDKHelper.UsbDeviceDataExchangeImpl;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
@@ -32,7 +39,6 @@ import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.barcode.IntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
-import com.muzima.utils.fingerprint.futronic.FingerprintIntent;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.notifications.SyncNotificationsIntent;
@@ -66,6 +72,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private Button searchServerBtn;
     private SearchView searchView;
     private boolean intentBarcodeResults = false;
+    private UsbDeviceDataExchangeImpl usbDeviceDataExchange;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,11 +89,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             }
         } else
             isNotificationsList = false;
-
         progressBarContainer = (FrameLayout) findViewById(R.id.progressbarContainer);
         setupNoDataView();
         setupListView(cohortId);
-
         searchServerBtn = (Button) findViewById(R.id.search_server_btn);
         searchServerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +105,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         });
         if (isNotificationsList)
             searchServerBtn.setVisibility(View.GONE);
+        usbDeviceDataExchange = new UsbDeviceDataExchangeImpl(this, mHandler);
     }
 
     @Override
@@ -122,15 +128,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 return true;
             }
         });
-
         if (quickSearch) {
             searchView.setIconified(false);
             searchView.requestFocus();
         } else
             searchView.setIconified(true);
-
         menubarSyncButton = menu.findItem(R.id.menu_load);
-
         if (isNotificationsList) {
             menubarSyncButton.setVisible(true);
             searchView.setVisibility(View.GONE);
@@ -138,7 +141,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             menubarSyncButton.setVisible(false);
             searchView.setVisibility(View.VISIBLE);
         }
-
         super.onCreateOptionsMenu(menu);
         return true;
     }
@@ -153,7 +155,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     // Confirmation dialog for confirming if the patient have an existing ID
     private void callConfirmationDialog() {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(PatientsListActivity.this);
         builder
                 .setCancelable(true)
@@ -162,15 +163,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 .setMessage(getResources().getString(R.string.patient_registration_id_card_question))
                 .setPositiveButton("Yes", yesClickListener())
                 .setNegativeButton("No", noClickListener()).create().show();
-
-
     }
 
     private Dialog.OnClickListener yesClickListener() {
         return new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
                 searchView.setIconified(false);
                 searchView.requestFocus();
             }
@@ -203,12 +201,10 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                     Toast.makeText(this, "Action not allowed while sync is in progress", Toast.LENGTH_SHORT).show();
                     return true;
                 }
-
                 if (!NetworkUtils.isConnectedToNetwork(this)) {
                     Toast.makeText(this, "No connection found, please connect your device and try again", Toast.LENGTH_SHORT).show();
                     return true;
                 }
-
                 syncAllNotificationsInBackgroundService();
             default:
                 return super.onOptionsItemSelected(item);
@@ -240,22 +236,17 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     private void setupNoDataView() {
-
         noDataView = findViewById(R.id.no_data_layout);
-
         TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
         if (isNotificationsList)
             noDataMsgTextView.setText(getResources().getText(R.string.no_notification_available));
         else
             noDataMsgTextView.setText(getResources().getText(R.string.no_clients_matched_locally));
-
         TextView noDataTipTextView = (TextView) findViewById(R.id.no_data_tip);
-
         if (isNotificationsList)
             noDataTipTextView.setText(R.string.no_notification_available_tip);
         else
             noDataTipTextView.setText(R.string.no_clients_matched_tip_locally);
-
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
         noDataTipTextView.setTypeface(Fonts.roboto_light(this));
     }
@@ -277,7 +268,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     @Override
     public void onQueryTaskFinish() {
-
         listView.setVisibility(VISIBLE);
         progressBarContainer.setVisibility(INVISIBLE);
     }
@@ -285,16 +275,13 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     protected void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-
         int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS, SyncStatusConstants.UNKNOWN_ERROR);
         int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
-
         if (syncType == DataSyncServiceConstants.SYNC_NOTIFICATIONS) {
             hideProgressbar();
             onNotificationDownloadFinish();
         }
     }
-
 
     public void hideProgressbar() {
         menubarSyncButton.setActionView(null);
@@ -308,7 +295,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         notificationsSyncInProgress = true;
         onNotificationDownloadStart();
         showProgressBar();
-
         User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
         if (authenticatedUser != null) {
             // get downloaded cohorts and sync obs and encounters
@@ -321,7 +307,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 for (Cohort cohort : downloadedCohorts) {
                     downloadedCohortsUuid.add(cohort.getUuid());
                 }
-
             } catch (CohortController.CohortFetchException e) {
                 e.printStackTrace();
             }
@@ -337,38 +322,74 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     public void onNotificationDownloadFinish() {
         notificationsSyncInProgress = false;
         patientAdapter.reloadData();
-        //updateSyncText();
     }
 
     public void onNotificationDownloadStart() {
         notificationsSyncInProgress = true;
     }
 
-
     public void invokeBarcodeScan() {
         IntentIntegrator scanIntegrator = new IntentIntegrator(this);
-
         scanIntegrator.initiateScan();
     }
+
     public void invokeFingerprintScan() {
-        Intent i = new Intent(getApplicationContext(), FingerprintIntent.class);
-        i.putExtra("action", 2);
-        startActivity(i);
+        try {
+            if (usbDeviceDataExchange.OpenDevice(0, true)) {
+                Intent i = new Intent(getApplicationContext(), com.muzima.utils.fingerprint.futronic.FingerPrintActivity.class);
+                i.putExtra("action", 2);
+                startActivity(i);
+            } else {
+                if (!usbDeviceDataExchange.IsPendingOpen()) {
+                    showMessageDialog("Cannot start fingerprint operation.\n" +
+                            "Scanner device is not connected, please connect");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
-
-
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
         if (scanningResult != null) {
             intentBarcodeResults = true;
             searchView.setQuery(scanningResult.getContents(), false);
-
         }
-
-
     }
 
+    private void showMessageDialog(String msg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(com.muzima.view.patients.PatientsListActivity.this);
+        builder
+                .setCancelable(true)
+                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                .setTitle("Information")
+                .setMessage("" + msg)
+                .setNegativeButton("Ok", null).create().show();
+    }
 
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case UsbDeviceDataExchangeImpl.MESSAGE_ALLOW_DEVICE: {
+                    if (usbDeviceDataExchange.ValidateContext()) {
+                        Intent i = new Intent(getApplicationContext(), com.muzima.utils.fingerprint.futronic.FingerPrintActivity.class);
+                        i.putExtra("action", 2);
+                        startActivity(i);
+                    } else {
+                        showMessageDialog("Cannot start fingerprint operation.\n" +
+                                "Scanner device is not connected, please connect");
+                    }
+                    break;
+                }
+                case UsbDeviceDataExchangeImpl.MESSAGE_DENY_DEVICE: {
+                    showMessageDialog("User deny scanner device");
+                    break;
+                }
+            }
+        }
+    };
 }
+

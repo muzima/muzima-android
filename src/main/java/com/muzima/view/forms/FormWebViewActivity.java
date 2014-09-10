@@ -69,8 +69,6 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     public static final String DISCRIMINATOR = "discriminator";
     public static final String FINGERPRINT = "fingerprintComponent";
 
-
-
     private WebView webView;
     private Form form;
     private FormTemplate formTemplate;
@@ -149,19 +147,16 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             Log.d(TAG, jsonMap);
             webView.loadUrl("javascript:document.populateBarCode(" + jsonMap + ")");
         }
-
         if (imageResultMap != null && !imageResultMap.isEmpty()) {
             String jsonMap = new JSONObject(imageResultMap).toString();
             Log.d(TAG, "Header:" + sectionName + "json:" + jsonMap);
             webView.loadUrl("javascript:document.populateImage('" + sectionName + "', " + jsonMap + ")");
         }
-
         if (audioResultMap != null && !audioResultMap.isEmpty()) {
             String jsonMap = new JSONObject(audioResultMap).toString();
             Log.d(TAG, "Header:" + sectionName + "json:" + jsonMap);
             webView.loadUrl("javascript:document.populateAudio('" + sectionName + "', " + jsonMap + ")");
         }
-
         if (videoResultMap != null && !videoResultMap.isEmpty()) {
             String jsonMap = new JSONObject(videoResultMap).toString();
             Log.d(TAG, "Header:" + sectionName + "json:" + jsonMap);
@@ -171,7 +166,6 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             String jsonMap = new JSONObject(fingerprintResultMap).toString();
             webView.loadUrl("javascript:document.populateFingeprint(" + jsonMap + ")");
         }
-
         super.onResume();
     }
 
@@ -213,28 +207,24 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         if (scanResult != null) {
             scanResultMap.put(barCodeComponent.getFieldName(), scanResult.getContents());
         }
-
         ImageResult imageResult = ImagingComponent.parseActivityResult(requestCode, resultCode, intent);
-        if (imageResult != null)  {
-            sectionName =  imageResult.getSectionName();
+        if (imageResult != null) {
+            sectionName = imageResult.getSectionName();
             imageResultMap.put(imagingComponent.getImagePathField(), imageResult.getImageUri());
             imageResultMap.put(imagingComponent.getImageCaptionField(), imageResult.getImageCaption());
         }
-
         AudioResult audioResult = AudioComponent.parseActivityResult(requestCode, resultCode, intent);
-        if (audioResult != null)  {
-            sectionName =  audioResult.getSectionName();
+        if (audioResult != null) {
+            sectionName = audioResult.getSectionName();
             audioResultMap.put(audioComponent.getAudioPathField(), audioResult.getAudioUri());
             audioResultMap.put(audioComponent.getAudioCaptionField(), audioResult.getAudioCaption());
         }
-
         VideoResult videoResult = VideoComponent.parseActivityResult(requestCode, resultCode, intent);
-        if (videoResult != null)  {
-            sectionName =  videoResult.getSectionName();
+        if (videoResult != null) {
+            sectionName = videoResult.getSectionName();
             videoResultMap.put(videoComponent.getVideoPathField(), videoResult.getVideoUri());
             videoResultMap.put(videoComponent.getVideoCaptionField(), videoResult.getVideoCaption());
         }
-
         FingerprintResult fingerprintResult = FingerprintComponent.parseActivityResult(requestCode, resultCode, intent);
         if (fingerprintResult != null) {
             fingerprintResultMap.put(fingerprintResult.getSectionName(), fingerprintResult.getFingerprintString());
@@ -273,12 +263,10 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
 
     private void setupFormData(Patient patient) throws FormFetchException, FormController.FormDataFetchException, FormController.FormDataSaveException {
         BaseForm formObject = (BaseForm) getIntent().getSerializableExtra(FORM);
-
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
         String formId = formObject.getFormUuid();
         form = formController.getFormByUuid(formId);
         formTemplate = formController.getFormTemplateByUuid(formId);
-
         if (formObject.hasData()) {
             formData = formController.getFormDataByUuid(((FormWithData) formObject).getFormDataUuid());
         } else {
@@ -304,16 +292,13 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         return formData;
     }
 
-
     private void setupWebView() {
         webView = (WebView) findViewById(R.id.webView);
         webView.setWebChromeClient(createWebChromeClient());
-
         getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
         getSettings().setJavaScriptEnabled(true);
         getSettings().setDatabaseEnabled(true);
         getSettings().setDomStorageEnabled(true);
-
         FormInstance formInstance = new FormInstance(form, formTemplate);
         webView.addJavascriptInterface(formInstance, FORM_INSTANCE);
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
@@ -322,7 +307,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         imagingComponent = new ImagingComponent(this);
         audioComponent = new AudioComponent(this);
         videoComponent = new VideoComponent(this);
-        fingerprintComponent= new FingerprintComponent(this);
+        fingerprintComponent = new FingerprintComponent(this);
         webView.addJavascriptInterface(barCodeComponent, BARCODE);
         webView.addJavascriptInterface(imagingComponent, IMAGE);
         webView.addJavascriptInterface(audioComponent, AUDIO);
@@ -401,7 +386,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
 
     private boolean isEncounterForm() {
         return getIntent().getStringExtra(DISCRIMINATOR).equals(Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER)
-            || getIntent().getStringExtra(DISCRIMINATOR).equals(Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION);
+                || getIntent().getStringExtra(DISCRIMINATOR).equals(Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION);
     }
 }
 

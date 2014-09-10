@@ -3,13 +3,11 @@ package com.muzima.view.forms;
 import android.app.Activity;
 import android.content.Intent;
 import android.webkit.JavascriptInterface;
-import com.muzima.utils.fingerprint.futronic.FingerprintIntent;
 import com.muzima.utils.fingerprint.futronic.FingerprintResult;
 
-import static com.muzima.utils.fingerprint.futronic.FingerprintIntent.FINGERPRINTDATA;
+import static com.muzima.utils.fingerprint.futronic.FingerPrintActivity.fingerPrintData;
 
 public class FingerprintComponent {
-
 
     private final Activity activity;
     public static String fieldName;
@@ -22,7 +20,7 @@ public class FingerprintComponent {
     @JavascriptInterface
     public void startFingerprintIntent(String fieldName) {
         this.fieldName = fieldName;
-        Intent fingerPrintIntent = new Intent(activity.getApplication(), FingerprintIntent.class);
+        Intent fingerPrintIntent = new Intent(activity.getApplication(), com.muzima.utils.fingerprint.futronic.FingerPrintActivity.class);
         fingerPrintIntent.putExtra("action", 0);
         activity.startActivityForResult(fingerPrintIntent, REQUEST_CODE);
     }
@@ -34,8 +32,8 @@ public class FingerprintComponent {
     public static FingerprintResult parseActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                String fingerprintString = intent.getStringExtra(FINGERPRINTDATA);
-                return new FingerprintResult(fingerprintString,getFieldName());
+                String fingerprintString = intent.getStringExtra(fingerPrintData);
+                return new FingerprintResult(fingerprintString, getFieldName());
             }
         }
         return null;

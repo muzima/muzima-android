@@ -5,10 +5,10 @@ public final class FingerprintResult {
     private final String fingerprintString;
 
     public FingerprintResult() {
-        this(null,null);
+        this(null, null);
     }
 
-    public FingerprintResult(String fingerprint,String sectionName) {
+    public FingerprintResult(String fingerprint, String sectionName) {
         this.fingerprintString = fingerprint;
         this.sectionName = sectionName;
     }
@@ -20,6 +20,4 @@ public final class FingerprintResult {
     public String getFingerprintString() {
         return fingerprintString;
     }
-
-
 }
