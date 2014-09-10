@@ -16,6 +16,7 @@ import com.muzima.api.model.FormData;
 import com.muzima.controller.FormController;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.utils.Constants;
+import com.muzima.utils.StringUtils;
 
 public class HTMLFormDataStore {
     private static final String TAG = "FormDataStore";
@@ -28,6 +29,11 @@ public class HTMLFormDataStore {
         this.formWebViewActivity = formWebViewActivity;
         this.formController = formController;
         this.formData = formData;
+    }
+
+    @JavascriptInterface
+    public String getStatus() {
+        return formData == null ? StringUtils.EMPTY : formData.getStatus();
     }
 
     @JavascriptInterface

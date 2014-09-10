@@ -10,6 +10,10 @@ $(document).ready(function () {
     'use strict';
     var dateFormat = "dd-mm-yy";
 
+    if (htmlDataStore.getStatus().toLowerCase() == 'complete') {
+        $('input, select, textarea').prop('disabled', true);
+    }
+
     /* Start - Function to save the form */
     document.submit = function () {
         var validForm = $("form").valid();
