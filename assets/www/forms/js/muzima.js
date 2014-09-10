@@ -248,7 +248,14 @@ $(document).ready(function () {
     /* Start - JS to Prepopulate Data in the Form */
     var populateDataConcepts = function ($div, value) {
         $.each(value, function (k, v) {
-            $div.find('[data-concept="' + k + '"]').val(v);
+            if (v instanceof Array) {
+                $div.find('[data-concept="' + k + '"]').val(v);
+            } else {
+                var elements = $div.find('[data-concept="' + k + '"]');
+                $.each(elements, function(i, element) {
+                    applyValue(element, v);
+                });
+            }
         });
     };
 
@@ -308,7 +315,7 @@ $(document).ready(function () {
                                         applyValue(element, valueElement);
                                     });
                                 } else {
-                                    var $div = $(elements).closest('.repeat');
+                                    var $div = $(elements).closest('.repeat, .custom-repeat');
                                     var $clonedDiv = $div.clone(true);
                                     $div.after($clonedDiv);
                                     elements = $clonedDiv.find('[data-concept="' + key + '"]');
