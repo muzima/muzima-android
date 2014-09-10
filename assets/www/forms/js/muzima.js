@@ -262,15 +262,13 @@ $(document).ready(function () {
     var populateNonConceptFields = function (prePopulateJson) {
         $.each(prePopulateJson, function (key, value) {
             var $elements = $('[name="' + key + '"]');
-            $.each($elements, function (i, element) {
-                if ($(element).is(':checkbox') || $(element).is(':radio')) {
-                    if ($(element).val() == value) {
-                        $(element).prop('checked', true);
-                    }
-                } else {
-                    $(element).val(value);
-                }
-            });
+            if (value instanceof Array) {
+                $elements.val(value);
+            } else {
+                $.each($elements, function (i, element) {
+                    applyValue(element, value);
+                });
+            }
         });
     };
 
