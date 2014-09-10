@@ -11,20 +11,30 @@ package com.muzima.utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DateUtils {
     public static String getFormattedDate(Date date){
-        SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat formattedDate = new SimpleDateFormat("dd-MM-yyyy");
         return formattedDate.format(date);
     }
 
     public static Date parse(String dateAsString) throws ParseException {
-        SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd");
-        return formattedDate.parse(dateAsString);
+        String datePattern = "[\\d]{2}-[\\d]{2}-[\\d]{4}";
+        Pattern pattern = Pattern.compile(datePattern);
+        Matcher matcher = pattern.matcher(dateAsString);
+        if (matcher.matches()) {
+            SimpleDateFormat formattedDate = new SimpleDateFormat("dd-MM-yyyy");
+            return formattedDate.parse(dateAsString);
+        } else {
+            SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd");
+            return formattedDate.parse(dateAsString);
+        }
     }
 
     public static String getFormattedDateTime(Date date){
-        SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+        SimpleDateFormat formattedDate = new SimpleDateFormat("dd-MM-yyyy hh:mm");
         return formattedDate.format(date);
     }
 
