@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.webkit.JavascriptInterface;
 import com.muzima.utils.fingerprint.futronic.FingerprintResult;
 
-import static com.muzima.utils.fingerprint.futronic.FingerPrintActivity.fingerPrintData;
+import static com.muzima.utils.fingerprint.futronic.FingerPrintActivity.FINGERPRINT_DATA;
 
 public class FingerprintComponent {
 
@@ -32,7 +32,7 @@ public class FingerprintComponent {
     public static FingerprintResult parseActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                String fingerprintString = intent.getStringExtra(fingerPrintData);
+                String fingerprintString = intent.getStringExtra(FINGERPRINT_DATA);
                 return new FingerprintResult(fingerprintString, getFieldName());
             }
         }

@@ -40,14 +40,14 @@ import java.util.Vector;
 public class FingerPrintActivity
         extends Activity
         implements IEnrollmentCallBack, IVerificationCallBack, IIdentificationCallBack {
-    public static final int showMessage = 1;
-    public static final int showImage = 2;
-    public static final int enrollFinger = 3;
-    public static final int enableControls = 4;
-    public static final String fingerPrintData = "fingerprintData";
-    private static final int operationEnroll = 1;
-    private static final int operationIdentify = 2;
-    private static final int operationVerify = 3;
+    public static final int SHOW_MESSAGE = 1;
+    public static final int SHOW_IMAGE = 2;
+    public static final int ENROLL_FINGER = 3;
+    public static final int ENABLE_CONTROLS = 4;
+    public static final String FINGERPRINT_DATA = "fingerprintData";
+    private static final int OPERATION_ENROLL = 1;
+    private static final int OPERATION_IDENTIFY = 2;
+    private static final int OPERATION_VERIFY = 3;
     private static final String TAG = "PatientsLocalSearchAdapter";
     private static Bitmap bitmap = null;
     private static String attributeName = "fingerprint";
@@ -77,29 +77,29 @@ public class FingerPrintActivity
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case showMessage:
+                case SHOW_MESSAGE:
                     String showMsg = (String) msg.obj;
                     textView.setText(showMsg);
                     break;
-                case showImage:
+                case SHOW_IMAGE:
                     imageView.setImageBitmap(bitmap);
                     break;
-                case enrollFinger:
+                case ENROLL_FINGER:
                     startEnrollment();
                     break;
-                case enableControls:
+                case ENABLE_CONTROLS:
                     enableControls(true);
                     break;
                 case UsbDeviceDataExchangeImpl.MESSAGE_ALLOW_DEVICE: {
                     if (usbDeviceDataExchange.ValidateContext()) {
                         switch (mPendingOperation) {
-                            case operationEnroll:
+                            case OPERATION_ENROLL:
                                 startEnrollment();
                                 break;
-                            case operationIdentify:
+                            case OPERATION_IDENTIFY:
                                 loadAllFingerprints();
                                 break;
-                            case operationVerify:
+                            case OPERATION_VERIFY:
                                 startVerification();
                                 break;
                         }
@@ -147,7 +147,7 @@ public class FingerPrintActivity
                     case 0:
                         if (processCompletedState) {
                             Intent i = new Intent();
-                            i.putExtra(fingerPrintData, fingerPrint);
+                            i.putExtra(FINGERPRINT_DATA, fingerPrint);
                             setResult(RESULT_OK, i);
                             finish();
                         } else
@@ -176,10 +176,10 @@ public class FingerPrintActivity
                 try {
                     if (usbDeviceDataExchange.OpenDevice(0, true)) {
                         // send message to start enrollment
-                        mHandler.obtainMessage(enrollFinger).sendToTarget();
+                        mHandler.obtainMessage(ENROLL_FINGER).sendToTarget();
                     } else {
                         if (usbDeviceDataExchange.IsPendingOpen()) {
-                            mPendingOperation = operationEnroll;
+                            mPendingOperation = OPERATION_ENROLL;
                         } else {
                             showMessageDialog("Cannot start enrollment operation.\n" +
                                     "Scanner device is not connected, please connect");
@@ -197,7 +197,7 @@ public class FingerPrintActivity
                         startVerification();
                     } else {
                         if (usbDeviceDataExchange.IsPendingOpen()) {
-                            mPendingOperation = operationVerify;
+                            mPendingOperation = OPERATION_VERIFY;
                         } else {
                             showMessageDialog("Cannot start enrollment operation.\n" +
                                     "Can't open scanner device");
@@ -215,7 +215,7 @@ public class FingerPrintActivity
                         loadAllFingerprints();
                     } else {
                         if (usbDeviceDataExchange.IsPendingOpen()) {
-                            mPendingOperation = operationIdentify;
+                            mPendingOperation = OPERATION_IDENTIFY;
                         } else {
                             showMessageDialog("Cannot start enrollment operation.\n" +
                                     "Can't open scanner device");
@@ -244,7 +244,7 @@ public class FingerPrintActivity
      * @param Progress the current progress data structure.
      */
     public void OnPutOn(FTR_PROGRESS Progress) {
-        mHandler.obtainMessage(showMessage, -1, -1, "Put finger into device, please ...").sendToTarget();
+        mHandler.obtainMessage(SHOW_MESSAGE, -1, -1, "Put finger into device, please ...").sendToTarget();
     }
 
     /**
@@ -253,7 +253,7 @@ public class FingerPrintActivity
      * @param Progress the current progress data structure.
      */
     public void OnTakeOff(FTR_PROGRESS Progress) {
-        mHandler.obtainMessage(showMessage, -1, -1, "Take off finger from device, please ...").sendToTarget();
+        mHandler.obtainMessage(SHOW_MESSAGE, -1, -1, "Take off finger from device, please ...").sendToTarget();
     }
 
     /**
@@ -263,7 +263,7 @@ public class FingerPrintActivity
      */
     public void UpdateScreenImage(Bitmap Image) {
         bitmap = Image;
-        mHandler.obtainMessage(showImage).sendToTarget();
+        mHandler.obtainMessage(SHOW_IMAGE).sendToTarget();
     }
 
     /**
@@ -274,7 +274,7 @@ public class FingerPrintActivity
      *         should be aborted, otherwise is <code>false</code>
      */
     public boolean OnFakeSource(FTR_PROGRESS Progress) {
-        mHandler.obtainMessage(showMessage, -1, -1, "Fake source detected").sendToTarget();
+        mHandler.obtainMessage(SHOW_MESSAGE, -1, -1, "Fake source detected").sendToTarget();
         return false;
         // if want to cancel, return true
     }
@@ -298,13 +298,13 @@ public class FingerPrintActivity
             processCompletedState = true;
             setFingerPrintData(Base64.encodeToString(((FutronicEnrollment) scanningOperation).getTemplate(), Base64.DEFAULT));
             mHandler.obtainMessage(
-                    showMessage,
+                    SHOW_MESSAGE,
                     -1,
                     -1,
                     "Finger print data captured successfully. Quality: " + ((FutronicEnrollment) scanningOperation).getQuality()
                             + "\n Tap Continue to proceed").sendToTarget();
         } else {
-            mHandler.obtainMessage(showMessage, -1, -1,
+            mHandler.obtainMessage(SHOW_MESSAGE, -1, -1,
                     "Enrollment failed. Error description: " + FutronicSdkBase.SdkRetCode2Message(nResult))
                     .sendToTarget();
         }
@@ -312,7 +312,7 @@ public class FingerPrintActivity
         scanningOperationObject = null;
         usbDeviceDataExchange.CloseDevice();
         mPendingOperation = 0;
-        mHandler.obtainMessage(enableControls).sendToTarget();
+        mHandler.obtainMessage(ENABLE_CONTROLS).sendToTarget();
     }
 
     /**
@@ -341,12 +341,12 @@ public class FingerPrintActivity
             stringBuffer.append("Error description: ");
             stringBuffer.append(FutronicSdkBase.SdkRetCode2Message(nResult));
         }
-        mHandler.obtainMessage(showMessage, -1, -1, stringBuffer.toString()).sendToTarget();
+        mHandler.obtainMessage(SHOW_MESSAGE, -1, -1, stringBuffer.toString()).sendToTarget();
         scanningOperation = null;
         scanningOperationObject = null;
         usbDeviceDataExchange.CloseDevice();
         mPendingOperation = 0;
-        mHandler.obtainMessage(enableControls).sendToTarget();
+        mHandler.obtainMessage(ENABLE_CONTROLS).sendToTarget();
     }
 
     /**
@@ -359,7 +359,7 @@ public class FingerPrintActivity
     public void OnGetBaseTemplateComplete(boolean bSuccess, int nResult) {
         StringBuffer stringBuffer = new StringBuffer();
         if (bSuccess) {
-            mHandler.obtainMessage(showMessage, -1, -1, "Starting identification...").sendToTarget();
+            mHandler.obtainMessage(SHOW_MESSAGE, -1, -1, "Starting identification...").sendToTarget();
             Vector<PatientFingerPrints> fingerPrintsVector = patientsFingerprintsRecords;
             FtrIdentifyRecord[] rgRecords = new FtrIdentifyRecord[fingerPrintsVector.size()];
             for (int iPatients = 0; iPatients < fingerPrintsVector.size(); iPatients++)
@@ -381,18 +381,18 @@ public class FingerPrintActivity
                 stringBuffer.append("Identification failed.");
                 stringBuffer.append(FutronicSdkBase.SdkRetCode2Message(nResult));
             }
-            mHandler.obtainMessage(showMessage, -1, -1, "Fingerprint Captured Tap Continue").sendToTarget();
+            mHandler.obtainMessage(SHOW_MESSAGE, -1, -1, "Fingerprint Captured Tap Continue").sendToTarget();
         } else {
             stringBuffer.append("Cannot retrieve base template.");
             stringBuffer.append("Error description: ");
             stringBuffer.append(FutronicSdkBase.SdkRetCode2Message(nResult));
         }
-        mHandler.obtainMessage(showMessage, -1, -1, stringBuffer.toString()).sendToTarget();
+        mHandler.obtainMessage(SHOW_MESSAGE, -1, -1, stringBuffer.toString()).sendToTarget();
         scanningOperation = null;
         scanningOperationObject = null;
         usbDeviceDataExchange.CloseDevice();
         mPendingOperation = 0;
-        mHandler.obtainMessage(enableControls).sendToTarget();
+        mHandler.obtainMessage(ENABLE_CONTROLS).sendToTarget();
     }
 
     // enrollment - start enrollment
@@ -445,7 +445,7 @@ public class FingerPrintActivity
             ((FutronicVerification) scanningOperation).Verification(this);
         } catch (Exception e) {
             usbDeviceDataExchange.CloseDevice();
-            mHandler.obtainMessage(showMessage, -1, -1, e.getMessage()).sendToTarget();
+            mHandler.obtainMessage(SHOW_MESSAGE, -1, -1, e.getMessage()).sendToTarget();
         }
     }
 
@@ -474,7 +474,7 @@ public class FingerPrintActivity
             scanningOperationObject = null;
         } catch (Exception e) {
             usbDeviceDataExchange.CloseDevice();
-            mHandler.obtainMessage(showMessage, -1, -1, e.getMessage()).sendToTarget();
+            mHandler.obtainMessage(SHOW_MESSAGE, -1, -1, e.getMessage()).sendToTarget();
         }
     }
 
@@ -497,7 +497,7 @@ public class FingerPrintActivity
     }
 
     /*
-     * enableControls
+     * ENABLE_CONTROLS
      */
     private void enableControls(boolean bEnable) {
         mButtonEnroll.setEnabled(bEnable);
