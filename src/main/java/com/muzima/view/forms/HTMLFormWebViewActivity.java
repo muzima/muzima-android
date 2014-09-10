@@ -178,6 +178,9 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             case R.id.form_close:
                 processBackButtonPressed();
                 return true;
+            case android.R.id.home:
+                showAlertDialog();
+                return true;
             case R.id.form_back_to_draft:
                 try {
                     formData.setStatus(STATUS_INCOMPLETE);
@@ -192,6 +195,18 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         }
     }
 
+    private void showAlertDialog() {
+        new AlertDialog.Builder(HTMLFormWebViewActivity.this)
+                .setCancelable(true)
+                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                .setTitle(getResources().getString(R.string.caution))
+                .setMessage(getResources().getString(R.string.exit_form_message))
+                .setPositiveButton(getString(R.string.yes_button_label), positiveClickListener())
+                .setNegativeButton(getString(R.string.no_button_label), null)
+                .create()
+                .show();
+    }
+
     public void saveDraft() {
         if (!isFormComplete()) {
             webView.loadUrl("javascript:document.saveDraft()");
@@ -201,27 +216,27 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        if (scanResult != null && barCodeComponent.getFieldName() != null && scanResult.getContents() != null ) {
+        if (scanResult != null && barCodeComponent.getFieldName() != null && scanResult.getContents() != null) {
             scanResultMap.put(barCodeComponent.getFieldName(), scanResult.getContents());
         }
 
         ImageResult imageResult = ImagingComponent.parseActivityResult(requestCode, resultCode, intent);
-        if (imageResult != null)  {
-            sectionName =  imageResult.getSectionName();
+        if (imageResult != null) {
+            sectionName = imageResult.getSectionName();
             imageResultMap.put(imagingComponent.getImagePathField(), imageResult.getImageUri());
             imageResultMap.put(imagingComponent.getImageCaptionField(), imageResult.getImageCaption());
         }
 
         AudioResult audioResult = AudioComponent.parseActivityResult(requestCode, resultCode, intent);
-        if (audioResult != null)  {
-            sectionName =  audioResult.getSectionName();
+        if (audioResult != null) {
+            sectionName = audioResult.getSectionName();
             audioResultMap.put(audioComponent.getAudioPathField(), audioResult.getAudioUri());
             audioResultMap.put(audioComponent.getAudioCaptionField(), audioResult.getAudioCaption());
         }
 
         VideoResult videoResult = VideoComponent.parseActivityResult(requestCode, resultCode, intent);
-        if (videoResult != null)  {
-            sectionName =  videoResult.getSectionName();
+        if (videoResult != null) {
+            sectionName = videoResult.getSectionName();
             videoResultMap.put(videoComponent.getVideoPathField(), videoResult.getVideoUri());
             videoResultMap.put(videoComponent.getVideoCaptionField(), videoResult.getVideoCaption());
         }
@@ -230,14 +245,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(HTMLFormWebViewActivity.this);
-            builder
-                    .setCancelable(true)
-                    .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                    .setTitle(getResources().getString(R.string.caution))
-                    .setMessage(getResources().getString(R.string.exit_form_message))
-                    .setPositiveButton("Yes", positiveClickListener())
-                    .setNegativeButton("No", null).create().show();
+            showAlertDialog();
             return false;
         }
         return super.onKeyDown(keyCode, event);
@@ -389,7 +397,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
     private boolean isEncounterForm() {
         return getIntent().getStringExtra(DISCRIMINATOR).equals(Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER)
-            || getIntent().getStringExtra(DISCRIMINATOR).equals(Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION);
+                || getIntent().getStringExtra(DISCRIMINATOR).equals(Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION);
     }
 }
 
