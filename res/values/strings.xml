@@ -234,6 +234,9 @@
     <string name="record_audio">Record Audio</string>
     <string name="record_audio_prompt">Record or choose audio</string>
 
+    <string name="yes_button_label">Yes</string>
+    <string name="no_button_label">No</string>
+
     <string name="version">Version %1$s</string>
 	<string name="confirm">Confirmation!</string>
 
@@ -285,6 +288,4 @@
         </p>
         ]]>
     </string>
-
-
 </resources>
