@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical">
+
+	<RelativeLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content">
+
+		<Button
+				android:id="@+id/buttonEnroll"
+				style="@style/FingerPrintButton"
+				android:text="Scan Finger"/>
+
+		<Button
+				android:id="@+id/buttonVerify"
+				style="@style/FingerPrintButton"
+				android:layout_alignLeft="@id/buttonEnroll"
+				android:layout_below="@id/buttonEnroll"
+				android:text="Verify Patient"/>
+
+		<Button
+				android:id="@+id/buttonIdentify"
+				style="@style/FingerPrintButton"
+				android:layout_alignLeft="@id/buttonEnroll"
+				android:layout_below="@id/buttonVerify"
+				android:text="Identify Patient"/>
+
+		<Button
+				android:id="@+id/buttonStop"
+				style="@style/FingerPrintButton"
+				android:layout_alignLeft="@id/buttonEnroll"
+				android:layout_below="@id/buttonIdentify"
+				android:enabled="false"
+				android:text="Stop Process"/>
+
+		<Button
+				android:id="@+id/buttonExit"
+				style="@style/FingerPrintButton"
+				android:layout_alignLeft="@id/buttonEnroll"
+				android:layout_below="@id/buttonStop"
+				android:text="Back "/>
+
+		<ImageView
+				android:id="@+id/imageFinger"
+				android:layout_width="100dp"
+				android:layout_height="192dp"
+				android:layout_alignParentRight="true"
+				android:layout_alignTop="@id/buttonEnroll"
+				android:layout_marginRight="10dp"
+				android:contentDescription="fingerprint image"
+				/>
+	</RelativeLayout>
+
+	<TextView
+			android:id="@+id/txtMessage"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="5dp"
+			android:hint="Status"
+			android:textColor="#0000ff"
+			android:textSize="8pt"/>
+
+	<Button
+			android:id="@+id/proceed"
+			style="@style/FingerPrintButton"
+			android:layout_gravity="center"
+			android:text="Continue"/>
+
+</LinearLayout>

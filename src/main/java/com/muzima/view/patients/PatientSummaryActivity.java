@@ -22,6 +22,7 @@ import com.actionbarsherlock.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.PersonAttribute;
 import com.muzima.api.model.User;
 import com.muzima.controller.FormController;
 import com.muzima.controller.NotificationController;
@@ -49,15 +50,16 @@ public class PatientSummaryActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_summary);
-
         Bundle intentExtras = getIntent().getExtras();
         if (intentExtras != null) {
             patient = (Patient) intentExtras.getSerializable(PATIENT);
         }
-
         try {
             setupPatientMetadata();
             notifyOfIdChange();
+            if (!checkFingerprint()) {
+                Toast.makeText(this, "Fingerprint has not been captured ", Toast.LENGTH_SHORT).show();
+            }
         } catch (PatientController.PatientLoadException e) {
             Toast.makeText(this, "An error occurred while fetching patient", Toast.LENGTH_SHORT).show();
             finish();
@@ -72,12 +74,11 @@ public class PatientSummaryActivity extends BaseActivity {
         } catch (IOException e) {
             Log.e(TAG, "Exception thrown when reading to phone disk", e);
         }
-        if(list.size()==0){
+        if (list.size() == 0) {
             return;
         }
-
         final String patientIdentifier = patient.getIdentifier();
-        if(list.contains(patientIdentifier)){
+        if (list.contains(patientIdentifier)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(true)
                     .setIcon(getResources().getDrawable(R.drawable.ic_warning))
@@ -112,17 +113,13 @@ public class PatientSummaryActivity extends BaseActivity {
     }
 
     private void setupPatientMetadata() throws PatientController.PatientLoadException {
-
         TextView patientName = (TextView) findViewById(R.id.patientName);
         patientName.setText(patient.getFamilyName() + ", " + patient.getGivenName() + " " + patient.getMiddleName());
-
         ImageView genderIcon = (ImageView) findViewById(R.id.genderImg);
         int genderDrawable = patient.getGender().equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
         genderIcon.setImageDrawable(getResources().getDrawable(genderDrawable));
-
         TextView dob = (TextView) findViewById(R.id.dob);
         dob.setText("DOB: " + getFormattedDate(patient.getBirthdate()));
-
         TextView patientIdentifier = (TextView) findViewById(R.id.patientIdentifier);
         patientIdentifier.setText(patient.getIdentifier());
     }
@@ -167,17 +164,15 @@ public class PatientSummaryActivity extends BaseActivity {
             PatientSummaryActivityMetadata patientSummaryActivityMetadata = new PatientSummaryActivityMetadata();
             FormController formController = muzimaApplication.getFormController();
             NotificationController notificationController = muzimaApplication.getNotificationController();
-
             try {
                 patientSummaryActivityMetadata.recommendedForms = formController.getRecommendedFormsCount();
                 patientSummaryActivityMetadata.completeForms = formController.getCompleteFormsCountForPatient(patient.getUuid());
                 patientSummaryActivityMetadata.incompleteForms = formController.getIncompleteFormsCountForPatient(patient.getUuid());
-
                 User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
                 if (authenticatedUser != null)
                     patientSummaryActivityMetadata.notifications =
-                        notificationController.getNotificationsCountForPatient(patient.getUuid(), authenticatedUser.getPerson().getUuid(),
-                                Constants.NotificationStatusConstants.NOTIFICATION_UNREAD);
+                            notificationController.getNotificationsCountForPatient(patient.getUuid(), authenticatedUser.getPerson().getUuid(),
+                                    Constants.NotificationStatusConstants.NOTIFICATION_UNREAD);
                 else
                     patientSummaryActivityMetadata.notifications = 0;
             } catch (FormController.FormFetchException e) {
@@ -194,7 +189,6 @@ public class PatientSummaryActivity extends BaseActivity {
             formsDescription.setText(patientSummaryActivityMetadata.incompleteForms + " Incomplete, "
                     + patientSummaryActivityMetadata.completeForms + " Complete, "
                     + patientSummaryActivityMetadata.recommendedForms + " Recommended");
-
             TextView notificationsDescription = (TextView) findViewById(R.id.notificationDescription);
             notificationsDescription.setText(patientSummaryActivityMetadata.notifications + " New Notifications");
         }
@@ -203,5 +197,15 @@ public class PatientSummaryActivity extends BaseActivity {
     private void executeBackgroundTask() {
         mBackgroundQueryTask = new BackgroundQueryTask();
         mBackgroundQueryTask.execute();
+    }
+
+    private boolean checkFingerprint() {
+        boolean hasFingerprint = false;
+        for (PersonAttribute personAttribute1 : patient.getAtributes()) {
+            if (personAttribute1.getAttributeType().getName().equalsIgnoreCase("fingerprint")) {
+                hasFingerprint = true;
+            }
+        }
+        return hasFingerprint;
     }
 }

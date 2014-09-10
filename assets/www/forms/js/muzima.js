@@ -550,6 +550,18 @@ $(document).ready(function () {
         return object;
     };
 
+    /* Called by the Activity WebViewActivity*/
+    document.populateFingeprint = function (jsonString) {
+        $.each(jsonString, function (key, value) {
+            var $inputField = $("input[name='" + key + "']");
+            $inputField.val(value);
+            $inputField.trigger('change');  //Need this to trigger the event so AMRS id gets populated.
+        })
+    };
+    $('.fingerprint_btn').click(function () {
+        fingerprintComponent.startFingerprintIntent($(this).parent().find("input[type='text']").attr('name'));
+    });
+
     /* End - Code to Serialize form along with Data-Concepts */
 
 });

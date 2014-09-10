@@ -16,7 +16,7 @@
                     android:bottom="10dp" />
         </shape>
     </item>
-    <item>
+    <item android:state_enabled="true" >
         <shape>
             <gradient
                     android:endColor="#7db9e8"
@@ -34,4 +34,5 @@
                     android:bottom="10dp" />
         </shape>
     </item>
+	<item android:state_enabled="false" android:drawable="@color/dark_button_background"/>
 </selector>
