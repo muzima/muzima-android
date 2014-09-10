@@ -141,6 +141,9 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             case R.id.form_close:
                 processBackButtonPressed();
                 return true;
+            case android.R.id.home:
+                showAlertDialog();
+                return true;
             case R.id.form_back_to_draft:
                 try {
                     formData.setStatus(STATUS_INCOMPLETE);
@@ -153,6 +156,18 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void showAlertDialog() {
+        new AlertDialog.Builder(HTMLFormWebViewActivity.this)
+                .setCancelable(true)
+                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                .setTitle(getResources().getString(R.string.caution))
+                .setMessage(getResources().getString(R.string.exit_form_message))
+                .setPositiveButton(getString(R.string.yes_button_label), positiveClickListener())
+                .setNegativeButton(getString(R.string.no_button_label), null)
+                .create()
+                .show();
     }
 
     public void saveDraft() {
@@ -172,14 +187,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(HTMLFormWebViewActivity.this);
-            builder
-                    .setCancelable(true)
-                    .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                    .setTitle(getResources().getString(R.string.caution))
-                    .setMessage(getResources().getString(R.string.exit_form_message))
-                    .setPositiveButton("Yes", positiveClickListener())
-                    .setNegativeButton("No", null).create().show();
+            showAlertDialog();
             return false;
         }
         return super.onKeyDown(keyCode, event);
