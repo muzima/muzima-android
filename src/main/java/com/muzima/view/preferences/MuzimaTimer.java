@@ -55,9 +55,8 @@ public class MuzimaTimer extends CountDownTimer {
         this.start();
     }
 
-    private void logOut() {
+    private void logOut(){
         muzimaApplication.logOut();
-        launchLoginActivity();
     }
 
     private void launchLoginActivity() {
