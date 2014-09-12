@@ -29,14 +29,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.CheckedTextView;
 import android.widget.Toast;
-import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Concept;
 import com.muzima.controller.ConceptController;
+import com.muzima.view.preferences.ConceptPreferenceActivity;
 
 import java.util.Arrays;
 import java.util.List;
@@ -48,7 +47,7 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
     private final String TAG = SelectedConceptAdapter.class.getSimpleName();
     protected ConceptController conceptController;
 
-    public SelectedConceptAdapter(MuzimaApplication context, int textViewResourceId, ConceptController conceptController) {
+    public SelectedConceptAdapter(ConceptPreferenceActivity context, int textViewResourceId, ConceptController conceptController) {
         super(context, textViewResourceId);
         this.conceptController = conceptController;
     }
@@ -63,24 +62,12 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
     }
 
     private class ViewHolder {
-        private TextView name;
-        private TextView synonyms;
-        private ImageButton deleteButton;
+        private CheckedTextView name;
+        private CheckedTextView synonyms;
 
         private ViewHolder(View conceptView) {
-            name = (TextView) conceptView.findViewById(R.id.concept_name);
-            synonyms = (TextView) conceptView.findViewById(R.id.concept_synonyms);
-            deleteButton = (ImageButton) conceptView.findViewById(R.id.delete_concept_btn);
-        }
-
-        private View.OnClickListener deleteConceptListener(final int position) {
-            return new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    view.setClickable(false);
-                    remove(getItem(position));
-                }
-            };
+            name = (CheckedTextView) conceptView.findViewById(R.id.concept_name);
+            synonyms = (CheckedTextView) conceptView.findViewById(R.id.concept_synonyms);
         }
     }
 
@@ -98,7 +85,6 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
         if (concept != null) {
             holder.name.setText(concept.getName());
             holder.synonyms.setText(concept.getSynonyms());
-            holder.deleteButton.setOnClickListener(holder.deleteConceptListener(position));
         }
         return convertView;
     }
@@ -155,5 +141,9 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
 
     public void addConcept(Concept concept) {
         new BackgroundSaveAndQueryTask().execute(concept);
+    }
+
+    public void clearSelectedForms() {
+        notifyDataSetChanged();
     }
 }
