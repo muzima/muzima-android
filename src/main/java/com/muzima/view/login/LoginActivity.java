@@ -61,6 +61,7 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         ((MuzimaApplication)getApplication()).cancelTimer();
         setContentView(R.layout.activity_login);
+        showSessionTimeOutPopUpIfNeeded();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             honeycombOrGreater = true;
         }
