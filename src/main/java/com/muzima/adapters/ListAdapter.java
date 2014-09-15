@@ -34,4 +34,6 @@ public abstract class ListAdapter<T> extends ArrayAdapter<T>{
             add(t);
         }
     }
+
+
 }
