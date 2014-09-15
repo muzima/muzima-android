@@ -98,6 +98,22 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
         }
     }
 
+    public void removeAll(List<Concept> conceptsToDelete) {
+        try {
+            List<Concept> allConcepts = conceptController.getConcepts();
+            allConcepts.removeAll(conceptsToDelete);
+            try {
+                conceptController.deleteConcepts(conceptsToDelete);
+            } catch (ConceptController.ConceptDeleteException e) {
+                Log.e(TAG, "Error while deleting the concept", e);
+            }
+            this.clear();
+            this.addAll(allConcepts);
+        } catch (ConceptController.ConceptFetchException e) {
+            Log.e(TAG, "Error while fetching the concept", e);
+        }
+    }
+
     @Override
     public void reloadData() {
         new BackgroundSaveAndQueryTask().execute();

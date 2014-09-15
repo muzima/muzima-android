@@ -167,9 +167,7 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
             switch (menuItem.getItemId()) {
                 case R.id.menu_delete:
                     List<Concept> selectedConcepts = getSelectedConcepts();
-                    for(Concept concept: selectedConcepts){
-                        selectedConceptAdapter.remove(concept);
-                    }
+                    selectedConceptAdapter.removeAll(selectedConcepts);
                     onCompleteOfConceptDelete(selectedConcepts.size());
             }
             return false;
@@ -177,6 +175,7 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
 
         private void onCompleteOfConceptDelete(int numberOfDeletedConcepts) {
             endActionMode();
+            selectedConceptListView.clearChoices();
             selectedConceptAdapter.reloadData();
             Toast.makeText(getApplicationContext(), numberOfDeletedConcepts +" Concepts deleted successfully!!", Toast.LENGTH_SHORT).show();
         }
