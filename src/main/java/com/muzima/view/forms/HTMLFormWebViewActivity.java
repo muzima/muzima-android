@@ -95,8 +95,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         autoSaveIntervalPreference = preferences.getString("autoSaveIntervalPreference", DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS);
         showProgressBar("Loading...");
         try {
-            patient = (Patient) getIntent().getSerializableExtra(PATIENT);
-            setupFormData(patient);
+            setupFormData();
             startAutoSaveProcess();
             setupWebView();
         } catch (FormFetchException e) {
@@ -236,29 +235,30 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         return formData.getStatus().equalsIgnoreCase(STATUS_COMPLETE);
     }
 
-    private void setupFormData(Patient patient) throws FormFetchException, FormController.FormDataFetchException, FormController.FormDataSaveException {
-        BaseForm formObject = (BaseForm) getIntent().getSerializableExtra(FORM);
-
+    private void setupFormData()
+            throws FormFetchException, FormController.FormDataFetchException, FormController.FormDataSaveException {
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
-        String formId = formObject.getFormUuid();
-        form = formController.getFormByUuid(formId);
-        formTemplate = formController.getFormTemplateByUuid(formId);
 
-        if (formObject.hasData()) {
-            formData = formController.getFormDataByUuid(((FormWithData) formObject).getFormDataUuid());
+        BaseForm baseForm = (BaseForm) getIntent().getSerializableExtra(FORM);
+        form = formController.getFormByUuid(baseForm.getFormUuid());
+        patient = (Patient) getIntent().getSerializableExtra(PATIENT);
+        formTemplate = formController.getFormTemplateByUuid(baseForm.getFormUuid());
+
+        if (baseForm.hasData()) {
+            formData = formController.getFormDataByUuid(((FormWithData) baseForm).getFormDataUuid());
         } else {
-            formData = createNewFormData(patient.getUuid(), formId, patient, formTemplate);
+            formData = createNewFormData();
         }
     }
 
-    private FormData createNewFormData(final String patientUuid, final String formUuid, Patient patient, FormTemplate formTemplate) throws FormController.FormDataSaveException {
+    private FormData createNewFormData() throws FormController.FormDataSaveException {
         FormData formData = new FormData() {{
             setUuid(UUID.randomUUID().toString());
-            setPatientUuid(patientUuid);
+            setPatientUuid(patient.getUuid());
             setUserUuid("userUuid");
             setStatus(STATUS_INCOMPLETE);
-            setTemplateUuid(formUuid);
-            setDiscriminator(getIntent().getStringExtra(DISCRIMINATOR));
+            setTemplateUuid(form.getUuid());
+            setDiscriminator(form.getDiscriminator());
         }};
         formData.setJsonPayload(new HTMLPatientJSONMapper().map(patient, formData));
         return formData;

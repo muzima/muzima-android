@@ -26,7 +26,7 @@ public class Constants {
 
     public static final String FORM_XML_DISCRIMINATOR_ENCOUNTER = "xml-encounter";
     public static final String FORM_JSON_DISCRIMINATOR_ENCOUNTER = "json-encounter";
-    public static final String FORM_DISCRIMINATOR_REGISTRATION = "registration";
+    public static final String FORM_DISCRIMINATOR_REGISTRATION = "xml-registration";
 
     public static class DataSyncServiceConstants {
         public static final String SYNC_TYPE = "sync_type";
