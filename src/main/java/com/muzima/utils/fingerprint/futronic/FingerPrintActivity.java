@@ -53,10 +53,6 @@ public class FingerPrintActivity
     private static String attributeName = "fingerprint";
     private List<Patient> patients;
     private byte[] fingerBytes;
-    private Button mButtonEnroll;
-    private Button mButtonVerify;
-    private Button mButtonIdentify;
-    private Button mButtonStop;
     private Button mButtonExit;
     private TextView textView;
     private ImageView imageView;
@@ -65,13 +61,14 @@ public class FingerPrintActivity
     private Object scanningOperationObject;
     private int mPendingOperation = 0;
     private UsbDeviceDataExchangeImpl usbDeviceDataExchange = null;
-    private Button proceed;
+    private Button toggleButton;
     private Vector<PatientFingerPrints> patientsFingerprintsRecords;
     private PatientFingerPrints patientRecord;
     private int currentViewAction;
     private boolean processCompletedState;
     private Patient foundPatient;
     private String fingerPrint;
+    private boolean stopProcessOn = false;
 
     private final Handler mHandler = new Handler() {
         @Override
@@ -121,27 +118,23 @@ public class FingerPrintActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fingerprint);
         extras = getIntent().getExtras();
-        proceed = (Button) findViewById(R.id.proceed);
-        mButtonEnroll = (Button) findViewById(R.id.buttonEnroll);
-        mButtonVerify = (Button) findViewById(R.id.buttonVerify);
-        mButtonIdentify = (Button) findViewById(R.id.buttonIdentify);
-        mButtonStop = (Button) findViewById(R.id.buttonStop);
+        toggleButton = (Button) findViewById(R.id.proceed);
         mButtonExit = (Button) findViewById(R.id.buttonExit);
         processCompletedState = false;
         if (extras.getInt("action") == 0) {
-            mButtonVerify.setVisibility(View.INVISIBLE);
-            mButtonIdentify.setVisibility(View.INVISIBLE);
+            toggleButton.setText("Scan Finger");
+            toggleButton.setTag(0);
             currentViewAction = 0;
         } else if (extras.getInt("action") == 1) {
-            mButtonEnroll.setVisibility(View.INVISIBLE);
-            mButtonIdentify.setVisibility(View.INVISIBLE);
+            toggleButton.setText("Verify Patient");
+            toggleButton.setTag(1);
             currentViewAction = 1;
         } else if (extras.getInt("action") == 2) {
-            mButtonEnroll.setVisibility(View.INVISIBLE);
-            mButtonVerify.setVisibility(View.INVISIBLE);
+            toggleButton.setText("Identify Patient");
+            toggleButton.setTag(2);
             currentViewAction = 2;
         }
-        proceed.setOnClickListener(new OnClickListener() {
+        toggleButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 switch (currentViewAction) {
                     case 0:
@@ -150,7 +143,9 @@ public class FingerPrintActivity
                             i.putExtra(FINGERPRINT_DATA, fingerPrint);
                             setResult(RESULT_OK, i);
                             finish();
-                        } else
+                        } else if(!processCompletedState)
+                            toggleButtonFunction();
+                        else
                             showMessageDialog("No Fingerprint captured, please scan first");
                         break;
                     case 1:
@@ -162,7 +157,9 @@ public class FingerPrintActivity
                             Intent intent = new Intent(FingerPrintActivity.this, PatientSummaryActivity.class);
                             intent.putExtra(PatientSummaryActivity.PATIENT, foundPatient);
                             startActivity(intent);
-                        } else
+                        }else if (!processCompletedState)
+                            toggleButtonFunction();
+                        else
                             showMessageDialog("No identification completed, please tap identify first");
                         break;
                 }
@@ -171,66 +168,6 @@ public class FingerPrintActivity
         textView = (TextView) findViewById(R.id.txtMessage);
         imageView = (ImageView) findViewById(R.id.imageFinger);
         usbDeviceDataExchange = new UsbDeviceDataExchangeImpl(this, mHandler);
-        mButtonEnroll.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                try {
-                    if (usbDeviceDataExchange.OpenDevice(0, true)) {
-                        // send message to start enrollment
-                        mHandler.obtainMessage(ENROLL_FINGER).sendToTarget();
-                    } else {
-                        if (usbDeviceDataExchange.IsPendingOpen()) {
-                            mPendingOperation = OPERATION_ENROLL;
-                        } else {
-                            showMessageDialog("Cannot start enrollment operation.\n" +
-                                    "Scanner device is not connected, please connect");
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        mButtonVerify.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                try {
-                    if (usbDeviceDataExchange.OpenDevice(0, true)) {
-                        startVerification();
-                    } else {
-                        if (usbDeviceDataExchange.IsPendingOpen()) {
-                            mPendingOperation = OPERATION_VERIFY;
-                        } else {
-                            showMessageDialog("Cannot start enrollment operation.\n" +
-                                    "Can't open scanner device");
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        mButtonIdentify.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                try {
-                    if (usbDeviceDataExchange.OpenDevice(0, true)) {
-                        loadAllFingerprints();
-                    } else {
-                        if (usbDeviceDataExchange.IsPendingOpen()) {
-                            mPendingOperation = OPERATION_IDENTIFY;
-                        } else {
-                            showMessageDialog("Cannot start enrollment operation.\n" +
-                                    "Can't open scanner device");
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        mButtonStop.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                stopOperation();
-            }
-        });
         mButtonExit.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 exitActivity();
@@ -238,6 +175,57 @@ public class FingerPrintActivity
         });
     }
 
+    public void startPatientEnrollment() {
+        try {
+            if (usbDeviceDataExchange.OpenDevice(0, true)) {
+                // send message to start enrollment
+                mHandler.obtainMessage(ENROLL_FINGER).sendToTarget();
+            } else {
+                if (usbDeviceDataExchange.IsPendingOpen()) {
+                    mPendingOperation = OPERATION_ENROLL;
+                } else {
+                    showMessageDialog("Cannot start enrollment operation.\n" +
+                            "Scanner device is not connected, please connect");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void startPatientVerification() {
+        try {
+            if (usbDeviceDataExchange.OpenDevice(0, true)) {
+                startVerification();
+            } else {
+                if (usbDeviceDataExchange.IsPendingOpen()) {
+                    mPendingOperation = OPERATION_VERIFY;
+                } else {
+                    showMessageDialog("Cannot start enrollment operation.\n" +
+                            "Can't open scanner device");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void startPatientIdentification() {
+        try {
+            if (usbDeviceDataExchange.OpenDevice(0, true)) {
+                loadAllFingerprints();
+            } else {
+                if (usbDeviceDataExchange.IsPendingOpen()) {
+                    mPendingOperation = OPERATION_IDENTIFY;
+                } else {
+                    showMessageDialog("Cannot start enrollment operation.\n" +
+                            "Can't open scanner device");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * The "Put your finger on the scanner" event.
      *
@@ -301,8 +289,7 @@ public class FingerPrintActivity
                     SHOW_MESSAGE,
                     -1,
                     -1,
-                    "Finger print data captured successfully. Quality: " + ((FutronicEnrollment) scanningOperation).getQuality()
-                            + "\n Tap Continue to proceed").sendToTarget();
+                    "Finger print data captured successfully. Quality: " + ((FutronicEnrollment) scanningOperation).getQuality()).sendToTarget();
         } else {
             mHandler.obtainMessage(SHOW_MESSAGE, -1, -1,
                     "Enrollment failed. Error description: " + FutronicSdkBase.SdkRetCode2Message(nResult))
@@ -373,7 +360,6 @@ public class FingerPrintActivity
                     PatientFingerPrints patientsFingerprints = patientsFingerprintsRecords.get(result.m_Index);
                     foundPatient = patientsFingerprints.getPatient();
                     stringBuffer.append(foundPatient.getDisplayName());
-                    stringBuffer.append(" Tap Continue to Proceed");
                 } else {
                     stringBuffer.append("No Match found");
                 }
@@ -381,7 +367,7 @@ public class FingerPrintActivity
                 stringBuffer.append("Identification failed.");
                 stringBuffer.append(FutronicSdkBase.SdkRetCode2Message(nResult));
             }
-            mHandler.obtainMessage(SHOW_MESSAGE, -1, -1, "Fingerprint Captured Tap Continue").sendToTarget();
+            mHandler.obtainMessage(SHOW_MESSAGE, -1, -1, "Fingerprint Captured").sendToTarget();
         } else {
             stringBuffer.append("Cannot retrieve base template.");
             stringBuffer.append("Error description: ");
@@ -500,11 +486,52 @@ public class FingerPrintActivity
      * ENABLE_CONTROLS
      */
     private void enableControls(boolean bEnable) {
-        mButtonEnroll.setEnabled(bEnable);
-        mButtonIdentify.setEnabled(bEnable);
-        mButtonVerify.setEnabled(bEnable);
         mButtonExit.setEnabled(bEnable);
-        mButtonStop.setEnabled(!bEnable);
+        if (bEnable) {
+            if (processCompletedState) {
+                toggleButton.setText("Continue");
+                stopProcessOn = false;
+            } else {
+                toggleButtonState();
+                stopProcessOn = false;
+            }
+        } else {
+            toggleButton.setText("Stop Process");
+            stopProcessOn = true;
+        }
+    }
+
+    protected void toggleButtonFunction() {
+        if (stopProcessOn) {
+            stopOperation();
+            stopProcessOn = false;
+        } else {
+            switch (Integer.parseInt("" + toggleButton.getTag())) {
+                case 0:
+                    startPatientEnrollment();
+                    break;
+                case 1:
+                    startPatientVerification();
+                    break;
+                case 2:
+                    startPatientIdentification();
+                    break;
+            }
+        }
+    }
+
+    protected void toggleButtonState() {
+        switch (Integer.parseInt("" + toggleButton.getTag())) {
+            case 0:
+                toggleButton.setText("Scan Finger");
+                break;
+            case 1:
+                toggleButton.setText("Verify Patient");
+                break;
+            case 2:
+                toggleButton.setText("Identify Patient");
+                break;
+        }
     }
 
     @Override
