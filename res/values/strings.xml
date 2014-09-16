@@ -136,7 +136,7 @@
 
     <string name="add_cohort_prefixes">Step 1: Add Cohort Prefix</string>
     <string name="download_cohort">Step 1: Download Cohort(s)</string>
-    <string name="download_form">Step 2: Download Form(s)</string>
+    <string name="download_form">Step 2: Download Form Template(s)</string>
     <string name="add_concept_prefixes">Step 3: Add Concept</string>
     <string name="check_barcode_scanner_header">Step 4: Check for BarCode Scanner</string>
 
@@ -187,7 +187,7 @@
     <string name="download_cohort_desc">Select one or more of the cohorts from the list and click on \'Next\' to
         download data relevant to these cohorts.
     </string>
-    <string name="download_form_desc">Select one or more forms from the list and click on \'Next\' to download</string>
+    <string name="download_form_desc">Select one or more form templates from the list and click on \'Next\' to download</string>
     <string name="downloaded_image">Downloaded Image</string>
     <string name="add_concept_pref_desc">Add concepts for which you would want observations to be downloaded.</string>
     <string name="install_barcode_scanner_description">You need a barcode scanner application to register clients from
