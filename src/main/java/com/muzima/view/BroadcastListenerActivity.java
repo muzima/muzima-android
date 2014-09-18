@@ -94,7 +94,7 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
             } else if(syncType == DataSyncServiceConstants.SYNC_ENCOUNTERS){
                 msg += " new encounters";
             } else if(syncType == DataSyncServiceConstants.SYNC_UPLOAD_FORMS){
-                msg = "upload form data successfully";
+                msg = "Upload form data success.";
             }
 
         }
