@@ -8,6 +8,7 @@
 
 package com.muzima.view.cohort;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -26,6 +27,7 @@ import com.muzima.controller.CohortController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
+import com.muzima.utils.NetworkUtils;
 import com.muzima.view.InstallBarCodeWizardActivity;
 import com.muzima.view.forms.MuzimaProgressDialog;
 import com.muzima.view.preferences.ConceptPreferenceActivity;
@@ -50,43 +52,7 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
 
         Button nextButton = (Button) findViewById(R.id.next);
         muzimaProgressDialog = new MuzimaProgressDialog(this);
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                turnOnProgressDialog("Downloading Observations and Encounters...");
-                new AsyncTask<Void, Void, int[]>() {
-
-                    @Override
-                    protected void onPreExecute() {
-                        Log.i(TAG, "Canceling timeout timer!") ;
-                        ((MuzimaApplication) getApplication()).cancelTimer();
-                        keepPhoneAwake(true) ;
-                    }
-
-                    @Override
-                    protected int[] doInBackground(Void... voids) {
-                        return downloadObservationAndEncounter();
-                    }
-
-                    @Override
-                    protected void onPostExecute(int[] results) {
-                        dismissProgressDialog();
-                        if (results[0] != SyncStatusConstants.SUCCESS) {
-                            Toast.makeText(CustomConceptWizardActivity.this, "Could not load cohorts", Toast.LENGTH_SHORT).show();
-                        } else {
-                            if (results[1] != SyncStatusConstants.SUCCESS) {
-                                Toast.makeText(CustomConceptWizardActivity.this, "Could not download observations for patients", Toast.LENGTH_SHORT).show();
-                            }
-                            if (results[2] != SyncStatusConstants.SUCCESS) {
-                                Toast.makeText(CustomConceptWizardActivity.this, "Could not download encounters for patients", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                        new WizardFinishPreferenceService(CustomConceptWizardActivity.this).finishWizard();
-                        navigateToNextActivity();
-                    }
-                }.execute();
-            }
-        });
+        nextButton.setOnClickListener(nextButtonListener(this));
 
         Button previousButton = (Button) findViewById(R.id.previous);
         previousButton.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +61,10 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
                 navigateToPreviousActivity();
             }
         });
+    }
+
+    private android.view.View.OnClickListener nextButtonListener(final Activity activity) {
+      return new NextButtonListener(activity);
     }
 
     @Override
@@ -191,5 +161,65 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
             muzimaProgressDialog.dismiss();
             isProcessDialogOn = false;
         }
+    }
+
+    private class NextButtonListener implements View.OnClickListener{
+
+        private Activity activity;
+
+        private NextButtonListener(Activity activity){
+            this.activity = activity;
+        }
+
+        @Override
+        public void onClick(final View view) {
+            Runnable retryAction = new Runnable() {
+                @Override
+                public void run() {
+                    onClick(view);
+                }
+            };
+
+            Runnable defaultAction = new Runnable() {
+                @Override
+                public void run() {
+                    turnOnProgressDialog("Downloading Observations and Encounters...");
+                    new AsyncTask<Void, Void, int[]>() {
+
+                        @Override
+                        protected void onPreExecute() {
+                            Log.i(TAG, "Canceling timeout timer!") ;
+                            ((MuzimaApplication) getApplication()).cancelTimer();
+                            keepPhoneAwake(true) ;
+                        }
+
+                        @Override
+                        protected int[] doInBackground(Void... voids) {
+                            return downloadObservationAndEncounter();
+                        }
+
+                        @Override
+                        protected void onPostExecute(int[] results) {
+                            dismissProgressDialog();
+                            if (results[0] != SyncStatusConstants.SUCCESS) {
+                                Toast.makeText(CustomConceptWizardActivity.this, "Could not load cohorts", Toast.LENGTH_SHORT).show();
+                            } else {
+                                if (results[1] != SyncStatusConstants.SUCCESS) {
+                                    Toast.makeText(CustomConceptWizardActivity.this, "Could not download observations for patients", Toast.LENGTH_SHORT).show();
+                                }
+                                if (results[2] != SyncStatusConstants.SUCCESS) {
+                                    Toast.makeText(CustomConceptWizardActivity.this, "Could not download encounters for patients", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            new WizardFinishPreferenceService(CustomConceptWizardActivity.this).finishWizard();
+                            navigateToNextActivity();
+                        }
+                    }.execute();
+
+                }
+            };
+            NetworkUtils.checkAndExecuteInternetBasedOperation(activity,retryAction,defaultAction);
+        }
+
     }
 }

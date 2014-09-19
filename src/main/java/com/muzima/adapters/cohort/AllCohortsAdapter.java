@@ -23,6 +23,7 @@
  */
 package com.muzima.adapters.cohort;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -34,6 +35,7 @@ import com.muzima.R;
 import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.utils.NetworkUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,8 +60,21 @@ public class AllCohortsAdapter extends CohortsAdapter {
         new LoadBackgroundQueryTask().execute();
     }
 
-    public void downloadCohortAndReload() {
-        new DownloadBackgroundQueryTask().execute();
+    public void downloadCohortAndReload(final Activity activity) {
+
+            Runnable retryAction = new Runnable() {
+                @Override
+                public void run() {
+                    downloadCohortAndReload(activity);
+                }
+            };
+            Runnable defaultAction = new Runnable() {
+                @Override
+                public void run() {
+                    new DownloadBackgroundQueryTask().execute();
+                }
+            };
+        NetworkUtils.checkAndExecuteInternetBasedOperation(activity,retryAction,defaultAction);
     }
 
     public List<String> getSelectedCohorts() {
@@ -130,6 +145,7 @@ public class AllCohortsAdapter extends CohortsAdapter {
     public abstract class CohortBackgroundQueryTask extends AsyncTask<Void, Void, List<Cohort>> {
         @Override
         protected void onPreExecute() {
+
             if (backgroundListQueryTaskListener != null) {
                 backgroundListQueryTaskListener.onQueryTaskStarted();
             }

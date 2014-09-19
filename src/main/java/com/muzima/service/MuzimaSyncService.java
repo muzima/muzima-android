@@ -12,8 +12,22 @@ import android.util.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.context.Context;
 import com.muzima.api.exception.AuthenticationException;
-import com.muzima.api.model.*;
-import com.muzima.controller.*;
+import com.muzima.api.model.Cohort;
+import com.muzima.api.model.CohortData;
+import com.muzima.api.model.Concept;
+import com.muzima.api.model.Encounter;
+import com.muzima.api.model.Form;
+import com.muzima.api.model.FormTemplate;
+import com.muzima.api.model.Notification;
+import com.muzima.api.model.Observation;
+import com.muzima.api.model.Patient;
+import com.muzima.controller.CohortController;
+import com.muzima.controller.ConceptController;
+import com.muzima.controller.EncounterController;
+import com.muzima.controller.FormController;
+import com.muzima.controller.NotificationController;
+import com.muzima.controller.ObservationController;
+import com.muzima.controller.PatientController;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -87,17 +101,6 @@ public class MuzimaSyncService {
                 muzimaContext.closeSession();
         }
         return SyncStatusConstants.AUTHENTICATION_SUCCESS;
-    }
-
-    private boolean hasInvalidSpecialCharacter(String username) {
-        String invalidCharacters = SyncStatusConstants.INVALID_CHARACTER_FOR_USERNAME;
-        for (int i = 0; i < invalidCharacters.length(); i++) {
-            String substring = invalidCharacters.substring(i, i + 1);
-            if (username.contains(substring)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public int[] downloadForms() {

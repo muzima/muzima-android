@@ -8,6 +8,7 @@
 
 package com.muzima.view.cohort;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -31,6 +32,7 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.cohort.AllCohortsAdapter;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.utils.NetworkUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.CheckedLinearLayout;
 import com.muzima.view.HelpActivity;
@@ -61,14 +63,14 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         ImageButton cancelFilterButton = (ImageButton) findViewById(R.id.cancel_filter_txt);
         cancelFilterButton.setOnClickListener(cancelFilterTextEventHandler(filterCohortText));
         Button nextButton = (Button) findViewById(R.id.next);
-        nextButton.setOnClickListener(nextButtonClickListener(cohortsAdapter));
+        nextButton.setOnClickListener(nextButtonClickListener(this,cohortsAdapter));
 
         progressDialog = new MuzimaProgressDialog(this);
 
         cohortsAdapter.setBackgroundListQueryTaskListener(this);
         listView.setOnItemClickListener(listViewClickListener(cohortsAdapter));
 
-        cohortsAdapter.downloadCohortAndReload();
+        cohortsAdapter.downloadCohortAndReload(this);
         listView.setAdapter(cohortsAdapter);
     }
 
@@ -123,39 +125,8 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         };
     }
 
-    private View.OnClickListener nextButtonClickListener(final AllCohortsAdapter cohortsAdapter) {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                turnOnProgressDialog("Downloading clients demographic...");
-                new AsyncTask<Void, Void, int[]>() {
-
-                    @Override
-                    protected void onPreExecute() {
-                        Log.i(TAG, "Canceling timer") ;
-                        ((MuzimaApplication) getApplication()).cancelTimer();
-                        keepPhoneAwake(true) ;
-                    }
-
-                    @Override
-                    protected int[] doInBackground(Void... voids) {
-                        return downloadAndSavePatients(cohortsAdapter);
-                    }
-
-                    @Override
-                    protected void onPostExecute(int[] result) {
-                        dismissProgressDialog();
-                        if (result[0] != SUCCESS) {
-                            Toast.makeText(CohortWizardActivity.this, "Could not download clients", Toast.LENGTH_SHORT).show();
-                        }
-                        Log.i(TAG, "Restarting timeout timer!") ;
-                        ((MuzimaApplication) getApplication()).restartTimer();
-                        keepPhoneAwake(false) ;
-                        navigateToNextActivity();
-                    }
-                }.execute();
-            }
-        };
+    private View.OnClickListener nextButtonClickListener(final Activity activity,final AllCohortsAdapter cohortsAdapter) {
+        return new NextButtonListener(activity,cohortsAdapter);
     }
 
     private void keepPhoneAwake(boolean awakeState) {
@@ -232,6 +203,61 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
             progressDialog.dismiss();
             isProcessDialogOn = false;
         }
+    }
+
+    private class NextButtonListener implements View.OnClickListener{
+
+        private  Activity activity;
+        private AllCohortsAdapter cohortsAdapter;
+
+        private NextButtonListener(Activity activity, AllCohortsAdapter cohortsAdapter){
+            this.activity = activity;
+            this.cohortsAdapter = cohortsAdapter;
+        }
+
+        @Override
+        public void onClick(final View view) {
+            Runnable retryAction = new Runnable() {
+                @Override
+                public void run() {
+                    onClick(view);
+                }
+            };
+            Runnable defaultAction = new Runnable() {
+                @Override
+                public void run() {
+                    turnOnProgressDialog("Downloading clients demographic...");
+                    new AsyncTask<Void, Void, int[]>() {
+
+                        @Override
+                        protected void onPreExecute() {
+                            Log.i(TAG, "Canceling timer") ;
+                            ((MuzimaApplication) getApplication()).cancelTimer();
+                            keepPhoneAwake(true) ;
+                        }
+
+                        @Override
+                        protected int[] doInBackground(Void... voids) {
+                            return downloadAndSavePatients(cohortsAdapter);
+                        }
+
+                        @Override
+                        protected void onPostExecute(int[] result) {
+                            dismissProgressDialog();
+                            if (result[0] != SUCCESS) {
+                                Toast.makeText(CohortWizardActivity.this, "Could not download clients", Toast.LENGTH_SHORT).show();
+                            }
+                            Log.i(TAG, "Restarting timeout timer!") ;
+                            ((MuzimaApplication) getApplication()).restartTimer();
+                            keepPhoneAwake(false) ;
+                            navigateToNextActivity();
+                        }
+                    }.execute();
+                }
+            };
+            NetworkUtils.checkAndExecuteInternetBasedOperation(activity,retryAction,defaultAction);
+        }
+
     }
 
 }
