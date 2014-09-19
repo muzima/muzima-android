@@ -8,6 +8,7 @@
 
 package com.muzima.view.cohort;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.NetworkUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.forms.MuzimaProgressDialog;
@@ -75,11 +77,11 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
                 }
             }
         });
-        allAvailableFormsAdapter.downloadFormTemplatesAndReload();
+        allAvailableFormsAdapter.downloadFormTemplatesAndReload(this);
         listView.setAdapter(allAvailableFormsAdapter);
 
         Button nextButton = (Button) findViewById(R.id.next);
-        nextButton.setOnClickListener(nextButtonListener());
+        nextButton.setOnClickListener(nextButtonListener(this));
 
         Button previousButton = (Button) findViewById(R.id.previous);
         previousButton.setOnClickListener(previousButtonListener());
@@ -96,34 +98,8 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
         };
     }
 
-    private View.OnClickListener nextButtonListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!hasRegistrationFormSelected()) {
-                    Toast.makeText(FormTemplateWizardActivity.this, "Please select at least one registration form!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                turnOnProgressDialog("Downloading Form Templates...");
-
-                new AsyncTask<Void, Void, int[]>() {
-
-                    @Override
-                    protected int[] doInBackground(Void... voids) {
-                        return downloadFormTemplates();
-                    }
-
-                    @Override
-                    protected void onPostExecute(int[] result) {
-                        dismissProgressDialog();
-                        if (result[0] != SyncStatusConstants.SUCCESS) {
-                            Toast.makeText(FormTemplateWizardActivity.this, "Could not download form templates", Toast.LENGTH_SHORT).show();
-                        }
-                        navigateToNextActivity();
-                    }
-                }.execute();
-            }
-        };
+    private View.OnClickListener nextButtonListener(final Activity activity) {
+        return new NextButtonListener(activity);
     }
 
     private boolean hasRegistrationFormSelected() {
@@ -162,7 +138,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
     protected void onResume() {
         super.onResume();
         tagsListAdapter.reloadData();
-        if(isProcessDialogOn){
+        if (isProcessDialogOn) {
             turnOnProgressDialog("Downloading Form Templates...");
         }
     }
@@ -242,16 +218,64 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
         dismissProgressDialog();
     }
 
-    private void turnOnProgressDialog(String message){
+    private void turnOnProgressDialog(String message) {
         progressDialog.show(message);
         isProcessDialogOn = true;
     }
 
-    private void dismissProgressDialog(){
-        if (progressDialog != null){
+    private void dismissProgressDialog() {
+        if (progressDialog != null) {
             progressDialog.dismiss();
             isProcessDialogOn = false;
         }
     }
+
+    private class NextButtonListener implements View.OnClickListener {
+
+        private Activity activity;
+
+        private NextButtonListener(Activity activity) {
+            this.activity = activity;
+        }
+
+        @Override
+        public void onClick(final View view) {
+            Runnable retryAction = new Runnable() {
+                @Override
+                public void run() {
+                    onClick(view);
+                }
+            };
+            Runnable defaultAction = new Runnable() {
+                @Override
+                public void run() {
+                    if (!hasRegistrationFormSelected()) {
+                        Toast.makeText(FormTemplateWizardActivity.this, "Please select at least one registration form!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    turnOnProgressDialog("Downloading Form Templates...");
+
+                    new AsyncTask<Void, Void, int[]>() {
+
+                        @Override
+                        protected int[] doInBackground(Void... voids) {
+                            return downloadFormTemplates();
+                        }
+
+                        @Override
+                        protected void onPostExecute(int[] result) {
+                            dismissProgressDialog();
+                            if (result[0] != SyncStatusConstants.SUCCESS) {
+                                Toast.makeText(FormTemplateWizardActivity.this, "Could not download form templates", Toast.LENGTH_SHORT).show();
+                            }
+                            navigateToNextActivity();
+                        }
+                    }.execute();
+                }
+            };
+            NetworkUtils.checkAndExecuteInternetBasedOperation(activity, retryAction, defaultAction);
+        }
+    }
+
 }
 

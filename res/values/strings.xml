@@ -210,6 +210,7 @@
     <string name="exit_form_message">Closing Form: This will discard all your changes.  Are you sure you would like to do this?
     </string>
     <string name="filter_cohort_hint">Start typing to filter the cohorts...</string>
+    <string name="no_internet_connectivity_message">It looks like the device is not connected to the internet.Connect to the internet and click retry. Click exit to quit the app.</string>
 
     <string name="notifications">Notifications</string>
     <string name="title_activity_notification_list">Notifications</string>
@@ -240,6 +241,8 @@
 
     <string name="yes_button_label">Yes</string>
     <string name="no_button_label">No</string>
+    <string name="retry_button_label">Retry</string>
+    <string name="exit_button_label">Exit</string>
 
     <string name="version">Version %1$s</string>
 	<string name="confirm">Confirmation!</string>

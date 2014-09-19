@@ -24,6 +24,7 @@
 
 package com.muzima.adapters.forms;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,6 +41,7 @@ import com.muzima.model.collections.AvailableForms;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
+import com.muzima.utils.NetworkUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -135,8 +137,21 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
         new BackgroundQueryTask(this).execute();
     }
 
-    public void downloadFormTemplatesAndReload() {
-        new DownloadBackgroundQueryTask(this).execute();
+    public void downloadFormTemplatesAndReload(final Activity activity) {
+
+        Runnable retryAction = new Runnable() {
+            @Override
+            public void run() {
+                downloadFormTemplatesAndReload(activity);
+            }
+        };
+        Runnable defaultAction = new Runnable() {
+            @Override
+            public void run() {
+                new DownloadBackgroundQueryTask(AllAvailableFormsAdapter.this).execute();
+            }
+        };
+        NetworkUtils.checkAndExecuteInternetBasedOperation(activity,retryAction,defaultAction);
     }
 
     @Override
