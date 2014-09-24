@@ -27,7 +27,7 @@ public abstract class FormWithDataBuilder<B extends FormWithDataBuilder, F exten
         return (B) this;
     }
 
-    public B withLastModifiedData(String date) {
+    public B withLastModifiedDate(String date) {
         formWithData.setLastModifiedDate(date);
         return (B) this;
     }

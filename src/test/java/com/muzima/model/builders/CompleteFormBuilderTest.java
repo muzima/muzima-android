@@ -40,7 +40,7 @@ public class CompleteFormBuilderTest {
 
     @Test
     public void withLastModifiedDate_shouldSetLastModifiedDate() throws Exception {
-        CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder().withLastModifiedData("24/09/2013").build();
+        CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder().withLastModifiedDate("24/09/2013").build();
 
         assertThat(completeForm.getLastModifiedDate(), is("24/09/2013"));
     }

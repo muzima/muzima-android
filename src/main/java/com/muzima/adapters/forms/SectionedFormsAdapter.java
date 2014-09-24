@@ -37,7 +37,9 @@ import com.muzima.R;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.FormWithData;
+import com.muzima.utils.Fonts;
 import com.muzima.utils.PatientComparator;
+import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -174,6 +176,16 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = super.getView(position, convertView, parent);
         setClickListenersOnView(position, convertView);
+        FormWithData form = getItem(position);
+        String formSaveTime = form.getLastModifiedDate();
+        ViewHolder holder = (ViewHolder) convertView.getTag();
+
+        if (!StringUtils.isEmpty(formSaveTime)) {
+            holder.savedTime.setText(formSaveTime);
+        }
+        holder.savedTime.setTypeface(Fonts.roboto_italic(getContext()));
+        holder.savedTime.setVisibility(View.VISIBLE);
+
         return convertView;
     }
 
@@ -237,4 +249,5 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
         }
         return result;
     }
+
 }

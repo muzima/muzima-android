@@ -31,6 +31,8 @@ import android.view.ViewGroup;
 
 import com.muzima.controller.FormController;
 import com.muzima.model.FormWithData;
+import com.muzima.utils.Fonts;
+import com.muzima.utils.StringUtils;
 import com.muzima.view.CheckedRelativeLayout;
 
 import java.util.ArrayList;
@@ -56,6 +58,16 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = super.getView(position, convertView, parent);
         setClickListenersOnView(position, convertView);
+        FormWithData form = getItem(position);
+        String formSaveTime = form.getLastModifiedDate();
+        ViewHolder holder = (ViewHolder) convertView.getTag();
+
+        if (!StringUtils.isEmpty(formSaveTime)) {
+            holder.savedTime.setText(formSaveTime);
+        }
+        holder.savedTime.setTypeface(Fonts.roboto_italic(getContext()));
+        holder.savedTime.setVisibility(View.VISIBLE);
+
         return convertView;
     }
 
