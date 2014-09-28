@@ -52,6 +52,9 @@ public class HTMLFormDataStore {
             Log.i(TAG, "Saving form data ...");
             if (!keepFormOpen) {
                 formWebViewActivity.finish();
+                if(status.equals("complete")) {
+                    Toast.makeText(formWebViewActivity, "Complete form data is saved successfully.", Toast.LENGTH_SHORT).show();
+                }
             }
         } catch (FormController.FormDataSaveException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving the form", Toast.LENGTH_SHORT).show();
