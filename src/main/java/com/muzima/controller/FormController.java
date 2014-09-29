@@ -51,7 +51,6 @@ import org.json.JSONException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -346,9 +345,7 @@ public class FormController {
 
     public void saveFormData(FormData formData) throws FormDataSaveException {
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-            Date date = new Date();
-            formData.setSaveTime(dateFormat.format(date));
+            formData.setSaveTime(new Date());
             formService.saveFormData(formData);
         } catch (IOException e) {
             throw new FormDataSaveException(e);

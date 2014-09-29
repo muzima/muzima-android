@@ -41,6 +41,7 @@ import com.muzima.utils.Fonts;
 import com.muzima.utils.PatientComparator;
 import com.muzima.utils.StringUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -177,7 +178,13 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
         convertView = super.getView(position, convertView, parent);
         setClickListenersOnView(position, convertView);
         FormWithData form = getItem(position);
-        String formSaveTime = form.getLastModifiedDate();
+
+        String formSaveTime = null;
+        if(form.getLastModifiedDate() != null){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            formSaveTime = dateFormat.format(form.getLastModifiedDate());
+        }
+
         ViewHolder holder = (ViewHolder) convertView.getTag();
 
         if (!StringUtils.isEmpty(formSaveTime)) {
