@@ -29,10 +29,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.api.model.Form;
-import com.muzima.api.model.FormData;
-import com.muzima.api.model.FormTemplate;
-import com.muzima.api.model.Patient;
+import com.muzima.api.model.*;
 import com.muzima.controller.FormController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
@@ -45,10 +42,12 @@ import com.muzima.utils.video.VideoResult;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.lucene.queryParser.ParseException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -71,6 +70,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     public static final String FORM = "form";
     public static final String DISCRIMINATOR = "discriminator";
     public static final String DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS =  "2";
+    public static final boolean IS_LOGGED_IN_USER_DEFAULT_PROVIDER =  false;
 
 
     private WebView webView;
@@ -90,6 +90,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private String sectionName;
     private FormController formController;
     private String autoSaveIntervalPreference;
+    private boolean encounterProviderPreference;
     final Handler handler = new Handler();
 
     @Override
@@ -108,6 +109,8 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         progressDialog = new MuzimaProgressDialog(this);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
         autoSaveIntervalPreference = preferences.getString("autoSaveIntervalPreference", DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS);
+        encounterProviderPreference = preferences.getBoolean("encounterProviderPreference", IS_LOGGED_IN_USER_DEFAULT_PROVIDER);
+
         showProgressBar("Loading...");
         try {
             setupFormData();
@@ -122,6 +125,10 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         } catch (FormController.FormDataSaveException e) {
             Log.e(TAG, e.getMessage(), e);
             finish();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -293,7 +300,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     }
 
     private void setupFormData()
-            throws FormFetchException, FormController.FormDataFetchException, FormController.FormDataSaveException {
+            throws FormFetchException, FormController.FormDataFetchException, FormController.FormDataSaveException, IOException, ParseException {
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
 
         BaseForm baseForm = (BaseForm) getIntent().getSerializableExtra(FORM);
@@ -308,7 +315,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         }
     }
 
-    private FormData createNewFormData() throws FormController.FormDataSaveException {
+    private FormData createNewFormData() throws FormController.FormDataSaveException, IOException, ParseException {
         FormData formData = new FormData() {{
             setUuid(UUID.randomUUID().toString());
             setPatientUuid(patient.getUuid());
@@ -317,7 +324,9 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             setTemplateUuid(form.getUuid());
             setDiscriminator(form.getDiscriminator());
         }};
-        formData.setJsonPayload(new HTMLPatientJSONMapper().map(patient, formData));
+        User user = ((MuzimaApplication) getApplicationContext()).getLoggedInUser();
+
+        formData.setJsonPayload(new HTMLPatientJSONMapper().map(patient, formData, user,encounterProviderPreference));
         return formData;
     }
 

@@ -40,6 +40,7 @@ import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpSender;
+import org.apache.lucene.queryParser.ParseException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -301,5 +302,13 @@ public class MuzimaApplication extends Application {
         }
         reader.close();
         return builder.toString();
+    }
+    public User getLoggedInUser() throws IOException, ParseException {
+
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String userName = (String) settings.getAll().get(getResources().getString(R.string.preference_username));
+        Context muzimaContext = getMuzimaContext();
+        User user = muzimaContext.getUserService().getUserByUsername(userName);
+        return user;
     }
 }

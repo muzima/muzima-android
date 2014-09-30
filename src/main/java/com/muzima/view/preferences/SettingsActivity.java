@@ -14,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
@@ -35,12 +36,14 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
     private String timeoutPreferenceKey;
     private String passwordPreferenceKey;
     private String autoSavePreferenceKey;
+    private String encounterProviderPreferenceKey;
 
     private EditTextPreference serverPreference;
     private EditTextPreference usernamePreference;
     private EditTextPreference timeoutPreference;
     private EditTextPreference passwordPreference;
     private EditTextPreference autoSaveIntervalPreference;
+    private CheckBoxPreference encounterProviderPreference;
 
     private String newURL;
 
@@ -106,6 +109,10 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         passwordPreference.setEnabled(false);
         passwordPreference.setSelectable(false);
 
+        encounterProviderPreferenceKey = getResources().getString(R.string.preference_encounter_provider);
+        encounterProviderPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(encounterProviderPreferenceKey);
+        encounterProviderPreference.setSummary(encounterProviderPreference.getSummary());
+
         // Show the Up button in the action bar.
         setupActionBar();
     }
@@ -123,7 +130,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
      */
     @Override
     public void onSharedPreferenceChanged(final SharedPreferences sharedPreferences, final String key) {
-        if (key.equalsIgnoreCase("wizardFinished")) {
+        if (key.equalsIgnoreCase("wizardFinished") || key.equalsIgnoreCase("encounterProviderPreference")) {
             return;
         }
         String value = sharedPreferences.getString(key, StringUtil.EMPTY);

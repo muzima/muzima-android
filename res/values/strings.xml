@@ -292,4 +292,8 @@
         </p>
         ]]>
     </string>
+    <string name="preference_encounter_provider_desc">Logged-in user as default encounter form provider</string>
+    <string name="preference_encounter_provider_title">Default encounter provider</string>
+    <string name="preference_encounter_provider">encounterProviderPreference</string>
+
 </resources>
