@@ -26,6 +26,7 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.FormWithData;
 import com.muzima.utils.PatientComparator;
+import com.muzima.view.CheckedRelativeLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -79,6 +81,7 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
             convertView = layoutInflater.inflate(R.layout.layout_forms_list_section_header, parent, false);
             holder.patientName = (TextView) convertView.findViewById(R.id.patientName);
             holder.patientIdentifier = (TextView) convertView.findViewById(R.id.patientId);
+            setClickListenersOnView(position, convertView);
             convertView.setTag(holder);
         } else {
             holder = (HeaderViewHolder) convertView.getTag();
@@ -183,11 +186,26 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
             @Override
             public boolean onLongClick(View view) {
 
+                CheckedRelativeLayout checkedLinearLayout = (CheckedRelativeLayout) view;
+                checkedLinearLayout.toggle();
+                boolean selected = checkedLinearLayout.isChecked();
+
                 FormWithData formWithPatientData = getItem(position);
-                if (!selectedFormsUuid.contains(formWithPatientData.getFormDataUuid())) {
+                if (selected && !selectedFormsUuid.contains(formWithPatientData.getFormDataUuid())) {
                     selectedFormsUuid.add(formWithPatientData.getFormDataUuid());
-                } else if (selectedFormsUuid.contains(formWithPatientData.getFormDataUuid())) {
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                        checkedLinearLayout.setChecked(true);
+                    } else {
+                        checkedLinearLayout.setActivated(true);
+
+                    }
+                } else if (!selected && selectedFormsUuid.contains(formWithPatientData.getFormDataUuid())) {
                     selectedFormsUuid.remove(formWithPatientData.getFormDataUuid());
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                        checkedLinearLayout.setChecked(false);
+                    } else {
+                        checkedLinearLayout.setActivated(false);
+                    }
                 }
 
                 muzimaClickListener.onItemLongClick();
@@ -202,7 +220,6 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
             }
         });
     }
-
     public void setMuzimaClickListener(MuzimaClickListener muzimaClickListener) {
         this.muzimaClickListener = muzimaClickListener;
     }
