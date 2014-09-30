@@ -61,6 +61,12 @@
                         android:gravity="left"
                         android:text="@string/observations">
                 </TextView>
+                <TextView
+                        android:id="@+id/observationDescription"
+                        style="@style/DashboardItemDescription"
+                        android:layout_alignParentBottom="true"
+                        android:text="##">
+                </TextView>
             </RelativeLayout>
         </LinearLayout>
 

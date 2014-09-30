@@ -23,6 +23,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
+import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.service.JSONInputOutputToDisk;
 import com.muzima.utils.Constants;
@@ -147,6 +148,7 @@ public class PatientSummaryActivity extends BaseActivity {
         int recommendedForms;
         int incompleteForms;
         int completeForms;
+        int observations;
     }
 
     public class BackgroundQueryTask extends AsyncTask<Void, Void, PatientSummaryActivityMetadata> {
@@ -156,12 +158,17 @@ public class PatientSummaryActivity extends BaseActivity {
             MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
             PatientSummaryActivityMetadata patientSummaryActivityMetadata = new PatientSummaryActivityMetadata();
             FormController formController = muzimaApplication.getFormController();
+            ObservationController observationController = muzimaApplication.getObservationController();
+
             try {
                 patientSummaryActivityMetadata.recommendedForms = formController.getRecommendedFormsCount();
                 patientSummaryActivityMetadata.completeForms = formController.getCompleteFormsCountForPatient(patient.getUuid());
                 patientSummaryActivityMetadata.incompleteForms = formController.getIncompleteFormsCountForPatient(patient.getUuid());
+                patientSummaryActivityMetadata.observations = observationController.getObservationsCountByPatient(patient.getUuid());
             } catch (FormController.FormFetchException e) {
                 Log.w(TAG, "FormFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
+            } catch (IOException e) {
+                Log.w(TAG, "IOException occurred while fetching observations count in MainActivityBackgroundTask", e);
             }
             return patientSummaryActivityMetadata;
         }
@@ -172,6 +179,9 @@ public class PatientSummaryActivity extends BaseActivity {
             formsDescription.setText(patientSummaryActivityMetadata.incompleteForms + " Incomplete, "
                     + patientSummaryActivityMetadata.completeForms + " Complete, "
                     + patientSummaryActivityMetadata.recommendedForms + " Recommended");
+
+            TextView observationDescription = (TextView) findViewById(R.id.observationDescription);
+            observationDescription.setText(patientSummaryActivityMetadata.observations + " Observations");
         }
     }
 

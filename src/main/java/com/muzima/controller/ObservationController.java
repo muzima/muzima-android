@@ -66,6 +66,9 @@ public class ObservationController {
             throw new LoadObservationException(e);
         }
     }
+    public int getObservationsCountByPatient(String patientUuid) throws IOException {
+        return observationService.getObservationsByPatient(patientUuid).size();
+    }
 
     private void inflateConcepts(List<Observation> observationsByPatient) throws IOException {
         Map<String, Concept> conceptCache = new HashMap<String, Concept>();
