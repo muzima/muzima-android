@@ -303,12 +303,4 @@ public class MuzimaApplication extends Application {
         reader.close();
         return builder.toString();
     }
-    public User getLoggedInUser() throws IOException, ParseException {
-
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        String userName = (String) settings.getAll().get(getResources().getString(R.string.preference_username));
-        Context muzimaContext = getMuzimaContext();
-        User user = muzimaContext.getUserService().getUserByUsername(userName);
-        return user;
-    }
 }

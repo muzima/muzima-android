@@ -29,7 +29,11 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.api.model.*;
+import com.muzima.api.model.Form;
+import com.muzima.api.model.FormData;
+import com.muzima.api.model.FormTemplate;
+import com.muzima.api.model.Patient;
+import com.muzima.api.model.User;
 import com.muzima.controller.FormController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
@@ -324,7 +328,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             setTemplateUuid(form.getUuid());
             setDiscriminator(form.getDiscriminator());
         }};
-        User user = ((MuzimaApplication) getApplicationContext()).getLoggedInUser();
+        User user = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
 
         formData.setJsonPayload(new HTMLPatientJSONMapper().map(patient, formData, user,encounterProviderPreference));
         return formData;
