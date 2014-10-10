@@ -248,6 +248,12 @@
                   android:theme="@style/WizardTheme"/>
         <!--Wizard Activities End-->
 
+        <receiver android:name="com.muzima.utils.ConnectivityChangeReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+
         <service android:name=".service.DataSyncService"
                  android:exported="false"/>
 

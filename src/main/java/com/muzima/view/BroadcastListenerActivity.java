@@ -95,8 +95,9 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
                 msg += " new encounters";
             } else if(syncType == DataSyncServiceConstants.SYNC_UPLOAD_FORMS){
                 msg = "Upload form data success.";
+            }else if(syncType == DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS){
+                msg = "Real time upload of form data successful.";
             }
-
         }
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }

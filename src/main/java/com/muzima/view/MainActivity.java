@@ -25,6 +25,7 @@ import com.muzima.controller.FormController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
+import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.view.cohort.CohortActivity;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
@@ -46,10 +47,9 @@ public class MainActivity extends BroadcastListenerActivity {
         mMainView = getLayoutInflater().inflate(R.layout.activity_dashboard, null);
         setContentView(mMainView);
         setTitle(R.string.homepage);
-
+        RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext());
         setupActionbar();
     }
-
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -65,6 +65,7 @@ public class MainActivity extends BroadcastListenerActivity {
     @Override
     protected void onPause() {
         super.onPause();
+
     }
 
     @Override

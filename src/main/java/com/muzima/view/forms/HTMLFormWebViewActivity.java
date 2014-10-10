@@ -90,7 +90,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private String sectionName;
     private FormController formController;
     private String autoSaveIntervalPreference;
-    final Handler handler = new Handler();
+    public final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,12 +143,16 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         handler.postDelayed(runnable, Integer.parseInt(autoSaveIntervalPreference) * DateUtils.MILLIS_PER_MINUTE);
     }
 
+    public void stopAutoSaveProcess() {
+        handler.removeCallbacksAndMessages(null);
+    }
+
     @Override
     protected void onDestroy() {
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
-        handler.removeCallbacksAndMessages(null);
+        stopAutoSaveProcess();
         super.onDestroy();
     }
 
@@ -427,6 +431,10 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private boolean isEncounterForm() {
         return getIntent().getStringExtra(DISCRIMINATOR).equals(Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER)
                 || getIntent().getStringExtra(DISCRIMINATOR).equals(Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION);
+    }
+
+    public Handler getHandler() {
+        return handler;
     }
 }
 

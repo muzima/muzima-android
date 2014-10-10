@@ -143,6 +143,14 @@ public class DataSyncService extends IntentService {
 
                     downloadObservationsAndEncounters(broadcastIntent, downloadedCohortIds);
                 }
+            case DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS:
+                updateNotificationMsg("Real time upload of forms");
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    int[] result = muzimaSyncService.uploadAllCompletedForms();
+                    broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS);
+                    prepareBroadcastMsgForFormUpload(broadcastIntent, result, "Real time upload of forms successful.");
+                }
+                break;
             default:
                 break;
         }

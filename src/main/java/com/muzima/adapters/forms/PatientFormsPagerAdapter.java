@@ -61,4 +61,8 @@ public class PatientFormsPagerAdapter extends MuzimaPagerAdapter {
         pagers[TAB_RECOMMENDED] = new PagerView("Recommended Form Templates", recommendedFormsListFragment);
         pagers[TAB_COMPLETE] = new PagerView("Complete Form Data", completeFormsListFragment);
     }
+
+    public void onFormUploadFinish() {
+        ((CompletePatientsFormsListFragment)pagers[TAB_COMPLETE].fragment).onFormUploadFinish();
+    }
 }

@@ -61,6 +61,7 @@ public class Constants {
         public static final int SYNC_UPLOAD_FORMS = 8;
         public static final int DOWNLOAD_PATIENT_ONLY = 9;
         public static final int SYNC_NOTIFICATIONS = 10;
+        public static final int SYNC_REAL_TIME_UPLOAD_FORMS =11;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;
