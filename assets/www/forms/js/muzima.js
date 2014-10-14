@@ -222,6 +222,75 @@ $(document).ready(function () {
 
     /*End- BarCode Functionality*/
 
+    /*Start- Imaging Functionality*/
+
+    /* Called by the Activity WebViewActivity*/
+    document.populateImage = function (sectionName, jsonString) {
+        var $parent = $('div[data-name="' + sectionName + '"]');
+        $.each(jsonString, function (key, value) {
+            var $inputField = $parent.find("input[name='" + key + "']");
+            $inputField.val(value);
+            $inputField.trigger('change');  //Need this to trigger the event so image gets populated.
+        })
+    };
+
+    $('.image_btn').click(function () {
+        imagingComponent.startImageIntent($(this).parent().parent().attr('data-name'),
+            $(this).parent().find("input[type='hidden']").attr('name'),
+            $(this).parent().find("input[type='hidden']").val(),
+            $(this).parent().find("input[type='text']").attr('name'),
+            $(this).parent().find("input[type='text']").val(),
+            $("input[name='encounter.form_uuid']").val());
+    });
+
+    /*End- Imaging Functionality*/
+
+    /*Start- Audio Capture Functionality*/
+
+    /* Called by the Activity WebViewActivity*/
+    document.populateAudio = function (sectionName, jsonString) {
+        var $parent = $('div[data-name="' + sectionName + '"]');
+        $.each(jsonString, function (key, value) {
+            var $inputField = $parent.find("input[name='" + key + "']");
+            $inputField.val(value);
+            $inputField.trigger('change');  //Need this to trigger the event so audio gets populated.
+        })
+    };
+
+    $('.audio_record_btn').click(function () {
+        audioComponent.startAudioIntent($(this).parent().parent().attr('data-name'),
+            $(this).parent().find("input[type='hidden']").attr('name'),
+            $(this).parent().find("input[type='hidden']").val(),
+            $(this).parent().find("input[type='text']").attr('name'),
+            $(this).parent().find("input[type='text']").val(),
+            $("input[name='encounter.form_uuid']").val());
+    });
+
+    /*End- Audio Capture Functionality*/
+
+    /*Start- Video Capture Functionality*/
+
+    /* Called by the Activity WebViewActivity*/
+    document.populateVideo = function (sectionName, jsonString) {
+        var $parent = $('div[data-name="' + sectionName + '"]');
+        $.each(jsonString, function (key, value) {
+            var $inputField = $parent.find("input[name='" + key + "']");
+            $inputField.val(value);
+            $inputField.trigger('change');  //Need this to trigger the event so video gets populated.
+        })
+    };
+
+    $('.video_record_btn').click(function () {
+        videoComponent.startVideoIntent($(this).parent().parent().attr('data-name'),
+            $(this).parent().find("input[type='hidden']").attr('name'),
+            $(this).parent().find("input[type='hidden']").val(),
+            $(this).parent().find("input[type='text']").attr('name'),
+            $(this).parent().find("input[type='text']").val(),
+            $("input[name='encounter.form_uuid']").val());
+    });
+
+    /*End- Video Capture Functionality*/
+
     /* Start - Initialize jQuery DatePicker */
 
     $('.datepicker').datepicker({

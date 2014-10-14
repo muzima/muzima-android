@@ -62,6 +62,9 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     public static final String FORM_INSTANCE = "formInstance";
     public static final String HTML_DATA_STORE = "htmlDataStore";
     public static final String BARCODE = "barCodeComponent";
+    public static final String IMAGE = "imagingComponent";
+    public static final String AUDIO = "audioComponent";
+    public static final String VIDEO = "videoComponent";
     public static final String ZIGGY_FILE_LOADER = "ziggyFileLoader";
     public static final String FORM = "form";
     public static final String DISCRIMINATOR = "discriminator";
@@ -75,6 +78,8 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private FormData formData;
     private Patient patient;
     private BarCodeComponent barCodeComponent;
+    private ImagingComponent imagingComponent;
+    private VideoComponent videoComponent;
     private Map<String, String> scanResultMap;
     private FormController formController;
     private String autoSaveIntervalPreference;
@@ -277,7 +282,11 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         FormInstance formInstance = new FormInstance(form, formTemplate);
         webView.addJavascriptInterface(formInstance, FORM_INSTANCE);
         barCodeComponent = new BarCodeComponent(this);
+        imagingComponent = new ImagingComponent(this);
+        videoComponent = new VideoComponent(this);
         webView.addJavascriptInterface(barCodeComponent, BARCODE);
+        webView.addJavascriptInterface(imagingComponent, IMAGE);
+        webView.addJavascriptInterface(videoComponent, VIDEO);
         webView.addJavascriptInterface(new HTMLFormDataStore(this, formController, formData), HTML_DATA_STORE);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         if (isFormComplete()) {
