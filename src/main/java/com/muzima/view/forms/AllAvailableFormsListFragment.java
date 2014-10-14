@@ -9,7 +9,9 @@
 package com.muzima.view.forms;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -22,13 +24,18 @@ import android.widget.Toast;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.AllAvailableFormsAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
+import com.muzima.service.MuzimaSyncService;
+import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.view.cohort.ConceptListActivity;
+import com.muzima.view.cohort.CustomConceptWizardActivity;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -139,7 +146,24 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
                         return true;
                     }
 
-                    syncAllFormTemplatesInBackgroundService();
+                    //syncAllFormTemplatesInBackgroundService();
+
+                    new AsyncTask<Void, Void, int[]>() {
+                        @Override
+                        protected void onPreExecute() {
+                            Log.i(TAG, "Canceling timeout timer!") ;
+                            ((MuzimaApplication) getActivity().getApplicationContext()).cancelTimer();
+                            ((FormsActivity) getActivity()).showProgressBar();
+                        }
+                        @Override
+                        protected int[] doInBackground(Void... voids) {
+                            return downloadFormTemplates();
+                        }
+                        @Override
+                        protected void onPostExecute(int[] results) {
+                            navigateToNextActivity();
+                        }
+                    }.execute();
 
                     endActionMode();
                     return true;
@@ -158,6 +182,17 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         if (actionMode != null) {
             actionMode.finish();
         }
+    }
+
+    private void navigateToNextActivity() {
+        Intent intent = new Intent(getActivity().getApplicationContext(), ConceptListActivity.class);
+        startActivity(intent);
+        getActivity().finish();
+    }
+    private int[] downloadFormTemplates() {
+        List<String> selectedFormIdsArray = getSelectedForms();
+        MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getActivity().getApplicationContext()).getMuzimaSyncService();
+        return muzimaSyncService.downloadFormTemplates(selectedFormIdsArray.toArray(new String[selectedFormIdsArray.size()]));
     }
 
     private void syncAllFormTemplatesInBackgroundService() {
