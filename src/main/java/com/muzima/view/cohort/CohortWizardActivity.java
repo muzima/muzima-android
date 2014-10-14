@@ -10,6 +10,7 @@ package com.muzima.view.cohort;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,11 +39,13 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.cohort.AllCohortsAdapter;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.utils.Constants;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.CheckedLinearLayout;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.forms.MuzimaProgressDialog;
 
+import java.util.Date;
 import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
@@ -157,6 +160,11 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
                         }
                         Log.i(TAG, "Restarting timeout timer!") ;
                         ((MuzimaApplication) getApplication()).restartTimer();
+                        SharedPreferences pref = getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        Date date = new Date();
+                        editor.putLong(AllCohortsListFragment.COHORTS_LAST_SYNCED_TIME, date.getTime());
+                        editor.commit();
                         keepPhoneAwake(false) ;
                         navigateToNextActivity();
                     }

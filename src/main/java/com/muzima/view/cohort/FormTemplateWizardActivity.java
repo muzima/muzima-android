@@ -8,7 +8,9 @@
 
 package com.muzima.view.cohort;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -30,12 +32,15 @@ import com.muzima.adapters.forms.TagsListAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
+import com.muzima.view.forms.AllAvailableFormsListFragment;
 import com.muzima.view.forms.MuzimaProgressDialog;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
@@ -119,6 +124,11 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
                         if (result[0] != SyncStatusConstants.SUCCESS) {
                             Toast.makeText(FormTemplateWizardActivity.this, "Could not download form templates", Toast.LENGTH_SHORT).show();
                         }
+                        SharedPreferences pref = getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        Date date = new Date();
+                        editor.putLong(AllAvailableFormsListFragment.FORMS_METADATA_LAST_SYNCED_TIME, date.getTime());
+                        editor.commit();
                         navigateToNextActivity();
                     }
                 }.execute();
