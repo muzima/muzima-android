@@ -12,7 +12,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -41,6 +44,7 @@ import com.muzima.utils.imaging.ImageResult;
 import com.muzima.utils.video.VideoResult;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
+import org.apache.commons.lang.time.DateUtils;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -64,9 +68,9 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     public static final String IMAGE = "imagingComponent";
     public static final String AUDIO = "audioComponent";
     public static final String VIDEO = "videoComponent";
-    public static final String ZIGGY_FILE_LOADER = "ziggyFileLoader";
     public static final String FORM = "form";
     public static final String DISCRIMINATOR = "discriminator";
+    public static final String DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS =  "2";
 
 
     private WebView webView;
@@ -85,6 +89,8 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private Map<String, String> videoResultMap;
     private String sectionName;
     private FormController formController;
+    private String autoSaveIntervalPreference;
+    final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,10 +106,12 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         videoResultMap = new HashMap<String, String>();
         setContentView(R.layout.activity_form_webview);
         progressDialog = new MuzimaProgressDialog(this);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+        autoSaveIntervalPreference = preferences.getString("autoSaveIntervalPreference", DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS);
         showProgressBar("Loading...");
         try {
-            patient = (Patient) getIntent().getSerializableExtra(PATIENT);
-            setupFormData(patient);
+            setupFormData();
+            startAutoSaveProcess();
             setupWebView();
         } catch (FormFetchException e) {
             Log.e(TAG, e.getMessage(), e);
@@ -117,11 +125,30 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         }
     }
 
+    private void startAutoSaveProcess() {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    webView.loadUrl("javascript:document.autoSaveForm()");
+                }
+                catch (Exception e) {
+                    Log.e(TAG, "Error while auto saving the form data", e);
+                }
+                finally{
+                    handler.postDelayed(this,  Integer.parseInt(autoSaveIntervalPreference) * DateUtils.MILLIS_PER_MINUTE);
+                }
+            }
+        };
+        handler.postDelayed(runnable, Integer.parseInt(autoSaveIntervalPreference) * DateUtils.MILLIS_PER_MINUTE);
+    }
+
     @Override
     protected void onDestroy() {
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
+        handler.removeCallbacksAndMessages(null);
         super.onDestroy();
     }
 
@@ -178,6 +205,9 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             case R.id.form_close:
                 processBackButtonPressed();
                 return true;
+            case android.R.id.home:
+                showAlertDialog();
+                return true;
             case R.id.form_back_to_draft:
                 try {
                     formData.setStatus(STATUS_INCOMPLETE);
@@ -192,6 +222,18 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         }
     }
 
+    private void showAlertDialog() {
+        new AlertDialog.Builder(HTMLFormWebViewActivity.this)
+                .setCancelable(true)
+                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                .setTitle(getResources().getString(R.string.caution))
+                .setMessage(getResources().getString(R.string.exit_form_message))
+                .setPositiveButton(getString(R.string.yes_button_label), positiveClickListener())
+                .setNegativeButton(getString(R.string.no_button_label), null)
+                .create()
+                .show();
+    }
+
     public void saveDraft() {
         if (!isFormComplete()) {
             webView.loadUrl("javascript:document.saveDraft()");
@@ -201,27 +243,27 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        if (scanResult != null && barCodeComponent.getFieldName() != null && scanResult.getContents() != null ) {
+        if (scanResult != null && barCodeComponent.getFieldName() != null && scanResult.getContents() != null) {
             scanResultMap.put(barCodeComponent.getFieldName(), scanResult.getContents());
         }
 
         ImageResult imageResult = ImagingComponent.parseActivityResult(requestCode, resultCode, intent);
-        if (imageResult != null)  {
-            sectionName =  imageResult.getSectionName();
+        if (imageResult != null) {
+            sectionName = imageResult.getSectionName();
             imageResultMap.put(imagingComponent.getImagePathField(), imageResult.getImageUri());
             imageResultMap.put(imagingComponent.getImageCaptionField(), imageResult.getImageCaption());
         }
 
         AudioResult audioResult = AudioComponent.parseActivityResult(requestCode, resultCode, intent);
-        if (audioResult != null)  {
-            sectionName =  audioResult.getSectionName();
+        if (audioResult != null) {
+            sectionName = audioResult.getSectionName();
             audioResultMap.put(audioComponent.getAudioPathField(), audioResult.getAudioUri());
             audioResultMap.put(audioComponent.getAudioCaptionField(), audioResult.getAudioCaption());
         }
 
         VideoResult videoResult = VideoComponent.parseActivityResult(requestCode, resultCode, intent);
-        if (videoResult != null)  {
-            sectionName =  videoResult.getSectionName();
+        if (videoResult != null) {
+            sectionName = videoResult.getSectionName();
             videoResultMap.put(videoComponent.getVideoPathField(), videoResult.getVideoUri());
             videoResultMap.put(videoComponent.getVideoCaptionField(), videoResult.getVideoCaption());
         }
@@ -230,14 +272,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(HTMLFormWebViewActivity.this);
-            builder
-                    .setCancelable(true)
-                    .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                    .setTitle(getResources().getString(R.string.caution))
-                    .setMessage(getResources().getString(R.string.exit_form_message))
-                    .setPositiveButton("Yes", positiveClickListener())
-                    .setNegativeButton("No", null).create().show();
+            showAlertDialog();
             return false;
         }
         return super.onKeyDown(keyCode, event);
@@ -257,29 +292,30 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         return formData.getStatus().equalsIgnoreCase(STATUS_COMPLETE);
     }
 
-    private void setupFormData(Patient patient) throws FormFetchException, FormController.FormDataFetchException, FormController.FormDataSaveException {
-        BaseForm formObject = (BaseForm) getIntent().getSerializableExtra(FORM);
-
+    private void setupFormData()
+            throws FormFetchException, FormController.FormDataFetchException, FormController.FormDataSaveException {
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
-        String formId = formObject.getFormUuid();
-        form = formController.getFormByUuid(formId);
-        formTemplate = formController.getFormTemplateByUuid(formId);
 
-        if (formObject.hasData()) {
-            formData = formController.getFormDataByUuid(((FormWithData) formObject).getFormDataUuid());
+        BaseForm baseForm = (BaseForm) getIntent().getSerializableExtra(FORM);
+        form = formController.getFormByUuid(baseForm.getFormUuid());
+        patient = (Patient) getIntent().getSerializableExtra(PATIENT);
+        formTemplate = formController.getFormTemplateByUuid(baseForm.getFormUuid());
+
+        if (baseForm.hasData()) {
+            formData = formController.getFormDataByUuid(((FormWithData) baseForm).getFormDataUuid());
         } else {
-            formData = createNewFormData(patient.getUuid(), formId, patient, formTemplate);
+            formData = createNewFormData();
         }
     }
 
-    private FormData createNewFormData(final String patientUuid, final String formUuid, Patient patient, FormTemplate formTemplate) throws FormController.FormDataSaveException {
+    private FormData createNewFormData() throws FormController.FormDataSaveException {
         FormData formData = new FormData() {{
             setUuid(UUID.randomUUID().toString());
-            setPatientUuid(patientUuid);
+            setPatientUuid(patient.getUuid());
             setUserUuid("userUuid");
             setStatus(STATUS_INCOMPLETE);
-            setTemplateUuid(formUuid);
-            setDiscriminator(getIntent().getStringExtra(DISCRIMINATOR));
+            setTemplateUuid(form.getUuid());
+            setDiscriminator(form.getDiscriminator());
         }};
         formData.setJsonPayload(new HTMLPatientJSONMapper().map(patient, formData));
         return formData;
@@ -376,6 +412,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     }
 
     private void processBackButtonPressed() {
+        handler.removeCallbacksAndMessages(null);
         onBackPressed();
     }
 
@@ -389,7 +426,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
     private boolean isEncounterForm() {
         return getIntent().getStringExtra(DISCRIMINATOR).equals(Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER)
-            || getIntent().getStringExtra(DISCRIMINATOR).equals(Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION);
+                || getIntent().getStringExtra(DISCRIMINATOR).equals(Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION);
     }
 }
 

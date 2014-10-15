@@ -95,3 +95,17 @@ span.clear{
 .datepicker{
     background: white !important;
 }
+
+.roman_numeral_list>li{
+    list-style-type: lower-roman;
+}
+
+.padded_div_images{
+    padding:20px 0px 20px;
+    text-align : center;
+}
+
+.font-normal {
+    font-weight: normal;
+}
+

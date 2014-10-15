@@ -11,10 +11,8 @@ package com.muzima.view.login;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
-import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -83,7 +81,7 @@ public class LoginActivity extends Activity {
 
         //Hack to get it to use default font space.
         passwordText.setTypeface(Typeface.DEFAULT);
-        //versionText.setText(getApplicationVersion());
+        versionText.setText(getApplicationVersion());
     }
 
     private void showSessionTimeOutPopUpIfNeeded() {
@@ -130,10 +128,7 @@ public class LoginActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-
         setupStatusView();
-
-        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
     }
 
     private void setupStatusView() {

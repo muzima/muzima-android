@@ -21,7 +21,7 @@ import com.muzima.adapters.cohort.CohortPagerAdapter;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.customViews.PagerSlidingTabStrip;
+import com.muzima.view.custom.PagerSlidingTabStrip;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;

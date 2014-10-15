@@ -18,7 +18,7 @@ import com.muzima.adapters.observations.ObservationsPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.customViews.PagerSlidingTabStrip;
+import com.muzima.view.custom.PagerSlidingTabStrip;
 
 public class ObservationsActivity extends BroadcastListenerActivity {
 

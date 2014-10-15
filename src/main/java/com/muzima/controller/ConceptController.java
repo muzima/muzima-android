@@ -62,6 +62,18 @@ public class ConceptController {
         }
     }
 
+    public void deleteConcepts(List<Concept> concepts) throws ConceptDeleteException {
+        try {
+            conceptService.deleteConcepts(concepts);
+            for(Concept concept : concepts){
+                List<Observation> observations = observationService.getObservations(concept);
+                observationService.deleteObservations(observations);
+            }
+        } catch (IOException e) {
+            throw new ConceptDeleteException(e);
+        }
+    }
+
     public void saveConcepts(List<Concept> concepts) throws ConceptSaveException {
         try {
             conceptService.saveConcepts(concepts);

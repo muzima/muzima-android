@@ -16,6 +16,7 @@ import com.muzima.api.model.FormData;
 import com.muzima.controller.FormController;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.utils.Constants;
+import com.muzima.utils.StringUtils;
 
 public class HTMLFormDataStore {
     private static final String TAG = "FormDataStore";
@@ -31,33 +32,52 @@ public class HTMLFormDataStore {
     }
 
     @JavascriptInterface
+    public String getStatus() {
+        return formData == null ? StringUtils.EMPTY : formData.getStatus();
+    }
+
+    @JavascriptInterface
     public void saveHTML(String jsonPayload, String status) {
+        saveHTML(jsonPayload, status, false);
+    }
+
+    @JavascriptInterface
+    public void saveHTML(String jsonPayload, String status, boolean keepFormOpen) {
         formData.setJsonPayload(jsonPayload);
         formData.setStatus(status);
         try {
             parseForm(jsonPayload, status);
             formController.saveFormData(formData);
             formWebViewActivity.setResult(FormsActivity.RESULT_OK);
-            formWebViewActivity.finish();
+            Log.i(TAG, "Saving form data ...");
+            if (!keepFormOpen) {
+                formWebViewActivity.finish();
+                if(status.equals("complete")) {
+                    Toast.makeText(formWebViewActivity, "Complete form data is saved successfully.", Toast.LENGTH_SHORT).show();
+                }
+                if(status.equals("incomplete")) {
+                    Toast.makeText(formWebViewActivity, "Draft form data is saved successfully.", Toast.LENGTH_SHORT).show();
+                }
+            }
         } catch (FormController.FormDataSaveException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving the form", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while saving form data", e);
-        } catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving the form", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while saving form data", e);
         }
     }
 
     private void parseForm(String jsonPayload, String status) {
-        if(status.equals(Constants.STATUS_INCOMPLETE)){
+        if (status.equals(Constants.STATUS_INCOMPLETE)) {
             return;
         }
-        getFormParser().createAndPersistObservations(jsonPayload,formData.getUuid());
+        getFormParser().createAndPersistObservations(jsonPayload, formData.getUuid());
     }
 
-    public HTMLFormObservationCreator getFormParser(){
-        MuzimaApplication applicationContext = (MuzimaApplication)formWebViewActivity.getApplicationContext();
+    public HTMLFormObservationCreator getFormParser() {
+        MuzimaApplication applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
         return new HTMLFormObservationCreator(applicationContext.getPatientController(), applicationContext.getConceptController(),
-        applicationContext.getEncounterController(), applicationContext.getObservationController());
+                applicationContext.getEncounterController(), applicationContext.getObservationController());
     }
 }

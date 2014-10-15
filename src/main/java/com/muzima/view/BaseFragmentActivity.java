@@ -8,13 +8,19 @@
 
 package com.muzima.view;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
+import com.muzima.R;
 import com.muzima.domain.Credentials;
+import com.muzima.view.login.LoginActivity;
 
 public class BaseFragmentActivity extends SherlockFragmentActivity {
 
@@ -45,7 +51,19 @@ public class BaseFragmentActivity extends SherlockFragmentActivity {
     protected void onResume() {
         super.onResume();
         ((MuzimaApplication) getApplication()).setCurrentActivity(this);
-        if (new Credentials(this).isEmpty()) {
+        checkDisclaimerOrCredentials();
+    }
+
+    private void checkDisclaimerOrCredentials() {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String disclaimerKey = getResources().getString(R.string.preference_disclaimer);
+        boolean disclaimerAccepted = settings.getBoolean(disclaimerKey, false);
+        Log.i("Disclaimer", "Disclaimer is accepted: " + disclaimerAccepted);
+        if (!disclaimerAccepted) {
+            Intent intent = new Intent(this, DisclaimerActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (new Credentials(this).isEmpty()) {
             dropDownHelper.launchLoginActivity(false);
         }
     }

@@ -27,7 +27,9 @@
 
     <ListView
             android:id="@+id/concept_preference_list"
-            style="@style/MuzimaListView"/>
+            style="@style/MuzimaSelectableListView"
+            android:choiceMode="multipleChoice">
+    </ListView>
 
     <TextView android:id="@+id/no_concept_added"
               android:text="@string/no_concept_added"
