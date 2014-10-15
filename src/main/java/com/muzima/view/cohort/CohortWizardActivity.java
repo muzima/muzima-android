@@ -10,7 +10,6 @@ package com.muzima.view.cohort;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,29 +24,26 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.Toast;
-
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.cohort.AllCohortsAdapter;
+import com.muzima.api.model.LastSyncTime;
+import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.service.MuzimaSyncService;
-import com.muzima.utils.Constants;
+import com.muzima.service.SntpService;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.CheckedLinearLayout;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.forms.MuzimaProgressDialog;
 
-import java.util.Date;
+import java.io.IOException;
 import java.util.List;
 
+import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 
@@ -160,11 +156,14 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
                         }
                         Log.i(TAG, "Restarting timeout timer!") ;
                         ((MuzimaApplication) getApplication()).restartTimer();
-                        SharedPreferences pref = getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = pref.edit();
-                        Date date = new Date();
-                        editor.putLong(AllCohortsListFragment.COHORTS_LAST_SYNCED_TIME, date.getTime());
-                        editor.commit();
+                        try {
+                            LastSyncTimeService lastSyncTimeService = ((MuzimaApplication)getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
+                            SntpService sntpService = ((MuzimaApplication)getApplicationContext()).getSntpService();
+                            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS, sntpService.getLocalTime());
+                            lastSyncTimeService.saveLastSyncTime(lastSyncTime);
+                        } catch (IOException e) {
+                            Log.i(TAG,"Error setting cohort sync time.");
+                        }
                         keepPhoneAwake(false) ;
                         navigateToNextActivity();
                     }

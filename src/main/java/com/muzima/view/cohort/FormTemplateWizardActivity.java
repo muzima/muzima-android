@@ -8,14 +8,13 @@
 
 package com.muzima.view.cohort;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.Button;
@@ -29,18 +28,20 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.forms.AllAvailableFormsAdapter;
 import com.muzima.adapters.forms.TagsListAdapter;
+import com.muzima.api.model.APIName;
+import com.muzima.api.model.LastSyncTime;
+import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.service.MuzimaSyncService;
-import com.muzima.utils.Constants;
+import com.muzima.service.SntpService;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
-import com.muzima.view.forms.AllAvailableFormsListFragment;
 import com.muzima.view.forms.MuzimaProgressDialog;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
@@ -59,6 +60,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
     private MuzimaProgressDialog progressDialog;
     private ListView listView;
     private boolean isProcessDialogOn = false;
+    private static final String TAG = "FormTemplateWizardActivity";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,11 +126,14 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
                         if (result[0] != SyncStatusConstants.SUCCESS) {
                             Toast.makeText(FormTemplateWizardActivity.this, "Could not download form templates", Toast.LENGTH_SHORT).show();
                         }
-                        SharedPreferences pref = getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = pref.edit();
-                        Date date = new Date();
-                        editor.putLong(AllAvailableFormsListFragment.FORMS_METADATA_LAST_SYNCED_TIME, date.getTime());
-                        editor.commit();
+                        try {
+                            LastSyncTimeService lastSyncTimeService = ((MuzimaApplication)getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
+                            SntpService sntpService = ((MuzimaApplication)getApplicationContext()).getSntpService();
+                            LastSyncTime lastSyncTime = new LastSyncTime(APIName.DOWNLOAD_FORMS,sntpService.getLocalTime());
+                            lastSyncTimeService.saveLastSyncTime(lastSyncTime);
+                        } catch (IOException e) {
+                            Log.i(TAG, "Error getting forms last sync time");
+                        }
                         navigateToNextActivity();
                     }
                 }.execute();
