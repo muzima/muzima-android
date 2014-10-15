@@ -28,7 +28,7 @@ public class Constants {
 
     public static final String FORM_XML_DISCRIMINATOR_ENCOUNTER = "xml-encounter";
     public static final String FORM_JSON_DISCRIMINATOR_ENCOUNTER = "json-encounter";
-    public static final String FORM_DISCRIMINATOR_REGISTRATION = "registration";
+    public static final String FORM_DISCRIMINATOR_REGISTRATION = "xml-registration";
     public static final String FORM_JSON_DISCRIMINATOR_CONSULTATION = "json-consultation";
     public static final String FORM_DISCRIMINATOR_CONSULTATION = "consultation";
 
@@ -45,6 +45,7 @@ public class Constants {
         public static final String SYNC_STATUS = "sync_status";
         public static final String DOWNLOAD_COUNT_PRIMARY = "download_count_primary";
         public static final String DOWNLOAD_COUNT_SECONDARY = "download_count_secondary";
+        public static final String DELETED_COUNT_PRIMARY = "deleted_count_primary";
         public static final String FORM_IDS = "formIds";
         public static final String COHORT_IDS = "cohortIds";
         public static final String PATIENT_UUID_FOR_DOWNLOAD = "patientUUIDForDownload";

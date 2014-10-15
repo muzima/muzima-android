@@ -47,18 +47,15 @@ public class FormDataStore {
 
     @JavascriptInterface
     public void save(String jsonData, String xmlData, String status) {
-        Patient newPatient = null;
-        if (isRegistrationComplete(status)) {
-            newPatient = formController.createNewPatient(jsonData);
-            formData.setPatientUuid(newPatient.getUuid());
-            formWebViewActivity.startPatientSummaryView(newPatient);
-        }
-        Log.d(TAG, "xml data is:" + xmlData);
         formData.setXmlPayload(xmlData);
-        Log.d(TAG, "json data is:" + jsonData);
         formData.setJsonPayload(jsonData);
         formData.setStatus(status);
         try {
+            if (isRegistrationComplete(status)) {
+                Patient newPatient = formController.createNewPatient(jsonData);
+                formData.setPatientUuid(newPatient.getUuid());
+                formWebViewActivity.startPatientSummaryView(newPatient);
+            }
             parseForm(xmlData, status);
             formController.saveFormData(formData);
             formWebViewActivity.setResult(FormsActivity.RESULT_OK);
