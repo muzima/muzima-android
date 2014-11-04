@@ -9,6 +9,7 @@
 package com.muzima;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -47,6 +48,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.Security;
+import java.util.List;
 
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 
@@ -301,5 +303,16 @@ public class MuzimaApplication extends Application {
         }
         reader.close();
         return builder.toString();
+    }
+    public boolean isRunningInBackground()
+    {
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> tasks = manager.getRunningTasks(1);
+        if (tasks.get(0).topActivity.getClassName().contains("Launcher")){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }
