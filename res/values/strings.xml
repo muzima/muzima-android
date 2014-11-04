@@ -209,6 +209,7 @@
     </string>
     <string name="exit_form_message">Closing Form: This will discard all your changes.  Are you sure you would like to do this?
     </string>
+    <string name="exit_app_message">Are you sure to log out and exit mUzima app?</string>
     <string name="filter_cohort_hint">Start typing to filter the cohorts...</string>
 
     <string name="notifications">Notifications</string>

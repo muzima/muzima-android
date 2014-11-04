@@ -271,6 +271,16 @@ public class MuzimaApplication extends Application {
         muzimaTimer.restart();
     }
 
+    public boolean isLoggedIn(){
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String passwordKey = getResources().getString(R.string.preference_password);
+        if(settings.getAll().size() == 0 || settings.getAll().get(passwordKey).toString() == StringUtil.EMPTY){
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
     public void logOut() {
         saveBeforeExit();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
