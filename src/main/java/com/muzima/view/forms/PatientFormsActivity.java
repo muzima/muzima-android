@@ -8,15 +8,19 @@
 
 package com.muzima.view.forms;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
+import com.muzima.adapters.forms.FormsPagerAdapter;
 import com.muzima.adapters.forms.PatientFormsPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
+import com.muzima.utils.Constants;
 import com.muzima.view.patients.PatientSummaryActivity;
 
 
@@ -37,5 +41,24 @@ public class PatientFormsActivity extends FormsActivityBase {
     @Override
     protected MuzimaPagerAdapter createFormsPagerAdapter() {
         return new PatientFormsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), patient);
+    }
+
+    @Override
+    protected void onReceive(Context context, Intent intent) {
+
+        super.onReceive(context, intent);
+
+        int syncStatus = intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_STATUS, Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR);
+        int syncType = intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, -1);
+
+
+        if(syncType == Constants.DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS) {
+            SharedPreferences sp = getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", MODE_PRIVATE);
+            if (sp.getBoolean("active", false) == true) {
+                if (syncStatus == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
+                    ((PatientFormsPagerAdapter) formsPagerAdapter).onFormUploadFinish();
+                }
+            }
+        }
     }
 }

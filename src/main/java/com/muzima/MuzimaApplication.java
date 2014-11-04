@@ -36,6 +36,7 @@ import com.muzima.service.SntpService;
 import com.muzima.util.Constants;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.forms.FormWebViewActivity;
+import com.muzima.view.forms.HTMLFormWebViewActivity;
 import com.muzima.view.preferences.MuzimaTimer;
 import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
@@ -105,7 +106,6 @@ public class MuzimaApplication extends Application {
         return dir.delete();
     }
 
-
     @Override
     public void onCreate() {
         ACRA.init(this);
@@ -116,6 +116,7 @@ public class MuzimaApplication extends Application {
             Security.removeProvider("AndroidOpenSSL");
         }
         muzimaTimer = getTimer(this);
+
         super.onCreate();
         try {
             ContextFactory.setProperty(Constants.LUCENE_DIRECTORY_PATH, APP_DIR);
@@ -299,6 +300,9 @@ public class MuzimaApplication extends Application {
     private void saveBeforeExit() {
         if (currentActivity instanceof FormWebViewActivity) {
             ((FormWebViewActivity) currentActivity).saveDraft();
+        }
+        if (currentActivity instanceof HTMLFormWebViewActivity) {
+            ((HTMLFormWebViewActivity) currentActivity).stopAutoSaveProcess();
         }
     }
 

@@ -134,6 +134,9 @@
     <string name="preference_category_cohorts">Cohort Settings</string>
     <string name="preference_cohorts_prefix_desc">Enter cohort prefixes</string>
     <string name="preference_cohort_prefix">cohortPrefixesPreference</string>
+    <string name="preference_real_time_sync_summary">Enables real time synchronization of completed forms.</string>
+    <string name="preference_real_time_sync_title">Real time sync</string>
+    <string name="preference_real_time_sync">realTimeSyncPreference</string>
 
     <string name="add_cohort_prefixes">Step 1: Add Cohort Prefix</string>
     <string name="download_cohort">Step 1: Download Cohort(s)</string>
