@@ -22,6 +22,7 @@ import com.muzima.api.model.APIName;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.Patient;
 import com.muzima.api.service.LastSyncTimeService;
+import com.muzima.utils.Constants;
 import com.muzima.view.BroadcastListenerActivity;
 
 import java.io.IOException;
