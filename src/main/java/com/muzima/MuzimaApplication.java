@@ -42,6 +42,7 @@ import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpSender;
+import org.apache.lucene.queryParser.ParseException;
 
 import java.io.BufferedReader;
 import java.io.File;
