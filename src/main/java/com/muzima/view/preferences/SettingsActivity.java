@@ -39,12 +39,14 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
     private String passwordPreferenceKey;
     private String autoSavePreferenceKey;
     private String realTimeSyncPreferenceKey;
+    private String encounterProviderPreferenceKey;
 
     private EditTextPreference serverPreference;
     private EditTextPreference usernamePreference;
     private EditTextPreference timeoutPreference;
     private EditTextPreference passwordPreference;
     private EditTextPreference autoSaveIntervalPreference;
+    private CheckBoxPreference encounterProviderPreference;
     private CheckBoxPreference realTimeSyncPreference;
 
     private String newURL;
@@ -131,6 +133,10 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         registerTextPreferenceChangeHandler(timeoutPreferenceKey, timeoutPreference);
         registerCheckboxPreferenceChangeHandler(realTimeSyncPreferenceKey, realTimeSyncPreference);
 
+        encounterProviderPreferenceKey = getResources().getString(R.string.preference_encounter_provider);
+        encounterProviderPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(encounterProviderPreferenceKey);
+        encounterProviderPreference.setSummary(encounterProviderPreference.getSummary());
+
         // Show the Up button in the action bar.
         setupActionBar();
     }
@@ -148,7 +154,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
      */
     @Override
     public void onSharedPreferenceChanged(final SharedPreferences sharedPreferences, final String key) {
-        if (key.equalsIgnoreCase("wizardFinished")) {
+        if (key.equalsIgnoreCase("wizardFinished") || key.equalsIgnoreCase("encounterProviderPreference")) {
             return;
         }
         PreferenceChangeHandler preferenceChangeHandler = actions.get(key);
