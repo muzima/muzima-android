@@ -73,7 +73,19 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
     }
 
     private String getPatientFullName(Patient patient) {
-        return patient.getFamilyName() + ", " + patient.getGivenName() + " " + patient.getMiddleName();
+        StringBuffer patientFullName = new StringBuffer();
+        if(patient.getFamilyName()!=null) {
+            patientFullName.append(patient.getFamilyName());
+            patientFullName.append(", ");
+        }
+        if(patient.getGivenName() != null){
+            patientFullName.append(patient.getGivenName());
+            patientFullName.append(" ");
+        }
+        if(patient.getMiddleName() != null){
+            patientFullName.append(patient.getMiddleName());
+        }
+        return patientFullName.toString();
     }
 
     private int getGenderImage(String gender) {
