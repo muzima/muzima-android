@@ -12,6 +12,10 @@ import com.muzima.api.model.Form;
 import com.muzima.model.CompleteFormWithPatientData;
 import org.junit.Test;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -40,8 +44,12 @@ public class CompleteFormBuilderTest {
 
     @Test
     public void withLastModifiedDate_shouldSetLastModifiedDate() throws Exception {
-        CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder().withLastModifiedData("24/09/2013").build();
-
-        assertThat(completeForm.getLastModifiedDate(), is("24/09/2013"));
+        Calendar saveTimeCalender = Calendar.getInstance();
+        saveTimeCalender.set(2014,8,29,10,10,10); //MONTH  Jan = 0, dec = 11
+        Date formSaveDateTime = saveTimeCalender.getTime();
+        CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder().withLastModifiedDate(formSaveDateTime).build();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String formSaveTime = dateFormat.format(completeForm.getLastModifiedDate());
+        assertThat(formSaveTime, is("29-09-2014 10:10:10"));
     }
 }

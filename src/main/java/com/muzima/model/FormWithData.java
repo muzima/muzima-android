@@ -10,16 +10,18 @@ package com.muzima.model;
 
 import com.muzima.api.model.Patient;
 
+import java.util.Date;
+
 public abstract class FormWithData extends BaseForm {
     private String formDataUuid;
-    private String lastModifiedDate;
+    private Date lastModifiedDate;
     private Patient patient;
 
-    public String getLastModifiedDate() {
+    public Date getLastModifiedDate() {
         return lastModifiedDate;
     }
 
-    public void setLastModifiedDate(String lastModifiedDate) {
+    public void setLastModifiedDate(Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 
