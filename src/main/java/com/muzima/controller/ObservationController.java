@@ -182,9 +182,14 @@ public class ObservationController {
                     allConceptsUuids = getAllUuids(knownConceptsUuid, newConceptsUuids);
                     allPatientsUuids = getAllUuids(knownPatientsUuid, newPatientsUuids);
                     paramSignature = buildParamSignature(allPatientsUuids, allConceptsUuids);
-                    observations = observationService.downloadObservations(newPatientsUuids, allConceptsUuids, null);
-                    observations.addAll(observationService.downloadObservations(knownPatientsUuid, newConceptsUuids, null));
-                    observations.addAll(observationService.downloadObservations(knownPatientsUuid, knownConceptsUuid, fullLastSyncTimeInfo.getLastSyncDate()));
+                    if(newPatientsUuids.size()!=0) {
+                        observations = observationService.downloadObservations(newPatientsUuids, allConceptsUuids, null);
+                        observations.addAll(observationService.downloadObservations(knownPatientsUuid, newConceptsUuids, null));
+                        observations.addAll(observationService.downloadObservations(knownPatientsUuid, knownConceptsUuid, fullLastSyncTimeInfo.getLastSyncDate()));
+                    }
+                    else{
+                        observations.addAll(observationService.downloadObservations(patientUuids, conceptUuids, null));
+                    }
                 }
             }
             LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_OBSERVATIONS, sntpService.getLocalTime(), paramSignature);
