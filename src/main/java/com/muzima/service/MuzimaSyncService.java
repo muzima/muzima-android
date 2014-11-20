@@ -170,6 +170,11 @@ public class MuzimaSyncService {
 
             formController.replaceFormTemplates(formTemplates);
             List<Concept> concepts = getRelatedConcepts(formTemplates);
+
+            ConceptController.newConcepts = concepts;
+            List<Concept> savedConcepts = conceptController.getConcepts();
+            ConceptController.newConcepts.removeAll(savedConcepts);
+
             conceptController.saveConcepts(concepts);
 
             Log.i(TAG, "Form templates replaced");
@@ -193,6 +198,8 @@ public class MuzimaSyncService {
             Log.e(TAG, "Exception when trying to download forms", e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
+        } catch (ConceptController.ConceptFetchException e) {
+            e.printStackTrace();
         }
         return result;
     }
@@ -327,7 +334,6 @@ public class MuzimaSyncService {
         }
         return result;
     }
-
     public int[] downloadObservationsForPatientsByCohortUUIDs(String[] cohortUuids) {
         int[] result = new int[2];
         List<Patient> patients;
