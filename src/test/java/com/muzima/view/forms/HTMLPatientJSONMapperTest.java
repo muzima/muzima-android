@@ -27,12 +27,12 @@ public class HTMLPatientJSONMapperTest {
     @Test
     public void shouldAddPatientDetailsOnJSONFromPatient() throws Exception {
         Date birthdate = new Date();
-        SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat formattedDate = new SimpleDateFormat("dd-MM-yyyy");
         Patient patient = patient("givenname", "middlename", "familyname", "Female", new Date(), "uuid");
         HTMLPatientJSONMapper mapper = new HTMLPatientJSONMapper();
         FormData formData = new FormData();
         User user = new User();
-        formData.setUuid("formUuid");
+        formData.setTemplateUuid("formUuid");
         String json = mapper.map(patient, formData, user, false);
         assertThat(json, containsString("\"patient\":{"));
         assertThat(json, containsString("\"encounter\":{"));
