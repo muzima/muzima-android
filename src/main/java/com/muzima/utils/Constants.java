@@ -24,7 +24,7 @@ public class Constants {
     public static final String STATUS_COMPLETE = "complete";
     public static final String STATUS_UPLOADED = "uploaded";
     public static final String SEARCH_STRING_BUNDLE_KEY = "SearchString";
-    public static String LOCAL_PATIENT = "LocalPatient";
+    public static final String LOCAL_PATIENT = "LocalPatient";
 
     public static final String FORM_XML_DISCRIMINATOR_ENCOUNTER = "xml-encounter";
     public static final String FORM_JSON_DISCRIMINATOR_ENCOUNTER = "json-encounter";

@@ -123,145 +123,6 @@ public class MuzimaSyncServiceTest {
         verify(muzimaContext).closeSession();
     }
 
-    @Test
-    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsenameContainsComma() throws Exception {
-        String[] credentials = new String[]{"username,", "password", "url"};
-
-        assertThat(muzimaSyncService.authenticate(credentials), is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
-    }
-
-    @Test
-    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsSemiColon() throws Exception {
-        String[] credentials = {"username;", "password", "url"};
-
-        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
-    }
-
-    @Test
-    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsDot(){
-        String[] credentials = {"username.", "password", "url"};
-
-        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
-    }
-
-    @Test
-    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsMinus(){
-        String[] credentials = {"username-", "password", "url"};
-
-        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
-    }
-
-    @Test
-    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsForwardSlash(){
-        String[] credentials = {"username/", "password", "url"};
-
-        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
-    }
-
-    @Test
-    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsAtSign(){
-        String[] credentials = {"username@", "password", "url"};
-
-        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
-    }
-
-    @Test
-    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsAshSign(){
-        String[] credentials = {"username#", "password", "url"};
-
-        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
-    }
-
-    @Test
-    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsDollarSign(){
-        String[] credentials = {"username$", "password", "url"};
-
-        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
-    }
-
-    @Test
-    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsPercentageSign(){
-        String[] credentials = {"username%", "password", "url"};
-
-        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
-    }
-
-    @Test
-    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsAndSign(){
-        String[] credentials = {"username&", "password", "url"};
-
-        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
-    }
-
-    @Test
-    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsStarSign(){
-        String[] credentials = {"username*", "password", "url"};
-
-        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
-    }
-
-    @Test
-    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsPlusSign(){
-        String[] credentials = {"username+", "password", "url"};
-
-        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
-    }
-
-    @Test
-    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsEqualSign(){
-        String[] credentials = {"username=", "password", "url"};
-
-        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
-    }
-
-    @Test
-    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsSingleQuote(){
-        String[] credentials = {"username'", "password", "url"};
-
-        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
-    }
-
-    @Test
-    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsDoubleQuote(){
-        String[] credentials = {"username\"", "password", "url"};
-
-        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
-    }
-
-    @Test
-    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsPipe(){
-        String[] credentials = {"username|", "password", "url"};
-
-        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
-    }
-
-    @Test
-    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsTilde(){
-        String[] credentials = {"username~", "password", "url"};
-
-        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
-    }
-
-    @Test
-    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsRevertedQuote(){
-        String[] credentials = {"username`", "password", "url"};
-
-        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
-    }
-
-    @Test
-    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsRightAngleBracket(){
-        String[] credentials = {"username<", "password", "url"};
-
-        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
-    }
-
-    @Test
-    public void authenticate_ShouldReturnInvalidCredentialsErrorIfUsernameContainsLeftAngleBracket(){
-        String[] credentials = {"username>", "password", "url"};
-
-        assertThat(muzimaSyncService.authenticate(credentials),is(SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME));
-    }
 
     @Test
     public void authenticate_shouldCallCloseSessionIfExceptionOccurred() throws Exception {
@@ -308,12 +169,12 @@ public class MuzimaSyncServiceTest {
         muzimaSyncService.downloadForms();
 
         verify(formContorller).downloadAllForms();
-        verify(formContorller).saveAllForms(forms);
+        verify(formContorller).updateAllForms(forms);
     }
 
     @Test
     public void downloadForms_shouldReturnSuccessStatusAndDownloadCountIfSuccessful() throws Exception, FormController.FormFetchException {
-        int[] result = new int[]{SyncStatusConstants.SUCCESS, 2};
+        int[] result = new int[]{SyncStatusConstants.SUCCESS, 2, 0};
 
         List<Form> forms = new ArrayList<Form>() {{
             add(new Form());
@@ -325,6 +186,30 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
+    public void downloadForms_shouldReturnDeletedFormCount() throws FormController.FormFetchException {
+        int[] result = new int[]{SyncStatusConstants.SUCCESS,2,1};
+
+        List<Form> downloadedForms = new ArrayList<Form>();
+        Form formToDelete = new Form();
+        formToDelete.setVoided(true);
+        formToDelete.setUuid("123");
+        Form newForm = new Form();
+        newForm.setVoided(false);
+        newForm.setUuid("456");
+        downloadedForms.add(formToDelete);
+        downloadedForms.add(new Form());
+        downloadedForms.add(newForm);
+        List<Form> allAvailableForms = new ArrayList<Form>();
+        Form formA = new Form();
+        formA.setUuid("789");
+        allAvailableForms.add(formToDelete);
+        allAvailableForms.add(formA);
+        when(formContorller.downloadAllForms()).thenReturn(downloadedForms);
+        when(formContorller.getAllAvailableForms()).thenReturn(allAvailableForms);
+        assertThat(muzimaSyncService.downloadForms(), is(result));
+    }
+
+    @Test
     public void downloadForms_shouldReturnDownloadErrorIfDownloadExceptionOccur() throws Exception, FormController.FormFetchException {
         doThrow(new FormController.FormFetchException(null)).when(formContorller).downloadAllForms();
         assertThat(muzimaSyncService.downloadForms()[0], is(SyncStatusConstants.DOWNLOAD_ERROR));
@@ -332,7 +217,7 @@ public class MuzimaSyncServiceTest {
 
     @Test
     public void downloadForms_shouldReturnSaveErrorIfSaveExceptionOccur() throws Exception, FormController.FormSaveException {
-        doThrow(new FormController.FormSaveException(null)).when(formContorller).saveAllForms(anyList());
+        doThrow(new FormController.FormSaveException(null)).when(formContorller).updateAllForms(anyList());
         assertThat(muzimaSyncService.downloadForms()[0], is(SyncStatusConstants.SAVE_ERROR));
     }
 
