@@ -191,10 +191,10 @@ public class MuzimaSyncServiceTest {
 
         List<Form> downloadedForms = new ArrayList<Form>();
         Form formToDelete = new Form();
-        formToDelete.setVoided(true);
+        formToDelete.setRetired(true);
         formToDelete.setUuid("123");
         Form newForm = new Form();
-        newForm.setVoided(false);
+        newForm.setRetired(false);
         newForm.setUuid("456");
         downloadedForms.add(formToDelete);
         downloadedForms.add(new Form());
