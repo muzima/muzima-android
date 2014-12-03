@@ -67,6 +67,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     public static final String PATIENT = "patient";
     public static final String FORM_INSTANCE = "formInstance";
     public static final String HTML_DATA_STORE = "htmlDataStore";
+    public static final String FINGER_PRINT_COMPONENT = "fingerPrintComponent";
     public static final String BARCODE = "barCodeComponent";
     public static final String IMAGE = "imagingComponent";
     public static final String AUDIO = "audioComponent";
@@ -84,10 +85,12 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private FormData formData;
     private Patient patient;
     private BarCodeComponent barCodeComponent;
+    private FingerPrintComponent fingerPrintComponent;
     private ImagingComponent imagingComponent;
     private AudioComponent audioComponent;
     private VideoComponent videoComponent;
     private Map<String, String> scanResultMap;
+    private Map<String, byte[]> fingerPrintScanResultMap;
     private Map<String, String> imageResultMap;
     private Map<String, String> audioResultMap;
     private Map<String, String> videoResultMap;
@@ -105,6 +108,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
+        fingerPrintScanResultMap = new HashMap<String, byte[]>();
         scanResultMap = new HashMap<String, String>();
         imageResultMap = new HashMap<String, String>();
         audioResultMap = new HashMap<String, String>();
@@ -181,6 +185,12 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
     @Override
     protected void onResume() {
+        if (fingerPrintScanResultMap != null && !fingerPrintScanResultMap.isEmpty()) {
+            String jsonMap = new JSONObject(fingerPrintScanResultMap).toString();
+            Log.d(TAG, jsonMap);
+            webView.loadUrl("javascript:document.populateFingerPrint(" + jsonMap + ")");
+        }
+
         if (scanResultMap != null && !scanResultMap.isEmpty()) {
             String jsonMap = new JSONObject(scanResultMap).toString();
             Log.d(TAG, jsonMap);
@@ -257,6 +267,11 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        IntentResult fingerPrintScanResult = IntentIntegrator.parseActivityResultForFingerPrint(requestCode, resultCode, intent);
+        if (fingerPrintScanResult != null && fingerPrintComponent.getFieldName() != null && fingerPrintScanResult.getRawBytes() != null) {
+            fingerPrintScanResultMap.put(fingerPrintComponent.getFieldName(), fingerPrintScanResult.getRawBytes());
+        }
+
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanResult != null && barCodeComponent.getFieldName() != null && scanResult.getContents() != null) {
             scanResultMap.put(barCodeComponent.getFieldName(), scanResult.getContents());
@@ -351,9 +366,11 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         FormInstance formInstance = new FormInstance(form, formTemplate);
         webView.addJavascriptInterface(formInstance, FORM_INSTANCE);
         barCodeComponent = new BarCodeComponent(this);
+        fingerPrintComponent = new FingerPrintComponent(this);
         imagingComponent = new ImagingComponent(this);
         audioComponent = new AudioComponent(this);
         videoComponent = new VideoComponent(this);
+        webView.addJavascriptInterface(fingerPrintComponent, FINGER_PRINT_COMPONENT);
         webView.addJavascriptInterface(barCodeComponent, BARCODE);
         webView.addJavascriptInterface(imagingComponent, IMAGE);
         webView.addJavascriptInterface(audioComponent, AUDIO);

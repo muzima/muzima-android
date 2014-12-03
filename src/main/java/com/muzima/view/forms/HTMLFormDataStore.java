@@ -44,7 +44,7 @@ public class HTMLFormDataStore {
 
     @JavascriptInterface
     public void saveHTML(String jsonPayload, String status, boolean keepFormOpen) {
-        formData.setJsonPayload(jsonPayload);
+       formData.setJsonPayload(jsonPayload);
         formData.setStatus(status);
         try {
             parseForm(jsonPayload, status);

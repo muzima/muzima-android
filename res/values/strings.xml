@@ -21,6 +21,7 @@
     <string name="clients">Clients</string>
     <string name="forms">Forms</string>
     <string name="notices">Notices</string>
+    <string name="client_scan_fingerprint">Scan Clients Fingerprint</string>
 
     <string name="no_new_form_msg">No Forms Available</string>
     <string name="no_new_form_tip">Please press load to fetch data from server</string>

@@ -46,7 +46,7 @@ public class HTMLFormDataStoreTest {
 
     @Test
     public void shouldParsedPayloadForCompletedForm() {
-        String jsonPayLoad = "jsonPayLoad";
+        String jsonPayLoad = "{'patient':{'patient.uuid':'10aa0fa5-48fd-4987-98e9-54c01d09dd52','patient.family_name':'rr','patient.given_name':'rt','patient.sex':'M','patient.medical_record_number':'2082KT-0','patient.finger_print':'fingerprint data 123','patient.birth_date':'01-12-2014','patient.birthdate_estimated':'true'},'tmp':{'tmp.birthdate_type':'birthdate'},'encounter':{'encounter.location_id':'3','encounter.provider_id':'1','encounter.encounter_datetime':'02-12-2014'}}";
         htmlFormDataStore.saveHTML(jsonPayLoad, Constants.STATUS_COMPLETE);
         verify(htmlFormObservationCreator).createAndPersistObservations(jsonPayLoad,formData.getUuid());
     }

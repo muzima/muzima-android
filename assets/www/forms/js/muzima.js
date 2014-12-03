@@ -297,6 +297,12 @@ $(document).ready(function () {
     });
     /* End - Play video in form */
 
+    /* Start - finger print in form */
+    $('.finger-print-scan').click(function(){
+        fingerPrintComponent.startFingerPrintIntent($(this).attr('finger-print-data'));
+    });
+    /* End - finger print in form */
+
     /* Start - view Image in form */
     $('.image-player').click(function(){
         imagingComponent.openImage($(this).attr('data-image'));

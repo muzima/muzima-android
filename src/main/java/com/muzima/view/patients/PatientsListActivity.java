@@ -10,10 +10,13 @@ package com.muzima.view.patients;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -30,8 +33,11 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.User;
+import com.muzima.biometric.model.PatientModels;
 import com.muzima.controller.CohortController;
+import com.muzima.controller.PatientController;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
@@ -70,6 +76,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private Button searchServerBtn;
     private SearchView searchView;
     private boolean intentBarcodeResults = false;
+    private boolean intentFingerPrintResults = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,10 +200,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.fingerprint:
+                invokeFingerPrintScan();
+                return true;
             case R.id.menu_client_add:
                 callConfirmationDialog();
                 return true;
-
             case R.id.scan:
                 invokeBarcodeScan();
                 return true;
@@ -353,19 +362,45 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         scanIntegrator.initiateScan();
     }
 
+    public void invokeFingerPrintScan() {
+        IntentIntegrator scanIntegrator = new IntentIntegrator(this);
+        scanIntegrator.initiateFingerPrintScan();
+    }
+
+    public void invokeFingerPrintIdentification() {
+        IntentIntegrator scanIntegrator = new IntentIntegrator(this);
+        scanIntegrator.initiateFingerPrintIdentification();
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
 
+        IntentResult fingerPrintScanningResult = IntentIntegrator.parseActivityResultForFingerPrint(requestCode, resultCode, dataIntent);
+        if (fingerPrintScanningResult != null) {
+            intentFingerPrintResults = true;
+            showDownloadDialog("Result", fingerPrintScanningResult.getContents());
+        }
 
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
         if (scanningResult != null) {
             intentBarcodeResults = true;
             searchView.setQuery(scanningResult.getContents(), false);
-
         }
+    }
 
+    private void showDownloadDialog(String dialogTitle, String dialogMessage) {
+        final AlertDialog.Builder downloadDialog = new AlertDialog.Builder(this);
+        downloadDialog.setTitle(dialogTitle);
+        downloadDialog.setMessage(dialogMessage);
+        downloadDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                dialog.cancel();
+            }
 
+        });
+        downloadDialog.show();
     }
 
 

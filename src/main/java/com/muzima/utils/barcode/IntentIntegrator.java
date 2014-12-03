@@ -19,14 +19,17 @@ package com.muzima.utils.barcode;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 
+import java.io.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -117,7 +120,9 @@ import java.util.Map;
 
 public class IntentIntegrator {
 
-    public static final int REQUEST_CODE = 0x0000c0de; // Only use bottom 16 bits
+    public static final int BARCODE_SCAN_REQUEST_CODE = 0x0000c0de; // Only use bottom 16 bits
+    public static final int FINGERPRINT_SCAN_REQUEST_CODE = 0x0000c0df;
+    public static final int FINGERPRINT_IDENTIFY_REQUEST_CODE = 0x0000c0e0;
     private static final String TAG = IntentIntegrator.class.getSimpleName();
 
     public static final String DEFAULT_TITLE = "Install Barcode Scanner?";
@@ -146,6 +151,7 @@ public class IntentIntegrator {
             BSPLUS_PACKAGE + ".simple" // Barcode Scanner+ Simple
             // What else supports this intent?
     );
+    private String FINGERPRINT_APP_PACKAGE = "com.muzima.biometric";
 
     private final Activity activity;
     private String title;
@@ -243,13 +249,52 @@ public class IntentIntegrator {
         return initiateScan(ALL_CODE_TYPES);
     }
 
+    public final void initiateFingerPrintScan() {
+        Intent fingerPrintIntent = new Intent();
+        fingerPrintIntent.setComponent(new ComponentName(FINGERPRINT_APP_PACKAGE, "com.muzima.biometric.activity.FingerActivity"));
+
+        if (isTargetAppAvailable(fingerPrintIntent)) {
+            startActivityForResult(fingerPrintIntent, FINGERPRINT_SCAN_REQUEST_CODE);
+        } else {
+            showDownloadDialog(FINGERPRINT_APP_PACKAGE, "Install Fingerprint Scanner?", "This application would require mUzima Fingerprint scanner. Do you want to install the app?");
+        }
+    }
+
+    public final void initiateFingerPrintIdentification() {
+        Intent fingerPrintIntent = new Intent();
+        fingerPrintIntent.setComponent(new ComponentName(FINGERPRINT_APP_PACKAGE, "com.muzima.biometric.activity.IdentifyActivity"));
+
+        if (isTargetAppAvailable(fingerPrintIntent)) {
+//            fingerPrintIntent.getExtras().putSerializable("fingersToEnroll", patientFingerPrints());
+            startActivityForResult(fingerPrintIntent, FINGERPRINT_IDENTIFY_REQUEST_CODE);
+        } else {
+            showDownloadDialog(FINGERPRINT_APP_PACKAGE, "Install Fingerprint Scanner?", "This application would require mUzima Fingerprint scanner. Do you want to install the app?");
+        }
+    }
+
+
+    private boolean isTargetAppAvailable(Intent intent) {
+        PackageManager pm = activity.getPackageManager();
+        List<ResolveInfo> availableApps = pm.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        if (availableApps != null) {
+            for (ResolveInfo availableApp : availableApps) {
+                String packageName = availableApp.activityInfo.packageName;
+                if (FINGERPRINT_APP_PACKAGE.equals(packageName)) {
+
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     /**
      * Initiates a scan only for a certain set of barcode types, given as strings corresponding
      * to their names in ZXing's {@code BarcodeFormat} class like "UPC_A". You can supply constants
      * like {@link #PRODUCT_CODE_TYPES} for example.
      *
      * @return the {@link AlertDialog} that was shown to the user prompting them to download the app
-     *         if a prompt was needed, or null otherwise
+     * if a prompt was needed, or null otherwise
      */
     public final AlertDialog initiateScan(Collection<String> desiredBarcodeFormats) {
         Intent intentScan = new Intent(BS_PACKAGE + ".SCAN");
@@ -270,13 +315,13 @@ public class IntentIntegrator {
 
         String targetAppPackage = findTargetAppPackage(intentScan);
         if (targetAppPackage == null) {
-            return showDownloadDialog();
+            return showDownloadDialog(targetApplications.get(0), title, message);
         }
         intentScan.setPackage(targetAppPackage);
         intentScan.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intentScan.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         attachMoreExtras(intentScan);
-        startActivityForResult(intentScan, REQUEST_CODE);
+        startActivityForResult(intentScan, BARCODE_SCAN_REQUEST_CODE);
         return null;
     }
 
@@ -290,7 +335,7 @@ public class IntentIntegrator {
         intentScan.addCategory(Intent.CATEGORY_DEFAULT);
         String targetAppPackage = findTargetAppPackage(intentScan);
         if (targetAppPackage == null) {
-            return showDownloadDialog();
+            return showDownloadDialog(targetApplications.get(0), title, message);
         }
         return null;
     }
@@ -331,14 +376,13 @@ public class IntentIntegrator {
         return false;
     }
 
-    private AlertDialog showDownloadDialog() {
+    private AlertDialog showDownloadDialog(final String packageName, String dialogTitle, String dialogMessage) {
         AlertDialog.Builder downloadDialog = new AlertDialog.Builder(activity);
-        downloadDialog.setTitle(title);
-        downloadDialog.setMessage(message);
+        downloadDialog.setTitle(dialogTitle);
+        downloadDialog.setMessage(dialogMessage);
         downloadDialog.setPositiveButton(buttonYes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                String packageName = targetApplications.get(0);
                 Uri uri = Uri.parse("market://details?id=" + packageName);
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 try {
@@ -363,11 +407,11 @@ public class IntentIntegrator {
      * {@link Activity#onActivityResult(int, int, Intent)} method.</p>
      *
      * @return null if the event handled here was not related to this class, or
-     *         else an {@link IntentResult} containing the result of the scan. If the user cancelled scanning,
-     *         the fields will be null.
+     * else an {@link IntentResult} containing the result of the scan. If the user cancelled scanning,
+     * the fields will be null.
      */
     public static IntentResult parseActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == REQUEST_CODE) {
+        if (requestCode == BARCODE_SCAN_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 String formatName = intent.getStringExtra("SCAN_RESULT_FORMAT");
@@ -380,6 +424,38 @@ public class IntentIntegrator {
                         rawBytes,
                         orientation,
                         errorCorrectionLevel);
+            }
+            return new IntentResult();
+        }
+        return null;
+    }
+
+    public static IntentResult parseActivityResultForFingerPrint(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == FINGERPRINT_SCAN_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                byte[] rawBytes = intent.getByteArrayExtra("templateBuffer");
+
+                return new IntentResult(Base64.encodeToString(rawBytes, Base64.DEFAULT),
+                        null,
+                        rawBytes,
+                        null,
+                        null);
+            }
+            return new IntentResult();
+        }
+        return null;
+    }
+
+
+    public static IntentResult parseActivityResultForFingerPrintIdentification(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == FINGERPRINT_IDENTIFY_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                String patientId = intent.getStringExtra("patientId");
+                return new IntentResult(patientId,
+                        null,
+                        null,
+                        null,
+                        null);
             }
             return new IntentResult();
         }
@@ -403,7 +479,7 @@ public class IntentIntegrator {
      * @param text the text string to encode as a barcode
      * @param type type of data to encode. See {@code com.google.zxing.client.android.Contents.Type} constants.
      * @return the {@link AlertDialog} that was shown to the user prompting them to download the app
-     *         if a prompt was needed, or null otherwise
+     * if a prompt was needed, or null otherwise
      */
     public final AlertDialog shareText(CharSequence text, CharSequence type) {
         Intent intent = new Intent();
@@ -413,7 +489,7 @@ public class IntentIntegrator {
         intent.putExtra("ENCODE_DATA", text);
         String targetAppPackage = findTargetAppPackage(intent);
         if (targetAppPackage == null) {
-            return showDownloadDialog();
+            return showDownloadDialog(targetAppPackage, title, message);
         }
         intent.setPackage(targetAppPackage);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
