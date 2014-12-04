@@ -140,7 +140,7 @@ public class MuzimaSyncService {
         int deletedFormCount = 0;
         for (Form form : allForms) {
             for (Form downloadedForm : allDownloadedForms) {
-                if (form.getUuid().equals(downloadedForm.getUuid()) && downloadedForm.isVoided()) {
+                if (form.getUuid().equals(downloadedForm.getUuid()) && downloadedForm.isRetired()) {
                     deletedFormCount++;
                 }
             }
@@ -153,7 +153,7 @@ public class MuzimaSyncService {
         Log.i(TAG, "Voided forms are deleted");
         List<Form> voidedForms = new ArrayList<Form>();
         for (Form form : forms) {
-            if (form.isVoided()) {
+            if (form.isRetired()) {
                 voidedForms.add(form);
             }
         }
