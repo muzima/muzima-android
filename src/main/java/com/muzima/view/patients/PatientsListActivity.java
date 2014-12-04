@@ -10,11 +10,9 @@ package com.muzima.view.patients;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,11 +29,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
-import com.muzima.api.model.Cohort;
-import com.muzima.api.model.Patient;
-import com.muzima.api.model.PatientIdentifier;
-import com.muzima.api.model.User;
-import com.muzima.biometric.model.PatientModels;
+import com.muzima.api.model.*;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.PatientController;
 import com.muzima.search.api.util.StringUtil;
@@ -43,12 +37,15 @@ import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.barcode.IntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
+import com.muzima.utils.fingerprint.PatientModelBuilder;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.notifications.SyncNotificationsIntent;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.muzima.biometric.model.PatientModels;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
@@ -201,7 +198,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.fingerprint:
-                invokeFingerPrintScan();
+                PatientModels modelsForIntent = getPatientModelsForIntent();
+                invokeFingerPrintIdentification(modelsForIntent);
+//                invokeFingerPrintScan();
                 return true;
             case R.id.menu_client_add:
                 callConfirmationDialog();
@@ -224,6 +223,19 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private PatientModels getPatientModelsForIntent() {
+        PatientController patientController = ((MuzimaApplication) getApplicationContext()).getPatientController();
+        PatientModelBuilder patientModelBuilder = new PatientModelBuilder();
+
+        List<Patient> allPatients = null;
+        try {
+            allPatients = patientController.getAllPatients();
+        } catch (PatientController.PatientLoadException e) {
+            allPatients = new ArrayList<Patient>();
+        }
+        return patientModelBuilder.build(allPatients);
     }
 
     @Override
@@ -367,9 +379,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         scanIntegrator.initiateFingerPrintScan();
     }
 
-    public void invokeFingerPrintIdentification() {
+    public void invokeFingerPrintIdentification(PatientModels modelsForIntent) {
         IntentIntegrator scanIntegrator = new IntentIntegrator(this);
-        scanIntegrator.initiateFingerPrintIdentification();
+        scanIntegrator.initiateFingerPrintIdentification(modelsForIntent);
     }
 
 
@@ -379,9 +391,15 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         IntentResult fingerPrintScanningResult = IntentIntegrator.parseActivityResultForFingerPrint(requestCode, resultCode, dataIntent);
         if (fingerPrintScanningResult != null) {
             intentFingerPrintResults = true;
+            Log.d("Result", fingerPrintScanningResult.getContents());
             showDownloadDialog("Result", fingerPrintScanningResult.getContents());
         }
-
+        IntentResult fingerPrintIdentificationResult = IntentIntegrator.parseActivityResultForFingerPrintIdentification(requestCode, resultCode, dataIntent);
+        if (fingerPrintIdentificationResult != null) {
+            intentFingerPrintResults = true;
+            Log.d("IdentifiedUser", fingerPrintIdentificationResult.getContents());
+            showDownloadDialog("IdentifiedUser", fingerPrintIdentificationResult.getContents());
+        }
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
         if (scanningResult != null) {
             intentBarcodeResults = true;
@@ -402,6 +420,5 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         });
         downloadDialog.show();
     }
-
 
 }

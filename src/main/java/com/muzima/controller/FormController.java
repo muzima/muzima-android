@@ -333,7 +333,7 @@ public class FormController {
                         .withForm(formService.getFormByUuid(formData.getTemplateUuid()))
                         .withFormDataUuid(formData.getUuid())
                         .withPatient(patient)
-                        .withLastModifiedDate(formData.getSaveTime())
+//                        .withLastModifiedDate(formData.getSaveTime())
                         .build();
             }
 
@@ -345,7 +345,7 @@ public class FormController {
 
     public void saveFormData(FormData formData) throws FormDataSaveException {
         try {
-            formData.setSaveTime(new Date());
+//            formData.setSaveTime(new Date());
             formService.saveFormData(formData);
         } catch (IOException e) {
                 throw new FormDataSaveException(e);
@@ -383,7 +383,7 @@ public class FormController {
                         .withForm(formService.getFormByUuid(formData.getTemplateUuid()))
                         .withFormDataUuid(formData.getUuid())
                         .withPatient(patient)
-                        .withLastModifiedDate(formData.getSaveTime())
+//                        .withLastModifiedDate(formData.getSaveTime())
                         .build());
             }
         } catch (IOException e) {
@@ -403,7 +403,7 @@ public class FormController {
                         .withForm(formService.getFormByUuid(formData.getTemplateUuid()))
                         .withFormDataUuid(formData.getUuid())
                         .withPatient(patient)
-                        .withLastModifiedDate(formData.getSaveTime())
+//                        .withLastModifiedDate(formData.getSaveTime())
                         .build();
                 completeForms.add(completeForm);
             }
@@ -420,7 +420,7 @@ public class FormController {
             for (FormData formData : allFormData) {
                 incompleteForms.add(new IncompleteFormBuilder().withForm(formService.getFormByUuid(formData.getTemplateUuid()))
                         .withFormDataUuid(formData.getUuid())
-                        .withLastModifiedDate(formData.getSaveTime())
+//                        .withLastModifiedDate(formData.getSaveTime())
                         .build());
             }
         } catch (IOException e) {
@@ -438,7 +438,7 @@ public class FormController {
                 completePatientForms.add(new CompleteFormBuilder()
                         .withForm(form)
                         .withFormDataUuid(formData.getUuid())
-                        .withLastModifiedDate(formData.getSaveTime())
+//                        .withLastModifiedDate(formData.getSaveTime())
                         .build());
             }
         } catch (IOException e) {

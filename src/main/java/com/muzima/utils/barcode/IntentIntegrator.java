@@ -28,6 +28,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import com.muzima.biometric.model.PatientModels;
 
 import java.io.*;
 import java.util.Arrays;
@@ -260,12 +261,12 @@ public class IntentIntegrator {
         }
     }
 
-    public final void initiateFingerPrintIdentification() {
+    public final void initiateFingerPrintIdentification(PatientModels modelsForIntent) {
         Intent fingerPrintIntent = new Intent();
         fingerPrintIntent.setComponent(new ComponentName(FINGERPRINT_APP_PACKAGE, "com.muzima.biometric.activity.IdentifyActivity"));
 
         if (isTargetAppAvailable(fingerPrintIntent)) {
-//            fingerPrintIntent.getExtras().putSerializable("fingersToEnroll", patientFingerPrints());
+            fingerPrintIntent.getExtras().putSerializable("fingersToEnroll", modelsForIntent);
             startActivityForResult(fingerPrintIntent, FINGERPRINT_IDENTIFY_REQUEST_CODE);
         } else {
             showDownloadDialog(FINGERPRINT_APP_PACKAGE, "Install Fingerprint Scanner?", "This application would require mUzima Fingerprint scanner. Do you want to install the app?");
