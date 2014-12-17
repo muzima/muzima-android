@@ -150,7 +150,7 @@
     <string name="cohort_prefix_label">Prefix:</string>
     <string name="cohort_add_prefix_hint">Add Prefix</string>
 
-    <string name="no_observations_available">No Observations Available</string>
+    <string name="observations_still_loading">Observations are still loading</string>
 
     <string name="preference_form_title">Add form tags</string>
     <string name="preference_form_desc">You can add form tags to restrict the form downloads</string>
