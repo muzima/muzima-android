@@ -8,11 +8,7 @@
 
 package com.muzima.view.forms;
 
-import com.muzima.api.model.FormData;
-import com.muzima.api.model.Patient;
-import com.muzima.api.model.PatientIdentifier;
-import com.muzima.api.model.PatientIdentifierType;
-import com.muzima.api.model.PersonName;
+import com.muzima.api.model.*;
 import com.muzima.utils.Constants;
 
 import com.muzima.utils.StringUtils;
@@ -62,6 +58,7 @@ public class PatientJSONMapper {
         Patient patient = new Patient();
         patient.setUuid(paramsMap.get("patient.uuid"));
         patient.setIdentifiers(asList(patientIdentifier(patient.getUuid()), preferredIdentifier(paramsMap)));
+        patient.setAttributes(asList(preferredAttribute(paramsMap)));
         patient.setNames(asList(personName(paramsMap)));
         patient.setGender(paramsMap.get("patient.sex"));
         patient.setBirthdate(getDate(paramsMap, "patient.birthdate"));
@@ -81,6 +78,20 @@ public class PatientJSONMapper {
         patientIdentifier.setIdentifierType(identifierType);
         patientIdentifier.setIdentifier(uuid);
         return patientIdentifier;
+    }
+
+    private PersonAttribute preferredAttribute(Map<String, String> paramsMap){
+        PersonAttribute personAttribute = personAttribute(paramsMap.get("fingerprint"));
+         return personAttribute;
+    }
+    
+    private PersonAttribute personAttribute(String attribute){
+        PersonAttribute personAttribute = new PersonAttribute();
+        PersonAttributeType personAttributeType = new PersonAttributeType();
+        personAttributeType.setName(Constants.FINGER_PRINT_PATIENT_ATTRIBUTE);
+        personAttribute.setAttributeType(personAttributeType);
+        personAttribute.setAttribute(attribute);
+        return personAttribute;
     }
 
     private Date getDate(Map<String, String> paramsMap, String property) {

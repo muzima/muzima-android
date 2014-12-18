@@ -34,6 +34,7 @@ import com.muzima.controller.FormController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
 import com.muzima.utils.Constants;
+import com.muzima.utils.StringUtils;
 import com.muzima.utils.audio.AudioResult;
 import com.muzima.utils.barcode.IntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
@@ -80,7 +81,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     private ImagingComponent imagingComponent;
     private AudioComponent audioComponent;
     private VideoComponent videoComponent;
-    private Map<String, byte[]> fingerPrintScanResultMap;
+    private Map<String, String> fingerPrintScanResultMap;
     private Map<String, String> scanResultMap;
     private Map<String, String> imageResultMap;
     private Map<String, String> audioResultMap;
@@ -96,7 +97,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        fingerPrintScanResultMap = new HashMap<String, byte[]>();
+        fingerPrintScanResultMap = new HashMap<String, String>();
         scanResultMap = new HashMap<String, String>();
         imageResultMap = new HashMap<String, String>();
         audioResultMap = new HashMap<String, String>();
@@ -210,12 +211,14 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult fingerPrintScanResult = IntentIntegrator.parseActivityResultForFingerPrint(requestCode, resultCode, intent);
         if (fingerPrintScanResult != null) {
-            fingerPrintScanResultMap.put(fingerPrintComponent.getFieldName(), fingerPrintScanResult.getRawBytes());
+            fingerPrintScanResultMap.put(fingerPrintComponent.getFieldName(), fingerPrintScanResult.getContents());
+            return;
         }
 
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanResult != null) {
             scanResultMap.put(barCodeComponent.getFieldName(), scanResult.getContents());
+            return;
         }
 
         ImageResult imageResult = ImagingComponent.parseActivityResult(requestCode, resultCode, intent);
@@ -223,6 +226,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             sectionName =  imageResult.getSectionName();
             imageResultMap.put(imagingComponent.getImagePathField(), imageResult.getImageUri());
             imageResultMap.put(imagingComponent.getImageCaptionField(), imageResult.getImageCaption());
+            return;
         }
 
         AudioResult audioResult = AudioComponent.parseActivityResult(requestCode, resultCode, intent);
@@ -230,6 +234,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             sectionName =  audioResult.getSectionName();
             audioResultMap.put(audioComponent.getAudioPathField(), audioResult.getAudioUri());
             audioResultMap.put(audioComponent.getAudioCaptionField(), audioResult.getAudioCaption());
+            return;
         }
 
         VideoResult videoResult = VideoComponent.parseActivityResult(requestCode, resultCode, intent);
@@ -237,6 +242,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             sectionName =  videoResult.getSectionName();
             videoResultMap.put(videoComponent.getVideoPathField(), videoResult.getVideoUri());
             videoResultMap.put(videoComponent.getVideoCaptionField(), videoResult.getVideoCaption());
+            return;
         }
     }
 

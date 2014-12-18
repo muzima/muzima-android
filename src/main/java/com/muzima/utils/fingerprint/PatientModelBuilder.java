@@ -5,6 +5,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonAttribute;
 import com.muzima.biometric.model.PatientModel;
 import com.muzima.biometric.model.PatientModels;
+import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class PatientModelBuilder {
     }
 
     private byte[] extractFingerPrintValue(Patient patient) {
-        PersonAttribute attribute= patient.getAttribute("FingerPrint");
+        PersonAttribute attribute= patient.getAttribute(Constants.FINGER_PRINT_PATIENT_ATTRIBUTE);
         if(attribute == null)
             return null;
         String fingerPrintTemplateString = attribute.getAttribute();

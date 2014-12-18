@@ -984,6 +984,19 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
     background-position: center;
 }
 
+.fingerprint_img {
+    background: white;
+    height: 18px;
+    line-height: 18px;
+    padding: 16px 23px;
+    margin-right: 4px !important;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    background-image: url("../images/fingerprint_scan.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 input, textarea, .uneditable-input {
     width: 206px;
 }
