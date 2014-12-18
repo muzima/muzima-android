@@ -131,6 +131,7 @@ public class DataSyncService extends IntentService {
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     downloadPatientsWithObsAndEncounters(broadcastIntent, patientsToBeDownloaded);
                 }
+                break;
             case DataSyncServiceConstants.SYNC_NOTIFICATIONS:
                 String receiverUUid = intent.getStringExtra(NotificationStatusConstants.RECEIVER_UUID);
                 String[] downloadedCohortIds = intent.getStringArrayExtra(DataSyncServiceConstants.COHORT_IDS);
@@ -143,6 +144,7 @@ public class DataSyncService extends IntentService {
 
                     downloadObservationsAndEncounters(broadcastIntent, downloadedCohortIds);
                 }
+                break;
             case DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS:
                 updateNotificationMsg("Real time upload of forms");
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
