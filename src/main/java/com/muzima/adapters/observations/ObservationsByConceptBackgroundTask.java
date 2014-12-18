@@ -26,6 +26,12 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Void, C
     }
 
     @Override
+    protected void onPreExecute() {
+        if (observationsByConceptAdapter.getBackgroundListQueryTaskListener() != null) {
+            observationsByConceptAdapter.getBackgroundListQueryTaskListener().onQueryTaskStarted();
+        }
+    }
+    @Override
     protected Concepts doInBackground(Void... params) {
         Concepts concepts = null;
         try {
@@ -52,5 +58,9 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Void, C
             observationsByConceptAdapter.add(conceptsWithObservation);
         }
         observationsByConceptAdapter.notifyDataSetChanged();
+
+        if (observationsByConceptAdapter.getBackgroundListQueryTaskListener() != null) {
+            observationsByConceptAdapter.getBackgroundListQueryTaskListener().onQueryTaskFinish();
+        }
     }
 }
