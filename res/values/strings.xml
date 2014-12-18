@@ -299,5 +299,6 @@
     <string name="preference_encounter_provider_desc">Logged-in user as default encounter form provider</string>
     <string name="preference_encounter_provider_title">Default encounter provider</string>
     <string name="preference_encounter_provider">encounterProviderPreference</string>
+    <string name="crash_toast_text">\"Sorry, mUzima has crashed. A crash report will be sent to the team.\"</string>
 
 </resources>

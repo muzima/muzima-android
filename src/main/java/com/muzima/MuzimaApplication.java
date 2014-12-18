@@ -56,12 +56,13 @@ import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 
 @ReportsCrashes(
         formKey = "",
-        formUri = "http://prasann.cloudant.com/acra-muzima/_design/acra-storage/_update/report",
+        formUri = "https://muzima.cloudant.com/acra-muzima/_design/acra-storage/_update/report",
         reportType = HttpSender.Type.JSON,
-        httpMethod = HttpSender.Method.PUT,
-        formUriBasicAuthLogin = "utionermsedeastagesinibl",
-        formUriBasicAuthPassword = "QJi5kBCe36wGC6jeMeWfSB4q",
-        mode = ReportingInteractionMode.TOAST)
+        httpMethod = HttpSender.Method.POST,
+        formUriBasicAuthLogin = "pontonlympservilifleyeto",
+        formUriBasicAuthPassword = "OMHKOHV8LVfv3c553n6Oqkof",
+        mode = ReportingInteractionMode.TOAST,
+        resToastText = R.string.crash_toast_text)
 public class MuzimaApplication extends Application {
     private Context muzimaContext;
     private Activity currentActivity;
