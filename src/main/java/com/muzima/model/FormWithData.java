@@ -16,6 +16,7 @@ public abstract class FormWithData extends BaseForm {
     private String formDataUuid;
     private Date lastModifiedDate;
     private Patient patient;
+    private Date encounterDate;
 
     public Date getLastModifiedDate() {
         return lastModifiedDate;
@@ -39,5 +40,13 @@ public abstract class FormWithData extends BaseForm {
 
     public void setPatient(Patient patient) {
         this.patient = patient;
+    }
+
+    public Date getEncounterDate() {
+        return encounterDate;
+    }
+
+    public void setEncounterDate(Date encounterDate) {
+        this.encounterDate = encounterDate;
     }
 }
