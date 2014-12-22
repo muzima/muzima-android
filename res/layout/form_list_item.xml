@@ -22,8 +22,15 @@
             android:layout_weight="1"
             android:paddingTop="2dp"
             android:paddingBottom="5dp"
-            android:textSize="12sp">
+            android:textSize="16sp">
     </TextView>
+
+    <CheckedTextView
+            android:id="@+id/form_save_time"
+            android:paddingTop="15dp"
+            android:layout_below="@+id/form_description"
+            style="@style/ListViewSelectableText"
+            android:textSize="10sp"/>/>
 
     <HorizontalScrollView
             android:id="@+id/tags_scroller"

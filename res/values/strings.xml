@@ -134,6 +134,9 @@
     <string name="preference_category_cohorts">Cohort Settings</string>
     <string name="preference_cohorts_prefix_desc">Enter cohort prefixes</string>
     <string name="preference_cohort_prefix">cohortPrefixesPreference</string>
+    <string name="preference_real_time_sync_summary">Enables real time synchronization of completed forms.</string>
+    <string name="preference_real_time_sync_title">Real time sync</string>
+    <string name="preference_real_time_sync">realTimeSyncPreference</string>
 
     <string name="add_cohort_prefixes">Step 1: Add Cohort Prefix</string>
     <string name="download_cohort">Step 1: Download Cohort(s)</string>
@@ -209,6 +212,7 @@
     </string>
     <string name="exit_form_message">Closing Form: This will discard all your changes.  Are you sure you would like to do this?
     </string>
+    <string name="exit_app_message">Are you sure to log out and exit mUzima app?</string>
     <string name="filter_cohort_hint">Start typing to filter the cohorts...</string>
 
     <string name="notifications">Notifications</string>
@@ -292,4 +296,9 @@
         </p>
         ]]>
     </string>
+    <string name="preference_encounter_provider_desc">Logged-in user as default encounter form provider</string>
+    <string name="preference_encounter_provider_title">Default encounter provider</string>
+    <string name="preference_encounter_provider">encounterProviderPreference</string>
+    <string name="crash_toast_text">\"Sorry, mUzima has crashed. A crash report will be sent to the team.\"</string>
+
 </resources>

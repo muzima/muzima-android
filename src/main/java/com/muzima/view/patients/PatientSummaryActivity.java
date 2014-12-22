@@ -25,6 +25,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.User;
 import com.muzima.controller.FormController;
 import com.muzima.controller.NotificationController;
+import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.service.JSONInputOutputToDisk;
 import com.muzima.utils.Constants;
@@ -157,6 +158,7 @@ public class PatientSummaryActivity extends BaseActivity {
         int incompleteForms;
         int completeForms;
         int notifications;
+        int observations;
     }
 
     public class BackgroundQueryTask extends AsyncTask<Void, Void, PatientSummaryActivityMetadata> {
@@ -167,12 +169,13 @@ public class PatientSummaryActivity extends BaseActivity {
             PatientSummaryActivityMetadata patientSummaryActivityMetadata = new PatientSummaryActivityMetadata();
             FormController formController = muzimaApplication.getFormController();
             NotificationController notificationController = muzimaApplication.getNotificationController();
+            ObservationController observationController = muzimaApplication.getObservationController();
 
             try {
                 patientSummaryActivityMetadata.recommendedForms = formController.getRecommendedFormsCount();
                 patientSummaryActivityMetadata.completeForms = formController.getCompleteFormsCountForPatient(patient.getUuid());
                 patientSummaryActivityMetadata.incompleteForms = formController.getIncompleteFormsCountForPatient(patient.getUuid());
-
+                patientSummaryActivityMetadata.observations = observationController.getObservationsCountByPatient(patient.getUuid());
                 User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
                 if (authenticatedUser != null)
                     patientSummaryActivityMetadata.notifications =
@@ -184,6 +187,8 @@ public class PatientSummaryActivity extends BaseActivity {
                 Log.w(TAG, "FormFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
             } catch (NotificationController.NotificationFetchException e) {
                 Log.w(TAG, "NotificationFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             return patientSummaryActivityMetadata;
         }
@@ -197,6 +202,9 @@ public class PatientSummaryActivity extends BaseActivity {
 
             TextView notificationsDescription = (TextView) findViewById(R.id.notificationDescription);
             notificationsDescription.setText(patientSummaryActivityMetadata.notifications + " New Notifications");
+
+            TextView observationDescription = (TextView) findViewById(R.id.observationDescription);
+            observationDescription.setText(patientSummaryActivityMetadata.observations + " Observations");
         }
     }
 

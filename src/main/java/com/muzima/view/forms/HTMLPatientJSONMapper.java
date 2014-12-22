@@ -10,6 +10,7 @@ package com.muzima.view.forms;
 
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.User;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
 import org.json.JSONException;
@@ -18,7 +19,7 @@ import org.json.JSONObject;
 public class HTMLPatientJSONMapper {
 
 
-    public String map(Patient patient, FormData formData) {
+    public String map(Patient patient, FormData formData, User loggedInUser, boolean isLoggedInUserIsDefaultProvider) {
         JSONObject prepopulateJSON = new JSONObject();
         JSONObject patientDetails = new JSONObject();
         JSONObject encounterDetails = new JSONObject();
@@ -34,6 +35,11 @@ public class HTMLPatientJSONMapper {
                 patientDetails.put("patient.birthdate", DateUtils.getFormattedDate(patient.getBirthdate()));
             }
             encounterDetails.put("encounter.form_uuid", StringUtils.defaultString(formData.getTemplateUuid()));
+
+            if(isLoggedInUserIsDefaultProvider) {
+                encounterDetails.put("encounter.provider_id_select", loggedInUser.getSystemId());
+                encounterDetails.put("encounter.provider_id", loggedInUser.getSystemId());
+            }
             prepopulateJSON.put("patient",patientDetails);
             prepopulateJSON.put("encounter",encounterDetails);
         } catch (JSONException e) {

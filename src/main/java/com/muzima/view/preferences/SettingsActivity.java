@@ -14,19 +14,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.tasks.ValidateURLTask;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.login.LoginActivity;
 import com.muzima.view.preferences.settings.ResetDataTask;
 import com.muzima.view.preferences.settings.SyncFormDataTask;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SettingsActivity extends SherlockPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -35,15 +38,19 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
     private String timeoutPreferenceKey;
     private String passwordPreferenceKey;
     private String autoSavePreferenceKey;
+    private String realTimeSyncPreferenceKey;
+    private String encounterProviderPreferenceKey;
 
     private EditTextPreference serverPreference;
     private EditTextPreference usernamePreference;
     private EditTextPreference timeoutPreference;
     private EditTextPreference passwordPreference;
     private EditTextPreference autoSaveIntervalPreference;
+    private CheckBoxPreference encounterProviderPreference;
+    private CheckBoxPreference realTimeSyncPreference;
 
     private String newURL;
-
+    private Map<String, PreferenceChangeHandler> actions = new HashMap<String, PreferenceChangeHandler>();
 
     @Override
     public void onUserInteraction() {
@@ -106,6 +113,30 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         passwordPreference.setEnabled(false);
         passwordPreference.setSelectable(false);
 
+        realTimeSyncPreferenceKey = getResources().getString(R.string.preference_real_time_sync);
+        realTimeSyncPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(realTimeSyncPreferenceKey);
+        realTimeSyncPreference.setSummary(realTimeSyncPreference.getSummary());
+        realTimeSyncPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                if(realTimeSyncPreference.isChecked()){
+                            RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext());
+                }
+                return false;
+            }
+        });
+
+        registerTextPreferenceChangeHandler(serverPreferenceKey, serverPreference);
+        registerTextPreferenceChangeHandler(usernamePreferenceKey, usernamePreference);
+        registerTextPreferenceChangeHandler(passwordPreferenceKey, passwordPreference);
+        registerTextPreferenceChangeHandler(autoSavePreferenceKey, autoSaveIntervalPreference);
+        registerTextPreferenceChangeHandler(timeoutPreferenceKey, timeoutPreference);
+        registerCheckboxPreferenceChangeHandler(realTimeSyncPreferenceKey, realTimeSyncPreference);
+
+        encounterProviderPreferenceKey = getResources().getString(R.string.preference_encounter_provider);
+        encounterProviderPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(encounterProviderPreferenceKey);
+        encounterProviderPreference.setSummary(encounterProviderPreference.getSummary());
+
         // Show the Up button in the action bar.
         setupActionBar();
     }
@@ -123,22 +154,36 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
      */
     @Override
     public void onSharedPreferenceChanged(final SharedPreferences sharedPreferences, final String key) {
-        if (key.equalsIgnoreCase("wizardFinished")) {
+        if (key.equalsIgnoreCase("wizardFinished") || key.equalsIgnoreCase("encounterProviderPreference")) {
             return;
         }
-        String value = sharedPreferences.getString(key, StringUtil.EMPTY);
-        if (StringUtil.equals(key, serverPreferenceKey)) {
-            serverPreference.setSummary(value);
-        } else if (StringUtil.equals(key, usernamePreferenceKey)) {
-            usernamePreference.setSummary(value);
-        } else if (StringUtil.equals(key, passwordPreferenceKey)) {
-            passwordPreference.setSummary(value.replaceAll(".", "*"));
-        } else if (StringUtil.equals(key, autoSavePreferenceKey)) {
-            autoSaveIntervalPreference.setSummary(value);
-        }else if (StringUtil.equals(key, timeoutPreferenceKey)) {
-            Log.e("Tag","Inside shared pref");
-            timeoutPreference.setSummary(value);
+        PreferenceChangeHandler preferenceChangeHandler = actions.get(key);
+        if(preferenceChangeHandler!=null) {
+            preferenceChangeHandler.handle(sharedPreferences);
         }
+    }
+
+    private static interface PreferenceChangeHandler {
+        public void handle(SharedPreferences sharedPreferences);
+    }
+
+    private void registerTextPreferenceChangeHandler(final String key, final EditTextPreference preference) {
+
+        actions.put(key, new PreferenceChangeHandler() {
+            @Override
+            public void handle(SharedPreferences sharedPreferences) {
+                preference.setSummary(sharedPreferences.getString(key, StringUtil.EMPTY));
+            }
+        });
+    }
+
+    private void registerCheckboxPreferenceChangeHandler(final String key, final CheckBoxPreference preference) {
+        actions.put(key, new PreferenceChangeHandler() {
+            @Override
+            public void handle(SharedPreferences sharedPreferences) {
+                preference.setChecked(sharedPreferences.getBoolean(key, false));
+            }
+        });
     }
 
     public void validationURLResult(boolean result) {

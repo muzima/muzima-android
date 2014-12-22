@@ -8,6 +8,7 @@
 
 package com.muzima.view.forms;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -48,6 +49,25 @@ public class CompletePatientsFormsListFragment extends FormsListFragment impleme
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        // Store our shared preference
+        SharedPreferences sp = getActivity().getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", getActivity().getApplicationContext().MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putBoolean("active", true);
+        ed.commit();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SharedPreferences sp = getActivity().getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", getActivity().getApplicationContext().MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putBoolean("active", false);
+        ed.commit();
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
     }
 
@@ -69,5 +89,9 @@ public class CompletePatientsFormsListFragment extends FormsListFragment impleme
     public void onItemClick(int position) {
         FormViewIntent intent = new FormViewIntent(getActivity(), (CompleteForm) listAdapter.getItem(position), patient);
         getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
+    }
+
+    public void onFormUploadFinish() {
+        listAdapter.reloadData();
     }
 }

@@ -72,9 +72,9 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
         } else if(syncStatus == SyncStatusConstants.SUCCESS){
             int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
             int downloadCount = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, 0);
-            int deletedFormCount = intent.getIntExtra(DataSyncServiceConstants.DELETED_COUNT_PRIMARY,0);
             msg = "Downloaded " + downloadCount;
             if(syncType == DataSyncServiceConstants.SYNC_FORMS){
+                int deletedFormCount = intent.getIntExtra(DataSyncServiceConstants.DELETED_COUNT_PRIMARY,0);
                 msg += " forms";
                 if(deletedFormCount > 0){
                     msg += "  Deleted " + deletedFormCount + " forms";
@@ -95,8 +95,9 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
                 msg += " new encounters";
             } else if(syncType == DataSyncServiceConstants.SYNC_UPLOAD_FORMS){
                 msg = "Upload form data success.";
+            }else if(syncType == DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS){
+                msg = "Real time upload of form data successful.";
             }
-
         }
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }

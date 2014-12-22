@@ -291,6 +291,19 @@ $(document).ready(function () {
 
     /*End- Video Capture Functionality*/
 
+    /* Start - Play video in form */
+    $('.video-player').click(function(){
+        videoComponent.openVideo($(this).attr('data-video'));
+    });
+    /* End - Play video in form */
+
+    /* Start - view Image in form */
+    $('.image-player').click(function(){
+        imagingComponent.openImage($(this).attr('data-image'));
+    });
+    /* End - view Image in form */
+
+
     /* Start - Initialize jQuery DatePicker */
 
     $('.datepicker').datepicker({

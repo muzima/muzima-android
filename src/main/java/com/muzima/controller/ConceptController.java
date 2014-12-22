@@ -36,6 +36,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ConceptController {
+    public static List<Concept> newConcepts = new ArrayList<Concept>();
     private ConceptService conceptService;
     private ObservationService observationService;
 

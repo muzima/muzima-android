@@ -8,6 +8,7 @@
 
 package com.muzima.view.forms;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,35 @@ public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAda
         CompleteFormsListFragment f = new CompleteFormsListFragment();
         f.formController = formController;
         return f;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Store our shared preference
+        SharedPreferences sp = getActivity().getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", getActivity().getApplicationContext().MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putBoolean("active", true);
+        ed.commit();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SharedPreferences sp = getActivity().getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", getActivity().getApplicationContext().MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putBoolean("active", false);
+        ed.commit();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 
     @Override

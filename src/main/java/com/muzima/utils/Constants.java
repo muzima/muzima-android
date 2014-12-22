@@ -24,7 +24,7 @@ public class Constants {
     public static final String STATUS_COMPLETE = "complete";
     public static final String STATUS_UPLOADED = "uploaded";
     public static final String SEARCH_STRING_BUNDLE_KEY = "SearchString";
-    public static String LOCAL_PATIENT = "LocalPatient";
+    public static final String LOCAL_PATIENT = "LocalPatient";
 
     public static final String FORM_XML_DISCRIMINATOR_ENCOUNTER = "xml-encounter";
     public static final String FORM_JSON_DISCRIMINATOR_ENCOUNTER = "json-encounter";
@@ -61,6 +61,7 @@ public class Constants {
         public static final int SYNC_UPLOAD_FORMS = 8;
         public static final int DOWNLOAD_PATIENT_ONLY = 9;
         public static final int SYNC_NOTIFICATIONS = 10;
+        public static final int SYNC_REAL_TIME_UPLOAD_FORMS =11;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;

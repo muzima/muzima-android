@@ -8,8 +8,6 @@
 
 package com.muzima.view.cohort;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,21 +20,21 @@ import android.widget.Toast;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.cohort.AllCohortsAdapter;
+import com.muzima.api.model.APIName;
+import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.controller.CohortController;
-import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.CheckedLinearLayout;
 
+import java.io.IOException;
 import java.util.Date;
 
 public class AllCohortsListFragment extends CohortListFragment {
     private static final String TAG = "AllCohortsListFragment";
-    public static final String COHORTS_LAST_SYNCED_TIME = "cohortsSyncedTime";
-    public static final long NOT_SYNCED_TIME = -1;
-
     private ActionMode actionMode;
     private boolean actionModeActive = false;
     private OnCohortDataDownloadListener cohortDataDownloadListener;
@@ -178,13 +176,18 @@ public class AllCohortsListFragment extends CohortListFragment {
     }
 
     private void updateSyncText() {
-        SharedPreferences pref = getActivity().getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
-        long lastSyncedTime = pref.getLong(COHORTS_LAST_SYNCED_TIME, NOT_SYNCED_TIME);
-        String lastSyncedMsg = "Not synced yet";
-        if (lastSyncedTime != NOT_SYNCED_TIME) {
-            lastSyncedMsg = "Last synced on: " + DateUtils.getFormattedDateTime(new Date(lastSyncedTime));
+        try {
+            LastSyncTimeService lastSyncTimeService = ((MuzimaApplication)this.getActivity().getApplicationContext()).getMuzimaContext().getLastSyncTimeService();//((MuzimaApplication)getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
+            Date lastSyncedTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS);
+            String lastSyncedMsg = "Not synced yet";
+            if(lastSyncedTime != null){
+                lastSyncedMsg = "Last synced on: " + DateUtils.getFormattedDateTime(lastSyncedTime);
+            }
+            syncText.setText(lastSyncedMsg);
+        } catch (IOException e) {
+            Log.i(TAG,"Error getting cohort last sync time");
         }
-        syncText.setText(lastSyncedMsg);
+
     }
 
 }

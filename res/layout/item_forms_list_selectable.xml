@@ -37,6 +37,14 @@
             android:paddingTop="5dp"
             style="@style/ListViewSelectableText">
     </CheckedTextView>
+
+    <CheckedTextView
+            android:id="@+id/form_save_time"
+            android:layout_below="@+id/form_description"
+            android:paddingTop="12dp"
+            style="@style/FormSaveDateTime">
+    </CheckedTextView>
+
     <com.muzima.view.CheckedRelativeLayout
             android:id="@+id/tags_scroller"
             android:layout_width="fill_parent"

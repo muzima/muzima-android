@@ -25,11 +25,15 @@ import com.muzima.controller.FormController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
+import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.view.cohort.CohortActivity;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.patients.PatientsListActivity;
 import org.apache.lucene.queryParser.ParseException;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 
 import static com.muzima.utils.Constants.NotificationStatusConstants.NOTIFICATION_UNREAD;
 
@@ -46,10 +50,9 @@ public class MainActivity extends BroadcastListenerActivity {
         mMainView = getLayoutInflater().inflate(R.layout.activity_dashboard, null);
         setContentView(mMainView);
         setTitle(R.string.homepage);
-
+        RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext());
         setupActionbar();
     }
-
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -65,6 +68,7 @@ public class MainActivity extends BroadcastListenerActivity {
     @Override
     protected void onPause() {
         super.onPause();
+
     }
 
     @Override
@@ -79,6 +83,37 @@ public class MainActivity extends BroadcastListenerActivity {
     protected void onDestroy() {
         ((MuzimaApplication) getApplication()).logOut();
         super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed(){
+        if(((MuzimaApplication) getApplication()).isLoggedIn())
+        {
+            showAlertDialog();
+        }
+    }
+
+    private void showAlertDialog() {
+        new AlertDialog.Builder(MainActivity.this)
+                .setCancelable(true)
+                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                .setTitle(getResources().getString(R.string.confirm))
+                .setMessage(getResources().getString(R.string.exit_app_message))
+                .setPositiveButton(getString(R.string.yes_button_label), dialogYesClickListener())
+                .setNegativeButton(getString(R.string.no_button_label), null)
+                .create()
+                .show();
+    }
+    private Dialog.OnClickListener dialogYesClickListener(){
+        return new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                ((MuzimaApplication) getApplication()).logOut();
+                finish();
+                System.exit(0);
+            }
+        };
     }
 
     /**

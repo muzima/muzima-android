@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.FormData;
 import com.muzima.controller.FormController;
+import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
@@ -53,12 +54,15 @@ public class HTMLFormDataStore {
             if (!keepFormOpen) {
                 formWebViewActivity.finish();
                 if(status.equals("complete")) {
-                    Toast.makeText(formWebViewActivity, "Complete form data is saved successfully.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(formWebViewActivity, "Completed form data is saved successfully.", Toast.LENGTH_SHORT).show();
+                    RealTimeFormUploader.getInstance().uploadAllCompletedForms(formWebViewActivity.getApplicationContext());
+
                 }
                 if(status.equals("incomplete")) {
                     Toast.makeText(formWebViewActivity, "Draft form data is saved successfully.", Toast.LENGTH_SHORT).show();
                 }
             }
+
         } catch (FormController.FormDataSaveException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving the form", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while saving form data", e);

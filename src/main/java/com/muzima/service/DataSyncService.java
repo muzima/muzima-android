@@ -13,19 +13,19 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.model.APIName;
+import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.Patient;
-import com.muzima.utils.Constants;
+import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.cohort.AllCohortsListFragment;
-import com.muzima.view.forms.AllAvailableFormsListFragment;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
@@ -72,8 +72,8 @@ public class DataSyncService extends IntentService {
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = muzimaSyncService.downloadForms();
                     String msg = "Downloaded " + result[1] + " forms and Deleted " + result[2] + " forms";
-                    prepareBroadcastMsg(broadcastIntent, result, msg);
-                    saveFormsSyncTime(result);
+                    prepareBroadcastMsgForDownloadForms(broadcastIntent, result, msg);
+                    saveSyncTime(result,APIName.DOWNLOAD_FORMS);
                 }
                 break;
             case DataSyncServiceConstants.SYNC_TEMPLATES:
@@ -92,7 +92,7 @@ public class DataSyncService extends IntentService {
                     int[] result = muzimaSyncService.downloadCohorts();
                     String msg = "Downloaded " + result[1] + " new cohorts" + "; and deleted " + result[2] + " cohorts";
                     prepareBroadcastMsg(broadcastIntent, result, msg);
-                    saveCohortsSyncTime(result);
+                    saveSyncTime(result, APIName.DOWNLOAD_COHORTS);
                     consolidateAndSyncIndependentPatients(broadcastIntent);
                 }
                 break;
@@ -131,6 +131,7 @@ public class DataSyncService extends IntentService {
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     downloadPatientsWithObsAndEncounters(broadcastIntent, patientsToBeDownloaded);
                 }
+                break;
             case DataSyncServiceConstants.SYNC_NOTIFICATIONS:
                 String receiverUUid = intent.getStringExtra(NotificationStatusConstants.RECEIVER_UUID);
                 String[] downloadedCohortIds = intent.getStringArrayExtra(DataSyncServiceConstants.COHORT_IDS);
@@ -143,6 +144,15 @@ public class DataSyncService extends IntentService {
 
                     downloadObservationsAndEncounters(broadcastIntent, downloadedCohortIds);
                 }
+                break;
+            case DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS:
+                updateNotificationMsg("Real time upload of forms");
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    int[] result = muzimaSyncService.uploadAllCompletedForms();
+                    broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS);
+                    prepareBroadcastMsgForFormUpload(broadcastIntent, result, "Real time upload of forms successful.");
+                }
+                break;
             default:
                 break;
         }
@@ -215,6 +225,14 @@ public class DataSyncService extends IntentService {
         broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_STATUS, result[0]);
         if (isSuccess(result)) {
             broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, result[1]);
+            updateNotificationMsg(msg);
+        }
+    }
+
+    private void prepareBroadcastMsgForDownloadForms(Intent broadcastIntent, int[] result, String msg) {
+        broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_STATUS, result[0]);
+        if (isSuccess(result)) {
+            broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, result[1]);
             broadcastIntent.putExtra(DataSyncServiceConstants.DELETED_COUNT_PRIMARY,result[2]);
             updateNotificationMsg(msg);
         }
@@ -231,23 +249,17 @@ public class DataSyncService extends IntentService {
         }
     }
 
-    private void saveFormsSyncTime(int[] result) {
+    private void saveSyncTime(int[] result, APIName apiName) {
         if (isSuccess(result)) {
-            SharedPreferences pref = getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = pref.edit();
-            Date date = new Date();
-            editor.putLong(AllAvailableFormsListFragment.FORMS_METADATA_LAST_SYNCED_TIME, date.getTime());
-            editor.commit();
-        }
-    }
-
-    private void saveCohortsSyncTime(int[] result) {
-        if (isSuccess(result)) {
-            SharedPreferences pref = getSharedPreferences(Constants.SYNC_PREF, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = pref.edit();
-            Date date = new Date();
-            editor.putLong(AllCohortsListFragment.COHORTS_LAST_SYNCED_TIME, date.getTime());
-            editor.commit();
+            LastSyncTimeService lastSyncTimeService = null;
+            try {
+                lastSyncTimeService = ((MuzimaApplication) getApplication()).getMuzimaContext().getLastSyncTimeService();
+                SntpService sntpService = ((MuzimaApplication)getApplicationContext()).getSntpService();
+                LastSyncTime lastSyncTime = new LastSyncTime(apiName, sntpService.getLocalTime());
+                lastSyncTimeService.saveLastSyncTime(lastSyncTime);
+            } catch (IOException e) {
+                Log.i(TAG, "Error setting last sync time.");
+            }
         }
     }
 
