@@ -9,6 +9,7 @@
 package com.muzima;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -35,11 +36,13 @@ import com.muzima.service.SntpService;
 import com.muzima.util.Constants;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.forms.FormWebViewActivity;
+import com.muzima.view.forms.HTMLFormWebViewActivity;
 import com.muzima.view.preferences.MuzimaTimer;
 import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpSender;
+import org.apache.lucene.queryParser.ParseException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -47,17 +50,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.Security;
+import java.util.List;
 
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 
 @ReportsCrashes(
         formKey = "",
-        formUri = "http://prasann.cloudant.com/acra-muzima/_design/acra-storage/_update/report",
+        formUri = "https://muzima.cloudant.com/acra-muzima/_design/acra-storage/_update/report",
         reportType = HttpSender.Type.JSON,
-        httpMethod = HttpSender.Method.PUT,
-        formUriBasicAuthLogin = "utionermsedeastagesinibl",
-        formUriBasicAuthPassword = "QJi5kBCe36wGC6jeMeWfSB4q",
-        mode = ReportingInteractionMode.TOAST)
+        httpMethod = HttpSender.Method.POST,
+        formUriBasicAuthLogin = "pontonlympservilifleyeto",
+        formUriBasicAuthPassword = "OMHKOHV8LVfv3c553n6Oqkof",
+        mode = ReportingInteractionMode.TOAST,
+        resToastText = R.string.crash_toast_text)
 public class MuzimaApplication extends Application {
     private Context muzimaContext;
     private Activity currentActivity;
@@ -103,7 +108,6 @@ public class MuzimaApplication extends Application {
         return dir.delete();
     }
 
-
     @Override
     public void onCreate() {
         ACRA.init(this);
@@ -114,6 +118,7 @@ public class MuzimaApplication extends Application {
             Security.removeProvider("AndroidOpenSSL");
         }
         muzimaTimer = getTimer(this);
+
         super.onCreate();
         try {
             ContextFactory.setProperty(Constants.LUCENE_DIRECTORY_PATH, APP_DIR);
@@ -269,6 +274,16 @@ public class MuzimaApplication extends Application {
         muzimaTimer.restart();
     }
 
+    public boolean isLoggedIn(){
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String passwordKey = getResources().getString(R.string.preference_password);
+        if(settings.getAll().size() == 0 || settings.getAll().get(passwordKey).toString() == StringUtil.EMPTY){
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
     public void logOut() {
         saveBeforeExit();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
@@ -288,6 +303,9 @@ public class MuzimaApplication extends Application {
         if (currentActivity instanceof FormWebViewActivity) {
             ((FormWebViewActivity) currentActivity).saveDraft();
         }
+        if (currentActivity instanceof HTMLFormWebViewActivity) {
+            ((HTMLFormWebViewActivity) currentActivity).stopAutoSaveProcess();
+        }
     }
 
     private String getConfigurationString() throws IOException {
@@ -301,5 +319,16 @@ public class MuzimaApplication extends Application {
         }
         reader.close();
         return builder.toString();
+    }
+    public boolean isRunningInBackground()
+    {
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> tasks = manager.getRunningTasks(1);
+        if (tasks.get(0).topActivity.getClassName().contains("Launcher")){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

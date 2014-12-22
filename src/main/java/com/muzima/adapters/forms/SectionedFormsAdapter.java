@@ -25,6 +25,7 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,8 +38,12 @@ import com.muzima.R;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.FormWithData;
+import com.muzima.utils.Fonts;
 import com.muzima.utils.PatientComparator;
+import com.muzima.utils.StringUtils;
+import com.muzima.view.CheckedRelativeLayout;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -78,6 +83,7 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
             convertView = layoutInflater.inflate(R.layout.layout_forms_list_section_header, parent, false);
             holder.patientName = (TextView) convertView.findViewById(R.id.patientName);
             holder.patientIdentifier = (TextView) convertView.findViewById(R.id.patientId);
+            setClickListenersOnView(position, convertView);
             convertView.setTag(holder);
         } else {
             holder = (HeaderViewHolder) convertView.getTag();
@@ -174,6 +180,22 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = super.getView(position, convertView, parent);
         setClickListenersOnView(position, convertView);
+        FormWithData form = getItem(position);
+
+        String formSaveTime = null;
+        if(form.getLastModifiedDate() != null){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            formSaveTime = dateFormat.format(form.getLastModifiedDate());
+        }
+
+        ViewHolder holder = (ViewHolder) convertView.getTag();
+
+        if (!StringUtils.isEmpty(formSaveTime)) {
+            holder.savedTime.setText(formSaveTime);
+        }
+        holder.savedTime.setTypeface(Fonts.roboto_italic(getContext()));
+        holder.savedTime.setVisibility(View.VISIBLE);
+
         return convertView;
     }
 
@@ -182,11 +204,26 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
             @Override
             public boolean onLongClick(View view) {
 
+                CheckedRelativeLayout checkedLinearLayout = (CheckedRelativeLayout) view;
+                checkedLinearLayout.toggle();
+                boolean selected = checkedLinearLayout.isChecked();
+
                 FormWithData formWithPatientData = getItem(position);
-                if (!selectedFormsUuid.contains(formWithPatientData.getFormDataUuid())) {
+                if (selected && !selectedFormsUuid.contains(formWithPatientData.getFormDataUuid())) {
                     selectedFormsUuid.add(formWithPatientData.getFormDataUuid());
-                } else if (selectedFormsUuid.contains(formWithPatientData.getFormDataUuid())) {
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                        checkedLinearLayout.setChecked(true);
+                    } else {
+                        checkedLinearLayout.setActivated(true);
+
+                    }
+                } else if (!selected && selectedFormsUuid.contains(formWithPatientData.getFormDataUuid())) {
                     selectedFormsUuid.remove(formWithPatientData.getFormDataUuid());
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                        checkedLinearLayout.setChecked(false);
+                    } else {
+                        checkedLinearLayout.setActivated(false);
+                    }
                 }
 
                 muzimaClickListener.onItemLongClick();
@@ -237,4 +274,5 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
         }
         return result;
     }
+
 }

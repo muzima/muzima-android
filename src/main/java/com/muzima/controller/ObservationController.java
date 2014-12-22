@@ -66,6 +66,9 @@ public class ObservationController {
             throw new LoadObservationException(e);
         }
     }
+    public int getObservationsCountByPatient(String patientUuid) throws IOException {
+        return observationService.getObservationsByPatient(patientUuid).size();
+    }
 
     private void inflateConcepts(List<Observation> observationsByPatient) throws IOException {
         Map<String, Concept> conceptCache = new HashMap<String, Concept>();
@@ -179,9 +182,14 @@ public class ObservationController {
                     allConceptsUuids = getAllUuids(knownConceptsUuid, newConceptsUuids);
                     allPatientsUuids = getAllUuids(knownPatientsUuid, newPatientsUuids);
                     paramSignature = buildParamSignature(allPatientsUuids, allConceptsUuids);
-                    observations = observationService.downloadObservations(newPatientsUuids, allConceptsUuids, null);
-                    observations.addAll(observationService.downloadObservations(knownPatientsUuid, newConceptsUuids, null));
-                    observations.addAll(observationService.downloadObservations(knownPatientsUuid, knownConceptsUuid, fullLastSyncTimeInfo.getLastSyncDate()));
+                    if(newPatientsUuids.size()!=0) {
+                        observations = observationService.downloadObservations(newPatientsUuids, allConceptsUuids, null);
+                        observations.addAll(observationService.downloadObservations(knownPatientsUuid, newConceptsUuids, null));
+                        observations.addAll(observationService.downloadObservations(knownPatientsUuid, knownConceptsUuid, fullLastSyncTimeInfo.getLastSyncDate()));
+                    }
+                    else{
+                        observations.addAll(observationService.downloadObservations(patientUuids, conceptUuids, null));
+                    }
                 }
             }
             LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_OBSERVATIONS, sntpService.getLocalTime(), paramSignature);

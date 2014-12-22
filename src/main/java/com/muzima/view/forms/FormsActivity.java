@@ -10,6 +10,7 @@ package com.muzima.view.forms;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -27,6 +28,7 @@ import com.muzima.adapters.forms.FormsPagerAdapter;
 import com.muzima.adapters.forms.TagsListAdapter;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
+import com.muzima.service.DataSyncService;
 import com.muzima.service.TagPreferenceService;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
@@ -73,6 +75,11 @@ public class FormsActivity extends FormsActivityBase {
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
     @Override
@@ -138,6 +145,13 @@ public class FormsActivity extends FormsActivityBase {
             hideProgressbar();
             if (syncStatus == SyncStatusConstants.SUCCESS) {
                 ((FormsPagerAdapter) formsPagerAdapter).onFormTemplateDownloadFinish();
+            }
+        } else if(syncType == DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS){
+            SharedPreferences sp = getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", MODE_PRIVATE);
+            if(sp.getBoolean("active",false) == true){
+                if (syncStatus == SyncStatusConstants.SUCCESS) {
+                    ((FormsPagerAdapter) formsPagerAdapter).onFormUploadFinish();
+                }
             }
         }
     }

@@ -30,14 +30,19 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.cohort.AllCohortsAdapter;
+import com.muzima.api.model.LastSyncTime;
+import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.service.SntpService;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.CheckedLinearLayout;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.forms.MuzimaProgressDialog;
 
+import java.io.IOException;
 import java.util.List;
 
+import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
 
@@ -150,6 +155,14 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
                         }
                         Log.i(TAG, "Restarting timeout timer!") ;
                         ((MuzimaApplication) getApplication()).restartTimer();
+                        try {
+                            LastSyncTimeService lastSyncTimeService = ((MuzimaApplication)getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
+                            SntpService sntpService = ((MuzimaApplication)getApplicationContext()).getSntpService();
+                            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS, sntpService.getLocalTime());
+                            lastSyncTimeService.saveLastSyncTime(lastSyncTime);
+                        } catch (IOException e) {
+                            Log.i(TAG,"Error setting cohort sync time.");
+                        }
                         keepPhoneAwake(false) ;
                         navigateToNextActivity();
                     }

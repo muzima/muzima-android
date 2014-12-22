@@ -10,6 +10,7 @@ package com.muzima.view.forms;
 
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.User;
 import com.muzima.builder.PatientBuilder;
 import org.junit.Test;
 
@@ -26,12 +27,13 @@ public class HTMLPatientJSONMapperTest {
     @Test
     public void shouldAddPatientDetailsOnJSONFromPatient() throws Exception {
         Date birthdate = new Date();
-        SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat formattedDate = new SimpleDateFormat("dd-MM-yyyy");
         Patient patient = patient("givenname", "middlename", "familyname", "Female", new Date(), "uuid");
         HTMLPatientJSONMapper mapper = new HTMLPatientJSONMapper();
         FormData formData = new FormData();
-        formData.setUuid("formUuid");
-        String json = mapper.map(patient, formData);
+        User user = new User();
+        formData.setTemplateUuid("formUuid");
+        String json = mapper.map(patient, formData, user, false);
         assertThat(json, containsString("\"patient\":{"));
         assertThat(json, containsString("\"encounter\":{"));
         assertThat(json, containsString("\"patient.given_name\":\"givenname\""));
@@ -47,7 +49,8 @@ public class HTMLPatientJSONMapperTest {
     public void shouldNotFailIFBirthDateIsNull() throws Exception {
         Patient patient = patient("givenname", "middlename", "familyname", "Female", null, "uuid");
         HTMLPatientJSONMapper htmlPatientJSONMapper = new HTMLPatientJSONMapper();
-        String json = htmlPatientJSONMapper.map(patient, new FormData());
+        User user = new User();
+        String json = htmlPatientJSONMapper.map(patient, new FormData(), user, false);
         assertThat(json,not(containsString("\"patient.birthdate\"")));
     }
 

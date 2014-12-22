@@ -140,7 +140,7 @@ public class MuzimaSyncService {
         int deletedFormCount = 0;
         for (Form form : allForms) {
             for (Form downloadedForm : allDownloadedForms) {
-                if (form.getUuid().equals(downloadedForm.getUuid()) && downloadedForm.isVoided()) {
+                if (form.getUuid().equals(downloadedForm.getUuid()) && downloadedForm.isRetired()) {
                     deletedFormCount++;
                 }
             }
@@ -153,7 +153,7 @@ public class MuzimaSyncService {
         Log.i(TAG, "Voided forms are deleted");
         List<Form> voidedForms = new ArrayList<Form>();
         for (Form form : forms) {
-            if (form.isVoided()) {
+            if (form.isRetired()) {
                 voidedForms.add(form);
             }
         }
@@ -170,6 +170,11 @@ public class MuzimaSyncService {
 
             formController.replaceFormTemplates(formTemplates);
             List<Concept> concepts = getRelatedConcepts(formTemplates);
+
+            ConceptController.newConcepts = concepts;
+            List<Concept> savedConcepts = conceptController.getConcepts();
+            ConceptController.newConcepts.removeAll(savedConcepts);
+
             conceptController.saveConcepts(concepts);
 
             Log.i(TAG, "Form templates replaced");
@@ -193,6 +198,8 @@ public class MuzimaSyncService {
             Log.e(TAG, "Exception when trying to download forms", e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
+        } catch (ConceptController.ConceptFetchException e) {
+            e.printStackTrace();
         }
         return result;
     }
@@ -327,7 +334,6 @@ public class MuzimaSyncService {
         }
         return result;
     }
-
     public int[] downloadObservationsForPatientsByCohortUUIDs(String[] cohortUuids) {
         int[] result = new int[2];
         List<Patient> patients;
