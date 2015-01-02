@@ -55,14 +55,22 @@ import java.util.List;
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 
 @ReportsCrashes(
+
         formKey = "",
         formUri = "https://muzima.cloudant.com/acra-muzima/_design/acra-storage/_update/report",
         reportType = HttpSender.Type.JSON,
         httpMethod = HttpSender.Method.POST,
         formUriBasicAuthLogin = "pontonlympservilifleyeto",
         formUriBasicAuthPassword = "OMHKOHV8LVfv3c553n6Oqkof",
-        mode = ReportingInteractionMode.TOAST,
-        resToastText = R.string.crash_toast_text)
+        mode = ReportingInteractionMode.DIALOG,
+        resDialogText = R.string.crash_dialog_text,
+        resDialogIcon = android.R.drawable.ic_dialog_info,
+        resDialogTitle = R.string.crash_dialog_title,
+        resDialogCommentPrompt = R.string.crash_dialog_comment_prompt,
+        resDialogOkToast = R.string.crash_dialog_ok_toast
+)
+
+
 public class MuzimaApplication extends Application {
     private Context muzimaContext;
     private Activity currentActivity;
