@@ -57,7 +57,7 @@ import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 @ReportsCrashes(
 
         formKey = "",
-        formUri = "https://muzima.cloudant.com/acra-muzima/_design/acra-storage/_update/report",
+        formUri = "http://muzima.cloudant.com/acra-muzima/_design/acra-storage/_update/report",
         reportType = HttpSender.Type.JSON,
         httpMethod = HttpSender.Method.POST,
         formUriBasicAuthLogin = "pontonlympservilifleyeto",
