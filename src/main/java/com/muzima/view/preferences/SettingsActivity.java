@@ -40,6 +40,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
     private String autoSavePreferenceKey;
     private String realTimeSyncPreferenceKey;
     private String encounterProviderPreferenceKey;
+    private String duplicateFormDataPreferenceKey;
 
     private EditTextPreference serverPreference;
     private EditTextPreference usernamePreference;
@@ -47,6 +48,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
     private EditTextPreference passwordPreference;
     private EditTextPreference autoSaveIntervalPreference;
     private CheckBoxPreference encounterProviderPreference;
+    private CheckBoxPreference duplicateFormDataPreference;
     private CheckBoxPreference realTimeSyncPreference;
 
     private String newURL;
@@ -136,6 +138,11 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         encounterProviderPreferenceKey = getResources().getString(R.string.preference_encounter_provider);
         encounterProviderPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(encounterProviderPreferenceKey);
         encounterProviderPreference.setSummary(encounterProviderPreference.getSummary());
+
+        duplicateFormDataPreferenceKey = getResources().getString(R.string.preference_duplicate_form_data);
+        duplicateFormDataPreference = (CheckBoxPreference)getPreferenceScreen().findPreference(duplicateFormDataPreferenceKey);
+        duplicateFormDataPreference.setSummary(duplicateFormDataPreference.getSummary());
+
 
         // Show the Up button in the action bar.
         setupActionBar();

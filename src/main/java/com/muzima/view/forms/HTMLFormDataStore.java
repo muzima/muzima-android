@@ -43,6 +43,11 @@ public class HTMLFormDataStore {
     }
 
     @JavascriptInterface
+    public void loadJsonPayload(String jsonPayload){
+        formWebViewActivity.jsonPayload = jsonPayload;
+    }
+
+    @JavascriptInterface
     public void saveHTML(String jsonPayload, String status, boolean keepFormOpen) {
         formData.setJsonPayload(jsonPayload);
         formData.setStatus(status);
