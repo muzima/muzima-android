@@ -39,6 +39,11 @@ public abstract class FormWithDataBuilder<B extends FormWithDataBuilder, F exten
         return (B) this;
     }
 
+    public B withEncounterDate(Date encounterDate){
+        formWithData.setEncounterDate(encounterDate);
+        return (B) this;
+    }
+
     public F build() {
         return (F) formWithData;
     }

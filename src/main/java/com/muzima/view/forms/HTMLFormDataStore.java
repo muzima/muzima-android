@@ -19,6 +19,8 @@ import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 
+import java.util.Date;
+
 public class HTMLFormDataStore {
     private static final String TAG = "FormDataStore";
 
@@ -48,6 +50,8 @@ public class HTMLFormDataStore {
         formData.setStatus(status);
         try {
             parseForm(jsonPayload, status);
+            Date encounterDate = getEncounterDateFromForm(jsonPayload);
+            formData.setEncounterDate(encounterDate);
             formController.saveFormData(formData);
             formWebViewActivity.setResult(FormsActivity.RESULT_OK);
             Log.i(TAG, "Saving form data ...");
@@ -77,6 +81,10 @@ public class HTMLFormDataStore {
             return;
         }
         getFormParser().createAndPersistObservations(jsonPayload, formData.getUuid());
+    }
+
+    private Date getEncounterDateFromForm(String jsonPayload){
+        return getFormParser().getEncounterDateFromFormDate(jsonPayload);
     }
 
     public HTMLFormObservationCreator getFormParser() {
