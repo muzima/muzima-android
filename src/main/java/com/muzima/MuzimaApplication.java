@@ -57,10 +57,10 @@ import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 @ReportsCrashes(
 
         formKey = "",
-        formUri = "http://muzima.cloudant.com/acra-muzima/_design/acra-storage/_update/report",
         reportType = HttpSender.Type.JSON,
         httpMethod = HttpSender.Method.POST,
-        formUriBasicAuthLogin = "pontonlympservilifleyeto",
+        formUri = "http://173.255.205.23/acra-muzima/_design/acra-storage/_update/report",
+        formUriBasicAuthLogin = "muzima-reporter",
         formUriBasicAuthPassword = "OMHKOHV8LVfv3c553n6Oqkof",
         mode = ReportingInteractionMode.DIALOG,
         resDialogText = R.string.crash_dialog_text,
