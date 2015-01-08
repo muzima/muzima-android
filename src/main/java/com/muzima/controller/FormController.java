@@ -9,6 +9,7 @@
 package com.muzima.controller;
 
 import android.util.Log;
+import com.muzima.adapters.json.AndroidJsonWriterAdopterFactory;
 import com.muzima.api.model.APIName;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
@@ -503,6 +504,8 @@ public class FormController {
             return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER), result);
         } catch (IOException e) {
             throw new UploadFormDataException(e);
+        } catch (JSONException e) {
+            throw new UploadFormDataException(e);
         }
     }
 
@@ -599,14 +602,14 @@ public class FormController {
         return requiredForms;
     }
 
-    boolean uploadFormDataToServer(List<FormData> allFormData, boolean result) throws IOException {
+    boolean uploadFormDataToServer(List<FormData> allFormData, boolean result) throws IOException, JSONException {
         for (FormData formData : allFormData) {
             String rawPayload = formData.getJsonPayload();
             // inject consultation.sourceUuid
             formData = injectUuidToPayload(formData);
             // replace media paths with base64 string
             formData = replaceMediaPathWithBase64String(formData);
-            if (formService.syncFormData(formData)) {
+            if (formService.syncFormData(formData, new AndroidJsonWriterAdopterFactory())) {
                 formData.setStatus(STATUS_UPLOADED);
 
                 //DO NOT save base64 string in DB
