@@ -59,7 +59,7 @@ import static com.muzima.view.preferences.MuzimaTimer.getTimer;
         formKey = "",
         reportType = HttpSender.Type.JSON,
         httpMethod = HttpSender.Method.POST,
-        formUri = "http://173.255.205.23/acra-muzima/_design/acra-storage/_update/report",
+        formUri = "http://173.255.205.23:5984/acra-muzima/_design/acra-storage/_update/report",
         formUriBasicAuthLogin = "muzima-reporter",
         formUriBasicAuthPassword = "OMHKOHV8LVfv3c553n6Oqkof",
         mode = ReportingInteractionMode.DIALOG,
