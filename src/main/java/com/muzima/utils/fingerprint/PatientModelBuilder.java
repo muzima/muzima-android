@@ -1,6 +1,5 @@
 package com.muzima.utils.fingerprint;
 
-import android.util.Base64;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonAttribute;
 import com.muzima.biometric.model.PatientModel;
@@ -15,7 +14,7 @@ public class PatientModelBuilder {
     public PatientModels build(List<Patient> patients) {
         ArrayList<PatientModel> models = new ArrayList<PatientModel>();
         for (Patient patient : patients) {
-            byte[] fingerPrintTemplate = extractFingerPrintValue(patient);
+            String fingerPrintTemplate = extractFingerPrintValue(patient);
             if (fingerPrintTemplate != null) {
                 PatientModel patientModel = new PatientModel(patient.getUuid(), fingerPrintTemplate);
                 models.add(patientModel);
@@ -24,13 +23,14 @@ public class PatientModelBuilder {
         return new PatientModels(models);
     }
 
-    private byte[] extractFingerPrintValue(Patient patient) {
+    private String extractFingerPrintValue(Patient patient) {
         PersonAttribute attribute= patient.getAttribute(Constants.FINGER_PRINT_PATIENT_ATTRIBUTE);
         if(attribute == null)
             return null;
         String fingerPrintTemplateString = attribute.getAttribute();
         if (StringUtils.isEmpty(fingerPrintTemplateString))
             return null;
-        return Base64.decode(fingerPrintTemplateString, Base64.DEFAULT);
+        return fingerPrintTemplateString;
     }
 }
+

@@ -26,6 +26,7 @@ public class Constants {
     public static final String SEARCH_STRING_BUNDLE_KEY = "SearchString";
     public static final String LOCAL_PATIENT = "LocalPatient";
     public static final String FINGER_PRINT_PATIENT_ATTRIBUTE = "fingerprint";
+    public static final String PATIENT_NOT_FOUND_RETURN_VALUE = "PATIENT_NOT_FOUND";
 
 
     public static final String FORM_XML_DISCRIMINATOR_ENCOUNTER = "xml-encounter";

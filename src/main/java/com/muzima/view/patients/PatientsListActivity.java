@@ -16,12 +16,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
@@ -29,7 +24,10 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
-import com.muzima.api.model.*;
+import com.muzima.api.model.Cohort;
+import com.muzima.api.model.Patient;
+import com.muzima.api.model.User;
+import com.muzima.biometric.model.PatientModels;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.PatientController;
 import com.muzima.search.api.util.StringUtil;
@@ -45,13 +43,10 @@ import com.muzima.view.notifications.SyncNotificationsIntent;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.muzima.biometric.model.PatientModels;
-
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
-import static com.muzima.utils.Constants.DataSyncServiceConstants;
+import static com.muzima.utils.Constants.*;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
-import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
 
 public class PatientsListActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener, ListAdapter.BackgroundListQueryTaskListener {
     public static final String COHORT_ID = "cohortId";
@@ -74,6 +69,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private SearchView searchView;
     private boolean intentBarcodeResults = false;
     private boolean intentFingerPrintResults = false;
+    private boolean intentFingerPrintScanResults = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,20 +157,28 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     // Confirmation dialog for confirming if the patient have an existing ID
     private void callConfirmationDialog() {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(PatientsListActivity.this);
         builder
                 .setCancelable(true)
                 .setIcon(getResources().getDrawable(R.drawable.ic_warning))
                 .setTitle(getResources().getString(R.string.confirm))
                 .setMessage(getResources().getString(R.string.patient_registration_id_card_question))
-                .setPositiveButton("Yes", yesClickListener())
-                .setNegativeButton("No", noClickListener()).create().show();
-
-
+                .setPositiveButton("Yes", setFocusToSearch())
+                .setNegativeButton("No", openRegistrationForm()).create().show();
     }
 
-    private Dialog.OnClickListener yesClickListener() {
+    private void callRegistrationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(PatientsListActivity.this);
+        builder
+                .setCancelable(true)
+                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                .setTitle(getResources().getString(R.string.confirm))
+                .setMessage(getResources().getString(R.string.patient_fingerprint_not_found_question))
+                .setPositiveButton("Yes", openRegistrationForm())
+                .setNegativeButton("No", setFocusToSearch()).create().show();
+    }
+
+    private Dialog.OnClickListener setFocusToSearch() {
         return new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -185,7 +189,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         };
     }
 
-    private Dialog.OnClickListener noClickListener() {
+    private Dialog.OnClickListener openRegistrationForm() {
         return new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -200,7 +204,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             case R.id.fingerprint:
                 PatientModels modelsForIntent = getPatientModelsForIntent();
                 invokeFingerPrintIdentification(modelsForIntent);
-//                invokeFingerPrintScan();
                 return true;
             case R.id.menu_client_add:
                 callConfirmationDialog();
@@ -283,9 +286,22 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         noDataTipTextView.setTypeface(Fonts.roboto_light(this));
     }
 
+    public void showPatientDetails(String patientId) {
+        if (PATIENT_NOT_FOUND_RETURN_VALUE.equalsIgnoreCase(patientId)) {
+            callRegistrationDialog();
+        } else {
+            Patient patient = patientAdapter.getPatientById(patientId);
+            showPatientDetails(patient);
+        }
+    }
+
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         Patient patient = patientAdapter.getItem(position);
+        showPatientDetails(patient);
+    }
+
+    private void showPatientDetails(Patient patient) {
         Intent intent = new Intent(this, PatientSummaryActivity.class);
         intent.putExtra(PatientSummaryActivity.PATIENT, patient);
         startActivity(intent);
@@ -387,23 +403,26 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
-
         IntentResult fingerPrintScanningResult = IntentIntegrator.parseActivityResultForFingerPrint(requestCode, resultCode, dataIntent);
         if (fingerPrintScanningResult != null) {
-            intentFingerPrintResults = true;
+            this.intentFingerPrintResults = true;
             Log.d("Result", fingerPrintScanningResult.getContents());
             showDownloadDialog("Result", fingerPrintScanningResult.getContents());
+            return;
         }
         IntentResult fingerPrintIdentificationResult = IntentIntegrator.parseActivityResultForFingerPrintIdentification(requestCode, resultCode, dataIntent);
         if (fingerPrintIdentificationResult != null) {
-            intentFingerPrintResults = true;
-            Log.d("IdentifiedUser", fingerPrintIdentificationResult.getContents());
-            showDownloadDialog("IdentifiedUser", fingerPrintIdentificationResult.getContents());
+            this.intentFingerPrintScanResults = true;
+            String identifiedPatientUUID = fingerPrintIdentificationResult.getContents();
+            Log.d("IdentifiedUser", identifiedPatientUUID);
+            showPatientDetails(identifiedPatientUUID);
+            return;
         }
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
         if (scanningResult != null) {
             intentBarcodeResults = true;
             searchView.setQuery(scanningResult.getContents(), false);
+            return;
         }
     }
 

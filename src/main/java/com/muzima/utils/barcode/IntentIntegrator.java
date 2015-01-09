@@ -26,17 +26,10 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import com.muzima.biometric.model.PatientModels;
 
-import java.io.*;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -266,7 +259,9 @@ public class IntentIntegrator {
         fingerPrintIntent.setComponent(new ComponentName(FINGERPRINT_APP_PACKAGE, "com.muzima.biometric.activity.IdentifyActivity"));
 
         if (isTargetAppAvailable(fingerPrintIntent)) {
-            fingerPrintIntent.getExtras().putSerializable("fingersToEnroll", modelsForIntent);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("fingersToEnroll", modelsForIntent);
+            fingerPrintIntent.putExtras(bundle);
             startActivityForResult(fingerPrintIntent, FINGERPRINT_IDENTIFY_REQUEST_CODE);
         } else {
             showDownloadDialog(FINGERPRINT_APP_PACKAGE, "Install Fingerprint Scanner?", "This application would require mUzima Fingerprint scanner. Do you want to install the app?");
@@ -434,11 +429,11 @@ public class IntentIntegrator {
     public static IntentResult parseActivityResultForFingerPrint(int requestCode, int resultCode, Intent intent) {
         if (requestCode == FINGERPRINT_SCAN_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                byte[] rawBytes = intent.getByteArrayExtra("templateBuffer");
+                String templateBuffer = intent.getStringExtra("templateBuffer");
 
-                return new IntentResult(Base64.encodeToString(rawBytes, Base64.DEFAULT),
+                return new IntentResult(templateBuffer,
                         null,
-                        rawBytes,
+                        null,
                         null,
                         null);
             }
