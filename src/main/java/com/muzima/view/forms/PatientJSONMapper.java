@@ -81,7 +81,7 @@ public class PatientJSONMapper {
     }
 
     private PersonAttribute preferredAttribute(Map<String, String> paramsMap){
-        PersonAttribute personAttribute = personAttribute(paramsMap.get("fingerprint"));
+        PersonAttribute personAttribute = personAttribute(paramsMap.get("patient.fingerprint"));
          return personAttribute;
     }
     
