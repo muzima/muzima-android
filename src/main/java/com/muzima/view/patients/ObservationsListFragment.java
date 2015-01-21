@@ -17,21 +17,24 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.muzima.R;
+import com.muzima.adapters.ListAdapter;
+import com.muzima.adapters.observations.ObservationsAdapter;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.view.MuzimaListFragment;
 
-public abstract class ObservationsListFragment extends MuzimaListFragment{
+public abstract class ObservationsListFragment extends MuzimaListFragment implements ListAdapter.BackgroundListQueryTaskListener{
     private static final String TAG = "ObservationsListFragment";
 
     protected ConceptController conceptController;
     protected ObservationController observationController;
     protected FrameLayout progressBarContainer;
     protected LinearLayout noDataView;
+    protected View observationsLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View observationsLayout = setupMainView(inflater,container);
+        observationsLayout = setupMainView(inflater,container);
         list = (ListView) observationsLayout.findViewById(R.id.list);
         progressBarContainer = (FrameLayout) observationsLayout.findViewById(R.id.progressbarContainer);
         noDataView = (LinearLayout) observationsLayout.findViewById(R.id.no_data_layout);
@@ -42,7 +45,7 @@ public abstract class ObservationsListFragment extends MuzimaListFragment{
         if (listAdapter != null) {
             list.setAdapter(listAdapter);
             list.setOnItemClickListener(this);
-//            ((CohortsAdapter)listAdapter).setBackgroundListQueryTaskListener(this);
+            ((ObservationsAdapter)listAdapter).setBackgroundListQueryTaskListener(this);
         }
         list.setEmptyView(observationsLayout.findViewById(R.id.no_data_layout));
 
@@ -54,4 +57,18 @@ public abstract class ObservationsListFragment extends MuzimaListFragment{
     }
 
     public abstract void onSearchTextChange(String query);
+
+    @Override
+    public void onQueryTaskStarted() {
+        noDataMsg = "Observations are loading";
+        updateDataLoadStatus(observationsLayout, noDataMsg);
+    }
+
+    @Override
+    public void onQueryTaskFinish() {
+        if(listAdapter.isEmpty()){
+            noDataMsg = "No observations Available";
+            updateDataLoadStatus(observationsLayout, noDataMsg);
+        }
+    }
 }

@@ -26,6 +26,13 @@ public class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Void,
     }
 
     @Override
+    protected void onPreExecute() {
+        if (observationsByEncounterAdapter.getBackgroundListQueryTaskListener() != null) {
+            observationsByEncounterAdapter.getBackgroundListQueryTaskListener().onQueryTaskStarted();
+        }
+    }
+
+    @Override
     protected Encounters doInBackground(Void... params) {
         Encounters encounters = null;
         try {
@@ -48,5 +55,9 @@ public class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Void,
             observationsByEncounterAdapter.add(encountersWithObservation);
         }
         observationsByEncounterAdapter.notifyDataSetChanged();
+
+        if (observationsByEncounterAdapter.getBackgroundListQueryTaskListener() != null) {
+            observationsByEncounterAdapter.getBackgroundListQueryTaskListener().onQueryTaskFinish();
+        }
     }
 }
