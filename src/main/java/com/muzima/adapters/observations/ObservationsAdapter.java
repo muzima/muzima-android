@@ -29,6 +29,11 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
     protected final String patientUuid;
     protected ConceptController conceptController;
     protected ObservationController observationController;
+    protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
+
+    public BackgroundListQueryTaskListener getBackgroundListQueryTaskListener() {
+        return backgroundListQueryTaskListener;
+    }
 
     public ObservationsAdapter(FragmentActivity context, int textViewResourceId,
                                ConceptController conceptController, ObservationController observationController) {
@@ -37,6 +42,10 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
         this.observationController = observationController;
         Patient patient = (Patient) context.getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
         patientUuid = patient.getUuid();
+    }
+
+    public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
+            this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
     }
 
     protected abstract class ViewHolder{

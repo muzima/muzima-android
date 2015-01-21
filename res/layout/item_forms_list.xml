@@ -42,6 +42,13 @@
             style="@style/FormSaveDateTime">
     </CheckedTextView>
 
+    <CheckedTextView
+            android:id="@+id/form_encounter_date"
+            android:paddingTop="15dp"
+            android:layout_below="@+id/form_description"
+            style="@style/FormSaveDateTime"
+            android:gravity="left"/>
+
     <com.muzima.view.CheckedRelativeLayout
             android:id="@+id/tags_scroller"
             android:layout_width="fill_parent"

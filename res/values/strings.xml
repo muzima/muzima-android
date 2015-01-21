@@ -150,7 +150,7 @@
     <string name="cohort_prefix_label">Prefix:</string>
     <string name="cohort_add_prefix_hint">Add Prefix</string>
 
-    <string name="no_observations_available">No Observations Available</string>
+    <string name="observations_still_loading">Observations are still loading</string>
 
     <string name="preference_form_title">Add form tags</string>
     <string name="preference_form_desc">You can add form tags to restrict the form downloads</string>
@@ -299,6 +299,11 @@
     <string name="preference_encounter_provider_desc">Logged-in user as default encounter form provider</string>
     <string name="preference_encounter_provider_title">Default encounter provider</string>
     <string name="preference_encounter_provider">encounterProviderPreference</string>
-    <string name="crash_toast_text">\"Sorry, mUzima has crashed. A crash report will be sent to the team.\"</string>
+    <string name="crash_dialog_text">An unexpected error occurred forcing mUzima to stop. Please help us fix
+        this by sending us error data, all you have to do is click OK.
+    </string>
+    <string name="crash_dialog_title">mUzima has crashed...</string>
+    <string name="crash_dialog_comment_prompt">Please add your comments about the problem below.</string>
+    <string name="crash_dialog_ok_toast">Thank you!</string>
 
 </resources>

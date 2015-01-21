@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -150,6 +151,19 @@ public class HTMLFormObservationCreator {
 
     private Encounter createEncounter(JSONObject encounterJSON, String formDataUuid) throws JSONException, ParseException {
         return observationParserUtility.getEncounterEntity(parse(encounterJSON.getString("encounter.encounter_datetime")), patient,formDataUuid);
+    }
+
+    public Date getEncounterDateFromFormDate(String jsonResponse){
+        try {
+            JSONObject jsonObject = new JSONObject(jsonResponse);
+            JSONObject jsonObjectInner = jsonObject.getJSONObject("encounter");
+            return parse(jsonObjectInner.getString("encounter.encounter_datetime"));
+        } catch (JSONException e) {
+            Log.e(TAG, "Error while parsing response JSON", e);
+        } catch (ParseException e) {
+            Log.e(TAG, "Error while parsing response JSON", e);
+        }
+        return null;
     }
 
     private Patient getPatient(JSONObject patient) throws JSONException, PatientController.PatientLoadException {

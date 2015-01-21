@@ -265,6 +265,12 @@
         <service android:name=".service.DataSyncService"
                  android:exported="false"/>
 
+        <activity android:name="org.acra.CrashReportDialog"
+                  android:theme="@android:style/Theme.Dialog"
+                  android:launchMode="singleInstance"
+                  android:excludeFromRecents="true"
+                  android:finishOnTaskLaunch="true" />
+
     </application>
 
 </manifest>

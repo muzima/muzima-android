@@ -334,6 +334,7 @@ public class FormController {
                         .withFormDataUuid(formData.getUuid())
                         .withPatient(patient)
                         .withLastModifiedDate(formData.getSaveTime())
+                        .withEncounterDate(formData.getEncounterDate())
                         .build();
             }
 
@@ -384,6 +385,7 @@ public class FormController {
                         .withFormDataUuid(formData.getUuid())
                         .withPatient(patient)
                         .withLastModifiedDate(formData.getSaveTime())
+                        .withEncounterDate(formData.getEncounterDate())
                         .build());
             }
         } catch (IOException e) {
@@ -404,6 +406,7 @@ public class FormController {
                         .withFormDataUuid(formData.getUuid())
                         .withPatient(patient)
                         .withLastModifiedDate(formData.getSaveTime())
+                        .withEncounterDate(formData.getEncounterDate())
                         .build();
                 completeForms.add(completeForm);
             }
@@ -421,6 +424,7 @@ public class FormController {
                 incompleteForms.add(new IncompleteFormBuilder().withForm(formService.getFormByUuid(formData.getTemplateUuid()))
                         .withFormDataUuid(formData.getUuid())
                         .withLastModifiedDate(formData.getSaveTime())
+                        .withEncounterDate(formData.getEncounterDate())
                         .build());
             }
         } catch (IOException e) {
@@ -439,6 +443,7 @@ public class FormController {
                         .withForm(form)
                         .withFormDataUuid(formData.getUuid())
                         .withLastModifiedDate(formData.getSaveTime())
+                        .withEncounterDate(formData.getEncounterDate())
                         .build());
             }
         } catch (IOException e) {
