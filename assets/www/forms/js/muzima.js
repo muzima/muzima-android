@@ -217,11 +217,20 @@ $(document).ready(function () {
     };
 
     $('.barcode_btn').click(function () {
-        barCodeComponent.startBarCodeIntent($(this).parent().find("input[type='text']").attr('name'));
+        bx.startBarCodeIntent($(this).parent().find("input[type='text']").attr('name'));
     });
 
     /*End- BarCode Functionality*/
 
+    /* Start - Fingerprint functionality */
+    document.populateFingerPrint = function (jsonString) {
+            $.each(jsonString, function (key, value) {
+                var $inputField = $("input[name='" + key + "']");
+                $inputField.val(value);
+                $inputField.trigger('change');  //Need this to trigger the event so AMRS id gets populated.
+            })
+    };
+    /* End - Fingerprint Functionality */
     /*Start- Imaging Functionality*/
 
     /* Called by the Activity WebViewActivity*/
@@ -296,6 +305,12 @@ $(document).ready(function () {
         videoComponent.openVideo($(this).attr('data-video'));
     });
     /* End - Play video in form */
+
+    /* Start - finger print in form */
+    $('.finger-print-scan').click(function(){
+        fingerPrintComponent.startFingerPrintIntent($(this).attr('finger-print-data'));
+    });
+    /* End - finger print in form */
 
     /* Start - view Image in form */
     $('.image-player').click(function(){

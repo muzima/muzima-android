@@ -5,6 +5,12 @@
 			android:orderInCategory="10"
 			android:showAsAction="always"
 			android:icon="@drawable/ic_refresh"/>
+    <item
+    			android:id="@+id/fingerprint"
+    			android:icon="@drawable/fingerprint_scan"
+    			android:showAsAction="always"
+    			android:title="@string/client_scan_fingerprint"/>
+
 	<item
 			android:id="@+id/scan"
 			android:icon="@drawable/barcode_icon"

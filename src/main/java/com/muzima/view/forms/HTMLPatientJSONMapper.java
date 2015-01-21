@@ -37,8 +37,8 @@ public class HTMLPatientJSONMapper {
             encounterDetails.put("encounter.form_uuid", StringUtils.defaultString(formData.getTemplateUuid()));
 
             if(isLoggedInUserIsDefaultProvider) {
-                encounterDetails.put("encounter.provider_id_select", loggedInUser.getSystemId());
-                encounterDetails.put("encounter.provider_id", loggedInUser.getSystemId());
+//                encounterDetails.put("encounter.provider_id_select", loggedInUser.getSystemId());
+//                encounterDetails.put("encounter.provider_id", loggedInUser.getSystemId());
             }
             prepopulateJSON.put("patient",patientDetails);
             prepopulateJSON.put("encounter",encounterDetails);

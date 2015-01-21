@@ -21,6 +21,7 @@
     <string name="clients">Clients</string>
     <string name="forms">Forms</string>
     <string name="notices">Notices</string>
+    <string name="client_scan_fingerprint">Scan Clients Fingerprint</string>
 
     <string name="no_new_form_msg">No Forms Available</string>
     <string name="no_new_form_tip">Please press load to fetch data from server</string>
@@ -249,6 +250,7 @@
 	<string name="confirm">Confirmation!</string>
 
 	<string name="patient_registration_id_card_question">Does the patient already have existing ID?</string>
+	<string name="patient_fingerprint_not_found_question">We could not identify the patient with the fingerprint. Do you want to register the patient?</string>
     <string name="wizard_disclaimer_header">Licensing, Disclaimer of Warranty and Limitation of Liability</string>
     <string name="wizard_disclaimer_desc">
         <![CDATA[

@@ -94,6 +94,25 @@ $(document).ready(function () {
     });
     /*End- BarCode Functionality*/
 
+    /*Finger print functionality start*/
+
+    var $fingerPrintInput = $('input[type="fingerprint"]');
+    $fingerPrintInput.before("<input type='button' class='fingerprint_img'>");
+    $('.fingerprint_img').click(function () {
+
+        fingerPrintComponent.startFingerPrintIntent($fingerPrintInput.attr('name'));
+    });
+
+    document.populateFingerPrint = function (jsonString) {
+            $.each(jsonString, function (key, value) {
+                var $inputField = $("input[name='" + key + "']");
+                $inputField.val(value);
+                $inputField.trigger('change');  //Need this to trigger the event so AMRS id gets populated.
+            })
+    };
+
+    /*Finger print functionality End*/
+
     /*Start- Imaging Functionality*/
 
     document.populateImage = function (jsonString) {

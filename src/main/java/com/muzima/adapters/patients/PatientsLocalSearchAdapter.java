@@ -138,6 +138,16 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
         return notificationPatients;
     }
 
+    public Patient getPatientById(String uuid) {
+        try {
+            return patientController.getPatientByUuid(uuid);
+        } catch (PatientController.PatientLoadException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
     private class ViewHolder {
         ImageView genderImg;
         TextView name;
