@@ -110,7 +110,6 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
         @Override
         protected List<Observation> doInBackground(String... params) {
             List<Observation> observations = null;
-            Log.e("doInBackground", params[0]);
              try {
                  observations=new ArrayList<Observation>();
                  List<Observation>observationsByPatient = observationController.getObservationsByPatient(encounter.getPatient().getUuid());
