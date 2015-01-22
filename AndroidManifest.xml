@@ -191,6 +191,24 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.patients.PatientSummaryActivity"/>
         </activity>
+        <activity
+                android:name=".view.encounters.EncountersActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_client_encounters"
+                android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.patients.PatientSummaryActivity"/>
+        </activity>
+        <activity
+                android:name=".view.encounters.EncounterSummaryActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_encounter_summary"
+                android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.encounters.EncountersActivity"/>
+        </activity>
 
         <activity android:name=".view.forms.RegistrationFormsActivity"
                   android:configChanges="orientation|screenSize"

@@ -8,6 +8,7 @@
 
 package com.muzima.controller;
 
+import android.util.Log;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.EncounterService;
@@ -45,6 +46,9 @@ public class EncounterController {
         } catch (IOException e) {
             throw new ReplaceEncounterException(e);
         }
+    }
+    public int getEncountersCountByPatient(String patientUuid) throws IOException {
+        return encounterService.getEncountersByPatientUuid(patientUuid).size();
     }
 
     public List<Encounter>  getEncountersByPatientUuid(String patientUuid) throws DownloadEncounterException{
