@@ -42,7 +42,6 @@ import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpSender;
-import org.apache.lucene.queryParser.ParseException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -104,16 +103,20 @@ public class MuzimaApplication extends Application {
     }
 
     private static boolean deleteDir(File dir) {
-        if (dir != null && dir.isDirectory()) {
-            String[] children = dir.list();
-            for (String child : children) {
-                boolean success = deleteDir(new File(dir, child));
-                if (!success) {
-                    return false;
+        if (dir != null) {
+            if (dir.isDirectory()) {
+                String[] children = dir.list();
+                for (String child : children) {
+                    boolean success = deleteDir(new File(dir, child));
+                    if (!success) {
+                        return false;
+                    }
                 }
             }
+            return dir.delete();
+        } else {
+            return false;
         }
-        return dir.delete();
     }
 
     @Override
@@ -122,7 +125,8 @@ public class MuzimaApplication extends Application {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.FROYO) {
             System.setProperty("http.keepAlive", "false");
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2
+                && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Security.removeProvider("AndroidOpenSSL");
         }
         muzimaTimer = getTimer(this);
@@ -144,23 +148,21 @@ public class MuzimaApplication extends Application {
     }
 
     public User getAuthenticatedUser() {
-        User authenticatedUser = null;
+        User authenticatedUser;
         muzimaContext.openSession();
         try {
             if (muzimaContext.isAuthenticated())
                 authenticatedUser = muzimaContext.getAuthenticatedUser();
-            else    {
-                Credentials cred   = new Credentials(getApplicationContext()) ;
-                if (cred != null) {
-                    String[] credentials = cred.getCredentialsArray();
-                    String username = credentials[0];
-                    String password = credentials[1];
-                    String server = credentials[2];
-                    if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password) && !StringUtils.isEmpty(server))
-                        muzimaContext.authenticate(username, password, server);
+            else {
+                Credentials cred = new Credentials(getApplicationContext());
+                String[] credentials = cred.getCredentialsArray();
+                String username = credentials[0];
+                String password = credentials[1];
+                String server = credentials[2];
+                if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password) && !StringUtils.isEmpty(server))
+                    muzimaContext.authenticate(username, password, server);
 
-                    authenticatedUser = muzimaContext.getAuthenticatedUser();
-                }
+                authenticatedUser = muzimaContext.getAuthenticatedUser();
             }
             muzimaContext.closeSession();
         } catch (Exception e) {
@@ -282,16 +284,12 @@ public class MuzimaApplication extends Application {
         muzimaTimer.restart();
     }
 
-    public boolean isLoggedIn(){
+    public boolean isLoggedIn() {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String passwordKey = getResources().getString(R.string.preference_password);
-        if(settings.getAll().size() == 0 || settings.getAll().get(passwordKey).toString() == StringUtil.EMPTY){
-            return false;
-        }
-        else {
-            return true;
-        }
+        return settings.getAll().size() == 0 || StringUtil.EMPTY.equals(settings.getAll().get(passwordKey).toString());
     }
+
     public void logOut() {
         saveBeforeExit();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
@@ -328,15 +326,10 @@ public class MuzimaApplication extends Application {
         reader.close();
         return builder.toString();
     }
-    public boolean isRunningInBackground()
-    {
+
+    public boolean isRunningInBackground() {
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> tasks = manager.getRunningTasks(1);
-        if (tasks.get(0).topActivity.getClassName().contains("Launcher")){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return tasks.get(0).topActivity.getClassName().contains("Launcher");
     }
 }
