@@ -37,7 +37,6 @@ public class EncounterWithObservations {
     }
 
     public void addObservation(Observation observation) {
-
         encounter = observation.getEncounter();
         observations.add(observation);
     }

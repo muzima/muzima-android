@@ -7,7 +7,6 @@
  */
 package com.muzima.adapters.encounters;
 
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
@@ -24,17 +23,16 @@ import com.muzima.view.patients.PatientSummaryActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public abstract class EncountersAdapter extends ListAdapter<Encounter> {
     private static final String TAG = "EncountersAdapter";
     protected EncounterController encounterController;
-
 
     public EncountersAdapter(Context context, int textViewResourceId, EncounterController encounterController) {
         super(context, textViewResourceId);
         this.encounterController = encounterController;
 
     }
+
     protected abstract class ViewHolder {
 
         protected LayoutInflater inflater;

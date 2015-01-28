@@ -72,6 +72,20 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
         }
     }
 
+    public static String getPatientFormattedName(Patient patient){
+        String familyName = patient.getFamilyName();
+        String givenName = patient.getGivenName();
+        String middleName = patient.getMiddleName();
+
+        if(!givenName.equals("")){
+            givenName =", "+ givenName.substring(0,1);
+        }
+        if(!middleName.equals("")){
+            middleName = " "+middleName.substring(0,1);
+        }
+        return familyName + givenName + middleName;
+    }
+
     private String getPatientFullName(Patient patient) {
         return patient.getFamilyName() + ", " + patient.getGivenName() + " " + patient.getMiddleName();
     }

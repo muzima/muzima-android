@@ -40,6 +40,7 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
     public void reloadData() {
         new BackgroundQueryTask().execute(encounterUuid);
     }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
         Observation observation =getItem(position);
@@ -57,12 +58,12 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
             convertView.setTag(holder);
         }else{
             holder = (EncounterObservationsViewHolder)convertView.getTag();
-
         }
         holder.setObservation(observation);
 
         return convertView;
     }
+
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
         this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
     }
@@ -100,6 +101,7 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
             conceptQuestion.setText(observation.getConcept().getName());
         }
     }
+
     private class BackgroundQueryTask extends AsyncTask<String, Void, List<Observation>> {
         @Override
         protected void onPreExecute() {
@@ -107,6 +109,7 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
                 backgroundListQueryTaskListener.onQueryTaskStarted();
             }
         }
+
         @Override
         protected List<Observation> doInBackground(String... params) {
             List<Observation> observations = null;
@@ -121,10 +124,11 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
                  }
 
              }catch(ObservationController.LoadObservationException e){
-                Log.e("Could not get Observations", e.toString());
+                Log.e(this.getClass().getSimpleName(),"Could not get Observations", e);
             }
             return observations;
         }
+
         @Override
         protected void onPostExecute(List<Observation> observations){
             if(observations==null){

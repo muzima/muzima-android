@@ -10,14 +10,12 @@ package com.muzima.adapters.encounters;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Observation;
 import com.muzima.controller.ObservationController;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public abstract class ObservationsAdapter extends ListAdapter<Observation> {
     private static final String TAG = "ObservationsAdapter";
@@ -27,6 +25,7 @@ public abstract class ObservationsAdapter extends ListAdapter<Observation> {
         super(context, textViewResourceId);
         this.observationController=observationController;
     }
+
     protected abstract class ViewHolder {
 
         protected LayoutInflater inflater;
@@ -37,5 +36,4 @@ public abstract class ObservationsAdapter extends ListAdapter<Observation> {
             inflater = LayoutInflater.from(getContext());
         }
     }
-
 }

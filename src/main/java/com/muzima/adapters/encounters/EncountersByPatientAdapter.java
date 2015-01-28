@@ -23,7 +23,6 @@ import com.muzima.controller.EncounterController;
 import com.muzima.utils.DateUtils;
 import java.util.List;
 
-
 public class EncountersByPatientAdapter extends EncountersAdapter {
     protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
     protected final String patientUuid;
@@ -38,7 +37,6 @@ public class EncountersByPatientAdapter extends EncountersAdapter {
     public void reloadData() {
         new BackgroundQueryTask().execute(patientUuid);
     }
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -70,10 +68,9 @@ public class EncountersByPatientAdapter extends EncountersAdapter {
         holder.encounterFormName.setText(encounterType);
         holder.encounterDate.setText(date);
 
-
         return convertView;
-
     }
+
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
         this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
     }
@@ -84,6 +81,7 @@ public class EncountersByPatientAdapter extends EncountersAdapter {
         public TextView encounterLocation;
         public TextView encounterFormName;
     }
+
     private class BackgroundQueryTask extends AsyncTask<String, Void, List<Encounter>> {
         @Override
         protected void onPreExecute() {
@@ -91,6 +89,7 @@ public class EncountersByPatientAdapter extends EncountersAdapter {
                 backgroundListQueryTaskListener.onQueryTaskStarted();
             }
         }
+
         @Override
         protected List<Encounter> doInBackground(String... params) {
             List<Encounter> encounters = null;
@@ -98,10 +97,11 @@ public class EncountersByPatientAdapter extends EncountersAdapter {
                encounters = encounterController.getEncountersByPatientUuid(patientUuid);
 
             }catch(EncounterController.DownloadEncounterException e){
-                Log.e("Could not get patient encounters",e.toString());
+                Log.e(this.getClass().getSimpleName(),"Could not get patient encounters",e);
             }
             return encounters;
         }
+
         @Override
         protected void onPostExecute(List<Encounter> encounters){
             if(encounters==null){

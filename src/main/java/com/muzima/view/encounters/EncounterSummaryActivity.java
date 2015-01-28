@@ -22,15 +22,12 @@ import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 
-
 public class EncounterSummaryActivity  extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
     public static final String ENCOUNTER="encounter";
     private Encounter encounter;
     private ListView encounterObservationsLayout;
     private EncounterObservationsAdapter encounterObservationsAdapter;
     private View noDataView;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +43,13 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
         setupEncounterMetadata();
         setupNoDataView();
         setUpEncounterObservations();
-
     }
 
     private void setupActionBar() {
         Patient patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
         getSupportActionBar().setTitle(patient.getSummary());
     }
+
     private void setupEncounterMetadata(){
         TextView encounterFormName = (TextView)findViewById(R.id.encounterFormName);
         encounterFormName.setText(encounter.getEncounterType().getName());
@@ -68,6 +65,7 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
 
 
     }
+
     private void setupNoDataView() {
 
         noDataView = findViewById(R.id.no_data_layout);
@@ -77,6 +75,7 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
 
     }
+
     private void setUpEncounterObservations(){
         encounterObservationsLayout = (ListView)findViewById(R.id.encounter_observations_list);
         encounterObservationsAdapter = new EncounterObservationsAdapter(EncounterSummaryActivity.this,R.layout.item_encounter_observation,
@@ -85,8 +84,8 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
         encounterObservationsLayout.setEmptyView(noDataView);
         encounterObservationsLayout.setAdapter(encounterObservationsAdapter);
         encounterObservationsAdapter.reloadData();
-
     }
+
     @Override
     public void onQueryTaskStarted(){}
 

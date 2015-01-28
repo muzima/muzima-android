@@ -8,7 +8,6 @@
 
 package com.muzima.controller;
 
-import android.util.Log;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.EncounterService;
