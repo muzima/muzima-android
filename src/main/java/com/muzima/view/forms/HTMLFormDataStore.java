@@ -13,6 +13,7 @@ import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.FormData;
+import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.HTMLFormObservationCreator;
@@ -47,6 +48,11 @@ public class HTMLFormDataStore {
         formData.setJsonPayload(jsonPayload);
         formData.setStatus(status);
         try {
+            if (isRegistrationComplete(status)) {
+                Patient newPatient = formController.createNewHTMLPatient(jsonPayload);
+                formData.setPatientUuid(newPatient.getUuid());
+                formWebViewActivity.startPatientSummaryView(newPatient);
+            }
             parseForm(jsonPayload, status);
             formController.saveFormData(formData);
             formWebViewActivity.setResult(FormsActivity.RESULT_OK);
@@ -56,7 +62,6 @@ public class HTMLFormDataStore {
                 if(status.equals("complete")) {
                     Toast.makeText(formWebViewActivity, "Completed form data is saved successfully.", Toast.LENGTH_SHORT).show();
                     RealTimeFormUploader.getInstance().uploadAllCompletedForms(formWebViewActivity.getApplicationContext());
-
                 }
                 if(status.equals("incomplete")) {
                     Toast.makeText(formWebViewActivity, "Draft form data is saved successfully.", Toast.LENGTH_SHORT).show();
@@ -83,5 +88,12 @@ public class HTMLFormDataStore {
         MuzimaApplication applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
         return new HTMLFormObservationCreator(applicationContext.getPatientController(), applicationContext.getConceptController(),
                 applicationContext.getEncounterController(), applicationContext.getObservationController());
+    }
+    private boolean isRegistrationComplete(String status) {
+        return isRegistrationForm() && status.equals(Constants.STATUS_COMPLETE);
+    }
+    public boolean isRegistrationForm() {
+        return !(formData.getDiscriminator().equalsIgnoreCase(Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER)
+                || formData.getDiscriminator().equalsIgnoreCase(Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION));
     }
 }
