@@ -69,4 +69,9 @@ public abstract class MuzimaListFragment extends SherlockFragment implements Ada
             listView.setItemChecked(i, false);
         }
     }
+
+    protected void updateDataLoadStatus(View layout, String noDataMsg){
+        TextView noDataMsgTextView = (TextView) layout.findViewById(R.id.no_data_msg);
+        noDataMsgTextView.setText(noDataMsg);
+    }
 }

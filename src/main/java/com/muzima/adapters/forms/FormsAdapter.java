@@ -69,6 +69,7 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
             holder.name = (CheckedTextView) convertView.findViewById(R.id.form_name);
             holder.description = (TextView) convertView.findViewById(R.id.form_description);
             holder.savedTime = (TextView) convertView.findViewById(R.id.form_save_time);
+            holder.encounterDate = (TextView) convertView.findViewById(R.id.form_encounter_date);
             holder.tagsScroller = (RelativeLayout) convertView.findViewById(R.id.tags_scroller);
             holder.tagsLayout = (LinearLayout) convertView.findViewById(R.id.menu_tags);
             holder.tags = new ArrayList<TextView>();
@@ -93,8 +94,6 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
             holder.description.setTypeface(Fonts.roboto_light(getContext()));
             holder.savedTime.setVisibility(View.GONE);
         }
-
-
         return convertView;
     }
 
@@ -119,6 +118,7 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
         LinearLayout tagsLayout;
         List<TextView> tags;
         TextView savedTime;
+        TextView encounterDate;
 
         public void addTag(TextView tag) {
             this.tags.add(tag);
