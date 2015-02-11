@@ -22,6 +22,8 @@ import com.muzima.utils.StringUtils;
 
 import java.util.Date;
 
+import static com.muzima.utils.Constants.FORM_HTML_DISCRIMINATOR_REGISTRATION;
+
 public class HTMLFormDataStore {
     private static final String TAG = "FormDataStore";
 
@@ -101,7 +103,7 @@ public class HTMLFormDataStore {
         return isRegistrationForm() && status.equals(Constants.STATUS_COMPLETE);
     }
     public boolean isRegistrationForm() {
-        return !(formData.getDiscriminator().equalsIgnoreCase(Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER)
-                || formData.getDiscriminator().equalsIgnoreCase(Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION));
+        return (formData.getDiscriminator() == null) ? false :
+                formData.getDiscriminator().equals(FORM_HTML_DISCRIMINATOR_REGISTRATION);
     }
 }
