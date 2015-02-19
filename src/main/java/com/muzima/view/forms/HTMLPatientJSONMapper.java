@@ -132,7 +132,7 @@ public class HTMLPatientJSONMapper {
         patientIdentifiers.add(getPatientUuidAsIdentifier());
 
         List<PatientIdentifier> otherIdentifiers = getOtherPatientIdentifiers();
-        if(!otherIdentifiers.equals(null))
+        if(!otherIdentifiers.isEmpty())
             patientIdentifiers.addAll(otherIdentifiers);
         return  patientIdentifiers;
     }
@@ -165,9 +165,8 @@ public class HTMLPatientJSONMapper {
             String identifierValue = (String)identifierValueObject;
             PatientIdentifier identifier = createPatientIdentifier(identifierTypeName, identifierValue);
             otherIdentifiers.add(identifier);
-            return otherIdentifiers;
         }
-        return null;
+        return otherIdentifiers;
     }
 
     private PatientIdentifier getPatientUuidAsIdentifier(){
