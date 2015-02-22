@@ -485,9 +485,7 @@ public class FormController {
             Patient patient = new PatientJSONMapper(data).getPatient();
             patientService.savePatient(patient);
             return patient;
-        } catch (JSONException e) {
-            Log.e(TAG, e.getMessage(), e);
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
         return null;
@@ -498,9 +496,7 @@ public class FormController {
             Patient patient = new HTMLPatientJSONMapper().getPatient(data);
             patientService.savePatient(patient);
             return patient;
-        } catch (JSONException e) {
-            Log.e(TAG, e.getMessage(), e);
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
         return null;
