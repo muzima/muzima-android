@@ -310,4 +310,13 @@
     <string name="crash_dialog_comment_prompt">Please add your comments about the problem below.</string>
     <string name="crash_dialog_ok_toast">Thank you!</string>
 
+    <string name="already_exists_form_message">This Form Data already exists for this client with same encounter date.</string>
+    <string name="already_exists_form_title">Duplicate Form Data</string>
+    <string name="duplicate_form_button_label">Save Duplicate Form Data</string>
+    <string name="alert_Ok">Ok</string>
+
+    <string name="preference_duplicate_form_data_desc">Allow Duplicate Form Data for same client with same encounter date</string>
+    <string name="preference_duplicate_form_data_title">Allow Duplication </string>
+    <string name="preference_duplicate_form_data">duplicateFormDataPreference</string>
+
 </resources>

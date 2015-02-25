@@ -185,6 +185,11 @@ $(document).ready(function () {
         var jsonData = JSON.stringify($('form').serializeEncounterForm());
         htmlDataStore.saveHTML(jsonData, status, keepFormOpen);
     };
+   document.loadJson = function () {
+        var jsonData = JSON.stringify($('form').serializeEncounterForm());
+        htmlDataStore.loadJsonPayload(jsonData);
+        return false;
+     };
 
     var addValidationMessage = function () {
         var validationError = $('#validation-error');
