@@ -730,7 +730,7 @@ public class FormController {
         List<FormData> allFormData = formService.getAllFormData(Constants.STATUS_INCOMPLETE);
         allFormData.addAll(formService.getAllFormData(Constants.STATUS_COMPLETE));
         for (FormData formData1 : allFormData){
-            if(!formData1.getDiscriminator().equals(Constants.FORM_DISCRIMINATOR_REGISTRATION)) {
+            if(!isRegistrationFormData(formData1)) {
                 org.json.JSONObject object = new org.json.JSONObject(formData1.getJsonPayload());
                 String encounterDate = ((org.json.JSONObject) object.get("encounter")).get("encounter.encounter_datetime").toString();
                 String patientUuid = ((org.json.JSONObject) object.get("patient")).get("patient.uuid").toString();
@@ -743,5 +743,9 @@ public class FormController {
             }
         }
         return false;
+    }
+
+    private boolean isRegistrationFormData(FormData formData){
+        return formData.getDiscriminator().equals(Constants.FORM_DISCRIMINATOR_REGISTRATION) || formData.getDiscriminator().equals(Constants.FORM_HTML_DISCRIMINATOR_REGISTRATION);
     }
 }
