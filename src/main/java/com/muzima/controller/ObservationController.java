@@ -145,6 +145,15 @@ public class ObservationController {
             throw new LoadObservationException(e);
         }
     }
+    public List<Observation> getObservationsByPatient(String patientUuid)  throws LoadObservationException{
+        try {
+            List<Observation> observations = observationService.getObservationsByPatient(patientUuid);
+            inflateConcepts(observations);
+            return observations;
+        } catch (IOException e) {
+            throw new LoadObservationException(e);
+        }
+    }
 
     private Encounters groupByEncounters(List<Observation> observationsByPatient) throws IOException {
         inflateConcepts(observationsByPatient);

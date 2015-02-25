@@ -46,6 +46,9 @@ public class EncounterController {
             throw new ReplaceEncounterException(e);
         }
     }
+    public int getEncountersCountByPatient(String patientUuid) throws IOException {
+        return encounterService.getEncountersByPatientUuid(patientUuid).size();
+    }
 
     public List<Encounter>  getEncountersByPatientUuid(String patientUuid) throws DownloadEncounterException{
         try {
