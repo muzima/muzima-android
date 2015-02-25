@@ -201,8 +201,10 @@ public class HTMLPatientJSONMapper {
         personName.setGivenName(patientJSON.getString("patient.given_name"));
 
         String middleNameJSONString = "patient.middle_name";
+        String personMiddlename = "";
         if(patientJSON.has(middleNameJSONString))
-            personName.setMiddleName(patientJSON.getString(middleNameJSONString));
+            personMiddlename=patientJSON.getString(middleNameJSONString);
+        personName.setMiddleName(personMiddlename);
 
         return personName;
     }
