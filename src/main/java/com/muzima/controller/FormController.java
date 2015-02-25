@@ -485,9 +485,7 @@ public class FormController {
             Patient patient = new PatientJSONMapper(data).getPatient();
             patientService.savePatient(patient);
             return patient;
-        } catch (JSONException e) {
-            Log.e(TAG, e.getMessage(), e);
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
         return null;
@@ -498,9 +496,7 @@ public class FormController {
             Patient patient = new HTMLPatientJSONMapper().getPatient(data);
             patientService.savePatient(patient);
             return patient;
-        } catch (JSONException e) {
-            Log.e(TAG, e.getMessage(), e);
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
         return null;
@@ -512,6 +508,7 @@ public class FormController {
             List<FormData> allFormData = formService.getAllFormData(Constants.STATUS_COMPLETE);
 
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_DISCRIMINATOR_REGISTRATION), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_HTML_DISCRIMINATOR_REGISTRATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER), result);
             return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER), result);

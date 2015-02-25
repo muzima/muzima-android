@@ -30,9 +30,11 @@ import java.util.List;
 import static com.muzima.utils.DateUtils.parse;
 
 public class HTMLPatientJSONMapper {
-    JSONObject patientJSON;
-    JSONObject observationJSON;
-    Patient patient;
+    public static String TAG = HTMLPatientJSONMapper.class.getSimpleName();
+
+    private JSONObject patientJSON;
+    private JSONObject observationJSON;
+    private Patient patient;
 
     public String map(Patient patient, FormData formData, User loggedInUser, boolean isLoggedInUserIsDefaultProvider) {
         JSONObject prepopulateJSON = new JSONObject();
@@ -48,7 +50,7 @@ public class HTMLPatientJSONMapper {
             patientDetails.put("patient.sex", StringUtils.defaultString(patient.getGender()));
             patientDetails.put("patient.uuid", StringUtils.defaultString(patient.getUuid()));
             if (patient.getBirthdate() != null) {
-                patientDetails.put("patient.birthdate", DateUtils.getFormattedDate(patient.getBirthdate()));
+                patientDetails.put("patient.birth_date", DateUtils.getFormattedDate(patient.getBirthdate()));
             }
             encounterDetails.put("encounter.form_uuid", StringUtils.defaultString(formData.getTemplateUuid()));
 
@@ -73,6 +75,7 @@ public class HTMLPatientJSONMapper {
             }
             prepopulateJSON.put("patient",patientDetails);
             prepopulateJSON.put("encounter",encounterDetails);
+            prepopulateJSON.put("observation",observationDetails);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -132,7 +135,7 @@ public class HTMLPatientJSONMapper {
         patientIdentifiers.add(getPatientUuidAsIdentifier());
 
         List<PatientIdentifier> otherIdentifiers = getOtherPatientIdentifiers();
-        if(!otherIdentifiers.equals(null))
+        if(!otherIdentifiers.isEmpty())
             patientIdentifiers.addAll(otherIdentifiers);
         return  patientIdentifiers;
     }
@@ -159,15 +162,13 @@ public class HTMLPatientJSONMapper {
                 PatientIdentifier identifier = createPatientIdentifier(identifierTypeName.getString(i), identifierValue.getString(i));
                 otherIdentifiers.add(identifier);
             }
-            return otherIdentifiers;
         }else if(identifierTypeNameObject instanceof String){
             String identifierTypeName = (String)identifierTypeNameObject;
             String identifierValue = (String)identifierValueObject;
             PatientIdentifier identifier = createPatientIdentifier(identifierTypeName, identifierValue);
             otherIdentifiers.add(identifier);
-            return otherIdentifiers;
         }
-        return null;
+        return otherIdentifiers;
     }
 
     private PatientIdentifier getPatientUuidAsIdentifier(){
@@ -190,7 +191,7 @@ public class HTMLPatientJSONMapper {
             if(birthDateAsString != null)
                 birthDate = parse(birthDateAsString);
         } catch (ParseException e) {
-            Log.e(this.getClass().getSimpleName(), "Could not parse birth_date", e);
+            Log.e(TAG, "Could not parse birth_date", e);
         }
         return birthDate;
     }

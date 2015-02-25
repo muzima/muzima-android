@@ -23,8 +23,6 @@ import com.muzima.model.collections.AvailableForms;
 import com.muzima.view.BaseActivity;
 import java.util.UUID;
 
-import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_REGISTRATION;
-
 public class RegistrationFormsActivity extends BaseActivity {
     private ListView list;
     private RegistrationFormsAdapter registrationFormsAdapter;
