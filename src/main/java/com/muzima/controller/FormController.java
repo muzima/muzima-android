@@ -42,6 +42,7 @@ import com.muzima.utils.CustomColor;
 import com.muzima.utils.EnDeCrypt;
 import com.muzima.utils.MediaUtils;
 import com.muzima.utils.StringUtils;
+import com.muzima.view.forms.HTMLPatientJSONMapper;
 import com.muzima.view.forms.PatientJSONMapper;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -482,6 +483,19 @@ public class FormController {
     public Patient createNewPatient(String data) {
         try {
             Patient patient = new PatientJSONMapper(data).getPatient();
+            patientService.savePatient(patient);
+            return patient;
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage(), e);
+        } catch (IOException e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+        return null;
+    }
+
+    public Patient createNewHTMLPatient(String data) {
+        try {
+            Patient patient = new HTMLPatientJSONMapper().getPatient(data);
             patientService.savePatient(patient);
             return patient;
         } catch (JSONException e) {
