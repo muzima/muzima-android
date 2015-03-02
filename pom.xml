@@ -59,7 +59,7 @@
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
             <scope>system</scope>
-            <systemPath>${env.ANDROID_HOME}/platforms/android-21/android.jar</systemPath>
+            <systemPath>/Users/shwethathammaiah/Development/android-sdk-macosx/platforms/android-19/android.jar</systemPath>
             <version>4.3</version>
         </dependency>
         <dependency>
@@ -155,7 +155,7 @@
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>3.7.0</version>
+                <!--version>3.7.0</version-->
                 <extensions>true</extensions>
                 <configuration>
                     <sdk>

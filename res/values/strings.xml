@@ -145,8 +145,9 @@
     <string name="add_cohort_prefixes">Step 1: Add Cohort Prefix</string>
     <string name="download_cohort">Step 1: Download Cohort(s)</string>
     <string name="download_form">Step 2: Download Form Template(s)</string>
-    <string name="add_concept_prefixes">Step 3: Add Concept</string>
-    <string name="check_barcode_scanner_header">Step 4: Check for BarCode Scanner</string>
+    <string name="add_location_prefixes">Step 3: Add Location(s)</string>
+    <string name="add_concept_prefixes">Step 4: Add Concept(s)</string>
+    <string name="check_barcode_scanner_header">Step 5: Check for BarCode Scanner</string>
 
 
     <string name="no_cohort_prefixes_added">No Cohort Prefixes Added</string>
@@ -165,6 +166,7 @@
     <string name="no_form_tags_added">No Form Tags Added</string>
 
     <string name="title_activity_concept_pref">Concepts</string>
+    <string name="title_activity_location_pref">Locations</string>
     <string name="add_concept">Search Concept</string>
     <string name="concept_add_concept">Enter concept name …</string>
     <string name="no_concept_added">No concept added yet.</string>
@@ -177,10 +179,12 @@
         download observations. The prefix(es) set here will be used to download cohorts afterwards.
     </string>
     <string name="custom_concept_help">Here you define concepts whose data will be included in later download.</string>
+    <string name="custom_location_help">Here you download locations that will show up in the forms.</string>
     <string name="title_activity_cohort_wizard">Download Cohorts</string>
     <string name="cohort_wizard_help_title">Download Cohorts Help</string>
     <string name="cohort_prefix_help_title">Define Cohorts Prefix(es) Help</string>
     <string name="custom_concept_help_title">Concepts Help</string>
+    <string name="custom_location_help_title">Locations Help</string>
     <string name="filling_patient_forms_help">Fill out forms for a patient</string>
     <string name="muzima_initial_setup_guide">mUzima initial setup guide</string>
     <string name="muzima_user_guide">mUzima user guide</string>
@@ -204,6 +208,7 @@
     <string name="download_form_desc">Select one or more form templates from the list and click on \'Next\' to download</string>
     <string name="downloaded_image">Downloaded Image</string>
     <string name="add_concept_pref_desc">Add concepts for which you would want observations to be downloaded.</string>
+    <string name="add_location_pref_desc">Add locations that you want to download.</string>
     <string name="install_barcode_scanner_description">You need a barcode scanner application to register clients from
         mobile. Please check whether it\'s been installed in your device or not.
     </string>
@@ -310,6 +315,7 @@
     <string name="crash_dialog_title">mUzima has crashed...</string>
     <string name="crash_dialog_comment_prompt">Please add your comments about the problem below.</string>
     <string name="crash_dialog_ok_toast">Thank you!</string>
+    <string name="no_location_added">No new location has been added yet.</string>
 
     <string name="already_exists_form_message">This Form Data already exists for this client with same encounter date.</string>
     <string name="already_exists_form_title">Duplicate Form Data</string>

@@ -23,6 +23,7 @@ public class HelpActivity extends BaseActivity {
     public static final int COHORT_WIZARD_HELP = 1;
     public static final int COHORT_PREFIX_HELP = 2;
     public static final int CUSTOM_CONCEPT_HELP = 3;
+    public static final int CUSTOM_LOCATION_HELP = 4;
     public static final String MUZIMA_INITAL_SETUP_GUIDE = "file:///android_asset/www/help-content/mUzima_initial_setup.html";
     public static final String PATIENT_FILLING_FORM = "file:///android_asset/www/help-content/filling-forms-for-a-patient.html";
     public static final String MUZIMA_USER_GUIDE = "file:///android_asset/www/help-content/mUzima-user-guide.html";
@@ -62,6 +63,11 @@ public class HelpActivity extends BaseActivity {
                 showHelpContentView();
                 helpContentView.setText(getResources().getText(R.string.custom_concept_help));
                 setTitle(R.string.custom_concept_help_title);
+                break;
+            case CUSTOM_LOCATION_HELP:
+                showHelpContentView();
+                helpContentView.setText(getResources().getText(R.string.custom_location_help));
+                setTitle(R.string.custom_location_help_title);
                 break;
             default:
                 helpContentView.setVisibility(View.GONE);

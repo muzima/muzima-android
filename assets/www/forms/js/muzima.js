@@ -98,6 +98,15 @@ $(document).ready(function () {
         $('input, select, textarea').prop('disabled', true);
     }
 
+    var locations = $("#encounter\\.location_id");
+    var locationNamesResults = htmlDataStore.getLocationNamesFromDevice();
+    locationNamesResults = JSON.parse(locationNamesResults);
+    locations.empty();
+    locations.append($("<option>").text("..."));
+    $.each(locationNamesResults, function() {
+        locations.append($("<option>").attr('value',this.id).text(this.name));
+    });
+
     /* Start - Toggle free text element */
     var hasFreetext = $('.has-freetext');
     hasFreetext.change(function () {

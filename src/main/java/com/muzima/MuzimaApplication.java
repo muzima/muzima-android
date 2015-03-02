@@ -19,12 +19,14 @@ import com.muzima.api.context.ContextFactory;
 import com.muzima.api.model.User;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
+import com.muzima.api.service.LocationService;
 import com.muzima.api.service.NotificationService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
+import com.muzima.controller.LocationController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
@@ -80,6 +82,7 @@ public class MuzimaApplication extends Application {
     private ObservationController observationController;
     private EncounterController encounterController;
     private NotificationController notificationController;
+    private LocationController locationController;
     private MuzimaSyncService muzimaSyncService;
     private CohortPrefixPreferenceService prefixesPreferenceService;
     private MuzimaTimer muzimaTimer;
@@ -260,6 +263,17 @@ public class MuzimaApplication extends Application {
             }
         }
         return notificationController;
+    }
+
+    public LocationController getLocationController() {
+        if (locationController == null) {
+            try {
+                locationController = new LocationController(muzimaContext.getService(LocationService.class));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return locationController;
     }
 
     public MuzimaSyncService getMuzimaSyncService() {

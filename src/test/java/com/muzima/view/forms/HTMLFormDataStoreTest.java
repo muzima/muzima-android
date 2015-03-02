@@ -10,6 +10,7 @@ package com.muzima.view.forms;
 
 import com.muzima.api.model.FormData;
 import com.muzima.controller.FormController;
+import com.muzima.controller.LocationController;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.testSupport.CustomTestRunner;
 import com.muzima.utils.Constants;
@@ -25,6 +26,7 @@ import static org.mockito.Mockito.verify;
 public class HTMLFormDataStoreTest {
 
     private FormController formController;
+    private LocationController locationController;
     private HTMLFormWebViewActivity formWebViewActivity;
     private FormData formData;
     private HTMLFormObservationCreator htmlFormObservationCreator;
@@ -33,10 +35,11 @@ public class HTMLFormDataStoreTest {
     @Before
     public void setUp() throws Exception {
         formController = mock(FormController.class);
+        locationController = mock(LocationController.class);
         formWebViewActivity = mock(HTMLFormWebViewActivity.class);
         formData = mock(FormData.class);
         htmlFormObservationCreator = mock(HTMLFormObservationCreator.class);
-        htmlFormDataStore = new HTMLFormDataStore(formWebViewActivity, formController, formData){
+        htmlFormDataStore = new HTMLFormDataStore(formWebViewActivity, formController,locationController , formData){
             @Override
             public HTMLFormObservationCreator getFormParser(){
                 return htmlFormObservationCreator;

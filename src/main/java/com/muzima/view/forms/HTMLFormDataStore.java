@@ -14,13 +14,19 @@ import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.Location;
 import com.muzima.controller.FormController;
+import com.muzima.controller.LocationController;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
+import net.minidev.json.JSONValue;
+import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static com.muzima.utils.Constants.FORM_HTML_DISCRIMINATOR_REGISTRATION;
 
@@ -29,12 +35,14 @@ public class HTMLFormDataStore {
 
     private HTMLFormWebViewActivity formWebViewActivity;
     private FormController formController;
+    private LocationController locationController;
     private FormData formData;
 
-    public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity, FormController formController, FormData formData) {
+    public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity, FormController formController, LocationController locationController, FormData formData) {
         this.formWebViewActivity = formWebViewActivity;
         this.formController = formController;
         this.formData = formData;
+        this.locationController = locationController;
     }
 
     @JavascriptInterface
@@ -70,11 +78,11 @@ public class HTMLFormDataStore {
             Log.i(TAG, "Saving form data ...");
             if (!keepFormOpen) {
                 formWebViewActivity.finish();
-                if(status.equals("complete")) {
+                if (status.equals("complete")) {
                     Toast.makeText(formWebViewActivity, "Completed form data is saved successfully.", Toast.LENGTH_SHORT).show();
                     RealTimeFormUploader.getInstance().uploadAllCompletedForms(formWebViewActivity.getApplicationContext());
                 }
-                if(status.equals("incomplete")) {
+                if (status.equals("incomplete")) {
                     Toast.makeText(formWebViewActivity, "Draft form data is saved successfully.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -86,6 +94,18 @@ public class HTMLFormDataStore {
             Toast.makeText(formWebViewActivity, "An error occurred while saving the form", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while saving form data", e);
         }
+    }
+
+    @JavascriptInterface
+    public String getLocationNamesFromDevice() throws JSONException {
+        List<Location> locationsOnDevice = new ArrayList<Location>();
+        try {
+             locationsOnDevice = locationController.getAllLocations();
+        } catch (LocationController.LocationLoadException e) {
+            Toast.makeText(formWebViewActivity, "An error occurred while loading locations for the form", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "Exception occurred while loading locations", e);
+        }
+        return JSONValue.toJSONString(locationsOnDevice);
     }
 
     private void parseForm(String jsonPayload, String status) {
