@@ -40,7 +40,6 @@ public class HTMLPatientJSONMapper {
         JSONObject prepopulateJSON = new JSONObject();
         JSONObject patientDetails = new JSONObject();
         JSONObject encounterDetails = new JSONObject();
-        JSONObject observationDetails = new JSONObject();
 
         try {
             patientDetails.put("patient.medical_record_number", StringUtils.defaultString(patient.getIdentifier()));
@@ -70,15 +69,15 @@ public class HTMLPatientJSONMapper {
                         identifierValue.put(StringUtils.defaultString(identifier.getIdentifier()));
                     }
                 }
-                observationDetails.put("other_identifier_type",identifierTypeName);
-                observationDetails.put("other_identifier_value",identifierValue);
+                prepopulateJSON.put("other_identifier_type",identifierTypeName);
+                prepopulateJSON.put("other_identifier_value",identifierValue);
             }
             prepopulateJSON.put("patient",patientDetails);
             prepopulateJSON.put("encounter",encounterDetails);
-            prepopulateJSON.put("observation",observationDetails);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Log.e("patientmap",prepopulateJSON.toString());
         return prepopulateJSON.toString();
     }
 
@@ -152,21 +151,23 @@ public class HTMLPatientJSONMapper {
 
     private List<PatientIdentifier> getOtherPatientIdentifiers() throws JSONException  {
         List<PatientIdentifier> otherIdentifiers = new ArrayList<PatientIdentifier>();
-        Object identifierTypeNameObject = observationJSON.get("other_identifier_type");
-        Object identifierValueObject =observationJSON.get("other_identifier_value");
+        if(observationJSON.has("other_identifier_type") && observationJSON.has("other_identifier_value")) {
+            Object identifierTypeNameObject = observationJSON.get("other_identifier_type");
+            Object identifierValueObject = observationJSON.get("other_identifier_value");
 
-        if(identifierTypeNameObject instanceof JSONArray) {
-            JSONArray identifierTypeName = (JSONArray)identifierTypeNameObject;
-            JSONArray identifierValue = (JSONArray)identifierValueObject;
-            for (int i = 0; i < identifierTypeName.length(); i++) {
-                PatientIdentifier identifier = createPatientIdentifier(identifierTypeName.getString(i), identifierValue.getString(i));
+            if (identifierTypeNameObject instanceof JSONArray) {
+                JSONArray identifierTypeName = (JSONArray) identifierTypeNameObject;
+                JSONArray identifierValue = (JSONArray) identifierValueObject;
+                for (int i = 0; i < identifierTypeName.length(); i++) {
+                    PatientIdentifier identifier = createPatientIdentifier(identifierTypeName.getString(i), identifierValue.getString(i));
+                    otherIdentifiers.add(identifier);
+                }
+            } else if (identifierTypeNameObject instanceof String) {
+                String identifierTypeName = (String) identifierTypeNameObject;
+                String identifierValue = (String) identifierValueObject;
+                PatientIdentifier identifier = createPatientIdentifier(identifierTypeName, identifierValue);
                 otherIdentifiers.add(identifier);
             }
-        }else if(identifierTypeNameObject instanceof String){
-            String identifierTypeName = (String)identifierTypeNameObject;
-            String identifierValue = (String)identifierValueObject;
-            PatientIdentifier identifier = createPatientIdentifier(identifierTypeName, identifierValue);
-            otherIdentifiers.add(identifier);
         }
         return otherIdentifiers;
     }
