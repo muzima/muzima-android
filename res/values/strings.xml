@@ -316,8 +316,8 @@
     <string name="duplicate_form_button_label">Save Duplicate Form Data</string>
     <string name="alert_Ok">Ok</string>
 
-    <string name="preference_duplicate_form_data_desc">Allow Duplicate Form Data for same client with same encounter date</string>
-    <string name="preference_duplicate_form_data_title">Allow Duplication </string>
+    <string name="preference_duplicate_form_data_desc">Enable warning when Duplicate Form Data for same client with same encounter date is being saved.</string>
+    <string name="preference_duplicate_form_data_title">Duplicate Form Data Warning </string>
     <string name="preference_duplicate_form_data">duplicateFormDataPreference</string>
 
 </resources>
