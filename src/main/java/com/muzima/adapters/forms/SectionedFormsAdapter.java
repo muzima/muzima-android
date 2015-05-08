@@ -133,8 +133,8 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
 
         int position = 0;
         for (int i = 0; i < getCount(); i++) {
-            FormWithData item = getItem(i);
-            if (item.getPatient().equals(patients.get(section))) {
+            Patient patient = getItem(i).getPatient();
+            if (patient != null && patient.equals(patients.get(section))) {
                 position = i;
                 break;
             }
@@ -152,7 +152,10 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
 
         int section = 0;
         if (!patients.isEmpty()){
-            section = patients.indexOf(getItem(position).getPatient());
+            Patient patient = getItem(position).getPatient();
+            if (patient != null) {
+                section = patients.indexOf(patient);
+            }
         }
         return section;
     }
@@ -268,7 +271,7 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
         List<Patient> result = new ArrayList<Patient>();
         for (FormWithData form : forms) {
             Patient patient = form.getPatient();
-            if (!result.contains(patient)) {
+            if (patient != null && !result.contains(patient)) {
                 result.add(patient);
             }
         }
