@@ -8,6 +8,7 @@
 
 package com.muzima.adapters.patients;
 
+import android.util.Log;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,17 +75,19 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
     }
 
     public static String getPatientFormattedName(Patient patient){
-        String familyName = patient.getFamilyName();
-        String givenName = patient.getGivenName();
-        String middleName = patient.getMiddleName();
-
-        if(!givenName.equals("")){
-            givenName =", "+ givenName.substring(0,1);
+        StringBuffer patientFormattedName = new StringBuffer();
+        if(patient.getFamilyName()!=null) {
+            patientFormattedName.append(patient.getFamilyName());
+            patientFormattedName.append(", ");
         }
-        if(!middleName.equals("")){
-            middleName = " "+middleName.substring(0,1);
+        if(patient.getGivenName() != null){
+            patientFormattedName.append(patient.getGivenName().substring(0,1));
+            patientFormattedName.append(" ");
         }
-        return familyName + givenName + middleName;
+        if(patient.getMiddleName() != null){
+            patientFormattedName.append(patient.getMiddleName().substring(0,1));
+        }
+        return patientFormattedName.toString();
     }
 
     private String getPatientFullName(Patient patient) {

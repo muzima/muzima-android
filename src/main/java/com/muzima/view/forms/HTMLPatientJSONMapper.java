@@ -77,7 +77,6 @@ public class HTMLPatientJSONMapper {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.e("patientmap",prepopulateJSON.toString());
         return prepopulateJSON.toString();
     }
 
