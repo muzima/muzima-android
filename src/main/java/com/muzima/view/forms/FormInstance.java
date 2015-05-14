@@ -10,7 +10,6 @@ package com.muzima.view.forms;
 
 import android.util.Log;
 import android.webkit.JavascriptInterface;
-
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormTemplate;
 

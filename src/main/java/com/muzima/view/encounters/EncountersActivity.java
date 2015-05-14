@@ -8,18 +8,19 @@
 package com.muzima.view.encounters;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ListView;
 import com.actionbarsherlock.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import android.os.Bundle;
-import com.muzima.adapters.encounters.EncountersByPatientAdapter;
 import com.muzima.adapters.ListAdapter;
+import com.muzima.adapters.encounters.EncountersByPatientAdapter;
+import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
@@ -27,7 +28,6 @@ import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 
-import com.muzima.adapters.patients.PatientAdapterHelper;
 import static com.muzima.utils.DateUtils.getFormattedDate;
 
 public class EncountersActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener, ListAdapter.BackgroundListQueryTaskListener {

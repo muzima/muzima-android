@@ -218,11 +218,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         if (!intentBarcodeResults)

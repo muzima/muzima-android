@@ -35,9 +35,9 @@ import java.util.List;
 import java.util.Map;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_OBSERVATIONS;
-import static java.util.Arrays.asList;
 import static com.muzima.util.Constants.UUID_SEPARATOR;
 import static com.muzima.util.Constants.UUID_TYPE_SEPARATOR;
+import static java.util.Arrays.asList;
 
 public class ObservationController {
 

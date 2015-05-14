@@ -9,7 +9,6 @@
 package com.muzima.view.cohort;
 
 import android.app.Activity;
-import com.muzima.utils.Constants;
 import com.muzima.view.SyncIntent;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants;

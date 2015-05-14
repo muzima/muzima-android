@@ -10,15 +10,9 @@ package com.muzima.adapters.encounters;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import com.muzima.adapters.ListAdapter;
-
 import com.muzima.api.model.Encounter;
-import com.muzima.api.model.Patient;
-import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
-import com.muzima.controller.ObservationController;
-import com.muzima.view.patients.PatientSummaryActivity;
 
 import java.util.ArrayList;
 import java.util.List;

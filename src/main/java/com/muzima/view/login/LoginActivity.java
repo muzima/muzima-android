@@ -141,11 +141,6 @@ public class LoginActivity extends Activity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (backgroundAuthenticationTask != null) {

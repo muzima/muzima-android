@@ -20,7 +20,6 @@ import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
-import com.muzima.adapters.forms.AllAvailableFormsAdapter;
 import com.muzima.adapters.forms.DownloadedFormsAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.model.DownloadedForm;

@@ -23,13 +23,17 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.User;
-import com.muzima.controller.*;
+import com.muzima.controller.EncounterController;
+import com.muzima.controller.FormController;
+import com.muzima.controller.NotificationController;
+import com.muzima.controller.ObservationController;
+import com.muzima.controller.PatientController;
 import com.muzima.service.JSONInputOutputToDisk;
 import com.muzima.utils.Constants;
 import com.muzima.view.BaseActivity;
+import com.muzima.view.encounters.EncountersActivity;
 import com.muzima.view.forms.PatientFormsActivity;
 import com.muzima.view.notifications.PatientNotificationActivity;
-import com.muzima.view.encounters.EncountersActivity;
 
 import java.io.IOException;
 import java.util.List;
@@ -97,8 +101,8 @@ public class PatientSummaryActivity extends BaseActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
         executeBackgroundTask();
     }
 
@@ -184,12 +188,13 @@ public class PatientSummaryActivity extends BaseActivity {
                 patientSummaryActivityMetadata.observations = observationController.getObservationsCountByPatient(patient.getUuid());
                 patientSummaryActivityMetadata.encounters = encounterController.getEncountersCountByPatient(patient.getUuid());
                 User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
-                if (authenticatedUser != null)
+                if (authenticatedUser != null) {
                     patientSummaryActivityMetadata.notifications =
-                        notificationController.getNotificationsCountForPatient(patient.getUuid(), authenticatedUser.getPerson().getUuid(),
-                                Constants.NotificationStatusConstants.NOTIFICATION_UNREAD);
-                else
+                            notificationController.getNotificationsCountForPatient(patient.getUuid(), authenticatedUser.getPerson().getUuid(),
+                                    Constants.NotificationStatusConstants.NOTIFICATION_UNREAD);
+                } else {
                     patientSummaryActivityMetadata.notifications = 0;
+                }
             } catch (FormController.FormFetchException e) {
                 Log.w(TAG, "FormFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
             } catch (NotificationController.NotificationFetchException e) {

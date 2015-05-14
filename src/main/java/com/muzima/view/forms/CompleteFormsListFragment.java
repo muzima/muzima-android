@@ -18,7 +18,6 @@ import com.muzima.R;
 import com.muzima.adapters.forms.CompleteFormsAdapter;
 import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.controller.FormController;
-import com.muzima.model.CompleteForm;
 import com.muzima.model.CompleteFormWithPatientData;
 
 public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAdapter implements FormsAdapter.MuzimaClickListener{
@@ -27,11 +26,6 @@ public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAda
         CompleteFormsListFragment f = new CompleteFormsListFragment();
         f.formController = formController;
         return f;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
     }
 
     @Override
@@ -51,11 +45,6 @@ public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAda
         SharedPreferences.Editor ed = sp.edit();
         ed.putBoolean("active", false);
         ed.commit();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
     }
 
     @Override

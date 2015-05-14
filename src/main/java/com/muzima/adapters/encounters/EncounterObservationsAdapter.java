@@ -24,6 +24,7 @@ import com.muzima.controller.ObservationController;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
+
 import java.util.ArrayList;
 import java.util.List;
 

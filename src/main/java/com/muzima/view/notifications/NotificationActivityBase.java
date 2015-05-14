@@ -43,11 +43,6 @@ public abstract class NotificationActivityBase extends BroadcastListenerActivity
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
     private void initPager() {
         notificationPager = (ViewPager) findViewById(R.id.pager);
         notificationPagerAdapter = createNotificationsPagerAdapter();

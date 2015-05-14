@@ -28,7 +28,6 @@ import com.muzima.adapters.forms.FormsPagerAdapter;
 import com.muzima.adapters.forms.TagsListAdapter;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
-import com.muzima.service.DataSyncService;
 import com.muzima.service.TagPreferenceService;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
@@ -65,21 +64,6 @@ public class FormsActivity extends FormsActivityBase {
         formController = ((MuzimaApplication) getApplication()).getFormController();
         tagPreferenceService = new TagPreferenceService(this);
         initDrawer();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
     }
 
     @Override

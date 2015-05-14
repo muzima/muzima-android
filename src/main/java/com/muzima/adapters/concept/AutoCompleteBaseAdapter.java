@@ -37,7 +37,6 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaSyncService;
-import com.muzima.utils.Constants;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

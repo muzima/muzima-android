@@ -54,11 +54,6 @@ public class DataSyncService extends IntentService {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-    @Override
     protected void onHandleIntent(Intent intent) {
         int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
         Intent broadcastIntent = new Intent();

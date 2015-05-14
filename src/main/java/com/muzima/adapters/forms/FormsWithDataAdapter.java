@@ -28,7 +28,6 @@ import android.content.Context;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.muzima.controller.FormController;
 import com.muzima.model.FormWithData;
 import com.muzima.utils.Fonts;

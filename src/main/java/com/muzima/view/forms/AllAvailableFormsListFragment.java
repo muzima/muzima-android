@@ -8,9 +8,7 @@
 
 package com.muzima.view.forms;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,12 +30,9 @@ import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.service.MuzimaSyncService;
-import com.muzima.service.WizardFinishPreferenceService;
-import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.cohort.ConceptListActivity;
-import com.muzima.view.cohort.CustomConceptWizardActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -80,11 +75,6 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         syncText = (TextView) view.findViewById(R.id.sync_text);
         updateSyncTime();
         return view;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     @Override

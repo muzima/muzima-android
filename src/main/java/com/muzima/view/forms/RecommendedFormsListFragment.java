@@ -11,7 +11,6 @@ package com.muzima.view.forms;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-
 import com.muzima.R;
 import com.muzima.adapters.forms.RecommendedFormsAdapter;
 import com.muzima.api.model.Patient;

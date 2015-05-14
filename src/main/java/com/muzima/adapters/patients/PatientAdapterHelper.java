@@ -18,7 +18,6 @@ import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
-import com.muzima.utils.StringUtils;
 
 import java.util.List;
 

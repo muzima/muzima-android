@@ -21,6 +21,7 @@ import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.EncounterController;
 import com.muzima.utils.DateUtils;
+
 import java.util.List;
 
 public class EncountersByPatientAdapter extends EncountersAdapter {
