@@ -721,7 +721,7 @@ public class FormController {
         }
         return mediaString != null? mediaString : mediaUri;
     }
-    public boolean isFormAlreadyExist(String jsonPayload) throws IOException, JSONException {
+    public boolean isFormAlreadyExist(String jsonPayload, FormData formData) throws IOException, JSONException {
         org.json.JSONObject temp = new org.json.JSONObject(jsonPayload);
         String checkEncounterDate = ((org.json.JSONObject)temp.get("encounter")).get("encounter.encounter_datetime").toString();
         String checkPatientUuid = ((org.json.JSONObject)temp.get("patient")).get("patient.uuid").toString();
@@ -730,7 +730,7 @@ public class FormController {
         List<FormData> allFormData = formService.getAllFormData(Constants.STATUS_INCOMPLETE);
         allFormData.addAll(formService.getAllFormData(Constants.STATUS_COMPLETE));
         for (FormData formData1 : allFormData){
-            if(!isRegistrationFormData(formData1)) {
+            if(!isRegistrationFormData(formData1) && !formData1.getUuid().equals(formData.getUuid())) {
                 org.json.JSONObject object = new org.json.JSONObject(formData1.getJsonPayload());
                 String encounterDate = ((org.json.JSONObject) object.get("encounter")).get("encounter.encounter_datetime").toString();
                 String patientUuid = ((org.json.JSONObject) object.get("patient")).get("patient.uuid").toString();

@@ -293,7 +293,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                 .show();
     }
     private boolean isFormAlreadyExist() throws IOException, JSONException {
-        return formController.isFormAlreadyExist(this.jsonPayload);
+        return formController.isFormAlreadyExist(this.jsonPayload, this.formData);
     }
     private Dialog.OnClickListener duplicateFormDataClickListener(final String saveType){
 
