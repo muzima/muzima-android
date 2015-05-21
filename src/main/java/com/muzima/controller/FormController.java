@@ -285,6 +285,15 @@ public class FormController {
         }
     }
 
+    public void saveFormTemplates(List<FormTemplate> formTemplates) throws FormSaveException {
+
+        try {
+            formService.saveFormTemplates(formTemplates);
+        } catch (IOException e) {
+            throw new FormSaveException(e);
+        }
+    }
+
     public boolean isFormDownloaded(Form form) throws FormFetchException {
         boolean downloaded;
         try {

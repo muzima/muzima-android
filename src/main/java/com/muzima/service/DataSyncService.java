@@ -75,7 +75,7 @@ public class DataSyncService extends IntentService {
                 String[] formIds = intent.getStringArrayExtra(DataSyncServiceConstants.FORM_IDS);
                 updateNotificationMsg("Downloading Forms Template for " + formIds.length + " forms");
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
-                    int[] result = muzimaSyncService.downloadFormTemplates(formIds);
+                    int[] result = muzimaSyncService.downloadFormTemplates(formIds, true);
                     String msg = "Downloaded " + result[1] + " form templates and " + result[2] + "concepts";
                     broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, result[2]);
                     prepareBroadcastMsg(broadcastIntent, result, msg);
@@ -170,19 +170,19 @@ public class DataSyncService extends IntentService {
         broadCastMessageForPatients(broadcastIntent, resultForPatients);
         List<String> patientUUIDList = new ArrayList<String>(asList(patientUUIDs));
         if (isSuccess(resultForPatients)) {
-            int[] resultForObs = muzimaSyncService.downloadObservationsForPatientsByPatientUUIDs(patientUUIDList);
+            int[] resultForObs = muzimaSyncService.downloadObservationsForPatientsByPatientUUIDs(patientUUIDList, true);
             broadCastMessageForObservationDownload(broadcastIntent, resultForObs);
 
-            int[] resultForEncounters = muzimaSyncService.downloadEncountersForPatientsByPatientUUIDs(patientUUIDList);
+            int[] resultForEncounters = muzimaSyncService.downloadEncountersForPatientsByPatientUUIDs(patientUUIDList, true);
             broadCastMessageForEncounters(broadcastIntent, resultForEncounters);
         }
     }
 
     private void downloadObservationsAndEncounters(Intent broadcastIntent, String[] savedCohortIds) {
-        int[] resultForObservations = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(savedCohortIds);
+        int[] resultForObservations = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(savedCohortIds, true);
         broadCastMessageForObservationDownload(broadcastIntent, resultForObservations);
 
-        int[] resultForEncounters = muzimaSyncService.downloadEncountersForPatientsByCohortUUIDs(savedCohortIds);
+        int[] resultForEncounters = muzimaSyncService.downloadEncountersForPatientsByCohortUUIDs(savedCohortIds, true);
         broadCastMessageForEncounters(broadcastIntent, resultForEncounters);
     }
 
