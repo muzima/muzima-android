@@ -749,4 +749,47 @@ $(document).ready(function () {
 
     /* End - Code to Serialize form along with Data-Concepts */
 
+    //Set up auto complete for an element.(generic, will work with any element that needs auto complete on it)
+        document.setupAutoComplete = function(elementName,dataDictionary){
+
+                $("#"+elementName).autocomplete({
+                             source: dataDictionary,
+                             create: function(event,ui){
+                                 var val = $('input[name=' + elementName + ']').val();
+                                 $.each(dataDictionary, function (i, elem) {
+                                     if (elem.val == val) {
+                                         $("#" + elementName).val(elem.label)
+                                     }
+                                 });
+                             },
+                             select: function (event, ui) {
+                                 $('input[name="'+ elementName + '"]').val(ui.item.val);
+                                 $("#" + elementName).val(ui.item.label);
+                                 return false;
+                             }
+                         });
+             }
+
+         //Set up auto complete for the provider element.
+         document.setupAutoCompleteForProvider = function(elementName,providers){
+
+         $("#"+elementName).autocomplete({
+                 source: providers,
+                 create: function (event, ui) {
+                     var provider_val = $('input[name="'+ elementName +'"]').val();
+                     $.each(providers, function (i, elem) {
+                         if (elem.val == provider_val) {
+                             $("#"+elementName).val(elem.label)
+                         }
+                     });
+                 },
+                 select: function (event, ui) {
+                     $('input[name="' + elementName + '"]').val(ui.item.val);
+                     $("#"+elementName).val(ui.item.label);
+                     $('#encounter\\.provider_id').val(ui.item.val);
+                     $('.show_provider_id_text').hide();
+                     return false;
+                 }
+             });
+         }
 });
