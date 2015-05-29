@@ -58,13 +58,14 @@ public class HTMLPatientJSONMapper {
                 encounterDetails.put("encounter.provider_id", loggedInUser.getSystemId());
             }
 
-            if(patient.getIdentifiers()!=null){
+            if(!patient.getIdentifiers().isEmpty()){
                 List<PatientIdentifier> patientIdentifiers =patient.getIdentifiers();
+
                 JSONArray identifierTypeName= new JSONArray();
                 JSONArray identifierValue = new JSONArray();
 
                 for(PatientIdentifier identifier : patientIdentifiers){
-                    if(!identifier.getIdentifier().equals(patient.getIdentifier()) || !identifier.getIdentifier().equals(patient.getUuid())){
+                    if(identifier.getIdentifier()!=null && !(identifier.getIdentifier().equals(patient.getIdentifier()) || identifier.getIdentifier().equals(patient.getUuid()))){
                         identifierTypeName.put(StringUtils.defaultString(identifier.getIdentifierType().getName()));
                         identifierValue.put(StringUtils.defaultString(identifier.getIdentifier()));
                     }
@@ -77,7 +78,6 @@ public class HTMLPatientJSONMapper {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.e("patientmap",prepopulateJSON.toString());
         return prepopulateJSON.toString();
     }
 
