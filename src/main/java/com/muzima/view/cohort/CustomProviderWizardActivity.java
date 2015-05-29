@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 2014. The Trustees of Indiana University.
- *
- * This version of the code is licensed under the MPL 2.0 Open Source license with additional
- * healthcare disclaimer. If the user is an entity intending to commercialize any application
- * that uses this code in a for-profit venture, please contact the copyright holder.
- */
-
 package com.muzima.view.cohort;
 
 import android.content.Context;
@@ -21,11 +13,11 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
 import com.muzima.view.forms.MuzimaProgressDialog;
-import com.muzima.view.preferences.LocationPreferenceActivity;
+import com.muzima.view.preferences.ProviderPreferenceActivity;
 
-public class CustomLocationWizardActivity extends LocationPreferenceActivity {
 
-    private static final String TAG = "CustomLocationWizardActivity";
+public class CustomProviderWizardActivity extends ProviderPreferenceActivity {
+    private static final String TAG = "CustomProviderWizardActivity";
     private MuzimaProgressDialog muzimaProgressDialog;
     protected Credentials credentials;
     private boolean isProcessDialogOn = false;
@@ -84,7 +76,7 @@ public class CustomLocationWizardActivity extends LocationPreferenceActivity {
     protected void onResume() {
         super.onResume();
         if (isProcessDialogOn) {
-            turnOnProgressDialog("Downloading Observations and Encounters...");
+            turnOnProgressDialog("Downloading Providers...");
         }
     }
 
@@ -103,17 +95,17 @@ public class CustomLocationWizardActivity extends LocationPreferenceActivity {
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_custom_location_wizard;
+        return R.layout.activity_custom_provider_wizard;
     }
 
     private void navigateToNextActivity() {
-        Intent intent = new Intent(getApplicationContext(), CustomProviderWizardActivity.class);
+        Intent intent = new Intent(getApplicationContext(), CustomConceptWizardActivity.class);
         startActivity(intent);
         finish();
     }
 
     private void navigateToPreviousActivity() {
-        Intent intent = new Intent(getApplicationContext(), FormTemplateWizardActivity.class);
+        Intent intent = new Intent(getApplicationContext(), CustomLocationWizardActivity.class);
         startActivity(intent);
         finish();
     }

@@ -30,6 +30,7 @@ import com.muzima.controller.LocationController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
+import com.muzima.controller.ProviderController;
 import com.muzima.utils.NetworkUtils;
 import org.apache.lucene.queryParser.ParseException;
 
@@ -57,6 +58,7 @@ public class MuzimaSyncService {
     private EncounterController encounterController;
     private NotificationController notificationController;
     private LocationController locationController;
+    private ProviderController providerController;
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
         this.muzimaApplication = muzimaContext;
@@ -69,6 +71,7 @@ public class MuzimaSyncService {
         encounterController = muzimaApplication.getEncounterController();
         notificationController = muzimaApplication.getNotificationController();
         locationController = muzimaApplication.getLocationController();
+        providerController = muzimaApplication.getProviderController();
     }
 
     public int authenticate(String[] credentials){
@@ -209,6 +212,11 @@ public class MuzimaSyncService {
             conceptController.saveConcepts(concepts);
             locationController.saveLocations(locations);
 
+            List<Provider> providers = getRelatedProviders(formTemplates);
+            List<Provider> savedProviders = providerController.getAllProviders();
+            ProviderController.newProviders.removeAll(savedProviders);
+            providerController.saveProviders(providers);
+
             Log.i(TAG, "Form templates replaced");
 
             result[0] = SyncStatusConstants.SUCCESS;
@@ -244,6 +252,18 @@ public class MuzimaSyncService {
         } catch (LocationController.LocationSaveException e) {
             Log.e(TAG, "Exception while saving Locations", e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
+            return result;
+        } catch (ProviderController.ProviderLoadException e) {
+            Log.e(TAG, "Exception while loading Providers", e);
+            result[0] = SyncStatusConstants.LOAD_ERROR;
+            return result;
+        } catch (ProviderController.ProviderSaveException e) {
+            Log.e(TAG, "Exception while saving Provider", e);
+            result[0] = SyncStatusConstants.SAVE_ERROR;
+            return result;
+        } catch (ProviderController.ProviderDownloadException e) {
+            Log.e(TAG, "Exception while downloading provider", e);
+            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
         }
         return result;
@@ -289,6 +309,20 @@ public class MuzimaSyncService {
         return voidedCohorts;
     }
 
+    private List<Provider> getRelatedProviders(List<FormTemplate> formTemplates) throws ProviderController.ProviderDownloadException {
+        HashSet<Provider> providers = new HashSet<Provider>();
+        HTMLProviderParser htmlParserUtils = new HTMLProviderParser();
+        for (FormTemplate formTemplate : formTemplates) {
+            List<String> names = new ArrayList<String>();
+            if (formTemplate.isHTMLForm()) {
+                names = htmlParserUtils.parse(formTemplate.getHtml());
+            } else {
+                // names = xmlParserUtils.parse(formTemplate.getModel());
+            }
+            providers.addAll(providerController.downloadProvidersFromServerByName(names));
+        }
+        return new ArrayList<Provider>(providers);
+    }
     private List<Concept> getRelatedConcepts(List<FormTemplate> formTemplates) throws ConceptController.ConceptDownloadException {
         HashSet<Concept> concepts = new HashSet<Concept>();
         ConceptParser xmlParserUtils = new ConceptParser();

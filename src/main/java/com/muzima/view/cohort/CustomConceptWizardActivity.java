@@ -175,7 +175,7 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
     }
 
     private void navigateToPreviousActivity() {
-        Intent intent = new Intent(getApplicationContext(), CustomLocationWizardActivity.class);
+        Intent intent = new Intent(getApplicationContext(), CustomProviderWizardActivity.class);
         startActivity(intent);
         finish();
     }

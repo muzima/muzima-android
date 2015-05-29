@@ -107,6 +107,15 @@ $(document).ready(function () {
         locations.append($("<option>").attr('value',this.id).text(this.name));
     });
 
+    var providers = $("#providers");
+    var providerNamesResults = htmlDataStore.getProviderNamesFromDevice();
+    providerNamesResults = JSON.parse(providerNamesResults);
+    providers.empty();
+    providers.append($("<option>").text("..."));
+    $.each(providerNamesResults, function() {
+        providers.append($("<option>").attr('value',this.systemId).text(this.name));
+    });
+
     /* Start - Toggle free text element */
     var hasFreetext = $('.has-freetext');
     hasFreetext.change(function () {

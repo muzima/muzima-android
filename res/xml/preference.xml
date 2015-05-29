@@ -84,4 +84,13 @@
         </Preference>
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/preference_category_provider">
+        <Preference
+                android:title="@string/preference_add_provider_title"
+                android:summary="@string/preference_add_provider_desc">
+            <intent android:targetPackage="com.muzima"
+                    android:targetClass="com.muzima.view.preferences.ProviderPreferenceActivity"/>
+        </Preference>
+    </PreferenceCategory>
+
 </PreferenceScreen>

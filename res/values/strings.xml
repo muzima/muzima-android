@@ -145,6 +145,10 @@
     <string name="preference_cohort_desc">You can add multiple cohort prefixes to restrict the cohort downloads</string>
     <string name="preference_category_openmrs">OpenMRS Settings</string>
     <string name="preference_category_cohorts">Cohort Settings</string>
+    <string name="preference_category_provider">Provider Settings</string>
+    <string name="preference_add_provider_title">Add Provider</string>
+    <string name="preference_add_provider_desc">You can add multiple providers for encounter forms</string>
+
     <string name="preference_cohorts_prefix_desc">Enter cohort prefixes</string>
     <string name="preference_cohort_prefix">cohortPrefixesPreference</string>
     <string name="preference_real_time_sync_summary">Enables real time synchronization of completed forms.</string>
@@ -156,6 +160,7 @@
     <string name="download_form">Step 2: Download Form Template(s)</string>
     <string name="add_location_prefixes">Step 3: Add Location(s)</string>
     <string name="add_concept_prefixes">Step 4: Add Concept(s)</string>
+    <string name="add_provider_prefixes">Step 3: Add Provider(s)</string>
     <string name="check_barcode_scanner_header">Step 5: Check for BarCode Scanner</string>
 
 
@@ -189,11 +194,13 @@
     </string>
     <string name="custom_concept_help">Here you define concepts whose data will be included in later download.</string>
     <string name="custom_location_help">Here you download locations that will show up in the forms.</string>
+    <string name="custom_provider_help">Here you download providers that will show up in the forms.</string>
     <string name="title_activity_cohort_wizard">Download Cohorts</string>
     <string name="cohort_wizard_help_title">Download Cohorts Help</string>
     <string name="cohort_prefix_help_title">Define Cohorts Prefix(es) Help</string>
     <string name="custom_concept_help_title">Concepts Help</string>
     <string name="custom_location_help_title">Locations Help</string>
+    <string name="custom_provider_help_title">providers Help</string>
     <string name="filling_patient_forms_help">Fill out forms for a patient</string>
     <string name="muzima_initial_setup_guide">mUzima initial setup guide</string>
     <string name="muzima_user_guide">mUzima user guide</string>
@@ -335,5 +342,9 @@
     <string name="preference_duplicate_form_data_desc">Allow Duplicate Form Data for same client with same encounter date</string>
     <string name="preference_duplicate_form_data_title">Allow Duplication </string>
     <string name="preference_duplicate_form_data">duplicateFormDataPreference</string>
+
+    <string name="no_provider_added">No new provider has been added yet.</string>
+    <string name="add_provider_pref_desc">Add providers that you want to download.</string>
+    <string name="title_activity_provider_pref">Providers</string>
 
 </resources>
