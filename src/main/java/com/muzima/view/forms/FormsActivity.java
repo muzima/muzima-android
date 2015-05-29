@@ -153,6 +153,10 @@ public class FormsActivity extends FormsActivityBase {
                     Toast.makeText(this, "Already fetching forms, ignored the request", Toast.LENGTH_SHORT).show();
                     return true;
                 }
+                if (hasFormsWithData()) {
+                    Toast.makeText(this, "There is existing form data for selected form(s). Finish Incomplete data and sync Complete data to Server first before downloading selected forms", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
                 syncAllFormsInBackgroundService();
                 return true;
             case R.id.menu_upload:
@@ -180,6 +184,15 @@ public class FormsActivity extends FormsActivityBase {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private boolean hasFormsWithData(){
+        try {
+            if (!(formController.getAllIncompleteFormsWithPatientData().isEmpty() && formController.getAllCompleteFormsWithPatientData().isEmpty())){
+                return true;
+            }
+        }catch(FormController.FormFetchException e){}
+        return false;
     }
 
     private void syncAllFormsInBackgroundService() {
