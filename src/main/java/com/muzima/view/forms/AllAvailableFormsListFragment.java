@@ -29,6 +29,10 @@ import com.muzima.api.model.APIName;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
+import com.muzima.model.CompleteFormWithPatientData;
+import com.muzima.model.IncompleteFormWithPatientData;
+import com.muzima.model.collections.CompleteFormsWithPatientData;
+import com.muzima.model.collections.IncompleteFormsWithPatientData;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
@@ -37,6 +41,7 @@ import com.muzima.view.cohort.ConceptListActivity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class AllAvailableFormsListFragment extends FormsListFragment {
@@ -135,6 +140,11 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
                         return true;
                     }
 
+                    if (hasSelectedFormsWithData()) {
+                        Toast.makeText(getActivity(), "There is existing form data for selected form(s). Finish Incomplete data and sync Complete data to Server first before downloading selected forms", Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+
                     //syncAllFormTemplatesInBackgroundService();
 
                     new AsyncTask<Void, Void, int[]>() {
@@ -171,6 +181,31 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         if (actionMode != null) {
             actionMode.finish();
         }
+    }
+
+    private boolean hasSelectedFormsWithData(){
+        try {
+            List<String> selectedFormsUuids = getSelectedForms();
+            IncompleteFormsWithPatientData incompleteForms = formController.getAllIncompleteFormsWithPatientData();
+            Iterator<IncompleteFormWithPatientData> incompleteFormsIterator = incompleteForms.iterator();
+            if(incompleteFormsIterator.hasNext()){
+                IncompleteFormWithPatientData incompleteForm = incompleteFormsIterator.next();
+                if(selectedFormsUuids.contains(incompleteForm.getFormUuid())){
+                    return true;
+                }
+            }
+
+            CompleteFormsWithPatientData completeForms = formController.getAllCompleteFormsWithPatientData();
+            Iterator<CompleteFormWithPatientData> completeFormsIterator = completeForms.iterator();
+            if(completeFormsIterator.hasNext()){
+                CompleteFormWithPatientData completeForm = completeFormsIterator.next();
+                if(selectedFormsUuids.contains(completeForm.getFormUuid())){
+                    return true;
+                }
+            }
+
+        }catch(FormController.FormFetchException e){}
+        return false;
     }
 
     private void navigateToNextActivity() {
