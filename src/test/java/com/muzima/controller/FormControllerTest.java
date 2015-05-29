@@ -448,15 +448,15 @@ public class FormControllerTest {
         when(patientService.getPatientByUuid(formData1.getPatientUuid())).thenReturn(new Patient());
         when(patientService.getPatientByUuid(formData2.getPatientUuid())).thenReturn(new Patient());
 
-        assertTrue(containsFormWithUuid(formController.getAllIncompleteForms(), form1.getUuid()));
-        assertTrue(containsFormWithUuid(formController.getAllIncompleteForms(), form2.getUuid()));
+        assertTrue(containsFormWithUuid(formController.getAllIncompleteFormsWithPatientData(), form1.getUuid()));
+        assertTrue(containsFormWithUuid(formController.getAllIncompleteFormsWithPatientData(), form2.getUuid()));
     }
 
     @Test (expected = FormController.FormFetchException.class)
     public void getAllIncompleteForms_shouldThrowFormFetchExceptionIfExceptionThrownByService() throws Exception, FormController.FormFetchException {
         doThrow(new IOException()).when(formService).getAllFormData(anyString());
 
-        formController.getAllIncompleteForms();
+        formController.getAllIncompleteFormsWithPatientData();
     }
 
     @Test
