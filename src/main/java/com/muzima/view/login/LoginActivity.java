@@ -246,7 +246,7 @@ public class LoginActivity extends Activity {
                 case SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME:
                     return "Invalid Character in Username. These are not allowed: " + SyncStatusConstants.INVALID_CHARACTER_FOR_USERNAME ;
                 case SyncStatusConstants.CONNECTION_ERROR:
-                    return "Error while connecting your server.";
+                    return "Error while connecting to the server. Please connect to the internet and try again.";
                 default:
                     return "Authentication failed";
             }

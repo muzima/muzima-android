@@ -28,6 +28,7 @@ import com.muzima.controller.FormController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
+import com.muzima.utils.NetworkUtils;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -79,7 +80,7 @@ public class MuzimaSyncService {
 
             muzimaContext.openSession();
             if (!muzimaContext.isAuthenticated()) {
-                muzimaContext.authenticate(username, password, server);
+                muzimaContext.authenticate(username, password, server,NetworkUtils.isConnectedToNetwork(muzimaApplication));
             }
         } catch (ConnectException e) {
             Log.e(TAG, "ConnectException Exception thrown while authentication.", e);

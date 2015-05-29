@@ -34,6 +34,7 @@ import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
 import com.muzima.util.Constants;
+import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.forms.FormWebViewActivity;
 import com.muzima.view.forms.HTMLFormWebViewActivity;
@@ -159,8 +160,12 @@ public class MuzimaApplication extends Application {
                 String username = credentials[0];
                 String password = credentials[1];
                 String server = credentials[2];
+
                 if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password) && !StringUtils.isEmpty(server))
-                    muzimaContext.authenticate(username, password, server);
+                {
+                    muzimaContext.authenticate(username, password, server, NetworkUtils.isConnectedToNetwork(this));
+                }
+
 
                 authenticatedUser = muzimaContext.getAuthenticatedUser();
             }
