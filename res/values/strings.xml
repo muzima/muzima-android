@@ -347,4 +347,6 @@
     <string name="add_provider_pref_desc">Add providers that you want to download.</string>
     <string name="title_activity_provider_pref">Providers</string>
 
+    <string name="not_a_provider_title">Unable to set as Provider</string>
+    <string name="not_a_provider_message">You do not have provider rights or your provider data is not downloaded, please use add provider option.</string>
 </resources>

@@ -17,9 +17,11 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
+import android.preference.PreferenceManager;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.controller.ProviderController;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.tasks.ValidateURLTask;
@@ -59,6 +61,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         ((MuzimaApplication) getApplication()).restartTimer();
         super.onUserInteraction();
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +141,29 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         encounterProviderPreferenceKey = getResources().getString(R.string.preference_encounter_provider);
         encounterProviderPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(encounterProviderPreferenceKey);
         encounterProviderPreference.setSummary(encounterProviderPreference.getSummary());
+
+        encounterProviderPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                if(o.equals(Boolean.TRUE)) {
+                    String loggedInUserSystemId = ((MuzimaApplication) getApplication()).getAuthenticatedUser().getSystemId();
+                    if (((MuzimaApplication) getApplication()).getProviderController().getProviderBySystemId(loggedInUserSystemId) == null) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
+                        builder
+                                .setCancelable(true)
+                                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                                .setTitle(getResources().getString(R.string.not_a_provider_title))
+                                .setMessage(getResources().getString(R.string.not_a_provider_message))
+                                .setPositiveButton("Ok", null).create().show();
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+                return true;
+            }
+        });
 
         duplicateFormDataPreferenceKey = getResources().getString(R.string.preference_duplicate_form_data);
         duplicateFormDataPreference = (CheckBoxPreference)getPreferenceScreen().findPreference(duplicateFormDataPreferenceKey);
@@ -270,6 +296,16 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
     protected void onResume() {
         super.onResume();
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        resetEncounterProviderPreference();
+    }
+
+    private void resetEncounterProviderPreference() {
+        if(encounterProviderPreference.isChecked()){
+            String loggedInUserSystemId = ((MuzimaApplication) getApplication()).getAuthenticatedUser().getSystemId();
+            if (((MuzimaApplication) getApplication()).getProviderController().getProviderBySystemId(loggedInUserSystemId) == null){
+                encounterProviderPreference.setChecked(false);
+            }
+        }
     }
 
     /**

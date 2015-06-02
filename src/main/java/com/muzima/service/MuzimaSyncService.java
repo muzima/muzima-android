@@ -309,7 +309,7 @@ public class MuzimaSyncService {
         return voidedCohorts;
     }
 
-    private List<Provider> getRelatedProviders(List<FormTemplate> formTemplates) throws ProviderController.ProviderDownloadException {
+    private List<Provider> getRelatedProviders(List<FormTemplate> formTemplates) throws ProviderController.ProviderDownloadException, ProviderController.ProviderLoadException {
         HashSet<Provider> providers = new HashSet<Provider>();
         HTMLProviderParser htmlParserUtils = new HTMLProviderParser();
         for (FormTemplate formTemplate : formTemplates) {
@@ -321,8 +321,12 @@ public class MuzimaSyncService {
             }
             providers.addAll(providerController.downloadProvidersFromServerByName(names));
         }
+        //Download the provider data in to local repo for logged in user
+        providers.add(providerController.downloadProviderBySystemId(muzimaApplication.getAuthenticatedUser().getSystemId()));
+
         return new ArrayList<Provider>(providers);
     }
+
     private List<Concept> getRelatedConcepts(List<FormTemplate> formTemplates) throws ConceptController.ConceptDownloadException {
         HashSet<Concept> concepts = new HashSet<Concept>();
         ConceptParser xmlParserUtils = new ConceptParser();

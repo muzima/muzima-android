@@ -491,7 +491,8 @@
             "field.searchable": {
                 "uuid": "$['uuid']",
                 "name": "$['name']",
-                "id": "$['id']"
+                "id": "$['id']",
+                "systemId": "$['identifier']"
             }
         },
         {
@@ -504,7 +505,8 @@
             "field.searchable": {
                 "uuid": "$['uuid']",
                 "name": "$['name']",
-                "id": "$['id']"
+                "id": "$['id']",
+                "systemId": "$['identifier']"
             }
         }
     ]
