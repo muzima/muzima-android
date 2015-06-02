@@ -80,7 +80,7 @@ public class MuzimaSyncService {
 
             muzimaContext.openSession();
             if (!muzimaContext.isAuthenticated()) {
-                muzimaContext.authenticate(username, password, server,NetworkUtils.isConnectedToNetwork(muzimaApplication));
+                muzimaContext.authenticate(username, password, server, NetworkUtils.isConnectedToNetwork(muzimaApplication));
             }
         } catch (ConnectException e) {
             Log.e(TAG, "ConnectException Exception thrown while authentication.", e);
@@ -349,6 +349,7 @@ public class MuzimaSyncService {
         }
         return result;
     }
+
     public int[] downloadObservationsForPatientsByCohortUUIDs(String[] cohortUuids) {
         int[] result = new int[2];
         List<Patient> patients;
