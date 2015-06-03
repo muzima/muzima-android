@@ -8,7 +8,9 @@
 
 package com.muzima.view.forms;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -154,7 +156,16 @@ public class FormsActivity extends FormsActivityBase {
                     return true;
                 }
                 if (hasFormsWithData()) {
-                    Toast.makeText(this, R.string.already_exists_forms_with_patient_data_msg, Toast.LENGTH_LONG).show();
+                    AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                    alertDialog.setMessage((getApplicationContext())
+                                    .getString(R.string.already_exists_some_forms_with_patient_data_msg)
+                    );
+                    alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    });
+                    alertDialog.show();
                     return true;
                 }
                 syncAllFormsInBackgroundService();
