@@ -125,14 +125,14 @@ public class FormsActivity extends FormsActivityBase {
                 ((FormsPagerAdapter) formsPagerAdapter).onFormUploadFinish();
             }
 
-        }  else if (syncType == DataSyncServiceConstants.SYNC_TEMPLATES) {
+        } else if (syncType == DataSyncServiceConstants.SYNC_TEMPLATES) {
             hideProgressbar();
             if (syncStatus == SyncStatusConstants.SUCCESS) {
                 ((FormsPagerAdapter) formsPagerAdapter).onFormTemplateDownloadFinish();
             }
-        } else if(syncType == DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS){
+        } else if (syncType == DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS) {
             SharedPreferences sp = getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", MODE_PRIVATE);
-            if(sp.getBoolean("active",false) == true){
+            if (sp.getBoolean("active", false) == true) {
                 if (syncStatus == SyncStatusConstants.SUCCESS) {
                     ((FormsPagerAdapter) formsPagerAdapter).onFormUploadFinish();
                 }
@@ -146,26 +146,26 @@ public class FormsActivity extends FormsActivityBase {
         switch (item.getItemId()) {
             case R.id.menu_load:
                 if (!NetworkUtils.isConnectedToNetwork(this)) {
-                    Toast.makeText(this, "No connection found, please connect your device and try again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.no_connection_found_msg, Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 if (syncInProgress) {
-                    Toast.makeText(this, "Already fetching forms, ignored the request", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.already_fetching_forms_msg, Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 if (hasFormsWithData()) {
-                    Toast.makeText(this, "There is existing form data for selected form(s). Finish Incomplete data and sync Complete data to Server first before downloading selected forms", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.already_exists_forms_with_patient_data_msg, Toast.LENGTH_LONG).show();
                     return true;
                 }
                 syncAllFormsInBackgroundService();
                 return true;
             case R.id.menu_upload:
                 if (!NetworkUtils.isConnectedToNetwork(this)) {
-                    Toast.makeText(this, "No connection found, please connect your device and try again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.no_connection_found_msg, Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 if (syncInProgress) {
-                    Toast.makeText(this, "Already uploading forms, ignored the request", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.already_uploading_forms_msg, Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 uploadAllFormsInBackgroundService();
@@ -186,12 +186,13 @@ public class FormsActivity extends FormsActivityBase {
         }
     }
 
-    private boolean hasFormsWithData(){
+    private boolean hasFormsWithData() {
         try {
-            if (!(formController.getAllIncompleteFormsWithPatientData().isEmpty() && formController.getAllCompleteFormsWithPatientData().isEmpty())){
+            if (!(formController.getAllIncompleteFormsWithPatientData().isEmpty() && formController.getAllCompleteFormsWithPatientData().isEmpty())) {
                 return true;
             }
-        }catch(FormController.FormFetchException e){}
+        } catch (FormController.FormFetchException e) {
+        }
         return false;
     }
 

@@ -53,30 +53,30 @@ public class HTMLPatientJSONMapper {
             }
             encounterDetails.put("encounter.form_uuid", StringUtils.defaultString(formData.getTemplateUuid()));
 
-            if(isLoggedInUserIsDefaultProvider) {
+            if (isLoggedInUserIsDefaultProvider) {
                 encounterDetails.put("encounter.provider_id_select", loggedInUser.getSystemId());
                 encounterDetails.put("encounter.provider_id", loggedInUser.getSystemId());
             }
 
-            if(!patient.getIdentifiers().isEmpty()){
-                List<PatientIdentifier> patientIdentifiers =patient.getIdentifiers();
+            if (!patient.getIdentifiers().isEmpty()) {
+                List<PatientIdentifier> patientIdentifiers = patient.getIdentifiers();
 
-                JSONArray identifierTypeName= new JSONArray();
+                JSONArray identifierTypeName = new JSONArray();
                 JSONArray identifierValue = new JSONArray();
 
-                for(PatientIdentifier identifier : patientIdentifiers){
-                    if(identifier.getIdentifier()!=null && !(identifier.getIdentifier().equals(patient.getIdentifier()) || identifier.getIdentifier().equals(patient.getUuid()))){
+                for (PatientIdentifier identifier : patientIdentifiers) {
+                    if (identifier.getIdentifier() != null && !(identifier.getIdentifier().equals(patient.getIdentifier()) || identifier.getIdentifier().equals(patient.getUuid()))) {
                         identifierTypeName.put(StringUtils.defaultString(identifier.getIdentifierType().getName()));
                         identifierValue.put(StringUtils.defaultString(identifier.getIdentifier()));
                     }
                 }
-                prepopulateJSON.put("other_identifier_type",identifierTypeName);
-                prepopulateJSON.put("other_identifier_value",identifierValue);
+                prepopulateJSON.put("other_identifier_type", identifierTypeName);
+                prepopulateJSON.put("other_identifier_value", identifierValue);
             }
-            prepopulateJSON.put("patient",patientDetails);
-            prepopulateJSON.put("encounter",encounterDetails);
+            prepopulateJSON.put("patient", patientDetails);
+            prepopulateJSON.put("encounter", encounterDetails);
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Could not populate patient registration data to JSON", e);
         }
         return prepopulateJSON.toString();
     }
@@ -87,13 +87,13 @@ public class HTMLPatientJSONMapper {
         return patient;
     }
 
-    private void setJSONObjects(String jsonPayload) throws JSONException{
+    private void setJSONObjects(String jsonPayload) throws JSONException {
         JSONObject responseJSON = new JSONObject(jsonPayload);
         patientJSON = responseJSON.getJSONObject("patient");
         observationJSON = responseJSON.getJSONObject("observation");
     }
 
-    private void createPatient()  throws JSONException {
+    private void createPatient() throws JSONException {
         initializePatient();
         setPatientIdentifiers();
         setPatientNames();
@@ -101,57 +101,57 @@ public class HTMLPatientJSONMapper {
         setPatientBirthDate();
     }
 
-    private void initializePatient() throws JSONException{
+    private void initializePatient() throws JSONException {
         patient = new Patient();
         patient.setUuid(patientJSON.getString("patient.uuid"));
     }
 
-    private void setPatientIdentifiers() throws JSONException{
+    private void setPatientIdentifiers() throws JSONException {
         List<PatientIdentifier> identifiers = getPatientIdentifiers();
         patient.setIdentifiers(identifiers);
     }
 
-    private void setPatientNames() throws JSONException{
+    private void setPatientNames() throws JSONException {
         List<PersonName> names = new ArrayList<PersonName>();
         names.add(getPersonName());
         patient.setNames(names);
     }
 
-    private void setPatientGender() throws JSONException{
+    private void setPatientGender() throws JSONException {
         String gender = patientJSON.getString("patient.sex");
         patient.setGender(gender);
     }
 
-    private void setPatientBirthDate() throws JSONException{
+    private void setPatientBirthDate() throws JSONException {
         Date date = getBirthDate();
         patient.setBirthdate(date);
     }
 
-    private List<PatientIdentifier> getPatientIdentifiers()  throws JSONException {
+    private List<PatientIdentifier> getPatientIdentifiers() throws JSONException {
         List<PatientIdentifier> patientIdentifiers = new ArrayList<PatientIdentifier>();
 
         patientIdentifiers.add(getPreferredPatientIdentifier());
         patientIdentifiers.add(getPatientUuidAsIdentifier());
 
         List<PatientIdentifier> otherIdentifiers = getOtherPatientIdentifiers();
-        if(!otherIdentifiers.isEmpty())
+        if (!otherIdentifiers.isEmpty())
             patientIdentifiers.addAll(otherIdentifiers);
-        return  patientIdentifiers;
+        return patientIdentifiers;
     }
 
-    private PatientIdentifier getPreferredPatientIdentifier() throws JSONException  {
+    private PatientIdentifier getPreferredPatientIdentifier() throws JSONException {
         String identifierValue = patientJSON.getString("patient.medical_record_number");
         String identifierTypeName = Constants.LOCAL_PATIENT;
 
-        PatientIdentifier preferredPatientIdentifier = createPatientIdentifier(identifierTypeName,identifierValue);
+        PatientIdentifier preferredPatientIdentifier = createPatientIdentifier(identifierTypeName, identifierValue);
         preferredPatientIdentifier.setPreferred(true);
 
         return preferredPatientIdentifier;
     }
 
-    private List<PatientIdentifier> getOtherPatientIdentifiers() throws JSONException  {
+    private List<PatientIdentifier> getOtherPatientIdentifiers() throws JSONException {
         List<PatientIdentifier> otherIdentifiers = new ArrayList<PatientIdentifier>();
-        if(observationJSON.has("other_identifier_type") && observationJSON.has("other_identifier_value")) {
+        if (observationJSON.has("other_identifier_type") && observationJSON.has("other_identifier_value")) {
             Object identifierTypeNameObject = observationJSON.get("other_identifier_type");
             Object identifierValueObject = observationJSON.get("other_identifier_value");
 
@@ -172,11 +172,11 @@ public class HTMLPatientJSONMapper {
         return otherIdentifiers;
     }
 
-    private PatientIdentifier getPatientUuidAsIdentifier(){
-        return createPatientIdentifier(Constants.LOCAL_PATIENT,patient.getUuid());
+    private PatientIdentifier getPatientUuidAsIdentifier() {
+        return createPatientIdentifier(Constants.LOCAL_PATIENT, patient.getUuid());
     }
 
-    private PatientIdentifier createPatientIdentifier(String identifierTypeName,String identifierValue) {
+    private PatientIdentifier createPatientIdentifier(String identifierTypeName, String identifierValue) {
         PatientIdentifier patientIdentifier = new PatientIdentifier();
         PatientIdentifierType identifierType = new PatientIdentifierType();
         identifierType.setName(identifierTypeName);
@@ -185,17 +185,18 @@ public class HTMLPatientJSONMapper {
         return patientIdentifier;
     }
 
-    private Date getBirthDate() throws JSONException  {
+    private Date getBirthDate() throws JSONException {
         String birthDateAsString = patientJSON.getString("patient.birth_date");
-        Date birthDate =null;
+        Date birthDate = null;
         try {
-            if(birthDateAsString != null)
+            if (birthDateAsString != null)
                 birthDate = parse(birthDateAsString);
         } catch (ParseException e) {
             Log.e(TAG, "Could not parse birth_date", e);
         }
         return birthDate;
     }
+
     private PersonName getPersonName() throws JSONException {
         PersonName personName = new PersonName();
         personName.setFamilyName(patientJSON.getString("patient.family_name"));
@@ -203,8 +204,8 @@ public class HTMLPatientJSONMapper {
 
         String middleNameJSONString = "patient.middle_name";
         String middleName = "";
-        if(patientJSON.has(middleNameJSONString))
-            middleName=patientJSON.getString(middleNameJSONString);
+        if (patientJSON.has(middleNameJSONString))
+            middleName = patientJSON.getString(middleNameJSONString);
         personName.setMiddleName(middleName);
 
         return personName;
