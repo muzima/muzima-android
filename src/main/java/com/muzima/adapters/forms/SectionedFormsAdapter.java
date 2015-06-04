@@ -207,32 +207,32 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
             @Override
             public boolean onLongClick(View view) {
 
-                CheckedRelativeLayout checkedLinearLayout = (CheckedRelativeLayout) view;
-                checkedLinearLayout.toggle();
-                boolean selected = checkedLinearLayout.isChecked();
+                if (view instanceof CheckedRelativeLayout) {
+                    CheckedRelativeLayout checkedLinearLayout = (CheckedRelativeLayout) view;
+                    checkedLinearLayout.toggle();
+                    boolean selected = checkedLinearLayout.isChecked();
 
-                FormWithData formWithPatientData = getItem(position);
-                if (selected && !selectedFormsUuid.contains(formWithPatientData.getFormDataUuid())) {
-                    selectedFormsUuid.add(formWithPatientData.getFormDataUuid());
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                        checkedLinearLayout.setChecked(true);
-                    } else {
-                        checkedLinearLayout.setActivated(true);
+                    FormWithData formWithPatientData = getItem(position);
+                    if (selected && !selectedFormsUuid.contains(formWithPatientData.getFormDataUuid())) {
+                        selectedFormsUuid.add(formWithPatientData.getFormDataUuid());
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                            checkedLinearLayout.setChecked(true);
+                        } else {
+                            checkedLinearLayout.setActivated(true);
 
+                        }
+                    } else if (!selected && selectedFormsUuid.contains(formWithPatientData.getFormDataUuid())) {
+                        selectedFormsUuid.remove(formWithPatientData.getFormDataUuid());
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                            checkedLinearLayout.setChecked(false);
+                        } else {
+                            checkedLinearLayout.setActivated(false);
+                        }
                     }
-                } else if (!selected && selectedFormsUuid.contains(formWithPatientData.getFormDataUuid())) {
-                    selectedFormsUuid.remove(formWithPatientData.getFormDataUuid());
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                        checkedLinearLayout.setChecked(false);
-                    } else {
-                        checkedLinearLayout.setActivated(false);
-                    }
+                    muzimaClickListener.onItemLongClick();
                 }
-
-                muzimaClickListener.onItemLongClick();
                 return true;
             }
-
         });
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
