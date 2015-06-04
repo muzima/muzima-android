@@ -162,7 +162,7 @@ public class MuzimaApplication extends Application {
                 String server = credentials[2];
 
                 if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password) && !StringUtils.isEmpty(server)) {
-                    muzimaContext.authenticate(username, password, server, NetworkUtils.isConnectedToNetwork(this));
+                    muzimaContext.authenticate(username, password, server, NetworkUtils.isConnectedToNetwork(this),false);
                 }
 
 

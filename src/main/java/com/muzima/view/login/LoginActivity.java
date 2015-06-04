@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +46,7 @@ public class LoginActivity extends Activity {
     private EditText usernameText;
     private EditText passwordText;
     private Button loginButton;
+    private CheckBox updatePassword;
     private TextView versionText;
     private BackgroundAuthenticationTask backgroundAuthenticationTask;
     private TextView authenticatingText;
@@ -55,6 +57,7 @@ public class LoginActivity extends Activity {
     private ValueAnimator flipFromAuthToLoginAnimator;
     private ValueAnimator flipFromAuthToNoConnAnimator;
     private boolean honeycombOrGreater;
+    private boolean isUpdatePasswordChecked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +80,10 @@ public class LoginActivity extends Activity {
         }
 
         useSavedServerUrl(serverURL);
+
+        if(isFirstLaunch){
+            removeChangedPasswordRecentlyCheckbox();
+        }
 
         //Hack to get it to use default font space.
         passwordText.setTypeface(Typeface.DEFAULT);
@@ -104,6 +111,10 @@ public class LoginActivity extends Activity {
         if (!StringUtils.isEmpty(serverUrl)) {
             serverUrlText.setText(serverUrl);
         }
+    }
+
+    private void removeChangedPasswordRecentlyCheckbox() {
+        updatePassword.setVisibility(View.GONE);
     }
 
     private String getApplicationVersion() {
@@ -200,10 +211,15 @@ public class LoginActivity extends Activity {
         serverUrlText = (EditText) findViewById(R.id.serverUrl);
         usernameText = (EditText) findViewById(R.id.username);
         passwordText = (EditText) findViewById(R.id.password);
+        updatePassword = (CheckBox) findViewById(R.id.update_password);
         loginButton = (Button) findViewById(R.id.login);
         authenticatingText = (TextView) findViewById(R.id.authenticatingText);
         versionText = (TextView) findViewById(R.id.version);
 
+    }
+
+    public void onUpdatePasswordCheckboxClicked(View view) {
+        isUpdatePasswordChecked = ((CheckBox) view).isChecked();
     }
 
     private class BackgroundAuthenticationTask extends AsyncTask<Credentials, Void, BackgroundAuthenticationTask.Result> {
@@ -219,7 +235,7 @@ public class LoginActivity extends Activity {
         protected Result doInBackground(Credentials... params) {
             Credentials credentials = params[0];
             MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplication()).getMuzimaSyncService();
-            int authenticationStatus = muzimaSyncService.authenticate(credentials.getCredentialsArray());
+            int authenticationStatus = muzimaSyncService.authenticate(credentials.getCredentialsArray(), isUpdatePasswordChecked);
             return new Result(credentials, authenticationStatus);
         }
 

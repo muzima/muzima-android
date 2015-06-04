@@ -111,7 +111,7 @@ public class MuzimaSyncServiceTest {
 
         when(muzimaContext.isAuthenticated()).thenReturn(true);
 
-        verify(muzimaContext, times(0)).authenticate(anyString(), anyString(), anyString(), anyBoolean());
+        verify(muzimaContext, times(0)).authenticate(anyString(), anyString(), anyString(), anyBoolean(), anyBoolean());
         assertThat(muzimaSyncService.authenticate(credentials), is(SyncStatusConstants.AUTHENTICATION_SUCCESS));
     }
 
@@ -129,7 +129,7 @@ public class MuzimaSyncServiceTest {
     public void authenticate_shouldCallCloseSessionIfExceptionOccurred() throws Exception {
         String[] credentials = new String[]{"username", "password", "url"};
 
-        doThrow(new ParseException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2], true);
+        doThrow(new ParseException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2], true, false);
         muzimaSyncService.authenticate(credentials);
 
         verify(muzimaContext).closeSession();
@@ -139,7 +139,7 @@ public class MuzimaSyncServiceTest {
     public void authenticate_shouldReturnParsingErrorIfParsingExceptionOccurs() throws Exception {
         String[] credentials = new String[]{"username", "password", "url"};
 
-        doThrow(new ParseException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2], true);
+        doThrow(new ParseException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2], true, false);
 
         assertThat(muzimaSyncService.authenticate(credentials), is(SyncStatusConstants.PARSING_ERROR));
     }
@@ -148,7 +148,7 @@ public class MuzimaSyncServiceTest {
     public void authenticate_shouldReturnConnectionErrorIfConnectionErrorOccurs() throws Exception {
         String[] credentials = new String[]{"username", "password", "url"};
 
-        doThrow(new ConnectException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2], true);
+        doThrow(new ConnectException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2], true, false);
 
         assertThat(muzimaSyncService.authenticate(credentials), is(SyncStatusConstants.CONNECTION_ERROR));
     }
@@ -157,7 +157,7 @@ public class MuzimaSyncServiceTest {
     public void authenticate_shouldReturnAuthenticationErrorIfAuthenticationErrorOccurs() throws Exception {
         String[] credentials = new String[]{"username", "password", "url"};
 
-        doThrow(new IOException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2], true);
+        doThrow(new IOException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2], true, false);
 
         assertThat(muzimaSyncService.authenticate(credentials), is(SyncStatusConstants.AUTHENTICATION_ERROR));
     }

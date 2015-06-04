@@ -67,7 +67,11 @@ public class MuzimaSyncService {
         notificationController = muzimaApplication.getNotificationController();
     }
 
-    public int authenticate(String[] credentials) {
+    public int authenticate(String[] credentials){
+       return authenticate(credentials, false);
+    }
+
+    public int authenticate(String[] credentials, boolean isUpdatePasswordRequired) {
         String username = credentials[0].trim();
         String password = credentials[1];
         String server = credentials[2];
@@ -80,7 +84,7 @@ public class MuzimaSyncService {
 
             muzimaContext.openSession();
             if (!muzimaContext.isAuthenticated()) {
-                muzimaContext.authenticate(username, password, server, NetworkUtils.isConnectedToNetwork(muzimaApplication));
+                muzimaContext.authenticate(username, password, server, NetworkUtils.isConnectedToNetwork(muzimaApplication),isUpdatePasswordRequired);
             }
         } catch (ConnectException e) {
             Log.e(TAG, "ConnectException Exception thrown while authentication.", e);
