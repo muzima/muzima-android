@@ -492,7 +492,7 @@
                 "uuid": "$['uuid']",
                 "name": "$['name']",
                 "id": "$['id']",
-                "systemId": "$['identifier']"
+                "identifier": "$['identifier']"
             }
         },
         {
@@ -506,7 +506,7 @@
                 "uuid": "$['uuid']",
                 "name": "$['name']",
                 "id": "$['id']",
-                "systemId": "$['identifier']"
+                "identifier": "$['identifier']"
             }
         }
     ]

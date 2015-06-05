@@ -8,6 +8,8 @@
 
 package com.muzima.view.forms;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
@@ -125,6 +127,19 @@ public class HTMLFormDataStore {
         return JSONValue.toJSONString(providersOnDevice);
     }
 
+    @JavascriptInterface
+    public String getDefaultEncounterProvider()
+    {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(formWebViewActivity.getApplicationContext());
+        boolean encounterProviderPreference = preferences.getBoolean("encounterProviderPreference", false);
+        if(encounterProviderPreference){
+            MuzimaApplication applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
+            List<Provider> providers = new ArrayList<Provider>();
+            providers.add(providerController.getProviderBySystemId(applicationContext.getAuthenticatedUser().getSystemId()));
+            return JSONValue.toJSONString(providers);
+        }
+        return "";
+    }
     private void parseForm(String jsonPayload, String status) {
         if (status.equals(Constants.STATUS_INCOMPLETE)) {
             return;
