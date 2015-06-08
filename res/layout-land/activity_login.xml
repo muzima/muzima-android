@@ -49,6 +49,15 @@
 
             </LinearLayout>
 
+
+                <CheckBox android:id="@+id/update_password"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="@string/new_password"
+                          android:textSize="14sp"
+                          android:onClick="onUpdatePasswordCheckboxClicked"/>
+
+
             <FrameLayout
                     style="@style/LoginButtonLayout" android:layout_height="wrap_content">
 
@@ -60,16 +69,6 @@
                         android:id="@+id/authenticatingText"
                         style="@style/LoginActivityAuthenticatingView"
                         android:visibility="gone"/>
-            </FrameLayout>
-
-            <FrameLayout
-                    style="@style/LoginButtonLayout">
-
-                <CheckBox android:id="@+id/update_password"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:text="@string/new_password"
-                          android:onClick="onUpdatePasswordCheckboxClicked"/>
             </FrameLayout>
 
             <TextView
