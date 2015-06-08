@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,7 +46,8 @@ public class LoginActivity extends Activity {
     private EditText usernameText;
     private EditText passwordText;
     private Button loginButton;
-    private TextView versionText ;
+    private CheckBox updatePassword;
+    private TextView versionText;
     private BackgroundAuthenticationTask backgroundAuthenticationTask;
     private TextView authenticatingText;
 
@@ -55,11 +57,12 @@ public class LoginActivity extends Activity {
     private ValueAnimator flipFromAuthToLoginAnimator;
     private ValueAnimator flipFromAuthToNoConnAnimator;
     private boolean honeycombOrGreater;
+    private boolean isUpdatePasswordChecked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MuzimaApplication)getApplication()).cancelTimer();
+        ((MuzimaApplication) getApplication()).cancelTimer();
         setContentView(R.layout.activity_login);
         showSessionTimeOutPopUpIfNeeded();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -77,6 +80,10 @@ public class LoginActivity extends Activity {
         }
 
         useSavedServerUrl(serverURL);
+
+        if(isFirstLaunch){
+            removeChangedPasswordRecentlyCheckbox();
+        }
 
         //Hack to get it to use default font space.
         passwordText.setTypeface(Typeface.DEFAULT);
@@ -106,16 +113,20 @@ public class LoginActivity extends Activity {
         }
     }
 
+    private void removeChangedPasswordRecentlyCheckbox() {
+        updatePassword.setVisibility(View.GONE);
+    }
+
     private String getApplicationVersion() {
-        String versionText  = "" ;
-        String versionCode = "" ;
+        String versionText = "";
+        String versionCode = "";
         try {
             versionCode = String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
-            versionText = String.format(getResources().getString(R.string.version), versionCode) ;
+            versionText = String.format(getResources().getString(R.string.version), versionCode);
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, "Unable to read application version.", e);
         }
-        return versionText ;
+        return versionText;
     }
 
     private String getServerURL() {
@@ -167,7 +178,8 @@ public class LoginActivity extends Activity {
                     backgroundAuthenticationTask.execute(
                             new Credentials(serverUrlText.getText().toString(), usernameText.getText().toString(),
                                     passwordText.getText().toString()
-                            ));
+                            )
+                    );
                 } else {
                     int errorColor = getResources().getColor(R.color.error_text_color);
                     if (StringUtils.isEmpty(serverUrlText.getText().toString())) {
@@ -199,10 +211,15 @@ public class LoginActivity extends Activity {
         serverUrlText = (EditText) findViewById(R.id.serverUrl);
         usernameText = (EditText) findViewById(R.id.username);
         passwordText = (EditText) findViewById(R.id.password);
+        updatePassword = (CheckBox) findViewById(R.id.update_password);
         loginButton = (Button) findViewById(R.id.login);
         authenticatingText = (TextView) findViewById(R.id.authenticatingText);
-        versionText = (TextView) findViewById(R.id.version) ;
+        versionText = (TextView) findViewById(R.id.version);
 
+    }
+
+    public void onUpdatePasswordCheckboxClicked(View view) {
+        isUpdatePasswordChecked = ((CheckBox) view).isChecked();
     }
 
     private class BackgroundAuthenticationTask extends AsyncTask<Credentials, Void, BackgroundAuthenticationTask.Result> {
@@ -218,7 +235,7 @@ public class LoginActivity extends Activity {
         protected Result doInBackground(Credentials... params) {
             Credentials credentials = params[0];
             MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplication()).getMuzimaSyncService();
-            int authenticationStatus = muzimaSyncService.authenticate(credentials.getCredentialsArray());
+            int authenticationStatus = muzimaSyncService.authenticate(credentials.getCredentialsArray(), isUpdatePasswordChecked);
             return new Result(credentials, authenticationStatus);
         }
 
@@ -244,9 +261,9 @@ public class LoginActivity extends Activity {
                 case SyncStatusConstants.INVALID_CREDENTIALS_ERROR:
                     return "Invalid Username, Password, Server combination.";
                 case SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME:
-                    return "Invalid Character in Username. These are not allowed: " + SyncStatusConstants.INVALID_CHARACTER_FOR_USERNAME ;
+                    return "Invalid Character in Username. These are not allowed: " + SyncStatusConstants.INVALID_CHARACTER_FOR_USERNAME;
                 case SyncStatusConstants.CONNECTION_ERROR:
-                    return "Error while connecting your server.";
+                    return "Error while connecting to the server. Please connect to the internet and try again.";
                 default:
                     return "Authentication failed";
             }

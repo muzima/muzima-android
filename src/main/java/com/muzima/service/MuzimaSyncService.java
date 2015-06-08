@@ -28,6 +28,7 @@ import com.muzima.controller.FormController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
+import com.muzima.utils.NetworkUtils;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -66,7 +67,11 @@ public class MuzimaSyncService {
         notificationController = muzimaApplication.getNotificationController();
     }
 
-    public int authenticate(String[] credentials) {
+    public int authenticate(String[] credentials){
+       return authenticate(credentials, false);
+    }
+
+    public int authenticate(String[] credentials, boolean isUpdatePasswordRequired) {
         String username = credentials[0].trim();
         String password = credentials[1];
         String server = credentials[2];
@@ -79,7 +84,7 @@ public class MuzimaSyncService {
 
             muzimaContext.openSession();
             if (!muzimaContext.isAuthenticated()) {
-                muzimaContext.authenticate(username, password, server);
+                muzimaContext.authenticate(username, password, server, NetworkUtils.isConnectedToNetwork(muzimaApplication),isUpdatePasswordRequired);
             }
         } catch (ConnectException e) {
             Log.e(TAG, "ConnectException Exception thrown while authentication.", e);
@@ -348,6 +353,7 @@ public class MuzimaSyncService {
         }
         return result;
     }
+
     public int[] downloadObservationsForPatientsByCohortUUIDs(String[] cohortUuids) {
         int[] result = new int[2];
         List<Patient> patients;

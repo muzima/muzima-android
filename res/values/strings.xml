@@ -196,6 +196,7 @@
     <string name="server_hint_text">Server URL</string>
     <string name="username_hint_text">Username</string>
     <string name="password_hint_text">Password</string>
+    <string name="new_password">Did you change your password recently?</string>
     <string name="add_cohort_pref_desc">Type the first few letters of the cohort you are interested in downloading
     </string>
     <string name="download_cohort_desc">Select one or more of the cohorts from the list and click on \'Next\' to
