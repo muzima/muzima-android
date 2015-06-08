@@ -36,6 +36,7 @@ public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAda
         SharedPreferences.Editor ed = sp.edit();
         ed.putBoolean("active", true);
         ed.commit();
+        listAdapter.reloadData();
     }
 
     @Override
