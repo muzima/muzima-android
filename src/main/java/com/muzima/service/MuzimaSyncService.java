@@ -12,8 +12,23 @@ import android.util.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.context.Context;
 import com.muzima.api.exception.AuthenticationException;
-import com.muzima.api.model.*;
-import com.muzima.controller.*;
+import com.muzima.api.model.Cohort;
+import com.muzima.api.model.CohortData;
+import com.muzima.api.model.Concept;
+import com.muzima.api.model.Encounter;
+import com.muzima.api.model.Form;
+import com.muzima.api.model.FormTemplate;
+import com.muzima.api.model.Notification;
+import com.muzima.api.model.Observation;
+import com.muzima.api.model.Patient;
+import com.muzima.controller.CohortController;
+import com.muzima.controller.ConceptController;
+import com.muzima.controller.EncounterController;
+import com.muzima.controller.FormController;
+import com.muzima.controller.NotificationController;
+import com.muzima.controller.ObservationController;
+import com.muzima.controller.PatientController;
+import com.muzima.utils.NetworkUtils;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -52,7 +67,11 @@ public class MuzimaSyncService {
         notificationController = muzimaApplication.getNotificationController();
     }
 
-    public int authenticate(String[] credentials) {
+    public int authenticate(String[] credentials){
+       return authenticate(credentials, false);
+    }
+
+    public int authenticate(String[] credentials, boolean isUpdatePasswordRequired) {
         String username = credentials[0].trim();
         String password = credentials[1];
         String server = credentials[2];
@@ -65,7 +84,7 @@ public class MuzimaSyncService {
 
             muzimaContext.openSession();
             if (!muzimaContext.isAuthenticated()) {
-                muzimaContext.authenticate(username, password, server);
+                muzimaContext.authenticate(username, password, server, NetworkUtils.isConnectedToNetwork(muzimaApplication),isUpdatePasswordRequired);
             }
         } catch (ConnectException e) {
             Log.e(TAG, "ConnectException Exception thrown while authentication.", e);
@@ -334,6 +353,7 @@ public class MuzimaSyncService {
         }
         return result;
     }
+
     public int[] downloadObservationsForPatientsByCohortUUIDs(String[] cohortUuids) {
         int[] result = new int[2];
         List<Patient> patients;

@@ -18,7 +18,6 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
-import com.muzima.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;

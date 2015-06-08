@@ -14,7 +14,6 @@ import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientIdentifierType;
 import com.muzima.api.model.PersonName;
 import com.muzima.utils.Constants;
-
 import com.muzima.utils.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -38,11 +38,6 @@ public class PatientNotificationsListFragment extends NotificationListFragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         Notification notification = (Notification) listAdapter.getItem(position);
         Intent notificationIntent = new Intent(getActivity(), NotificationActivity.class);

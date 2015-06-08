@@ -26,7 +26,6 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsRemoteSearchAdapter;
 import com.muzima.api.model.Patient;
-import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
@@ -37,7 +36,6 @@ import java.util.List;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
 import static java.lang.String.valueOf;
@@ -94,11 +92,6 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         listView.setVisibility(INVISIBLE);
         noDataView.setVisibility(INVISIBLE);
         progressBarContainer.setVisibility(VISIBLE);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 
     private void setupNoDataView() {

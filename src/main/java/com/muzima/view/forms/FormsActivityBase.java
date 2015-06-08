@@ -43,11 +43,6 @@ public abstract class FormsActivityBase extends BroadcastListenerActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
     private void initPager() {
         formsPager = (ViewPager) findViewById(R.id.pager);
         formsPagerAdapter = createFormsPagerAdapter();

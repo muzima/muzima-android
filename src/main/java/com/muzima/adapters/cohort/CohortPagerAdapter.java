@@ -25,7 +25,6 @@ package com.muzima.adapters.cohort;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
-
 import com.muzima.MuzimaApplication;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.controller.CohortController;

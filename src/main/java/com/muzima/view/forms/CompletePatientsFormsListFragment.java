@@ -56,6 +56,7 @@ public class CompletePatientsFormsListFragment extends FormsListFragment impleme
         SharedPreferences.Editor ed = sp.edit();
         ed.putBoolean("active", true);
         ed.commit();
+        listAdapter.reloadData();
     }
 
     @Override

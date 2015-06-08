@@ -8,9 +8,9 @@
 
 package com.muzima.view.forms;
 
-import android.content.Context;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,17 +31,18 @@ import com.muzima.api.model.APIName;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
+import com.muzima.model.FormWithData;
+import com.muzima.model.collections.CompleteFormsWithPatientData;
+import com.muzima.model.collections.IncompleteFormsWithPatientData;
 import com.muzima.service.MuzimaSyncService;
-import com.muzima.service.WizardFinishPreferenceService;
-import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.cohort.ConceptListActivity;
-import com.muzima.view.cohort.CustomConceptWizardActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class AllAvailableFormsListFragment extends FormsListFragment {
@@ -83,11 +84,6 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         if (!actionModeActive) {
             actionMode = getSherlockActivity().startActionMode(new NewFormsActionModeCallback());
@@ -117,6 +113,102 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         newFormsSyncInProgress = true;
     }
 
+    public void endActionMode() {
+        if (actionMode != null) {
+            actionMode.finish();
+        }
+    }
+
+    /**
+     * Check whether  any of selected forms has existing patient data
+     */
+    private boolean patientDataExistsWithSelectedForms() {
+        try {
+            IncompleteFormsWithPatientData incompleteForms = formController.getAllIncompleteFormsWithPatientData();
+            CompleteFormsWithPatientData completeForms = formController.getAllCompleteFormsWithPatientData();
+            if (patientDataExistsWithSelectedForms(incompleteForms) || patientDataExistsWithSelectedForms(completeForms)) {
+                return true;
+            }
+        } catch (FormController.FormFetchException e) {
+            Log.i(TAG, "Error getting forms with patient data");
+        }
+        return false;
+    }
+
+    /**
+     * Check whether  any of selected forms has existing patient data
+     *
+     * @param formWithData Existing patient data to check against
+     * @return true if there's any match, otherwise return false
+     */
+    private boolean patientDataExistsWithSelectedForms(ArrayList<? extends FormWithData> formWithData) {
+        List<String> selectedFormsUuids = getSelectedForms();
+        Iterator<? extends FormWithData> incompleteFormsIterator = formWithData.iterator();
+        if (incompleteFormsIterator.hasNext()) {
+            FormWithData incompleteForm = incompleteFormsIterator.next();
+            if (selectedFormsUuids.contains(incompleteForm.getFormUuid())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void navigateToNextActivity() {
+        Intent intent = new Intent(getActivity().getApplicationContext(), ConceptListActivity.class);
+        startActivity(intent);
+        getActivity().finish();
+    }
+
+    private int[] downloadFormTemplates() {
+        List<String> selectedFormIdsArray = getSelectedForms();
+        MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getActivity().getApplicationContext()).getMuzimaSyncService();
+        return muzimaSyncService.downloadFormTemplates(selectedFormIdsArray.toArray(new String[selectedFormIdsArray.size()]));
+    }
+
+    private void syncAllFormTemplatesInBackgroundService() {
+        ((FormsActivity) getActivity()).showProgressBar();
+        new SyncFormTemplateIntent(getActivity(), getSelectedFormsArray()).start();
+    }
+
+    public void setTemplateDownloadCompleteListener(OnTemplateDownloadComplete templateDownloadCompleteListener) {
+        this.templateDownloadCompleteListener = templateDownloadCompleteListener;
+    }
+
+    private String[] getSelectedFormsArray() {
+        List<String> selectedForms = getSelectedForms();
+        String[] selectedFormUuids = new String[selectedForms.size()];
+        return selectedForms.toArray(selectedFormUuids);
+    }
+
+    private void updateSyncTime() {
+        try {
+            LastSyncTimeService lastSyncTimeService = ((MuzimaApplication) this.getActivity().getApplicationContext()).getMuzimaContext().getLastSyncTimeService();//((MuzimaApplication)getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
+            Date lastSyncedTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS);
+            String lastSyncedMsg = "Not synced yet";
+            if (lastSyncedTime != null) {
+                lastSyncedMsg = "Last synced on: " + DateUtils.getFormattedDateTime(lastSyncedTime);
+            }
+            syncText.setText(lastSyncedMsg);
+        } catch (IOException e) {
+            Log.i(TAG, "Error getting forms last sync time");
+        }
+    }
+
+    private List<String> getSelectedForms() {
+        List<String> formUUIDs = new ArrayList<String>();
+        SparseBooleanArray checkedItemPositions = list.getCheckedItemPositions();
+        for (int i = 0; i < checkedItemPositions.size(); i++) {
+            if (checkedItemPositions.valueAt(i)) {
+                formUUIDs.add(((AvailableForm) list.getItemAtPosition(checkedItemPositions.keyAt(i))).getFormUuid());
+            }
+        }
+        return formUUIDs;
+    }
+
+    public interface OnTemplateDownloadComplete {
+        public void onTemplateDownloadComplete();
+    }
+
     public final class NewFormsActionModeCallback implements ActionMode.Callback {
 
         @Override
@@ -135,13 +227,27 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
             switch (menuItem.getItemId()) {
                 case R.id.menu_download:
                     if (newFormsSyncInProgress) {
-                        Toast.makeText(getActivity(), "Action not allowed while sync is in progress", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.sync_in_progress_msg, Toast.LENGTH_SHORT).show();
                         endActionMode();
                         break;
                     }
 
                     if (!NetworkUtils.isConnectedToNetwork(getActivity())) {
-                        Toast.makeText(getActivity(), "No connection found, please connect your device and try again", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.no_connection_found_msg, Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+
+                    if (patientDataExistsWithSelectedForms()) {
+                        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                        alertDialog.setMessage((getActivity().getApplicationContext())
+                                        .getString(R.string.already_exists_selected_forms_with_patient_data_msg)
+                        );
+                        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                            }
+                        });
+                        alertDialog.show();
                         return true;
                     }
 
@@ -150,14 +256,16 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
                     new AsyncTask<Void, Void, int[]>() {
                         @Override
                         protected void onPreExecute() {
-                            Log.i(TAG, "Canceling timeout timer!") ;
+                            Log.i(TAG, "Canceling timeout timer!");
                             ((MuzimaApplication) getActivity().getApplicationContext()).cancelTimer();
                             ((FormsActivity) getActivity()).showProgressBar();
                         }
+
                         @Override
                         protected int[] doInBackground(Void... voids) {
                             return downloadFormTemplates();
                         }
+
                         @Override
                         protected void onPostExecute(int[] results) {
                             navigateToNextActivity();
@@ -175,66 +283,5 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
             actionModeActive = false;
             ((AllAvailableFormsAdapter) listAdapter).clearSelectedForms();
         }
-    }
-
-    public void endActionMode() {
-        if (actionMode != null) {
-            actionMode.finish();
-        }
-    }
-
-    private void navigateToNextActivity() {
-        Intent intent = new Intent(getActivity().getApplicationContext(), ConceptListActivity.class);
-        startActivity(intent);
-        getActivity().finish();
-    }
-    private int[] downloadFormTemplates() {
-        List<String> selectedFormIdsArray = getSelectedForms();
-        MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getActivity().getApplicationContext()).getMuzimaSyncService();
-        return muzimaSyncService.downloadFormTemplates(selectedFormIdsArray.toArray(new String[selectedFormIdsArray.size()]));
-    }
-
-    private void syncAllFormTemplatesInBackgroundService() {
-        ((FormsActivity) getActivity()).showProgressBar();
-        new SyncFormTemplateIntent(getActivity(), getSelectedFormsArray()).start();
-    }
-
-    public void setTemplateDownloadCompleteListener(OnTemplateDownloadComplete templateDownloadCompleteListener) {
-        this.templateDownloadCompleteListener = templateDownloadCompleteListener;
-    }
-
-    public interface OnTemplateDownloadComplete {
-        public void onTemplateDownloadComplete();
-    }
-
-    private String[] getSelectedFormsArray() {
-        List<String> selectedForms = getSelectedForms();
-        String[] selectedFormUuids = new String[selectedForms.size()];
-        return selectedForms.toArray(selectedFormUuids);
-    }
-
-    private void updateSyncTime() {
-        try {
-            LastSyncTimeService lastSyncTimeService = ((MuzimaApplication)this.getActivity().getApplicationContext()).getMuzimaContext().getLastSyncTimeService();//((MuzimaApplication)getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
-            Date lastSyncedTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS);
-            String lastSyncedMsg = "Not synced yet";
-            if(lastSyncedTime != null){
-                lastSyncedMsg = "Last synced on: " + DateUtils.getFormattedDateTime(lastSyncedTime);
-            }
-            syncText.setText(lastSyncedMsg);
-        } catch (IOException e) {
-            Log.i(TAG,"Error getting forms last sync time");
-        }
-    }
-
-    private List<String> getSelectedForms(){
-        List<String> formUUIDs = new ArrayList<String>();
-        SparseBooleanArray checkedItemPositions = list.getCheckedItemPositions();
-        for (int i = 0; i < checkedItemPositions.size(); i++) {
-            if (checkedItemPositions.valueAt(i)) {
-                formUUIDs.add(((AvailableForm) list.getItemAtPosition(checkedItemPositions.keyAt(i))).getFormUuid());
-            }
-        }
-        return formUUIDs;
     }
 }

@@ -11,7 +11,6 @@ package com.muzima.view.forms;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
-
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Patient;
@@ -19,7 +18,6 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
 import com.muzima.service.FormParser;
-
 import com.muzima.utils.Constants;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -117,7 +115,6 @@ public class FormDataStore {
     }
 
     public boolean isRegistrationForm() {
-        return (formData.getDiscriminator() == null) ? false :
-                formData.getDiscriminator().equals(FORM_DISCRIMINATOR_REGISTRATION);
+        return (formData.getDiscriminator() != null) && formData.getDiscriminator().equals(FORM_DISCRIMINATOR_REGISTRATION);
     }
 }

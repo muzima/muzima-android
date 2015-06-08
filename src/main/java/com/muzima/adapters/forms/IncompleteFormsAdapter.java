@@ -64,7 +64,7 @@ public class IncompleteFormsAdapter extends SectionedFormsAdapter<IncompleteForm
             if (adapterWeakReference.get() != null) {
                 try {
                     FormsAdapter formsAdapter = adapterWeakReference.get();
-                    incompleteForms = formsAdapter.getFormController().getAllIncompleteForms();
+                    incompleteForms = formsAdapter.getFormController().getAllIncompleteFormsWithPatientData();
                     Log.i(TAG, "#Incomplete forms: " + incompleteForms.size());
                 } catch (FormController.FormFetchException e) {
                     Log.w(TAG, "Exception occurred while fetching local forms ", e);

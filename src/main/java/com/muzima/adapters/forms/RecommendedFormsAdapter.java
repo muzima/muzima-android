@@ -26,7 +26,6 @@ package com.muzima.adapters.forms;
 
 import android.content.Context;
 import android.util.Log;
-
 import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;

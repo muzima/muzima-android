@@ -26,7 +26,6 @@ package com.muzima.adapters.concept;
 import android.content.Context;
 import android.util.Log;
 import android.widget.AutoCompleteTextView;
-
 import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
 

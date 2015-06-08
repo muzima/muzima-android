@@ -37,7 +37,6 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaSyncService;
-import com.muzima.utils.Constants;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -98,7 +97,7 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
                 Credentials credentials = new Credentials(getContext());
                 MuzimaApplication muzimaApplicationContext = getMuzimaApplicationContext();
                 try {
-                    if (muzimaSyncService.authenticate(credentials.getCredentialsArray()) == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
+                    if (muzimaSyncService.authenticate(credentials.getCredentialsArray(),false) == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
                         options = getOptions(constraint);
                         previousConstraint = constraint.toString();
                         previousResult = options;

@@ -35,9 +35,9 @@ import java.util.List;
 import java.util.Map;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_OBSERVATIONS;
-import static java.util.Arrays.asList;
 import static com.muzima.util.Constants.UUID_SEPARATOR;
 import static com.muzima.util.Constants.UUID_TYPE_SEPARATOR;
+import static java.util.Arrays.asList;
 
 public class ObservationController {
 
@@ -141,6 +141,15 @@ public class ObservationController {
     public Encounters getEncountersWithObservations(String patientUuid) throws LoadObservationException {
         try {
             return groupByEncounters(observationService.getObservationsByPatient(patientUuid));
+        } catch (IOException e) {
+            throw new LoadObservationException(e);
+        }
+    }
+    public List<Observation> getObservationsByPatient(String patientUuid)  throws LoadObservationException{
+        try {
+            List<Observation> observations = observationService.getObservationsByPatient(patientUuid);
+            inflateConcepts(observations);
+            return observations;
         } catch (IOException e) {
             throw new LoadObservationException(e);
         }

@@ -46,6 +46,7 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
@@ -110,7 +111,7 @@ public class MuzimaSyncServiceTest {
 
         when(muzimaContext.isAuthenticated()).thenReturn(true);
 
-        verify(muzimaContext, times(0)).authenticate(anyString(), anyString(), anyString());
+        verify(muzimaContext, times(0)).authenticate(anyString(), anyString(), anyString(), anyBoolean(), anyBoolean());
         assertThat(muzimaSyncService.authenticate(credentials), is(SyncStatusConstants.AUTHENTICATION_SUCCESS));
     }
 
@@ -128,7 +129,7 @@ public class MuzimaSyncServiceTest {
     public void authenticate_shouldCallCloseSessionIfExceptionOccurred() throws Exception {
         String[] credentials = new String[]{"username", "password", "url"};
 
-        doThrow(new ParseException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2]);
+        doThrow(new ParseException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2], true, false);
         muzimaSyncService.authenticate(credentials);
 
         verify(muzimaContext).closeSession();
@@ -138,7 +139,7 @@ public class MuzimaSyncServiceTest {
     public void authenticate_shouldReturnParsingErrorIfParsingExceptionOccurs() throws Exception {
         String[] credentials = new String[]{"username", "password", "url"};
 
-        doThrow(new ParseException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2]);
+        doThrow(new ParseException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2], true, false);
 
         assertThat(muzimaSyncService.authenticate(credentials), is(SyncStatusConstants.PARSING_ERROR));
     }
@@ -147,7 +148,7 @@ public class MuzimaSyncServiceTest {
     public void authenticate_shouldReturnConnectionErrorIfConnectionErrorOccurs() throws Exception {
         String[] credentials = new String[]{"username", "password", "url"};
 
-        doThrow(new ConnectException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2]);
+        doThrow(new ConnectException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2], true, false);
 
         assertThat(muzimaSyncService.authenticate(credentials), is(SyncStatusConstants.CONNECTION_ERROR));
     }
@@ -156,7 +157,7 @@ public class MuzimaSyncServiceTest {
     public void authenticate_shouldReturnAuthenticationErrorIfAuthenticationErrorOccurs() throws Exception {
         String[] credentials = new String[]{"username", "password", "url"};
 
-        doThrow(new IOException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2]);
+        doThrow(new IOException()).when(muzimaContext).authenticate(credentials[0], credentials[1], credentials[2], true, false);
 
         assertThat(muzimaSyncService.authenticate(credentials), is(SyncStatusConstants.AUTHENTICATION_ERROR));
     }
@@ -187,7 +188,7 @@ public class MuzimaSyncServiceTest {
 
     @Test
     public void downloadForms_shouldReturnDeletedFormCount() throws FormController.FormFetchException {
-        int[] result = new int[]{SyncStatusConstants.SUCCESS,2,1};
+        int[] result = new int[]{SyncStatusConstants.SUCCESS, 2, 1};
 
         List<Form> downloadedForms = new ArrayList<Form>();
         Form formToDelete = new Form();
@@ -508,7 +509,7 @@ public class MuzimaSyncServiceTest {
         conceptWeight.setUuid("weight");
         Concept conceptTemp = new Concept();
         conceptTemp.setUuid("temp");
-        when(conceptController.getConcepts()).thenReturn(asList(conceptWeight,conceptTemp));
+        when(conceptController.getConcepts()).thenReturn(asList(conceptWeight, conceptTemp));
 
         muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortUuids);
 
@@ -565,8 +566,8 @@ public class MuzimaSyncServiceTest {
             }});
         }};
 
-        List<Concept> conceptList = new ArrayList<Concept>(){{
-            add(new Concept(){{
+        List<Concept> conceptList = new ArrayList<Concept>() {{
+            add(new Concept() {{
                 setUuid("concept1");
             }});
         }};
@@ -708,8 +709,8 @@ public class MuzimaSyncServiceTest {
         Observation voidedObservation = mock(Observation.class);
         when(voidedObservation.isVoided()).thenReturn(true);
         observations.add(voidedObservation);
-        List<Concept> conceptList = new ArrayList<Concept>(){{
-            add(new Concept(){{
+        List<Concept> conceptList = new ArrayList<Concept>() {{
+            add(new Concept() {{
                 setUuid("concept1");
             }});
         }};

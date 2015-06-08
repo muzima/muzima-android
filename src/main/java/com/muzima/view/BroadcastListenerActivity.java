@@ -20,7 +20,7 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
-    private static final String TAG = "BroadcastListenerActivity";
+    private static final String TAG = BroadcastListenerActivity.class.getSimpleName();
     public static final String MESSAGE_SENT_ACTION = "com.muzima.MESSAGE_RECEIVED_ACTION";
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
