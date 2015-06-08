@@ -9,15 +9,12 @@
 package com.muzima.view.cohort;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
-
 import com.actionbarsherlock.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -25,8 +22,6 @@ import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaSyncService;
-import com.muzima.service.WizardFinishPreferenceService;
-import com.muzima.view.InstallBarCodeWizardActivity;
 import com.muzima.view.forms.MuzimaProgressDialog;
 import com.muzima.view.preferences.ConceptPreferenceActivity;
 

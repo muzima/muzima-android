@@ -24,7 +24,6 @@ import com.muzima.model.observation.EncounterWithObservations;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
-import com.muzima.utils.StringUtils;
 
 public class ObservationsByEncounterAdapter extends ObservationsAdapter<EncounterWithObservations> {
     public ObservationsByEncounterAdapter(FragmentActivity activity, int item_observation_list, ConceptController conceptController, ObservationController observationController) {

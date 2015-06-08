@@ -20,7 +20,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
-import com.muzima.view.login.LoginActivity;
 
 public class BaseFragmentActivity extends SherlockFragmentActivity {
 

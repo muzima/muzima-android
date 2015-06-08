@@ -9,7 +9,6 @@
 package com.muzima.service;
 
 import com.muzima.utils.StringUtils;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 

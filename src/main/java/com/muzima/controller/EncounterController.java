@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.Set;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_ENCOUNTERS;
-import static java.util.Arrays.asList;
 import static com.muzima.util.Constants.UUID_SEPARATOR;
+import static java.util.Arrays.asList;
 
 public class EncounterController {
 
@@ -45,6 +45,9 @@ public class EncounterController {
         } catch (IOException e) {
             throw new ReplaceEncounterException(e);
         }
+    }
+    public int getEncountersCountByPatient(String patientUuid) throws IOException {
+        return encounterService.getEncountersByPatientUuid(patientUuid).size();
     }
 
     public List<Encounter>  getEncountersByPatientUuid(String patientUuid) throws DownloadEncounterException{

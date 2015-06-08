@@ -8,9 +8,7 @@
 
 package com.muzima.service;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 public class SntpService {
 

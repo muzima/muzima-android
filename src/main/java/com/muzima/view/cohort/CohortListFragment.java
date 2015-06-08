@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.cohort.CohortsAdapter;

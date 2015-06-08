@@ -21,9 +21,8 @@ import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.view.BaseActivity;
-import java.util.UUID;
 
-import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_REGISTRATION;
+import java.util.UUID;
 
 public class RegistrationFormsActivity extends BaseActivity {
     private ListView list;

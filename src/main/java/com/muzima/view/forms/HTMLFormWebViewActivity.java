@@ -47,6 +47,7 @@ import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.lucene.queryParser.ParseException;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -75,6 +76,9 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     public static final String DISCRIMINATOR = "discriminator";
     public static final String DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS =  "2";
     public static final boolean IS_LOGGED_IN_USER_DEFAULT_PROVIDER =  false;
+    public static final boolean IS_ALLOWED_FORM_DATA_DUPLICATION =  true;
+    public static final String SAVE_AS_INCOMPLETE = "saveDraft";
+    public static final String SAVE_AS_COMPLETED = "submit";
 
 
     private WebView webView;
@@ -95,7 +99,9 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private FormController formController;
     private String autoSaveIntervalPreference;
     private boolean encounterProviderPreference;
+    private boolean duplicateFormDataPreference;
     final Handler handler = new Handler();
+    public String jsonPayload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +120,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
         autoSaveIntervalPreference = preferences.getString("autoSaveIntervalPreference", DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS);
         encounterProviderPreference = preferences.getBoolean("encounterProviderPreference", IS_LOGGED_IN_USER_DEFAULT_PROVIDER);
+        duplicateFormDataPreference = preferences.getBoolean("duplicateFormDataPreference", IS_ALLOWED_FORM_DATA_DUPLICATION );
 
         showProgressBar("Loading...");
         try {
@@ -212,10 +219,26 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.form_save_as_draft:
-                saveDraft();
+                try {
+                    saveDraft();
+                } catch (IOException e) {
+                    Log.e(TAG, "Error while saving the form data", e);
+                } catch (JSONException e) {
+                    Log.e(TAG, "Error while saving the form data", e);
+                } catch (InterruptedException e) {
+                    Log.e(TAG, "Error while saving the form data", e);
+                }
                 return true;
             case R.id.form_submit:
-                webView.loadUrl("javascript:document.submit()");
+                try {
+                    saveCompleted();
+                } catch (IOException e) {
+                    Log.e(TAG, "Error while saving the form data", e);
+                } catch (JSONException e) {
+                    Log.e(TAG, "Error while saving the form data", e);
+                } catch (InterruptedException e) {
+                    Log.e(TAG, "Error while saving the form data", e);
+                }
                 return true;
             case R.id.form_close:
                 processBackButtonPressed();
@@ -248,11 +271,79 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                 .create()
                 .show();
     }
+    public void showWarningDialog(String saveType) {
+        new AlertDialog.Builder(HTMLFormWebViewActivity.this)
+                .setCancelable(true)
+                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                .setTitle(getResources().getString(R.string.already_exists_form_title))
+                .setMessage(getResources().getString(R.string.already_exists_form_message))
+                .setPositiveButton(getString(R.string.duplicate_form_button_label), duplicateFormDataClickListener(saveType))
+                .setNegativeButton(getString(R.string.cancel), null)
+                .create()
+                .show();
+    }
+    public void showWarningDialog() {
+        new AlertDialog.Builder(HTMLFormWebViewActivity.this)
+                .setCancelable(true)
+                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                .setTitle(getResources().getString(R.string.already_exists_form_title))
+                .setMessage(getResources().getString(R.string.already_exists_form_message))
+                .setNegativeButton(getString(R.string.alert_Ok), null)
+                .create()
+                .show();
+    }
+    private boolean isFormAlreadyExist() throws IOException, JSONException {
+        return formController.isFormAlreadyExist(this.jsonPayload);
+    }
+    private Dialog.OnClickListener duplicateFormDataClickListener(final String saveType){
 
-    public void saveDraft() {
+        return new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(saveType.equals(SAVE_AS_INCOMPLETE)){
+                    webView.loadUrl("javascript:document.saveDraft()");
+                }else if(saveType.equals(SAVE_AS_COMPLETED)){
+                    webView.loadUrl("javascript:document.submit()");
+                }
+            }
+        };
+    }
+
+    public void saveDraft() throws IOException, JSONException, InterruptedException {
+        loadJson();
+        Thread.sleep(500);
         if (!isFormComplete()) {
-            webView.loadUrl("javascript:document.saveDraft()");
+            if(isFormAlreadyExist()) {
+                if(duplicateFormDataPreference) {
+                    showWarningDialog(SAVE_AS_INCOMPLETE);
+                }
+                else {
+                    showWarningDialog();
+                }
+            }
+            else {
+                webView.loadUrl("javascript:document.saveDraft()");
+            }
         }
+    }
+
+    public void saveCompleted() throws IOException, JSONException, InterruptedException {
+        loadJson();
+        Thread.sleep(500);
+        if(isFormAlreadyExist()) {
+            if(duplicateFormDataPreference) {
+                showWarningDialog(SAVE_AS_COMPLETED);
+            }else {
+                showWarningDialog();
+            }
+        }
+        else {
+            webView.loadUrl("javascript:document.submit()");
+        }
+    }
+
+    private void loadJson(){
+        webView.loadUrl("javascript:document.loadJson()");
     }
 
     @Override

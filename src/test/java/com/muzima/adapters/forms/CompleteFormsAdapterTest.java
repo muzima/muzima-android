@@ -59,7 +59,7 @@ public class CompleteFormsAdapterTest {
         CompleteFormsWithPatientData completeFormsWithPatientData = new CompleteFormsWithPatientData();
         completeFormsWithPatientData.add(new CompleteFormWithPatientData());
 
-        when(formController.getAllCompleteForms()).thenReturn(completeFormsWithPatientData);
+        when(formController.getAllCompleteFormsWithPatientData()).thenReturn(completeFormsWithPatientData);
 
         queryTask.execute();
         Robolectric.runBackgroundTasks();
@@ -76,7 +76,7 @@ public class CompleteFormsAdapterTest {
             add(completeFormWithPatientData(patient2));
             add(completeFormWithPatientData(patient1));
         }};
-        when(formController.getAllCompleteForms()).thenReturn(completeFormsWithPatientData);
+        when(formController.getAllCompleteFormsWithPatientData()).thenReturn(completeFormsWithPatientData);
         StickyListHeadersListView listView = new StickyListHeadersListView(Robolectric.application);
         listView.setAdapter(formsAdapter);
         formsAdapter.setListView(listView);

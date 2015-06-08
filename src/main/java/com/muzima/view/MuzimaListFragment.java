@@ -31,11 +31,6 @@ public abstract class MuzimaListFragment extends SherlockFragment implements Ada
         setRetainInstance(true);
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
     protected void setupNoDataView(View formsLayout) {
         TextView noDataMsgTextView = (TextView) formsLayout.findViewById(R.id.no_data_msg);
         noDataMsgTextView.setText(noDataMsg);

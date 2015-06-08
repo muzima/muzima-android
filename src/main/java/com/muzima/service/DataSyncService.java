@@ -54,11 +54,6 @@ public class DataSyncService extends IntentService {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-    @Override
     protected void onHandleIntent(Intent intent) {
         int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
         Intent broadcastIntent = new Intent();
@@ -146,7 +141,7 @@ public class DataSyncService extends IntentService {
                 }
                 break;
             case DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS:
-                updateNotificationMsg("Real time upload of forms");
+                updateNotificationMsg("Start real time upload of forms");
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = muzimaSyncService.uploadAllCompletedForms();
                     broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS);

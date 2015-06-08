@@ -9,10 +9,7 @@
 package com.muzima.tasks;
 
 import android.os.AsyncTask;
-import android.os.Build;
 import android.widget.Toast;
-
-import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.model.BaseForm;
 

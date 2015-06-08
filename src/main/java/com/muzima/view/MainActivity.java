@@ -8,11 +8,13 @@
 
 package com.muzima.view;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 import com.actionbarsherlock.app.ActionBar;
@@ -31,9 +33,6 @@ import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.patients.PatientsListActivity;
 import org.apache.lucene.queryParser.ParseException;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 
 import static com.muzima.utils.Constants.NotificationStatusConstants.NOTIFICATION_UNREAD;
 
@@ -55,20 +54,9 @@ public class MainActivity extends BroadcastListenerActivity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
         executeBackgroundTask();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
     }
 
     @Override

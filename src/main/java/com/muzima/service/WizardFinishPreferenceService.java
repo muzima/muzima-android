@@ -11,7 +11,6 @@ package com.muzima.service;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
 import com.muzima.R;
 
 public class WizardFinishPreferenceService extends PreferenceService {

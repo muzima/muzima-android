@@ -36,7 +36,14 @@
     </RelativeLayout>
 
     <View style="@style/DividerLine"/>
-
+    <ScrollView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
     <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="100dp"
@@ -69,7 +76,38 @@
                 </TextView>
             </RelativeLayout>
         </LinearLayout>
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:baselineAligned="false">
 
+        <RelativeLayout
+                android:layout_width="fill_parent"
+                style="@style/ClickableGridItem"
+                android:layout_weight="100"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal"
+                android:layout_height="80dp"
+                android:baselineAligned="false"
+                android:onClick="showEncounters">
+
+            <TextView
+                    style="@style/DashboardListItemMediumHeadingText"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="@string/encounters">
+            </TextView>
+            <TextView
+                    android:id="@+id/encounterDescription"
+                    style="@style/DashboardItemDescription"
+                    android:layout_alignParentBottom="true"
+                    android:text="##">
+            </TextView>
+        </RelativeLayout>
+    </LinearLayout>
     <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="100dp"
@@ -138,8 +176,8 @@
 
             </RelativeLayout>
     </LinearLayout>
-
-
+   </LinearLayout>
+    </ScrollView>
     <View style="@style/DividerLine"/>
 
 </LinearLayout>

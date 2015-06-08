@@ -12,14 +12,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.Toast;
-
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
-import com.muzima.adapters.forms.FormsPagerAdapter;
 import com.muzima.adapters.forms.PatientFormsPagerAdapter;
 import com.muzima.api.model.Patient;
-import com.muzima.controller.PatientController;
 import com.muzima.utils.Constants;
 import com.muzima.view.patients.PatientSummaryActivity;
 

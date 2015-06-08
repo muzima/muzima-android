@@ -41,7 +41,7 @@ public class HTMLPatientJSONMapperTest {
         assertThat(json, containsString("\"patient.family_name\":\"familyname\""));
         assertThat(json, containsString("\"patient.sex\":\"Female\""));
         assertThat(json, containsString("\"patient.uuid\":\"uuid\""));
-        assertThat(json, containsString("\"patient.birthdate\":\"" + formattedDate.format(birthdate) + "\""));
+        assertThat(json, containsString("\"patient.birth_date\":\"" + formattedDate.format(birthdate) + "\""));
         assertThat(json, containsString("\"encounter.form_uuid\":\"formUuid\""));
     }
 
@@ -51,7 +51,7 @@ public class HTMLPatientJSONMapperTest {
         HTMLPatientJSONMapper htmlPatientJSONMapper = new HTMLPatientJSONMapper();
         User user = new User();
         String json = htmlPatientJSONMapper.map(patient, new FormData(), user, false);
-        assertThat(json,not(containsString("\"patient.birthdate\"")));
+        assertThat(json,not(containsString("\"patient.birth_date\"")));
     }
 
     private Patient patient(String givenName, String middleName, String familyName, String sex, Date birthdate, String uuid) {

@@ -8,11 +8,8 @@
 
 package com.muzima.utils.audio;
 
-import java.io.File;
-
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -29,7 +26,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.utils.MediaUtils;
-import com.muzima.view.forms.AudioComponent;
+
+import java.io.File;
 
 import static com.muzima.utils.Constants.APP_AUDIO_DIR;
 
