@@ -370,7 +370,7 @@ public class FormController {
         }
     }
 
-    public IncompleteFormsWithPatientData getAllIncompleteForms() throws FormFetchException {
+    public IncompleteFormsWithPatientData getAllIncompleteFormsWithPatientData() throws FormFetchException {
         IncompleteFormsWithPatientData incompleteForms = new IncompleteFormsWithPatientData();
 
         try {
@@ -395,7 +395,7 @@ public class FormController {
         return incompleteForms;
     }
 
-    public CompleteFormsWithPatientData getAllCompleteForms() throws FormFetchException {
+    public CompleteFormsWithPatientData getAllCompleteFormsWithPatientData() throws FormFetchException {
         CompleteFormsWithPatientData completeForms = new CompleteFormsWithPatientData();
 
         try {
@@ -454,11 +454,11 @@ public class FormController {
     }
 
     public int getAllIncompleteFormsSize() throws FormFetchException {
-        return getAllIncompleteForms().size();
+        return getAllIncompleteFormsWithPatientData().size();
     }
 
     public int getAllCompleteFormsSize() throws FormFetchException {
-        return getAllCompleteForms().size();
+        return getAllCompleteFormsWithPatientData().size();
     }
 
     public int getCompleteFormsCountForPatient(String patientId) throws FormFetchException {

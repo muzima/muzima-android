@@ -43,6 +43,15 @@
     <string name="no_synced_form_msg">No Forms Have Been Synced Yet</string>
     <string name="no_synced_form_tip">Please press sync button to sync completed forms with server</string>
 
+    <string name="sync_in_progress_msg">Action not allowed while sync is in progress</string>
+    <string name="already_fetching_forms_msg">Already fetching forms, ignored the request</string>
+    <string name="already_uploading_forms_msg">Already fetching forms, ignored the request</string>
+    <string name="no_connection_found_msg">No connection found, please connect your device and try again</string>
+    <string name="already_exists_selected_forms_with_patient_data_msg">There is existing form data for selected form(s).
+        Finish Incomplete data and sync Complete data to Server first before downloading the forms.</string>
+    <string name="already_exists_some_forms_with_patient_data_msg">There is existing form data.
+        Finish Incomplete data and sync Complete data to Server first before syncing form templates.</string>
+
     <string name="no_cohorts_available">No Cohorts Available</string>
     <string name="no_cohorts_available_tip">Please press load to fetch available cohorts list from server</string>
     <string name="no_cohorts_synced">No Cohorts Have Been Synced</string>
