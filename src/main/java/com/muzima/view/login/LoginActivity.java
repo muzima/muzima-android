@@ -274,6 +274,7 @@ public class LoginActivity extends Activity {
             if (new WizardFinishPreferenceService(LoginActivity.this).isWizardFinished()) {
                 intent = new Intent(getApplicationContext(), MainActivity.class);
             } else {
+                ((MuzimaApplication)getApplication()).clearApplicationData();
                 intent = new Intent(getApplicationContext(), CohortWizardActivity.class);
             }
             startActivity(intent);
