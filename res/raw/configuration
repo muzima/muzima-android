@@ -454,6 +454,33 @@
                 "apiName": "$['apiName']",
                 "paramSignature": "$['paramSignature']"
             }
-        }
-    ]
-}
+        },
+                 {
+                     "resource.name": "Search Location Resource",
+                     "node.root": "$['results']",
+                     "resource.object": "com.muzima.api.model.Location",
+                     "algorithm.class": "com.muzima.api.model.algorithm.LocationAlgorithm",
+                     "resolver.class": "com.muzima.api.model.resolver.SearchLocationResolver",
+                     "field.unique": "uuid",
+                     "field.searchable": {
+                         "uuid": "$['uuid']",
+                         "name": "$['name']",
+                         "id": "$['id']"
+                     }
+                 },
+                 {
+                                     "resource.name": "Uuid Location Resource",
+                                     "node.root": "$",
+                                     "resource.object": "com.muzima.api.model.Location",
+                                     "algorithm.class": "com.muzima.api.model.algorithm.LocationAlgorithm",
+                                     "resolver.class": "com.muzima.api.model.resolver.UuidLocationResolver",
+                                     "field.unique": "uuid",
+                                     "field.searchable": {
+                                         "uuid": "$['uuid']",
+                                         "name": "$['name']",
+                                         "id": "$['id']"
+                                     }
+                         }
+
+             ]
+         }
