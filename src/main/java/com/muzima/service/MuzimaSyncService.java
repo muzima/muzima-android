@@ -180,19 +180,24 @@ public class MuzimaSyncService {
         return voidedForms;
     }
 
-    public int[] downloadFormTemplates(String[] formIds) {
+    public int[] downloadFormTemplates(String[] formIds, boolean replaceExistingTemplates) {
         int[] result = new int[3];
 
         try {
             List<FormTemplate> formTemplates = formController.downloadFormTemplates(formIds);
             Log.i(TAG, formTemplates.size() + " form template download successful");
 
-            formController.replaceFormTemplates(formTemplates);
             List<Concept> concepts = getRelatedConcepts(formTemplates);
 
-            ConceptController.newConcepts = concepts;
-            List<Concept> savedConcepts = conceptController.getConcepts();
-            ConceptController.newConcepts.removeAll(savedConcepts);
+            if(replaceExistingTemplates){
+                formController.replaceFormTemplates(formTemplates);
+                ConceptController.newConcepts = concepts;
+                List<Concept> savedConcepts = conceptController.getConcepts();
+                ConceptController.newConcepts.removeAll(savedConcepts);
+            }
+            else {
+                formController.saveFormTemplates(formTemplates);
+            }
 
             conceptController.saveConcepts(concepts);
 
@@ -353,13 +358,12 @@ public class MuzimaSyncService {
         }
         return result;
     }
-
-    public int[] downloadObservationsForPatientsByCohortUUIDs(String[] cohortUuids) {
+    public int[] downloadObservationsForPatientsByCohortUUIDs(String[] cohortUuids, boolean replaceExistingObservation) {
         int[] result = new int[2];
         List<Patient> patients;
         try {
             patients = patientController.getPatientsForCohorts(cohortUuids);
-            result = downloadObservationsForPatientsByPatientUUIDs(getPatientUuids(patients));
+            result = downloadObservationsForPatientsByPatientUUIDs(getPatientUuids(patients),replaceExistingObservation);
         } catch (PatientController.PatientLoadException e) {
             Log.e(TAG, "Exception thrown while loading patients.", e);
             result[0] = SyncStatusConstants.LOAD_ERROR;
@@ -386,7 +390,7 @@ public class MuzimaSyncService {
         return lists;
     }
 
-    public int[] downloadObservationsForPatientsByPatientUUIDs(List<String> patientUuids) {
+    public int[] downloadObservationsForPatientsByPatientUUIDs(List<String> patientUuids, boolean replaceExistingObservations) {
         int[] result = new int[3];
         try {
             long startDownloadObservations = System.currentTimeMillis();
@@ -409,11 +413,17 @@ public class MuzimaSyncService {
             observationController.deleteObservations(voidedObservations);
             allObservations.removeAll(voidedObservations);
             Log.i(TAG, "Voided observations delete successful with " + voidedObservations.size() + " observations");
-            observationController.replaceObservations(allObservations);
-            long replacedObservations = System.currentTimeMillis();
 
-            Log.d(TAG, "In Downloading observations : " + (endDownloadObservations - startDownloadObservations) / 1000 + " sec\n" +
-                    "In Replacing observations for patients: " + (replacedObservations - endDownloadObservations) / 1000 + " sec");
+            if(replaceExistingObservations) {
+                observationController.replaceObservations(allObservations);
+                long replacedObservations = System.currentTimeMillis();
+                Log.d(TAG, "In Downloading observations : " + (endDownloadObservations - startDownloadObservations) / 1000 + " sec\n" +
+                        "In Replacing observations for patients: " + (replacedObservations - endDownloadObservations) / 1000 + " sec");
+            }
+            else {
+                observationController.saveObservations(allObservations);
+                Log.d(TAG, "In Saving observations : " + (endDownloadObservations - startDownloadObservations) / 1000 + " sec\n");
+            }
 
             result[0] = SyncStatusConstants.SUCCESS;
             result[1] = allObservations.size();
@@ -430,6 +440,9 @@ public class MuzimaSyncService {
         } catch (ObservationController.DeleteObservationException e) {
             Log.e(TAG, "Exception thrown while deleting observations.", e);
             result[0] = SyncStatusConstants.DELETE_ERROR;
+        } catch (ObservationController.SaveObservationException e) {
+            Log.e(TAG, "Exception thrown while saving observations.", e);
+            result[0] = SyncStatusConstants.SAVE_ERROR;
         }
 
         return result;
@@ -445,12 +458,12 @@ public class MuzimaSyncService {
         return voidedObservations;
     }
 
-    public int[] downloadEncountersForPatientsByCohortUUIDs(String[] cohortUuids) {
+    public int[] downloadEncountersForPatientsByCohortUUIDs(String[] cohortUuids, boolean replaceExistingEncounters) {
         int[] result = new int[2];
         List<Patient> patients;
         try {
             patients = patientController.getPatientsForCohorts(cohortUuids);
-            result = downloadEncountersForPatientsByPatientUUIDs(getPatientUuids(patients));
+            result = downloadEncountersForPatientsByPatientUUIDs(getPatientUuids(patients), replaceExistingEncounters);
         } catch (PatientController.PatientLoadException e) {
             Log.e(TAG, "Exception thrown while loading patients.", e);
             result[0] = SyncStatusConstants.LOAD_ERROR;
@@ -458,7 +471,7 @@ public class MuzimaSyncService {
         return result;
     }
 
-    public int[] downloadEncountersForPatientsByPatientUUIDs(List<String> patientUuids) {
+    public int[] downloadEncountersForPatientsByPatientUUIDs(List<String> patientUuids, boolean replaceExistingEncounters) {
         int[] result = new int[3];
         try {
             long startDownloadEncounters = System.currentTimeMillis();
@@ -474,11 +487,15 @@ public class MuzimaSyncService {
             encounterController.deleteEncounters(voidedEncounters);
             Log.i(TAG, "Voided encounters delete successful with " + allEncounters.size() + " encounters");
 
-            encounterController.replaceEncounters(allEncounters);
-            long replacedEncounters = System.currentTimeMillis();
-
-            Log.d(TAG, "In Downloading encounters : " + (endDownloadObservations - startDownloadEncounters) / 1000 + " sec\n" +
-                    "In Replacing encounters for patients: " + (replacedEncounters - endDownloadObservations) / 1000 + " sec");
+            if(replaceExistingEncounters) {
+                encounterController.replaceEncounters(allEncounters);
+                long replacedEncounters = System.currentTimeMillis();
+                Log.d(TAG, "In Downloading encounters : " + (endDownloadObservations - startDownloadEncounters) / 1000 + " sec\n" +
+                        "In Replacing encounters for patients: " + (replacedEncounters - endDownloadObservations) / 1000 + " sec");
+            }else {
+                encounterController.saveEncounters(allEncounters);
+                Log.d(TAG, "In Saving encounters : " + (endDownloadObservations - startDownloadEncounters) / 1000 + " sec\n" );
+            }
 
             result[0] = SyncStatusConstants.SUCCESS;
             result[1] = allEncounters.size();
@@ -492,6 +509,9 @@ public class MuzimaSyncService {
         } catch (EncounterController.DeleteEncounterException e) {
             Log.e(TAG, "Exception thrown while deleting encounters.", e);
             result[0] = SyncStatusConstants.DELETE_ERROR;
+        } catch (EncounterController.SaveEncounterException e) {
+            Log.e(TAG, "Exception thrown while saving encounters.", e);
+            result[0] = SyncStatusConstants.SAVE_ERROR;
         }
         return result;
     }
