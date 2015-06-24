@@ -46,7 +46,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class AllAvailableFormsListFragment extends FormsListFragment {
-    private static final String TAG = "AllAvailableFormsListFragment";
+    private static final String TAG = AllAvailableFormsListFragment.class.getSimpleName();
     private ActionMode actionMode;
     private boolean actionModeActive = false;
     private OnTemplateDownloadComplete templateDownloadCompleteListener;
@@ -153,27 +153,6 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         return false;
     }
 
-    private void navigateToNextActivity() {
-        Intent intent = new Intent(getActivity().getApplicationContext(), ConceptListActivity.class);
-        startActivity(intent);
-        getActivity().finish();
-    }
-
-    private int[] downloadFormTemplates() {
-        List<String> selectedFormIdsArray = getSelectedForms();
-        MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getActivity().getApplicationContext()).getMuzimaSyncService();
-        return muzimaSyncService.downloadFormTemplates(selectedFormIdsArray.toArray(new String[selectedFormIdsArray.size()]));
-    }
-
-    private void syncAllFormTemplatesInBackgroundService() {
-        ((FormsActivity) getActivity()).showProgressBar();
-        new SyncFormTemplateIntent(getActivity(), getSelectedFormsArray()).start();
-    }
-
-    public void setTemplateDownloadCompleteListener(OnTemplateDownloadComplete templateDownloadCompleteListener) {
-        this.templateDownloadCompleteListener = templateDownloadCompleteListener;
-    }
-
     private String[] getSelectedFormsArray() {
         List<String> selectedForms = getSelectedForms();
         String[] selectedFormUuids = new String[selectedForms.size()];
@@ -206,7 +185,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     }
 
     public interface OnTemplateDownloadComplete {
-        public void onTemplateDownloadComplete();
+        void onTemplateDownloadComplete();
     }
 
     public final class NewFormsActionModeCallback implements ActionMode.Callback {
@@ -285,12 +264,6 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         }
     }
 
-    public void endActionMode() {
-        if (actionMode != null) {
-            actionMode.finish();
-        }
-    }
-
     private void navigateToNextActivity() {
         Intent intent = new Intent(getActivity().getApplicationContext(), ConceptListActivity.class);
         startActivity(intent);
@@ -309,40 +282,5 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
 
     public void setTemplateDownloadCompleteListener(OnTemplateDownloadComplete templateDownloadCompleteListener) {
         this.templateDownloadCompleteListener = templateDownloadCompleteListener;
-    }
-
-    public interface OnTemplateDownloadComplete {
-        public void onTemplateDownloadComplete();
-    }
-
-    private String[] getSelectedFormsArray() {
-        List<String> selectedForms = getSelectedForms();
-        String[] selectedFormUuids = new String[selectedForms.size()];
-        return selectedForms.toArray(selectedFormUuids);
-    }
-
-    private void updateSyncTime() {
-        try {
-            LastSyncTimeService lastSyncTimeService = ((MuzimaApplication)this.getActivity().getApplicationContext()).getMuzimaContext().getLastSyncTimeService();//((MuzimaApplication)getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
-            Date lastSyncedTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS);
-            String lastSyncedMsg = "Not synced yet";
-            if(lastSyncedTime != null){
-                lastSyncedMsg = "Last synced on: " + DateUtils.getFormattedDateTime(lastSyncedTime);
-            }
-            syncText.setText(lastSyncedMsg);
-        } catch (IOException e) {
-            Log.i(TAG,"Error getting forms last sync time");
-        }
-    }
-
-    private List<String> getSelectedForms(){
-        List<String> formUUIDs = new ArrayList<String>();
-        SparseBooleanArray checkedItemPositions = list.getCheckedItemPositions();
-        for (int i = 0; i < checkedItemPositions.size(); i++) {
-            if (checkedItemPositions.valueAt(i)) {
-                formUUIDs.add(((AvailableForm) list.getItemAtPosition(checkedItemPositions.keyAt(i))).getFormUuid());
-            }
-        }
-        return formUUIDs;
     }
 }
