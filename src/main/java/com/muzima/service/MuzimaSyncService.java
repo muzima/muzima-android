@@ -22,6 +22,7 @@ import com.muzima.api.model.Location;
 import com.muzima.api.model.Notification;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.Provider;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
@@ -196,6 +197,8 @@ public class MuzimaSyncService {
 
             List<Concept> concepts = getRelatedConcepts(formTemplates);
             List<Location> locations = getRelatedLocations(formTemplates);
+            List<Provider> providers = providerController.getRelatedProviders(formTemplates,
+                    muzimaApplication.getAuthenticatedUser().getSystemId());
 
             if (replaceExistingTemplates) {
                 LocationController.newLocations = locations;
@@ -204,17 +207,14 @@ public class MuzimaSyncService {
                 ConceptController.newConcepts.removeAll(savedConcepts);
                 List<Location> savedLocations = locationController.getAllLocations();
                 LocationController.newLocations.removeAll(savedLocations);
+                providerController.newProviders(providers);
             }
             else {
                 formController.saveFormTemplates(formTemplates);
             }
-            
+
             conceptController.saveConcepts(concepts);
             locationController.saveLocations(locations);
-
-            List<Provider> providers = getRelatedProviders(formTemplates);
-            List<Provider> savedProviders = providerController.getAllProviders();
-            ProviderController.newProviders.removeAll(savedProviders);
             providerController.saveProviders(providers);
 
             Log.i(TAG, "Form templates replaced");
@@ -307,24 +307,6 @@ public class MuzimaSyncService {
         }
         cohortController.deleteCohorts(voidedCohorts);
         return voidedCohorts;
-    }
-
-    private List<Provider> getRelatedProviders(List<FormTemplate> formTemplates) throws ProviderController.ProviderDownloadException, ProviderController.ProviderLoadException {
-        HashSet<Provider> providers = new HashSet<Provider>();
-        HTMLProviderParser htmlParserUtils = new HTMLProviderParser();
-        for (FormTemplate formTemplate : formTemplates) {
-            List<String> names = new ArrayList<String>();
-            if (formTemplate.isHTMLForm()) {
-                names = htmlParserUtils.parse(formTemplate.getHtml());
-            } else {
-                // names = xmlParserUtils.parse(formTemplate.getModel());
-            }
-            providers.addAll(providerController.downloadProvidersFromServerByName(names));
-        }
-        //Download the provider data in to local repo for logged in user
-        providers.add(providerController.downloadProviderBySystemId(muzimaApplication.getAuthenticatedUser().getSystemId()));
-
-        return new ArrayList<Provider>(providers);
     }
 
     private List<Concept> getRelatedConcepts(List<FormTemplate> formTemplates) throws ConceptController.ConceptDownloadException {

@@ -110,9 +110,9 @@ public class SelectedProviderAdapter extends ListAdapter<Provider> {
                     // Called with Provider which is selected in the AutoComplete menu.
                     providerController.saveProviders(providersList);
                 }
-                if(ProviderController.newProviders.size() > 0){
+                if(providerController.newProviders().size() > 0){
                     // called when new providers are downloaded as part of new form template
-                    return ProviderController.newProviders;
+                    return providerController.newProviders();
                 }
                 try {
                     selectedProviders = providerController.getAllProviders();
@@ -131,7 +131,6 @@ public class SelectedProviderAdapter extends ListAdapter<Provider> {
                 Toast.makeText(getContext(), "Something went wrong while fetching providers from local repo", Toast.LENGTH_SHORT).show();
                 return;
             }
-            ProviderController.newProviders = new ArrayList<Provider>();
             clear();
             addAll(providers);
             notifyDataSetChanged();

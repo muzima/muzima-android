@@ -1,12 +1,13 @@
 package com.muzima.controller;
 
 import android.util.Log;
+import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Provider;
 import com.muzima.api.service.ProviderService;
+import com.muzima.service.HTMLProviderParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class ProviderController {
 
     public static final String TAG = "ProviderController";
     private ProviderService providerService;
-    public static List<Provider> newProviders = new ArrayList<Provider>();
+    public List<Provider> newProviders = new ArrayList<Provider>();
 
     public ProviderController(ProviderService providerService){
         this.providerService = providerService;
@@ -132,6 +133,33 @@ public class ProviderController {
         }
     }
 
+    public List<Provider> getRelatedProviders(List<FormTemplate> formTemplates, String systemId) throws ProviderDownloadException, ProviderLoadException {
+        HashSet<Provider> providers = new HashSet<Provider>();
+        HTMLProviderParser htmlParserUtils = new HTMLProviderParser();
+        for (FormTemplate formTemplate : formTemplates) {
+            List<String> names = new ArrayList<String>();
+            if (formTemplate.isHTMLForm()) {
+                names = htmlParserUtils.parse(formTemplate.getHtml());
+            } else {
+                // names = xmlParserUtils.parse(formTemplate.getModel());
+            }
+            providers.addAll(downloadProvidersFromServerByName(names));
+        }
+        //Download the provider data in to local repo for logged in user
+        providers.add(downloadProviderBySystemId(systemId));
+
+        return new ArrayList<Provider>(providers);
+    }
+
+    public void newProviders(List<Provider> providers) throws ProviderLoadException {
+        newProviders = providers;
+        List<Provider> savedProviders = getAllProviders();
+        newProviders.removeAll(savedProviders);
+    }
+
+    public List<Provider> newProviders() {
+        return newProviders;
+    }
 
     public static class ProviderSaveException extends Throwable {
         public ProviderSaveException(Throwable throwable) {
