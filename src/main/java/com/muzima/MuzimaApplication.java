@@ -130,6 +130,7 @@ public class MuzimaApplication extends Application {
                 && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Security.removeProvider("AndroidOpenSSL");
         }
+        logOut();
         muzimaTimer = getTimer(this);
 
         super.onCreate();
