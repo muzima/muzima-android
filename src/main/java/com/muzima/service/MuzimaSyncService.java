@@ -18,6 +18,7 @@ import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormTemplate;
+import com.muzima.api.model.Location;
 import com.muzima.api.model.Notification;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
@@ -25,6 +26,7 @@ import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
+import com.muzima.controller.LocationController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
@@ -54,6 +56,7 @@ public class MuzimaSyncService {
     private final CohortPrefixPreferenceService cohortPrefixPreferenceService;
     private EncounterController encounterController;
     private NotificationController notificationController;
+    private LocationController locationController;
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
         this.muzimaApplication = muzimaContext;
@@ -65,6 +68,7 @@ public class MuzimaSyncService {
         observationController = muzimaApplication.getObservationController();
         encounterController = muzimaApplication.getEncounterController();
         notificationController = muzimaApplication.getNotificationController();
+        locationController = muzimaApplication.getLocationController();
     }
 
     public int authenticate(String[] credentials){
@@ -181,31 +185,36 @@ public class MuzimaSyncService {
     }
 
     public int[] downloadFormTemplates(String[] formIds, boolean replaceExistingTemplates) {
-        int[] result = new int[3];
+        int[] result = new int[4];
 
         try {
             List<FormTemplate> formTemplates = formController.downloadFormTemplates(formIds);
             Log.i(TAG, formTemplates.size() + " form template download successful");
 
             List<Concept> concepts = getRelatedConcepts(formTemplates);
+            List<Location> locations = getRelatedLocations(formTemplates);
 
-            if(replaceExistingTemplates){
-                formController.replaceFormTemplates(formTemplates);
+            if (replaceExistingTemplates) {
+                LocationController.newLocations = locations;
                 ConceptController.newConcepts = concepts;
                 List<Concept> savedConcepts = conceptController.getConcepts();
                 ConceptController.newConcepts.removeAll(savedConcepts);
+                List<Location> savedLocations = locationController.getAllLocations();
+                LocationController.newLocations.removeAll(savedLocations);
             }
             else {
                 formController.saveFormTemplates(formTemplates);
             }
-
+            
             conceptController.saveConcepts(concepts);
+            locationController.saveLocations(locations);
 
             Log.i(TAG, "Form templates replaced");
 
             result[0] = SyncStatusConstants.SUCCESS;
             result[1] = formTemplates.size();
             result[2] = concepts.size();
+            result[3] = locations.size();
         } catch (FormController.FormSaveException e) {
             Log.e(TAG, "Exception when trying to save forms", e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
@@ -220,10 +229,22 @@ public class MuzimaSyncService {
             return result;
         } catch (ConceptController.ConceptSaveException e) {
             Log.e(TAG, "Exception when trying to download forms", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = SyncStatusConstants.SAVE_ERROR;
             return result;
         } catch (ConceptController.ConceptFetchException e) {
             e.printStackTrace();
+        } catch (LocationController.LocationDownloadException e) {
+            Log.e(TAG, "Exception while downloading Locations", e);
+            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            return result;
+        } catch (LocationController.LocationLoadException e) {
+            Log.e(TAG, "Exception while loading Locations", e);
+            result[0] = SyncStatusConstants.LOAD_ERROR;
+            return result;
+        } catch (LocationController.LocationSaveException e) {
+            Log.e(TAG, "Exception while saving Locations", e);
+            result[0] = SyncStatusConstants.SAVE_ERROR;
+            return result;
         }
         return result;
     }
@@ -282,6 +303,22 @@ public class MuzimaSyncService {
             concepts.addAll(conceptController.downloadConceptsByNames(names));
         }
         return new ArrayList<Concept>(concepts);
+    }
+
+    private List<Location> getRelatedLocations(List<FormTemplate> formTemplates) throws LocationController.LocationDownloadException {
+        HashSet<Location> locations = new HashSet<Location>();
+        LocationParser xmlParserUtils = new LocationParser();
+        HTMLLocationParser htmlParserUtils = new HTMLLocationParser();
+        for (FormTemplate formTemplate : formTemplates) {
+            List<String> names = new ArrayList<String>();
+            if (formTemplate.isHTMLForm()) {
+                names = htmlParserUtils.parse(formTemplate.getHtml());
+            } else {
+               // names = xmlParserUtils.parse(formTemplate.getModel());
+            }
+            locations.addAll(locationController.downloadLocationsFromServerByName(names));
+        }
+        return new ArrayList<Location>(locations);
     }
 
     public int[] downloadPatientsForCohorts(String[] cohortUuids) {

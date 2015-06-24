@@ -38,6 +38,7 @@ import com.muzima.service.MuzimaSyncService;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.cohort.ConceptListActivity;
+import com.muzima.view.cohort.LocationListActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -265,7 +266,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     }
 
     private void navigateToNextActivity() {
-        Intent intent = new Intent(getActivity().getApplicationContext(), ConceptListActivity.class);
+        Intent intent = new Intent(getActivity().getApplicationContext(), LocationListActivity.class);
         startActivity(intent);
         getActivity().finish();
     }

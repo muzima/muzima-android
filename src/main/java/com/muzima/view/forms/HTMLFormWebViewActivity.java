@@ -35,6 +35,7 @@ import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.User;
 import com.muzima.controller.FormController;
+import com.muzima.controller.LocationController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
 import com.muzima.utils.Constants;
@@ -97,6 +98,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private Map<String, String> videoResultMap;
     private String sectionName;
     private FormController formController;
+    private LocationController locationController;
     private String autoSaveIntervalPreference;
     private boolean encounterProviderPreference;
     private boolean duplicateFormDataPreference;
@@ -107,6 +109,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         formController = ((MuzimaApplication) this.getApplicationContext()).getFormController();
+        locationController = ((MuzimaApplication) this.getApplicationContext()).getLocationController();
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
@@ -401,7 +404,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private void setupFormData()
             throws FormFetchException, FormController.FormDataFetchException, FormController.FormDataSaveException, IOException, ParseException {
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
-
         BaseForm baseForm = (BaseForm) getIntent().getSerializableExtra(FORM);
         form = formController.getFormByUuid(baseForm.getFormUuid());
         patient = (Patient) getIntent().getSerializableExtra(PATIENT);
@@ -449,7 +451,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         webView.addJavascriptInterface(imagingComponent, IMAGE);
         webView.addJavascriptInterface(audioComponent, AUDIO);
         webView.addJavascriptInterface(videoComponent, VIDEO);
-        webView.addJavascriptInterface(new HTMLFormDataStore(this, formController, formData), HTML_DATA_STORE);
+        webView.addJavascriptInterface(new HTMLFormDataStore(this, formController,locationController, formData), HTML_DATA_STORE);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         if (isFormComplete()) {
             webView.setOnTouchListener(createCompleteFormListenerToDisableInput());

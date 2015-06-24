@@ -168,7 +168,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
     }
 
     private void navigateToNextActivity() {
-        Intent intent = new Intent(getApplicationContext(), CustomConceptWizardActivity.class);
+        Intent intent = new Intent(getApplicationContext(), CustomLocationWizardActivity.class);
         startActivity(intent);
         finish();
     }
