@@ -191,17 +191,13 @@ public class MuzimaSyncService {
             Log.i(TAG, formTemplates.size() + " form template download successful");
 
             List<Concept> concepts = conceptController.getRelatedConcepts(formTemplates);
-            List<Location> locations = getRelatedLocations(formTemplates);
+            List<Location> locations = locationController.getRelatedLocations(formTemplates);
 
 
             if (replaceExistingTemplates) {
                 formController.replaceFormTemplates(formTemplates);
                 conceptController.newConcepts(concepts);
-
-                LocationController.newLocations = locations;
-                List<Location> savedLocations = locationController.getAllLocations();
-                LocationController.newLocations.removeAll(savedLocations);
-
+                locationController.newLocations(locations);
             } else {
                 formController.saveFormTemplates(formTemplates);
             }
@@ -289,23 +285,7 @@ public class MuzimaSyncService {
         return voidedCohorts;
     }
 
-    private List<Location> getRelatedLocations(List<FormTemplate> formTemplates) throws LocationController.LocationDownloadException {
-        HashSet<Location> locations = new HashSet<Location>();
-        LocationParser xmlParserUtils = new LocationParser();
-        HTMLLocationParser htmlParserUtils = new HTMLLocationParser();
-        for (FormTemplate formTemplate : formTemplates) {
-            List<String> names = new ArrayList<String>();
-            if (formTemplate.isHTMLForm()) {
-                names = htmlParserUtils.parse(formTemplate.getHtml());
-            } else {
-                // names = xmlParserUtils.parse(formTemplate.getModel());
-            }
-            locations.addAll(locationController.downloadLocationsFromServerByName(names));
-        }
-        return new ArrayList<Location>(locations);
-    }
-
-    public int[] downloadPatientsForCohorts(String[] cohortUuids) {
+  public int[] downloadPatientsForCohorts(String[] cohortUuids) {
         int[] result = new int[4];
 
         int patientCount = 0;
