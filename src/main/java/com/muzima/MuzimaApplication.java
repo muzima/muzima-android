@@ -303,12 +303,6 @@ public class MuzimaApplication extends Application {
         muzimaTimer.restart();
     }
 
-    public boolean isLoggedIn() {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        String passwordKey = getResources().getString(R.string.preference_password);
-        return settings.getAll().size() == 0 || StringUtil.EMPTY.equals(settings.getAll().get(passwordKey).toString());
-    }
-
     public void logOut() {
         saveBeforeExit();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);

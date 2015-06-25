@@ -74,11 +74,8 @@ public class MainActivity extends BroadcastListenerActivity {
     }
 
     @Override
-    public void onBackPressed(){
-        if(((MuzimaApplication) getApplication()).isLoggedIn())
-        {
-            showAlertDialog();
-        }
+    public void onBackPressed() {
+        showAlertDialog();
     }
 
     private void showAlertDialog() {
@@ -92,11 +89,11 @@ public class MainActivity extends BroadcastListenerActivity {
                 .create()
                 .show();
     }
-    private Dialog.OnClickListener dialogYesClickListener(){
+
+    private Dialog.OnClickListener dialogYesClickListener() {
         return new Dialog.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
+            public void onClick(DialogInterface dialog, int which) {
                 ((MuzimaApplication) getApplication()).logOut();
                 finish();
                 System.exit(0);
@@ -165,11 +162,11 @@ public class MainActivity extends BroadcastListenerActivity {
                 // Notifications
                 User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
                 if (authenticatedUser != null) {
-                    homeActivityMetadata.newNotifications =  notificationController.getAllNotificationsByReceiverCount(authenticatedUser.getPerson().getUuid(),NOTIFICATION_UNREAD);
-                    homeActivityMetadata.totalNotifications =  notificationController.getAllNotificationsByReceiverCount(authenticatedUser.getPerson().getUuid(),null);
+                    homeActivityMetadata.newNotifications = notificationController.getAllNotificationsByReceiverCount(authenticatedUser.getPerson().getUuid(), NOTIFICATION_UNREAD);
+                    homeActivityMetadata.totalNotifications = notificationController.getAllNotificationsByReceiverCount(authenticatedUser.getPerson().getUuid(), null);
                 } else {
-                    homeActivityMetadata.newNotifications =  0;
-                    homeActivityMetadata.totalNotifications =  0;
+                    homeActivityMetadata.newNotifications = 0;
+                    homeActivityMetadata.totalNotifications = 0;
                 }
             } catch (CohortController.CohortFetchException e) {
                 Log.w(TAG, "CohortFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
