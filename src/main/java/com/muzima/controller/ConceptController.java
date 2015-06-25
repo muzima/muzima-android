@@ -24,9 +24,12 @@
 package com.muzima.controller;
 
 import com.muzima.api.model.Concept;
+import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Observation;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.ObservationService;
+import com.muzima.service.ConceptParser;
+import com.muzima.service.HTMLConceptParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,7 +39,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ConceptController {
-    public static List<Concept> newConcepts = new ArrayList<Concept>();
+    private List<Concept> newConcepts = new ArrayList<Concept>();
     private ConceptService conceptService;
     private ObservationService observationService;
 
@@ -121,6 +124,32 @@ public class ConceptController {
         } catch (IOException e) {
             throw new ConceptFetchException(e);
         }
+    }
+
+    public void newConcepts(List<Concept> concepts) throws ConceptFetchException {
+        newConcepts = concepts;
+        List<Concept> savedConcepts = getConcepts();
+        newConcepts.removeAll(savedConcepts);
+    }
+
+    public List<Concept> newConcepts() {
+        return newConcepts;
+    }
+
+    public List<Concept> getRelatedConcepts(List<FormTemplate> formTemplates) throws ConceptDownloadException {
+        HashSet<Concept> concepts = new HashSet<Concept>();
+        ConceptParser xmlParserUtils = new ConceptParser();
+        HTMLConceptParser htmlParserUtils = new HTMLConceptParser();
+        for (FormTemplate formTemplate : formTemplates) {
+            List<String> names = new ArrayList<String>();
+            if (formTemplate.isHTMLForm()) {
+                names = htmlParserUtils.parse(formTemplate.getHtml());
+            } else {
+                names = xmlParserUtils.parse(formTemplate.getModel());
+            }
+            concepts.addAll(downloadConceptsByNames(names));
+        }
+        return new ArrayList<Concept>(concepts);
     }
 
     public static class ConceptDownloadException extends Throwable {

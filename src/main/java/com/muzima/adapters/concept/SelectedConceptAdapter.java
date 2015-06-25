@@ -36,7 +36,6 @@ import com.muzima.api.model.Concept;
 import com.muzima.controller.ConceptController;
 import com.muzima.view.preferences.ConceptPreferenceActivity;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -134,9 +133,9 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
                     // Called with Concept which is selected in the AutoComplete menu.
                     conceptController.saveConcepts(conceptList);
                 }
-                if(ConceptController.newConcepts.size() > 0){
+                if(conceptController.newConcepts().size() > 0){
                     // called when new concepts are downloaded as part of new form template
-                    return ConceptController.newConcepts;
+                    return conceptController.newConcepts();
                 }
                 selectedConcepts = conceptController.getConcepts();
             } catch (ConceptController.ConceptSaveException e) {
@@ -153,7 +152,6 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
                 Toast.makeText(getContext(), "Something went wrong while fetching concepts from local repo", Toast.LENGTH_SHORT).show();
                 return;
             }
-            ConceptController.newConcepts = new ArrayList<Concept>();
             clear();
             addAll(concepts);
             notifyDataSetChanged();

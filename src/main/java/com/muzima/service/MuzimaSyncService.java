@@ -37,7 +37,6 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
@@ -191,21 +190,18 @@ public class MuzimaSyncService {
             List<FormTemplate> formTemplates = formController.downloadFormTemplates(formIds);
             Log.i(TAG, formTemplates.size() + " form template download successful");
 
-            List<Concept> concepts = getRelatedConcepts(formTemplates);
-            List<Location> locations = getRelatedLocations(formTemplates);
+            List<Concept> concepts = conceptController.getRelatedConcepts(formTemplates);
+            List<Location> locations = locationController.getRelatedLocations(formTemplates);
+
 
             if (replaceExistingTemplates) {
-                LocationController.newLocations = locations;
-                ConceptController.newConcepts = concepts;
-                List<Concept> savedConcepts = conceptController.getConcepts();
-                ConceptController.newConcepts.removeAll(savedConcepts);
-                List<Location> savedLocations = locationController.getAllLocations();
-                LocationController.newLocations.removeAll(savedLocations);
-            }
-            else {
+                formController.replaceFormTemplates(formTemplates);
+                conceptController.newConcepts(concepts);
+                locationController.newLocations(locations);
+            } else {
                 formController.saveFormTemplates(formTemplates);
             }
-            
+
             conceptController.saveConcepts(concepts);
             locationController.saveLocations(locations);
 
@@ -289,39 +285,7 @@ public class MuzimaSyncService {
         return voidedCohorts;
     }
 
-    private List<Concept> getRelatedConcepts(List<FormTemplate> formTemplates) throws ConceptController.ConceptDownloadException {
-        HashSet<Concept> concepts = new HashSet<Concept>();
-        ConceptParser xmlParserUtils = new ConceptParser();
-        HTMLConceptParser htmlParserUtils = new HTMLConceptParser();
-        for (FormTemplate formTemplate : formTemplates) {
-            List<String> names = new ArrayList<String>();
-            if (formTemplate.isHTMLForm()) {
-                names = htmlParserUtils.parse(formTemplate.getHtml());
-            } else {
-                names = xmlParserUtils.parse(formTemplate.getModel());
-            }
-            concepts.addAll(conceptController.downloadConceptsByNames(names));
-        }
-        return new ArrayList<Concept>(concepts);
-    }
-
-    private List<Location> getRelatedLocations(List<FormTemplate> formTemplates) throws LocationController.LocationDownloadException {
-        HashSet<Location> locations = new HashSet<Location>();
-        LocationParser xmlParserUtils = new LocationParser();
-        HTMLLocationParser htmlParserUtils = new HTMLLocationParser();
-        for (FormTemplate formTemplate : formTemplates) {
-            List<String> names = new ArrayList<String>();
-            if (formTemplate.isHTMLForm()) {
-                names = htmlParserUtils.parse(formTemplate.getHtml());
-            } else {
-               // names = xmlParserUtils.parse(formTemplate.getModel());
-            }
-            locations.addAll(locationController.downloadLocationsFromServerByName(names));
-        }
-        return new ArrayList<Location>(locations);
-    }
-
-    public int[] downloadPatientsForCohorts(String[] cohortUuids) {
+  public int[] downloadPatientsForCohorts(String[] cohortUuids) {
         int[] result = new int[4];
 
         int patientCount = 0;

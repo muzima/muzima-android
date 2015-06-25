@@ -9,8 +9,11 @@
 package com.muzima.controller;
 
 import android.util.Log;
+import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Location;
 import com.muzima.api.service.LocationService;
+import com.muzima.service.HTMLLocationParser;
+import com.muzima.service.LocationParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,7 +24,7 @@ public class LocationController {
 
     public static final String TAG = "LocationController";
     private LocationService locationService;
-    public static List<Location> newLocations = new ArrayList<Location>();
+    public List<Location> newLocations = new ArrayList<Location>();
 
     public LocationController(LocationService locationService){
         this.locationService = locationService;
@@ -121,6 +124,31 @@ public class LocationController {
 
     }
 
+    public List<Location> getRelatedLocations(List<FormTemplate> formTemplates) throws LocationDownloadException {
+        HashSet<Location> locations = new HashSet<Location>();
+        LocationParser xmlParserUtils = new LocationParser();
+        HTMLLocationParser htmlParserUtils = new HTMLLocationParser();
+        for (FormTemplate formTemplate : formTemplates) {
+            List<String> names = new ArrayList<String>();
+            if (formTemplate.isHTMLForm()) {
+                names = htmlParserUtils.parse(formTemplate.getHtml());
+            } else {
+                // names = xmlParserUtils.parse(formTemplate.getModel());
+            }
+            locations.addAll(downloadLocationsFromServerByName(names));
+        }
+        return new ArrayList<Location>(locations);
+    }
+
+    public void newLocations(List<Location> locations) throws LocationLoadException {
+        newLocations = locations;
+        List<Location> savedLocations = getAllLocations();
+        newLocations.removeAll(savedLocations);
+    }
+
+    public List<Location> newLocations() {
+        return newLocations;
+    }
 
     public static class LocationSaveException extends Throwable {
         public LocationSaveException(Throwable throwable) {

@@ -21,7 +21,6 @@ import com.muzima.api.model.Location;
 import com.muzima.controller.LocationController;
 import com.muzima.view.preferences.LocationPreferenceActivity;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -117,9 +116,9 @@ public class SelectedLocationAdapter extends ListAdapter<Location> {
                     // Called with Location which is selected in the AutoComplete menu.
                     locationController.saveLocations(locationsList);
                 }
-                if(LocationController.newLocations.size() > 0){
+                if(locationController.newLocations().size() > 0){
                     // called when new locations are downloaded as part of new form template
-                    return LocationController.newLocations;
+                    return locationController.newLocations();
                 }
                 try {
                     selectedLocations = locationController.getAllLocations();
@@ -138,7 +137,6 @@ public class SelectedLocationAdapter extends ListAdapter<Location> {
                 Toast.makeText(getContext(), "Something went wrong while fetching locations from local repo", Toast.LENGTH_SHORT).show();
                 return;
             }
-            LocationController.newLocations = new ArrayList<Location>();
             clear();
             addAll(locations);
             notifyDataSetChanged();
