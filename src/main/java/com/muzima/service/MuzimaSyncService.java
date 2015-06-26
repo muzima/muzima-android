@@ -22,6 +22,7 @@ import com.muzima.api.model.Location;
 import com.muzima.api.model.Notification;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.Provider;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
@@ -30,6 +31,7 @@ import com.muzima.controller.LocationController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
+import com.muzima.controller.ProviderController;
 import com.muzima.utils.NetworkUtils;
 import org.apache.lucene.queryParser.ParseException;
 
@@ -56,6 +58,7 @@ public class MuzimaSyncService {
     private EncounterController encounterController;
     private NotificationController notificationController;
     private LocationController locationController;
+    private ProviderController providerController;
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
         this.muzimaApplication = muzimaContext;
@@ -68,6 +71,7 @@ public class MuzimaSyncService {
         encounterController = muzimaApplication.getEncounterController();
         notificationController = muzimaApplication.getNotificationController();
         locationController = muzimaApplication.getLocationController();
+        providerController = muzimaApplication.getProviderController();
     }
 
     public int authenticate(String[] credentials){
@@ -190,20 +194,28 @@ public class MuzimaSyncService {
             List<FormTemplate> formTemplates = formController.downloadFormTemplates(formIds);
             Log.i(TAG, formTemplates.size() + " form template download successful");
 
-            List<Concept> concepts = conceptController.getRelatedConcepts(formTemplates);
-            List<Location> locations = locationController.getRelatedLocations(formTemplates);
+            List<Concept> concepts = getRelatedConcepts(formTemplates);
+            List<Location> locations = getRelatedLocations(formTemplates);
+            List<Provider> providers = providerController.getRelatedProviders(formTemplates,
+                    muzimaApplication.getAuthenticatedUser().getSystemId());
 
 
             if (replaceExistingTemplates) {
-                formController.replaceFormTemplates(formTemplates);
-                conceptController.newConcepts(concepts);
-                locationController.newLocations(locations);
-            } else {
+                LocationController.newLocations = locations;
+                ConceptController.newConcepts = concepts;
+                List<Concept> savedConcepts = conceptController.getConcepts();
+                ConceptController.newConcepts.removeAll(savedConcepts);
+                List<Location> savedLocations = locationController.getAllLocations();
+                LocationController.newLocations.removeAll(savedLocations);
+                providerController.newProviders(providers);
+            }
+            else {
                 formController.saveFormTemplates(formTemplates);
             }
 
             conceptController.saveConcepts(concepts);
             locationController.saveLocations(locations);
+            providerController.saveProviders(providers);
 
             Log.i(TAG, "Form templates replaced");
 
@@ -240,6 +252,18 @@ public class MuzimaSyncService {
         } catch (LocationController.LocationSaveException e) {
             Log.e(TAG, "Exception while saving Locations", e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
+            return result;
+        } catch (ProviderController.ProviderLoadException e) {
+            Log.e(TAG, "Exception while loading Providers", e);
+            result[0] = SyncStatusConstants.LOAD_ERROR;
+            return result;
+        } catch (ProviderController.ProviderSaveException e) {
+            Log.e(TAG, "Exception while saving Provider", e);
+            result[0] = SyncStatusConstants.SAVE_ERROR;
+            return result;
+        } catch (ProviderController.ProviderDownloadException e) {
+            Log.e(TAG, "Exception while downloading provider", e);
+            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
         }
         return result;

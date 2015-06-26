@@ -77,6 +77,21 @@
                 android:parentActivityName="com.muzima.view.MainActivity">
         </activity>
         <activity
+                android:name=".view.preferences.ProviderPreferenceActivity"
+                android:theme="@style/PreferencesTheme"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_provider_pref"
+                android:parentActivityName="com.muzima.view.preferences.SettingsActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.preferences.SettingsActivity"/>
+        </activity>
+        <activity
+                android:name="com.muzima.view.cohort.ProviderListActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_provider_pref">
+        </activity>
+        <activity
                 android:name=".view.preferences.CohortPreferenceActivity"
                 android:theme="@style/PreferencesTheme"
                 android:configChanges="orientation|screenSize"
@@ -160,6 +175,7 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.forms.FormsActivity"/>
         </activity>
+
         <activity
                 android:name=".view.forms.HTMLFormWebViewActivity"
                 android:label="@string/title_activity_form_webview"
@@ -281,6 +297,10 @@
                   android:configChanges="orientation|screenSize"
                   android:theme="@style/WizardTheme"/>
         <activity android:name=".view.cohort.CustomLocationWizardActivity"
+                  android:configChanges="orientation|screenSize"
+                  android:theme="@style/WizardTheme"/>
+        <activity android:name=".view.cohort.CustomProviderWizardActivity"
+                  android:label="Define Custom Concept"
                   android:configChanges="orientation|screenSize"
                   android:theme="@style/WizardTheme"/>
         <activity android:name=".view.cohort.CustomConceptWizardActivity"

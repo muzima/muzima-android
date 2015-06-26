@@ -8,15 +8,19 @@
 
 package com.muzima.view.forms;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.FormData;
-import com.muzima.api.model.Patient;
 import com.muzima.api.model.Location;
+import com.muzima.api.model.Patient;
+import com.muzima.api.model.Provider;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.ProviderController;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.utils.Constants;
@@ -37,11 +41,13 @@ public class HTMLFormDataStore {
     private FormController formController;
     private LocationController locationController;
     private FormData formData;
+    private ProviderController providerController;
 
-    public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity, FormController formController, LocationController locationController, FormData formData) {
+    public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity, FormController formController, LocationController locationController, FormData formData, ProviderController providerController) {
         this.formWebViewActivity = formWebViewActivity;
         this.formController = formController;
         this.formData = formData;
+        this.providerController = providerController;
         this.locationController = locationController;
     }
 
@@ -100,7 +106,7 @@ public class HTMLFormDataStore {
     public String getLocationNamesFromDevice() throws JSONException {
         List<Location> locationsOnDevice = new ArrayList<Location>();
         try {
-             locationsOnDevice = locationController.getAllLocations();
+            locationsOnDevice = locationController.getAllLocations();
         } catch (LocationController.LocationLoadException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while loading locations for the form", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while loading locations", e);
@@ -108,6 +114,32 @@ public class HTMLFormDataStore {
         return JSONValue.toJSONString(locationsOnDevice);
     }
 
+    @JavascriptInterface
+    public String getProviderNamesFromDevice() throws JSONException {
+        List<Provider> providersOnDevice = new ArrayList<Provider>();
+        try {
+            providersOnDevice = providerController.getAllProviders();
+        }catch (ProviderController.ProviderLoadException e) {
+            Toast.makeText(formWebViewActivity, "An error occurred while loading provider for the form", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "Exception occurred while loading providers", e);
+            e.printStackTrace();
+        }
+        return JSONValue.toJSONString(providersOnDevice);
+    }
+
+    @JavascriptInterface
+    public String getDefaultEncounterProvider()
+    {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(formWebViewActivity.getApplicationContext());
+        boolean encounterProviderPreference = preferences.getBoolean("encounterProviderPreference", false);
+        if(encounterProviderPreference){
+            MuzimaApplication applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
+            List<Provider> providers = new ArrayList<Provider>();
+            providers.add(providerController.getProviderBySystemId(applicationContext.getAuthenticatedUser().getSystemId()));
+            return JSONValue.toJSONString(providers);
+        }
+        return "";
+    }
     private void parseForm(String jsonPayload, String status) {
         if (status.equals(Constants.STATUS_INCOMPLETE)) {
             return;
