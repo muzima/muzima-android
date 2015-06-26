@@ -455,32 +455,59 @@
                 "paramSignature": "$['paramSignature']"
             }
         },
-                 {
-                     "resource.name": "Search Location Resource",
-                     "node.root": "$['results']",
-                     "resource.object": "com.muzima.api.model.Location",
-                     "algorithm.class": "com.muzima.api.model.algorithm.LocationAlgorithm",
-                     "resolver.class": "com.muzima.api.model.resolver.SearchLocationResolver",
-                     "field.unique": "uuid",
-                     "field.searchable": {
-                         "uuid": "$['uuid']",
-                         "name": "$['name']",
-                         "id": "$['id']"
-                     }
-                 },
-                 {
-                                     "resource.name": "Uuid Location Resource",
-                                     "node.root": "$",
-                                     "resource.object": "com.muzima.api.model.Location",
-                                     "algorithm.class": "com.muzima.api.model.algorithm.LocationAlgorithm",
-                                     "resolver.class": "com.muzima.api.model.resolver.UuidLocationResolver",
-                                     "field.unique": "uuid",
-                                     "field.searchable": {
-                                         "uuid": "$['uuid']",
-                                         "name": "$['name']",
-                                         "id": "$['id']"
-                                     }
-                         }
-
-             ]
-         }
+        {
+            "resource.name": "Search Location Resource",
+            "node.root": "$['results']",
+            "resource.object": "com.muzima.api.model.Location",
+            "algorithm.class": "com.muzima.api.model.algorithm.LocationAlgorithm",
+            "resolver.class": "com.muzima.api.model.resolver.SearchLocationResolver",
+            "field.unique": "uuid",
+            "field.searchable": {
+                "uuid": "$['uuid']",
+                "name": "$['name']",
+                "id": "$['id']"
+            }
+        },
+        {
+            "resource.name": "Uuid Location Resource",
+            "node.root": "$",
+            "resource.object": "com.muzima.api.model.Location",
+            "algorithm.class": "com.muzima.api.model.algorithm.LocationAlgorithm",
+            "resolver.class": "com.muzima.api.model.resolver.UuidLocationResolver",
+            "field.unique": "uuid",
+            "field.searchable": {
+                "uuid": "$['uuid']",
+                "name": "$['name']",
+                "id": "$['id']"
+            }
+        },
+        {
+            "resource.name": "Search Provider Resource",
+            "node.root": "$['results']",
+            "resource.object": "com.muzima.api.model.Provider",
+            "algorithm.class": "com.muzima.api.model.algorithm.ProviderAlgorithm",
+            "resolver.class": "com.muzima.api.model.resolver.SearchProviderResolver",
+            "field.unique": "uuid",
+            "field.searchable": {
+                "uuid": "$['uuid']",
+                "name": "$['name']",
+                "id": "$['id']",
+                "identifier": "$['identifier']"
+            }
+        },
+        {
+            "resource.name": "Uuid Provider Resource",
+            "node.root": "$",
+            "resource.object": "com.muzima.api.model.Provider",
+            "algorithm.class": "com.muzima.api.model.algorithm.ProviderAlgorithm",
+            "resolver.class": "com.muzima.api.model.resolver.UuidProviderResolver",
+            "field.unique": "uuid",
+            "field.searchable": {
+                "uuid": "$['uuid']",
+                "name": "$['name']",
+                "id": "$['id']",
+                "identifier": "$['identifier']"
+            }
+        }
+    ]
+}

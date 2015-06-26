@@ -107,6 +107,23 @@ $(document).ready(function () {
         locations.append($("<option>").attr('value',this.id).text(this.name));
     });
 
+    var providers = $("#providers");
+    var providerNamesResults = htmlDataStore.getProviderNamesFromDevice();
+    providerNamesResults = JSON.parse(providerNamesResults);
+    providers.empty();
+    providers.append($("<option>").text("..."));
+    $.each(providerNamesResults, function() {
+        providers.append($("<option>").attr('value',this.identifier).text(this.name));
+    });
+
+//    /*setting default encounter provider*/
+    var encounterProvider = htmlDataStore.getDefaultEncounterProvider();
+    encounterProvider = JSON.parse(encounterProvider);
+    $.each(encounterProvider, function() {
+        $("#encounter\\.provider_id_select").val(this.name);
+        $("#encounter\\.provider_id").val(this.identifier);
+    });
+
     /* Start - Toggle free text element */
     var hasFreetext = $('.has-freetext');
     hasFreetext.change(function () {

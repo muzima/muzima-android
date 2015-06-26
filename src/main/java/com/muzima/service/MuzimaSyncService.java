@@ -22,6 +22,7 @@ import com.muzima.api.model.Location;
 import com.muzima.api.model.Notification;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.Provider;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
@@ -30,6 +31,7 @@ import com.muzima.controller.LocationController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
+import com.muzima.controller.ProviderController;
 import com.muzima.utils.NetworkUtils;
 import org.apache.lucene.queryParser.ParseException;
 
@@ -37,6 +39,7 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
@@ -56,6 +59,7 @@ public class MuzimaSyncService {
     private EncounterController encounterController;
     private NotificationController notificationController;
     private LocationController locationController;
+    private ProviderController providerController;
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
         this.muzimaApplication = muzimaContext;
@@ -68,6 +72,7 @@ public class MuzimaSyncService {
         encounterController = muzimaApplication.getEncounterController();
         notificationController = muzimaApplication.getNotificationController();
         locationController = muzimaApplication.getLocationController();
+        providerController = muzimaApplication.getProviderController();
     }
 
     public int authenticate(String[] credentials){
@@ -192,18 +197,21 @@ public class MuzimaSyncService {
 
             List<Concept> concepts = conceptController.getRelatedConcepts(formTemplates);
             List<Location> locations = locationController.getRelatedLocations(formTemplates);
-
+            List<Provider> providers = providerController.getRelatedProviders(
+                    formTemplates, muzimaApplication.getAuthenticatedUser().getSystemId());
 
             if (replaceExistingTemplates) {
-                formController.replaceFormTemplates(formTemplates);
-                conceptController.newConcepts(concepts);
                 locationController.newLocations(locations);
-            } else {
+                conceptController.newConcepts(concepts);
+                providerController.newProviders(providers);
+            }
+            else {
                 formController.saveFormTemplates(formTemplates);
             }
 
             conceptController.saveConcepts(concepts);
             locationController.saveLocations(locations);
+            providerController.saveProviders(providers);
 
             Log.i(TAG, "Form templates replaced");
 
@@ -240,6 +248,18 @@ public class MuzimaSyncService {
         } catch (LocationController.LocationSaveException e) {
             Log.e(TAG, "Exception while saving Locations", e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
+            return result;
+        } catch (ProviderController.ProviderLoadException e) {
+            Log.e(TAG, "Exception while loading Providers", e);
+            result[0] = SyncStatusConstants.LOAD_ERROR;
+            return result;
+        } catch (ProviderController.ProviderSaveException e) {
+            Log.e(TAG, "Exception while saving Provider", e);
+            result[0] = SyncStatusConstants.SAVE_ERROR;
+            return result;
+        } catch (ProviderController.ProviderDownloadException e) {
+            Log.e(TAG, "Exception while downloading provider", e);
+            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
         }
         return result;
@@ -285,7 +305,7 @@ public class MuzimaSyncService {
         return voidedCohorts;
     }
 
-  public int[] downloadPatientsForCohorts(String[] cohortUuids) {
+    public int[] downloadPatientsForCohorts(String[] cohortUuids) {
         int[] result = new int[4];
 
         int patientCount = 0;

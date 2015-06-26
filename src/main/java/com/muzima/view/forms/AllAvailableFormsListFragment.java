@@ -39,6 +39,8 @@ import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.cohort.ConceptListActivity;
 import com.muzima.view.cohort.LocationListActivity;
+import com.muzima.view.cohort.CustomConceptWizardActivity;
+import com.muzima.view.cohort.ProviderListActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
