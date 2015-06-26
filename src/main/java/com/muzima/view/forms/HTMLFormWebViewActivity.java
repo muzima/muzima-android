@@ -299,7 +299,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                 .show();
     }
     private boolean isFormAlreadyExist() throws IOException, JSONException {
-        return formController.isFormAlreadyExist(this.jsonPayload);
+        return formController.isFormAlreadyExist(this.jsonPayload, this.formData);
     }
     private Dialog.OnClickListener duplicateFormDataClickListener(final String saveType){
 
@@ -319,13 +319,8 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         loadJson();
         Thread.sleep(500);
         if (!isFormComplete()) {
-            if(isFormAlreadyExist()) {
-                if(duplicateFormDataPreference) {
+            if(isFormAlreadyExist() && duplicateFormDataPreference) {
                     showWarningDialog(SAVE_AS_INCOMPLETE);
-                }
-                else {
-                    showWarningDialog();
-                }
             }
             else {
                 webView.loadUrl("javascript:document.saveDraft()");
@@ -336,12 +331,8 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     public void saveCompleted() throws IOException, JSONException, InterruptedException {
         loadJson();
         Thread.sleep(500);
-        if(isFormAlreadyExist()) {
-            if(duplicateFormDataPreference) {
+        if(isFormAlreadyExist() && duplicateFormDataPreference) {
                 showWarningDialog(SAVE_AS_COMPLETED);
-            }else {
-                showWarningDialog();
-            }
         }
         else {
             webView.loadUrl("javascript:document.submit()");
