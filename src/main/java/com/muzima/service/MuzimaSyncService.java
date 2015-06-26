@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
@@ -194,19 +195,14 @@ public class MuzimaSyncService {
             List<FormTemplate> formTemplates = formController.downloadFormTemplates(formIds);
             Log.i(TAG, formTemplates.size() + " form template download successful");
 
-            List<Concept> concepts = getRelatedConcepts(formTemplates);
-            List<Location> locations = getRelatedLocations(formTemplates);
-            List<Provider> providers = providerController.getRelatedProviders(formTemplates,
-                    muzimaApplication.getAuthenticatedUser().getSystemId());
-
+            List<Concept> concepts = conceptController.getRelatedConcepts(formTemplates);
+            List<Location> locations = locationController.getRelatedLocations(formTemplates);
+            List<Provider> providers = providerController.getRelatedProviders(
+                    formTemplates, muzimaApplication.getAuthenticatedUser().getSystemId());
 
             if (replaceExistingTemplates) {
-                LocationController.newLocations = locations;
-                ConceptController.newConcepts = concepts;
-                List<Concept> savedConcepts = conceptController.getConcepts();
-                ConceptController.newConcepts.removeAll(savedConcepts);
-                List<Location> savedLocations = locationController.getAllLocations();
-                LocationController.newLocations.removeAll(savedLocations);
+                locationController.newLocations(locations);
+                conceptController.newConcepts(concepts);
                 providerController.newProviders(providers);
             }
             else {
@@ -309,7 +305,7 @@ public class MuzimaSyncService {
         return voidedCohorts;
     }
 
-  public int[] downloadPatientsForCohorts(String[] cohortUuids) {
+    public int[] downloadPatientsForCohorts(String[] cohortUuids) {
         int[] result = new int[4];
 
         int patientCount = 0;
