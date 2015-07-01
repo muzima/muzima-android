@@ -107,6 +107,11 @@ $(document).ready(function () {
         locations.append($("<option>").attr('value',this.id).text(this.name));
     });
 
+    // setting font size as per user preference
+    var font_size = htmlDataStore.getFontSizePreference();
+    $('body').addClass(font_size);
+
+
     var providers = $("#providers");
     var providerNamesResults = htmlDataStore.getProviderNamesFromDevice();
     providerNamesResults = JSON.parse(providerNamesResults);
@@ -794,7 +799,7 @@ $(document).ready(function () {
                 return false;
             }
         });
-    }
+    };
 
     //Set up auto complete for the provider element.
     document.setupAutoCompleteForProvider = function(elementName, providers) {
@@ -817,5 +822,5 @@ $(document).ready(function () {
                 return false;
             }
         });
-    }
+    };
 });
