@@ -201,6 +201,7 @@ public class MuzimaSyncService {
                     formTemplates, muzimaApplication.getAuthenticatedUser().getSystemId());
 
             if (replaceExistingTemplates) {
+                formController.replaceFormTemplates(formTemplates);
                 locationController.newLocations(locations);
                 conceptController.newConcepts(concepts);
                 providerController.newProviders(providers);
