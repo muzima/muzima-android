@@ -6,7 +6,7 @@
  * that uses this code in a for-profit venture, please contact the copyright holder.
  */
 
-package com.muzima.view.cohort;
+package com.muzima.view.location;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +20,8 @@ import com.actionbarsherlock.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
+import com.muzima.view.provider.CustomProviderWizardActivity;
+import com.muzima.view.forms.FormTemplateWizardActivity;
 import com.muzima.view.forms.MuzimaProgressDialog;
 import com.muzima.view.preferences.LocationPreferenceActivity;
 

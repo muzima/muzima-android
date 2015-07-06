@@ -6,7 +6,7 @@
  * that uses this code in a for-profit venture, please contact the copyright holder.
  */
 
-package com.muzima.view.cohort;
+package com.muzima.view.concept;
 
 import android.content.Context;
 import android.os.AsyncTask;
