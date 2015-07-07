@@ -145,9 +145,12 @@ public class ProviderController {
             }
             providers.addAll(downloadProvidersFromServerByName(names));
         }
-        //Download the provider data in to local repo for logged in user
-        providers.add(downloadProviderBySystemId(systemId));
 
+        //Download the provider data in to local repo for logged in user
+        Provider loggedInProvider = downloadProviderBySystemId(systemId);
+        if(loggedInProvider != null){
+            providers.add(downloadProviderBySystemId(systemId));
+        }
         return new ArrayList<Provider>(providers);
     }
 
