@@ -435,6 +435,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         getSettings().setJavaScriptEnabled(true);
         getSettings().setDatabaseEnabled(true);
         getSettings().setDomStorageEnabled(true);
+        getSettings().setBuiltInZoomControls(true);
 
         FormInstance formInstance = new FormInstance(form, formTemplate);
         webView.addJavascriptInterface(formInstance, FORM_INSTANCE);
