@@ -94,7 +94,7 @@
         <ListPreference
                 android:title="@string/preference_font_size_title"
                 android:key="@string/preference_font_size"
-                android:defaultValue="Small"
+                android:defaultValue="Medium"
                 android:entries="@array/font_sizes"
                 android:entryValues="@array/font_sizes">
         </ListPreference>
