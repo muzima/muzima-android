@@ -62,8 +62,8 @@ var validateAlone = function (source, values, message) {
                     if ($(checkBox).val() == value) {
                         errors[$(fieldSet).attr('name')] = message;
                     }
-                })
-            })
+                });
+            });
         }
     }
     return errors;
@@ -249,7 +249,7 @@ $(document).ready(function () {
             var $inputField = $("input[name='" + key + "']");
             $inputField.val(value);
             $inputField.trigger('change');  //Need this to trigger the event so AMRS id gets populated.
-        })
+        });
     };
 
     $('.barcode_btn').click(function () {
@@ -267,7 +267,7 @@ $(document).ready(function () {
             var $inputField = $parent.find("input[name='" + key + "']");
             $inputField.val(value);
             $inputField.trigger('change');  //Need this to trigger the event so image gets populated.
-        })
+        });
     };
 
     $('.image_btn').click(function () {
@@ -290,7 +290,7 @@ $(document).ready(function () {
             var $inputField = $parent.find("input[name='" + key + "']");
             $inputField.val(value);
             $inputField.trigger('change');  //Need this to trigger the event so audio gets populated.
-        })
+        });
     };
 
     $('.audio_record_btn').click(function () {
@@ -313,7 +313,7 @@ $(document).ready(function () {
             var $inputField = $parent.find("input[name='" + key + "']");
             $inputField.val(value);
             $inputField.trigger('change');  //Need this to trigger the event so video gets populated.
-        })
+        });
     };
 
     $('.video_record_btn').click(function () {
@@ -489,8 +489,8 @@ $(document).ready(function () {
         var valid = true;
         var totalSelected = $fieldset.find('input:checkbox:checked').length;
         $.each($fieldset.find('input:checkbox:checked'), function (i, cBoxElement) {
-            if (($(cBoxElement).val() == 'none' || $(cBoxElement).val() == '1107^NONE^99DCT')
-                && totalSelected > 1) {
+            if (($(cBoxElement).val() == 'none' || $(cBoxElement).val() == '1107^NONE^99DCT') &&
+            totalSelected > 1) {
                 valid = false;
             }
         });
@@ -789,7 +789,7 @@ $(document).ready(function () {
                 var val = $('input[name=' + elementName + ']').val();
                 $.each(dataDictionary, function(i, elem) {
                     if (elem.val == val) {
-                        $("#" + elementName).val(elem.label)
+                        $("#" + elementName).val(elem.label);
                     }
                 });
             },
@@ -803,14 +803,13 @@ $(document).ready(function () {
 
     //Set up auto complete for the provider element.
     document.setupAutoCompleteForProvider = function(elementName, providers) {
-
         $("#" + elementName).autocomplete({
             source: providers,
             create: function(event, ui) {
                 var provider_val = $('input[name="' + elementName + '"]').val();
                 $.each(providers, function(i, elem) {
                     if (elem.val == provider_val) {
-                        $("#" + elementName).val(elem.label)
+                        $("#" + elementName).val(elem.label);
                     }
                 });
             },
