@@ -14,6 +14,7 @@ import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 import com.muzima.MuzimaApplication;
+import com.muzima.R;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Patient;
@@ -140,6 +141,16 @@ public class HTMLFormDataStore {
         }
         return "";
     }
+
+    @JavascriptInterface
+    public String getFontSizePreference()
+    {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(formWebViewActivity.getApplicationContext());
+        return preferences.getString(formWebViewActivity.getResources().getString(R.string.preference_font_size),
+                HTMLFormWebViewActivity.DEFAULT_FONT_SIZE).toLowerCase();
+    }
+
+
     private void parseForm(String jsonPayload, String status) {
         if (status.equals(Constants.STATUS_INCOMPLETE)) {
             return;

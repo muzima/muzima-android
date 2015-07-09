@@ -16,12 +16,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceManager;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.controller.ProviderController;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.tasks.ValidateURLTask;
@@ -43,6 +42,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
     private String realTimeSyncPreferenceKey;
     private String encounterProviderPreferenceKey;
     private String duplicateFormDataPreferenceKey;
+    private String fontSizePreferenceKey;
 
     private EditTextPreference serverPreference;
     private EditTextPreference usernamePreference;
@@ -52,6 +52,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
     private CheckBoxPreference encounterProviderPreference;
     private CheckBoxPreference duplicateFormDataPreference;
     private CheckBoxPreference realTimeSyncPreference;
+    private ListPreference fontSizePreference;
 
     private String newURL;
     private Map<String, PreferenceChangeHandler> actions = new HashMap<String, PreferenceChangeHandler>();
@@ -124,8 +125,8 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         realTimeSyncPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                if(realTimeSyncPreference.isChecked()){
-                            RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext());
+                if (realTimeSyncPreference.isChecked()) {
+                    RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext());
                 }
                 return false;
             }
@@ -145,7 +146,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         encounterProviderPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
-                if(o.equals(Boolean.TRUE)) {
+                if (o.equals(Boolean.TRUE)) {
                     String loggedInUserSystemId = ((MuzimaApplication) getApplication()).getAuthenticatedUser().getSystemId();
                     if (((MuzimaApplication) getApplication()).getProviderController().getProviderBySystemId(loggedInUserSystemId) == null) {
 
@@ -169,6 +170,10 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         duplicateFormDataPreference = (CheckBoxPreference)getPreferenceScreen().findPreference(duplicateFormDataPreferenceKey);
         duplicateFormDataPreference.setSummary(duplicateFormDataPreference.getSummary());
 
+        fontSizePreferenceKey = getResources().getString(R.string.preference_font_size);
+        fontSizePreference = (ListPreference) getPreferenceScreen().findPreference(fontSizePreferenceKey);
+        fontSizePreference.setSummary(fontSizePreference.getValue());
+        registerListPreferenceChangeHandler(fontSizePreferenceKey, fontSizePreference);
 
         // Show the Up button in the action bar.
         setupActionBar();
@@ -201,6 +206,16 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
     }
 
     private void registerTextPreferenceChangeHandler(final String key, final EditTextPreference preference) {
+
+        actions.put(key, new PreferenceChangeHandler() {
+            @Override
+            public void handle(SharedPreferences sharedPreferences) {
+                preference.setSummary(sharedPreferences.getString(key, StringUtil.EMPTY));
+            }
+        });
+    }
+
+    private void registerListPreferenceChangeHandler(final String key, final ListPreference preference) {
 
         actions.put(key, new PreferenceChangeHandler() {
             @Override
