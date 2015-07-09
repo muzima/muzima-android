@@ -133,13 +133,14 @@ public class HTMLFormDataStore {
     {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(formWebViewActivity.getApplicationContext());
         boolean encounterProviderPreference = preferences.getBoolean("encounterProviderPreference", false);
+        List<Provider> providers = new ArrayList<Provider>();
+
         if(encounterProviderPreference){
             MuzimaApplication applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
-            List<Provider> providers = new ArrayList<Provider>();
             providers.add(providerController.getProviderBySystemId(applicationContext.getAuthenticatedUser().getSystemId()));
             return JSONValue.toJSONString(providers);
         }
-        return "";
+        return JSONValue.toJSONString(providers);
     }
 
     @JavascriptInterface
