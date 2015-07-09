@@ -349,4 +349,5 @@
 
     <string name="not_a_provider_title">Unable to set as Provider</string>
     <string name="not_a_provider_message">You do not have provider rights or your provider data is not downloaded, please use add provider option.</string>
+    <string name="rerun_wizard_message">Wizard was interrupted, please logout and run the wizard again.</string>
 </resources>

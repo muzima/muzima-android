@@ -12,15 +12,19 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.context.Context;
 import com.muzima.api.model.User;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
@@ -28,6 +32,7 @@ import com.muzima.controller.NotificationController;
 import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
 import com.muzima.scheduler.RealTimeFormUploader;
+import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.view.cohort.CohortActivity;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
@@ -56,7 +61,48 @@ public class MainActivity extends BroadcastListenerActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        reRunWizardIfIncomplete();
         executeBackgroundTask();
+    }
+
+    private void reRunWizardIfIncomplete() {
+        if (!new WizardFinishPreferenceService(this).isWizardFinished()) {
+            try {
+                MuzimaApplication application = ((MuzimaApplication) getApplicationContext());
+                Context context = application.getMuzimaContext();
+                //Cohort Wizard activity
+                application.getPatientController().deleteAllPatients();
+                application.getCohortController().deleteCohortMembers(application.getCohortController().getAllCohorts());
+                application.getCohortController().deleteAllCohorts();
+                context.getLastSyncTimeService().deleteAll();
+
+                //FormTemplateWizardActivity
+                application.getConceptController().deleteAllConcepts();
+                application.getLocationController().deleteAllLocations();
+                application.getProviderController().deleteAllProviders();
+                application.getFormController().deleteAllForms();
+                application.getFormController().deleteAllFormTemplates();
+
+                //CustomConceptWizardActivity
+                context.getObservationService().deleteAll();
+                context.getEncounterService().deleteAll();
+            } catch (Throwable e) {
+                Log.e(TAG, "Unable to delete previous wizard run data. Error: " + e);
+            }
+            if(checkIfDisclaimerIsAccepted()){
+                Toast
+                        .makeText(getApplicationContext(), getString(R.string.rerun_wizard_message), Toast.LENGTH_LONG)
+                        .show();
+            }
+
+        }
+    }
+
+    private boolean checkIfDisclaimerIsAccepted() {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String disclaimerKey = getResources().getString(R.string.preference_disclaimer);
+        boolean disclaimerAccepted = settings.getBoolean(disclaimerKey, false);
+        return disclaimerAccepted;
     }
 
     @Override

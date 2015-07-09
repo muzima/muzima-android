@@ -152,6 +152,10 @@ public class ConceptController {
         return new ArrayList<Concept>(concepts);
     }
 
+    public void deleteAllConcepts() throws ConceptDeleteException, ConceptFetchException {
+        deleteConcepts(getConcepts());
+    }
+
     public static class ConceptDownloadException extends Throwable {
         public ConceptDownloadException(Throwable throwable) {
             super(throwable);

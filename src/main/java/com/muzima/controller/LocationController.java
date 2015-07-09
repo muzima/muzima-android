@@ -150,6 +150,10 @@ public class LocationController {
         return newLocations;
     }
 
+    public void deleteAllLocations() throws LocationDeleteException, LocationLoadException {
+        deleteLocations(getAllLocations());
+    }
+
     public static class LocationSaveException extends Throwable {
         public LocationSaveException(Throwable throwable) {
             super(throwable);
