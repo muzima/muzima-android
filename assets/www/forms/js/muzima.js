@@ -822,5 +822,50 @@ $(document).ready(function () {
                 return false;
             }
         });
-    };
+    }
+
+    document.setupValidationForProvider = function(value, element, listOfProviders) {
+            /* Start - Checking that the user entered provider exists in the list of possible providers */
+            $.validator.addMethod("validProviderOnly", function(value, element) {
+
+                if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
+                var providerEnteredByUser = value;
+                for (var i = 0; i < listOfProviders.length; i++) {
+                    if (providerEnteredByUser == listOfProviders[i].label) {
+                        return true;
+                    }
+                }
+                return false;
+            }, "Please provide a provider from the list of possible providers.");
+
+            // attach 'validProviderOnly' class to perform validation.
+            jQuery.validator.addClassRules({
+                "valid-provider-only": {
+                    validProviderOnly: true
+                }
+            });
+            /* End - validProviderOnly*/
+        }
+
+        document.setupValidationForLocation = function(value, element, listOfLocations) {
+
+            /* Start - Checking that the user entered location exists in the list of possible locations */
+            $.validator.addMethod("validLocationOnly", function(value, element) {
+                if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
+                var locationEnteredByUser = $('#encounter\\.location_id').val();
+                for (var i = 0; i < listOfLocations.length; i++) {
+                    if (locationEnteredByUser == listOfLocations[i].label) {
+                        return true;
+                    }
+                }
+                return false;
+            }, "Please provide a location from the list of possible locations.");
+
+        }
+
+        // attach 'validLocationOnly' class to perform validation.
+            jQuery.validator.addClassRules({
+                "valid-location-only": { validLocationOnly: true }
+            });
+            /* End - validLocationOnly*/
 });
