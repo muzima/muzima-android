@@ -77,6 +77,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     public static final String FORM = "form";
     public static final String DISCRIMINATOR = "discriminator";
     public static final String DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS =  "2";
+    public static final String DEFAULT_FONT_SIZE =  "Medium";
     public static final boolean IS_LOGGED_IN_USER_DEFAULT_PROVIDER =  false;
     public static final boolean IS_ALLOWED_FORM_DATA_DUPLICATION =  true;
     public static final String SAVE_AS_INCOMPLETE = "saveDraft";
@@ -434,6 +435,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         getSettings().setJavaScriptEnabled(true);
         getSettings().setDatabaseEnabled(true);
         getSettings().setDomStorageEnabled(true);
+        getSettings().setBuiltInZoomControls(true);
 
         FormInstance formInstance = new FormInstance(form, formTemplate);
         webView.addJavascriptInterface(formInstance, FORM_INSTANCE);

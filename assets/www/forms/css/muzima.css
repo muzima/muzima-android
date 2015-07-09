@@ -109,3 +109,59 @@ span.clear{
     font-weight: normal;
 }
 
+.small{
+    font-size: 14px;
+}
+
+.medium, .medium .form-control, .medium .btn{
+    font-size: 18px;
+}
+
+.medium h2{
+    font-size: 34px;
+}
+
+.medium h3{
+    font-size: 28px;
+}
+
+.medium h4{
+    font-size: 22px;
+}
+
+.medium .form-control:not(textarea){
+    height: 38px;
+}
+
+.medium .btn{
+    padding: 6px 15px;
+}
+
+.large, .large .form-control, .large .btn{
+    font-size: 22px;
+}
+
+.large h2{
+    font-size: 38px;
+}
+
+.large h3{
+    font-size: 32px;
+}
+
+.large h4{
+    font-size: 26px;
+}
+
+.large .form-control:not(textarea){
+    height: 42px;
+}
+
+.large .btn{
+    padding: 6px 18px;
+}
+
+.medium .btn.image_btn, .medium .btn.audio_record_btn, .medium .btn.video_record_btn,
+.large .btn.image_btn, .large .btn.audio_record_btn, .large .btn.video_record_btn {
+    height: 11%;
+}
