@@ -61,34 +61,12 @@ public class MainActivity extends BroadcastListenerActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        reRunWizardIfIncomplete();
+        showIncompleteWizardWarning();
         executeBackgroundTask();
     }
 
-    private void reRunWizardIfIncomplete() {
-        if (!new WizardFinishPreferenceService(this).isWizardFinished()) {
-            try {
-                MuzimaApplication application = ((MuzimaApplication) getApplicationContext());
-                Context context = application.getMuzimaContext();
-                //Cohort Wizard activity
-                application.getPatientController().deleteAllPatients();
-                application.getCohortController().deleteCohortMembers(application.getCohortController().getAllCohorts());
-                application.getCohortController().deleteAllCohorts();
-                context.getLastSyncTimeService().deleteAll();
-
-                //FormTemplateWizardActivity
-                application.getConceptController().deleteAllConcepts();
-                application.getLocationController().deleteAllLocations();
-                application.getProviderController().deleteAllProviders();
-                application.getFormController().deleteAllForms();
-                application.getFormController().deleteAllFormTemplates();
-
-                //CustomConceptWizardActivity
-                context.getObservationService().deleteAll();
-                context.getEncounterService().deleteAll();
-            } catch (Throwable e) {
-                Log.e(TAG, "Unable to delete previous wizard run data. Error: " + e);
-            }
+    private void showIncompleteWizardWarning() {
+        if (!new WizardFinishPreferenceService(this).isWizardFinished() ) {
             if(checkIfDisclaimerIsAccepted()){
                 Toast
                         .makeText(getApplicationContext(), getString(R.string.rerun_wizard_message), Toast.LENGTH_LONG)
