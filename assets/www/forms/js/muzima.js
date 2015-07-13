@@ -570,6 +570,16 @@ $(document).ready(function () {
         $.each(value, function (k, v) {
             if (v instanceof Array) {
                 $div.find('[data-concept="' + k + '"]').val(v);
+            }else if (v instanceof Object){
+                if(v.obs_value !== undefined && v.obs_datetime !== undefined){
+                    var obs_elements = $div.find('[data-concept="' + k + '"]');
+                    $.each(obs_elements, function(i, element) {
+                        applyValue(element, v.obs_value);
+                    });
+
+                    var datetime_element = $div.find('[data-obsdatetimefor="' + obs_elements.attr('name') + '"]');
+                    applyValue(datetime_element, v.obs_datetime);
+                }
             } else {
                 var elements = $div.find('[data-concept="' + k + '"]');
                 $.each(elements, function(i, element) {
@@ -649,6 +659,15 @@ $(document).ready(function () {
                                 });
                             });
                         }
+                    } else if (value.obs_value !== undefined && value.obs_datetime !== undefined ){
+                        var obs_elements = $('[data-concept="' + key + '"]');
+                        $.each(obs_elements, function(i, element) {
+                            applyValue(element, value.obs_value);
+                        });
+
+
+                        var datetime_element = $('[data-obsdatetimefor="' + obs_elements.attr('name') + '"]');
+                        applyValue(datetime_element, value.obs_datetime);
                     } else {
                         populateDataConcepts($div, value);
                     }
@@ -681,6 +700,9 @@ $(document).ready(function () {
 
     /* Start - Code to Serialize form along with Data-Concepts */
     $.fn.serializeEncounterForm = function () {
+         //construct array of obs_datetime for use while serializing concepts
+        setObsDatetimeArray(this);
+
         var jsonResult = $.extend({}, serializeNonConceptElements(this),
             serializeConcepts(this), serializeNestedConcepts(this));
         var completeObject = {};
@@ -691,12 +713,14 @@ $(document).ready(function () {
             if (dotIndex >= 0) {
                 key = k.substr(0, k.indexOf("."));
             }
-            var objects = completeObject[key];
-            if (objects === undefined) {
-                objects = {};
-                completeObject[key] = objects;
+            if (key !== "obs_datetime") {
+                var objects = completeObject[key];
+                if (objects === undefined) {
+                    objects = {};
+                    completeObject[key] = objects;
+                }
+                objects[k] = v;
             }
-            objects[k] = v;
         });
         return completeObject;
     };
@@ -749,19 +773,59 @@ $(document).ready(function () {
         return object;
     };
 
-    var jsonifyConcepts = function ($allConcepts) {
+        var jsonifyConcepts = function ($allConcepts) {
         var o = {};
         $.each($allConcepts, function (i, element) {
             if ($(element).is(':checkbox') || $(element).is(':radio')) {
                 if ($(element).is(':checked')) {
-                    o = pushIntoArray(o, $(element).attr('data-concept'), $(element).val());
+                    var obs_datetime = getObsDatetime(element);
+                    if(obs_datetime != ''){
+                        var v = {};
+                        var obs_value = $(element).val();
+                        if (JSON.stringify(obs_value) != '{}' && obs_value != "") {
+                            v = pushIntoArray(v, 'obs_value', obs_value);
+                            v = pushIntoArray(v, 'obs_datetime', obs_datetime);
+                            o = pushIntoArray(o, $(element).attr('data-concept'), v);
+                        }
+                    }else{
+                        o = pushIntoArray(o, $(element).attr('data-concept'), $(element).val());
+                    }
                 }
             } else {
-                o = pushIntoArray(o, $(element).attr('data-concept'), $(element).val());
+                var obs_datetime = getObsDatetime(element);
+                if(obs_datetime != ''){
+                    var v = {};
+                    var obs_value = $(element).val();
+                    if (JSON.stringify(obs_value) != '{}' && obs_value != "") {
+                        v = pushIntoArray(v, 'obs_value', obs_value);
+                        v = pushIntoArray(v, 'obs_datetime', obs_datetime);
+                        o = pushIntoArray(o, $(element).attr('data-concept'), v);
+                    }
+                }else{
+                    o = pushIntoArray(o, $(element).attr('data-concept'), $(element).val());
+                }
             }
         });
         return o;
     };
+
+    var obsDatetimeArray = null;
+    var setObsDatetimeArray = function ($form){
+        obsDatetimeArray = {};
+        var obsDatetimeElements = $form.find('*[data-obsdatetimefor]').filter(':visible');
+        $.each(obsDatetimeElements, function (i, element){
+            pushIntoArray(obsDatetimeArray, $(element).attr('data-obsdatetimefor'), $(element).val());
+        });
+    };
+    var getObsDatetime=function(element){
+        if(obsDatetimeArray !== null){
+           var elementName = $(element).attr('name');
+            if(obsDatetimeArray[elementName] !== undefined){
+                return obsDatetimeArray[elementName];
+            }
+        }
+        return '';
+    }
 
     var pushIntoArray = function (object, key, value) {
         if (JSON.stringify(value) == '{}' || value == "") {
