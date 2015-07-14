@@ -199,6 +199,11 @@ public class PatientController {
         }
     }
 
+    public void deleteAllPatients() throws PatientDeleteException,IOException {
+        List<Patient> allPatients = patientService.getAllPatients();
+        patientService.deletePatients(allPatients);
+    }
+
 
     public static class PatientSaveException extends Throwable {
         public PatientSaveException(Throwable throwable) {

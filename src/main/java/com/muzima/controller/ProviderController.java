@@ -164,6 +164,10 @@ public class ProviderController {
         return newProviders;
     }
 
+    public void deleteAllProviders() throws ProviderDeleteException, ProviderLoadException {
+        deleteProviders(getAllProviders());
+    }
+
     public static class ProviderSaveException extends Throwable {
         public ProviderSaveException(Throwable throwable) {
             super(throwable);

@@ -255,6 +255,14 @@ public class FormController {
         }
     }
 
+    public void deleteAllFormTemplates() throws FormDeleteException {
+        try {
+            formService.deleteFormTemplates(formService.getAllFormTemplates());
+        } catch (IOException e) {
+            throw new FormDeleteException(e);
+        }
+    }
+
     public void deleteForms(List<Form> forms) throws FormDeleteException {
         try {
             formService.deleteForms(forms);

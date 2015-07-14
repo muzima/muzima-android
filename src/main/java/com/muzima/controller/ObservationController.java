@@ -255,6 +255,23 @@ public class ObservationController {
         }
     }
 
+    public void deleteAllObservations(List<Concept> concepts) throws DeleteObservationException {
+        try {
+            observationService.deleteObservations(getObservations(concepts));
+        } catch (IOException e) {
+            throw new DeleteObservationException(e);
+        }
+
+    }
+
+    public List<Observation> getObservations(List<Concept> concepts) throws IOException {
+        ArrayList<Observation> observations = new ArrayList<Observation>();
+        for (Concept concept : concepts) {
+            observations.addAll(observationService.getObservations(concept));
+        }
+        return observations;
+    }
+
     public static class LoadObservationException extends Throwable {
         public LoadObservationException(Throwable e) {
             super(e);

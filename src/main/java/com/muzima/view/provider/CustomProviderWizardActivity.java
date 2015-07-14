@@ -1,4 +1,4 @@
-package com.muzima.view.cohort;
+package com.muzima.view.provider;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +12,9 @@ import com.actionbarsherlock.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
+import com.muzima.view.concept.CustomConceptWizardActivity;
 import com.muzima.view.forms.MuzimaProgressDialog;
+import com.muzima.view.location.CustomLocationWizardActivity;
 import com.muzima.view.preferences.ProviderPreferenceActivity;
 
 
