@@ -6,7 +6,7 @@
  * that uses this code in a for-profit venture, please contact the copyright holder.
  */
 
-package com.muzima.view.cohort;
+package com.muzima.view.forms;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -38,7 +38,8 @@ import com.muzima.service.SntpService;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
-import com.muzima.view.forms.MuzimaProgressDialog;
+import com.muzima.view.cohort.CohortWizardActivity;
+import com.muzima.view.location.CustomLocationWizardActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;

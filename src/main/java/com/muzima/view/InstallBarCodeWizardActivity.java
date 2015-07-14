@@ -16,7 +16,7 @@ import android.widget.Button;
 import com.actionbarsherlock.view.Menu;
 import com.muzima.R;
 import com.muzima.utils.barcode.IntentIntegrator;
-import com.muzima.view.cohort.CustomConceptWizardActivity;
+import com.muzima.view.concept.CustomConceptWizardActivity;
 
 public class InstallBarCodeWizardActivity extends BaseActivity {
 

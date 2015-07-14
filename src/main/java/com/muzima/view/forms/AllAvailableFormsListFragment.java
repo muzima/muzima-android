@@ -37,10 +37,7 @@ import com.muzima.model.collections.IncompleteFormsWithPatientData;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
-import com.muzima.view.cohort.ConceptListActivity;
-import com.muzima.view.cohort.LocationListActivity;
-import com.muzima.view.cohort.CustomConceptWizardActivity;
-import com.muzima.view.cohort.ProviderListActivity;
+import com.muzima.view.location.LocationListActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;

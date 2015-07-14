@@ -1,28 +1,20 @@
-/*
- * Copyright (c) 2014. The Trustees of Indiana University.
- *
- * This version of the code is licensed under the MPL 2.0 Open Source license with additional
- * healthcare disclaimer. If the user is an entity intending to commercialize any application
- * that uses this code in a for-profit venture, please contact the copyright holder.
- */
-
-package com.muzima.view.cohort;
+package com.muzima.view.provider;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.view.View;
 import android.widget.Button;
-
 import com.actionbarsherlock.view.Menu;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
+import com.muzima.view.concept.ConceptListActivity;
 import com.muzima.view.forms.MuzimaProgressDialog;
-import com.muzima.view.preferences.LocationPreferenceActivity;
+import com.muzima.view.preferences.ProviderPreferenceActivity;
 
 
-public class LocationListActivity extends LocationPreferenceActivity {
-    private static final String TAG = "LocationListActivity";
+public class ProviderListActivity extends ProviderPreferenceActivity{
+    private static final String TAG = "ProviderListActivity";
     private MuzimaProgressDialog muzimaProgressDialog;
     protected Credentials credentials;
     private boolean isProcessDialogOn = false;
@@ -38,9 +30,9 @@ public class LocationListActivity extends LocationPreferenceActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                        navigateToNextActivity();
-                    }
-            });
+                navigateToNextActivity();
+            }
+        });
     }
 
     @Override
@@ -53,17 +45,17 @@ public class LocationListActivity extends LocationPreferenceActivity {
     protected void onResume() {
         super.onResume();
         if(isProcessDialogOn){
-            turnOnProgressDialog("Downloading Observations and Encounters...");
+            turnOnProgressDialog("Downloading Provider(s)...");
         }
     }
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_location_list;
+        return R.layout.activity_provider_list;
     }
 
     private void navigateToNextActivity() {
-        Intent intent = new Intent(getApplicationContext(), ProviderListActivity.class);
+        Intent intent = new Intent(getApplicationContext(), ConceptListActivity.class);
         startActivity(intent);
         finish();
     }
@@ -72,5 +64,4 @@ public class LocationListActivity extends LocationPreferenceActivity {
         muzimaProgressDialog.show(message);
         isProcessDialogOn = true;
     }
-
 }
