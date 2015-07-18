@@ -112,7 +112,7 @@ $(document).ready(function () {
     $('body').addClass(font_size);
 
 
-    var providers = $("#providers");
+    var providers = $("#select_providers");
     var providerNamesResults = htmlDataStore.getProviderNamesFromDevice();
     providerNamesResults = JSON.parse(providerNamesResults);
     providers.empty();
@@ -801,6 +801,14 @@ $(document).ready(function () {
         });
     };
 
+   document.setupAutoCompleteDataForProvider = function(elementName) {
+    var providersDictionary = [];
+                   $.each(providerNamesResults, function(key, providerName){
+                       providersDictionary.push({"val": providerName.identifier, "label": providerName.name});
+                   });
+       document.setupAutoCompleteForProvider('encounter\\.provider_id_select',providersDictionary);
+   };
+
     //Set up auto complete for the provider element.
     document.setupAutoCompleteForProvider = function(elementName, providers) {
         $("#" + elementName).autocomplete({
@@ -823,8 +831,12 @@ $(document).ready(function () {
         });
     }
 
-    document.setupValidationForProvider = function(value, element, listOfProviders) {
+    document.setupValidationForProvider = function(value, element) {
             /* Start - Checking that the user entered provider exists in the list of possible providers */
+            var listOfProviders = [];
+            $.each(providerNamesResults, function(key, providerName){
+                listOfProviders.push({"val": providerName.identifier, "label": providerName.name});
+            });
             $.validator.addMethod("validProviderOnly", function(value, element) {
 
                 if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
@@ -867,4 +879,6 @@ $(document).ready(function () {
                 "valid-location-only": { validLocationOnly: true }
             });
             /* End - validLocationOnly*/
+
+
 });
