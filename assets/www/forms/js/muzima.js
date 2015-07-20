@@ -780,6 +780,14 @@ $(document).ready(function () {
 
     /* End - Code to Serialize form along with Data-Concepts */
 
+    document.setupAutoCompleteData = function(elementName) {
+                var dataDictionary = [];
+                $.each(locationNamesResults, function(key, locationName){
+                    dataDictionary.push({"val": locationName.id, "label": locationName.name});
+                });
+                document.setupAutoComplete('encounter\\.location_id', dataDictionary);
+   };
+
     //Set up auto complete for an element.(generic, will work with any element that needs auto complete on it)
     document.setupAutoComplete = function(elementName, dataDictionary) {
 
@@ -846,8 +854,12 @@ $(document).ready(function () {
             /* End - validProviderOnly*/
         }
 
-        document.setupValidationForLocation = function(value, element, listOfLocations) {
+        document.setupValidationForLocation = function(value, element) {
 
+             var listOfLocations = [];
+                            $.each(locationNamesResults, function(key, locationName){
+                                listOfLocations.push({"val": locationName.id, "label": locationName.name});
+                            });
             /* Start - Checking that the user entered location exists in the list of possible locations */
             $.validator.addMethod("validLocationOnly", function(value, element) {
                 if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
