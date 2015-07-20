@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.muzima.utils.Constants.FORM_HTML_DISCRIMINATOR_REGISTRATION;
+import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION;
 
 public class HTMLFormDataStore {
     private static final String TAG = "FormDataStore";
@@ -160,6 +160,6 @@ public class HTMLFormDataStore {
         return isRegistrationForm() && status.equals(Constants.STATUS_COMPLETE);
     }
     public boolean isRegistrationForm() {
-        return (formData.getDiscriminator() != null) && formData.getDiscriminator().equals(FORM_HTML_DISCRIMINATOR_REGISTRATION);
+        return (formData.getDiscriminator() != null) && formData.getDiscriminator().equals(FORM_JSON_DISCRIMINATOR_REGISTRATION);
     }
 }
