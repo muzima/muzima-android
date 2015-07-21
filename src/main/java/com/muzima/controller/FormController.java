@@ -526,7 +526,7 @@ public class FormController {
             List<FormData> allFormData = formService.getAllFormData(Constants.STATUS_COMPLETE);
 
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_DISCRIMINATOR_REGISTRATION), result);
-            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_HTML_DISCRIMINATOR_REGISTRATION), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER), result);
             return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER), result);
@@ -766,6 +766,6 @@ public class FormController {
     }
 
     private boolean isRegistrationFormData(FormData formData){
-        return formData.getDiscriminator().equals(Constants.FORM_DISCRIMINATOR_REGISTRATION) || formData.getDiscriminator().equals(Constants.FORM_HTML_DISCRIMINATOR_REGISTRATION);
+        return formData.getDiscriminator().equals(Constants.FORM_DISCRIMINATOR_REGISTRATION) || formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION);
     }
 }
