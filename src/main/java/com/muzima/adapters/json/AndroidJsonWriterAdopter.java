@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.adapters.json;
 
 import android.util.JsonWriter;
@@ -7,9 +15,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.io.Writer;
 
-/**
- * Created by vikas on 07/01/15.
- */
+// TODO: Need to look at this in the Android 8
 public class AndroidJsonWriterAdopter implements JsonWriterAdapter {
     private JsonWriter jsonWriter;
 
@@ -23,7 +29,7 @@ public class AndroidJsonWriterAdopter implements JsonWriterAdapter {
         try {
             jsonWriter.beginArray();
         } catch (IOException e) {
-            throw new JSONException(e);
+            throw new JSONException(e.getMessage());
         }
         return this;
     }
@@ -33,7 +39,7 @@ public class AndroidJsonWriterAdopter implements JsonWriterAdapter {
         try {
             jsonWriter.beginObject();
         } catch (IOException e) {
-            throw new JSONException(e);
+            throw new JSONException(e.getMessage());
         }
         return this;
     }
@@ -43,7 +49,7 @@ public class AndroidJsonWriterAdopter implements JsonWriterAdapter {
         try {
             jsonWriter.name(key);
         } catch (IOException e) {
-            throw new JSONException(e);
+            throw new JSONException(e.getMessage());
         }
         return this;
     }
@@ -53,7 +59,7 @@ public class AndroidJsonWriterAdopter implements JsonWriterAdapter {
         try {
             jsonWriter.value(value);
         } catch (IOException e) {
-            throw new JSONException(e);
+            throw new JSONException(e.getMessage());
         }
         return this;
     }
@@ -63,7 +69,7 @@ public class AndroidJsonWriterAdopter implements JsonWriterAdapter {
         try {
             jsonWriter.endObject();
         } catch (IOException e) {
-            throw new JSONException(e);
+            throw new JSONException(e.getMessage());
         }
         return this;
     }
@@ -73,7 +79,7 @@ public class AndroidJsonWriterAdopter implements JsonWriterAdapter {
         try {
             jsonWriter.endArray();
         } catch (IOException e) {
-            throw new JSONException(e);
+            throw new JSONException(e.getMessage());
         }
         return this;
     }
