@@ -83,7 +83,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     public static final String SAVE_AS_INCOMPLETE = "saveDraft";
     public static final String SAVE_AS_COMPLETED = "submit";
 
-
     private WebView webView;
     private Form form;
     private FormTemplate formTemplate;
@@ -105,7 +104,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private boolean encounterProviderPreference;
     private boolean duplicateFormDataPreference;
     final Handler handler = new Handler();
-    public String jsonPayload;
     private ProviderController providerController;
 
     @Override
@@ -128,26 +126,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         autoSaveIntervalPreference = preferences.getString("autoSaveIntervalPreference", DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS);
         encounterProviderPreference = preferences.getBoolean("encounterProviderPreference", IS_LOGGED_IN_USER_DEFAULT_PROVIDER);
         duplicateFormDataPreference = preferences.getBoolean("duplicateFormDataPreference", IS_ALLOWED_FORM_DATA_DUPLICATION );
-
-        showProgressBar("Loading...");
-        try {
-            setupFormData();
-            startAutoSaveProcess();
-            setupWebView();
-        } catch (FormFetchException e) {
-            Log.e(TAG, e.getMessage(), e);
-            finish();
-        } catch (FormController.FormDataFetchException e) {
-            Log.e(TAG, e.getMessage(), e);
-            finish();
-        } catch (FormController.FormDataSaveException e) {
-            Log.e(TAG, e.getMessage(), e);
-            finish();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void startAutoSaveProcess() {
@@ -195,6 +173,16 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
     @Override
     protected void onResume() {
+
+        showProgressBar("Loading...");
+        try {
+            setupFormData();
+            startAutoSaveProcess();
+            setupWebView();
+        } catch (Throwable t) {
+            Log.e(TAG, t.getMessage(), t);
+        }
+
         if (scanResultMap != null && !scanResultMap.isEmpty()) {
             String jsonMap = new JSONObject(scanResultMap).toString();
             Log.d(TAG, jsonMap);
@@ -299,9 +287,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                 .create()
                 .show();
     }
-    private boolean isFormAlreadyExist() throws IOException, JSONException {
-        return formController.isFormAlreadyExist(this.jsonPayload, this.formData);
-    }
+
     private Dialog.OnClickListener duplicateFormDataClickListener(final String saveType){
 
         return new Dialog.OnClickListener() {
@@ -317,31 +303,11 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     }
 
     public void saveDraft() throws IOException, JSONException, InterruptedException {
-        loadJson();
-        Thread.sleep(500);
-        if (!isFormComplete()) {
-            if(isFormAlreadyExist() && duplicateFormDataPreference) {
-                    showWarningDialog(SAVE_AS_INCOMPLETE);
-            }
-            else {
-                webView.loadUrl("javascript:document.saveDraft()");
-            }
-        }
+        webView.loadUrl("javascript:document.saveDraft()");
     }
 
     public void saveCompleted() throws IOException, JSONException, InterruptedException {
-        loadJson();
-        Thread.sleep(500);
-        if(isFormAlreadyExist() && duplicateFormDataPreference) {
-                showWarningDialog(SAVE_AS_COMPLETED);
-        }
-        else {
-            webView.loadUrl("javascript:document.submit()");
-        }
-    }
-
-    private void loadJson(){
-        webView.loadUrl("javascript:document.loadJson()");
+        webView.loadUrl("javascript:document.submit()");
     }
 
     @Override

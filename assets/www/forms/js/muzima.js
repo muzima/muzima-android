@@ -80,7 +80,7 @@ var showValidationMessages = function (errors) {
 
 var toggleValidationMessages = function (errors) {
     var validator = $('form').validate();
-    if ($.isEmptyObject(errors)){
+    if ($.isEmptyObject(errors)) {
         // remove the error messages
         validator.resetForm();
     } else {
@@ -103,8 +103,8 @@ $(document).ready(function () {
     locationNamesResults = JSON.parse(locationNamesResults);
     locations.empty();
     locations.append($("<option>").text("..."));
-    $.each(locationNamesResults, function() {
-        locations.append($("<option>").attr('value',this.id).text(this.name));
+    $.each(locationNamesResults, function () {
+        locations.append($("<option>").attr('value', this.id).text(this.name));
     });
 
     // setting font size as per user preference
@@ -117,14 +117,14 @@ $(document).ready(function () {
     providerNamesResults = JSON.parse(providerNamesResults);
     providers.empty();
     providers.append($("<option>").text("..."));
-    $.each(providerNamesResults, function() {
-        providers.append($("<option>").attr('value',this.identifier).text(this.name));
+    $.each(providerNamesResults, function () {
+        providers.append($("<option>").attr('value', this.identifier).text(this.name));
     });
 
 //    /*setting default encounter provider*/
     var encounterProvider = htmlDataStore.getDefaultEncounterProvider();
     encounterProvider = JSON.parse(encounterProvider);
-    $.each(encounterProvider, function() {
+    $.each(encounterProvider, function () {
         $("#encounter\\.provider_id_select").val(this.name);
         $("#encounter\\.provider_id").val(this.identifier);
     });
@@ -203,7 +203,7 @@ $(document).ready(function () {
         }
     };
 
-    document.autoSaveForm = function(){
+    document.autoSaveForm = function () {
         save("incomplete", true);
     };
 
@@ -216,24 +216,19 @@ $(document).ready(function () {
         var jsonData = JSON.stringify($('form').serializeEncounterForm());
         htmlDataStore.saveHTML(jsonData, status, keepFormOpen);
     };
-   document.loadJson = function () {
-        var jsonData = JSON.stringify($('form').serializeEncounterForm());
-        htmlDataStore.loadJsonPayload(jsonData);
-        return false;
-     };
 
     var addValidationMessage = function () {
         var validationError = $('#validation-error');
         if (validationError.length == 0) {
             $('form').prepend(
-                    '<div class="error" id="validation-error">' +
-                    '    There is one or more validation check failed on this form. Please review and resubmit the form' +
-                    '</div>'
+                '<div class="error" id="validation-error">' +
+                '    There is one or more validation check failed on this form. Please review and resubmit the form' +
+                '</div>'
             );
         } else {
             validationError.html('There is one or more validation failed on this form. Please review and resubmit the form');
         }
-        $('html, body').animate({ scrollTop: 0 }, 'slow');
+        $('html, body').animate({scrollTop: 0}, 'slow');
     };
 
     var removeValidationMessage = function () {
@@ -328,13 +323,13 @@ $(document).ready(function () {
     /*End- Video Capture Functionality*/
 
     /* Start - Play video in form */
-    $('.video-player').click(function(){
+    $('.video-player').click(function () {
         videoComponent.openVideo($(this).attr('data-video'));
     });
     /* End - Play video in form */
 
     /* Start - view Image in form */
-    $('.image-player').click(function(){
+    $('.image-player').click(function () {
         imagingComponent.openImage($(this).attr('data-image'));
     });
     /* End - view Image in form */
@@ -363,7 +358,7 @@ $(document).ready(function () {
 
     // attach 'checkDigit' class to perform validation.
     jQuery.validator.addClassRules({
-        checkDigit: { checkDigit: true }
+        checkDigit: {checkDigit: true}
     });
 
     $.fn.luhnCheckDigit = function (number) {
@@ -397,7 +392,7 @@ $(document).ready(function () {
 
     // attach 'checkDigit' class to perform validation.
     jQuery.validator.addClassRules({
-        checkDigit: { checkDigit: true }
+        checkDigit: {checkDigit: true}
     });
 
     /* Start - Checking that the current date is not in the future */
@@ -418,7 +413,7 @@ $(document).ready(function () {
 
     // attach 'nonFutureDate' class to perform validation.
     jQuery.validator.addClassRules({
-        nonFutureDate: { nonFutureDate: true }
+        nonFutureDate: {nonFutureDate: true}
     });
 
     /* End - nonFutureDate*/
@@ -441,7 +436,7 @@ $(document).ready(function () {
 
     // attach 'checkFutureDate' class to perform validation.
     jQuery.validator.addClassRules({
-        checkFutureDate: { checkFutureDate: true }
+        checkFutureDate: {checkFutureDate: true}
     });
 
     /* End - checkFutureDate*/
@@ -457,7 +452,7 @@ $(document).ready(function () {
 
     // attach 'phoneNumber' class to perform validation.
     jQuery.validator.addClassRules({
-        phoneNumber: { phoneNumber: true }
+        phoneNumber: {phoneNumber: true}
     });
 
     /* End - phoneNumber*/
@@ -490,7 +485,7 @@ $(document).ready(function () {
         var totalSelected = $fieldset.find('input:checkbox:checked').length;
         $.each($fieldset.find('input:checkbox:checked'), function (i, cBoxElement) {
             if (($(cBoxElement).val() == 'none' || $(cBoxElement).val() == '1107^NONE^99DCT') &&
-            totalSelected > 1) {
+                totalSelected > 1) {
                 valid = false;
             }
         });
@@ -570,10 +565,10 @@ $(document).ready(function () {
         $.each(value, function (k, v) {
             if (v instanceof Array) {
                 $div.find('[data-concept="' + k + '"]').val(v);
-            }else if (v instanceof Object){
-                if(v.obs_value !== undefined && v.obs_datetime !== undefined){
+            } else if (v instanceof Object) {
+                if (v.obs_value !== undefined && v.obs_datetime !== undefined) {
                     var obs_elements = $div.find('[data-concept="' + k + '"]');
-                    $.each(obs_elements, function(i, element) {
+                    $.each(obs_elements, function (i, element) {
                         applyValue(element, v.obs_value);
                     });
 
@@ -582,7 +577,7 @@ $(document).ready(function () {
                 }
             } else {
                 var elements = $div.find('[data-concept="' + k + '"]');
-                $.each(elements, function(i, element) {
+                $.each(elements, function (i, element) {
                     applyValue(element, v);
                 });
             }
@@ -639,7 +634,7 @@ $(document).ready(function () {
                         if (elements.length < value.length) {
                             $.each(value, function (i, valueElement) {
                                 if (i == 0) {
-                                    $.each(elements, function(i, element) {
+                                    $.each(elements, function (i, element) {
                                         applyValue(element, valueElement);
                                     });
                                 } else {
@@ -647,21 +642,21 @@ $(document).ready(function () {
                                     var $clonedDiv = $div.clone(true);
                                     $div.after($clonedDiv);
                                     elements = $clonedDiv.find('[data-concept="' + key + '"]');
-                                    $.each(elements, function(i, element) {
+                                    $.each(elements, function (i, element) {
                                         applyValue(element, valueElement);
                                     });
                                 }
                             });
                         } else {
                             $.each(value, function (i, valueElement) {
-                                $.each(elements, function(i, element) {
+                                $.each(elements, function (i, element) {
                                     applyValue(element, valueElement);
                                 });
                             });
                         }
-                    } else if (value.obs_value !== undefined && value.obs_datetime !== undefined ){
+                    } else if (value.obs_value !== undefined && value.obs_datetime !== undefined) {
                         var obs_elements = $('[data-concept="' + key + '"]');
-                        $.each(obs_elements, function(i, element) {
+                        $.each(obs_elements, function (i, element) {
                             applyValue(element, value.obs_value);
                         });
 
@@ -687,7 +682,7 @@ $(document).ready(function () {
     if (prePopulateData != '') {
         console.time("Starting population");
         var prePopulateJSON = JSON.parse(prePopulateData);
-        $.each(prePopulateJSON, function(key, value) {
+        $.each(prePopulateJSON, function (key, value) {
             if (key === 'observation') {
                 populateObservations(value);
             } else {
@@ -700,7 +695,7 @@ $(document).ready(function () {
 
     /* Start - Code to Serialize form along with Data-Concepts */
     $.fn.serializeEncounterForm = function () {
-         //construct array of obs_datetime for use while serializing concepts
+        //construct array of obs_datetime for use while serializing concepts
         setObsDatetimeArray(this);
 
         var jsonResult = $.extend({}, serializeNonConceptElements(this),
@@ -744,7 +739,7 @@ $(document).ready(function () {
         var result = {};
         var parentDivs = $form.find('div[data-concept]').filter(':visible');
         $.each(parentDivs, function (i, element) {
-            var $allConcepts = $(element).find('*[data-concept]');
+            var $allConcepts = $(element).find('*[data-concept]').filter(':visible');
             result = pushIntoArray(result, $(element).attr('data-concept'), jsonifyConcepts($allConcepts));
         });
         return result;
@@ -773,13 +768,13 @@ $(document).ready(function () {
         return object;
     };
 
-        var jsonifyConcepts = function ($allConcepts) {
+    var jsonifyConcepts = function ($allConcepts) {
         var o = {};
         $.each($allConcepts, function (i, element) {
             if ($(element).is(':checkbox') || $(element).is(':radio')) {
                 if ($(element).is(':checked')) {
                     var obs_datetime = getObsDatetime(element);
-                    if(obs_datetime != ''){
+                    if (obs_datetime != '') {
                         var v = {};
                         var obs_value = $(element).val();
                         if (JSON.stringify(obs_value) != '{}' && obs_value != "") {
@@ -787,13 +782,13 @@ $(document).ready(function () {
                             v = pushIntoArray(v, 'obs_datetime', obs_datetime);
                             o = pushIntoArray(o, $(element).attr('data-concept'), v);
                         }
-                    }else{
+                    } else {
                         o = pushIntoArray(o, $(element).attr('data-concept'), $(element).val());
                     }
                 }
             } else {
                 var obs_datetime = getObsDatetime(element);
-                if(obs_datetime != ''){
+                if (obs_datetime != '') {
                     var v = {};
                     var obs_value = $(element).val();
                     if (JSON.stringify(obs_value) != '{}' && obs_value != "") {
@@ -801,7 +796,7 @@ $(document).ready(function () {
                         v = pushIntoArray(v, 'obs_datetime', obs_datetime);
                         o = pushIntoArray(o, $(element).attr('data-concept'), v);
                     }
-                }else{
+                } else {
                     o = pushIntoArray(o, $(element).attr('data-concept'), $(element).val());
                 }
             }
@@ -810,17 +805,17 @@ $(document).ready(function () {
     };
 
     var obsDatetimeArray = null;
-    var setObsDatetimeArray = function ($form){
+    var setObsDatetimeArray = function ($form) {
         obsDatetimeArray = {};
         var obsDatetimeElements = $form.find('*[data-obsdatetimefor]').filter(':visible');
-        $.each(obsDatetimeElements, function (i, element){
+        $.each(obsDatetimeElements, function (i, element) {
             pushIntoArray(obsDatetimeArray, $(element).attr('data-obsdatetimefor'), $(element).val());
         });
     };
-    var getObsDatetime=function(element){
-        if(obsDatetimeArray !== null){
-           var elementName = $(element).attr('name');
-            if(obsDatetimeArray[elementName] !== undefined){
+    var getObsDatetime = function (element) {
+        if (obsDatetimeArray !== null) {
+            var elementName = $(element).attr('name');
+            if (obsDatetimeArray[elementName] !== undefined) {
                 return obsDatetimeArray[elementName];
             }
         }
@@ -844,28 +839,28 @@ $(document).ready(function () {
 
     /* End - Code to Serialize form along with Data-Concepts */
 
-    document.setupAutoCompleteData = function(elementName) {
-                var dataDictionary = [];
-                $.each(locationNamesResults, function(key, locationName){
-                    dataDictionary.push({"val": locationName.id, "label": locationName.name});
-                });
-                document.setupAutoComplete('encounter\\.location_id', dataDictionary);
-   };
+    document.setupAutoCompleteData = function (elementName) {
+        var dataDictionary = [];
+        $.each(locationNamesResults, function (key, locationName) {
+            dataDictionary.push({"val": locationName.id, "label": locationName.name});
+        });
+        document.setupAutoComplete('encounter\\.location_id', dataDictionary);
+    };
 
     //Set up auto complete for an element.(generic, will work with any element that needs auto complete on it)
-    document.setupAutoComplete = function(elementName, dataDictionary) {
+    document.setupAutoComplete = function (elementName, dataDictionary) {
 
         $("#" + elementName).autocomplete({
             source: dataDictionary,
-            create: function(event, ui) {
+            create: function (event, ui) {
                 var val = $('input[name=' + elementName + ']').val();
-                $.each(dataDictionary, function(i, elem) {
+                $.each(dataDictionary, function (i, elem) {
                     if (elem.val == val) {
                         $("#" + elementName).val(elem.label);
                     }
                 });
             },
-            select: function(event, ui) {
+            select: function (event, ui) {
                 $('input[name="' + elementName + '"]').val(ui.item.val);
                 $("#" + elementName).val(ui.item.label);
                 return false;
@@ -873,27 +868,27 @@ $(document).ready(function () {
         });
     };
 
-   document.setupAutoCompleteDataForProvider = function(elementName) {
-    var providersDictionary = [];
-                   $.each(providerNamesResults, function(key, providerName){
-                       providersDictionary.push({"val": providerName.identifier, "label": providerName.name});
-                   });
-       document.setupAutoCompleteForProvider('encounter\\.provider_id_select',providersDictionary);
-   };
+    document.setupAutoCompleteDataForProvider = function (elementName) {
+        var providersDictionary = [];
+        $.each(providerNamesResults, function (key, providerName) {
+            providersDictionary.push({"val": providerName.identifier, "label": providerName.name});
+        });
+        document.setupAutoCompleteForProvider('encounter\\.provider_id_select', providersDictionary);
+    };
 
     //Set up auto complete for the provider element.
-    document.setupAutoCompleteForProvider = function(elementName, providers) {
+    document.setupAutoCompleteForProvider = function (elementName, providers) {
         $("#" + elementName).autocomplete({
             source: providers,
-            create: function(event, ui) {
+            create: function (event, ui) {
                 var provider_val = $('input[name="' + elementName + '"]').val();
-                $.each(providers, function(i, elem) {
+                $.each(providers, function (i, elem) {
                     if (elem.val == provider_val) {
                         $("#" + elementName).val(elem.label);
                     }
                 });
             },
-            select: function(event, ui) {
+            select: function (event, ui) {
                 $('input[name="' + elementName + '"]').val(ui.item.val);
                 $("#" + elementName).val(ui.item.label);
                 $('#encounter\\.provider_id').val(ui.item.val);
@@ -903,78 +898,78 @@ $(document).ready(function () {
         });
     }
 
-    document.setupValidationForProvider = function(value, element) {
-            /* Start - Checking that the user entered provider exists in the list of possible providers */
-            var listOfProviders = [];
-            $.each(providerNamesResults, function(key, providerName){
-                listOfProviders.push({"val": providerName.identifier, "label": providerName.name});
-            });
-            $.validator.addMethod("validProviderOnly", function(value, element) {
+    document.setupValidationForProvider = function (value, element) {
+        /* Start - Checking that the user entered provider exists in the list of possible providers */
+        var listOfProviders = [];
+        $.each(providerNamesResults, function (key, providerName) {
+            listOfProviders.push({"val": providerName.identifier, "label": providerName.name});
+        });
+        $.validator.addMethod("validProviderOnly", function (value, element) {
 
-                if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
-                var providerEnteredByUser = value;
-                for (var i = 0; i < listOfProviders.length; i++) {
-                    if (providerEnteredByUser == listOfProviders[i].label) {
-                        return true;
-                    }
+            if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
+            var providerEnteredByUser = value;
+            for (var i = 0; i < listOfProviders.length; i++) {
+                if (providerEnteredByUser == listOfProviders[i].label) {
+                    return true;
                 }
-                return false;
-            }, "Please provide a provider from the list of possible providers.");
+            }
+            return false;
+        }, "Please provide a provider from the list of possible providers.");
 
-            // attach 'validProviderOnly' class to perform validation.
-            jQuery.validator.addClassRules({
-                "valid-provider-only": {
-                    validProviderOnly: true
+        // attach 'validProviderOnly' class to perform validation.
+        jQuery.validator.addClassRules({
+            "valid-provider-only": {
+                validProviderOnly: true
+            }
+        });
+        /* End - validProviderOnly*/
+    }
+
+    document.setupValidationForLocation = function (value, element) {
+
+        var listOfLocations = [];
+        $.each(locationNamesResults, function (key, locationName) {
+            listOfLocations.push({"val": locationName.id, "label": locationName.name});
+        });
+        /* Start - Checking that the user entered location exists in the list of possible locations */
+        $.validator.addMethod("validLocationOnly", function (value, element) {
+            if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
+            var locationEnteredByUser = $('#encounter\\.location_id').val();
+            for (var i = 0; i < listOfLocations.length; i++) {
+                if (locationEnteredByUser == listOfLocations[i].label) {
+                    return true;
                 }
-            });
-            /* End - validProviderOnly*/
-        }
+            }
+            return false;
+        }, "Please provide a location from the list of possible locations.");
 
-        document.setupValidationForLocation = function(value, element) {
+    }
 
-             var listOfLocations = [];
-                            $.each(locationNamesResults, function(key, locationName){
-                                listOfLocations.push({"val": locationName.id, "label": locationName.name});
-                            });
-            /* Start - Checking that the user entered location exists in the list of possible locations */
-            $.validator.addMethod("validLocationOnly", function(value, element) {
-                if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
-                var locationEnteredByUser = $('#encounter\\.location_id').val();
-                for (var i = 0; i < listOfLocations.length; i++) {
-                    if (locationEnteredByUser == listOfLocations[i].label) {
-                        return true;
-                    }
+    // attach 'validLocationOnly' class to perform validation.
+    jQuery.validator.addClassRules({
+        "valid-location-only": {validLocationOnly: true}
+    });
+    /* End - validLocationOnly*/
+
+    document.setupValidationForConsultation = function (value, element, listOfConsultants) {
+
+        /* Start - Checking that the user entered consultant exists in the list of possible consultant */
+        $.validator.addMethod("validConsultantOnly", function (value, element) {
+            if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
+            var locationEnteredByUser = $('#consultation\\.recipient').val();
+            for (var i = 0; i < listOfConsultants.length; i++) {
+                if (locationEnteredByUser == listOfConsultants[i].label) {
+                    return true;
                 }
-                return false;
-            }, "Please provide a location from the list of possible locations.");
+            }
+            return false;
+        }, "Please provide a consultant from the list of possible consultants.");
 
-        }
+    }
 
-        // attach 'validLocationOnly' class to perform validation.
-            jQuery.validator.addClassRules({
-                "valid-location-only": { validLocationOnly: true }
-            });
-            /* End - validLocationOnly*/
-
-         document.setupValidationForConsultation = function(value, element, listOfConsultants) {
-
-             /* Start - Checking that the user entered consultant exists in the list of possible consultant */
-             $.validator.addMethod("validConsultantOnly", function(value, element) {
-                 if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
-                 var locationEnteredByUser = $('#consultation\\.recipient').val();
-                 for (var i = 0; i < listOfConsultants.length; i++) {
-                     if (locationEnteredByUser == listOfConsultants[i].label) {
-                         return true;
-                     }
-                 }
-                 return false;
-             }, "Please provide a consultant from the list of possible consultants.");
-
-         }
-
-         // attach 'validConsultantOnly' class to perform validation.
-             jQuery.validator.addClassRules({
-                 "valid-consultant-only": { validConsultantOnly: true }
-             });
-             /* End - validConsultantOnly*/
+    // attach 'validConsultantOnly' class to perform validation.
+    jQuery.validator.addClassRules({
+        "valid-consultant-only": {validConsultantOnly: true}
+    });
+    /* End - validConsultantOnly*/
 });

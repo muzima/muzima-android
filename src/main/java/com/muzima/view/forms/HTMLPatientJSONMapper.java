@@ -90,7 +90,9 @@ public class HTMLPatientJSONMapper {
     private void setJSONObjects(String jsonPayload) throws JSONException {
         JSONObject responseJSON = new JSONObject(jsonPayload);
         patientJSON = responseJSON.getJSONObject("patient");
-        observationJSON = responseJSON.getJSONObject("observation");
+        if (responseJSON.has("observation")) {
+            observationJSON = responseJSON.getJSONObject("observation");
+        }
     }
 
     private void createPatient() throws JSONException {
@@ -151,7 +153,7 @@ public class HTMLPatientJSONMapper {
 
     private List<PatientIdentifier> getOtherPatientIdentifiers() throws JSONException {
         List<PatientIdentifier> otherIdentifiers = new ArrayList<PatientIdentifier>();
-        if (observationJSON.has("other_identifier_type") && observationJSON.has("other_identifier_value")) {
+        if (observationJSON != null && observationJSON.has("other_identifier_type") && observationJSON.has("other_identifier_value")) {
             Object identifierTypeNameObject = observationJSON.get("other_identifier_type");
             Object identifierValueObject = observationJSON.get("other_identifier_value");
 
