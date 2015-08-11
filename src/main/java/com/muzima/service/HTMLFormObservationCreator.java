@@ -143,6 +143,9 @@ public class HTMLFormObservationCreator {
             return null;
         }
         Observation observation = observationParserUtility.getObservationEntity(concept, value);
+        if(observation == null){
+            return null;
+        }
         observation.setEncounter(encounter);
         observation.setPerson(patient);
         observation.setObservationDatetime(encounter.getEncounterDatetime());
