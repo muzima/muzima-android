@@ -129,9 +129,9 @@
     <string name="preference_server_desc">Enter the OpenMRS Server</string>
     <string name="preference_server">serverPreference</string>
     <string name="preference_timeout_title">Timeout</string>
-    <string name="preference_timeout_desc">Enter the Timeout value in minutes</string>
+    <string name="preference_timeout_desc">Enter the value in minutes</string>
     <string name="preference_timeout">timeoutPreference</string>
-    <string name="preference_auto_save_interval_desc">Sets interval time for automatic save of forms.</string>
+    <string name="preference_auto_save_interval_desc">Enter the value in minutes</string>
     <string name="preference_auto_save_interval_title">Automatic form save interval</string>
     <string name="preference_auto_save_interval">autoSaveIntervalPreference</string>
     <string name="default_auto_save_interval_value">2</string>
@@ -141,17 +141,19 @@
     <string name="preference_password_title">Password</string>
     <string name="preference_password_desc">Enter the OpenMRS password</string>
     <string name="preference_password">passwordPreference</string>
-    <string name="preference_cohort_title">Add Cohort Prefix</string>
-    <string name="preference_cohort_desc">You can add multiple cohort prefixes to restrict the cohort downloads</string>
+    <string name="preference_cohort_title">Add cohort prefixes</string>
+    <string name="preference_cohort_desc">You can add multiple cohort prefixes to restrict the cohort downloads.</string>
     <string name="preference_category_openmrs">OpenMRS Settings</string>
+    <string name="preference_category_muzima">Muzima Settings</string>
+    <string name="preference_category_provider_location">Provider/Location Settings</string>
     <string name="preference_category_cohorts">Cohort Settings</string>
     <string name="preference_category_provider">Provider Settings</string>
-    <string name="preference_add_provider_title">Add Provider</string>
-    <string name="preference_add_provider_desc">You can add multiple providers for encounter forms</string>
+    <string name="preference_add_provider_title">Add provider(s)</string>
+    <string name="preference_add_provider_desc">You can add provider(s) to display in your forms.</string>
 
     <string name="preference_cohorts_prefix_desc">Enter cohort prefixes</string>
     <string name="preference_cohort_prefix">cohortPrefixesPreference</string>
-    <string name="preference_real_time_sync_summary">Enables real time synchronization of completed forms.</string>
+    <string name="preference_real_time_sync_summary">Enable real time synchronization of complete form data</string>
     <string name="preference_real_time_sync_title">Real time sync</string>
     <string name="preference_real_time_sync">realTimeSyncPreference</string>
 
@@ -173,7 +175,7 @@
     <string name="no_observations_available">No Observations Available</string>
 
     <string name="preference_form_title">Add form tags</string>
-    <string name="preference_form_desc">You can add form tags to restrict the form downloads</string>
+    <string name="preference_form_desc">You can add form tags to restrict the form downloads.</string>
     <string name="title_activity_form_tag">Form Tags</string>
     <string name="add_form_tags">Add Form Tags</string>
     <string name="form_add_tag_hint">Add Tags</string>
@@ -335,12 +337,12 @@
     <string name="no_location_added">No new location has been added yet.</string>
 
     <string name="already_exists_form_message">This Form Data already exists for this client with same encounter date.</string>
-    <string name="already_exists_form_title">Duplicate Form Data</string>
+    <string name="already_exists_form_title">Duplicate form data warning</string>
     <string name="duplicate_form_button_label">Save Duplicate Form Data</string>
     <string name="alert_Ok">Ok</string>
 
-    <string name="preference_duplicate_form_data_desc">Enable warning when Duplicate Form Data for same client with same encounter date is being saved.</string>
-    <string name="preference_duplicate_form_data_title">Duplicate Form Data Warning </string>
+    <string name="preference_duplicate_form_data_desc">Enable warning when duplicate form data for same client with same encounter date is being saved</string>
+    <string name="preference_duplicate_form_data_title">Duplicate form data warning</string>
     <string name="preference_duplicate_form_data">duplicateFormDataPreference</string>
 
     <string name="no_provider_added">No new provider has been added yet.</string>
@@ -350,6 +352,6 @@
     <string name="not_a_provider_title">Unable to set as Provider</string>
     <string name="not_a_provider_message">You do not have provider rights or your provider data is not downloaded, please use add provider option.</string>
     <string name="rerun_wizard_message">Wizard was interrupted, please logout and run the wizard again.</string>
-    <string name="preference_font_size_title">Font Size</string>
+    <string name="preference_font_size_title">Font size</string>
     <string name="preference_font_size">font_size</string>
 </resources>
