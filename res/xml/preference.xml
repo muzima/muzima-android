@@ -27,6 +27,9 @@
                 android:positiveButtonText="@android:string/ok"
                 android:title="@string/preference_password_title"
                 android:inputType="textPassword"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/preference_category_muzima">
         <EditTextPreference
                 android:defaultValue="5"
                 android:dialogMessage="@string/preference_timeout_desc"
@@ -50,17 +53,42 @@
                 android:summary="@string/preference_real_time_sync_summary"
                 android:title="@string/preference_real_time_sync_title"
                 android:key="@string/preference_real_time_sync" />
-        <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="@string/preference_encounter_provider"
-                android:summary="@string/preference_encounter_provider_desc"
-                android:title="@string/preference_encounter_provider_title" />
+
         <CheckBoxPreference
                 android:defaultValue="true"
                 android:checked="true"
                 android:key="@string/preference_duplicate_form_data"
                 android:summary="@string/preference_duplicate_form_data_desc"
                 android:title="@string/preference_duplicate_form_data_title" />
+
+        <ListPreference
+                android:title="@string/preference_font_size_title"
+                android:key="@string/preference_font_size"
+                android:defaultValue="Medium"
+                android:entries="@array/font_sizes"
+                android:entryValues="@array/font_sizes">
+        </ListPreference>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/preference_category_provider_location">
+        <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="@string/preference_encounter_provider"
+                android:summary="@string/preference_encounter_provider_desc"
+                android:title="@string/preference_encounter_provider_title" />
+        <Preference
+                android:title="@string/preference_add_provider_title"
+                android:summary="@string/preference_add_provider_desc">
+            <intent android:targetPackage="com.muzima"
+                    android:targetClass="com.muzima.view.preferences.ProviderPreferenceActivity"/>
+        </Preference>
+        <Preference
+                android:title="Add location(s)"
+                android:summary="You can add location(s) to display in your forms.">
+            <intent android:targetPackage="com.muzima"
+                    android:targetClass="com.muzima.view.preferences.LocationPreferenceActivity"/>
+        </Preference>
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/preference_category_cohorts">
@@ -71,33 +99,11 @@
                     android:targetClass="com.muzima.view.preferences.CohortPreferenceActivity"/>
         </Preference>
         <Preference
-                android:title="Add concepts"
+                android:title="Add concept(s)"
                 android:summary="You can add concepts to configure what observations to download.">
             <intent android:targetPackage="com.muzima"
                     android:targetClass="com.muzima.view.preferences.ConceptPreferenceActivity"/>
         </Preference>
-        <Preference
-                android:title="Add locations"
-                android:summary="You can add locations that will be displayed in your forms.">
-            <intent android:targetPackage="com.muzima"
-                    android:targetClass="com.muzima.view.preferences.LocationPreferenceActivity"/>
-        </Preference>
-    </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/preference_category_provider">
-        <Preference
-                android:title="@string/preference_add_provider_title"
-                android:summary="@string/preference_add_provider_desc">
-            <intent android:targetPackage="com.muzima"
-                    android:targetClass="com.muzima.view.preferences.ProviderPreferenceActivity"/>
-        </Preference>
-        <ListPreference
-                android:title="@string/preference_font_size_title"
-                android:key="@string/preference_font_size"
-                android:defaultValue="Medium"
-                android:entries="@array/font_sizes"
-                android:entryValues="@array/font_sizes">
-        </ListPreference>
     </PreferenceCategory>
-
 </PreferenceScreen>
