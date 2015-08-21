@@ -588,7 +588,29 @@ $(document).ready(function () {
         $.each(prePopulateJson, function (key, value) {
             var $elements = $('[name="' + key + '"]');
             if (value instanceof Array) {
-                $elements.val(value);
+                 if ($elements.length < value.length) {
+                    $.each(value, function (i, valueElement) {
+                        if (i == 0) {
+                            $.each($elements, function(i, element) {
+                                applyValue(element, valueElement);
+                            });
+                        } else {
+                            var $div = $elements.closest('.repeat, .custom-repeat');
+                            var $clonedDiv = $div.clone(true);
+                            $div.after($clonedDiv);
+                            $elements = $clonedDiv.find('[name="' + key + '"]');
+                            $.each($elements, function(i, element) {
+                                applyValue(element, valueElement);
+                            });
+                        }
+                    });
+                } else {
+                    $.each(value, function (i, valueElement) {
+                        $.each($elements, function(i, element) {
+                            applyValue(element, valueElement);
+                        });
+                    });
+                }
             } else {
                 $.each($elements, function (i, element) {
                     applyValue(element, value);
