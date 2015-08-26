@@ -6,7 +6,7 @@
  * that uses this code in a for-profit venture, please contact the copyright holder.
  */
 
-package com.muzima.view.cohort;
+package com.muzima.view.concept;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -92,9 +92,9 @@ public class ConceptListActivity extends ConceptPreferenceActivity {
             } else{
                 results[0] = SyncStatusConstants.SUCCESS;
             }
-            int[] downloadObservationsResult = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortsUuidDownloaded);
+            int[] downloadObservationsResult = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortsUuidDownloaded, true);
 
-            int[] downloadEncountersResult = muzimaSyncService.downloadEncountersForPatientsByCohortUUIDs(cohortsUuidDownloaded);
+            int[] downloadEncountersResult = muzimaSyncService.downloadEncountersForPatientsByCohortUUIDs(cohortsUuidDownloaded, true);
 
             results[1] = downloadObservationsResult[0];
             results[2] = downloadEncountersResult[0];

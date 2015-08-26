@@ -77,7 +77,9 @@ public class HTMLFormObservationCreator {
             JSONObject responseJSON = new JSONObject(jsonResponse);
             patient = getPatient(responseJSON.getJSONObject("patient"));
             encounter = createEncounter(responseJSON.getJSONObject("encounter"),formDataUuid);
-            observations = extractObservationFromJSONObject(responseJSON.getJSONObject("observation"));
+            if (responseJSON.has("observation")) {
+                observations = extractObservationFromJSONObject(responseJSON.getJSONObject("observation"));
+            }
         } catch (PatientController.PatientLoadException e) {
             Log.e(TAG, "Error while fetching Patient", e);
         } catch (ConceptController.ConceptFetchException e) {
@@ -96,7 +98,9 @@ public class HTMLFormObservationCreator {
         try {
             encounterController.saveEncounters(asList(encounter));
             conceptController.saveConcepts(observationParserUtility.getNewConceptList());
-            observationController.saveObservations(observations);
+            if(observations != null && !observations.isEmpty()){
+                observationController.saveObservations(observations);
+            }
         } catch (Exception e) {
             Log.e(TAG, "Error while parsing and storing Observations.", e);
         }

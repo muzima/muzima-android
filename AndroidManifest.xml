@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.muzima"
-          android:versionCode="1"
-          android:versionName="1.0">
+          android:versionCode="2"
+          android:versionName="1.0.1">
 
     <uses-sdk
             android:minSdkVersion="8"
@@ -41,9 +41,15 @@
         </activity>
 
         <activity
-                android:name="com.muzima.view.cohort.ConceptListActivity"
+                android:name=".view.concept.ConceptListActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/title_activity_concept_pref">
+        </activity>
+
+        <activity
+                android:name=".view.location.LocationListActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_location_pref">
         </activity>
 
         <activity
@@ -60,7 +66,7 @@
                 android:parentActivityName="com.muzima.view.MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.muzima.view.DashboardActivity"/>
+                    android:value="com.muzima.view.MainActivity"/>
         </activity>
 
         <activity
@@ -69,6 +75,21 @@
                 android:configChanges="orientation|screenSize"
                 android:label="@string/title_activity_settings"
                 android:parentActivityName="com.muzima.view.MainActivity">
+        </activity>
+        <activity
+                android:name=".view.preferences.ProviderPreferenceActivity"
+                android:theme="@style/PreferencesTheme"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_provider_pref"
+                android:parentActivityName="com.muzima.view.preferences.SettingsActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.preferences.SettingsActivity"/>
+        </activity>
+        <activity
+                android:name=".view.provider.ProviderListActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_provider_pref">
         </activity>
         <activity
                 android:name=".view.preferences.CohortPreferenceActivity"
@@ -92,13 +113,23 @@
                     android:value="com.muzima.view.preferences.SettingsActivity"/>
         </activity>
         <activity
+                android:name=".view.preferences.LocationPreferenceActivity"
+                android:theme="@style/PreferencesTheme"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_location_pref"
+                android:parentActivityName="com.muzima.view.preferences.SettingsActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.preferences.SettingsActivity"/>
+        </activity>
+        <activity
                 android:name="com.muzima.view.HelpActivity"
                 android:label="@string/title_activity_help"
                 android:configChanges="orientation|screenSize"
                 android:parentActivityName="com.muzima.view.MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.muzima.view.DashboardActivity"/>
+                    android:value="com.muzima.view.MainActivity"/>
         </activity>
         <activity
                 android:name="com.muzima.view.WebViewActivity"
@@ -116,7 +147,7 @@
                 android:parentActivityName="com.muzima.view.MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.muzima.view.DashboardActivity"/>
+                    android:value="com.muzima.view.MainActivity"/>
         </activity>
 
         <activity
@@ -132,7 +163,7 @@
                 android:parentActivityName="com.muzima.view.MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.muzima.view.DashboardActivity"/>
+                    android:value="com.muzima.view.MainActivity"/>
         </activity>
         <activity
                 android:name=".view.forms.FormWebViewActivity"
@@ -144,6 +175,7 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.forms.FormsActivity"/>
         </activity>
+
         <activity
                 android:name=".view.forms.HTMLFormWebViewActivity"
                 android:label="@string/title_activity_form_webview"
@@ -161,7 +193,7 @@
                 android:parentActivityName="com.muzima.view.patients.PatientsListActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.muzima.view.ClientListActivity"/>
+                    android:value="com.muzima.view.patients.PatientsListActivity"/>
         </activity>
 
         <activity
@@ -261,10 +293,17 @@
         <activity android:name=".view.cohort.CohortWizardActivity"
                   android:configChanges="orientation|screenSize"
                   android:theme="@style/WizardTheme"/>
-        <activity android:name=".view.cohort.FormTemplateWizardActivity"
+        <activity android:name=".view.forms.FormTemplateWizardActivity"
                   android:configChanges="orientation|screenSize"
                   android:theme="@style/WizardTheme"/>
-        <activity android:name=".view.cohort.CustomConceptWizardActivity"
+        <activity android:name=".view.location.CustomLocationWizardActivity"
+                  android:configChanges="orientation|screenSize"
+                  android:theme="@style/WizardTheme"/>
+        <activity android:name=".view.provider.CustomProviderWizardActivity"
+                  android:label="Define Custom Concept"
+                  android:configChanges="orientation|screenSize"
+                  android:theme="@style/WizardTheme"/>
+        <activity android:name=".view.concept.CustomConceptWizardActivity"
                   android:label="Define Custom Concept"
                   android:configChanges="orientation|screenSize"
                   android:theme="@style/WizardTheme"/>

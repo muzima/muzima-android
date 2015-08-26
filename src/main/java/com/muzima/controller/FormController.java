@@ -9,6 +9,7 @@
 package com.muzima.controller;
 
 import android.util.Log;
+import com.muzima.adapters.json.AndroidJsonWriterAdopterFactory;
 import com.muzima.api.model.APIName;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
@@ -254,6 +255,14 @@ public class FormController {
         }
     }
 
+    public void deleteAllFormTemplates() throws FormDeleteException {
+        try {
+            formService.deleteFormTemplates(formService.getAllFormTemplates());
+        } catch (IOException e) {
+            throw new FormDeleteException(e);
+        }
+    }
+
     public void deleteForms(List<Form> forms) throws FormDeleteException {
         try {
             formService.deleteForms(forms);
@@ -282,6 +291,15 @@ public class FormController {
             } catch (IOException e) {
                 throw new FormSaveException(e);
             }
+        }
+    }
+
+    public void saveFormTemplates(List<FormTemplate> formTemplates) throws FormSaveException {
+
+        try {
+            formService.saveFormTemplates(formTemplates);
+        } catch (IOException e) {
+            throw new FormSaveException(e);
         }
     }
 
@@ -508,11 +526,13 @@ public class FormController {
             List<FormData> allFormData = formService.getAllFormData(Constants.STATUS_COMPLETE);
 
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_DISCRIMINATOR_REGISTRATION), result);
-            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_HTML_DISCRIMINATOR_REGISTRATION), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER), result);
             return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER), result);
         } catch (IOException e) {
+            throw new UploadFormDataException(e);
+        } catch (JSONException e) {
             throw new UploadFormDataException(e);
         }
     }
@@ -610,14 +630,14 @@ public class FormController {
         return requiredForms;
     }
 
-    boolean uploadFormDataToServer(List<FormData> allFormData, boolean result) throws IOException {
+    boolean uploadFormDataToServer(List<FormData> allFormData, boolean result) throws IOException, JSONException {
         for (FormData formData : allFormData) {
             String rawPayload = formData.getJsonPayload();
             // inject consultation.sourceUuid
             formData = injectUuidToPayload(formData);
             // replace media paths with base64 string
             formData = replaceMediaPathWithBase64String(formData);
-            if (formService.syncFormData(formData)) {
+            if (formService.syncFormData(formData, new AndroidJsonWriterAdopterFactory())) {
                 formData.setStatus(STATUS_UPLOADED);
 
                 //DO NOT save base64 string in DB
@@ -721,7 +741,7 @@ public class FormController {
         }
         return mediaString != null? mediaString : mediaUri;
     }
-    public boolean isFormAlreadyExist(String jsonPayload) throws IOException, JSONException {
+    public boolean isFormAlreadyExist(String jsonPayload, FormData formData) throws IOException, JSONException {
         org.json.JSONObject temp = new org.json.JSONObject(jsonPayload);
         String checkEncounterDate = ((org.json.JSONObject)temp.get("encounter")).get("encounter.encounter_datetime").toString();
         String checkPatientUuid = ((org.json.JSONObject)temp.get("patient")).get("patient.uuid").toString();
@@ -730,7 +750,7 @@ public class FormController {
         List<FormData> allFormData = formService.getAllFormData(Constants.STATUS_INCOMPLETE);
         allFormData.addAll(formService.getAllFormData(Constants.STATUS_COMPLETE));
         for (FormData formData1 : allFormData){
-            if(!isRegistrationFormData(formData1)) {
+            if(!isRegistrationFormData(formData1) && !formData1.getUuid().equals(formData.getUuid())) {
                 org.json.JSONObject object = new org.json.JSONObject(formData1.getJsonPayload());
                 String encounterDate = ((org.json.JSONObject) object.get("encounter")).get("encounter.encounter_datetime").toString();
                 String patientUuid = ((org.json.JSONObject) object.get("patient")).get("patient.uuid").toString();
@@ -746,6 +766,6 @@ public class FormController {
     }
 
     private boolean isRegistrationFormData(FormData formData){
-        return formData.getDiscriminator().equals(Constants.FORM_DISCRIMINATOR_REGISTRATION) || formData.getDiscriminator().equals(Constants.FORM_HTML_DISCRIMINATOR_REGISTRATION);
+        return formData.getDiscriminator().equals(Constants.FORM_DISCRIMINATOR_REGISTRATION) || formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION);
     }
 }

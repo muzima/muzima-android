@@ -5,28 +5,15 @@
  * healthcare disclaimer. If the user is an entity intending to commercialize any application
  * that uses this code in a for-profit venture, please contact the copyright holder.
  */
-
-/**
- * Copyright 2012 Muzima Team
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.muzima.controller;
 
 import com.muzima.api.model.Concept;
+import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Observation;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.ObservationService;
+import com.muzima.service.ConceptParser;
+import com.muzima.service.HTMLConceptParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,7 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ConceptController {
-    public static List<Concept> newConcepts = new ArrayList<Concept>();
+    private List<Concept> newConcepts = new ArrayList<Concept>();
     private ConceptService conceptService;
     private ObservationService observationService;
 
@@ -104,7 +91,7 @@ public class ConceptController {
             Iterator<Concept> iterator = concepts.iterator();
             while (iterator.hasNext()) {
                 Concept next = iterator.next();
-                if (!next.containsNameIgnoreLowerCase(name)) {
+                if (next == null || !next.containsNameIgnoreLowerCase(name)) {
                     iterator.remove();
                 }
             }
@@ -121,6 +108,36 @@ public class ConceptController {
         } catch (IOException e) {
             throw new ConceptFetchException(e);
         }
+    }
+
+    public void newConcepts(List<Concept> concepts) throws ConceptFetchException {
+        newConcepts = concepts;
+        List<Concept> savedConcepts = getConcepts();
+        newConcepts.removeAll(savedConcepts);
+    }
+
+    public List<Concept> newConcepts() {
+        return newConcepts;
+    }
+
+    public List<Concept> getRelatedConcepts(List<FormTemplate> formTemplates) throws ConceptDownloadException {
+        HashSet<Concept> concepts = new HashSet<Concept>();
+        ConceptParser xmlParserUtils = new ConceptParser();
+        HTMLConceptParser htmlParserUtils = new HTMLConceptParser();
+        for (FormTemplate formTemplate : formTemplates) {
+            List<String> names = new ArrayList<String>();
+            if (formTemplate.isHTMLForm()) {
+                names = htmlParserUtils.parse(formTemplate.getHtml());
+            } else {
+                names = xmlParserUtils.parse(formTemplate.getModel());
+            }
+            concepts.addAll(downloadConceptsByNames(names));
+        }
+        return new ArrayList<Concept>(concepts);
+    }
+
+    public void deleteAllConcepts() throws ConceptDeleteException, ConceptFetchException {
+        deleteConcepts(getConcepts());
     }
 
     public static class ConceptDownloadException extends Throwable {

@@ -37,7 +37,7 @@ import com.muzima.model.collections.IncompleteFormsWithPatientData;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
-import com.muzima.view.cohort.ConceptListActivity;
+import com.muzima.view.location.LocationListActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class AllAvailableFormsListFragment extends FormsListFragment {
-    private static final String TAG = "AllAvailableFormsListFragment";
+    private static final String TAG = AllAvailableFormsListFragment.class.getSimpleName();
     private ActionMode actionMode;
     private boolean actionModeActive = false;
     private OnTemplateDownloadComplete templateDownloadCompleteListener;
@@ -153,27 +153,6 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         return false;
     }
 
-    private void navigateToNextActivity() {
-        Intent intent = new Intent(getActivity().getApplicationContext(), ConceptListActivity.class);
-        startActivity(intent);
-        getActivity().finish();
-    }
-
-    private int[] downloadFormTemplates() {
-        List<String> selectedFormIdsArray = getSelectedForms();
-        MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getActivity().getApplicationContext()).getMuzimaSyncService();
-        return muzimaSyncService.downloadFormTemplates(selectedFormIdsArray.toArray(new String[selectedFormIdsArray.size()]));
-    }
-
-    private void syncAllFormTemplatesInBackgroundService() {
-        ((FormsActivity) getActivity()).showProgressBar();
-        new SyncFormTemplateIntent(getActivity(), getSelectedFormsArray()).start();
-    }
-
-    public void setTemplateDownloadCompleteListener(OnTemplateDownloadComplete templateDownloadCompleteListener) {
-        this.templateDownloadCompleteListener = templateDownloadCompleteListener;
-    }
-
     private String[] getSelectedFormsArray() {
         List<String> selectedForms = getSelectedForms();
         String[] selectedFormUuids = new String[selectedForms.size()];
@@ -206,7 +185,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     }
 
     public interface OnTemplateDownloadComplete {
-        public void onTemplateDownloadComplete();
+        void onTemplateDownloadComplete();
     }
 
     public final class NewFormsActionModeCallback implements ActionMode.Callback {
@@ -283,5 +262,25 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
             actionModeActive = false;
             ((AllAvailableFormsAdapter) listAdapter).clearSelectedForms();
         }
+    }
+
+    private void navigateToNextActivity() {
+        Intent intent = new Intent(getActivity().getApplicationContext(), LocationListActivity.class);
+        startActivity(intent);
+        getActivity().finish();
+    }
+    private int[] downloadFormTemplates() {
+        List<String> selectedFormIdsArray = getSelectedForms();
+        MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getActivity().getApplicationContext()).getMuzimaSyncService();
+        return muzimaSyncService.downloadFormTemplates(selectedFormIdsArray.toArray(new String[selectedFormIdsArray.size()]), true);
+    }
+
+    private void syncAllFormTemplatesInBackgroundService() {
+        ((FormsActivity) getActivity()).showProgressBar();
+        new SyncFormTemplateIntent(getActivity(), getSelectedFormsArray()).start();
+    }
+
+    public void setTemplateDownloadCompleteListener(OnTemplateDownloadComplete templateDownloadCompleteListener) {
+        this.templateDownloadCompleteListener = templateDownloadCompleteListener;
     }
 }

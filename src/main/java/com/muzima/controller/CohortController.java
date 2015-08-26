@@ -212,6 +212,12 @@ public class CohortController {
         }
     }
 
+    public void deleteCohortMembers(List<Cohort> allCohorts) throws CohortReplaceException {
+        for (Cohort cohort : allCohorts) {
+            deleteCohortMembers(cohort.getUuid());
+        }
+    }
+
     public static class CohortDownloadException extends Throwable {
         public CohortDownloadException(Throwable throwable) {
             super(throwable);

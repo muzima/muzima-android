@@ -8,33 +8,48 @@
 
 package com.muzima.view.forms;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 import com.muzima.MuzimaApplication;
+import com.muzima.R;
 import com.muzima.api.model.FormData;
+import com.muzima.api.model.Location;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.Provider;
 import com.muzima.controller.FormController;
+import com.muzima.controller.LocationController;
+import com.muzima.controller.ProviderController;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
+import net.minidev.json.JSONValue;
+import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import static com.muzima.utils.Constants.FORM_HTML_DISCRIMINATOR_REGISTRATION;
+import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION;
 
 public class HTMLFormDataStore {
     private static final String TAG = "FormDataStore";
 
     private HTMLFormWebViewActivity formWebViewActivity;
     private FormController formController;
+    private LocationController locationController;
     private FormData formData;
+    private ProviderController providerController;
 
-    public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity, FormController formController, FormData formData) {
+    public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity, FormController formController, LocationController locationController, FormData formData, ProviderController providerController) {
         this.formWebViewActivity = formWebViewActivity;
         this.formController = formController;
         this.formData = formData;
+        this.providerController = providerController;
+        this.locationController = locationController;
     }
 
     @JavascriptInterface
@@ -45,11 +60,6 @@ public class HTMLFormDataStore {
     @JavascriptInterface
     public void saveHTML(String jsonPayload, String status) {
         saveHTML(jsonPayload, status, false);
-    }
-
-    @JavascriptInterface
-    public void loadJsonPayload(String jsonPayload){
-        formWebViewActivity.jsonPayload = jsonPayload;
     }
 
     @JavascriptInterface
@@ -70,11 +80,11 @@ public class HTMLFormDataStore {
             Log.i(TAG, "Saving form data ...");
             if (!keepFormOpen) {
                 formWebViewActivity.finish();
-                if(status.equals("complete")) {
+                if (status.equals("complete")) {
                     Toast.makeText(formWebViewActivity, "Completed form data is saved successfully.", Toast.LENGTH_SHORT).show();
                     RealTimeFormUploader.getInstance().uploadAllCompletedForms(formWebViewActivity.getApplicationContext());
                 }
-                if(status.equals("incomplete")) {
+                if (status.equals("incomplete")) {
                     Toast.makeText(formWebViewActivity, "Draft form data is saved successfully.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -87,6 +97,55 @@ public class HTMLFormDataStore {
             Log.e(TAG, "Exception occurred while saving form data", e);
         }
     }
+
+    @JavascriptInterface
+    public String getLocationNamesFromDevice() throws JSONException {
+        List<Location> locationsOnDevice = new ArrayList<Location>();
+        try {
+            locationsOnDevice = locationController.getAllLocations();
+        } catch (LocationController.LocationLoadException e) {
+            Toast.makeText(formWebViewActivity, "An error occurred while loading locations for the form", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "Exception occurred while loading locations", e);
+        }
+        return JSONValue.toJSONString(locationsOnDevice);
+    }
+
+    @JavascriptInterface
+    public String getProviderNamesFromDevice() throws JSONException {
+        List<Provider> providersOnDevice = new ArrayList<Provider>();
+        try {
+            providersOnDevice = providerController.getAllProviders();
+        }catch (ProviderController.ProviderLoadException e) {
+            Toast.makeText(formWebViewActivity, "An error occurred while loading provider for the form", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "Exception occurred while loading providers", e);
+            e.printStackTrace();
+        }
+        return JSONValue.toJSONString(providersOnDevice);
+    }
+
+    @JavascriptInterface
+    public String getDefaultEncounterProvider()
+    {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(formWebViewActivity.getApplicationContext());
+        boolean encounterProviderPreference = preferences.getBoolean("encounterProviderPreference", false);
+        List<Provider> providers = new ArrayList<Provider>();
+
+        if(encounterProviderPreference){
+            MuzimaApplication applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
+            providers.add(providerController.getProviderBySystemId(applicationContext.getAuthenticatedUser().getSystemId()));
+            return JSONValue.toJSONString(providers);
+        }
+        return JSONValue.toJSONString(providers);
+    }
+
+    @JavascriptInterface
+    public String getFontSizePreference()
+    {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(formWebViewActivity.getApplicationContext());
+        return preferences.getString(formWebViewActivity.getResources().getString(R.string.preference_font_size),
+                HTMLFormWebViewActivity.DEFAULT_FONT_SIZE).toLowerCase();
+    }
+
 
     private void parseForm(String jsonPayload, String status) {
         if (status.equals(Constants.STATUS_INCOMPLETE)) {
@@ -108,6 +167,6 @@ public class HTMLFormDataStore {
         return isRegistrationForm() && status.equals(Constants.STATUS_COMPLETE);
     }
     public boolean isRegistrationForm() {
-        return (formData.getDiscriminator() != null) && formData.getDiscriminator().equals(FORM_HTML_DISCRIMINATOR_REGISTRATION);
+        return (formData.getDiscriminator() != null) && formData.getDiscriminator().equals(FORM_JSON_DISCRIMINATOR_REGISTRATION);
     }
 }

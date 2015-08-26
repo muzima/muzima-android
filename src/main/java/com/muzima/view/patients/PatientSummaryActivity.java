@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.User;
 import com.muzima.controller.EncounterController;
@@ -117,7 +118,7 @@ public class PatientSummaryActivity extends BaseActivity {
     private void setupPatientMetadata() throws PatientController.PatientLoadException {
 
         TextView patientName = (TextView) findViewById(R.id.patientName);
-        patientName.setText(patient.getFamilyName() + ", " + patient.getGivenName() + " " + patient.getMiddleName());
+        patientName.setText(PatientAdapterHelper.getPatientFormattedName(patient));
 
         ImageView genderIcon = (ImageView) findViewById(R.id.genderImg);
         int genderDrawable = patient.getGender().equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
