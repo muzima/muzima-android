@@ -6,7 +6,7 @@
  * that uses this code in a for-profit venture, please contact the copyright holder.
  */
 
-package com.muzima.view.cohort;
+package com.muzima.view.concept;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +26,7 @@ import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.view.InstallBarCodeWizardActivity;
+import com.muzima.view.provider.CustomProviderWizardActivity;
 import com.muzima.view.forms.MuzimaProgressDialog;
 import com.muzima.view.preferences.ConceptPreferenceActivity;
 
@@ -116,9 +117,9 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
              } else{
                  results[0] = SyncStatusConstants.SUCCESS;
              }
-            int[] downloadObservationsResult = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortsUuidDownloaded);
+            int[] downloadObservationsResult = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortsUuidDownloaded, false);
 
-            int[] downloadEncountersResult = muzimaSyncService.downloadEncountersForPatientsByCohortUUIDs(cohortsUuidDownloaded);
+            int[] downloadEncountersResult = muzimaSyncService.downloadEncountersForPatientsByCohortUUIDs(cohortsUuidDownloaded, false);
 
             results[1] = downloadObservationsResult[0];
             results[2] = downloadEncountersResult[0];
@@ -175,7 +176,7 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
     }
 
     private void navigateToPreviousActivity() {
-        Intent intent = new Intent(getApplicationContext(), FormTemplateWizardActivity.class);
+        Intent intent = new Intent(getApplicationContext(), CustomProviderWizardActivity.class);
         startActivity(intent);
         finish();
     }

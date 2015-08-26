@@ -29,6 +29,7 @@ import com.muzima.controller.CohortController;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.CheckedLinearLayout;
+import com.muzima.view.patients.SyncPatientDataIntent;
 
 import java.io.IOException;
 import java.util.Date;

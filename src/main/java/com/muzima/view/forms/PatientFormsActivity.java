@@ -15,6 +15,7 @@ import android.os.Bundle;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.adapters.forms.PatientFormsPagerAdapter;
+import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.Constants;
 import com.muzima.view.patients.PatientSummaryActivity;
@@ -30,7 +31,7 @@ public class PatientFormsActivity extends FormsActivityBase {
         Intent intent = getIntent();
         patient = (Patient) intent.getSerializableExtra(PatientSummaryActivity.PATIENT);
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setTitle(patient.getFamilyName() + ", " + patient.getGivenName() + " " + patient.getMiddleName());
+        getSupportActionBar().setTitle(patient.getSummary());
     }
 
 
