@@ -126,6 +126,16 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         autoSaveIntervalPreference = preferences.getString("autoSaveIntervalPreference", DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS);
         encounterProviderPreference = preferences.getBoolean("encounterProviderPreference", IS_LOGGED_IN_USER_DEFAULT_PROVIDER);
         duplicateFormDataPreference = preferences.getBoolean("duplicateFormDataPreference", IS_ALLOWED_FORM_DATA_DUPLICATION );
+
+        showProgressBar("Loading...");
+        try {
+            setupFormData();
+            startAutoSaveProcess();
+            setupWebView();
+        } catch (Throwable t) {
+            Log.e(TAG, t.getMessage(), t);
+        }
+        super.onStart();
     }
 
     private void startAutoSaveProcess() {
@@ -174,15 +184,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     @Override
     protected void onResume() {
 
-        showProgressBar("Loading...");
-        try {
-            setupFormData();
-            startAutoSaveProcess();
-            setupWebView();
-        } catch (Throwable t) {
-            Log.e(TAG, t.getMessage(), t);
-        }
-
         if (scanResultMap != null && !scanResultMap.isEmpty()) {
             String jsonMap = new JSONObject(scanResultMap).toString();
             Log.d(TAG, jsonMap);
@@ -206,8 +207,17 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             Log.d(TAG, "Header:" + sectionName + "json:" + jsonMap);
             webView.loadUrl("javascript:document.populateVideo('" + sectionName + "', " + jsonMap + ")");
         }
-
         super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        try {
+            webView.loadUrl("javascript:document.autoSaveForm()");
+        } catch (Exception e) {
+            Log.e(TAG, "Error while saving the form data", e);
+        }
+        super.onPause();
     }
 
     @Override
