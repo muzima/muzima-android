@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.CountDownTimer;
 import com.muzima.MuzimaApplication;
 import com.muzima.service.TimeoutPreferenceService;
+import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.view.login.LoginActivity;
 
 public class MuzimaTimer extends CountDownTimer {
@@ -58,8 +59,11 @@ public class MuzimaTimer extends CountDownTimer {
     private void logOut()
     {
         boolean isRunningInBackground = muzimaApplication.isRunningInBackground();
-        muzimaApplication.logOut();
-        if(!isRunningInBackground) {
+        boolean isWizardComplete = new WizardFinishPreferenceService(muzimaApplication).isWizardFinished();
+        if (isWizardComplete) {
+            muzimaApplication.logOut();
+        }
+        if(!isRunningInBackground && isWizardComplete) {
             launchLoginActivity();
         }
     }
