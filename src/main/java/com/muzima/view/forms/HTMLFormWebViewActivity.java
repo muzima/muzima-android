@@ -143,7 +143,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             @Override
             public void run() {
                 try{
-                    webView.loadUrl("javascript:document.autoSaveForm()");
+                    autoSaveForm();
                 }
                 catch (Exception e) {
                     Log.e(TAG, "Error while auto saving the form data", e);
@@ -208,16 +208,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             webView.loadUrl("javascript:document.populateVideo('" + sectionName + "', " + jsonMap + ")");
         }
         super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        try {
-            webView.loadUrl("javascript:document.autoSaveForm()");
-        } catch (Exception e) {
-            Log.e(TAG, "Error while saving the form data", e);
-        }
-        super.onPause();
     }
 
     @Override
@@ -312,6 +302,9 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         };
     }
 
+    public void autoSaveForm() throws IOException, JSONException, InterruptedException {
+        webView.loadUrl("javascript:document.autoSaveForm()");
+    }
     public void saveDraft() throws IOException, JSONException, InterruptedException {
         webView.loadUrl("javascript:document.saveDraft()");
     }
