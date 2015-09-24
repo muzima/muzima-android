@@ -604,6 +604,10 @@ $(document).ready(function () {
                             });
                         }
                     });
+                } else if ($elements.length == value.length) {
+                    $.each(value, function (i, valueElement) {
+                        applyValue($elements[i], valueElement);
+                    });
                 } else {
                     $.each(value, function (i, valueElement) {
                         $.each($elements, function(i, element) {
