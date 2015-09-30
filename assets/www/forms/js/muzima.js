@@ -772,7 +772,7 @@ $(document).ready(function () {
         var shouldInclude = $(element).is(':visible');
         if (!shouldInclude) {
             var media = $(element).attr("name");
-            shouldInclude = media.indexOf("consultation") > -1;
+            shouldInclude = media && media.indexOf("consultation") > -1;
         }
         return shouldInclude;
     }
