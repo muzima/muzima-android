@@ -388,6 +388,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             setStatus(STATUS_INCOMPLETE);
             setTemplateUuid(form.getUuid());
             setDiscriminator(form.getDiscriminator());
+            setFormName(form.getName());
         }};
         User user = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
 

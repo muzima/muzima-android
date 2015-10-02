@@ -15,6 +15,7 @@ import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Patient;
@@ -71,6 +72,13 @@ public class HTMLFormDataStore {
                 Patient newPatient = formController.createNewHTMLPatient(jsonPayload);
                 formData.setPatientUuid(newPatient.getUuid());
                 formWebViewActivity.startPatientSummaryView(newPatient);
+            }
+            try {
+                Form form = formController.getFormByUuid(formData.getTemplateUuid());
+                formData.setFormName(form.getName());
+            } catch (FormController.FormFetchException e) {
+                Toast.makeText(formWebViewActivity, "An error occurred while fetching the form", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Exception occurred while fetching form data", e);
             }
             parseForm(jsonPayload, status);
             Date encounterDate = getEncounterDateFromForm(jsonPayload);
