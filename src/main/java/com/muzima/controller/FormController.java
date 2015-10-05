@@ -48,6 +48,7 @@ import com.muzima.view.forms.PatientJSONMapper;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
+import net.minidev.json.parser.ParseException;
 import org.json.JSONException;
 
 import java.io.File;
@@ -656,12 +657,12 @@ public class FormController {
         if (StringUtil.equals(formData.getDiscriminator(), FORM_JSON_DISCRIMINATOR_CONSULTATION)) {
             try {
                 String base = "consultation";
-                JSONParser jp =new JSONParser(JSONParser.MODE_PERMISSIVE);
-                JSONObject obj = (JSONObject)jp.parse(formData.getJsonPayload());
+                JSONParser jp = new JSONParser(JSONParser.MODE_PERMISSIVE);
+                JSONObject obj = (JSONObject) jp.parse(formData.getJsonPayload());
                 JsonUtils.replaceAsString(obj, base, "consultation.sourceUuid", formData.getUuid());
                 formData.setJsonPayload(obj.toJSONString());
-            } catch (net.minidev.json.parser.ParseException e) {
-                e.printStackTrace();
+            } catch (ParseException e) {
+                Log.e(TAG, e.getMessage(), e);
             }
         }
         return formData;
@@ -682,20 +683,22 @@ public class FormController {
                 } else {
                     traverseJson((JSONObject)obj);
                 }
-            }catch(Exception e){
+            } catch(Exception e){
                 val = json.get(key).toString();
             }
 
-            if(val != null)
+            if(val != null) {
                 replaceMediaPathWithMedia(key, val);
+            }
         }
     }
 
     private void replaceMediaPathWithMedia(String key, String value){
         if (value.contains("/muzima/media/")) {
             String newKeyValPair = "\"" + key + "\":\"" + getStringMedia(value) + "\"";
-            if (!jsonPayload.contains(value))
+            if (!jsonPayload.contains(value)) {
                 value = value.replace("/", "\\/");
+            }
             String keyValPair = "\"" + key + "\":\"" + value + "\"";
 
             jsonPayload = jsonPayload.replace(keyValPair, newKeyValPair);
@@ -705,11 +708,11 @@ public class FormController {
     private FormData replaceMediaPathWithBase64String(FormData formData) {
         try {
             jsonPayload = formData.getJsonPayload();
-            JSONParser jp =new JSONParser(JSONParser.MODE_PERMISSIVE);
+            JSONParser jp = new JSONParser(JSONParser.MODE_PERMISSIVE);
             traverseJson((JSONObject) jp.parse(jsonPayload));
             formData.setJsonPayload(jsonPayload);
-        } catch (net.minidev.json.parser.ParseException e) {
-            e.printStackTrace();
+        } catch (ParseException e) {
+            Log.e(TAG, e.getMessage(), e);
         }
         return formData;
     }
@@ -727,12 +730,15 @@ public class FormController {
                 try {
                     FileInputStream fis = new FileInputStream(f);
                     byte[] fileBytes = new byte[(int) f.length()];
-                    fis.read(fileBytes);
+                    int read = fis.read(fileBytes);
+                    if (read != f.length()) {
+                        Log.e(TAG, "File read is not equal to the length of the file itself.");
+                    }
 
                     //convert the decrypted media to Base64 string
                     mediaString = MediaUtils.toBase64(fileBytes);
                 } catch (Exception e) {
-                    Log.e(TAG, e.getMessage());
+                    Log.e(TAG, e.getMessage(), e);
                 }
 
                 // and encrypt again
@@ -766,6 +772,7 @@ public class FormController {
     }
 
     private boolean isRegistrationFormData(FormData formData){
-        return formData.getDiscriminator().equals(Constants.FORM_DISCRIMINATOR_REGISTRATION) || formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION);
+        return formData.getDiscriminator().equals(Constants.FORM_DISCRIMINATOR_REGISTRATION)
+                || formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION);
     }
 }

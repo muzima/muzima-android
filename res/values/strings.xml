@@ -161,9 +161,9 @@
     <string name="download_cohort">Step 1: Download Cohort(s)</string>
     <string name="download_form">Step 2: Download Form Template(s)</string>
     <string name="add_location_prefixes">Step 3: Add Location(s)</string>
-    <string name="add_concept_prefixes">Step 4: Add Concept(s)</string>
-    <string name="add_provider_prefixes">Step 3: Add Provider(s)</string>
-    <string name="check_barcode_scanner_header">Step 5: Check for BarCode Scanner</string>
+    <string name="add_concept_prefixes">Step 5: Add Concept(s)</string>
+    <string name="add_provider_prefixes">Step 4: Add Provider(s)</string>
+    <string name="check_barcode_scanner_header">Step 6: Check for BarCode Scanner</string>
 
 
     <string name="no_cohort_prefixes_added">No Cohort Prefixes Added</string>
@@ -221,18 +221,17 @@
     <string name="new_password">Did you change your password recently?</string>
     <string name="add_cohort_pref_desc">Type the first few letters of the cohort you are interested in downloading
     </string>
-    <string name="download_cohort_desc">Select one or more of the cohorts from the list and click on \'Next\' to
-        download data relevant to these cohorts.
+    <string name="download_cohort_desc">Select one or more cohorts from the list and click on \'Next\' to download
     </string>
     <string name="download_form_desc">Select one or more form templates from the list and click on \'Next\' to download</string>
     <string name="downloaded_image">Downloaded Image</string>
-    <string name="add_concept_pref_desc">Add concepts for which you would want observations to be downloaded.</string>
-    <string name="add_location_pref_desc">Add locations that you want to download.</string>
+    <string name="add_concept_pref_desc">Add concept(s) that you want observation(s) to be downloaded.</string>
+    <string name="add_location_pref_desc">Add location(s) that you want to download.</string>
     <string name="install_barcode_scanner_description">You need a barcode scanner application to register clients from
         mobile. Please check whether it\'s been installed in your device or not.
     </string>
     <string name="install_barcode_scanner_btn_text">Check Barcode Scanner</string>
-    <string name="scanner_app_exists_text">Barcode Scanner application is already been installed !!</string>
+    <string name="scanner_app_exists_text">Barcode Scanner application is already installed.</string>
     <string name="caution">Caution!</string>
     <string name="session_timed_out_header">Alert!</string>
     <string name="session_timed_out_msg">Your session had been timed out. Please log in again to proceed.</string>
@@ -346,7 +345,7 @@
     <string name="preference_duplicate_form_data">duplicateFormDataPreference</string>
 
     <string name="no_provider_added">No new provider has been added yet.</string>
-    <string name="add_provider_pref_desc">Add providers that you want to download.</string>
+    <string name="add_provider_pref_desc">Add provider(s) that you want to download.</string>
     <string name="title_activity_provider_pref">Providers</string>
 
     <string name="not_a_provider_title">Unable to set as Provider</string>
