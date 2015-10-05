@@ -175,11 +175,13 @@ public class LoginActivity extends Activity {
                         return;
                     }
 
+                    String username = (usernameText.getText() == null) ? "" : usernameText.getText().toString().trim();
+                    //not trimming passwords since passwords may contain space.
+                    String password = (passwordText.getText() == null) ? "" : passwordText.getText().toString();
+
                     backgroundAuthenticationTask = new BackgroundAuthenticationTask();
                     backgroundAuthenticationTask.execute(
-                            new Credentials(serverUrlText.getText().toString(), usernameText.getText().toString(),
-                                    passwordText.getText().toString()
-                            )
+                            new Credentials(serverUrlText.getText().toString(), username, password)
                     );
                 } else {
                     int errorColor = getResources().getColor(R.color.error_text_color);

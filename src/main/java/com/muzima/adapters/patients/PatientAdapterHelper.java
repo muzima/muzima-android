@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
+import com.muzima.utils.StringUtils;
 
 import java.util.List;
 
@@ -73,33 +74,33 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
         }
     }
 
-    public static String getPatientFormattedName(Patient patient){
+    public static String getPatientFormattedName(Patient patient) {
         StringBuffer patientFormattedName = new StringBuffer();
-        if(patient.getFamilyName()!=null) {
+        if (!StringUtils.isEmpty(patient.getFamilyName())) {
             patientFormattedName.append(patient.getFamilyName());
             patientFormattedName.append(", ");
         }
-        if(patient.getGivenName() != null){
-            patientFormattedName.append(patient.getGivenName().substring(0,1));
+        if (!StringUtils.isEmpty(patient.getGivenName())) {
+            patientFormattedName.append(patient.getGivenName().substring(0, 1));
             patientFormattedName.append(" ");
         }
-        if(patient.getMiddleName() != null){
-            patientFormattedName.append(patient.getMiddleName().substring(0,1));
+        if (!StringUtils.isEmpty(patient.getMiddleName())) {
+            patientFormattedName.append(patient.getMiddleName().substring(0, 1));
         }
         return patientFormattedName.toString();
     }
 
     private String getPatientFullName(Patient patient) {
         StringBuffer patientFullName = new StringBuffer();
-        if(patient.getFamilyName()!=null) {
+        if (!StringUtils.isEmpty(patient.getFamilyName())) {
             patientFullName.append(patient.getFamilyName());
             patientFullName.append(", ");
         }
-        if(patient.getGivenName() != null){
+        if (!StringUtils.isEmpty(patient.getGivenName())) {
             patientFullName.append(patient.getGivenName());
             patientFullName.append(" ");
         }
-        if(patient.getMiddleName() != null){
+        if (!StringUtils.isEmpty(patient.getMiddleName())) {
             patientFullName.append(patient.getMiddleName());
         }
         return patientFullName.toString();

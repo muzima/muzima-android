@@ -57,6 +57,8 @@ public class InstallBarCodeWizardActivity extends BaseActivity {
                 AlertDialog alertDialog = intentIntegrator.checkForScannerAppInstallation();
                 if (alertDialog == null) {
                     findViewById(R.id.scanner_already_exists).setVisibility(View.VISIBLE);
+                    Button skip = (Button)findViewById(R.id.skip);
+                    skip.setText("Finish");
                 }
             }
         });

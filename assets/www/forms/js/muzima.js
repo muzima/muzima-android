@@ -604,6 +604,10 @@ $(document).ready(function () {
                             });
                         }
                     });
+                } else if ($elements.length == value.length) {
+                    $.each(value, function (i, valueElement) {
+                        applyValue($elements[i], valueElement);
+                    });
                 } else {
                     $.each(value, function (i, valueElement) {
                         $.each($elements, function(i, element) {
@@ -759,17 +763,28 @@ $(document).ready(function () {
 
     var serializeNestedConcepts = function ($form) {
         var result = {};
-        var parentDivs = $form.find('div[data-concept]').filter(':visible');
+        var parentDivs = $form.find('div[data-concept]').filter(shouldInclude);
         $.each(parentDivs, function (i, element) {
-            var $allConcepts = $(element).find('*[data-concept]').filter(':visible');
-            result = pushIntoArray(result, $(element).attr('data-concept'), jsonifyConcepts($allConcepts));
+            var allConcepts = $(element).find('*[data-concept]');
+            allConcepts = allConcepts.filter(shouldInclude);
+            result = pushIntoArray(result, $(element).attr('data-concept'), jsonifyConcepts(allConcepts));
         });
         return result;
     };
 
+    function shouldInclude (index, element) {
+        var shouldInclude = $(element).is(':visible');
+        if (!shouldInclude) {
+            var media = $(element).attr("name");
+            shouldInclude = media && media.indexOf("consultation") > -1;
+        }
+        return shouldInclude;
+    }
+
     var serializeConcepts = function ($form) {
         var object = {};
-        var allConcepts = $form.find('*[data-concept]').filter(':visible');
+        var allConcepts = $form.find('*[data-concept]');
+        allConcepts = allConcepts.filter(shouldInclude);
         $.each(allConcepts, function (i, element) {
             if ($(element).closest('.section, .concept-set').attr('data-concept') == undefined) {
                 var jsonifiedConcepts = jsonifyConcepts($(element));

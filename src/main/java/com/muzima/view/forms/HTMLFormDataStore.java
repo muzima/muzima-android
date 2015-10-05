@@ -115,7 +115,7 @@ public class HTMLFormDataStore {
         List<Provider> providersOnDevice = new ArrayList<Provider>();
         try {
             providersOnDevice = providerController.getAllProviders();
-        }catch (ProviderController.ProviderLoadException e) {
+        } catch (ProviderController.ProviderLoadException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while loading provider for the form", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while loading providers", e);
             e.printStackTrace();
