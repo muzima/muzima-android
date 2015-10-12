@@ -197,6 +197,9 @@ $(document).ready(function () {
             validForm = validForm && $.fn.customValidationCheck();
         }
         if (validForm) {
+	    $(this).find('input:text').each(function(){
+               $(this).val($.trim($(this).val()));
+            });
             save("complete", false);
         } else {
             addValidationMessage();
