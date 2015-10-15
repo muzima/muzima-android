@@ -14,28 +14,33 @@ import com.muzima.MuzimaApplication;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.NotificationController;
+import com.muzima.view.cohort.AllCohortsListFragment;
+import com.muzima.view.notifications.GeneralNotificationsListFragment;
 import com.muzima.view.notifications.PatientNotificationsListFragment;
+import com.muzima.view.notifications.PatientsNotificationsListFragment;
 
 /**
  * Responsible to hold all the notification fragments as multiple pages/tabs.
  */
-public class NotificationPagerAdapter extends MuzimaPagerAdapter {
+public class NotificationsPagerAdapter extends MuzimaPagerAdapter {
     private static final String TAG = "NotificationPagerAdapter";
 
-    public static final int TAB_CONSULTATION = 0;
-    private final Patient patient;
+    public static final int TAB_PATIENT = 0;
+    public static final int TAB_GENERAL = 1;
 
-    public NotificationPagerAdapter(Context context, FragmentManager supportFragmentManager, Patient patient) {
+    public NotificationsPagerAdapter(Context context, FragmentManager supportFragmentManager) {
         super(context, supportFragmentManager);
-        this.patient = patient;
     }
 
     public void initPagerViews(){
-        pagers = new PagerView[1];
+
+        pagers = new PagerView[2];
         NotificationController notificationController = ((MuzimaApplication) context.getApplicationContext()).getNotificationController();
 
-        PatientNotificationsListFragment patientNotificationsListFragment = PatientNotificationsListFragment.newInstance(notificationController, patient);
+        PatientsNotificationsListFragment patientsNotificationsListFragment = PatientsNotificationsListFragment.newInstance(notificationController);
+        GeneralNotificationsListFragment generalNotificationsListFragment = GeneralNotificationsListFragment.newInstance(notificationController);
 
-        pagers[TAB_CONSULTATION] = new PagerView("Consultation", patientNotificationsListFragment);
+        pagers[TAB_PATIENT] = new PagerView("Client Notifications", patientsNotificationsListFragment);
+        pagers[TAB_GENERAL] = new PagerView("General Notifications", generalNotificationsListFragment);
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.muzima.view.CheckedLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="3dp"
@@ -8,7 +8,7 @@
     android:background="@drawable/list_multi_selector_blue"
     android:orientation="horizontal">
 
-    <com.muzima.view.CheckedLinearLayout
+    <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="3dp"
@@ -16,7 +16,7 @@
             android:background="@drawable/list_multi_selector_blue"
             android:orientation="vertical">
 
-        <com.muzima.view.CheckedLinearLayout
+        <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="3dp"
@@ -24,7 +24,7 @@
                 android:layout_marginTop="3dp"
                 android:orientation="horizontal">
 
-            <CheckedTextView
+            <TextView
                     android:id="@+id/subject"
                     style="@style/ListHeader"
                     android:layout_height="wrap_content"
@@ -39,15 +39,13 @@
                     android:contentDescription="@string/new_notification_image"
                     android:visibility="gone"
                     android:src="@drawable/notifications"/>
-        </com.muzima.view.CheckedLinearLayout>
-
-        <CheckedTextView
-                android:id="@+id/receiver"
+        </LinearLayout>
+        <TextView
+                android:id="@+id/notificationDate"
                 android:background="@drawable/list_multi_selector_blue"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/secondary_text"
-                style="@style/ListDescription">
-        </CheckedTextView>
-    </com.muzima.view.CheckedLinearLayout>
+                style="@style/ListDescription"/>
+    </LinearLayout>
 
-</com.muzima.view.CheckedLinearLayout>
+</LinearLayout>
