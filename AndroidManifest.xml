@@ -140,6 +140,7 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.WebViewActivity"/>
         </activity>
+
         <activity
                 android:name=".view.patients.PatientsListActivity"
                 android:label="@string/title_activity_clients_list"
@@ -165,6 +166,7 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.MainActivity"/>
         </activity>
+
         <activity
                 android:name=".view.forms.FormWebViewActivity"
                 android:label="@string/title_activity_form_webview"
@@ -287,6 +289,16 @@
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.patients.PatientSummaryActivity"/>
+        </activity>
+
+        <activity
+                android:name=".view.notifications.NotificationsListActivity"
+                android:label="@string/title_activity_notification_list"
+                android:configChanges="orientation|screenSize"
+                android:parentActivityName="com.muzima.view.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.MainActivity"/>
         </activity>
 
         <!--Wizard Activities Start-->

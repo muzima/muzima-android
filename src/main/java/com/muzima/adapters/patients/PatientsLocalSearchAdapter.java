@@ -32,17 +32,15 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
     private final PatientAdapterHelper patientAdapterHelper;
     private PatientController patientController;
     private final String cohortId;
-    private boolean isNotificationsList;
     private Context context;
     protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
 
     public PatientsLocalSearchAdapter(Context context, int textViewResourceId,
-                                      PatientController patientController, String cohortId, boolean isNotificationList) {
+                                      PatientController patientController, String cohortId) {
         super(context, textViewResourceId);
         this.context = context;
         this.patientController = patientController;
         this.cohortId = cohortId;
-        this.isNotificationsList = isNotificationList;
         this.patientAdapterHelper = new PatientAdapterHelper(context, textViewResourceId);
     }
 
@@ -77,11 +75,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
             List<Patient> patients = null;
             if (isSearch(params)) {
                 try {
-                    if (isNotificationsList) {
-                        return filterPatientsWithNotifications(patientController.searchPatientLocally(params[0], cohortId));
-                    } else {
-                        return patientController.searchPatientLocally(params[0], cohortId);
-                    }
+                    return patientController.searchPatientLocally(params[0], cohortId);
                 } catch (PatientController.PatientLoadException e) {
                     Log.w(TAG, String.format("Exception occurred while searching patients for %s search string." , params[0]), e);
                 }
@@ -91,8 +85,6 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
             try {
                 if (cohortUuid != null) {
                     patients = patientController.getPatients(cohortUuid);
-                } else if (isNotificationsList) {
-                    patients = filterPatientsWithNotifications(null);
                 } else {
                     patients = patientController.getAllPatients();
                 }
@@ -110,38 +102,5 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
         protected void onPostExecute(List<Patient> patients) {
             patientAdapterHelper.onPostExecute(patients, PatientsLocalSearchAdapter.this, backgroundListQueryTaskListener);
         }
-    }
-
-    private List<Patient> filterPatientsWithNotifications(List<Patient> patientList) {
-        NotificationController notificationController = ((MuzimaApplication) context.getApplicationContext()).getNotificationController();
-        List<Patient> notificationPatients = null;
-        try {
-            if (patientList == null)
-                patientList = patientController.getAllPatients();
-
-            if (patientList.size() >= 1)  {
-                notificationPatients = new ArrayList<Patient>();
-                User authenticatedUser = ((MuzimaApplication) context.getApplicationContext()).getAuthenticatedUser();
-                if (authenticatedUser != null) {
-                    for (Patient patient : patientList)  {
-                        if (notificationController.patientHasNotifications(patient.getUuid(), authenticatedUser.getPerson().getUuid(),
-                                Constants.NotificationStatusConstants.NOTIFICATION_UNREAD))
-                            notificationPatients.add(patient) ;
-                    }
-                }
-            }
-        } catch (PatientController.PatientLoadException e) {
-            Log.w(TAG, "Exception occurred while fetching patients", e);
-        } catch (NotificationController.NotificationFetchException e) {
-            Log.w(TAG, "Exception occurred while fetching patients", e);
-        }
-        return notificationPatients;
-    }
-
-    private class ViewHolder {
-        ImageView genderImg;
-        TextView name;
-        TextView dateOfBirth;
-        TextView identifier;
     }
 }
