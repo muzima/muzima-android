@@ -301,4 +301,12 @@ public class ObservationController {
             super(e);
         }
     }
+    public static class ParseObservationException extends Throwable {
+        public ParseObservationException(Throwable e) {
+            super(e);
+        }
+        public ParseObservationException(String message) {
+            super(message);
+        }
+    }
 }

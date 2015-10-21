@@ -67,8 +67,10 @@ public class FormParser {
         this.observationParserUtility = new ObservationParserUtility(conceptController);
     }
 
-    public List<Observation> parseAndSaveObservations(String xml, String formDataUuid) throws XmlPullParserException, IOException,
-            ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
+    public List<Observation> parseAndSaveObservations(String xml, String formDataUuid)
+            throws XmlPullParserException, IOException, ParseException, PatientController.PatientLoadException,
+            ConceptController.ConceptFetchException, ConceptController.ConceptSaveException,
+            ConceptController.ConceptParseException, ObservationController.ParseObservationException {
         parser.setInput(new ByteArrayInputStream(xml.getBytes()), null);
         parser.nextTag();
         while (!isEndOf("form")) {
@@ -140,7 +142,9 @@ public class FormParser {
         return parser.getEventType() == XmlPullParser.START_TAG && tagName.equals(parser.getName());
     }
 
-    private List<Observation> createObservations(XmlPullParser parser) throws XmlPullParserException, IOException, ConceptController.ConceptFetchException, ParseException, ConceptController.ConceptSaveException {
+    private List<Observation> createObservations(XmlPullParser parser) throws XmlPullParserException,
+            IOException, ConceptController.ConceptFetchException, ParseException, ConceptController.ConceptSaveException,
+            ConceptController.ConceptParseException, ObservationController.ParseObservationException{
         List<Observation> observationList = new ArrayList<Observation>();
         Stack<String> conceptNames = new Stack<String>();
         while (!isEndOf("obs")) {
@@ -180,7 +184,9 @@ public class FormParser {
         return observationList;
     }
 
-    private Observation getObservation(Stack<String> conceptNames, String codedObservationName) throws ConceptController.ConceptFetchException {
+    private Observation getObservation(Stack<String> conceptNames, String codedObservationName)
+            throws ConceptController.ConceptFetchException, ConceptController.ConceptParseException,
+            ObservationController.ParseObservationException {
         Concept conceptEntity = observationParserUtility.getConceptEntity(conceptNames.peek());
         return observationParserUtility.getObservationEntity(conceptEntity, codedObservationName);
     }

@@ -16,6 +16,7 @@ import com.muzima.api.model.FormData;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
+import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.service.FormParser;
 import com.muzima.utils.Constants;
@@ -64,6 +65,12 @@ public class FormDataStore {
         } catch (ConceptController.ConceptSaveException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving observations in the form", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while saving a concept parsed from the form data", e);
+        } catch (ObservationController.ParseObservationException e) {
+            Toast.makeText(formWebViewActivity, "An error occurred while saving observations in the form", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "Exception occurred while saving an observation parsed from the form data", e);
+        } catch (ConceptController.ConceptParseException e) {
+            Toast.makeText(formWebViewActivity, "An error occurred while parsing concepts in the form", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "Exception occurred while parsing a concept parsed from the form data", e);
         } catch (ParseException e) {
             Toast.makeText(formWebViewActivity, "An error occurred while saving observations in the form", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while parsing the xml payload", e);
@@ -82,7 +89,10 @@ public class FormDataStore {
         }
     }
 
-    private void parseForm(String xmlData, String status) throws ConceptController.ConceptSaveException, ParseException, XmlPullParserException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, IOException {
+    private void parseForm(String xmlData, String status) throws ConceptController.ConceptSaveException,
+            ParseException, XmlPullParserException, PatientController.PatientLoadException,
+            ConceptController.ConceptFetchException, IOException, ConceptController.ConceptParseException,
+            ObservationController.ParseObservationException{
         if (status.equals(Constants.STATUS_INCOMPLETE)){
             return;
         }
@@ -91,7 +101,8 @@ public class FormDataStore {
     }
 
     public FormParser getFormParser() {
-        return new FormParser(applicationContext.getPatientController(), applicationContext.getConceptController(), applicationContext.getEncounterController(), applicationContext.getObservationController());
+        return new FormParser(applicationContext.getPatientController(), applicationContext.getConceptController(),
+                applicationContext.getEncounterController(), applicationContext.getObservationController());
     }
 
 

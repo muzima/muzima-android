@@ -163,4 +163,9 @@ public class ConceptController {
             super(throwable);
         }
     }
+    public static class ConceptParseException extends Throwable {
+        public ConceptParseException(String message) {
+            super(message);
+        }
+    }
 }

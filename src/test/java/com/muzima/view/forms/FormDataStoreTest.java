@@ -107,7 +107,9 @@ public class FormDataStoreTest {
     }
 
     @Test
-    public void shouldParseObservationsInProvidedPayloadWhenSavingAsFinal() throws ConceptController.ConceptSaveException, ParseException, XmlPullParserException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, IOException {
+    public void shouldParseObservationsInProvidedPayloadWhenSavingAsFinal() throws ConceptController.ConceptSaveException,
+            ParseException, XmlPullParserException, PatientController.PatientLoadException,ConceptController.ConceptFetchException,
+            ConceptController.ConceptParseException, IOException, ObservationController.ParseObservationException {
         String xmlPayload = "xmldata";
         store.save("data", xmlPayload, Constants.STATUS_COMPLETE);
 
@@ -115,7 +117,9 @@ public class FormDataStoreTest {
     }
 
     @Test
-    public void shouldNotParseObservationsForIncompleteForm() throws ConceptController.ConceptSaveException, ParseException, XmlPullParserException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, IOException {
+    public void shouldNotParseObservationsForIncompleteForm() throws ConceptController.ConceptSaveException, ParseException,
+            XmlPullParserException, PatientController.PatientLoadException, ConceptController.ConceptFetchException,
+            ConceptController.ConceptParseException, ObservationController.ParseObservationException, IOException {
         store.save("data", "xmldata", Constants.STATUS_INCOMPLETE);
 
         verify(formParser, times(0)).parseAndSaveObservations(anyString(),anyString());
