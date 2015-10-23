@@ -12,11 +12,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
-import com.muzima.adapters.notification.NotificationPagerAdapter;
-import com.muzima.adapters.patients.PatientAdapterHelper;
+import com.muzima.adapters.notification.PatientNotificationPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.view.patients.PatientSummaryActivity;
-
 
 public class PatientNotificationActivity extends NotificationActivityBase {
     private static final String TAG = "PatientNotificationActivity";
@@ -31,9 +29,8 @@ public class PatientNotificationActivity extends NotificationActivityBase {
         getSupportActionBar().setTitle(patient.getSummary());
     }
 
-
     @Override
     protected MuzimaPagerAdapter createNotificationsPagerAdapter() {
-        return new NotificationPagerAdapter(getApplicationContext(), getSupportFragmentManager(), patient);
+        return new PatientNotificationPagerAdapter(getApplicationContext(), getSupportFragmentManager(), patient);
     }
 }
