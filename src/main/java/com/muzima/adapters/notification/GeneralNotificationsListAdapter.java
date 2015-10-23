@@ -115,7 +115,7 @@ public class GeneralNotificationsListAdapter extends NotificationAdapter {
             } catch (PatientController.PatientLoadException e) {
                 Log.e(TAG, "Exception occurred while fetching the notifications", e);
             }
-            return allNotifications;
+            return filteredNotifications;
         }
     }
 }
