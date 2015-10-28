@@ -23,6 +23,7 @@ import com.muzima.api.model.Person;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.NotificationController;
 import com.muzima.utils.Constants;
+import com.muzima.utils.DateUtils;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.patients.ObservationsActivity;
 
@@ -59,7 +60,7 @@ public class NotificationActivity extends BaseActivity {
         subjectView.setText(notification.getSubject());
 
         TextView notificationDate = (TextView) findViewById(R.id.dateSent);
-        notificationDate.setText("Sent:"  + notification.getDateCreated().toString());
+        notificationDate.setText("Sent: " + DateUtils.getMonthNameFormattedDate(notification.getDateCreated()));
 
         TextView sentBy = (TextView) findViewById(R.id.sentBy);
         Person person = notification.getSender();
@@ -74,7 +75,6 @@ public class NotificationActivity extends BaseActivity {
             viewEncounterButton = findViewById(R.id.viewEncounter);
             viewEncounterButton.setVisibility(View.GONE);
         }
-
     }
 
     private void markAsRead() {

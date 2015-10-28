@@ -10,7 +10,6 @@ package com.muzima.utils;
 
 import android.os.Build;
 import android.os.Environment;
-import android.util.Base64;
 import android.util.Log;
 
 import javax.crypto.Cipher;
@@ -75,10 +74,10 @@ public class EnDeCrypt {
 
             String cipherText;
             if (salt != null)
-                cipherText = String.format("%s%s%s%s%s", toBase64(salt), DELIMITER,
-                        toBase64(iv), DELIMITER, toBase64(encryptedStream));
+                cipherText = String.format("%s%s%s%s%s", MediaUtils.toBase64(salt), DELIMITER,
+                        MediaUtils.toBase64(iv), DELIMITER, MediaUtils.toBase64(encryptedStream));
             else
-                cipherText = toBase64(encryptedStream);
+                cipherText = MediaUtils.toBase64(encryptedStream);
 
             // write the encrypted stream to file together with salt and IV
             fos.write(cipherText.getBytes());
@@ -120,9 +119,9 @@ public class EnDeCrypt {
                 throw new IllegalArgumentException("Invalid encrypted text format");
             }
 
-            byte[] salt = fromBase64(fields[0]);
-            byte[] iv = fromBase64(fields[1]);
-            byte[] cipherBytes = fromBase64(fields[2]);
+            byte[] salt = MediaUtils.fromBase64(fields[0]);
+            byte[] iv = MediaUtils.fromBase64(fields[1]);
+            byte[] cipherBytes = MediaUtils.fromBase64(fields[2]);
 
             Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
             IvParameterSpec ivParams = new IvParameterSpec(iv);
@@ -174,13 +173,5 @@ public class EnDeCrypt {
         random.nextBytes(saltBytes);
 
         return saltBytes;
-    }
-
-    private static String toBase64(byte[] bytes) {
-        return Base64.encodeToString(bytes, Base64.NO_WRAP);
-    }
-
-    private static byte[] fromBase64(String base64) {
-        return Base64.decode(base64, Base64.NO_WRAP);
     }
 }

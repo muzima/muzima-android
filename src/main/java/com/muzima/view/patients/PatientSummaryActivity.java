@@ -166,7 +166,8 @@ public class PatientSummaryActivity extends BaseActivity {
         int recommendedForms;
         int incompleteForms;
         int completeForms;
-        int notifications;
+        int newNotifications;
+        int totalNotifications;
         int observations;
         int encounters;
     }
@@ -190,11 +191,14 @@ public class PatientSummaryActivity extends BaseActivity {
                 patientSummaryActivityMetadata.encounters = encounterController.getEncountersCountByPatient(patient.getUuid());
                 User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
                 if (authenticatedUser != null) {
-                    patientSummaryActivityMetadata.notifications =
+                    patientSummaryActivityMetadata.newNotifications =
                             notificationController.getNotificationsCountForPatient(patient.getUuid(), authenticatedUser.getPerson().getUuid(),
                                     Constants.NotificationStatusConstants.NOTIFICATION_UNREAD);
+                    patientSummaryActivityMetadata.totalNotifications =
+                            notificationController.getNotificationsCountForPatient(patient.getUuid(), authenticatedUser.getPerson().getUuid(), null);
                 } else {
-                    patientSummaryActivityMetadata.notifications = 0;
+                    patientSummaryActivityMetadata.newNotifications = 0;
+                    patientSummaryActivityMetadata.totalNotifications = 0;
                 }
             } catch (FormController.FormFetchException e) {
                 Log.w(TAG, "FormFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
@@ -214,7 +218,8 @@ public class PatientSummaryActivity extends BaseActivity {
                     + patientSummaryActivityMetadata.recommendedForms + " Recommended");
 
             TextView notificationsDescription = (TextView) findViewById(R.id.notificationDescription);
-            notificationsDescription.setText(patientSummaryActivityMetadata.notifications + " New Notifications");
+            notificationsDescription.setText(patientSummaryActivityMetadata.newNotifications + " New Notifications, "
+                    + patientSummaryActivityMetadata.totalNotifications + " Total Notifications");
 
             TextView observationDescription = (TextView) findViewById(R.id.observationDescription);
             observationDescription.setText(patientSummaryActivityMetadata.observations + " Observations");
