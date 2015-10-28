@@ -24,7 +24,6 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.api.context.Context;
 import com.muzima.api.model.User;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
@@ -36,6 +35,7 @@ import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.view.cohort.CohortActivity;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
+import com.muzima.view.notifications.NotificationsListActivity;
 import com.muzima.view.patients.PatientsListActivity;
 import org.apache.lucene.queryParser.ParseException;
 
@@ -153,8 +153,7 @@ public class MainActivity extends BroadcastListenerActivity {
      * Called when the user clicks the Notifications area
      */
     public void notificationsList(View view) {
-        Intent intent = new Intent(this, PatientsListActivity.class);
-        intent.putExtra(PatientsListActivity.COHORT_NAME, PatientsListActivity.NOTIFICATIONS);
+        Intent intent = new Intent(this, NotificationsListActivity.class);
         startActivity(intent);
     }
 
@@ -233,11 +232,8 @@ public class MainActivity extends BroadcastListenerActivity {
         int syncedPatients;
         int incompleteForms;
         int completeAndUnsyncedForms;
-
-        // notifications
         int newNotifications;
         int totalNotifications;
-
     }
 
     @Override

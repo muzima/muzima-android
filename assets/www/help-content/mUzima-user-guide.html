@@ -18,7 +18,7 @@
 <p> The hardware required depends on the size of your implementation. For small implementations, OpenMRS can be run on
     just about any desktop or laptop.</p>
 
-<strong>Minimum Requirements - 100s of patients</strong>
+<strong>Minimum Requirements - 100 patients</strong>
 
 <p>1 GHz processor or better, 256 MB of memory or more, 40 GB hard drive or larger. You can set up the server on a
     laptop for demonstration or testing purposes.</p>
@@ -28,8 +28,7 @@
 <p>1.5+ GHz, 2 GB of memory, and 150+ GB of disk space with RAID and appropriate backup facilities.</p>
 <strong>Minimum Requirements - 250,000 patients </strong>
 
-<p>AMPATH is supporting an OpenMRS instance with over 250,000 patients with two 2.26 GHz quad processors, 16 GB of
-    memory, and 500 GB of disk space with RAID and appropriate backup facilities.</p>
+<p>4.52+ GHz quad processors, 16 GB of memory, and 500 GB of disk space with RAID and appropriate backup facilities.</p>
 
 <strong>Software Specifications</strong>
 
@@ -37,8 +36,8 @@
 
 <strong>OpenMRS Standalone</strong>
 
-<p>To install the standalone version, download the ZIP file and decompress it, then double-click the
-    openmrs-standalone.jar file to run it. The first time you run this file, it will install OpenMRS and open your
+<p>To run the standalone version, download the ZIP file and decompress it, then double-click the
+    openmrs-standalone.jar file to run it. The first time you run this file, it will configure OpenMRS and open your
     browser to the new OpenMRS instance.
 </p>
 
@@ -90,7 +89,7 @@
     By default, OpenMRS runs the MySQL database on port 3316, and the Tomcat server on port 8081. To use a different
     port, stop the application, then change the port number in the
     <strong>openmrs-standalone-runtime.properties</strong> file or in the GUI, and restart. To override the port
-    from the command line, run the JAR file with a <strong>-tomcatport</strong> or **-mysqlport **parameter.
+    from the command line, run the JAR file with a <strong>-tomcatport</strong> or <strong>-mysqlport</strong> parameter.
 </p>
 
 <p>
@@ -107,7 +106,7 @@
 
 <strong>Getting Started with OpenMRS</strong>
 
-<p>After successfully installing openmrs instance login with your assigned user name and password and click on the Login
+<p>After successfully installing an openmrs instance, login with your assigned username and password and click on the Login
     button</p>
 
 <strong>How To Create A New Patient</strong>
@@ -122,11 +121,11 @@
     <div class="padded_div_images">
         <img src="../help-content/images/open-mrs-create-patient.jpg" width="350" height="200">
     </div>
-    <li>Click on **create person **button</li>
+    <li>Click on <strong>create person</strong> button</li>
     <li>You will be transitioned to a new page with more form fields</li>
     <li>Fill in all required fields and click on <strong>save</strong> button</li>
 </ul>
-That's it you have now successfully created your patient.
+That's it; you have now successfully created a patient.
 </p>
 
 <strong>How to Create A Cohort </strong><br>
@@ -175,8 +174,15 @@ That's it you have now successfully created your patient.
 </p>
 
 <p>For mUzima to work with openMRS you need to have the following modules running:<br>
-    *** mUzima Forms module** *** mUzima Registration module** *** mUzima Processor module** *** Latest Xforms module**
-    *** Latest Rest Web Services**
+<ol start="1">
+    <li>mUzima Forms module</li>
+    <li>mUzima Registration module</li>
+    <li>mUzima Processor module</li>
+    <li>Reporting Compatibility</li>
+    <li>Latest Rest Web Services</li>
+    <li>Latest xForms module</li>
+    <li>mUzima Consultation module [optional]</li>
+</ol>
 </p>
 
 <p>
@@ -184,23 +190,19 @@ That's it you have now successfully created your patient.
 </p>
 
 <p>
-    Login to your OpenMRS instance.<br>
-    Click on Administration link on the menu bar.<br>
-    Navigate to modules.<br>
-    Click on Manage modules link.<br>
-    Click on Add or Upgrade module.<br>
+<ul>
+    <li>Login to your OpenMRS instance.</li>
+    <li>Click on Administration link on the menu bar.</li>
+    <li>Navigate to modules.</li>
+    <li>Click on Manage modules link.</li>
+    <li>Click on Add or Upgrade module.</li>
+</ul>
 </p>
 
 <p>
     A screen will pop up. Choose browse button to locate the directory where yo have stored module from your machine
     or install the module from openMRS hosted site by using the Install from Module Repository Section and type in
     the name of the module and click on install.<br>
-</p>
-
-<p>
-    <strong>NB:</strong>For the mUzima modules to run, one should ensure the following <strong>latest</strong>
-    modules have been loaded
-    and are running i.e 1. Rest Webservices module 2. Xforms module.
 </p>
 
 </body>

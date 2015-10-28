@@ -25,9 +25,8 @@ import java.util.List;
 /**
  * Responsible to populate all notification fetched from DB in the PatientNotificationsListFragment page.
  */
-public class PatientNotificationsAdapter extends NotificationsAdapter {
+public class PatientNotificationsAdapter extends NotificationAdapter {
     private static final String TAG = "PatientNotificationsAdapter";
-    private List<Notification> notifications;
     private Patient patient;
 
     public PatientNotificationsAdapter(Context context, int textViewResourceId, NotificationController notificationController, Patient patient) {
@@ -40,18 +39,10 @@ public class PatientNotificationsAdapter extends NotificationsAdapter {
         new LoadBackgroundQueryTask().execute();
     }
 
-    public void downloadNotificationsAndReload() {
-        new DownloadBackgroundQueryTask().execute();
-    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = super.getView(position, convertView, parent);
         return view;
-    }
-
-    public void onListItemClick(int position) {
-        notifyDataSetChanged();
     }
 
     /**
@@ -67,8 +58,7 @@ public class PatientNotificationsAdapter extends NotificationsAdapter {
 
         @Override
         protected void onPostExecute(List<Notification> patientNotifications) {
-            notifications = patientNotifications;
-            if (notifications == null) {
+            if (patientNotifications == null) {
                 Toast.makeText(getContext(), "Something went wrong while fetching notifications from local repo", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -101,25 +91,6 @@ public class PatientNotificationsAdapter extends NotificationsAdapter {
                 if (authenticatedUser != null)
                     patientNotifications = notificationController.getNotificationsForPatient(patient.getUuid(), authenticatedUser.getPerson().getUuid(), null);
                 Log.d(TAG, "#Retrieved " + patientNotifications.size() + " notifications from Database.");
-            } catch (NotificationController.NotificationFetchException e) {
-                Log.w(TAG, "Exception occurred while fetching the notifications", e);
-            }
-            return patientNotifications;
-        }
-    }
-
-    /**
-     * Responsible to download Notifications from server and to reload the contents from DB. Runs in BackGround.
-     */
-    public class DownloadBackgroundQueryTask extends PatientNotificationsBackgroundQueryTask {
-        @Override
-        protected List<Notification> doInBackground(Void... voids) {
-            List<Notification> patientNotifications = null;
-            try {
-                User authenticatedUser = ((MuzimaApplication) getContext().getApplicationContext()).getAuthenticatedUser();
-                if (authenticatedUser != null)
-                    patientNotifications = notificationController.getNotificationsForPatient(patient.getUuid(),authenticatedUser.getPerson().getUuid(), null);
-                Log.i(TAG, "#Retrieved: " + patientNotifications.size());
             } catch (NotificationController.NotificationFetchException e) {
                 Log.w(TAG, "Exception occurred while fetching the notifications", e);
             }
