@@ -8,6 +8,7 @@
 
 package com.muzima.view.notifications;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
-import com.muzima.adapters.notification.NotificationsAdapter;
+import com.muzima.adapters.notification.NotificationAdapter;
 import com.muzima.controller.NotificationController;
 import com.muzima.view.MuzimaListFragment;
 
@@ -29,22 +30,22 @@ public abstract class NotificationListFragment extends MuzimaListFragment implem
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View formsLayout = setupMainView(inflater,container);
-        list = (ListView) formsLayout.findViewById(R.id.list);
-        progressBarContainer = (FrameLayout) formsLayout.findViewById(R.id.progressbarContainer);
-        noDataView = (LinearLayout) formsLayout.findViewById(R.id.no_data_layout);
+        View notificationsLayout = setupMainView(inflater,container);
+        list = (ListView) notificationsLayout.findViewById(R.id.list);
+        progressBarContainer = (FrameLayout) notificationsLayout.findViewById(R.id.progressbarContainer);
+        noDataView = (LinearLayout) notificationsLayout.findViewById(R.id.no_data_layout);
 
-        setupNoDataView(formsLayout);
+        setupNoDataView(notificationsLayout);
 
         // Todo no need to do this check after all list adapters are implemented
         if (listAdapter != null) {
             list.setAdapter(listAdapter);
             list.setOnItemClickListener(this);
-            ((NotificationsAdapter)listAdapter).setBackgroundListQueryTaskListener(this);
+            ((NotificationAdapter)listAdapter).setBackgroundListQueryTaskListener(this);
         }
-        list.setEmptyView(formsLayout.findViewById(R.id.no_data_layout));
+        list.setEmptyView(notificationsLayout.findViewById(R.id.no_data_layout));
 
-        return formsLayout;
+        return notificationsLayout;
     }
 
     protected View setupMainView(LayoutInflater inflater, ViewGroup container){

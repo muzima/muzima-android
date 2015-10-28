@@ -99,7 +99,7 @@ public class HelpActivity extends BaseActivity {
     }
 
     public void viewMuzimaUserGuide(View view) {
-        startHelpContentDisplayActivity(MUZIMA_USER_GUIDE,getText(R.string.muzima_user_guide).toString());
+        startHelpContentDisplayActivity(MUZIMA_USER_GUIDE,getText(R.string.server_side_setup).toString());
     }
 
     public void viewMuzimaTrainingManual(View view) {
