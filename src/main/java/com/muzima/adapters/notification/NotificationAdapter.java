@@ -21,16 +21,19 @@ import com.muzima.api.model.Notification;
 import com.muzima.controller.NotificationController;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.Constants;
+import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
+
+import java.util.Date;
 
 /**
  * Responsible for displaying Notifications as list.
  */
-public abstract class NotificationsAdapter extends ListAdapter<Notification> {
+public abstract class NotificationAdapter extends ListAdapter<Notification> {
     protected NotificationController notificationController;
     protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
 
-    public NotificationsAdapter(Context context, int textViewResourceId, NotificationController notificationController) {
+    public NotificationAdapter(Context context, int textViewResourceId, NotificationController notificationController) {
         super(context, textViewResourceId);
         this.notificationController = notificationController;
     }
@@ -48,7 +51,7 @@ public abstract class NotificationsAdapter extends ListAdapter<Notification> {
         }
         holder.setStatus(getItem(position).getStatus());
         holder.setSubject(getItem(position).getSubject());
-        holder.setReceiver(getItem(position).getPayload());
+        holder.setNotificationDate(getItem(position).getDateCreated());
         holder.markUnreadNotification();
         return convertView;
     }
@@ -58,14 +61,14 @@ public abstract class NotificationsAdapter extends ListAdapter<Notification> {
     }
 
     public class ViewHolder {
-        private CheckedTextView subject;
-        private TextView receiver;
+        private TextView subject;
+        private TextView notificationDate;
         private String status;
         private ImageView newNotificationImg;
 
         public ViewHolder(View convertView) {
-            this.subject = (CheckedTextView) convertView.findViewById(R.id.subject);
-            this.receiver = (TextView) convertView.findViewById(R.id.receiver);
+            this.subject = (TextView) convertView.findViewById(R.id.subject);
+            this.notificationDate = (TextView) convertView.findViewById(R.id.notificationDate);
             this.newNotificationImg = (ImageView) convertView.findViewById(R.id.newNotificationImg);
         }
 
@@ -73,8 +76,8 @@ public abstract class NotificationsAdapter extends ListAdapter<Notification> {
             subject.setText(text);
         }
 
-        public void setReceiver(String text) {
-            receiver.setText(text);
+        public void setNotificationDate(Date date) {
+            notificationDate.setText(DateUtils.getMonthNameFormattedDate(date));
         }
 
         public void setStatus(String status) {
@@ -84,14 +87,13 @@ public abstract class NotificationsAdapter extends ListAdapter<Notification> {
         public void markUnreadNotification() {
             if (StringUtil.equals(Constants.NotificationStatusConstants.NOTIFICATION_READ, status)){
                 subject.setTypeface(Fonts.roboto_light(getContext()));
-                receiver.setTypeface(Fonts.roboto_light(getContext()));
+                notificationDate.setTypeface(Fonts.roboto_light(getContext()));
                 newNotificationImg.setVisibility(View.GONE);
             } else {
                 subject.setTypeface(Fonts.roboto_medium(getContext()));
-                receiver.setTypeface(Fonts.roboto_medium(getContext()));
+                notificationDate.setTypeface(Fonts.roboto_medium(getContext()));
                 newNotificationImg.setVisibility(View.VISIBLE);
             }
-
         }
     }
 }
