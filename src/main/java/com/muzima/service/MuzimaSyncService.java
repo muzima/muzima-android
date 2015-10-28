@@ -667,7 +667,7 @@ public class MuzimaSyncService {
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
         } catch (NotificationController.NotificationDeleteException e) {
-            Log.e(TAG, "Exception occurred while deleting existing forms", e);
+            Log.e(TAG, "Exception occurred while deleting existing notifications", e);
             result[0] = SyncStatusConstants.DELETE_ERROR;
             return result;
         } catch (NotificationController.NotificationFetchException e) {

@@ -205,7 +205,7 @@
     <string name="custom_provider_help_title">providers Help</string>
     <string name="filling_patient_forms_help">Fill out forms for a patient</string>
     <string name="muzima_initial_setup_guide">mUzima initial setup guide</string>
-    <string name="muzima_user_guide">mUzima user guide</string>
+    <string name="server_side_setup">Server Side Setup</string>
     <string name="muzima_training_manual">mUzima training manual</string>
     <string name="introduction_video">Video introduction to mUzima</string>
 

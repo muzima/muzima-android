@@ -92,6 +92,7 @@ public class MuzimaApplication extends Application {
     private MuzimaTimer muzimaTimer;
     public static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
+    private User authenticatedUser;
 
     static {
         // see http://rtyley.github.io/spongycastle/
@@ -156,26 +157,27 @@ public class MuzimaApplication extends Application {
     }
 
     public User getAuthenticatedUser() {
-        User authenticatedUser;
-        muzimaContext.openSession();
         try {
-            if (muzimaContext.isAuthenticated())
-                authenticatedUser = muzimaContext.getAuthenticatedUser();
-            else {
-                Credentials cred = new Credentials(getApplicationContext());
-                String[] credentials = cred.getCredentialsArray();
-                String username = credentials[0];
-                String password = credentials[1];
-                String server = credentials[2];
+            if (authenticatedUser == null) {
+                muzimaContext.openSession();
+                if (muzimaContext.isAuthenticated())
+                    authenticatedUser = muzimaContext.getAuthenticatedUser();
+                else {
+                    Credentials cred = new Credentials(getApplicationContext());
+                    String[] credentials = cred.getCredentialsArray();
+                    String username = credentials[0];
+                    String password = credentials[1];
+                    String server = credentials[2];
 
-                if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password) && !StringUtils.isEmpty(server)) {
-                    muzimaContext.authenticate(username, password, server, NetworkUtils.isConnectedToNetwork(this),false);
+                    if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password) && !StringUtils.isEmpty(server)) {
+                        muzimaContext.authenticate(username, password, server, NetworkUtils.isConnectedToNetwork(this), false);
+                    }
+
+
+                    authenticatedUser = muzimaContext.getAuthenticatedUser();
                 }
-
-
-                authenticatedUser = muzimaContext.getAuthenticatedUser();
+                muzimaContext.closeSession();
             }
-            muzimaContext.closeSession();
         } catch (Exception e) {
             muzimaContext.closeSession();
             throw new RuntimeException(e);
@@ -321,6 +323,7 @@ public class MuzimaApplication extends Application {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String passwordKey = getResources().getString(R.string.preference_password);
         settings.edit().putString(passwordKey, StringUtil.EMPTY).commit();
+        evictAuthenticatedUser();
     }
 
     public void cancelTimer() {
@@ -329,6 +332,10 @@ public class MuzimaApplication extends Application {
 
     public void setCurrentActivity(Activity currentActivity) {
         this.currentActivity = currentActivity;
+    }
+
+    private void evictAuthenticatedUser(){
+        authenticatedUser = null;
     }
 
     private void saveBeforeExit() {

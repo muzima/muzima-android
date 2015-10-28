@@ -14,6 +14,7 @@ import com.muzima.api.model.Notification;
 import com.muzima.api.model.Tag;
 import com.muzima.api.service.FormService;
 import com.muzima.api.service.NotificationService;
+import com.muzima.api.service.PatientService;
 import com.muzima.search.api.util.StringUtil;
 import org.apache.lucene.queryParser.ParseException;
 
@@ -56,35 +57,7 @@ public class NotificationController {
 
     public List<Notification> getNotificationsForPatient(String patientUuid, String receiverUuid, String status) throws NotificationFetchException {
         try {
-            List<Notification> patientNotifications = new ArrayList<Notification>();
-            List<FormData> allFormData = formService.getFormDataByPatient(patientUuid, STATUS_UPLOADED);
-            Form form;
-
-            for (FormData formData : allFormData) {
-                Notification notification = notificationService.getNotificationBySource(formData.getUuid());
-                form = formService.getFormByUuid(formData.getTemplateUuid());
-                if (isConsultationForm(form) && notification != null) {
-
-                    //if receiverUuid is null and status is null the we add the notification to list
-                    if (StringUtil.isEmpty(receiverUuid) && StringUtil.isEmpty(status)) {
-                        // no filtering return all notifications for patient
-                        patientNotifications.add(notification);
-                    } else if (StringUtil.isEmpty(status))  {
-                        // status not passed filter by receiverUuid only
-                        if (StringUtil.equals(notification.getReceiver().getUuid(), receiverUuid))
-                            patientNotifications.add(notification);
-                    } else if (StringUtil.isEmpty(receiverUuid)){
-                        // receiverUuid not passed filter by status only
-                        if (StringUtil.equals(notification.getStatus(),status))
-                            patientNotifications.add(notification);
-                    } else {
-                         // filter by both receiverUuid status
-                        if (StringUtil.equals(notification.getReceiver().getUuid(), receiverUuid) && StringUtil.equals(notification.getStatus(),status) )
-                            patientNotifications.add(notification);
-                    }
-                }
-            }
-            return patientNotifications;
+            return (notificationService.getNotificationByPatient(patientUuid, receiverUuid, status));
         } catch (IOException e) {
             throw new NotificationFetchException(e);
         }
