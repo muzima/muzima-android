@@ -9,7 +9,6 @@
 package com.muzima.controller;
 
 import android.util.Log;
-import com.muzima.adapters.json.AndroidJsonWriterAdopterFactory;
 import com.muzima.api.model.APIName;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
@@ -638,7 +637,7 @@ public class FormController {
             formData = injectUuidToPayload(formData);
             // replace media paths with base64 string
             formData = replaceMediaPathWithBase64String(formData);
-            if (formService.syncFormData(formData, new AndroidJsonWriterAdopterFactory())) {
+            if (formService.syncFormData(formData)) {
                 formData.setStatus(STATUS_UPLOADED);
 
                 //DO NOT save base64 string in DB
