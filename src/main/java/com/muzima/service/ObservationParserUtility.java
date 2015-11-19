@@ -8,6 +8,7 @@
 
 package com.muzima.service;
 
+import android.util.Log;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.ConceptName;
 import com.muzima.api.model.ConceptType;
@@ -19,6 +20,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonName;
 import com.muzima.controller.ConceptController;
+import com.muzima.controller.ObservationController;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.StringUtils;
 
@@ -55,10 +57,12 @@ public class ObservationParserUtility {
         return encounter;
     }
 
-    public Concept getConceptEntity(String rawConceptName) throws ConceptController.ConceptFetchException {
+    public Concept getConceptEntity(String rawConceptName) throws ConceptController.ConceptFetchException,
+            ConceptController.ConceptParseException{
         String conceptName = getConceptName(rawConceptName);
         if(StringUtil.isEmpty(conceptName)){
-            return null;
+            throw new ConceptController.ConceptParseException("Could not not get Concept name for concept with raw name '"
+            + rawConceptName + "'");
         }
         Concept conceptFromExistingList = getConceptFromExistingList(conceptName);
         if (conceptFromExistingList != null) {
@@ -72,16 +76,25 @@ public class ObservationParserUtility {
         return observedConcept;
     }
 
-    public Observation getObservationEntity(Concept concept, String value) throws ConceptController.ConceptFetchException {
+    public Observation getObservationEntity(Concept concept, String value) throws ConceptController.ConceptFetchException,
+        ConceptController.ConceptParseException, ObservationController.ParseObservationException{
         if (StringUtil.isEmpty(value)) {
-            return null;
+            throw new ObservationController.ParseObservationException("Could not create Observation entity for concept '"
+                    + concept.getName() + "'. Reason: No Observation value provided.");
         }
         Observation observation = new Observation();
         observation.setUuid(getObservationUuid());
         observation.setConcept(concept);
         observation.setValueCoded(defaultValueCodedConcept());
         if (concept.isCoded()) {
-            observation.setValueCoded(getConceptEntity(value));
+            try {
+                Concept valueCoded = getConceptEntity(value);
+                observation.setValueCoded(valueCoded);
+            } catch (ConceptController.ConceptParseException e) {
+                throw new ConceptController.ConceptParseException("Could not get value for coded concept '"
+                        + concept.getName() + "', from provided value '" + value + "'");
+            }
+
         } else if (concept.isNumeric()) {
             observation.setValueNumeric(getDoubleValue(value));
         } else {

@@ -62,7 +62,10 @@ public class FormParserTest {
     }
 
     @Test
-    public void shouldCreateMultipleObservations() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
+    public void shouldCreateMultipleObservations() throws IOException, XmlPullParserException, ParseException,
+            PatientController.PatientLoadException, ConceptController.ConceptFetchException,
+            ConceptController.ConceptSaveException, ConceptController.ConceptParseException,
+            ObservationController.ParseObservationException{
         String xml = readFile("xml/histo_xml_payload.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
 
@@ -71,7 +74,10 @@ public class FormParserTest {
     }
 
     @Test
-    public void shouldAssociateCorrectConceptForObservation() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
+    public void shouldAssociateCorrectConceptForObservation() throws IOException, XmlPullParserException,
+            ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException,
+            ConceptController.ConceptSaveException, ConceptController.ConceptParseException,
+            ObservationController.ParseObservationException{
         String xml = readFile("xml/one_date_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
         Concept aConcept = mock(Concept.class);
@@ -84,7 +90,10 @@ public class FormParserTest {
     }
 
     @Test
-    public void shouldParseObservationOfTypeConcept() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
+    public void shouldParseObservationOfTypeConcept() throws IOException, XmlPullParserException, ParseException,
+            PatientController.PatientLoadException, ConceptController.ConceptFetchException,
+            ConceptController.ConceptSaveException, ConceptController.ConceptParseException,
+            ObservationController.ParseObservationException{
         String xml = readFile("xml/value_concept_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
         Concept aConcept = mock(Concept.class);
@@ -99,7 +108,10 @@ public class FormParserTest {
     }
 
     @Test
-    public void shouldParsePayloadWithMultipleSelectObservations() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
+    public void shouldParsePayloadWithMultipleSelectObservations() throws IOException, XmlPullParserException,
+            ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException,
+            ConceptController.ConceptSaveException, ConceptController.ConceptParseException,
+            ObservationController.ParseObservationException{
         String xml = readFile("xml/multiple_select_value_concept_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
         Concept aConcept = mock(Concept.class);
@@ -114,7 +126,10 @@ public class FormParserTest {
     }
 
     @Test
-    public void shouldParsePayloadWithMultipleSelectObservationsAndNoneSelected() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
+    public void shouldParsePayloadWithMultipleSelectObservationsAndNoneSelected() throws IOException,
+            XmlPullParserException, ParseException, PatientController.PatientLoadException,
+            ConceptController.ConceptFetchException, ConceptController.ConceptSaveException,
+            ConceptController.ConceptParseException, ObservationController.ParseObservationException{
         String xml = readFile("xml/multiple_select_value_concept_observation_with_no_selection.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
         Concept aConcept = mock(Concept.class);
@@ -125,7 +140,10 @@ public class FormParserTest {
     }
 
     @Test
-    public void shouldNotCreateObservationWithEmptyValue() throws ConceptController.ConceptFetchException, XmlPullParserException, PatientController.PatientLoadException, ParseException, IOException, ConceptController.ConceptSaveException {
+    public void shouldNotCreateObservationWithEmptyValue() throws ConceptController.ConceptFetchException,
+            XmlPullParserException, PatientController.PatientLoadException, ParseException, IOException,
+            ConceptController.ConceptSaveException, ConceptController.ConceptParseException,
+            ObservationController.ParseObservationException{
         String xml = readFile("xml/observation_with_empty_value.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
         Concept aConcept = mock(Concept.class);
@@ -136,7 +154,10 @@ public class FormParserTest {
     }
 
     @Test
-    public void shouldParseNonPreciseNumericObservation() throws ConceptController.ConceptFetchException, XmlPullParserException, PatientController.PatientLoadException, ParseException, IOException, ConceptController.ConceptSaveException {
+    public void shouldParseNonPreciseNumericObservation() throws ConceptController.ConceptFetchException,
+            XmlPullParserException, PatientController.PatientLoadException, ParseException, IOException,
+            ConceptController.ConceptSaveException, ConceptController.ConceptParseException,
+            ObservationController.ParseObservationException{
         String xml = readFile("xml/numeric_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
         Concept aConcept = mock(Concept.class);
@@ -150,7 +171,10 @@ public class FormParserTest {
     }
 
     @Test
-    public void shouldParsePreciseNumericObservationToTwoDecimalPlaces() throws ConceptController.ConceptFetchException, XmlPullParserException, PatientController.PatientLoadException, ParseException, IOException, ConceptController.ConceptSaveException {
+    public void shouldParsePreciseNumericObservationToTwoDecimalPlaces() throws ConceptController.ConceptFetchException,
+            XmlPullParserException, PatientController.PatientLoadException, ParseException, IOException,
+            ConceptController.ConceptSaveException, ConceptController.ConceptParseException,
+            ObservationController.ParseObservationException{
         String xml = readFile("xml/numeric_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
         Concept aConcept = mock(Concept.class);
@@ -166,7 +190,10 @@ public class FormParserTest {
 
 
     @Test
-    public void shouldBuildDummyConceptForObservationOfTypeConcept() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
+    public void shouldBuildDummyConceptForObservationOfTypeConcept() throws IOException, XmlPullParserException,
+            ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException,
+            ConceptController.ConceptSaveException, ConceptController.ConceptParseException,
+            ObservationController.ParseObservationException{
         String xml = readFile("xml/value_concept_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
         Concept aConcept = mock(Concept.class);
@@ -183,7 +210,10 @@ public class FormParserTest {
     }
 
     @Test
-    public void shouldPrefixCreatedObservationsUuidWithCustomPrefix() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
+    public void shouldPrefixCreatedObservationsUuidWithCustomPrefix() throws IOException, XmlPullParserException,
+            ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException,
+            ConceptController.ConceptSaveException, ConceptController.ConceptParseException,
+            ObservationController.ParseObservationException{
         String xml = readFile("xml/one_date_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
 
@@ -192,7 +222,10 @@ public class FormParserTest {
     }
 
     @Test
-    public void shouldAssociateCorrectEncounterForObservation() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
+    public void shouldAssociateCorrectEncounterForObservation() throws IOException, XmlPullParserException,
+            ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException,
+            ConceptController.ConceptSaveException, ConceptController.ConceptParseException,
+            ObservationController.ParseObservationException {
         String xml = readFile("xml/one_date_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
 
@@ -201,7 +234,10 @@ public class FormParserTest {
     }
 
     @Test
-    public void shouldSetAssociateEncounterTimeAsObservationDateTime() throws ConceptController.ConceptFetchException, XmlPullParserException, PatientController.PatientLoadException, ParseException, IOException, ConceptController.ConceptSaveException {
+    public void shouldSetAssociateEncounterTimeAsObservationDateTime() throws ConceptController.ConceptFetchException,
+            XmlPullParserException, PatientController.PatientLoadException, ParseException, IOException,
+            ConceptController.ConceptSaveException, ConceptController.ConceptParseException,
+            ObservationController.ParseObservationException {
         String xml = readFile("xml/one_date_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
 
@@ -210,7 +246,10 @@ public class FormParserTest {
     }
 
     @Test
-    public void shouldAssociateEncountersToDummyProvider() throws ConceptController.ConceptFetchException, XmlPullParserException, PatientController.PatientLoadException, ParseException, IOException, ConceptController.ConceptSaveException {
+    public void shouldAssociateEncountersToDummyProvider() throws ConceptController.ConceptFetchException,
+            XmlPullParserException, PatientController.PatientLoadException, ParseException, IOException,
+            ConceptController.ConceptSaveException, ConceptController.ConceptParseException,
+            ObservationController.ParseObservationException {
         String xml = readFile("xml/one_date_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
 
@@ -224,7 +263,10 @@ public class FormParserTest {
     }
 
     @Test
-    public void shouldAssociateEncountersToDummyLocation() throws ConceptController.ConceptFetchException, XmlPullParserException, PatientController.PatientLoadException, ParseException, IOException, ConceptController.ConceptSaveException {
+    public void shouldAssociateEncountersToDummyLocation() throws ConceptController.ConceptFetchException,
+            XmlPullParserException, PatientController.PatientLoadException, ParseException, IOException,
+            ConceptController.ConceptSaveException, ConceptController.ConceptParseException,
+            ObservationController.ParseObservationException{
         String xml = readFile("xml/one_date_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
 
@@ -235,7 +277,10 @@ public class FormParserTest {
     }
 
     @Test
-    public void shouldAssociateEncountersToDummyEncounterType() throws ConceptController.ConceptFetchException, XmlPullParserException, PatientController.PatientLoadException, ParseException, IOException, ConceptController.ConceptSaveException {
+    public void shouldAssociateEncountersToDummyEncounterType() throws ConceptController.ConceptFetchException,
+            XmlPullParserException, PatientController.PatientLoadException, ParseException, IOException,
+            ConceptController.ConceptSaveException, ConceptController.ConceptParseException,
+            ObservationController.ParseObservationException {
         String xml = readFile("xml/one_date_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
 
@@ -246,7 +291,10 @@ public class FormParserTest {
     }
 
     @Test
-    public void shouldSaveAssociateCorrectEncounterForObservation() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, EncounterController.SaveEncounterException, ConceptController.ConceptSaveException {
+    public void shouldSaveAssociateCorrectEncounterForObservation() throws IOException, XmlPullParserException,
+            ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException,
+            EncounterController.SaveEncounterException, ConceptController.ConceptSaveException,
+            ConceptController.ConceptParseException, ObservationController.ParseObservationException{
         String xml = readFile("xml/one_date_observation.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
 
@@ -257,7 +305,10 @@ public class FormParserTest {
     }
 
     @Test
-    public void shouldSaveCreatedObservation() throws IOException, XmlPullParserException, ParseException, ObservationController.SaveObservationException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
+    public void shouldSaveCreatedObservation() throws IOException, XmlPullParserException, ParseException,
+            ObservationController.SaveObservationException, PatientController.PatientLoadException,
+            ConceptController.ConceptFetchException, ConceptController.ConceptSaveException,
+            ConceptController.ConceptParseException, ObservationController.ParseObservationException{
         String xml = readFile("xml/histo_xml_payload.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
 
@@ -266,7 +317,10 @@ public class FormParserTest {
     }
 
     @Test
-    public void shouldAssociateCorrectPatient() throws IOException, XmlPullParserException, ParseException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
+    public void shouldAssociateCorrectPatient() throws IOException, XmlPullParserException, ParseException,
+            PatientController.PatientLoadException, ConceptController.ConceptFetchException,
+            ConceptController.ConceptSaveException, ConceptController.ConceptParseException,
+            ObservationController.ParseObservationException {
         String xml = readFile("xml/histo_xml_payload.xml");
         formParser = new FormParser(new MXParser(), patientController, conceptController, encounterController, observationController);
         Patient patient = new Patient();
