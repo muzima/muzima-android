@@ -13,6 +13,7 @@ import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
+import com.muzima.controller.ObservationController;
 import com.muzima.testSupport.CustomTestRunner;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,7 +60,8 @@ public class ObservationParserUtilityTest {
     }
 
     @Test
-    public void shouldCreateNewConceptEntityAndAddItToListIfNotInDB() throws Exception, ConceptController.ConceptFetchException {
+    public void shouldCreateNewConceptEntityAndAddItToListIfNotInDB() throws Exception,
+            ConceptController.ConceptFetchException, ConceptController.ConceptParseException {
         observationParserUtility = new ObservationParserUtility(conceptController);
         when(conceptController.getConceptByName("ConceptName")).thenReturn(null);
         Concept concept = observationParserUtility.getConceptEntity("id^ConceptName^mm");
@@ -70,13 +72,15 @@ public class ObservationParserUtilityTest {
     }
 
     @Test
-    public void shouldNotCreateNewConceptOrObservationForInvalidConceptName() throws Exception, ConceptController.ConceptFetchException {
+    public void shouldNotCreateNewConceptOrObservationForInvalidConceptName() throws Exception,
+            ConceptController.ConceptFetchException {
         observationParserUtility = new ObservationParserUtility(conceptController);
         assertThat(observationParserUtility.getNewConceptList().size(), is(0));
     }
 
     @Test
-    public void shouldNotCreateConceptIfAlreadyExistsInDB() throws Exception, ConceptController.ConceptFetchException {
+    public void shouldNotCreateConceptIfAlreadyExistsInDB() throws Exception, ConceptController.ConceptFetchException,
+            ConceptController.ConceptParseException{
         observationParserUtility = new ObservationParserUtility(conceptController);
         Concept mockConcept = mock(Concept.class);
         when(conceptController.getConceptByName("ConceptName")).thenReturn(mockConcept);
@@ -89,7 +93,8 @@ public class ObservationParserUtilityTest {
     }
 
     @Test
-    public void shouldCreateOnlyOneConceptForRepeatedConceptNames() throws Exception, ConceptController.ConceptFetchException {
+    public void shouldCreateOnlyOneConceptForRepeatedConceptNames() throws Exception, ConceptController.ConceptFetchException,
+            ConceptController.ConceptParseException{
         observationParserUtility = new ObservationParserUtility(conceptController);
         when(conceptController.getConceptByName("ConceptName")).thenReturn(null);
 
@@ -103,7 +108,9 @@ public class ObservationParserUtilityTest {
     }
 
     @Test
-    public void shouldCreateNumericObservation() throws Exception, ConceptController.ConceptFetchException {
+    public void shouldCreateNumericObservation() throws Exception,
+            ConceptController.ConceptFetchException, ConceptController.ConceptParseException,
+            ObservationController.ParseObservationException{
         Concept concept = mock(Concept.class);
         when(concept.isNumeric()).thenReturn(true);
         when(concept.isCoded()).thenReturn(false);
@@ -113,7 +120,9 @@ public class ObservationParserUtilityTest {
     }
 
     @Test
-    public void shouldCreateValueCodedObsAndShouldAddItToNewConceptList() throws Exception, ConceptController.ConceptFetchException {
+    public void shouldCreateValueCodedObsAndShouldAddItToNewConceptList() throws Exception,
+            ConceptController.ConceptFetchException, ConceptController.ConceptParseException,
+            ObservationController.ParseObservationException{
         observationParserUtility = new ObservationParserUtility(conceptController);
         Concept concept = mock(Concept.class);
         when(concept.isNumeric()).thenReturn(false);
@@ -125,7 +134,9 @@ public class ObservationParserUtilityTest {
     }
 
     @Test
-    public void shouldCreateObsWithStringForNonNumericNonCodedConcept() throws Exception, ConceptController.ConceptFetchException {
+    public void shouldCreateObsWithStringForNonNumericNonCodedConcept() throws Exception,
+            ConceptController.ConceptFetchException, ConceptController.ConceptParseException,
+            ObservationController.ParseObservationException{
         observationParserUtility = new ObservationParserUtility(conceptController);
         Concept concept = mock(Concept.class);
         when(concept.getName()).thenReturn("SomeConcept");

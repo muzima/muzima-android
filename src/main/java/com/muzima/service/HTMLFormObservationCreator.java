@@ -84,7 +84,7 @@ public class HTMLFormObservationCreator {
             Log.e(TAG, "Error while fetching Patient", e);
         } catch (ConceptController.ConceptFetchException e) {
             Log.e(TAG, "Error while fetching Concept", e);
-        } catch (JSONException e) {
+        }catch (JSONException e) {
             Log.e(TAG, "Error while parsing response JSON", e);
         } catch (ParseException e) {
             Log.e(TAG, "Error while parsing response JSON", e);
@@ -106,7 +106,8 @@ public class HTMLFormObservationCreator {
         }
     }
 
-    private List<Observation> extractObservationFromJSONObject(JSONObject jsonObject) throws JSONException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
+    private List<Observation> extractObservationFromJSONObject(JSONObject jsonObject) throws JSONException,
+            ConceptController.ConceptFetchException,ConceptController.ConceptSaveException{
         List<Observation> observations = new ArrayList<Observation>();
         Iterator keys = jsonObject.keys();
         while (keys.hasNext()) {
@@ -117,7 +118,8 @@ public class HTMLFormObservationCreator {
         return observations;
     }
 
-    private List<Observation> extractBasedOnType(JSONObject jsonObject, String key) throws JSONException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
+    private List<Observation> extractBasedOnType(JSONObject jsonObject, String key) throws JSONException,
+            ConceptController.ConceptFetchException, ConceptController.ConceptSaveException{
         if (jsonObject.get(key) instanceof JSONArray) {
             return createMultipleObservation(key, jsonObject.getJSONArray(key));
         } else if (jsonObject.get(key) instanceof JSONObject) {
@@ -129,7 +131,7 @@ public class HTMLFormObservationCreator {
     }
 
     private List<Observation> createMultipleObservation(String conceptName, JSONArray jsonArray) throws JSONException,
-            ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
+            ConceptController.ConceptFetchException, ConceptController.ConceptSaveException{
         List<Observation> observations = new ArrayList<Observation>();
         for (int i = 0; i < jsonArray.length(); i++) {
             if (jsonArray.get(i) instanceof JSONObject) {
@@ -141,19 +143,22 @@ public class HTMLFormObservationCreator {
         return observations;
     }
 
-    private Observation createObservation(String conceptName, String value) throws JSONException, ConceptController.ConceptFetchException, ConceptController.ConceptSaveException {
-        Concept concept = observationParserUtility.getConceptEntity(conceptName);
-        if (concept == null) {
+    private Observation createObservation(String conceptName, String value) throws JSONException,
+            ConceptController.ConceptFetchException, ConceptController.ConceptSaveException{
+        try {
+            Concept concept = observationParserUtility.getConceptEntity(conceptName);
+            Observation observation = observationParserUtility.getObservationEntity(concept, value);
+            observation.setEncounter(encounter);
+            observation.setPerson(patient);
+            observation.setObservationDatetime(encounter.getEncounterDatetime());
+            return observation;
+        } catch (ConceptController.ConceptParseException e) {
+            Log.e(TAG, "Error while parsing Concept", e);
+            return null;
+        } catch (ObservationController.ParseObservationException e) {
+            Log.e(TAG, "Error while parsing Observation", e);
             return null;
         }
-        Observation observation = observationParserUtility.getObservationEntity(concept, value);
-        if(observation == null){
-            return null;
-        }
-        observation.setEncounter(encounter);
-        observation.setPerson(patient);
-        observation.setObservationDatetime(encounter.getEncounterDatetime());
-        return observation;
     }
 
     private Encounter createEncounter(JSONObject encounterJSON, String formDataUuid) throws JSONException, ParseException {

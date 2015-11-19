@@ -130,7 +130,9 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         showProgressBar("Loading...");
         try {
             setupFormData();
-            startAutoSaveProcess();
+            if (!isFormComplete()) {
+                startAutoSaveProcess();
+            }
             setupWebView();
         } catch (Throwable t) {
             Log.e(TAG, t.getMessage(), t);
