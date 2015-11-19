@@ -1011,7 +1011,6 @@ $(document).ready(function () {
                 $('input[name="' + elementName + '"]').val(ui.item.val);
                 $("#" + elementName).val(ui.item.label);
                 $('#encounter\\.provider_id').val(ui.item.val);
-                $('.show_provider_id_text').hide();
                 return false;
             }
         });
