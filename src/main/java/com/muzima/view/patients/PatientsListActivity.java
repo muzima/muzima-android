@@ -14,13 +14,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
@@ -28,21 +28,13 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
-import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Patient;
-import com.muzima.api.model.User;
-import com.muzima.controller.CohortController;
-import com.muzima.search.api.util.StringUtil;
+import com.muzima.controller.PatientController;
 import com.muzima.utils.Fonts;
-import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.barcode.IntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
-import com.muzima.view.notifications.SyncNotificationsIntent;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
@@ -94,6 +86,31 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 startActivity(intent);
             }
         });
+    }
+    @Override
+    public void onReceive(Context context, Intent intent){
+        super.onReceive(context, intent);
+        int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS, SyncStatusConstants.UNKNOWN_ERROR);
+        int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
+        int downloadCount = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY,0);
+        String[] patientUUIDs = intent.getStringArrayExtra(DataSyncServiceConstants.PATIENT_UUID_FOR_DOWNLOAD);
+
+        if (syncType == DataSyncServiceConstants.DOWNLOAD_PATIENT_ONLY) {
+
+            if (syncStatus == SyncStatusConstants.SUCCESS && patientUUIDs.length == 1) {
+                try {
+                    PatientController patientController = ((MuzimaApplication) getApplicationContext()).getPatientController();
+                    Patient patient = patientController.getPatientByUuid(patientUUIDs[0]);
+                    intent = new Intent(this, PatientSummaryActivity.class);
+                    intent.putExtra(PatientSummaryActivity.PATIENT, patient);
+                    startActivity(intent);
+                } catch (PatientController.PatientLoadException e) {
+                    Log.e(PatientRemoteSearchListActivity.class.getName(), "Could not load downloaded patient " + e.getMessage());
+                }
+            } else if (syncStatus == SyncStatusConstants.SUCCESS && downloadCount > 0) {
+                patientAdapter.reloadData();
+            }
+        }
     }
 
     @Override
