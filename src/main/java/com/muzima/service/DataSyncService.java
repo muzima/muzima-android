@@ -167,7 +167,7 @@ public class DataSyncService extends IntentService {
             return;
         }
         int[] resultForPatients = muzimaSyncService.downloadPatients(patientUUIDs);
-        broadCastMessageForPatients(broadcastIntent, resultForPatients);
+        broadCastMessageForPatients(broadcastIntent, resultForPatients, patientUUIDs);
         List<String> patientUUIDList = new ArrayList<String>(asList(patientUUIDs));
         if (isSuccess(resultForPatients)) {
             int[] resultForObs = muzimaSyncService.downloadObservationsForPatientsByPatientUUIDs(patientUUIDList, true);
@@ -210,8 +210,17 @@ public class DataSyncService extends IntentService {
     private void broadCastMessageForPatients(Intent broadcastIntent, int[] resultForPatients) {
         String msgForPatients = "Downloaded " + resultForPatients[1] + " new patients";
         prepareBroadcastMsg(broadcastIntent, resultForPatients, msgForPatients);
-        if (isSuccess(resultForPatients) && resultForPatients.length > 2) {
-            broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, resultForPatients[2]);
+        if (isSuccess(resultForPatients) && resultForPatients.length > 1) {
+            broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, resultForPatients[1]);
+        }
+        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+    }
+    private void broadCastMessageForPatients(Intent broadcastIntent, int[] resultForPatients, String[] patientUUIDs) {
+        String msgForPatients = "Downloaded " + resultForPatients[1] + " new patients";
+        prepareBroadcastMsg(broadcastIntent, resultForPatients, msgForPatients);
+        if (isSuccess(resultForPatients) && resultForPatients.length > 1) {
+            broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, resultForPatients[1]);
+            broadcastIntent.putExtra(DataSyncServiceConstants.PATIENT_UUID_FOR_DOWNLOAD, patientUUIDs);
         }
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }

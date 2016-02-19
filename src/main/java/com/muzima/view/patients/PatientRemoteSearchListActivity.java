@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,6 +27,7 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsRemoteSearchAdapter;
 import com.muzima.api.model.Patient;
+import com.muzima.controller.PatientController;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
@@ -45,6 +47,7 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
     private PatientsRemoteSearchAdapter patientAdapter;
     private ListView listView;
     private String searchString;
+    private String[] patientUUIDs;
     private FrameLayout progressBarContainer;
 
     private View noDataView;
@@ -142,15 +145,28 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         super.onReceive(context, intent);
         int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS, SyncStatusConstants.UNKNOWN_ERROR);
         int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
+        String[] patientUUIDs = intent.getStringArrayExtra(DataSyncServiceConstants.PATIENT_UUID_FOR_DOWNLOAD);
 
         if (syncType == DataSyncServiceConstants.DOWNLOAD_PATIENT_ONLY) {
-            if (syncStatus == SyncStatusConstants.SUCCESS) {
+            if (syncStatus == SyncStatusConstants.SUCCESS && patientUUIDs.length == 1) {
+                try {
+                    PatientController patientController = ((MuzimaApplication) getApplicationContext()).getPatientController();
+                    Patient patient = patientController.getPatientByUuid(patientUUIDs[0]);
+                    intent = new Intent(this, PatientSummaryActivity.class);
+                    intent.putExtra(PatientSummaryActivity.PATIENT, patient);
+                    startActivity(intent);
+                } catch (PatientController.PatientLoadException e) {
+                    Log.e(PatientRemoteSearchListActivity.class.getName(), "Could not load downloaded patient " + e.getMessage());
+                    startActivity(new Intent(PatientRemoteSearchListActivity.this, PatientsListActivity.class));
+                }
+            } else if (syncStatus == SyncStatusConstants.SUCCESS) {
                 startActivity(new Intent(PatientRemoteSearchListActivity.this, PatientsListActivity.class));
             }
         }
     }
 
-    private void downloadPatients(String[] patientUUIDs) {
+    private void downloadPatients() {
+        patientUUIDs = getSelectedPatientsUuid();
         new PatientDownloadIntent(this, patientUUIDs).start();
     }
 
@@ -172,7 +188,7 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         public boolean onActionItemClicked(ActionMode actionMode, com.actionbarsherlock.view.MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.menu_download:
-                    downloadPatients(getSelectedPatientsUuid());
+                    downloadPatients();
                     finish();
             }
             return false;
