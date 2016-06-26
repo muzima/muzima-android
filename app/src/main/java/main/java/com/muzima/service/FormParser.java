@@ -36,7 +36,7 @@ public class FormParser {
     private final PatientController patientController;
     private final ConceptController conceptController;
     private final EncounterController encounterController;
-    private final ObservationController observationController;
+    //private final ObservationController observationController;
     private final ObservationParserUtility observationParserUtility;
 
     private XmlPullParser parser;

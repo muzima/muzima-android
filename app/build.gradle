@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
+    useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "com.muzima"
@@ -19,6 +20,11 @@ android {
 
 dependencies {
     compile files('/home/cessito/StudioProjects/muzima-android/libs/muzima-api-1.1-SNAPSHOT.jar')
-
     compile 'com.android.support:appcompat-v7:23.4.0'
+
+    compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
+    compile 'ch.acra:acra:4.9.0'
+    compile 'org.jsoup:jsoup:1.9.2'
+    compile 'commons-lang:commons-lang:20030203.000129'
+    compile 'org.typelevel:junit:2.11.7'
 }

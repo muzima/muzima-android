@@ -11,16 +11,21 @@ package com.muzima.view.patients;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.widget.SearchView;
 import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsPagerAdapter;
+import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
+import com.muzima.api.service.impl.ObservationServiceImpl;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.custom.PagerSlidingTabStrip;
+import com.muzima.controller.ObservationController;
 
 public class ObservationsActivity extends BroadcastListenerActivity {
 
@@ -75,12 +80,19 @@ public class ObservationsActivity extends BroadcastListenerActivity {
         searchView.setOnQueryTextListener(cohortPagerAdapter);
         return true;
     }
-    @Override
-    public boolean onOptionsItemsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.observation_list, menu);
-        UploadView = (EditText) findViewById(R.Id.action_uploadobs);
-		Toast.makeText(getApplicationContext(), "Successful editing", Toast.LENGTH_LONG).show();
 
+    @Override
+    public boolean onOptionsItemsMenu(MenuItem item) {
+        if(item.getItemId()==R.id.uploadobs){
+            //upload ....
+            Observation observation = null;
+            Toast.makeText(this, "editing here", Toast.LENGTH_SHORT).show();
+            ObservationServiceImpl observationService = new ObservationServiceImpl();
+            observationService.updateObservation(observation);
         }
 
-    }
+
+        return true;
+        }
+
+}
