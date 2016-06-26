@@ -1,0 +1,36 @@
+<model>
+    <instance>
+        <form
+                id="19"
+                name="Forms with concepts" version="0.1" uuid="573b4de2-26f0-452d-8d8c-fc16c2499629">
+            <obs>
+                <most_recent_papanicolaou_smear_result
+                        openmrs_concept="7423^MOST RECENT PAPANICOLAOU SMEAR RESULT^99DCT" openmrs_datatype="CWE"
+                        multiple="1">
+                    <date/>
+                    <time/>
+                    <normal openmrs_concept="1115^NORMAL^99DCT">false</normal>
+                    <atypical_squamous_cells_of_undetermined_significance
+                            openmrs_concept="7417^ATYPICAL SQUAMOUS CELLS OF UNDETERMINED SIGNIFICANCE ^99DCT">false
+                    </atypical_squamous_cells_of_undetermined_significance>
+                    <atypical_glandular_cells_of_undetermined_significance
+                            openmrs_concept="7418^ATYPICAL GLANDULAR CELLS OF UNDETERMINED SIGNIFICANCE ^99DCT">false
+                    </atypical_glandular_cells_of_undetermined_significance>
+                    <low_grade_squamous_intraepithelial_lesion
+                            openmrs_concept="7419^LOW GRADE SQUAMOUS INTRAEPITHELIAL LESION^99DCT">false
+                    </low_grade_squamous_intraepithelial_lesion>
+                    <high_grade_squamous_intraepithelial_lesion
+                            openmrs_concept="7420^HIGH GRADE SQUAMOUS INTRAEPITHELIAL LESION^99DCT">false
+                    </high_grade_squamous_intraepithelial_lesion>
+                    <squamous_cell_carcinoma_not_otherwise_specified
+                            openmrs_concept="7421^SQUAMOUS CELL CARCINOMA, NOT OTHERWISE SPECIFIED ^99DCT">false
+                    </squamous_cell_carcinoma_not_otherwise_specified>
+                    <adenocarcinoma openmrs_concept="7422^ADENOCARCINOMA ^99DCT">false</adenocarcinoma>
+                    <not_applicable openmrs_concept="1175^NOT_APPLICABLE^99DCT">false</not_applicable>
+                    <do_not_know openmrs_concept="1624^DO NOT KNOW^99DCT">false</do_not_know>
+                    <xforms_value/>
+                </most_recent_papanicolaou_smear_result>
+            </obs>
+        </form>
+    </instance>
+</model>

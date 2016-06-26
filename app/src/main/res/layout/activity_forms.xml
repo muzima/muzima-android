@@ -1,0 +1,57 @@
+<android.support.v4.widget.DrawerLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:custom="http://schemas.android.com/apk/res/com.muzima"
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <!-- The main content view -->
+    <LinearLayout android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent">
+
+        <com.muzima.view.custom.PagerSlidingTabStrip
+                android:id="@+id/pager_indicator"
+                custom:indicatorColor="@color/tab_indicator"
+                custom:indicatorHeight="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/pager_indicator_height"
+                android:overScrollMode="ifContentScrolls"
+                android:layout_alignParentBottom="true"
+                android:background="@color/tab_background"/>
+
+        <android.support.v4.view.ViewPager
+                android:id="@+id/pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+		android:background="@color/primary_black"
+                />
+
+    </LinearLayout>
+    <!-- The navigation drawer -->
+    <FrameLayout android:id="@+id/tags_drawer"
+                 android:layout_gravity="right"
+                 android:layout_width="240dp"
+                 android:layout_height="match_parent"
+                 android:background="@color/drawer_background">
+
+        <ListView
+                android:id="@+id/tags_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@drawable/tags_list_divider"
+                android:dividerHeight="2dp"/>
+
+
+        <TextView
+                android:id="@+id/tags_no_data_msg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textColor="#ffffff"
+                android:text="@string/tags_no_data"
+                android:visibility="gone">
+        </TextView>
+
+    </FrameLayout>
+</android.support.v4.widget.DrawerLayout>

@@ -1,0 +1,209 @@
+<html>
+<head>
+    <link href="../forms/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../forms/css/muzima.css" rel="stylesheet">
+    <link href="../forms/css/ui-darkness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+</head>
+
+<body class="col-md-8 col-md-offset-2">
+<p>
+    This guide will take you through setting up OpenMRS instance and working around with some of the key functionality
+    within OpenMRS environment.
+</p>
+
+<h3>Requirements</h3>
+
+<strong>Hardware Specifications</strong>
+
+<p> The hardware required depends on the size of your implementation. For small implementations, OpenMRS can be run on
+    just about any desktop or laptop.</p>
+
+<strong>Minimum Requirements - 100 patients</strong>
+
+<p>1 GHz processor or better, 256 MB of memory or more, 40 GB hard drive or larger. You can set up the server on a
+    laptop for demonstration or testing purposes.</p>
+
+<strong>Minimum Requirements - 10,000 patients</strong>
+
+<p>1.5+ GHz, 2 GB of memory, and 150+ GB of disk space with RAID and appropriate backup facilities.</p>
+<strong>Minimum Requirements - 250,000 patients </strong>
+
+<p>4.52+ GHz quad processors, 16 GB of memory, and 500 GB of disk space with RAID and appropriate backup facilities.</p>
+
+<strong>Software Specifications</strong>
+
+<p>Java JDK 1.6</p>
+
+<strong>OpenMRS Standalone</strong>
+
+<p>To run the standalone version, download the ZIP file and decompress it, then double-click the
+    openmrs-standalone.jar file to run it. The first time you run this file, it will configure OpenMRS and open your
+    browser to the new OpenMRS instance.
+</p>
+
+<p>
+    <strong>On Windows operating System</strong><br>
+    From the command line, you can navigate to the decompressed folder and run the following command: java -jar
+    standalone-1.1.jar
+</p>
+
+<p><strong>On Linux</strong> Use a command line shell to navigate to the decompressed folder and run the following
+    command: ./run-on-linux.sh</p>
+
+<p><strong>Logging In</strong> By default, the initial username and password are as follows:
+    * Username: admin * Password: Admin123/test </p>
+
+<div class="padded_div_images">
+    <img src="../help-content/images/open-mrs-login.jpg" width="350" height="200">
+</div>
+<p>You must immediately change the admin password after installation for security purposes. To change your password,
+    click <strong>My Profile</strong> in the upper right of OpenMRS, and choose the <strong>Change Login Info </strong>tab.
+    Update your password, then click <strong> Save Options.</strong> You can also change your username, and provide your
+    real name, on this screen.</p>
+
+<p>
+    <strong>Stopping and Restarting</strong><br>
+
+
+<p>
+    As long as OpenMRS is running, you can return to the application by opening the following URL in your browser. <br>
+    http://localhost:8081/openmrs-standalone/
+</p>
+
+<p>
+    Before you change certain preferences, such as the port on which MySQL or Tomcat runs, you must stop the
+    application.
+</p>
+
+<p>
+    To stop the application, use the <strong>Stop</strong> button in the user interface, or <strong>choose File >
+    Quit.</strong> Alternatively, run the JAR file on the command line with a <strong>-stop parameter.</strong>
+</p>
+
+<p>
+    You can restart the GUI by clicking Start, or double-clicking on the JAR file again. Alternatively, you can run
+    the JAR file with a -start parameter.
+</p>
+
+<p>
+    By default, OpenMRS runs the MySQL database on port 3316, and the Tomcat server on port 8081. To use a different
+    port, stop the application, then change the port number in the
+    <strong>openmrs-standalone-runtime.properties</strong> file or in the GUI, and restart. To override the port
+    from the command line, run the JAR file with a <strong>-tomcatport</strong> or <strong>-mysqlport</strong> parameter.
+</p>
+
+<p>
+    Changing the port number will change the URL used to access the application. To access the application, you can
+    choose <strong>File > Launch Browser,</strong> or run the JAR file with a <strong>-browser parameter.</strong>
+</p>
+</p>
+
+<strong>Accessing OpenMRS in A Network Setup</strong>
+
+<p>If you are accessing an openmrs instance setup in a network, you can access using your preferred browser the Openmrs
+    Instance by using the ip address of the particular server or pc where Openmrs is installed e.g
+    https://192.168.100.50:8081/openmrs-standalone</p>
+
+<strong>Getting Started with OpenMRS</strong>
+
+<p>After successfully installing an openmrs instance, login with your assigned username and password and click on the Login
+    button</p>
+
+<strong>How To Create A New Patient</strong>
+
+<div class="padded_div_images">
+    <img src="../help-content/images/open-mrs-dashboard.jpg" width="350" height="200">
+</div>
+<p>
+<ul>
+    <li>Navigate to Find/Create patient menu on the menu bar and click on it.</li>
+    <li>Fill in the information for the new patient in the <strong>create patient section </strong></li>
+    <div class="padded_div_images">
+        <img src="../help-content/images/open-mrs-create-patient.jpg" width="350" height="200">
+    </div>
+    <li>Click on <strong>create person</strong> button</li>
+    <li>You will be transitioned to a new page with more form fields</li>
+    <li>Fill in all required fields and click on <strong>save</strong> button</li>
+</ul>
+That's it; you have now successfully created a patient.
+</p>
+
+<strong>How to Create A Cohort </strong><br>
+
+<p>
+    A cohort is a set of patients with specific characteristics
+    *** Locate Cohort Builder on the menu bar and click on it**
+</p>
+
+<div class="padded_div_images">
+    <img src="../help-content/images/open-mrs-cohort-builder-select.jpg" width="350" height="200">
+</div>
+
+<p>
+    *** Click on Patient Attributes Tab**
+</p>
+
+<div class="padded_div_images">
+    <img src="../help-content/images/open-mrs-cohort-builder.jpg" width="350" height="200">
+</div>
+
+<p>
+    *** Specify the parameters the cohort should take by filling the cohort builder form appropriately** Example:
+    Gender=Any, Age between 20 and 40, And click on the save button icon as shown below:
+</p>
+
+<div class="padded_div_images">
+    <img src="../help-content/images/open-mrs-cohort-save-step-one.jpg" width="350" height="200">
+</div>
+
+<p>
+    A screen will pop up for you to enter the Name and Description of the cohort you created. Enter the fields with the
+    appropriate name and description and click on save button.
+</p>
+
+<div class="padded_div_images">
+    <img src="../help-content/images/open-mrs-cohort-save-step-two.jpg" width="350" height="200">
+</div>
+
+<p>
+    Check if the cohort was created by clicking on the <strong>Saved link</strong> next to the **Search **text
+</p>
+
+<p>
+    You are now ready to use mUzima platform.<br>
+</p>
+
+<p>For mUzima to work with openMRS you need to have the following modules running:<br>
+<ol start="1">
+    <li>mUzima Forms module</li>
+    <li>mUzima Registration module</li>
+    <li>mUzima Processor module</li>
+    <li>Reporting Compatibility</li>
+    <li>Latest Rest Web Services</li>
+    <li>Latest xForms module</li>
+    <li>mUzima Consultation module [optional]</li>
+</ol>
+</p>
+
+<p>
+    <strong>How To Install A module in OpenMRS</strong><br>
+</p>
+
+<p>
+<ul>
+    <li>Login to your OpenMRS instance.</li>
+    <li>Click on Administration link on the menu bar.</li>
+    <li>Navigate to modules.</li>
+    <li>Click on Manage modules link.</li>
+    <li>Click on Add or Upgrade module.</li>
+</ul>
+</p>
+
+<p>
+    A screen will pop up. Choose browse button to locate the directory where yo have stored module from your machine
+    or install the module from openMRS hosted site by using the Install from Module Repository Section and type in
+    the name of the module and click on install.<br>
+</p>
+
+</body>
+</html>

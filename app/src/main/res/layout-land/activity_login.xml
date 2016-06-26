@@ -1,0 +1,82 @@
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/LoginActivityLayout"
+        android:orientation="horizontal">
+
+    <LinearLayout style="@style/LoginLandscapeLeftLayout">
+
+        <TextView
+                android:drawableTop="@drawable/ic_launcher_logo"
+                android:id="@+id/title_login"
+                style="@style/LoginActivityHeader"/>
+
+    </LinearLayout>
+
+    <View
+            style="@style/LoginActivityDivider.Style"/>
+    <ScrollView style="@style/LoginLandscapeRightLayout">
+        <LinearLayout android:layout_height="wrap_content"
+                      android:layout_width="match_parent"
+                      android:orientation="vertical">
+
+            <LinearLayout
+                    style="@style/LoginInfoLayout">
+
+                <EditText
+                        android:id="@+id/serverUrl"
+                        style="@style/LoginInfoEditText"
+                        android:inputType="textUri"
+                        android:hint="@string/server_hint_text"
+                        />
+
+                <View
+                        style="@style/LoginInfoLayoutDivider" android:id = "@+id/server_url_divider"/>
+
+                <EditText
+                        android:id="@+id/username"
+                        style="@style/LoginInfoEditText"
+                        android:hint="@string/username_hint_text"
+                        />
+
+                <View
+                        style="@style/LoginInfoLayoutDivider"/>
+
+                <EditText
+                        android:id="@+id/password"
+                        style="@style/LoginInfoEditText"
+                        android:hint="@string/password_hint_text"
+                        android:inputType="textPassword"/>
+
+            </LinearLayout>
+
+
+                <CheckBox android:id="@+id/update_password"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="@string/new_password"
+                          android:textSize="14sp"
+                          android:onClick="onUpdatePasswordCheckboxClicked"/>
+
+
+            <FrameLayout
+                    style="@style/LoginButtonLayout" android:layout_height="wrap_content">
+
+                <Button
+                        android:id="@+id/login"
+                        style="@style/LoginButton"/>
+
+                <TextView
+                        android:id="@+id/authenticatingText"
+                        style="@style/LoginActivityAuthenticatingView"
+                        android:visibility="gone"/>
+            </FrameLayout>
+
+            <TextView
+                    android:id="@+id/version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

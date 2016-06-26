@@ -1,0 +1,75 @@
+<com.muzima.view.CheckedRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:background="@drawable/list_multi_selector_blue"
+                android:layout_width="match_parent">
+    <com.muzima.view.CheckedLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="100"
+            android:background="@drawable/list_multi_selector_blue"
+            android:id="@+id/form_name_layout"
+            android:orientation="horizontal">
+
+        <CheckedTextView
+                android:id="@+id/form_name"
+                android:layout_weight="80"
+                android:layout_width="0dp"
+                android:checkMark="@null"
+                style="@style/ListViewSelectableText"/>
+
+        <ImageView
+                android:background="@drawable/list_multi_selector_blue"
+                android:id="@+id/downloadImg"
+                android:layout_weight="20"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="top|right"
+                android:src="@drawable/ic_action_important"
+                android:visibility="gone"
+                android:contentDescription="@string/downloaded_image"/>
+    </com.muzima.view.CheckedLinearLayout>
+
+
+    <CheckedTextView
+            android:id="@+id/form_description"
+            android:layout_below="@+id/form_name_layout"
+            android:paddingTop="5dp"
+            style="@style/ListViewSelectableText">
+    </CheckedTextView>
+
+    <CheckedTextView
+            android:id="@+id/form_save_time"
+            android:layout_below="@+id/form_description"
+            android:paddingTop="12dp"
+            style="@style/FormSaveDateTime">
+    </CheckedTextView>
+
+    <CheckedTextView
+            android:id="@+id/form_encounter_date"
+            android:layout_below="@+id/form_description"
+            android:paddingTop="12dp"
+            android:gravity="left"
+            style="@style/FormSaveDateTime">
+    </CheckedTextView>
+
+    <com.muzima.view.CheckedRelativeLayout
+            android:id="@+id/tags_scroller"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/tag_selected_height"
+            android:clickable="true"
+            android:background="@drawable/list_multi_selector_blue"
+            android:layout_below="@+id/form_description"
+            android:layout_alignParentRight="true">
+
+        <LinearLayout
+                android:id="@+id/menu_tags"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/list_multi_selector_blue"
+                android:gravity="center_vertical">
+        </LinearLayout>
+    </com.muzima.view.CheckedRelativeLayout>
+</com.muzima.view.CheckedRelativeLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:onClick="dashboardClick"
+        android:padding="5dp"
+        android:src="@drawable/ic_action_dashboard" />
+
+   <!-- <SearchView
+        android:id="@+id/clientSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:queryHint="@string/client_search"
+         />
+    
+          <EditText
+        android:id="@+id/clientSearch"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:drawableLeft="@drawable/ic_search"
+        android:hint="@string/client_search"
+        android:lines="@integer/search_line_weight"
+        android:padding="6sp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="@color/search_hint" />
+    -->
+
+</LinearLayout>

@@ -1,0 +1,62 @@
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/LoginActivityLayout">
+
+
+    <com.muzima.view.CheckedLinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:layout_marginTop="3dp"
+            android:orientation="vertical">
+
+        <CheckedTextView
+                android:id="@+id/subject"
+                style="@style/ListHeader"/>
+
+        <com.muzima.view.CheckedLinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginRight="7dp"
+                android:orientation="horizontal">
+
+            <CheckedTextView
+                    android:id="@+id/dateSent"
+                    style="@style/ListDescription"
+                    android:layout_width="0dp"
+                    android:layout_weight=".7"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/secondary_text"/>
+
+            <CheckedTextView
+                    android:id="@+id/sentBy"
+                    style="@style/ListDescription"
+                    android:layout_width="0dp"
+                    android:layout_weight=".3"
+                    android:gravity="right"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/secondary_text"/>
+        </com.muzima.view.CheckedLinearLayout>
+    </com.muzima.view.CheckedLinearLayout>
+
+    <View style="@style/LoginActivityDivider.Style"/>
+
+   <TextView
+           android:id="@+id/notificationDetail"
+           style="@style/ListHeader"
+           android:layout_height="wrap_content"
+           android:background="@drawable/list_multi_selector_blue"/>
+
+    <FrameLayout
+            style="@style/LoginButtonLayout">
+
+        <Button
+                android:id="@+id/viewEncounter"
+                android:text="@string/notification_view_encounter"
+                style="@style/LoginButton"
+                android:onClick="encounterView"/>
+    </FrameLayout>
+
+</LinearLayout>

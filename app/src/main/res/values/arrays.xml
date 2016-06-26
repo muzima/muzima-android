@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string-array name="locations">
+		<item>Home</item>
+		<item>Email</item>
+		<item>Calendar</item>
+		<item>Browser</item>
+	</string-array>
+
+	<string-array name="font_sizes">
+		<item>Small</item>
+		<item>Medium</item>
+		<item>Large</item>
+	</string-array>
+
+</resources>

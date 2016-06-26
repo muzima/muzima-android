@@ -1,0 +1,58 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/WizardContainer">
+
+    <LinearLayout style="@style/AutocompleteTextArea">
+
+        <AutoCompleteTextView
+                android:id="@+id/prefix_add_prefix"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/primary_blue"
+                android:textColorHint="@color/hint_text_grey"
+                android:textCursorDrawable="@null"
+                android:hint="Type Cohort name ...">
+            <requestFocus/>
+        </AutoCompleteTextView>
+
+        <Button android:layout_width="72dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="2dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="Add"
+                android:background="@color/primary_blue"
+                android:gravity="center"
+                android:onClick="addPrefix">
+        </Button>
+    </LinearLayout>
+
+    <View style="@style/DividerLine"
+          android:layout_height="2dp"/>
+
+    <ListView
+            android:id="@+id/cohort_pref_list"
+            style="@style/MuzimaListView"/>
+
+    <TextView
+            android:id="@+id/no_data_msg"
+            android:text="@string/no_cohort_prefixes_added"
+            style="@style/NoItemInListView">
+    </TextView>
+
+    <View
+            style="@style/DividerLine"
+            android:layout_height="2dp"/>
+</LinearLayout>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+

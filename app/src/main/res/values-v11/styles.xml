@@ -1,0 +1,5 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Application theme. -->
+    <style name="WizardTheme" parent="android:Theme.Holo.NoActionBar">
+    </style>
+</resources>

@@ -1,0 +1,54 @@
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/LoginActivityLayout"
+        android:orientation="horizontal">
+
+    <LinearLayout style="@style/LoginLandscapeLeftLayout" android:weightSum="1">
+
+        <CheckedTextView
+                android:id="@+id/subject"
+                android:layout_height="39dp"
+                android:layout_width="match_parent"/>
+
+        <CheckedTextView
+                android:id="@+id/dateSent"
+                android:layout_width="match_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/secondary_text"
+                android:layout_height="32dp"/>
+
+        <CheckedTextView
+                android:id="@+id/sentBy"
+                style="@style/ListDescription"
+                android:layout_width="match_parent"
+                android:gravity="left"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/secondary_text"/>
+
+    </LinearLayout>
+
+    <View
+            style="@style/LoginActivityDivider.Style"/>
+
+    <LinearLayout style="@style/LoginLandscapeRightLayout">
+
+        <TextView
+                android:id="@+id/notificationDetail"
+                style="@style/ListHeader"
+                android:layout_height="wrap_content"
+                android:background="@drawable/list_multi_selector_blue"/>
+
+        <FrameLayout
+            style="@style/LoginButtonLayout">
+
+            <Button
+                    android:id="@+id/viewEncounter"
+                    android:text="@string/notification_view_encounter"
+                    style="@style/LoginButton"
+                    android:onClick="encounterView"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

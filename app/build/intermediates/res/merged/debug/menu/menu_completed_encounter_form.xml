@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:id="@+id/form_back_to_draft"
+            android:icon="@drawable/ic_action_undo"
+            android:text="@string/form_back_to_draft"
+            android:showAsAction="ifRoom|withText"
+            android:title="@string/form_back_to_draft"/>
+    <item
+            android:id="@+id/form_close"
+            android:icon="@drawable/ic_cancel"
+            android:text="@string/form_close"
+            android:showAsAction="ifRoom|withText"
+            android:title="@string/form_close"/>
+
+</menu>

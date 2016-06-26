@@ -1,0 +1,152 @@
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/DashboardWrapper"
+              tools:context=".MainActivity">
+
+    <TextView
+            android:id="@+id/helpContent"
+            style="@style/HelpContent"
+            android:text="Help!"/>
+
+    <ScrollView
+            android:id="@+id/helpInfoMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            <TextView
+                    android:id="@+id/howToLabel"
+                    style="@style/HelpContent"
+                    android:text="How To: "
+                    android:textSize="20sp"/>
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1.5dp"
+                    android:src="#555555"/>
+            <TextView
+                    android:id="@+id/muzimaSetupGuideLabel"
+                    android:onClick="viewMuzimaInitialSetupGuide"
+                    style="@style/HelpContent"
+                    android:text="Initial setup for mUzima"
+                    android:clickable="true"
+                    android:textSize="16sp"/>
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:src="#555555"/>
+            <TextView
+                    android:id="@+id/muzimaUserGuideLabel"
+                    android:onClick="viewMuzimaUserGuide"
+                    style="@style/HelpContent"
+                    android:text="Server side Setup"
+                    android:clickable="true"
+                    android:textSize="16sp"/>
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:src="#555555"/>
+            <TextView
+                    android:id="@+id/muzimaTrainingManualLabel"
+                    android:onClick="viewMuzimaTrainingManual"
+                    style="@style/HelpContent"
+                    android:text="mUzima Training Manual"
+                    android:clickable="true"
+                    android:textSize="16sp"/>
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:src="#555555"/>
+            <TextView
+                    android:id="@+id/fillingPatientFormLabel"
+                    android:onClick="viewPatientFormFillingHelpContent"
+                    style="@style/HelpContent"
+                    android:text="Fill out forms for a patient"
+                    android:clickable="true"
+                    android:textSize="16sp"/>
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:src="#555555"/>
+            <TextView
+                    android:id="@+id/videoLinksLabel"
+                    android:onClick="viewPatientFormFillingHelpContent"
+                    style="@style/HelpContent"
+                    android:text="Video Links: "
+                    android:textSize="20sp"/>
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1.5dp"
+                    android:src="#555555"/>
+            <TextView
+                    android:id="@+id/introductionVideoLabel"
+                    android:onClick="viewIntroductionVideo"
+                    style="@style/HelpContent"
+                    android:text="Introduction to mUzima"
+                    android:clickable="true"
+                    android:textSize="16sp"/>
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:src="#555555"/>
+            <TextView
+                    android:id="@+id/settingUpMuzimaVideoLabel"
+                    android:onClick="viewSettingUpMuzimaVideo"
+                    style="@style/HelpContent"
+                    android:text="Setting Up mUzima"
+                    android:clickable="true"
+                    android:textSize="16sp"/>
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:src="#555555"/>
+            <TextView
+                    android:id="@+id/taggingFormsVideoLabel"
+                    android:onClick="viewTaggingFormsVideo"
+                    style="@style/HelpContent"
+                    android:text="Tagging Forms"
+                    android:clickable="true"
+                    android:textSize="16sp"/>
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:src="#555555"/>
+            <TextView
+                    android:id="@+id/downloadingCohortsVideoLabel"
+                    android:onClick="viewDownloadingCohortsVideo"
+                    style="@style/HelpContent"
+                    android:text="Downloading Cohorts"
+                    android:clickable="true"
+                    android:textSize="16sp"/>
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:src="#555555"/>
+            <TextView
+                    android:id="@+id/changeSettingsVideoLabel"
+                    android:onClick="viewChangeSettingsVideo"
+                    style="@style/HelpContent"
+                    android:text="Change Settings"
+                    android:clickable="true"
+                    android:textSize="16sp"/>
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:src="#555555"/>
+            <TextView
+                    android:id="@+id/downloadingFormsVideoLabel"
+                    android:onClick="viewDownloadingFormsVideo"
+                    style="@style/HelpContent"
+                    android:text="Downloading Forms"
+                    android:clickable="true"
+                    android:textSize="16sp"/>
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:src="#555555"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

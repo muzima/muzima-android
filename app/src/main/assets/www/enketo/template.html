@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+		<title>Muzima</title>
+		<meta charset="utf-8">
+		<meta name="author" content="Martijn van de Rijdt (Aid Web Solutions) &amp; Modi Research Group">
+		<meta name="robots" content="noindex">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+
+		<link href="css/muzima.css" media="all" rel="stylesheet" type="text/css">
+
+		<script type="text/javascript" src="js/libraries-all-min.js"></script>
+		<script type="text/javascript" src="js/xpathjs_javarosa.js"></script>
+		<!--<script type="text/javascript" src="js/webform-drishti-all-min.js"></script>-->
+
+		<script type="text/javascript" src="js/form.js"></script>
+		<script type="text/javascript" src="js/gui.js"></script>
+		<script type="text/javascript" src="js/helpers.js"></script>
+		<script type="text/javascript" src="js/muzima.storage.js"></script>
+		<script type="text/javascript" src="js/muzima.webform.js"></script>
+		<script type="text/javascript" src="js/widgets.js"></script>
+
+		<script type="text/javascript" src="../ziggy/ziggy.js"></script>
+        <script type="text/javascript">
+            // Date.parse("yyyy-MM-dd"), new Date("yyyy-MM-dd") is not supported in android 2.2. Added this patch for libraries-all-min.js to fix it.
+            var ecmaScriptDateParse = Date.parse;
+            Date.parse = function(dateString){
+                if(!dateString){
+                    return;
+                }
+                dateString = dateString.replace(/-/g, "/");
+                return ecmaScriptDateParse(dateString);
+            }
+
+            DateType.prototype.toDate=function(){var date=new Date(this.value);if(!isNaN(date.getTime())) return date;return new Date(Date.parse(this.value))}
+        </script>
+		<script type="text/javascript">
+            window.onerror = function (m, u, l) {
+        	    console.error("Javascript Error: , msg: {0}, url: {1}, line: {2}".format(m, u, l));
+				return true;
+			};
+
+			var settings = {};
+			settings['mapsDynamicAPIKey'] = 'AIzaSyDF5xYZfxN7r5SsNPGstjAeTzwa6dVU4Ik';
+			settings['mapsStaticAPIKey'] = 'AIzaSyDF5xYZfxN7r5SsNPGstjAeTzwa6dVU4Ik';
+			settings['supportEmail'] = '';
+			settings['returnURL'] = '';
+
+			var modelStr = formInstance.getModel()+"";
+		</script>
+	</head>
+	<body>
+
+		<div id="feedback-bar" class="alert">			
+			<i class="icon-info-sign"></i>
+			<a href="#" class="close">&times;</a>
+		</div>
+
+		<div id="dialog-alert" class="modal hide fade ">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3></h3>
+			</div>
+			<div class="modal-body">
+				<p class="alert alert-block alert-error"></p>
+			</div>
+			<div class="modal-footer">
+				<span class="self-destruct-timer"></span>
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+				</div>
+		</div>
+
+		<div id="dialog-confirm" class="modal hide fade">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3></h3>
+			</div>
+			<div class="modal-body">
+				<p class="alert alert-block alert-error"></p>
+				<p class="msg"></p>
+			</div>
+			<div class="modal-footer">
+				<span class="self-destruct-timer"></span>
+				<button class="negative btn">Close</button>
+				<button class="positive btn btn-info">Confirm</button>
+				</div>
+		</div>
+
+		<div id="dialog-save" class="dialog" style="display: none;">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3></h3>
+			</div>
+			<div class="modal-body">
+				<form onsubmit="return false;">
+					<span class="dialog-msg"></span>
+					<span class="dialog-error ui-state-error"></span>
+					<label>name:<input name="record-name" type="text"/></label>
+					<label><input name="record-final" type="checkbox" value="true"/><span>final</span></label>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			</div>
+		</div>
+		<div class="main">
+			<div class="paper">
+				<div class="form-header clearfix"><span class="form-language-selector"><span>Choose Language</span></span></div>
+
+				<script>
+					document.write(formInstance.getHTML());
+				</script>
+                <div class="form-buttons">
+                    <input type="button" value="Save as Draft" class="form-button" onclick="javascript:document.saveDraft()">
+                    <input type="button" value="Save as Complete" class="form-button" onclick="javascript:document.submit()">
+                </div>
+                <script>
+                    if(formDataRepositoryContext.getFormStatus()==="complete"){
+                        $(".form-buttons").hide();
+                    }
+                </script>
+            </div>
+		</div>
+	</body>
+</html>

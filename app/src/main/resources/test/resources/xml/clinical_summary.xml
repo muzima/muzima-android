@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<clinicalSummary>
+    <currentDatetime>17-Jan-2014 03:00:39.0318</currentDatetime>
+    <moduleVersion>4.0.4</moduleVersion>
+    <templateRevision>1</templateRevision>
+    <templateName>Adult HIV Template</templateName>
+    <id>7280</id>
+    <identifier>7279MP-4</identifier>
+    <name>
+        John
+        Mamwa
+        Shavola
+    </name>
+    <gender>
+        Female
+    </gender>
+    <birthdate estimated="true">11-Dec-1956</birthdate>
+    <age>57 Years</age>
+    <returnVisit>29-Jan-2014</returnVisit>
+    <earliestEncounter>
+        <datetime>11-Apr-2006</datetime>
+    </earliestEncounter>
+    <latestEncounter>
+        <datetime>15-Jan-2014</datetime>
+        <location>Wishard Hospital</location>
+        <provider>Rose Cheruto Toroitich</provider>
+        <creator>Rose Cheruto Toroitich</creator>
+        <dateCreated>16-Jan-2014</dateCreated>
+    </latestEncounter>
+    <whoStage>WHO STAGE 3 ADULT</whoStage>
+    <drugAdherence>Missing Data - 15-Jan-2014, 13-Jan-2014(5 More)</drugAdherence>
+    <problemList/>
+    <flowsheet>
+        <results name="WEIGHT (KG)">
+            <result>
+                <datetime>11-Apr-2006</datetime>
+                <value>54.0</value>
+                <status/>
+            </result>
+            <result>
+                <datetime>09-May-2006</datetime>
+                <value>52.0</value>
+                <status/>
+            </result>
+            <result>
+                <datetime>06-Jun-2006</datetime>
+                <value>52.5</value>
+                <status/>
+            </result>
+        </results>
+        <results name="HGB">
+            <result>
+                <datetime>09-May-2006</datetime>
+                <value>12.7</value>
+                <status/>
+            </result>
+        </results>
+        <results name="CD4">
+            <result>
+                <datetime>09-May-2006</datetime>
+                <value>296.0</value>
+                <status/>
+                <percentage>16</percentage>
+            </result>
+            <result>
+                <datetime>06-Jun-2006</datetime>
+                <value/>
+                <status>Test Ordered</status>
+                <percentage/>
+            </result>
+        </results>
+        <results name="VIRAL-LD"/>
+        <results name="SGPT">
+            <result>
+                <datetime>09-May-2006</datetime>
+                <value>66.5</value>
+                <status/>
+            </result>
+        </results>
+        <results name="CREAT">
+            <result>
+                <datetime>09-May-2006</datetime>
+                <value>67.0</value>
+                <status/>
+            </result>
+        </results>
+        <results name="VDRL"/>
+    </flowsheet>
+    <medications type="arv"/>
+    <medications type="oi"/>
+    <cxrs/>
+    <reminders displayId="true" displayText="true">
+        <reminder>
+            <id>22</id>
+            <token>Adult CXR Reminder</token>
+            <value>Please check Chest X-Ray. No Chest X-Ray result in system.</value>
+        </reminder>
+        <reminder>
+            <id>24</id>
+            <token>Adult Syphilis Reminder</token>
+            <value>Consider ordering Syphilis/VDRL Test. Pt. with no Syphilis/VDRL results.</value>
+        </reminder>
+        <reminder>
+            <id>41</id>
+            <token>Below 500 CD4 No Anti Retro Viral Reminder</token>
+            <value>Please order CD4 panel. Last CD4 (&lt; 500) over 6 mo. ago in pt NOT on ARVs.</value>
+        </reminder>
+    </reminders>
+    <tb-reminders>
+        <tb-reminder>
+            <id>60</id>
+            <token>Tuberculosis: Reminder 1</token>
+            <value>Reminder 1 excluded by Ex4A</value>
+        </tb-reminder>
+        <tb-reminder>
+            <id>61</id>
+            <token>Tuberculosis: Reminder 2</token>
+            <value>Reminder 2 excluded by Ex4A</value>
+        </tb-reminder>
+        <tb-reminder>
+            <id>62</id>
+            <token>Tuberculosis: Reminder 3</token>
+            <value>Reminder 3 excluded by Ex4A</value>
+        </tb-reminder>
+        <tb-reminder>
+            <id>63</id>
+            <token>Tuberculosis: Reminder 4</token>
+            <value>Reminder 4 excluded by Ex4A</value>
+        </tb-reminder>
+        <tb-reminder>
+            <id>64</id>
+            <token>Tuberculosis: Reminder 5</token>
+            <value>Reminder 5 excluded by Ex4A</value>
+        </tb-reminder>
+        <tb-reminder>
+            <id>65</id>
+            <token>Tuberculosis: Reminder 6</token>
+            <value>Reminder 6 excluded by Ex4A</value>
+        </tb-reminder>
+        <tb-reminder>
+            <id>66</id>
+            <token>Tuberculosis: Reminder 7</token>
+            <value>Reminder 7 excluded by Ex4A</value>
+        </tb-reminder>
+        <tb-reminder>
+            <id>67</id>
+            <token>Tuberculosis: Reminder 9</token>
+            <value>Reminder 9 excluded by Ex4A</value>
+        </tb-reminder>
+        <tb-reminder>
+            <id>68</id>
+            <token>Tuberculosis: Reminder 10</token>
+            <value>Reminder 10 excluded by Ex4A</value>
+        </tb-reminder>
+        <tb-reminder>
+            <id>69</id>
+            <token>Tuberculosis: Reminder 11</token>
+            <value>Reminder 11 excluded by Ex4A</value>
+        </tb-reminder>
+        <tb-reminder>
+            <id>70</id>
+            <token>Tuberculosis: Reminder 12</token>
+            <value>Reminder 12 excluded by Ex4A</value>
+        </tb-reminder>
+        <tb-reminder>
+            <id>71</id>
+            <token>Tuberculosis: Reminder 13</token>
+            <value>Reminder 13 excluded by Ex4A</value>
+        </tb-reminder>
+    </tb-reminders>
+</clinicalSummary>

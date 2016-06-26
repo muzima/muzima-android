@@ -1,0 +1,48 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+    <ListView
+            android:id="@+id/remote_search_list"
+            style="@style/MuzimaSelectableListView"
+            android:choiceMode="multipleChoice"/>
+
+    <LinearLayout
+            android:id="@+id/no_data_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingRight="16dp"
+            android:gravity="center"
+            android:visibility="gone">
+
+        <TextView
+                android:id="@+id/no_data_msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="25sp">
+        </TextView>
+
+        <TextView
+                android:id="@+id/no_data_tip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="20sp">
+        </TextView>
+
+        <Button android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/create_patient_btn"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                style="@style/Button.Next"
+                android:text="Create Client"
+                android:layout_height="wrap_content">
+        </Button>
+
+    </LinearLayout>
+
+    <include layout="@layout/progress_bar"/>
+
+</FrameLayout>

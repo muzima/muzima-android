@@ -1,0 +1,13 @@
+<com.muzima.view.CheckedLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="7dp"
+              android:layout_marginBottom="7dp"
+              android:background="@color/primary_black"
+              android:orientation="vertical">
+
+    <CheckedTextView
+            android:id="@+id/cohort_name"
+            android:checkMark="@null"
+            style="@style/ListViewSingleSelectText"/>
+</com.muzima.view.CheckedLinearLayout>

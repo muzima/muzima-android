@@ -1,0 +1,60 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/DashboardTableContainer">
+    <RelativeLayout
+            style="@style/PatientDemographicsLayout"
+            android:background="@color/primary_black">
+
+        <TextView
+                android:id="@+id/patientName"
+                android:layout_alignParentLeft="true"
+                style="@style/DashboardMediumTitleText"/>
+
+        <ImageView
+                android:id="@+id/genderImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:paddingTop="20dp"
+                android:contentDescription="Gender Image"/>
+    </RelativeLayout>
+    <RelativeLayout
+            style="@style/PatientDemographicsLayout"
+            android:paddingTop="4dp"
+            android:paddingBottom="16dp"
+            android:background="@color/primary_black">
+
+        <TextView
+                android:id="@+id/dob"
+                style="@style/DashboardBaseText"/>
+
+        <TextView
+                android:id="@+id/patientIdentifier"
+                style="@style/DashboardBaseText"
+                android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <View style="@style/DividerLine"/>
+    <LinearLayout
+            android:id="@+id/no_data_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingRight="16dp"
+            android:visibility="gone">
+
+        <TextView
+                android:id="@+id/no_data_msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="20sp">
+        </TextView>
+
+    </LinearLayout>
+    <ListView
+            android:id="@+id/encounter_list"
+            style="@style/MuzimaSelectableListView">
+    </ListView>
+
+</LinearLayout>

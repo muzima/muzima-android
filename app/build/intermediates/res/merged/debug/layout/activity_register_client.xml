@@ -1,0 +1,172 @@
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/DashboardWrapper"
+    tools:context=".MainActivity" >
+   <LinearLayout style="@style/DashboardTableContainer" >
+
+        <LinearLayout style="@style/DividerLineMargin" >
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/ClickableSummaryItem" >
+
+            <LinearLayout style="@style/SummaryItemRow" >
+                  <TextView
+                        android:id="@+id/clientNotifications"
+                        style="@style/DashboardBaseText"
+                        android:text="Sex:" >
+                    </TextView>
+             </LinearLayout>
+             <LinearLayout style="@style/SummaryItemRow" >  
+					    <RadioGroup 
+						     android:id="@+id/radio_button_register_sex"
+						    android:layout_width="fill_parent"
+						    android:layout_height="wrap_content"
+						    android:orientation="horizontal">
+						    <RadioButton android:id="@+id/radio_button_register_male"
+						        android:layout_width="wrap_content"
+						        android:layout_height="wrap_content"
+						        style="@style/DashboardBaseText"
+						        android:text="@string/radio_button_register_male"
+						        android:onClick="onRadioButtonClicked"/>
+						    <RadioButton android:id="@+id/radio_button_register_female"
+						        android:layout_width="wrap_content"
+						        android:layout_height="wrap_content"
+						        style="@style/DashboardBaseText"
+						        android:text="@string/radio_button_register_female"
+						        android:onClick="onRadioButtonClicked"/>
+						</RadioGroup>
+						              
+            </LinearLayout>
+
+        <LinearLayout style="@style/DividerLineMargin" >
+        </LinearLayout>
+        <LinearLayout style="@style/SummaryItemRow" >
+           
+                    <TextView
+                        style="@style/DashboardBaseText"
+                        android:text="Name:" >
+                    </TextView>
+           		 </LinearLayout>    
+                <LinearLayout style="@style/SummaryItemRow" >
+                     <TextView
+				         android:id="@+id/textview_register_given_name"
+				         style="@style/RegisterText"
+				         android:layout_width="wrap_content"
+				         android:layout_height="wrap_content"
+				         android:text="@string/textview_register_given_name" />
+
+                     <EditText
+                         android:id="@+id/edit_register_given_name"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_weight="1"
+                         android:ems="10"
+                         android:inputType="textPersonName" >
+
+                         <requestFocus />
+                     </EditText>
+
+        		</LinearLayout>
+        		<LinearLayout style="@style/SummaryItemRow" >
+        		        <TextView
+				         android:id="@+id/textview_register_middle_name"
+				         style="@style/RegisterText"
+				         android:layout_width="wrap_content"
+				         android:layout_height="wrap_content"
+				         android:text="@string/textview_register_middle_name" />
+
+        		        <EditText
+        		            android:id="@+id/edit_register_given_name"
+        		            android:layout_width="wrap_content"
+        		            android:layout_height="wrap_content"
+        		            android:layout_weight="1"
+        		            android:ems="10"
+        		            android:inputType="textPersonName" />
+				 
+        		</LinearLayout>
+        		<LinearLayout style="@style/SummaryItemRow" >
+        		        <TextView
+				         android:id="@+id/textview_register_famiy_name"
+				         style="@style/RegisterText"
+				         android:layout_width="wrap_content"
+				         android:layout_height="wrap_content"
+				         android:text="@string/textview_register_family_name" />
+
+        		        <EditText
+        		            android:id="@+id/edit_register_given_name"
+        		            android:layout_width="wrap_content"
+        		            android:layout_height="wrap_content"
+        		            android:layout_weight="1"
+        		            android:ems="10"
+        		            android:inputType="textPersonName" />
+				   
+        		</LinearLayout>
+
+        		
+        		
+        <LinearLayout style="@style/DividerLineMargin" >
+        </LinearLayout>
+  				 <LinearLayout style="@style/SummaryItemRow" >
+           
+                    <TextView
+                        style="@style/DashboardBaseText"
+                        android:text="@string/textview_register_birthdate" >
+                    </TextView>
+           		 </LinearLayout> 
+			 <LinearLayout style="@style/SummaryItemRow" >
+			     
+			     <TextView
+				         android:id="@+id/textview_register_birthdate_format"
+				         style="@style/RegisterText"
+				         android:layout_width="wrap_content"
+				         android:layout_height="wrap_content"
+				         android:text="@string/textview_register_birthdate_format" />
+
+			     <EditText
+			         android:id="@+id/editText_register_birthdate"
+			         android:layout_width="wrap_content"
+			         android:layout_height="wrap_content"
+			         android:layout_weight="1"
+			         android:ems="10"
+			         android:inputType="date" />
+                  
+           		 </LinearLayout>
+           		<LinearLayout style="@style/DividerLineMargin" >
+        		</LinearLayout>
+           		 <LinearLayout style="@style/SummaryItemRow" >
+			     
+			     <TextView
+				         android:id="@+id/textview_register_identifier"
+				         style="@style/DashboardBaseText"
+				         android:layout_width="wrap_content"
+				         android:layout_height="wrap_content"
+				         android:text="@string/textview_register_identifier" /> 
+				  </LinearLayout>       
+			     <LinearLayout style="@style/SummaryItemRow" >
+			     
+			     <TextView
+				         android:id="@+id/textview_register_patient_identifier"
+				         style="@style/RegisterText"
+				         android:layout_width="wrap_content"
+				         android:layout_height="wrap_content"
+				         android:text="@string/textview_register_client_identifier" />
+
+			     <EditText
+			         android:id="@+id/editText_register_unique_identifier"
+			         android:layout_width="wrap_content"
+			         android:layout_height="wrap_content"
+			         android:layout_weight="1"
+			         android:ems="10"
+			         android:inputType="date" />
+                  
+           		 </LinearLayout>
+           		 </LinearLayout> 
+
+        <LinearLayout style="@style/DividerLineMargin" >
+        </LinearLayout>
+</LinearLayout>
+
+</LinearLayout>
+    
+    
