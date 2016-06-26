@@ -24,7 +24,7 @@
             android:title="Logout">
     </item>
 <item
-            android:id="@+id/action_Upload Obs'"
+            android:id="@+id/action_upload_obs'"
             android:orderInCategory="4"
             android:showAsAction="always"
             android:title="Upload Obs">
