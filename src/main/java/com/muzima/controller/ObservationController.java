@@ -67,7 +67,7 @@ public class ObservationController {
         }
     }
     public int getObservationsCountByPatient(String patientUuid) throws IOException {
-        return observationService.getObservationsByPatient(patientUuid).size();
+        return observationService.countObservationsByPatient(patientUuid);
     }
 
     private void inflateConcepts(List<Observation> observationsByPatient) throws IOException {
