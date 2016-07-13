@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+    <LinearLayout android:layout_height="wrap_content"
+                  android:layout_width="fill_parent"
+                  android:orientation="vertical">
+        <TextView style="@style/SummaryHeader"
+                  android:text="@string/check_barcode_scanner_header"/>
+        <TextView android:layout_height="wrap_content"
+                  android:layout_gravity="center"
+                  android:gravity="center"
+                  android:drawablePadding="10dp"
+                  android:layout_margin="10dp"
+                  android:text="@string/install_barcode_scanner_description"
+                  android:drawableTop="@drawable/barcode_scanner"
+                  android:layout_width="wrap_content"/>
+        <Button android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/install_barcode_btn"
+                style="@style/Button.Next"
+                android:layout_gravity="center"
+                android:text="@string/install_barcode_scanner_btn_text"/>
+        <TextView android:layout_height="wrap_content"
+                  android:layout_width="wrap_content"
+                  android:gravity="center"
+                  android:padding="10dp"
+                  android:textColor="@color/primary_blue"
+                  android:id="@+id/scanner_already_exists"
+                  android:visibility="gone"
+                  android:text="@string/scanner_app_exists_text"/>
+    </LinearLayout>
+    <LinearLayout style="@style/ButtonRow"
+                  android:layout_alignParentBottom="true">
+        <Button
+                android:id="@+id/previous"
+                style="@style/Button.Previous"
+                android:layout_weight=".3"/>
+        <Button
+                android:id="@+id/skip"
+                android:text="Skip"
+                style="@style/Button.Next"
+                android:layout_weight=".3"/>
+    </LinearLayout>
+</RelativeLayout>

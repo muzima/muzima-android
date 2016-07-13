@@ -1,0 +1,58 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
+
+package com.muzima.view.preferences.settings;
+
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
+import com.muzima.MuzimaApplication;
+import com.muzima.domain.Credentials;
+import com.muzima.service.CohortPrefixPreferenceService;
+import com.muzima.service.CredentialsPreferenceService;
+import com.muzima.service.WizardFinishPreferenceService;
+import com.muzima.view.preferences.SettingsActivity;
+
+public class ResetDataTask extends AsyncTask<String, Void, Void> {
+    private SettingsActivity settingsActivity;
+    private String newUrl;
+    private ProgressDialog progressDialog;
+
+    public ResetDataTask(SettingsActivity settingsActivity, String newUrl) {
+        this.settingsActivity = settingsActivity;
+        this.newUrl = newUrl;
+    }
+
+    @Override
+    protected Void doInBackground(String... params) {
+        resetData();
+        return null;
+    }
+
+    private void resetData() {
+        ((MuzimaApplication)settingsActivity.getApplication()).clearApplicationData();
+        SettingsActivity context = settingsActivity;
+        new WizardFinishPreferenceService(context).resetWizard();
+        new CohortPrefixPreferenceService(context).clearPrefixes();
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        progressDialog = new ProgressDialog(settingsActivity);
+        progressDialog.setMessage("Step 3: Resetting Data");
+        progressDialog.show();
+    }
+
+    @Override
+    protected void onPostExecute(Void v) {
+        new CredentialsPreferenceService(settingsActivity).saveCredentials(new Credentials(newUrl, null, null));
+        progressDialog.dismiss();
+        super.onPostExecute(v);
+        settingsActivity.launchLoginActivity(true);
+    }
+}

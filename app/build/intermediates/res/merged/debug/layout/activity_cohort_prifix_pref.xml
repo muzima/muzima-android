@@ -1,0 +1,40 @@
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        android:orientation="vertical">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_cohort_prefixes"
+            android:textStyle="bold"
+            android:textAllCaps="true"/>
+
+    <View style="@style/DividerLine">
+    </View>
+
+    <TextView
+            android:id="@+id/no_cohort_prefix_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:gravity="center_horizontal"
+            android:text="@string/no_cohort_prefixes_added"
+            android:textSize="20sp">
+    </TextView>
+
+    <TextView
+            android:id="@+id/no_cohort_prefix_tip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:gravity="center_horizontal"
+            android:text="@string/no_cohort_prefixes_msg"
+            android:textSize="16sp">
+    </TextView>
+</LinearLayout>
+    
+    

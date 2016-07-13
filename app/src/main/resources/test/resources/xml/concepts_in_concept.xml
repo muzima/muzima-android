@@ -1,0 +1,25 @@
+<model>
+    <instance>
+        <form
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="19"
+                name="Forms with concepts" version="0.1" uuid="573b4de2-26f0-452d-8d8c-fc16c2499629">
+
+            <weight openmrs_concept="128^WEIGHT^99DCT" openmrs_datatype="ZZ">
+                <date xsi:nil="true"/>
+            </weight>
+
+            <problem_list openmrs_concept="1284^PROBLEM LIST^99DCT" openmrs_datatype="ZZ">
+                <problem_added openmrs_concept="6042^PROBLEM ADDED^99DCT" openmrs_datatype="CWE" template="0">
+                    <date xsi:nil="true"/>
+                    <time xsi:nil="true"/>
+                    <value xsi:nil="true"/>
+                </problem_added>
+                <problem_resolved openmrs_concept="6097^PROBLEM RESOLVED^99DCT" openmrs_datatype="CWE" template="0">
+                    <date xsi:nil="true"/>
+                    <time xsi:nil="true"/>
+                    <value xsi:nil="true"/>
+                </problem_resolved>
+            </problem_list>
+        </form>
+    </instance>
+</model>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/abs__action_bar_default_height">
+
+    <View
+            android:id="@+id/tag_indicator"
+            android:layout_width="5dp"
+            android:layout_height="match_parent"/>
+
+    <TextView
+            android:id="@+id/tag_name"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:textSize="18sp"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:textColor="#ffffff"/>
+
+    <FrameLayout
+            android:id="@+id/tag_color_indicator"
+            android:layout_width="@dimen/abs__action_bar_default_height"
+            android:layout_height="match_parent">
+
+        <ImageView
+                android:id="@+id/tag_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"/>
+    </FrameLayout>
+</LinearLayout>

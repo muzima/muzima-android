@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.muzima"
+          android:versionCode="4"
+          android:versionName="1.0.3">
+
+    <uses-sdk
+            android:minSdkVersion="8"
+            android:targetSdkVersion="21"/>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.READ_LOGS" />
+
+    <application
+            android:allowBackup="true"
+            android:icon="@drawable/ic_launcher_logo"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme"
+            android:name=".MuzimaApplication">
+        <meta-data
+                android:name="android.app.default_searchable"
+                android:value="com.muzima.view.SearchResultsActivity"/>
+
+        <activity
+                android:name=".view.DisclaimerActivity"
+                android:label="mUzima Disclaimer">
+        </activity>
+
+        <activity
+                android:name="com.muzima.view.MainActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+                android:name=".view.concept.ConceptListActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_concept_pref">
+        </activity>
+
+        <activity
+                android:name=".view.location.LocationListActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_location_pref">
+        </activity>
+
+        <activity
+                android:name="com.muzima.view.login.LoginActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/app_name"
+                android:theme="@style/AppThemeNoActionBar">
+        </activity>
+
+        <activity
+                android:name="com.muzima.view.cohort.CohortActivity"
+                android:label="@string/title_activity_cohort_list"
+                android:configChanges="orientation|screenSize"
+                android:parentActivityName="com.muzima.view.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.MainActivity"/>
+        </activity>
+
+        <activity
+                android:name=".view.preferences.SettingsActivity"
+                android:theme="@style/PreferencesTheme"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_settings"
+                android:parentActivityName="com.muzima.view.MainActivity">
+        </activity>
+        <activity
+                android:name=".view.preferences.ProviderPreferenceActivity"
+                android:theme="@style/PreferencesTheme"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_provider_pref"
+                android:parentActivityName="com.muzima.view.preferences.SettingsActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.preferences.SettingsActivity"/>
+        </activity>
+        <activity
+                android:name=".view.provider.ProviderListActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_provider_pref">
+        </activity>
+        <activity
+                android:name=".view.preferences.CohortPreferenceActivity"
+                android:theme="@style/PreferencesTheme"
+                android:configChanges="orientation|screenSize"
+
+                android:label="@string/title_activity_cohort_pref"
+                android:parentActivityName="com.muzima.view.preferences.SettingsActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.preferences.SettingsActivity"/>
+        </activity>
+        <activity
+                android:name=".view.preferences.ConceptPreferenceActivity"
+                android:theme="@style/PreferencesTheme"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_concept_pref"
+                android:parentActivityName="com.muzima.view.preferences.SettingsActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.preferences.SettingsActivity"/>
+        </activity>
+        <activity
+                android:name=".view.preferences.LocationPreferenceActivity"
+                android:theme="@style/PreferencesTheme"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_location_pref"
+                android:parentActivityName="com.muzima.view.preferences.SettingsActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.preferences.SettingsActivity"/>
+        </activity>
+        <activity
+                android:name="com.muzima.view.HelpActivity"
+                android:label="@string/title_activity_help"
+                android:configChanges="orientation|screenSize"
+                android:parentActivityName="com.muzima.view.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.MainActivity"/>
+        </activity>
+        <activity
+                android:name="com.muzima.view.WebViewActivity"
+                android:label="@string/title_activity_help"
+                android:configChanges="orientation|screenSize"
+                android:parentActivityName="com.muzima.view.BaseActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.WebViewActivity"/>
+        </activity>
+
+        <activity
+                android:name=".view.patients.PatientsListActivity"
+                android:label="@string/title_activity_clients_list"
+                android:configChanges="orientation|screenSize"
+                android:parentActivityName="com.muzima.view.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.MainActivity"/>
+        </activity>
+
+        <activity
+                android:name=".view.patients.PatientRemoteSearchListActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_clients_list">
+        </activity>
+
+        <activity
+                android:name=".view.forms.FormsActivity"
+                android:label="@string/title_activity_form_list"
+                android:configChanges="orientation|screenSize"
+                android:parentActivityName="com.muzima.view.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.MainActivity"/>
+        </activity>
+
+        <activity
+                android:name=".view.forms.FormWebViewActivity"
+                android:label="@string/title_activity_form_webview"
+                android:configChanges="orientation|screenSize"
+                android:windowSoftInputMode="adjustResize"
+                android:parentActivityName="com.muzima.view.forms.FormsActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.forms.FormsActivity"/>
+        </activity>
+
+        <activity
+                android:name=".view.forms.HTMLFormWebViewActivity"
+                android:label="@string/title_activity_form_webview"
+                android:configChanges="orientation|screenSize"
+                android:windowSoftInputMode="adjustResize"
+                android:parentActivityName="com.muzima.view.forms.FormsActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.forms.FormsActivity"/>
+        </activity>
+        <activity
+                android:name=".view.patients.PatientSummaryActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_client_summary"
+                android:parentActivityName="com.muzima.view.patients.PatientsListActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.patients.PatientsListActivity"/>
+        </activity>
+
+        <activity
+                android:name=".view.forms.PatientFormsActivity"
+                android:label="@string/title_activity_client_summary"
+                android:configChanges="orientation|screenSize"
+                android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.patients.PatientSummaryActivity"/>
+        </activity>
+
+        <activity
+                android:name=".view.notifications.PatientNotificationActivity"
+                android:label="@string/title_activity_client_summary"
+                android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.patients.PatientSummaryActivity"/>
+        </activity>
+
+        <activity
+                android:name=".view.patients.ObservationsActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_client_observations"
+                android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.patients.PatientSummaryActivity"/>
+        </activity>
+        <activity
+                android:name=".view.encounters.EncountersActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_client_encounters"
+                android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.patients.PatientSummaryActivity"/>
+        </activity>
+        <activity
+                android:name=".view.encounters.EncounterSummaryActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_encounter_summary"
+                android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.encounters.EncountersActivity"/>
+        </activity>
+
+        <activity android:name=".view.forms.RegistrationFormsActivity"
+                  android:configChanges="orientation|screenSize"
+                  android:label="Select Registration Form" android:noHistory="true"/>
+
+        <activity
+                android:name=".utils.imaging.ImagingIntent"
+                android:label="@string/title_activity_image"
+                android:parentActivityName="com.muzima.view.forms.FormsActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.forms.FormsActivity"/>
+        </activity>
+
+        <activity
+                android:name=".utils.audio.AudioIntent"
+                android:label="@string/title_activity_audio"
+                android:configChanges="orientation|screenSize"
+                android:windowSoftInputMode="adjustResize"
+                android:parentActivityName="com.muzima.view.forms.FormsActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.forms.FormsActivity"/>
+        </activity>
+
+        <activity
+                android:name=".utils.video.VideoIntent"
+                android:label="@string/title_activity_video"
+                android:configChanges="orientation|screenSize"
+                android:windowSoftInputMode="adjustResize"
+                android:parentActivityName="com.muzima.view.forms.FormsActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.forms.FormsActivity"/>
+        </activity>
+
+        <activity
+                android:name=".view.notifications.NotificationActivity"
+                android:label="@string/title_activity_notification"
+                android:configChanges="orientation|screenSize"
+                android:windowSoftInputMode="adjustResize"
+                android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.patients.PatientSummaryActivity"/>
+        </activity>
+
+        <activity
+                android:name=".view.notifications.NotificationsListActivity"
+                android:label="@string/title_activity_notification_list"
+                android:configChanges="orientation|screenSize"
+                android:parentActivityName="com.muzima.view.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.MainActivity"/>
+        </activity>
+
+        <!--Wizard Activities Start-->
+        <activity android:name=".view.cohort.CohortWizardActivity"
+                  android:configChanges="orientation|screenSize"
+                  android:theme="@style/WizardTheme"/>
+        <activity android:name=".view.forms.FormTemplateWizardActivity"
+                  android:configChanges="orientation|screenSize"
+                  android:theme="@style/WizardTheme"/>
+        <activity android:name=".view.location.CustomLocationWizardActivity"
+                  android:configChanges="orientation|screenSize"
+                  android:theme="@style/WizardTheme"/>
+        <activity android:name=".view.provider.CustomProviderWizardActivity"
+                  android:label="Define Custom Concept"
+                  android:configChanges="orientation|screenSize"
+                  android:theme="@style/WizardTheme"/>
+        <activity android:name=".view.concept.CustomConceptWizardActivity"
+                  android:label="Define Custom Concept"
+                  android:configChanges="orientation|screenSize"
+                  android:theme="@style/WizardTheme"/>
+        <activity android:name=".view.InstallBarCodeWizardActivity"
+                  android:label="Install Barcode Scanner"
+                  android:configChanges="orientation|screenSize"
+                  android:theme="@style/WizardTheme"/>
+        <!--Wizard Activities End-->
+
+        <receiver android:name="com.muzima.utils.ConnectivityChangeReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".service.DataSyncService"
+                 android:exported="false"/>
+
+        <activity android:name="org.acra.CrashReportDialog"
+                  android:theme="@android:style/Theme.Dialog"
+                  android:launchMode="singleInstance"
+                  android:excludeFromRecents="true"
+                  android:finishOnTaskLaunch="true" />
+
+    </application>
+
+</manifest>

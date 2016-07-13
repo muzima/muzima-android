@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/ListSectionHeader">
+
+    <TextView android:id="@+id/patientName"
+            style="@style/ListSectionHeaderLeftText"
+            />
+
+    <TextView android:id="@+id/patientId"
+            style="@style/ListSectionHeaderRightText"
+            />
+
+</LinearLayout>

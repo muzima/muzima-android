@@ -1,0 +1,29 @@
+<com.muzima.view.CheckedRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                       android:layout_height="wrap_content"
+                                       android:checkable="true"
+                                       android:background="@drawable/list_multi_selector_blue"
+                                       android:layout_width="match_parent">
+    <com.muzima.view.CheckedLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="100"
+            android:background="@drawable/list_multi_selector_blue"
+            android:id="@+id/concept_name_layout"
+            android:orientation="horizontal">
+
+        <CheckedTextView
+                android:id="@+id/concept_name"
+                android:layout_weight="80"
+                android:layout_width="0dp"
+                android:checkMark="@null"
+                style="@style/ListViewSelectableText">
+        </CheckedTextView>
+
+    </com.muzima.view.CheckedLinearLayout>
+
+    <CheckedTextView
+            android:id="@+id/concept_synonyms"
+            android:layout_below="@+id/concept_name_layout"
+            style="@style/ListViewSelectableDescription">
+    </CheckedTextView>
+</com.muzima.view.CheckedRelativeLayout>

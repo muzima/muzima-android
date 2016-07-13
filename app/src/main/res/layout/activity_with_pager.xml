@@ -1,0 +1,37 @@
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:custom="http://schemas.android.com/apk/res/com.muzima"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <!-- The main content view -->
+    <LinearLayout android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent">
+
+        <com.muzima.view.custom.PagerSlidingTabStrip
+                android:id="@+id/pager_indicator"
+                custom:indicatorColor="@color/tab_indicator"
+                custom:indicatorHeight="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/pager_indicator_height"
+                android:overScrollMode="ifContentScrolls"
+                android:background="@color/tab_background"/>
+
+        <android.support.v4.view.ViewPager
+                android:id="@+id/pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+    </LinearLayout>
+</FrameLayout>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+

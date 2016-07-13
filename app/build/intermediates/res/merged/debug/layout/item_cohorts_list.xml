@@ -1,0 +1,23 @@
+<com.muzima.view.CheckedLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:weightSum="100"
+              android:orientation="horizontal">
+
+    <CheckedTextView
+            android:id="@+id/cohort_name"
+            android:checkMark="@null"
+            style="@style/ListViewSelectableText"
+            android:background="@null"
+            android:layout_weight="80"
+            android:layout_width="0dp"/>
+    <ImageView
+            android:id="@+id/downloadImg"
+            android:layout_weight="20"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="top|right"
+            android:src="@drawable/ic_action_important"
+            android:visibility="gone"
+            android:contentDescription="@string/downloaded_image"/>
+</com.muzima.view.CheckedLinearLayout>

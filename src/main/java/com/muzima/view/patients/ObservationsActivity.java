@@ -71,6 +71,15 @@ public class ObservationsActivity extends BroadcastListenerActivity {
                 .getActionView();
         searchView.setQueryHint("Search observations");
         searchView.setOnQueryTextListener(cohortPagerAdapter);
+
+		
         return true;
+    }
+
+   @Override
+    public boolean onOptionsItemsMenu(Menu menu) {
+	getSupportMenuInflater().inflate(R.menu.observation_list, menu);
+   	UploadView uploadView = (
+	
     }
 }

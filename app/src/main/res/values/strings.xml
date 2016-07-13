@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">mUzima</string>
+    <string name="homepage">Home</string>
+
+    <string name="menu_settings">Settings</string>
+    <string name="menu_load">Load</string>
+    <string name="menu_upload">Upload</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_client_add">Register client</string>
+    <string name="menu_download">Download</string>
+    <string name="menu_delete">Delete</string>
+
+    <string name="search_clients">Search Clients</string>
+    <string name="search_observations">Search Observations</string>
+    <string name="register_new_client">Register Client</string>
+    <string name="view_encounters">View Encounters</string>
+    <string name="cohorts">Cohorts</string>
+    <string name="observations">Observations</string>
+    <string name="clients">Clients</string>
+    <string name="forms">Forms</string>
+    <string name="notices">Notices</string>
+    <string name="encounters">Encounters</string>
+
+    <string name="no_new_form_msg">No Forms Available</string>
+    <string name="no_new_form_tip">Please press load to fetch data from server</string>
+    <string name="no_downloaded_form_msg">No Forms Have Been Downloaded</string>
+    <string name="no_recommended_form_msg">No Forms Have Been Downloaded</string>
+    <string name="no_downloaded_form_tip">Please select forms from all forms list and click download</string>
+    <string name="no_recommended_form_tip">Please select non registration forms from all forms list and click download
+    </string>
+    <string name="no_incomplete_form_msg">No Incomplete Forms On Device</string>
+    <string name="no_incomplete_client_form_msg">No Incomplete Forms</string>
+    <string name="no_incomplete_form_tip">Incomplete forms are available only if you have saved a partially filled
+        form
+    </string>
+    <string name="no_complete_form_msg">No Completed And Unsynced Forms On Device</string>
+    <string name="no_complete_client_form_msg">No Completed And Unsynced Forms</string>
+    <string name="no_complete_form_tip">Complete Forms are available only if you have filled a form completely but have
+        not synced it with the server
+    </string>
+    <string name="no_synced_form_msg">No Forms Have Been Synced Yet</string>
+    <string name="no_synced_form_tip">Please press sync button to sync completed forms with server</string>
+
+    <string name="sync_in_progress_msg">Action not allowed while sync is in progress</string>
+    <string name="already_fetching_forms_msg">Already fetching forms, ignored the request</string>
+    <string name="already_uploading_forms_msg">Already fetching forms, ignored the request</string>
+    <string name="no_connection_found_msg">No connection found, please connect your device and try again</string>
+    <string name="already_exists_selected_forms_with_patient_data_msg">There is existing form data for selected form(s).
+        Finish Incomplete data and sync Complete data to Server first before downloading the forms.</string>
+    <string name="already_exists_some_forms_with_patient_data_msg">There is existing form data.
+        Finish Incomplete data and sync Complete data to Server first before syncing form templates.</string>
+
+    <string name="no_cohorts_available">No Cohorts Available</string>
+    <string name="no_cohorts_available_tip">Please press load to fetch available cohorts list from server</string>
+    <string name="no_cohorts_synced">No Cohorts Have Been Synced</string>
+    <string name="no_cohorts_synced_tip">Please select cohorts from all cohorts list and click sync</string>
+
+    <string name="no_clients_downloaded">No clients have been downloaded</string>
+    <string name="no_clients_downloaded_tip">Please select cohorts from all cohorts list and click sync to download
+        clients
+    </string>
+
+    <string name="no_clients_matched_locally">No clients matched your search locally. Enter at least 3 characters for
+        remote search.
+    </string>
+    <string name="no_clients_matched_tip_locally">Your search includes client id, given name, middle name and family
+        name and searched only in the device
+    </string>
+    <string name="no_clients_matched_remotely">No clients matched your search on server</string>
+    <string name="no_clients_matched_tip_remotely">Your search includes client id, given name, middle name and family
+        name and searched only in the device
+    </string>
+    <string name="no_encounters_available">No Encounters Available</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="client_search">Search Name or ID</string>
+	<string name="client_scan">Scan Clients ID</string>
+    <string name="observation_search">Search Observations</string>
+
+    <string name="title_activity_client_list">Clients</string>
+    <string name="title_activity_cohort_list">Cohorts</string>
+    <string name="title_activity_search_results">Search Results</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_help">Help</string>
+    <string name="title_activity_logout">Logout</string>
+    <string name="title_activity_register_client">Register Client</string>
+    <string name="title_activity_sync">Sync</string>
+    <string name="title_activity_form_list">Forms</string>
+    <string name="title_activity_clients_list">Clients</string>
+    <string name="title_activity_form_webview">Form</string>
+    <string name="title_activity_notice_list">Notice List</string>
+    <string name="title_activity_client_summary">Client Summary</string>
+    <string name="title_activity_client_observations">Client Observations</string>
+    <string name="title_activity_client_encounters">Client Encounters</string>
+    <string name="title_activity_encounter_summary">Observations</string>
+    <string name="title_login">Please Log In</string>
+    <string name="title_activity_cohort_pref">Cohort Prefixes</string>
+
+    <string name="textview_login_username">Username:</string>
+    <string name="textview_login_password">Password:</string>
+    <string name="button_login">Log In</string>
+    <string name="button_logout">Log Out</string>
+    <string name="title_logout">Log Out:</string>
+    <string name="textview_sync_device">Sync Device</string>
+    <string name="textview_logout">Log Out:</string>
+    <string name="textview_formlist_title">Form List:</string>
+    <string name="textview_formlist_blank_forms">Blank Forms</string>
+    <string name="textview_formlist_incomplete_forms">Incomplete Forms:</string>
+    <string name="radio_button_register_male">Male</string>
+    <string name="radio_button_register_female">Female</string>
+    <string name="textview_register_given_name">Given:</string>
+    <string name="textview_register_middle_name">Middle:</string>
+    <string name="textview_register_family_name">Family:</string>
+    <string name="textview_register_birthdate">Birthdate:</string>
+    <string name="textview_register_birthdate_format">dd/mm/yyyy:</string>
+    <string name="textview_register_identifier">Identifier:</string>
+    <string name="textview_register_client_identifier">Client Identifier:</string>
+
+    <string name="drawer_open">Tags drawer open</string>
+    <string name="drawer_close">Tags drawer close</string>
+    <string name="drawer_title">Tags</string>
+    <string name="tags_no_data">No Tags Available</string>
+
+    <string name="preference_disclaimer">disclaimer</string>
+    <string name="preference_server_title">Server</string>
+    <string name="preference_server_desc">Enter the OpenMRS Server</string>
+    <string name="preference_server">serverPreference</string>
+    <string name="preference_timeout_title">Timeout</string>
+    <string name="preference_timeout_desc">Enter the value in minutes</string>
+    <string name="preference_timeout">timeoutPreference</string>
+    <string name="preference_auto_save_interval_desc">Enter the value in minutes</string>
+    <string name="preference_auto_save_interval_title">Automatic form save interval</string>
+    <string name="preference_auto_save_interval">autoSaveIntervalPreference</string>
+    <string name="default_auto_save_interval_value">2</string>
+    <string name="preference_username">usernamePreference</string>
+    <string name="preference_username_title">Username</string>
+    <string name="preference_username_desc">Enter the OpenMRS username</string>
+    <string name="preference_password_title">Password</string>
+    <string name="preference_password_desc">Enter the OpenMRS password</string>
+    <string name="preference_password">passwordPreference</string>
+    <string name="preference_cohort_title">Add cohort prefixes</string>
+    <string name="preference_cohort_desc">You can add multiple cohort prefixes to restrict the cohort downloads.</string>
+    <string name="preference_category_openmrs">OpenMRS Settings</string>
+    <string name="preference_category_muzima">Muzima Settings</string>
+    <string name="preference_category_provider_location">Provider/Location Settings</string>
+    <string name="preference_category_cohorts">Cohort Settings</string>
+    <string name="preference_category_provider">Provider Settings</string>
+    <string name="preference_add_provider_title">Add provider(s)</string>
+    <string name="preference_add_provider_desc">You can add provider(s) to display in your forms.</string>
+
+    <string name="preference_cohorts_prefix_desc">Enter cohort prefixes</string>
+    <string name="preference_cohort_prefix">cohortPrefixesPreference</string>
+    <string name="preference_real_time_sync_summary">Enable real time synchronization of complete form data</string>
+    <string name="preference_real_time_sync_title">Real time sync</string>
+    <string name="preference_real_time_sync">realTimeSyncPreference</string>
+
+    <string name="add_cohort_prefixes">Step 1: Add Cohort Prefix</string>
+    <string name="download_cohort">Step 1: Download Cohort(s)</string>
+    <string name="download_form">Step 2: Download Form Template(s)</string>
+    <string name="add_location_prefixes">Step 3: Add Location(s)</string>
+    <string name="add_concept_prefixes">Step 5: Add Concept(s)</string>
+    <string name="add_provider_prefixes">Step 4: Add Provider(s)</string>
+    <string name="check_barcode_scanner_header">Step 6: Check for BarCode Scanner</string>
+
+
+    <string name="no_cohort_prefixes_added">No Cohort Prefixes Added</string>
+    <string name="no_cohort_prefixes_msg">Please click on add button to add a cohort prefix</string>
+    <string name="cohort_prefix_label">Prefix:</string>
+    <string name="cohort_add_prefix_hint">Add Prefix</string>
+
+    <string name="observations_still_loading">Observations are still loading</string>
+    <string name="no_observations_available">No Observations Available</string>
+
+    <string name="preference_form_title">Add form tags</string>
+    <string name="preference_form_desc">You can add form tags to restrict the form downloads.</string>
+    <string name="title_activity_form_tag">Form Tags</string>
+    <string name="add_form_tags">Add Form Tags</string>
+    <string name="form_add_tag_hint">Add Tags</string>
+    <string name="no_form_tags_added">No Form Tags Added</string>
+
+    <string name="title_activity_concept_pref">Concepts</string>
+    <string name="title_activity_location_pref">Locations</string>
+    <string name="add_concept">Search Concept</string>
+    <string name="concept_add_concept">Enter concept name …</string>
+    <string name="no_concept_added">No concept added yet.</string>
+    <string name="currentUser">Welcome</string>
+    <string name="preference_wizard_finished">wizardFinished</string>
+    <string name="cohort_wizard_help">In this step of the wizard, you download the cohorts you need. Please select the
+        cohorts and click next.
+    </string>
+    <string name="cohort_prefix_help">A cohort is a predefined group of clients for which you can fill forms and
+        download observations. The prefix(es) set here will be used to download cohorts afterwards.
+    </string>
+    <string name="custom_concept_help">Here you define concepts whose data will be included in later download.</string>
+    <string name="custom_location_help">Here you download locations that will show up in the forms.</string>
+    <string name="custom_provider_help">Here you download providers that will show up in the forms.</string>
+    <string name="title_activity_cohort_wizard">Download Cohorts</string>
+    <string name="cohort_wizard_help_title">Download Cohorts Help</string>
+    <string name="cohort_prefix_help_title">Define Cohorts Prefix(es) Help</string>
+    <string name="custom_concept_help_title">Concepts Help</string>
+    <string name="custom_location_help_title">Locations Help</string>
+    <string name="custom_provider_help_title">providers Help</string>
+    <string name="filling_patient_forms_help">Fill out forms for a patient</string>
+    <string name="muzima_initial_setup_guide">mUzima initial setup guide</string>
+    <string name="server_side_setup">Server Side Setup</string>
+    <string name="muzima_training_manual">mUzima training manual</string>
+    <string name="introduction_video">Video introduction to mUzima</string>
+
+    <string name="form_save_as_draft">Draft</string>
+    <string name="form_close">Close</string>
+    <string name="form_back_to_draft">Back To Draft</string>
+    <string name="form_submit">Save</string>
+    <string name="delete_text">Delete</string>
+    <string name="logo_alt_text">MuzimaLogo</string>
+    <string name="server_hint_text">Server URL</string>
+    <string name="username_hint_text">Username</string>
+    <string name="password_hint_text">Password</string>
+    <string name="new_password">Did you change your password recently?</string>
+    <string name="add_cohort_pref_desc">Type the first few letters of the cohort you are interested in downloading
+    </string>
+    <string name="download_cohort_desc">Select one or more cohorts from the list and click on \'Next\' to download
+    </string>
+    <string name="download_form_desc">Select one or more form templates from the list and click on \'Next\' to download</string>
+    <string name="downloaded_image">Downloaded Image</string>
+    <string name="add_concept_pref_desc">Add concept(s) that you want observation(s) to be downloaded.</string>
+    <string name="add_location_pref_desc">Add location(s) that you want to download.</string>
+    <string name="install_barcode_scanner_description">You need a barcode scanner application to register clients from
+        mobile. Please check whether it\'s been installed in your device or not.
+    </string>
+    <string name="install_barcode_scanner_btn_text">Check Barcode Scanner</string>
+    <string name="scanner_app_exists_text">Barcode Scanner application is already installed.</string>
+    <string name="caution">Caution!</string>
+    <string name="session_timed_out_header">Alert!</string>
+    <string name="session_timed_out_msg">Your session had been timed out. Please log in again to proceed.</string>
+    <string name="switch_server_message">Switching Server: This will clear all mUzima data on your
+        device, including any incomplete forms. Are you sure you want to change this setting?
+    </string>
+    <string name="exit_form_message">Closing Form: This will discard all your changes.  Are you sure you would like to do this?
+    </string>
+    <string name="exit_app_message">Are you sure to log out and exit mUzima app?</string>
+    <string name="filter_cohort_hint">Start typing to filter the cohorts...</string>
+
+    <string name="notifications">Notifications</string>
+    <string name="title_activity_notification_list">Notifications</string>
+    <string name="title_activity_notification">Notification</string>
+    <string name="no_notification_available">No Notifications Available</string>
+    <string name="no_notification_available_tip">Make sure you have connectivity to server and press the load button</string>
+    <string name="new_notification_image">New Notification</string>
+    <string name="title_activity_image">Add Image</string>
+    <string name="capture_image">Capture Image</string>
+    <string name="choose_image">Choose Image</string>
+    <string name="image_caption">Image Caption</string>
+    <string name="accept">Accept</string>
+    <string name="cancel">Cancel</string>
+    <string name="preview_media">Preview Media</string>
+    <string name="notification_view_encounter">View Encounter</string>
+
+    <string name="title_activity_video">Add Video</string>
+    <string name="video_caption">Video Caption</string>
+    <string name="choose_video">Choose Video</string>
+    <string name="record_video">Record Video</string>
+    <string name="record_video_prompt">Record or choose video</string>
+
+    <string name="title_activity_audio">Add Audio</string>
+    <string name="audio_caption">Audio Caption</string>
+    <string name="choose_audio">Choose Audio</string>
+    <string name="record_audio">Record Audio</string>
+    <string name="record_audio_prompt">Record or choose audio</string>
+
+    <string name="yes_button_label">Yes</string>
+    <string name="no_button_label">No</string>
+
+    <string name="version">Version %1$s</string>
+	<string name="confirm">Confirmation!</string>
+
+	<string name="patient_registration_id_card_question">Does the patient already have existing ID?</string>
+    <string name="wizard_disclaimer_header">Licensing, Disclaimer of Warranty and Limitation of Liability</string>
+    <string name="wizard_disclaimer_desc">
+        <![CDATA[
+        <p>
+        mUzima is distributed under the terms of the Mozilla Public License, v. 2.0 (MPL 2.0).
+        A copy of the MPL 2.0 license can be found at http://mozilla.org/MPL/2.0/.
+        </p>
+        <p>
+        mUzima is also distributed under the terms of the following Additional Disclaimer of Warranty
+        and Limitation of Liability.
+        </p>
+        <p>
+        <strong>Additional Disclaimer of Warranty and Limitation of Liability</strong>
+        </p>
+        <p>
+        In the United States, or any other jurisdictions where they may apply, the following additional
+        disclaimer of warranty and limitation of liability are hereby incorporated into the terms and
+        conditions of MPL 2.0:
+        </p>
+        <p>
+        1. No warranties of any kind whatsoever are made as to the results that You will obtain from
+        relying upon the covered code (or any information or content obtained by way of the covered code),
+        including but not limited to compliance with privacy laws or regulations or clinical care industry
+        standards and protocols. Use of the covered code is not a substitute for a health care provider’s
+        standard practice or professional judgment. Any decision with regard to the appropriateness of treatment,
+        or the validity or reliability of information or content made available by the covered code, is the sole
+        responsibility of the health care provider. Consequently, it is incumbent upon each health care provider
+        to verify all medical history and treatment plans with each patient.
+        </p>
+        <p>
+        2. Under no circumstances and under no legal theory, whether tort (including negligence), contract, or
+        otherwise, shall any Contributor, or anyone who distributes Covered Software as permitted by the license,
+        be liable to You for any indirect, special, incidental, consequential damages of any character including,
+        without limitation, damages for loss of goodwill, work stoppage, computer failure or malfunction, or any
+        and all other damages or losses, of any nature whatsoever (direct or otherwise) on account of or associated
+        with the use or inability to use the covered content (including, without limitation, the use of information
+        or content made available by the covered code, all documentation associated therewith, and the failure of
+        the covered code to comply with privacy laws and regulations or clinical care industry standards and protocols),
+        even if such party shall have been informed of the possibility of such damages.
+        </p>
+        <p>
+        3. If the user of this application is an entity intending to commercialize any application that uses this
+        code in a for-profit venture, the user is required to contact the copyright holder
+        (Copyright 2014, The Trustees of Indiana University).
+        </p>
+        ]]>
+    </string>
+    <string name="preference_encounter_provider_desc">Logged-in user as default encounter form provider</string>
+    <string name="preference_encounter_provider_title">Default encounter provider</string>
+    <string name="preference_encounter_provider">encounterProviderPreference</string>
+    <string name="crash_dialog_text">An unexpected error occurred forcing mUzima to stop. Please help us fix
+        this by sending us error data, all you have to do is click OK.
+    </string>
+    <string name="crash_dialog_title">mUzima has crashed...</string>
+    <string name="crash_dialog_comment_prompt">Please add your comments about the problem below.</string>
+    <string name="crash_dialog_ok_toast">Thank you!</string>
+    <string name="no_location_added">No new location has been added yet.</string>
+
+    <string name="already_exists_form_message">This Form Data already exists for this client with same encounter date.</string>
+    <string name="already_exists_form_title">Duplicate form data warning</string>
+    <string name="duplicate_form_button_label">Save Duplicate Form Data</string>
+    <string name="alert_Ok">Ok</string>
+
+    <string name="preference_duplicate_form_data_desc">Enable warning when duplicate form data for same client with same encounter date is being saved</string>
+    <string name="preference_duplicate_form_data_title">Duplicate form data warning</string>
+    <string name="preference_duplicate_form_data">duplicateFormDataPreference</string>
+
+    <string name="no_provider_added">No new provider has been added yet.</string>
+    <string name="add_provider_pref_desc">Add provider(s) that you want to download.</string>
+    <string name="title_activity_provider_pref">Providers</string>
+
+    <string name="not_a_provider_title">Unable to set as Provider</string>
+    <string name="not_a_provider_message">You do not have provider rights or your provider data is not downloaded, please use add provider option.</string>
+    <string name="rerun_wizard_message">Wizard was interrupted, please logout and run the wizard again.</string>
+    <string name="preference_font_size_title">Font size</string>
+    <string name="preference_font_size">font_size</string>
+</resources>

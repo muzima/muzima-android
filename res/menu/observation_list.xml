@@ -23,4 +23,12 @@
             android:showAsAction="never"
             android:title="Logout">
     </item>
+<item
+            android:id="@+id/action_upload_obs'"
+            android:orderInCategory="4"
+            android:showAsAction="always"
+            android:title="Upload Obs" 
+            android:onClick="Uploadclick">
+
+    </item>
 </menu>

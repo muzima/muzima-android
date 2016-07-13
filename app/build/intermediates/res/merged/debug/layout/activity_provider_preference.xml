@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/add_provider_layout"
+              style="@style/WizardContainer">
+
+    <LinearLayout style="@style/AutocompleteTextArea">
+
+        <AutoCompleteTextView
+                android:id="@+id/add_provider"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:layout_weight="1"
+                android:textColor="@color/primary_blue"
+                android:textColorHint="@color/hint_text_grey"
+                android:textCursorDrawable="@null"
+                android:hint="Enter provider name ..."
+                android:background="@color/primary_black">
+            <requestFocus/>
+        </AutoCompleteTextView>
+
+    </LinearLayout>
+
+    <View
+            style="@style/DividerLine"
+            android:layout_height="2dp"/>
+
+    <ListView
+            android:id="@+id/provider_preference_list"
+            style="@style/MuzimaSelectableListView"
+            android:choiceMode="multipleChoice">
+    </ListView>
+
+    <TextView android:id="@+id/no_provider_added"
+              android:text="@string/no_provider_added"
+              style="@style/NoItemInListView"/>
+    <View
+            style="@style/DividerLine"
+            android:layout_height="2dp"/>
+</LinearLayout>

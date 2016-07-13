@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:id="@+id/playerContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_above="@+id/captionContainer"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/audioRecordContainer"
+        android:gravity="center_vertical|right" >
+
+        <FrameLayout
+            android:id="@+id/audioPreview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:visibility="gone" >
+
+            <ImageView
+                android:id="@+id/audioThumbnail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|center_vertical"
+                android:adjustViewBounds="true"
+                android:background="@drawable/pic_preview_border"
+                android:contentDescription="@string/preview_media"
+                android:scaleType="fitXY"
+                android:src="@drawable/user_pic"/>
+            
+            <ImageView
+                android:id="@+id/playButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|center_vertical"
+                android:adjustViewBounds="true"
+                android:background="@drawable/pic_preview_border"
+                android:contentDescription="@string/preview_media"
+                android:onClick="playAudio"
+                android:scaleType="fitXY"
+                android:src="@android:drawable/ic_media_play"/>
+            
+        </FrameLayout>
+        
+            <TextView
+		        android:id="@+id/noAudioMessage"
+		        style="@style/LoginActivityHeader"
+		        android:gravity="center|center_vertical"
+		        android:text="@string/record_audio_prompt" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/captionContainer"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/playerContainer"
+        android:gravity="left"
+        android:paddingTop="5dp" >
+
+        <EditText
+            android:id="@+id/audioCaption"
+            style="@style/LoginInfoEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="left"
+            android:hint="@string/audio_caption"
+            android:visibility="gone" >
+
+            <requestFocus />
+        </EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/audioAcceptContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:background="@color/hint_text_grey"
+        android:gravity="center_vertical|right"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <Button
+            android:id="@+id/acceptAudio"
+            style="@style/Button"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:background="@drawable/sel_button_round"
+            android:onClick="acceptAudio"
+            android:padding="11dp"
+            android:text="@string/accept"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/cancel"
+            style="@style/Button"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/sel_button_round"
+            android:onClick="rejectAudio"
+            android:padding="11dp"
+            android:text="@string/cancel"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/audioRecordContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:background="@color/hint_text_grey"
+        android:gravity="center_vertical|right"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/recordAudio"
+            style="@style/Button"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:background="@drawable/sel_button_round"
+            android:onClick="recordAudio"
+            android:padding="11dp"
+            android:text="@string/record_audio"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/chooseAudio"
+            style="@style/Button"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/sel_button_round"
+            android:onClick="chooseAudio"
+            android:padding="11dp"
+            android:text="@string/choose_audio"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+</RelativeLayout>

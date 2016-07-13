@@ -1,0 +1,42 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/ObservationByEncounterElement">
+    <TextView
+            android:id="@+id/concept_info"
+            style="@style/ObservationConcept">
+    </TextView>
+
+    <View
+            android:id="@+id/divider1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            />
+
+    <TextView
+            android:id="@+id/observation_value"
+            style="@style/ObservationValue">
+    </TextView>
+
+    <ImageView
+            android:id="@+id/observation_complex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="Complex Obs"
+            android:src="@android:drawable/ic_menu_gallery"
+            android:visibility="gone"/>
+
+    <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            />
+
+    <TextView
+            android:id="@+id/observation_date"
+            style="@style/ObservationDate">
+    </TextView>
+</LinearLayout>

@@ -1,0 +1,183 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/DashboardTableContainer">
+
+    <RelativeLayout
+            style="@style/PatientDemographicsLayout"
+            android:background="@color/primary_black">
+
+        <TextView
+                android:id="@+id/patientName"
+                android:layout_alignParentLeft="true"
+                style="@style/DashboardMediumTitleText"/>
+
+        <ImageView
+                android:id="@+id/genderImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:paddingTop="20dp"
+                android:contentDescription="Gender Image"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+            style="@style/PatientDemographicsLayout"
+            android:paddingTop="4dp"
+            android:paddingBottom="16dp"
+            android:background="@color/primary_black">
+
+        <TextView
+                android:id="@+id/dob"
+                style="@style/DashboardBaseText"/>
+
+        <TextView
+                android:id="@+id/patientIdentifier"
+                style="@style/DashboardBaseText"
+                android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <View style="@style/DividerLine"/>
+    <ScrollView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:baselineAligned="false">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                    style="@style/ClickableGridItem"
+                    android:layout_weight="100"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                    android:orientation="horizontal"
+                    android:layout_height="80dp"
+                android:baselineAligned="false"
+                    android:onClick="showObservations">
+
+                <TextView
+                        style="@style/DashboardListItemMediumHeadingText"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text="@string/observations">
+                </TextView>
+                <TextView
+                        android:id="@+id/observationDescription"
+                        style="@style/DashboardItemDescription"
+                        android:layout_alignParentBottom="true"
+                        android:text="##">
+                </TextView>
+            </RelativeLayout>
+        </LinearLayout>
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:baselineAligned="false">
+
+        <RelativeLayout
+                android:layout_width="fill_parent"
+                style="@style/ClickableGridItem"
+                android:layout_weight="100"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal"
+                android:layout_height="80dp"
+                android:baselineAligned="false"
+                android:onClick="showEncounters">
+
+            <TextView
+                    style="@style/DashboardListItemMediumHeadingText"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="@string/encounters">
+            </TextView>
+            <TextView
+                    android:id="@+id/encounterDescription"
+                    style="@style/DashboardItemDescription"
+                    android:layout_alignParentBottom="true"
+                    android:text="##">
+            </TextView>
+        </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:baselineAligned="false">
+
+
+            <RelativeLayout
+                    style="@style/ClickableGridItem"
+                    android:layout_weight="100"
+                    android:orientation="horizontal"
+                    android:layout_height="80dp"
+                android:baselineAligned="false"
+                    android:onClick="showForms">
+
+                <TextView
+                        style="@style/DashboardListItemMediumHeadingText"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/forms">
+                </TextView>
+
+                <TextView
+                        android:id="@+id/formDescription"
+                        style="@style/DashboardItemDescription"
+                        android:layout_alignParentBottom="true"
+                        android:text="##">
+                </TextView>
+
+            </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:baselineAligned="false">
+
+
+            <RelativeLayout
+                    style="@style/ClickableGridItem"
+                    android:layout_weight="100"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:layout_height="80dp"
+                    android:baselineAligned="false"
+                    android:onClick="showNotifications">
+
+                <TextView
+                        style="@style/DashboardListItemMediumHeadingText"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/notifications">
+                </TextView>
+
+                <TextView
+                        android:id="@+id/notificationDescription"
+                        style="@style/DashboardItemDescription"
+                        android:layout_alignParentBottom="true"
+                        android:text="##">
+                </TextView>
+
+            </RelativeLayout>
+    </LinearLayout>
+   </LinearLayout>
+    </ScrollView>
+    <View style="@style/DividerLine"/>
+
+</LinearLayout>

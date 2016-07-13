@@ -1,0 +1,58 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingLeft="16dp"
+              android:paddingRight="16dp"
+              android:orientation="vertical">
+
+    <TextView
+            android:id="@+id/form_name"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingTop="5dp"
+            android:textSize="18sp">
+    </TextView>
+
+    <TextView
+            android:id="@+id/form_description"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingTop="2dp"
+            android:paddingBottom="5dp"
+            android:textSize="16sp">
+    </TextView>
+
+    <CheckedTextView
+            android:id="@+id/form_save_time"
+            android:paddingTop="15dp"
+            android:layout_below="@+id/form_description"
+            style="@style/FormSaveDateTime"
+            android:textSize="10sp"/>
+
+    <CheckedTextView
+            android:id="@+id/form_encounter_date"
+            android:paddingTop="15dp"
+            android:layout_below="@+id/form_description"
+            style="@style/FormSaveDateTime"
+            android:gravity="left"
+            android:textSize="10sp"/>
+
+    <HorizontalScrollView
+            android:id="@+id/tags_scroller"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:scrollbars="none"
+            android:layout_gravity="right"
+            android:visibility="gone">
+
+        <LinearLayout
+                android:id="@+id/tags"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+        </LinearLayout>
+    </HorizontalScrollView>
+</LinearLayout>

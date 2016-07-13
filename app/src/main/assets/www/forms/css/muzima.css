@@ -1,0 +1,167 @@
+.section, .sub-section {
+    padding: 10px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    margin: 10px 5px;
+}
+
+.required {
+    color: red;
+}
+
+.error {
+    color: red;
+    font-weight: normal;
+}
+
+input.error {
+    border: 1px solid red;
+    color: black;
+}
+
+.barcode_btn {
+    height: 18px;
+    width: 7%;
+    display: inline-block;
+    line-height: 18px;
+    padding: 16px 23px;
+    margin-right: 4px !important;
+    border-radius: 4px;
+    background: #ffffff url("../images/barcode_icon.png") no-repeat center;
+}
+
+.barcode_text {
+    display: inline-block;
+    width: 90%;
+}
+
+.image_btn {
+    height: 6%;
+    width: 12%;
+    display: inline-block;
+    line-height: 18px;
+    padding: 16px 23px;
+    margin-right: 4px !important;
+    border-radius: 4px;
+    background: #ffffff url("../images/imaging_icon.png") no-repeat center;
+}
+
+.image_text {
+    display: inline-block;
+    width: 90%;
+}
+
+.audio_record_btn {
+    height: 6%;
+    width: 12%;
+    display: inline-block;
+    line-height: 18px;
+    padding: 16px 23px;
+    margin-right: 4px !important;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.09) url("../images/audio_record_icon.png") no-repeat center;
+}
+
+.audio_record_text {
+    display: inline-block;
+    width: 90%;
+}
+
+.video_record_btn {
+    height: 6%;
+    width: 12%;
+    display: inline-block;
+    line-height: 18px;
+    padding: 16px 23px;
+    margin-right: 4px !important;
+    border-radius: 4px;
+    background: #ffffff url("../images/video_record_icon.png") no-repeat center;
+}
+
+.video_record_text {
+    display: inline-block;
+    width: 90%;
+}
+
+#pre_populate_data{
+    display: none;
+}
+
+span.clear{
+    display: block;
+    clear:left;
+}
+
+.datepicker{
+    background: white !important;
+}
+
+.roman_numeral_list>li{
+    list-style-type: lower-roman;
+}
+
+.padded_div_images{
+    padding:20px 0px 20px;
+    text-align : center;
+}
+
+.font-normal {
+    font-weight: normal;
+}
+
+.small{
+    font-size: 14px;
+}
+
+.medium, .medium .form-control, .medium .btn{
+    font-size: 18px;
+}
+
+.medium h2{
+    font-size: 34px;
+}
+
+.medium h3{
+    font-size: 28px;
+}
+
+.medium h4{
+    font-size: 22px;
+}
+
+.medium .form-control:not(textarea){
+    height: 38px;
+}
+
+.medium .btn{
+    padding: 6px 15px;
+}
+
+.large, .large .form-control, .large .btn{
+    font-size: 22px;
+}
+
+.large h2{
+    font-size: 38px;
+}
+
+.large h3{
+    font-size: 32px;
+}
+
+.large h4{
+    font-size: 26px;
+}
+
+.large .form-control:not(textarea){
+    height: 42px;
+}
+
+.large .btn{
+    padding: 6px 18px;
+}
+
+.medium .btn.image_btn, .medium .btn.audio_record_btn, .medium .btn.video_record_btn,
+.large .btn.image_btn, .large .btn.audio_record_btn, .large .btn.video_record_btn {
+    height: 11%;
+}

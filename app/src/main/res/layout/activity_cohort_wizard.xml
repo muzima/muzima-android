@@ -1,0 +1,63 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_height="match_parent"
+                android:padding="2dp"
+                android:layout_width="match_parent">
+
+    <LinearLayout android:id="@+id/download_cohort_header"
+                  style="@style/NotClickableSummaryItem"
+                  android:layout_alignParentTop="true">
+        <TextView style="@style/SummaryHeader"
+                  android:text="@string/download_cohort"/>
+
+        <TextView
+                android:textColor="@android:color/white"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/download_cohort_desc">
+        </TextView>
+
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <EditText android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="10dp"
+                      android:background="@color/primary_black"
+                      android:textColor="@color/primary_blue"
+                      android:cursorVisible="true"
+                      android:layout_marginBottom="10dp"
+                      android:hint="@string/filter_cohort_hint"
+                      android:id="@+id/filter_cohorts_txt"/>
+            <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                       android:id="@+id/cancel_filter_txt"
+                       android:src="@drawable/ic_cancel"
+                       android:background="@android:color/transparent"
+                       android:layout_alignTop="@+id/filter_cohorts_txt"
+                       android:layout_alignBottom="@+id/filter_cohorts_txt"
+                       android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout style="@style/WizardContainer"
+                  android:layout_below="@+id/download_cohort_header"
+                  android:layout_height="match_parent"
+                  android:layout_width="match_parent">
+
+        <ListView
+                android:id="@+id/cohort_wizard_list"
+                style="@style/MuzimaSelectableListView"
+                android:choiceMode="multipleChoice"/>
+    </LinearLayout>
+
+    <LinearLayout style="@style/ButtonRow"
+                  android:layout_alignParentBottom="true">
+        <Button
+                android:id="@+id/next"
+                style="@style/Button.Next"/>
+    </LinearLayout>
+</RelativeLayout>
+
+
+

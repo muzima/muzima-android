@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="3dp"
+    android:layout_marginTop="3dp"
+    android:background="@drawable/list_selector_blue"
+    android:orientation="horizontal">
+
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/list_selector_blue"
+            android:orientation="vertical">
+
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginRight="7dp"
+                android:layout_marginTop="3dp"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:id="@+id/subject"
+                    style="@style/ListHeader"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/list_selector_blue"/>
+
+            <ImageView
+                    android:id="@+id/newNotificationImg"
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center|right"
+                    android:background="@drawable/list_selector_blue"
+                    android:contentDescription="@string/new_notification_image"
+                    android:visibility="gone"
+                    android:src="@drawable/notifications"/>
+        </LinearLayout>
+        <TextView
+                android:id="@+id/notificationDate"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/secondary_text"
+                android:background="@drawable/list_selector_blue"
+                style="@style/ListDescription"/>
+    </LinearLayout>
+
+</LinearLayout>

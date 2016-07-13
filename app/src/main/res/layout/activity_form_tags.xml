@@ -1,0 +1,88 @@
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/DashboardTableContainer">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_form_tags"
+            android:textAllCaps="true"
+            android:paddingBottom="3dp"
+            android:textColor="@android:color/white"/>
+
+    <View
+            style="@style/DividerLine"
+            android:layout_height="2dp"/>
+
+
+    <LinearLayout
+            style="@style/SummaryItemRow"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp">
+
+        <EditText
+                android:id="@+id/tag_edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/form_add_tag_hint"
+                android:inputType="textPersonName">
+
+            <requestFocus/>
+        </EditText>
+
+        <TextView
+                android:layout_width="72dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="2dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="Add"
+                android:background="@drawable/dark_button_selector"
+                android:gravity="center"
+                android:onClick="addTag"
+                android:clickable="true"
+                style="@style/RegisterText"/>
+
+    </LinearLayout>
+
+    <View
+            style="@style/DividerLine"
+            android:layout_height="2dp"/>
+
+    <ListView
+            android:id="@+id/tags_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"/>
+
+    <TextView
+            android:id="@+id/no_data_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/no_form_tags_added"
+            android:textSize="20sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:visibility="invisible">
+    </TextView>
+
+    <View
+            style="@style/DividerLine"
+            android:layout_height="2dp"/>
+</LinearLayout>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+

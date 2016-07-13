@@ -1,0 +1,21 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="dashboardButtonHeight">52dp</dimen>
+
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="pager_indicator_height">56dp</dimen>
+    <dimen name="pager_indicator_text_size">14sp</dimen>
+
+    <dimen name="tag_selected_height">16dp</dimen>
+    <dimen name="tag_unselected_height">2dp</dimen>
+
+    <dimen name="sync_bar_height">40dp</dimen>
+
+    <dimen name="observation_element_by_concept_height">120dp</dimen>
+    <dimen name="observation_element_by_encounter_height">140dp</dimen>
+    <dimen name="observation_element_padding">2dp</dimen>
+
+</resources>

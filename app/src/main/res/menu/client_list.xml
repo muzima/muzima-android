@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+			android:id="@+id/scan"
+			android:icon="@drawable/barcode_icon"
+			android:showAsAction="always"
+			android:title="@string/client_scan"/>
+	<item
+			android:id="@+id/search"
+			android:actionViewClass="com.actionbarsherlock.widget.SearchView"
+			android:icon="@drawable/ic_search"
+			android:showAsAction="always"
+			android:title="@string/client_search"/>
+	<item
+			android:id="@+id/menu_client_add"
+			android:icon="@drawable/ic_action_add_client"
+			android:showAsAction="always"
+			android:title="@string/client_search"/>
+</menu>
