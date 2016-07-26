@@ -211,7 +211,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     private void setupListView(String cohortId) {
         listView = (ListView) findViewById(R.id.list);
-        listView.setEmptyView(findViewById(R.id.no_data_layout));
         patientAdapter = new PatientsLocalSearchAdapter(getApplicationContext(),
                 R.layout.layout_list,
                 ((MuzimaApplication) getApplicationContext()).getPatientController(), cohortId);
@@ -236,6 +235,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        patientAdapter.cancelBackgroundTask();
         Patient patient = patientAdapter.getItem(position);
         Intent intent = new Intent(this, PatientSummaryActivity.class);
         intent.putExtra(PatientSummaryActivity.PATIENT, patient);
@@ -246,13 +246,14 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     public void onQueryTaskStarted() {
         listView.setVisibility(INVISIBLE);
         noDataView.setVisibility(INVISIBLE);
+        listView.setEmptyView(progressBarContainer);
         progressBarContainer.setVisibility(VISIBLE);
     }
 
     @Override
     public void onQueryTaskFinish() {
-
         listView.setVisibility(VISIBLE);
+        listView.setEmptyView(noDataView);
         progressBarContainer.setVisibility(INVISIBLE);
     }
 
@@ -269,5 +270,11 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             intentBarcodeResults = true;
             searchView.setQuery(scanningResult.getContents(), false);
         }
+    }
+
+    @Override
+    public void onBackPressed(){
+        patientAdapter.cancelBackgroundTask();
+        super.onBackPressed();
     }
 }

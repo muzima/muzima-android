@@ -8,6 +8,7 @@
 
 package com.muzima.adapters.observations;
 
+import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import org.junit.Test;
 
@@ -18,7 +19,8 @@ public class ConceptsBySearchTest {
     @Test
     public void shouldSearchObservationsByUuidAndTerm() throws Exception, ObservationController.LoadObservationException {
         ObservationController controller = mock(ObservationController.class);
-        ConceptsBySearch conceptsBySearch = new ConceptsBySearch(controller, "uuid", "term");
+        ConceptController conceptController = mock(ConceptController.class);
+        ConceptsBySearch conceptsBySearch = new ConceptsBySearch(conceptController,controller, "uuid", "term");
         conceptsBySearch.get();
         verify(controller).searchObservationsGroupedByConcepts("term", "uuid");
     }

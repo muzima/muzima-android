@@ -33,6 +33,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
     private PatientController patientController;
     private final String cohortId;
     private Context context;
+    private AsyncTask<String, List<Patient>, List<Patient>> backgroundQueryTask;
     protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
 
     public PatientsLocalSearchAdapter(Context context, int textViewResourceId,
@@ -51,28 +52,40 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
 
     @Override
     public void reloadData() {
-        new BackgroundQueryTask().execute(cohortId);
+        if(backgroundQueryTask != null){
+            backgroundQueryTask.cancel(true);
+        }
+        backgroundQueryTask = new BackgroundQueryTask().execute(cohortId);
     }
 
     public void search(String text) {
-        new BackgroundQueryTask().execute(text, SEARCH);
+        if(backgroundQueryTask != null){
+            backgroundQueryTask.cancel(true);
+        }
+        backgroundQueryTask = new BackgroundQueryTask().execute(text, SEARCH);
     }
 
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
         this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
     }
 
+    public void cancelBackgroundTask(){
+        backgroundQueryTask.cancel(true);
+    }
 
-    private class BackgroundQueryTask extends AsyncTask<String, Void, List<Patient>> {
+
+    private class BackgroundQueryTask extends AsyncTask<String, List<Patient>, List<Patient>> {
 
         @Override
         protected void onPreExecute() {
             patientAdapterHelper.onPreExecute(backgroundListQueryTaskListener);
+            PatientsLocalSearchAdapter.this.clear();
         }
 
         @Override
         protected List<Patient> doInBackground(String... params) {
             List<Patient> patients = null;
+
             if (isSearch(params)) {
                 try {
                     return patientController.searchPatientLocally(params[0], cohortId);
@@ -85,8 +98,32 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
             try {
                 if (cohortUuid != null) {
                     patients = patientController.getPatients(cohortUuid);
+                    publishProgress(patients);
                 } else {
-                    patients = patientController.getAllPatients();
+                    int pageSize = 10;
+                    int patientCount = patientController.getTotalPatientsCount();
+                    if(patientCount <= 10){
+                        patients = patientController.getAllPatients();
+                    } else {
+                        int pages = new Double(Math.ceil(patientCount / pageSize)).intValue();
+                        List<Patient> temp = null;
+                        for (int page = 1; page <= pages; page++) {
+                            if(!isCancelled()) {
+                                if (patients == null) {
+                                    patients = patientController.getAllPatients(page, pageSize);
+                                    if (patients != null) {
+                                        publishProgress(patients);
+                                    }
+                                } else {
+                                    temp = patientController.getAllPatients(page, pageSize);
+                                    if (temp != null) {
+                                        patients.addAll(temp);
+                                        publishProgress(temp);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             } catch (PatientController.PatientLoadException e) {
                 Log.w(TAG, "Exception occurred while fetching patients", e);
@@ -101,6 +138,12 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
         @Override
         protected void onPostExecute(List<Patient> patients) {
             patientAdapterHelper.onPostExecute(patients, PatientsLocalSearchAdapter.this, backgroundListQueryTaskListener);
+        }
+        @Override
+        protected void onProgressUpdate(List<Patient>... patients) {
+            for (List<Patient> patientList : patients) {
+                patientAdapterHelper.onProgressUpdate(patientList, PatientsLocalSearchAdapter.this, backgroundListQueryTaskListener);
+            }
         }
     }
 }

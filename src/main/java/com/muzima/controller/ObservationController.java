@@ -66,6 +66,13 @@ public class ObservationController {
             throw new LoadObservationException(e);
         }
     }
+    public Concepts getConceptWithObservations(String patientUuid, String conceptUuid ) throws LoadObservationException {
+        try {
+            return groupByConcepts(observationService.getObservationsByPatientAndConcept(patientUuid, conceptUuid));
+        } catch (IOException e) {
+            throw new LoadObservationException(e);
+        }
+    }
     public int getObservationsCountByPatient(String patientUuid) throws IOException {
         return observationService.countObservationsByPatient(patientUuid);
     }
@@ -145,6 +152,15 @@ public class ObservationController {
             throw new LoadObservationException(e);
         }
     }
+
+    public Encounters getObservationsByPatientAndEncounter(String patientUuid, String encounterUuid) throws LoadObservationException {
+        try {
+            return groupByEncounters(observationService.getObservationsByPatientAndEncounter(patientUuid, encounterUuid));
+        } catch (IOException e) {
+            throw new LoadObservationException(e);
+        }
+    }
+
     public List<Observation> getObservationsByPatient(String patientUuid)  throws LoadObservationException{
         try {
             List<Observation> observations = observationService.getObservationsByPatient(patientUuid);
