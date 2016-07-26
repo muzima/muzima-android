@@ -8,6 +8,7 @@
 
 package com.muzima.adapters.observations;
 
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
+import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.view.patients.PatientSummaryActivity;
 
@@ -28,16 +30,20 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
     private static final String TAG = "ObservationsAdapter";
     protected final String patientUuid;
     protected ConceptController conceptController;
+    protected EncounterController encounterController;
     protected ObservationController observationController;
     protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
+    protected AsyncTask<?, ?, ?> backgroundQueryTask;
 
     public BackgroundListQueryTaskListener getBackgroundListQueryTaskListener() {
         return backgroundListQueryTaskListener;
     }
 
     public ObservationsAdapter(FragmentActivity context, int textViewResourceId,
+                               EncounterController encounterController,
                                ConceptController conceptController, ObservationController observationController) {
         super(context, textViewResourceId);
+        this.encounterController = encounterController;
         this.conceptController = conceptController;
         this.observationController = observationController;
         Patient patient = (Patient) context.getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);

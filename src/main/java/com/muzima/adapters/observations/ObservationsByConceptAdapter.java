@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,8 +30,9 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
     private static final String TAG = "ObservationsByConceptAdapter";
 
     public ObservationsByConceptAdapter(FragmentActivity activity, int itemCohortsList,
-                                        ConceptController conceptController, ObservationController observationController) {
-        super(activity, itemCohortsList, conceptController, observationController);
+                                        ConceptController conceptController,
+                                        ObservationController observationController) {
+        super(activity, itemCohortsList, null,conceptController, observationController);
     }
 
     @Override
@@ -53,14 +55,21 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         return convertView;
     }
 
-
     @Override
     public void reloadData() {
-        new ObservationsByConceptBackgroundTask(this, new ConceptsByPatient(observationController, patientUuid)).execute();
+        if(backgroundQueryTask != null){
+            backgroundQueryTask.cancel(true);
+        }
+        backgroundQueryTask = new ObservationsByConceptBackgroundTask(this,
+                new ConceptsByPatient(conceptController, observationController, patientUuid)).execute();
     }
 
     public void search(String term) {
-        new ObservationsByConceptBackgroundTask(this, new ConceptsBySearch(observationController, patientUuid, term)).execute();
+        if(backgroundQueryTask != null){
+            backgroundQueryTask.cancel(true);
+        }
+        backgroundQueryTask = new ObservationsByConceptBackgroundTask(this,
+                new ConceptsBySearch(conceptController,observationController, patientUuid, term)).execute();
     }
 
     protected class ObservationsByConceptViewHolder extends ViewHolder{

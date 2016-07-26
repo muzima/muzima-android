@@ -8,21 +8,41 @@
 
 package com.muzima.adapters.observations;
 
+import com.muzima.api.model.Encounter;
+import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.Encounters;
+
+import java.util.List;
 
 public class EncountersByPatient extends EncounterAction {
     private String patientUuid;
     private ObservationController controller;
+    private EncounterController encounterController;
 
-    public EncountersByPatient(ObservationController controller, String patientUuid) {
+    public EncountersByPatient(EncounterController encounterController,ObservationController controller, String patientUuid) {
         this.controller = controller;
         this.patientUuid = patientUuid;
+        this.encounterController = encounterController;
     }
 
     @Override
     Encounters get() throws ObservationController.LoadObservationException {
         return  controller.getEncountersWithObservations(patientUuid);
+    }
+
+    @Override
+    Encounters get(Encounter encounter) throws ObservationController.LoadObservationException {
+        return controller.getObservationsByPatientAndEncounter(patientUuid,encounter.getUuid());
+    }
+
+    @Override
+    List<Encounter> getEncounters() throws ObservationController.LoadObservationException {
+        try {
+            return encounterController.getEncountersByPatientUuid(patientUuid);
+        }catch (EncounterController.DownloadEncounterException e){
+            throw new ObservationController.LoadObservationException(e);
+        }
     }
 
 

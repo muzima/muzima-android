@@ -59,6 +59,14 @@ public class PatientController {
         }
     }
 
+    public List<Patient> getAllPatients(int page, int pageSize) throws PatientLoadException {
+        try {
+            return patientService.getAllPatients(page,pageSize);
+        } catch (IOException e) {
+            throw new PatientLoadException(e);
+        }
+    }
+
     public int getTotalPatientsCount() throws PatientLoadException {
         try {
             return patientService.countAllPatients();
@@ -80,6 +88,17 @@ public class PatientController {
             return StringUtils.isEmpty(cohortUuid)
                     ? patientService.searchPatients(term)
                     : patientService.searchPatients(term, cohortUuid);
+        } catch (IOException e) {
+            throw new PatientLoadException(e);
+        } catch (ParseException e) {
+            throw new PatientLoadException(e);
+        }
+    }
+
+    public List<Patient> searchPatientLocally(String term,  int page, int pageSize)
+            throws PatientLoadException {
+        try {
+            return patientService.searchPatients(term,page,pageSize);
         } catch (IOException e) {
             throw new PatientLoadException(e);
         } catch (ParseException e) {

@@ -8,9 +8,14 @@
 
 package com.muzima.adapters.observations;
 
+import com.muzima.api.model.Encounter;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.Encounters;
 
+import java.util.List;
+
 public abstract class EncounterAction {
     abstract Encounters get() throws ObservationController.LoadObservationException;
+    abstract Encounters get(Encounter encounter) throws ObservationController.LoadObservationException;
+    abstract List<Encounter> getEncounters() throws ObservationController.LoadObservationException;
 }
