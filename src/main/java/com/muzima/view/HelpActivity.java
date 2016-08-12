@@ -52,27 +52,27 @@ public class HelpActivity extends BaseActivity {
         switch (helpType) {
             case COHORT_WIZARD_HELP:
                 showHelpContentView();
-                helpContentView.setText(getResources().getText(R.string.cohort_wizard_help));
-                setTitle(R.string.cohort_wizard_help_title);
+                helpContentView.setText(getResources().getText(R.string.hint_cohort_wizard_help));
+                setTitle(R.string.title_cohort_wizard_help);
                 break;
             case COHORT_PREFIX_HELP:
                 showHelpContentView();
-                helpContentView.setText(getResources().getText(R.string.cohort_prefix_help));
-                setTitle(R.string.cohort_prefix_help_title);
+                helpContentView.setText(getResources().getText(R.string.hint_cohort_prefix_help));
+                setTitle(R.string.title_cohort_prefix_help);
                 break;
             case CUSTOM_CONCEPT_HELP:
                 showHelpContentView();
-                helpContentView.setText(getResources().getText(R.string.custom_concept_help));
-                setTitle(R.string.custom_concept_help_title);
+                helpContentView.setText(getResources().getText(R.string.hint_custom_concept_help));
+                setTitle(R.string.title_custom_concept_help);
                 break;
             case CUSTOM_LOCATION_HELP:
                 showHelpContentView();
-                helpContentView.setText(getResources().getText(R.string.custom_location_help));
-                setTitle(R.string.custom_location_help_title);
+                helpContentView.setText(getResources().getText(R.string.hint_custom_location_help));
+                setTitle(R.string.title_custom_location_help);
             case CUSTOM_PROVIDER_HELP:
                 showHelpContentView();
-                helpContentView.setText(getResources().getText(R.string.custom_provider_help));
-                setTitle(R.string.custom_provider_help_title);
+                helpContentView.setText(getResources().getText(R.string.hint_custom_provider_help));
+                setTitle(R.string.title_custom_provider_help);
                 break;
             default:
                 helpContentView.setVisibility(View.GONE);
@@ -91,19 +91,19 @@ public class HelpActivity extends BaseActivity {
     }
 
     public void viewPatientFormFillingHelpContent(View view) {
-        startHelpContentDisplayActivity(PATIENT_FILLING_FORM,getText(R.string.filling_patient_forms_help).toString());
+        startHelpContentDisplayActivity(PATIENT_FILLING_FORM,getText(R.string.title_fill_patient_forms_help).toString());
     }
 
     public void viewMuzimaInitialSetupGuide(View view) {
-        startHelpContentDisplayActivity(MUZIMA_INITAL_SETUP_GUIDE,getText(R.string.muzima_initial_setup_guide).toString());
+        startHelpContentDisplayActivity(MUZIMA_INITAL_SETUP_GUIDE,getText(R.string.title_initial_setup_guide).toString());
     }
 
     public void viewMuzimaUserGuide(View view) {
-        startHelpContentDisplayActivity(MUZIMA_USER_GUIDE,getText(R.string.server_side_setup).toString());
+        startHelpContentDisplayActivity(MUZIMA_USER_GUIDE,getText(R.string.title_server_side_setup).toString());
     }
 
     public void viewMuzimaTrainingManual(View view) {
-        startHelpContentDisplayActivity(MUZIMA_TRAINING_MANUAL,getText(R.string.muzima_training_manual).toString());
+        startHelpContentDisplayActivity(MUZIMA_TRAINING_MANUAL,getText(R.string.title_muzima_training_manual).toString());
     }
 
     private void startHelpContentDisplayActivity(String filePath, String title) {

@@ -43,8 +43,8 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
     @Override
     public void onCreate(Bundle savedInstanceState) {
         listAdapter = new DownloadedFormsAdapter(getActivity(), R.layout.item_forms_list_selectable, formController);
-        noDataMsg = getActivity().getResources().getString(R.string.no_downloaded_form_msg);
-        noDataTip = getActivity().getResources().getString(R.string.no_downloaded_form_tip);
+        noDataMsg = getActivity().getResources().getString(R.string.info_forms_unavailable);
+        noDataTip = getActivity().getResources().getString(R.string.hint_forms_download);
 
         // this can happen on orientation change
         if (actionModeActive) {

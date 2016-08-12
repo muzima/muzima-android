@@ -4,8 +4,8 @@
     <item
             android:id="@+id/form_close"
             android:icon="@drawable/ic_cancel"
-            android:text="@string/form_close"
+            android:text="@string/menu_form_close"
             android:showAsAction="ifRoom|withText"
-            android:title="@string/form_close"/>
+            android:title="@string/menu_form_close"/>
 
 </menu>

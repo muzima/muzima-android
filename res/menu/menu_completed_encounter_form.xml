@@ -4,14 +4,14 @@
     <item
             android:id="@+id/form_back_to_draft"
             android:icon="@drawable/ic_action_undo"
-            android:text="@string/form_back_to_draft"
+            android:text="@string/menu_form_back_to_draft"
             android:showAsAction="ifRoom|withText"
-            android:title="@string/form_back_to_draft"/>
+            android:title="@string/menu_form_back_to_draft"/>
     <item
             android:id="@+id/form_close"
             android:icon="@drawable/ic_cancel"
-            android:text="@string/form_close"
+            android:text="@string/menu_form_close"
             android:showAsAction="ifRoom|withText"
-            android:title="@string/form_close"/>
+            android:title="@string/menu_form_close"/>
 
 </menu>

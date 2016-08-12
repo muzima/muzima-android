@@ -34,7 +34,7 @@
     </ListView>
 
     <TextView android:id="@+id/no_provider_added"
-              android:text="@string/no_provider_added"
+              android:text="@string/info_provider_not_added"
               style="@style/NoItemInListView"/>
     <View
             style="@style/DividerLine"

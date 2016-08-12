@@ -13,7 +13,7 @@
                       style="@style/NotClickableSummaryItem"
                       android:layout_alignParentTop="true">
             <TextView style="@style/SummaryHeader"
-                      android:text="@string/download_form"/>
+                      android:text="@string/title_form_download"/>
 
             <LinearLayout android:layout_height="wrap_content"
                           android:weightSum="100"
@@ -25,7 +25,7 @@
                         android:layout_weight="80"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/download_form_desc">
+                        android:text="@string/hint_form_download">
                 </TextView>
 
                 <ImageButton android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
                              android:layout_weight="20"
                              android:layout_width="0dp"
                              android:src="@drawable/ic_labels"
-                             android:contentDescription="@string/tags_no_data">
+                             android:contentDescription="@string/info_tags_unavailable">
                 </ImageButton>
 
             </LinearLayout>
@@ -88,7 +88,7 @@
                 android:gravity="center"
                 android:textSize="20sp"
                 android:textColor="#ffffff"
-                android:text="@string/tags_no_data"
+                android:text="@string/info_tags_unavailable"
                 android:visibility="gone">
         </TextView>
 

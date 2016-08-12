@@ -39,7 +39,7 @@
                             style="@style/DashboardListItemPrimaryText"
                             android:layout_height="wrap_content"
                             android:gravity="left"
-                            android:text="@string/cohorts">
+                            android:text="@string/general_cohorts_name">
                     </TextView>
 
                     <TextView
@@ -59,7 +59,7 @@
                             style="@style/DashboardListItemPrimaryText"
                             android:layout_height="wrap_content"
                             android:gravity="left"
-                            android:text="@string/clients">
+                            android:text="@string/general_clients_name">
                     </TextView>
 
                     <TextView
@@ -92,7 +92,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="left"
-                            android:text="@string/forms">
+                            android:text="@string/general_forms_name">
                     </TextView>
 
                     <TextView
@@ -116,7 +116,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="left"
-                            android:text="@string/notifications">
+                            android:text="@string/title_notifications">
                     </TextView>
 
                     <TextView
