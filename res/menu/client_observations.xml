@@ -5,6 +5,6 @@
         android:actionViewClass="com.actionbarsherlock.widget.SearchView"
         android:icon="@drawable/ic_search"
         android:showAsAction="always"
-        android:title="@string/observation_search"/>
+        android:title="@string/title_observation_search"/>
 
 </menu>

@@ -26,7 +26,7 @@
                 android:layout_gravity="center"
                 android:clickable="true"
                 android:src="@drawable/ic_action_discard"
-                android:contentDescription="@string/delete_text"/>
+                android:contentDescription="@string/text_delete"/>
 
     </LinearLayout>
 </LinearLayout>

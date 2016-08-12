@@ -53,8 +53,8 @@ public class AllCohortsListFragment extends CohortListFragment {
         if (listAdapter == null) {
             listAdapter = new AllCohortsAdapter(getActivity(), R.layout.item_cohorts_list, cohortController);
         }
-        noDataMsg = getActivity().getResources().getString(R.string.no_cohorts_available);
-        noDataTip = getActivity().getResources().getString(R.string.no_cohorts_available_tip);
+        noDataMsg = getActivity().getResources().getString(R.string.info_cohorts_metadata_unavailable);
+        noDataTip = getActivity().getResources().getString(R.string.hint_cohorts_metadata_download);
         super.onCreate(savedInstanceState);
     }
 

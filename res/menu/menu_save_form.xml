@@ -3,12 +3,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
             android:id="@+id/form_save_as_draft"
-            android:text="@string/form_save_as_draft"
+            android:text="@string/menu_form_save_as_draft"
             android:showAsAction="ifRoom|withText"
-            android:title="@string/form_save_as_draft"/>
+            android:title="@string/menu_form_save_as_draft"/>
     <item
             android:id="@+id/form_submit"
-            android:text="@string/form_submit"
+            android:text="@string/menu_form_save"
             android:showAsAction="ifRoom|withText"
-            android:title="@string/form_submit"/>
+            android:title="@string/menu_form_save"/>
 </menu>

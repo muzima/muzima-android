@@ -64,8 +64,8 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         if (listAdapter == null) {
             listAdapter = new AllAvailableFormsAdapter(getActivity(), R.layout.item_forms_list_selectable, formController);
         }
-        noDataMsg = getActivity().getResources().getString(R.string.no_new_form_msg);
-        noDataTip = getActivity().getResources().getString(R.string.no_new_form_tip);
+        noDataMsg = getActivity().getResources().getString(R.string.info_forms_metadata_unavailable);
+        noDataTip = getActivity().getResources().getString(R.string.hint_forms_metadata_download);
 
         // this can happen on orientation change
         if (actionModeActive) {
@@ -206,20 +206,20 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
             switch (menuItem.getItemId()) {
                 case R.id.menu_download:
                     if (newFormsSyncInProgress) {
-                        Toast.makeText(getActivity(), R.string.sync_in_progress_msg, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.error_request_unallowed_while_syncing, Toast.LENGTH_SHORT).show();
                         endActionMode();
                         break;
                     }
 
                     if (!NetworkUtils.isConnectedToNetwork(getActivity())) {
-                        Toast.makeText(getActivity(), R.string.no_connection_found_msg, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.error_request_connection_not_found, Toast.LENGTH_SHORT).show();
                         return true;
                     }
 
                     if (patientDataExistsWithSelectedForms()) {
                         AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
                         alertDialog.setMessage((getActivity().getApplicationContext())
-                                        .getString(R.string.already_exists_selected_forms_with_patient_data_msg)
+                                        .getString(R.string.error_already_exists_selected_forms_with_patient_data)
                         );
                         alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
                             @Override

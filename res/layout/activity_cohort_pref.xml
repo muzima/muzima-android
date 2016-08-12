@@ -38,7 +38,7 @@
 
     <TextView
             android:id="@+id/no_data_msg"
-            android:text="@string/no_cohort_prefixes_added"
+            android:text="@string/info_cohort_prefixes_unavailable"
             style="@style/NoItemInListView">
     </TextView>
 
