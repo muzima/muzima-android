@@ -222,7 +222,7 @@ public class MainActivity extends BroadcastListenerActivity {
                     + homeActivityMetadata.totalNotifications + " Total");
 
             TextView currentUser = (TextView) findViewById(R.id.currentUser);
-            currentUser.setText(getResources().getString(R.string.text_user_welcome) + " " + credentials.getUserName());
+            currentUser.setText(getResources().getString(R.string.general_welcome) + " " + credentials.getUserName());
         }
     }
 

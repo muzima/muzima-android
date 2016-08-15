@@ -3,32 +3,34 @@
     <string name="app_name">mUzima</string>
 
     <string name="confirm_duplicate_form_data_save">Save Duplicate Form Data</string>
-
     <string name="confirm_patient_id_exists">Does the patient already have existing ID?</string>
 
     <string name="default_auto_save_interval">2</string>
 
     <string name="error_forms_with_patient_data_exists">There is existing form data.
         Finish Incomplete data and sync Complete data to Server first before syncing form templates.</string>
-    <string name="error_selected_forms_with_patient_data_exists">There is existing form data for selected form(s).
-        Finish Incomplete data and sync Complete data to Server first before downloading the forms.</string>
     <string name="error_provider_not_set">You do not have provider rights or your provider data is not downloaded, please use add provider option.</string>
     <string name="error_request_already_fetching_forms">Already fetching forms, ignored the request</string>
     <string name="error_request_already_uploading_forms">Already uploading forms, ignored the request</string>
     <string name="error_request_connection_not_found">No connection found, please connect your device and try again</string>
     <string name="error_request_unallowed_while_syncing">Action not allowed while sync is in progress</string>
+    <string name="error_selected_forms_with_patient_data_exists">There is existing form data for selected form(s).
+        Finish Incomplete data and sync Complete data to Server first before downloading the forms.</string>
     <string name="error_wizard_interrupted">Wizard was interrupted, please logout and run the wizard again.</string>
 
-    <string name="general_accept_text">Accept</string>
-    <string name="general_cancel_text">Cancel</string>
+    <string name="general_accept">Accept</string>
+    <string name="general_cancel">Cancel</string>
     <string name="general_clients">Clients</string>
     <string name="general_cohorts">Cohorts</string>
+    <string name="general_delete">Delete</string>
     <string name="general_encounters">Encounters</string>
     <string name="general_forms">Forms</string>
+    <string name="general_no">No</string>
     <string name="general_notices">Notices</string>
     <string name="general_observations">Observations</string>
-    <string name="general_no">No</string>
     <string name="general_ok">Ok</string>
+    <string name="general_thank_you">Thank you!</string>
+    <string name="general_welcome">Welcome</string>
     <string name="general_yes">Yes</string>
 
     <string name="hint_audio_record">Record or choose audio</string>
@@ -97,7 +99,6 @@
     <string name="info_cohorts_metadata_unavailable">No Cohorts Available</string>
     <string name="info_complete_form_unavailable">No completed and non synced forms on device</string>
     <string name="info_concepts_unavailable">No concept added yet.</string>
-    <string name="info_crash_dialog_ok_click">Thank you!</string>
     <string name="info_disclaimer"><![CDATA[
         <p>
         mUzima is distributed under the terms of the Mozilla Public License, v. 2.0 (MPL 2.0).
@@ -193,9 +194,6 @@
     <string name="preference_username_desc">Enter the OpenMRS username</string>
     <string name="preference_username_title">Username</string>
 
-    <string name="text_delete">Delete</string>
-    <string name="text_user_welcome">Welcome</string>
-
     <string name="title_activity_audio">Add Audio</string>
     <string name="title_activity_client_encounters">Client Encounters</string>
     <string name="title_activity_client_list">Clients</string>
@@ -221,7 +219,6 @@
     <string name="title_audio_record">Record Audio</string>
     <string name="title_barcode_scanner_check">Check Barcode Scanner</string>
     <string name="title_barcode_scanner_setup">Step 6: Check for BarCode Scanner</string>
-    <string name="title_choose_image">Choose Image</string>
     <string name="title_client_scan">Scan Clients ID</string>
     <string name="title_cohort_download">Step 1: Download Cohort(s)</string>
     <string name="title_cohort_prefix_help">Define Cohorts Prefix(es) Help</string>
@@ -239,6 +236,7 @@
     <string name="title_homepage">Home</string>
     <string name="title_image_caption">Image Caption</string>
     <string name="title_image_capture">Capture Image</string>
+    <string name="title_image_choose">Choose Image</string>
     <string name="title_initial_setup_guide">mUzima initial setup guide</string>
     <string name="title_introduction_video">Video introduction to mUzima</string>
     <string name="title_location_download">Step 3: Add Location(s)</string>
