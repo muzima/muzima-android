@@ -108,8 +108,8 @@ public class MainActivity extends BroadcastListenerActivity {
                 .setIcon(getResources().getDrawable(R.drawable.ic_warning))
                 .setTitle(getResources().getString(R.string.title_logout_confirm))
                 .setMessage(getResources().getString(R.string.warning_logout_confirm))
-                .setPositiveButton(getString(R.string.general_text_yes), dialogYesClickListener())
-                .setNegativeButton(getString(R.string.general_text_no), null)
+                .setPositiveButton(getString(R.string.general_yes), dialogYesClickListener())
+                .setNegativeButton(getString(R.string.general_no), null)
                 .create()
                 .show();
     }

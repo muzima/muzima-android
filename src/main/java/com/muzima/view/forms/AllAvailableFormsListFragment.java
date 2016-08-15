@@ -219,7 +219,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
                     if (patientDataExistsWithSelectedForms()) {
                         AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
                         alertDialog.setMessage((getActivity().getApplicationContext())
-                                        .getString(R.string.error_already_exists_selected_forms_with_patient_data)
+                                        .getString(R.string.error_selected_forms_with_patient_data_exists)
                         );
                         alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
                             @Override

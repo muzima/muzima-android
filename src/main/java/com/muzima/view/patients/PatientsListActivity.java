@@ -160,7 +160,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 .setCancelable(true)
                 .setIcon(getResources().getDrawable(R.drawable.ic_warning))
                 .setTitle(getResources().getString(R.string.title_logout_confirm))
-                .setMessage(getResources().getString(R.string.confirmation_patient_id_exists))
+                .setMessage(getResources().getString(R.string.confirm_patient_id_exists))
                 .setPositiveButton("Yes", yesClickListener())
                 .setNegativeButton("No", noClickListener()).create().show();
 

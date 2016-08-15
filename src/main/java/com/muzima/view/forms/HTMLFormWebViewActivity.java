@@ -263,8 +263,8 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                 .setIcon(getResources().getDrawable(R.drawable.ic_warning))
                 .setTitle(getResources().getString(R.string.warning_caution_text))
                 .setMessage(getResources().getString(R.string.warning_form_close))
-                .setPositiveButton(getString(R.string.general_text_yes), positiveClickListener())
-                .setNegativeButton(getString(R.string.general_text_no), null)
+                .setPositiveButton(getString(R.string.general_yes), positiveClickListener())
+                .setNegativeButton(getString(R.string.general_no), null)
                 .create()
                 .show();
     }
@@ -285,7 +285,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                 .setIcon(getResources().getDrawable(R.drawable.ic_warning))
                 .setTitle(getResources().getString(R.string.title_form_data_already_exisis))
                 .setMessage(getResources().getString(R.string.warning_form_data_already_exisis))
-                .setNegativeButton(getString(R.string.general_text_ok), null)
+                .setNegativeButton(getString(R.string.general_ok), null)
                 .create()
                 .show();
     }
