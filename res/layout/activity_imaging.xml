@@ -26,7 +26,7 @@
                     android:layout_height="150dp"
                     android:adjustViewBounds="true"
                     android:background="@drawable/pic_preview_border"
-                    android:contentDescription="@string/preview_media"
+                    android:contentDescription="@string/title_media_preview"
                     android:scaleType="fitXY"
                     android:src="@drawable/user_pic"/>
 
@@ -34,7 +34,7 @@
                     android:id="@+id/imageCaption"
                     style="@style/CaptionEditText"
                     android:visibility="gone"
-                    android:hint="@string/image_caption"/>
+                    android:hint="@string/title_image_caption"/>
         </LinearLayout>
     </ScrollView>
 
@@ -62,7 +62,7 @@
                     android:background="@drawable/sel_button_round"
                     android:padding="11dp"
                     android:layout_marginRight="2dp"
-                    android:text="@string/accept"
+                    android:text="@string/general_accept"
                     android:textColor="@android:color/white"
                     android:onClick="acceptImage"/>
 
@@ -74,7 +74,7 @@
                     android:background="@drawable/sel_button_round"
                     android:padding="11dp"
                     android:layout_marginLeft="2dp"
-                    android:text="@string/cancel"
+                    android:text="@string/general_cancel"
                     android:textColor="@android:color/white"
                     android:onClick="rejectImage"/>
         </LinearLayout>
@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:padding="11dp"
                     android:layout_marginRight="2dp"
-                    android:text="@string/capture_image"
+                    android:text="@string/title_image_capture"
                     android:textColor="@android:color/white"
                     android:background="@drawable/sel_button_round"
                     style="@style/Button"
@@ -107,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:padding="11dp"
                     android:layout_marginLeft="2dp"
-                    android:text="@string/choose_image"
+                    android:text="@string/title_image_choose"
                     android:textColor="@android:color/white"
                     android:background="@drawable/sel_button_round"
                     style="@style/Button"
