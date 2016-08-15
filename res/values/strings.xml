@@ -3,19 +3,20 @@
     <string name="app_name">mUzima</string>
 
     <string name="confirm_duplicate_form_data_save">Save Duplicate Form Data</string>
+
     <string name="confirm_patient_id_exists">Does the patient already have existing ID?</string>
 
     <string name="default_auto_save_interval">2</string>
 
     <string name="error_forms_with_patient_data_exists">There is existing form data.
         Finish Incomplete data and sync Complete data to Server first before syncing form templates.</string>
+    <string name="error_selected_forms_with_patient_data_exists">There is existing form data for selected form(s).
+        Finish Incomplete data and sync Complete data to Server first before downloading the forms.</string>
     <string name="error_provider_not_set">You do not have provider rights or your provider data is not downloaded, please use add provider option.</string>
     <string name="error_request_already_fetching_forms">Already fetching forms, ignored the request</string>
     <string name="error_request_already_uploading_forms">Already uploading forms, ignored the request</string>
     <string name="error_request_connection_not_found">No connection found, please connect your device and try again</string>
     <string name="error_request_unallowed_while_syncing">Action not allowed while sync is in progress</string>
-    <string name="error_selected_forms_with_patient_data_exists">There is existing form data for selected form(s).
-        Finish Incomplete data and sync Complete data to Server first before downloading the forms.</string>
     <string name="error_wizard_interrupted">Wizard was interrupted, please logout and run the wizard again.</string>
 
     <string name="general_accept_text">Accept</string>
@@ -24,9 +25,9 @@
     <string name="general_cohorts">Cohorts</string>
     <string name="general_encounters">Encounters</string>
     <string name="general_forms">Forms</string>
-    <string name="general_no">No</string>
     <string name="general_notices">Notices</string>
     <string name="general_observations">Observations</string>
+    <string name="general_no">No</string>
     <string name="general_ok">Ok</string>
     <string name="general_yes">Yes</string>
 
@@ -165,7 +166,6 @@
 
     <string name="preference_add_provider_desc">You can add provider(s) to display in your forms.</string>
     <string name="preference_add_provider_title">Add provider(s)</string>
-    <string name="preference_auto_save_interval">autoSaveIntervalPreference</string>
     <string name="preference_auto_save_interval_desc">Enter the value in minutes</string>
     <string name="preference_auto_save_interval_title">Automatic form save interval</string>
     <string name="preference_category_cohorts">Cohort Settings</string>
@@ -174,31 +174,22 @@
     <string name="preference_category_provider">Provider Settings</string>
     <string name="preference_category_provider_location">Provider/Location Settings</string>
     <string name="preference_cohort_desc">You can add multiple cohort prefixes to restrict the cohort downloads.</string>
-    <string name="preference_cohort_prefix">cohortPrefixesPreference</string>
     <string name="preference_cohort_title">Add cohort prefixes</string>
     <string name="preference_cohorts_prefix_desc">Enter cohort prefixes</string>
     <string name="preference_disclaimer">disclaimer</string>
     <string name="preference_duplicate_form_data_enable_title">Duplicate form data warning</string>
-    <string name="preference_duplicate_form_data_key">duplicateFormDataPreference</string>
     <string name="preference_duplicate_form_data_warning_enable_hint">Enable warning when duplicate form data for same client with same encounter date is being saved</string>
-    <string name="preference_encounter_provider_key">encounterProviderPreference</string>
     <string name="preference_encounter_provider_title">Default encounter provider</string>
-    <string name="preference_font_size">font_size</string>
     <string name="preference_font_size_title">Font size</string>
-    <string name="preference_password">passwordPreference</string>
     <string name="preference_password_desc">Enter the OpenMRS password</string>
     <string name="preference_password_title">Password</string>
     <string name="preference_provider_default_user">Logged-in user as default encounter form provider</string>
-    <string name="preference_real_time_sync">realTimeSyncPreference</string>
     <string name="preference_real_time_sync_summary">Enable real time synchronization of complete form data</string>
     <string name="preference_real_time_sync_title">Real time sync</string>
-    <string name="preference_server">serverPreference</string>
     <string name="preference_server_desc">Enter the OpenMRS Server</string>
     <string name="preference_server_title">Server</string>
-    <string name="preference_timeout">timeoutPreference</string>
     <string name="preference_timeout_desc">Enter the value in minutes</string>
     <string name="preference_timeout_title">Timeout</string>
-    <string name="preference_username">usernamePreference</string>
     <string name="preference_username_desc">Enter the OpenMRS username</string>
     <string name="preference_username_title">Username</string>
 

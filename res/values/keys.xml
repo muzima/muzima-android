@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="preference_auto_save_interval">autoSaveIntervalPreference</string>
+    <string name="preference_cohort_prefix">cohortPrefixesPreference</string>
+    <string name="preference_duplicate_form_data_key">duplicateFormDataPreference</string>
+    <string name="preference_encounter_provider_key">encounterProviderPreference</string>
+    <string name="preference_font_size">font_size</string>
+    <string name="preference_password">passwordPreference</string>
+    <string name="preference_real_time_sync">realTimeSyncPreference</string>
+    <string name="preference_server">serverPreference</string>
+    <string name="preference_timeout">timeoutPreference</string>
+    <string name="preference_username">usernamePreference</string>
+</resources>
