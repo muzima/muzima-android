@@ -9,7 +9,7 @@
         <ImageView
                 android:id="@+id/logo"
                 style="@style/LoginActivityLogo"
-                android:contentDescription="@string/logo_alt_text"/>
+                android:contentDescription="@string/hint_logo_alt_text"/>
 
         <TextView
                 android:id="@+id/title_login"
@@ -25,7 +25,7 @@
                     android:inputType="textUri"
                     android:text="http://173.255.205.23:8081/openmrs-standalone"
                     android:nextFocusDown="@+id/username"
-                    android:hint="@string/server_hint_text"/>
+                    android:hint="@string/hint_server_text"/>
 
             <View
                     style="@style/LoginInfoLayoutDivider"
@@ -36,13 +36,13 @@
                     style="@style/LoginInfoEditText"
                     android:inputType="textShortMessage"
                     android:nextFocusDown="@+id/password"
-                    android:hint="@string/username_hint_text"/>
+                    android:hint="@string/hint_username_text"/>
 
             <View style="@style/LoginInfoLayoutDivider"/>
 
             <EditText
                     android:id="@+id/password"
-                    android:hint="@string/password_hint_text"
+                    android:hint="@string/hint_password_text"
                     style="@style/LoginInfoEditText"
                     android:nextFocusDown="@+id/login"
                     android:inputType="textPassword"/>
@@ -54,7 +54,7 @@
             <CheckBox android:id="@+id/update_password"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
-                      android:text="@string/new_password"
+                      android:text="@string/hint_password_change"
                       android:textSize="14sp"
                       android:onClick="onUpdatePasswordCheckboxClicked"/>
 

@@ -261,10 +261,10 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         new AlertDialog.Builder(HTMLFormWebViewActivity.this)
                 .setCancelable(true)
                 .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                .setTitle(getResources().getString(R.string.caution))
-                .setMessage(getResources().getString(R.string.exit_form_message))
-                .setPositiveButton(getString(R.string.yes_button_label), positiveClickListener())
-                .setNegativeButton(getString(R.string.no_button_label), null)
+                .setTitle(getResources().getString(R.string.warning_caution_text))
+                .setMessage(getResources().getString(R.string.warning_form_close))
+                .setPositiveButton(getString(R.string.general_yes), positiveClickListener())
+                .setNegativeButton(getString(R.string.general_no), null)
                 .create()
                 .show();
     }
@@ -272,10 +272,10 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         new AlertDialog.Builder(HTMLFormWebViewActivity.this)
                 .setCancelable(true)
                 .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                .setTitle(getResources().getString(R.string.already_exists_form_title))
-                .setMessage(getResources().getString(R.string.already_exists_form_message))
-                .setPositiveButton(getString(R.string.duplicate_form_button_label), duplicateFormDataClickListener(saveType))
-                .setNegativeButton(getString(R.string.cancel), null)
+                .setTitle(getResources().getString(R.string.title_form_data_already_exisis))
+                .setMessage(getResources().getString(R.string.warning_form_data_already_exisis))
+                .setPositiveButton(getString(R.string.confirm_duplicate_form_data_save), duplicateFormDataClickListener(saveType))
+                .setNegativeButton(getString(R.string.general_cancel), null)
                 .create()
                 .show();
     }
@@ -283,9 +283,9 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         new AlertDialog.Builder(HTMLFormWebViewActivity.this)
                 .setCancelable(true)
                 .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                .setTitle(getResources().getString(R.string.already_exists_form_title))
-                .setMessage(getResources().getString(R.string.already_exists_form_message))
-                .setNegativeButton(getString(R.string.alert_Ok), null)
+                .setTitle(getResources().getString(R.string.title_form_data_already_exisis))
+                .setMessage(getResources().getString(R.string.warning_form_data_already_exisis))
+                .setNegativeButton(getString(R.string.general_ok), null)
                 .create()
                 .show();
     }

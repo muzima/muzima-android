@@ -31,8 +31,8 @@ public class IncompleteFormsListFragment extends FormsFragmentWithSectionedListA
     public void onCreate(Bundle savedInstanceState) {
         listAdapter = new IncompleteFormsAdapter(getActivity(), R.layout.item_forms_list_selectable, formController);
         ((IncompleteFormsAdapter)listAdapter).setMuzimaClickListener(this);
-        noDataMsg = getActivity().getResources().getString(R.string.no_incomplete_form_msg);
-        noDataTip = getActivity().getResources().getString(R.string.no_incomplete_form_tip);
+        noDataMsg = getActivity().getResources().getString(R.string.info_incomplete_form_unvailable);
+        noDataTip = getActivity().getResources().getString(R.string.hint_incomplete_form_unavailable);
 
         if (actionModeActive) {
             actionMode = getSherlockActivity().startActionMode(new DeleteFormsActionModeCallback());

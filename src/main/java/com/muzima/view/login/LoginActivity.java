@@ -97,8 +97,8 @@ public class LoginActivity extends Activity {
             builder
                     .setCancelable(true)
                     .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                    .setTitle(getResources().getString(R.string.session_timed_out_header))
-                    .setMessage(getResources().getString(R.string.session_timed_out_msg))
+                    .setTitle(getResources().getString(R.string.title_session_time_out))
+                    .setMessage(getResources().getString(R.string.info_session_time_out))
                     .setPositiveButton("Ok", null).show();
         }
     }
@@ -123,7 +123,7 @@ public class LoginActivity extends Activity {
         String versionCode = "";
         try {
             versionCode = String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
-            versionText = String.format(getResources().getString(R.string.version), versionCode);
+            versionText = String.format(getResources().getString(R.string.info_application_version), versionCode);
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, "Unable to read application version.", e);
         }

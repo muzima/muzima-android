@@ -12,13 +12,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.TextView;
 import com.muzima.R;
 import com.muzima.adapters.notification.PatientNotificationsListAdapter;
 import com.muzima.api.model.Notification;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.NotificationController;
-import com.muzima.utils.Fonts;
 import com.muzima.view.patients.PatientSummaryActivity;
 
 public class PatientsNotificationsListFragment extends NotificationListFragment {
@@ -34,8 +32,8 @@ public class PatientsNotificationsListFragment extends NotificationListFragment 
         if (listAdapter == null) {
             listAdapter = new PatientNotificationsListAdapter(getActivity(), R.layout.item_notifications_list, notificationController);
         }
-        noDataMsg = getActivity().getResources().getString(R.string.no_notification_available);
-        noDataTip = getActivity().getResources().getString(R.string.no_notification_available_tip);
+        noDataMsg = getActivity().getResources().getString(R.string.info_notifications_unavailable);
+        noDataTip = getActivity().getResources().getString(R.string.hint_notifications_sync);
         super.onCreate(savedInstanceState);
     }
 
