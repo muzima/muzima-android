@@ -80,7 +80,7 @@
                 android:name=".view.preferences.ProviderPreferenceActivity"
                 android:theme="@style/PreferencesTheme"
                 android:configChanges="orientation|screenSize"
-                android:label="@string/title_activity_provider_pref"
+                android:label="@string/title_activity_provider"
                 android:parentActivityName="com.muzima.view.preferences.SettingsActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -89,7 +89,7 @@
         <activity
                 android:name=".view.provider.ProviderListActivity"
                 android:configChanges="orientation|screenSize"
-                android:label="@string/title_activity_provider_pref">
+                android:label="@string/title_activity_provider">
         </activity>
         <activity
                 android:name=".view.preferences.CohortPreferenceActivity"

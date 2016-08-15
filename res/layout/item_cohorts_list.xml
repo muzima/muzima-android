@@ -19,5 +19,5 @@
             android:layout_gravity="top|right"
             android:src="@drawable/ic_action_important"
             android:visibility="gone"
-            android:contentDescription="@string/downloaded_image"/>
+            android:contentDescription="@string/info_downloaded_image"/>
 </com.muzima.view.CheckedLinearLayout>

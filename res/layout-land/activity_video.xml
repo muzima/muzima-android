@@ -28,7 +28,7 @@
                 android:layout_gravity="center|center_vertical"
                 android:adjustViewBounds="true"
                 android:background="@drawable/pic_preview_border"
-                android:contentDescription="@string/preview_media"
+                android:contentDescription="@string/title_media_preview"
                 android:scaleType="fitXY"
                 android:src="@drawable/user_pic"/>
             
@@ -39,7 +39,7 @@
                 android:layout_gravity="center|center_vertical"
                 android:adjustViewBounds="true"
                 android:background="@drawable/pic_preview_border"
-                android:contentDescription="@string/preview_media"
+                android:contentDescription="@string/title_media_preview"
                 android:onClick="playVideo"
                 android:scaleType="fitXY"
                 android:src="@android:drawable/ic_media_play"/>
@@ -50,7 +50,7 @@
 		        android:id="@+id/noVideoMessage"
 		        style="@style/LoginActivityHeader"
 		        android:gravity="center|center_vertical"
-		        android:text="@string/record_video_prompt"/>
+		        android:text="@string/hint_video_record"/>
     </LinearLayout>
 
     <LinearLayout
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:gravity="left"
-            android:hint="@string/video_caption"
+            android:hint="@string/title_video_caption"
             android:visibility="gone" >
 
             <requestFocus />
@@ -96,7 +96,7 @@
             android:background="@drawable/sel_button_round"
             android:onClick="acceptVideo"
             android:padding="11dp"
-            android:text="@string/accept"
+            android:text="@string/general_accept"
             android:textColor="@android:color/white" />
 
         <Button
@@ -108,7 +108,7 @@
             android:background="@drawable/sel_button_round"
             android:onClick="rejectVideo"
             android:padding="11dp"
-            android:text="@string/cancel"
+            android:text="@string/general_cancel"
             android:textColor="@android:color/white" />
     </LinearLayout>
 
@@ -130,7 +130,7 @@
             android:background="@drawable/sel_button_round"
             android:onClick="recordVideo"
             android:padding="11dp"
-            android:text="@string/record_video"
+            android:text="@string/title_video_record"
             android:textColor="@android:color/white" />
 
         <Button
@@ -142,7 +142,7 @@
             android:background="@drawable/sel_button_round"
             android:onClick="chooseVideo"
             android:padding="11dp"
-            android:text="@string/choose_video"
+            android:text="@string/title_video_choose"
             android:textColor="@android:color/white" />
     </LinearLayout>
 

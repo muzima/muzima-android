@@ -10,7 +10,7 @@
         <LinearLayout style="@style/NotClickableSummaryItem">
             <TextView
                     style="@style/SummaryHeader"
-                    android:text="@string/wizard_disclaimer_header"/>
+                    android:text="@string/title_disclaimer"/>
             <com.muzima.view.custom.ScrollViewWithDetection
                     android:id="@+id/disclaimer_scroller"
                     android:background="@color/primary_black"

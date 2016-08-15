@@ -102,10 +102,10 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         noDataView = findViewById(R.id.no_data_layout);
 
         TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
-        noDataMsgTextView.setText(getResources().getText(R.string.no_clients_matched_remotely));
+        noDataMsgTextView.setText(getResources().getText(R.string.info_clients_remote_search_unmatched));
 
         TextView noDataTipTextView = (TextView) findViewById(R.id.no_data_tip);
-        noDataTipTextView.setText(R.string.no_clients_matched_tip_remotely);
+        noDataTipTextView.setText(R.string.hint_clients_remote_search_unmatched);
 
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
         noDataTipTextView.setTypeface(Fonts.roboto_light(this));

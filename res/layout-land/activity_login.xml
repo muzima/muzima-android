@@ -26,7 +26,7 @@
                         android:id="@+id/serverUrl"
                         style="@style/LoginInfoEditText"
                         android:inputType="textUri"
-                        android:hint="@string/server_hint_text"
+                        android:hint="@string/hint_server_text"
                         />
 
                 <View
@@ -35,7 +35,7 @@
                 <EditText
                         android:id="@+id/username"
                         style="@style/LoginInfoEditText"
-                        android:hint="@string/username_hint_text"
+                        android:hint="@string/hint_username_text"
                         />
 
                 <View
@@ -44,7 +44,7 @@
                 <EditText
                         android:id="@+id/password"
                         style="@style/LoginInfoEditText"
-                        android:hint="@string/password_hint_text"
+                        android:hint="@string/hint_password_text"
                         android:inputType="textPassword"/>
 
             </LinearLayout>
@@ -53,7 +53,7 @@
                 <CheckBox android:id="@+id/update_password"
                           android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
-                          android:text="@string/new_password"
+                          android:text="@string/hint_password_change"
                           android:textSize="14sp"
                           android:onClick="onUpdatePasswordCheckboxClicked"/>
 

@@ -159,8 +159,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         builder
                 .setCancelable(true)
                 .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                .setTitle(getResources().getString(R.string.confirm))
-                .setMessage(getResources().getString(R.string.patient_registration_id_card_question))
+                .setTitle(getResources().getString(R.string.title_logout_confirm))
+                .setMessage(getResources().getString(R.string.confirm_patient_id_exists))
                 .setPositiveButton("Yes", yesClickListener())
                 .setNegativeButton("No", noClickListener()).create().show();
 
@@ -225,10 +225,10 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         noDataView = findViewById(R.id.no_data_layout);
 
         TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
-        noDataMsgTextView.setText(getResources().getText(R.string.no_clients_matched_locally));
+        noDataMsgTextView.setText(getResources().getText(R.string.info_clients_local_search_unmatched));
 
         TextView noDataTipTextView = (TextView) findViewById(R.id.no_data_tip);
-        noDataTipTextView.setText(R.string.no_clients_matched_tip_locally);
+        noDataTipTextView.setText(R.string.hint_clients_local_search_unmatched);
 
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
         noDataTipTextView.setTypeface(Fonts.roboto_light(this));
