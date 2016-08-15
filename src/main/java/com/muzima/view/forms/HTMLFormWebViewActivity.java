@@ -275,7 +275,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                 .setTitle(getResources().getString(R.string.title_form_data_already_exisis))
                 .setMessage(getResources().getString(R.string.warning_form_data_already_exisis))
                 .setPositiveButton(getString(R.string.confirm_duplicate_form_data_save), duplicateFormDataClickListener(saveType))
-                .setNegativeButton(getString(R.string.general_cancel_text), null)
+                .setNegativeButton(getString(R.string.general_cancel), null)
                 .create()
                 .show();
     }

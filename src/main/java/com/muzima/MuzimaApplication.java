@@ -71,7 +71,7 @@ import static com.muzima.view.preferences.MuzimaTimer.getTimer;
         resDialogIcon = android.R.drawable.ic_dialog_info,
         resDialogTitle = R.string.title_crash_dialog,
         resDialogCommentPrompt = R.string.hint_crash_dialog_comment_prompt,
-        resDialogOkToast = R.string.info_crash_dialog_ok_click
+        resDialogOkToast = R.string.general_thank_you
 )
 
 

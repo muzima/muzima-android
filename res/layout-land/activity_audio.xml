@@ -96,7 +96,7 @@
             android:background="@drawable/sel_button_round"
             android:onClick="acceptAudio"
             android:padding="11dp"
-            android:text="@string/general_accept_text"
+            android:text="@string/general_accept"
             android:textColor="@android:color/white" />
 
         <Button
@@ -108,7 +108,7 @@
             android:background="@drawable/sel_button_round"
             android:onClick="rejectAudio"
             android:padding="11dp"
-            android:text="@string/general_cancel_text"
+            android:text="@string/general_cancel"
             android:textColor="@android:color/white" />
     </LinearLayout>
 
