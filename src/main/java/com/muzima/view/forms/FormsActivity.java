@@ -158,7 +158,7 @@ public class FormsActivity extends FormsActivityBase {
                 if (hasFormsWithData()) {
                     AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                     alertDialog.setMessage((getApplicationContext())
-                                    .getString(R.string.error_already_exists_forms_with_patient_data)
+                                    .getString(R.string.error_forms_with_patient_data_exists)
                     );
                     alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
                         @Override
