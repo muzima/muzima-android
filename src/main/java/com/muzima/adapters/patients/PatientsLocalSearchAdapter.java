@@ -13,17 +13,11 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import com.muzima.MuzimaApplication;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
-import com.muzima.api.model.User;
-import com.muzima.controller.NotificationController;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.Constants;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
@@ -96,13 +90,35 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
 
             String cohortUuid = params[0];
             try {
+                int pageSize = Constants.PATIENT_LOAD_PAGE_SIZE;
                 if (cohortUuid != null) {
-                    patients = patientController.getPatients(cohortUuid);
-                    publishProgress(patients);
+                    int patientCount = patientController.countAllPatients(cohortUuid);
+                    if(patientCount <= pageSize){
+                        patients = patientController.getPatients(cohortUuid);
+                    } else {
+                        int pages = new Double(Math.ceil(patientCount / pageSize)).intValue();
+                        List<Patient> temp = null;
+                        for (int page = 1; page <= pages; page++) {
+                            if(!isCancelled()) {
+                                if (patients == null) {
+                                    patients = patientController.getPatients(cohortUuid, page, pageSize);
+                                    if (patients != null) {
+                                        publishProgress(patients);
+                                    }
+                                } else {
+                                    temp = patientController.getPatients(cohortUuid, page, pageSize);
+                                    if (temp != null) {
+                                        patients.addAll(temp);
+                                        publishProgress(temp);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                 } else {
-                    int pageSize = 10;
-                    int patientCount = patientController.getTotalPatientsCount();
-                    if(patientCount <= 10){
+                    int patientCount = patientController.countAllPatients();
+                    if(patientCount <= pageSize){
                         patients = patientController.getAllPatients();
                     } else {
                         int pages = new Double(Math.ceil(patientCount / pageSize)).intValue();
@@ -121,6 +137,8 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
                                         publishProgress(temp);
                                     }
                                 }
+                            } else {
+                                break;
                             }
                         }
                     }

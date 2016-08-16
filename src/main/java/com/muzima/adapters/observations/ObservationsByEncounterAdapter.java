@@ -60,19 +60,17 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
 
     @Override
     public void reloadData() {
-        if(backgroundQueryTask != null){
-            backgroundQueryTask.cancel(true);
-        }
-        backgroundQueryTask = new ObservationsByEncounterBackgroundTask(this,
+        cancelRunningBackgroundQueryTask();
+        AsyncTask<Void,?,?> backgroundQueryTask = new ObservationsByEncounterBackgroundTask(this,
                 new EncountersByPatient(encounterController,observationController, patientUuid)).execute();
+        setRunningBackgroundQueryTask(backgroundQueryTask);
     }
 
     public void search(String query) {
-        if(backgroundQueryTask != null){
-            backgroundQueryTask.cancel(true);
-        }
-        backgroundQueryTask = new ObservationsByEncounterBackgroundTask(this,
+        cancelRunningBackgroundQueryTask();
+        AsyncTask<Void,?,?> backgroundQueryTask = new ObservationsByEncounterBackgroundTask(this,
                 new EncountersBySearch(encounterController,observationController, patientUuid, query)).execute();
+        setRunningBackgroundQueryTask(backgroundQueryTask);
     }
 
     protected class ObservationsByEncounterViewHolder extends ViewHolder {

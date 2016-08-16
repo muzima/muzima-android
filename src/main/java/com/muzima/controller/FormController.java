@@ -471,11 +471,11 @@ public class FormController {
         return completePatientForms;
     }
 
-    public int getAllIncompleteFormsSize() throws FormFetchException {
+    public int countAllIncompleteForms() throws FormFetchException {
         return getAllIncompleteFormsWithPatientData().size();
     }
 
-    public int getAllCompleteFormsSize() throws FormFetchException {
+    public int countAllCompleteForms() throws FormFetchException {
         return getAllCompleteFormsWithPatientData().size();
     }
 

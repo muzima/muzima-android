@@ -37,7 +37,6 @@ public class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Encou
 
     @Override
     protected Encounters doInBackground(Void... params) {
-        //observationsByEncounterAdapter.clear();
         Encounters encountersWithObservations = null;
         Encounters temp = null;
         try {
@@ -54,6 +53,8 @@ public class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Encou
                         }
                         publishProgress(temp);
                     }
+                } else {
+                    break;
                 }
             }
         } catch (ObservationController.LoadObservationException e) {

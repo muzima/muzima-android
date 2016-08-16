@@ -42,15 +42,19 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
         try {
             List<Concept> concepts = conceptAction.getConcepts();
             for (Concept concept : concepts) {
-                temp = conceptAction.get(concept);
-                if(temp != null){
-                    temp.sortByDate();
-                    if(conceptsWithObservations == null){
-                        conceptsWithObservations = temp;
-                    } else {
-                        conceptsWithObservations.addAll(temp);
+                if(!isCancelled()) {
+                    temp = conceptAction.get(concept);
+                    if (temp != null) {
+                        temp.sortByDate();
+                        if (conceptsWithObservations == null) {
+                            conceptsWithObservations = temp;
+                        } else {
+                            conceptsWithObservations.addAll(temp);
+                        }
+                        publishProgress(temp);
                     }
-                    publishProgress(temp);
+                } else {
+                    break;
                 }
             }
         } catch (ObservationController.LoadObservationException e) {

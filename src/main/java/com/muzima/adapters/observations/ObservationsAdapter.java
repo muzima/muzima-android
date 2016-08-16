@@ -33,7 +33,7 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
     protected EncounterController encounterController;
     protected ObservationController observationController;
     protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
-    protected AsyncTask<?, ?, ?> backgroundQueryTask;
+    private AsyncTask<?, ?, ?> backgroundQueryTask;
 
     public BackgroundListQueryTaskListener getBackgroundListQueryTaskListener() {
         return backgroundListQueryTaskListener;
@@ -52,6 +52,16 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
 
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
             this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
+    }
+
+    public void cancelRunningBackgroundQueryTask(){
+        if(backgroundQueryTask != null){
+            backgroundQueryTask.cancel(true);
+        }
+    }
+
+    protected void setRunningBackgroundQueryTask(AsyncTask<?,?,?> backgroundQueryTask){
+        this.backgroundQueryTask = backgroundQueryTask;
     }
 
     protected abstract class ViewHolder{

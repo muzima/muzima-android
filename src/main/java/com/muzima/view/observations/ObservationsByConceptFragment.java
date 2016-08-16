@@ -53,4 +53,10 @@ public class ObservationsByConceptFragment extends ObservationsListFragment {
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
     }
 
+    @Override
+    public void onQueryTaskCancelled(){
+        ObservationsByConceptAdapter observationsByConceptAdapter = ((ObservationsByConceptAdapter)listAdapter);
+        observationsByConceptAdapter.cancelRunningBackgroundQueryTask();
+    }
+
 }

@@ -50,14 +50,14 @@ public class PatientController {
             throw new PatientLoadException(e);
         }
     }
-/*
-    public List<String> getPatientsUuids(String cohortId) throws PatientLoadException {
+
+    public List<Patient> getPatients(String cohortId,int page, int pageSize) throws PatientLoadException {
         try {
-            return patientService.getPatientsUuids(cohortId);
+            return patientService.getAllPatients(cohortId, page,pageSize);
         } catch (IOException e) {
             throw new PatientLoadException(e);
         }
-    }*/
+    }
 
     public List<Patient> getAllPatients() throws PatientLoadException {
         try {
@@ -75,9 +75,17 @@ public class PatientController {
         }
     }
 
-    public int getTotalPatientsCount() throws PatientLoadException {
+    public int countAllPatients() throws PatientLoadException {
         try {
             return patientService.countAllPatients();
+        } catch (IOException e) {
+            throw new PatientLoadException(e);
+        }
+    }
+
+    public int countAllPatients(String cohortId) throws PatientLoadException {
+        try {
+            return patientService.countAllPatients(cohortId);
         } catch (IOException e) {
             throw new PatientLoadException(e);
         }

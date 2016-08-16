@@ -176,11 +176,11 @@ public class MainActivity extends BroadcastListenerActivity {
             FormController formController = muzimaApplication.getFormController();
             NotificationController notificationController = muzimaApplication.getNotificationController();
             try {
-                homeActivityMetadata.totalCohorts = cohortController.getTotalCohortsCount();
-                homeActivityMetadata.syncedCohorts = cohortController.getSyncedCohortsCount();
-                homeActivityMetadata.syncedPatients = patientController.getTotalPatientsCount();
-                homeActivityMetadata.incompleteForms = formController.getAllIncompleteFormsSize();
-                homeActivityMetadata.completeAndUnsyncedForms = formController.getAllCompleteFormsSize();
+                homeActivityMetadata.totalCohorts = cohortController.countAllCohorts();
+                homeActivityMetadata.syncedCohorts = cohortController.countSyncedCohorts();
+                homeActivityMetadata.syncedPatients = patientController.countAllPatients();
+                homeActivityMetadata.incompleteForms = formController.countAllIncompleteForms();
+                homeActivityMetadata.completeAndUnsyncedForms = formController.countAllCompleteForms();
 
                 // Notifications
                 User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
