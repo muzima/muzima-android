@@ -47,6 +47,7 @@ import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
+import com.muzima.view.progressdialog.MuzimaProgressDialog;
 
 public class FormTemplateWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
     private MenuItem tagsButton;

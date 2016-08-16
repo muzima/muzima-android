@@ -50,6 +50,14 @@ public class PatientController {
             throw new PatientLoadException(e);
         }
     }
+/*
+    public List<String> getPatientsUuids(String cohortId) throws PatientLoadException {
+        try {
+            return patientService.getPatientsUuids(cohortId);
+        } catch (IOException e) {
+            throw new PatientLoadException(e);
+        }
+    }*/
 
     public List<Patient> getAllPatients() throws PatientLoadException {
         try {

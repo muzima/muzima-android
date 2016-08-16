@@ -8,6 +8,7 @@
 
 package com.muzima.service;
 
+import android.content.Intent;
 import android.util.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.context.Context;
@@ -32,14 +33,15 @@ import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
+import com.muzima.utils.Constants;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.view.progressdialog.ProgressDialogUpdateIntentService;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
@@ -76,7 +78,7 @@ public class MuzimaSyncService {
     }
 
     public int authenticate(String[] credentials){
-       return authenticate(credentials, false);
+        return authenticate(credentials, false);
     }
 
     public int authenticate(String[] credentials, boolean isUpdatePasswordRequired) {
@@ -385,12 +387,31 @@ public class MuzimaSyncService {
         List<Patient> patients;
         try {
             patients = patientController.getPatientsForCohorts(cohortUuids);
-            result = downloadObservationsForPatientsByPatientUUIDs(getPatientUuids(patients),replaceExistingObservation);
+            int patientsTotal = patients.size();
+            int count = 0;
+            for(Patient patient : patients){
+                count++;
+                Log.i(TAG, "Downloading Obs for patient " + count + " of "+ patientsTotal);
+                updateProgressDialog("Downloading Obs for patient " + count + " of "+ patientsTotal);
+                List<String> patientlist = new ArrayList();
+                patientlist.add(patient.getUuid());
+                result = downloadObservationsForPatientsByPatientUUIDs(patientlist,replaceExistingObservation);
+                if(result[0] != SyncStatusConstants.SUCCESS){
+                    Log.e(TAG, "Obs for patient " + count + " of "+ patientsTotal + " not downloaded");
+                    updateProgressDialog("Obs for patient " + count + " of "+ patientsTotal + " not downloaded");
+
+                }
+            }
         } catch (PatientController.PatientLoadException e) {
             Log.e(TAG, "Exception thrown while loading patients.", e);
             result[0] = SyncStatusConstants.LOAD_ERROR;
         }
         return result;
+    }
+    private void updateProgressDialog(String message){
+        Intent progressUpdateIntent = new Intent(muzimaApplication.getApplicationContext(),ProgressDialogUpdateIntentService.class);
+        progressUpdateIntent.putExtra(Constants.ProgressDialogConstants.PROGRESS_UPDATE_MESSAGE, message);
+        muzimaApplication.getApplicationContext().startService(progressUpdateIntent);
     }
 
     private List<List<String>> split(final List<String> strings) {
@@ -485,7 +506,26 @@ public class MuzimaSyncService {
         List<Patient> patients;
         try {
             patients = patientController.getPatientsForCohorts(cohortUuids);
-            result = downloadEncountersForPatientsByPatientUUIDs(getPatientUuids(patients), replaceExistingEncounters);
+
+            int patientsTotal = patients.size();
+            int count = 0;
+
+
+            for(Patient patient : patients){
+                count++;
+                Log.i(TAG, "Downloading Encounters for patient " + count + " of "+ patientsTotal);
+                updateProgressDialog("Downloading Encounters for patient " + count + " of "+ patientsTotal);
+                List<String> patientlist = new ArrayList();
+                patientlist.add(patient.getUuid());
+                result = downloadEncountersForPatientsByPatientUUIDs(patientlist,replaceExistingEncounters);
+                if(result[0] != SyncStatusConstants.SUCCESS){
+                    Log.e(TAG, "Encounters for patient " + count + " of "+ patientsTotal + " not downloaded");
+                    updateProgressDialog("Encounters for patient " + count + " of "+ patientsTotal + " not downloaded");
+                }
+            }
+
+
+
         } catch (PatientController.PatientLoadException e) {
             Log.e(TAG, "Exception thrown while loading patients.", e);
             result[0] = SyncStatusConstants.LOAD_ERROR;
