@@ -213,7 +213,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
         tagsDrawerList.setOnItemClickListener(tagsListAdapter);
         tagsListAdapter.setTagsChangedListener(allAvailableFormsAdapter);
         actionbarDrawerToggle = new ActionBarDrawerToggle(this, mainLayout,
-                R.drawable.ic_labels, R.string.drawer_open, R.string.drawer_close) {
+                R.drawable.ic_labels, R.string.hint_drawer_open, R.string.hint_drawer_close) {
 
             /**
              * Called when a drawer has settled in a completely closed state.

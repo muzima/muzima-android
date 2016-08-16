@@ -67,11 +67,11 @@ import static com.muzima.view.preferences.MuzimaTimer.getTimer;
         formUriBasicAuthLogin = "muzima-reporter",
         formUriBasicAuthPassword = "OMHKOHV8LVfv3c553n6Oqkof",
         mode = ReportingInteractionMode.DIALOG,
-        resDialogText = R.string.crash_dialog_text,
+        resDialogText = R.string.hint_crash_dialog,
         resDialogIcon = android.R.drawable.ic_dialog_info,
-        resDialogTitle = R.string.crash_dialog_title,
-        resDialogCommentPrompt = R.string.crash_dialog_comment_prompt,
-        resDialogOkToast = R.string.crash_dialog_ok_toast
+        resDialogTitle = R.string.title_crash_dialog,
+        resDialogCommentPrompt = R.string.hint_crash_dialog_comment_prompt,
+        resDialogOkToast = R.string.general_thank_you
 )
 
 

@@ -36,7 +36,7 @@
                     android:layout_height="30dp"
                     android:layout_gravity="center|right"
                     android:background="@drawable/list_selector_blue"
-                    android:contentDescription="@string/new_notification_image"
+                    android:contentDescription="@string/info_new_notification"
                     android:visibility="gone"
                     android:src="@drawable/notifications"/>
         </LinearLayout>

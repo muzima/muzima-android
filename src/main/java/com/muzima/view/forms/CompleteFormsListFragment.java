@@ -52,8 +52,8 @@ public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAda
     public void onCreate(Bundle savedInstanceState) {
         listAdapter = new CompleteFormsAdapter(getActivity(), R.layout.item_forms_list, formController);
         ((CompleteFormsAdapter)listAdapter).setMuzimaClickListener(this);
-        noDataMsg = getActivity().getResources().getString(R.string.no_complete_form_msg);
-        noDataTip = getActivity().getResources().getString(R.string.no_complete_form_tip);
+        noDataMsg = getActivity().getResources().getString(R.string.info_complete_form_unavailable);
+        noDataTip = getActivity().getResources().getString(R.string.hint_complete_form_unavailable);
 
         if (actionModeActive) {
             actionMode = getSherlockActivity().startActionMode(new DeleteFormsActionModeCallback());

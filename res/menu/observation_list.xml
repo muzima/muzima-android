@@ -5,12 +5,12 @@
         android:actionViewClass="com.actionbarsherlock.widget.SearchView"
         android:icon="@drawable/ic_search"
         android:showAsAction="always"
-        android:title="@string/client_search"/>
+        android:title="@string/hint_client_search"/>
     <item
             android:id="@+id/action_settings"
             android:orderInCategory="1"
             android:showAsAction="never"
-            android:title="@string/action_settings"/>
+            android:title="@string/menu_settings"/>
     <item
             android:id="@+id/action_help"
             android:orderInCategory="2"
