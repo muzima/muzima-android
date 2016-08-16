@@ -8,13 +8,13 @@
                   android:layout_width="fill_parent"
                   android:orientation="vertical">
         <TextView style="@style/SummaryHeader"
-                  android:text="@string/check_barcode_scanner_header"/>
+                  android:text="@string/title_barcode_scanner_setup"/>
         <TextView android:layout_height="wrap_content"
                   android:layout_gravity="center"
                   android:gravity="center"
                   android:drawablePadding="10dp"
                   android:layout_margin="10dp"
-                  android:text="@string/install_barcode_scanner_description"
+                  android:text="@string/hint_barcode_scanner_setup"
                   android:drawableTop="@drawable/barcode_scanner"
                   android:layout_width="wrap_content"/>
         <Button android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
                 android:id="@+id/install_barcode_btn"
                 style="@style/Button.Next"
                 android:layout_gravity="center"
-                android:text="@string/install_barcode_scanner_btn_text"/>
+                android:text="@string/title_barcode_scanner_check"/>
         <TextView android:layout_height="wrap_content"
                   android:layout_width="wrap_content"
                   android:gravity="center"
@@ -30,7 +30,7 @@
                   android:textColor="@color/primary_blue"
                   android:id="@+id/scanner_already_exists"
                   android:visibility="gone"
-                  android:text="@string/scanner_app_exists_text"/>
+                  android:text="@string/info_scanner_app_exists"/>
     </LinearLayout>
     <LinearLayout style="@style/ButtonRow"
                   android:layout_alignParentBottom="true">

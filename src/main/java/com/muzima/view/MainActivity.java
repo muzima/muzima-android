@@ -53,7 +53,7 @@ public class MainActivity extends BroadcastListenerActivity {
         credentials = new Credentials(this);
         mMainView = getLayoutInflater().inflate(R.layout.activity_dashboard, null);
         setContentView(mMainView);
-        setTitle(R.string.homepage);
+        setTitle(R.string.title_homepage);
         RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext());
         setupActionbar();
     }
@@ -69,7 +69,7 @@ public class MainActivity extends BroadcastListenerActivity {
         if (!new WizardFinishPreferenceService(this).isWizardFinished() ) {
             if(checkIfDisclaimerIsAccepted()){
                 Toast
-                        .makeText(getApplicationContext(), getString(R.string.rerun_wizard_message), Toast.LENGTH_LONG)
+                        .makeText(getApplicationContext(), getString(R.string.error_wizard_interrupted), Toast.LENGTH_LONG)
                         .show();
             }
 
@@ -106,10 +106,10 @@ public class MainActivity extends BroadcastListenerActivity {
         new AlertDialog.Builder(MainActivity.this)
                 .setCancelable(true)
                 .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                .setTitle(getResources().getString(R.string.confirm))
-                .setMessage(getResources().getString(R.string.exit_app_message))
-                .setPositiveButton(getString(R.string.yes_button_label), dialogYesClickListener())
-                .setNegativeButton(getString(R.string.no_button_label), null)
+                .setTitle(getResources().getString(R.string.title_logout_confirm))
+                .setMessage(getResources().getString(R.string.warning_logout_confirm))
+                .setPositiveButton(getString(R.string.general_yes), dialogYesClickListener())
+                .setNegativeButton(getString(R.string.general_no), null)
                 .create()
                 .show();
     }
@@ -222,7 +222,7 @@ public class MainActivity extends BroadcastListenerActivity {
                     + homeActivityMetadata.totalNotifications + " Total");
 
             TextView currentUser = (TextView) findViewById(R.id.currentUser);
-            currentUser.setText(getResources().getString(R.string.currentUser) + " " + credentials.getUserName());
+            currentUser.setText(getResources().getString(R.string.general_welcome) + " " + credentials.getUserName());
         }
     }
 

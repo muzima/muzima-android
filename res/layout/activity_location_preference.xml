@@ -32,7 +32,7 @@
     </ListView>
 
     <TextView android:id="@+id/no_location_added"
-              android:text="@string/no_location_added"
+              android:text="@string/info_locations_unavailable"
               style="@style/NoItemInListView"/>
     <View
             style="@style/DividerLine"

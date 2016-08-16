@@ -8,13 +8,13 @@
                   android:padding="5dp">
         <LinearLayout style="@style/NotClickableSummaryItem">
             <TextView style="@style/SummaryHeader"
-                      android:text="@string/add_concept_prefixes"/>
+                      android:text="@string/title_concept_download"/>
             <TextView
                     android:textColor="@android:color/white"
                     android:textAlignment="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/add_concept_pref_desc">
+                    android:text="@string/hint_concept_pref_add">
             </TextView>
         </LinearLayout>
         <include layout="@layout/activity_concept_preference"/>

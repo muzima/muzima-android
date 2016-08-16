@@ -81,8 +81,8 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
                     builder
                             .setCancelable(true)
                             .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                            .setTitle(getResources().getString(R.string.caution))
-                            .setMessage(getResources().getString(R.string.switch_server_message))
+                            .setTitle(getResources().getString(R.string.warning_caution_text))
+                            .setMessage(getResources().getString(R.string.warning_switch_server))
                             .setPositiveButton("Yes", positiveClickListener())
                             .setNegativeButton("No", null).create().show();
                 }
@@ -139,7 +139,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         registerTextPreferenceChangeHandler(timeoutPreferenceKey, timeoutPreference);
         registerCheckboxPreferenceChangeHandler(realTimeSyncPreferenceKey, realTimeSyncPreference);
 
-        encounterProviderPreferenceKey = getResources().getString(R.string.preference_encounter_provider);
+        encounterProviderPreferenceKey = getResources().getString(R.string.preference_encounter_provider_key);
         encounterProviderPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(encounterProviderPreferenceKey);
         encounterProviderPreference.setSummary(encounterProviderPreference.getSummary());
 
@@ -154,8 +154,8 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
                         builder
                                 .setCancelable(true)
                                 .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                                .setTitle(getResources().getString(R.string.not_a_provider_title))
-                                .setMessage(getResources().getString(R.string.not_a_provider_message))
+                                .setTitle(getResources().getString(R.string.title_provider_not_set_error))
+                                .setMessage(getResources().getString(R.string.error_provider_not_set))
                                 .setPositiveButton("Ok", null).create().show();
                         return false;
                     } else {
@@ -166,7 +166,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
             }
         });
 
-        duplicateFormDataPreferenceKey = getResources().getString(R.string.preference_duplicate_form_data);
+        duplicateFormDataPreferenceKey = getResources().getString(R.string.preference_duplicate_form_data_key);
         duplicateFormDataPreference = (CheckBoxPreference)getPreferenceScreen().findPreference(duplicateFormDataPreferenceKey);
         duplicateFormDataPreference.setSummary(duplicateFormDataPreference.getSummary());
 
