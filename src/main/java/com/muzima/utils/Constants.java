@@ -91,4 +91,8 @@ public class Constants {
         public static final String NOTIFICATION_UNREAD = "unread";
         public static final String RECEIVER_UUID = "receiverUuid";
     }
+    public static class ProgressDialogConstants {
+        public static final String PROGRESS_UPDATE_MESSAGE = "progressUpdateMessage";
+        public static final String PROGRESS_UPDATE_ACTION = "progressUpdateAction";
+    }
 }

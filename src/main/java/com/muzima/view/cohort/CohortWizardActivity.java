@@ -38,7 +38,7 @@ import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.CheckedLinearLayout;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.forms.FormTemplateWizardActivity;
-import com.muzima.view.forms.MuzimaProgressDialog;
+import com.muzima.view.progressdialog.MuzimaProgressDialog;
 
 import java.io.IOException;
 import java.util.List;
