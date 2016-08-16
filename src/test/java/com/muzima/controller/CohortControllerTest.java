@@ -316,7 +316,7 @@ public class CohortControllerTest {
     @Test
     public void getTotalCohortsCount_shouldReturnEmptyListOfNoCohortsHaveBeenSynced() throws IOException, ParseException, CohortController.CohortFetchException {
         when(cohortService.countAllCohorts()).thenReturn(2);
-        assertThat(controller.getTotalCohortsCount(), is(2));
+        assertThat(controller.countAllCohorts(), is(2));
     }
 
 
@@ -327,7 +327,7 @@ public class CohortControllerTest {
 
         when(cohortService.getAllCohorts()).thenReturn(cohorts);
         when(cohortService.countCohortMembers(anyString())).thenReturn(2);
-        assertThat(controller.getSyncedCohortsCount(), is(1));
+        assertThat(controller.countSyncedCohorts(), is(1));
     }
 
     @Test
@@ -336,7 +336,7 @@ public class CohortControllerTest {
 
         when(cohortService.getAllCohorts()).thenReturn(cohorts);
 
-        assertThat(controller.getSyncedCohortsCount(), is(0));
+        assertThat(controller.countSyncedCohorts(), is(0));
     }
 
     @Test

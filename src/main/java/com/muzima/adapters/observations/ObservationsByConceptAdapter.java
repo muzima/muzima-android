@@ -8,6 +8,7 @@
 
 package com.muzima.adapters.observations;
 
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,19 +58,18 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
 
     @Override
     public void reloadData() {
-        if(backgroundQueryTask != null){
-            backgroundQueryTask.cancel(true);
-        }
-        backgroundQueryTask = new ObservationsByConceptBackgroundTask(this,
-                new ConceptsByPatient(conceptController, observationController, patientUuid)).execute();
+        cancelRunningBackgroundQueryTask();
+        AsyncTask<Void,?,?> backgroundQueryTask = new ObservationsByConceptBackgroundTask(this,
+                new ConceptsByPatient(conceptController, observationController, patientUuid));
+        backgroundQueryTask.execute();
+        setRunningBackgroundQueryTask(backgroundQueryTask);
     }
 
     public void search(String term) {
-        if(backgroundQueryTask != null){
-            backgroundQueryTask.cancel(true);
-        }
-        backgroundQueryTask = new ObservationsByConceptBackgroundTask(this,
+        cancelRunningBackgroundQueryTask();
+        AsyncTask<Void,?,?> backgroundQueryTask = new ObservationsByConceptBackgroundTask(this,
                 new ConceptsBySearch(conceptController,observationController, patientUuid, term)).execute();
+        setRunningBackgroundQueryTask(backgroundQueryTask);
     }
 
     protected class ObservationsByConceptViewHolder extends ViewHolder{

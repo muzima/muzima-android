@@ -257,6 +257,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         progressBarContainer.setVisibility(INVISIBLE);
     }
 
+    @Override
+    public void onQueryTaskCancelled(){}
+
     public void invokeBarcodeScan() {
         IntentIntegrator scanIntegrator = new IntentIntegrator(this);
 

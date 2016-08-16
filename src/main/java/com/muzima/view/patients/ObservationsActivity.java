@@ -73,4 +73,10 @@ public class ObservationsActivity extends BroadcastListenerActivity {
         searchView.setOnQueryTextListener(observationsPagerAdapter);
         return true;
     }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        observationsPagerAdapter.cancelBackgroundQueryTasks();
+    }
 }

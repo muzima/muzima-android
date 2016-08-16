@@ -79,6 +79,9 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
         progressBarContainer.setVisibility(View.INVISIBLE);
     }
 
+    @Override
+    public void onQueryTaskCancelled(){}
+
     public final class DeleteFormsActionModeCallback implements ActionMode.Callback {
 
         @Override

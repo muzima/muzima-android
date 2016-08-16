@@ -92,4 +92,7 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
     @Override
     public void onQueryTaskFinish(){}
 
+    @Override
+    public void onQueryTaskCancelled(){}
+
 }

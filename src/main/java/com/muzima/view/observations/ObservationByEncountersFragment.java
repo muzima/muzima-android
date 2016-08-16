@@ -44,4 +44,10 @@ public class ObservationByEncountersFragment extends ObservationsListFragment{
     public void onSearchTextChange(String query) {
         ((ObservationsByEncounterAdapter)listAdapter).search(query);
     }
+
+    @Override
+    public void onQueryTaskCancelled(){
+        ObservationsByEncounterAdapter observationsByEncounterAdapter = ((ObservationsByEncounterAdapter)listAdapter);
+        observationsByEncounterAdapter.cancelRunningBackgroundQueryTask();
+    }
 }

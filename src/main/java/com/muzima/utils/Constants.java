@@ -41,6 +41,8 @@ public class Constants {
     public static final String APP_VIDEO_DIR = APP_MEDIA_DIR + "/video";
     public static final String TMP_FILE_PATH = APP_EXTERNAL_DIR_ROOT + "/.cache";
 
+    public static final int PATIENT_LOAD_PAGE_SIZE = 10;
+
     public static class DataSyncServiceConstants {
         public static final String SYNC_TYPE = "sync_type";
         public static final String CREDENTIALS = "credentials";
