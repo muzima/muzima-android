@@ -13,7 +13,6 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -58,7 +57,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
 
     @Override
     public void reloadData() {
-        cancelRunningBackgroundQueryTask();
+        cancelBackgroundQueryTask();
         AsyncTask<Void,?,?> backgroundQueryTask = new ObservationsByConceptBackgroundTask(this,
                 new ConceptsByPatient(conceptController, observationController, patientUuid));
         backgroundQueryTask.execute();
@@ -66,7 +65,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
     }
 
     public void search(String term) {
-        cancelRunningBackgroundQueryTask();
+        cancelBackgroundQueryTask();
         AsyncTask<Void,?,?> backgroundQueryTask = new ObservationsByConceptBackgroundTask(this,
                 new ConceptsBySearch(conceptController,observationController, patientUuid, term)).execute();
         setRunningBackgroundQueryTask(backgroundQueryTask);

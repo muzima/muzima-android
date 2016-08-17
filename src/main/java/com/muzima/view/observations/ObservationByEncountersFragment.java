@@ -48,6 +48,6 @@ public class ObservationByEncountersFragment extends ObservationsListFragment{
     @Override
     public void onQueryTaskCancelled(){
         ObservationsByEncounterAdapter observationsByEncounterAdapter = ((ObservationsByEncounterAdapter)listAdapter);
-        observationsByEncounterAdapter.cancelRunningBackgroundQueryTask();
+        observationsByEncounterAdapter.cancelBackgroundQueryTask();
     }
 }
