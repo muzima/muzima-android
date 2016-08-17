@@ -60,14 +60,14 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
 
     @Override
     public void reloadData() {
-        cancelRunningBackgroundQueryTask();
+        cancelBackgroundQueryTask();
         AsyncTask<Void,?,?> backgroundQueryTask = new ObservationsByEncounterBackgroundTask(this,
                 new EncountersByPatient(encounterController,observationController, patientUuid)).execute();
         setRunningBackgroundQueryTask(backgroundQueryTask);
     }
 
     public void search(String query) {
-        cancelRunningBackgroundQueryTask();
+        cancelBackgroundQueryTask();
         AsyncTask<Void,?,?> backgroundQueryTask = new ObservationsByEncounterBackgroundTask(this,
                 new EncountersBySearch(encounterController,observationController, patientUuid, query)).execute();
         setRunningBackgroundQueryTask(backgroundQueryTask);

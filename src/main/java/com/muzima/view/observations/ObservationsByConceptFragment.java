@@ -56,7 +56,7 @@ public class ObservationsByConceptFragment extends ObservationsListFragment {
     @Override
     public void onQueryTaskCancelled(){
         ObservationsByConceptAdapter observationsByConceptAdapter = ((ObservationsByConceptAdapter)listAdapter);
-        observationsByConceptAdapter.cancelRunningBackgroundQueryTask();
+        observationsByConceptAdapter.cancelBackgroundQueryTask();
     }
 
 }

@@ -46,16 +46,12 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
 
     @Override
     public void reloadData() {
-        if(backgroundQueryTask != null){
-            backgroundQueryTask.cancel(true);
-        }
+        cancelBackgroundTask();
         backgroundQueryTask = new BackgroundQueryTask().execute(cohortId);
     }
 
     public void search(String text) {
-        if(backgroundQueryTask != null){
-            backgroundQueryTask.cancel(true);
-        }
+        cancelBackgroundTask();
         backgroundQueryTask = new BackgroundQueryTask().execute(text, SEARCH);
     }
 
@@ -64,7 +60,9 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
     }
 
     public void cancelBackgroundTask(){
-        backgroundQueryTask.cancel(true);
+        if(backgroundQueryTask != null){
+            backgroundQueryTask.cancel(true);
+        }
     }
 
 
@@ -92,7 +90,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
             try {
                 int pageSize = Constants.PATIENT_LOAD_PAGE_SIZE;
                 if (cohortUuid != null) {
-                    int patientCount = patientController.countAllPatients(cohortUuid);
+                    int patientCount = patientController.countPatients(cohortUuid);
                     if(patientCount <= pageSize){
                         patients = patientController.getPatients(cohortUuid);
                     } else {
@@ -126,12 +124,12 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
                         for (int page = 1; page <= pages; page++) {
                             if(!isCancelled()) {
                                 if (patients == null) {
-                                    patients = patientController.getAllPatients(page, pageSize);
+                                    patients = patientController.getPatients(page, pageSize);
                                     if (patients != null) {
                                         publishProgress(patients);
                                     }
                                 } else {
-                                    temp = patientController.getAllPatients(page, pageSize);
+                                    temp = patientController.getPatients(page, pageSize);
                                     if (temp != null) {
                                         patients.addAll(temp);
                                         publishProgress(temp);

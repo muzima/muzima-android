@@ -54,7 +54,7 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
             this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
     }
 
-    public void cancelRunningBackgroundQueryTask(){
+    public void cancelBackgroundQueryTask(){
         if(backgroundQueryTask != null){
             backgroundQueryTask.cancel(true);
         }
