@@ -143,7 +143,6 @@ public class MuzimaApplication extends Application {
         super.onCreate();
         try {
             ContextFactory.setProperty(Constants.LUCENE_DIRECTORY_PATH, APP_DIR);
-            ContextFactory.setProperty(Constants.RESOURCE_CONFIGURATION_STRING, getConfigurationString());
             muzimaContext = ContextFactory.createContext();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -345,19 +344,6 @@ public class MuzimaApplication extends Application {
         if (currentActivity instanceof HTMLFormWebViewActivity) {
             ((HTMLFormWebViewActivity) currentActivity).stopAutoSaveProcess();
         }
-    }
-
-    private String getConfigurationString() throws IOException {
-        InputStream inputStream = getResources().openRawResource(R.raw.configuration);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-
-        String line;
-        StringBuilder builder = new StringBuilder();
-        while ((line = reader.readLine()) != null) {
-            builder.append(line);
-        }
-        reader.close();
-        return builder.toString();
     }
 
     public boolean isRunningInBackground() {
