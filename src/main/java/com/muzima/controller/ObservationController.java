@@ -153,9 +153,9 @@ public class ObservationController {
         }
     }
 
-    public Encounters getObservationsByPatientAndEncounter(String patientUuid, String encounterUuid) throws LoadObservationException {
+    public Encounters getObservationsByEncounterUuid(String encounterUuid) throws LoadObservationException {
         try {
-            return groupByEncounters(observationService.getObservationsByPatientAndEncounter(patientUuid, encounterUuid));
+            return groupByEncounters(observationService.getObservationsByEncounter(encounterUuid));
         } catch (IOException e) {
             throw new LoadObservationException(e);
         }

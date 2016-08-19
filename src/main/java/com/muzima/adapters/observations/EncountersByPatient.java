@@ -17,23 +17,23 @@ import java.util.List;
 
 public class EncountersByPatient extends EncounterAction {
     private String patientUuid;
-    private ObservationController controller;
+    private ObservationController observationController;
     private EncounterController encounterController;
 
-    public EncountersByPatient(EncounterController encounterController,ObservationController controller, String patientUuid) {
-        this.controller = controller;
+    public EncountersByPatient(EncounterController encounterController,ObservationController observationController, String patientUuid) {
+        this.observationController = observationController;
         this.patientUuid = patientUuid;
         this.encounterController = encounterController;
     }
 
     @Override
     Encounters get() throws ObservationController.LoadObservationException {
-        return  controller.getEncountersWithObservations(patientUuid);
+        return  observationController.getEncountersWithObservations(patientUuid);
     }
 
     @Override
     Encounters get(Encounter encounter) throws ObservationController.LoadObservationException {
-        return controller.getObservationsByPatientAndEncounter(patientUuid,encounter.getUuid());
+        return observationController.getObservationsByEncounterUuid(encounter.getUuid());
     }
 
     @Override
@@ -50,7 +50,7 @@ public class EncountersByPatient extends EncounterAction {
     public String toString() {
         return "EncountersByPatient{" +
                 "patientUuid='" + patientUuid + '\'' +
-                ", controller=" + controller +
+                ", observationController=" + observationController +
                 '}';
     }
 }

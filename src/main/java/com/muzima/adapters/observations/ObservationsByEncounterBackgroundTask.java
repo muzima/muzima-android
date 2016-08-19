@@ -45,6 +45,7 @@ public class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Encou
                 if(!isCancelled()) {
                     temp = encounterAction.get(encounter);
                     if (temp != null) {
+                        System.out.println(temp.size());
                         temp.sortByDate();
                         if (encountersWithObservations == null) {
                             encountersWithObservations = temp;
@@ -76,7 +77,6 @@ public class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Encou
 
     @Override
     protected void onProgressUpdate(Encounters... encountersWithObservations) {
-        System.out.println("Publishing Progress Encounters.... ... " + encountersWithObservations.length);
         if (encountersWithObservations == null) {
             return;
         }
