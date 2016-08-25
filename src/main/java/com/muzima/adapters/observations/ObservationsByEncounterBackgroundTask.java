@@ -45,7 +45,6 @@ public class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Encou
                 if(!isCancelled()) {
                     temp = encounterAction.get(encounter);
                     if (temp != null) {
-                        System.out.println(temp.size());
                         temp.sortByDate();
                         if (encountersWithObservations == null) {
                             encountersWithObservations = temp;

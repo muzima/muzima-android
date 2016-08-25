@@ -9,6 +9,7 @@
 package com.muzima.adapters.observations;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.EncounterWithObservations;
 import com.muzima.search.api.util.StringUtil;
+import com.muzima.utils.BackgroundTaskHelper;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
 
@@ -62,14 +64,16 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
     public void reloadData() {
         cancelBackgroundQueryTask();
         AsyncTask<Void,?,?> backgroundQueryTask = new ObservationsByEncounterBackgroundTask(this,
-                new EncountersByPatient(encounterController,observationController, patientUuid)).execute();
+                new EncountersByPatient(encounterController,observationController, patientUuid));
+        BackgroundTaskHelper.executeInParallel(backgroundQueryTask);
         setRunningBackgroundQueryTask(backgroundQueryTask);
     }
 
     public void search(String query) {
         cancelBackgroundQueryTask();
         AsyncTask<Void,?,?> backgroundQueryTask = new ObservationsByEncounterBackgroundTask(this,
-                new EncountersBySearch(encounterController,observationController, patientUuid, query)).execute();
+                new EncountersBySearch(encounterController,observationController, patientUuid, query));
+        BackgroundTaskHelper.executeInParallel(backgroundQueryTask);
         setRunningBackgroundQueryTask(backgroundQueryTask);
     }
 

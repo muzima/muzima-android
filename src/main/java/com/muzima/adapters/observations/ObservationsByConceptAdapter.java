@@ -9,6 +9,7 @@
 package com.muzima.adapters.observations;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.ConceptWithObservations;
 import com.muzima.search.api.util.StringUtil;
+import com.muzima.utils.BackgroundTaskHelper;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
 
@@ -60,14 +62,15 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         cancelBackgroundQueryTask();
         AsyncTask<Void,?,?> backgroundQueryTask = new ObservationsByConceptBackgroundTask(this,
                 new ConceptsByPatient(conceptController, observationController, patientUuid));
-        backgroundQueryTask.execute();
+        BackgroundTaskHelper.executeInParallel(backgroundQueryTask);
         setRunningBackgroundQueryTask(backgroundQueryTask);
     }
 
     public void search(String term) {
         cancelBackgroundQueryTask();
         AsyncTask<Void,?,?> backgroundQueryTask = new ObservationsByConceptBackgroundTask(this,
-                new ConceptsBySearch(conceptController,observationController, patientUuid, term)).execute();
+                new ConceptsBySearch(conceptController,observationController, patientUuid, term));
+        BackgroundTaskHelper.executeInParallel(backgroundQueryTask);
         setRunningBackgroundQueryTask(backgroundQueryTask);
     }
 
