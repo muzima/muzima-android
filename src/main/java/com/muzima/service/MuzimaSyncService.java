@@ -11,6 +11,7 @@ package com.muzima.service;
 import android.content.Intent;
 import android.util.Log;
 import com.muzima.MuzimaApplication;
+import com.muzima.R;
 import com.muzima.api.context.Context;
 import com.muzima.api.exception.AuthenticationException;
 import com.muzima.api.model.Cohort;
@@ -392,13 +393,13 @@ public class MuzimaSyncService {
             for(Patient patient : patients){
                 count++;
                 Log.i(TAG, "Downloading Obs for patient " + count + " of "+ patientsTotal);
-                updateProgressDialog("Downloading Obs for patient " + count + " of "+ patientsTotal);
+                updateProgressDialog(String.format(muzimaApplication.getString(R.string.info_obs_download_pogress_update), count, patientsTotal));
                 List<String> patientlist = new ArrayList();
                 patientlist.add(patient.getUuid());
                 result = downloadObservationsForPatientsByPatientUUIDs(patientlist,replaceExistingObservation);
                 if(result[0] != SyncStatusConstants.SUCCESS){
                     Log.e(TAG, "Obs for patient " + count + " of "+ patientsTotal + " not downloaded");
-                    updateProgressDialog("Obs for patient " + count + " of "+ patientsTotal + " not downloaded");
+                    updateProgressDialog(String.format(muzimaApplication.getString(R.string.info_obs_notdownloaded_progress_update), count, patientsTotal));
 
                 }
             }
@@ -514,13 +515,13 @@ public class MuzimaSyncService {
             for(Patient patient : patients){
                 count++;
                 Log.i(TAG, "Downloading Encounters for patient " + count + " of "+ patientsTotal);
-                updateProgressDialog("Downloading Encounters for patient " + count + " of "+ patientsTotal);
+                updateProgressDialog(String.format(muzimaApplication.getString(R.string.info_encounter_download_progress_update), count, patientsTotal));
                 List<String> patientlist = new ArrayList();
                 patientlist.add(patient.getUuid());
                 result = downloadEncountersForPatientsByPatientUUIDs(patientlist,replaceExistingEncounters);
                 if(result[0] != SyncStatusConstants.SUCCESS){
                     Log.e(TAG, "Encounters for patient " + count + " of "+ patientsTotal + " not downloaded");
-                    updateProgressDialog("Encounters for patient " + count + " of "+ patientsTotal + " not downloaded");
+                    updateProgressDialog(String.format(muzimaApplication.getString(R.string.info_encounter_notdownloaded_progress_update), count, patientsTotal));
                 }
             }
 
