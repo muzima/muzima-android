@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import com.muzima.MuzimaApplication;
+import com.muzima.R;
 import com.muzima.api.model.Notification;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.User;
@@ -59,7 +60,7 @@ public class PatientNotificationsAdapter extends NotificationAdapter {
         @Override
         protected void onPostExecute(List<Notification> patientNotifications) {
             if (patientNotifications == null) {
-                Toast.makeText(getContext(), "Something went wrong while fetching notifications from local repo", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getContext().getString(R.string.error_notifications_fetch), Toast.LENGTH_SHORT).show();
                 return;
             }
             //Removes the current items from the list.

@@ -61,7 +61,7 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
 
     public void onPostExecute(List<Patient> patients, ListAdapter searchAdapter, BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
         if (patients == null) {
-            Toast.makeText(getContext(), "Something went wrong while fetching patients from local repo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getContext().getString(R.string.error_patients_fetch), Toast.LENGTH_SHORT).show();
             return;
         }
 

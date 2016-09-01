@@ -45,7 +45,7 @@ public class EncountersActivity extends BroadcastListenerActivity implements Ada
             setupNoDataView();
             setupPatientEncounters();
         } catch (PatientController.PatientLoadException e) {
-            Toast.makeText(this, "An error occurred while fetching patient", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_patient_fetch), Toast.LENGTH_SHORT).show();
             finish();
         }
     }

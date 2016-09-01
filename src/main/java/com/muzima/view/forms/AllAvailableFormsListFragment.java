@@ -163,7 +163,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         try {
             LastSyncTimeService lastSyncTimeService = ((MuzimaApplication) this.getActivity().getApplicationContext()).getMuzimaContext().getLastSyncTimeService();//((MuzimaApplication)getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
             Date lastSyncedTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS);
-            String lastSyncedMsg = "Not synced yet";
+            String lastSyncedMsg = getActivity().getString(R.string.info_data_sync);
             if (lastSyncedTime != null) {
                 lastSyncedMsg = "Last synced on: " + DateUtils.getFormattedDateTime(lastSyncedTime);
             }

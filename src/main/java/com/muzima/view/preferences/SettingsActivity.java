@@ -258,7 +258,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
                     .setCancelable(true)
                     .setIcon(getResources().getDrawable(R.drawable.ic_warning))
                     .setTitle("Failure")
-                    .setMessage("Failed to Sync Form data to the current server. Do you still want to continue?")
+                    .setMessage(getString(R.string.preference_form_data_sync_fail))
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

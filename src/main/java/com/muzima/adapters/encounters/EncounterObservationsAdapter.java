@@ -133,7 +133,7 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
         @Override
         protected void onPostExecute(List<Observation> observations){
             if(observations==null){
-                Toast.makeText(getContext(), "Observations could not be loaded", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getContext().getString(R.string.error_observations_load), Toast.LENGTH_SHORT).show();
                 return;
             }
             clear();

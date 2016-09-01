@@ -6,16 +6,75 @@
     <string name="confirm_patient_id_exists">Does the patient already have existing ID?</string>
 
     <string name="default_auto_save_interval">2</string>
+    <string name="default_forms_register">Registration Forms</string>
 
+    <string name="error_action_allow">Action not allowed while sync is in progress</string>
+    <string name="error_audio_choosing_activity_find">Error: Activity for choosing audio not found</string>
+    <string name="error_audio_playing_activity_find">Error: Activity for playing audio not found</string>
+    <string name="error_audio_recording_activity_find">Error: Activity for recording audio not found</string>
+    <string name="error_authentication_error_occur">Authentication error occurred</string>
+    <string name="error_authentication_fail">Authentication failed</string>
+    <string name="error_clients_download">Could not download clients</string>
+    <string name="error_cohorts_fetch">Something went wrong while fetching cohorts from local repo</string>
+    <string name="error_cohorts_load">Could not load cohorts</string>
+    <string name="error_concepts_fetch">Something went wrong while fetching concepts from local repo</string>
+    <string name="error_concepts_in_form_parse">An error occurred while parsing concepts in the form</string>
+    <string name="error_connection_error_occured_data_download">Connection error occurred while downloading data
+    </string>
+    <string name="error_connection_find">No connection found, please connect your device and try again</string>
+    <string name="error_data_from_local_repo_delete">An error occurred while deleting data from local repo</string>
+    <string name="error_data_from_server_download">An error occurred while downloading data form server</string>
+    <string name="error_data_to_local_repo_save">An error occurred while saving data to local repo</string>
+    <string name="error_encounters_and_observations_download">Could not download observations for patients</string>
+    <string name="error_encounters_load">Encounters could not be loaded</string>
+    <string name="error_exception_thrown_data_upload">Exception has been thrown while uploading data</string>
+    <string name="error_form_could_not_load">Could not load form</string>
+    <string name="error_form_save">An error occurred while saving the form</string>
+    <string name="error_form_templates_download">Could not download form templates</string>
+    <string name="error_forms_fetch">Something went wrong while fetching forms from local repo</string>
+    <string name="error_forms_load">Could not load forms</string>
     <string name="error_forms_with_patient_data_exists">There is existing form data.
         Finish Incomplete data and sync Complete data to Server first before syncing form templates.</string>
+    <string name="error_image_capturing_activity_find">Error: Activity for capturing an image not found</string>
+    <string name="error_image_choosing_activity_find">Error: Activity for choosing image not found</string>
+    <string name="error_image_viewing_activity_find">activity_not_found view image</string>
+    <string name="error_invalid_character_in_username_not_allowed">"Invalid Character in Username. These are not
+        allowed: "
+    </string>
+    <string name="error_invalid_server_URL_return">Invalid Server URL.</string>
+    <string name="error_invalid_username_password_server_combination">Invalid Username, Password, Server combination.
+    </string>
+    <string name="error_load_exception_thrown_data_load">Load exception has been thrown while loading data</string>
+    <string name="error_locations_fetch">Something went wrong while fetching locations from local repo</string>
+    <string name="error_locations_for_form_load">An error occurred while loading locations for the form</string>
+    <string name="error_notifications_download">Error downloading notifications</string>
+    <string name="error_notifications_fetch">Something went wrong while fetching notifications from local repo</string>
+    <string name="error_observations_fetch">Something went wrong while fetching observations from local repo</string>
+    <string name="error_observations_in_form_save">An error occurred while saving observations in the form</string>
+    <string name="error_observations_load">Observations could not be loaded</string>
+    <string name="error_observations_unavailable">No observations Available</string>
+    <string name="error_parse_exception_thrown_data_fetch">Parse exception has been thrown while fetching data</string>
+    <string name="error_patient_encounters_download">Could not download encounters for patients</string>
+    <string name="error_patient_fetch">An error occurred while fetching patient</string>
+    <string name="error_patients_fetch">Something went wrong while fetching patients from local repo</string>
+    <string name="error_provider_for_form_load">An error occurred while loading provider for the form</string>
     <string name="error_provider_not_set">You do not have provider rights or your provider data is not downloaded, please use add provider option.</string>
+    <string name="error_providers_fetch">Something went wrong while fetching providers from local repo</string>
     <string name="error_request_already_fetching_forms">Already fetching forms, ignored the request</string>
     <string name="error_request_already_uploading_forms">Already uploading forms, ignored the request</string>
     <string name="error_request_connection_not_found">No connection found, please connect your device and try again</string>
     <string name="error_request_unallowed_while_syncing">Action not allowed while sync is in progress</string>
     <string name="error_selected_forms_with_patient_data_exists">There is existing form data for selected form(s).
         Finish Incomplete data and sync Complete data to Server first before downloading the forms.</string>
+    <string name="error_server_connection_not_found">Error while connecting to the server. Please connect to the
+        internet and try again.
+    </string>
+    <string name="error_tags_fetch">Something went wrong while fetching tags from local repo</string>
+    <string name="error_target_applications_find">No target applications</string>
+    <string name="error_video_choosing_activity_find">Error: Activity for choosing video not found</string>
+    <string name="error_video_playing_activity_find">Error: Activity for playing video not found</string>
+    <string name="error_video_recording_activity_find">Error: Activity for recording video not found</string>
+    <string name="error_viewPager_has_no_adapter_instance">ViewPager does not have adapter instance.</string>
     <string name="error_wizard_interrupted">Wizard was interrupted, please logout and run the wizard again.</string>
 
     <string name="general_accept">Accept</string>
@@ -33,6 +92,8 @@
     <string name="general_welcome">Welcome</string>
     <string name="general_yes">Yes</string>
 
+    <string name="hint_atleast_one_registration_form_select">Please select at least one registration form!</string>
+    <string name="hint_audio_caption_enter">Please enter a caption for the audio</string>
     <string name="hint_audio_record">Record or choose audio</string>
     <string name="hint_barcode_scanner_setup">You need a barcode scanner application to register clients from
         mobile. Please check whether it\'s been installed in your device or not.
@@ -74,6 +135,7 @@
     <string name="hint_forms_metadata_download">Please press load to fetch data from server</string>
     <string name="hint_forms_recommend">Please select non registration forms from all forms list and click download
     </string>
+    <string name="hint_image_caption_enter">Please enter a caption for the image</string>
     <string name="hint_incomplete_form_unavailable">Incomplete forms are available only if you have saved a partially filled
         form
     </string>
@@ -82,23 +144,42 @@
     <string name="hint_notification_view_encounter">View Encounter</string>
     <string name="hint_notifications_sync">Make sure you have connectivity to server and press the load button</string>
     <string name="hint_password_change">Did you change your password recently?</string>
+    <string name="hint_password_enter">Please Enter Password</string>
     <string name="hint_password_text">Password</string>
     <string name="hint_provider_pref_add">Add provider(s) that you want to download.</string>
+    <string name="hint_server_URL_enter">Please Enter Server URL</string>
     <string name="hint_server_text">Server URL</string>
+    <string name="hint_username_enter">Please Enter Username</string>
     <string name="hint_username_text">Username</string>
+    <string name="hint_video_caption_enter">Please enter a caption for the video</string>
     <string name="hint_video_record">Record or choose video</string>
 
+    <string name="info_URL_validate">Step 1: Validating URL</string>
+    <string name="info_all_templates_available">All Form Templates</string>
     <string name="info_application_version">Version %1$s</string>
+    <string name="info_authentication_in_progress">Authentication in progress...</string>
     <string name="info_client_complete_form_unavailable">No completed and non synced forms</string>
+    <string name="info_client_identifier_change">Client Identifier changed on server. The new identifier will be used
+        going forward.
+    </string>
     <string name="info_client_incomplete_form_unavailable">No incomplete forms</string>
+    <string name="info_clients_demographics_download">Downloading clients demographic...</string>
     <string name="info_clients_local_search_unmatched">No clients matched your search locally. Enter at least 3 characters for
         remote search.
     </string>
+    <string name="info_clients_notify">Client Notifications</string>
     <string name="info_clients_remote_search_unmatched">No clients matched your search on server</string>
+    <string name="info_clients_search">Search clients</string>
     <string name="info_cohort_prefixes_unavailable">No Cohort Prefixes Added</string>
+    <string name="info_cohorts_download">Downloading Cohorts</string>
+    <string name="info_cohorts_load">Loading Cohorts...</string>
     <string name="info_cohorts_metadata_unavailable">No Cohorts Available</string>
+    <string name="info_complete_form_data_successful_save">Completed form data is saved successfully.</string>
     <string name="info_complete_form_unavailable">No completed and non synced forms on device</string>
+    <string name="info_concepts_successful_delete">" Concepts deleted successfully!!"</string>
     <string name="info_concepts_unavailable">No concept added yet.</string>
+    <string name="info_data_sync">Not synced yet</string>
+    <string name="info_descriptions_unavailable">No description available</string>
     <string name="info_disclaimer"><![CDATA[
         <p>
         mUzima is distributed under the terms of the Mozilla Public License, v. 2.0 (MPL 2.0).
@@ -135,22 +216,70 @@
         (Copyright 2014, The Trustees of Indiana University).
         </p>
         ]]></string>
+    <string name="info_download_complete">"Download Complete with status "</string>
     <string name="info_downloaded_image">Downloaded Image</string>
+    <string name="info_draft_form_data_successful_save">Draft form data is saved successfully.</string>
+    <string name="info_encounters_and_observations_download">Downloading Observations and Encounters...</string>
     <string name="info_encounters_unavailable">No Encounters Available</string>
+    <string name="info_form_data_complete">Complete Form Data</string>
+    <string name="info_form_data_incomplete">Incomplete Form Data</string>
+    <string name="info_form_data_sucessful_upload">Upload form data success.</string>
+    <string name="info_form_template_download">Downloaded Form Templates</string>
+    <string name="info_form_templates_and_concepts_download">"Downloaded %d form templates and %d concepts"</string>
+    <string name="info_form_templates_and_related_concepts_download">"Downloaded %d form templates and %d related concepts "</string>
+    <string name="info_form_templates_download">Downloading Form Templates...</string>
+    <string name="info_form_templates_recommended">Recommended Form Templates</string>
+    <string name="info_forms_download_and_delete">"Downloaded %d forms deleted %forms"</string>
+    <string name="info_forms_download_delete">"Downloaded %d deleted %d forms "</string>
+    <string name="info_forms_downloaded">"Downloaded %d forms"</string>
+    <string name="info_forms_load">Loading Forms...</string>
+    <string name="info_forms_metadata_download">Downloading Forms Metadata</string>
     <string name="info_forms_metadata_unavailable">No forms available</string>
     <string name="info_forms_no_recommended">No forms have been downloaded</string>
+    <string name="info_forms_real_time_upload">Start real time upload of forms</string>
+    <string name="info_forms_successful_delete">Forms deleted successfully!!</string>
+    <string name="info_forms_successful_real_time_data_upload">Real time upload of form data successful.</string>
+    <string name="info_forms_successful_real_time_upload">Real time upload of forms successful.</string>
+    <string name="info_forms_successful_upload">Uploaded the forms Successfully</string>
+    <string name="info_forms_template_download">"Downloading Forms Template for %d forms"</string>
     <string name="info_forms_unavailable">No forms have been downloaded</string>
+    <string name="info_forms_upload">Uploading Forms</string>
+    <string name="info_general_notify">General Notifications</string>
     <string name="info_incomplete_form_unvailable">No incomplete forms on device</string>
+    <string name="info_locations_successful_delete">" Locations deleted successfully!!"</string>
     <string name="info_locations_unavailable">No new location has been added yet.</string>
+    <string name="info_muzima_sync_service_finish">Muzima Sync Service Finished</string>
+    <string name="info_muzima_sync_service_run">Muzima Sync Service Running</string>
+    <string name="info_new_cohorts_download">"Downloaded %d new cohorts"</string>
+    <string name="info_new_cohorts_download_and_delete">"Downloaded %d new cohorts and deleted %d cohorts"</string>
+    <string name="info_new_encounters_download">"Downloaded %d new observations "</string>
+    <string name="info_new_encounters_download_and_delete">"Downloaded %d new encounters and deleted %d encounters"</string>
     <string name="info_new_notification">New Notification</string>
+    <string name="info_new_observations_download">"Downloaded %d new observations "</string>
+    <string name="info_new_observations_download_and_delete">"Downloaded %d new observations and deleted %d observations "</string>
+    <string name="info_new_patient_download">"Downloaded %d new patients"</string>
+    <string name="info_new_patients_download">"Downloaded %d new patients for %d cohorts."</string>
     <string name="info_no_cohorts_synced">No Cohorts Have Been Synced</string>
+    <string name="info_notification_download">"Downloaded %d notifications"</string>
     <string name="info_notifications_unavailable">No Notifications Available</string>
+    <string name="info_observations_and_encounters_still_download">" Still downloading observations and encounters"
+    </string>
+    <string name="info_observations_load">Observations are loading</string>
+    <string name="info_observations_search">Search observations</string>
     <string name="info_observations_still_loading">Observations are still loading</string>
     <string name="info_observations_unavailable">No Observations Available</string>
+    <string name="info_patient_data_download">Downloading Patients data</string>
+    <string name="info_patients_download">Downloading Patients</string>
+    <string name="info_patients_for_cohorts_download">"Downloaded %d patients for % cohorts"</string>
     <string name="info_preference_wizard_finished">wizardFinished</string>
     <string name="info_provider_not_added">No new provider has been added yet.</string>
+    <string name="info_providers_download">Downloading Providers...</string>
+    <string name="info_providers_successful_delete">" Providers deleted successfully!!"</string>
+    <string name="info_receiver_notifications_download">"Downloading Notifications for receiver "</string>
+    <string name="info_request_ignore">Already fetching cohorts, ignored the request</string>
     <string name="info_scanner_app_exists">Barcode Scanner application is already installed.</string>
     <string name="info_session_time_out">Your session had been timed out. Please log in again to proceed.</string>
+    <string name="info_sync_service_start">Sync service started</string>
     <string name="info_tags_unavailable">No Tags Available</string>
 
     <string name="menu_client_add">Register client</string>
@@ -182,6 +311,9 @@
     <string name="preference_duplicate_form_data_warning_enable_hint">Enable warning when duplicate form data for same client with same encounter date is being saved</string>
     <string name="preference_encounter_provider_title">Default encounter provider</string>
     <string name="preference_font_size_title">Font size</string>
+    <string name="preference_form_data_sync_fail">Failed to Sync Form data to the current server. Do you still want to
+        continue?
+    </string>
     <string name="preference_password_desc">Enter the OpenMRS password</string>
     <string name="preference_password_title">Password</string>
     <string name="preference_provider_default_user">Logged-in user as default encounter form provider</string>
@@ -228,6 +360,8 @@
     <string name="title_custom_concept_help">Concepts Help</string>
     <string name="title_custom_location_help">Locations Help</string>
     <string name="title_custom_provider_help">providers Help</string>
+    <string name="title_data_reset">Step 3: Resetting Data</string>
+    <string name="title_data_synchronize">Step 2: Synchronising Local Data</string>
     <string name="title_disclaimer">Licensing, Disclaimer of Warranty and Limitation of Liability</string>
     <string name="title_drawer">Tags</string>
     <string name="title_fill_patient_forms_help">Fill out forms for a patient</string>
@@ -254,10 +388,15 @@
     <string name="title_video_record">Record Video</string>
 
     <string name="warning_caution_text">Caution!</string>
+    <string name="warning_empty_prefix_add">You can\'t add an empty prefix</string>
     <string name="warning_form_close">Closing Form: This will discard all your changes.  Are you sure you would like to do this?
     </string>
     <string name="warning_form_data_already_exisis">This Form Data already exists for this client with same encounter date.</string>
+    <string name="warning_forms_complete_and_sync">" contains some associated forms with it. Please complete and sync
+        those forms before deleting them."
+    </string>
     <string name="warning_logout_confirm">Are you sure to log out and exit mUzima app?</string>
+    <string name="warning_prefix_already_exists">Prefix already exists</string>
     <string name="warning_switch_server">Switching Server: This will clear all mUzima data on your
         device, including any incomplete forms. Are you sure you want to change this setting?
     </string>

@@ -11,6 +11,7 @@ package com.muzima.adapters.notification;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import com.muzima.MuzimaApplication;
+import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.NotificationController;
@@ -40,7 +41,7 @@ public class NotificationsPagerAdapter extends MuzimaPagerAdapter {
         PatientsNotificationsListFragment patientsNotificationsListFragment = PatientsNotificationsListFragment.newInstance(notificationController);
         GeneralNotificationsListFragment generalNotificationsListFragment = GeneralNotificationsListFragment.newInstance(notificationController);
 
-        pagers[TAB_PATIENT] = new PagerView("Client Notifications", patientsNotificationsListFragment);
-        pagers[TAB_GENERAL] = new PagerView("General Notifications", generalNotificationsListFragment);
+        pagers[TAB_PATIENT] = new PagerView(context.getString(R.string.info_clients_notify), patientsNotificationsListFragment);
+        pagers[TAB_GENERAL] = new PagerView(context.getString(R.string.info_general_notify), generalNotificationsListFragment);
     }
 }

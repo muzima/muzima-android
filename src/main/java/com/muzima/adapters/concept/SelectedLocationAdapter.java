@@ -134,7 +134,7 @@ public class SelectedLocationAdapter extends ListAdapter<Location> {
         @Override
         protected void onPostExecute(List<Location> locations) {
             if (locations == null) {
-                Toast.makeText(getContext(), "Something went wrong while fetching locations from local repo", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getContext().getString(R.string.error_locations_fetch), Toast.LENGTH_SHORT).show();
                 return;
             }
             clear();

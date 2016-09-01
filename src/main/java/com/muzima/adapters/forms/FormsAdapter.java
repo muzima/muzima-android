@@ -71,7 +71,7 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
 
             String description = form.getDescription();
             if (StringUtils.isEmpty(description)) {
-                description = "No description available";
+                description = getContext().getString(R.string.info_descriptions_unavailable);
             }
             holder.description.setText(description);
             holder.description.setTypeface(Fonts.roboto_light(getContext()));
@@ -94,7 +94,7 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
     }
 
     protected static class ViewHolder {
-        CheckedTextView name;
+        CheckedTextView name
         ImageView downloadedImg;
         TextView description;
         RelativeLayout tagsScroller;

@@ -96,7 +96,7 @@ public class NotificationActivity extends BaseActivity {
             intent.putExtra(PATIENT, notificationEncounter.getPatient());
             startActivity(intent);
         }else
-            Toast.makeText(this, "Could not load form", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_form_could_not_load), Toast.LENGTH_SHORT).show();
     }
 
     private void getNotificationEncounter(Patient patient) {

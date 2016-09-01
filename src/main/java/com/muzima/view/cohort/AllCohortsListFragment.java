@@ -130,13 +130,13 @@ public class AllCohortsListFragment extends CohortListFragment {
             switch (menuItem.getItemId()) {
                 case R.id.menu_download:
                     if (cohortsSyncInProgress) {
-                        Toast.makeText(getActivity(), "Action not allowed while sync is in progress", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.error_request_unallowed_while_syncing, Toast.LENGTH_SHORT).show();
                         endActionMode();
                         break;
                     }
 
                     if (!NetworkUtils.isConnectedToNetwork(getActivity())) {
-                        Toast.makeText(getActivity(), "No connection found, please connect your device and try again", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.error_request_connection_not_found, Toast.LENGTH_SHORT).show();
                         return true;
                     }
 
@@ -175,7 +175,7 @@ public class AllCohortsListFragment extends CohortListFragment {
         try {
             LastSyncTimeService lastSyncTimeService = ((MuzimaApplication)this.getActivity().getApplicationContext()).getMuzimaContext().getLastSyncTimeService();//((MuzimaApplication)getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
             Date lastSyncedTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS);
-            String lastSyncedMsg = "Not synced yet";
+            String lastSyncedMsg = getActivity().getString(R.string.info_data_sync);
             if(lastSyncedTime != null){
                 lastSyncedMsg = "Last synced on: " + DateUtils.getFormattedDateTime(lastSyncedTime);
             }

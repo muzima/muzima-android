@@ -110,7 +110,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
                             onCompleteOfFormDelete();
                         } else {
                             Toast.makeText(getActivity(), getCommaSeparatedFormNames(selectedForms, formTemplatesWithAssociatedFormData)
-                                    + " contains some associated forms with it. Please complete and sync those forms before deleting them.",
+                                    + getActivity().getString(R.string.warning_forms_complete_and_sync),
                                     Toast.LENGTH_SHORT).show();
                         }
                     } catch (FormController.FormDeleteException e) {
@@ -124,7 +124,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
             endActionMode();
             listAdapter.reloadData();
             allAvailableFormsCompleteListener.reloadData();
-            Toast.makeText(getActivity(), "Forms deleted successfully!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getActivity().getString(R.string.info_forms_successful_delete), Toast.LENGTH_SHORT).show();
         }
 
         @Override
