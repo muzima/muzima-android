@@ -10,6 +10,7 @@ package com.muzima.tasks;
 
 import android.os.AsyncTask;
 import android.widget.Toast;
+import com.muzima.R;
 import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.model.BaseForm;
 
@@ -41,7 +42,7 @@ public abstract class FormsAdapterBackgroundQueryTask<T extends BaseForm> extend
     @Override
     protected void onPostExecute(List<T> forms) {
         if (forms==null) {
-            Toast.makeText(adapterWeakReference.get().getContext(), "Could not load forms", Toast.LENGTH_SHORT).show();
+            Toast.makeText(adapterWeakReference.get().getContext(), adapterWeakReference.get().getContext().getString(R.string.error_forms_load), Toast.LENGTH_SHORT).show();
         }
 
         changeDataSet(forms);
@@ -62,7 +63,7 @@ public abstract class FormsAdapterBackgroundQueryTask<T extends BaseForm> extend
         if (adapterWeakReference.get() != null) {
             FormsAdapter formsAdapter = adapterWeakReference.get();
             if (forms == null) {
-                Toast.makeText(formsAdapter.getContext(), "Something went wrong while fetching forms from local repo", Toast.LENGTH_SHORT).show();
+                Toast.makeText(formsAdapter.getContext(), formsAdapter.getContext().getString(R.string.error_forms_fetch), Toast.LENGTH_SHORT).show();
                 return;
             }
             formsAdapter.clear();

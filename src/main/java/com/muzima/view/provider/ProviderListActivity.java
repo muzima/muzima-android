@@ -45,7 +45,7 @@ public class ProviderListActivity extends ProviderPreferenceActivity{
     protected void onResume() {
         super.onResume();
         if(isProcessDialogOn){
-            turnOnProgressDialog("Downloading Provider(s)...");
+            turnOnProgressDialog((getString(R.string.info_providers_download)));
         }
     }
 

@@ -109,10 +109,10 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
             @Override
             public void onClick(View view) {
                 if (!hasRegistrationFormSelected()) {
-                    Toast.makeText(FormTemplateWizardActivity.this, "Please select at least one registration form!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FormTemplateWizardActivity.this, getString(R.string.hint_atleast_one_registration_form_select), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                turnOnProgressDialog("Downloading Form Templates...");
+                turnOnProgressDialog(getString(R.string.info_form_templates_download));
 
                 new AsyncTask<Void, Void, int[]>() {
 
@@ -125,7 +125,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
                     protected void onPostExecute(int[] result) {
                         dismissProgressDialog();
                         if (result[0] != SyncStatusConstants.SUCCESS) {
-                            Toast.makeText(FormTemplateWizardActivity.this, "Could not download form templates", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FormTemplateWizardActivity.this, getString(R.string.error_form_templates_download), Toast.LENGTH_SHORT).show();
                         }
                         try {
                             LastSyncTimeService lastSyncTimeService = ((MuzimaApplication)getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
@@ -179,7 +179,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
         super.onResume();
         tagsListAdapter.reloadData();
         if(isProcessDialogOn){
-            turnOnProgressDialog("Downloading Form Templates...");
+            turnOnProgressDialog(getString(R.string.info_form_templates_download));
         }
     }
 
@@ -250,7 +250,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
 
     @Override
     public void onQueryTaskStarted() {
-        turnOnProgressDialog("Loading Forms...");
+        turnOnProgressDialog(getString(R.string.info_forms_load));
     }
 
     @Override

@@ -112,7 +112,7 @@ public class AudioIntent extends Activity {
     	String caption = mAudioCaption.getText().toString();
     	
     	if (caption == null || caption.length() < 1){
-    		Toast.makeText(getApplicationContext(),"Please enter a caption for the audio", Toast.LENGTH_SHORT).show();
+    		Toast.makeText(getApplicationContext(),getString(R.string.hint_audio_caption_enter), Toast.LENGTH_SHORT).show();
     		return;
     	}
     	
@@ -145,7 +145,7 @@ public class AudioIntent extends Activity {
 		try {
 			startActivityForResult(i, AUDIO_CAPTURE);
 		} catch (ActivityNotFoundException e) {
-			Toast.makeText(this,"Error: Activity for recording audio not found", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this,getString(R.string.error_audio_recording_activity_find), Toast.LENGTH_SHORT).show();
 		}		
 	}
 
@@ -165,7 +165,7 @@ public class AudioIntent extends Activity {
             startActivityForResult(i,AUDIO_CHOOSE);
         } catch (ActivityNotFoundException e) {
             Log.d(TAG,e.getMessage(), e);
-			Toast.makeText(this,"Error: Activity for choosing audio not found", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this,getString(R.string.error_audio_choosing_activity_find), Toast.LENGTH_SHORT).show();
 		}
 	}
 	
@@ -176,7 +176,7 @@ public class AudioIntent extends Activity {
 		try {
 			startActivity(i);
 		} catch (ActivityNotFoundException e) {
-			Toast.makeText(AudioIntent.this,"Error: Activity for playing audio not found", Toast.LENGTH_SHORT).show();
+			Toast.makeText(AudioIntent.this,getString(R.string.error_audio_playing_activity_find), Toast.LENGTH_SHORT).show();
 		}
 	}
 	

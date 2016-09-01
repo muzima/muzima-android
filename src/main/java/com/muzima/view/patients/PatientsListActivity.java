@@ -118,7 +118,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         getSupportMenuInflater().inflate(R.menu.client_list, menu);
         searchView = (SearchView) menu.findItem(R.id.search)
                 .getActionView();
-        searchView.setQueryHint("Search clients");
+        searchView.setQueryHint(getString(R.string.info_clients_search));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {

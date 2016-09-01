@@ -86,7 +86,7 @@ public class CustomLocationWizardActivity extends LocationPreferenceActivity {
     protected void onResume() {
         super.onResume();
         if (isProcessDialogOn) {
-            turnOnProgressDialog("Downloading Observations and Encounters...");
+            turnOnProgressDialog(getString(R.string.info_encounters_and_observations_download));
         }
     }
 

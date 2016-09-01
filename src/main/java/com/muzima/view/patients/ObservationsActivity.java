@@ -69,7 +69,7 @@ public class ObservationsActivity extends BroadcastListenerActivity {
         getSupportMenuInflater().inflate(R.menu.observation_list, menu);
         SearchView searchView = (SearchView) menu.findItem(R.id.search)
                 .getActionView();
-        searchView.setQueryHint("Search observations");
+        searchView.setQueryHint(getString(R.string.info_observations_search));
         searchView.setOnQueryTextListener(cohortPagerAdapter);
         return true;
     }

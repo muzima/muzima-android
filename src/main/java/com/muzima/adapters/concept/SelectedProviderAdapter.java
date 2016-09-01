@@ -128,7 +128,7 @@ public class SelectedProviderAdapter extends ListAdapter<Provider> {
         @Override
         protected void onPostExecute(List<Provider> providers) {
             if (providers == null) {
-                Toast.makeText(getContext(), "Something went wrong while fetching providers from local repo", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getContext().getString(R.string.error_providers_fetch), Toast.LENGTH_SHORT).show();
                 return;
             }
             clear();

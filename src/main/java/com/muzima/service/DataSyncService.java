@@ -37,8 +37,8 @@ public class DataSyncService extends IntentService {
 
     private static final int MUZIMA_NOTIFICATION = 0;
     private static final String TAG = "DataSyncService";
-    private final String notificationServiceRunning = "Muzima Sync Service Running";
-    private final String notificationServiceFinished = "Muzima Sync Service Finished";
+    private final String notificationServiceRunning = getString(R.string.info_muzima_sync_service_run);
+    private final String notificationServiceFinished = getString(R.string.info_muzima_sync_service_finish);
     private String notificationMsg;
     private MuzimaSyncService muzimaSyncService;
 
@@ -50,7 +50,7 @@ public class DataSyncService extends IntentService {
     public void onCreate() {
         super.onCreate();
         muzimaSyncService = ((MuzimaApplication) getApplication()).getMuzimaSyncService();
-        updateNotificationMsg("Sync service started");
+        updateNotificationMsg(getString(R.string.info_sync_service_start));
     }
 
     @Override
@@ -63,29 +63,29 @@ public class DataSyncService extends IntentService {
 
         switch (syncType) {
             case DataSyncServiceConstants.SYNC_FORMS:
-                updateNotificationMsg("Downloading Forms Metadata");
+                updateNotificationMsg(getString(R.string.info_forms_metadata_download));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = muzimaSyncService.downloadForms();
-                    String msg = "Downloaded " + result[1] + " forms and Deleted " + result[2] + " forms";
+                    String msg = String.format(getString(R.string.info_forms_download_and_delete),result[1], result[2]);
                     prepareBroadcastMsgForDownloadForms(broadcastIntent, result, msg);
                     saveSyncTime(result,APIName.DOWNLOAD_FORMS);
                 }
                 break;
             case DataSyncServiceConstants.SYNC_TEMPLATES:
                 String[] formIds = intent.getStringArrayExtra(DataSyncServiceConstants.FORM_IDS);
-                updateNotificationMsg("Downloading Forms Template for " + formIds.length + " forms");
+                updateNotificationMsg(String.format(getString(R.string.info_forms_template_download), formIds.length ));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = muzimaSyncService.downloadFormTemplates(formIds, true);
-                    String msg = "Downloaded " + result[1] + " form templates and " + result[2] + "concepts";
+                    String msg = String.format(getString(R.string.info_form_templates_and_concepts_download),result[1],result[2]);
                     broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, result[2]);
                     prepareBroadcastMsg(broadcastIntent, result, msg);
                 }
                 break;
             case DataSyncServiceConstants.SYNC_COHORTS:
-                updateNotificationMsg("Downloading Cohorts");
+                updateNotificationMsg(getString(R.string.info_cohorts_download));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = muzimaSyncService.downloadCohorts();
-                    String msg = "Downloaded " + result[1] + " new cohorts" + "; and deleted " + result[2] + " cohorts";
+                    String msg = String.format(getString(R.string.info_new_cohorts_download_and_delete),result[1],result[2]);
                     prepareBroadcastMsg(broadcastIntent, result, msg);
                     saveSyncTime(result, APIName.DOWNLOAD_COHORTS);
                     consolidateAndSyncIndependentPatients(broadcastIntent);
@@ -93,7 +93,7 @@ public class DataSyncService extends IntentService {
                 break;
             case DataSyncServiceConstants.SYNC_PATIENTS_FULL_DATA:
                 String[] cohortIds = intent.getStringArrayExtra(DataSyncServiceConstants.COHORT_IDS);
-                updateNotificationMsg("Downloading Patients");
+                updateNotificationMsg(getString(R.string.info_patients_download));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     downloadPatients(broadcastIntent, cohortIds);
                     downloadObservationsAndEncounters(broadcastIntent, cohortIds);
@@ -101,24 +101,24 @@ public class DataSyncService extends IntentService {
                 break;
             case DataSyncServiceConstants.SYNC_PATIENTS_ONLY:
                 String[] cohortIdsToDownload = intent.getStringArrayExtra(DataSyncServiceConstants.COHORT_IDS);
-                updateNotificationMsg("Downloading Patients");
+                updateNotificationMsg(getString(R.string.info_patients_download));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     downloadPatients(broadcastIntent, cohortIdsToDownload);
                 }
                 break;
             case DataSyncServiceConstants.SYNC_PATIENTS_DATA_ONLY:
                 String[] savedCohortIds = intent.getStringArrayExtra(DataSyncServiceConstants.COHORT_IDS);
-                updateNotificationMsg("Downloading Patients data");
+                updateNotificationMsg(getString(R.string.info_patient_data_download));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     downloadObservationsAndEncounters(broadcastIntent, savedCohortIds);
                 }
                 break;
             case DataSyncServiceConstants.SYNC_UPLOAD_FORMS:
-                updateNotificationMsg("Uploading Forms");
+                updateNotificationMsg(getString(R.string.info_forms_upload));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = muzimaSyncService.uploadAllCompletedForms();
                     broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_UPLOAD_FORMS);
-                    prepareBroadcastMsgForFormUpload(broadcastIntent, result, "Uploaded the forms Successfully");
+                    prepareBroadcastMsgForFormUpload(broadcastIntent, result, getString(R.string.info_forms_successful_upload));
                 }
                 break;
             case DataSyncServiceConstants.DOWNLOAD_PATIENT_ONLY:
@@ -130,10 +130,10 @@ public class DataSyncService extends IntentService {
             case DataSyncServiceConstants.SYNC_NOTIFICATIONS:
                 String receiverUUid = intent.getStringExtra(NotificationStatusConstants.RECEIVER_UUID);
                 String[] downloadedCohortIds = intent.getStringArrayExtra(DataSyncServiceConstants.COHORT_IDS);
-                updateNotificationMsg("Downloading Notifications for receiver " + receiverUUid);
+                updateNotificationMsg(getString(R.string.info_receiver_notifications_download) + receiverUUid);
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = muzimaSyncService.downloadNotifications(receiverUUid);
-                    String msg = "Downloaded " + result[1] + " notifications";
+                    String msg = String.format(getString(R.string.info_notification_download),result[1]);
                     prepareBroadcastMsg(broadcastIntent, result, msg);
                     LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
 
@@ -141,11 +141,11 @@ public class DataSyncService extends IntentService {
                 }
                 break;
             case DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS:
-                updateNotificationMsg("Start real time upload of forms");
+                updateNotificationMsg(getString(R.string.info_forms_real_time_upload));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = muzimaSyncService.uploadAllCompletedForms();
                     broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS);
-                    prepareBroadcastMsgForFormUpload(broadcastIntent, result, "Real time upload of forms successful.");
+                    prepareBroadcastMsgForFormUpload(broadcastIntent, result, getString(R.string.info_forms_successful_real_time_upload));
                 }
                 break;
             default:
@@ -192,23 +192,21 @@ public class DataSyncService extends IntentService {
     }
 
     private void broadCastMessageForEncounters(Intent broadcastIntent, int[] resultForEncounters) {
-        String msgForEncounters = "Downloaded " + resultForEncounters[1] + " new encounters" +
-                "; and deleted " + resultForEncounters[2] + " encounters";
+        String msgForEncounters = String.format(getString(R.string.info_new_encounters_download_and_delete),resultForEncounters[1] ,resultForEncounters[2]);
         prepareBroadcastMsg(broadcastIntent, resultForEncounters, msgForEncounters);
         broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_ENCOUNTERS);
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
 
     private void broadCastMessageForObservationDownload(Intent broadcastIntent, int[] resultForObservations) {
-        String msgForObservations = "Downloaded " + resultForObservations[1] + " new observations" +
-                "; and deleted " + resultForObservations[2] + " observations";
+        String msgForObservations = String.format(getString(R.string.info_new_observations_download_and_delete),resultForObservations[1] , resultForObservations[2]);
         prepareBroadcastMsg(broadcastIntent, resultForObservations, msgForObservations);
         broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_OBSERVATIONS);
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
 
     private void broadCastMessageForPatients(Intent broadcastIntent, int[] resultForPatients) {
-        String msgForPatients = "Downloaded " + resultForPatients[1] + " new patients";
+        String msgForPatients = String.format(getString(R.string.info_new_patient_download),resultForPatients[1]);
         prepareBroadcastMsg(broadcastIntent, resultForPatients, msgForPatients);
         if (isSuccess(resultForPatients) && resultForPatients.length > 1) {
             broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, resultForPatients[1]);
@@ -216,7 +214,7 @@ public class DataSyncService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
     private void broadCastMessageForPatients(Intent broadcastIntent, int[] resultForPatients, String[] patientUUIDs) {
-        String msgForPatients = "Downloaded " + resultForPatients[1] + " new patients";
+        String msgForPatients = String.format(getString(R.string.info_new_patient_download),resultForPatients[1]);;
         prepareBroadcastMsg(broadcastIntent, resultForPatients, msgForPatients);
         if (isSuccess(resultForPatients) && resultForPatients.length > 1) {
             broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, resultForPatients[1]);
