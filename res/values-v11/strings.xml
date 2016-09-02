@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="info_obs_download_pogress_update" formatted="false" >Downloading Obs for patient %d of %d.</string>
-    <string name="info_obs_notdownloaded_progress_update" formatted="false" >Obs for patient %d of %d not downloaded.</string>
-    <string name="info_encounter_download_progress_update" formatted="false" >Downloading Encounters for patient %d of %d.</string>
-    <string name="info_encounter_notdownloaded_progress_update" formatted="false" >Encounters for patient %d of %d not downloaded.</string>
-</resources>
