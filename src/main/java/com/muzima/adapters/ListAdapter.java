@@ -24,6 +24,7 @@ public abstract class ListAdapter<T> extends ArrayAdapter<T>{
     public interface BackgroundListQueryTaskListener{
         public void onQueryTaskStarted();
         public void onQueryTaskFinish();
+        public void onQueryTaskCancelled();
     }
 
     // addAll is not supported in API 8, so overwrite it

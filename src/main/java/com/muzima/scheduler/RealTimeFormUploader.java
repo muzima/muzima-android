@@ -38,7 +38,7 @@ public class RealTimeFormUploader {
     private void uploadAllFormsInBackgroundService(android.content.Context applicationContext) {
         try {
             FormController formController = ((MuzimaApplication) applicationContext).getFormController();
-            if(formController.getAllCompleteFormsSize() > 0 && NetworkUtils.isConnectedToNetwork(applicationContext)){
+            if(formController.countAllCompleteForms() > 0 && NetworkUtils.isConnectedToNetwork(applicationContext)){
                 new RealTimeUploadFormIntent(applicationContext).start();
             }
         } catch (FormController.FormFetchException e) {

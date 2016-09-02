@@ -45,7 +45,7 @@ public class CohortController {
         }
     }
 
-    public int getTotalCohortsCount() throws CohortFetchException {
+    public int countAllCohorts() throws CohortFetchException {
         try {
             return cohortService.countAllCohorts();
         } catch (IOException e) {
@@ -182,7 +182,7 @@ public class CohortController {
         }
     }
 
-    public int getSyncedCohortsCount() throws CohortFetchException {
+    public int countSyncedCohorts() throws CohortFetchException {
         return getSyncedCohorts().size();
     }
 

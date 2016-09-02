@@ -11,11 +11,14 @@ package com.muzima.adapters.observations;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
+import com.muzima.api.model.Encounter;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.EncounterWithObservations;
 import com.muzima.model.observation.Encounters;
 
-public class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Void, Encounters> {
+import java.util.List;
+
+public class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Encounters, Encounters> {
 
     private EncounterAction encounterAction;
     private ObservationsByEncounterAdapter observationsByEncounterAdapter;
@@ -34,14 +37,30 @@ public class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Void,
 
     @Override
     protected Encounters doInBackground(Void... params) {
-        Encounters encounters = null;
+        Encounters encountersWithObservations = null;
+        Encounters temp = null;
         try {
-            encounters = encounterAction.get();
-            encounters.sortByDate();
+            List<Encounter> encounters = encounterAction.getEncounters();
+            for(Encounter encounter : encounters) {
+                if(!isCancelled()) {
+                    temp = encounterAction.get(encounter);
+                    if (temp != null) {
+                        temp.sortByDate();
+                        if (encountersWithObservations == null) {
+                            encountersWithObservations = temp;
+                        } else {
+                            encountersWithObservations.addAll(temp);
+                        }
+                        publishProgress(temp);
+                    }
+                } else {
+                    break;
+                }
+            }
         } catch (ObservationController.LoadObservationException e) {
             Log.w("Observations", String.format("Exception while loading observations for %s.", encounterAction), e);
         }
-        return encounters;
+        return encountersWithObservations;
     }
 
     @Override
@@ -50,14 +69,22 @@ public class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Void,
             Toast.makeText(observationsByEncounterAdapter.getContext(), "Something went wrong while fetching observations from local repo", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        for (EncounterWithObservations encountersWithObservation : encountersWithObservations) {
-            observationsByEncounterAdapter.add(encountersWithObservation);
-        }
-        observationsByEncounterAdapter.notifyDataSetChanged();
-
         if (observationsByEncounterAdapter.getBackgroundListQueryTaskListener() != null) {
             observationsByEncounterAdapter.getBackgroundListQueryTaskListener().onQueryTaskFinish();
         }
+    }
+
+    @Override
+    protected void onProgressUpdate(Encounters... encountersWithObservations) {
+        if (encountersWithObservations == null) {
+            return;
+        }
+
+        for (Encounters encounters : encountersWithObservations) {
+            for (EncounterWithObservations encountersWithObservation : encounters) {
+                observationsByEncounterAdapter.add(encountersWithObservation);
+            }
+        }
+        observationsByEncounterAdapter.notifyDataSetChanged();
     }
 }

@@ -41,7 +41,7 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
 
         setupActionBar();
         setupEncounterMetadata();
-        setupNoDataView();
+        setupStillLoadingView();
         setUpEncounterObservations();
     }
 
@@ -76,6 +76,14 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
 
     }
 
+    private void setupStillLoadingView(){
+        noDataView = findViewById(R.id.no_data_layout);
+
+        TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
+        noDataMsgTextView.setText(getResources().getText(R.string.info_observations_still_loading));
+        noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
+    }
+
     private void setUpEncounterObservations(){
         encounterObservationsLayout = (ListView)findViewById(R.id.encounter_observations_list);
         encounterObservationsAdapter = new EncounterObservationsAdapter(EncounterSummaryActivity.this,R.layout.item_encounter_observation,
@@ -90,6 +98,13 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
     public void onQueryTaskStarted(){}
 
     @Override
-    public void onQueryTaskFinish(){}
+    public void onQueryTaskFinish(){
+        if(encounterObservationsAdapter.isEmpty()){
+            setupNoDataView();
+        }
+    }
+
+    @Override
+    public void onQueryTaskCancelled(){}
 
 }

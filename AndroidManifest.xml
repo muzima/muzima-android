@@ -333,6 +333,8 @@
 
         <service android:name=".service.DataSyncService"
                  android:exported="false"/>
+        <service android:name=".view.progressdialog.ProgressDialogUpdateIntentService"
+                 android:exported="false"/>
 
         <activity android:name="org.acra.CrashReportDialog"
                   android:theme="@android:style/Theme.Dialog"
