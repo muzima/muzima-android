@@ -74,6 +74,19 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
         }
     }
 
+    public void onProgressUpdate(List<Patient> patients, ListAdapter searchAdapter, BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
+        if (patients == null) {
+            return;
+        }
+
+        searchAdapter.addAll(patients);
+        searchAdapter.notifyDataSetChanged();
+
+        if (backgroundListQueryTaskListener != null) {
+            backgroundListQueryTaskListener.onQueryTaskFinish();
+        }
+    }
+
     public static String getPatientFormattedName(Patient patient) {
         StringBuffer patientFormattedName = new StringBuffer();
         if (!StringUtils.isEmpty(patient.getFamilyName())) {

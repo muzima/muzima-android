@@ -25,9 +25,11 @@ import com.muzima.controller.CohortController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
+import com.muzima.utils.Constants;
+import com.muzima.utils.StringUtils;
 import com.muzima.view.InstallBarCodeWizardActivity;
 import com.muzima.view.provider.CustomProviderWizardActivity;
-import com.muzima.view.forms.MuzimaProgressDialog;
+import com.muzima.view.progressdialog.MuzimaProgressDialog;
 import com.muzima.view.preferences.ConceptPreferenceActivity;
 
 import java.util.ArrayList;
@@ -181,8 +183,8 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
         finish();
     }
 
-    private void turnOnProgressDialog(String message){
-        muzimaProgressDialog.show(message);
+    private void turnOnProgressDialog(String title){
+        muzimaProgressDialog.show(title);
         isProcessDialogOn = true;
     }
 
@@ -190,6 +192,15 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
         if (muzimaProgressDialog != null){
             muzimaProgressDialog.dismiss();
             isProcessDialogOn = false;
+        }
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent){
+        super.onReceive(context,intent);
+        String message = intent.getStringExtra(Constants.ProgressDialogConstants.PROGRESS_UPDATE_MESSAGE);
+        if(!StringUtils.isEmpty(message)){
+            muzimaProgressDialog.updateMessage(message);
         }
     }
 }

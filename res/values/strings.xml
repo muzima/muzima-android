@@ -136,6 +136,8 @@
         </p>
         ]]></string>
     <string name="info_downloaded_image">Downloaded Image</string>
+    <string formatted="false" name="info_encounter_download_progress_update">Downloading Encounters for patient %d of %d.</string>
+    <string formatted="false" name="info_encounter_notdownloaded_progress_update">Encounters for patient %d of %d not downloaded.</string>
     <string name="info_encounters_unavailable">No Encounters Available</string>
     <string name="info_forms_metadata_unavailable">No forms available</string>
     <string name="info_forms_no_recommended">No forms have been downloaded</string>
@@ -145,6 +147,8 @@
     <string name="info_new_notification">New Notification</string>
     <string name="info_no_cohorts_synced">No Cohorts Have Been Synced</string>
     <string name="info_notifications_unavailable">No Notifications Available</string>
+    <string formatted="false" name="info_obs_download_pogress_update">Downloading Obs for patient %d of %d.</string>
+    <string formatted="false" name="info_obs_notdownloaded_progress_update">Obs for patient %d of %d not downloaded.</string>
     <string name="info_observations_still_loading">Observations are still loading</string>
     <string name="info_observations_unavailable">No Observations Available</string>
     <string name="info_preference_wizard_finished">wizardFinished</string>

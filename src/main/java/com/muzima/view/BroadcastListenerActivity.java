@@ -15,6 +15,7 @@ import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
+import com.muzima.utils.Constants;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
@@ -22,6 +23,7 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
     private static final String TAG = BroadcastListenerActivity.class.getSimpleName();
     public static final String MESSAGE_SENT_ACTION = "com.muzima.MESSAGE_RECEIVED_ACTION";
+    public static final String PROGRESS_UPDATE_ACTION = "com.muzima.PROGRESS_UPDATE_ACTION";
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -34,6 +36,7 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
     protected void onResume() {
         super.onResume();
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(MESSAGE_SENT_ACTION));
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(PROGRESS_UPDATE_ACTION));
     }
 
     @Override
@@ -46,7 +49,15 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
         displayToast(intent);
     }
 
+    private boolean isProgessUpdate(Intent intent){
+        String action = intent.getAction();
+        return action == PROGRESS_UPDATE_ACTION;
+    }
     private void displayToast(Intent intent) {
+        if(isProgessUpdate(intent)){
+            //ToDo: put logic to log update status
+            return;
+        }
         int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS,
                 SyncStatusConstants.UNKNOWN_ERROR);
 

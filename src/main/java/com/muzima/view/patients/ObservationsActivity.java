@@ -24,7 +24,7 @@ public class ObservationsActivity extends BroadcastListenerActivity {
 
     public boolean quickSearch = false;
     private ViewPager viewPager;
-    private ObservationsPagerAdapter cohortPagerAdapter;
+    private ObservationsPagerAdapter observationsPagerAdapter;
     private PagerSlidingTabStrip pagerTabsLayout;
 
     @Override
@@ -51,9 +51,9 @@ public class ObservationsActivity extends BroadcastListenerActivity {
 
     private void initPager() {
         viewPager = (ViewPager) findViewById(R.id.pager);
-        cohortPagerAdapter = new ObservationsPagerAdapter(getApplicationContext(), getSupportFragmentManager());
-        cohortPagerAdapter.initPagerViews();
-        viewPager.setAdapter(cohortPagerAdapter);
+        observationsPagerAdapter = new ObservationsPagerAdapter(getApplicationContext(), getSupportFragmentManager());
+        observationsPagerAdapter.initPagerViews();
+        viewPager.setAdapter(observationsPagerAdapter);
     }
 
     /**
@@ -70,7 +70,13 @@ public class ObservationsActivity extends BroadcastListenerActivity {
         SearchView searchView = (SearchView) menu.findItem(R.id.search)
                 .getActionView();
         searchView.setQueryHint("Search observations");
-        searchView.setOnQueryTextListener(cohortPagerAdapter);
+        searchView.setOnQueryTextListener(observationsPagerAdapter);
         return true;
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        observationsPagerAdapter.cancelBackgroundQueryTasks();
     }
 }

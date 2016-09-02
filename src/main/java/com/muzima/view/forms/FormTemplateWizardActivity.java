@@ -47,6 +47,7 @@ import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
+import com.muzima.view.progressdialog.MuzimaProgressDialog;
 
 public class FormTemplateWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
     private MenuItem tagsButton;
@@ -257,6 +258,9 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
     public void onQueryTaskFinish() {
         dismissProgressDialog();
     }
+
+    @Override
+    public void onQueryTaskCancelled(){}
 
     private void turnOnProgressDialog(String message){
         progressDialog.show(message);
