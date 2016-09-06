@@ -170,7 +170,7 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
             endActionMode();
             selectedProviderListView.clearChoices();
             selectedProviderAdapter.reloadData();
-            Toast.makeText(getApplicationContext(), numberOfDeletedProviders +getString(R.string.info_providers_successful_delete), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), numberOfDeletedProviders +getString(R.string.info_provider_successful_delete), Toast.LENGTH_SHORT).show();
         }
 
         @Override

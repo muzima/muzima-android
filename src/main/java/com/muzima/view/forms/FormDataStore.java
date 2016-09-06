@@ -64,28 +64,28 @@ public class FormDataStore {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_save), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while saving form data", e);
         } catch (ConceptController.ConceptSaveException e) {
-            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observations_in_form_save), Toast.LENGTH_SHORT).show();
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observation_form_save), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while saving a concept parsed from the form data", e);
         } catch (ObservationController.ParseObservationException e) {
-            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observations_in_form_save), Toast.LENGTH_SHORT).show();
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observation_form_save), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while saving an observation parsed from the form data", e);
         } catch (ConceptController.ConceptParseException e) {
-            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_concepts_in_form_parse), Toast.LENGTH_SHORT).show();
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_concept_parse), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while parsing a concept parsed from the form data", e);
         } catch (ParseException e) {
-            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observations_in_form_save), Toast.LENGTH_SHORT).show();
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observation_form_save), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while parsing the xml payload", e);
         } catch (XmlPullParserException e) {
-            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observations_in_form_save), Toast.LENGTH_SHORT).show();
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observation_form_save), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while exploring the xml payload", e);
         } catch (PatientController.PatientLoadException e) {
-            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observations_in_form_save), Toast.LENGTH_SHORT).show();
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observation_form_save), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while loading a patient parsed from the form data", e);
         } catch (ConceptController.ConceptFetchException e) {
-            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observations_in_form_save), Toast.LENGTH_SHORT).show();
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observation_form_save), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while fetching a concept parsed from the form data", e);
         } catch (IOException e) {
-            Toast.makeText(formWebViewActivity,formWebViewActivity.getString(R.string.error_observations_in_form_save), Toast.LENGTH_SHORT).show();
+            Toast.makeText(formWebViewActivity,formWebViewActivity.getString(R.string.error_observation_form_save), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "IOException occurred while saving observations parsed from the form data", e);
         }
     }

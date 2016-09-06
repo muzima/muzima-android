@@ -81,7 +81,7 @@ public class HTMLFormDataStore {
             if (!keepFormOpen) {
                 formWebViewActivity.finish();
                 if (status.equals("complete")) {
-                    Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.info_complete_form_data_successful_save), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.info_form_data_successful_save), Toast.LENGTH_SHORT).show();
                     RealTimeFormUploader.getInstance().uploadAllCompletedForms(formWebViewActivity.getApplicationContext());
                 }
                 if (status.equals("incomplete")) {
@@ -104,7 +104,7 @@ public class HTMLFormDataStore {
         try {
             locationsOnDevice = locationController.getAllLocations();
         } catch (LocationController.LocationLoadException e) {
-            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_locations_for_form_load), Toast.LENGTH_SHORT).show();
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_location_load), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while loading locations", e);
         }
         return JSONValue.toJSONString(locationsOnDevice);
@@ -116,7 +116,7 @@ public class HTMLFormDataStore {
         try {
             providersOnDevice = providerController.getAllProviders();
         } catch (ProviderController.ProviderLoadException e) {
-            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_provider_for_form_load), Toast.LENGTH_SHORT).show();
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_provider_load), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while loading providers", e);
             e.printStackTrace();
         }

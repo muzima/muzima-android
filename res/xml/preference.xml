@@ -58,7 +58,7 @@
                 android:defaultValue="true"
                 android:checked="true"
                 android:key="@string/preference_duplicate_form_data_key"
-                android:summary="@string/preference_duplicate_form_data_warning_enable_hint"
+                android:summary="@string/preference_duplicate_form_data_warning_enable"
                 android:title="@string/preference_duplicate_form_data_enable_title" />
 
         <ListPreference

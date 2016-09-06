@@ -56,7 +56,7 @@ public class SyncedCohortsAdapter extends CohortsAdapter{
         @Override
         protected void onPostExecute(List<Cohort> cohorts) {
             if(cohorts == null){
-                Toast.makeText(getContext(), getContext().getString(R.string.error_cohorts_fetch), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getContext().getString(R.string.error_cohort_fetch), Toast.LENGTH_SHORT).show();
                 return;
             }
 

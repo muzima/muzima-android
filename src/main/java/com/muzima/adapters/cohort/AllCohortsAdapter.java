@@ -123,7 +123,7 @@ public class AllCohortsAdapter extends CohortsAdapter {
         protected void onPostExecute(List<Cohort> allCohorts) {
             cohorts = allCohorts;
             if (cohorts == null) {
-                Toast.makeText(getContext(), getContext().getString(R.string.error_cohorts_fetch), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getContext().getString(R.string.error_cohort_fetch), Toast.LENGTH_SHORT).show();
                 return;
             }
             //Removes the current items from the list.

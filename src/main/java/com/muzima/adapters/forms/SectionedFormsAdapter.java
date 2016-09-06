@@ -78,7 +78,7 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
                 holder.patientName.setText(patient.getDisplayName());
                 holder.patientIdentifier.setText(patient.getIdentifier());
             } else {
-                holder.patientName.setText(getContext().getString(R.string.default_forms_register));
+                holder.patientName.setText(getContext().getString(R.string.default_form_register));
             }
         }
         return convertView;

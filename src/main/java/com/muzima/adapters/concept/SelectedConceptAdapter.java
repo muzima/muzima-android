@@ -133,7 +133,7 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
         @Override
         protected void onPostExecute(List<Concept> concepts) {
             if (concepts == null) {
-                Toast.makeText(getContext(), getContext().getString(R.string.error_concepts_fetch), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getContext().getString(R.string.error_concept_fetch), Toast.LENGTH_SHORT).show();
                 return;
             }
             clear();

@@ -177,7 +177,7 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
             endActionMode();
             selectedConceptListView.clearChoices();
             selectedConceptAdapter.reloadData();
-            Toast.makeText(getApplicationContext(), numberOfDeletedConcepts +getString(R.string.info_concepts_successful_delete), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), numberOfDeletedConcepts +getString(R.string.info_concept_successful_delete), Toast.LENGTH_SHORT).show();
         }
 
         @Override
