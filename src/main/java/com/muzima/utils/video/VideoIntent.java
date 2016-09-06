@@ -145,7 +145,7 @@ public class VideoIntent extends Activity {
 		try {
 			startActivityForResult(i, VIDEO_RECORD);
 		} catch (ActivityNotFoundException e) {
-			Toast.makeText(this,getString(R.string.error_video_recording_activity_find), Toast.LENGTH_SHORT).show();
+			Toast.makeText(this,getString(R.string.error_video_record_activity_find), Toast.LENGTH_SHORT).show();
 		}		
 	}
 	
@@ -163,7 +163,7 @@ public class VideoIntent extends Activity {
 		    i.setType("video/*");
 			startActivityForResult(i,VIDEO_CHOOSE);
 		} catch (ActivityNotFoundException e) {
-			Toast.makeText(this,getString(R.string.error_video_choosing_activity_find), Toast.LENGTH_SHORT).show();
+			Toast.makeText(this,getString(R.string.error_video_chose_activity_find), Toast.LENGTH_SHORT).show();
 		}
 	}
 	
@@ -174,7 +174,7 @@ public class VideoIntent extends Activity {
 		try {
 			startActivity(i);
 		} catch (ActivityNotFoundException e) {
-			Toast.makeText(VideoIntent.this,getString(R.string.error_video_playing_activity_find), Toast.LENGTH_SHORT).show();
+			Toast.makeText(VideoIntent.this,getString(R.string.error_video_play_activity_find), Toast.LENGTH_SHORT).show();
 		}
 	}
 	

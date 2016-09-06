@@ -53,8 +53,8 @@ public class AllCohortsListFragment extends CohortListFragment {
         if (listAdapter == null) {
             listAdapter = new AllCohortsAdapter(getActivity(), R.layout.item_cohorts_list, cohortController);
         }
-        noDataMsg = getActivity().getResources().getString(R.string.info_cohorts_metadata_unavailable);
-        noDataTip = getActivity().getResources().getString(R.string.hint_cohorts_metadata_download);
+        noDataMsg = getActivity().getResources().getString(R.string.info_cohort_metadata_unavailable);
+        noDataTip = getActivity().getResources().getString(R.string.hint_cohort_metadata_download);
         super.onCreate(savedInstanceState);
     }
 
@@ -130,13 +130,13 @@ public class AllCohortsListFragment extends CohortListFragment {
             switch (menuItem.getItemId()) {
                 case R.id.menu_download:
                     if (cohortsSyncInProgress) {
-                        Toast.makeText(getActivity(), R.string.error_request_unallowed_while_syncing, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.error_request_unallowed_sync, Toast.LENGTH_SHORT).show();
                         endActionMode();
                         break;
                     }
 
                     if (!NetworkUtils.isConnectedToNetwork(getActivity())) {
-                        Toast.makeText(getActivity(), R.string.error_request_connection_not_found, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.error_request_connection_find, Toast.LENGTH_SHORT).show();
                         return true;
                     }
 

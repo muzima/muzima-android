@@ -48,7 +48,7 @@ public class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Void,
     @Override
     protected void onPostExecute(Encounters encountersWithObservations) {
         if (encountersWithObservations == null) {
-            Toast.makeText(observationsByEncounterAdapter.getContext(), observationsByEncounterAdapter.getContext().getString(R.string.error_observations_fetch), Toast.LENGTH_SHORT).show();
+            Toast.makeText(observationsByEncounterAdapter.getContext(), observationsByEncounterAdapter.getContext().getString(R.string.error_observation_fetch), Toast.LENGTH_SHORT).show();
             return;
         }
 

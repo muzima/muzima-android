@@ -30,8 +30,8 @@ public class GeneralNotificationsListFragment extends NotificationListFragment {
         if (listAdapter == null) {
             listAdapter = new GeneralNotificationsListAdapter(getActivity(), R.layout.item_notifications_list, notificationController);
         }
-        noDataMsg = getActivity().getResources().getString(R.string.info_notifications_unavailable);
-        noDataTip = getActivity().getResources().getString(R.string.hint_notifications_sync);
+        noDataMsg = getActivity().getResources().getString(R.string.info_notification_unavailable);
+        noDataTip = getActivity().getResources().getString(R.string.hint_notification_sync);
         super.onCreate(savedInstanceState);
     }
 

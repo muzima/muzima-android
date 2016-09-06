@@ -145,7 +145,7 @@ public class AudioIntent extends Activity {
 		try {
 			startActivityForResult(i, AUDIO_CAPTURE);
 		} catch (ActivityNotFoundException e) {
-			Toast.makeText(this,getString(R.string.error_audio_recording_activity_find), Toast.LENGTH_SHORT).show();
+			Toast.makeText(this,getString(R.string.error_audio_record_activity_find), Toast.LENGTH_SHORT).show();
 		}		
 	}
 
@@ -165,7 +165,7 @@ public class AudioIntent extends Activity {
             startActivityForResult(i,AUDIO_CHOOSE);
         } catch (ActivityNotFoundException e) {
             Log.d(TAG,e.getMessage(), e);
-			Toast.makeText(this,getString(R.string.error_audio_choosing_activity_find), Toast.LENGTH_SHORT).show();
+			Toast.makeText(this,getString(R.string.error_audio_chose_activity_find), Toast.LENGTH_SHORT).show();
 		}
 	}
 	
@@ -176,7 +176,7 @@ public class AudioIntent extends Activity {
 		try {
 			startActivity(i);
 		} catch (ActivityNotFoundException e) {
-			Toast.makeText(AudioIntent.this,getString(R.string.error_audio_playing_activity_find), Toast.LENGTH_SHORT).show();
+			Toast.makeText(AudioIntent.this,getString(R.string.error_audio_play_activity_find), Toast.LENGTH_SHORT).show();
 		}
 	}
 	

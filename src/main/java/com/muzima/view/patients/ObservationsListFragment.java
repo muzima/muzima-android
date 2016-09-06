@@ -59,14 +59,14 @@ public abstract class ObservationsListFragment extends MuzimaListFragment implem
 
     @Override
     public void onQueryTaskStarted() {
-        noDataMsg = getActivity().getString(R.string.info_observations_load);
+        noDataMsg = getActivity().getString(R.string.info_observation_load);
         updateDataLoadStatus(observationsLayout, noDataMsg);
     }
 
     @Override
     public void onQueryTaskFinish() {
         if(listAdapter.isEmpty()){
-            noDataMsg = getActivity().getString(R.string.error_observations_unavailable);
+            noDataMsg = getActivity().getString(R.string.error_observation_unavailable);
             updateDataLoadStatus(observationsLayout, noDataMsg);
         }
     }

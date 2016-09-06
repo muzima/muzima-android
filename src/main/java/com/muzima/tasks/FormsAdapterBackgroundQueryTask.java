@@ -42,7 +42,7 @@ public abstract class FormsAdapterBackgroundQueryTask<T extends BaseForm> extend
     @Override
     protected void onPostExecute(List<T> forms) {
         if (forms==null) {
-            Toast.makeText(adapterWeakReference.get().getContext(), adapterWeakReference.get().getContext().getString(R.string.error_forms_load), Toast.LENGTH_SHORT).show();
+            Toast.makeText(adapterWeakReference.get().getContext(), adapterWeakReference.get().getContext().getString(R.string.error_form_load), Toast.LENGTH_SHORT).show();
         }
 
         changeDataSet(forms);
@@ -63,7 +63,7 @@ public abstract class FormsAdapterBackgroundQueryTask<T extends BaseForm> extend
         if (adapterWeakReference.get() != null) {
             FormsAdapter formsAdapter = adapterWeakReference.get();
             if (forms == null) {
-                Toast.makeText(formsAdapter.getContext(), formsAdapter.getContext().getString(R.string.error_forms_fetch), Toast.LENGTH_SHORT).show();
+                Toast.makeText(formsAdapter.getContext(), formsAdapter.getContext().getString(R.string.error_form_fetch), Toast.LENGTH_SHORT).show();
                 return;
             }
             formsAdapter.clear();

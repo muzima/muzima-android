@@ -106,7 +106,7 @@ public class EncountersByPatientAdapter extends EncountersAdapter {
         @Override
         protected void onPostExecute(List<Encounter> encounters){
             if(encounters==null){
-                Toast.makeText(getContext(),getContext().getString(R.string.error_encounters_load),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),getContext().getString(R.string.error_encounter_load),Toast.LENGTH_SHORT).show();
                 return;
             }
             clear();

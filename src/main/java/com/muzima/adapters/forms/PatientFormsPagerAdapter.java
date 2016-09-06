@@ -42,7 +42,7 @@ public class PatientFormsPagerAdapter extends MuzimaPagerAdapter {
         CompletePatientsFormsListFragment completeFormsListFragment = CompletePatientsFormsListFragment.newInstance(formController, patient);
 
         pagers[TAB_INCOMPLETE] = new PagerView(context.getString(R.string.info_form_data_incomplete), incompleteFormsListFragment);
-        pagers[TAB_RECOMMENDED] = new PagerView(context.getString(R.string.info_form_templates_recommended), recommendedFormsListFragment);
+        pagers[TAB_RECOMMENDED] = new PagerView(context.getString(R.string.info_form_template_recommended), recommendedFormsListFragment);
         pagers[TAB_COMPLETE] = new PagerView(context.getString(R.string.info_form_data_complete), completeFormsListFragment);
     }
 

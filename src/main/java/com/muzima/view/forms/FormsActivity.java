@@ -148,17 +148,17 @@ public class FormsActivity extends FormsActivityBase {
         switch (item.getItemId()) {
             case R.id.menu_load:
                 if (!NetworkUtils.isConnectedToNetwork(this)) {
-                    Toast.makeText(this, R.string.error_request_connection_not_found, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.error_request_connection_find, Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 if (syncInProgress) {
-                    Toast.makeText(this, R.string.error_request_already_fetching_forms, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.error_request_form_fetch, Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 if (hasFormsWithData()) {
                     AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                     alertDialog.setMessage((getApplicationContext())
-                                    .getString(R.string.error_forms_with_patient_data_exists)
+                                    .getString(R.string.error_patient_data_form_exist)
                     );
                     alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
                         @Override
@@ -172,11 +172,11 @@ public class FormsActivity extends FormsActivityBase {
                 return true;
             case R.id.menu_upload:
                 if (!NetworkUtils.isConnectedToNetwork(this)) {
-                    Toast.makeText(this, R.string.error_request_connection_not_found, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.error_request_connection_find, Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 if (syncInProgress) {
-                    Toast.makeText(this, R.string.error_request_already_uploading_forms, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.error_request_form_upload, Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 uploadAllFormsInBackgroundService();

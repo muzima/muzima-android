@@ -220,7 +220,7 @@ public class IntentIntegrator {
 
     public final void setTargetApplications(List<String> targetApplications) {
         if (targetApplications.isEmpty()) {
-            throw new IllegalArgumentException(activity.getString(R.string.error_target_applications_find));
+            throw new IllegalArgumentException(activity.getString(R.string.error_target_application_find));
         }
         this.targetApplications = targetApplications;
     }

@@ -8,7 +8,6 @@
 
 package com.muzima.adapters.patients;
 
-import android.util.Log;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +60,7 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
 
     public void onPostExecute(List<Patient> patients, ListAdapter searchAdapter, BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
         if (patients == null) {
-            Toast.makeText(getContext(), getContext().getString(R.string.error_patients_fetch), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getContext().getString(R.string.error_patient_repo_fetch), Toast.LENGTH_SHORT).show();
             return;
         }
 

@@ -90,7 +90,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
     protected void onResume() {
         super.onResume();
         if(isProcessDialogOn){
-            turnOnProgressDialog(getString(R.string.info_cohorts_load));
+            turnOnProgressDialog(getString(R.string.info_cohort_load));
         }
     }
 
@@ -133,7 +133,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                turnOnProgressDialog(getString(R.string.info_clients_demographics_download));
+                turnOnProgressDialog(getString(R.string.info_client_demographics_download));
                 new AsyncTask<Void, Void, int[]>() {
 
                     @Override
@@ -152,7 +152,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
                     protected void onPostExecute(int[] result) {
                         dismissProgressDialog();
                         if (result[0] != SUCCESS) {
-                            Toast.makeText(CohortWizardActivity.this, getString(R.string.error_clients_download), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CohortWizardActivity.this, getString(R.string.error_client_download), Toast.LENGTH_SHORT).show();
                         }
                         Log.i(TAG, "Restarting timeout timer!") ;
                         ((MuzimaApplication) getApplication()).restartTimer();
@@ -228,7 +228,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
 
     @Override
     public void onQueryTaskStarted() {
-        turnOnProgressDialog(getString(R.string.info_cohorts_load));
+        turnOnProgressDialog(getString(R.string.info_cohort_load));
     }
 
     @Override

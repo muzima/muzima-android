@@ -65,7 +65,7 @@ public abstract class FormsFragmentWithSectionedListAdapter extends FormsListFra
         private void onCompleteOfFormDelete() {
             endActionMode();
             listAdapter.reloadData();
-            Toast.makeText(getActivity(), getActivity().getString(R.string.info_forms_successful_delete), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getActivity().getString(R.string.info_form_successful_delete), Toast.LENGTH_SHORT).show();
         }
 
         private void endActionMode() {

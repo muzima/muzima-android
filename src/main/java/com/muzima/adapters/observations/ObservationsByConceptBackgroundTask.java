@@ -49,7 +49,7 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Void, C
     @Override
     protected void onPostExecute(Concepts conceptsWithObservations) {
         if (conceptsWithObservations == null) {
-            Toast.makeText(observationsByConceptAdapter.getContext(),observationsByConceptAdapter.getContext().getString(R.string.error_observations_fetch), Toast.LENGTH_SHORT).show();
+            Toast.makeText(observationsByConceptAdapter.getContext(),observationsByConceptAdapter.getContext().getString(R.string.error_observation_fetch), Toast.LENGTH_SHORT).show();
             return;
         }
 

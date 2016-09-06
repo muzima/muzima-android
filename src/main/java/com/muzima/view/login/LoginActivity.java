@@ -290,11 +290,11 @@ public class LoginActivity extends Activity {
                 case SyncStatusConstants.MALFORMED_URL_ERROR:
                     return getString(R.string.error_invalid_server_URL_return);
                 case SyncStatusConstants.INVALID_CREDENTIALS_ERROR:
-                    return getString(R.string.error_invalid_username_password_server_combination);
+                    return getString(R.string.error_invalid_username_password_combine);
                 case SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME:
-                    return getString(R.string.error_invalid_character_in_username_not_allowed) + SyncStatusConstants.INVALID_CHARACTER_FOR_USERNAME;
+                    return getString(R.string.error_invalid_username_allow) + SyncStatusConstants.INVALID_CHARACTER_FOR_USERNAME;
                 case SyncStatusConstants.CONNECTION_ERROR:
-                    return getString(R.string.error_server_connection_not_found);
+                    return getString(R.string.error_server_connection_find);
                 default:
                     return getString(R.string.error_authentication_fail);
             }

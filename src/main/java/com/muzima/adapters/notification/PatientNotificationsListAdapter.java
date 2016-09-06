@@ -61,7 +61,7 @@ public class PatientNotificationsListAdapter extends NotificationAdapter {
         @Override
         protected void onPostExecute(List<Notification> allNotifications) {
             if (allNotifications == null) {
-                Toast.makeText(getContext(), getContext().getString(R.string.error_notifications_fetch), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getContext().getString(R.string.error_notification_fetch), Toast.LENGTH_SHORT).show();
                 return;
             }
             //Removes the current items from the list.

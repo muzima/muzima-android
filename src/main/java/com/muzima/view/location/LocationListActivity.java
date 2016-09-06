@@ -54,7 +54,7 @@ public class LocationListActivity extends LocationPreferenceActivity {
     protected void onResume() {
         super.onResume();
         if(isProcessDialogOn){
-            turnOnProgressDialog(getString(R.string.info_encounters_and_observations_download));
+            turnOnProgressDialog(getString(R.string.info_encounter_observation_download));
         }
     }
 
