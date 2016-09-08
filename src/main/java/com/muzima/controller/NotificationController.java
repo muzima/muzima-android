@@ -15,7 +15,6 @@ import com.muzima.api.model.Tag;
 import com.muzima.api.service.FormService;
 import com.muzima.api.service.NotificationService;
 import com.muzima.api.service.PatientService;
-import com.muzima.search.api.util.StringUtil;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;

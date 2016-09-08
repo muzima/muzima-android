@@ -22,9 +22,9 @@ import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.scheduler.RealTimeFormUploader;
-import com.muzima.search.api.util.StringUtil;
 import com.muzima.tasks.ValidateURLTask;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.utils.StringUtils;
 import com.muzima.view.login.LoginActivity;
 import com.muzima.view.preferences.settings.ResetDataTask;
 import com.muzima.view.preferences.settings.SyncFormDataTask;
@@ -210,7 +210,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         actions.put(key, new PreferenceChangeHandler() {
             @Override
             public void handle(SharedPreferences sharedPreferences) {
-                preference.setSummary(sharedPreferences.getString(key, StringUtil.EMPTY));
+                preference.setSummary(sharedPreferences.getString(key, StringUtils.EMPTY));
             }
         });
     }
@@ -220,7 +220,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         actions.put(key, new PreferenceChangeHandler() {
             @Override
             public void handle(SharedPreferences sharedPreferences) {
-                preference.setSummary(sharedPreferences.getString(key, StringUtil.EMPTY));
+                preference.setSummary(sharedPreferences.getString(key, StringUtils.EMPTY));
             }
         });
     }

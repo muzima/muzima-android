@@ -15,7 +15,7 @@ import android.preference.PreferenceManager;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.R;
-import com.muzima.search.api.util.StringUtil;
+import com.muzima.utils.StringUtils;
 import com.muzima.view.login.LoginActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
@@ -54,7 +54,7 @@ public class DefaultMenuDropDownHelper {
                 SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
                 String passwordKey = activity.getResources().getString(R.string.preference_password);
                 settings.edit()
-                        .putString(passwordKey, StringUtil.EMPTY)
+                        .putString(passwordKey, StringUtils.EMPTY)
                         .commit();
 
                 launchLoginActivity(false);

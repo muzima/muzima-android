@@ -20,7 +20,7 @@ import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
-import com.muzima.search.api.util.StringUtil;
+import com.muzima.utils.StringUtils;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 
@@ -84,7 +84,7 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
                 if (selectedTags.isEmpty() || selectedTags.contains(tags[i])) {
                     textView.setText(tags[i].getName());
                 } else {
-                    textView.setText(StringUtil.EMPTY);
+                    textView.setText(StringUtils.EMPTY);
                 }
             }
 
