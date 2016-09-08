@@ -118,6 +118,9 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
     }
 
     @Override
+    public void onQueryTaskCancelled(){}
+
+    @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         if (!actionModeActive && getCheckedItemCount(listView) > 0) {
             actionMode = this.startActionMode(new DownloadPatientMode());

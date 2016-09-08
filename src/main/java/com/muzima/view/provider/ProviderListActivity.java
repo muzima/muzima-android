@@ -9,7 +9,7 @@ import com.actionbarsherlock.view.Menu;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
 import com.muzima.view.concept.ConceptListActivity;
-import com.muzima.view.forms.MuzimaProgressDialog;
+import com.muzima.view.progressdialog.MuzimaProgressDialog;
 import com.muzima.view.preferences.ProviderPreferenceActivity;
 
 

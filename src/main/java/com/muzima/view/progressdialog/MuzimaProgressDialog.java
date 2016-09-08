@@ -6,7 +6,7 @@
  * that uses this code in a for-profit venture, please contact the copyright holder.
  */
 
-package com.muzima.view.forms;
+package com.muzima.view.progressdialog;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -29,6 +29,11 @@ public class MuzimaProgressDialog {
         dialog.setTitle(title);
         dialog.setMessage("This might take a while");
         dialog.show();
+    }
+
+    @JavascriptInterface
+    public void updateMessage(String message) {
+        dialog.setMessage(message);
     }
 
     @JavascriptInterface

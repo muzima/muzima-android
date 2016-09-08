@@ -42,7 +42,7 @@ public class EncountersActivity extends BroadcastListenerActivity implements Ada
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
         try {
             setupPatientMetadata();
-            setupNoDataView();
+            setupStillLoadingView();
             setupPatientEncounters();
         } catch (PatientController.PatientLoadException e) {
             Toast.makeText(this, getString(R.string.error_patient_fetch), Toast.LENGTH_SHORT).show();
@@ -88,6 +88,14 @@ public class EncountersActivity extends BroadcastListenerActivity implements Ada
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
     }
 
+    private void setupStillLoadingView() {
+
+        noDataView = findViewById(R.id.no_data_layout);
+        TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
+        noDataMsgTextView.setText("Encounters are still loading");
+        noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
+    }
+
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         Encounter encounter = encountersByPatientAdapter.getItem(position);
@@ -101,7 +109,14 @@ public class EncountersActivity extends BroadcastListenerActivity implements Ada
     public void onQueryTaskStarted() {}
 
     @Override
-    public void onQueryTaskFinish() {}
+    public void onQueryTaskFinish() {
+        if(encountersByPatientAdapter.isEmpty()) {
+            setupNoDataView();
+        }
+    }
+
+    @Override
+    public void onQueryTaskCancelled(){}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.muzima</groupId>
     <artifactId>muzima-android</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.0.4</version>
     <packaging>apk</packaging>
     <name>Muzima-Android</name>
 
@@ -17,16 +17,9 @@
             <url>https://raw.github.com/muzima/muzima-maven/master/releases</url>
         </repository>
         <repository>
-            <id>local-project-libraries-snapshot-github-search</id>
-            <name>Local project libraries</name>
-            <url>https://raw.github.com/muzima/muzima-maven/search-api</url>
-            <snapshots/>
-        </repository>
-        <repository>
             <id>local-project-libraries-snapshot-github-api</id>
             <name>Local project libraries</name>
             <url>https://raw.github.com/muzima/muzima-maven/muzima-api</url>
-            <snapshots/>
         </repository>
     </repositories>
 
@@ -122,7 +115,7 @@
         <dependency>
             <groupId>com.muzima</groupId>
             <artifactId>muzima-api</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.1.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.inject</groupId>

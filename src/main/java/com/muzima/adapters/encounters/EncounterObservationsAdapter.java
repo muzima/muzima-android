@@ -21,6 +21,8 @@ import com.muzima.R;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
 import com.muzima.controller.ObservationController;
+import com.muzima.model.observation.EncounterWithObservations;
+import com.muzima.model.observation.Encounters;
 import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
@@ -114,14 +116,13 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
         @Override
         protected List<Observation> doInBackground(String... params) {
             List<Observation> observations = null;
+
              try {
                  observations=new ArrayList<Observation>();
-                 List<Observation>observationsByPatient = observationController.getObservationsByPatient(encounter.getPatient().getUuid());
+                 Encounters encounterWithObservations  = observationController.getObservationsByEncounterUuid(encounter.getUuid());
 
-                 for(Observation obs:observationsByPatient){
-                     if(obs.getEncounter().getUuid().equals(encounter.getUuid())){
-                         observations.add(obs);
-                     }
+                 for(EncounterWithObservations encounterWithObs:encounterWithObservations){
+                     observations.addAll(encounterWithObs.getObservations());
                  }
 
              }catch(ObservationController.LoadObservationException e){

@@ -6,16 +6,15 @@
  * that uses this code in a for-profit venture, please contact the copyright holder.
  */
 
-package com.muzima.view.forms;
+package com.muzima.view.progressdialog;
 
 import android.app.ProgressDialog;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 
 public class MuzimaProgressDialogTest {
@@ -25,7 +24,7 @@ public class MuzimaProgressDialogTest {
 
     @Before
     public void setUp() throws Exception {
-        progressDialog = mock(ProgressDialog.class);
+        progressDialog = Mockito.mock(ProgressDialog.class);
         dialog = new MuzimaProgressDialog(progressDialog);
     }
 
@@ -33,25 +32,25 @@ public class MuzimaProgressDialogTest {
     public void shouldShowProgressDialogWithGivenText() throws Exception {
         dialog.show("title");
 
-        verify(progressDialog).setCancelable(false);
-        verify(progressDialog).setTitle("title");
-        verify(progressDialog).setMessage("This might take a while");
-        verify(progressDialog).show();
+        Mockito.verify(progressDialog).setCancelable(false);
+        Mockito.verify(progressDialog).setTitle("title");
+        Mockito.verify(progressDialog).setMessage("This might take a while");
+        Mockito.verify(progressDialog).show();
     }
 
     @Test
     public void shouldDismissADialogOnlyWhenVisible() throws Exception {
-        when(progressDialog.isShowing()).thenReturn(true);
+        Mockito.when(progressDialog.isShowing()).thenReturn(true);
         dialog.dismiss();
 
-        verify(progressDialog).dismiss();
+        Mockito.verify(progressDialog).dismiss();
     }
 
     @Test
     public void shouldNotCallDismissIfProgressBarISNotVisible() throws Exception {
-        when(progressDialog.isShowing()).thenReturn(false);
+        Mockito.when(progressDialog.isShowing()).thenReturn(false);
 
         dialog.dismiss();
-        verify(progressDialog,never()).dismiss();
+        Mockito.verify(progressDialog, Mockito.never()).dismiss();
     }
 }
