@@ -28,8 +28,8 @@ import com.muzima.R;
 import com.muzima.adapters.concept.AutoCompleteLocationAdapter;
 import com.muzima.adapters.concept.SelectedLocationAdapter;
 import com.muzima.api.model.Location;
-import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.Constants;
+import com.muzima.utils.StringUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
 
@@ -101,7 +101,7 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
                     selectedLocationAdapter.addLocation(selectedLocation);
                     selectedLocationAdapter.notifyDataSetChanged();
                 }
-                autoCompleteLocationsTextView.setText(StringUtil.EMPTY);
+                autoCompleteLocationsTextView.setText(StringUtils.EMPTY);
             }
         };
     }

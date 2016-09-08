@@ -13,8 +13,8 @@ import com.muzima.api.model.CohortData;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.LastSyncTimeService;
-import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.SntpService;
+import com.muzima.utils.StringUtils;
 import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
@@ -82,7 +82,7 @@ public class CohortControllerTest {
     @Test
     public void downloadAllCohorts_shouldReturnDownloadedCohorts() throws CohortController.CohortDownloadException, IOException {
         List<Cohort> downloadedCohorts = new ArrayList<Cohort>();
-        when(cohortService.downloadCohortsByName(StringUtil.EMPTY)).thenReturn(downloadedCohorts);
+        when(cohortService.downloadCohortsByName(StringUtils.EMPTY)).thenReturn(downloadedCohorts);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS)).thenReturn(null);
         controller.downloadAllCohorts();
 
@@ -91,7 +91,7 @@ public class CohortControllerTest {
 
     @Test(expected = CohortController.CohortDownloadException.class)
     public void downloadAllCohorts_shouldThrowCohortDownloadExceptionIfExceptionIsThrownByCohortService() throws CohortController.CohortDownloadException, IOException {
-        doThrow(new IOException()).when(cohortService).downloadCohortsByNameAndSyncDate(StringUtil.EMPTY, null);
+        doThrow(new IOException()).when(cohortService).downloadCohortsByNameAndSyncDate(StringUtils.EMPTY, null);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS)).thenReturn(null);
 
         controller.downloadAllCohorts();

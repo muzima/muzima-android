@@ -23,7 +23,7 @@ import com.muzima.api.model.Observation;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.EncounterWithObservations;
 import com.muzima.model.observation.Encounters;
-import com.muzima.search.api.util.StringUtil;
+import com.muzima.utils.StringUtils;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
 
@@ -82,7 +82,7 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
 
             String observationConceptType = observation.getConcept().getConceptType().getName();
 
-            if (StringUtil.equals(observationConceptType, "Complex")){
+            if (StringUtils.equals(observationConceptType, "Complex")){
                 observationValue.setVisibility(View.GONE);
                 observationComplex.setVisibility(View.VISIBLE);
             } else {

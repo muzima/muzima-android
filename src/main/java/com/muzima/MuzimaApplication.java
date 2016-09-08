@@ -33,7 +33,6 @@ import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
 import com.muzima.domain.Credentials;
-import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
@@ -321,7 +320,7 @@ public class MuzimaApplication extends Application {
         saveBeforeExit();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String passwordKey = getResources().getString(R.string.preference_password);
-        settings.edit().putString(passwordKey, StringUtil.EMPTY).commit();
+        settings.edit().putString(passwordKey, StringUtils.EMPTY).commit();
         evictAuthenticatedUser();
     }
 

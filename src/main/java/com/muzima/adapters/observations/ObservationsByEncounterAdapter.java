@@ -24,10 +24,10 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.EncounterWithObservations;
-import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.BackgroundTaskHelper;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.StringUtils;
 
 public class ObservationsByEncounterAdapter extends ObservationsAdapter<EncounterWithObservations> {
     public ObservationsByEncounterAdapter(FragmentActivity activity, int item_observation_list,
@@ -109,7 +109,7 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
 
             TextView observationValue = (TextView) layout.findViewById(R.id.observation_value);
             ImageView observationComplexHolder = (ImageView) layout.findViewById(R.id.observation_complex);
-            if (StringUtil.equals(observationConceptType, "Complex")){
+            if (StringUtils.equals(observationConceptType, "Complex")){
                 observationValue.setVisibility(View.GONE);
                 observationComplexHolder.setVisibility(View.VISIBLE);
             } else {

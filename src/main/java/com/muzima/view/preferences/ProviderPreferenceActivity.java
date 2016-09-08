@@ -20,8 +20,8 @@ import com.muzima.R;
 import com.muzima.adapters.concept.AutoCompleteProviderAdapter;
 import com.muzima.adapters.concept.SelectedProviderAdapter;
 import com.muzima.api.model.Provider;
-import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.Constants;
+import com.muzima.utils.StringUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
 
@@ -96,7 +96,7 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
                     selectedProviderAdapter.addProvider(selectedProvider);
                     selectedProviderAdapter.notifyDataSetChanged();
                 }
-                autoCompleteProvidersTextView.setText(StringUtil.EMPTY);
+                autoCompleteProvidersTextView.setText(StringUtils.EMPTY);
             }
         };
     }
