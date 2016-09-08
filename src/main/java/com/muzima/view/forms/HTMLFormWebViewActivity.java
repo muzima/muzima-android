@@ -47,6 +47,7 @@ import com.muzima.utils.imaging.ImageResult;
 import com.muzima.utils.video.VideoResult;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
+import com.muzima.view.progressdialog.MuzimaProgressDialog;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.lucene.queryParser.ParseException;
 import org.json.JSONException;

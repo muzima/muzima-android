@@ -41,6 +41,8 @@ public class Constants {
     public static final String APP_VIDEO_DIR = APP_MEDIA_DIR + "/video";
     public static final String TMP_FILE_PATH = APP_EXTERNAL_DIR_ROOT + "/.cache";
 
+    public static final int PATIENT_LOAD_PAGE_SIZE = 10;
+
     public static class DataSyncServiceConstants {
         public static final String SYNC_TYPE = "sync_type";
         public static final String CREDENTIALS = "credentials";
@@ -90,5 +92,9 @@ public class Constants {
         public static final String NOTIFICATION_READ = "read";
         public static final String NOTIFICATION_UNREAD = "unread";
         public static final String RECEIVER_UUID = "receiverUuid";
+    }
+    public static class ProgressDialogConstants {
+        public static final String PROGRESS_UPDATE_MESSAGE = "progressUpdateMessage";
+        public static final String PROGRESS_UPDATE_ACTION = "progressUpdateAction";
     }
 }

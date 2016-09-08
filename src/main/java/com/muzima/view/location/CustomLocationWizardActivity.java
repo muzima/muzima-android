@@ -22,7 +22,7 @@ import com.muzima.R;
 import com.muzima.domain.Credentials;
 import com.muzima.view.provider.CustomProviderWizardActivity;
 import com.muzima.view.forms.FormTemplateWizardActivity;
-import com.muzima.view.forms.MuzimaProgressDialog;
+import com.muzima.view.progressdialog.MuzimaProgressDialog;
 import com.muzima.view.preferences.LocationPreferenceActivity;
 
 public class CustomLocationWizardActivity extends LocationPreferenceActivity {

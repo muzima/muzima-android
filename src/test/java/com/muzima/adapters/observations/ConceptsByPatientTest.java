@@ -8,6 +8,7 @@
 
 package com.muzima.adapters.observations;
 
+import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import org.junit.Test;
 
@@ -18,7 +19,8 @@ public class ConceptsByPatientTest {
     @Test
     public void shouldGetObservationsByPatientUUID() throws Exception, ObservationController.LoadObservationException {
         ObservationController controller = mock(ObservationController.class);
-        ConceptsByPatient byPatient = new ConceptsByPatient(controller, "uuid");
+        ConceptController conceptController = mock(ConceptController.class);
+        ConceptsByPatient byPatient = new ConceptsByPatient(conceptController,controller, "uuid");
         byPatient.get();
         verify(controller).getConceptWithObservations("uuid");
     }

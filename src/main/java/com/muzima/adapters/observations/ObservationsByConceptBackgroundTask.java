@@ -12,16 +12,20 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 import com.muzima.R;
+import com.muzima.api.model.Concept;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.ConceptWithObservations;
 import com.muzima.model.observation.Concepts;
 
-public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Void, Concepts> {
+import java.util.List;
+
+public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concepts, Concepts> {
 
     private ConceptAction conceptAction;
     private ObservationsByConceptAdapter observationsByConceptAdapter;
 
-    public ObservationsByConceptBackgroundTask(ObservationsByConceptAdapter observationsByConceptAdapter, ConceptAction conceptAction) {
+    public ObservationsByConceptBackgroundTask(ObservationsByConceptAdapter observationsByConceptAdapter,
+                                               ConceptAction conceptAction) {
         this.observationsByConceptAdapter = observationsByConceptAdapter;
         this.conceptAction = conceptAction;
     }
@@ -34,16 +38,30 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Void, C
     }
     @Override
     protected Concepts doInBackground(Void... params) {
-        Concepts concepts = null;
+        Concepts conceptsWithObservations = null;
+        Concepts temp = null;
         try {
-            concepts = conceptAction.get();
-            if(concepts != null){
-                concepts.sortByDate();
+            List<Concept> concepts = conceptAction.getConcepts();
+            for (Concept concept : concepts) {
+                if(!isCancelled()) {
+                    temp = conceptAction.get(concept);
+                    if (temp != null) {
+                        temp.sortByDate();
+                        if (conceptsWithObservations == null) {
+                            conceptsWithObservations = temp;
+                        } else {
+                            conceptsWithObservations.addAll(temp);
+                        }
+                        publishProgress(temp);
+                    }
+                } else {
+                    break;
+                }
             }
         } catch (ObservationController.LoadObservationException e) {
             Log.w("Observations", String.format("Exception while loading observations for %s.", conceptAction), e);
         }
-        return concepts;
+        return conceptsWithObservations;
     }
 
     @Override
@@ -53,15 +71,22 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Void, C
             return;
         }
 
-        observationsByConceptAdapter.clear();
-
-        for (ConceptWithObservations conceptsWithObservation : conceptsWithObservations) {
-            observationsByConceptAdapter.add(conceptsWithObservation);
-        }
-        observationsByConceptAdapter.notifyDataSetChanged();
-
         if (observationsByConceptAdapter.getBackgroundListQueryTaskListener() != null) {
             observationsByConceptAdapter.getBackgroundListQueryTaskListener().onQueryTaskFinish();
         }
+    }
+
+    @Override
+    protected void onProgressUpdate(Concepts... conceptsWithObservations) {
+        if (conceptsWithObservations == null) {
+            return;
+        }
+
+        for (Concepts concepts : conceptsWithObservations) {
+            for (ConceptWithObservations conceptsWithObservation : concepts) {
+                observationsByConceptAdapter.add(conceptsWithObservation);
+            }
+        }
+        observationsByConceptAdapter.notifyDataSetChanged();
     }
 }

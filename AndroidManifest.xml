@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.muzima"
-          android:versionCode="4"
-          android:versionName="1.0.3">
+          android:versionCode="5"
+          android:versionName="1.0.4">
 
     <uses-sdk
             android:minSdkVersion="8"
@@ -332,6 +332,8 @@
         </receiver>
 
         <service android:name=".service.DataSyncService"
+                 android:exported="false"/>
+        <service android:name=".view.progressdialog.ProgressDialogUpdateIntentService"
                  android:exported="false"/>
 
         <activity android:name="org.acra.CrashReportDialog"

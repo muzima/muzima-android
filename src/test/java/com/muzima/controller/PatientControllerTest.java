@@ -65,7 +65,7 @@ public class PatientControllerTest {
     public void getTotalPatientsCount_shouldReturnPatientsCount() throws IOException, ParseException, PatientController.PatientLoadException {
         when(patientService.countAllPatients()).thenReturn(2);
 
-        assertThat(patientController.getTotalPatientsCount(), is(2));
+        assertThat(patientController.countAllPatients(), is(2));
     }
 
     @Test
