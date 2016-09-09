@@ -62,12 +62,12 @@ public class NotificationsListActivity extends NotificationActivityBase {
         switch (item.getItemId()) {
             case R.id.menu_load:
                 if (notificationsSyncInProgress) {
-                    Toast.makeText(this, "Action not allowed while sync is in progress", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.error_request_unallowed_sync, Toast.LENGTH_SHORT).show();
                     return true;
                 }
 
                 if (!NetworkUtils.isConnectedToNetwork(this)) {
-                    Toast.makeText(this, "No connection found, please connect your device and try again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.error_request_connection_find, Toast.LENGTH_SHORT).show();
                     return true;
                 }
 
@@ -100,7 +100,7 @@ public class NotificationsListActivity extends NotificationActivityBase {
             }
             new SyncNotificationsIntent(this, authenticatedUser.getPerson().getUuid(), getDownloadedCohortsArray(downloadedCohortsUuid)).start();
         } else
-            Toast.makeText(this, "Error downloading notifications", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_notification_download), Toast.LENGTH_SHORT).show();
     }
 
     @Override

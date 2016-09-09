@@ -154,7 +154,7 @@ public class TagsListAdapter extends ListAdapter<Tag> implements AdapterView.OnI
         @Override
         protected void onPostExecute(List<Tag> tags) {
             if(tags == null){
-                Toast.makeText(getContext(), "Something went wrong while fetching tags from local repo", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getContext().getString(R.string.error_tag_fetch), Toast.LENGTH_SHORT).show();
                 return;
             }
 

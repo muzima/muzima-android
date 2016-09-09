@@ -11,6 +11,7 @@ package com.muzima.adapters.observations;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
+import com.muzima.R;
 import com.muzima.api.model.Concept;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.ConceptWithObservations;
@@ -66,8 +67,7 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
     @Override
     protected void onPostExecute(Concepts conceptsWithObservations) {
         if (conceptsWithObservations == null) {
-            Toast.makeText(observationsByConceptAdapter.getContext(),
-                    "Something went wrong while fetching observations from local repo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(observationsByConceptAdapter.getContext(),observationsByConceptAdapter.getContext().getString(R.string.error_observation_fetch), Toast.LENGTH_SHORT).show();
             return;
         }
 

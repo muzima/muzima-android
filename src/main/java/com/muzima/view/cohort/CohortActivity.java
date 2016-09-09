@@ -55,12 +55,12 @@ public class CohortActivity extends BroadcastListenerActivity {
         switch (item.getItemId()) {
             case R.id.menu_load:
                 if (!NetworkUtils.isConnectedToNetwork(this)) {
-                    Toast.makeText(this, "No connection found, please connect your device and try again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.error_request_connection_find, Toast.LENGTH_SHORT).show();
                     return true;
                 }
 
                 if (syncInProgress) {
-                    Toast.makeText(this, "Already fetching cohorts, ignored the request", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.info_request_ignore), Toast.LENGTH_SHORT).show();
                     return true;
                 }
 

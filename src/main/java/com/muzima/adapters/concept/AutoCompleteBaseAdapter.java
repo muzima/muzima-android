@@ -86,7 +86,7 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
                         previousConstraint = constraint.toString();
                         previousResult = options;
                     } else {
-                        Toast.makeText(getMuzimaApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getMuzimaApplicationContext(), muzimaApplicationContext.getString(R.string.error_authentication_fail), Toast.LENGTH_SHORT).show();
                     }
 
                     Log.i(TAG, "Downloaded: " + options.size());

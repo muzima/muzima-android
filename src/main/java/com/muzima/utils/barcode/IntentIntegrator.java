@@ -26,6 +26,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import com.muzima.R;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -219,7 +220,7 @@ public class IntentIntegrator {
 
     public final void setTargetApplications(List<String> targetApplications) {
         if (targetApplications.isEmpty()) {
-            throw new IllegalArgumentException("No target applications");
+            throw new IllegalArgumentException(activity.getString(R.string.error_target_application_find));
         }
         this.targetApplications = targetApplications;
     }
