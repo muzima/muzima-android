@@ -36,7 +36,7 @@ public class ObservationByEncountersFragment extends ObservationsListFragment{
             listAdapter = new ObservationsByEncounterAdapter(
                     getActivity(), R.layout.item_observation_by_encounter_list,encounterController, conceptController, observationController);
         }
-        noDataMsg = getActivity().getResources().getString(R.string.info_observations_still_loading);
+        noDataMsg = getActivity().getResources().getString(R.string.info_observation_in_progress);
         super.onCreate(savedInstanceState);
     }
 

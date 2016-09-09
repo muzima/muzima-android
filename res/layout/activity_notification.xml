@@ -54,7 +54,7 @@
 
         <Button
                 android:id="@+id/viewEncounter"
-                android:text="@string/hint_notification_view_encounter"
+                android:text="@string/general_view_encounter"
                 style="@style/LoginButton"
                 android:onClick="encounterView"/>
     </FrameLayout>

@@ -175,7 +175,7 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
             endActionMode();
             selectedLocationListView.clearChoices();
             selectedLocationAdapter.reloadData();
-            Toast.makeText(getApplicationContext(), numberOfDeletedLocations +" Locations deleted successfully!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.info_location_delete_success, numberOfDeletedLocations), Toast.LENGTH_SHORT).show();
         }
 
         @Override

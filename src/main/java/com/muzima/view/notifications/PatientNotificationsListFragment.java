@@ -33,7 +33,7 @@ public class PatientNotificationsListFragment extends NotificationListFragment {
         if (listAdapter == null) {
             listAdapter = new PatientNotificationsAdapter(getActivity(), R.layout.item_notifications_list, notificationController, patient);
         }
-        noDataMsg = getActivity().getResources().getString(R.string.info_notifications_unavailable);
+        noDataMsg = getActivity().getResources().getString(R.string.info_notification_unavailable);
         super.onCreate(savedInstanceState);
     }
 

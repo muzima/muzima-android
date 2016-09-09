@@ -118,7 +118,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         getSupportMenuInflater().inflate(R.menu.client_list, menu);
         searchView = (SearchView) menu.findItem(R.id.search)
                 .getActionView();
-        searchView.setQueryHint("Search clients");
+        searchView.setQueryHint(getString(R.string.hint_client_search));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -224,10 +224,10 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         noDataView = findViewById(R.id.no_data_layout);
 
         TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
-        noDataMsgTextView.setText(getResources().getText(R.string.info_clients_local_search_unmatched));
+        noDataMsgTextView.setText(getResources().getText(R.string.info_client_local_search_not_found));
 
         TextView noDataTipTextView = (TextView) findViewById(R.id.no_data_tip);
-        noDataTipTextView.setText(R.string.hint_clients_local_search_unmatched);
+        noDataTipTextView.setText(R.string.hint_client_local_search);
 
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
         noDataTipTextView.setTypeface(Fonts.roboto_light(this));

@@ -2,7 +2,7 @@
     <item
             android:id="@+id/menu_delete"
             android:icon="@drawable/ic_action_discard"
-            android:title="@string/menu_delete"
+            android:title="@string/general_delete"
             android:showAsAction="always|withText"/>
 
 </menu>

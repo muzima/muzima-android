@@ -63,7 +63,7 @@ public class PatientSummaryActivity extends BaseActivity {
             setupPatientMetadata();
             notifyOfIdChange();
         } catch (PatientController.PatientLoadException e) {
-            Toast.makeText(this, "An error occurred while fetching patient", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.error_patient_fetch, Toast.LENGTH_SHORT).show();
             finish();
         }
     }
@@ -86,7 +86,7 @@ public class PatientSummaryActivity extends BaseActivity {
             builder.setCancelable(true)
                     .setIcon(getResources().getDrawable(R.drawable.ic_warning))
                     .setTitle("Notice")
-                    .setMessage("Client Identifier changed on server. The new identifier will be used going forward.")
+                    .setMessage(getString(R.string.info_client_identifier_change))
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

@@ -26,7 +26,7 @@
                         android:id="@+id/serverUrl"
                         style="@style/LoginInfoEditText"
                         android:inputType="textUri"
-                        android:hint="@string/hint_server_text"
+                        android:hint="@string/hint_server_url"
                         />
 
                 <View
@@ -35,7 +35,7 @@
                 <EditText
                         android:id="@+id/username"
                         style="@style/LoginInfoEditText"
-                        android:hint="@string/hint_username_text"
+                        android:hint="@string/general_username"
                         />
 
                 <View
@@ -44,7 +44,7 @@
                 <EditText
                         android:id="@+id/password"
                         style="@style/LoginInfoEditText"
-                        android:hint="@string/hint_password_text"
+                        android:hint="@string/general_password"
                         android:inputType="textPassword"/>
 
             </LinearLayout>
