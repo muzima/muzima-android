@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2014. The Trustees of Indiana University.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license with additional
+ * healthcare disclaimer. If the user is an entity intending to commercialize any application
+ * that uses this code in a for-profit venture, please contact the copyright holder.
+ */
 package com.muzima.view.preferences;
 
 import android.content.Context;
@@ -14,6 +21,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
+import com.muzima.utils.StringUtils;
 import com.actionbarsherlock.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -21,16 +29,12 @@ import com.muzima.adapters.concept.AutoCompleteProviderAdapter;
 import com.muzima.adapters.concept.SelectedProviderAdapter;
 import com.muzima.api.model.Provider;
 import com.muzima.utils.Constants;
-import com.muzima.utils.StringUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by vikas on 16/03/15.
- */
 public class ProviderPreferenceActivity extends BroadcastListenerActivity {
     private static final String TAG = ProviderPreferenceActivity.class.getSimpleName();
     private SelectedProviderAdapter selectedProviderAdapter;
@@ -170,7 +174,7 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
             endActionMode();
             selectedProviderListView.clearChoices();
             selectedProviderAdapter.reloadData();
-            Toast.makeText(getApplicationContext(), numberOfDeletedProviders +getString(R.string.info_provider_successful_delete), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.info_provider_delete_success,numberOfDeletedProviders), Toast.LENGTH_SHORT).show();
         }
 
         @Override

@@ -30,7 +30,7 @@
                   android:textColor="@color/primary_blue"
                   android:id="@+id/scanner_already_exists"
                   android:visibility="gone"
-                  android:text="@string/info_scanner_app_exists"/>
+                  android:text="@string/info_scanner_exists"/>
     </LinearLayout>
     <LinearLayout style="@style/ButtonRow"
                   android:layout_alignParentBottom="true">

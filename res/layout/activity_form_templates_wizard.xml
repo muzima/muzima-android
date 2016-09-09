@@ -25,7 +25,7 @@
                         android:layout_weight="80"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/hint_form_click_download">
+                        android:text="@string/hint_wizard_form_download">
                 </TextView>
 
                 <ImageButton android:layout_height="wrap_content"

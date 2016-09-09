@@ -113,7 +113,7 @@ public class VideoIntent extends Activity {
     	String caption = mVideoCaption.getText().toString();
     	
     	if (caption == null || caption.length() < 1){
-    		Toast.makeText(getApplicationContext(),getString(R.string.hint_video_caption_enter), Toast.LENGTH_SHORT).show();
+    		Toast.makeText(getApplicationContext(),getString(R.string.hint_video_caption_prompt), Toast.LENGTH_SHORT).show();
     		return;
     	}
     	
@@ -145,7 +145,7 @@ public class VideoIntent extends Activity {
 		try {
 			startActivityForResult(i, VIDEO_RECORD);
 		} catch (ActivityNotFoundException e) {
-			Toast.makeText(this,getString(R.string.error_video_record_activity_find), Toast.LENGTH_SHORT).show();
+			Toast.makeText(this,getString(R.string.info_video_record_activity_unavailable), Toast.LENGTH_SHORT).show();
 		}		
 	}
 	
@@ -163,7 +163,7 @@ public class VideoIntent extends Activity {
 		    i.setType("video/*");
 			startActivityForResult(i,VIDEO_CHOOSE);
 		} catch (ActivityNotFoundException e) {
-			Toast.makeText(this,getString(R.string.error_video_chose_activity_find), Toast.LENGTH_SHORT).show();
+			Toast.makeText(this,getString(R.string.info_video_chose_activity_unavailable), Toast.LENGTH_SHORT).show();
 		}
 	}
 	
@@ -174,7 +174,7 @@ public class VideoIntent extends Activity {
 		try {
 			startActivity(i);
 		} catch (ActivityNotFoundException e) {
-			Toast.makeText(VideoIntent.this,getString(R.string.error_video_play_activity_find), Toast.LENGTH_SHORT).show();
+			Toast.makeText(VideoIntent.this,getString(R.string.info_video_play_activity_unavailable), Toast.LENGTH_SHORT).show();
 		}
 	}
 	

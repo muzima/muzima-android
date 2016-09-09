@@ -112,7 +112,7 @@ public class AudioIntent extends Activity {
     	String caption = mAudioCaption.getText().toString();
     	
     	if (caption == null || caption.length() < 1){
-    		Toast.makeText(getApplicationContext(),getString(R.string.hint_audio_caption_enter), Toast.LENGTH_SHORT).show();
+    		Toast.makeText(getApplicationContext(),getString(R.string.hint_audio_caption), Toast.LENGTH_SHORT).show();
     		return;
     	}
     	

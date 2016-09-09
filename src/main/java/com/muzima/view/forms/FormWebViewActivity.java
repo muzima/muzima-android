@@ -233,7 +233,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             builder
                     .setCancelable(true)
                     .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                    .setTitle(getResources().getString(R.string.warning_caution_text))
+                    .setTitle(getResources().getString(R.string.general_caution))
                     .setMessage(getResources().getString(R.string.warning_form_close))
                     .setPositiveButton("Yes", positiveClickListener())
                     .setNegativeButton("No", null).create().show();

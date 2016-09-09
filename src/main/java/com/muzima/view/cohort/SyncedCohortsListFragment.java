@@ -32,7 +32,7 @@ public class SyncedCohortsListFragment extends CohortListFragment implements All
         if(listAdapter == null){
             listAdapter = new SyncedCohortsAdapter(getActivity(), R.layout.item_synced_cohorts_list, cohortController);
         }
-        noDataMsg = getActivity().getResources().getString(R.string.info_no_cohort_sync);
+        noDataMsg = getActivity().getResources().getString(R.string.info_no_cohort_download);
         noDataTip = getActivity().getResources().getString(R.string.hint_cohort_sync);
         super.onCreate(savedInstanceState);
     }

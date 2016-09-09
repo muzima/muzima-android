@@ -53,8 +53,8 @@ public class AllCohortsListFragment extends CohortListFragment {
         if (listAdapter == null) {
             listAdapter = new AllCohortsAdapter(getActivity(), R.layout.item_cohorts_list, cohortController);
         }
-        noDataMsg = getActivity().getResources().getString(R.string.info_cohort_metadata_unavailable);
-        noDataTip = getActivity().getResources().getString(R.string.hint_cohort_metadata_download);
+        noDataMsg = getActivity().getResources().getString(R.string.info_cohorts_unavailable);
+        noDataTip = getActivity().getResources().getString(R.string.hint_cohort_list_download);
         super.onCreate(savedInstanceState);
     }
 
@@ -130,13 +130,13 @@ public class AllCohortsListFragment extends CohortListFragment {
             switch (menuItem.getItemId()) {
                 case R.id.menu_download:
                     if (cohortsSyncInProgress) {
-                        Toast.makeText(getActivity(), R.string.error_request_unallowed_sync, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.error_sync_not_allowed, Toast.LENGTH_SHORT).show();
                         endActionMode();
                         break;
                     }
 
                     if (!NetworkUtils.isConnectedToNetwork(getActivity())) {
-                        Toast.makeText(getActivity(), R.string.error_request_connection_find, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.error_connection_unavailable, Toast.LENGTH_SHORT).show();
                         return true;
                     }
 
@@ -175,7 +175,7 @@ public class AllCohortsListFragment extends CohortListFragment {
         try {
             LastSyncTimeService lastSyncTimeService = ((MuzimaApplication)this.getActivity().getApplicationContext()).getMuzimaContext().getLastSyncTimeService();//((MuzimaApplication)getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
             Date lastSyncedTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS);
-            String lastSyncedMsg = getActivity().getString(R.string.info_data_sync);
+            String lastSyncedMsg = getActivity().getString(R.string.info_last_sync_unavailable);
             if(lastSyncedTime != null){
                 lastSyncedMsg = "Last synced on: " + DateUtils.getFormattedDateTime(lastSyncedTime);
             }

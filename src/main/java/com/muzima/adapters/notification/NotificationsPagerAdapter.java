@@ -38,7 +38,7 @@ public class NotificationsPagerAdapter extends MuzimaPagerAdapter {
         PatientsNotificationsListFragment patientsNotificationsListFragment = PatientsNotificationsListFragment.newInstance(notificationController);
         GeneralNotificationsListFragment generalNotificationsListFragment = GeneralNotificationsListFragment.newInstance(notificationController);
 
-        pagers[TAB_PATIENT] = new PagerView(context.getString(R.string.info_client_notify), patientsNotificationsListFragment);
-        pagers[TAB_GENERAL] = new PagerView(context.getString(R.string.info_general_notify), generalNotificationsListFragment);
+        pagers[TAB_PATIENT] = new PagerView(context.getString(R.string.title_client_notifications), patientsNotificationsListFragment);
+        pagers[TAB_GENERAL] = new PagerView(context.getString(R.string.title_general_notifications), generalNotificationsListFragment);
     }
 }

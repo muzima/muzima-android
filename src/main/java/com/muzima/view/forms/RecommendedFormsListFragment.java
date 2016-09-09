@@ -31,8 +31,8 @@ public class RecommendedFormsListFragment extends FormsListFragment implements A
     @Override
     public void onCreate(Bundle savedInstanceState) {
         listAdapter = new RecommendedFormsAdapter(getActivity(), R.layout.item_forms_list, formController);
-        noDataMsg = getActivity().getResources().getString(R.string.info_form_no_recommended);
-        noDataTip = getActivity().getResources().getString(R.string.hint_form_recommend);
+        noDataMsg = getActivity().getResources().getString(R.string.info_downloaded_forms_unavailable);
+        noDataTip = getActivity().getResources().getString(R.string.hint_recommended_forms_unavailable);
         super.onCreate(savedInstanceState);
     }
 

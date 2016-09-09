@@ -66,10 +66,10 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements TagsListAda
         allAvailableFormsListFragment.setTemplateDownloadCompleteListener(downloadedFormsListFragment);
         downloadedFormsListFragment.setAllAvailableFormsCompleteListener(allAvailableFormsListFragment);
 
-        pagers[TAB_All] = new PagerView(context.getString(R.string.info_template_available), allAvailableFormsListFragment);
+        pagers[TAB_All] = new PagerView(context.getString(R.string.title_form_template_all), allAvailableFormsListFragment);
         pagers[TAB_DOWNLOADED] = new PagerView(context.getString(R.string.info_form_template_downloaded), downloadedFormsListFragment);
-        pagers[TAB_COMPLETE] = new PagerView(context.getString(R.string.info_form_data_complete), completeFormsListFragment);
-        pagers[TAB_INCOMPLETE] = new PagerView(context.getString(R.string.info_form_data_incomplete), incompleteFormsListFragment);
+        pagers[TAB_COMPLETE] = new PagerView(context.getString(R.string.title_form_data_complete), completeFormsListFragment);
+        pagers[TAB_INCOMPLETE] = new PagerView(context.getString(R.string.title_form_data_incomplete), incompleteFormsListFragment);
     }
 
     public void endActionMode() {

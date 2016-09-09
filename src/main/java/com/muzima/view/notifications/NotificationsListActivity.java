@@ -62,12 +62,12 @@ public class NotificationsListActivity extends NotificationActivityBase {
         switch (item.getItemId()) {
             case R.id.menu_load:
                 if (notificationsSyncInProgress) {
-                    Toast.makeText(this, R.string.error_request_unallowed_sync, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.error_sync_not_allowed, Toast.LENGTH_SHORT).show();
                     return true;
                 }
 
                 if (!NetworkUtils.isConnectedToNetwork(this)) {
-                    Toast.makeText(this, R.string.error_request_connection_find, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.error_connection_unavailable, Toast.LENGTH_SHORT).show();
                     return true;
                 }
 

@@ -10,8 +10,8 @@
     <item
             android:id="@+id/form_close"
             android:icon="@drawable/ic_cancel"
-            android:text="@string/menu_form_close"
+            android:text="@string/general_close"
             android:showAsAction="ifRoom|withText"
-            android:title="@string/menu_form_close"/>
+            android:title="@string/general_close"/>
 
 </menu>

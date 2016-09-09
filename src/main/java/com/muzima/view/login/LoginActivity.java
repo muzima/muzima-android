@@ -97,7 +97,7 @@ public class LoginActivity extends Activity {
             builder
                     .setCancelable(true)
                     .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                    .setTitle(getResources().getString(R.string.title_session_time_out))
+                    .setTitle(getResources().getString(R.string.general_alert))
                     .setMessage(getResources().getString(R.string.info_session_time_out))
                     .setPositiveButton("Ok", null).show();
         }
@@ -123,7 +123,7 @@ public class LoginActivity extends Activity {
         String versionCode = "";
         try {
             versionCode = String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
-            versionText = String.format(getResources().getString(R.string.info_application_version), versionCode);
+            versionText = getResources().getString(R.string.general_application_version, versionCode);
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, "Unable to read application version.", e);
         }
@@ -186,17 +186,17 @@ public class LoginActivity extends Activity {
                 } else {
                     int errorColor = getResources().getColor(R.color.error_text_color);
                     if (StringUtils.isEmpty(serverUrlText.getText().toString())) {
-                        serverUrlText.setHint(getString(R.string.hint_server_URL_enter));
+                        serverUrlText.setHint(getString(R.string.hint_server_url_prompt));
                         serverUrlText.setHintTextColor(errorColor);
                     }
 
                     if (StringUtils.isEmpty(usernameText.getText().toString())) {
-                        usernameText.setHint(getString(R.string.hint_username_enter));
+                        usernameText.setHint(getString(R.string.hint_username_prompt));
                         usernameText.setHintTextColor(errorColor);
                     }
 
                     if (StringUtils.isEmpty(passwordText.getText().toString())) {
-                        passwordText.setHint(getString(R.string.hint_password_enter));
+                        passwordText.setHint(getString(R.string.hint_password_prompt));
                         passwordText.setHintTextColor(errorColor);
                     }
                 }
@@ -288,13 +288,13 @@ public class LoginActivity extends Activity {
         private String getErrorText(Result result) {
             switch (result.status) {
                 case SyncStatusConstants.MALFORMED_URL_ERROR:
-                    return getString(R.string.error_invalid_server_URL_return);
+                    return getString(R.string.error_server_url_invalid);
                 case SyncStatusConstants.INVALID_CREDENTIALS_ERROR:
-                    return getString(R.string.error_invalid_username_password_combine);
+                    return getString(R.string.error_credential_invalid);
                 case SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME:
-                    return getString(R.string.error_invalid_username_allow) + SyncStatusConstants.INVALID_CHARACTER_FOR_USERNAME;
+                    return getString(R.string.error_username_invalid_format) + SyncStatusConstants.INVALID_CHARACTER_FOR_USERNAME;
                 case SyncStatusConstants.CONNECTION_ERROR:
-                    return getString(R.string.error_server_connection_find);
+                    return getString(R.string.error_connection_unavailable);
                 default:
                     return getString(R.string.error_authentication_fail);
             }
