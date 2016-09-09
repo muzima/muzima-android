@@ -15,7 +15,7 @@ import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
-import com.muzima.utils.Constants;
+import com.muzima.R;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
@@ -61,53 +61,53 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
         int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS,
                 SyncStatusConstants.UNKNOWN_ERROR);
 
-        String msg = "Download Complete with status " + syncStatus;
+        String msg = getString(R.string.info_download_complete) + syncStatus;
         Log.i(TAG, msg);
 
         if (syncStatus == SyncStatusConstants.DOWNLOAD_ERROR) {
-            msg = "An error occurred while downloading data form server";
+            msg = getString(R.string.error_data_download);
         } else if (syncStatus == SyncStatusConstants.AUTHENTICATION_ERROR) {
-            msg = "Authentication error occurred";
+            msg = getString(R.string.error_authentication_occur);
         } else if (syncStatus == SyncStatusConstants.DELETE_ERROR) {
-            msg = "An error occurred while deleting data from local repo";
+            msg = getString(R.string.error_local_repo_data_delete);
         } else if (syncStatus == SyncStatusConstants.SAVE_ERROR) {
-            msg = "An error occurred while saving data to local repo";
+            msg = getString(R.string.error_data_save);
         } else if (syncStatus == SyncStatusConstants.CONNECTION_ERROR) {
-            msg = "Connection error occurred while downloading data";
+            msg = getString(R.string.error_connection_data_download);
         } else if (syncStatus == SyncStatusConstants.PARSING_ERROR) {
-            msg = "Parse exception has been thrown while fetching data";
+            msg = getString(R.string.error_parse_exception_data_fetch);
         } else if (syncStatus == SyncStatusConstants.LOAD_ERROR) {
-            msg = "Load exception has been thrown while loading data";
+            msg = getString(R.string.error_exception_data_load);
         } else if (syncStatus == SyncStatusConstants.UPLOAD_ERROR) {
-            msg = "Exception has been thrown while uploading data";
+            msg = getString(R.string.error_exception_data_upload);
         } else if(syncStatus == SyncStatusConstants.SUCCESS){
             int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
             int downloadCount = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, 0);
-            msg = "Downloaded " + downloadCount;
+
             if(syncType == DataSyncServiceConstants.SYNC_FORMS){
                 int deletedFormCount = intent.getIntExtra(DataSyncServiceConstants.DELETED_COUNT_PRIMARY,0);
-                msg += " forms";
+                msg = String.format(getString(R.string.info_form_downloaded), downloadCount);
                 if(deletedFormCount > 0){
-                    msg += "  Deleted " + deletedFormCount + " forms";
+                    msg = String.format(getString(R.string.info_form_download_delete) ,downloadCount, deletedFormCount);
                 }
             }else if(syncType == DataSyncServiceConstants.SYNC_TEMPLATES){
-                msg += " form templates and " + intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0) + " related concepts";
+                msg = String.format(getString(R.string.info_form_template_related_concept_download), downloadCount , intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0));
             } else if(syncType == DataSyncServiceConstants.SYNC_COHORTS){
-                msg += " new cohorts";
+                msg = String.format(getString(R.string.info_new_cohort_download), downloadCount);
             } else if(syncType == DataSyncServiceConstants.SYNC_PATIENTS_FULL_DATA){
                 int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
-                msg += " new patients for " + downloadCountSec + " cohorts. Still downloading observations and encounters";
+                msg =String.format(getString(R.string.info_new_patient_cohort_download), downloadCount, downloadCountSec)+ getString(R.string.info_observation_encounter_still_download);
             } else if(syncType == DataSyncServiceConstants.SYNC_PATIENTS_ONLY){
                 int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
-                msg += " patients for " + downloadCountSec + " cohorts.";
+                msg =String.format(getString(R.string.info_patient_for_cohort_download), downloadCount ,downloadCountSec);
             } else if(syncType == DataSyncServiceConstants.SYNC_OBSERVATIONS){
-                msg += " new observations";
+                msg = String.format(getString(R.string.info_new_observation_download), downloadCount);
             } else if(syncType == DataSyncServiceConstants.SYNC_ENCOUNTERS){
-                msg += " new encounters";
+                msg= String.format(getString(R.string.info_new_encounter_download), downloadCount);
             } else if(syncType == DataSyncServiceConstants.SYNC_UPLOAD_FORMS){
-                msg = "Upload form data success.";
+                msg = getString(R.string.info_form_data_sucessful_upload);
             }else if(syncType == DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS){
-                msg = "Real time upload of form data successful.";
+                msg = getString(R.string.info_form_data_real_time_upload);
             }
         }
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();

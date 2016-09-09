@@ -56,7 +56,7 @@ public class ConceptListActivity extends ConceptPreferenceActivity {
                     @Override
                     protected void onPreExecute() {
                         Log.i(TAG, "Canceling timeout timer!") ;
-                        turnOnProgressDialog("Downloading Observations and Encounters...");
+                        turnOnProgressDialog(getString(R.string.info_encounter_observation_download));
                         ((MuzimaApplication) getApplication()).cancelTimer();
                         keepPhoneAwake(true) ;
                     }
@@ -125,7 +125,7 @@ public class ConceptListActivity extends ConceptPreferenceActivity {
     protected void onResume() {
         super.onResume();
         if(isProcessDialogOn){
-            turnOnProgressDialog("Downloading Observations and Encounters...");
+            turnOnProgressDialog(getString(R.string.info_encounter_observation_download));
         }
     }
 
