@@ -11,6 +11,7 @@ package com.muzima.view.preferences.settings;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import com.muzima.MuzimaApplication;
+import com.muzima.R;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.view.preferences.SettingsActivity;
 
@@ -36,7 +37,7 @@ public class SyncFormDataTask extends AsyncTask<String, Void, Boolean> {
     protected void onPreExecute() {
         super.onPreExecute();
         progressDialog = new ProgressDialog(settingsActivity);
-        progressDialog.setMessage("Step 2: Synchronising Local Data");
+        progressDialog.setMessage(settingsActivity.getString(R.string.title_data_synchronize));
 
         progressDialog.show();
     }

@@ -11,6 +11,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
+import com.muzima.R;
 import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
 
@@ -55,7 +56,7 @@ public class SyncedCohortsAdapter extends CohortsAdapter{
         @Override
         protected void onPostExecute(List<Cohort> cohorts) {
             if(cohorts == null){
-                Toast.makeText(getContext(), "Something went wrong while fetching cohorts from local repo", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getContext().getString(R.string.error_cohort_fetch), Toast.LENGTH_SHORT).show();
                 return;
             }
 

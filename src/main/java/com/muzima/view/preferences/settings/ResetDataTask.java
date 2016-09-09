@@ -11,6 +11,7 @@ package com.muzima.view.preferences.settings;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import com.muzima.MuzimaApplication;
+import com.muzima.R;
 import com.muzima.domain.Credentials;
 import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.CredentialsPreferenceService;
@@ -44,7 +45,7 @@ public class ResetDataTask extends AsyncTask<String, Void, Void> {
     protected void onPreExecute() {
         super.onPreExecute();
         progressDialog = new ProgressDialog(settingsActivity);
-        progressDialog.setMessage("Step 3: Resetting Data");
+        progressDialog.setMessage(settingsActivity.getString(R.string.title_data_reset));
         progressDialog.show();
     }
 

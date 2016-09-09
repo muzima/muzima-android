@@ -164,7 +164,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="left"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/title_notifications">
+                        android:text="@string/general_notifications">
                 </TextView>
 
                 <TextView

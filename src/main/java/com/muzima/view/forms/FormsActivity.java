@@ -148,17 +148,17 @@ public class FormsActivity extends FormsActivityBase {
         switch (item.getItemId()) {
             case R.id.menu_load:
                 if (!NetworkUtils.isConnectedToNetwork(this)) {
-                    Toast.makeText(this, R.string.error_request_connection_not_found, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.error_connection_unavailable, Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 if (syncInProgress) {
-                    Toast.makeText(this, R.string.error_request_already_fetching_forms, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.info_form_fetch_in_progress, Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 if (hasFormsWithData()) {
                     AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                     alertDialog.setMessage((getApplicationContext())
-                                    .getString(R.string.error_forms_with_patient_data_exists)
+                                    .getString(R.string.error_patient_data_form_exist)
                     );
                     alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
                         @Override
@@ -172,11 +172,11 @@ public class FormsActivity extends FormsActivityBase {
                 return true;
             case R.id.menu_upload:
                 if (!NetworkUtils.isConnectedToNetwork(this)) {
-                    Toast.makeText(this, R.string.error_request_connection_not_found, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.error_connection_unavailable, Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 if (syncInProgress) {
-                    Toast.makeText(this, R.string.error_request_already_uploading_forms, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.info_form_upload_in_progress, Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 uploadAllFormsInBackgroundService();
@@ -248,7 +248,7 @@ public class FormsActivity extends FormsActivityBase {
              * Called when a drawer has settled in a completely closed state.
              */
             public void onDrawerClosed(View view) {
-                String title = getResources().getString(R.string.title_activity_form_list);
+                String title = getResources().getString(R.string.general_forms);
                 getSupportActionBar().setTitle(title);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -258,7 +258,7 @@ public class FormsActivity extends FormsActivityBase {
              * Called when a drawer has settled in a completely open state.
              */
             public void onDrawerOpened(View drawerView) {
-                String title = getResources().getString(R.string.title_drawer);
+                String title = getResources().getString(R.string.general_tags);
                 getSupportActionBar().setTitle(title);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);

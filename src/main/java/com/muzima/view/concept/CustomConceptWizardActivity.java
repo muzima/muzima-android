@@ -55,7 +55,7 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                turnOnProgressDialog("Downloading Observations and Encounters...");
+                turnOnProgressDialog(getString(R.string.info_encounter_observation_download));
                 new AsyncTask<Void, Void, int[]>() {
 
                     @Override
@@ -74,13 +74,13 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
                     protected void onPostExecute(int[] results) {
                         dismissProgressDialog();
                         if (results[0] != SyncStatusConstants.SUCCESS) {
-                            Toast.makeText(CustomConceptWizardActivity.this, "Could not load cohorts", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CustomConceptWizardActivity.this, getString(R.string.error_cohort_load), Toast.LENGTH_SHORT).show();
                         } else {
                             if (results[1] != SyncStatusConstants.SUCCESS) {
-                                Toast.makeText(CustomConceptWizardActivity.this, "Could not download observations for patients", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CustomConceptWizardActivity.this, getString(R.string.error_encounter_observation_download), Toast.LENGTH_SHORT).show();
                             }
                             if (results[2] != SyncStatusConstants.SUCCESS) {
-                                Toast.makeText(CustomConceptWizardActivity.this, "Could not download encounters for patients", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CustomConceptWizardActivity.this, getString(R.string.error_patient_encounter_download), Toast.LENGTH_SHORT).show();
                             }
                         }
                         new WizardFinishPreferenceService(CustomConceptWizardActivity.this).finishWizard();
@@ -149,7 +149,7 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
     protected void onResume() {
         super.onResume();
         if(isProcessDialogOn){
-            turnOnProgressDialog("Downloading Observations and Encounters...");
+            turnOnProgressDialog(getString(R.string.info_encounter_observation_download));
         }
     }
 

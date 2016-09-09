@@ -53,7 +53,6 @@ public class MainActivity extends BroadcastListenerActivity {
         credentials = new Credentials(this);
         mMainView = getLayoutInflater().inflate(R.layout.activity_dashboard, null);
         setContentView(mMainView);
-        setTitle(R.string.title_homepage);
         RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext());
         setupActionbar();
     }

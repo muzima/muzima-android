@@ -71,7 +71,7 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
         noDataView = findViewById(R.id.no_data_layout);
 
         TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
-        noDataMsgTextView.setText(getResources().getText(R.string.info_observations_unavailable));
+        noDataMsgTextView.setText(getResources().getText(R.string.info_observation_unavailable));
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
 
     }
@@ -80,7 +80,7 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
         noDataView = findViewById(R.id.no_data_layout);
 
         TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
-        noDataMsgTextView.setText(getResources().getText(R.string.info_observations_still_loading));
+        noDataMsgTextView.setText(getResources().getText(R.string.info_observations_load_in_progress));
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
     }
 

@@ -13,7 +13,6 @@ import com.muzima.api.model.Provider;
 import com.muzima.controller.ProviderController;
 import com.muzima.view.preferences.ProviderPreferenceActivity;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -128,7 +127,7 @@ public class SelectedProviderAdapter extends ListAdapter<Provider> {
         @Override
         protected void onPostExecute(List<Provider> providers) {
             if (providers == null) {
-                Toast.makeText(getContext(), "Something went wrong while fetching providers from local repo", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getContext().getString(R.string.error_provider_fetch), Toast.LENGTH_SHORT).show();
                 return;
             }
             clear();

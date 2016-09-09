@@ -23,9 +23,9 @@ import com.muzima.api.model.Observation;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.EncounterWithObservations;
 import com.muzima.model.observation.Encounters;
-import com.muzima.utils.StringUtils;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,7 +134,7 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
         @Override
         protected void onPostExecute(List<Observation> observations){
             if(observations==null){
-                Toast.makeText(getContext(), "Observations could not be loaded", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getContext().getString(R.string.error_observation_load), Toast.LENGTH_SHORT).show();
                 return;
             }
             clear();
