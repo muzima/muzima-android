@@ -99,7 +99,7 @@ public class ImagingIntent extends BaseActivity {
         String caption = mImageCaption.getText().toString();
 
         if (caption == null || caption.length() < 1){
-            Toast.makeText(getApplicationContext(),getString(R.string.hint_image_caption_enter), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),getString(R.string.hint_image_caption_prompt), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -130,7 +130,7 @@ public class ImagingIntent extends BaseActivity {
         try {
             startActivityForResult(i,IMAGE_CAPTURE);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(getApplicationContext(),getString(R.string.error_image_capture_activity_find), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),getString(R.string.error_image_capture_activity_unavailable), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -147,7 +147,7 @@ public class ImagingIntent extends BaseActivity {
             i.setType("image/*");
             startActivityForResult(i, IMAGE_CHOOSE);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(getApplicationContext(),getString(R.string.error_image_chose_activity_find), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),getString(R.string.error_image_chose_activity_unavailable), Toast.LENGTH_SHORT).show();
         }
     }
     
@@ -201,7 +201,7 @@ public class ImagingIntent extends BaseActivity {
                         try {
                             ImagingIntent.this.startActivity(i);
                         } catch (ActivityNotFoundException e) {
-                            Toast.makeText(getApplicationContext(),getString(R.string.error_image_view_activity_find), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),getString(R.string.error_image_view_activity_unavailable), Toast.LENGTH_SHORT).show();
                         }
                     }
                     c.close();

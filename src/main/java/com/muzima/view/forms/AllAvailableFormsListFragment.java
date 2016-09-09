@@ -64,8 +64,8 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         if (listAdapter == null) {
             listAdapter = new AllAvailableFormsAdapter(getActivity(), R.layout.item_forms_list_selectable, formController);
         }
-        noDataMsg = getActivity().getResources().getString(R.string.info_form_metadata_unavailable);
-        noDataTip = getActivity().getResources().getString(R.string.hint_form_metadata_download);
+        noDataMsg = getActivity().getResources().getString(R.string.info_forms_unavailable);
+        noDataTip = getActivity().getResources().getString(R.string.hint_form_list_download);
 
         // this can happen on orientation change
         if (actionModeActive) {
@@ -163,7 +163,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         try {
             LastSyncTimeService lastSyncTimeService = ((MuzimaApplication) this.getActivity().getApplicationContext()).getMuzimaContext().getLastSyncTimeService();//((MuzimaApplication)getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
             Date lastSyncedTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS);
-            String lastSyncedMsg = getActivity().getString(R.string.info_data_sync);
+            String lastSyncedMsg = getActivity().getString(R.string.info_last_sync_unavailable);
             if (lastSyncedTime != null) {
                 lastSyncedMsg = "Last synced on: " + DateUtils.getFormattedDateTime(lastSyncedTime);
             }
@@ -206,13 +206,13 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
             switch (menuItem.getItemId()) {
                 case R.id.menu_download:
                     if (newFormsSyncInProgress) {
-                        Toast.makeText(getActivity(), R.string.error_request_unallowed_sync, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.error_sync_not_allowed, Toast.LENGTH_SHORT).show();
                         endActionMode();
                         break;
                     }
 
                     if (!NetworkUtils.isConnectedToNetwork(getActivity())) {
-                        Toast.makeText(getActivity(), R.string.error_request_connection_find, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.error_connection_unavailable, Toast.LENGTH_SHORT).show();
                         return true;
                     }
 

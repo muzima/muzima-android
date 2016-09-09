@@ -81,11 +81,11 @@ public class HTMLFormDataStore {
             if (!keepFormOpen) {
                 formWebViewActivity.finish();
                 if (status.equals("complete")) {
-                    Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.info_form_data_successful_save), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.info_form_data_save_success), Toast.LENGTH_SHORT).show();
                     RealTimeFormUploader.getInstance().uploadAllCompletedForms(formWebViewActivity.getApplicationContext());
                 }
                 if (status.equals("incomplete")) {
-                    Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.info_draft_form_data_successful_save), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.info_draft_form_save_success), Toast.LENGTH_SHORT).show();
                 }
             }
 

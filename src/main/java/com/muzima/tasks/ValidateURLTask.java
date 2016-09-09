@@ -31,7 +31,7 @@ public class ValidateURLTask extends AsyncTask<String, Void, Boolean> {
     protected void onPreExecute() {
         super.onPreExecute();
         progressDialog = new ProgressDialog(settingsActivity);
-        progressDialog.setMessage(settingsActivity.getString(R.string.info_URL_validate));
+        progressDialog.setMessage(settingsActivity.getString(R.string.info_url_validate));
         progressDialog.show();
     }
 

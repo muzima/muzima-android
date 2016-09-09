@@ -23,9 +23,9 @@ import com.muzima.api.model.Observation;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.EncounterWithObservations;
 import com.muzima.model.observation.Encounters;
-import com.muzima.utils.StringUtils;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;

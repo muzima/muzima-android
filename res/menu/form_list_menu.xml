@@ -4,25 +4,25 @@
             android:icon="@drawable/ic_action_add_client"
             android:orderInCategory="1"
             android:showAsAction="never"
-            android:title="@string/menu_client_add"/>
+            android:title="@string/menu_client_register"/>
 
     <item
             android:id="@+id/menu_tags"
             android:icon="@drawable/ic_labels"
             android:orderInCategory="2"
             android:showAsAction="always"
-            android:title="@string/menu_client_add"/>
+            android:title="@string/menu_client_register"/>
 
     <item
             android:id="@+id/menu_load"
-            android:title="@string/menu_load"
+            android:title="@string/general_load"
             android:orderInCategory="10"
             android:showAsAction="always"
             android:icon="@drawable/ic_refresh"/>
 
     <item
             android:id="@+id/menu_upload"
-            android:title="@string/menu_upload"
+            android:title="@string/general_upload"
             android:orderInCategory="10"
             android:showAsAction="always"
             android:icon="@drawable/ic_action_upload"
@@ -32,7 +32,7 @@
             android:id="@+id/action_settings"
             android:orderInCategory="1"
             android:showAsAction="never"
-            android:title="@string/menu_settings"/>
+            android:title="@string/general_settings"/>
     <item
             android:id="@+id/action_help"
             android:orderInCategory="2"

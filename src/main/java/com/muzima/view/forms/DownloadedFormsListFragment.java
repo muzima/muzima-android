@@ -43,7 +43,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
     @Override
     public void onCreate(Bundle savedInstanceState) {
         listAdapter = new DownloadedFormsAdapter(getActivity(), R.layout.item_forms_list_selectable, formController);
-        noDataMsg = getActivity().getResources().getString(R.string.info_form_unavailable);
+        noDataMsg = getActivity().getResources().getString(R.string.info_downloaded_forms_unavailable);
         noDataTip = getActivity().getResources().getString(R.string.hint_form_download);
 
         // this can happen on orientation change
@@ -109,8 +109,8 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
                             formController.deleteFormTemplatesByUUID(selectedFormsUUIDs);
                             onCompleteOfFormDelete();
                         } else {
-                            Toast.makeText(getActivity(), getCommaSeparatedFormNames(selectedForms, formTemplatesWithAssociatedFormData)
-                                    + getActivity().getString(R.string.warning_forms_complete_and_sync),
+                            Toast.makeText(getActivity(),
+                                    getActivity().getString(R.string.warning_forms_complete_and_sync,getCommaSeparatedFormNames(selectedForms, formTemplatesWithAssociatedFormData)),
                                     Toast.LENGTH_SHORT).show();
                         }
                     } catch (FormController.FormDeleteException e) {
@@ -124,7 +124,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
             endActionMode();
             listAdapter.reloadData();
             allAvailableFormsCompleteListener.reloadData();
-            Toast.makeText(getActivity(), getActivity().getString(R.string.info_form_successful_delete), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getActivity().getString(R.string.info_form_delete_success), Toast.LENGTH_SHORT).show();
         }
 
         @Override

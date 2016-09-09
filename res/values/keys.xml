@@ -10,4 +10,6 @@
     <string name="preference_server">serverPreference</string>
     <string name="preference_timeout">timeoutPreference</string>
     <string name="preference_username">usernamePreference</string>
+    <string name="preference_wizard_finished">wizardFinished</string>
+    <string name="preference_disclaimer">disclaimer</string>
 </resources>

@@ -44,13 +44,13 @@
         <activity
                 android:name=".view.concept.ConceptListActivity"
                 android:configChanges="orientation|screenSize"
-                android:label="@string/title_activity_concept_pref">
+                android:label="@string/general_concepts">
         </activity>
 
         <activity
                 android:name=".view.location.LocationListActivity"
                 android:configChanges="orientation|screenSize"
-                android:label="@string/title_activity_location_pref">
+                android:label="@string/general_locations">
         </activity>
 
         <activity
@@ -62,7 +62,7 @@
 
         <activity
                 android:name="com.muzima.view.cohort.CohortActivity"
-                android:label="@string/title_activity_cohort_list"
+                android:label="@string/general_cohorts"
                 android:configChanges="orientation|screenSize"
                 android:parentActivityName="com.muzima.view.MainActivity">
             <meta-data
@@ -74,14 +74,14 @@
                 android:name=".view.preferences.SettingsActivity"
                 android:theme="@style/PreferencesTheme"
                 android:configChanges="orientation|screenSize"
-                android:label="@string/title_activity_settings"
+                android:label="@string/general_settings"
                 android:parentActivityName="com.muzima.view.MainActivity">
         </activity>
         <activity
                 android:name=".view.preferences.ProviderPreferenceActivity"
                 android:theme="@style/PreferencesTheme"
                 android:configChanges="orientation|screenSize"
-                android:label="@string/title_activity_provider"
+                android:label="@string/general_providers"
                 android:parentActivityName="com.muzima.view.preferences.SettingsActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -90,14 +90,14 @@
         <activity
                 android:name=".view.provider.ProviderListActivity"
                 android:configChanges="orientation|screenSize"
-                android:label="@string/title_activity_provider">
+                android:label="@string/general_providers">
         </activity>
         <activity
                 android:name=".view.preferences.CohortPreferenceActivity"
                 android:theme="@style/PreferencesTheme"
                 android:configChanges="orientation|screenSize"
 
-                android:label="@string/title_activity_cohort_pref"
+                android:label="@string/title_activity_cohort_prefix"
                 android:parentActivityName="com.muzima.view.preferences.SettingsActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -107,7 +107,7 @@
                 android:name=".view.preferences.ConceptPreferenceActivity"
                 android:theme="@style/PreferencesTheme"
                 android:configChanges="orientation|screenSize"
-                android:label="@string/title_activity_concept_pref"
+                android:label="@string/general_concepts"
                 android:parentActivityName="com.muzima.view.preferences.SettingsActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -117,7 +117,7 @@
                 android:name=".view.preferences.LocationPreferenceActivity"
                 android:theme="@style/PreferencesTheme"
                 android:configChanges="orientation|screenSize"
-                android:label="@string/title_activity_location_pref"
+                android:label="@string/general_locations"
                 android:parentActivityName="com.muzima.view.preferences.SettingsActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -125,7 +125,7 @@
         </activity>
         <activity
                 android:name="com.muzima.view.HelpActivity"
-                android:label="@string/title_activity_help"
+                android:label="@string/general_help"
                 android:configChanges="orientation|screenSize"
                 android:parentActivityName="com.muzima.view.MainActivity">
             <meta-data
@@ -134,7 +134,7 @@
         </activity>
         <activity
                 android:name="com.muzima.view.WebViewActivity"
-                android:label="@string/title_activity_help"
+                android:label="@string/general_help"
                 android:configChanges="orientation|screenSize"
                 android:parentActivityName="com.muzima.view.BaseActivity">
             <meta-data
@@ -144,7 +144,7 @@
 
         <activity
                 android:name=".view.patients.PatientsListActivity"
-                android:label="@string/title_activity_clients_list"
+                android:label="@string/general_clients"
                 android:configChanges="orientation|screenSize"
                 android:parentActivityName="com.muzima.view.MainActivity">
             <meta-data
@@ -155,12 +155,12 @@
         <activity
                 android:name=".view.patients.PatientRemoteSearchListActivity"
                 android:configChanges="orientation|screenSize"
-                android:label="@string/title_activity_clients_list">
+                android:label="@string/general_clients">
         </activity>
 
         <activity
                 android:name=".view.forms.FormsActivity"
-                android:label="@string/title_activity_form_list"
+                android:label="@string/general_forms"
                 android:configChanges="orientation|screenSize"
                 android:parentActivityName="com.muzima.view.MainActivity">
             <meta-data
@@ -170,7 +170,7 @@
 
         <activity
                 android:name=".view.forms.FormWebViewActivity"
-                android:label="@string/title_activity_form_webview"
+                android:label="@string/general_form"
                 android:configChanges="orientation|screenSize"
                 android:windowSoftInputMode="adjustResize"
                 android:parentActivityName="com.muzima.view.forms.FormsActivity">
@@ -181,7 +181,7 @@
 
         <activity
                 android:name=".view.forms.HTMLFormWebViewActivity"
-                android:label="@string/title_activity_form_webview"
+                android:label="@string/general_form"
                 android:configChanges="orientation|screenSize"
                 android:windowSoftInputMode="adjustResize"
                 android:parentActivityName="com.muzima.view.forms.FormsActivity">
@@ -239,7 +239,7 @@
         <activity
                 android:name=".view.encounters.EncounterSummaryActivity"
                 android:configChanges="orientation|screenSize"
-                android:label="@string/title_activity_encounter_summary"
+                android:label="@string/general_observations"
                 android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -283,7 +283,7 @@
 
         <activity
                 android:name=".view.notifications.NotificationActivity"
-                android:label="@string/title_activity_notification"
+                android:label="@string/general_notification"
                 android:configChanges="orientation|screenSize"
                 android:windowSoftInputMode="adjustResize"
                 android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity">
@@ -294,7 +294,7 @@
 
         <activity
                 android:name=".view.notifications.NotificationsListActivity"
-                android:label="@string/title_activity_notification_list"
+                android:label="@string/general_notifications"
                 android:configChanges="orientation|screenSize"
                 android:parentActivityName="com.muzima.view.MainActivity">
             <meta-data
