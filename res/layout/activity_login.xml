@@ -23,7 +23,7 @@
                     android:id="@+id/serverUrl"
                     style="@style/LoginInfoEditText"
                     android:inputType="textUri"
-                    android:text="http://173.255.205.23:8081/openmrs-standalone"
+                    android:text="http://demo1.muzima.org"
                     android:nextFocusDown="@+id/username"
                     android:hint="@string/hint_server_url"/>
 

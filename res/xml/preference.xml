@@ -3,7 +3,7 @@
 
     <PreferenceCategory android:title="@string/header_openmrs_category">
         <EditTextPreference
-                android:defaultValue="http://173.255.205.23:8081/openmrs-standalone"
+                android:defaultValue="http://demo1.muzima.org"
                 android:dialogMessage="@string/hint_server_url_prompt"
                 android:dialogTitle="@string/general_server"
                 android:key="@string/preference_server"
