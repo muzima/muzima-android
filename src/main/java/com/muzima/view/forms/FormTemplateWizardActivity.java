@@ -113,7 +113,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
                     Toast.makeText(FormTemplateWizardActivity.this, getString(R.string.hint_registration_form_select), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                turnOnProgressDialog(getString(R.string.info_form_template_download));
+                turnOnProgressDialog(getString(R.string.info_form_template_download,getSelectedForms().size()));
 
                 new AsyncTask<Void, Void, int[]>() {
 
@@ -179,9 +179,6 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
     protected void onResume() {
         super.onResume();
         tagsListAdapter.reloadData();
-        if(isProcessDialogOn){
-            turnOnProgressDialog(getString(R.string.info_form_template_download));
-        }
     }
 
     @Override
@@ -251,7 +248,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
 
     @Override
     public void onQueryTaskStarted() {
-        turnOnProgressDialog(getString(R.string.info_form_load));
+        turnOnProgressDialog(getString(R.string.info_form_metadata_download));
     }
 
     @Override

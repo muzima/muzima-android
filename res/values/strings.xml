@@ -234,14 +234,14 @@
         (Copyright 2014, The Trustees of Indiana University).
         </p>
         ]]></string>
-    <string name="info_download_complete">Download Complete with status %d</string>
+    <string name="info_download_complete">Download complete with status %d</string>
     <string name="info_downloaded_forms_unavailable">No forms have been downloaded</string>
-    <string name="info_downloaded_image">Downloaded Image</string>
+    <string name="info_downloaded_image">Downloaded image</string>
     <string name="info_draft_form_save_success">Draft form was saved successfully.</string>
-    <string formatted="false" name="info_encounter_download_progress">Downloading Encounters for patient %d of %d.</string>
+    <string formatted="false" name="info_encounter_download_progress">Downloading encounters for patient %d of %d.</string>
     <string formatted="false" name="info_encounter_not_downloaded_progress">Encounters for patient %d of %d not downloaded.</string>
-    <string name="info_encounter_observation_download">Downloading Observations and Encounters...</string>
-    <string name="info_encounter_unavailable">No Encounters Available</string>
+    <string name="info_encounter_observation_download">Downloading observations and encounters...</string>
+    <string name="info_encounter_unavailable">No encounters available</string>
     <string name="info_form_data_save_success">Completed form data was saved successfully.</string>
     <string name="info_form_data_upload_fail">Failed to Sync Form data to the current server. Do you still want to
         continue?
@@ -252,7 +252,7 @@
     <string formatted="false" name="info_form_download_delete">Downloaded %d forms and retired %d forms</string>
     <string name="info_form_fetch_in_progress">Already fetching forms, ignored the request</string>
     <string name="info_form_load">Loading Forms...</string>
-    <string name="info_form_metadata_download">Downloading Forms Metadata</string>
+    <string name="info_form_metadata_download">Downloading forms metadata</string>
     <string formatted="false" name="info_form_template_concept_download">Downloaded %d form templates and %d concepts</string>
     <string name="info_form_template_download">Downloading form templates for %d forms</string>
     <string name="info_form_template_downloaded">Downloaded Form Templates</string>
