@@ -12,6 +12,7 @@ import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 import com.muzima.MuzimaApplication;
+import com.muzima.R;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
@@ -60,31 +61,31 @@ public class FormDataStore {
             formWebViewActivity.setResult(FormsActivity.RESULT_OK);
             formWebViewActivity.finish();
         } catch (FormController.FormDataSaveException e) {
-            Toast.makeText(formWebViewActivity, "An error occurred while saving the form", Toast.LENGTH_SHORT).show();
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_save), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while saving form data", e);
         } catch (ConceptController.ConceptSaveException e) {
-            Toast.makeText(formWebViewActivity, "An error occurred while saving observations in the form", Toast.LENGTH_SHORT).show();
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observation_form_save), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while saving a concept parsed from the form data", e);
         } catch (ObservationController.ParseObservationException e) {
-            Toast.makeText(formWebViewActivity, "An error occurred while saving observations in the form", Toast.LENGTH_SHORT).show();
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observation_form_save), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while saving an observation parsed from the form data", e);
         } catch (ConceptController.ConceptParseException e) {
-            Toast.makeText(formWebViewActivity, "An error occurred while parsing concepts in the form", Toast.LENGTH_SHORT).show();
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_concept_parse), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while parsing a concept parsed from the form data", e);
         } catch (ParseException e) {
-            Toast.makeText(formWebViewActivity, "An error occurred while saving observations in the form", Toast.LENGTH_SHORT).show();
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observation_form_save), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while parsing the xml payload", e);
         } catch (XmlPullParserException e) {
-            Toast.makeText(formWebViewActivity, "An error occurred while saving observations in the form", Toast.LENGTH_SHORT).show();
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observation_form_save), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while exploring the xml payload", e);
         } catch (PatientController.PatientLoadException e) {
-            Toast.makeText(formWebViewActivity, "An error occurred while saving observations in the form", Toast.LENGTH_SHORT).show();
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observation_form_save), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while loading a patient parsed from the form data", e);
         } catch (ConceptController.ConceptFetchException e) {
-            Toast.makeText(formWebViewActivity, "An error occurred while saving observations in the form", Toast.LENGTH_SHORT).show();
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observation_form_save), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Exception occurred while fetching a concept parsed from the form data", e);
         } catch (IOException e) {
-            Toast.makeText(formWebViewActivity, "An error occurred while saving observations in the form", Toast.LENGTH_SHORT).show();
+            Toast.makeText(formWebViewActivity,formWebViewActivity.getString(R.string.error_observation_form_save), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "IOException occurred while saving observations parsed from the form data", e);
         }
     }

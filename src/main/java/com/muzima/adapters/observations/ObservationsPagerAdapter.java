@@ -14,6 +14,7 @@ import com.actionbarsherlock.widget.SearchView;
 import com.muzima.MuzimaApplication;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.controller.ConceptController;
+import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.view.observations.ObservationByEncountersFragment;
 import com.muzima.view.observations.ObservationsByConceptFragment;
@@ -23,6 +24,8 @@ public class ObservationsPagerAdapter extends MuzimaPagerAdapter implements Sear
 
     private static final int TAB_BY_DATE = 0;
     private static final int TAB_BY_ENCOUNTERS = 1;
+    private ObservationsListFragment observationByDateListFragment;
+    ObservationsListFragment observationByEncountersFragment;
 
     public ObservationsPagerAdapter(Context applicationContext, FragmentManager supportFragmentManager) {
         super(applicationContext,supportFragmentManager);
@@ -33,13 +36,15 @@ public class ObservationsPagerAdapter extends MuzimaPagerAdapter implements Sear
         pagers = new PagerView[2];
         ConceptController conceptController = ((MuzimaApplication) context.getApplicationContext()).getConceptController();
         ObservationController observationController = ((MuzimaApplication) context.getApplicationContext()).getObservationController();
+        EncounterController encounterController = ((MuzimaApplication) context.getApplicationContext()).getEncounterController();
 
-        ObservationsListFragment observationByDateListFragment =
+        observationByDateListFragment =
                 ObservationsByConceptFragment.newInstance(conceptController, observationController);
-        ObservationsListFragment observationByEncountersFragment = ObservationByEncountersFragment.newInstance(observationController);
+        observationByEncountersFragment = ObservationByEncountersFragment.newInstance(encounterController,observationController);
 
         pagers[TAB_BY_DATE] = new PagerView("By Concepts", observationByDateListFragment);
         pagers[TAB_BY_ENCOUNTERS] = new PagerView("By Encounters", observationByEncountersFragment);
+
 
     }
 
@@ -54,5 +59,10 @@ public class ObservationsPagerAdapter extends MuzimaPagerAdapter implements Sear
             ((ObservationsListFragment)pager.fragment).onSearchTextChange(newText);
         }
         return false;
+    }
+
+    public void cancelBackgroundQueryTasks(){
+        observationByDateListFragment.onQueryTaskCancelled();
+        observationByEncountersFragment.onQueryTaskCancelled();
     }
 }

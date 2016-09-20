@@ -63,21 +63,21 @@ public class HelpActivity extends BaseActivity {
             case CUSTOM_CONCEPT_HELP:
                 showHelpContentView();
                 helpContentView.setText(getResources().getText(R.string.hint_custom_concept_help));
-                setTitle(R.string.title_custom_concept_help);
+                setTitle(R.string.title_concept_help);
                 break;
             case CUSTOM_LOCATION_HELP:
                 showHelpContentView();
                 helpContentView.setText(getResources().getText(R.string.hint_custom_location_help));
-                setTitle(R.string.title_custom_location_help);
+                setTitle(R.string.title_location_help);
             case CUSTOM_PROVIDER_HELP:
                 showHelpContentView();
                 helpContentView.setText(getResources().getText(R.string.hint_custom_provider_help));
-                setTitle(R.string.title_custom_provider_help);
+                setTitle(R.string.title_provider_help);
                 break;
             default:
                 helpContentView.setVisibility(View.GONE);
                 scrollView.setVisibility(View.VISIBLE);
-                setTitle(R.string.title_activity_help);
+                setTitle(R.string.general_help);
                 break;
         }
     }

@@ -38,7 +38,7 @@ import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.CheckedLinearLayout;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.forms.FormTemplateWizardActivity;
-import com.muzima.view.forms.MuzimaProgressDialog;
+import com.muzima.view.progressdialog.MuzimaProgressDialog;
 
 import java.io.IOException;
 import java.util.List;
@@ -90,7 +90,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
     protected void onResume() {
         super.onResume();
         if(isProcessDialogOn){
-            turnOnProgressDialog("Loading Cohorts...");
+            turnOnProgressDialog(getString(R.string.info_cohort_load));
         }
     }
 
@@ -133,7 +133,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                turnOnProgressDialog("Downloading clients demographic...");
+                turnOnProgressDialog(getString(R.string.info_client_demographics_download));
                 new AsyncTask<Void, Void, int[]>() {
 
                     @Override
@@ -152,7 +152,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
                     protected void onPostExecute(int[] result) {
                         dismissProgressDialog();
                         if (result[0] != SUCCESS) {
-                            Toast.makeText(CohortWizardActivity.this, "Could not download clients", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CohortWizardActivity.this, getString(R.string.error_client_download), Toast.LENGTH_SHORT).show();
                         }
                         Log.i(TAG, "Restarting timeout timer!") ;
                         ((MuzimaApplication) getApplication()).restartTimer();
@@ -228,13 +228,15 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
 
     @Override
     public void onQueryTaskStarted() {
-        turnOnProgressDialog("Loading Cohorts...");
+        turnOnProgressDialog(getString(R.string.info_cohort_load));
     }
 
     @Override
     public void onQueryTaskFinish() {
         dismissProgressDialog();
     }
+    @Override
+    public void onQueryTaskCancelled(){}
 
     private void turnOnProgressDialog(String message){
         progressDialog.show(message);

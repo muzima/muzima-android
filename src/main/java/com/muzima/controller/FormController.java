@@ -34,7 +34,6 @@ import com.muzima.model.collections.CompleteFormsWithPatientData;
 import com.muzima.model.collections.DownloadedForms;
 import com.muzima.model.collections.IncompleteForms;
 import com.muzima.model.collections.IncompleteFormsWithPatientData;
-import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.SntpService;
 import com.muzima.util.JsonUtils;
 import com.muzima.utils.Constants;
@@ -206,7 +205,7 @@ public class FormController {
     public List<Form> downloadAllForms() throws FormFetchException {
         try {
             Date lastSyncDate = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS);
-            List<Form> forms = formService.downloadFormsByName(StringUtil.EMPTY, lastSyncDate);
+            List<Form> forms = formService.downloadFormsByName(StringUtils.EMPTY, lastSyncDate);
             LastSyncTime lastSyncTime = new LastSyncTime(APIName.DOWNLOAD_FORMS, sntpService.getLocalTime());
             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             return forms;
@@ -345,8 +344,8 @@ public class FormController {
 
         try {
             FormData formData = formService.getFormDataByUuid(formDataUuid);
-            if (formData != null && (StringUtil.equals(formData.getStatus(), Constants.STATUS_UPLOADED)) ||
-                    StringUtil.equals(formData.getStatus(), Constants.STATUS_COMPLETE)){
+            if (formData != null && (StringUtils.equals(formData.getStatus(), Constants.STATUS_UPLOADED)) ||
+                    StringUtils.equals(formData.getStatus(), Constants.STATUS_COMPLETE)){
                 Patient patient = patientService.getPatientByUuid(formData.getPatientUuid());
                 completeForm = new CompleteFormWithPatientDataBuilder()
                         .withForm(formService.getFormByUuid(formData.getTemplateUuid()))
@@ -471,11 +470,11 @@ public class FormController {
         return completePatientForms;
     }
 
-    public int getAllIncompleteFormsSize() throws FormFetchException {
+    public int countAllIncompleteForms() throws FormFetchException {
         return getAllIncompleteFormsWithPatientData().size();
     }
 
-    public int getAllCompleteFormsSize() throws FormFetchException {
+    public int countAllCompleteForms() throws FormFetchException {
         return getAllCompleteFormsWithPatientData().size();
     }
 
@@ -654,7 +653,7 @@ public class FormController {
 
     private static FormData injectUuidToPayload(FormData formData) {
 
-        if (StringUtil.equals(formData.getDiscriminator(), FORM_JSON_DISCRIMINATOR_CONSULTATION)) {
+        if (StringUtils.equals(formData.getDiscriminator(), FORM_JSON_DISCRIMINATOR_CONSULTATION)) {
             try {
                 String base = "consultation";
                 JSONParser jp = new JSONParser(JSONParser.MODE_PERMISSIVE);

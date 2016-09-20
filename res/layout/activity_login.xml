@@ -9,7 +9,7 @@
         <ImageView
                 android:id="@+id/logo"
                 style="@style/LoginActivityLogo"
-                android:contentDescription="@string/hint_logo_alt_text"/>
+                android:contentDescription="@string/title_logo"/>
 
         <TextView
                 android:id="@+id/title_login"
@@ -23,9 +23,9 @@
                     android:id="@+id/serverUrl"
                     style="@style/LoginInfoEditText"
                     android:inputType="textUri"
-                    android:text="http://173.255.205.23:8081/openmrs-standalone"
+                    android:text="http://demo1.muzima.org"
                     android:nextFocusDown="@+id/username"
-                    android:hint="@string/hint_server_text"/>
+                    android:hint="@string/hint_server_url"/>
 
             <View
                     style="@style/LoginInfoLayoutDivider"
@@ -36,13 +36,13 @@
                     style="@style/LoginInfoEditText"
                     android:inputType="textShortMessage"
                     android:nextFocusDown="@+id/password"
-                    android:hint="@string/hint_username_text"/>
+                    android:hint="@string/general_username"/>
 
             <View style="@style/LoginInfoLayoutDivider"/>
 
             <EditText
                     android:id="@+id/password"
-                    android:hint="@string/hint_password_text"
+                    android:hint="@string/general_password"
                     style="@style/LoginInfoEditText"
                     android:nextFocusDown="@+id/login"
                     android:inputType="textPassword"/>

@@ -26,6 +26,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import com.muzima.R;
 
 import java.util.Arrays;
 import java.util.Collection;

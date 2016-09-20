@@ -64,4 +64,7 @@ public abstract class NotificationListFragment extends MuzimaListFragment implem
         list.setVisibility(View.VISIBLE);
         progressBarContainer.setVisibility(View.INVISIBLE);
     }
+
+    @Override
+    public void onQueryTaskCancelled(){}
 }

@@ -25,7 +25,6 @@ import com.muzima.model.AvailableForm;
 import com.muzima.model.BaseForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.model.collections.DownloadedForms;
-import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.SntpService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
@@ -147,7 +146,7 @@ public class FormControllerTest {
     @Test
     public void downloadAllForms_shouldDownloadAllForms() throws IOException, ParseException, FormController.FormFetchException {
         List<Form> forms = new ArrayList<Form>();
-        when(formService.downloadFormsByName(StringUtil.EMPTY)).thenReturn(forms);
+        when(formService.downloadFormsByName(StringUtils.EMPTY)).thenReturn(forms);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_FORMS)).thenReturn(mockDate);
 
         assertThat(formController.downloadAllForms(), is(forms));
@@ -184,7 +183,7 @@ public class FormControllerTest {
     @Test(expected = FormController.FormFetchException.class)
     public void downloadAllForms_shouldThrowExceptionThrownByFormService() throws IOException, ParseException, FormController.FormFetchException {
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_FORMS)).thenReturn(mockDate);
-        doThrow(new IOException()).when(formService).downloadFormsByName(StringUtil.EMPTY, mockDate);
+        doThrow(new IOException()).when(formService).downloadFormsByName(StringUtils.EMPTY, mockDate);
         formController.downloadAllForms();
     }
 

@@ -21,9 +21,11 @@ import com.muzima.R;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
 import com.muzima.controller.ObservationController;
-import com.muzima.search.api.util.StringUtil;
+import com.muzima.model.observation.EncounterWithObservations;
+import com.muzima.model.observation.Encounters;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +82,7 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
 
             String observationConceptType = observation.getConcept().getConceptType().getName();
 
-            if (StringUtil.equals(observationConceptType, "Complex")){
+            if (StringUtils.equals(observationConceptType, "Complex")){
                 observationValue.setVisibility(View.GONE);
                 observationComplex.setVisibility(View.VISIBLE);
             } else {
@@ -114,14 +116,13 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
         @Override
         protected List<Observation> doInBackground(String... params) {
             List<Observation> observations = null;
+
              try {
                  observations=new ArrayList<Observation>();
-                 List<Observation>observationsByPatient = observationController.getObservationsByPatient(encounter.getPatient().getUuid());
+                 Encounters encounterWithObservations  = observationController.getObservationsByEncounterUuid(encounter.getUuid());
 
-                 for(Observation obs:observationsByPatient){
-                     if(obs.getEncounter().getUuid().equals(encounter.getUuid())){
-                         observations.add(obs);
-                     }
+                 for(EncounterWithObservations encounterWithObs:encounterWithObservations){
+                     observations.addAll(encounterWithObs.getObservations());
                  }
 
              }catch(ObservationController.LoadObservationException e){
@@ -133,7 +134,7 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
         @Override
         protected void onPostExecute(List<Observation> observations){
             if(observations==null){
-                Toast.makeText(getContext(), "Observations could not be loaded", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getContext().getString(R.string.error_observation_load), Toast.LENGTH_SHORT).show();
                 return;
             }
             clear();

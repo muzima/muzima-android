@@ -19,6 +19,7 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.observations.ObservationsAdapter;
 import com.muzima.controller.ConceptController;
+import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.view.MuzimaListFragment;
 
@@ -27,6 +28,7 @@ public abstract class ObservationsListFragment extends MuzimaListFragment implem
 
     protected ConceptController conceptController;
     protected ObservationController observationController;
+    protected EncounterController encounterController;
     protected FrameLayout progressBarContainer;
     protected LinearLayout noDataView;
     protected View observationsLayout;
@@ -59,14 +61,14 @@ public abstract class ObservationsListFragment extends MuzimaListFragment implem
 
     @Override
     public void onQueryTaskStarted() {
-        noDataMsg = "Observations are loading";
+        noDataMsg = getActivity().getString(R.string.info_observation_load);
         updateDataLoadStatus(observationsLayout, noDataMsg);
     }
 
     @Override
     public void onQueryTaskFinish() {
         if(listAdapter.isEmpty()){
-            noDataMsg = "No observations Available";
+            noDataMsg = getActivity().getString(R.string.error_observation_unavailable);
             updateDataLoadStatus(observationsLayout, noDataMsg);
         }
     }

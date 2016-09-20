@@ -28,8 +28,8 @@ import com.muzima.R;
 import com.muzima.adapters.concept.AutoCompleteLocationAdapter;
 import com.muzima.adapters.concept.SelectedLocationAdapter;
 import com.muzima.api.model.Location;
-import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.Constants;
+import com.muzima.utils.StringUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
 
@@ -101,7 +101,7 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
                     selectedLocationAdapter.addLocation(selectedLocation);
                     selectedLocationAdapter.notifyDataSetChanged();
                 }
-                autoCompleteLocationsTextView.setText(StringUtil.EMPTY);
+                autoCompleteLocationsTextView.setText(StringUtils.EMPTY);
             }
         };
     }
@@ -175,7 +175,7 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
             endActionMode();
             selectedLocationListView.clearChoices();
             selectedLocationAdapter.reloadData();
-            Toast.makeText(getApplicationContext(), numberOfDeletedLocations +" Locations deleted successfully!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.info_location_delete_success, numberOfDeletedLocations), Toast.LENGTH_SHORT).show();
         }
 
         @Override

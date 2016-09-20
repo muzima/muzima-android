@@ -33,7 +33,6 @@ import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
 import com.muzima.domain.Credentials;
-import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
@@ -143,7 +142,6 @@ public class MuzimaApplication extends Application {
         super.onCreate();
         try {
             ContextFactory.setProperty(Constants.LUCENE_DIRECTORY_PATH, APP_DIR);
-            ContextFactory.setProperty(Constants.RESOURCE_CONFIGURATION_STRING, getConfigurationString());
             muzimaContext = ContextFactory.createContext();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -209,7 +207,7 @@ public class MuzimaApplication extends Application {
     public FormController getFormController() {
         if (formController == null) {
             try {
-                formController = new FormController(muzimaContext.getFormService(), muzimaContext.getPatientService(), muzimaContext.getLastSyncTimeService(), sntpService,
+                formController = new FormController(muzimaContext.getFormService(), muzimaContext.getPatientService(), muzimaContext.getLastSyncTimeService(), getSntpService(),
                         muzimaContext.getObservationService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -322,7 +320,7 @@ public class MuzimaApplication extends Application {
         saveBeforeExit();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String passwordKey = getResources().getString(R.string.preference_password);
-        settings.edit().putString(passwordKey, StringUtil.EMPTY).commit();
+        settings.edit().putString(passwordKey, StringUtils.EMPTY).commit();
         evictAuthenticatedUser();
     }
 
@@ -345,19 +343,6 @@ public class MuzimaApplication extends Application {
         if (currentActivity instanceof HTMLFormWebViewActivity) {
             ((HTMLFormWebViewActivity) currentActivity).stopAutoSaveProcess();
         }
-    }
-
-    private String getConfigurationString() throws IOException {
-        InputStream inputStream = getResources().openRawResource(R.raw.configuration);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-
-        String line;
-        StringBuilder builder = new StringBuilder();
-        while ((line = reader.readLine()) != null) {
-            builder.append(line);
-        }
-        reader.close();
-        return builder.toString();
     }
 
     public boolean isRunningInBackground() {

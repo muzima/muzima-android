@@ -10,6 +10,7 @@ package com.muzima.tasks;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import com.muzima.R;
 import com.muzima.view.preferences.SettingsActivity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -30,7 +31,7 @@ public class ValidateURLTask extends AsyncTask<String, Void, Boolean> {
     protected void onPreExecute() {
         super.onPreExecute();
         progressDialog = new ProgressDialog(settingsActivity);
-        progressDialog.setMessage("Step 1: Validating URL");
+        progressDialog.setMessage(settingsActivity.getString(R.string.info_url_validate));
         progressDialog.show();
     }
 

@@ -8,22 +8,44 @@
 
 package com.muzima.adapters.observations;
 
+import com.muzima.api.model.Concept;
+import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.Concepts;
+
+import java.io.IOException;
+import java.util.List;
 
 public class ConceptsByPatient extends ConceptAction {
     private String patientUuid;
     private ObservationController controller;
+    private ConceptController conceptController;
 
-    public ConceptsByPatient(ObservationController controller, String patientUuid) {
+    public ConceptsByPatient(ConceptController conceptController, ObservationController controller, String patientUuid) {
         this.controller = controller;
         this.patientUuid = patientUuid;
+        this.conceptController = conceptController;
     }
 
     @Override
     Concepts get() throws ObservationController.LoadObservationException {
         return controller.getConceptWithObservations(patientUuid);
     }
+
+    @Override
+    Concepts get(Concept concept) throws ObservationController.LoadObservationException {
+        return controller.getConceptWithObservations(patientUuid,concept.getUuid());
+    }
+
+    @Override
+    List<Concept> getConcepts() throws ObservationController.LoadObservationException{
+        try {
+            return conceptController.getConcepts();
+        }catch (ConceptController.ConceptFetchException e){
+            throw new ObservationController.LoadObservationException(e);
+        }
+    }
+
 
     @Override
     public String toString() {

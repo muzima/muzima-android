@@ -51,6 +51,14 @@ public class PatientController {
         }
     }
 
+    public List<Patient> getPatients(String cohortId,int page, int pageSize) throws PatientLoadException {
+        try {
+            return patientService.getPatients(cohortId, page,pageSize);
+        } catch (IOException e) {
+            throw new PatientLoadException(e);
+        }
+    }
+
     public List<Patient> getAllPatients() throws PatientLoadException {
         try {
             return patientService.getAllPatients();
@@ -59,9 +67,25 @@ public class PatientController {
         }
     }
 
-    public int getTotalPatientsCount() throws PatientLoadException {
+    public List<Patient> getPatients(int page, int pageSize) throws PatientLoadException {
+        try {
+            return patientService.getPatients(page,pageSize);
+        } catch (IOException e) {
+            throw new PatientLoadException(e);
+        }
+    }
+
+    public int countAllPatients() throws PatientLoadException {
         try {
             return patientService.countAllPatients();
+        } catch (IOException e) {
+            throw new PatientLoadException(e);
+        }
+    }
+
+    public int countPatients(String cohortId) throws PatientLoadException {
+        try {
+            return patientService.countPatients(cohortId);
         } catch (IOException e) {
             throw new PatientLoadException(e);
         }
@@ -80,6 +104,17 @@ public class PatientController {
             return StringUtils.isEmpty(cohortUuid)
                     ? patientService.searchPatients(term)
                     : patientService.searchPatients(term, cohortUuid);
+        } catch (IOException e) {
+            throw new PatientLoadException(e);
+        } catch (ParseException e) {
+            throw new PatientLoadException(e);
+        }
+    }
+
+    public List<Patient> searchPatientLocally(String term,  int page, int pageSize)
+            throws PatientLoadException {
+        try {
+            return patientService.searchPatients(term,page,pageSize);
         } catch (IOException e) {
             throw new PatientLoadException(e);
         } catch (ParseException e) {

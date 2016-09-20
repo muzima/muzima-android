@@ -21,7 +21,6 @@ import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonName;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
-import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.StringUtils;
 
 import java.math.BigDecimal;
@@ -60,7 +59,7 @@ public class ObservationParserUtility {
     public Concept getConceptEntity(String rawConceptName) throws ConceptController.ConceptFetchException,
             ConceptController.ConceptParseException{
         String conceptName = getConceptName(rawConceptName);
-        if(StringUtil.isEmpty(conceptName)){
+        if(StringUtils.isEmpty(conceptName)){
             throw new ConceptController.ConceptParseException("Could not not get Concept name for concept with raw name '"
             + rawConceptName + "'");
         }
@@ -78,7 +77,7 @@ public class ObservationParserUtility {
 
     public Observation getObservationEntity(Concept concept, String value) throws ConceptController.ConceptFetchException,
         ConceptController.ConceptParseException, ObservationController.ParseObservationException{
-        if (StringUtil.isEmpty(value)) {
+        if (StringUtils.isEmpty(value)) {
             throw new ObservationController.ParseObservationException("Could not create Observation entity for concept '"
                     + concept.getName() + "'. Reason: No Observation value provided.");
         }

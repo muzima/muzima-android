@@ -14,8 +14,8 @@ import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.LastSyncTimeService;
-import com.muzima.search.api.util.StringUtil;
 import com.muzima.service.SntpService;
+import com.muzima.utils.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class CohortController {
         }
     }
 
-    public int getTotalCohortsCount() throws CohortFetchException {
+    public int countAllCohorts() throws CohortFetchException {
         try {
             return cohortService.countAllCohorts();
         } catch (IOException e) {
@@ -56,7 +56,7 @@ public class CohortController {
     public List<Cohort> downloadAllCohorts() throws CohortDownloadException {
         try {
             Date lastSyncTimeForCohorts = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS);
-            List<Cohort> allCohorts = cohortService.downloadCohortsByNameAndSyncDate(StringUtil.EMPTY, lastSyncTimeForCohorts);
+            List<Cohort> allCohorts = cohortService.downloadCohortsByNameAndSyncDate(StringUtils.EMPTY, lastSyncTimeForCohorts);
 
             LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS, sntpService.getLocalTime());
             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
@@ -182,7 +182,7 @@ public class CohortController {
         }
     }
 
-    public int getSyncedCohortsCount() throws CohortFetchException {
+    public int countSyncedCohorts() throws CohortFetchException {
         return getSyncedCohorts().size();
     }
 
