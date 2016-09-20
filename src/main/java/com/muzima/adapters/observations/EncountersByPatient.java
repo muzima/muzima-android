@@ -8,21 +8,41 @@
 
 package com.muzima.adapters.observations;
 
+import com.muzima.api.model.Encounter;
+import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.Encounters;
 
+import java.util.List;
+
 public class EncountersByPatient extends EncounterAction {
     private String patientUuid;
-    private ObservationController controller;
+    private ObservationController observationController;
+    private EncounterController encounterController;
 
-    public EncountersByPatient(ObservationController controller, String patientUuid) {
-        this.controller = controller;
+    public EncountersByPatient(EncounterController encounterController,ObservationController observationController, String patientUuid) {
+        this.observationController = observationController;
         this.patientUuid = patientUuid;
+        this.encounterController = encounterController;
     }
 
     @Override
     Encounters get() throws ObservationController.LoadObservationException {
-        return  controller.getEncountersWithObservations(patientUuid);
+        return  observationController.getEncountersWithObservations(patientUuid);
+    }
+
+    @Override
+    Encounters get(Encounter encounter) throws ObservationController.LoadObservationException {
+        return observationController.getObservationsByEncounterUuid(encounter.getUuid());
+    }
+
+    @Override
+    List<Encounter> getEncounters() throws ObservationController.LoadObservationException {
+        try {
+            return encounterController.getEncountersByPatientUuid(patientUuid);
+        }catch (EncounterController.DownloadEncounterException e){
+            throw new ObservationController.LoadObservationException(e);
+        }
     }
 
 
@@ -30,7 +50,7 @@ public class EncountersByPatient extends EncounterAction {
     public String toString() {
         return "EncountersByPatient{" +
                 "patientUuid='" + patientUuid + '\'' +
-                ", controller=" + controller +
+                ", observationController=" + observationController +
                 '}';
     }
 }

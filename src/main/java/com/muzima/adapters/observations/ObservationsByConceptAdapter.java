@@ -8,6 +8,8 @@
 
 package com.muzima.adapters.observations;
 
+import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,17 +22,19 @@ import com.muzima.api.model.Observation;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.ConceptWithObservations;
-import com.muzima.search.api.util.StringUtil;
+import com.muzima.utils.BackgroundTaskHelper;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.StringUtils;
 
 public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWithObservations> {
 
     private static final String TAG = "ObservationsByConceptAdapter";
 
     public ObservationsByConceptAdapter(FragmentActivity activity, int itemCohortsList,
-                                        ConceptController conceptController, ObservationController observationController) {
-        super(activity, itemCohortsList, conceptController, observationController);
+                                        ConceptController conceptController,
+                                        ObservationController observationController) {
+        super(activity, itemCohortsList, null,conceptController, observationController);
     }
 
     @Override
@@ -53,14 +57,21 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         return convertView;
     }
 
-
     @Override
     public void reloadData() {
-        new ObservationsByConceptBackgroundTask(this, new ConceptsByPatient(observationController, patientUuid)).execute();
+        cancelBackgroundQueryTask();
+        AsyncTask<Void,?,?> backgroundQueryTask = new ObservationsByConceptBackgroundTask(this,
+                new ConceptsByPatient(conceptController, observationController, patientUuid));
+        BackgroundTaskHelper.executeInParallel(backgroundQueryTask);
+        setRunningBackgroundQueryTask(backgroundQueryTask);
     }
 
     public void search(String term) {
-        new ObservationsByConceptBackgroundTask(this, new ConceptsBySearch(observationController, patientUuid, term)).execute();
+        cancelBackgroundQueryTask();
+        AsyncTask<Void,?,?> backgroundQueryTask = new ObservationsByConceptBackgroundTask(this,
+                new ConceptsBySearch(conceptController,observationController, patientUuid, term));
+        BackgroundTaskHelper.executeInParallel(backgroundQueryTask);
+        setRunningBackgroundQueryTask(backgroundQueryTask);
     }
 
     protected class ObservationsByConceptViewHolder extends ViewHolder{
@@ -85,7 +96,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
 
             TextView observationValue = (TextView) layout.findViewById(R.id.observation_value);
             ImageView observationComplexHolder = (ImageView) layout.findViewById(R.id.observation_complex);
-            if (StringUtil.equals(observationConceptType, "Complex")){
+            if (StringUtils.equals(observationConceptType, "Complex")){
                 observationValue.setVisibility(View.GONE);
                 observationComplexHolder.setVisibility(View.VISIBLE);
             } else {

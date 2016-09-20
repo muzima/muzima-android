@@ -79,6 +79,9 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
         progressBarContainer.setVisibility(View.INVISIBLE);
     }
 
+    @Override
+    public void onQueryTaskCancelled(){}
+
     public final class DeleteFormsActionModeCallback implements ActionMode.Callback {
 
         @Override
@@ -110,7 +113,7 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
         private void onCompleteOfFormDelete() {
             endActionMode();
             listAdapter.reloadData();
-            Toast.makeText(getActivity(), "Forms deleted successfully!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getActivity().getString(R.string.info_form_delete_success), Toast.LENGTH_SHORT).show();
         }
 
         private void endActionMode() {

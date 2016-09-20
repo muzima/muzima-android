@@ -9,6 +9,7 @@
 package com.muzima.view.concept;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
@@ -22,7 +23,9 @@ import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaSyncService;
-import com.muzima.view.forms.MuzimaProgressDialog;
+import com.muzima.utils.Constants;
+import com.muzima.utils.StringUtils;
+import com.muzima.view.progressdialog.MuzimaProgressDialog;
 import com.muzima.view.preferences.ConceptPreferenceActivity;
 
 import java.util.ArrayList;
@@ -53,7 +56,7 @@ public class ConceptListActivity extends ConceptPreferenceActivity {
                     @Override
                     protected void onPreExecute() {
                         Log.i(TAG, "Canceling timeout timer!") ;
-                        turnOnProgressDialog("Downloading Observations and Encounters...");
+                        turnOnProgressDialog(getString(R.string.info_encounter_observation_download));
                         ((MuzimaApplication) getApplication()).cancelTimer();
                         keepPhoneAwake(true) ;
                     }
@@ -122,7 +125,7 @@ public class ConceptListActivity extends ConceptPreferenceActivity {
     protected void onResume() {
         super.onResume();
         if(isProcessDialogOn){
-            turnOnProgressDialog("Downloading Observations and Encounters...");
+            turnOnProgressDialog(getString(R.string.info_encounter_observation_download));
         }
     }
 
@@ -157,6 +160,15 @@ public class ConceptListActivity extends ConceptPreferenceActivity {
         if (muzimaProgressDialog != null){
             muzimaProgressDialog.dismiss();
             isProcessDialogOn = false;
+        }
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent){
+        super.onReceive(context,intent);
+        String message = intent.getStringExtra(Constants.ProgressDialogConstants.PROGRESS_UPDATE_MESSAGE);
+        if(!StringUtils.isEmpty(message)){
+            muzimaProgressDialog.updateMessage(message);
         }
     }
 }

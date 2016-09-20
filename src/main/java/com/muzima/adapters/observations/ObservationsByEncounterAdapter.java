@@ -8,6 +8,8 @@
 
 package com.muzima.adapters.observations;
 
+import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,15 +21,19 @@ import com.muzima.R;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
 import com.muzima.controller.ConceptController;
+import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.EncounterWithObservations;
-import com.muzima.search.api.util.StringUtil;
+import com.muzima.utils.BackgroundTaskHelper;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.StringUtils;
 
 public class ObservationsByEncounterAdapter extends ObservationsAdapter<EncounterWithObservations> {
-    public ObservationsByEncounterAdapter(FragmentActivity activity, int item_observation_list, ConceptController conceptController, ObservationController observationController) {
-        super(activity,item_observation_list,conceptController,observationController);
+    public ObservationsByEncounterAdapter(FragmentActivity activity, int item_observation_list,
+                                          EncounterController encounterController, ConceptController conceptController,
+                                          ObservationController observationController) {
+        super(activity,item_observation_list,encounterController, conceptController,observationController);
     }
 
 
@@ -56,11 +62,19 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
 
     @Override
     public void reloadData() {
-        new ObservationsByEncounterBackgroundTask(this, new EncountersByPatient(observationController, patientUuid)).execute();
+        cancelBackgroundQueryTask();
+        AsyncTask<Void,?,?> backgroundQueryTask = new ObservationsByEncounterBackgroundTask(this,
+                new EncountersByPatient(encounterController,observationController, patientUuid));
+        BackgroundTaskHelper.executeInParallel(backgroundQueryTask);
+        setRunningBackgroundQueryTask(backgroundQueryTask);
     }
 
     public void search(String query) {
-        new ObservationsByEncounterBackgroundTask(this, new EncountersBySearch(observationController, patientUuid, query)).execute();
+        cancelBackgroundQueryTask();
+        AsyncTask<Void,?,?> backgroundQueryTask = new ObservationsByEncounterBackgroundTask(this,
+                new EncountersBySearch(encounterController,observationController, patientUuid, query));
+        BackgroundTaskHelper.executeInParallel(backgroundQueryTask);
+        setRunningBackgroundQueryTask(backgroundQueryTask);
     }
 
     protected class ObservationsByEncounterViewHolder extends ViewHolder {
@@ -76,7 +90,8 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
         private void renderItem(EncounterWithObservations item) {
             addEncounterObservations(item.getObservations());
             setEncounter(item.getEncounter());
-            headerLayout.setBackgroundColor(getContext().getResources().getColor(R.color.observation_by_encounter_header_background));
+            headerLayout.setBackgroundColor(getContext()
+                    .getResources().getColor(R.color.observation_by_encounter_header_background));
         }
 
         @Override
@@ -94,7 +109,7 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
 
             TextView observationValue = (TextView) layout.findViewById(R.id.observation_value);
             ImageView observationComplexHolder = (ImageView) layout.findViewById(R.id.observation_complex);
-            if (StringUtil.equals(observationConceptType, "Complex")){
+            if (StringUtils.equals(observationConceptType, "Complex")){
                 observationValue.setVisibility(View.GONE);
                 observationComplexHolder.setVisibility(View.VISIBLE);
             } else {
@@ -117,7 +132,8 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
         public void setEncounter(Encounter encounter) {
             encounterProvider.setText(encounter.getProvider().getDisplayName());
             String date = "";
-            boolean isEncounterForObservationWithNonNullEncounterUuid = !isEncounterForObservationWithNullEncounterUuid(encounter);
+            boolean isEncounterForObservationWithNonNullEncounterUuid =
+                    !isEncounterForObservationWithNullEncounterUuid(encounter);
             if(isEncounterForObservationWithNonNullEncounterUuid)
                 date = DateUtils.getMonthNameFormattedDate(encounter.getEncounterDatetime());
             encounterDate.setText(date);

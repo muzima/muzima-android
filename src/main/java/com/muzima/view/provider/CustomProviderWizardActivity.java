@@ -13,7 +13,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
 import com.muzima.view.concept.CustomConceptWizardActivity;
-import com.muzima.view.forms.MuzimaProgressDialog;
+import com.muzima.view.progressdialog.MuzimaProgressDialog;
 import com.muzima.view.location.CustomLocationWizardActivity;
 import com.muzima.view.preferences.ProviderPreferenceActivity;
 
@@ -78,7 +78,7 @@ public class CustomProviderWizardActivity extends ProviderPreferenceActivity {
     protected void onResume() {
         super.onResume();
         if (isProcessDialogOn) {
-            turnOnProgressDialog("Downloading Providers...");
+            turnOnProgressDialog(getString(R.string.info_provider_download));
         }
     }
 

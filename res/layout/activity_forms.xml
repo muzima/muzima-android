@@ -49,7 +49,7 @@
                 android:gravity="center"
                 android:textSize="20sp"
                 android:textColor="#ffffff"
-                android:text="@string/info_tags_unavailable"
+                android:text="@string/info_tag_unavailable"
                 android:visibility="gone">
         </TextView>
 

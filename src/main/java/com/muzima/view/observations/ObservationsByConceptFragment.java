@@ -34,7 +34,7 @@ public class ObservationsByConceptFragment extends ObservationsListFragment {
             listAdapter = new ObservationsByConceptAdapter(
                     getActivity(), R.layout.item_observation_by_concept_list, conceptController, observationController);
         }
-        noDataMsg = getActivity().getResources().getString(R.string.info_observations_still_loading);
+        noDataMsg = getActivity().getResources().getString(R.string.info_observation_in_progress);
         super.onCreate(savedInstanceState);
     }
 
@@ -51,6 +51,12 @@ public class ObservationsByConceptFragment extends ObservationsListFragment {
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    }
+
+    @Override
+    public void onQueryTaskCancelled(){
+        ObservationsByConceptAdapter observationsByConceptAdapter = ((ObservationsByConceptAdapter)listAdapter);
+        observationsByConceptAdapter.cancelBackgroundQueryTask();
     }
 
 }

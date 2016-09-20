@@ -53,7 +53,6 @@ public class MainActivity extends BroadcastListenerActivity {
         credentials = new Credentials(this);
         mMainView = getLayoutInflater().inflate(R.layout.activity_dashboard, null);
         setContentView(mMainView);
-        setTitle(R.string.title_homepage);
         RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext());
         setupActionbar();
     }
@@ -176,11 +175,11 @@ public class MainActivity extends BroadcastListenerActivity {
             FormController formController = muzimaApplication.getFormController();
             NotificationController notificationController = muzimaApplication.getNotificationController();
             try {
-                homeActivityMetadata.totalCohorts = cohortController.getTotalCohortsCount();
-                homeActivityMetadata.syncedCohorts = cohortController.getSyncedCohortsCount();
-                homeActivityMetadata.syncedPatients = patientController.getTotalPatientsCount();
-                homeActivityMetadata.incompleteForms = formController.getAllIncompleteFormsSize();
-                homeActivityMetadata.completeAndUnsyncedForms = formController.getAllCompleteFormsSize();
+                homeActivityMetadata.totalCohorts = cohortController.countAllCohorts();
+                homeActivityMetadata.syncedCohorts = cohortController.countSyncedCohorts();
+                homeActivityMetadata.syncedPatients = patientController.countAllPatients();
+                homeActivityMetadata.incompleteForms = formController.countAllIncompleteForms();
+                homeActivityMetadata.completeAndUnsyncedForms = formController.countAllCompleteForms();
 
                 // Notifications
                 User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();

@@ -47,6 +47,7 @@ import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
+import com.muzima.view.progressdialog.MuzimaProgressDialog;
 
 public class FormTemplateWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
     private MenuItem tagsButton;
@@ -109,10 +110,10 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
             @Override
             public void onClick(View view) {
                 if (!hasRegistrationFormSelected()) {
-                    Toast.makeText(FormTemplateWizardActivity.this, "Please select at least one registration form!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FormTemplateWizardActivity.this, getString(R.string.hint_registration_form_select), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                turnOnProgressDialog("Downloading Form Templates...");
+                turnOnProgressDialog(getString(R.string.info_form_template_download,getSelectedForms().size()));
 
                 new AsyncTask<Void, Void, int[]>() {
 
@@ -125,7 +126,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
                     protected void onPostExecute(int[] result) {
                         dismissProgressDialog();
                         if (result[0] != SyncStatusConstants.SUCCESS) {
-                            Toast.makeText(FormTemplateWizardActivity.this, "Could not download form templates", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FormTemplateWizardActivity.this, getString(R.string.error_form_templates_download), Toast.LENGTH_SHORT).show();
                         }
                         try {
                             LastSyncTimeService lastSyncTimeService = ((MuzimaApplication)getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
@@ -178,9 +179,6 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
     protected void onResume() {
         super.onResume();
         tagsListAdapter.reloadData();
-        if(isProcessDialogOn){
-            turnOnProgressDialog("Downloading Form Templates...");
-        }
     }
 
     @Override
@@ -250,13 +248,16 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
 
     @Override
     public void onQueryTaskStarted() {
-        turnOnProgressDialog("Loading Forms...");
+        turnOnProgressDialog(getString(R.string.info_form_metadata_download));
     }
 
     @Override
     public void onQueryTaskFinish() {
         dismissProgressDialog();
     }
+
+    @Override
+    public void onQueryTaskCancelled(){}
 
     private void turnOnProgressDialog(String message){
         progressDialog.show(message);

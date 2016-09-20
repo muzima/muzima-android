@@ -118,7 +118,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         getSupportMenuInflater().inflate(R.menu.client_list, menu);
         searchView = (SearchView) menu.findItem(R.id.search)
                 .getActionView();
-        searchView.setQueryHint("Search clients");
+        searchView.setQueryHint(getString(R.string.hint_client_search));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -211,7 +211,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     private void setupListView(String cohortId) {
         listView = (ListView) findViewById(R.id.list);
-        listView.setEmptyView(findViewById(R.id.no_data_layout));
         patientAdapter = new PatientsLocalSearchAdapter(getApplicationContext(),
                 R.layout.layout_list,
                 ((MuzimaApplication) getApplicationContext()).getPatientController(), cohortId);
@@ -225,10 +224,10 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         noDataView = findViewById(R.id.no_data_layout);
 
         TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
-        noDataMsgTextView.setText(getResources().getText(R.string.info_clients_local_search_unmatched));
+        noDataMsgTextView.setText(getResources().getText(R.string.info_client_local_search_not_found));
 
         TextView noDataTipTextView = (TextView) findViewById(R.id.no_data_tip);
-        noDataTipTextView.setText(R.string.hint_clients_local_search_unmatched);
+        noDataTipTextView.setText(R.string.hint_client_local_search);
 
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
         noDataTipTextView.setTypeface(Fonts.roboto_light(this));
@@ -236,6 +235,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        patientAdapter.cancelBackgroundTask();
         Patient patient = patientAdapter.getItem(position);
         Intent intent = new Intent(this, PatientSummaryActivity.class);
         intent.putExtra(PatientSummaryActivity.PATIENT, patient);
@@ -246,15 +246,19 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     public void onQueryTaskStarted() {
         listView.setVisibility(INVISIBLE);
         noDataView.setVisibility(INVISIBLE);
+        listView.setEmptyView(progressBarContainer);
         progressBarContainer.setVisibility(VISIBLE);
     }
 
     @Override
     public void onQueryTaskFinish() {
-
         listView.setVisibility(VISIBLE);
+        listView.setEmptyView(noDataView);
         progressBarContainer.setVisibility(INVISIBLE);
     }
+
+    @Override
+    public void onQueryTaskCancelled(){}
 
     public void invokeBarcodeScan() {
         IntentIntegrator scanIntegrator = new IntentIntegrator(this);
@@ -269,5 +273,11 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             intentBarcodeResults = true;
             searchView.setQuery(scanningResult.getContents(), false);
         }
+    }
+
+    @Override
+    public void onBackPressed(){
+        patientAdapter.cancelBackgroundTask();
+        super.onBackPressed();
     }
 }

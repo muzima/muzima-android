@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsByEncounterAdapter;
+import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.view.patients.ObservationsListFragment;
 
@@ -21,9 +22,11 @@ public class ObservationByEncountersFragment extends ObservationsListFragment{
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
     }
 
-    public static ObservationByEncountersFragment newInstance(ObservationController observationController) {
+    public static ObservationByEncountersFragment newInstance(EncounterController encounterController, ObservationController observationController) {
         ObservationByEncountersFragment f = new ObservationByEncountersFragment();
         f.observationController = observationController;
+        f.encounterController = encounterController;
+
         return f;
     }
 
@@ -31,14 +34,20 @@ public class ObservationByEncountersFragment extends ObservationsListFragment{
     public void onCreate(Bundle savedInstanceState) {
         if(listAdapter == null){
             listAdapter = new ObservationsByEncounterAdapter(
-                    getActivity(), R.layout.item_observation_by_encounter_list, conceptController, observationController);
+                    getActivity(), R.layout.item_observation_by_encounter_list,encounterController, conceptController, observationController);
         }
-        noDataMsg = getActivity().getResources().getString(R.string.info_observations_still_loading);
+        noDataMsg = getActivity().getResources().getString(R.string.info_observation_in_progress);
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public void onSearchTextChange(String query) {
         ((ObservationsByEncounterAdapter)listAdapter).search(query);
+    }
+
+    @Override
+    public void onQueryTaskCancelled(){
+        ObservationsByEncounterAdapter observationsByEncounterAdapter = ((ObservationsByEncounterAdapter)listAdapter);
+        observationsByEncounterAdapter.cancelBackgroundQueryTask();
     }
 }

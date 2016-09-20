@@ -47,6 +47,7 @@ import com.muzima.utils.imaging.ImageResult;
 import com.muzima.utils.video.VideoResult;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
+import com.muzima.view.progressdialog.MuzimaProgressDialog;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.lucene.queryParser.ParseException;
 import org.json.JSONException;
@@ -261,7 +262,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         new AlertDialog.Builder(HTMLFormWebViewActivity.this)
                 .setCancelable(true)
                 .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                .setTitle(getResources().getString(R.string.warning_caution_text))
+                .setTitle(getResources().getString(R.string.general_caution))
                 .setMessage(getResources().getString(R.string.warning_form_close))
                 .setPositiveButton(getString(R.string.general_yes), positiveClickListener())
                 .setNegativeButton(getString(R.string.general_no), null)
@@ -272,8 +273,8 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         new AlertDialog.Builder(HTMLFormWebViewActivity.this)
                 .setCancelable(true)
                 .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                .setTitle(getResources().getString(R.string.title_form_data_already_exisis))
-                .setMessage(getResources().getString(R.string.warning_form_data_already_exisis))
+                .setTitle(getResources().getString(R.string.title_duplicate_form_data_warning))
+                .setMessage(getResources().getString(R.string.warning_form_data_already_exists))
                 .setPositiveButton(getString(R.string.confirm_duplicate_form_data_save), duplicateFormDataClickListener(saveType))
                 .setNegativeButton(getString(R.string.general_cancel), null)
                 .create()
@@ -283,8 +284,8 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         new AlertDialog.Builder(HTMLFormWebViewActivity.this)
                 .setCancelable(true)
                 .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                .setTitle(getResources().getString(R.string.title_form_data_already_exisis))
-                .setMessage(getResources().getString(R.string.warning_form_data_already_exisis))
+                .setTitle(getResources().getString(R.string.title_duplicate_form_data_warning))
+                .setMessage(getResources().getString(R.string.warning_form_data_already_exists))
                 .setNegativeButton(getString(R.string.general_ok), null)
                 .create()
                 .show();

@@ -82,11 +82,11 @@ public class CohortPreferenceActivity extends BaseFragmentActivity {
     public void addPrefix(View view) {
         String newPrefix = cohortPrefix.getText().toString();
         if (newPrefix.length() == 0) {
-            Toast.makeText(this, "You can't add an empty prefix", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.warning_empty_cohort_prefix), Toast.LENGTH_SHORT).show();
             return;
         }
         if (!preferenceService.addCohortPrefix(newPrefix)) {
-            Toast.makeText(this, "Prefix already exists", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.warning_cohort_prefix_exists), Toast.LENGTH_SHORT).show();
         }
         prefAdapter.reloadData();
         cohortPrefix.clearListSelection();

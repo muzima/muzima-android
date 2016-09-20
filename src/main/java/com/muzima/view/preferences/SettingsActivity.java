@@ -22,9 +22,9 @@ import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.scheduler.RealTimeFormUploader;
-import com.muzima.search.api.util.StringUtil;
 import com.muzima.tasks.ValidateURLTask;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.utils.StringUtils;
 import com.muzima.view.login.LoginActivity;
 import com.muzima.view.preferences.settings.ResetDataTask;
 import com.muzima.view.preferences.settings.SyncFormDataTask;
@@ -81,7 +81,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
                     builder
                             .setCancelable(true)
                             .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                            .setTitle(getResources().getString(R.string.warning_caution_text))
+                            .setTitle(getResources().getString(R.string.general_caution))
                             .setMessage(getResources().getString(R.string.warning_switch_server))
                             .setPositiveButton("Yes", positiveClickListener())
                             .setNegativeButton("No", null).create().show();
@@ -154,8 +154,8 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
                         builder
                                 .setCancelable(true)
                                 .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                                .setTitle(getResources().getString(R.string.title_provider_not_set_error))
-                                .setMessage(getResources().getString(R.string.error_provider_not_set))
+                                .setTitle(getResources().getString(R.string.title_provider_not_set))
+                                .setMessage(getResources().getString(R.string.hint_provider_not_set))
                                 .setPositiveButton("Ok", null).create().show();
                         return false;
                     } else {
@@ -210,7 +210,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         actions.put(key, new PreferenceChangeHandler() {
             @Override
             public void handle(SharedPreferences sharedPreferences) {
-                preference.setSummary(sharedPreferences.getString(key, StringUtil.EMPTY));
+                preference.setSummary(sharedPreferences.getString(key, StringUtils.EMPTY));
             }
         });
     }
@@ -220,7 +220,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
         actions.put(key, new PreferenceChangeHandler() {
             @Override
             public void handle(SharedPreferences sharedPreferences) {
-                preference.setSummary(sharedPreferences.getString(key, StringUtil.EMPTY));
+                preference.setSummary(sharedPreferences.getString(key, StringUtils.EMPTY));
             }
         });
     }
@@ -258,7 +258,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements Shar
                     .setCancelable(true)
                     .setIcon(getResources().getDrawable(R.drawable.ic_warning))
                     .setTitle("Failure")
-                    .setMessage("Failed to Sync Form data to the current server. Do you still want to continue?")
+                    .setMessage(getString(R.string.info_form_data_upload_fail))
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

@@ -97,7 +97,7 @@ public class LoginActivity extends Activity {
             builder
                     .setCancelable(true)
                     .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                    .setTitle(getResources().getString(R.string.title_session_time_out))
+                    .setTitle(getResources().getString(R.string.general_alert))
                     .setMessage(getResources().getString(R.string.info_session_time_out))
                     .setPositiveButton("Ok", null).show();
         }
@@ -123,7 +123,7 @@ public class LoginActivity extends Activity {
         String versionCode = "";
         try {
             versionCode = String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
-            versionText = String.format(getResources().getString(R.string.info_application_version), versionCode);
+            versionText = getResources().getString(R.string.general_application_version, versionCode);
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, "Unable to read application version.", e);
         }
@@ -171,7 +171,7 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
                 if (validInput()) {
                     if (backgroundAuthenticationTask != null && backgroundAuthenticationTask.getStatus() == AsyncTask.Status.RUNNING) {
-                        Toast.makeText(getApplicationContext(), "Authentication in progress...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.info_authentication_in_progress), Toast.LENGTH_SHORT).show();
                         return;
                     }
 
@@ -186,17 +186,17 @@ public class LoginActivity extends Activity {
                 } else {
                     int errorColor = getResources().getColor(R.color.error_text_color);
                     if (StringUtils.isEmpty(serverUrlText.getText().toString())) {
-                        serverUrlText.setHint("Please Enter Server URL");
+                        serverUrlText.setHint(getString(R.string.hint_server_url_prompt));
                         serverUrlText.setHintTextColor(errorColor);
                     }
 
                     if (StringUtils.isEmpty(usernameText.getText().toString())) {
-                        usernameText.setHint("Please Enter Username");
+                        usernameText.setHint(getString(R.string.hint_username_prompt));
                         usernameText.setHintTextColor(errorColor);
                     }
 
                     if (StringUtils.isEmpty(passwordText.getText().toString())) {
-                        passwordText.setHint("Please Enter Password");
+                        passwordText.setHint(getString(R.string.hint_password_prompt));
                         passwordText.setHintTextColor(errorColor);
                     }
                 }
@@ -288,15 +288,15 @@ public class LoginActivity extends Activity {
         private String getErrorText(Result result) {
             switch (result.status) {
                 case SyncStatusConstants.MALFORMED_URL_ERROR:
-                    return "Invalid Server URL.";
+                    return getString(R.string.error_server_url_invalid);
                 case SyncStatusConstants.INVALID_CREDENTIALS_ERROR:
-                    return "Invalid Username, Password, Server combination.";
+                    return getString(R.string.error_credential_invalid);
                 case SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME:
-                    return "Invalid Character in Username. These are not allowed: " + SyncStatusConstants.INVALID_CHARACTER_FOR_USERNAME;
+                    return getString(R.string.error_username_invalid_format) + SyncStatusConstants.INVALID_CHARACTER_FOR_USERNAME;
                 case SyncStatusConstants.CONNECTION_ERROR:
-                    return "Error while connecting to the server. Please connect to the internet and try again.";
+                    return getString(R.string.error_connection_unavailable);
                 default:
-                    return "Authentication failed";
+                    return getString(R.string.error_authentication_fail);
             }
         }
 

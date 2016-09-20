@@ -28,7 +28,7 @@ import com.muzima.R;
 import com.muzima.adapters.concept.AutoCompleteConceptAdapter;
 import com.muzima.adapters.concept.SelectedConceptAdapter;
 import com.muzima.api.model.Concept;
-import com.muzima.search.api.util.StringUtil;
+import com.muzima.utils.StringUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
 
@@ -103,7 +103,7 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
                     selectedConceptAdapter.addConcept(selectedConcept);
                     selectedConceptAdapter.notifyDataSetChanged();
                 }
-                autoCompleteConceptTextView.setText(StringUtil.EMPTY);
+                autoCompleteConceptTextView.setText(StringUtils.EMPTY);
             }
         };
     }
@@ -177,7 +177,7 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
             endActionMode();
             selectedConceptListView.clearChoices();
             selectedConceptAdapter.reloadData();
-            Toast.makeText(getApplicationContext(), numberOfDeletedConcepts +" Concepts deleted successfully!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.info_concept_delete_success, numberOfDeletedConcepts), Toast.LENGTH_SHORT).show();
         }
 
         @Override

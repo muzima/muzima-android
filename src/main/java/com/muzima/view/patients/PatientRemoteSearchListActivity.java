@@ -102,10 +102,10 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         noDataView = findViewById(R.id.no_data_layout);
 
         TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
-        noDataMsgTextView.setText(getResources().getText(R.string.info_clients_remote_search_unmatched));
+        noDataMsgTextView.setText(getResources().getText(R.string.info_client_remote_search_not_found));
 
         TextView noDataTipTextView = (TextView) findViewById(R.id.no_data_tip);
-        noDataTipTextView.setText(R.string.hint_clients_remote_search_unmatched);
+        noDataTipTextView.setText(R.string.hint_client_remote_search);
 
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
         noDataTipTextView.setTypeface(Fonts.roboto_light(this));
@@ -116,6 +116,9 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         listView.setVisibility(VISIBLE);
         progressBarContainer.setVisibility(INVISIBLE);
     }
+
+    @Override
+    public void onQueryTaskCancelled(){}
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {

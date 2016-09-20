@@ -116,7 +116,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="left"
-                            android:text="@string/title_notifications">
+                            android:text="@string/general_notifications">
                     </TextView>
 
                     <TextView

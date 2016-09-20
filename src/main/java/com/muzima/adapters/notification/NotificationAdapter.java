@@ -19,10 +19,10 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Notification;
 import com.muzima.controller.NotificationController;
-import com.muzima.search.api.util.StringUtil;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.StringUtils;
 
 import java.util.Date;
 
@@ -85,7 +85,7 @@ public abstract class NotificationAdapter extends ListAdapter<Notification> {
         }
 
         public void markUnreadNotification() {
-            if (StringUtil.equals(Constants.NotificationStatusConstants.NOTIFICATION_READ, status)){
+            if (StringUtils.equals(Constants.NotificationStatusConstants.NOTIFICATION_READ, status)){
                 subject.setTypeface(Fonts.roboto_light(getContext()));
                 notificationDate.setTypeface(Fonts.roboto_light(getContext()));
                 newNotificationImg.setVisibility(View.GONE);
