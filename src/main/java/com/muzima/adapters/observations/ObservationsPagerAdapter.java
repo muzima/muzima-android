@@ -10,7 +10,7 @@ package com.muzima.adapters.observations;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
-import com.actionbarsherlock.widget.SearchView;
+import android.support.v7.widget.SearchView;
 import com.muzima.MuzimaApplication;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.controller.ConceptController;
@@ -18,7 +18,7 @@ import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.view.observations.ObservationByEncountersFragment;
 import com.muzima.view.observations.ObservationsByConceptFragment;
-import com.muzima.view.patients.ObservationsListFragment;
+import com.muzima.view.observations.ObservationsListFragment;
 
 public class ObservationsPagerAdapter extends MuzimaPagerAdapter implements SearchView.OnQueryTextListener {
 

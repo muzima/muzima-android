@@ -16,9 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Toast;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import com.muzima.R;
 import com.muzima.adapters.forms.DownloadedFormsAdapter;
 import com.muzima.controller.FormController;
@@ -48,7 +48,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
 
         // this can happen on orientation change
         if (actionModeActive) {
-            actionMode = getSherlockActivity().startActionMode(new DeleteFormsActionModeCallback());
+            actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
             actionMode.setTitle(String.valueOf(getSelectedForms().size()));
         }
 
@@ -58,7 +58,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         if (!actionModeActive) {
-            actionMode = getSherlockActivity().startActionMode(new DeleteFormsActionModeCallback());
+            actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
             actionModeActive = true;
         }
         int numOfSelectedForms = getSelectedForms().size();
@@ -87,7 +87,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            getSherlockActivity().getSupportMenuInflater().inflate(R.menu.actionmode_menu_delete, menu);
+            getActivity().getMenuInflater().inflate(R.menu.actionmode_menu_delete, menu);
             return true;
         }
 

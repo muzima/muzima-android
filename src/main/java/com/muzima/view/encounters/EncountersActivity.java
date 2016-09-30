@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.actionbarsherlock.view.Menu;
+import android.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
@@ -120,7 +120,7 @@ public class EncountersActivity extends BroadcastListenerActivity implements Ada
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.client_summary, menu);
+        getMenuInflater().inflate(R.menu.client_summary, menu);
         super.onCreateOptionsMenu(menu);
         return true;
     }

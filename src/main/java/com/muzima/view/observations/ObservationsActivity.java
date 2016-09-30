@@ -6,19 +6,20 @@
  * that uses this code in a for-profit venture, please contact the copyright holder.
  */
 
-package com.muzima.view.patients;
+package com.muzima.view.observations;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.widget.SearchView;
+import android.view.Menu;
+import android.support.v7.widget.SearchView;
 import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.custom.PagerSlidingTabStrip;
+import com.muzima.view.patients.PatientSummaryActivity;
 
 public class ObservationsActivity extends BroadcastListenerActivity {
 
@@ -57,7 +58,7 @@ public class ObservationsActivity extends BroadcastListenerActivity {
     }
 
     /**
-     * Set up the {@link android.app.ActionBar}.
+     * Set up the {@link android.support.v7.app.ActionBar}.
      */
     private void setupActionBar() {
         Patient patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
@@ -66,7 +67,7 @@ public class ObservationsActivity extends BroadcastListenerActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.observation_list, menu);
+        getMenuInflater().inflate(R.menu.observation_list, menu);
         SearchView searchView = (SearchView) menu.findItem(R.id.search)
                 .getActionView();
         searchView.setQueryHint(getString(R.string.info_observation_search));

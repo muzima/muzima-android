@@ -9,7 +9,7 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
-import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PersonName;

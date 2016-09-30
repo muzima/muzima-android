@@ -22,8 +22,8 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.FormsPagerAdapter;
@@ -60,12 +60,14 @@ public class FormsActivity extends FormsActivityBase {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_forms, null);
         setContentView(mainLayout);
-        super.onCreate(savedInstanceState);
         formController = ((MuzimaApplication) getApplication()).getFormController();
         tagPreferenceService = new TagPreferenceService(this);
         initDrawer();
+        initPager();
+        initPagerIndicator();
     }
 
     @Override
@@ -84,12 +86,12 @@ public class FormsActivity extends FormsActivityBase {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.form_list_menu, menu);
+        getMenuInflater().inflate(R.menu.form_list_menu, menu);
         menubarLoadButton = menu.findItem(R.id.menu_load);
         tagsButton = menu.findItem(R.id.menu_tags);
         menuUpload = menu.findItem(R.id.menu_upload);
         onPageChange(formsPager.getCurrentItem());
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

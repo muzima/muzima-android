@@ -11,12 +11,13 @@ package com.muzima.view.progressdialog;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.webkit.JavascriptInterface;
+import com.muzima.R;
 
 public class MuzimaProgressDialog {
     private ProgressDialog dialog;
 
     public MuzimaProgressDialog(Activity activity) {
-        this(new ProgressDialog(activity));
+        this(new ProgressDialog(activity, R.style.alertDialogTheme));
     }
 
     MuzimaProgressDialog(ProgressDialog dialog) {

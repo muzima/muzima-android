@@ -41,7 +41,7 @@ public class CompletePatientsFormsListFragment extends FormsListFragment impleme
         noDataTip = getActivity().getResources().getString(R.string.hint_incomplete_form_unavailable);
 
         if (actionModeActive) {
-            actionMode = getSherlockActivity().startActionMode(new DeleteFormsActionModeCallback());
+            actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
             actionMode.setTitle(String.valueOf(((PatientIncompleteFormsAdapter)listAdapter).getSelectedFormsUuid().size()));
         }
 
@@ -75,7 +75,7 @@ public class CompletePatientsFormsListFragment extends FormsListFragment impleme
     @Override
     public boolean onItemLongClick() {
         if (!actionModeActive) {
-            actionMode = getSherlockActivity().startActionMode(new DeleteFormsActionModeCallback());
+            actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
             actionModeActive = true;
         }
         int numOfSelectedForms = ((PatientCompleteFormsAdapter)listAdapter).getSelectedFormsUuid().size();

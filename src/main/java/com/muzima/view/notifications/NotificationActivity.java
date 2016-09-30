@@ -25,7 +25,7 @@ import com.muzima.controller.NotificationController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.view.BaseActivity;
-import com.muzima.view.patients.ObservationsActivity;
+import com.muzima.view.observations.ObservationsActivity;
 
 import java.util.List;
 

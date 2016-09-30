@@ -20,9 +20,9 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.Toast;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.concept.AutoCompleteLocationAdapter;
@@ -67,7 +67,7 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
 
         // this can happen on orientation change
         if (actionModeActive) {
-            actionMode = getSherlock().startActionMode(new DeleteLocationsActionModeCallback());
+            actionMode = startActionMode(new DeleteLocationsActionModeCallback());
             actionMode.setTitle(String.valueOf(getSelectedLocations().size()));
         }
     }
@@ -77,7 +77,7 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (!actionModeActive) {
-                    actionMode = getSherlock().startActionMode(new DeleteLocationsActionModeCallback());
+                    actionMode = startActionMode(new DeleteLocationsActionModeCallback());
                     actionModeActive = true;
                 }
                 int selectedLocationsCount = getSelectedLocations().size();
@@ -151,7 +151,7 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            getSherlock().getMenuInflater().inflate(R.menu.actionmode_menu_delete, menu);
+            getMenuInflater().inflate(R.menu.actionmode_menu_delete, menu);
             return true;
         }
 
