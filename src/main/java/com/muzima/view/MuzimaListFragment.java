@@ -13,12 +13,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import com.actionbarsherlock.app.SherlockFragment;
+import android.support.v4.app.Fragment;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.utils.Fonts;
 
-public abstract class MuzimaListFragment extends SherlockFragment implements AdapterView.OnItemClickListener {
+public abstract class MuzimaListFragment extends Fragment implements AdapterView.OnItemClickListener {
     private static final String TAG = "MuzimaListFragment";
 
     protected ListView list;

@@ -6,7 +6,7 @@
  * that uses this code in a for-profit venture, please contact the copyright holder.
  */
 
-package com.muzima.view.patients;
+package com.muzima.view.observations;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

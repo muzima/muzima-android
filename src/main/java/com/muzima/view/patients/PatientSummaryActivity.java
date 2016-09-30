@@ -18,7 +18,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.actionbarsherlock.view.Menu;
+import android.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.patients.PatientAdapterHelper;
@@ -35,6 +35,7 @@ import com.muzima.view.BaseActivity;
 import com.muzima.view.encounters.EncountersActivity;
 import com.muzima.view.forms.PatientFormsActivity;
 import com.muzima.view.notifications.PatientNotificationActivity;
+import com.muzima.view.observations.ObservationsActivity;
 
 import java.io.IOException;
 import java.util.List;
@@ -133,7 +134,7 @@ public class PatientSummaryActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.client_summary, menu);
+        getMenuInflater().inflate(R.menu.client_summary, menu);
         super.onCreateOptionsMenu(menu);
         return true;
     }

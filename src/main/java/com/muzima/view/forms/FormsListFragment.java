@@ -16,9 +16,9 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import com.muzima.R;
 import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.adapters.forms.FormsWithDataAdapter;
@@ -86,7 +86,7 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            getSherlockActivity().getSupportMenuInflater().inflate(R.menu.actionmode_menu_delete, menu);
+            getActivity().getMenuInflater().inflate(R.menu.actionmode_menu_delete, menu);
             return true;
         }
 

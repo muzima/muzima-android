@@ -14,8 +14,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuItem;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortPagerAdapter;
 import com.muzima.utils.Fonts;
@@ -44,7 +44,7 @@ public class CohortActivity extends BroadcastListenerActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.cohort_list_menu, menu);
+        getMenuInflater().inflate(R.menu.cohort_list_menu, menu);
         menubarLoadButton = menu.findItem(R.id.menu_load);
         menubarLoadButton.setVisible(false);
         return true;

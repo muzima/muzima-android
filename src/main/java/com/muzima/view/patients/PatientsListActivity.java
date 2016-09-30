@@ -21,9 +21,9 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.support.v7.widget.SearchView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
@@ -115,9 +115,10 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.client_list, menu);
+        getMenuInflater().inflate(R.menu.client_list, menu);
         searchView = (SearchView) menu.findItem(R.id.search)
                 .getActionView();
+
         searchView.setQueryHint(getString(R.string.hint_client_search));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -139,7 +140,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             searchView.requestFocus();
         } else
             searchView.setIconified(true);
-
         super.onCreateOptionsMenu(menu);
         return true;
     }

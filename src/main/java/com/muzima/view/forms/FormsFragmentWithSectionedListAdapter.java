@@ -13,9 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import com.muzima.R;
 import com.muzima.adapters.forms.SectionedFormsAdapter;
 import com.muzima.controller.FormController;
@@ -38,7 +38,7 @@ public abstract class FormsFragmentWithSectionedListAdapter extends FormsListFra
 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            getSherlockActivity().getSupportMenuInflater().inflate(R.menu.actionmode_menu_delete, menu);
+            getActivity().getMenuInflater().inflate(R.menu.actionmode_menu_delete, menu);
             return true;
         }
 
