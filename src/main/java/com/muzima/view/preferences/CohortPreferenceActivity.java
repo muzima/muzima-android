@@ -15,7 +15,7 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.Toast;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.MenuItem;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortPrefixPrefAdapter;
 import com.muzima.adapters.concept.AutoCompleteCohortPrefixAdapter;

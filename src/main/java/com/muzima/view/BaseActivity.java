@@ -8,15 +8,15 @@
 
 package com.muzima.view;
 
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 
-public class BaseActivity extends SherlockActivity {
+public class BaseActivity extends AppCompatActivity {
 
     private DefaultMenuDropDownHelper dropDownHelper;
 
@@ -49,7 +49,7 @@ public class BaseActivity extends SherlockActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.dashboard, menu);
+        getMenuInflater().inflate(R.menu.dashboard, menu);
         return true;
     }
 

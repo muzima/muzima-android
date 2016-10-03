@@ -8,6 +8,7 @@
 
 package com.muzima.view;
 
+import android.support.v7.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -20,8 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
+import android.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.User;
@@ -237,7 +237,7 @@ public class MainActivity extends BroadcastListenerActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.dashboard, menu);
+        getMenuInflater().inflate(R.menu.dashboard, menu);
         return true;
     }
 

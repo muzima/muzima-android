@@ -13,8 +13,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 import android.widget.Toast;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
@@ -37,8 +37,10 @@ public class NotificationsListActivity extends NotificationActivityBase {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_with_pager);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_with_pager);
+        initPager();
+        initPagerIndicator();
         setTitle(NOTIFICATIONS);
 
         progressBarContainer = (FrameLayout) findViewById(R.id.progressbarContainer);
@@ -51,7 +53,7 @@ public class NotificationsListActivity extends NotificationActivityBase {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.notification_list_menu, menu);
+        getMenuInflater().inflate(R.menu.notification_list_menu, menu);
         menubarSyncButton = menu.findItem(R.id.menu_load);
         super.onCreateOptionsMenu(menu);
         return true;

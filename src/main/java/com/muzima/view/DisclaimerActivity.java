@@ -8,7 +8,6 @@
 
 package com.muzima.view;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -64,8 +63,6 @@ public class DisclaimerActivity extends Activity {
         });
 
         scrollViewWithDetection.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @SuppressLint("NewApi")
-            @SuppressWarnings("deprecation")
             @Override
             public void onGlobalLayout() {
                 int textViewHeight = disclaimerTextView.getHeight();
@@ -76,12 +73,7 @@ public class DisclaimerActivity extends Activity {
                 if (!scrollable) {
                     nextButton.setVisibility(View.VISIBLE);
                 }
-
-                if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                    scrollViewWithDetection.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                } else {
-                    scrollViewWithDetection.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                }
+                scrollViewWithDetection.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
 

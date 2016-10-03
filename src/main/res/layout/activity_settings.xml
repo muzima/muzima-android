@@ -1,0 +1,5 @@
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+              style="@style/DashboardWrapper"
+              tools:context=".MainActivity">
+
+</LinearLayout>

@@ -51,7 +51,7 @@ enketo.FormDefinitionLoader = function(){
 enketo.FormModelMapper = function(formDataRepository, queryBuilder, idFactory){
     var mapToFormModel = function(){ 
         console.log("mapToFormModel called");
-        var model = JSON.parse(getFormInterface().getModel());
+        var model = JSON.parse(getFormInterface().getModelXml());
         for(var i = 0; i < model.form.fields.length; i++){
             model.form.fields[i].value = "";
         }

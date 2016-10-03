@@ -20,8 +20,8 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
+import android.view.ActionMode;
+import android.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
@@ -177,7 +177,7 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            PatientRemoteSearchListActivity.this.getSupportMenuInflater()
+            PatientRemoteSearchListActivity.this.getMenuInflater()
                     .inflate(R.menu.actionmode_menu_download, menu);
             return true;
         }
@@ -188,7 +188,7 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         }
 
         @Override
-        public boolean onActionItemClicked(ActionMode actionMode, com.actionbarsherlock.view.MenuItem menuItem) {
+        public boolean onActionItemClicked(ActionMode actionMode, android.view.MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.menu_download:
                     downloadPatients();

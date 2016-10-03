@@ -13,18 +13,17 @@ import android.os.AsyncTask;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.service.MuzimaSyncService;
-import com.muzima.view.preferences.SettingsActivity;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 public class SyncFormDataTask extends AsyncTask<String, Void, Boolean> {
-    private SettingsActivity settingsActivity;
+    private SettingsPreferenceFragment settingsPreferenceFragment;
     private MuzimaSyncService muzimaSyncService;
     private ProgressDialog progressDialog;
 
-    public SyncFormDataTask(SettingsActivity settingsActivity) {
-        this.settingsActivity = settingsActivity;
-        muzimaSyncService = ((MuzimaApplication) settingsActivity.getApplication()).getMuzimaSyncService();
+    public SyncFormDataTask(SettingsPreferenceFragment settingsPreferenceFragment) {
+        this.settingsPreferenceFragment = settingsPreferenceFragment;
+        muzimaSyncService = ((MuzimaApplication)settingsPreferenceFragment.getActivity().getApplication()).getMuzimaSyncService();
     }
 
     @Override
@@ -36,8 +35,8 @@ public class SyncFormDataTask extends AsyncTask<String, Void, Boolean> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressDialog = new ProgressDialog(settingsActivity);
-        progressDialog.setMessage(settingsActivity.getString(R.string.title_data_synchronize));
+        progressDialog = new ProgressDialog(settingsPreferenceFragment.getContext());
+        progressDialog.setMessage(settingsPreferenceFragment.getString(R.string.title_data_synchronize));
 
         progressDialog.show();
     }
@@ -46,6 +45,6 @@ public class SyncFormDataTask extends AsyncTask<String, Void, Boolean> {
     protected void onPostExecute(Boolean r) {
         super.onPostExecute(r);
         progressDialog.dismiss();
-        settingsActivity.syncedFormData(r);
+        settingsPreferenceFragment.syncedFormData(r);
     }
 }
