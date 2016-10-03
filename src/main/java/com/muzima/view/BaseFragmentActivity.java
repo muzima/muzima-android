@@ -8,20 +8,20 @@
 
 package com.muzima.view;
 
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
 
-public class BaseFragmentActivity extends SherlockFragmentActivity {
+public class BaseFragmentActivity extends AppCompatActivity {
 
     private DefaultMenuDropDownHelper dropDownHelper;
 
@@ -34,7 +34,7 @@ public class BaseFragmentActivity extends SherlockFragmentActivity {
 
     private void setActionBar() {
         ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null) {
+        if (supportActionBar != null){
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setDisplayShowTitleEnabled(true);
         }
@@ -69,7 +69,7 @@ public class BaseFragmentActivity extends SherlockFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(DefaultMenuDropDownHelper.DEFAULT_MENU, menu);
+        getMenuInflater().inflate(DefaultMenuDropDownHelper.DEFAULT_MENU, menu);
         return true;
     }
 

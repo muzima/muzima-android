@@ -2,8 +2,10 @@ local.properties
 project.properties
 .idea
 .settings
+.gradle
 gen/
-target/
+gradle/
+build/
 muzima-ui.iml
 gen-external-apklibs/
 out/

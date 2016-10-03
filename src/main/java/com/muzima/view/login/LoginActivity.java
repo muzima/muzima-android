@@ -24,7 +24,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.actionbarsherlock.internal.nineoldandroids.animation.ValueAnimator;
+import android.animation.ValueAnimator;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.context.Context;

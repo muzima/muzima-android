@@ -15,7 +15,6 @@ import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsByEncounterAdapter;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
-import com.muzima.view.patients.ObservationsListFragment;
 
 public class ObservationByEncountersFragment extends ObservationsListFragment{
     @Override

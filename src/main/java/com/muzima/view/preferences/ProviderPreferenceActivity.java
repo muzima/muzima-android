@@ -19,10 +19,10 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.Toast;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
+import android.view.ActionMode;
+import android.view.Menu;
 import com.muzima.utils.StringUtils;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.concept.AutoCompleteProviderAdapter;
@@ -66,7 +66,7 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
 
         // this can happen on orientation change
         if (actionModeActive) {
-            actionMode = getSherlock().startActionMode(new DeleteProvidersActionModeCallback());
+            actionMode = startActionMode(new DeleteProvidersActionModeCallback());
             actionMode.setTitle(String.valueOf(getSelectedProviders().size()));
         }
     }
@@ -76,7 +76,7 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (!actionModeActive) {
-                    actionMode = getSherlock().startActionMode(new DeleteProvidersActionModeCallback());
+                    actionMode = startActionMode(new DeleteProvidersActionModeCallback());
                     actionModeActive = true;
                 }
                 int selectedProvidersCount = getSelectedProviders().size();
@@ -150,7 +150,7 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            getSherlock().getMenuInflater().inflate(R.menu.actionmode_menu_delete, menu);
+            getMenuInflater().inflate(R.menu.actionmode_menu_delete, menu);
             return true;
         }
 

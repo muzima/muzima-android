@@ -56,7 +56,7 @@ public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAda
         noDataTip = getActivity().getResources().getString(R.string.hint_complete_form_unavailable);
 
         if (actionModeActive) {
-            actionMode = getSherlockActivity().startActionMode(new DeleteFormsActionModeCallback());
+            actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
             actionMode.setTitle(String.valueOf(((CompleteFormsAdapter)listAdapter).getSelectedFormsUuid().size()));
         }
 
@@ -79,7 +79,7 @@ public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAda
     @Override
     public boolean onItemLongClick() {
         if (!actionModeActive) {
-            actionMode = getSherlockActivity().startActionMode(new DeleteFormsActionModeCallback());
+            actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
             actionModeActive = true;
         }
         int numOfSelectedForms = ((CompleteFormsAdapter)listAdapter).getSelectedFormsUuid().size();

@@ -8,6 +8,7 @@
 
 package com.muzima.view.forms;
 
+import android.support.v7.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -24,9 +25,8 @@ import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Form;
@@ -175,11 +175,11 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (isFormComplete() && isEncounterForm()) {
-            getSupportMenuInflater().inflate(R.menu.menu_completed_encounter_form, menu);
+            getMenuInflater().inflate(R.menu.menu_completed_encounter_form, menu);
         } else if (isFormComplete() && !isEncounterForm()) {
-            getSupportMenuInflater().inflate(R.menu.menu_completed_registration_form, menu);
+            getMenuInflater().inflate(R.menu.menu_completed_registration_form, menu);
         } else {
-            getSupportMenuInflater().inflate(R.menu.menu_save_form, menu);
+            getMenuInflater().inflate(R.menu.menu_save_form, menu);
         }
         return true;
     }

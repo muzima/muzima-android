@@ -17,9 +17,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckedTextView;
 import android.widget.Toast;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.cohort.AllCohortsAdapter;
@@ -79,7 +79,7 @@ public class AllCohortsListFragment extends CohortListFragment {
         }
         boolean isChecked = checkedLinearLayout.isChecked();
         if (!actionModeActive && isChecked) {
-            actionMode = getSherlockActivity().startActionMode(new AllCohortsActionModeCallback());
+            actionMode = getActivity().startActionMode(new AllCohortsActionModeCallback());
             actionModeActive = true;
         }
         ((AllCohortsAdapter) listAdapter).onListItemClick(position);
@@ -116,7 +116,7 @@ public class AllCohortsListFragment extends CohortListFragment {
 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            getSherlockActivity().getSupportMenuInflater().inflate(R.menu.actionmode_menu_download, menu);
+            getActivity().getMenuInflater().inflate(R.menu.actionmode_menu_download, menu);
             return true;
         }
 

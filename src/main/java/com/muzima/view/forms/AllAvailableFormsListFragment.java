@@ -21,9 +21,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.AllAvailableFormsAdapter;
@@ -69,7 +69,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
 
         // this can happen on orientation change
         if (actionModeActive) {
-            actionMode = getSherlockActivity().startActionMode(new NewFormsActionModeCallback());
+            actionMode = getActivity().startActionMode(new NewFormsActionModeCallback());
             actionMode.setTitle(String.valueOf(getSelectedForms().size()));
         }
         super.onCreate(savedInstanceState);
@@ -86,7 +86,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         if (!actionModeActive) {
-            actionMode = getSherlockActivity().startActionMode(new NewFormsActionModeCallback());
+            actionMode = getActivity().startActionMode(new NewFormsActionModeCallback());
             actionModeActive = true;
         }
         int numOfSelectedForms = getSelectedForms().size();
@@ -192,7 +192,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            getSherlockActivity().getSupportMenuInflater().inflate(R.menu.actionmode_menu_download, menu);
+            getActivity().getMenuInflater().inflate(R.menu.actionmode_menu_download, menu);
             return true;
         }
 

@@ -20,7 +20,6 @@ import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormTemplate;
-import com.muzima.api.model.Location;
 import com.muzima.api.model.Notification;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
@@ -199,13 +198,13 @@ public class MuzimaSyncService {
             Log.i(TAG, formTemplates.size() + " form template download successful");
 
             List<Concept> concepts = conceptController.getRelatedConcepts(formTemplates);
-            List<Location> locations = locationController.getRelatedLocations(formTemplates);
-            List<Provider> providers = providerController.getRelatedProviders(
-                    formTemplates, muzimaApplication.getAuthenticatedUser().getSystemId());
+            List<Provider> providers = new ArrayList<Provider>();
+            Provider loggedInProvider = providerController.getLoggedInProvider(
+                    muzimaApplication.getAuthenticatedUser().getSystemId());
+            if(loggedInProvider != null) providers.add(loggedInProvider);
 
             if (replaceExistingTemplates) {
                 formController.replaceFormTemplates(formTemplates);
-                locationController.newLocations(locations);
                 conceptController.newConcepts(concepts);
                 providerController.newProviders(providers);
             }
@@ -214,7 +213,6 @@ public class MuzimaSyncService {
             }
 
             conceptController.saveConcepts(concepts);
-            locationController.saveLocations(locations);
             providerController.saveProviders(providers);
 
             Log.i(TAG, "Form templates replaced");
@@ -222,7 +220,6 @@ public class MuzimaSyncService {
             result[0] = SyncStatusConstants.SUCCESS;
             result[1] = formTemplates.size();
             result[2] = concepts.size();
-            result[3] = locations.size();
         } catch (FormController.FormSaveException e) {
             Log.e(TAG, "Exception when trying to save forms", e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
@@ -241,18 +238,6 @@ public class MuzimaSyncService {
             return result;
         } catch (ConceptController.ConceptFetchException e) {
             e.printStackTrace();
-        } catch (LocationController.LocationDownloadException e) {
-            Log.e(TAG, "Exception while downloading Locations", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
-            return result;
-        } catch (LocationController.LocationLoadException e) {
-            Log.e(TAG, "Exception while loading Locations", e);
-            result[0] = SyncStatusConstants.LOAD_ERROR;
-            return result;
-        } catch (LocationController.LocationSaveException e) {
-            Log.e(TAG, "Exception while saving Locations", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
-            return result;
         } catch (ProviderController.ProviderLoadException e) {
             Log.e(TAG, "Exception while loading Providers", e);
             result[0] = SyncStatusConstants.LOAD_ERROR;
@@ -260,10 +245,6 @@ public class MuzimaSyncService {
         } catch (ProviderController.ProviderSaveException e) {
             Log.e(TAG, "Exception while saving Provider", e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
-            return result;
-        } catch (ProviderController.ProviderDownloadException e) {
-            Log.e(TAG, "Exception while downloading provider", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
         }
         return result;

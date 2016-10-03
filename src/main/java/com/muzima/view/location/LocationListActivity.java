@@ -14,7 +14,7 @@ import android.os.PowerManager;
 import android.view.View;
 import android.widget.Button;
 
-import com.actionbarsherlock.view.Menu;
+import android.view.Menu;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
 import com.muzima.view.provider.ProviderListActivity;

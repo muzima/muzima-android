@@ -12,26 +12,29 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import com.muzima.R;
 import com.muzima.view.preferences.SettingsActivity;
+
+import com.muzima.view.preferences.settings.SettingsPreferenceFragment;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+
 public class ValidateURLTask extends AsyncTask<String, Void, Boolean> {
 
-    private final SettingsActivity settingsActivity;
+    private final SettingsPreferenceFragment settingsPreferenceFragment;
     private ProgressDialog progressDialog;
 
-    public ValidateURLTask(SettingsActivity settingsActivity) {
-        this.settingsActivity = settingsActivity;
+    public ValidateURLTask(SettingsPreferenceFragment settingsPreferenceFragment) {
+        this.settingsPreferenceFragment = settingsPreferenceFragment;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressDialog = new ProgressDialog(settingsActivity);
-        progressDialog.setMessage(settingsActivity.getString(R.string.info_url_validate));
+        progressDialog = new ProgressDialog(settingsPreferenceFragment.getActivity());
+        progressDialog.setMessage(settingsPreferenceFragment.getActivity().getString(R.string.info_url_validate));
         progressDialog.show();
     }
 
@@ -53,7 +56,7 @@ public class ValidateURLTask extends AsyncTask<String, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         progressDialog.dismiss();
-        settingsActivity.validationURLResult(aBoolean);
+        settingsPreferenceFragment.validationURLResult(aBoolean);
         super.onPostExecute(aBoolean);
     }
 }

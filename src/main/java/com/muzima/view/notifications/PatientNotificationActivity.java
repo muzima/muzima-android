@@ -22,10 +22,12 @@ public class PatientNotificationActivity extends NotificationActivityBase {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_with_pager);
         Intent intent = getIntent();
         patient = (Patient) intent.getSerializableExtra(PatientSummaryActivity.PATIENT);
-        super.onCreate(savedInstanceState);
+        initPager();
+        initPagerIndicator();
         getSupportActionBar().setTitle(patient.getSummary());
     }
 

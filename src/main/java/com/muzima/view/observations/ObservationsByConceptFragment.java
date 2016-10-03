@@ -17,7 +17,6 @@ import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsByConceptAdapter;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
-import com.muzima.view.patients.ObservationsListFragment;
 
 public class ObservationsByConceptFragment extends ObservationsListFragment {
 

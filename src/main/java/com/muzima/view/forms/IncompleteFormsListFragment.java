@@ -35,7 +35,7 @@ public class IncompleteFormsListFragment extends FormsFragmentWithSectionedListA
         noDataTip = getActivity().getResources().getString(R.string.hint_incomplete_form_unavailable);
 
         if (actionModeActive) {
-            actionMode = getSherlockActivity().startActionMode(new DeleteFormsActionModeCallback());
+            actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
             actionMode.setTitle(String.valueOf(((IncompleteFormsAdapter)listAdapter).getSelectedFormsUuid().size()));
         }
 
@@ -56,7 +56,7 @@ public class IncompleteFormsListFragment extends FormsFragmentWithSectionedListA
     @Override
     public boolean onItemLongClick() {
         if (!actionModeActive) {
-            actionMode = getSherlockActivity().startActionMode(new DeleteFormsActionModeCallback());
+            actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
             actionModeActive = true;
         }
         int numOfSelectedForms = ((IncompleteFormsAdapter)listAdapter).getSelectedFormsUuid().size();

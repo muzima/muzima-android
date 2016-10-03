@@ -2,8 +2,8 @@ package com.muzima.view;
 
 import android.os.Bundle;
 import android.webkit.WebView;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuItem;
 import com.muzima.R;
 
 public class WebViewActivity extends BaseActivity {
@@ -26,7 +26,7 @@ public class WebViewActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.help, menu);
+        getMenuInflater().inflate(R.menu.help, menu);
         super.onCreateOptionsMenu(menu);
         removeHelpMenu(menu);
         return true;

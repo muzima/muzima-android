@@ -133,7 +133,7 @@ public class LocationController {
             if (formTemplate.isHTMLForm()) {
                 names = htmlParserUtils.parse(formTemplate.getHtml());
             } else {
-                // names = xmlParserUtils.parse(formTemplate.getModel());
+                // names = xmlParserUtils.parse(formTemplate.getModelXml());
             }
             locations.addAll(downloadLocationsFromServerByName(names));
         }

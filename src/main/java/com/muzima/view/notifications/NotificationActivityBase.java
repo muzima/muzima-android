@@ -29,20 +29,13 @@ public abstract class NotificationActivityBase extends BroadcastListenerActivity
     protected MuzimaPagerAdapter notificationPagerAdapter;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initPager();
-        initPagerIndicator();
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == NOTIFICATION_VIEW_ACTIVITY_RESULT){
             notificationPagerAdapter.reloadData();
         }
     }
 
-    private void initPager() {
+    protected void initPager() {
         notificationPager = (ViewPager) findViewById(R.id.pager);
         notificationPagerAdapter = createNotificationsPagerAdapter();
         notificationPagerAdapter.initPagerViews();
@@ -52,7 +45,7 @@ public abstract class NotificationActivityBase extends BroadcastListenerActivity
     protected abstract MuzimaPagerAdapter createNotificationsPagerAdapter();
 
 
-    private void initPagerIndicator() {
+    protected void initPagerIndicator() {
         pagerTabsLayout = (PagerSlidingTabStrip) findViewById(R.id.pager_indicator);
         pagerTabsLayout.setTextColor(Color.WHITE);
         pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));

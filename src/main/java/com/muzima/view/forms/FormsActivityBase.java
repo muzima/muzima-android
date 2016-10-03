@@ -30,20 +30,13 @@ public abstract class FormsActivityBase extends BroadcastListenerActivity {
     protected MuzimaPagerAdapter formsPagerAdapter;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initPager();
-        initPagerIndicator();
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == FORM_VIEW_ACTIVITY_RESULT){
             formsPagerAdapter.reloadData();
         }
     }
 
-    private void initPager() {
+    protected void initPager() {
         formsPager = (ViewPager) findViewById(R.id.pager);
         formsPagerAdapter = createFormsPagerAdapter();
         formsPagerAdapter.initPagerViews();
@@ -53,7 +46,7 @@ public abstract class FormsActivityBase extends BroadcastListenerActivity {
     protected abstract MuzimaPagerAdapter createFormsPagerAdapter();
 
 
-    private void initPagerIndicator() {
+    protected void initPagerIndicator() {
         pagerTabsLayout = (PagerSlidingTabStrip) findViewById(R.id.pager_indicator);
         pagerTabsLayout.setTextColor(Color.WHITE);
         pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));

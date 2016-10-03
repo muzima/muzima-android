@@ -37,8 +37,8 @@ public class DataSyncService extends IntentService {
 
     private static final int MUZIMA_NOTIFICATION = 0;
     private static final String TAG = "DataSyncService";
-    private final String notificationServiceRunning = getString(R.string.info_muzima_sync_service_in_progress);
-    private final String notificationServiceFinished = getString(R.string.info_muzima_sync_service_finish);
+    private String notificationServiceRunning;
+    private String notificationServiceFinished;
     private String notificationMsg;
     private MuzimaSyncService muzimaSyncService;
 
@@ -49,8 +49,10 @@ public class DataSyncService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
+        notificationServiceRunning = getString(R.string.info_muzima_sync_service_in_progress);
+        notificationServiceFinished = getString(R.string.info_muzima_sync_service_finish);
         muzimaSyncService = ((MuzimaApplication) getApplication()).getMuzimaSyncService();
-        updateNotificationMsg(getString(R.string.info_muzima_sync_service_in_progress));
+        updateNotificationMsg(notificationServiceRunning);
     }
 
     @Override
