@@ -12,15 +12,18 @@ import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Observation;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.ObservationService;
-import com.muzima.service.ConceptParser;
-import com.muzima.service.HTMLConceptParser;
+import com.muzima.util.JsonUtils;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 public class ConceptController {
     private List<Concept> newConcepts = new ArrayList<Concept>();
@@ -35,6 +38,14 @@ public class ConceptController {
     public List<Concept> downloadConceptsByNamePrefix(String name) throws ConceptDownloadException {
         try {
             return conceptService.downloadConceptsByName(name);
+        } catch (IOException e) {
+            throw new ConceptDownloadException(e);
+        }
+    }
+
+    public Concept downloadConceptByUuid(String uuid) throws ConceptDownloadException {
+        try {
+            return conceptService.downloadConceptByUuid(uuid);
         } catch (IOException e) {
             throw new ConceptDownloadException(e);
         }
@@ -100,6 +111,15 @@ public class ConceptController {
         return new ArrayList<Concept>(result);
     }
 
+    public List<Concept> downloadConceptsByUuid(Set<String> uuids) throws ConceptDownloadException {
+        HashSet<Concept> result = new HashSet<Concept>();
+        for (String uuid : uuids) {
+            Concept concept = downloadConceptByUuid(uuid);
+            result.add(concept);
+        }
+        return new ArrayList<Concept>(result);
+    }
+
     public List<Concept> getConcepts() throws ConceptFetchException {
         try {
             List<Concept> allConcepts = conceptService.getAllConcepts();
@@ -121,19 +141,25 @@ public class ConceptController {
     }
 
     public List<Concept> getRelatedConcepts(List<FormTemplate> formTemplates) throws ConceptDownloadException {
-        HashSet<Concept> concepts = new HashSet<Concept>();
-        ConceptParser xmlParserUtils = new ConceptParser();
-        HTMLConceptParser htmlParserUtils = new HTMLConceptParser();
+        HashSet<String> uuids = new HashSet<>();
         for (FormTemplate formTemplate : formTemplates) {
-            List<String> names = new ArrayList<String>();
-            if (formTemplate.isHTMLForm()) {
-                names = htmlParserUtils.parse(formTemplate.getHtml());
-            } else {
-                names = xmlParserUtils.parse(formTemplate.getModel());
+            Object uuidsObject = JsonUtils.readAsObject(formTemplate.getMetaJson(),"$['concepts']");
+
+            if(uuidsObject instanceof JSONArray){
+                JSONArray uuidsArray = (JSONArray)uuidsObject;
+                for(Object obj : uuidsArray    ){
+                    JSONObject conceptObj = (JSONObject)obj;
+                    uuids.add((String)conceptObj.get("uuid"));
+                }
+            } else if(uuidsObject instanceof LinkedHashMap){
+                LinkedHashMap obj = (LinkedHashMap) uuidsObject;
+                if(obj.containsKey("uuid")){
+                    uuids.add((String)obj.get("uuid"));
+                }
+                uuids.add(uuidsObject.toString());
             }
-            concepts.addAll(downloadConceptsByNames(names));
         }
-        return new ArrayList<Concept>(concepts);
+        return downloadConceptsByUuid(uuids);
     }
 
     public void deleteAllConcepts() throws ConceptDeleteException, ConceptFetchException {
