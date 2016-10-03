@@ -29,8 +29,8 @@ public class FormInstance {
     }
 
     @JavascriptInterface
-    public String getModel() {
-        return formTemplate.getModel();
+    public String getModelXml() {
+        return formTemplate.getModelXml();
     }
 
     @JavascriptInterface

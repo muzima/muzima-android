@@ -141,7 +141,7 @@ public class ProviderController {
             if (formTemplate.isHTMLForm()) {
                 names = htmlParserUtils.parse(formTemplate.getHtml());
             } else {
-                // names = xmlParserUtils.parse(formTemplate.getModel());
+                // names = xmlParserUtils.parse(formTemplate.getModelXml());
             }
             providers.addAll(downloadProvidersFromServerByName(names));
         }
@@ -154,10 +154,16 @@ public class ProviderController {
         return new ArrayList<Provider>(providers);
     }
 
+    public Provider getLoggedInProvider(String systemId) throws ProviderLoadException{
+        return downloadProviderBySystemId(systemId);
+    }
+
     public void newProviders(List<Provider> providers) throws ProviderLoadException {
-        newProviders = providers;
-        List<Provider> savedProviders = getAllProviders();
-        newProviders.removeAll(savedProviders);
+        if(providers!=null && !providers.isEmpty()) {
+            newProviders = providers;
+            List<Provider> savedProviders = getAllProviders();
+            newProviders.removeAll(savedProviders);
+        }
     }
 
     public List<Provider> newProviders() {
