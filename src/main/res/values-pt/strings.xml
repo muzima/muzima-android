@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="app_name">mSaúde</string>
+    <string name="confirm_duplicate_form_data_save">Guardar Dados Duplicados</string>
+    <string name="confirm_patient_id_exists">O paciente já tem o ID?</string>
+    <string name="default_form_register">Formulário de Registo</string>
+    <string name="error_action_allow">Acção não permitida enquanto a sincronização está em progresso</string>
+    <string name="error_audio_chose_activity_find">Erro: Actividade para escolha de audio não encontrado</string>
+    <string name="error_audio_play_activity_find">Erro: Actividade para tocar audio não encontrado</string>
+    <string name="error_audio_record_activity_find">Erro: Actividade para gravar audio não encontrado</string>
+    <string name="error_authentication_fail">Falhou a autenticação</string>
+    <string name="error_authentication_occur">Ocorreu um erro de autenticação</string>
+    <string name="error_client_download">Não poderá baixar os clientes</string>
+    <string name="error_cohort_fetch">Alguma coisa foi errado enquanto puxava coortes para o repositóro local</string>
+    <string name="error_cohort_load">Não poderá carregar coortes</string>
+    <string name="error_concept_fetch">Alguma coisa foi errado enquanto puxava os coneitos para o repositóro local
+    </string>
+    <string name="error_concept_parse">Ocorreu um erro durante a análise de conceitos no formulário</string>
+    <string name="error_connection_data_download">Ocorreu um erro de conexão enquanto baixava os dados</string>
+    <string name="error_connection_find">Sem conexão, por favor conecte teu dispositivo e tente de novo</string>
+    <string name="error_connection_unavailable">Sem conexão, por favor conecte teu dispositivo e tente de novo</string>
+    <string name="error_credential_invalid">Nome do Utilizador, Senha, combinação do Servidor Inválidos</string>
+    <string name="error_data_download">Ocorreu um erro enquanto baixava os dados do servidor</string>
+    <string name="error_data_save">Ocorreu um erro enquanto guardava os dados no repositório local</string>
+    <string name="error_encounter_load">Visitas não poderão ser carregados</string>
+    <string name="error_encounter_observation_download">Não poderá baixar observações para os pacientes</string>
+    <string name="error_exception_data_load">Uma excepção foi lançada enquanto baixado os dados</string>
+    <string name="error_exception_data_upload">Uma excepção foi lançada enquanto carregava os dados</string>
+    <string name="error_form_fetch">Algo de errado aconteceu enquanto puxava formulários do repositório local</string>
+    <string name="error_form_load">Não poderá carregar os formulários</string>
+    <string name="error_form_load_fail">Não poderá carregar o formulário</string>
+    <string name="error_form_location_load">Ocorreu um erro enquanto carregava os locais para o formulário</string>
+    <string name="error_form_patient_data_exist">Existem dados para o formulário(s) seleccionados. Finalize os dados
+        Incompletos e sincronize os dados Completos para o servidor primeiro antes de descarregar os formulários.
+    </string>
+    <string name="error_form_provider_load">Um erro ocorreu enquanto carregava o provedor para o formulário</string>
+    <string name="error_form_save">Ocorreu um erro enquanto guardava o formulário</string>
+    <string name="error_form_templates_download">Impossível baixar templates</string>
+    <string name="error_image_capture_activity_unavailable">Erro: Aplicação para capturar uma imagem não encontrado
+    </string>
+    <string name="error_image_chose_activity_unavailable">Erro: Aplicação para escolher uma imagem não encontrado
+    </string>
+    <string name="error_image_view_activity_unavailable">Erro: Aplicação para vizualizar uma imagem não encontrado
+    </string>
+    <string name="error_local_repo_data_delete">Um erro ocorreu enquanto apagava dados do repositório local</string>
+    <string name="error_location_fetch">Algo de errado aconteceu enquanto puxava locais do repositório local</string>
+    <string name="error_notification_fetch">Algo de errado aconteceu enquanto puxava notificações do repositório local
+    </string>
+    <string name="error_observation_fetch">Algo de errado aconteceu enquanto puxava observações do repositório local
+    </string>
+    <string name="error_observation_form_save">Ocorreu um erro enquanto guardava observações no formulário</string>
+    <string name="error_observation_load">Observações não poderam ser carregados</string>
+    <string name="error_observation_unavailable">Nenhum observação disponível</string>
+    <string name="error_parse_exception_data_fetch">Excepção de análise foi laçanda enquanto puxava os dados</string>
+    <string name="error_patient_data_form_exist">Existem dados. Finalize os dados Incompletos e sincronize os dados
+        Completos para o servidor primeiro antes de sincronizar os templates.
+    </string>
+    <string name="error_patient_encounter_download">Não foi possivel baixar visitas para os pacientes</string>
+    <string name="error_patient_fetch">Ocorreu um erro enquanto puxava o paciente</string>
+    <string name="error_patient_repo_fetch">Algo de errado aconteceu enquanto puxava pacientes do repositório local
+    </string>
+    <string name="error_provider_fetch">Algo de errado aconteceu enquanto puxava provedores do repositório local
+    </string>
+    <string name="error_server_url_invalid">URL do Servidor Inválido</string>
+    <string name="error_sync_not_allowed">Acção não permitida enquanto a sincronização está em progresso</string>
+    <string name="error_tag_fetch">Algo de errado aconteceu enquanto puxava etiquetas do repositório local</string>
+    <string name="error_username_invalid_format">Carácter do Nome de Utilizador Inválido. Estes não são permitidos: %s
+    </string>
+    <string name="general_accept">Aceitar</string>
+    <string name="general_alert">Alerta!</string>
+    <string name="general_application_version">Versão %1$s</string>
+    <string name="general_cancel">Cancelar</string>
+    <string name="general_caution">Cuidado!</string>
+    <string name="general_clients">Clientes</string>
+    <string name="general_close">Fechar</string>
+    <string name="general_cohorts">Coortes</string>
+    <string name="general_concepts">Conceitos</string>
+    <string name="general_delete">Apagar</string>
+    <string name="general_description_unavailable">Sem descrição disponível</string>
+    <string name="general_download">Baixar</string>
+    <string name="general_draft">Rascunho</string>
+    <string name="general_encounters">Visitas</string>
+    <string name="general_form">Formulário</string>
+    <string name="general_forms">Formulários</string>
+    <string name="general_help">Ajuda</string>
+    <string name="general_load">Carregar</string>
+    <string name="general_locations">Locais</string>
+    <string name="general_no">Não</string>
+    <string name="general_notices">Informação</string>
+    <string name="general_notification">Notificação</string>
+    <string name="general_notifications">Notificações</string>
+    <string name="general_observations">Observações</string>
+    <string name="general_ok">Ok</string>
+    <string name="general_password">Senha</string>
+    <string name="general_providers">Provedores</string>
+    <string name="general_save">Gravar</string>
+    <string name="general_search">Procurar</string>
+    <string name="general_server">Servidor</string>
+    <string name="general_settings">Configurações</string>
+    <string name="general_tags">Etiquetas</string>
+    <string name="general_thank_you">Obrigado!</string>
+    <string name="general_upload">Carregar</string>
+    <string name="general_username">Nome do utilizador</string>
+    <string name="general_view_encounter">Ver visita</string>
+    <string name="general_welcome">Bem vindo</string>
+    <string name="general_yes">Sim</string>
+    <string name="header_cohort_category">Configurações de coorte</string>
+    <string name="header_muzima_category">Configurações do mSaúde</string>
+    <string name="header_openmrs_category">Configurações de OpenMRS</string>
+    <string name="header_provider_location_category">Provedor/Configurações de Local</string>
+    <string name="hint_audio_record">Grvar ou escolher audio</string>
+    <string name="hint_barcode_scanner_setup">Você precisa de aplicação scaner de código de barra para registar os
+        clientes a partir do telefone. Por favor verifique se isto está ou não instalado no seu dispositivo.
+    </string>
+    <string name="hint_client_local_search">Tua pesquisa incluí ID do cliente, primeiro nome, nome do meio e apélido e
+        pesquisado somente no dispositivo
+    </string>
+    <string name="hint_client_remote_search">Tua pesquisa incluí ID do cliente, primeiro nome, nome do meio e apélido e
+        pesquisado no servidor
+    </string>
+    <string name="hint_client_search">Pesquisar clientes</string>
+    <string name="hint_cohort_download">Seleccione uma ou mais coortes a partir da lista e clique no \'Próximo\' para
+        baixar
+    </string>
+    <string name="hint_cohort_filter">Começe a digitar para filtrar os coortes…</string>
+    <string name="hint_cohort_list_download">Por favor pressione no carregar para puxar lista de coortes disponíveis no
+        servidor
+    </string>
+    <string name="hint_cohort_prefix_help">Uma coorte é um grupo pré-definido de clientes para o qual você pode
+        preencher o formulários e baixar observações. O(s) prefixo(s) definidos aqui serão usados para baixar coortes
+        mais tarde.
+    </string>
+    <string name="hint_cohort_prefix_manage">Prefixos de Coorte restringe o descarregamento de coorte para somente
+        aqueles que começam com um prefixo específico.
+    </string>
+    <string name="hint_cohort_sync">Por favor seleccione coortes a partir da toda lista de coortes e clique em
+        sincronizar
+    </string>
+    <string name="hint_complete_form_unavailable">Formulários completos estão disponíveis somente se você preencheu um
+        formulário completamente mas não sincronizou com o servidor
+    </string>
+    <string name="hint_crash_dialog">Ocorreu um erro inesperado, forçando mSaúde a parar. Por favor ajude-nos a reparar
+        isto, enviando para nós dados do erro,para isso clique no OK
+    </string>
+    <string name="hint_crash_dialog_comment_prompt">Por favor adicione os seus comentários acerca do problema abaixo
+    </string>
+    <string name="hint_custom_concept_help">Aqui você define conceitos em que os dados serão incluídos no
+        descarregamento mais tarde
+    </string>
+    <string name="hint_custom_location_help">Aqui você baixa locais que serão mostrados nos formulários</string>
+    <string name="hint_custom_provider_help">Aqui você baixa provedores que serão mostrados nos formulários</string>
+    <string name="hint_form_download">Por favor seleccione formulários a partir da toda lista de formulários e clique em
+        baixar
+    </string>
+    <string name="hint_form_list_download">Por favor pressione no carregar para puxar formulários disponíveis no
+        servidor
+    </string>
+    <string name="hint_incomplete_form_unavailable">Formulários Incompletos estão disponíveis somente se você gravou um
+        formulário preenchido parcialmente
+    </string>
+    <string name="hint_location_pref_add">Adicione o lacal(s) que você que baixar</string>
+    <string name="hint_manage_provider">Obtenha mais provedores a partir do servidor ou remova os provedores a partir
+        deste dispositivo
+    </string>
+    <string name="hint_manage_location">Obtenha mais locais a partir do servidor ou remova os locais a partir deste
+        dispositivo
+    </string>
+    <string name="hint_manage_concept">Obtenha mais conceitos a partir do servidor ou remova os conceitos a partir deste
+        dispositivo. Conceitos são usados para configurar que observações em baixar.
+    </string>
+    <string name="hint_notification_sync">Certifique que você tem conectividade com o servidor e pressione no botão
+        carregar
+    </string>
+    <string name="hint_password_change">Você alterou a sua senha recentemente?</string>
+    <string name="hint_password_prompt">Por favor Introduza a Senha</string>
+    <string name="hint_provider_pref_add">Adicione o provedor(s) que quer baixar</string>
+    <string name="hint_real_time_sync">Incapaz a sincronização de dados em tempo real</string>
+    <string name="hint_registration_form_select">Por favor seleccione pelo menos um formulário de registo!</string>
+    <string name="hint_server_password_prompt">Introduza a senha de OpenMRS</string>
+    <string name="hint_server_url">URL do Servidor</string>
+    <string name="hint_server_url_prompt">Por favor introduza a URL do servidor</string>
+    <string name="hint_username_prompt">Por favor introduza o nome do utilizador</string>
+    <string name="info_authentication_in_progress">Autenticação em progresso…</string>
+    <string name="info_client_local_search_not_found">Nenhum cliente satisfaz a sua pesquisa localmente. Introduza pelo
+        menos 3 carácteres para pesquisa remota.
+    </string>
+    <string name="info_client_remote_search_not_found">Nenhum cliente satisfaz a sua pesquisa no servidor</string>
+    <string name="info_cohort_download">Baixando Coortes</string>
+    <string name="info_cohort_load">Carregando Coortes…</string>
+    <string formatted="false" name="info_cohort_new_patient_download">false</string>
+    <string formatted="false" name="info_cohort_patient_download">false</string>
+    <string name="info_cohort_prefixes_unavailable">Nenhum Prefixo de Coorte Adicionado</string>
+    <string name="info_cohorts_unavailable">Nenhuma Coorte Disponível</string>
+    <string name="info_complete_form_unavailable">Nenhum formulário completado e sincronizado</string>
+    <string name="info_concept_delete_success">%d conceitos apagados com sucesso</string>
+    <string name="info_concept_unavailable">Nenhum conceito adicionado ainda</string>
+    <string name="info_download_complete">Descarregamento completo com o estado %d</string>
+    <string name="info_downloaded_forms_unavailable">Nenhum formulário foi baixado</string>
+    <string name="info_downloaded_image">Baixado a imagem</string>
+    <string name="info_draft_form_save_success">Racunho do formulário foi guardado com sucesso</string>
+    <string formatted="false" name="info_encounter_download_progress">false</string>
+    <string formatted="false" name="info_encounter_not_downloaded_progress">false</string>
+    <string name="info_encounter_observation_download">Baixando observações e visitas…</string>
+    <string name="info_encounter_unavailable">Nenhuma visita disponível</string>
+    <string name="info_form_data_save_success">Formulário completado foi guardado com sucessso</string>
+    <string name="info_form_data_upload_sucess">Dados carregado com sucesso</string>
+    <string name="info_form_delete_success">Formulários apagados com sucesso</string>
+    <string name="info_form_download">Baixado %d formulários</string>
+    <string formatted="false" name="info_form_download_delete">false</string>
+    <string name="info_form_fetch_in_progress">Já está puxando of formulários, ignore o pedido</string>
+    <string name="info_form_load">Carregando Formulários…</string>
+    <string name="info_form_metadata_download">Baixando formulários de metadados</string>
+    <string formatted="false" name="info_form_template_concept_download">false</string>
+    <string name="info_form_template_downloaded">Baixado Formulários</string>
+    <string name="info_form_template_recommended">Formulários Recomendados</string>
+    <string name="info_form_upload">Carregando Formulários</string>
+    <string name="info_form_upload_in_progress">Formulários já carregados, ignore os pedido</string>
+    <string name="info_form_upload_success">Formulários carregados com sucesso</string>
+    <string name="info_forms_unavailable">Nenhum formulário disponível</string>
+    <string name="info_incomplete_form_unvailable">Nenhum formulário imcompleto</string>
+    <string name="info_last_sync_unavailable">Não sincronizado ainda</string>
+    <string name="info_location_delete_success">%d locais apagados com sucesso</string>
+    <string name="info_location_unavailable">Ainda nenhum local foi adicionado</string>
+    <string name="info_muzima_sync_service_finish">Serviço de sincronização de mSaúde finalizado</string>
+    <string name="info_muzima_sync_service_in_progress">Serviço de sincronização de mSaúde está correndo</string>
+    <string name="info_new_cohort_download">Baixado %d novas coortes</string>
+    <string formatted="false" name="info_new_cohort_download_delete">false</string>
+    <string name="info_new_encounter_download">Baixado %d novas observações</string>
+    <string formatted="false" name="info_new_encounter_download_delete">false</string>
+    <string name="info_new_notification">Nova Notificação</string>
+    <string name="info_new_observation_download">Baixado %d novas observações</string>
+    <string formatted="false" name="info_new_observation_download_delete">false</string>
+    <string name="info_new_patient_download">Baixado %d novos pacientes</string>
+    <string name="info_no_cohort_download">Nenhuma coorte foi sincronizada</string>
+    <string name="info_notification_download">Baixado %d notificações</string>
+    <string name="info_notification_download_in_progress">Baixando notificações</string>
+    <string name="info_notification_unavailable">Nenhumas notificações disponíveis</string>
+    <string name="info_observation_in_progress">Observações ainda estão sendo carregados</string>
+    <string name="info_observation_load">Observações estão sendo carregados</string>
+    <string name="info_observation_search">Pesquisar observações</string>
+    <string name="info_observation_unavailable">Nenhumas observações disponíveis</string>
+    <string formatted="false" name="info_observations_download_pogress">false</string>
+    <string name="info_observations_load_in_progress">Observações ainda estão sendo carregados</string>
+    <string formatted="false" name="info_observations_not_downloaded_progress">false</string>
+    <string name="info_patient_data_download">Bainxando dados dos Pacientes</string>
+    <string name="info_patient_download">Baixando Pacientes</string>
+    <string name="info_provider_delete_success">%d Provedores apagados com sucesso</string>
+    <string name="info_provider_download">Baixando Provedores…</string>
+    <string name="info_provider_unavailable">Nenhum provedor foi adicionado ainda</string>
+    <string name="info_real_time_upload">mSaúde está carregando os teus dados</string>
+    <string name="info_real_time_upload_success">mSaúde carregou os dados com sucesso</string>
+    <string name="info_scanner_exists">Código de barra já está instalado.</string>
+    <string name="info_session_time_out">A tua sessão expirou. Por favor entra de novo para proceder</string>
+    <string name="info_tag_unavailable">Nenhuma etiqueta disponível</string>
+    <string name="info_url_validate">Passo 1: Validando URL</string>
+    <string name="info_video_chose_activity_unavailable">Erro: Aplicação para escolha de video não encontrado</string>
+    <string name="info_video_play_activity_unavailable">Erro: Aplicação para projectar video não encontrado</string>
+    <string name="info_video_record_activity_unavailable">Erro: Aplicação para gravar video não encontrado</string>
+    <string name="menu_client_register">Registar cliente</string>
+    <string name="menu_form_back_to_draft">Voltar ao Rascunho</string>
+    <string name="title_activity_audio">Adicionar Audio</string>
+    <string name="title_activity_client_encounters">Visitas do Cliente</string>
+    <string name="title_activity_client_observations">Observações do Cliente</string>
+    <string name="title_activity_client_summary">Sumário do Cliente</string>
+    <string name="title_activity_cohort_prefix">Prefixos de Coorte</string>
+    <string name="title_activity_image">Adicionar Imagem</string>
+    <string name="title_activity_video">Adicionar Video</string>
+    <string name="title_audio_caption">Capturar Audio</string>
+    <string name="title_audio_choose">Escolher Audio</string>
+    <string name="title_audio_record">Gravar Audio</string>
+    <string name="title_barcode_scanner_check">Verificar o Código de Barra</string>
+    <string name="title_barcode_scanner_setup">Passo 6: Verificar o scaner de código de barra</string>
+    <string name="title_client_notifications">Notificações do Cliente</string>
+    <string name="title_client_scan">Examinar o ID dos Clientes</string>
+    <string name="title_cohort_download">Passo 1: Baixar Coorte(s)</string>
+    <string name="title_cohort_prefix_manage">Gestão de Prefixos de Coorte</string>
+    <string name="title_cohort_wizard_help">Baixar Ajuda Coorte</string>
+    <string name="title_concept_download">Passo 5: Adicionar Conceito(s)</string>
+    <string name="title_concept_help">Ajuda Conceitos</string>
+    <string name="title_crash_dialog">mSaúde parou…</string>
+    <string name="title_data_reset">Passo 3: Redefinir Dados</string>
+    <string name="title_data_synchronize">Passo 2: Sincronizando Dado Local</string>
+    <string name="title_disclaimer">Licença, Aviso Legal de Garantia e Limitação de Responsabilidade</string>
+    <string name="title_duplicate_form_data_warning">Aviso de dados duplicados</string>
+    <string name="title_fill_patient_forms_help">Preencher o formulário para um paciente</string>
+    <string name="title_font_size">Tamanho da fonte</string>
+    <string name="title_form_data_complete">Formulário Completo</string>
+    <string name="title_form_data_incomplete">Formulário Imcompleto</string>
+    <string name="title_form_download">Passo 2: Baixar Templates</string>
+    <string name="title_form_template_all">Todos Templates</string>
+    <string name="title_general_notifications">Notificações Gerais</string>
+    <string name="title_image_capture">Capturar Imagem</string>
+    <string name="title_image_choose">Escolher Imagem</string>
+    <string name="title_initial_setup_guide">Guia inicial de instalação de mSaúde</string>
+    <string name="title_location_download">Passo 3: Adicionar Local(s)</string>
+    <string name="title_location_help">Ajuda Locais</string>
+    <string name="title_logout_confirm">Confirmação!</string>
+    <string name="title_manage_provider">Gestão de provedores</string>
+    <string name="title_manage_location">Gestão de locais</string>
+    <string name="title_manage_concept">Gestão de conceitos</string>
+    <string name="title_media_preview">Prever Mídia</string>
+    <string name="title_muzima_training_manual">Manual de treino de mSaúde</string>
+    <string name="title_provider_download">Passo 4: Adicionar Provedor(s)</string>
+    <string name="title_provider_help">Ajuda Provedor</string>
+    <string name="title_provider_not_set">Incapz de definir como Provedor</string>
+    <string name="title_real_time_sync">Sincronização em tempo real</string>
+    <string name="title_session_timeout">Sessão expirou (mins)</string>
+    <string name="title_video_choose">Escolha o Video</string>
+    <string name="title_video_record">Gravar o Video</string>
+    <string name="warning_cohort_prefix_exists">Prefixo de coorte existe</string>
+    <string name="warning_form_close">Fechando Formulário: Isto irá descartar todas suas alterações. Tem certeza que
+        gostária de fazer isto?
+    </string>
+    <string name="warning_form_data_already_exists">Estes dados já existem para estes clientes com mesma data de
+        visita
+    </string>
+    <string name="warning_forms_complete_and_sync">%s contém alguns formulários associados com isto. Por favor complete
+        e sincroniza estes formulários antes de baixar a nova versão.
+    </string>
+    <string name="warning_logout_confirm">Tem certeza que voçê quer sair e fechar o aplicativo mSaúde?</string>
+    <string name="warning_switch_server">Trocando o Servidor: Isto irá apagar todos dados de mSaúde no seu dispositivo,
+        incluindo formulários imcompletos. Tem certeza que quer mudar as configurações?
+    </string>
+
+</resources>
