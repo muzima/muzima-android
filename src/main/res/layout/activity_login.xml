@@ -62,11 +62,13 @@
 
             <Button
                     android:id="@+id/login"
-                    style="@style/LoginButton"/>
+                    style="@style/LoginButton"
+                    android:text="@string/general_login"/>
 
             <TextView
                     android:id="@+id/authenticatingText"
                     style="@style/LoginActivityAuthenticatingView"
+                    android:text="@string/hint_authentication_progress"
                     android:visibility="gone"/>
         </FrameLayout>
 
