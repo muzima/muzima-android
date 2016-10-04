@@ -374,4 +374,9 @@
     <string name="warning_switch_server">Switching Server: This will clear all mUzima data on your
         device, including any incomplete forms. Are you sure you want to change this setting?
     </string>
+    <string name="general_next">Next</string>
+    <string name="general_previous">Previous</string>
+    <string name="general_login">Login</string>
+    <string name="hint_authentication_progress">Authenticating...</string>
+    <string name="app_title">mUzima Clinic</string>
 </resources>
