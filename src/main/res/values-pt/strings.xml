@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <string name="app_name">mSaúde</string>
+    <string name="app_name">mUzima</string>
     <string name="confirm_duplicate_form_data_save">Guardar Dados Duplicados</string>
     <string name="confirm_patient_id_exists">O paciente já tem o ID?</string>
     <string name="default_form_register">Formulário de Registo</string>
@@ -105,7 +105,7 @@
     <string name="general_welcome">Bem vindo</string>
     <string name="general_yes">Sim</string>
     <string name="header_cohort_category">Configurações de coorte</string>
-    <string name="header_muzima_category">Configurações do mSaúde</string>
+    <string name="header_muzima_category">Configurações do mUzima</string>
     <string name="header_openmrs_category">Configurações de OpenMRS</string>
     <string name="header_provider_location_category">Provedor/Configurações de Local</string>
     <string name="hint_audio_record">Grvar ou escolher audio</string>
@@ -139,7 +139,7 @@
     <string name="hint_complete_form_unavailable">Formulários completos estão disponíveis somente se você preencheu um
         formulário completamente mas não sincronizou com o servidor
     </string>
-    <string name="hint_crash_dialog">Ocorreu um erro inesperado, forçando mSaúde a parar. Por favor ajude-nos a reparar
+    <string name="hint_crash_dialog">Ocorreu um erro inesperado, forçando mUzima a parar. Por favor ajude-nos a reparar
         isto, enviando para nós dados do erro,para isso clique no OK
     </string>
     <string name="hint_crash_dialog_comment_prompt">Por favor adicione os seus comentários acerca do problema abaixo
@@ -221,8 +221,8 @@
     <string name="info_last_sync_unavailable">Não sincronizado ainda</string>
     <string name="info_location_delete_success">%d locais apagados com sucesso</string>
     <string name="info_location_unavailable">Ainda nenhum local foi adicionado</string>
-    <string name="info_muzima_sync_service_finish">Serviço de sincronização de mSaúde finalizado</string>
-    <string name="info_muzima_sync_service_in_progress">Serviço de sincronização de mSaúde está correndo</string>
+    <string name="info_muzima_sync_service_finish">Serviço de sincronização de mUzima finalizado</string>
+    <string name="info_muzima_sync_service_in_progress">Serviço de sincronização de mUzima está correndo</string>
     <string name="info_new_cohort_download">Baixado %d novas coortes</string>
     <string formatted="false" name="info_new_cohort_download_delete">false</string>
     <string name="info_new_encounter_download">Baixado %d novas observações</string>
@@ -247,8 +247,8 @@
     <string name="info_provider_delete_success">%d Provedores apagados com sucesso</string>
     <string name="info_provider_download">Baixando Provedores…</string>
     <string name="info_provider_unavailable">Nenhum provedor foi adicionado ainda</string>
-    <string name="info_real_time_upload">mSaúde está carregando os teus dados</string>
-    <string name="info_real_time_upload_success">mSaúde carregou os dados com sucesso</string>
+    <string name="info_real_time_upload">mUzima está carregando os teus dados</string>
+    <string name="info_real_time_upload_success">mUzima carregou os dados com sucesso</string>
     <string name="info_scanner_exists">Código de barra já está instalado.</string>
     <string name="info_session_time_out">A tua sessão expirou. Por favor entra de novo para proceder</string>
     <string name="info_tag_unavailable">Nenhuma etiqueta disponível</string>
@@ -277,7 +277,7 @@
     <string name="title_cohort_wizard_help">Baixar Ajuda Coorte</string>
     <string name="title_concept_download">Passo 5: Adicionar Conceito(s)</string>
     <string name="title_concept_help">Ajuda Conceitos</string>
-    <string name="title_crash_dialog">mSaúde parou…</string>
+    <string name="title_crash_dialog">mUzima parou…</string>
     <string name="title_data_reset">Passo 3: Redefinir Dados</string>
     <string name="title_data_synchronize">Passo 2: Sincronizando Dado Local</string>
     <string name="title_disclaimer">Licença, Aviso Legal de Garantia e Limitação de Responsabilidade</string>
@@ -291,7 +291,7 @@
     <string name="title_general_notifications">Notificações Gerais</string>
     <string name="title_image_capture">Capturar Imagem</string>
     <string name="title_image_choose">Escolher Imagem</string>
-    <string name="title_initial_setup_guide">Guia inicial de instalação de mSaúde</string>
+    <string name="title_initial_setup_guide">Guia inicial de instalação de mUzima</string>
     <string name="title_location_download">Passo 3: Adicionar Local(s)</string>
     <string name="title_location_help">Ajuda Locais</string>
     <string name="title_logout_confirm">Confirmação!</string>
@@ -299,7 +299,7 @@
     <string name="title_manage_location">Gestão de locais</string>
     <string name="title_manage_concept">Gestão de conceitos</string>
     <string name="title_media_preview">Prever Mídia</string>
-    <string name="title_muzima_training_manual">Manual de treino de mSaúde</string>
+    <string name="title_muzima_training_manual">Manual de treino de mUzima</string>
     <string name="title_provider_download">Passo 4: Adicionar Provedor(s)</string>
     <string name="title_provider_help">Ajuda Provedor</string>
     <string name="title_provider_not_set">Incapz de definir como Provedor</string>
@@ -317,8 +317,8 @@
     <string name="warning_forms_complete_and_sync">%s contém alguns formulários associados com isto. Por favor complete
         e sincroniza estes formulários antes de baixar a nova versão.
     </string>
-    <string name="warning_logout_confirm">Tem certeza que voçê quer sair e fechar o aplicativo mSaúde?</string>
-    <string name="warning_switch_server">Trocando o Servidor: Isto irá apagar todos dados de mSaúde no seu dispositivo,
+    <string name="warning_logout_confirm">Tem certeza que voçê quer sair e fechar o aplicativo mUzima?</string>
+    <string name="warning_switch_server">Trocando o Servidor: Isto irá apagar todos dados de mUzima no seu dispositivo,
         incluindo formulários imcompletos. Tem certeza que quer mudar as configurações?
     </string>
 
