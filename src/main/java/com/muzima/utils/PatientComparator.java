@@ -22,15 +22,15 @@ public class PatientComparator implements Comparator<Patient> {
         if (patient2 == null) {
             patient2 = new Patient();
         }
-        int familyNameCompareResult = patient1.getFamilyName().compareTo(patient2.getFamilyName());
+        int familyNameCompareResult = StringUtils.nullSafeCompare(patient1.getFamilyName(), patient2.getFamilyName());
         if (familyNameCompareResult != 0) {
             return familyNameCompareResult;
         }
-        int givenNameCompareResult = patient1.getGivenName().compareTo(patient2.getGivenName());
+        int givenNameCompareResult = StringUtils.nullSafeCompare(patient1.getGivenName(), patient2.getGivenName());
         if (givenNameCompareResult != 0) {
             return givenNameCompareResult;
         }
-        return patient1.getMiddleName().compareTo(patient2.getMiddleName());
+        return StringUtils.nullSafeCompare(patient1.getMiddleName(), patient2.getMiddleName());
     }
 
 }
