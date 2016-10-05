@@ -9,7 +9,7 @@
 
         <TextView
                 android:id="@+id/title_login"
-                android:drawableLeft="@drawable/ic_launcher_logo"
+                android:drawableTop="@drawable/ic_launcher_logo"
                 style="@style/LoginActivityHeader"/>
 
     </LinearLayout>
