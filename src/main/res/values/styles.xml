@@ -46,11 +46,15 @@
 	    <item name="android:background">@color/primary_black</item>
     </style>
 
-
     <style name="alertDialogTheme"  parent="Theme.AppCompat.Dialog">
-        <item name="android:textColorPrimary">@color/primary_blue</item>
-        <item name="colorAccent">@color/primary_blue</item>
+        <item name="android:windowTitleStyle">@style/alertTitleTextStyle</item>
+        <item name="colorAccent">@android:color/white</item>
         <item name="android:background">@color/drawer_background</item>
+    </style>
+
+    <style name="alertTitleTextStyle">
+        <item name="android:textColor">@color/primary_blue</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
     </style>
 
     <style name="WizardContainer">

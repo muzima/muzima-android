@@ -115,7 +115,7 @@ public class ConceptController {
         HashSet<Concept> result = new HashSet<Concept>();
         for (String uuid : uuids) {
             Concept concept = downloadConceptByUuid(uuid);
-            result.add(concept);
+            if(concept != null) result.add(concept);
         }
         return new ArrayList<Concept>(result);
     }
