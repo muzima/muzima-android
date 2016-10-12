@@ -30,11 +30,14 @@ import com.muzima.R;
 import com.muzima.api.context.Context;
 import com.muzima.domain.Credentials;
 import com.muzima.service.CredentialsPreferenceService;
+import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.MainActivity;
 import com.muzima.view.cohort.CohortWizardActivity;
+
+import java.util.Locale;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
@@ -275,6 +278,9 @@ public class LoginActivity extends Activity {
             if (result.status == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
                 new CredentialsPreferenceService(getApplicationContext()).saveCredentials(result.credentials);
                 ((MuzimaApplication) getApplication()).restartTimer();
+                LocalePreferenceService localePreferenceService = ((MuzimaApplication) getApplication()).getLocalePreferenceService();
+                String currentLocale = Locale.getDefault().toString();
+                localePreferenceService.setPreferredLocale(currentLocale);
                 startNextActivity();
             } else {
                 Toast.makeText(getApplicationContext(), getErrorText(result), Toast.LENGTH_SHORT).show();

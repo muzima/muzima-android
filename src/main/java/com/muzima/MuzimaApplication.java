@@ -34,6 +34,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.CohortPrefixPreferenceService;
+import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
 import com.muzima.util.Constants;
@@ -88,6 +89,7 @@ public class MuzimaApplication extends Application {
     private ProviderController providerController;
     private MuzimaSyncService muzimaSyncService;
     private CohortPrefixPreferenceService prefixesPreferenceService;
+    private LocalePreferenceService localePreferenceService;
     private MuzimaTimer muzimaTimer;
     public static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
@@ -129,11 +131,7 @@ public class MuzimaApplication extends Application {
     @Override
     public void onCreate() {
         ACRA.init(this);
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.FROYO) {
-            System.setProperty("http.keepAlive", "false");
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2
-                && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Security.removeProvider("AndroidOpenSSL");
         }
         logOut();
@@ -306,6 +304,13 @@ public class MuzimaApplication extends Application {
             prefixesPreferenceService = new CohortPrefixPreferenceService(this);
         }
         return prefixesPreferenceService;
+    }
+
+    public LocalePreferenceService getLocalePreferenceService(){
+        if(localePreferenceService == null){
+            localePreferenceService = new LocalePreferenceService(this);
+        }
+        return localePreferenceService;
     }
 
     public void resetTimer(int timeOutInMin) {
