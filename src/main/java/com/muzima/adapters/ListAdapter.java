@@ -23,7 +23,6 @@ public abstract class ListAdapter<T> extends ArrayAdapter<T>{
         public void onQueryTaskStarted();
         public void onQueryTaskFinish();
         public void onQueryTaskCancelled();
+        public void onQueryTaskCancelled(Object errorDefinition);
     }
-
-
 }

@@ -72,8 +72,10 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
             msg = getString(R.string.error_local_repo_data_delete);
         } else if (syncStatus == SyncStatusConstants.SAVE_ERROR) {
             msg = getString(R.string.error_data_save);
-        } else if (syncStatus == SyncStatusConstants.CONNECTION_ERROR) {
-            msg = getString(R.string.error_connection_data_download);
+        } else if (syncStatus == SyncStatusConstants.LOCAL_CONNECTION_ERROR) {
+            msg = getString(R.string.error_local_connection_unavailable);
+        } else if (syncStatus == SyncStatusConstants.SERVER_CONNECTION_ERROR) {
+            msg = getString(R.string.error_server_connection_unavailable);
         } else if (syncStatus == SyncStatusConstants.PARSING_ERROR) {
             msg = getString(R.string.error_parse_exception_data_fetch);
         } else if (syncStatus == SyncStatusConstants.LOAD_ERROR) {

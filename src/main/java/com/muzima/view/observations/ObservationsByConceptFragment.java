@@ -58,4 +58,10 @@ public class ObservationsByConceptFragment extends ObservationsListFragment {
         observationsByConceptAdapter.cancelBackgroundQueryTask();
     }
 
+    @Override
+    public void onQueryTaskCancelled(Object status){
+        ObservationsByConceptAdapter observationsByConceptAdapter = ((ObservationsByConceptAdapter)listAdapter);
+        observationsByConceptAdapter.cancelBackgroundQueryTask();
+    }
+
 }
