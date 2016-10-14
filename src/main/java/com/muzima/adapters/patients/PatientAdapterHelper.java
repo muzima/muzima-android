@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
+import com.muzima.utils.Constants.SERVER_CONNECTIVITY_STATUS;
 import com.muzima.utils.StringUtils;
 
 import java.util.List;
@@ -83,6 +84,16 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
 
         if (backgroundListQueryTaskListener != null) {
             backgroundListQueryTaskListener.onQueryTaskFinish();
+        }
+    }
+
+    public void onAuthenticationError(int searchResutStatus, BackgroundListQueryTaskListener backgroundListQueryTaskListener){
+        backgroundListQueryTaskListener.onQueryTaskCancelled(searchResutStatus);
+    }
+
+    public void onNetworkError(SERVER_CONNECTIVITY_STATUS networkStatus, BackgroundListQueryTaskListener backgroundListQueryTaskListener){
+        if (backgroundListQueryTaskListener != null) {
+            backgroundListQueryTaskListener.onQueryTaskCancelled(networkStatus);
         }
     }
 

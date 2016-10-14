@@ -74,16 +74,17 @@ public class Constants {
             public static final int DELETE_ERROR = 3;
             public static final int SUCCESS = 4;
             public static final int CANCELLED = 5;
-            public static final int CONNECTION_ERROR = 6;
-            public static final int PARSING_ERROR = 7;
-            public static final int AUTHENTICATION_SUCCESS = 8;
-            public static final int REPLACE_ERROR = 9;
-            public static final int LOAD_ERROR = 10;
-            public static final int UNKNOWN_ERROR = 11;
-            public static final int UPLOAD_ERROR = 12;
-            public static final int MALFORMED_URL_ERROR = 13;
-            public static final int INVALID_CREDENTIALS_ERROR = 14;
-            public static final int INVALID_CHARACTER_IN_USERNAME = 15;
+            public static final int LOCAL_CONNECTION_ERROR = 6;
+            public static final int SERVER_CONNECTION_ERROR = 7;
+            public static final int PARSING_ERROR = 8;
+            public static final int AUTHENTICATION_SUCCESS = 9;
+            public static final int REPLACE_ERROR = 10;
+            public static final int LOAD_ERROR = 11;
+            public static final int UNKNOWN_ERROR = 12;
+            public static final int UPLOAD_ERROR = 13;
+            public static final int MALFORMED_URL_ERROR = 14;
+            public static final int INVALID_CREDENTIALS_ERROR = 15;
+            public static final int INVALID_CHARACTER_IN_USERNAME = 16;
             public static final String INVALID_CHARACTER_FOR_USERNAME = ",;.-/@#$%&*+='\"|~`<>";
         }
     }
@@ -96,5 +97,8 @@ public class Constants {
     public static class ProgressDialogConstants {
         public static final String PROGRESS_UPDATE_MESSAGE = "progressUpdateMessage";
         public static final String PROGRESS_UPDATE_ACTION = "progressUpdateAction";
+    }
+    public enum SERVER_CONNECTIVITY_STATUS {
+        SERVER_ONLINE,SERVER_OFFLINE, INTERNET_FAILURE
     }
 }
