@@ -11,6 +11,7 @@ package com.muzima.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import com.muzima.utils.Constants.SERVER_CONNECTIVITY_STATUS;
 
 public class NetworkUtils {
     public static boolean isConnectedToNetwork(Context context) {
@@ -18,5 +19,17 @@ public class NetworkUtils {
                 context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
+    }
+
+    public static SERVER_CONNECTIVITY_STATUS getServerStatus(Context context, String server){
+        if (!NetworkUtils.isConnectedToNetwork(context)) {
+            return Constants.SERVER_CONNECTIVITY_STATUS.INTERNET_FAILURE;
+        } else {
+            if(com.muzima.util.NetworkUtils.isAddressReachable(server)){
+                return Constants.SERVER_CONNECTIVITY_STATUS.SERVER_ONLINE;
+            } else {
+                return Constants.SERVER_CONNECTIVITY_STATUS.SERVER_OFFLINE;
+            }
+        }
     }
 }
