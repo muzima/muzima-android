@@ -19,6 +19,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
 import com.muzima.utils.Constants.SERVER_CONNECTIVITY_STATUS;
+import com.muzima.utils.NetworkUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +84,7 @@ public class PatientsRemoteSearchAdapter extends ListAdapter<Patient> {
 
             Credentials credentials = new Credentials(getContext());
             try {
-                SERVER_CONNECTIVITY_STATUS serverStatus = applicationContext.getMuzimaSyncService().getServerStatus(credentials.getServerUrl());
+                SERVER_CONNECTIVITY_STATUS serverStatus = NetworkUtils.getServerStatus(getContext(), credentials.getServerUrl());
                 if(serverStatus == SERVER_CONNECTIVITY_STATUS.SERVER_ONLINE) {
                     int authenticateResult = applicationContext.getMuzimaSyncService().authenticate(credentials.getCredentialsArray());
                     if (authenticateResult == SyncStatusConstants.AUTHENTICATION_SUCCESS) {

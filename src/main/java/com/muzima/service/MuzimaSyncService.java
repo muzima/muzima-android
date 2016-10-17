@@ -82,20 +82,6 @@ public class MuzimaSyncService {
         return authenticate(credentials, false);
     }
 
-    public SERVER_CONNECTIVITY_STATUS getServerStatus(String server){
-
-        Context muzimaContext = muzimaApplication.getMuzimaContext();
-        if (!NetworkUtils.isConnectedToNetwork(muzimaApplication)) {
-            return SERVER_CONNECTIVITY_STATUS.INTERNET_FAILURE;
-        } else {
-            if(muzimaContext.isServerOnline(server)){
-                return SERVER_CONNECTIVITY_STATUS.SERVER_ONLINE;
-            } else {
-                return SERVER_CONNECTIVITY_STATUS.SERVER_OFFLINE;
-            }
-        }
-    }
-
     public int authenticate(String[] credentials, boolean isUpdatePasswordRequired) {
         String username = credentials[0].trim();
         String password = credentials[1];
