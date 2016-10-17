@@ -260,6 +260,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     public void onQueryTaskCancelled(){}
 
+    @Override
+    public void onQueryTaskCancelled(Object errorDefinition){}
+
     public void invokeBarcodeScan() {
         IntentIntegrator scanIntegrator = new IntentIntegrator(this);
 

@@ -259,6 +259,9 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
     @Override
     public void onQueryTaskCancelled(){}
 
+    @Override
+    public void onQueryTaskCancelled(Object errorDefinition){}
+
     private void turnOnProgressDialog(String message){
         progressDialog.show(message);
         isProcessDialogOn = true;

@@ -55,7 +55,7 @@ public class CohortActivity extends BroadcastListenerActivity {
         switch (item.getItemId()) {
             case R.id.menu_load:
                 if (!NetworkUtils.isConnectedToNetwork(this)) {
-                    Toast.makeText(this, R.string.error_connection_unavailable, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.error_local_connection_unavailable, Toast.LENGTH_SHORT).show();
                     return true;
                 }
 

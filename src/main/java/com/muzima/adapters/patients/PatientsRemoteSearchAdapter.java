@@ -18,6 +18,7 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
+import com.muzima.utils.Constants.SERVER_CONNECTIVITY_STATUS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,7 @@ public class PatientsRemoteSearchAdapter extends ListAdapter<Patient> {
         new ServerSearchBackgroundTask().execute(searchString);
     }
 
-    private class ServerSearchBackgroundTask extends AsyncTask<String, Void, List<Patient>> {
+    private class ServerSearchBackgroundTask extends AsyncTask<String, Void, Object> {
         @Override
         protected void onPreExecute() {
             patientAdapterHelper.onPreExecute(backgroundListQueryTaskListener);
@@ -61,20 +62,41 @@ public class PatientsRemoteSearchAdapter extends ListAdapter<Patient> {
         }
 
         @Override
-        protected void onPostExecute(List<Patient> patients) {
+        protected void onPostExecute(Object patientsObject) {
+            List<Patient> patients = (List<Patient>)patientsObject;
             patientAdapterHelper.onPostExecute(patients, PatientsRemoteSearchAdapter.this, backgroundListQueryTaskListener);
         }
 
         @Override
-        protected List<Patient> doInBackground(String... strings) {
+        protected void onCancelled(Object result){
+            if(result instanceof SERVER_CONNECTIVITY_STATUS){
+                patientAdapterHelper.onNetworkError((SERVER_CONNECTIVITY_STATUS)result,backgroundListQueryTaskListener);
+            } else {
+                int authenticateResult = (int) result;
+                patientAdapterHelper.onAuthenticationError(authenticateResult, backgroundListQueryTaskListener);
+            }
+        }
+
+        @Override
+        protected Object doInBackground(String... strings) {
             MuzimaApplication applicationContext = (MuzimaApplication) getContext();
 
             Credentials credentials = new Credentials(getContext());
             try {
-                int authenticateResult = applicationContext.getMuzimaSyncService().authenticate(credentials.getCredentialsArray());
-                if (authenticateResult == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
-                    return patientController.searchPatientOnServer(strings[0]);
+                SERVER_CONNECTIVITY_STATUS serverStatus = applicationContext.getMuzimaSyncService().getServerStatus(credentials.getServerUrl());
+                if(serverStatus == SERVER_CONNECTIVITY_STATUS.SERVER_ONLINE) {
+                    int authenticateResult = applicationContext.getMuzimaSyncService().authenticate(credentials.getCredentialsArray());
+                    if (authenticateResult == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
+                        return patientController.searchPatientOnServer(strings[0]);
+                    } else {
+                        cancel(true);
+                        return authenticateResult;
+                    }
+                }else {
+                        cancel(true);
+                        return serverStatus;
                 }
+
             } catch (Throwable t) {
                 Log.e(TAG, "Error while searching for patient in the server.", t);
             } finally {

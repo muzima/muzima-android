@@ -69,4 +69,7 @@ public abstract class CohortListFragment extends MuzimaListFragment implements L
 
     @Override
     public void onQueryTaskCancelled(){}
+
+    @Override
+    public void onQueryTaskCancelled(Object errorDefinition){}
 }

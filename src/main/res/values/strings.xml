@@ -21,8 +21,6 @@
     <string name="error_concept_parse">An error occurred while parsing concepts in the form</string>
     <string name="error_connection_data_download">Connection error occurred while downloading data
     </string>
-    <string name="error_connection_find">No connection found, please connect your device and try again</string>
-    <string name="error_connection_unavailable">No connection found, please connect your device and try again</string>
     <string name="error_credential_invalid">Invalid Username, Password, Server combination.
     </string>
     <string name="error_data_download">An error occurred while downloading data form server</string>
@@ -43,6 +41,7 @@
     <string name="error_image_capture_activity_unavailable">Error: Application for capturing an image not found</string>
     <string name="error_image_chose_activity_unavailable">Error: Application for choosing image not found</string>
     <string name="error_image_view_activity_unavailable">Error: Application for viewing image not found</string>
+    <string name="error_local_connection_unavailable">Network connection not found</string>
     <string name="error_local_repo_data_delete">An error occurred while deleting data from local repo</string>
     <string name="error_location_fetch">Something went wrong while fetching locations from local repo</string>
     <string name="error_notification_download">Error downloading notifications</string>
@@ -57,7 +56,9 @@
     <string name="error_patient_encounter_download">Could not download encounters for patients</string>
     <string name="error_patient_fetch">An error occurred while fetching patient</string>
     <string name="error_patient_repo_fetch">Something went wrong while fetching patients from local repo</string>
+    <string name="error_patient_search">Something went wrong while searching patient(s)</string>
     <string name="error_provider_fetch">Something went wrong while fetching providers from local repo</string>
+    <string name="error_server_connection_unavailable">Server unreachable</string>
     <string name="error_server_url_invalid">Invalid Server URL.</string>
     <string name="error_sync_not_allowed">Action not allowed while sync is in progress</string>
     <string name="error_tag_fetch">Something went wrong while fetching tags from local repo</string>
@@ -71,6 +72,7 @@
     <string name="general_application_version">Version %1$s</string>
     <string name="general_cancel">Cancel</string>
     <string name="general_caution">Caution!</string>
+    <string name="general_client_register">Register client</string>
     <string name="general_clients">Clients</string>
     <string name="general_close">Close</string>
     <string name="general_cohorts">Cohorts</string>
@@ -156,11 +158,12 @@
     <string name="hint_incomplete_form_unavailable">Incomplete forms are available only if you have saved a partially filled
         form
     </string>
+    <string name="hint_local_connection_unavailable">Please connect your device and try again</string>
     <string name="hint_location_pref_add">Add location(s) that you want to download.</string>
-    <string name="hint_manage_provider">Get more providers from the server or remove providers from this device</string>
-    <string name="hint_manage_location">Get more locations from the server or remove locations from this device</string>
     <string name="hint_manage_concept">Get more concepts from the server or remove concepts from this device.
         Concepts are used to configure what observations to download.</string>
+    <string name="hint_manage_location">Get more locations from the server or remove locations from this device</string>
+    <string name="hint_manage_provider">Get more providers from the server or remove providers from this device</string>
     <string name="hint_notification_sync">Make sure you have connectivity to server and press the load button</string>
     <string name="hint_password_change">Did you change your password recently?</string>
     <string name="hint_password_prompt">Please Enter Password</string>
@@ -170,6 +173,7 @@
     <string name="hint_recommended_forms_unavailable">Please select non-registration forms from all forms list and click download
     </string>
     <string name="hint_registration_form_select">Please select at least one registration form!</string>
+    <string name="hint_server_connection_unavailable">Please contact your server administrator to check server connectivity</string>
     <string name="hint_server_password_prompt">Enter the OpenMRS password</string>
     <string name="hint_server_url">Server URL</string>
     <string name="hint_server_url_prompt">Please enter server URL</string>
@@ -301,7 +305,6 @@
     <string name="info_video_play_activity_unavailable">Error: Application for playing video not found</string>
     <string name="info_video_record_activity_unavailable">Error: Application for recording video not found</string>
 
-    <string name="menu_client_register">Register client</string>
     <string name="menu_form_back_to_draft">Back To Draft</string>
 
     <string name="title_activity_audio">Add Audio</string>
@@ -347,9 +350,9 @@
     <string name="title_location_help">Locations Help</string>
     <string name="title_logo">MuzimaLogo</string>
     <string name="title_logout_confirm">Confirmation!</string>
-    <string name="title_manage_provider">Manage providers</string>
-    <string name="title_manage_location">Manage locations</string>
     <string name="title_manage_concept">Manage concepts</string>
+    <string name="title_manage_location">Manage locations</string>
+    <string name="title_manage_provider">Manage providers</string>
     <string name="title_media_preview">Preview Media</string>
     <string name="title_muzima_training_manual">mUzima training manual</string>
     <string name="title_provider_download">Step 4: Add Provider(s)</string>

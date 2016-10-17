@@ -82,6 +82,9 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
     @Override
     public void onQueryTaskCancelled(){}
 
+    @Override
+    public void onQueryTaskCancelled(Object errorDefinition){}
+
     public final class DeleteFormsActionModeCallback implements ActionMode.Callback {
 
         @Override

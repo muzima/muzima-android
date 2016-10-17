@@ -4,7 +4,7 @@
             android:icon="@drawable/ic_action_add_client"
             android:orderInCategory="1"
             custom:showAsAction="never"
-            android:title="@string/menu_client_register"/>
+            android:title="@string/general_client_register"/>
 
     <item
             android:id="@+id/menu_tags"

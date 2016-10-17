@@ -136,7 +136,7 @@ public class AllCohortsListFragment extends CohortListFragment {
                     }
 
                     if (!NetworkUtils.isConnectedToNetwork(getActivity())) {
-                        Toast.makeText(getActivity(), R.string.error_connection_unavailable, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.error_local_connection_unavailable, Toast.LENGTH_SHORT).show();
                         return true;
                     }
 

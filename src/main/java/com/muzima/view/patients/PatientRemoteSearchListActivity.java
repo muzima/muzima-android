@@ -28,6 +28,7 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsRemoteSearchAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
+import com.muzima.utils.Constants.SERVER_CONNECTIVITY_STATUS;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
@@ -49,6 +50,7 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
     private String searchString;
     private String[] patientUUIDs;
     private FrameLayout progressBarContainer;
+    private Button createPatientBtn;
 
     private View noDataView;
     private ActionMode actionMode;
@@ -69,14 +71,6 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         setUpListView(searchString);
         setupNoDataView();
         patientAdapter.reloadData();
-        Button createPatientBtn = (Button) findViewById(R.id.create_patient_btn);
-        createPatientBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(PatientRemoteSearchListActivity.this, RegistrationFormsActivity.class));
-            }
-        });
-
     }
 
     private void setUpListView(String searchString) {
@@ -109,6 +103,15 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
 
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
         noDataTipTextView.setTypeface(Fonts.roboto_light(this));
+
+        createPatientBtn = (Button) findViewById(R.id.create_patient_btn);
+        createPatientBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PatientRemoteSearchListActivity.this, RegistrationFormsActivity.class));
+            }
+        });
+        createPatientBtn.setVisibility(VISIBLE);
     }
 
     @Override
@@ -118,7 +121,38 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
     }
 
     @Override
-    public void onQueryTaskCancelled(){}
+    public void onQueryTaskCancelled(){
+        noDataView = findViewById(R.id.no_data_layout);
+        TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
+        noDataMsgTextView.setText(getResources().getText(R.string.error_patient_search));
+        createPatientBtn.setVisibility(INVISIBLE);
+        noDataView.setVisibility(VISIBLE);
+        progressBarContainer.setVisibility(INVISIBLE);
+    }
+
+    @Override
+    public void onQueryTaskCancelled(Object errorDefinition){
+        noDataView = findViewById(R.id.no_data_layout);
+        TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
+        TextView noDataTipTextView = (TextView) findViewById(R.id.no_data_tip);
+        createPatientBtn.setVisibility(INVISIBLE);
+
+        if (errorDefinition instanceof SERVER_CONNECTIVITY_STATUS){
+            SERVER_CONNECTIVITY_STATUS serverConnectivityStatus = (SERVER_CONNECTIVITY_STATUS)errorDefinition;
+            if(serverConnectivityStatus == SERVER_CONNECTIVITY_STATUS.SERVER_OFFLINE) {
+                noDataMsgTextView.setText(getResources().getText(R.string.error_server_connection_unavailable));
+                noDataTipTextView.setText(R.string.hint_server_connection_unavailable);
+            } else if(serverConnectivityStatus == SERVER_CONNECTIVITY_STATUS.INTERNET_FAILURE) {
+                noDataMsgTextView.setText(R.string.error_local_connection_unavailable);
+                noDataTipTextView.setText(R.string.hint_local_connection_unavailable);
+            }
+        } else {
+            noDataMsgTextView.setText(getResources().getText(R.string.error_patient_search));
+        }
+
+        noDataView.setVisibility(VISIBLE);
+        progressBarContainer.setVisibility(INVISIBLE);
+    }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
