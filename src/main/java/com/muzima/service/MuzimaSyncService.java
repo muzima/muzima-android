@@ -34,6 +34,7 @@ import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
 import com.muzima.utils.Constants;
+import com.muzima.utils.Constants.SERVER_CONNECTIVITY_STATUS;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.progressdialog.ProgressDialogUpdateIntentService;
 import org.apache.lucene.queryParser.ParseException;
@@ -81,6 +82,20 @@ public class MuzimaSyncService {
         return authenticate(credentials, false);
     }
 
+    public SERVER_CONNECTIVITY_STATUS getServerStatus(String server){
+
+        Context muzimaContext = muzimaApplication.getMuzimaContext();
+        if (!NetworkUtils.isConnectedToNetwork(muzimaApplication)) {
+            return SERVER_CONNECTIVITY_STATUS.INTERNET_FAILURE;
+        } else {
+            if(muzimaContext.isServerOnline(server)){
+                return SERVER_CONNECTIVITY_STATUS.SERVER_ONLINE;
+            } else {
+                return SERVER_CONNECTIVITY_STATUS.SERVER_OFFLINE;
+            }
+        }
+    }
+
     public int authenticate(String[] credentials, boolean isUpdatePasswordRequired) {
         String username = credentials[0].trim();
         String password = credentials[1];
@@ -93,12 +108,16 @@ public class MuzimaSyncService {
 //            }
 
             muzimaContext.openSession();
-            if (!muzimaContext.isAuthenticated()) {
-                muzimaContext.authenticate(username, password, server, NetworkUtils.isConnectedToNetwork(muzimaApplication),isUpdatePasswordRequired);
+            if (!muzimaContext.isAuthenticated()){
+                if(isUpdatePasswordRequired && !NetworkUtils.isConnectedToNetwork(muzimaApplication)) {
+                    return SyncStatusConstants.LOCAL_CONNECTION_ERROR;
+                } else {
+                    muzimaContext.authenticate(username, password, server, isUpdatePasswordRequired);
+                }
             }
         } catch (ConnectException e) {
             Log.e(TAG, "ConnectException Exception thrown while authentication.", e);
-            return SyncStatusConstants.CONNECTION_ERROR;
+            return SyncStatusConstants.SERVER_CONNECTION_ERROR;
         } catch (ParseException e) {
             Log.e(TAG, "ParseException Exception thrown while authentication.", e);
             return SyncStatusConstants.PARSING_ERROR;
