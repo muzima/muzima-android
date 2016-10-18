@@ -67,4 +67,7 @@ public abstract class NotificationListFragment extends MuzimaListFragment implem
 
     @Override
     public void onQueryTaskCancelled(){}
+
+    @Override
+    public void onQueryTaskCancelled(Object errorDefinition){}
 }

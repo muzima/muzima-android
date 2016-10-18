@@ -37,7 +37,7 @@
                 android:layout_marginTop="20dp"
                 android:padding="10dp"
                 style="@style/Button.Next"
-                android:text="Create Client"
+                android:text="@string/general_client_register"
                 android:layout_height="wrap_content">
         </Button>
 

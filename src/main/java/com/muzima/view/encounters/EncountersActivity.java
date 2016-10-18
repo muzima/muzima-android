@@ -119,6 +119,9 @@ public class EncountersActivity extends BroadcastListenerActivity implements Ada
     public void onQueryTaskCancelled(){}
 
     @Override
+    public void onQueryTaskCancelled(Object errorDefinition){}
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.client_summary, menu);
         super.onCreateOptionsMenu(menu);
