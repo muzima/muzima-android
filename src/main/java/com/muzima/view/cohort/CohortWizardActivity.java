@@ -238,6 +238,9 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
     @Override
     public void onQueryTaskCancelled(){}
 
+    @Override
+    public void onQueryTaskCancelled(Object errorDefinition){}
+
     private void turnOnProgressDialog(String message){
         progressDialog.show(message);
         isProcessDialogOn = true;

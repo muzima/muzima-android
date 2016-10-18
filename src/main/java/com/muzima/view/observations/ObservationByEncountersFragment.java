@@ -49,4 +49,9 @@ public class ObservationByEncountersFragment extends ObservationsListFragment{
         ObservationsByEncounterAdapter observationsByEncounterAdapter = ((ObservationsByEncounterAdapter)listAdapter);
         observationsByEncounterAdapter.cancelBackgroundQueryTask();
     }
+
+    @Override
+    public void onQueryTaskCancelled(Object errorDefinition){
+        onQueryTaskCancelled();
+    }
 }

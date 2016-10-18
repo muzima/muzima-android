@@ -150,7 +150,7 @@ public class FormsActivity extends FormsActivityBase {
         switch (item.getItemId()) {
             case R.id.menu_load:
                 if (!NetworkUtils.isConnectedToNetwork(this)) {
-                    Toast.makeText(this, R.string.error_connection_unavailable, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.error_local_connection_unavailable, Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 if (syncInProgress) {
@@ -174,7 +174,7 @@ public class FormsActivity extends FormsActivityBase {
                 return true;
             case R.id.menu_upload:
                 if (!NetworkUtils.isConnectedToNetwork(this)) {
-                    Toast.makeText(this, R.string.error_connection_unavailable, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.error_local_connection_unavailable, Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 if (syncInProgress) {

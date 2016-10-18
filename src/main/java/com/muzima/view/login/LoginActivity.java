@@ -299,8 +299,10 @@ public class LoginActivity extends Activity {
                     return getString(R.string.error_credential_invalid);
                 case SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME:
                     return getString(R.string.error_username_invalid_format) + SyncStatusConstants.INVALID_CHARACTER_FOR_USERNAME;
-                case SyncStatusConstants.CONNECTION_ERROR:
-                    return getString(R.string.error_connection_unavailable);
+                case SyncStatusConstants.LOCAL_CONNECTION_ERROR:
+                    return getString(R.string.error_local_connection_unavailable);
+                case SyncStatusConstants.SERVER_CONNECTION_ERROR:
+                    return getString(R.string.error_server_connection_unavailable);
                 default:
                     return getString(R.string.error_authentication_fail);
             }
