@@ -32,6 +32,7 @@ import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.annotation.Config;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -59,6 +60,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(CustomTestRunner.class)
+@Config(manifest= Config.NONE)
 public class MuzimaSyncServiceTest {
 
     private MuzimaSyncService muzimaSyncService;
