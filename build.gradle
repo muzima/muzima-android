@@ -10,7 +10,6 @@ buildscript {
 apply plugin: 'com.android.application'
 
 group = 'com.muzima'
-version = '1.0.4'
 description = 'Muzima-Android'
 
 android {
@@ -22,6 +21,9 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 23
+        versionCode 6
+        versionName "1.0.6"
+        manifestPlaceholders = [versionCode:defaultConfig.versionCode, versionName:defaultConfig.versionName]
     }
 
     packagingOptions {
@@ -33,7 +35,7 @@ android {
         variant.outputs.each { output ->
             output.outputFile = new File(
                     output.outputFile.parent,
-                    output.outputFile.name.replace(".apk", "-${variant.versionName}.apk"))
+                    output.outputFile.name.replace(".apk", "-${versionName}.apk"))
         }
     }
 }
@@ -59,10 +61,14 @@ dependencies {
         exclude(module: 'guice')
     }
     compile group: 'com.google.inject', name: 'guice', version:'3.0', classifier:'no_aop'
+    testCompile fileTree('lib/stickylistheaders-1.0.0.jar')
     testCompile group: 'junit', name: 'junit', version:'4.8.2'
     testCompile group: 'org.mockito', name: 'mockito-all', version:'1.8.5'
-    testCompile group: 'org.robolectric', name: 'robolectric', version:'2.0-alpha-1'
+    testCompile group: 'org.robolectric', name: 'robolectric', version:'3.1.1'
     testCompile group: 'xmlpull', name: 'xmlpull', version:'1.1.3.4d_b4_min'
+    testCompile(group: 'com.muzima', name: 'muzima-api', version:'1.1.2') {
+        exclude(module: 'guice')
+    }
 }
 task wrapper(type: Wrapper) {
     gradleVersion = '3.1'
