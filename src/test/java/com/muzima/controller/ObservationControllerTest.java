@@ -61,8 +61,8 @@ public class ObservationControllerTest {
 
     @Test
     public void shouldCheckLastSyncTimeBeforeDownloadingObservations() throws Exception, ObservationController.DownloadObservationException {
-        List<String> patientUuids = asList(new String[]{"PatientUuid1", "PatientUuid2"});
-        List<String> conceptUuids = asList(new String[]{"ConceptUuid1", "ConceptUuid2"});
+        List<String> patientUuids = asList("PatientUuid1", "PatientUuid2");
+        List<String> conceptUuids = asList("ConceptUuid1", "ConceptUuid2");
         Date aDate = mock(Date.class);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_OBSERVATIONS, "PatientUuid1,PatientUuid2;ConceptUuid1,ConceptUuid2")).thenReturn(aDate);
         observationController.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids);
@@ -72,8 +72,8 @@ public class ObservationControllerTest {
 
     @Test
     public void shouldUseLastSyncTimeToDownloadObservations() throws Exception, ObservationController.DownloadObservationException {
-        List<String> patientUuids = asList(new String[]{"PatientUuid1", "PatientUuid2"});
-        List<String> conceptUuids = asList(new String[]{"ConceptUuid1", "ConceptUuid2"});
+        List<String> patientUuids = asList("PatientUuid1", "PatientUuid2");
+        List<String> conceptUuids = asList("ConceptUuid1", "ConceptUuid2");
         Date lastSyncTime = mock(Date.class);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_OBSERVATIONS, "PatientUuid1,PatientUuid2;ConceptUuid1,ConceptUuid2")).thenReturn(lastSyncTime);
 
@@ -84,8 +84,8 @@ public class ObservationControllerTest {
 
     @Test
     public void shouldUpdateLastSyncTimeForObservation() throws Exception, ObservationController.DownloadObservationException {
-        List<String> patientUuids = asList(new String[]{"PatientUuid1", "PatientUuid2"});
-        List<String> conceptUuids = asList(new String[]{"ConceptUuid1", "ConceptUuid2"});
+        List<String> patientUuids = asList("PatientUuid1", "PatientUuid2");
+        List<String> conceptUuids = asList("ConceptUuid1", "ConceptUuid2");
         Date currentDate = mock(Date.class);
         when(sntpService.getLocalTime()).thenReturn(currentDate);
 
@@ -100,25 +100,25 @@ public class ObservationControllerTest {
 
     @Test
     public void shouldProperlyProcessChangeInKnownPatientOrConcept() throws ObservationController.DownloadObservationException, IOException {
-        List<String> patientUuids = asList(new String[]{"PatientUuid1", "PatientUuid2"});
-        List<String> conceptUuids = asList(new String[]{"ConceptUuid1", "ConceptUuid2"});
-        List<String> previousPatientUuids = asList(new String[]{"PatientUuid1", "PatientUuid3"});
-        List<String> previousConceptUuids = asList(new String[]{"ConceptUuid1", "ConceptUuid3"});
-        List<String> newPatientUuids = asList(new String[]{"PatientUuid2"});
-        List<String> newConceptUuids = asList(new String[]{"ConceptUuid2"});
+        List<String> patientUuids = asList("PatientUuid1", "PatientUuid2");
+        List<String> conceptUuids = asList("ConceptUuid1", "ConceptUuid2");
+        List<String> previousPatientUuids = asList("PatientUuid1", "PatientUuid3");
+        List<String> previousConceptUuids = asList("ConceptUuid1", "ConceptUuid3");
+        List<String> newPatientUuids = Collections.singletonList("PatientUuid2");
+        List<String> newConceptUuids = Collections.singletonList("ConceptUuid2");
         LastSyncTime lastSyncTimeInFull = mock(LastSyncTime.class);
         when(lastSyncTimeInFull.getParamSignature()).thenReturn("PatientUuid1,PatientUuid3;ConceptUuid1,ConceptUuid3");
         Date aDate =  mock(Date.class);
         when(lastSyncTimeInFull.getLastSyncDate()).thenReturn(aDate);
         when(lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_OBSERVATIONS)).thenReturn(lastSyncTimeInFull);
-        List<Observation> anObservationSet = new ArrayList<Observation>();
+        List<Observation> anObservationSet = new ArrayList<>();
         Observation anObservation = mock(Observation.class);
         anObservationSet.add(anObservation);
         when(observationService.downloadObservations(previousPatientUuids, previousConceptUuids, aDate)).thenReturn(anObservationSet);
-        List<Observation> anotherObservationSet = new ArrayList<Observation>();
+        List<Observation> anotherObservationSet = new ArrayList<>();
         Observation anotherObservation = mock(Observation.class);
         anotherObservationSet.add(anotherObservation);
-        List<String> allConceptUuids = new ArrayList<String>();
+        List<String> allConceptUuids = new ArrayList<>();
         allConceptUuids.addAll(previousConceptUuids);
         allConceptUuids.addAll(newConceptUuids);
         Collections.sort(allConceptUuids);
@@ -145,8 +145,8 @@ public class ObservationControllerTest {
 
     @Test
     public void shouldRecognisedNonInitialisedLastSyncTime() throws ObservationController.DownloadObservationException, IOException {
-        List<String> patientUuids = asList(new String[]{"PatientUuid1", "PatientUuid2"});
-        List<String> conceptUuids = asList(new String[]{"ConceptUuid1", "ConceptUuid2"});
+        List<String> patientUuids = asList("PatientUuid1", "PatientUuid2");
+        List<String> conceptUuids = asList("ConceptUuid1", "ConceptUuid2");
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_OBSERVATIONS, "PatientUuid1,PatientUuid2;ConceptUuid1,ConceptUuid2")).thenReturn(null);
         when(lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_OBSERVATIONS)).thenReturn(null);
 
@@ -221,14 +221,13 @@ public class ObservationControllerTest {
         verify(observationService).saveObservations(observations);
     }
 
-
     private List<Observation> buildObservations(final Concept concept1, final Concept concept2) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         final Date date1 = sdf.parse("21/12/2012");
         final Date date2 = sdf.parse("25/12/2012");
         final Date date3 = sdf.parse("09/04/2013");
 
-        ArrayList<Observation> observations = new ArrayList<Observation>();
+        ArrayList<Observation> observations = new ArrayList<>();
         final Observation ob1 = new Observation() {{
             setUuid("ob1");
             setConcept(concept1);
@@ -249,7 +248,6 @@ public class ObservationControllerTest {
             setConcept(concept1);
             setObservationDatetime(date2);
         }};
-
 
         observations.add(ob1);
         observations.add(ob2);

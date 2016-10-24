@@ -11,8 +11,7 @@ package com.muzima.controller;
 import com.muzima.api.model.Location;
 import com.muzima.api.service.LocationService;
 import org.apache.lucene.queryParser.ParseException;
-import org.aspectj.lang.annotation.Before;
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -28,10 +27,10 @@ import static org.mockito.Mockito.when;
 
 public class LocationControllerTest {
 
-    LocationController locationController;
-    LocationService locationService;
+    private LocationController locationController;
+    private LocationService locationService;
 
-    @org.junit.Before
+    @Before
     public void setup() {
         locationService = mock(LocationService.class);
         locationController = new LocationController(locationService);
@@ -40,7 +39,7 @@ public class LocationControllerTest {
     @Test
     public void shouldSearchOnServerForLocationsByNames() throws Exception, LocationController.LocationDownloadException {
         String name = "name";
-        List<Location> locations = new ArrayList<Location>();
+        List<Location> locations = new ArrayList<>();
 
         when(locationService.downloadLocationsByName(name)).thenReturn(locations);
         assertThat(locationController.downloadLocationFromServerByName(name), is(locations));
@@ -59,7 +58,7 @@ public class LocationControllerTest {
 
     @Test
     public void getAllLocations_shouldReturnAllAvailableLocations() throws IOException, ParseException, LocationController.LocationLoadException {
-        List<Location> locations = new ArrayList<Location>();
+        List<Location> locations = new ArrayList<>();
         when(locationService.getAllLocations()).thenReturn(locations);
 
         assertThat(locationController.getAllLocations(), is(locations));
@@ -81,8 +80,7 @@ public class LocationControllerTest {
         assertThat(locationController.getLocationByUuid(uuid), is(location));
     }
 
-    @Test
-    @Ignore("Need to fix the Android Log class util")
+    @Test(expected = LocationController.LocationDownloadException.class)
     public void shouldReturnEmptyListIsExceptionThrown() throws Exception, LocationController.LocationDownloadException {
         String searchString = "name";
         doThrow(new IOException()).when(locationService).downloadLocationsByName(searchString);

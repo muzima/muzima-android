@@ -44,7 +44,7 @@ public class FormTemplateBuilder {
         FormTemplate formTemplate = new FormTemplate();
         formTemplate.setUuid(uuid);
         formTemplate.setHtml(html);
-        formTemplate.setModel(model);
+        formTemplate.setModelXml(model);
         formTemplate.setModelJson(modelJson);
         return formTemplate;
     }
