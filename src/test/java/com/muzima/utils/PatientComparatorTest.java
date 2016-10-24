@@ -14,11 +14,11 @@ import com.muzima.api.model.PersonName;
 import org.junit.Before;
 import org.junit.Test;
 
-import static java.util.Arrays.asList;
+import java.util.Collections;
+
 import static junit.framework.Assert.assertTrue;
 
 public class PatientComparatorTest {
-
 
     private PatientComparator patientComparator;
 
@@ -54,10 +54,10 @@ public class PatientComparatorTest {
         personName.setFamilyName(familyName);
         personName.setMiddleName(middleName);
         personName.setGivenName(givenName);
-        patient.setNames(asList(personName));
+        patient.setNames(Collections.singletonList(personName));
         PatientIdentifier personId = new PatientIdentifier();
         personId.setIdentifier(identifier);
-        patient.setIdentifiers(asList(personId));
+        patient.setIdentifiers(Collections.singletonList(personId));
         return patient;
     }
 }

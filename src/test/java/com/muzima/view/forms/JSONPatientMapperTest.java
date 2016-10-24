@@ -14,16 +14,20 @@ import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.io.InputStream;
 import java.util.List;
 import java.util.Scanner;
 
-import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest= Config.NONE)
 public class JSONPatientMapperTest{
 
     private PatientJSONMapper mapper;

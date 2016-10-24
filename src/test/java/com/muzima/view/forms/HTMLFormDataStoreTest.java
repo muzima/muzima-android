@@ -18,12 +18,17 @@ import com.muzima.utils.Constants;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@RunWith(CustomTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest= Config.NONE)
 public class HTMLFormDataStoreTest {
 
     private FormController formController;
@@ -52,6 +57,7 @@ public class HTMLFormDataStoreTest {
 
     @Test
     public void shouldParsedPayloadForCompletedForm() {
+        when(formWebViewActivity.getString(anyInt())).thenReturn("success");
         String jsonPayLoad = "jsonPayLoad";
         htmlFormDataStore.saveHTML(jsonPayLoad, Constants.STATUS_COMPLETE);
         verify(htmlFormObservationCreator).createAndPersistObservations(jsonPayLoad,formData.getUuid());
@@ -59,6 +65,7 @@ public class HTMLFormDataStoreTest {
 
     @Test
     public void shouldNotParseIncompletedForm() {
+        when(formWebViewActivity.getString(anyInt())).thenReturn("success");
         String jsonPayLoad = "jsonPayLoad";
         htmlFormDataStore.saveHTML(jsonPayLoad, Constants.STATUS_INCOMPLETE);
         verify(htmlFormObservationCreator, times(0)).createAndPersistObservations(jsonPayLoad,formData.getUuid());

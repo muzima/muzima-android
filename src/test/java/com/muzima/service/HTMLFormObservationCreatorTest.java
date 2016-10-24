@@ -19,9 +19,12 @@ import com.muzima.controller.PatientController;
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.io.InputStream;
 import java.text.ParseException;
@@ -40,6 +43,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest= Config.NONE)
 public class HTMLFormObservationCreatorTest {
     private HTMLFormObservationCreator htmlFormObservationCreator;
 
@@ -141,7 +146,7 @@ public class HTMLFormObservationCreatorTest {
             ConceptController.ConceptFetchException {
         htmlFormObservationCreator.createAndPersistObservations(readFile(),formDataUuid);
         List<Observation> observations = htmlFormObservationCreator.getObservations();
-        List<Observation> multiValuedObservations = new ArrayList<Observation>();
+        List<Observation> multiValuedObservations = new ArrayList<>();
         for (Observation observation : observations) {
             if (observation.getConcept().getName().equals("REFERRALS ORDERED")) {
                 multiValuedObservations.add(observation);

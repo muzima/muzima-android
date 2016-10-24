@@ -23,7 +23,6 @@ import static org.junit.matchers.JUnitMatchers.hasItems;
 
 public class ConceptsTest {
 
-
     @Before
     public void setUp() throws Exception {
     }

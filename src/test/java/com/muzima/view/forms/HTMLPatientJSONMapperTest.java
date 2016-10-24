@@ -13,6 +13,9 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.User;
 import com.muzima.builder.PatientBuilder;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,8 +24,9 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.containsString;
 
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest= Config.NONE)
 public class HTMLPatientJSONMapperTest {
-
 
     @Test
     public void shouldAddPatientDetailsOnJSONFromPatient() throws Exception {
