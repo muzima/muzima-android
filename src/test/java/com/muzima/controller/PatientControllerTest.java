@@ -18,11 +18,11 @@ import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -49,7 +49,7 @@ public class PatientControllerTest {
 
     @Test
     public void getAllPatients_shouldReturnAllAvailablePatients() throws IOException, ParseException, PatientController.PatientLoadException {
-        List<Patient> patients = new ArrayList<Patient>();
+        List<Patient> patients = new ArrayList<>();
         when(patientService.getAllPatients()).thenReturn(patients);
 
         assertThat(patientController.getAllPatients(), is(patients));
@@ -95,7 +95,7 @@ public class PatientControllerTest {
 
         Patient patient = new Patient();
         patient.setUuid(members.get(0).getPatientUuid());
-        when(patientService.getPatientsFromCohortMembers(members)).thenReturn(asList(patient));
+        when(patientService.getPatientsFromCohortMembers(members)).thenReturn(Collections.singletonList(patient));
 
         List<Patient> patients = patientController.getPatients(cohortId);
 
@@ -105,7 +105,7 @@ public class PatientControllerTest {
     @Test
     public void shouldSearchWithOutCohortUUIDIsNull() throws IOException, ParseException, PatientController.PatientLoadException {
         String searchString = "searchString";
-        List<Patient> patients = new ArrayList<Patient>();
+        List<Patient> patients = new ArrayList<>();
 
         when(patientService.searchPatients(searchString)).thenReturn(patients);
 
@@ -117,7 +117,7 @@ public class PatientControllerTest {
     @Test
     public void shouldSearchWithOutCohortUUIDIsEmpty() throws IOException, ParseException, PatientController.PatientLoadException {
         String searchString = "searchString";
-        List<Patient> patients = new ArrayList<Patient>();
+        List<Patient> patients = new ArrayList<>();
 
         when(patientService.searchPatients(searchString)).thenReturn(patients);
 
@@ -130,7 +130,7 @@ public class PatientControllerTest {
     public void shouldCallSearchPatientWithCohortIDIfPresent() throws Exception, PatientController.PatientLoadException {
         String searchString = "searchString";
         String cohortUUID = "cohortUUID";
-        List<Patient> patients = new ArrayList<Patient>();
+        List<Patient> patients = new ArrayList<>();
 
         when(patientService.searchPatients(searchString, cohortUUID)).thenReturn(patients);
         assertThat(patientController.searchPatientLocally(searchString, cohortUUID), is(patients));
@@ -139,7 +139,7 @@ public class PatientControllerTest {
     }
 
     private List<CohortMember> buildCohortMembers(String cohortId) {
-        List<CohortMember> cohortMembers = new ArrayList<CohortMember>();
+        List<CohortMember> cohortMembers = new ArrayList<>();
         CohortMember member1 = new CohortMember();
         member1.setCohortUuid(cohortId);
         member1.setPatientUuid("patientId1");
@@ -160,7 +160,7 @@ public class PatientControllerTest {
     @Test
     public void shouldSearchOnServerForPatientByNames() throws Exception {
         String name = "name";
-        List<Patient> patients = new ArrayList<Patient>();
+        List<Patient> patients = new ArrayList<>();
 
         when(patientService.downloadPatientsByName(name)).thenReturn(patients);
         assertThat(patientController.searchPatientOnServer(name), is(patients));
@@ -168,7 +168,6 @@ public class PatientControllerTest {
     }
 
     @Test
-    @Ignore("Need to fix the Android Log class util")
     public void shouldReturnEmptyListIsExceptionThrown() throws Exception {
         String searchString = "name";
         doThrow(new IOException()).when(patientService).downloadPatientsByName(searchString);
@@ -192,7 +191,7 @@ public class PatientControllerTest {
         Patient patient = new Patient();
         patient.setUuid(uuid);
         if (patientIdentifier != null) {
-            patient.setIdentifiers(asList(patientIdentifier));
+            patient.setIdentifiers(Collections.singletonList(patientIdentifier));
         }
         return patient;
     }
@@ -215,7 +214,7 @@ public class PatientControllerTest {
     }
 
     private List<Patient> buildPatients() {
-        ArrayList<Patient> patients = new ArrayList<Patient>();
+        ArrayList<Patient> patients = new ArrayList<>();
         Patient patient1 = new Patient();
         patient1.setUuid("uuid1");
         Patient patient2 = new Patient();

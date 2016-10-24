@@ -35,7 +35,7 @@ public class HTMLConceptParserTest {
         assertThat(concepts,hasItem("RETURN VISIT DATE"));
     }
 
-    public String readFile() {
+    private String readFile() {
         InputStream fileStream = getClass().getClassLoader().getResourceAsStream("html/histo_form.html");
         Scanner s = new Scanner(fileStream).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "{}";

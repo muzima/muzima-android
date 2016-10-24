@@ -12,6 +12,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PersonName;
 
+import java.util.Collections;
 import java.util.Date;
 
 import static java.util.Arrays.asList;
@@ -23,8 +24,6 @@ public class PatientBuilder {
     private String givenName;
     private String middleName;
     private String sex;
-
-
     private String uuid;
 
     public static PatientBuilder patient() {
@@ -79,7 +78,7 @@ public class PatientBuilder {
         personName.setGivenName(givenName);
         personName.setMiddleName(middleName);
         personName.setPreferred(true);
-        patient.setNames(asList(personName));
+        patient.setNames(Collections.singletonList(personName));
         patient.setGender(sex);
         return patient;
     }

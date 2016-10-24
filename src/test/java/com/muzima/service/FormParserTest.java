@@ -334,7 +334,7 @@ public class FormParserTest {
     }
 
 
-    public String readFile(String fileName) {
+    private String readFile(String fileName) {
         InputStream fileStream = getClass().getClassLoader().getResourceAsStream(fileName);
         Scanner s = new Scanner(fileStream).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "{}";

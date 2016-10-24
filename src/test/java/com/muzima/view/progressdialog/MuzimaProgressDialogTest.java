@@ -13,10 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
-
 public class MuzimaProgressDialogTest {
 
     private ProgressDialog progressDialog;
