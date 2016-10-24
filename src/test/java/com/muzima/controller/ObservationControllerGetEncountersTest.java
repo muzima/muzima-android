@@ -35,7 +35,7 @@ public class ObservationControllerGetEncountersTest {
         final String patientUuid = "patient1";
         final String encounterUuid = "encounterUuid";
         final String conceptUuid = "c1";
-        ArrayList<Observation> observations = new ArrayList<Observation>();
+        ArrayList<Observation> observations = new ArrayList<>();
         Observation observation = new Observation(){{
             setConcept(new Concept(){{
                 setUuid(conceptUuid);

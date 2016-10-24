@@ -68,7 +68,7 @@ public class ConceptParserTest {
         assertThat(conceptNames, hasItem("END TIME"));
     }
 
-    public String getModel(String modelFileName) {
+    private String getModel(String modelFileName) {
         InputStream fileStream = getClass().getClassLoader().getResourceAsStream("xml/" + modelFileName);
         Scanner s = new Scanner(fileStream).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "{}";

@@ -139,7 +139,7 @@ public class FormParserTest {
         assertThat(observations.size(), is(0));
     }
 
-    @Test
+    @Test(expected = ObservationController.ParseObservationException.class)
     public void shouldNotCreateObservationWithEmptyValue() throws ConceptController.ConceptFetchException,
             XmlPullParserException, PatientController.PatientLoadException, ParseException, IOException,
             ConceptController.ConceptSaveException, ConceptController.ConceptParseException,
@@ -334,7 +334,7 @@ public class FormParserTest {
     }
 
 
-    public String readFile(String fileName) {
+    private String readFile(String fileName) {
         InputStream fileStream = getClass().getClassLoader().getResourceAsStream(fileName);
         Scanner s = new Scanner(fileStream).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "{}";

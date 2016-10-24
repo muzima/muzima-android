@@ -9,7 +9,7 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
-import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
+import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PersonName;
@@ -21,6 +21,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowLooper;
 
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
@@ -34,6 +37,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(CustomTestRunner.class)
+@Config(manifest= Config.NONE)
 public class CompleteFormsAdapterTest {
     private CompleteFormsAdapter formsAdapter;
     private FormController formController;
@@ -49,8 +53,8 @@ public class CompleteFormsAdapterTest {
             }
         };
 
-        Robolectric.getBackgroundScheduler().pause();
-        Robolectric.getUiThreadScheduler().pause();
+        Robolectric.getBackgroundThreadScheduler().pause();
+        Robolectric.getForegroundThreadScheduler().pause();
     }
 
     @Test
@@ -62,7 +66,7 @@ public class CompleteFormsAdapterTest {
         when(formController.getAllCompleteFormsWithPatientData()).thenReturn(completeFormsWithPatientData);
 
         queryTask.execute();
-        Robolectric.runBackgroundTasks();
+        Robolectric.flushBackgroundThreadScheduler();
         assertEquals(completeFormsWithPatientData, queryTask.get(100, TimeUnit.MILLISECONDS));
     }
 
@@ -77,13 +81,13 @@ public class CompleteFormsAdapterTest {
             add(completeFormWithPatientData(patient1));
         }};
         when(formController.getAllCompleteFormsWithPatientData()).thenReturn(completeFormsWithPatientData);
-        StickyListHeadersListView listView = new StickyListHeadersListView(Robolectric.application);
+        StickyListHeadersListView listView = new StickyListHeadersListView(RuntimeEnvironment.application);
         listView.setAdapter(formsAdapter);
         formsAdapter.setListView(listView);
 
         queryTask.execute();
-        Robolectric.runBackgroundTasks();
-        Robolectric.runUiThreadTasks();
+        Robolectric.flushBackgroundThreadScheduler();
+        ShadowLooper.runUiThreadTasks();
         assertThat(formsAdapter.getPatients(), is(asList(patient1, patient2)));
     }
 
