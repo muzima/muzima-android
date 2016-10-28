@@ -57,6 +57,20 @@ public class LocationController {
         }
     }
 
+    public List<Location> downloadLocationsFromServerByUuid(String[] uuids) throws LocationDownloadException {
+        HashSet<Location> result = new HashSet<>();
+        try {
+            for(String uuid : uuids) {
+                 Location location = locationService.downloadLocationByUuid(uuid);
+                if(location != null) result.add(location);
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Error while searching for patients in the server", e);
+            throw new LocationDownloadException(e);
+        }
+        return new ArrayList<>(result);
+    }
+
     public List<Location> getAllLocations() throws LocationLoadException {
         try {
             return locationService.getAllLocations();

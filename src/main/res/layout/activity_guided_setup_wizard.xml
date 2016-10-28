@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:padding="2dp"
+        android:layout_width="match_parent"
+        android:background="@color/primary_black">
+    <LinearLayout
+            android:id="@+id/guided_setup_header"
+            style="@style/NotClickableSummaryItem"
+            android:layout_alignParentTop="true">
+        <TextView style="@style/SummaryHeader"
+                  android:text="Progress update"/>
+    </LinearLayout>
+    <LinearLayout
+        style="@style/NotClickableSummaryItem"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:id="@+id/activity_logs_layout"
+        android:layout_below="@+id/guided_setup_header">
+    <TextView
+            android:id="@+id/activity_log"
+            android:textColor="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+    />
+</LinearLayout>
+    <LinearLayout
+            style="@style/NotClickableSummaryItem"
+            android:id="@+id/progress_bar_container"
+            android:layout_below="@+id/activity_logs_layout"
+            android:orientation="horizontal">
+
+        <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@android:style/Widget.ProgressBar.Small"
+                android:layout_marginRight="5dp"
+        android:progress="30"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Initial setup running. Please wait" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/ButtonRow" android:id="@+id/next_button_layout"
+                  android:visibility="gone"
+    android:layout_alignParentBottom="true">
+        <Button
+                android:id="@+id/finish"
+                style="@style/Button.Finish"/>
+    </LinearLayout>
+
+</RelativeLayout>

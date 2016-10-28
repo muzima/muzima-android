@@ -166,7 +166,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
     private int[] downloadFormTemplates() {
         List<String> selectedFormIdsArray = getSelectedForms();
         MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
-        return muzimaSyncService.downloadFormTemplates(selectedFormIdsArray.toArray(new String[selectedFormIdsArray.size()]), false);
+        return muzimaSyncService.downloadFormTemplatesAndRelatedMetadata(selectedFormIdsArray.toArray(new String[selectedFormIdsArray.size()]), false);
     }
 
     private void navigateToNextActivity() {
