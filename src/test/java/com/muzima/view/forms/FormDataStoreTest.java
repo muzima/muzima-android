@@ -16,12 +16,13 @@ import com.muzima.controller.FormController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.service.FormParser;
-import com.muzima.testSupport.CustomTestRunner;
 import com.muzima.utils.Constants;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -30,6 +31,7 @@ import java.text.ParseException;
 import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_REGISTRATION;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -38,7 +40,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(CustomTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest= Config.NONE)
 public class FormDataStoreTest {
 
     private FormController controller;
@@ -83,6 +86,7 @@ public class FormDataStoreTest {
     @Test
     public void save_shouldNotFinishTheActivityIfThereIsAnExceptionWhileSaving() throws Exception, FormController.FormDataSaveException {
         doThrow(new FormController.FormDataSaveException(null)).when(controller).saveFormData(formData);
+        when(activity.getString(anyInt())).thenReturn("success");
         store.save("data", "xmldata", "status");
         verify(activity, times(0)).finish();
     }

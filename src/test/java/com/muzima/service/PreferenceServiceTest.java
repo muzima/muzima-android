@@ -14,6 +14,7 @@ import com.muzima.testSupport.CustomTestRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.annotation.Config;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.muzima.utils.Constants.COHORT_PREFIX_PREF;
@@ -26,6 +27,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(CustomTestRunner.class)
+@Config(manifest = Config.NONE)
 public class PreferenceServiceTest {
 
     private CohortPrefixPreferenceService preferenceService;
