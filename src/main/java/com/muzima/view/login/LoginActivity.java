@@ -36,6 +36,7 @@ import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.MainActivity;
 import com.muzima.view.cohort.CohortWizardActivity;
+import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
 
 import java.util.Locale;
 
@@ -314,7 +315,7 @@ public class LoginActivity extends Activity {
                 intent = new Intent(getApplicationContext(), MainActivity.class);
             } else {
                 removeRemnantDataFromPreviousRunOfWizard();
-                intent = new Intent(getApplicationContext(), CohortWizardActivity.class);
+                intent = new Intent(getApplicationContext(), SetupMethodPreferenceWizardActivity.class);
             }
             startActivity(intent);
             finish();
