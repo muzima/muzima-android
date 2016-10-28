@@ -11,6 +11,9 @@ package com.muzima.view.forms;
 import com.muzima.api.model.FormData;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.io.InputStream;
 import java.util.Date;
@@ -18,11 +21,14 @@ import java.util.Scanner;
 
 import static com.muzima.builder.PatientBuilder.patient;
 import static com.muzima.utils.DateUtils.getFormattedDate;
+import static org.hamcrest.CoreMatchers.allOf;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.containsString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest= Config.NONE)
 public class PatientJSONMapperTest {
 
     private PatientJSONMapper mapper;
@@ -34,61 +40,86 @@ public class PatientJSONMapperTest {
         formData = mock(FormData.class);
     }
 
-
     @Test
     public void shouldContainAMRSIdOfPatient() throws Exception {
         String resultJSON = mapper.map(patient().withIdentifier("id").instance(), formData);
-        assertThat(resultJSON, containsString("{\"name\":\"patient.medical_record_number\",\"value\":\"id\",\"bind\":\"/model/instance/form/patient/patient.medical_record_number\"}"));
+        assertThat(resultJSON, allOf(
+                containsString("\"name\":\"patient.medical_record_number\""),
+                containsString("\"value\":\"id\""),
+                containsString("\"bind\":\"\\/model\\/instance\\/form\\/patient\\/patient.medical_record_number\"")));
     }
 
     @Test
     public void shouldContainEmptyStringIfAnyStringAttributeIsMissing() throws Exception {
         String resultJSON = mapper.map(patient().instance(), formData);
-        assertThat(resultJSON, containsString("{\"name\":\"patient.medical_record_number\",\"value\":\"\",\"bind\":\"/model/instance/form/patient/patient.medical_record_number\"}"));
+        assertThat(resultJSON, allOf(
+                containsString("\"name\":\"patient.medical_record_number\""),
+                containsString("\"value\":\"\""),
+                containsString("\"bind\":\"\\/model\\/instance\\/form\\/patient\\/patient.medical_record_number\"")));
     }
 
     @Test
     public void shouldContainBirthDateIfPresent() throws Exception {
         Date currentDate = new Date();
         String resultJSON = mapper.map(patient().withBirthdate(currentDate).instance(), formData);
-        assertThat(resultJSON, containsString("{\"name\":\"patient.birthdate\",\"value\":\"" + getFormattedDate(currentDate) + "\",\"bind\":\"/model/instance/form/patient/patient.birthdate\"}"));
+        assertThat(resultJSON, allOf(
+                containsString("\"name\":\"patient.birthdate\""),
+                containsString("\"value\":\"" + getFormattedDate(currentDate) + "\""),
+                containsString("\"bind\":\"\\/model\\/instance\\/form\\/patient\\/patient.birthdate\"")));
     }
 
     @Test
     public void shouldNotContainBirthDateEntryIfNotPresent() throws Exception {
         String resultJSON = mapper.map(patient().instance(), formData);
-        assertThat(resultJSON, containsString("{\"name\":\"patient.birthdate\",\"bind\":\"/model/instance/form/patient/patient.birthdate\"}"));
+        assertThat(resultJSON, allOf(
+                containsString("\"name\":\"patient.birthdate\""),
+                containsString("\"bind\":\"\\/model\\/instance\\/form\\/patient\\/patient.birthdate\"")));
     }
 
     @Test
     public void shouldContainFamilyName() throws Exception {
         String resultJSON = mapper.map(patient().withFamilyName("familyName").instance(), formData);
-        assertThat(resultJSON, containsString("{\"name\":\"patient.family_name\",\"value\":\"familyName\",\"bind\":\"/model/instance/form/patient/patient.family_name\"}"));
+        assertThat(resultJSON, allOf(
+                containsString("\"name\":\"patient.family_name\""),
+                containsString("\"value\":\"familyName\""),
+                containsString("\"bind\":\"\\/model\\/instance\\/form\\/patient\\/patient.family_name\"")));
     }
 
     @Test
     public void shouldContainGivenName() throws Exception {
         String resultJSON = mapper.map(patient().withGivenName("givenName").instance(), formData);
-        assertThat(resultJSON, containsString("{\"name\":\"patient.given_name\",\"value\":\"givenName\",\"bind\":\"/model/instance/form/patient/patient.given_name\"}"));
+        assertThat(resultJSON, allOf(
+                containsString("\"name\":\"patient.given_name\""),
+                containsString("\"value\":\"givenName\""),
+                containsString("\"bind\":\"\\/model\\/instance\\/form\\/patient\\/patient.given_name\"")));
     }
 
     @Test
     public void shouldContainMiddleName() throws Exception {
         String resultJSON = mapper.map(patient().withMiddleName("middleName").instance(), formData);
-        assertThat(resultJSON, containsString("{\"name\":\"patient.middle_name\",\"value\":\"middleName\",\"bind\":\"/model/instance/form/patient/patient.middle_name\"}"));
+        assertThat(resultJSON, allOf(
+                containsString("\"name\":\"patient.middle_name\""),
+                containsString("\"value\":\"middleName\""),
+                containsString("\"bind\":\"\\/model\\/instance\\/form\\/patient\\/patient.middle_name\"")));
     }
 
     @Test
     public void shouldContainGender() throws Exception {
         String resultJSON = mapper.map(patient().withSex("f").instance(), formData);
-        assertThat(resultJSON, containsString("{\"name\":\"patient.sex\",\"value\":\"f\",\"bind\":\"/model/instance/form/patient/patient.sex\"}"));
+        assertThat(resultJSON, allOf(
+                containsString("\"name\":\"patient.sex\""),
+                containsString("\"value\":\"f\""),
+                containsString("\"bind\":\"\\/model\\/instance\\/form\\/patient\\/patient.sex\"")));
     }
 
     @Test
     public void shouldContainFormUUID() throws Exception{
         when(formData.getTemplateUuid()).thenReturn("this-is-a-form-uuid");
         String resultJSON = mapper.map(patient().instance(), formData);
-        assertThat(resultJSON,containsString("{\"name\":\"encounter.form_uuid\",\"value\":\"this-is-a-form-uuid\",\"bind\":\"/model/instance/form/encounter/encounter.form_uuid\"}"));
+        assertThat(resultJSON,allOf(
+                containsString("\"name\":\"encounter.form_uuid\""),
+                containsString("\"value\":\"this-is-a-form-uuid\""),
+                containsString("\"bind\":\"\\/model\\/instance\\/form\\/encounter\\/encounter.form_uuid\"")));
     }
 
     private String getJSONContent() {

@@ -17,8 +17,10 @@ import com.muzima.view.forms.FormsActivity;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.annotation.Config;
 
 @RunWith(CustomTestRunner.class)
+@Config(manifest = Config.NONE)
 public class FormsActivityTest {
     private FormsActivity activity;
     private ListView formsListView;
