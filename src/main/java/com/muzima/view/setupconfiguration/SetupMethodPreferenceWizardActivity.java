@@ -5,16 +5,20 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
+import com.muzima.adapters.cohort.AllCohortsAdapter;
 import com.muzima.adapters.setupconfiguration.SetupConfigurationAdapter;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.LastSyncTimeService;
@@ -60,6 +64,10 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
                 getApplicationContext(),R.layout.item_setup_configs_list,
                 ((MuzimaApplication) getApplicationContext()).getSetupConfigurationController());
         setupConfigurationAdapter.setBackgroundListQueryTaskListener(this);
+
+        final EditText configSetupFilter = (EditText) findViewById(R.id.filter_configs_txt);
+        configSetupFilter.addTextChangedListener(textWatcherForFilterText(setupConfigurationAdapter));
+
         setupConfigurationAdapter.reloadData();
 
         activeNextButton = (Button) findViewById(R.id.next);
@@ -154,7 +162,7 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
     }
 
     private void navigateToGuidedWizardActivity(final SetupConfigurationAdapter setupConfigurationAdapter){
-        turnOnProgressDialog("Preparing setup configuration wizard");
+        turnOnProgressDialog(getString(R.string.info_setup_configuration_wizard_prepare));
         new AsyncTask<Void, Void, int[]>() {
 
             @Override
@@ -174,10 +182,12 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
                 Log.i(TAG, "Restarting timeout timer!");
                 ((MuzimaApplication) getApplication()).restartTimer();
                 if (result[0] != SUCCESS) {
-                    Toast.makeText(SetupMethodPreferenceWizardActivity.this, "Could not download Setup Configuration template", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SetupMethodPreferenceWizardActivity.this,
+                            getString(R.string.error_setup_configuration_template_download), Toast.LENGTH_SHORT).show();
                 } else {
                     try {
-                        LastSyncTimeService lastSyncTimeService = ((MuzimaApplication) getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
+                        LastSyncTimeService lastSyncTimeService =
+                                ((MuzimaApplication) getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
                         SntpService sntpService = ((MuzimaApplication) getApplicationContext()).getSntpService();
                         LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_SETUP_CONFIGURATIONS, sntpService.getLocalTime());
                         lastSyncTimeService.saveLastSyncTime(lastSyncTime);
@@ -186,7 +196,8 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
                     }
                     keepPhoneAwake(false);
                     Intent intent = new Intent(getApplicationContext(), GuidedConfigurationWizardActivity.class);
-                    intent.putExtra("SETUP_CONFIG_UUID",setupConfigurationAdapter.getSelectedConfigurationUuid());
+                    intent.putExtra(GuidedConfigurationWizardActivity.SETUP_CONFIG_UUID_INTENT_KEY,
+                            setupConfigurationAdapter.getSelectedConfigurationUuid());
                     startActivity(intent);
                     finish();
                 }
@@ -212,9 +223,28 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
         }
     }
 
+    private TextWatcher textWatcherForFilterText(final SetupConfigurationAdapter setupConfigurationAdapter) {
+        return new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                setupConfigurationAdapter.filterItems(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        };
+    }
+
     @Override
     public void onQueryTaskStarted() {
-        turnOnProgressDialog("Loading Setup Configs");
+        turnOnProgressDialog(getString(R.string.info_setup_config_load));
     }
 
     @Override

@@ -6,12 +6,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
+import com.muzima.adapters.setupconfiguration.GuidedSetupActionLogAdapter;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.SetupConfigurationController;
+import com.muzima.model.SetupActionLogModel;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.util.JsonUtils;
@@ -22,18 +25,20 @@ import net.minidev.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
+import com.muzima.utils.Constants.SetupLogConstants;
 
 public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
+    public static final String SETUP_CONFIG_UUID_INTENT_KEY = "SETUP_CONFIG_UUID";
     private SetupConfigurationTemplate setupConfigurationTemplate;
-    private TextView progressUpdateView;
     private String progressUpdateMessage;
-    private final int TOTAL_WIZARD_STEPS = 6;
-    private int wizardStatus =0;
+    private final int TOTAL_WIZARD_STEPS = 8;
+    private int wizardLevel =0;
+    private boolean wizardcompletedSuccessfully = true;
+    GuidedSetupActionLogAdapter setupActionLogAdapter;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guided_setup_wizard);
-        progressUpdateView = (TextView)findViewById(R.id.activity_log);
         Button finishSetupButton = (Button) findViewById(R.id.finish);
 
         finishSetupButton.setOnClickListener(new View.OnClickListener() {
@@ -45,14 +50,17 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 finish();
             }
         });
+        setupActionLogAdapter = new GuidedSetupActionLogAdapter(getApplicationContext(),R.id.setup_logs_list);
+        ListView setupLogsListView = (ListView)findViewById(R.id.setup_logs_list);
+        setupLogsListView.setAdapter(setupActionLogAdapter);
 
-        runSetupConfiguration();
+        initiateSetupConfiguration();
     }
 
-    private void runSetupConfiguration(){
-        String setupConfigTemplateUuid = getIntent().getStringExtra("SETUP_CONFIG_UUID");
+    private void initiateSetupConfiguration(){
+        String setupConfigTemplateUuid = getIntent().getStringExtra(SETUP_CONFIG_UUID_INTENT_KEY);
         fetchConfigurationTemplate(setupConfigTemplateUuid);
-        downloadAndSavePatients();
+        downloadCohorts();
     }
 
     private void fetchConfigurationTemplate(String setupConfigTemplateUuid){
@@ -65,11 +73,47 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         }
     }
 
-    private void downloadAndSavePatients() {
+    private void downloadCohorts() {
+        final SetupActionLogModel downloadCohortsLog = new SetupActionLogModel();
+        addSetupActionLog(downloadCohortsLog);
         new AsyncTask<Void, Void, int[]>() {
             @Override
             protected void onPreExecute() {
-                updateProgress("Downloading patient cohorts");
+                downloadCohortsLog.setSetupAction(getString(R.string.info_cohort_download));
+                onQueryTaskStarted();
+            }
+            @Override
+            protected int[] doInBackground(Void... voids) {
+                MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
+                return muzimaSyncService.downloadCohorts();
+            }
+            @Override
+            protected void onPostExecute(int[] result) {
+                String resultStatus=null;
+                String resultDescription=null;
+                if (result != null && result[0] == SyncStatusConstants.SUCCESS) {
+                    resultDescription = getString(R.string.info_cohort_downloaded,result[1]);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else {
+                    wizardcompletedSuccessfully=false;
+                    resultDescription = getString(R.string.error_cohort_download);
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                }
+                downloadCohortsLog.setSetupActionResult(resultDescription);
+                downloadCohortsLog.setSetupActionResultStatus(resultStatus);
+                onQueryTaskFinish();
+                downloadAndSavePatients();
+            }
+        }.execute();
+    }
+
+    private void downloadAndSavePatients() {
+        final SetupActionLogModel downloadPatientsLog = new SetupActionLogModel();
+        addSetupActionLog(downloadPatientsLog);
+        new AsyncTask<Void, Void, int[]>() {
+            @Override
+            protected void onPreExecute() {
+                downloadPatientsLog.setSetupAction(getString(R.string.info_patient_download));
                 onQueryTaskStarted();
             }
             @Override
@@ -78,22 +122,25 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 if (!uuids.isEmpty())
 
                 {
-
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                     return muzimaSyncService.downloadPatientsForCohorts(uuids.toArray(new String[uuids.size()]));
-
                 }
                 return null;
             }
             @Override
             protected void onPostExecute(int[] result) {
-                String status=null;
+                String resultDescription=null;
+                String resultStatus=null;
                 if (result != null && result[0] == SyncStatusConstants.SUCCESS) {
-                    status = getString(R.string.info_new_patient_download, result[1]);
+                    resultDescription = getString(R.string.info_cohort_patient_download, result[1],result[2]);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
-                    status = "Could not download cohorts";
+                    wizardcompletedSuccessfully=false;
+                    resultDescription = getString(R.string.error_patient_download);
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
-                updateProgress(status);
+                downloadPatientsLog.setSetupActionResult(resultDescription);
+                downloadPatientsLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
                 downloadForms();
             }
@@ -101,15 +148,51 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     }
 
     private void downloadForms() {
+        final SetupActionLogModel downloadFormsLog = new SetupActionLogModel();
+        addSetupActionLog(downloadFormsLog);
         new AsyncTask<Void, Void, int[]>() {
             @Override
             protected void onPreExecute() {
-                updateProgress("Downloading Form Templates");
+                downloadFormsLog.setSetupAction(getString(R.string.info_form_download));
                 onQueryTaskStarted();
             }
             @Override
             protected int[] doInBackground(Void... voids) {
-                List<String> uuids = extractFormsUuids();
+                MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
+                return muzimaSyncService.downloadForms();
+            }
+            @Override
+            protected void onPostExecute(int[] result) {
+                String resultDescription = null;
+                String resultStatus=null;
+                if (result != null && result[0] == SyncStatusConstants.SUCCESS) {
+                    resultDescription = getString(R.string.info_form_downloaded,result[1]);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else{
+                    wizardcompletedSuccessfully=false;
+                    resultDescription = getString(R.string.error_form_download);
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                }
+                downloadFormsLog.setSetupActionResult(resultDescription);
+                downloadFormsLog.setSetupActionResultStatus(resultStatus);
+                onQueryTaskFinish();
+                downloadFormTemplates();
+            }
+        }.execute();
+    }
+
+    private void downloadFormTemplates() {
+        final SetupActionLogModel downloadFormTemplatesLog = new SetupActionLogModel();
+        addSetupActionLog(downloadFormTemplatesLog);
+        new AsyncTask<Void, Void, int[]>() {
+            @Override
+            protected void onPreExecute() {
+                downloadFormTemplatesLog.setSetupAction(getString(R.string.info_form_template_download));
+                onQueryTaskStarted();
+            }
+            @Override
+            protected int[] doInBackground(Void... voids) {
+                List<String> uuids = extractFormTemplatesUuids();
                 if (!uuids.isEmpty())
 
                 {
@@ -121,13 +204,18 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
             @Override
             protected void onPostExecute(int[] result) {
-                String status = null;
+                String resultDescription = null;
+                String resultStatus=null;
                 if (result != null && result[0] == SyncStatusConstants.SUCCESS) {
-                    status = "Downloaded "+result[1]+" form templates";
+                    resultDescription = getString(R.string.info_form_template_downloaded,result[1]);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else{
-                    status = "Could not download forms";
+                    wizardcompletedSuccessfully=false;
+                    resultDescription = getString(R.string.error_form_templates_download);
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
-                updateProgress(status);
+                downloadFormTemplatesLog.setSetupActionResult(resultDescription);
+                downloadFormTemplatesLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
                 downloadProviders();
                 downloadLocations();
@@ -136,10 +224,12 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         }.execute();
     }
     private void downloadLocations() {
+        final SetupActionLogModel downloadLocationsLog = new SetupActionLogModel();
+        addSetupActionLog(downloadLocationsLog);
         new AsyncTask<Void, Void, int[]>() {
             @Override
             protected void onPreExecute() {
-                updateProgress("Downloading Locations");
+                downloadLocationsLog.setSetupAction(getString(R.string.info_location_download));
                 onQueryTaskStarted();
             }
             @Override
@@ -156,22 +246,29 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
             @Override
             protected void onPostExecute(int[] result) {
-                String status =null;
+                String resultDescription =null;
+                String resultStatus=null;
                 if (result != null && result[0] == SyncStatusConstants.SUCCESS) {
-                    status = "Downloaded " + result[1] + " locations";
+                    resultDescription = getString(R.string.info_location_downloaded,result[1]);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
-                    status = "Could not download locations";
+                    wizardcompletedSuccessfully=false;
+                    resultDescription = getString(R.string.error_location_download);
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
-                updateProgress(status);
+                downloadLocationsLog.setSetupActionResult(resultDescription);
+                downloadLocationsLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
             }
         }.execute();
     }
     private void downloadProviders() {
+        final SetupActionLogModel downloadProvidersLog = new SetupActionLogModel();
+        addSetupActionLog(downloadProvidersLog);
         new AsyncTask<Void, Void, int[]>() {
             @Override
             protected void onPreExecute() {
-                updateProgress("Downloading Providers");
+                downloadProvidersLog.setSetupAction(getString(R.string.info_provider_download));
                 onQueryTaskStarted();
             }
             @Override
@@ -188,22 +285,29 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
             @Override
             protected void onPostExecute(int[] result) {
-                String status =null;
+                String resultDescription =null;
+                String resultStatus=null;
                 if (result != null && result[0] == SyncStatusConstants.SUCCESS) {
-                    status = "Downloaded " + result[1] + " providers";
+                    resultDescription = getString(R.string.info_provider_downloaded, result[1]);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
-                    status = "Could not download providers";
+                    wizardcompletedSuccessfully=false;
+                    resultDescription = getString(R.string.error_provider_download);
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
-                updateProgress(status);
+                downloadProvidersLog.setSetupActionResult(resultDescription);
+                downloadProvidersLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
             }
         }.execute();
     }
     private void downloadConcepts() {
+        final SetupActionLogModel downloadConceptsLog = new SetupActionLogModel();
+        addSetupActionLog(downloadConceptsLog);
         new AsyncTask<Void, Void, int[]>() {
             @Override
             protected void onPreExecute() {
-                updateProgress("Downloading Concepts");
+                downloadConceptsLog.setSetupAction(getString(R.string.info_concept_download));
                 onQueryTaskStarted();
             }
             @Override
@@ -220,23 +324,31 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
             @Override
             protected void onPostExecute(int[] result) {
-                String status =null;
+                String resultDescription =null;
+                String resultStatus=null;
                 if (result != null && result[0] == SyncStatusConstants.SUCCESS) {
-                    status = "Downloaded " + result[1] + " concepts";
+                    resultDescription = getString(R.string.info_concept_downloaded, result[1]);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
-                    status = "Could not download concepts";
+                    wizardcompletedSuccessfully=false;
+                    resultDescription = getString(R.string.error_concept_download);
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
-                updateProgress(status);
+                downloadConceptsLog.setSetupActionResult(resultDescription);
+                downloadConceptsLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
-                downloadEncountersAndObservations();
+                downloadEncounters();
+                downloadObservations();
             }
         }.execute();
     }
-    private void downloadEncountersAndObservations() {
+    private void downloadEncounters() {
+        final SetupActionLogModel downloadEncountersLog = new SetupActionLogModel();
+        addSetupActionLog(downloadEncountersLog);
         new AsyncTask<Void, Void, int[]>() {
             @Override
             protected void onPreExecute() {
-                updateProgress("Downloading Encounters and Observations");
+                downloadEncountersLog.setSetupAction(getString(R.string.info_encounter_download));
                 onQueryTaskStarted();
             }
             @Override
@@ -253,13 +365,58 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
             @Override
             protected void onPostExecute(int[] result) {
-                String status =null;
+                String resultDescription =null;
+                String resultStatus=null;
                 if (result != null && result[0] == SyncStatusConstants.SUCCESS) {
-                    status = "Downloaded  obs and encounters";
+                    resultDescription = getString(R.string.info_encounter_downloaded, result[1], result[2]);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
-                    status = "Could not download obs and encounters";
+                    wizardcompletedSuccessfully=false;
+                    resultDescription = getString(R.string.error_encounter_download);
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
-                updateProgress(status);
+                downloadEncountersLog.setSetupActionResult(resultDescription);
+                downloadEncountersLog.setSetupActionResultStatus(resultStatus);
+                onQueryTaskFinish();
+            }
+        }.execute();
+    }
+    private void downloadObservations() {
+        final SetupActionLogModel downloadObservationsLog = new SetupActionLogModel();
+        addSetupActionLog(downloadObservationsLog);
+        new AsyncTask<Void, Void, int[]>() {
+            @Override
+            protected void onPreExecute() {
+                downloadObservationsLog.setSetupAction(getString(R.string.info_observation_download));
+                onQueryTaskStarted();
+            }
+            @Override
+            protected int[] doInBackground(Void... voids) {
+                List<String> uuids = extractCohortsUuids();
+                if (!uuids.isEmpty())
+
+                {
+                    MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
+                    return muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(
+                            uuids.toArray(new String[uuids.size()]),false);
+
+                }
+                return null;
+            }
+            @Override
+            protected void onPostExecute(int[] result) {
+                String resultDescription =null;
+                String resultStatus=null;
+                if (result != null && result[0] == SyncStatusConstants.SUCCESS) {
+                    resultDescription = getString(R.string.info_observation_downloaded, result[1], result[2]);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else {
+                    wizardcompletedSuccessfully=false;
+                    resultDescription = getString(R.string.error_encounter_download);
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                }
+                downloadObservationsLog.setSetupActionResult(resultDescription);
+                downloadObservationsLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
             }
         }.execute();
@@ -301,7 +458,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         return locationUuids;
     }
 
-    private List<String> extractFormsUuids(){
+    private List<String> extractFormTemplatesUuids(){
         List<String> formsuuids = new ArrayList<>();
         List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(),"$['config']['forms']");
         if(objects != null){
@@ -324,17 +481,23 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         }
         return cohortUuids;
     }
-    private synchronized void updateProgress(String status){
-        progressUpdateView.append("\n"+status);
+
+    private void addSetupActionLog(SetupActionLogModel setupActionLogModel){
+        setupActionLogAdapter.add(setupActionLogModel);
     }
 
     private synchronized void incrementWizardStep(){
-        wizardStatus++;
+        wizardLevel++;
     }
 
     private synchronized void evaluateFinishStatus(){
-        if(wizardStatus == (TOTAL_WIZARD_STEPS)) {
-            updateProgress("\n\nSetup completed successfully");
+        if(wizardLevel == (TOTAL_WIZARD_STEPS)) {
+            TextView finalResult = (TextView) findViewById(R.id.setup_actions_final_result);
+            if(wizardcompletedSuccessfully){
+                finalResult.setText(getString(R.string.info_setup_complete_success));
+            } else{
+                finalResult.setText(getString(R.string.info_setup_complete_fail));
+            }
             LinearLayout progressBarLayout = (LinearLayout) findViewById(R.id.progress_bar_container);
             progressBarLayout.setVisibility(View.GONE);
             LinearLayout nextButtonLayout = (LinearLayout) findViewById(R.id.next_button_layout);
@@ -343,10 +506,12 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     }
     @Override
     public void onQueryTaskStarted() {
+        setupActionLogAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onQueryTaskFinish() {
+        setupActionLogAdapter.notifyDataSetChanged();
         incrementWizardStep();
         evaluateFinishStatus();
     }
@@ -356,5 +521,4 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     @Override
     public void onQueryTaskCancelled(Object errorDefinition){}
-
 }

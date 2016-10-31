@@ -9,37 +9,41 @@
             style="@style/NotClickableSummaryItem"
             android:layout_alignParentTop="true">
         <TextView style="@style/SummaryHeader"
-                  android:text="Progress update"/>
+                  android:text="@string/title_guided_setup_progress"/>
     </LinearLayout>
     <LinearLayout
         style="@style/NotClickableSummaryItem"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
-        android:id="@+id/activity_logs_layout"
+        android:id="@+id/setup_logs_layout"
         android:layout_below="@+id/guided_setup_header">
-    <TextView
-            android:id="@+id/activity_log"
-            android:textColor="@android:color/white"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-    />
+        <ListView
+                android:id="@+id/setup_logs_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+        </ListView>
+        <TextView android:id="@+id/setup_actions_final_result"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
 </LinearLayout>
     <LinearLayout
             style="@style/NotClickableSummaryItem"
             android:id="@+id/progress_bar_container"
-            android:layout_below="@+id/activity_logs_layout"
-            android:orientation="horizontal">
+            android:layout_below="@+id/setup_logs_layout"
+            android:orientation="horizontal"
+    android:layout_marginTop="15dp">
 
         <ProgressBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@android:style/Widget.ProgressBar.Small"
                 android:layout_marginRight="5dp"
-        android:progress="30"/>
+                android:progress="30"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Initial setup running. Please wait" />
+                android:text="@string/info_initial_setup_progress" />
     </LinearLayout>
 
     <LinearLayout style="@style/ButtonRow" android:id="@+id/next_button_layout"

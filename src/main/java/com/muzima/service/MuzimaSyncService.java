@@ -601,6 +601,8 @@ public class MuzimaSyncService {
 
             int patientsTotal = patients.size();
             int count = 0;
+            int patientsEncountersDownloaded=0;
+            int totalEncountersDownloaded=0;
 
 
             for(Patient patient : patients){
@@ -613,8 +615,12 @@ public class MuzimaSyncService {
                 if(result[0] != SyncStatusConstants.SUCCESS){
                     Log.e(TAG, "Encounters for patient " + count + " of "+ patientsTotal + " not downloaded");
                     updateProgressDialog(muzimaApplication.getString(R.string.info_encounter_not_downloaded_progress, count, patientsTotal));
+                    patientsEncountersDownloaded++;
+                    totalEncountersDownloaded +=result[1];
                 }
             }
+            result[1]=totalEncountersDownloaded;
+            result[2]=patientsEncountersDownloaded;
 
 
 
