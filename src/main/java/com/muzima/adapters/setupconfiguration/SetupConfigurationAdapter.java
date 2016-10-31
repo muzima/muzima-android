@@ -19,6 +19,7 @@ import com.muzima.service.MuzimaSyncService;
 import com.muzima.utils.Fonts;
 import com.muzima.view.CheckedLinearLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SetupConfigurationAdapter extends ListAdapter<SetupConfiguration> {
@@ -27,6 +28,7 @@ public class SetupConfigurationAdapter extends ListAdapter<SetupConfiguration> {
     private final MuzimaSyncService muzimaSyncService;
     private String selectedConfigurationUuid;
     protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
+    private List<SetupConfiguration> allSetupConfigurations;
 
     public SetupConfigurationAdapter(Context context, int textViewResourceId, SetupConfigurationController setupConfigurationController){
         super(context, textViewResourceId);
@@ -91,6 +93,19 @@ public class SetupConfigurationAdapter extends ListAdapter<SetupConfiguration> {
         }
     }
 
+    public void filterItems(String filterText) {
+        SetupConfigurationAdapter.this.clear();
+        List <SetupConfiguration> filteredSetupConfigurations = new ArrayList<>();
+        for (SetupConfiguration setupConfiguration : allSetupConfigurations) {
+            if (setupConfiguration.getName().toLowerCase().contains(filterText.toLowerCase())
+                    || setupConfiguration.getDescription().toLowerCase().contains(filterText.toLowerCase())) {
+                filteredSetupConfigurations.add(setupConfiguration);
+            }
+        }
+        addAll(filteredSetupConfigurations);
+        notifyDataSetChanged();
+    }
+
     public class DownloadSetupConfigurationsBackgroundQueryTask extends AsyncTask<Void, Void, List<SetupConfiguration>> {
         @Override
         protected void onPreExecute() {
@@ -118,7 +133,8 @@ public class SetupConfigurationAdapter extends ListAdapter<SetupConfiguration> {
                 Toast.makeText(getContext(), "Setup configurations could not be loaded", Toast.LENGTH_SHORT).show();
                 return;
             }
-
+            allSetupConfigurations = setupConfigurations;
+            SetupConfigurationAdapter.this.clear();
             addAll(setupConfigurations);
             notifyDataSetChanged();
 

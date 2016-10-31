@@ -93,6 +93,7 @@
     <string name="general_notifications">Notifications</string>
     <string name="general_observations">Observations</string>
     <string name="general_ok">Ok</string>
+    <string name="general_fail">Fail</string>
     <string name="general_password">Password</string>
     <string name="general_providers">Providers</string>
     <string name="general_save">Save</string>
@@ -196,7 +197,7 @@
     <string name="info_cohort_fetch_in_progress">Already fetching cohorts, ignored the request</string>
     <string name="info_cohort_load">Loading Cohorts...</string>
     <string formatted="false" name="info_cohort_new_patient_download">Downloaded %d new patients for %d cohorts.</string>
-    <string formatted="false" name="info_cohort_patient_download">Downloaded %d patients for % cohorts</string>
+    <string formatted="false" name="info_cohort_patient_download">Downloaded %d patients for %d cohorts</string>
     <string name="info_cohort_prefixes_unavailable">No Cohort Prefixes Added</string>
     <string name="info_cohorts_unavailable">No Cohorts Available</string>
     <string name="info_complete_form_unavailable">No completed and non synced forms</string>
@@ -252,14 +253,14 @@
     </string>
     <string name="info_form_data_upload_sucess">Upload form data success</string>
     <string name="info_form_delete_success">Forms deleted successfully</string>
-    <string name="info_form_download">Downloaded %d forms</string>
+    <string name="info_form_downloaded">Downloaded %d forms</string>
     <string formatted="false" name="info_form_download_delete">Downloaded %d forms and retired %d forms</string>
     <string name="info_form_fetch_in_progress">Already fetching forms, ignored the request</string>
     <string name="info_form_load">Loading Forms...</string>
     <string name="info_form_metadata_download">Downloading forms metadata</string>
     <string formatted="false" name="info_form_template_concept_download">Downloaded %d form templates and %d concepts</string>
-    <string name="info_form_template_download">Downloading form templates for %d forms</string>
-    <string name="info_form_template_downloaded">Downloaded Form Templates</string>
+    <string name="info_form_template_with_count_download">Downloading form templates for %d forms</string>
+    <string name="title_form_template_downloaded">Downloaded Form Templates</string>
     <string name="info_form_template_recommended">Recommended Form Templates</string>
     <string name="info_form_upload">Uploading Forms</string>
     <string name="info_form_upload_in_progress">Already uploading forms, ignored the request</string>
@@ -273,7 +274,7 @@
     <string name="info_muzima_sync_service_in_progress">mUzima sync service running</string>
     <string name="info_new_cohort_download">Downloaded %d new cohorts</string>
     <string formatted="false" name="info_new_cohort_download_delete">Downloaded %d new cohorts and retired %d cohorts</string>
-    <string name="info_new_encounter_download">Downloaded %d new observations</string>
+    <string name="info_new_encounter_download">Downloaded %d new encounters</string>
     <string formatted="false" name="info_new_encounter_download_delete">Downloaded %d new encounters and retired %d encounters</string>
     <string name="info_new_notification">New Notification</string>
     <string name="info_new_observation_download">Downloaded %d new observations</string>
@@ -293,7 +294,7 @@
     <string name="info_patient_data_download">Downloading Patients data</string>
     <string name="info_patient_download">Downloading Patients</string>
     <string name="info_provider_delete_success">%d Providers deleted successfully</string>
-    <string name="info_provider_download">Downloading Providers...</string>
+    <string name="info_provider_load">Loading Providers...</string>
     <string name="info_provider_unavailable">No providers have been added yet</string>
     <string name="info_real_time_upload">mUzima is uploading your data</string>
     <string name="info_real_time_upload_success">mUzima has uploaded your data successfully</string>
@@ -377,4 +378,38 @@
     <string name="warning_switch_server">Switching Server: This will clear all mUzima data on your
         device, including any incomplete forms. Are you sure you want to change this setting?
     </string>
+    <string name="info_setup_configuration_wizard_prepare">Preparing setup configuration wizard</string>
+    <string name="error_setup_configuration_template_download">Could not download Setup Configuration template</string>
+    <string name="info_setup_config_load">Loading Setup Configs</string>
+    <string formatted="false" name="info_cohort_downloaded">Downloaded %d cohorts</string>
+    <string name="error_cohort_download">Could not download cohorts</string>
+    <string name="error_patient_download">Could not download patients</string>
+    <string name="info_form_download">Downloading Forms</string>
+    <string name="error_form_download">Could not download forms</string>
+    <string name="info_form_template_download">Downloading Form Templates</string>
+    <string formatted="false" name="info_form_template_downloaded">Downloaded %d form templates</string>
+    <string name="info_location_download">Downloading Locations</string>
+    <string formatted="false" name="info_location_downloaded">Downloaded %d locations</string>
+    <string name="error_location_download">Could not download locations</string>
+    <string name="info_provider_download">Downloading providers</string>
+    <string formatted="false" name="info_provider_downloaded">Downloaded %d providers</string>
+    <string name="error_provider_download">Could not download providers</string>
+    <string name="info_concept_download">Downloading concepts</string>
+    <string formatted="false" name="info_concept_downloaded">Downloaded %d concepts</string>
+    <string name="error_concept_download">Could not download concepts</string>
+    <string name="error_encounter_download">Could not download encounters</string>
+    <string name="error_observation_download">Could not download observations</string>
+    <string name="info_encounter_download">Downloading encounters</string>
+    <string name="info_observation_download">Downloading observations</string>
+    <string formatted="false" name="info_encounter_downloaded">Downloaded %d encounters for %d patients</string>
+    <string formatted="false" name="info_observation_downloaded">Downloaded %d observations for %d patients</string>
+    <string name="info_setup_complete_success">Setup completed successfully</string>
+    <string name="info_setup_complete_fail">Setup completed with some failure</string>
+    <string name="title_guided_setup">Guided setup (Recommended)</string>
+    <string name="hint_guided_setup">Select a preset configuration and let mUzima do the rest for you</string>
+    <string name="hint_configuration_search">Search a configuration</string>
+    <string name="title_advanced_setup">Advanced Setup</string>
+    <string name="hint_advanced_setup">Use a step by step wizard to choose what you want</string>
+    <string name="info_initial_setup_progress">Initial setup running. Please wait</string>
+    <string name="title_guided_setup_progress">Setup Progress</string>
 </resources>

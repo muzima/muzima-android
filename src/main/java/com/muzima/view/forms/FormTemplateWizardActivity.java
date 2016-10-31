@@ -113,7 +113,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
                     Toast.makeText(FormTemplateWizardActivity.this, getString(R.string.hint_registration_form_select), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                turnOnProgressDialog(getString(R.string.info_form_template_download,getSelectedForms().size()));
+                turnOnProgressDialog(getString(R.string.info_form_template_with_count_download,getSelectedForms().size()));
 
                 new AsyncTask<Void, Void, int[]>() {
 

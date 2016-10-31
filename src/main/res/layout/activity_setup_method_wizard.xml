@@ -13,13 +13,13 @@ android:background="@color/primary_black">
             style="@style/NotClickableSummaryItem"
             android:layout_alignParentTop="true">
         <TextView style="@style/SummaryHeader"
-              android:text="Guided setup (Recommended)"/>
+              android:text="@string/title_guided_setup"/>
         <TextView
                 android:textColor="@android:color/white"
                 android:textAlignment="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Select a preset configuration and let mUzima do the rest for you.">
+                android:text="@string/hint_guided_setup">
         </TextView>
     </LinearLayout>
     <LinearLayout android:layout_below="@+id/guided_setup_header"
@@ -28,14 +28,15 @@ android:background="@color/primary_black">
                   android:layout_height="match_parent"
                   android:orientation="vertical"
                   android:id="@+id/configs_layout">
-        <RelativeLayout style="@style/ClickableSummaryItem">
+        <RelativeLayout style="@style/NotClickableSummaryItem">
             <EditText android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:layout_marginTop="10dp"
                       android:textColor="@color/primary_blue"
+                      android:background="@color/primary_black"
                       android:cursorVisible="true"
                       android:layout_marginBottom="10dp"
-                      android:hint="Search a configuration"
+                      android:hint="@string/hint_configuration_search"
                       android:id="@+id/filter_configs_txt"/>
             <ImageButton android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
@@ -71,14 +72,14 @@ android:background="@color/primary_black">
             android:layout_above="@+id/next_button_layout">
         <TextView style="@style/DividerLine"/>
         <TextView style="@style/SelectableSummaryHeader"
-                  android:text="Advanced setup"
+                  android:text="@string/title_advanced_setup"
                   android:duplicateParentState="true"/>
         <TextView
                 android:textColor="@android:color/white"
                 android:textAlignment="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Use a step by step wizard to choose what you want"
+                android:text="@string/hint_advanced_setup"
                 android:duplicateParentState="true"/>
     </com.muzima.view.CheckedLinearLayout>
 
