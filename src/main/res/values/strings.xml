@@ -197,7 +197,11 @@
     <string name="info_cohort_fetch_in_progress">Already fetching cohorts, ignored the request</string>
     <string name="info_cohort_load">Loading Cohorts...</string>
     <string formatted="false" name="info_cohort_new_patient_download">Downloaded %d new patients for %d cohorts.</string>
-    <string formatted="false" name="info_cohort_patient_download">Downloaded %d patients for %d cohorts</string>
+    <string name="info_cohort_patient_not_download">No patients downloaded</string>
+    <string name="info_cohort_patient_download">Downloaded 1 patient for 1 cohort</string>
+    <string formatted="false" name="info_cohorts_patient_download">Downloaded 1 patient for %d cohorts</string>
+    <string formatted="false" name="info_cohort_patients_download">Downloaded %d patients for 1 cohort</string>
+    <string formatted="false" name="info_cohorts_patients_download">Downloaded %d patients for %d cohorts</string>
     <string name="info_cohort_prefixes_unavailable">No Cohort Prefixes Added</string>
     <string name="info_cohorts_unavailable">No Cohorts Available</string>
     <string name="info_complete_form_unavailable">No completed and non synced forms</string>
@@ -253,7 +257,9 @@
     </string>
     <string name="info_form_data_upload_sucess">Upload form data success</string>
     <string name="info_form_delete_success">Forms deleted successfully</string>
-    <string name="info_form_downloaded">Downloaded %d forms</string>
+    <string name="info_form_downloaded">Downloaded 1 form</string>
+    <string name="info_form_not_downloaded">No forms downloaded</string>
+    <string name="info_forms_downloaded">Downloaded %d forms</string>
     <string formatted="false" name="info_form_download_delete">Downloaded %d forms and retired %d forms</string>
     <string name="info_form_fetch_in_progress">Already fetching forms, ignored the request</string>
     <string name="info_form_load">Loading Forms...</string>
@@ -381,28 +387,46 @@
     <string name="info_setup_configuration_wizard_prepare">Preparing setup configuration wizard</string>
     <string name="error_setup_configuration_template_download">Could not download Setup Configuration template</string>
     <string name="info_setup_config_load">Loading Setup Configs</string>
-    <string formatted="false" name="info_cohort_downloaded">Downloaded %d cohorts</string>
+    <string name="info_cohort_downloaded">Downloaded 1 cohort</string>
+    <string name="info_cohort_not_downloaded">No cohorts downloaded</string>
+    <string formatted="false" name="info_cohorts_downloaded">Downloaded %d cohorts</string>
     <string name="error_cohort_download">Could not download cohorts</string>
     <string name="error_patient_download">Could not download patients</string>
     <string name="info_form_download">Downloading Forms</string>
     <string name="error_form_download">Could not download forms</string>
     <string name="info_form_template_download">Downloading Form Templates</string>
-    <string formatted="false" name="info_form_template_downloaded">Downloaded %d form templates</string>
+    <string name="info_form_template_downloaded">Downloaded 1 form template</string>
+    <string name="info_form_template_not_downloaded">No form template downloaded</string>
+    <string formatted="false" name="info_form_templates_downloaded">Downloaded %d form templates</string>
     <string name="info_location_download">Downloading Locations</string>
-    <string formatted="false" name="info_location_downloaded">Downloaded %d locations</string>
+    <string name="info_location_not_downloaded">Did not download any locations</string>
+    <string name="info_location_downloaded">Downloaded 1 location</string>
+    <string formatted="false" name="info_locations_downloaded">Downloaded %d locations</string>
     <string name="error_location_download">Could not download locations</string>
     <string name="info_provider_download">Downloading providers</string>
-    <string formatted="false" name="info_provider_downloaded">Downloaded %d providers</string>
+    <string name="info_provider_downloaded">Downloaded 1 provider</string>
+    <string name="info_provider_not_downloaded">Did not download any providers</string>
+    <string formatted="false" name="info_providers_downloaded">Downloaded %d providers</string>
     <string name="error_provider_download">Could not download providers</string>
     <string name="info_concept_download">Downloading concepts</string>
-    <string formatted="false" name="info_concept_downloaded">Downloaded %d concepts</string>
+    <string name="info_concept_downloaded">Downloaded 1 concept</string>
+    <string name="info_concept_not_downloaded">Did not download any concepts</string>
+    <string formatted="false" name="info_concepts_downloaded">Downloaded %d concepts</string>
     <string name="error_concept_download">Could not download concepts</string>
     <string name="error_encounter_download">Could not download encounters</string>
     <string name="error_observation_download">Could not download observations</string>
     <string name="info_encounter_download">Downloading encounters</string>
     <string name="info_observation_download">Downloading observations</string>
-    <string formatted="false" name="info_encounter_downloaded">Downloaded %d encounters for %d patients</string>
-    <string formatted="false" name="info_observation_downloaded">Downloaded %d observations for %d patients</string>
+    <string name="info_encounter_patient_downloaded">Downloaded 1 encounter for 1 patient</string>
+    <string formatted="false" name="info_encounter_patients_downloaded">Downloaded 1 encounter for %d patients</string>
+    <string formatted="false" name="info_encounters_patient_downloaded">Downloaded %d encounters for 1 patient</string>
+    <string formatted="false" name="info_encounters_patients_downloaded">Downloaded %d encounters for %d patients</string>
+    <string name="info_observation_patient_downloaded">Downloaded 1 observation for 1 patient</string>
+    <string name="info_observation_patient_not_downloaded">Did not download any observations</string>
+    <string name="info_encounter_patient_not_downloaded">Did not download any encounters</string>
+    <string formatted="false" name="info_observations_patient_downloaded">Downloaded 1 observation for %d patients</string>
+    <string formatted="false" name="info_observation_patients_downloaded">Downloaded %d observations for 1 patient</string>
+    <string formatted="false" name="info_observations_patients_downloaded">Downloaded %d observations for %d patients</string>
     <string name="info_setup_complete_success">Setup completed successfully</string>
     <string name="info_setup_complete_fail">Setup completed with some failure</string>
     <string name="title_guided_setup">Guided setup (Recommended)</string>

@@ -65,14 +65,14 @@ public class GuidedSetupActionLogAdapter extends ListAdapter<SetupActionLogModel
         }
 
         public void setSetupActionResultStatus(String text){
-            if(text!=null && !StringUtils.equals(text, Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG)){
+            if(!StringUtils.isEmpty(text) && StringUtils.equals(text, Constants.SetupLogConstants.ACTION_FAILURE_STATUS_LOG)){
                 setupActionResultStatus.setTextColor(Color.RED);
                 setupActionResult.setTextColor(Color.RED);
-                setupActionResultStatus.setText(getContext().getString(R.string.general_fail));
-            } else {
+                setupActionResultStatus.setText((getContext().getString(R.string.general_fail)).toUpperCase() + ": ");
+            } else if(!StringUtils.isEmpty(text) && StringUtils.equals(text, Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG)){
                 setupActionResultStatus.setTextColor(ContextCompat.getColor(getContext(),R.color.primary_blue));
                 setupActionResult.setTextColor(ContextCompat.getColor(getContext(),R.color.primary_blue));
-                setupActionResultStatus.setText(getContext().getString(R.string.general_ok));
+                setupActionResultStatus.setText((getContext().getString(R.string.general_ok)).toUpperCase() + ": ");
             }
         }
     }

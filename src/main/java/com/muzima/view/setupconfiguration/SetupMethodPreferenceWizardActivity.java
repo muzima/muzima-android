@@ -8,6 +8,7 @@ import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -93,11 +94,17 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        removeSettingsMenu(menu);
+        return true;
+    }
+
+    @Override
     protected void onDestroy() {
         keyboardWatcher.destroy();
         super.onDestroy();
     }
-
 
     @Override
     public void onKeyboardShown(int keyboardSize) {

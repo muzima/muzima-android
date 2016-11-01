@@ -480,6 +480,9 @@ public class MuzimaSyncService {
         try {
             patients = patientController.getPatientsForCohorts(cohortUuids);
             int patientsTotal = patients.size();
+            int patientsObsDownloaded = 0;
+            int totalObsDownloaded = 0;
+
             int count = 0;
             for(Patient patient : patients){
                 count++;
@@ -492,8 +495,13 @@ public class MuzimaSyncService {
                     Log.e(TAG, "Obs for patient " + count + " of "+ patientsTotal + " not downloaded");
                     updateProgressDialog(muzimaApplication.getString(R.string.info_observations_not_downloaded_progress, count, patientsTotal));
 
+                } else if(result[1] > 0) {
+                    patientsObsDownloaded++;
+                    totalObsDownloaded += result[1];
                 }
             }
+            result[1]=totalObsDownloaded;
+            result[2]=patientsObsDownloaded;
         } catch (PatientController.PatientLoadException e) {
             Log.e(TAG, "Exception thrown while loading patients.", e);
             result[0] = SyncStatusConstants.LOAD_ERROR;
@@ -615,8 +623,9 @@ public class MuzimaSyncService {
                 if(result[0] != SyncStatusConstants.SUCCESS){
                     Log.e(TAG, "Encounters for patient " + count + " of "+ patientsTotal + " not downloaded");
                     updateProgressDialog(muzimaApplication.getString(R.string.info_encounter_not_downloaded_progress, count, patientsTotal));
+                } else if(result[1] > 0) {
                     patientsEncountersDownloaded++;
-                    totalEncountersDownloaded +=result[1];
+                    totalEncountersDownloaded += result[1];
                 }
             }
             result[1]=totalEncountersDownloaded;
