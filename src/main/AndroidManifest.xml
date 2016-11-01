@@ -71,26 +71,6 @@
         </activity>
 
         <activity
-                android:name="com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity"
-                android:label="Setup Method"
-                android:configChanges="orientation|screenSize"
-                android:parentActivityName="com.muzima.view.MainActivity"
-                android:windowSoftInputMode="adjustResize">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.muzima.view.MainActivity"/>
-        </activity>
-        <activity
-            android:name=".view.setupconfiguration.GuidedConfigurationWizardActivity"
-            android:label="Guided Setup Wizard"
-            android:configChanges="orientation|screenSize"
-            android:parentActivityName="com.muzima.view.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.MainActivity"/>
-        </activity>
-
-        <activity
                 android:name=".view.preferences.SettingsActivity"
                 android:theme="@style/PreferencesTheme"
                 android:configChanges="orientation|screenSize"
@@ -344,6 +324,18 @@
                   android:label="Install Barcode Scanner"
                   android:configChanges="orientation|screenSize"
                   android:theme="@style/WizardTheme"/>
+
+        <activity
+                android:name="com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity"
+                android:label="Setup Method"
+                android:configChanges="orientation|screenSize"
+                android:theme="@style/WizardTheme"
+                android:windowSoftInputMode="adjustResize"/>
+        <activity
+                android:name=".view.setupconfiguration.GuidedConfigurationWizardActivity"
+                android:label="Guided Setup Wizard"
+                android:configChanges="orientation|screenSize"
+                android:theme="@style/WizardTheme"/>
         <!--Wizard Activities End-->
 
         <receiver android:name="com.muzima.utils.ConnectivityChangeReceiver">

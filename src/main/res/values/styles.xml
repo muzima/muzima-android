@@ -4,7 +4,7 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="@style/Theme.AppCompat">
+    <style name="AppBaseTheme" parent="@style/Theme.AppCompat.D">
         <item name="colorAccent">@color/primary_blue</item>
         <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
     </style>
@@ -23,6 +23,7 @@
 
     <!-- Application theme. -->
     <style name="WizardTheme" parent="AppThemeNoActionBar">
+        <item name="android:background">@color/primary_black</item>
     </style>
 
     <style name="PreferencesTheme" parent="AppBaseTheme">

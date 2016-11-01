@@ -1,8 +1,11 @@
 package com.muzima.view.setupconfiguration;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -29,9 +32,10 @@ import com.muzima.utils.Constants.SetupLogConstants;
 
 public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
     public static final String SETUP_CONFIG_UUID_INTENT_KEY = "SETUP_CONFIG_UUID";
+    private static final String TAG = "GuidedConfigurationWizardActivity";
     private SetupConfigurationTemplate setupConfigurationTemplate;
     private String progressUpdateMessage;
-    private final int TOTAL_WIZARD_STEPS = 8;
+    private final int TOTAL_WIZARD_STEPS = 9;
     private int wizardLevel =0;
     private boolean wizardcompletedSuccessfully = true;
     GuidedSetupActionLogAdapter setupActionLogAdapter;
@@ -57,6 +61,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         initiateSetupConfiguration();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        removeSettingsMenu(menu);
+        return true;
+    }
+
     private void initiateSetupConfiguration(){
         String setupConfigTemplateUuid = getIntent().getStringExtra(SETUP_CONFIG_UUID_INTENT_KEY);
         fetchConfigurationTemplate(setupConfigTemplateUuid);
@@ -69,7 +80,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     ((MuzimaApplication)getApplicationContext()).getSetupConfigurationController();
             setupConfigurationTemplate = setupConfigurationController.getSetupConfigurationTemplate(setupConfigTemplateUuid);
         }catch (SetupConfigurationController.SetupConfigurationFetchException e){
-            e.printStackTrace();
+            Log.e(TAG, "Could not get setup configuration template", e);
         }
     }
 
@@ -91,8 +102,15 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             protected void onPostExecute(int[] result) {
                 String resultStatus=null;
                 String resultDescription=null;
-                if (result != null && result[0] == SyncStatusConstants.SUCCESS) {
-                    resultDescription = getString(R.string.info_cohort_downloaded,result[1]);
+                if (result != null){
+                    resultDescription = getString(R.string.info_cohort_not_downloaded);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if(result[0] == SyncStatusConstants.SUCCESS) {
+                    if(result[1] == 1) {
+                        resultDescription = getString(R.string.info_cohort_downloaded);
+                    } else {
+                        resultDescription = getString(R.string.info_cohorts_downloaded, result[1]);
+                    }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
                     wizardcompletedSuccessfully=false;
@@ -131,13 +149,25 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             protected void onPostExecute(int[] result) {
                 String resultDescription=null;
                 String resultStatus=null;
-                if (result != null && result[0] == SyncStatusConstants.SUCCESS) {
-                    resultDescription = getString(R.string.info_cohort_patient_download, result[1],result[2]);
+                if (result == null) {
+                    resultDescription = getString(R.string.info_cohort_patient_not_download);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
+                    if(result[1] == 1 && result[2] == 1){
+                        resultDescription = getString(R.string.info_cohort_patient_download);
+                    } else if(result[1] == 1){
+                        resultDescription = getString(R.string.info_cohorts_patient_download, result[2]);
+                    } else if(result[2] == 1){
+                        resultDescription = getString(R.string.info_cohort_patients_download, result[1]);
+                    } else {
+                        resultDescription = getString(R.string.info_cohorts_patients_download, result[1],result[2]);
+                    }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
                     wizardcompletedSuccessfully=false;
                     resultDescription = getString(R.string.error_patient_download);
                     resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+
                 }
                 downloadPatientsLog.setSetupActionResult(resultDescription);
                 downloadPatientsLog.setSetupActionResultStatus(resultStatus);
@@ -165,8 +195,15 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             protected void onPostExecute(int[] result) {
                 String resultDescription = null;
                 String resultStatus=null;
-                if (result != null && result[0] == SyncStatusConstants.SUCCESS) {
-                    resultDescription = getString(R.string.info_form_downloaded,result[1]);
+                if (result == null){
+                    resultDescription = getString(R.string.info_form_not_downloaded);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if(result[0] == SyncStatusConstants.SUCCESS) {
+                    if(result[1] == 1) {
+                        resultDescription = getString(R.string.info_form_downloaded);
+                    } else {
+                        resultDescription = getString(R.string.info_forms_downloaded, result[1]);
+                    }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else{
                     wizardcompletedSuccessfully=false;
@@ -206,8 +243,15 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             protected void onPostExecute(int[] result) {
                 String resultDescription = null;
                 String resultStatus=null;
-                if (result != null && result[0] == SyncStatusConstants.SUCCESS) {
-                    resultDescription = getString(R.string.info_form_template_downloaded,result[1]);
+                if(result == null){
+                    resultDescription = getString(R.string.info_form_template_not_downloaded);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
+                    if(result[1] == 1) {
+                        resultDescription = getString(R.string.info_form_template_downloaded);
+                    } else {
+                        resultDescription = getString(R.string.info_form_templates_downloaded, result[1]);
+                    }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else{
                     wizardcompletedSuccessfully=false;
@@ -248,8 +292,15 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             protected void onPostExecute(int[] result) {
                 String resultDescription =null;
                 String resultStatus=null;
-                if (result != null && result[0] == SyncStatusConstants.SUCCESS) {
-                    resultDescription = getString(R.string.info_location_downloaded,result[1]);
+                if (result == null){
+                    resultDescription = getString(R.string.info_location_not_downloaded);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                }else if(result[0] != SyncStatusConstants.SUCCESS) {
+                    if(result[1] == 1) {
+                        resultDescription = getString(R.string.info_location_downloaded);
+                    } else {
+                        resultDescription = getString(R.string.info_locations_downloaded,result[1]);
+                    }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
                     wizardcompletedSuccessfully=false;
@@ -287,8 +338,15 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             protected void onPostExecute(int[] result) {
                 String resultDescription =null;
                 String resultStatus=null;
-                if (result != null && result[0] == SyncStatusConstants.SUCCESS) {
-                    resultDescription = getString(R.string.info_provider_downloaded, result[1]);
+                if (result == null){
+                    resultDescription = getString(R.string.info_provider_not_downloaded);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if( result[0] == SyncStatusConstants.SUCCESS) {
+                    if(result[1] == 1) {
+                        resultDescription = getString(R.string.info_provider_downloaded);
+                    } else {
+                        resultDescription = getString(R.string.info_providers_downloaded, result[1]);
+                    }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
                     wizardcompletedSuccessfully=false;
@@ -326,8 +384,15 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             protected void onPostExecute(int[] result) {
                 String resultDescription =null;
                 String resultStatus=null;
-                if (result != null && result[0] == SyncStatusConstants.SUCCESS) {
-                    resultDescription = getString(R.string.info_concept_downloaded, result[1]);
+                if (result == null){
+                    resultDescription = getString(R.string.info_concept_not_downloaded);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if(result[0] == SyncStatusConstants.SUCCESS) {
+                    if(result[1] == 1) {
+                        resultDescription = getString(R.string.info_concept_downloaded);
+                    } else {
+                        resultDescription = getString(R.string.info_concepts_downloaded, result[1]);
+                    }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
                     wizardcompletedSuccessfully=false;
@@ -367,8 +432,23 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             protected void onPostExecute(int[] result) {
                 String resultDescription =null;
                 String resultStatus=null;
-                if (result != null && result[0] == SyncStatusConstants.SUCCESS) {
-                    resultDescription = getString(R.string.info_encounter_downloaded, result[1], result[2]);
+                if (result == null){
+                    resultDescription = getString(R.string.info_encounter_patient_not_downloaded);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if(result[0] == SyncStatusConstants.SUCCESS) {
+                    int downloadedEncounters = result[1];
+                    int patients = result[2];
+                    if(downloadedEncounters == 1 && patients == 1) {
+                        resultDescription = getString(R.string.info_encounter_patient_downloaded);
+                    } else if(downloadedEncounters == 1) {
+                        resultDescription = getString(R.string.info_encounter_patients_downloaded, patients);
+                    } else if(patients == 1) {
+                        resultDescription = getString(R.string.info_encounters_patient_downloaded, downloadedEncounters);
+                    } else if(downloadedEncounters == 0) {
+                        resultDescription = getString(R.string.info_encounter_patient_not_downloaded);
+                    } else {
+                        resultDescription = getString(R.string.info_encounters_patients_downloaded, downloadedEncounters, patients);
+                    }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
                     wizardcompletedSuccessfully=false;
@@ -407,12 +487,27 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             protected void onPostExecute(int[] result) {
                 String resultDescription =null;
                 String resultStatus=null;
-                if (result != null && result[0] == SyncStatusConstants.SUCCESS) {
-                    resultDescription = getString(R.string.info_observation_downloaded, result[1], result[2]);
+                if (result == null){
+                    resultDescription = getString(R.string.info_observation_patient_not_downloaded);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if(result[0] == SyncStatusConstants.SUCCESS) {
+                    int downloadedObs = result[1];
+                    int patients = result[2];
+                    if(downloadedObs == 1 && patients == 1) {
+                        resultDescription = getString(R.string.info_observation_patient_downloaded);
+                    } else if(downloadedObs == 1) {
+                        resultDescription = getString(R.string.info_observation_patients_downloaded, patients);
+                    } else if(patients == 1) {
+                        resultDescription = getString(R.string.info_observations_patient_downloaded, downloadedObs);
+                    } else if(downloadedObs == 0) {
+                        resultDescription = getString(R.string.info_observation_patient_not_downloaded);
+                    } else {
+                        resultDescription = getString(R.string.info_observation_patient_not_downloaded, downloadedObs, patients);
+                    }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
                     wizardcompletedSuccessfully=false;
-                    resultDescription = getString(R.string.error_encounter_download);
+                    resultDescription = getString(R.string.error_observation_download);
                     resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
                 downloadObservationsLog.setSetupActionResult(resultDescription);
@@ -497,6 +592,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 finalResult.setText(getString(R.string.info_setup_complete_success));
             } else{
                 finalResult.setText(getString(R.string.info_setup_complete_fail));
+                finalResult.setTextColor(Color.RED);
             }
             LinearLayout progressBarLayout = (LinearLayout) findViewById(R.id.progress_bar_container);
             progressBarLayout.setVisibility(View.GONE);
