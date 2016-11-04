@@ -53,7 +53,8 @@ android:background="@color/primary_black">
                       android:layout_below="@+id/guided_setup_header"
                       android:layout_height="match_parent"
                       android:layout_width="match_parent"
-                        android:fillViewport="true">
+                      android:fillViewport="true"
+                      android:scrollbars="vertical">
 
             <ListView
                     android:id="@+id/configs_wizard_list"
