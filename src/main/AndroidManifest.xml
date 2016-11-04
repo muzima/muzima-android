@@ -146,7 +146,8 @@
                 android:name=".view.patients.PatientsListActivity"
                 android:label="@string/general_clients"
                 android:configChanges="orientation|screenSize"
-                android:parentActivityName="com.muzima.view.MainActivity">
+                android:parentActivityName="com.muzima.view.MainActivity"
+                android:windowSoftInputMode="adjustResize">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.MainActivity"/>
@@ -324,7 +325,6 @@
                   android:label="Install Barcode Scanner"
                   android:configChanges="orientation|screenSize"
                   android:theme="@style/WizardTheme"/>
-
         <activity
                 android:name="com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity"
                 android:label="Setup Method"
