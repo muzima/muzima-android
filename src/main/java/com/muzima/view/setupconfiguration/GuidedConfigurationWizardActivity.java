@@ -102,7 +102,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             protected void onPostExecute(int[] result) {
                 String resultStatus=null;
                 String resultDescription=null;
-                if (result != null){
+                if (result == null){
                     resultDescription = getString(R.string.info_cohort_not_downloaded);
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else if(result[0] == SyncStatusConstants.SUCCESS) {
