@@ -7,7 +7,13 @@
     <style name="AppBaseTheme" parent="@style/Theme.AppCompat">
         <item name="colorAccent">@color/primary_blue</item>
         <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
+        <item name="colorPrimary">@color/primary_black</item>
     </style>
+
+    <style name="actionbarStyle"
+           parent="@style/Widget.AppCompat.ActionBar">
+    </style>
+
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
 
@@ -16,6 +22,7 @@
     <!-- Application theme. -->
     <style name="AppThemeNoActionBar" parent="@style/Theme.AppCompat.NoActionBar">
         <item name="colorAccent">@color/primary_blue</item>
+        <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
     </style>
 
     <style name="LoginTheme" parent="AppThemeNoActionBar">

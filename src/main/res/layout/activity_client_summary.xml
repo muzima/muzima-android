@@ -111,17 +111,20 @@
     <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="100dp"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_marginTop="10dp"
             android:baselineAligned="false">
 
 
             <RelativeLayout
+                    android:layout_width="fill_parent"
                     style="@style/ClickableGridItem"
                     android:layout_weight="100"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     android:orientation="horizontal"
                     android:layout_height="80dp"
-                android:baselineAligned="false"
+                    android:baselineAligned="false"
                     android:onClick="showForms">
 
                 <TextView
@@ -145,16 +148,18 @@
     <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="100dp"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_marginTop="10dp"
-            android:baselineAligned="false">
+            android:baselineAligned="false" android:layout_marginBottom="10dp">
 
 
             <RelativeLayout
+                    android:layout_width="fill_parent"
                     style="@style/ClickableGridItem"
                     android:layout_weight="100"
-                    android:orientation="horizontal"
+                    android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
+                    android:orientation="horizontal"
                     android:layout_height="80dp"
                     android:baselineAligned="false"
                     android:onClick="showNotifications">
