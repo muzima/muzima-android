@@ -295,7 +295,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 if (result == null){
                     resultDescription = getString(R.string.info_location_not_downloaded);
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                }else if(result[0] != SyncStatusConstants.SUCCESS) {
+                }else if(result[0] == SyncStatusConstants.SUCCESS) {
                     if(result[1] == 1) {
                         resultDescription = getString(R.string.info_location_downloaded);
                     } else {
