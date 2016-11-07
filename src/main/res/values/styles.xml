@@ -7,7 +7,13 @@
     <style name="AppBaseTheme" parent="@style/Theme.AppCompat">
         <item name="colorAccent">@color/primary_blue</item>
         <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
+        <item name="colorPrimary">@color/primary_black</item>
     </style>
+
+    <style name="actionbarStyle"
+           parent="@style/Widget.AppCompat.ActionBar">
+    </style>
+
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
 
@@ -16,6 +22,7 @@
     <!-- Application theme. -->
     <style name="AppThemeNoActionBar" parent="@style/Theme.AppCompat.NoActionBar">
         <item name="colorAccent">@color/primary_blue</item>
+        <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
     </style>
 
     <style name="LoginTheme" parent="AppThemeNoActionBar">
@@ -23,6 +30,7 @@
 
     <!-- Application theme. -->
     <style name="WizardTheme" parent="AppThemeNoActionBar">
+        <item name="android:background">@color/primary_black</item>
     </style>
 
     <style name="PreferencesTheme" parent="AppBaseTheme">
@@ -64,6 +72,14 @@
         <item name="android:background">@color/primary_black</item>
     </style>
 
+    <style name="setupMethodConfigurationsList">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginLeft">25dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@color/primary_black</item>
+    </style>
+
     <style name="SummaryHeader">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -71,6 +87,15 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/primary_blue</item>
+    </style>
+
+    <style name="SelectableSummaryHeader">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">3dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/selectable_summary_header</item>
     </style>
 
     <style name="DashboardBaseText">
@@ -128,6 +153,7 @@
         <item name="android:paddingBottom">4dp</item>
         <item name="android:orientation">vertical</item>
         <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/list_selector</item>
     </style>
 
     <style name="ClickableGridItem">
@@ -236,6 +262,16 @@
         <item name="android:paddingBottom">5dp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:background">@color/primary_black</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+    </style>
+
+    <style name="ListSelectableDescription">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@drawable/list_multi_selector_blue</item>
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
     </style>
 
@@ -512,9 +548,19 @@
         <item name="android:text">Previous</item>
     </style>
 
+    <style name="Button.InactiveNext">
+        <item name="android:background">@drawable/previous_button_selector</item>
+        <item name="android:text">Next</item>
+    </style>
+
     <style name="Button.Next">
         <item name="android:background">@drawable/next_button_selector</item>
         <item name="android:text">Next</item>
+    </style>
+
+    <style name="Button.Finish">
+        <item name="android:background">@drawable/next_button_selector</item>
+        <item name="android:text">Finish</item>
     </style>
 
     <style name="LoginActivityNoConnectionView">
@@ -570,9 +616,9 @@
     </style>
 
     <style name="MuzimaSelectableListView">
-        <item name="android:divider">@android:color/white</item>
+        <item name="android:divider">@color/hint_text_grey</item>
         <item name="android:dividerHeight">1dp</item>
-        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:textColor">@color/primary_blue</item>
     </style>
@@ -593,12 +639,15 @@
     <style name="ListViewSelectableDescription">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
         <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:background">@drawable/list_multi_selector_blue</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/selectable_hint_text</item>
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:listDivider">@color/hint_text_grey</item>
     </style>
 
     <style name="ListViewText">

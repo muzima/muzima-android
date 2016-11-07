@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:padding="2dp"
+                android:layout_height="match_parent"
+
+android:background="@color/primary_black">
+
+    <LinearLayout
+
+            android:id="@+id/guided_setup_header"
+            style="@style/NotClickableSummaryItem"
+            android:layout_alignParentTop="true">
+        <TextView style="@style/SummaryHeader"
+              android:text="@string/title_guided_setup"/>
+        <TextView
+                android:textColor="@android:color/white"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hint_guided_setup">
+        </TextView>
+    </LinearLayout>
+    <LinearLayout android:layout_below="@+id/guided_setup_header"
+                  android:layout_above="@+id/advanced_setup_layout"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+                  android:id="@+id/configs_layout">
+        <RelativeLayout style="@style/NotClickableSummaryItem">
+            <EditText android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="10dp"
+                      android:textColor="@color/primary_blue"
+                      android:background="@color/primary_black"
+                      android:cursorVisible="true"
+                      android:layout_marginBottom="10dp"
+                      android:hint="@string/hint_configuration_search"
+                      android:id="@+id/filter_configs_txt"/>
+            <ImageButton android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:id="@+id/cancel_filter_txt"
+                         android:src="@drawable/ic_cancel"
+                         android:background="@android:color/transparent"
+                         android:layout_alignTop="@+id/filter_configs_txt"
+                         android:layout_alignBottom="@+id/filter_configs_txt"
+                         android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+
+        <ScrollView style="@style/setupMethodConfigurationsList"
+                      android:background="@drawable/list_multi_selector_blue"
+                      android:layout_below="@+id/guided_setup_header"
+                      android:layout_height="match_parent"
+                      android:layout_width="match_parent"
+                      android:fillViewport="true"
+                      android:scrollbars="vertical">
+
+            <ListView
+                    android:id="@+id/configs_wizard_list"
+                    style="@style/MuzimaSelectableListView"
+                    android:choiceMode="singleChoice"/>
+        </ScrollView>
+    </LinearLayout>
+
+    <com.muzima.view.CheckedLinearLayout
+            style="@style/ClickableSummaryItem"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/advanced_setup_layout"
+            android:background="@drawable/list_multi_selector_blue"
+            android:choiceMode="singleChoice"
+            android:layout_above="@+id/next_button_layout">
+        <TextView style="@style/DividerLine"/>
+        <TextView style="@style/SelectableSummaryHeader"
+                  android:text="@string/title_advanced_setup"
+                  android:duplicateParentState="true"
+        android:background="@android:color/transparent"/>
+        <TextView
+                android:textColor="@android:color/white"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hint_advanced_setup"
+                android:duplicateParentState="true"
+                android:background="@android:color/transparent"/>
+    </com.muzima.view.CheckedLinearLayout>
+
+    <LinearLayout style="@style/ButtonRow" android:id="@+id/next_button_layout"
+                  android:layout_alignParentBottom="true">
+        <Button
+                android:id="@+id/inactive_next"
+                style="@style/Button.InactiveNext"/>
+        <Button
+                android:id="@+id/next" android:visibility="gone"
+                style="@style/Button.Next"/>
+    </LinearLayout>
+
+</RelativeLayout>
