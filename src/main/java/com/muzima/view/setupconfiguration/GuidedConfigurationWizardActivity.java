@@ -137,9 +137,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             @Override
             protected int[] doInBackground(Void... voids) {
                 List<String> uuids = extractCohortsUuids();
-                if (!uuids.isEmpty())
-
-                {
+                if (!uuids.isEmpty()){
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                     return muzimaSyncService.downloadPatientsForCohorts(uuids.toArray(new String[uuids.size()]));
                 }
@@ -230,9 +228,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             @Override
             protected int[] doInBackground(Void... voids) {
                 List<String> uuids = extractFormTemplatesUuids();
-                if (!uuids.isEmpty())
-
-                {
+                if (!uuids.isEmpty()){
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                     return muzimaSyncService.downloadFormTemplates(uuids.toArray(new String[uuids.size()]),false);
 
@@ -279,9 +275,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             @Override
             protected int[] doInBackground(Void... voids) {
                 List<String> uuids = extractLocationsUuids();
-                if (!uuids.isEmpty())
-
-                {
+                if (!uuids.isEmpty()){
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                     return muzimaSyncService.downloadLocations(uuids.toArray(new String[uuids.size()]));
 
@@ -325,9 +319,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             @Override
             protected int[] doInBackground(Void... voids) {
                 List<String> uuids = extractProvidersUuids();
-                if (!uuids.isEmpty())
-
-                {
+                if (!uuids.isEmpty()){
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                     return muzimaSyncService.downloadProviders(uuids.toArray(new String[uuids.size()]));
 
@@ -371,9 +363,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             @Override
             protected int[] doInBackground(Void... voids) {
                 List<String> uuids = extractConceptsUuids();
-                if (!uuids.isEmpty())
-
-                {
+                if (!uuids.isEmpty()){
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                     return muzimaSyncService.downloadConcepts(uuids.toArray(new String[uuids.size()]));
 
@@ -419,9 +409,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             @Override
             protected int[] doInBackground(Void... voids) {
                 List<String> uuids = extractCohortsUuids();
-                if (!uuids.isEmpty())
-
-                {
+                if (!uuids.isEmpty()){
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                     return muzimaSyncService.downloadEncountersForPatientsByCohortUUIDs(uuids.toArray(new String[uuids.size()]),false);
 
@@ -473,9 +461,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             @Override
             protected int[] doInBackground(Void... voids) {
                 List<String> uuids = extractCohortsUuids();
-                if (!uuids.isEmpty())
-
-                {
+                if (!uuids.isEmpty()){
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                     return muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(
                             uuids.toArray(new String[uuids.size()]),false);

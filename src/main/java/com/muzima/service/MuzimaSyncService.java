@@ -839,7 +839,7 @@ public class MuzimaSyncService {
             List<SetupConfiguration> setupConfigurations = setupConfigurationController.downloadAllSetupConfigurations();
             result[0] = SyncStatusConstants.SUCCESS;
             result[1] = setupConfigurations.size();
-            System.out.println("Setup Configs downloaded: "+setupConfigurations.size());
+            Log.i(TAG, "Setup Configs downloaded: "+setupConfigurations.size());
             //ToDo: Remove all retired
             setupConfigurationController.saveSetupConfigurations(setupConfigurations);
         } catch (SetupConfigurationController.SetupConfigurationDownloadException e){
@@ -861,7 +861,6 @@ public class MuzimaSyncService {
             if(setupConfigurationTemplate != null) {
                 result[1] = 1;
             }
-            System.out.println("MuzimaSyncService: "+setupConfigurationTemplate.getConfigJson());
             setupConfigurationController.saveSetupConfigurationTemplate(setupConfigurationTemplate);
         } catch (SetupConfigurationController.SetupConfigurationDownloadException e){
             Log.e(TAG, "Exception when trying to download setup configs");

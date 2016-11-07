@@ -309,11 +309,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         patientAdapter.cancelBackgroundTask();
         listView.clearFocus();
         super.onBackPressed();
-        if(getCurrentFocus() != null) {
-            System.out.println("Current focusssssssss: " + getCurrentFocus().toString());
-        } else {
-            System.out.println("Current focusssssssss: null");
-        }
     }
     @Override
     public void onKeyboardShown(int keyboardSize) {
@@ -323,14 +318,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     public void onKeyboardClosed() {
         fabSearchButton.setVisibility(View.VISIBLE);
-       // fabSearchButton.setFocusable(true);
-       // boolean f=fabSearchButton.requestFocus();
         listView.clearChoices();
-        if(getCurrentFocus() != null) {
-            System.out.println("Current focus: " + getCurrentFocus().toString());
-        } else {
-            System.out.println("Current focus: null");
-        }
 
     }
 
