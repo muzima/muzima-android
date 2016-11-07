@@ -130,7 +130,7 @@ public class SetupConfigurationAdapter extends ListAdapter<SetupConfiguration> {
         @Override
         protected void onPostExecute(List<SetupConfiguration> setupConfigurations){
             if(setupConfigurations == null){
-                Toast.makeText(getContext(), "Setup configurations could not be loaded", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.error_setup_configuration_download, Toast.LENGTH_SHORT).show();
                 return;
             }
             allSetupConfigurations = setupConfigurations;
