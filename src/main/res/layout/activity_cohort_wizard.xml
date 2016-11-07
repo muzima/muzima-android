@@ -51,11 +51,19 @@
                 android:choiceMode="multipleChoice"/>
     </LinearLayout>
 
-    <LinearLayout style="@style/ButtonRow"
-                  android:layout_alignParentBottom="true">
+    <LinearLayout
+            style="@style/ButtonRow"
+            android:id="@+id/button_row"
+            android:layout_alignParentBottom="true">
+        <Button
+                android:id="@+id/previous"
+                style="@style/Button.Previous"
+                android:layout_weight=".3"/>
+
         <Button
                 android:id="@+id/next"
-                style="@style/Button.Next"/>
+                style="@style/Button.Next"
+                android:layout_weight=".3"/>
     </LinearLayout>
 </RelativeLayout>
 

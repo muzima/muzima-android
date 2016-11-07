@@ -32,6 +32,7 @@ import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
+import com.muzima.controller.SetupConfigurationController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.LocalePreferenceService;
@@ -90,6 +91,7 @@ public class MuzimaApplication extends Application {
     private MuzimaSyncService muzimaSyncService;
     private CohortPrefixPreferenceService prefixesPreferenceService;
     private LocalePreferenceService localePreferenceService;
+    private SetupConfigurationController setupConfigurationController;
     private MuzimaTimer muzimaTimer;
     public static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
@@ -311,6 +313,17 @@ public class MuzimaApplication extends Application {
             localePreferenceService = new LocalePreferenceService(this);
         }
         return localePreferenceService;
+    }
+
+    public SetupConfigurationController getSetupConfigurationController(){
+        if(setupConfigurationController == null){
+            try {
+                setupConfigurationController = new SetupConfigurationController(muzimaContext.getSetupConfigurationService());
+            }catch (IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+        return setupConfigurationController;
     }
 
     public void resetTimer(int timeOutInMin) {

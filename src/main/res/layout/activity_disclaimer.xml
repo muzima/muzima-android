@@ -5,8 +5,24 @@
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:orientation="vertical"
-                  android:padding="5dp"
                   android:layout_above="@+id/navigation">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:background="@color/primary_black">
+            <TextView android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+
+
+            android:drawableLeft="@drawable/ic_launcher_logo"
+            android:text="mUzima Disclaimer"
+            android:textSize="20sp"
+                      android:gravity="center_vertical"
+            android:textAlignment="center"
+            android:textStyle="bold">
+
+            </TextView>
+        </LinearLayout>
+        <TextView android:layout_width="match_parent" android:layout_height="2dp"
+              android:background="@color/primary_blue"/>
         <LinearLayout style="@style/NotClickableSummaryItem">
             <TextView
                     style="@style/SummaryHeader"

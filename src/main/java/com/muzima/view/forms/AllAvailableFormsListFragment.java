@@ -272,7 +272,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     private int[] downloadFormTemplates() {
         List<String> selectedFormIdsArray = getSelectedForms();
         MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getActivity().getApplicationContext()).getMuzimaSyncService();
-        return muzimaSyncService.downloadFormTemplates(selectedFormIdsArray.toArray(new String[selectedFormIdsArray.size()]), true);
+        return muzimaSyncService.downloadFormTemplatesAndRelatedMetadata(selectedFormIdsArray.toArray(new String[selectedFormIdsArray.size()]), true);
     }
 
     private void syncAllFormTemplatesInBackgroundService() {

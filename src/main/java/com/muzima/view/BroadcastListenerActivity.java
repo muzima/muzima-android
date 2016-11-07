@@ -88,7 +88,7 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
 
             if(syncType == DataSyncServiceConstants.SYNC_FORMS){
                 int deletedFormCount = intent.getIntExtra(DataSyncServiceConstants.DELETED_COUNT_PRIMARY,0);
-                msg = getString(R.string.info_form_download, downloadCount);
+                msg = getString(R.string.info_form_downloaded, downloadCount);
                 if(deletedFormCount > 0){
                     msg = getString(R.string.info_form_download_delete, downloadCount, deletedFormCount);
                 }
