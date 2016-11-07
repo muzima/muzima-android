@@ -22,7 +22,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 6
-        versionName "2.0"
+        versionName "2.0.0"
         manifestPlaceholders = [versionCode:defaultConfig.versionCode, versionName:defaultConfig.versionName]
     }
 
@@ -66,9 +66,6 @@ dependencies {
         exclude(module: 'guice')
     }
     compile group: 'com.google.inject', name: 'guice', version:'3.0', classifier:'no_aop'
-    testCompile group: 'junit', name: 'junit', version:'4.8.2'
-    testCompile group: 'org.mockito', name: 'mockito-all', version:'1.8.5'
-    testCompile group: 'org.robolectric', name: 'robolectric', version:'2.0-alpha-1'
     testCompile fileTree('lib/stickylistheaders-1.0.0.jar')
     testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'
     testCompile group: 'junit', name: 'junit-dep', version:'4.10'
