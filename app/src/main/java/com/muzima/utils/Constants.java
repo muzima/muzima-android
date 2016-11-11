@@ -94,11 +94,19 @@ public class Constants {
         public static final String NOTIFICATION_UNREAD = "unread";
         public static final String RECEIVER_UUID = "receiverUuid";
     }
+
     public static class ProgressDialogConstants {
         public static final String PROGRESS_UPDATE_MESSAGE = "progressUpdateMessage";
         public static final String PROGRESS_UPDATE_ACTION = "progressUpdateAction";
     }
+
     public enum SERVER_CONNECTIVITY_STATUS {
         SERVER_ONLINE,SERVER_OFFLINE, INTERNET_FAILURE
     }
+
+    public static class SetupLogConstants{
+        public static final String ACTION_SUCCESS_STATUS_LOG = "OK";
+        public static final String ACTION_FAILURE_STATUS_LOG = "FAIL";
+    }
+
 }

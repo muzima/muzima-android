@@ -78,7 +78,7 @@ public class CustomProviderWizardActivity extends ProviderPreferenceActivity {
     protected void onResume() {
         super.onResume();
         if (isProcessDialogOn) {
-            turnOnProgressDialog(getString(R.string.info_provider_download));
+            turnOnProgressDialog(getString(R.string.info_provider_load));
         }
     }
 

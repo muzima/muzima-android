@@ -13,17 +13,21 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.SearchView;
+import com.azimolabs.keyboardwatcher.KeyboardWatcher;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
@@ -35,14 +39,17 @@ import com.muzima.utils.barcode.IntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
+import android.support.design.widget.FloatingActionButton;
 
+import static android.view.View.FOCUS_RIGHT;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
 
-public class PatientsListActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener, ListAdapter.BackgroundListQueryTaskListener {
+public class PatientsListActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener,
+        ListAdapter.BackgroundListQueryTaskListener, KeyboardWatcher.OnKeyboardToggleListener {
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
     public static final String QUICK_SEARCH = "quickSearch";
@@ -54,8 +61,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private View noDataView;
     private String searchString;
     private Button searchServerBtn;
+    FloatingActionButton fabSearchButton;
+    private LinearLayout searchServerLayout;
     private SearchView searchView;
     private boolean intentBarcodeResults = false;
+
+    private KeyboardWatcher keyboardWatcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +86,20 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         setupNoDataView();
         setupListView(cohortId);
 
+        fabSearchButton =  (FloatingActionButton) findViewById(R.id.fab_search);
+        fabSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchView.setIconified(false);
+                Rect r = new Rect();
+                searchView.requestFocusFromTouch();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
+
+        searchServerLayout = (LinearLayout) findViewById(R.id.search_server_layout);
+
         searchServerBtn = (Button) findViewById(R.id.search_server_btn);
         searchServerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +111,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 startActivity(intent);
             }
         });
+        keyboardWatcher = new KeyboardWatcher(this);
+        keyboardWatcher.setListener(this);
     }
     @Override
     public void onReceive(Context context, Intent intent){
@@ -133,6 +160,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 patientAdapter.search(s.trim());
                 return true;
             }
+
         });
 
         if (quickSearch) {
@@ -146,9 +174,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     private void activateRemoteAfterThreeCharacterEntered(String searchString) {
         if (searchString.trim().length() < 3) {
-            searchServerBtn.setVisibility(View.GONE);
+            searchServerLayout.setVisibility(View.INVISIBLE);
         } else {
-            searchServerBtn.setVisibility(View.VISIBLE);
+            searchServerLayout.setVisibility(View.VISIBLE);
         }
     }
 
@@ -163,8 +191,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 .setMessage(getResources().getString(R.string.confirm_patient_id_exists))
                 .setPositiveButton("Yes", yesClickListener())
                 .setNegativeButton("No", noClickListener()).create().show();
-
-
     }
 
     private Dialog.OnClickListener yesClickListener() {
@@ -281,6 +307,24 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     public void onBackPressed(){
         patientAdapter.cancelBackgroundTask();
+        listView.clearFocus();
         super.onBackPressed();
+    }
+    @Override
+    public void onKeyboardShown(int keyboardSize) {
+        fabSearchButton.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onKeyboardClosed() {
+        fabSearchButton.setVisibility(View.VISIBLE);
+        listView.clearChoices();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        keyboardWatcher.destroy();
+        super.onDestroy();
     }
 }

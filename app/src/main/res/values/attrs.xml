@@ -8,7 +8,7 @@
         <attr name="tabDividerPadding" format="dimension" />
         <attr name="tabPaddingLeftRight" format="dimension" />
         <attr name="scrollOffset" format="dimension" />
-        <attr name="tabBackground" format="reference" />
+        <attr name="tabCustomBackground" format="reference" />
         <attr name="shouldExpand" format="boolean" />
     </declare-styleable>
 

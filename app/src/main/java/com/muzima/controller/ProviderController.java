@@ -45,9 +45,23 @@ public class ProviderController {
         try {
             return providerService.downloadProviderByUuid(uuid);
         } catch (IOException e) {
-            Log.e(TAG, "Error while searching for patients in the server", e);
+            Log.e(TAG, "Error while downloading provider from the server", e);
             throw new ProviderDownloadException(e);
         }
+    }
+
+    public List<Provider> downloadProvidersFromServerByUuid(String[] uuids) throws ProviderDownloadException {
+        HashSet<Provider> result = new HashSet<>();
+        try {
+            for(String uuid : uuids) {
+                Provider provider = providerService.downloadProviderByUuid(uuid);
+                if(provider != null) result.add(provider);
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Error while downloading providers from the server", e);
+            throw new ProviderDownloadException(e);
+        }
+        return new ArrayList<>(result);
     }
 
     public List<Provider> getAllProviders() throws ProviderLoadException {
