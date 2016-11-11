@@ -1,1 +1,1 @@
-rootProject.name = 'muzima-android'
+include ':app'
