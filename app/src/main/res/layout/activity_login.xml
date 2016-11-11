@@ -23,7 +23,7 @@
                     android:id="@+id/serverUrl"
                     style="@style/LoginInfoEditText"
                     android:inputType="textUri"
-                    android:text="http://demo1.muzima.org"
+                    android:text="@string/default_server"
                     android:nextFocusDown="@+id/username"
                     android:hint="@string/hint_server_url"/>
 

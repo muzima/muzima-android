@@ -75,9 +75,9 @@ public class DataSyncService extends IntentService {
                 break;
             case DataSyncServiceConstants.SYNC_TEMPLATES:
                 String[] formIds = intent.getStringArrayExtra(DataSyncServiceConstants.FORM_IDS);
-                updateNotificationMsg(getString(R.string.info_form_template_download, formIds.length ));
+                updateNotificationMsg(getString(R.string.info_form_template_with_count_download, formIds.length ));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
-                    int[] result = muzimaSyncService.downloadFormTemplates(formIds, true);
+                    int[] result = muzimaSyncService.downloadFormTemplatesAndRelatedMetadata(formIds, true);
                     String msg = getString(R.string.info_form_template_concept_download,result[1],result[2]);
                     broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, result[2]);
                     prepareBroadcastMsg(broadcastIntent, result, msg);
@@ -216,7 +216,7 @@ public class DataSyncService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
     private void broadCastMessageForPatients(Intent broadcastIntent, int[] resultForPatients, String[] patientUUIDs) {
-        String msgForPatients = getString(R.string.info_new_patient_download,resultForPatients[1]);;
+        String msgForPatients = getString(R.string.info_new_patient_download,resultForPatients[1]);
         prepareBroadcastMsg(broadcastIntent, resultForPatients, msgForPatients);
         if (isSuccess(resultForPatients) && resultForPatients.length > 1) {
             broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, resultForPatients[1]);

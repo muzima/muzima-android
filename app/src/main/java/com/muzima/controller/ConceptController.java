@@ -111,7 +111,7 @@ public class ConceptController {
         return new ArrayList<Concept>(result);
     }
 
-    public List<Concept> downloadConceptsByUuid(Set<String> uuids) throws ConceptDownloadException {
+    public List<Concept> downloadConceptsByUuid(String[] uuids) throws ConceptDownloadException {
         HashSet<Concept> result = new HashSet<Concept>();
         for (String uuid : uuids) {
             Concept concept = downloadConceptByUuid(uuid);
@@ -159,7 +159,7 @@ public class ConceptController {
                 uuids.add(uuidsObject.toString());
             }
         }
-        return downloadConceptsByUuid(uuids);
+        return downloadConceptsByUuid(uuids.toArray(new String[uuids.size()]));
     }
 
     public void deleteAllConcepts() throws ConceptDeleteException, ConceptFetchException {

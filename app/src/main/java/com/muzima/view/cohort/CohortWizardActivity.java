@@ -39,6 +39,7 @@ import com.muzima.view.CheckedLinearLayout;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.forms.FormTemplateWizardActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
+import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
 
 import java.io.IOException;
 import java.util.List;
@@ -66,8 +67,12 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
 
         ImageButton cancelFilterButton = (ImageButton) findViewById(R.id.cancel_filter_txt);
         cancelFilterButton.setOnClickListener(cancelFilterTextEventHandler(filterCohortText));
+
         Button nextButton = (Button) findViewById(R.id.next);
         nextButton.setOnClickListener(nextButtonClickListener(cohortsAdapter));
+
+        Button previousButton = (Button) findViewById(R.id.previous);
+        previousButton.setOnClickListener(previousButtonListener());
 
         progressDialog = new MuzimaProgressDialog(this);
 
@@ -77,7 +82,6 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         cohortsAdapter.downloadCohortAndReload();
         listView.setAdapter(cohortsAdapter);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -125,6 +129,15 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
                     checkedLinearLayout.toggle();
                 }
                 cohortsAdapter.onListItemClick(position);
+            }
+        };
+    }
+
+    private View.OnClickListener previousButtonListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToPreviousActivity();
             }
         };
     }
@@ -217,6 +230,11 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         finish();
     }
 
+    private void navigateToPreviousActivity() {
+        Intent intent = new Intent(getApplicationContext(), SetupMethodPreferenceWizardActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
     private AllCohortsAdapter createAllCohortsAdapter() {
         return new AllCohortsAdapter(getApplicationContext(), R.layout.item_cohorts_list, ((MuzimaApplication) getApplicationContext()).getCohortController());
