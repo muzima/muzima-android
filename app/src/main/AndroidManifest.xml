@@ -326,7 +326,7 @@
                   android:configChanges="orientation|screenSize"
                   android:theme="@style/WizardTheme"/>
         <activity
-                android:name="com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity"
+                android:name=".view.setupconfiguration.SetupMethodPreferenceWizardActivity"
                 android:label="Setup Method"
                 android:configChanges="orientation|screenSize"
                 android:theme="@style/WizardTheme"
