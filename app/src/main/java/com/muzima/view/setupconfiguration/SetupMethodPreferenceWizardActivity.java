@@ -16,10 +16,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.azimolabs.keyboardwatcher.KeyboardWatcher;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
-import com.muzima.adapters.cohort.AllCohortsAdapter;
 import com.muzima.adapters.setupconfiguration.SetupConfigurationAdapter;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.LastSyncTimeService;
@@ -29,7 +29,6 @@ import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.CheckedLinearLayout;
 import com.muzima.view.cohort.CohortWizardActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
-import com.azimolabs.keyboardwatcher.KeyboardWatcher;
 
 import java.io.IOException;
 
