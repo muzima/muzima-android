@@ -7,17 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
-import android.widget.ImageView;
 import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
-import com.muzima.adapters.cohort.CohortsAdapter;
 import com.muzima.api.model.SetupConfiguration;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.utils.Fonts;
-import com.muzima.view.CheckedLinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
