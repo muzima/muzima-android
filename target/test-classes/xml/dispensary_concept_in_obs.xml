@@ -1,0 +1,17 @@
+<model>
+    <instance>
+        <form xmlns:openmrs="/moduleServlet/formentry/forms/schema/19-1"
+              xmlns:xd="http://schemas.microsoft.com/office/infopath/2003" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+              xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="19"
+              name="Forms with concepts" version="0.1" uuid="573b4de2-26f0-452d-8d8c-fc16c2499629">
+            <obs openmrs_concept="1238^MEDICAL RECORD OBSERVATIONS^99DCT" openmrs_datatype="ZZ">
+                <start_time openmrs_concept="1693^START TIME^99DCT" openmrs_datatype="TM">
+                    <value/>
+                </start_time>
+                <end_time openmrs_concept="1694^END TIME^99DCT" openmrs_datatype="TM">
+                    <value/>
+                </end_time>
+            </obs>
+        </form>
+    </instance>
+</model>

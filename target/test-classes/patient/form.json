@@ -1,0 +1,175 @@
+{"form": {
+    "fields": [
+        {
+            "name": "header",
+            "bind": "/model/instance/form/header"
+        },
+        {
+            "name": "enterer",
+            "bind": "/model/instance/form/header/enterer"
+        },
+        {
+            "name": "date_entered",
+            "bind": "/model/instance/form/header/date_entered"
+        },
+        {
+            "name": "session",
+            "bind": "/model/instance/form/header/session"
+        },
+        {
+            "name": "uid",
+            "bind": "/model/instance/form/header/uid"
+        },
+        {
+            "name": "patient",
+            "bind": "/model/instance/form/patient"
+        },
+        {
+            "name": "patient.patient_id",
+            "bind": "/model/instance/form/patient/patient.patient_id"
+        },
+        {
+            "name": "patient_identifier.identifier_type_id",
+            "bind": "/model/instance/form/patient/patient_identifier.identifier_type_id"
+        },
+        {
+            "name": "patient.medical_record_number",
+            "bind": "/model/instance/form/patient/patient.medical_record_number"
+        },
+        {
+            "name": "patient.birthdate",
+            "bind": "/model/instance/form/patient/patient.birthdate"
+        },
+        {
+            "name": "patient.birthdate_estimated",
+            "bind": "/model/instance/form/patient/patient.birthdate_estimated"
+        },
+        {
+            "name": "patient.family_name",
+            "bind": "/model/instance/form/patient/patient.family_name"
+        },
+        {
+            "name": "patient.given_name",
+            "value": [""],
+            "bind": "/model/instance/form/patient/patient.given_name"
+        },
+        {
+            "name": "patient.middle_name",
+            "value": [""],
+            "bind": "/model/instance/form/patient/patient.middle_name"
+        },
+        {
+            "name": "patient.sex",
+            "value": [""],
+            "bind": "/model/instance/form/patient/patient.sex"
+        },
+        {
+            "name": "no_male",
+            "bind": "/model/instance/form/patient/no_male"
+        },
+        {
+            "name": "encounter",
+            "bind": "/model/instance/form/encounter"
+        },
+        {
+            "name": "encounter.form_uuid",
+            "bind": "/model/instance/form/encounter/encounter.form_uuid"
+        },
+        {
+            "name": "encounter.encounter_datetime",
+            "bind": "/model/instance/form/encounter/encounter.encounter_datetime"
+        },
+        {
+            "name": "encounter.location_id",
+            "bind": "/model/instance/form/encounter/encounter.location_id"
+        },
+        {
+            "name": "encounter.provider_id",
+            "bind": "/model/instance/form/encounter/encounter.provider_id"
+        },
+        {
+            "name": "obs",
+            "bind": "/model/instance/form/obs"
+        },
+        {
+            "name": "temporary.registration.uuid",
+            "bind": "/model/instance/form/obs/temporary.registration.uuid"
+        },
+        {
+            "name": "start_time",
+            "bind": "/model/instance/form/obs/start_time"
+        },
+        {
+            "name": "value",
+            "bind": "/model/instance/form/obs/start_time/value"
+        },
+        {
+            "name": "start_now",
+            "bind": "/model/instance/form/obs/start_now"
+        },
+        {
+            "name": "end_time",
+            "bind": "/model/instance/form/obs/end_time"
+        },
+        {
+            "name": "value",
+            "bind": "/model/instance/form/obs/end_time/value"
+        },
+        {
+            "name": "current_sit_type",
+            "bind": "/model/instance/form/obs/current_sit_type"
+        },
+        {
+            "name": "value",
+            "bind": "/model/instance/form/obs/current_sit_type/value"
+        },
+        {
+            "name": "last_menstrual_period_date",
+            "bind": "/model/instance/form/obs/last_menstrual_period_date"
+        },
+        {
+            "name": "date",
+            "bind": "/model/instance/form/obs/last_menstrual_period_date/date"
+        },
+        {
+            "name": "time",
+            "bind": "/model/instance/form/obs/last_menstrual_period_date/time"
+        },
+        {
+            "name": "value",
+            "bind": "/model/instance/form/obs/last_menstrual_period_date/value"
+        },
+        {
+            "name": "date_most_recent_papanicolaou_smear_performed",
+            "bind": "/model/instance/form/obs/date_most_recent_papanicolaou_smear_performed"
+        },
+        {
+            "name": "date",
+            "bind": "/model/instance/form/obs/date_most_recent_papanicolaou_smear_performed/date"
+        },
+        {
+            "name": "time",
+            "bind": "/model/instance/form/obs/date_most_recent_papanicolaou_smear_performed/time"
+        },
+        {
+            "name": "value",
+            "bind": "/model/instance/form/obs/date_most_recent_papanicolaou_smear_performed/value"
+        },
+        {
+            "name": "freetext_general",
+            "bind": "/model/instance/form/obs/freetext_general"
+        },
+        {
+            "name": "date",
+            "bind": "/model/instance/form/obs/freetext_general/date"
+        },
+        {
+            "name": "time",
+            "bind": "/model/instance/form/obs/freetext_general/time"
+        },
+        {
+            "name": "value",
+            "bind": "/model/instance/form/obs/freetext_general/value"
+        }
+    ]
+}}
