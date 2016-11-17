@@ -1,7 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
                 android:layout_height="match_parent"
-                android:padding="2dp"
                 android:layout_width="match_parent">
 
     <LinearLayout android:id="@+id/download_cohort_header"
