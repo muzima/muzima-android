@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/DashboardWrapper"
+              android:id="@+id/rl"
+              tools:context=".MainActivity">
+
+    <ExpandableListView
+            android:id="@+id/lvExp"
+            android:layout_height="match_parent"
+            android:layout_width="fill_parent"/>
+
+</LinearLayout>

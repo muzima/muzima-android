@@ -93,6 +93,7 @@ public class LoginActivity extends Activity {
         //Hack to get it to use default font space.
         passwordText.setTypeface(Typeface.DEFAULT);
         versionText.setText(getApplicationVersion());
+        usernameText.requestFocus();
     }
 
     private void showSessionTimeOutPopUpIfNeeded() {

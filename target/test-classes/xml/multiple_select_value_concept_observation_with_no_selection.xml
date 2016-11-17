@@ -1,0 +1,24 @@
+<form>
+    <patient>
+        <patient_identifier.identifier_type_id>1</patient_identifier.identifier_type_id>
+        <patient.medical_record_number>2876CH-0</patient.medical_record_number>
+        <patient.birthdate>1956-12-11</patient.birthdate>
+        <patient.family_name>Kosabei</patient.family_name>
+        <patient.given_name>Everlyn</patient.given_name>
+        <patient.uuid>dd7963a8-1691-11df-97a5-7038c432aabf</patient.uuid>
+        <patient.middle_name>Some</patient.middle_name>
+        <patient.sex>F</patient.sex>
+    </patient>
+    <encounter>
+        <encounter.encounter_datetime>2014-02-01</encounter.encounter_datetime>
+        <encounter.location_id>7</encounter.location_id>
+        <encounter.provider_id>3-4</encounter.provider_id>
+        <tmp>
+            <provider_id_select>3-4</provider_id_select>
+        </tmp>
+    </encounter>
+
+    <obs concept="1238^MEDICAL RECORD OBSERVATIONS^99DCT">
+        <review_of_systems_general concept="1069^REVIEW OF SYSTEMS, GENERAL^99DCT" multipleSelect="true"/>
+    </obs>
+</form>
