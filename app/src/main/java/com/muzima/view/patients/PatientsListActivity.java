@@ -64,6 +64,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     FloatingActionButton fabSearchButton;
     private LinearLayout searchServerLayout;
     private SearchView searchView;
+    private MenuItem searchMenuItem;
     private boolean intentBarcodeResults = false;
 
     private KeyboardWatcher keyboardWatcher;
@@ -90,8 +91,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         fabSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                searchMenuItem.setVisible(true);
                 searchView.setIconified(false);
-                Rect r = new Rect();
                 searchView.requestFocusFromTouch();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT);
@@ -143,8 +144,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.client_list, menu);
-        searchView = (SearchView) menu.findItem(R.id.search)
-                .getActionView();
+        searchMenuItem = menu.findItem(R.id.search);
+        searchView = (SearchView) searchMenuItem.getActionView();
 
         searchView.setQueryHint(getString(R.string.hint_client_search));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -164,10 +165,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         });
 
         if (quickSearch) {
-            searchView.setIconified(false);
+            searchMenuItem.setVisible(true);
             searchView.requestFocus();
-        } else
-            searchView.setIconified(true);
+        }
         super.onCreateOptionsMenu(menu);
         return true;
     }
@@ -197,7 +197,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         return new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                searchMenuItem.setVisible(true);
                 searchView.setIconified(false);
                 searchView.requestFocus();
             }
@@ -307,19 +307,18 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     public void onBackPressed(){
         patientAdapter.cancelBackgroundTask();
-        listView.clearFocus();
         super.onBackPressed();
     }
     @Override
     public void onKeyboardShown(int keyboardSize) {
         fabSearchButton.setVisibility(View.GONE);
+        searchMenuItem.setVisible(true);
     }
 
     @Override
     public void onKeyboardClosed() {
         fabSearchButton.setVisibility(View.VISIBLE);
-        listView.clearChoices();
-
+        searchMenuItem.setVisible(false);
     }
 
     @Override
