@@ -59,10 +59,15 @@ public class IncompleteFormsAdapter extends SectionedFormsAdapter<IncompleteForm
         @Override
         protected void onPostExecute(List<IncompleteFormWithPatientData> forms) {
             if (adapterWeakReference.get() != null) {
-                SectionedFormsAdapter formsAdapter = (SectionedFormsAdapter)adapterWeakReference.get();
-                formsAdapter.setPatients(formsAdapter.buildPatientsList(forms));
-                formsAdapter.sortFormsByPatientName(forms);
-                notifyListener();
+                SectionedFormsAdapter formsAdapter = (SectionedFormsAdapter) adapterWeakReference.get();
+                if (forms != null && !forms.isEmpty()) {
+                    formsAdapter.setPatients(formsAdapter.buildPatientsList(forms));
+                    formsAdapter.sortFormsByPatientName(forms);
+                    notifyListener();
+                } else {
+                    formsAdapter.clear();
+                    notifyListener();
+                }
             }
         }
     }

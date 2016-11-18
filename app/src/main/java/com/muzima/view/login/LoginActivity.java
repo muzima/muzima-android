@@ -61,7 +61,6 @@ public class LoginActivity extends Activity {
     private ValueAnimator flipFromLoginToAuthAnimator;
     private ValueAnimator flipFromAuthToLoginAnimator;
     private ValueAnimator flipFromAuthToNoConnAnimator;
-    private boolean honeycombOrGreater;
     private boolean isUpdatePasswordChecked;
 
     @Override
@@ -70,9 +69,6 @@ public class LoginActivity extends Activity {
         ((MuzimaApplication) getApplication()).cancelTimer();
         setContentView(R.layout.activity_login);
         showSessionTimeOutPopUpIfNeeded();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            honeycombOrGreater = true;
-        }
 
         initViews();
         setupListeners();
@@ -357,15 +353,11 @@ public class LoginActivity extends Activity {
                         to.setVisibility(View.VISIBLE);
                     }
                 } else if (to.getVisibility() == View.VISIBLE) {
-                    if (honeycombOrGreater) {
-                        to.setRotationX(-180 * (1 - animatedFraction));
-                    }
+                    to.setRotationX(-180 * (1 - animatedFraction));
                 }
 
                 if (from.getVisibility() == View.VISIBLE) {
-                    if (honeycombOrGreater) {
-                        from.setRotationX(180 * animatedFraction);
-                    }
+                    from.setRotationX(180 * animatedFraction);
                 }
             }
         });
