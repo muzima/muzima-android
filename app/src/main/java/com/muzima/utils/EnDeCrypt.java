@@ -151,10 +151,7 @@ public class EnDeCrypt {
         KeySpec keySpec = new PBEKeySpec(password.toCharArray(), salt, ITERATION_COUNT, KEY_LENGTH);
 
         SecretKeyFactory keyFactory;
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.FROYO)
-            keyFactory = SecretKeyFactory.getInstance(PASSWORD_HASH_ALGORITHM_FROYO);
-        else
-            keyFactory = SecretKeyFactory.getInstance(PASSWORD_HASH_ALGORITHM);
+        keyFactory = SecretKeyFactory.getInstance(PASSWORD_HASH_ALGORITHM);
 
         byte[] keyBytes = keyFactory.generateSecret(keySpec).getEncoded();
 
