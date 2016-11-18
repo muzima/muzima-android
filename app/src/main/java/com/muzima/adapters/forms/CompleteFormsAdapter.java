@@ -62,9 +62,14 @@ public class CompleteFormsAdapter extends SectionedFormsAdapter<CompleteFormWith
             if (adapterWeakReference.get() != null) {
                 // Forms have to be displayed in sorted fashion by Patient. And forms' don't have a direct relationship with patient.
                 SectionedFormsAdapter formsAdapter = (SectionedFormsAdapter) adapterWeakReference.get();
-                formsAdapter.setPatients(formsAdapter.buildPatientsList(forms));
-                formsAdapter.sortFormsByPatientName(forms);
-                notifyListener();
+                if (forms != null && !forms.isEmpty()) {
+                    formsAdapter.setPatients(formsAdapter.buildPatientsList(forms));
+                    formsAdapter.sortFormsByPatientName(forms);
+                    notifyListener();
+                } else {
+                    formsAdapter.clear();
+                    notifyListener();
+                }
             }
         }
     }

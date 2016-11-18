@@ -59,26 +59,28 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
 
     @Override
     public View getHeaderView(int position, View convertView, ViewGroup parent) {
-        HeaderViewHolder holder;
-        if (convertView == null) {
-            holder = new HeaderViewHolder();
-            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            convertView = layoutInflater.inflate(R.layout.layout_forms_list_section_header, parent, false);
-            holder.patientName = (TextView) convertView.findViewById(R.id.patientName);
-            holder.patientIdentifier = (TextView) convertView.findViewById(R.id.patientId);
-            setClickListenersOnView(position, convertView);
-            convertView.setTag(holder);
-        } else {
-            holder = (HeaderViewHolder) convertView.getTag();
-        }
-
-        if (!patients.isEmpty()) {
-            Patient patient = patients.get(getSectionForPosition(position));
-            if (patient != null) {
-                holder.patientName.setText(patient.getDisplayName());
-                holder.patientIdentifier.setText(patient.getIdentifier());
+        if(!isEmpty()) {
+            HeaderViewHolder holder;
+            if (convertView == null) {
+                holder = new HeaderViewHolder();
+                LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+                convertView = layoutInflater.inflate(R.layout.layout_forms_list_section_header, parent, false);
+                holder.patientName = (TextView) convertView.findViewById(R.id.patientName);
+                holder.patientIdentifier = (TextView) convertView.findViewById(R.id.patientId);
+                setClickListenersOnView(position, convertView);
+                convertView.setTag(holder);
             } else {
-                holder.patientName.setText(getContext().getString(R.string.default_form_register));
+                holder = (HeaderViewHolder) convertView.getTag();
+            }
+
+            if (!patients.isEmpty()) {
+                Patient patient = patients.get(getSectionForPosition(position));
+                if (patient != null) {
+                    holder.patientName.setText(patient.getDisplayName());
+                    holder.patientIdentifier.setText(patient.getIdentifier());
+                } else {
+                    holder.patientName.setText(getContext().getString(R.string.default_form_register));
+                }
             }
         }
         return convertView;
@@ -91,7 +93,7 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
     @Override
     public long getHeaderId(int position) {
         int section = 0;
-        if (!patients.isEmpty()) {
+        if (!patients.isEmpty() && !isEmpty()) {
             section = patients.indexOf(getItem(position).getPatient());
         }
         return section;
@@ -165,22 +167,24 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = super.getView(position, convertView, parent);
-        setClickListenersOnView(position, convertView);
-        FormWithData form = getItem(position);
+        if(!isEmpty()) {
+            setClickListenersOnView(position, convertView);
+            FormWithData form = getItem(position);
 
-        String formSaveTime = null;
-        if(form.getLastModifiedDate() != null){
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-            formSaveTime = dateFormat.format(form.getLastModifiedDate());
+            String formSaveTime = null;
+            if (form.getLastModifiedDate() != null) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                formSaveTime = dateFormat.format(form.getLastModifiedDate());
+            }
+
+            ViewHolder holder = (ViewHolder) convertView.getTag();
+
+            if (!StringUtils.isEmpty(formSaveTime)) {
+                holder.savedTime.setText(formSaveTime);
+            }
+            holder.savedTime.setTypeface(Fonts.roboto_italic(getContext()));
+            holder.savedTime.setVisibility(View.VISIBLE);
         }
-
-        ViewHolder holder = (ViewHolder) convertView.getTag();
-
-        if (!StringUtils.isEmpty(formSaveTime)) {
-            holder.savedTime.setText(formSaveTime);
-        }
-        holder.savedTime.setTypeface(Fonts.roboto_italic(getContext()));
-        holder.savedTime.setVisibility(View.VISIBLE);
 
         return convertView;
     }
@@ -189,7 +193,6 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-
                 if (view instanceof CheckedRelativeLayout) {
                     CheckedRelativeLayout checkedLinearLayout = (CheckedRelativeLayout) view;
                     checkedLinearLayout.toggle();
@@ -198,19 +201,10 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
                     FormWithData formWithPatientData = getItem(position);
                     if (selected && !selectedFormsUuid.contains(formWithPatientData.getFormDataUuid())) {
                         selectedFormsUuid.add(formWithPatientData.getFormDataUuid());
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                            checkedLinearLayout.setChecked(true);
-                        } else {
-                            checkedLinearLayout.setActivated(true);
-
-                        }
+                        checkedLinearLayout.setActivated(true);
                     } else if (!selected && selectedFormsUuid.contains(formWithPatientData.getFormDataUuid())) {
                         selectedFormsUuid.remove(formWithPatientData.getFormDataUuid());
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                            checkedLinearLayout.setChecked(false);
-                        } else {
-                            checkedLinearLayout.setActivated(false);
-                        }
+                        checkedLinearLayout.setActivated(false);
                     }
                     muzimaClickListener.onItemLongClick();
                 }
@@ -260,5 +254,4 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
         }
         return result;
     }
-
 }

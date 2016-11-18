@@ -38,7 +38,7 @@ public class CompletePatientsFormsListFragment extends FormsListFragment impleme
         listAdapter = new PatientCompleteFormsAdapter(getActivity(), R.layout.item_forms_list, formController, patient.getUuid());
         ((PatientCompleteFormsAdapter)listAdapter).setMuzimaClickListener(this);
         noDataMsg = getActivity().getResources().getString(R.string.info_complete_form_unavailable);
-        noDataTip = getActivity().getResources().getString(R.string.hint_incomplete_form_unavailable);
+        noDataTip = getActivity().getResources().getString(R.string.hint_complete_form_unavailable);
 
         if (actionModeActive) {
             actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
