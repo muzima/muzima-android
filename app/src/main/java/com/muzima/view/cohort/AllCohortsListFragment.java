@@ -74,9 +74,6 @@ public class AllCohortsListFragment extends CohortListFragment {
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         CheckedLinearLayout checkedLinearLayout = (CheckedLinearLayout) view;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            checkedLinearLayout.toggle();
-        }
         boolean isChecked = checkedLinearLayout.isChecked();
         if (!actionModeActive && isChecked) {
             actionMode = getActivity().startActionMode(new AllCohortsActionModeCallback());

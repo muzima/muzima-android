@@ -83,19 +83,10 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
                 FormWithData formWithPatientData = getItem(position);
                 if (selected && !selectedFormsUuid.contains(formWithPatientData.getFormDataUuid())) {
                     selectedFormsUuid.add(formWithPatientData.getFormDataUuid());
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                        checkedLinearLayout.setChecked(true);
-                    } else {
-                        checkedLinearLayout.setActivated(true);
-
-                    }
+                    checkedLinearLayout.setActivated(true);
                 } else if (!selected && selectedFormsUuid.contains(formWithPatientData.getFormDataUuid())) {
                     selectedFormsUuid.remove(formWithPatientData.getFormDataUuid());
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                        checkedLinearLayout.setChecked(false);
-                    } else {
-                        checkedLinearLayout.setActivated(false);
-                    }
+                    checkedLinearLayout.setActivated(false);
                 }
 
                 muzimaClickListener.onItemLongClick();
