@@ -136,12 +136,7 @@ public class ImagingIntent extends BaseActivity {
 
     public void chooseImage(View view) {
         Intent i;
-        final boolean isKitKat = Build.VERSION.SDK_INT >= 19;
-
-        if (isKitKat)
-            i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        else
-            i = new Intent(Intent.ACTION_GET_CONTENT);
+        i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         try {
             i.setType("image/*");
@@ -295,15 +290,10 @@ public class ImagingIntent extends BaseActivity {
     private void resizeImageView() {
         int width, height;
         Display display = getWindowManager().getDefaultDisplay();
-        if (android.os.Build.VERSION.SDK_INT >= 13) {
-            Point size = new Point();
-            display.getSize(size);
-            width = size.x;
-            height = size.y;
-        } else {
-            width = display.getWidth();  // @deprecated
-            height = display.getHeight();  // @deprecated
-        }
+        Point size = new Point();
+        display.getSize(size);
+        width = size.x;
+        height = size.y;
 
         // Calculate image sizes
         if (height > width) {
