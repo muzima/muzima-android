@@ -65,6 +65,10 @@ public abstract class CohortsAdapter extends ListAdapter<Cohort> {
             downloadedImage.setVisibility(View.VISIBLE);
         }
 
+        public void hideDownloadImage() {
+            downloadedImage.setVisibility(View.GONE);
+        }
+
         public void setTextToName(String text) {
             name.setText(text);
             name.setTypeface(Fonts.roboto_medium(getContext()));
