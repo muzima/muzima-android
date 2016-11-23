@@ -1,0 +1,88 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginTop="130dp"
+    android:layout_height="400dp"
+    android:id="@+id/fragment_container"
+    tools:context="com.example.boniface.muzimaapp.EditFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="Name of Content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="50dp"
+        android:textSize="30dp"
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:textColor="FFFFFF"
+        />
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:text="Obs Value"
+        android:textSize="25dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="110dp"
+        />
+    <EditText
+        android:layout_width="190dp"
+        android:layout_height="60dp"
+        android:text="Obs Value"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="180dp"
+        />
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:text="Obs Datetime"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="190dp"
+        android:textSize="25dp"
+
+        />
+    <EditText
+        android:layout_width="190dp"
+        android:layout_height="60dp"
+        android:text="Obs DateTime"
+        android:layout_marginTop="180dp"
+        android:layout_marginLeft="180dp"
+        />
+    <CheckBox
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="260dp"
+        android:layout_marginLeft="15dp"
+        android:id="@+id/checkbox"/>
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="265dp"
+        android:text="Edit"
+        android:textSize="25dp"
+        android:layout_marginLeft="55dp"
+        />
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:text="Close"
+        android:id="@+id/close"
+        android:textSize="20dp"
+        android:background="@color/colorAccent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="310dp"/>
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:text="Save"
+        android:background="@color/colorAccent"
+        android:id="@+id/save"
+        android:textSize="20dp"
+        android:layout_marginLeft="180dp"
+        android:layout_marginTop="310dp"/>
+
+
+</FrameLayout>
