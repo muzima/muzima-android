@@ -283,6 +283,9 @@
         continue?
     </string>
     <string name="info_form_data_upload_sucess">Upload form data success</string>
+    <string name="info_form_delete_integrity_failure">Integrity failure: Cannot delete registration form data that has
+        associated encounter form data
+    </string>
     <string name="info_form_delete_success">Forms deleted successfully</string>
     <string name="info_form_download">Downloading Forms</string>
     <string formatted="false" name="info_form_download_delete">Downloaded %d forms and retired %d forms</string>

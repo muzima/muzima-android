@@ -9,6 +9,7 @@
 package com.muzima.view.forms;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ import com.muzima.controller.FormController;
 import java.util.List;
 
 public abstract class FormsFragmentWithSectionedListAdapter extends FormsListFragment{
-
+    private final String TAG = "FormsFragmentWithSectionedListAdapter";
     protected ActionMode actionMode;
     protected boolean actionModeActive;
 
@@ -53,10 +54,17 @@ public abstract class FormsFragmentWithSectionedListAdapter extends FormsListFra
                 case R.id.menu_delete:
                     List<String> selectedFormsUUIDs = ((SectionedFormsAdapter) listAdapter).getSelectedFormsUuid();
                     try {
-                        formController.deleteCompleteAndIncompleteForms(selectedFormsUUIDs);
-                        onCompleteOfFormDelete();
-                        ((SectionedFormsAdapter) listAdapter).clearSelectedFormsUuid();
+                        if(!formController.containsRegistrationFormDataWithEncounterForm(selectedFormsUUIDs)) {
+                            formController.deleteCompleteAndIncompleteForms(selectedFormsUUIDs);
+                            onCompleteOfFormDelete();
+                            ((SectionedFormsAdapter) listAdapter).clearSelectedFormsUuid();
+                        } else {
+                            Toast.makeText(getActivity(), getActivity().getString(R.string.info_form_delete_integrity_failure), Toast.LENGTH_LONG).show();
+                        }
                     } catch (FormController.FormDeleteException e) {
+                        Log.e(TAG,"Could not delete form data ",e);
+                    } catch (FormController.FormDataFetchException e) {
+                        Log.e(TAG,"Could not validate form data deletion ",e);
                     }
             }
             return false;
@@ -79,6 +87,4 @@ public abstract class FormsFragmentWithSectionedListAdapter extends FormsListFra
             actionModeActive = false;
         }
     }
-
-
 }
