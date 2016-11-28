@@ -387,6 +387,14 @@ public class FormController {
         }
     }
 
+    public int countAllFormDataByPatientUuid(String patientUuid, String status) throws FormDataFetchException {
+        try {
+            return formService.countFormDataByPatient(patientUuid, status);
+        } catch (IOException e) {
+            throw new FormDataFetchException(e);
+        }
+    }
+
     public IncompleteFormsWithPatientData getAllIncompleteFormsWithPatientData() throws FormFetchException {
         IncompleteFormsWithPatientData incompleteForms = new IncompleteFormsWithPatientData();
 
@@ -768,6 +776,27 @@ public class FormController {
             }
         }
         return false;
+    }
+
+    public boolean containsRegistrationFormDataWithEncounterForm(List<String> formUuids) throws FormDataFetchException{
+        for(String formUuid:formUuids){
+            if(isRegistrationFormDataWithEncounterForm(formUuid)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isRegistrationFormDataWithEncounterForm(String formUuid) throws FormDataFetchException{
+        FormData formData = getFormDataByUuid(formUuid);
+        if(isRegistrationFormData(formData)){
+            return hasEncounterForm(formData);
+        }
+        return false;
+    }
+
+    private boolean hasEncounterForm(FormData registrationFormData) throws FormDataFetchException{
+        return countAllFormDataByPatientUuid(registrationFormData.getPatientUuid(),null)>1;
     }
 
     private boolean isRegistrationFormData(FormData formData){
