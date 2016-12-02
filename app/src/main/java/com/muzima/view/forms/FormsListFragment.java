@@ -104,7 +104,7 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
                 case R.id.menu_delete:
                     List<String> selectedFormsUUIDs = ((FormsWithDataAdapter) listAdapter).getSelectedFormsUuid();
                     try {
-                        formController.deleteCompleteAndIncompleteForms(selectedFormsUUIDs);
+                        formController.deleteCompleteAndIncompleteEncounterFormData(selectedFormsUUIDs);
                         onCompleteOfFormDelete();
                         ((FormsWithDataAdapter) listAdapter).clearSelectedFormsUuid();
                     } catch (FormController.FormDeleteException e) {
