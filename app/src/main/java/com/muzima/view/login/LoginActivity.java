@@ -99,7 +99,7 @@ public class LoginActivity extends Activity {
                     .setIcon(getResources().getDrawable(R.drawable.ic_warning))
                     .setTitle(getResources().getString(R.string.general_alert))
                     .setMessage(getResources().getString(R.string.info_session_time_out))
-                    .setPositiveButton("Ok", null).show();
+                    .setPositiveButton(R.string.general_ok, null).show();
         }
     }
 

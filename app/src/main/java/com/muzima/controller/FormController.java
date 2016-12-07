@@ -10,12 +10,15 @@ package com.muzima.controller;
 
 import android.util.Log;
 import com.muzima.api.model.APIName;
+import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.LastSyncTime;
+import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Tag;
+import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.FormService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.ObservationService;
@@ -71,17 +74,19 @@ public class FormController {
     private LastSyncTimeService lastSyncTimeService;
     private SntpService sntpService;
     private ObservationService observationService;
+    private EncounterService encounterService;
     private Map<String, Integer> tagColors;
     private List<Tag> selectedTags;
     private String jsonPayload;
 
     public FormController(FormService formService, PatientService patientService, LastSyncTimeService lastSyncTimeService, SntpService sntpService,
-                          ObservationService observationService) {
+                          ObservationService observationService, EncounterService encounterService) {
         this.formService = formService;
         this.patientService = patientService;
         this.lastSyncTimeService = lastSyncTimeService;
         this.sntpService = sntpService;
         this.observationService = observationService;
+        this.encounterService = encounterService;
         tagColors = new HashMap<String, Integer>();
         selectedTags = new ArrayList<Tag>();
     }
@@ -387,6 +392,14 @@ public class FormController {
         }
     }
 
+    public int countAllFormDataByPatientUuid(String patientUuid, String status) throws FormDataFetchException {
+        try {
+            return formService.countFormDataByPatient(patientUuid, status);
+        } catch (IOException e) {
+            throw new FormDataFetchException(e);
+        }
+    }
+
     public IncompleteFormsWithPatientData getAllIncompleteFormsWithPatientData() throws FormFetchException {
         IncompleteFormsWithPatientData incompleteForms = new IncompleteFormsWithPatientData();
 
@@ -555,17 +568,12 @@ public class FormController {
         return REGISTRATION.equalsIgnoreCase(formTag.getName());
     }
 
-    public void deleteCompleteAndIncompleteForms(List<String> selectedIncompleteFormsUuids) throws FormDeleteException{
+    public void deleteCompleteAndIncompleteEncounterFormData(List<String> formDataUuids) throws FormDeleteException{
         try {
-            List<FormData> selectedFormsData = new ArrayList<FormData>();
-            for (String selectedIncompleteFormsUuid : selectedIncompleteFormsUuids) {
-                selectedFormsData.add(getFormDataByUuid(selectedIncompleteFormsUuid));
-            }
-            formService.deleteFormData(selectedFormsData);
+            List<FormData> formDataList = formService.getFormDataByUuids(formDataUuids);
+            deleteEncounterFormDataAndRelatedPatientData(formDataList);
         } catch (IOException e) {
             throw new FormDeleteException(e);
-        } catch (FormDataFetchException e) {
-            Log.e(TAG, "Fetching form data throwing exception", e);
         }
     }
 
@@ -770,8 +778,107 @@ public class FormController {
         return false;
     }
 
-    private boolean isRegistrationFormData(FormData formData){
+    public boolean isRegistrationFormDataWithEncounterForm(String formUuid) throws FormDataFetchException{
+        FormData formData = getFormDataByUuid(formUuid);
+        if(isRegistrationFormData(formData)){
+            return hasEncounterForm(formData);
+        }
+        return false;
+    }
+
+    private boolean hasEncounterForm(FormData registrationFormData) throws FormDataFetchException{
+        return countAllFormDataByPatientUuid(registrationFormData.getPatientUuid(),null)>1;
+    }
+
+    public boolean isRegistrationFormData(FormData formData){
         return formData.getDiscriminator().equals(Constants.FORM_DISCRIMINATOR_REGISTRATION)
                 || formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION);
+    }
+
+    public boolean isCompleteFormData(FormData formData){
+        return StringUtils.equals(formData.getStatus(), Constants.STATUS_COMPLETE);
+    }
+
+    public Map<String,List<FormData>> getFormDataGroupedByPatient(List<String> uuids) throws FormDataFetchException{
+        Map<String,List<FormData>> formDataMap = new HashMap<>();
+        try{
+            List<FormData> formDataList =  formService.getFormDataByUuids(uuids);
+            if(!formDataList.isEmpty()){
+                for(FormData formData:formDataList){
+                    String patientUuid = formData.getPatientUuid();
+                    if(formDataMap.containsKey(patientUuid)){
+                        formDataMap.get(patientUuid).add(formData);
+                    } else {
+                        List patientFormData = new ArrayList<FormData>();
+                        patientFormData.add(formData);
+                        formDataMap.put(patientUuid,patientFormData);
+                    }
+                }
+            }
+            return formDataMap;
+        }catch (IOException e){
+            throw new FormDataFetchException(e);
+        }
+    }
+
+    public Map<String,List<FormData>> deleteFormDataWithNoRelatedCompleteRegistrationFormDataInGroup(
+                                                Map<String,List<FormData>> groupedFormData) throws FormDeleteException{
+        Map<String, List<FormData>> remnantData = new HashMap<>();
+        for (String patientUuid : groupedFormData.keySet()) {
+            List<FormData> formDataList = groupedFormData.get(patientUuid);
+            boolean hasRegistration = false;
+            for (FormData data : formDataList) {
+                if (isRegistrationFormData(data) && isCompleteFormData(data)) {
+                    hasRegistration = true;
+                    break;
+                }
+            }
+            if (hasRegistration) {
+                remnantData.put(patientUuid, formDataList);
+            } else {
+                deleteEncounterFormDataAndRelatedPatientData(formDataList);
+            }
+        }
+        return remnantData;
+    }
+
+    public void deleteEncounterFormDataAndRelatedPatientData(List<FormData> formDataList) throws FormDeleteException{
+        try {
+            for (FormData formData : formDataList) {
+                if (isCompleteFormData(formData)) {
+                    Encounter encounter = encounterService.getEncounterByFormDataUuid(formData.getUuid());
+                    if (encounter != null) {
+                        List<Observation> observations = observationService.getObservationsByEncounter(encounter.getUuid());
+                        observationService.deleteObservations(observations);
+                        encounterService.deleteEncounter(encounter);
+                    }
+                }
+                formService.deleteFormData(formData);
+            }
+        }catch(IOException e){
+            throw new FormDeleteException(e);
+        }
+    }
+
+    public Map<String,List<FormData>> deleteRegistrationFormDataWithAllRelatedEncountersInGroup(Map<String,List<FormData>> groupedFormData) throws FormDeleteException,FormDataFetchException{
+        try{
+            Map<String, List<FormData>> remnantData = new HashMap<>();
+            for (String patientUuid : groupedFormData.keySet()) {
+                List<FormData> formDataList = groupedFormData.get(patientUuid);
+                int actualPatientFormDataCount = countAllFormDataByPatientUuid(patientUuid,null);
+                if(actualPatientFormDataCount == formDataList.size()) {
+                    formService.deleteFormData(formDataList);
+                    Patient patient = patientService.getPatientByUuid(patientUuid);
+                    if(patient != null) {
+                        patientService.deletePatient(patient);
+                    }
+                } else {
+                    remnantData.put(patientUuid,formDataList);
+                }
+            }
+            return remnantData;
+        } catch(IOException e){
+            throw new FormDeleteException(e);
+        }
     }
 }
