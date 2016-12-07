@@ -8,7 +8,6 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +27,7 @@ import com.muzima.view.CheckedRelativeLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -229,6 +229,10 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
 
     public void clearSelectedFormsUuid() {
         selectedFormsUuid.clear();
+    }
+
+    public void retainFromSelectedFormsUuid(Collection uuids) {
+        selectedFormsUuid.retainAll(uuids);
     }
 
 

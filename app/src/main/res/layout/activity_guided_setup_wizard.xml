@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_height="match_parent"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:background="@color/primary_black">
     <LinearLayout
             android:id="@+id/guided_setup_header"
             style="@style/NotClickableSummaryItem"
