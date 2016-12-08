@@ -575,14 +575,14 @@ public class FormControllerTest {
     }
 
     @Test
-    public void deleteCompleteAndIncompleteForms_shouldDeleteIncompleteForm() throws Exception, FormController.FormDataFetchException, FormController.FormDeleteException {
+    public void deleteCompleteAndIncompleteEncounterFormData_shouldDeleteIncompleteForm() throws Exception, FormController.FormDataFetchException, FormController.FormDeleteException {
         FormData incompleteFormToDelete = new FormData();
         String uuid = "uuid";
         incompleteFormToDelete.setUuid(uuid);
         incompleteFormToDelete.setStatus(Constants.STATUS_INCOMPLETE);
         when(formController.getFormDataByUuid(anyString())).thenReturn(incompleteFormToDelete);
 
-        formController.deleteCompleteAndIncompleteForms(asList(uuid));
+        formController.deleteCompleteAndIncompleteEncounterFormData(asList(uuid));
         verify(formService).deleteFormData(asList(incompleteFormToDelete));
     }
 
