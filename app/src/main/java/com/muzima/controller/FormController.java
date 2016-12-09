@@ -857,7 +857,6 @@ public class FormController {
                         encounterService.deleteEncounter(encounter);
                     }
                 }
-                System.out.println("Deleting formdata: "+formData.getUserUuid());
                 formService.deleteFormData(formData);
             }
         }catch(IOException e){
