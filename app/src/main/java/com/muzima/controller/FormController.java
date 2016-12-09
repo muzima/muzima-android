@@ -344,6 +344,14 @@ public class FormController {
         }
     }
 
+    public List<FormData> getFormDataByUuids(List<String> formDataUuids) throws FormDataFetchException {
+        try {
+            return formService.getFormDataByUuids(formDataUuids);
+        } catch (IOException e) {
+            throw new FormDataFetchException(e);
+        }
+    }
+
     public CompleteFormWithPatientData getCompleteFormDataByUuid(String formDataUuid) throws FormDataFetchException, FormFetchException {
         CompleteFormWithPatientData completeForm = null;
 
@@ -570,9 +578,9 @@ public class FormController {
 
     public void deleteCompleteAndIncompleteEncounterFormData(List<String> formDataUuids) throws FormDeleteException{
         try {
-            List<FormData> formDataList = formService.getFormDataByUuids(formDataUuids);
+            List<FormData> formDataList = getFormDataByUuids(formDataUuids);
             deleteEncounterFormDataAndRelatedPatientData(formDataList);
-        } catch (IOException e) {
+        } catch (FormDataFetchException e) {
             throw new FormDeleteException(e);
         }
     }
@@ -801,24 +809,20 @@ public class FormController {
 
     public Map<String,List<FormData>> getFormDataGroupedByPatient(List<String> uuids) throws FormDataFetchException{
         Map<String,List<FormData>> formDataMap = new HashMap<>();
-        try{
-            List<FormData> formDataList =  formService.getFormDataByUuids(uuids);
-            if(!formDataList.isEmpty()){
-                for(FormData formData:formDataList){
-                    String patientUuid = formData.getPatientUuid();
-                    if(formDataMap.containsKey(patientUuid)){
-                        formDataMap.get(patientUuid).add(formData);
-                    } else {
-                        List patientFormData = new ArrayList<FormData>();
-                        patientFormData.add(formData);
-                        formDataMap.put(patientUuid,patientFormData);
-                    }
+        List<FormData> formDataList =  getFormDataByUuids(uuids);
+        if(!formDataList.isEmpty()){
+            for(FormData formData:formDataList){
+                String patientUuid = formData.getPatientUuid();
+                if(formDataMap.containsKey(patientUuid)){
+                    formDataMap.get(patientUuid).add(formData);
+                } else {
+                    List patientFormData = new ArrayList<FormData>();
+                    patientFormData.add(formData);
+                    formDataMap.put(patientUuid,patientFormData);
                 }
             }
-            return formDataMap;
-        }catch (IOException e){
-            throw new FormDataFetchException(e);
         }
+        return formDataMap;
     }
 
     public Map<String,List<FormData>> deleteFormDataWithNoRelatedCompleteRegistrationFormDataInGroup(
@@ -853,6 +857,7 @@ public class FormController {
                         encounterService.deleteEncounter(encounter);
                     }
                 }
+                System.out.println("Deleting formdata: "+formData.getUserUuid());
                 formService.deleteFormData(formData);
             }
         }catch(IOException e){

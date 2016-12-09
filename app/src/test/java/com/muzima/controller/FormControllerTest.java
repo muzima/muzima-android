@@ -18,6 +18,7 @@ import com.muzima.api.service.FormService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PatientService;
+import com.muzima.api.service.EncounterService;
 import com.muzima.builder.FormBuilder;
 import com.muzima.builder.FormTemplateBuilder;
 import com.muzima.builder.TagBuilder;
@@ -64,6 +65,7 @@ public class FormControllerTest {
     private PatientService patientService;
     private LastSyncTimeService lastSyncTimeService;
     private ObservationService observationService;
+    private EncounterService encounterService;
     private SntpService sntpService;
     private LastSyncTime lastSyncTime;
     private Date mockDate;
@@ -75,7 +77,8 @@ public class FormControllerTest {
         lastSyncTimeService = mock(LastSyncTimeService.class);
         sntpService = mock(SntpService.class);
         observationService = mock(ObservationService.class);
-        formController = new FormController(formService, patientService, lastSyncTimeService, sntpService,observationService);
+        encounterService = mock(EncounterService.class);
+        formController = new FormController(formService, patientService, lastSyncTimeService, sntpService,observationService, encounterService);
         lastSyncTime = mock(LastSyncTime.class);
         mockDate = mock(Date.class);
     }
@@ -580,10 +583,10 @@ public class FormControllerTest {
         String uuid = "uuid";
         incompleteFormToDelete.setUuid(uuid);
         incompleteFormToDelete.setStatus(Constants.STATUS_INCOMPLETE);
-        when(formController.getFormDataByUuid(anyString())).thenReturn(incompleteFormToDelete);
+        when(formController.getFormDataByUuids(asList(anyString()))).thenReturn(asList(incompleteFormToDelete));
 
         formController.deleteCompleteAndIncompleteEncounterFormData(asList(uuid));
-        verify(formService).deleteFormData(asList(incompleteFormToDelete));
+        verify(formService).deleteFormData(incompleteFormToDelete);
     }
 
     @Test
@@ -592,10 +595,10 @@ public class FormControllerTest {
         String uuid = "uuid";
         completeFormToDelete.setUuid(uuid);
         completeFormToDelete.setStatus(Constants.STATUS_COMPLETE);
-        when(formController.getFormDataByUuid(anyString())).thenReturn(completeFormToDelete);
+        when(formController.getFormDataByUuids(asList(anyString()))).thenReturn(asList(completeFormToDelete));
 
-        formController.deleteCompleteAndIncompleteForms(asList(uuid));
-        verify(formService).deleteFormData(asList(completeFormToDelete));
+        formController.deleteCompleteAndIncompleteEncounterFormData(asList(uuid));
+        verify(formService).deleteFormData(completeFormToDelete);
 
     }
 
