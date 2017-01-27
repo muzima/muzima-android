@@ -152,13 +152,8 @@ public class AudioIntent extends Activity {
     public void chooseAudio(View view) {
         isNewAudio = false;
         Intent i;
-        final boolean isKitKat = Build.VERSION.SDK_INT >= 19;
-
-        if (isKitKat){
-            i = new Intent(Intent.ACTION_GET_CONTENT, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
-            i.addCategory(Intent.CATEGORY_OPENABLE);
-        } else
-            i = new Intent(Intent.ACTION_GET_CONTENT);
+        i = new Intent(Intent.ACTION_GET_CONTENT, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+        i.addCategory(Intent.CATEGORY_OPENABLE);
 
         try {
             i.setType("audio/*");
@@ -247,14 +242,13 @@ public class AudioIntent extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (intent != null) {
-            final boolean isKitKat = Build.VERSION.SDK_INT >= 19;
 
             boolean openDocument = false;
             if (requestCode == AUDIO_CHOOSE)
                 openDocument = true;
 
             // get the file path and create a copy in the instance folder
-            String audioPath = getPathFromUri((Uri) intent.getData(), isKitKat, openDocument);
+            String audioPath = getPathFromUri((Uri) intent.getData(), openDocument);
             saveAudio(audioPath);
             refreshAudioView();
         }
@@ -268,7 +262,7 @@ public class AudioIntent extends Activity {
         outState.putString(KEY_AUDIO_CAPTION, mBinaryDescription);
 	}
 
-    private String getPathFromUri(Uri uri, boolean isKitKat, boolean isOpenDocument) {
+    private String getPathFromUri(Uri uri, boolean isOpenDocument) {
         if (uri.toString().startsWith("file"))
             return uri.toString().substring(6);
         else {
@@ -277,7 +271,7 @@ public class AudioIntent extends Activity {
             Cursor c = null;
 
             try {
-                if (isKitKat && isOpenDocument) {
+                if (isOpenDocument) {
                     String id = uri.getLastPathSegment().split(":")[1];
                     audioSelection = Audio.Media._ID + "=" + id;
                     uri = getUri();

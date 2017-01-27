@@ -125,9 +125,6 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CheckedLinearLayout checkedLinearLayout = (CheckedLinearLayout) view;
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                    checkedLinearLayout.toggle();
-                }
                 cohortsAdapter.onListItemClick(position);
             }
         };

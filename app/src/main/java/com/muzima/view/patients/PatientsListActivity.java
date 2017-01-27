@@ -13,7 +13,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,7 +26,6 @@ import android.widget.TextView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.SearchView;
-import com.azimolabs.keyboardwatcher.KeyboardWatcher;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
@@ -41,7 +39,7 @@ import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import android.support.design.widget.FloatingActionButton;
 
-import static android.view.View.FOCUS_RIGHT;
+import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
@@ -49,7 +47,7 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
 
 public class PatientsListActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener,
-        ListAdapter.BackgroundListQueryTaskListener, KeyboardWatcher.OnKeyboardToggleListener {
+        ListAdapter.BackgroundListQueryTaskListener {
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
     public static final String QUICK_SEARCH = "quickSearch";
@@ -64,9 +62,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     FloatingActionButton fabSearchButton;
     private LinearLayout searchServerLayout;
     private SearchView searchView;
+    private MenuItem searchMenuItem;
     private boolean intentBarcodeResults = false;
-
-    private KeyboardWatcher keyboardWatcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,9 +87,10 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         fabSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                searchMenuItem.setVisible(true);
                 searchView.setIconified(false);
-                Rect r = new Rect();
                 searchView.requestFocusFromTouch();
+                fabSearchButton.setVisibility(GONE);
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT);
             }
@@ -111,8 +109,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 startActivity(intent);
             }
         });
-        keyboardWatcher = new KeyboardWatcher(this);
-        keyboardWatcher.setListener(this);
     }
     @Override
     public void onReceive(Context context, Intent intent){
@@ -143,8 +139,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.client_list, menu);
-        searchView = (SearchView) menu.findItem(R.id.search)
-                .getActionView();
+        searchMenuItem = menu.findItem(R.id.search);
+        searchView = (SearchView) searchMenuItem.getActionView();
 
         searchView.setQueryHint(getString(R.string.hint_client_search));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -162,12 +158,27 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             }
 
         });
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View view, boolean hasFocus){
+                if(hasFocus){
+                    fabSearchButton.setVisibility(GONE);
+                } else {
+                    fabSearchButton.postDelayed(new Runnable() {
+                        public void run() {
+                            fabSearchButton.setVisibility(VISIBLE);
+                        }
+                    },500);
+                    searchMenuItem.setVisible(false);
+                }
+
+            }
+        });
 
         if (quickSearch) {
-            searchView.setIconified(false);
+            searchMenuItem.setVisible(true);
             searchView.requestFocus();
-        } else
-            searchView.setIconified(true);
+        }
         super.onCreateOptionsMenu(menu);
         return true;
     }
@@ -197,7 +208,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         return new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                searchMenuItem.setVisible(true);
                 searchView.setIconified(false);
                 searchView.requestFocus();
             }
@@ -307,24 +318,11 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     public void onBackPressed(){
         patientAdapter.cancelBackgroundTask();
-        listView.clearFocus();
         super.onBackPressed();
-    }
-    @Override
-    public void onKeyboardShown(int keyboardSize) {
-        fabSearchButton.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onKeyboardClosed() {
-        fabSearchButton.setVisibility(View.VISIBLE);
-        listView.clearChoices();
-
     }
 
     @Override
     protected void onDestroy() {
-        keyboardWatcher.destroy();
         super.onDestroy();
     }
 }
