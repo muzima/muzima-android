@@ -283,6 +283,9 @@
         continue?
     </string>
     <string name="info_form_data_upload_sucess">Upload form data success</string>
+    <string name="info_form_delete_integrity_failure">Integrity failure: Cannot delete registration form data that has
+        associated encounter form data
+    </string>
     <string name="info_form_delete_success">Forms deleted successfully</string>
     <string name="info_form_download">Downloading Forms</string>
     <string formatted="false" name="info_form_download_delete">Downloaded %d forms and retired %d forms</string>
@@ -435,8 +438,13 @@
         those forms before downloading a newer version.
     </string>
     <string name="warning_logout_confirm">Are you sure you want to log out and exit mUzima app?</string>
+    <string name="warning_registration_form_data_delete">You are about to delete registration data. This will also
+        delete patient record on device. Are you sure?
+    </string>
     <string name="warning_switch_server">Switching Server: This will clear all mUzima data on your
         device, including any incomplete forms. Are you sure you want to change this setting?
     </string>
     <string name="admin">admin</string>
+    <string name="error_form_data_delete">Could not delete some form data</string>
+    <string name="info_form_data_delete">Deleted %d forms</string>
 </resources>
