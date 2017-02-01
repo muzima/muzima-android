@@ -488,7 +488,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     } else if(downloadedObs == 0) {
                         resultDescription = getString(R.string.info_observation_patient_not_downloaded);
                     } else {
-                        resultDescription = getString(R.string.info_observation_patient_not_downloaded, downloadedObs, patients);
+                        resultDescription = getString(R.string.info_observations_patients_downloaded, downloadedObs, patients);
                     }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
