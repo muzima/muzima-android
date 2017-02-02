@@ -39,7 +39,8 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
     private EditTextPreference passwordPreference;
     private EditTextPreference autoSaveIntervalPreference;
     private CheckBoxPreference encounterProviderPreference;
-    private CheckBoxPreference duplicateFormDataPreference;
+    //Disabling duplicate form data preference until a better workflow of flagging duplicates is thought out. See MUZIMA-392
+   // private CheckBoxPreference duplicateFormDataPreference;
     private CheckBoxPreference realTimeSyncPreference;
     private ListPreference fontSizePreference;
 
@@ -150,9 +151,9 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             }
         });
 
-        duplicateFormDataPreferenceKey = getResources().getString(R.string.preference_duplicate_form_data_key);
+        /*duplicateFormDataPreferenceKey = getResources().getString(R.string.preference_duplicate_form_data_key);
         duplicateFormDataPreference = (CheckBoxPreference)getPreferenceScreen().findPreference(duplicateFormDataPreferenceKey);
-        duplicateFormDataPreference.setSummary(duplicateFormDataPreference.getSummary());
+        duplicateFormDataPreference.setSummary(duplicateFormDataPreference.getSummary());*/
 
         fontSizePreferenceKey = getResources().getString(R.string.preference_font_size);
         fontSizePreference = (ListPreference) getPreferenceScreen().findPreference(fontSizePreferenceKey);
