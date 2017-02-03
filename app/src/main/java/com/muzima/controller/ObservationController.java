@@ -195,6 +195,9 @@ public class ObservationController {
             if (hasExactCallBeenMadeBefore(lastSyncTime)) {
                 observations.addAll(observationService.downloadObservations(patientUuids, conceptUuids, lastSyncTime));
             } else {
+                observations.addAll(observationService.downloadObservations(patientUuids, conceptUuids, null));
+                //ToDo: Revise this while working on Obs Delta download
+                /*
                 LastSyncTime fullLastSyncTimeInfo = lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_OBSERVATIONS);
                 if (isFirstCallToDownloadObservationsEver(fullLastSyncTimeInfo)) {
                     observations.addAll(observationService.downloadObservations(patientUuids, conceptUuids, null));
@@ -215,7 +218,7 @@ public class ObservationController {
                     else{
                         observations.addAll(observationService.downloadObservations(patientUuids, conceptUuids, null));
                     }
-                }
+                }*/
             }
             LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_OBSERVATIONS, sntpService.getLocalTime(), paramSignature);
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
