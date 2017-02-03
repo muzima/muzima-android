@@ -67,9 +67,11 @@ public class EncounterController {
             if (hasThisCallHappenedBefore(lastSyncTime)) {
                 encounters.addAll(downloadEncounters(patientUuids, lastSyncTime));
             } else {
-                previousPatientsUuid = updateEncountersAndReturnPrevPatientUUIDs(patientUuids, encounters, previousPatientsUuid);
+                //ToDo: Revise this while working on Encounter Delta download
+                //previousPatientsUuid = updateEncountersAndReturnPrevPatientUUIDs(patientUuids, encounters, previousPatientsUuid);
+                encounters.addAll(downloadEncounters(patientUuids, null));
             }
-            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_ENCOUNTERS, sntpService.getLocalTime(), getUpdatedParam(patientUuids, previousPatientsUuid));
+            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_ENCOUNTERS, sntpService.getLocalTime(), paramSignature);
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
             return encounters;
         } catch (IOException e) {
