@@ -259,10 +259,13 @@
         the covered code to comply with privacy laws and regulations or clinical care industry standards and protocols),
         even if such party shall have been informed of the possibility of such damages.
         </p><p>
-        3. If the user of this application is an entity intending to commercialize any application that uses this
-        code in a for-profit venture, the user is required to contact the copyright holder
-        (Copyright 2014, The Trustees of Indiana University).
-        </p>
+        3. mUzima is copyrighted to The Trustees of Indiana University, Moi University, and Vanderbilt University
+	Medical Center (2014-2017).
+        </p><p>
+	4.  If the user of this application is an entity intending to commercialize or make a profit out of any
+	application that uses this code in a for-profit venture, the user is required to contact the copyright holder
+	through mUzima.mobile@gmail.com
+	</p>
         ]]></string>
     <string name="info_download_complete">Download complete with status %d</string>
     <string name="info_downloaded_forms_unavailable">No forms have been downloaded</string>
