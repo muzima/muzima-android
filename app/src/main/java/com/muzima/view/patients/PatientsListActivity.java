@@ -176,6 +176,22 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 }
             }
         });
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View view, boolean hasFocus){
+                if(hasFocus){
+                    fabSearchButton.setVisibility(GONE);
+                } else {
+                    fabSearchButton.postDelayed(new Runnable() {
+                        public void run() {
+                            fabSearchButton.setVisibility(VISIBLE);
+                        }
+                    },500);
+                    searchMenuItem.setVisible(false);
+                }
+
+            }
+        });
 
         if (quickSearch) {
             searchMenuItem.setVisible(true);
