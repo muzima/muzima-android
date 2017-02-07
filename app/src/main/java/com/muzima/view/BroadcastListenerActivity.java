@@ -92,7 +92,7 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
                 if(deletedFormCount > 0){
                     msg = getString(R.string.info_form_download_delete, downloadCount, deletedFormCount);
                 }
-            }else if(syncType == DataSyncServiceConstants.SYNC_TEMPLATES){
+            } else if(syncType == DataSyncServiceConstants.SYNC_TEMPLATES){
                 msg = getString(R.string.info_form_template_concept_download, downloadCount , intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0));
             } else if(syncType == DataSyncServiceConstants.SYNC_COHORTS){
                 msg = getString(R.string.info_new_cohort_download, downloadCount);
@@ -108,8 +108,10 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
                 msg= getString(R.string.info_new_encounter_download, downloadCount);
             } else if(syncType == DataSyncServiceConstants.SYNC_UPLOAD_FORMS){
                 msg = getString(R.string.info_form_data_upload_sucess);
-            }else if(syncType == DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS){
+            } else if(syncType == DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS){
                 msg = getString(R.string.info_real_time_upload_success);
+            } else if(syncType == DataSyncServiceConstants.SYNC_NOTIFICATIONS){
+                msg = getString(R.string.info_notification_download, downloadCount);
             }
         }
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();

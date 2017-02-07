@@ -94,8 +94,8 @@ public class SetupConfigurationAdapter extends ListAdapter<SetupConfiguration> {
         SetupConfigurationAdapter.this.clear();
         List <SetupConfiguration> filteredSetupConfigurations = new ArrayList<>();
         for (SetupConfiguration setupConfiguration : allSetupConfigurations) {
-            if (setupConfiguration.getName().toLowerCase().contains(filterText.toLowerCase())
-                    || setupConfiguration.getDescription().toLowerCase().contains(filterText.toLowerCase())) {
+            if (setupConfiguration.getName() != null && setupConfiguration.getName().toLowerCase().contains(filterText.toLowerCase())
+                    || setupConfiguration.getDescription()!= null && setupConfiguration.getDescription().toLowerCase().contains(filterText.toLowerCase())) {
                 filteredSetupConfigurations.add(setupConfiguration);
             }
         }

@@ -54,14 +54,14 @@
                 android:summary="@string/hint_real_time_sync"
                 android:title="@string/title_real_time_sync"
                 android:key="@string/preference_real_time_sync" />
-
+<!--
         <CheckBoxPreference
                 android:defaultValue="true"
                 android:checked="true"
                 android:key="@string/preference_duplicate_form_data_key"
                 android:summary="@string/hint_duplicate_form_data_warning"
                 android:title="@string/title_duplicate_form_data_warning" />
-
+-->
         <ListPreference
                 android:title="@string/title_font_size"
                 android:key="@string/preference_font_size"
