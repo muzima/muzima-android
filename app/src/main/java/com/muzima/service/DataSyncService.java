@@ -290,7 +290,6 @@ public class DataSyncService extends IntentService {
                         .setSmallIcon(R.drawable.ic_launcher_logo)
                         .setContentTitle(title)
                         .setContentText(msg)
-                        .setDefaults(Notification.DEFAULT_ALL) //requires VIBRATE permissions
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(msg));
 
         NotificationManager mNotificationManager =
