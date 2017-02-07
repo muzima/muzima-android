@@ -475,7 +475,7 @@ public class MuzimaSyncService {
         return result;
     }
     public int[] downloadObservationsForPatientsByCohortUUIDs(String[] cohortUuids, boolean replaceExistingObservation) {
-        int[] result = new int[2];
+        int[] result = new int[3];
         List<Patient> patients;
         try {
             patients = patientController.getPatientsForCohorts(cohortUuids);
@@ -602,7 +602,7 @@ public class MuzimaSyncService {
     }
 
     public int[] downloadEncountersForPatientsByCohortUUIDs(String[] cohortUuids, boolean replaceExistingEncounters) {
-        int[] result = new int[2];
+        int[] result = new int[3];
         List<Patient> patients;
         try {
             patients = patientController.getPatientsForCohorts(cohortUuids);

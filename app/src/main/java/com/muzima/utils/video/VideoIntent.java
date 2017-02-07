@@ -152,12 +152,7 @@ public class VideoIntent extends Activity {
 	public void chooseVideo(View view) {
 		isNewVideo = false;
         Intent i;
-        final boolean isKitKat = Build.VERSION.SDK_INT >= 19;
-
-        if (isKitKat)
-            i = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
-        else
-            i = new Intent(Intent.ACTION_GET_CONTENT);
+		i = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
 
         try {
 		    i.setType("video/*");

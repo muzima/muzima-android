@@ -66,6 +66,8 @@ public class AllCohortsAdapter extends CohortsAdapter {
         Cohort cohort = getItem(position);
         if (cohortController.isDownloaded(cohort)) {
             holder.displayDownloadImage();
+        } else {
+            holder.hideDownloadImage();
         }
         highlightCohorts(cohort,view);
         return view;
