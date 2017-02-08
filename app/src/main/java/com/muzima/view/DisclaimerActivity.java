@@ -36,7 +36,7 @@ public class DisclaimerActivity extends Activity {
         String disclaimerText = getResources().getString(R.string.info_disclaimer);
         final TextView disclaimerTextView = (TextView) findViewById(R.id.disclaimer_text_view);
         disclaimerTextView.setText(Html.fromHtml(disclaimerText));
-        Linkify.addLinks(disclaimerTextView, Linkify.WEB_URLS);
+        Linkify.addLinks(disclaimerTextView, Linkify.ALL);
 
         final Button nextButton = (Button) findViewById(R.id.next);
         nextButton.setOnClickListener(new View.OnClickListener() {
