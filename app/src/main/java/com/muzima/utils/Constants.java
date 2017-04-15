@@ -42,6 +42,7 @@ public class Constants {
     public static final String TMP_FILE_PATH = APP_EXTERNAL_DIR_ROOT + "/.cache";
 
     public static final int PATIENT_LOAD_PAGE_SIZE = 10;
+    public static final int COHORT_MEMBERSHIP_LOAD_PAGE_SIZE = 10;
 
     public static class DataSyncServiceConstants {
         public static final String SYNC_TYPE = "sync_type";
@@ -49,6 +50,7 @@ public class Constants {
         public static final String SYNC_STATUS = "sync_status";
         public static final String DOWNLOAD_COUNT_PRIMARY = "download_count_primary";
         public static final String DOWNLOAD_COUNT_SECONDARY = "download_count_secondary";
+        public static final String DOWNLOAD_COUNT_TERTIARY = "download_count_tertiary";
         public static final String DELETED_COUNT_PRIMARY = "deleted_count_primary";
         public static final String FORM_IDS = "formIds";
         public static final String COHORT_IDS = "cohortIds";
@@ -66,6 +68,8 @@ public class Constants {
         public static final int DOWNLOAD_PATIENT_ONLY = 9;
         public static final int SYNC_NOTIFICATIONS = 10;
         public static final int SYNC_REAL_TIME_UPLOAD_FORMS =11;
+        public static final int SYNC_COHORT_MEMBERSHIP_FULL_DATA = 12;
+        public static final int SYNC_COHORT_MEMBERSHIP_ONLY = 13;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;

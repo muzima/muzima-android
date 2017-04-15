@@ -10,12 +10,14 @@ package com.muzima.service;
 
 import android.content.Intent;
 import android.util.Log;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.context.Context;
 import com.muzima.api.exception.AuthenticationException;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
+import com.muzima.api.model.CohortMembership;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Form;
@@ -38,10 +40,9 @@ import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.utils.Constants;
-import com.muzima.utils.Constants.SERVER_CONNECTIVITY_STATUS;
 import com.muzima.utils.NetworkUtils;
-import com.muzima.utils.StringUtils;
 import com.muzima.view.progressdialog.ProgressDialogUpdateIntentService;
+
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -49,6 +50,7 @@ import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
@@ -867,6 +869,81 @@ public class MuzimaSyncService {
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
         } catch (SetupConfigurationController.SetupConfigurationSaveException e){
             Log.e(TAG, "Exception when trying to save setup configs");
+            result[0] = SyncStatusConstants.SAVE_ERROR;
+        }
+        return result;
+    }
+
+    public int[] downloadCohortMemberships(String[] cohortUuids) {
+        int[] result = new int[4];
+        HashMap<String, Integer> cohortCount = new HashMap<String, Integer>();
+
+        try {
+            long startDownloadCohortData = System.currentTimeMillis();
+            ArrayList<ArrayList<CohortMembership>> membershipList =
+                    cohortController.downloadCohortMemberships(cohortUuids);
+            List<Patient> patients = new ArrayList<Patient>();
+            long endDownloadCohortData = System.currentTimeMillis();
+            Log.d(TAG, "In downloading Cohort Memberships: " + (endDownloadCohortData
+                    - startDownloadCohortData) / 1000 + " sec\n");
+
+            if (membershipList.isEmpty()) {
+                result[0] = SyncStatusConstants.SUCCESS;
+                result[1] = 0;
+                result[2] = 0;
+                result[3] = 0;
+                return result;
+            }
+            List<CohortMembership> newMemberships = membershipList.get(0);
+            Log.i(TAG, "New Cohort Memberships downloaded: " + newMemberships.size());
+            List<CohortMembership> updatedMemberships = membershipList.get(1);
+            Log.i(TAG, "Updated Cohort Memberships downloaded: " + updatedMemberships.size());
+
+            if (!newMemberships.isEmpty()) {
+                cohortController.addCohortMemberships(newMemberships);
+                Log.i(TAG, newMemberships.size() + " new Cohort Memberships saved");
+                for (CohortMembership membership : newMemberships) {
+                    if (!cohortCount.containsKey(membership.getCohort().getUuid())) {
+                        cohortCount.put
+                                (membership.getCohort().getUuid(), membership.getUuid().hashCode());
+                    }
+                    patients.add(membership.getPatient());
+                }
+            }
+            if (!updatedMemberships.isEmpty()) {
+                cohortController.updateCohortMemberships(updatedMemberships);
+                Log.i(TAG, updatedMemberships.size() + " updated Cohort Memberships saved");
+
+                for (CohortMembership membership : updatedMemberships) {
+                    if (!cohortCount.containsKey(membership.getCohort().getUuid())) {
+                        cohortCount.put
+                                (membership.getCohort().getUuid(), membership.getUuid().hashCode());
+                    }
+                    patients.add(membership.getPatient());
+                }
+            }
+            if (!patients.isEmpty()) {
+                patientController.replacePatients(patients);
+                Log.i(TAG, "Patients saved");
+            }
+            result[0] = SyncStatusConstants.SUCCESS;
+            result[1] = newMemberships.size();
+            result[2] = updatedMemberships.size();
+            result[3] = cohortCount.size();
+        } catch (CohortController.CohortMembershipDownloadException e) {
+            Log.e(TAG, "Exception thrown while downloading cohort memberships.", e);
+            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+        } catch (PatientController.PatientSaveException e) {
+            Log.e(TAG, "Exception thrown while replacing patients");
+            result[0] = SyncStatusConstants.REPLACE_ERROR;
+        } catch (IOException e) {
+            Log.e(TAG, "Exception thrown while downloading cohort memberships", e);
+            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+        } catch (CohortController.CohortMembershipReplaceException e) {
+            Log.e(TAG, "Exception thrown while updating cohort memberships", e);
+            result[0] = SyncStatusConstants.REPLACE_ERROR;
+        } catch (CohortController.CohortMembershipSaveException e) {
+            Log.e(TAG, "Exception thrown while saving cohort memberships", e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
         }
         return result;

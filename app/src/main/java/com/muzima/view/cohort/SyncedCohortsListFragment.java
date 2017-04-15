@@ -12,11 +12,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+
 import com.muzima.R;
 import com.muzima.adapters.cohort.SyncedCohortsAdapter;
 import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
-import com.muzima.view.patients.PatientsListActivity;
+import com.muzima.view.membership.MembershipsListActivity;
 
 public class SyncedCohortsListFragment extends CohortListFragment implements AllCohortsListFragment.OnCohortDataDownloadListener {
     private static final String TAG = "SyncedCohortsListFragment";
@@ -41,9 +42,9 @@ public class SyncedCohortsListFragment extends CohortListFragment implements All
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         unselectAllItems(list);
         Cohort cohort = (Cohort) listAdapter.getItem(position);
-        Intent intent = new Intent(getActivity(), PatientsListActivity.class);
-        intent.putExtra(PatientsListActivity.COHORT_ID, cohort.getUuid());
-        intent.putExtra(PatientsListActivity.COHORT_NAME, cohort.getName());
+        Intent intent = new Intent(getActivity(), MembershipsListActivity.class);
+        intent.putExtra(MembershipsListActivity.COHORT_ID, cohort.getUuid());
+        intent.putExtra(MembershipsListActivity.COHORT_NAME, cohort.getName());
         startActivity(intent);
     }
 

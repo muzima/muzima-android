@@ -57,4 +57,8 @@ public class CohortPagerAdapter extends MuzimaPagerAdapter {
         pagers[TAB_All].fragment.unselectAllItems();
         ((AllCohortsListFragment)pagers[TAB_All].fragment).endActionMode();
     }
+
+    public void onCohortMembershipsDownloadFinish() {
+        ((AllCohortsListFragment)pagers[TAB_All].fragment).onCohortMembershipDownloadFinish();
+    }
 }

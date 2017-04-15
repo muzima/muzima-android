@@ -8,14 +8,16 @@
 
 package com.muzima.controller;
 
-import com.muzima.api.model.CohortMember;
+import com.muzima.api.model.CohortMembership;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientIdentifierType;
+import com.muzima.api.service.CohortMembershipService;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.PatientService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
+
 import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +25,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -39,12 +42,14 @@ public class PatientControllerTest {
     private PatientController patientController;
     private PatientService patientService;
     private CohortService cohortService;
+    private CohortMembershipService membershipService;
 
     @Before
     public void setup() {
         patientService = mock(PatientService.class);
         cohortService = mock(CohortService.class);
-        patientController = new PatientController(patientService, cohortService);
+        membershipService = mock(CohortMembershipService.class);
+        patientController = new PatientController(patientService, cohortService, membershipService);
     }
 
     @Test
@@ -90,12 +95,12 @@ public class PatientControllerTest {
     @Test
     public void getPatientsInCohort_shouldReturnThePatientsInTheCohort() throws IOException, PatientController.PatientLoadException {
         String cohortId = "cohortId";
-        List<CohortMember> members = buildCohortMembers(cohortId);
-        when(cohortService.getCohortMembers(cohortId)).thenReturn(members);
+        List<CohortMembership> memberships = buildCohortMemberships(cohortId);
+        when(membershipService.getCohortMemberships(cohortId)).thenReturn(memberships);
 
         Patient patient = new Patient();
-        patient.setUuid(members.get(0).getPatientUuid());
-        when(patientService.getPatientsFromCohortMembers(members)).thenReturn(Collections.singletonList(patient));
+        patient.setUuid(memberships.get(0).getPatient().getUuid());
+        when(patientService.getPatientsFromCohortMemberships(memberships)).thenReturn(Collections.singletonList(patient));
 
         List<Patient> patients = patientController.getPatients(cohortId);
 
@@ -138,13 +143,13 @@ public class PatientControllerTest {
         verify(patientService).searchPatients(searchString, cohortUUID);
     }
 
-    private List<CohortMember> buildCohortMembers(String cohortId) {
-        List<CohortMember> cohortMembers = new ArrayList<>();
-        CohortMember member1 = new CohortMember();
-        member1.setCohortUuid(cohortId);
-        member1.setPatientUuid("patientId1");
-        cohortMembers.add(member1);
-        return cohortMembers;
+
+    private List<CohortMembership> buildCohortMemberships(String cohortId) {
+        List<CohortMembership> cohortMemberships = new ArrayList<>();
+        Patient patient = patient("UUID1",patientIdentifier("UUID2"));
+        CohortMembership membership = new CohortMembership(patient, new Date());
+        cohortMemberships.add(membership);
+        return cohortMemberships;
     }
 
     @Test

@@ -1,0 +1,68 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@color/primary_black">
+<LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+    <ListView
+            android:id="@+id/list"
+            style="@style/MuzimaSelectableListView">
+    </ListView>
+
+    <LinearLayout
+            android:id="@+id/no_data_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/list"
+            android:gravity="center"
+            android:paddingRight="16dp"
+            android:visibility="gone">
+
+        <TextView
+                android:id="@+id/no_data_msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="25sp">
+        </TextView>
+
+        <TextView
+                android:id="@+id/no_data_tip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="20sp">
+        </TextView>
+    </LinearLayout>
+    <LinearLayout
+            android:id="@+id/search_server_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_below="@id/no_data_layout"
+            android:visibility="invisible">
+        <LinearLayout style="@style/DividerLine"
+            android:layout_marginTop="30dp"/>
+        <Button android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/search_server_btn"
+                android:layout_marginTop="20dp"
+                style="@style/Button.Next"
+                android:drawableLeft="@drawable/ic_search"
+                android:text="Search Server"/>
+    </LinearLayout>
+</LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_search" />
+
+    <include layout="@layout/progress_bar"/>
+
+</FrameLayout>

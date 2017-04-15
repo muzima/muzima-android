@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
@@ -21,14 +22,15 @@ import com.muzima.model.SetupActionLogModel;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.util.JsonUtils;
+import com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
+import com.muzima.utils.Constants.SetupLogConstants;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainActivity;
+
 import net.minidev.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
-import com.muzima.utils.Constants.SetupLogConstants;
 
 public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
     public static final String SETUP_CONFIG_UUID_INTENT_KEY = "SETUP_CONFIG_UUID";
@@ -131,7 +133,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         new AsyncTask<Void, Void, int[]>() {
             @Override
             protected void onPreExecute() {
-                downloadPatientsLog.setSetupAction(getString(R.string.info_patient_download));
+                downloadPatientsLog.setSetupAction(getString(R.string.info_membership_download));
                 onQueryTaskStarted();
             }
             @Override
@@ -139,31 +141,29 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 List<String> uuids = extractCohortsUuids();
                 if (!uuids.isEmpty()){
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
-                    return muzimaSyncService.downloadPatientsForCohorts(uuids.toArray(new String[uuids.size()]));
+                    return muzimaSyncService.downloadCohortMemberships(uuids.toArray(new String[uuids.size()]));
                 }
                 return null;
             }
             @Override
             protected void onPostExecute(int[] result) {
-                String resultDescription=null;
-                String resultStatus=null;
+                String resultDescription = null;
+                String resultStatus = null;
                 if (result == null) {
-                    resultDescription = getString(R.string.info_cohort_patient_not_download);
+                    resultDescription = getString(R.string.info_cohort_membership_not_download);
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else if (result[0] == SyncStatusConstants.SUCCESS) {
-                    if(result[1] == 1 && result[2] == 1){
-                        resultDescription = getString(R.string.info_cohort_patient_download);
-                    } else if(result[1] == 1){
-                        resultDescription = getString(R.string.info_cohorts_patient_download, result[2]);
-                    } else if(result[2] == 1){
-                        resultDescription = getString(R.string.info_cohort_patients_download, result[1]);
+                    if (result[1] + result[2] == 1 && result[3] == 1) {
+                        resultDescription = getString(R.string.info_cohort_membership_download);
                     } else {
-                        resultDescription = getString(R.string.info_cohorts_patients_download, result[1],result[2]);
+                        resultDescription =
+                                getString(R.string.info_new_update_cohort_memberships_cohort_download,
+                                        result[1], result[2], result[3]);
                     }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
                     wizardcompletedSuccessfully=false;
-                    resultDescription = getString(R.string.error_patient_download);
+                    resultDescription = getString(R.string.error_cohort_membership_download);
                     resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
 
                 }

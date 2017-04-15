@@ -10,11 +10,15 @@ package com.muzima.controller;
 
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
+import com.muzima.api.model.CohortMembership;
 import com.muzima.api.model.LastSyncTime;
+import com.muzima.api.service.CohortMembershipService;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.service.SntpService;
+import com.muzima.util.handler.impl.CohortMembershipDeltaHandler;
 import com.muzima.utils.StringUtils;
+
 import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +31,7 @@ import java.util.List;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS;
 import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS_DATA;
+import static com.muzima.api.model.APIName.DOWNLOAD_COHORT_MEMBERSHIPS;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
@@ -45,6 +50,8 @@ import static org.mockito.Mockito.when;
 public class CohortControllerTest {
     private CohortController controller;
     private CohortService cohortService;
+    private CohortMembershipService cohortMembershipService;
+    private CohortMembershipDeltaHandler deltaHandler;
     private LastSyncTimeService lastSyncTimeService;
     private LastSyncTime lastSyncTime;
     private Date anotherMockDate;
@@ -54,9 +61,11 @@ public class CohortControllerTest {
     @Before
     public void setup() throws IOException {
         cohortService = mock(CohortService.class);
+        cohortMembershipService = mock(CohortMembershipService.class);
         lastSyncTimeService = mock(LastSyncTimeService.class);
         sntpService = mock(SntpService.class);
-        controller = new CohortController(cohortService, lastSyncTimeService, sntpService);
+        controller =new CohortController(cohortService,
+                lastSyncTimeService, sntpService, cohortMembershipService, deltaHandler);
         lastSyncTime = mock(LastSyncTime.class);
         anotherMockDate = mock(Date.class);
         mockDate = mock(Date.class);
@@ -326,7 +335,7 @@ public class CohortControllerTest {
         cohorts.add(new Cohort());
 
         when(cohortService.getAllCohorts()).thenReturn(cohorts);
-        when(cohortService.countCohortMembers(anyString())).thenReturn(2);
+        when(cohortMembershipService.countCohortMemberships(anyString())).thenReturn(2);
         assertThat(controller.countSyncedCohorts(), is(1));
     }
 
@@ -343,7 +352,7 @@ public class CohortControllerTest {
     public void getSyncedCohorts_shouldReturnTheCohortsWhichHaveMoreThanOneMember() throws CohortController.CohortReplaceException, IOException, ParseException, CohortController.CohortFetchException {
         Cohort cohort = new Cohort();
         when(cohortService.getAllCohorts()).thenReturn(asList(cohort));
-        when(cohortService.countCohortMembers(anyString())).thenReturn(1);
+        when(cohortMembershipService.countCohortMemberships(anyString())).thenReturn(1);
         assertThat(controller.getSyncedCohorts(), hasItem(cohort));
     }
 
@@ -353,5 +362,59 @@ public class CohortControllerTest {
         when(cohortService.getAllCohorts()).thenReturn(asList(cohort));
         when(cohortService.countCohortMembers(anyString())).thenReturn(0);
         assertThat(controller.getSyncedCohorts().size(), is(0));
+    }
+
+    @Test
+    public void downloadCohortMembershipsByUuid_shouldDownloadCohortMembershipsByUuid()
+            throws IOException, CohortController.CohortMembershipDownloadException {
+        List<CohortMembership> memberships = new ArrayList<CohortMembership>();
+        String uuid = "uuid";
+        when(cohortMembershipService.downloadCohortMemberships(uuid, null)).thenReturn(memberships);
+        when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORT_MEMBERSHIPS, uuid))
+                .thenReturn(null);
+
+        assertThat(controller.downloadCohortMembershipsByUuid(uuid), is(memberships));
+    }
+
+    @Test(expected = CohortController.CohortMembershipDownloadException.class)
+    public void downloadCohortMembershipsByUuid_shouldThrowCohortMembershipDownloadExceptionIfExceptionThrownByCohortMembershipService()
+            throws IOException, CohortController.CohortMembershipDownloadException {
+        String uuid = "uuid";
+        doThrow(new IOException()).when(cohortMembershipService).downloadCohortMemberships(uuid, null);
+        when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORT_MEMBERSHIPS, uuid)).thenReturn(null);
+
+        controller.downloadCohortMembershipsByUuid(uuid);
+    }
+
+    @Test
+    public void downloadCohortMembershipsByUuid_shouldGetLastSynchDateAndUseItWhenDownloadingData()
+            throws IOException, CohortController.CohortMembershipDownloadException {
+        List<CohortMembership> memberships = new ArrayList<CohortMembership>();
+        String uuid = "uuid";
+        when(cohortMembershipService.downloadCohortMemberships(uuid, null)).thenReturn(memberships);
+        when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORT_MEMBERSHIPS, uuid)).thenReturn(mockDate);
+        when(cohortMembershipService.downloadCohortMemberships(uuid, mockDate)).thenReturn(memberships);
+
+        controller.downloadCohortMembershipsByUuid(uuid);
+
+        verify(lastSyncTimeService).getLastSyncTimeFor(DOWNLOAD_COHORT_MEMBERSHIPS, uuid);
+        verify(cohortMembershipService,never()).downloadCohortMemberships(uuid, null);
+    }
+
+    @Test
+    public void downloadCohortMembershipsByUuid_shouldSaveLastSyncTimeOfCohortData()
+            throws IOException, CohortController.CohortMembershipDownloadException {
+        String uuid = "uuid";
+        when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORT_MEMBERSHIPS, uuid)).thenReturn(mockDate);
+        when(sntpService.getLocalTime()).thenReturn(anotherMockDate);
+
+        controller.downloadCohortMembershipsByUuid(uuid);
+
+        ArgumentCaptor<LastSyncTime> captor = ArgumentCaptor.forClass(LastSyncTime.class);
+        verify(lastSyncTimeService).saveLastSyncTime(captor.capture());
+        LastSyncTime savedLastSyncTime = captor.getValue();
+        assertThat(savedLastSyncTime.getApiName(), is(DOWNLOAD_COHORT_MEMBERSHIPS));
+        assertThat(savedLastSyncTime.getLastSyncDate(), is(anotherMockDate));
+        assertThat(savedLastSyncTime.getParamSignature(), is(uuid));
     }
 }
