@@ -1,0 +1,35 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical">
+        <LinearLayout style="@style/NotClickableSummaryItem">
+            <TextView style="@style/SummaryHeader"
+                      android:text="@string/title_provider_download"/>
+            <TextView
+                    android:textColor="@android:color/white"
+                    android:textAlignment="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hint_provider_pref_add">
+            </TextView>
+        </LinearLayout>
+        <include layout="@layout/activity_provider_preference"/>
+    </LinearLayout>
+    <LinearLayout style="@style/ButtonRow"
+                  android:layout_alignParentBottom="true">
+        <Button
+                android:id="@+id/previous"
+                style="@style/Button.Previous"
+                android:layout_weight=".3"/>
+        <Button
+                android:id="@+id/next"
+                style="@style/Button.Next"
+                android:layout_weight=".3"/>
+    </LinearLayout>
+
+</RelativeLayout>
+
+
