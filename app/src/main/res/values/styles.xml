@@ -548,7 +548,7 @@
 
     <style name="Button.InactiveNext">
         <item name="android:background">@drawable/previous_button_selector</item>
-        <item name="android:text">Next</item>
+        <item name="android:text">@string/general_next</item>
     </style>
 
     <style name="Button.Next">
