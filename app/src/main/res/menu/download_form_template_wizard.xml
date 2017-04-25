@@ -14,13 +14,13 @@
         android:id="@+id/action_help"
         android:orderInCategory="2"
         custom:showAsAction="never"
-        android:title="Help">
+        android:title="@string/general_help">
     </item>
     <item
         android:id="@+id/action_logout"
         android:orderInCategory="3"
         custom:showAsAction="never"
-        android:title="Logout">
+        android:title="@string/general_logout">
     </item>
 
 </menu>
