@@ -284,6 +284,7 @@
     <string name="info_cohort_patient_not_download">Nenhum paciente foi baixado</string>
     <string formatted="false" name="info_cohort_patients_download">Baixou %d pacientes para 1 coorte</string>
     <string name="info_cohort_prefixes_unavailable">Nenhum Prefixo de Coorte Adicionado</string>
+    <string formatted="false" name="info_cohorts_downloaded">Baixou %d provedores coortes</string>
     <string formatted="false" name="info_cohorts_patient_download">Baixou 1 paciente para %d coortes</string>
     <string formatted="false" name="info_cohorts_patients_download">Baixou %d pacientes para %d coortes</string>
     <string name="info_cohorts_unavailable">Nenhuma Coorte Disponível</string>

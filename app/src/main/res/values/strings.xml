@@ -6,9 +6,9 @@
     <string name="confirm_duplicate_form_data_save">Save Duplicate Form Data</string>
     <string name="confirm_patient_id_exists">Does the patient already have existing ID?</string>
 
-    <string name="default_auto_save_interval">2</string>
+    <string translatable="false"     name="default_auto_save_interval">2</string>
     <string name="default_form_register">Registration Forms</string>
-    <string name="default_server">http://demo2.muzima.org</string>
+    <string translatable="false" name="default_server">http://demo2.muzima.org</string>
 
     <string name="error_action_allow">Action not allowed while sync is in progress</string>
     <string name="error_audio_chose_activity_find">Error: Activity for choosing audio not found</string>
