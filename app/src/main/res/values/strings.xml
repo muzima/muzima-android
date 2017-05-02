@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <string name="app_name">mUzima</string>
+    <string name="app_title">mUzima Clinic</string>
 
     <string name="confirm_duplicate_form_data_save">Save Duplicate Form Data</string>
     <string name="confirm_patient_id_exists">Does the patient already have existing ID?</string>
@@ -33,6 +34,7 @@
     <string name="error_encounter_observation_download">Could not download observations for patients</string>
     <string name="error_exception_data_load">Load exception has been thrown while loading data</string>
     <string name="error_exception_data_upload">Exception has been thrown while uploading data</string>
+    <string name="error_form_data_delete">Could not delete some form data</string>
     <string name="error_form_download">Could not download forms</string>
     <string name="error_form_fetch">Something went wrong while fetching forms from local repo</string>
     <string name="error_form_load">Could not load forms</string>
@@ -82,6 +84,7 @@
 
     <string name="general_accept">Accept</string>
     <string name="general_alert">Alert!</string>
+    <string name="general_all">All</string>
     <string name="general_application_version">Version %1$s</string>
     <string name="general_cancel">Cancel</string>
     <string name="general_caution">Caution!</string>
@@ -101,6 +104,9 @@
     <string name="general_help">Help</string>
     <string name="general_load">Load</string>
     <string name="general_locations">Locations</string>
+    <string name="general_login">Login</string>
+    <string name="general_logout">Logout</string>
+    <string name="general_next">Next</string>
     <string name="general_no">No</string>
     <string name="general_notices">Notices</string>
     <string name="general_notification">Notification</string>
@@ -108,11 +114,14 @@
     <string name="general_observations">Observations</string>
     <string name="general_ok">Ok</string>
     <string name="general_password">Password</string>
+    <string name="general_previous">Previous</string>
+    <string name="general_progress_message">This might take a while</string>
     <string name="general_providers">Providers</string>
     <string name="general_save">Save</string>
     <string name="general_search">Search</string>
     <string name="general_server">Server</string>
     <string name="general_settings">Settings</string>
+    <string name="general_synced">Synced</string>
     <string name="general_tags">Tags</string>
     <string name="general_thank_you">Thank you!</string>
     <string name="general_upload">Upload</string>
@@ -129,9 +138,11 @@
     <string name="hint_advanced_setup">Use a step by step wizard to choose what you want</string>
     <string name="hint_audio_caption">Please enter a caption for the audio</string>
     <string name="hint_audio_record">Record or choose audio</string>
+    <string name="hint_authentication_progress">Authenticating...</string>
     <string name="hint_barcode_scanner_setup">You need a barcode scanner application to register clients from
         mobile. Please check whether it\'s been installed in your device or not.
     </string>
+    <string name="hint_check_digit_validation_failure">Please enter digits that matches CheckDigit algorithm</string>
     <string name="hint_client_local_search">Your search includes client id, given name, middle name and family
         name and searched only in the device
     </string>
@@ -139,6 +150,10 @@
         name and searched on the server
     </string>
     <string name="hint_client_search">Search clients</string>
+    <string formatted="false" name="hint_client_summary_encounters">%d Encounters</string>
+    <string formatted="false" name="hint_client_summary_forms">%d Incomplete, %d Complete, %d Recommended</string>
+    <string formatted="false" name="hint_client_summary_notifications">%d New Notifications, %d Total Notifications</string>
+    <string formatted="false" name="hint_client_summary_observations">%d Observations</string>
     <string name="hint_cohort_download">Select one or more cohorts from the list and click on \'Next\' to download
     </string>
     <string name="hint_cohort_filter">Start typing to filter the cohorts...</string>
@@ -160,14 +175,20 @@
     </string>
     <string name="hint_concept_pref_add">Add concept(s) that you want observation(s) to be downloaded.</string>
     <string name="hint_configuration_search">Search a configuration</string>
+    <string name="hint_consultation_consultant_validation_failure">Please provide a consultant from the list of possible consultants</string>
     <string name="hint_crash_dialog">An unexpected error occurred forcing mUzima to stop. Please help us fix
         this by sending us error data, all you have to do is click OK.
     </string>
     <string name="hint_crash_dialog_comment_prompt">Please add your comments about the problem below.</string>
+    <string name="hint_current_or_past_date_validation_failure">Please enter a date prior or equal to today</string>
     <string name="hint_custom_concept_help">Here you define concepts whose data will be included in later download.
     </string>
     <string name="hint_custom_location_help">Here you download locations that will show up in the forms.</string>
     <string name="hint_custom_provider_help">Here you download providers that will show up in the forms.</string>
+    <string formatted="false" name="hint_dashboard_clients_description">%d Synced</string>
+    <string formatted="false" name="hint_dashboard_cohorts_description">%d Synced, %d Total</string>
+    <string formatted="false" name="hint_dashboard_forms_description">%d Incomplete, %d Complete</string>
+    <string formatted="false" name="hint_dashboard_notifications_description">%d New, %d Total</string>
     <string name="hint_default_encounter_provider">Logged-in user will be used as the default encounter provider
     </string>
     <string name="hint_drawer_close">Tags drawer close</string>
@@ -175,15 +196,21 @@
     <string name="hint_duplicate_form_data_warning">Warn the user when duplicate form data for same client with same
         encounter date is being saved
     </string>
+    <string name="hint_encounter_location_validation_failure">Please provide a location from the list of possible locations</string>
+    <string name="hint_encounter_provider_validation_failure">Please provide a provider from the list of possible providers</string>
     <string name="hint_form_auto_save_interval">The value in which your forms will be automatically saved</string>
     <string name="hint_form_download">Please select forms from all forms list and click download</string>
     <string name="hint_form_list_download">Please press load to fetch available forms from the server</string>
+    <string name="hint_form_validation_failure">There is one or more validation check failed on this form. Please review and resubmit the form</string>
+    <string name="hint_future_date_validation_failure">Please enter a date in the future</string>
     <string name="hint_guided_setup">Select a preset configuration and let mUzima do the rest for you</string>
     <string name="hint_image_caption_prompt">Please enter a caption for the image</string>
     <string name="hint_incomplete_form_unavailable">Incomplete forms are available only if you have saved a partially
         filled
         form
     </string>
+    <string name="hint_last_synced">Last synced on: %s</string>
+    <string name="hint_loading_progress">Loading...</string>
     <string name="hint_local_connection_unavailable">Please connect your device and try again</string>
     <string name="hint_location_pref_add">Add location(s) that you want to download.</string>
     <string name="hint_manage_concept">Get more concepts from the server or remove concepts from this device.
@@ -191,9 +218,12 @@
     </string>
     <string name="hint_manage_location">Get more locations from the server or remove locations from this device</string>
     <string name="hint_manage_provider">Get more providers from the server or remove providers from this device</string>
+    <string name="hint_mandatory_question_validation_failure">This question must be answered</string>
     <string name="hint_notification_sync">Make sure you have connectivity to server and press the load button</string>
+    <string name="hint_option_none_exclusive_selection_validation_failure">If \'None\' is selected, no other options can be selected</string>
     <string name="hint_password_change">Did you change your password recently?</string>
     <string name="hint_password_prompt">Please Enter Password</string>
+    <string name="hint_phone_number_validation_failure">Invalid Phone Number. Please check and re-enter</string>
     <string name="hint_provider_not_set">You do not have provider rights or your provider data is not downloaded, please
         use add provider option.
     </string>
@@ -203,6 +233,7 @@
         download
     </string>
     <string name="hint_registration_form_select">Please select at least one registration form!</string>
+    <string name="hint_repeating_section_minimum_repeats_validation_failure">Minimum repeats not satisfied. Needs at least</string>
     <string name="hint_server_connection_unavailable">Please contact your server administrator to check server
         connectivity
     </string>
@@ -307,6 +338,7 @@
     <string formatted="false" name="info_encounters_patient_downloaded">Downloaded %d encounters for 1 patient</string>
     <string formatted="false" name="info_encounters_patients_downloaded">Downloaded %d encounters for %d patients
     </string>
+    <string formatted="false" name="info_form_data_delete">Deleted %d forms</string>
     <string name="info_form_data_save_success">Completed form data was saved successfully.</string>
     <string name="info_form_data_upload_fail">Failed to Sync Form data to the current server. Do you still want to
         continue?
@@ -460,10 +492,13 @@
     <string name="title_manage_provider">Manage providers</string>
     <string name="title_media_preview">Preview Media</string>
     <string name="title_muzima_training_manual">mUzima training manual</string>
+    <string name="title_observations_by_concepts">By Concepts</string>
+    <string name="title_observations_by_encounters">By Encounters</string>
     <string name="title_provider_download">Step 4: Add Provider(s)</string>
     <string name="title_provider_help">providers Help</string>
     <string name="title_provider_not_set">Unable to set as Provider</string>
     <string name="title_real_time_sync">Real time sync</string>
+    <string name="title_search_server">Search server</string>
     <string name="title_server_side_setup">Server Side Setup</string>
     <string name="title_session_timeout">Session timeout (mins)</string>
     <string name="title_video_caption">Video Caption</string>
@@ -488,27 +523,4 @@
     <string name="warning_switch_server">Switching Server: This will clear all mUzima data on your
         device, including any incomplete forms. Are you sure you want to change this setting?
     </string>
-    <string name="general_next">Next</string>
-    <string name="general_previous">Previous</string>
-    <string name="general_login">Login</string>
-    <string name="hint_authentication_progress">Authenticating...</string>
-    <string name="app_title">mUzima Clinic</string>
-    <string name="error_form_data_delete">Could not delete some form data</string>
-    <string formatted="false" name="info_form_data_delete">Deleted %d forms</string>
-    <string name="title_search_server">Search server</string>
-    <string name="general_progress_message">This might take a while</string>
-    <string name="general_logout">Logout</string>
-    <string formatted="false" name="hint_dashboard_cohorts_description">%d Synced, %d Total</string>
-    <string formatted="false" name="hint_dashboard_clients_description">%d Synced</string>
-    <string formatted="false" name="hint_dashboard_forms_description">%d Incomplete, %d Complete</string>
-    <string formatted="false" name="hint_dashboard_notifications_description">%d New, %d Total</string>
-    <string name="general_synced">Synced</string>
-    <string name="general_all">All</string>
-    <string formatted="false" name="hint_client_summary_observations">%d Observations</string>
-    <string formatted="false" name="hint_client_summary_encounters">%d Encounters</string>
-    <string formatted="false" name="hint_client_summary_forms">%d Incomplete, %d Complete, %d Recommended</string>
-    <string formatted="false" name="hint_client_summary_notifications">%d New Notifications, %d Total Notifications</string>
-    <string name="title_observations_by_concepts">By Concepts</string>
-    <string name="title_observations_by_encounters">By Encounters</string>
-    <string name="hint_last_synced">Last synced on: %s</string>
 </resources>
