@@ -128,7 +128,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         encounterProviderPreference = preferences.getBoolean("encounterProviderPreference", IS_LOGGED_IN_USER_DEFAULT_PROVIDER);
         duplicateFormDataPreference = preferences.getBoolean("duplicateFormDataPreference", IS_ALLOWED_FORM_DATA_DUPLICATION );
 
-        showProgressBar("Loading...");
+        showProgressBar(getString(R.string.hint_loading_progress));
         try {
             setupFormData();
             if (!isFormComplete()) {

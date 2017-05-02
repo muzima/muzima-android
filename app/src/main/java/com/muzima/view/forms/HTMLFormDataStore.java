@@ -8,6 +8,7 @@
 
 package com.muzima.view.forms;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -168,5 +169,11 @@ public class HTMLFormDataStore {
     }
     public boolean isRegistrationForm() {
         return (formData.getDiscriminator() != null) && formData.getDiscriminator().equals(FORM_JSON_DISCRIMINATOR_REGISTRATION);
+    }
+
+    @JavascriptInterface
+    public String getStringResource(String stringResourceName){
+        Context context = formWebViewActivity.getBaseContext();
+        return context.getString(context.getResources().getIdentifier(stringResourceName, "string",context.getPackageName()));
     }
 }

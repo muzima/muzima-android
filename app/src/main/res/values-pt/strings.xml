@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <string name="app_name">mUzima</string>
+    <string name="app_title">mUzima Clínica</string>
+
     <string name="confirm_duplicate_form_data_save">Guardar Dados do Formulãrio Duplicado</string>
     <string name="confirm_patient_id_exists">O paciente já tem o Identificador?</string>
+
     <string name="default_form_register">Formulário de Registos</string>
+
     <string name="error_action_allow">Acção não permitida enquanto a sincronização está em progresso</string>
     <string name="error_audio_chose_activity_find">Erro: Actividade para escolha de áudio não encontrado</string>
     <string name="error_audio_play_activity_find">Erro: Actividade para tocar áudio não encontrado</string>
@@ -79,8 +83,10 @@
     </string>
     <string name="error_wizard_interrupted">Wizard foi interrompido, por favor de sair e executar o wizard de novo.
     </string>
+
     <string name="general_accept">Aceitar</string>
     <string name="general_alert">Alerta!</string>
+    <string name="general_all">Todos</string>
     <string name="general_application_version">Versão %1$s</string>
     <string name="general_cancel">Cancelar</string>
     <string name="general_caution">Cuidado!</string>
@@ -100,6 +106,9 @@
     <string name="general_help">Ajuda</string>
     <string name="general_load">Carregar</string>
     <string name="general_locations">Locais</string>
+    <string name="general_login">Entrar</string>
+    <string name="general_logout">Sair</string>
+    <string name="general_next">Próximo</string>
     <string name="general_no">Não</string>
     <string name="general_notices">Avisos</string>
     <string name="general_notification">Notificação</string>
@@ -107,11 +116,14 @@
     <string name="general_observations">Observações</string>
     <string name="general_ok">Ok</string>
     <string name="general_password">Senha</string>
+    <string name="general_previous">Anterior</string>
+    <string name="general_progress_message">Isso pode demorar um pouco</string>
     <string name="general_providers">Provedores</string>
     <string name="general_save">Gravar</string>
     <string name="general_search">Pesquisar</string>
     <string name="general_server">Servidor</string>
     <string name="general_settings">Configurações</string>
+    <string name="general_synced">Sincronizada</string>
     <string name="general_tags">Etiquetas</string>
     <string name="general_thank_you">Obrigado!</string>
     <string name="general_upload">Carregar</string>
@@ -119,16 +131,20 @@
     <string name="general_view_encounter">Ver visita</string>
     <string name="general_welcome">Bem vindo</string>
     <string name="general_yes">Sim</string>
+
     <string name="header_cohort_category">Configurações de coorte</string>
     <string name="header_muzima_category">Configurações de mUzima</string>
     <string name="header_openmrs_category">Configurações de OpenMRS</string>
     <string name="header_provider_location_category">Provedor/Configurações de Locais</string>
+
     <string name="hint_advanced_setup">Use os passos do wizard para escolher o que quer</string>
     <string name="hint_audio_caption">Por favor introduza uma legenda para o áudio</string>
     <string name="hint_audio_record">Gravar ou escolher áudio</string>
+    <string name="hint_authentication_progress">Autenticando...</string>
     <string name="hint_barcode_scanner_setup">Precisa de aplicativo de scanner de código de barra para registar os
         clientes a partir do telefone. Por favor verifique se isto está instalado no dispositivo ou não.
     </string>
+    <string name="hint_check_digit_validation_failure">Por favor introduza os dígitos que correspondem ao algoritmo de verificação de dígitos</string>
     <string name="hint_client_local_search">Sua pesquisa inclui ID do cliente, primeiro nome, nome do meio e apélido e
         pesquisado somente no dispositivo
     </string>
@@ -136,6 +152,10 @@
         pesquisado no servidor
     </string>
     <string name="hint_client_search">Pesquisar clientes</string>
+    <string formatted="false" name="hint_client_summary_encounters">%d Encontros</string>
+    <string formatted="false" name="hint_client_summary_forms">%d Incompleto, %d Completo, %d Recomendado</string>
+    <string formatted="false" name="hint_client_summary_notifications">%d Novas Notificações, %d Total de notificações</string>
+    <string formatted="false" name="hint_client_summary_observations">%d Observações</string>
     <string name="hint_cohort_download">Seleccione uma ou mais coortes a partir da lista e clique no \'Próximo\' para
         baixar
     </string>
@@ -161,16 +181,22 @@
     </string>
     <string name="hint_concept_pref_add">Adiciona os conceitos que quer observações para ser baixados</string>
     <string name="hint_configuration_search">Pesquisar uma configuração</string>
+    <string name="hint_consultation_consultant_validation_failure">Por favor forneça um consultor a partir da lista de possiveis consultores</string>
     <string name="hint_crash_dialog">Ocorreu um erro inesperado, forçando mUzima a parar. Por favor ajude-nos a reparar
         isto, enviando para nós dados do erro,para isso clique no OK
     </string>
     <string name="hint_crash_dialog_comment_prompt">Por favor adicione os seus comentários sobre o problema abaixo
     </string>
+    <string name="hint_current_or_past_date_validation_failure">Por favor introduza uma data anterior ou igual a hoje</string>
     <string name="hint_custom_concept_help">Aqui se define conceitos em que os dados serão incluídos no descarregamento
         mais tarde
     </string>
     <string name="hint_custom_location_help">Aqui se baixa locais que serão mostrados nos formulários</string>
     <string name="hint_custom_provider_help">Aqui se baixa provedores que serão mostrados nos formulários</string>
+    <string formatted="false" name="hint_dashboard_clients_description">%d Sincronizada</string>
+    <string formatted="false" name="hint_dashboard_cohorts_description">%d Sincronizada, %d Total</string>
+    <string formatted="false" name="hint_dashboard_forms_description">%d Incompleto, %d Completo</string>
+    <string formatted="false" name="hint_dashboard_notifications_description">%d Novo, %d Total</string>
     <string name="hint_default_encounter_provider">O utilizador logado será utilizado como provedor de consulta padrão
     </string>
     <string name="hint_drawer_close">Fechar caixa de etiquetas</string>
@@ -178,6 +204,8 @@
     <string name="hint_duplicate_form_data_warning">Avisar o utilizador quando o formulário de dados para o mesmo
         cliente com a mesma data de visita está sendo guardado.
     </string>
+    <string name="hint_encounter_location_validation_failure">Por favor forneça um local a partir da lista dos possiveis locais</string>
+    <string name="hint_encounter_provider_validation_failure">Por favor forneça um provedor a partir da lista dos possiveis provedores</string>
     <string name="hint_form_auto_save_interval">O valor no qual o formulário será automaticamente gravado</string>
     <string name="hint_form_download">Por favor seleccione formulários a partir da lista de todos os formulários e
         clique em baixar
@@ -185,11 +213,15 @@
     <string name="hint_form_list_download">Por favor pressione no carregar para puxar formulários disponíveis no
         servidor
     </string>
+    <string name="hint_form_validation_failure">Existe uma or mais falha nas validações de este formulário. Por favor reveja e re-submeta o formulário</string>
+    <string name="hint_future_date_validation_failure">Por favor introduza uma data futura</string>
     <string name="hint_guided_setup">Seleccione a presente configuração e permita mUzima fazer o resto</string>
     <string name="hint_image_caption_prompt">Por favor introduza uma legenda para a imagem</string>
     <string name="hint_incomplete_form_unavailable">Formulários incompletos estão disponíveis somente se tiver guardado
         um formulário preenchido parcialmente
     </string>
+    <string name="hint_last_synced">Última sincronização em: %s</string>
+    <string name="hint_loading_progress">Carregando...</string>
     <string name="hint_local_connection_unavailable">Por favor conecte o dispositivo e tente de novo</string>
     <string name="hint_location_pref_add">Adicione o local que quer baixar</string>
     <string name="hint_manage_concept">Obtenha mais conceitos a partir do servidor ou remova os conceitos a partir deste
@@ -201,11 +233,14 @@
     <string name="hint_manage_provider">Obtenha mais provedores a partir do servidor ou remova os provedores a partir
         deste dispositivo
     </string>
+    <string name="hint_mandatory_question_validation_failure">Está pergunta deve ser respondida</string>
     <string name="hint_notification_sync">Certifique que tem conectividade com o servidor e pressione no botão
         carregar
     </string>
+    <string name="hint_option_none_exclusive_selection_validation_failure">Se \'Nenhum\' é seleccionado, nehuma outra opção pode ser seleccionada</string>
     <string name="hint_password_change">Alterou a sua senha recentemente?</string>
     <string name="hint_password_prompt">Por favor Introduza a Senha</string>
+    <string name="hint_phone_number_validation_failure">Número de telefone inválido. Por favor verifique e re-introduza</string>
     <string name="hint_provider_not_set">Não tem previlegio de provedor ou o seus dados de provedor não foram baixados,
         por favor use a opção de adicionar provedor
     </string>
@@ -215,6 +250,7 @@
         de todos os formulários e clique em baixar
     </string>
     <string name="hint_registration_form_select">Por favor seleccione pelo menos um formulário de registo!</string>
+    <string name="hint_repeating_section_minimum_repeats_validation_failure">Repetições minimas não satisfeita. Precisa uma pelo menos</string>
     <string name="hint_server_connection_unavailable">Por favor contacte o administrador do servidor para verificar a
         conectividade
     </string>
@@ -228,6 +264,7 @@
     <string name="hint_wizard_form_download">Seleccione um ou mais modelos a partir da lista e clique no \'Próximo\'
         para baixar
     </string>
+
     <string name="info_authentication_in_progress">Autenticação em progresso…</string>
     <string name="info_client_demographics_download">Baixando demográfico de clientes…</string>
     <string name="info_client_identifier_change">Identificador do cliente mudou no servidor. O novo identificador será
@@ -261,20 +298,14 @@
         <p>
             mUzima é distribuído sob os termos da Licença Pública de Mozilla, v. 2.0 (MPL 2.0).
             Uma cópia da licença MPL 2.0 pode ser encontrada em http://mozilla.org/MPL/2.0/.
-        </p>
-        <p>
+        </p><p>
             mUzima também é distribuído sob os termos da seguinte Garantia Adicional de Renúncia
             e Limitação de Responsabilidade.
-        </p>
-        <p>
-            <strong>Isenção de Garantia Adicional e Limitação de Responsabilidade</strong>
-        </p>
-        <p>
+        </p><p><strong>Isenção de Garantia Adicional e Limitação de Responsabilidade</strong></p><p>
             Nos Estados Unidos, ou em quaisquer outras jurisdições onde se possam aplicar, as seguintes
             isenções da garantia e limitação de responsabilidade são aqui incorporadas nos termos e condições de MPL
             2.0:
-        </p>
-        <p>
+        </p><p>
             1. Nenhuma garantia de qualquer tipo é feita sobre os resultados que Você obterá
             com base no código fechado (ou em qualquer informação ou conteúdo obtido através do código fechado)
             incluindo mas não limitado a conformidade com leis de privacidade ou regulamentos ou padrões e protocolos de
@@ -286,8 +317,7 @@
             responsabilidade do provedor de cuidados de saúde. Consequentemente, incumbe a cada provedor de cuidados de
             saúde
             para verificar toda a história médica e planos de tratamento com cada paciente.
-        </p>
-        <p>
+        </p><p>
             2. Sob nenhuma circunstância e sob nenhuma teoria legal, se o delito (incluindo negligência), contracto ou
             caso contrário, qualquer Colaborador ou qualquer pessoa que distribuir o Software Fechado conforme permitido
             pela licença,
@@ -301,12 +331,10 @@
             do código fechado para cumprir as leis e regulamentos de privacidade ou os padrões e protocolos da indústria
             de cuidados clínicos),
             mesmo que essa parte tenha sido informada da possibilidade de tais danos.
-        </p>
-        <p>
+        </p><p>
             3. MUzima é protegido por direitos autorais da Universidade de Indiana, Universidade Moi, e o Centro Médico
             da Universidade da Vanderbilt (2014-2017).
-        </p>
-        <p>
+        </p><p>
             4. Se o utilizador deste aplicativo for uma entidade que pretende comercializar qualquer aplicativo que
             utilize este código
             em um empreendimento com fins lucrativos, o usuário é obrigado entrar em contacto com o detentor dos
@@ -426,7 +454,9 @@
     <string name="info_video_chose_activity_unavailable">Erro: Aplicação para escolha de vídeo não encontrado</string>
     <string name="info_video_play_activity_unavailable">Erro: Aplicação para projectar vídeo não encontrado</string>
     <string name="info_video_record_activity_unavailable">Erro: Aplicação para gravar vídeo não encontrado</string>
+
     <string name="menu_form_back_to_draft">Voltar ao Rascunho</string>
+
     <string name="title_activity_audio">Adicionar Audio</string>
     <string name="title_activity_client_encounters">Visitas do Cliente</string>
     <string name="title_activity_client_observations">Observações do Cliente</string>
@@ -479,6 +509,8 @@
     <string name="title_manage_provider">Gestão de provedores</string>
     <string name="title_media_preview">Prever Mídia</string>
     <string name="title_muzima_training_manual">Manual de treino de mUzima</string>
+    <string name="title_observations_by_concepts">Por Conceitos</string>
+    <string name="title_observations_by_encounters">Por Encontros</string>
     <string name="title_provider_download">Passo 4: Adicionar Provedor(s)</string>
     <string name="title_provider_help">Ajuda com Provedores</string>
     <string name="title_provider_not_set">Incapz de definir como Provedor</string>
@@ -489,6 +521,7 @@
     <string name="title_video_caption">Legenda do vídeo</string>
     <string name="title_video_choose">Escolha o Vídeo</string>
     <string name="title_video_record">Gravar o Vídeo</string>
+
     <string name="warning_cohort_prefix_exists">Prefixo de coorte existe</string>
     <string name="warning_empty_cohort_prefix">Não pode adicionar um prefixo para coorte vazia</string>
     <string name="warning_form_close">Formulário de fechamento: Isto irá descartar todas suas alterações. Tem certeza
@@ -508,24 +541,4 @@
     <string name="warning_switch_server">Trocando o Servidor: Isto irá apagar todos dados de mUzima no seu dispositivo,
         incluindo formulários imcompletos. Tem certeza que quer mudar as configurações?
     </string>
-    <string name="general_next">Próximo</string>
-    <string name="general_previous">Anterior</string>
-    <string name="general_login">Entrar</string>
-    <string name="hint_authentication_progress">Autenticando...</string>
-    <string name="app_title">mUzima Clínica</string>
-    <string name="general_progress_message">Isso pode demorar um pouco</string>
-    <string name="general_logout">Sair</string>
-    <string formatted="false" name="hint_dashboard_cohorts_description">%d Sincronizada, %d Total</string>
-    <string formatted="false" name="hint_dashboard_clients_description">%d Sincronizada</string>
-    <string formatted="false" name="hint_dashboard_forms_description">%d Incompleto, %d Completo</string>
-    <string formatted="false" name="hint_dashboard_notifications_description">%d Novo, %d Total</string>
-    <string name="general_synced">Sincronizada</string>
-    <string name="general_all">Todos</string>
-    <string formatted="false" name="hint_client_summary_observations">%d Observações</string>
-    <string formatted="false" name="hint_client_summary_encounters">%d Encontros</string>
-    <string formatted="false" name="hint_client_summary_forms">%d Incompleto, %d Completo, %d Recomendado</string>
-    <string formatted="false" name="hint_client_summary_notifications">%d Novas Notificações, %d Total de notificações</string>
-    <string name="title_observations_by_concepts">Por Conceitos</string>
-    <string name="title_observations_by_encounters">Por Encontros</string>
-    <string name="hint_last_synced">Última sincronização em: %s</string>
 </resources>
