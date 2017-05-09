@@ -84,6 +84,7 @@
 
     <string name="general_accept">Accept</string>
     <string name="general_alert">Alert!</string>
+    <string name="general_agree">Agree</string>
     <string name="general_all">All</string>
     <string name="general_application_version">Version %1$s</string>
     <string name="general_cancel">Cancel</string>
@@ -95,6 +96,7 @@
     <string name="general_concepts">Concepts</string>
     <string name="general_delete">Delete</string>
     <string name="general_description_unavailable">No description available</string>
+    <string name="general_disagree">Disagree</string>
     <string name="general_download">Download</string>
     <string name="general_draft">Draft</string>
     <string name="general_encounters">Encounters</string>
@@ -263,8 +265,7 @@
     <string name="info_cohort_downloaded">Downloaded 1 cohort</string>
     <string name="info_cohort_fetch_in_progress">Already fetching cohorts, ignored the request</string>
     <string name="info_cohort_load">Loading Cohorts...</string>
-    <string formatted="false" name="info_cohort_new_patient_download">Downloaded %d new patients for %d cohorts.
-    </string>
+    <string formatted="false" name="info_cohort_new_patient_download">Downloaded %d new patients for %d cohorts.</string>
     <string name="info_cohort_not_downloaded">No cohorts downloaded</string>
     <string name="info_cohort_patient_download">Downloaded 1 patient for 1 cohort</string>
     <string name="info_cohort_patient_not_download">No patients downloaded</string>
@@ -491,6 +492,7 @@
     <string name="title_manage_location">Manage locations</string>
     <string name="title_manage_provider">Manage providers</string>
     <string name="title_media_preview">Preview Media</string>
+    <string name="title_muzima_disclaimer">mUzima Disclaimer</string>
     <string name="title_muzima_training_manual">mUzima training manual</string>
     <string name="title_observations_by_concepts">By Concepts</string>
     <string name="title_observations_by_encounters">By Encounters</string>
