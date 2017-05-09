@@ -85,6 +85,7 @@
     </string>
 
     <string name="general_accept">Aceitar</string>
+    <string name="general_agree">Concordo</string>
     <string name="general_alert">Alerta!</string>
     <string name="general_all">Todos</string>
     <string name="general_application_version">Versão %1$s</string>
@@ -97,6 +98,7 @@
     <string name="general_concepts">Conceitos</string>
     <string name="general_delete">Apagar</string>
     <string name="general_description_unavailable">Sem descrição disponível</string>
+    <string name="general_disagree">Discordo</string>
     <string name="general_download">Baixar</string>
     <string name="general_draft">Rascunho</string>
     <string name="general_encounters">Visitas</string>
@@ -278,9 +280,9 @@
     <string name="info_cohort_downloaded">Baixou 1 coorte</string>
     <string name="info_cohort_fetch_in_progress">Já está buscando as coortes, ignorou o pedido</string>
     <string name="info_cohort_load">Carregando Coortes…</string>
-    <string formatted="false" name="info_cohort_new_patient_download">Baixou %d novos pacientes para d% coortes</string>
+    <string formatted="false" name="info_cohort_new_patient_download">Baixou %d novos pacientes para %d coortes</string>
     <string name="info_cohort_not_downloaded">Nenhuma coorte baixada</string>
-    <string formatted="false" name="info_cohort_patient_download">Baixou %d pacientes para % coortes</string>
+    <string formatted="false" name="info_cohort_patient_download">Baixou 1 paciente para 1 coorte</string>
     <string name="info_cohort_patient_not_download">Nenhum paciente foi baixado</string>
     <string formatted="false" name="info_cohort_patients_download">Baixou %d pacientes para 1 coorte</string>
     <string name="info_cohort_prefixes_unavailable">Nenhum Prefixo de Coorte Adicionado</string>
@@ -509,6 +511,7 @@
     <string name="title_manage_location">Gestão de locais</string>
     <string name="title_manage_provider">Gestão de provedores</string>
     <string name="title_media_preview">Prever Mídia</string>
+    <string name="title_muzima_disclaimer">Aviso Legal de mUzima</string>
     <string name="title_muzima_training_manual">Manual de treino de mUzima</string>
     <string name="title_observations_by_concepts">Por Conceitos</string>
     <string name="title_observations_by_encounters">Por Encontros</string>

@@ -13,7 +13,7 @@
 
 
             android:drawableLeft="@drawable/ic_launcher_logo"
-            android:text="mUzima Disclaimer"
+            android:text="@string/title_muzima_disclaimer"
             android:textSize="20sp"
                       android:gravity="center_vertical"
             android:textAlignment="center"
@@ -48,13 +48,13 @@
         <Button
                 android:id="@+id/previous"
                 style="@style/Button.Previous"
-                android:text="Disagree"
+                android:text="@string/general_disagree"
                 android:layout_weight=".3"/>
         <Button
                 android:id="@+id/next"
                 style="@style/Button.Next"
                 android:visibility="invisible"
-                android:text="Agree"
+                android:text="@string/general_agree"
                 android:layout_weight=".3"/>
     </LinearLayout>
 
