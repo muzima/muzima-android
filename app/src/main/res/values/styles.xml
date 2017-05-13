@@ -455,9 +455,9 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">32sp</item>
+        <item name="android:textSize">30sp</item>
         <item name="android:typeface">normal</item>
-        <item name="android:text">mUzima Clinic</item>
+        <item name="android:text">mUzima for Health Providers</item>
     </style>
 
     <style name="LoginActivityDivider.Style">
