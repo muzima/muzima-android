@@ -62,7 +62,7 @@
 
             <Button
                     android:id="@+id/login"
-                    style="@style/LoginButton"/>
+                    style="@style/button_style"/>
 
             <TextView
                     android:id="@+id/authenticatingText"
