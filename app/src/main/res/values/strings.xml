@@ -525,4 +525,5 @@
     <string name="warning_switch_server">Switching Server: This will clear all mUzima data on your
         device, including any incomplete forms. Are you sure you want to change this setting?
     </string>
+    <string name="general_finish">Finish</string>
 </resources>

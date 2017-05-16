@@ -558,7 +558,7 @@
 
     <style name="Button.Finish">
         <item name="android:background">@drawable/next_button_selector</item>
-        <item name="android:text">Finish</item>
+        <item name="android:text">@string/general_finish</item>
     </style>
 
     <style name="LoginActivityNoConnectionView">
