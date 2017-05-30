@@ -215,7 +215,7 @@
     <string name="hint_form_list_download">Por favor pressione no carregar para puxar formulários disponíveis no
         servidor
     </string>
-    <string name="hint_form_validation_failure">Existe uma or mais falha nas validações de este formulário. Por favor reveja e re-submeta o formulário</string>
+    <string name="hint_form_validation_failure">Existe uma ou mais falhas de validação neste formulário. Por favor revise e reenvie o formulário</string>
     <string name="hint_future_date_validation_failure">Por favor introduza uma data futura</string>
     <string name="hint_guided_setup">Seleccione a presente configuração e permita mUzima fazer o resto</string>
     <string name="hint_image_caption_prompt">Por favor introduza uma legenda para a imagem</string>
