@@ -457,7 +457,7 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">32sp</item>
         <item name="android:typeface">normal</item>
-        <item name="android:text">mUzima Clinic</item>
+        <item name="android:text">@string/app_title</item>
     </style>
 
     <style name="LoginActivityDivider.Style">
@@ -530,7 +530,6 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:text">"Login"</item>
         <item name="android:background">@drawable/login_button_selector</item>
     </style>
 
@@ -544,22 +543,22 @@
 
     <style name="Button.Previous">
         <item name="android:background">@drawable/previous_button_selector</item>
-        <item name="android:text">Previous</item>
+        <item name="android:text">@string/general_previous</item>
     </style>
 
     <style name="Button.InactiveNext">
         <item name="android:background">@drawable/previous_button_selector</item>
-        <item name="android:text">Next</item>
+        <item name="android:text">@string/general_next</item>
     </style>
 
     <style name="Button.Next">
         <item name="android:background">@drawable/next_button_selector</item>
-        <item name="android:text">Next</item>
+        <item name="android:text">@string/general_next</item>
     </style>
 
     <style name="Button.Finish">
         <item name="android:background">@drawable/next_button_selector</item>
-        <item name="android:text">Finish</item>
+        <item name="android:text">@string/general_finish</item>
     </style>
 
     <style name="LoginActivityNoConnectionView">
@@ -578,7 +577,6 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:text">"Authenticating..."</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">18sp</item>
         <item name="android:singleLine">true</item>

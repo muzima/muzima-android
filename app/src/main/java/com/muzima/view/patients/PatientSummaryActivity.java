@@ -77,12 +77,12 @@ public class PatientSummaryActivity extends BaseActivity {
         } catch (IOException e) {
             Log.e(TAG, "Exception thrown when reading to phone disk", e);
         }
-        if(list.size()==0){
+        if (list.size() == 0) {
             return;
         }
 
         final String patientIdentifier = patient.getIdentifier();
-        if(list.contains(patientIdentifier)){
+        if (list.contains(patientIdentifier)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(true)
                     .setIcon(getResources().getDrawable(R.drawable.ic_warning))
@@ -214,19 +214,19 @@ public class PatientSummaryActivity extends BaseActivity {
         @Override
         protected void onPostExecute(PatientSummaryActivityMetadata patientSummaryActivityMetadata) {
             TextView formsDescription = (TextView) findViewById(R.id.formDescription);
-            formsDescription.setText(patientSummaryActivityMetadata.incompleteForms + " Incomplete, "
-                    + patientSummaryActivityMetadata.completeForms + " Complete, "
-                    + patientSummaryActivityMetadata.recommendedForms + " Recommended");
+            formsDescription.setText(getString(R.string.hint_client_summary_forms, patientSummaryActivityMetadata.incompleteForms,
+                    patientSummaryActivityMetadata.completeForms,
+                    patientSummaryActivityMetadata.recommendedForms));
 
             TextView notificationsDescription = (TextView) findViewById(R.id.notificationDescription);
-            notificationsDescription.setText(patientSummaryActivityMetadata.newNotifications + " New Notifications, "
-                    + patientSummaryActivityMetadata.totalNotifications + " Total Notifications");
+            notificationsDescription.setText(getString(R.string.hint_client_summary_notifications, patientSummaryActivityMetadata.newNotifications,
+                    patientSummaryActivityMetadata.totalNotifications));
 
             TextView observationDescription = (TextView) findViewById(R.id.observationDescription);
-            observationDescription.setText(patientSummaryActivityMetadata.observations + " Observations");
+            observationDescription.setText(getString(R.string.hint_client_summary_observations, patientSummaryActivityMetadata.observations));
 
             TextView encounterDescription = (TextView) findViewById(R.id.encounterDescription);
-            encounterDescription.setText(patientSummaryActivityMetadata.encounters + " Encounters");
+            encounterDescription.setText(getString(R.string.hint_client_summary_encounters, patientSummaryActivityMetadata.encounters));
         }
     }
 
