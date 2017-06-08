@@ -35,6 +35,7 @@ import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
+import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
@@ -149,7 +150,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
         for (int i = 0; i < checkedItemPositions.size(); i++) {
             if (checkedItemPositions.valueAt(i)) {
                 AvailableForm selectedForm = (AvailableForm) listView.getItemAtPosition(checkedItemPositions.keyAt(i));
-                if (selectedForm.isRegistrationForm()) {
+                if (selectedForm.hasDescriminator(Constants.FORM_DISCRIMINATOR_REGISTRATION)) {
                     registrationFormSelected = true;
                 }
             }
