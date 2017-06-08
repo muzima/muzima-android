@@ -22,6 +22,7 @@ public class AvailableFormBuilder{
         availableForm.setName(form.getName());
         availableForm.setDescription(form.getDescription());
         availableForm.setTags(form.getTags());
+        availableForm.setDiscriminator(form.getDiscriminator());
         availableForm.setFormUuid(form.getUuid());
         return this;
     }

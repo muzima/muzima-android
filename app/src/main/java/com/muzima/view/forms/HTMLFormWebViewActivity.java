@@ -152,11 +152,15 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                     Log.e(TAG, "Error while auto saving the form data", e);
                 }
                 finally{
-                    handler.postDelayed(this,  Integer.parseInt(autoSaveIntervalPreference) * DateUtils.MILLIS_PER_MINUTE);
+                    handler.postDelayed(this,
+                            Integer.parseInt(autoSaveIntervalPreference) *
+                                    DateUtils.MILLIS_PER_MINUTE);
                 }
             }
         };
-        handler.postDelayed(runnable, Integer.parseInt(autoSaveIntervalPreference) * DateUtils.MILLIS_PER_MINUTE);
+        handler.postDelayed(runnable,
+                Integer.parseInt(autoSaveIntervalPreference) *
+                        DateUtils.MILLIS_PER_MINUTE);
     }
 
     public void stopAutoSaveProcess() {

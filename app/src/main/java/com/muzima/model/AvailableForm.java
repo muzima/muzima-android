@@ -9,6 +9,7 @@
 package com.muzima.model;
 
 import com.muzima.api.model.Tag;
+import com.muzima.utils.Constants;
 
 public class AvailableForm extends BaseForm {
     public static final String REGISTRATION = "registration";
@@ -39,6 +40,19 @@ public class AvailableForm extends BaseForm {
             if(REGISTRATION.equalsIgnoreCase(tag.getName())){
                 return true;
             }
+        }
+        return false;
+    }
+    public boolean hasDescriminator(String discriminator){
+        switch (discriminator) {
+            case Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION:
+            case Constants.FORM_DISCRIMINATOR_REGISTRATION:
+                return Constants.FORM_DISCRIMINATOR_REGISTRATION.equals(getDiscriminator())
+                        || Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION.equals(getDiscriminator());
+            case Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER:
+            case Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER:
+                return Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER.equals(getDiscriminator())
+                        || Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER.equals(getDiscriminator());
         }
         return false;
     }
