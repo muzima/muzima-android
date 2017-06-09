@@ -150,7 +150,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
         for (int i = 0; i < checkedItemPositions.size(); i++) {
             if (checkedItemPositions.valueAt(i)) {
                 AvailableForm selectedForm = (AvailableForm) listView.getItemAtPosition(checkedItemPositions.keyAt(i));
-                if (selectedForm.hasDescriminator(Constants.FORM_DISCRIMINATOR_REGISTRATION)) {
+                if (selectedForm.isRegistrationForm()) {
                     registrationFormSelected = true;
                 }
             }
