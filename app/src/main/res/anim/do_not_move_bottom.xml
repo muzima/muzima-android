@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>  
-<set xmlns:android="http://schemas.android.com/apk/res/android">  
+<!--
+  ~ Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~  this code in a for-profit venture,please contact the copyright holder.
+  -->
+
+<set xmlns:android="http://schemas.android.com/apk/res/android">
    
   <translate android:fromXDelta="0%p" android:toXDelta="0%p" android:duration="500" android:zAdjustment="bottom"/>  
   <alpha android:fromAlpha="1.0" android:toAlpha="1.0" android:duration="500" android:zAdjustment="bottom"/>  
