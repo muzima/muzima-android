@@ -8,18 +8,18 @@
 
 package com.muzima.view.cohort;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckedTextView;
 import android.widget.Toast;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuItem;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.cohort.AllCohortsAdapter;
@@ -29,6 +29,7 @@ import com.muzima.controller.CohortController;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.CheckedLinearLayout;
+import com.muzima.view.membership.SyncMembershipDataIntent;
 import com.muzima.view.patients.SyncPatientDataIntent;
 
 import java.io.IOException;
@@ -109,6 +110,12 @@ public class AllCohortsListFragment extends CohortListFragment {
         }
     }
 
+    public void onCohortMembershipDownloadFinish() {
+        if (cohortDataDownloadListener != null) {
+            cohortDataDownloadListener.onCohortDataDownloadComplete();
+        }
+    }
+
     public final class AllCohortsActionModeCallback implements ActionMode.Callback {
 
         @Override
@@ -137,7 +144,7 @@ public class AllCohortsListFragment extends CohortListFragment {
                         return true;
                     }
 
-                    syncPatientsAndObservationsInBackgroundService();
+                    syncMembershipsAndObservationsInBackgroundService();
 
                     endActionMode();
                     return true;
@@ -162,6 +169,12 @@ public class AllCohortsListFragment extends CohortListFragment {
     private void syncPatientsAndObservationsInBackgroundService() {
         ((CohortActivity) getActivity()).showProgressBar();
         new SyncPatientDataIntent(getActivity(), ((AllCohortsAdapter) listAdapter).getSelectedCohortsArray()).start();
+    }
+
+    private void syncMembershipsAndObservationsInBackgroundService() {
+        ((CohortActivity) getActivity()).showProgressBar();
+        new SyncMembershipDataIntent(getActivity(), ((AllCohortsAdapter) listAdapter)
+                .getSelectedCohortsArray()).start();
     }
 
     public interface OnCohortDataDownloadListener {

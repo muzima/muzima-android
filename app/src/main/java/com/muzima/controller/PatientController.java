@@ -9,12 +9,15 @@
 package com.muzima.controller;
 
 import android.util.Log;
-import com.muzima.api.model.CohortMember;
+
+import com.muzima.api.model.CohortMembership;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
+import com.muzima.api.service.CohortMembershipService;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.PatientService;
 import com.muzima.utils.StringUtils;
+
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -28,10 +31,14 @@ public class PatientController {
     public static final String TAG = "PatientController";
     private PatientService patientService;
     private CohortService cohortService;
+    private CohortMembershipService cohortMembershipService;
 
-    public PatientController(PatientService patientService, CohortService cohortService) {
+    public PatientController(PatientService patientService,
+                             CohortService cohortService,
+                             CohortMembershipService cohortMembershipService) {
         this.patientService = patientService;
         this.cohortService = cohortService;
+        this.cohortMembershipService = cohortMembershipService;
     }
 
     public void replacePatients(List<Patient> patients) throws PatientSaveException {
@@ -44,8 +51,8 @@ public class PatientController {
 
     public List<Patient> getPatients(String cohortId) throws PatientLoadException {
         try {
-            List<CohortMember> cohortMembers = cohortService.getCohortMembers(cohortId);
-            return patientService.getPatientsFromCohortMembers(cohortMembers);
+            List<CohortMembership> memberships = cohortMembershipService.getCohortMemberships(cohortId);
+            return patientService.getPatientsFromCohortMemberships(memberships);
         } catch (IOException e) {
             throw new PatientLoadException(e);
         }

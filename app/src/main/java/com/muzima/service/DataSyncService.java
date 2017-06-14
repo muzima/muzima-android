@@ -150,6 +150,21 @@ public class DataSyncService extends IntentService {
                     prepareBroadcastMsgForFormUpload(broadcastIntent, result, getString(R.string.info_real_time_upload_success));
                 }
                 break;
+            case DataSyncServiceConstants.SYNC_COHORT_MEMBERSHIP_FULL_DATA:
+                cohortIds = intent.getStringArrayExtra(DataSyncServiceConstants.COHORT_IDS);
+                updateNotificationMsg(getString(R.string.info_membership_download));
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    downloadCohortMemberships(broadcastIntent, cohortIds);
+                    downloadObservationsAndEncounters(broadcastIntent, cohortIds);
+                }
+                break;
+            case DataSyncServiceConstants.SYNC_COHORT_MEMBERSHIP_ONLY:
+                cohortIdsToDownload = intent.getStringArrayExtra(DataSyncServiceConstants.COHORT_IDS);
+                updateNotificationMsg(getString(R.string.info_membership_download));
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    downloadCohortMemberships(broadcastIntent, cohortIdsToDownload);
+                }
+                break;
             default:
                 break;
         }
@@ -298,5 +313,22 @@ public class DataSyncService extends IntentService {
     private void updateNotificationMsg(String msg) {
         notificationMsg = msg;
         showNotification(notificationServiceRunning, notificationMsg);
+    }
+
+    private void downloadCohortMemberships(Intent broadcastIntent, String[] cohortIds) {
+        int[] resultForCohortMemberships = muzimaSyncService.downloadCohortMemberships(cohortIds);
+        broadCastMessageForCohortMemberships(broadcastIntent, resultForCohortMemberships);
+    }
+
+    private void broadCastMessageForCohortMemberships(Intent broadcastIntent, int[] resultForCohortMemberships) {
+        String msgForCohortMemberships = getString(R.string.info_new_update_cohort_memberships_download,
+                resultForCohortMemberships[1], resultForCohortMemberships[2]);
+        prepareBroadcastMsg(broadcastIntent, resultForCohortMemberships, msgForCohortMemberships);
+        if (isSuccess(resultForCohortMemberships) && resultForCohortMemberships.length > 1) {
+            broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, resultForCohortMemberships[1]);
+            broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_TERTIARY, resultForCohortMemberships[2]);
+            broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, resultForCohortMemberships[3]);
+        }
+        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
 }

@@ -90,6 +90,10 @@ public class CohortActivity extends BroadcastListenerActivity {
             }
         } else if (syncType == DataSyncServiceConstants.SYNC_ENCOUNTERS) {
             hideProgressbar();
+        } else if (syncType == DataSyncServiceConstants.SYNC_COHORT_MEMBERSHIP_FULL_DATA) {
+            if (syncStatus == SyncStatusConstants.SUCCESS) {
+                cohortPagerAdapter.onCohortMembershipsDownloadFinish();
+            }
         }
     }
 

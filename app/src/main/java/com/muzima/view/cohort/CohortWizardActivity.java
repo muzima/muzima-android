@@ -11,12 +11,13 @@ package com.muzima.view.cohort;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -24,8 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.view.Menu;
-import android.view.MenuItem;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
@@ -155,7 +155,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
 
                     @Override
                     protected int[] doInBackground(Void... voids) {
-                        return downloadAndSavePatients(cohortsAdapter);
+                        return downloadCohortMemberships(cohortsAdapter);
                     }
 
                     @Override
@@ -219,6 +219,13 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
 
         List<String> selectedCohortsArray = cohortsAdapter.getSelectedCohorts();
         return muzimaSyncService.downloadPatientsForCohorts(selectedCohortsArray.toArray(new String[selectedCohortsArray.size()]));
+    }
+
+    private int[] downloadCohortMemberships(AllCohortsAdapter cohortsAdapter) {
+        MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
+
+        List<String> selectedCohortsArray = cohortsAdapter.getSelectedCohorts();
+        return muzimaSyncService.downloadCohortMemberships(selectedCohortsArray.toArray(new String[selectedCohortsArray.size()]));
     }
 
     private void navigateToNextActivity() {

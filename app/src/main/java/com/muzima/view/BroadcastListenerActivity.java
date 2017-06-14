@@ -101,7 +101,7 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
                 msg =getString(R.string.info_cohort_new_patient_download, downloadCount, downloadCountSec)+ getString(R.string.info_patient_data_download);
             } else if(syncType == DataSyncServiceConstants.SYNC_PATIENTS_ONLY){
                 int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
-                msg =getString(R.string.info_cohort_patient_download, downloadCount ,downloadCountSec);
+                msg =getString(R.string.info_cohorts_patients_download, downloadCount ,downloadCountSec);
             } else if(syncType == DataSyncServiceConstants.SYNC_OBSERVATIONS){
                 msg = getString(R.string.info_new_observation_download, downloadCount);
             } else if(syncType == DataSyncServiceConstants.SYNC_ENCOUNTERS){
@@ -112,6 +112,16 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
                 msg = getString(R.string.info_real_time_upload_success);
             } else if(syncType == DataSyncServiceConstants.SYNC_NOTIFICATIONS){
                 msg = getString(R.string.info_notification_download, downloadCount);
+            } else if (syncType == DataSyncServiceConstants.SYNC_COHORT_MEMBERSHIP_FULL_DATA) {
+                int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
+                int downloadCountTer = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_TERTIARY, 0);
+                msg = getString(R.string.info_new_update_cohort_memberships_cohort_download,
+                        downloadCountSec, downloadCountTer, downloadCount);
+            } else if (syncType == DataSyncServiceConstants.SYNC_COHORT_MEMBERSHIP_ONLY) {
+                int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
+                int downloadCountTer = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_TERTIARY, 0);
+                msg = getString(R.string.info_new_update_cohort_memberships_cohort_download,
+                        downloadCountSec, downloadCountTer, downloadCount);
             }
         }
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();

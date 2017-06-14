@@ -9,11 +9,13 @@
 package com.muzima.service;
 
 import android.content.SharedPreferences;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.api.context.Context;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
 import com.muzima.api.model.CohortMember;
+import com.muzima.api.model.CohortMembership;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Form;
@@ -29,6 +31,7 @@ import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
 import com.muzima.utils.Constants;
+
 import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
@@ -79,6 +82,16 @@ public class MuzimaSyncServiceTest {
     private EncounterController encounterController;
     private CohortPrefixPreferenceService prefixesPreferenceService;
 
+    private Cohort cohort1;
+    private Cohort cohort2;
+    private Patient patient1;
+    private Patient patient2;
+    private CohortMembership membership1;
+    private CohortMembership membership2;
+    private String[] cohortUuids;
+    private ArrayList<ArrayList<CohortMembership>> membershipList;
+    private List<Patient> patients;
+
     @Before
     public void setUp() throws Exception {
         muzimaApplication = mock(MuzimaApplication.class);
@@ -108,6 +121,35 @@ public class MuzimaSyncServiceTest {
         when(muzimaApplication.getSharedPreferences(anyString(), anyInt())).thenReturn(sharedPref);
         when(muzimaApplication.getApplicationContext()).thenReturn(RuntimeEnvironment.application);
         muzimaSyncService = new MuzimaSyncService(muzimaApplication);
+
+        cohort1 = new Cohort();
+        cohort1.setUuid("cUuid1");
+        cohort2 = new Cohort();
+        cohort2.setUuid("cUuid2");
+        patient1 = new Patient();
+        patient1.setUuid("pUuid1");
+        patient2 = new Patient();
+        patient2.setUuid("pUuid2");
+        membership1 = new CohortMembership(patient1);
+        membership1.setCohort(cohort1);
+        membership1.setUuid("mUuid1");
+        membership2 = new CohortMembership(patient2);
+        membership2.setCohort(cohort2);
+        membership2.setUuid("mUuid2");
+        cohortUuids = new String[]{cohort1.getUuid(), cohort2.getUuid()};
+        membershipList =
+                new ArrayList<ArrayList<CohortMembership>>() {{
+                    add(new ArrayList<CohortMembership>() {{
+                        add(membership1);
+                    }});
+                    add(new ArrayList<CohortMembership>() {{
+                        add(membership2);
+                    }});
+                }};
+        patients = new ArrayList<Patient>() {{
+            add(membership1.getPatient());
+            add(membership2.getPatient());
+        }};
     }
 
     @Test
@@ -744,5 +786,91 @@ public class MuzimaSyncServiceTest {
         Patient patient1 = new Patient();
         patient1.setUuid(patientUUID);
         return patient1;
+    }
+
+    @Test
+    public void downloadCohortMemberships_shouldDownloadAllCohortMemberships()
+            throws CohortController.CohortMembershipDownloadException, IOException {
+        String[] cohortUuids = new String[]{"uuid1", "uuid2"};
+        ArrayList<ArrayList<CohortMembership>> membershipList =
+                new ArrayList<ArrayList<CohortMembership>>();
+
+        when(cohortController.downloadCohortMemberships(cohortUuids))
+                .thenReturn(membershipList);
+
+        muzimaSyncService.downloadCohortMemberships(cohortUuids);
+
+        verify(cohortController).downloadCohortMemberships(cohortUuids);
+        verifyNoMoreInteractions(cohortController);
+    }
+
+    @Test
+    public void downloadCohortMemberships_shouldReturnSuccessWithCohortMembershipCountIfDownloadIsSuccessful()
+            throws CohortController.CohortMembershipDownloadException, IOException {
+        when(cohortController.downloadCohortMemberships(cohortUuids)).thenReturn(membershipList);
+
+        int[] result = muzimaSyncService.downloadCohortMemberships(cohortUuids);
+
+        assertThat(result[0], is(SyncStatusConstants.SUCCESS));
+        assertThat(result[1], is(1));
+        assertThat(result[2], is(1));
+        assertThat(result[3], is(2));
+    }
+
+    @Test
+    public void downloadCohortMemberships_shouldDownloadNewAndUpdatedCohortMemberships()
+            throws CohortController.CohortMembershipDownloadException, IOException,
+            CohortController.CohortMembershipSaveException,
+            CohortController.CohortMembershipReplaceException, PatientController.PatientSaveException {
+        when(cohortController.downloadCohortMemberships(cohortUuids)).thenReturn(membershipList);
+
+        muzimaSyncService.downloadCohortMemberships(cohortUuids);
+
+        verify(cohortController).downloadCohortMemberships(cohortUuids);
+        verify(cohortController).addCohortMemberships(membershipList.get(0));
+        verify(cohortController).updateCohortMemberships(membershipList.get(1));
+        verify(patientController).replacePatients(patients);
+        verifyNoMoreInteractions(cohortController);
+    }
+
+    @Test
+    public void downloadCohortMemberships_shouldReturnDownloadErrorIfDownloadExceptionIsThrown()
+            throws CohortController.CohortMembershipDownloadException, IOException {
+        doThrow(new CohortController.CohortMembershipDownloadException(null)).when(cohortController)
+                .downloadCohortMemberships(cohortUuids);
+        assertThat(muzimaSyncService.downloadCohortMemberships(cohortUuids)[0], is(SyncStatusConstants.DOWNLOAD_ERROR));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void downloadCohortMemberships_shouldReturnSaveErrorIfSaveExceptionIsThrownForCohortMemberships()
+            throws CohortController.CohortMembershipDownloadException, IOException,
+            CohortController.CohortMembershipSaveException {
+        when(cohortController.downloadCohortMemberships(cohortUuids)).thenReturn(membershipList);
+        doThrow(new CohortController.CohortMembershipSaveException(null)).when(cohortController).addCohortMemberships(anyList());
+
+        assertThat(muzimaSyncService.downloadCohortMemberships(cohortUuids)[0], is(SyncStatusConstants.SAVE_ERROR));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void downloadCohortMemberships_shouldReturnReplaceErrorIfReplaceExceptionIsThrownForCohortMemberships()
+            throws CohortController.CohortMembershipDownloadException, IOException,
+            CohortController.CohortMembershipReplaceException {
+        when(cohortController.downloadCohortMemberships(cohortUuids)).thenReturn(membershipList);
+        doThrow(new CohortController.CohortMembershipReplaceException(null)).when(cohortController).updateCohortMemberships(anyList());
+
+        assertThat(muzimaSyncService.downloadCohortMemberships(cohortUuids)[0], is(SyncStatusConstants.REPLACE_ERROR));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void downloadCohortMemberships_shouldReturnReplaceErrorIfReplaceExceptionIsThrownForPatients()
+            throws CohortController.CohortMembershipDownloadException, IOException, PatientController.PatientSaveException {
+        when(cohortController.downloadCohortMemberships(cohortUuids)).thenReturn(membershipList);
+        doThrow(new PatientController.PatientSaveException(null)).when(patientController).replacePatients(anyList());
+
+        assertThat(muzimaSyncService.downloadCohortMemberships(cohortUuids)[0], is(SyncStatusConstants.REPLACE_ERROR));
+
     }
 }

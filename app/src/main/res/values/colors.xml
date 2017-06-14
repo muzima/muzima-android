@@ -31,5 +31,6 @@
     <color name="login_authenticating_background">#12A5F4</color>
     <color name="error_text_color">#ffaf6267</color>
 
-
+    <color name="primary_green">#64dd17</color>
+    <color name="primary_red">#d50000</color>
 </resources>

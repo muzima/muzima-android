@@ -449,4 +449,21 @@
     </string>
     <string name="error_form_data_delete">Could not delete some form data</string>
     <string name="info_form_data_delete">Deleted %d forms</string>
+
+    <string name="info_membership_download">Downloading Cohort Memberships</string>
+    <string name="info_new_cohort_membership_download">Downloaded %d new Cohort Memberships</string>
+    <string formatted="false" name="info_new_update_cohort_memberships_download">Downloaded %d new, %d updated Cohort Memberships</string>
+    <string formatted="false" name="info_new_update_cohort_memberships_cohort_download">Downloaded %d new, %d updated memberships for %d cohorts</string>
+    <string formatted="false" name="info_cohort_new_membership_download">Downloaded %d new memberships for %d cohorts.</string>
+    <string name="info_cohort_membership_download">Downloaded 1 membership for 1 cohort</string>
+    <string formatted="false" name="info_cohorts_membership_download">Downloaded 1 membership for %d cohorts</string>
+    <string formatted="false" name="info_cohort_memberships_download">Downloaded %d memberships for 1 cohort</string>
+    <string formatted="false" name="info_cohorts_memberships_download">Downloaded %d memberships for %d cohorts</string>
+    <string name="info_cohort_membership_not_download">No cohort and memberships downloaded</string>
+    <string name="error_cohort_membership_download">Could not download cohorts and its memberships</string>
+    <string name="error_cohort_membership_repo_fetch">Something went wrong while fetching cohort memberships from local repo</string>
+    <string name="membership_status_active">active</string>
+    <string name="membership_status_inactive">inactive</string>
+    <string name="membership_status_all">all</string>
+    <string name="membership_filter">Filter</string>
 </resources>

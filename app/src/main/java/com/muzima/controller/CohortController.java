@@ -11,10 +11,13 @@ package com.muzima.controller;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
 import com.muzima.api.model.CohortMember;
+import com.muzima.api.model.CohortMembership;
 import com.muzima.api.model.LastSyncTime;
+import com.muzima.api.service.CohortMembershipService;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.service.SntpService;
+import com.muzima.util.handler.impl.CohortMembershipDeltaHandler;
 import com.muzima.utils.StringUtils;
 
 import java.io.IOException;
@@ -24,17 +27,24 @@ import java.util.List;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS;
 import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS_DATA;
+import static com.muzima.api.model.APIName.DOWNLOAD_COHORT_MEMBERSHIPS;
 
 public class CohortController {
     private static final String TAG = "CohortController";
     private CohortService cohortService;
+    private CohortMembershipService cohortMembershipService;
     private LastSyncTimeService lastSyncTimeService;
     private SntpService sntpService;
+    private CohortMembershipDeltaHandler deltaHandler;
 
-    public CohortController(CohortService cohortService, LastSyncTimeService lastSyncTimeService, SntpService sntpService) {
+    public CohortController(CohortService cohortService, LastSyncTimeService lastSyncTimeService,
+                            SntpService sntpService, CohortMembershipService cohortMembershipService,
+                            CohortMembershipDeltaHandler deltaHandler) {
         this.cohortService = cohortService;
         this.lastSyncTimeService = lastSyncTimeService;
         this.sntpService = sntpService;
+        this.cohortMembershipService = cohortMembershipService;
+        this.deltaHandler = deltaHandler;
     }
 
     public List<Cohort> getAllCohorts() throws CohortFetchException {
@@ -164,7 +174,7 @@ public class CohortController {
             List<Cohort> syncedCohorts = new ArrayList<Cohort>();
             for (Cohort cohort : cohorts) {
                 //TODO: Have a has members method to make this more explicit
-                if (isDownloaded(cohort)) {
+                if (hasCohortMembership(cohort)) {
                     syncedCohorts.add(cohort);
                 }
             }
@@ -174,6 +184,13 @@ public class CohortController {
         }
     }
 
+    public boolean hasCohortMembership(Cohort cohort) {
+        try {
+            return cohortMembershipService.countCohortMemberships(cohort.getUuid()) > 0;
+        } catch (IOException e) {
+            return false;
+        }
+    }
     public boolean isDownloaded(Cohort cohort) {
         try {
             return cohortService.countCohortMembers(cohort.getUuid()) > 0;
@@ -218,6 +235,142 @@ public class CohortController {
         }
     }
 
+    public void addCohortMembership(CohortMembership membership)
+            throws CohortMembershipSaveException {
+        try {
+            cohortMembershipService.saveCohortMembership(membership);
+        } catch (IOException e) {
+            throw new CohortMembershipSaveException(e);
+        }
+    }
+
+    public void addCohortMemberships(List<CohortMembership> membershipList)
+            throws CohortMembershipSaveException {
+        try {
+            cohortMembershipService.saveCohortMemberships(membershipList);
+        } catch (IOException e) {
+            throw new CohortMembershipSaveException(e);
+        }
+    }
+
+    public void updateCohortMemberships(List<CohortMembership> membershipList)
+            throws CohortMembershipReplaceException {
+        try {
+            cohortMembershipService.updateCohortMemberships(membershipList);
+        } catch (IOException e) {
+            throw new CohortMembershipReplaceException(e);
+        }
+    }
+
+    public ArrayList<ArrayList<CohortMembership>> downloadCohortMemberships(String[] uuids)
+            throws CohortMembershipDownloadException, IOException {
+        ArrayList<ArrayList<CohortMembership>> membershipList =
+                new ArrayList<ArrayList<CohortMembership>>();
+        for (String uuid : uuids) {
+            List<CohortMembership> localMemberships =
+                    cohortMembershipService.getCohortMemberships(uuid);
+            if (!localMemberships.isEmpty()) {
+                ArrayList<CohortMembership> newMemberships = new ArrayList<CohortMembership>();
+                ArrayList<CohortMembership> updatedMemberships = new ArrayList<CohortMembership>();
+                List<CohortMembership> downloadedMemberships = downloadCohortMembershipsByUuid(uuid);
+                newMemberships =
+                        deltaHandler.getNewCollection(downloadedMemberships, localMemberships);
+                updatedMemberships =
+                        deltaHandler.getUpdatedCollection(downloadedMemberships, localMemberships);
+                if (membershipList.isEmpty()) {
+                    membershipList.add(newMemberships);
+                    membershipList.add(updatedMemberships);
+                } else {
+                    membershipList.get(0).addAll(newMemberships);
+                    membershipList.get(1).addAll(updatedMemberships);
+                }
+            } else {
+                membershipList.add(new ArrayList<CohortMembership>
+                        (downloadCohortMembershipsByUuid(uuid)));
+                membershipList.add(new ArrayList<CohortMembership>());
+            }
+        }
+        return membershipList;
+    }
+
+    public List<CohortMembership> downloadCohortMembershipsByUuid(String uuid)
+            throws CohortMembershipDownloadException {
+        try {
+            Date lastSyncDate =
+                    lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORT_MEMBERSHIPS, uuid);
+            List<CohortMembership> memberships =
+                    cohortMembershipService.downloadCohortMemberships(uuid, lastSyncDate);
+            LastSyncTime lastSyncTime = new LastSyncTime
+                    (DOWNLOAD_COHORT_MEMBERSHIPS, sntpService.getLocalTime(), uuid);
+            lastSyncTimeService.saveLastSyncTime(lastSyncTime);
+            return memberships;
+        } catch (IOException e) {
+            throw new CohortMembershipDownloadException(e);
+        }
+    }
+
+    public List<CohortMembership> searchCohortMembershipLocally(String term, String cohortUuid)
+            throws CohortMembershipLoadException {
+        try {
+            return StringUtils.isEmpty(cohortUuid)
+                    ? cohortMembershipService.searchCohortMemberships(term)
+                    : cohortMembershipService.searchCohortMemberships(term, cohortUuid);
+        } catch (Exception e) {
+            throw new CohortMembershipLoadException(e);
+        }
+    }
+
+    public int countMemberships(String cohortUuid) throws CohortMembershipLoadException {
+        try {
+            return cohortMembershipService.countCohortMemberships(cohortUuid);
+        } catch (IOException e) {
+            throw new CohortMembershipLoadException(e);
+        }
+    }
+
+    public List<CohortMembership> getCohortMemberships(String cohortUuid)
+            throws CohortMembershipLoadException {
+        try {
+            return cohortMembershipService.getCohortMemberships(cohortUuid);
+        } catch (IOException e) {
+            throw new CohortMembershipLoadException(e);
+        }
+    }
+
+    public List<CohortMembership> getCohortMemberships(String cohortUuid, int page, int pageSize)
+            throws CohortMembershipLoadException {
+        try {
+            return cohortMembershipService.getCohortMemberships(cohortUuid, page, pageSize);
+        } catch (IOException e) {
+            throw new CohortMembershipLoadException(e);
+        }
+    }
+
+    public int countAllCohortMemberships() throws CohortMembershipLoadException {
+        try {
+            return cohortMembershipService.countAllCohortMemberships();
+        } catch (IOException e) {
+            throw new CohortMembershipLoadException(e);
+        }
+    }
+
+    public List<CohortMembership> getAllCohortMemberships() throws CohortMembershipLoadException {
+        try {
+            return cohortMembershipService.getAllCohortMemberships();
+        } catch (IOException e) {
+            throw new CohortMembershipLoadException(e);
+        }
+    }
+
+    public List<CohortMembership> getCohortMemberships(int page, int pageSize)
+            throws CohortMembershipLoadException {
+        try {
+            return cohortMembershipService.getCohortMemberships(page, pageSize);
+        } catch (IOException e) {
+            throw new CohortMembershipLoadException(e);
+        }
+    }
+
     public static class CohortDownloadException extends Throwable {
         public CohortDownloadException(Throwable throwable) {
             super(throwable);
@@ -244,6 +397,41 @@ public class CohortController {
 
     public static class CohortReplaceException extends Throwable {
         public CohortReplaceException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+
+    public static class CohortMembershipDownloadException extends Throwable {
+        public CohortMembershipDownloadException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+
+    public static class CohortMembershipFetchException extends Throwable {
+        public CohortMembershipFetchException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+
+    public static class CohortMembershipSaveException extends Throwable {
+        public CohortMembershipSaveException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+
+    public static class CohortMembershipDeleteException extends Throwable {
+        public CohortMembershipDeleteException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+
+    public static class CohortMembershipReplaceException extends Throwable {
+        public CohortMembershipReplaceException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+    public static class CohortMembershipLoadException extends Throwable {
+        public CohortMembershipLoadException(Throwable throwable) {
             super(throwable);
         }
     }
