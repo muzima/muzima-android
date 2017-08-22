@@ -65,8 +65,8 @@ public class MainActivity extends BroadcastListenerActivity {
     }
 
     private void showIncompleteWizardWarning() {
-        if (!new WizardFinishPreferenceService(this).isWizardFinished() ) {
-            if(checkIfDisclaimerIsAccepted()){
+        if (!new WizardFinishPreferenceService(this).isWizardFinished()) {
+            if (checkIfDisclaimerIsAccepted()) {
                 Toast
                         .makeText(getApplicationContext(), getString(R.string.error_wizard_interrupted), Toast.LENGTH_LONG)
                         .show();
@@ -184,8 +184,10 @@ public class MainActivity extends BroadcastListenerActivity {
                 // Notifications
                 User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
                 if (authenticatedUser != null) {
-                    homeActivityMetadata.newNotifications = notificationController.getAllNotificationsByReceiverCount(authenticatedUser.getPerson().getUuid(), NOTIFICATION_UNREAD);
-                    homeActivityMetadata.totalNotifications = notificationController.getAllNotificationsByReceiverCount(authenticatedUser.getPerson().getUuid(), null);
+                    homeActivityMetadata.newNotifications = notificationController
+                            .getAllNotificationsByReceiverCount(authenticatedUser.getPerson().getUuid(), NOTIFICATION_UNREAD);
+                    homeActivityMetadata.totalNotifications = notificationController
+                            .getAllNotificationsByReceiverCount(authenticatedUser.getPerson().getUuid(), null);
                 } else {
                     homeActivityMetadata.newNotifications = 0;
                     homeActivityMetadata.totalNotifications = 0;
@@ -207,18 +209,20 @@ public class MainActivity extends BroadcastListenerActivity {
         @Override
         protected void onPostExecute(HomeActivityMetadata homeActivityMetadata) {
             TextView cohortsDescriptionView = (TextView) mMainView.findViewById(R.id.cohortDescription);
-            cohortsDescriptionView.setText(homeActivityMetadata.syncedCohorts + " Synced, " + homeActivityMetadata.totalCohorts + " Total");
+            cohortsDescriptionView.setText(getString(R.string.hint_dashboard_cohorts_description,
+                    homeActivityMetadata.syncedCohorts, homeActivityMetadata.totalCohorts));
 
             TextView patientDescriptionView = (TextView) mMainView.findViewById(R.id.patientDescription);
-            patientDescriptionView.setText(homeActivityMetadata.syncedPatients + " Synced");
+            patientDescriptionView.setText(getString(R.string.hint_dashboard_clients_description,
+                    homeActivityMetadata.syncedPatients));
 
             TextView formsDescription = (TextView) mMainView.findViewById(R.id.formDescription);
-            formsDescription.setText(homeActivityMetadata.incompleteForms + " Incomplete, "
-                    + homeActivityMetadata.completeAndUnsyncedForms + " Complete");
+            formsDescription.setText(getString(R.string.hint_dashboard_forms_description,
+                    homeActivityMetadata.incompleteForms, homeActivityMetadata.completeAndUnsyncedForms));
 
             TextView notificationsDescription = (TextView) mMainView.findViewById(R.id.notificationDescription);
-            notificationsDescription.setText(homeActivityMetadata.newNotifications + " New, "
-                    + homeActivityMetadata.totalNotifications + " Total");
+            notificationsDescription.setText(getString(R.string.hint_dashboard_notifications_description,
+                    homeActivityMetadata.newNotifications, homeActivityMetadata.totalNotifications));
 
             TextView currentUser = (TextView) findViewById(R.id.currentUser);
             currentUser.setText(getResources().getString(R.string.general_welcome) + " " + credentials.getUserName());
