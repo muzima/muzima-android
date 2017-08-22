@@ -346,7 +346,7 @@ public class FormController {
 
     public List<FormData> getFormDataByUuids(List<String> formDataUuids) throws FormDataFetchException {
         try {
-            return formService.getFormDataByUuids(formDataUuids);
+            return formService.getFormDataByUuids (formDataUuids);
         } catch (IOException e) {
             throw new FormDataFetchException(e);
         }
