@@ -1,0 +1,72 @@
+/********************/
+/* GENERAL SETTINGS */
+/********************/
+
+.clear {
+    clear: both;
+}
+
+
+/********************/
+/* EXPANDABLE LIST  */
+/********************/
+#listContainer{
+  margin-top:15px;
+}
+
+#expList ul, li {
+    list-style: none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+}
+#expList p {
+    margin:0;
+    display:block;
+}
+#expList p:hover {
+    color:#666d96;
+}
+#expList li {
+    line-height:140%;
+    text-indent:0px;
+    background-position: 1px 8px;
+    padding-left: 20px;
+    background-repeat: no-repeat;
+	color: grey;
+}
+
+/* Collapsed state for list element */
+#expList .collapsed {
+    background-image: url(../images/collapsed.png);
+	font-weight: bold;
+	font-size: 17px;
+}
+/* Expanded state for list element
+/* NOTE: This class must be located UNDER the collapsed one */
+#expList .expanded {
+    background-image: url(../images/expanded.png);
+	font-weight: normal;
+	font-size: 15px;
+}
+#expList {
+    clear: both;
+}
+
+.listControl{
+  margin-bottom: 15px;
+}
+.listControl a {
+    border: 1px solid #555555;
+    color: #555555;
+    cursor: pointer;
+    height: 1.5em;
+    line-height: 1.5em;
+    margin-right: 5px;
+    padding: 4px 10px;
+}
+.listControl a:hover {
+    background-color:#555555;
+    color:#222222; 
+    font-weight:normal;
+}
