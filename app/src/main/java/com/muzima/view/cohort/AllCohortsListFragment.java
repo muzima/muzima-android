@@ -68,7 +68,7 @@ public class AllCohortsListFragment extends CohortListFragment {
 
     @Override
     protected String getSuccessMsg(Integer[] status) {
-        return "Downloaded: " + status[1] + " cohorts";
+        return getString(R.string.info_cohorts_downloaded, status[1]);
     }
 
     @Override
@@ -174,7 +174,7 @@ public class AllCohortsListFragment extends CohortListFragment {
             Date lastSyncedTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS);
             String lastSyncedMsg = getActivity().getString(R.string.info_last_sync_unavailable);
             if(lastSyncedTime != null){
-                lastSyncedMsg = "Last synced on: " + DateUtils.getFormattedDateTime(lastSyncedTime);
+                lastSyncedMsg = getString(R.string.hint_last_synced,DateUtils.getFormattedDateTime(lastSyncedTime));
             }
             syncText.setText(lastSyncedMsg);
         } catch (IOException e) {

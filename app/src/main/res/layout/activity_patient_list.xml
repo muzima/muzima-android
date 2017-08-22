@@ -51,7 +51,7 @@
                 android:layout_marginTop="20dp"
                 style="@style/Button.Next"
                 android:drawableLeft="@drawable/ic_search"
-                android:text="Search Server"/>
+                android:text="@string/title_search_server"/>
     </LinearLayout>
 </LinearLayout>
     <android.support.design.widget.FloatingActionButton

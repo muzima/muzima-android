@@ -101,7 +101,7 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
                 msg =getString(R.string.info_cohort_new_patient_download, downloadCount, downloadCountSec)+ getString(R.string.info_patient_data_download);
             } else if(syncType == DataSyncServiceConstants.SYNC_PATIENTS_ONLY){
                 int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
-                msg =getString(R.string.info_cohort_patient_download, downloadCount ,downloadCountSec);
+                msg =getString(R.string.info_cohorts_patients_download, downloadCount ,downloadCountSec);
             } else if(syncType == DataSyncServiceConstants.SYNC_OBSERVATIONS){
                 msg = getString(R.string.info_new_observation_download, downloadCount);
             } else if(syncType == DataSyncServiceConstants.SYNC_ENCOUNTERS){
