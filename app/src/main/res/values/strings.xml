@@ -447,6 +447,7 @@
     <string name="warning_switch_server">Switching Server: This will clear all mUzima data on your
         device, including any incomplete forms. Are you sure you want to change this setting?
     </string>
+    <string name="admin">admin</string>
     <string name="error_form_data_delete">Could not delete some form data</string>
     <string name="info_form_data_delete">Deleted %d forms</string>
 </resources>
