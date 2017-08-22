@@ -10,12 +10,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.*;
 import com.azimolabs.keyboardwatcher.KeyboardWatcher;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -69,6 +64,14 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
         configSetupFilter.addTextChangedListener(textWatcherForFilterText(setupConfigurationAdapter));
 
         setupConfigurationAdapter.reloadData();
+
+        //set clearing ability for the imageButton under Guided setup
+        ImageButton imageButton = (ImageButton) findViewById(R.id.cancel_filter_txt);
+        imageButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                configSetupFilter.setText("");
+            }
+        });
 
         activeNextButton = (Button) findViewById(R.id.next);
         activeNextButton.setOnClickListener(new View.OnClickListener() {
