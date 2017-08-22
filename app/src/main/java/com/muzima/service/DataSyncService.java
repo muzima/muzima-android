@@ -9,6 +9,7 @@
 package com.muzima.service;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -288,7 +289,9 @@ public class DataSyncService extends IntentService {
                         .setContentIntent(PendingIntent.getActivity(this, 0, new Intent(), 0))
                         .setSmallIcon(R.drawable.ic_launcher_logo)
                         .setContentTitle(title)
-                        .setContentText(msg);
+                        .setContentText(msg)
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText(msg));
+
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(MUZIMA_NOTIFICATION, mBuilder.getNotification());
