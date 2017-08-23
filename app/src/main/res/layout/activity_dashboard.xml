@@ -1,3 +1,13 @@
+<!--
+  ~ Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~  this code in a for-profit venture,please contact the copyright holder.
+  -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               style="@style/DashboardTableContainer" android:layout_height="match_parent">
     <LinearLayout
@@ -24,50 +34,51 @@
                       android:layout_height="wrap_content"
                       android:orientation="vertical"
                       android:layout_marginTop="10dp">
-            <LinearLayout android:layout_width="fill_parent"
-                          android:weightSum="100"
-                          android:layout_marginTop="10dp"
-                          android:layout_marginBottom="10dp"
-                          android:layout_height="100dp"
-                          android:baselineAligned="false">
 
-                <RelativeLayout style="@style/ClickableGridItem"
-                                android:layout_weight="50"
-                                android:orientation="vertical"
-                                android:onClick="cohortList">
-                    <TextView
-                            style="@style/DashboardListItemPrimaryText"
-                            android:layout_height="wrap_content"
-                            android:gravity="left"
-                            android:text="@string/general_cohorts">
-                    </TextView>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="100dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:baselineAligned="false"
+                android:weightSum="100">
+
+                <RelativeLayout
+                    style="@style/ClickableGridItem"
+                    android:layout_weight="50"
+                    android:onClick="cohortList"
+                    android:orientation="vertical">
 
                     <TextView
-                            android:id="@+id/cohortDescription"
-                            android:layout_alignParentBottom="true"
-                            style="@style/DashboardItemDescription"
-                            android:text="## Synced, ## Total">
-                    </TextView>
+                        style="@style/DashboardListItemPrimaryText"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text="@string/general_cohorts"></TextView>
+
+                    <TextView
+                        android:id="@+id/cohortDescription"
+                        style="@style/DashboardItemDescription"
+                        android:layout_alignParentBottom="true"
+                        android:text="## Synced, ## Total"></TextView>
 
                 </RelativeLayout>
 
-                <RelativeLayout style="@style/ClickableGridItem"
-                                android:layout_weight="50"
-                                android:onClick="patientList">
+                <RelativeLayout
+                    style="@style/ClickableGridItem"
+                    android:layout_weight="50"
+                    android:onClick="patientList">
 
                     <TextView
-                            style="@style/DashboardListItemPrimaryText"
-                            android:layout_height="wrap_content"
-                            android:gravity="left"
-                            android:text="@string/general_clients">
-                    </TextView>
+                        style="@style/DashboardListItemPrimaryText"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text="@string/general_clients"></TextView>
 
                     <TextView
-                            android:id="@+id/patientDescription"
-                            style="@style/DashboardItemDescription"
-                            android:layout_alignParentBottom="true"
-                            android:text="## Synced">
-                    </TextView>
+                        android:id="@+id/patientDescription"
+                        style="@style/DashboardItemDescription"
+                        android:layout_alignParentBottom="true"
+                        android:text="## Synced"></TextView>
 
                 </RelativeLayout>
 
