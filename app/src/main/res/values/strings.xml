@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <string name="app_name">mUzima</string>
-    <string name="app_title">mUzima Clinic</string>
+    <string name="app_title">mUzima for Health Providers</string>
 
     <string name="confirm_duplicate_form_data_save">Save Duplicate Form Data</string>
     <string name="confirm_patient_id_exists">Does the patient already have existing ID?</string>
