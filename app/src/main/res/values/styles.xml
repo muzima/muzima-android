@@ -527,10 +527,10 @@
     </style>
 
     <style name="LoginButton">
+        <item name="android:background">@drawable/rounded_corner_loginbutton</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:background">@drawable/login_button_selector</item>
     </style>
 
     <style name="Button">
