@@ -20,6 +20,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.azimolabs.keyboardwatcher.KeyboardWatcher;
 import com.muzima.MuzimaApplication;
@@ -120,7 +121,6 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
 
     @Override
     public void onKeyboardShown(int keyboardSize) {
-        advancedSetupLayout.setVisibility(View.GONE);
         nextButtonLayout.setVisibility(View.GONE);
 
     }
@@ -132,6 +132,15 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
 
     }
 
+    private void hideKeyboard(){
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            view.clearFocus();
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
     private View.OnClickListener advancedSetupClickListener(){
 
         return new View.OnClickListener() {
@@ -140,6 +149,7 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
                 activateNextButton();
                 deselectGuidedSetupConfigsView();
                 selectAdvancedSetupView();
+                hideKeyboard();
             }
         };
     }
@@ -151,6 +161,7 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 activateNextButton();
                 deselectAdvancedSetupView();
+                hideKeyboard();
                 setupConfigurationAdapter.onListItemClick(position);
             }
         };
