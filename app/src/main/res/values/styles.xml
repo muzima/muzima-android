@@ -571,19 +571,7 @@
         <item name="android:text">@string/general_finish</item>
     </style>
 
-    <style name="LoginActivityNoConnectionView">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:text">"No Internet Connectivity"</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:padding">4dp</item>
-        <item name="android:background">@color/login_noConnectivity_background</item>
-    </style>
-
-    <style name="LoginActivityAuthenticatingView">
+    <style name="LoginAuthenticatingButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@android:color/white</item>
@@ -591,7 +579,7 @@
         <item name="android:textSize">18sp</item>
         <item name="android:singleLine">true</item>
         <item name="android:padding">4dp</item>
-        <item name="android:background">@color/login_authenticating_background</item>
+        <item name="android:background">@drawable/rounded_corner_loginbutton</item>
     </style>
 
     <style name="HelpContent">
