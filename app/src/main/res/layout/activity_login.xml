@@ -77,7 +77,7 @@
 
             <TextView
                     android:id="@+id/authenticatingText"
-                    style="@style/LoginActivityAuthenticatingView"
+                    style="@style/LoginAuthenticatingButton"
                     android:text="@string/hint_authentication_progress"
                     android:visibility="gone"/>
         </FrameLayout>
