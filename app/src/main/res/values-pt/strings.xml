@@ -27,7 +27,7 @@
     <string name="error_data_save">Ocorreu um erro enquanto guardava os dados no repositório local</string>
     <string name="error_encounter_download">Não poderá baixar visitas</string>
     <string name="error_encounter_load">Visitas não poderão ser carregados</string>
-    <string name="error_encounter_observation_download">Não poderá baixar observações para os pacientes</string>
+    <string name="error_encounter_observation_download">Não poderá baixar observações para os clientes</string>
     <string name="error_exception_data_load">Uma excepção de carregamento foi lançada ao carregar os dados</string>
     <string name="error_exception_data_upload">Uma excepção foi lançada ao carregar os dados</string>
     <string name="error_form_data_delete">Não poderá apagar alguns dados do formulário</string>
@@ -64,10 +64,10 @@
     <string name="error_patient_data_form_exist">Existe dados do formulário. Finalize os dados incompletos e sincronize
         os dados completos para o servidor antes de sincronizar os modelos do formulário.
     </string>
-    <string name="error_patient_download">Não poderá baixar pacientes</string>
-    <string name="error_patient_encounter_download">Não poderá baixar visitas para os pacientes</string>
+    <string name="error_patient_download">Não poderá baixar clientes</string>
+    <string name="error_patient_encounter_download">Não poderá baixar visitas para os clientes</string>
     <string name="error_patient_fetch">Ocorreu um erro enquanto buscava o paciente</string>
-    <string name="error_patient_repo_fetch">Algo deu errado enquanto buscava pacientes do repositório local</string>
+    <string name="error_patient_repo_fetch">Algo deu errado enquanto buscava clientes do repositório local</string>
     <string name="error_patient_search">Algo deu errado enquanto procurava paciente(s)</string>
     <string name="error_provider_download">Não poderá baixar provedores</string>
     <string name="error_provider_fetch">Algo deu errado enquanto buscava provedores do repositório local</string>
@@ -280,15 +280,15 @@
     <string name="info_cohort_downloaded">Baixou 1 coorte</string>
     <string name="info_cohort_fetch_in_progress">Já está buscando as coortes, ignorou o pedido</string>
     <string name="info_cohort_load">Carregando Coortes…</string>
-    <string formatted="false" name="info_cohort_new_patient_download">Baixou %d novos pacientes para %d coortes</string>
+    <string formatted="false" name="info_cohort_new_patient_download">Baixou %d novos clientes para %d coortes</string>
     <string name="info_cohort_not_downloaded">Nenhuma coorte baixada</string>
-    <string formatted="false" name="info_cohort_patient_download">Baixou 1 paciente para 1 coorte</string>
-    <string name="info_cohort_patient_not_download">Nenhum paciente foi baixado</string>
-    <string formatted="false" name="info_cohort_patients_download">Baixou %d pacientes para 1 coorte</string>
+    <string formatted="false" name="info_cohort_patient_download">Baixou 1 cliente para 1 coorte</string>
+    <string name="info_cohort_patient_not_download">Nenhum cliente foi baixado</string>
+    <string formatted="false" name="info_cohort_patients_download">Baixou %d clientes para 1 coorte</string>
     <string name="info_cohort_prefixes_unavailable">Nenhum Prefixo de Coorte Adicionado</string>
     <string formatted="false" name="info_cohorts_downloaded">Baixou %d provedores coortes</string>
-    <string formatted="false" name="info_cohorts_patient_download">Baixou 1 paciente para %d coortes</string>
-    <string formatted="false" name="info_cohorts_patients_download">Baixou %d pacientes para %d coortes</string>
+    <string formatted="false" name="info_cohorts_patient_download">Baixou 1 cliente para %d coortes</string>
+    <string formatted="false" name="info_cohorts_patients_download">Baixou %d clientes para %d coortes</string>
     <string name="info_cohorts_unavailable">Nenhuma Coorte Disponível</string>
     <string name="info_complete_form_unavailable">Nenhum formulário completado e não sincronizado</string>
     <string formatted="false" name="info_concept_delete_success">%d conceitos apagados com sucesso</string>
@@ -350,16 +350,16 @@
     <string name="info_downloaded_image">Baixou a imagem</string>
     <string name="info_draft_form_save_success">Racunho do formulário foi guardado com sucesso</string>
     <string name="info_encounter_download">Baixando visitas</string>
-    <string formatted="false" name="info_encounter_download_progress">Baixando visitas para paciente %d de %d</string>
-    <string formatted="false" name="info_encounter_not_downloaded_progress">Visitas para paciente %d de %d não baixou
+    <string formatted="false" name="info_encounter_download_progress">Baixando visitas para cliente %d de %d</string>
+    <string formatted="false" name="info_encounter_not_downloaded_progress">Visitas para cliente %d de %d não baixou
     </string>
     <string name="info_encounter_observation_download">Baixando observações e visitas…</string>
-    <string name="info_encounter_patient_downloaded">Baixou 1 visita para 1 paciente</string>
+    <string name="info_encounter_patient_downloaded">Baixou 1 visita para 1 cliente</string>
     <string name="info_encounter_patient_not_downloaded">Não baixou nenhuma visita</string>
-    <string formatted="false" name="info_encounter_patients_downloaded">Baixou 1 vista para %d pacientes</string>
+    <string formatted="false" name="info_encounter_patients_downloaded">Baixou 1 vista para %d clientes</string>
     <string name="info_encounter_unavailable">Nenhuma visita disponível</string>
-    <string formatted="false" name="info_encounters_patient_downloaded">Baixou %d visitas para 1 paciente</string>
-    <string formatted="false" name="info_encounters_patients_downloaded">Baixou %d visitas para %d pacientes</string>
+    <string formatted="false" name="info_encounters_patient_downloaded">Baixou %d visitas para 1 cliente</string>
+    <string formatted="false" name="info_encounters_patients_downloaded">Baixou %d visitas para %d clientes</string>
     <string formatted="false" name="info_form_data_delete">Apagado %d formulários</string>
     <string name="info_form_data_save_success">Dados do formulário completado foi guardado com sucessso</string>
     <string name="info_form_data_upload_fail">Falha para sincronizar dados do formulário com o servidor corrente.
@@ -413,7 +413,7 @@
     <string formatted="false" name="info_new_observation_download_delete">Baixou %d novas observações e retirou %d
         observações
     </string>
-    <string formatted="false" name="info_new_patient_download">Baixou %d novos pacientes</string>
+    <string formatted="false" name="info_new_patient_download">Baixou %d novos clientes</string>
     <string name="info_no_cohort_download">Nenhuma coorte foi sincronizada</string>
     <string formatted="false" name="info_notification_download">Baixou %d notificações</string>
     <string name="info_notification_download_in_progress">Baixando notificações</string>
@@ -421,22 +421,22 @@
     <string name="info_observation_download">Baixando observações</string>
     <string name="info_observation_in_progress">Observações ainda estão a carregar</string>
     <string name="info_observation_load">Observações estão a carregar</string>
-    <string name="info_observation_patient_downloaded">Baixou 1 observação para 1 paciente</string>
+    <string name="info_observation_patient_downloaded">Baixou 1 observação para 1 cliente</string>
     <string name="info_observation_patient_not_downloaded">Não baixou nenhuma observação</string>
-    <string formatted="false" name="info_observation_patients_downloaded">Baixou %d observações para 1 paciente</string>
+    <string formatted="false" name="info_observation_patients_downloaded">Baixou %d observações para 1 cliente</string>
     <string name="info_observation_search">Pesquisar observações</string>
     <string name="info_observation_unavailable">Nenhuma observação disponível</string>
-    <string formatted="false" name="info_observations_download_pogress">Baixando observações para paciente %d de %d.
+    <string formatted="false" name="info_observations_download_pogress">Baixando observações para cliente %d de %d.
     </string>
     <string name="info_observations_load_in_progress">Observações ainda estão a carregar</string>
-    <string formatted="false" name="info_observations_not_downloaded_progress">Observações para paciente %d para %d não
+    <string formatted="false" name="info_observations_not_downloaded_progress">Observações para cliente %d para %d não
         baixadas.
     </string>
-    <string formatted="false" name="info_observations_patient_downloaded">Baixou 1 observação para %d pacientes</string>
-    <string formatted="false" name="info_observations_patients_downloaded">Baixou %d observações para %d pacientes
+    <string formatted="false" name="info_observations_patient_downloaded">Baixou 1 observação para %d clientes</string>
+    <string formatted="false" name="info_observations_patients_downloaded">Baixou %d observações para %d clientes
     </string>
-    <string name="info_patient_data_download">Bainxando dados dos pacientes</string>
-    <string name="info_patient_download">Baixando Pacientes</string>
+    <string name="info_patient_data_download">Bainxando dados dos clientes</string>
+    <string name="info_patient_download">Baixando Clientes</string>
     <string formatted="false" name="info_provider_delete_success">%d Provedores apagados com sucesso</string>
     <string name="info_provider_download">Baixando Provedores…</string>
     <string name="info_provider_downloaded">Baixou 1 provedor</string>
@@ -487,7 +487,7 @@
     <string name="title_default_encounter_provider">Provedor de visita padrão</string>
     <string name="title_disclaimer">Licença, Aviso Legal de Garantia e Limitação de Responsabilidade</string>
     <string name="title_duplicate_form_data_warning">Aviso de dados duplicados</string>
-    <string name="title_fill_patient_forms_help">Preencher formulários para um paciente</string>
+    <string name="title_fill_patient_forms_help">Preencher formulários para um cliente</string>
     <string name="title_font_size">Tamanho da fonte</string>
     <string name="title_form_auto_save_interval">Intervalo (mins) de gravação automática de formulário</string>
     <string name="title_form_data_complete">Formulário de Dados Completo</string>
@@ -540,7 +540,7 @@
     </string>
     <string name="warning_logout_confirm">Tem certeza que quer sair e fechar o aplicativo mUzima ?</string>
     <string name="warning_registration_form_data_delete">Está para apagar dados de registo. Isto irá apagar o registo do
-        paciente no dispositivo. Tem certeza?
+        cliente no dispositivo. Tem certeza?
     </string>
     <string name="warning_switch_server">Trocando o Servidor: Isto irá apagar todos dados de mUzima no seu dispositivo,
         incluindo formulários imcompletos. Tem certeza que quer mudar as configurações?
