@@ -1,49 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
-  ~ and Vanderbilt University Medical Center.
-  ~
-  ~ This version of the code is licensed under the MPL 2.0 Open Source license
-  ~ with additional health care disclaimer.
-  ~ If the user is an entity intending to commercialize any application that uses
-  ~  this code in a for-profit venture,please contact the copyright holder.
-  -->
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/primary_black">
 
-    <com.muzima.view.CheckedLinearLayout
-            style="@style/ClickableSummaryItem"
-            android:layout_marginTop="2dp"
-            android:id="@+id/advanced_setup_layout"
-            android:background="@drawable/list_multi_selector_blue"
-            android:choiceMode="singleChoice"
-            android:layout_alignParentTop="true">
-        <TextView style="@style/SelectableSummaryHeader"
-                  android:text="@string/title_advanced_setup"
-                  android:duplicateParentState="true"
-                  android:background="@android:color/transparent"/>
-        <TextView
-                android:textColor="@android:color/white"
-                android:textAlignment="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:text="@string/hint_advanced_setup"
-                android:duplicateParentState="true"
-                android:background="@android:color/transparent"/>
-        <TextView style="@style/DividerLine"/>
-    </com.muzima.view.CheckedLinearLayout>
     <LinearLayout
 
             android:id="@+id/guided_setup_header"
-            android:layout_below="@+id/advanced_setup_layout"
-            style="@style/NotClickableSummaryItem">
+            style="@style/NotClickableSummaryItem"
+            android:layout_alignParentTop="true">
         <TextView style="@style/SummaryHeader"
-              android:text="@string/title_guided_setup"/>
+                  android:text="@string/title_guided_setup"/>
         <TextView
                 android:textColor="@android:color/white"
                 android:textAlignment="center"
@@ -53,10 +21,11 @@
         </TextView>
     </LinearLayout>
     <LinearLayout android:layout_below="@+id/guided_setup_header"
+                  android:layout_above="@+id/advanced_setup_layout"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:orientation="vertical"
-                  android:layout_marginBottom="20dp"
+                  android:focusableInTouchMode="true"
                   android:id="@+id/configs_layout">
         <RelativeLayout style="@style/NotClickableSummaryItem">
             <EditText android:layout_width="match_parent"
@@ -79,12 +48,12 @@
         </RelativeLayout>
 
         <ScrollView style="@style/setupMethodConfigurationsList"
-                      android:background="@drawable/list_multi_selector_blue"
-                      android:layout_below="@+id/guided_setup_header"
-                      android:layout_height="match_parent"
-                      android:layout_width="match_parent"
-                      android:fillViewport="true"
-                      android:scrollbars="vertical">
+                    android:background="@drawable/list_multi_selector_blue"
+                    android:layout_below="@+id/guided_setup_header"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:fillViewport="true"
+                    android:scrollbars="vertical">
 
             <ListView
                     android:id="@+id/configs_wizard_list"
@@ -92,6 +61,29 @@
                     android:choiceMode="singleChoice"/>
         </ScrollView>
     </LinearLayout>
+
+    <com.muzima.view.CheckedLinearLayout
+            style="@style/ClickableSummaryItem"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/advanced_setup_layout"
+            android:background="@drawable/list_multi_selector_blue"
+            android:choiceMode="singleChoice"
+            android:layout_above="@+id/next_button_layout">
+        <TextView style="@style/DividerLine"/>
+        <TextView style="@style/SelectableSummaryHeader"
+                  android:text="@string/title_advanced_setup"
+                  android:duplicateParentState="true"
+                  android:background="@android:color/transparent"/>
+        <TextView
+                android:textColor="@android:color/white"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hint_advanced_setup"
+                android:duplicateParentState="true"
+                android:background="@android:color/transparent"/>
+    </com.muzima.view.CheckedLinearLayout>
 
     <LinearLayout style="@style/ButtonRow" android:id="@+id/next_button_layout"
                   android:layout_alignParentBottom="true">
