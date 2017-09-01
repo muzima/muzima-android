@@ -14,7 +14,7 @@
     <string name="app_title">mUzima for Health Providers</string>
 
     <string name="confirm_duplicate_form_data_save">Save Duplicate Form Data</string>
-    <string name="confirm_patient_id_exists">Does the patient already have existing ID?</string>
+    <string name="confirm_patient_id_exists">Does the client already have existing ID?</string>
 
     <string translatable="false"     name="default_auto_save_interval">2</string>
     <string name="default_form_register">Registration Forms</string>
@@ -41,7 +41,7 @@
     <string name="error_data_save">An error occurred while saving data to local repo</string>
     <string name="error_encounter_download">Could not download encounters</string>
     <string name="error_encounter_load">Encounters could not be loaded</string>
-    <string name="error_encounter_observation_download">Could not download observations for patients</string>
+    <string name="error_encounter_observation_download">Could not download observations for clients</string>
     <string name="error_exception_data_load">Load exception has been thrown while loading data</string>
     <string name="error_exception_data_upload">Exception has been thrown while uploading data</string>
     <string name="error_form_data_delete">Could not delete some form data</string>
@@ -74,11 +74,11 @@
     <string name="error_patient_data_form_exist">There is existing form data.
         Finish Incomplete data and sync Complete data to Server first before syncing form templates.
     </string>
-    <string name="error_patient_download">Could not download patients</string>
-    <string name="error_patient_encounter_download">Could not download encounters for patients</string>
-    <string name="error_patient_fetch">An error occurred while fetching patient</string>
-    <string name="error_patient_repo_fetch">Something went wrong while fetching patients from local repo</string>
-    <string name="error_patient_search">Something went wrong while searching patient(s)</string>
+    <string name="error_patient_download">Could not download clients</string>
+    <string name="error_patient_encounter_download">Could not download encounters for clients</string>
+    <string name="error_patient_fetch">An error occurred while fetching client</string>
+    <string name="error_patient_repo_fetch">Something went wrong while fetching clients from local repo</string>
+    <string name="error_patient_search">Something went wrong while searching client(s)</string>
     <string name="error_provider_download">Could not download providers</string>
     <string name="error_provider_fetch">Something went wrong while fetching providers from local repo</string>
     <string name="error_server_connection_unavailable">Server unreachable</string>
@@ -275,15 +275,15 @@
     <string name="info_cohort_downloaded">Downloaded 1 cohort</string>
     <string name="info_cohort_fetch_in_progress">Already fetching cohorts, ignored the request</string>
     <string name="info_cohort_load">Loading Cohorts...</string>
-    <string formatted="false" name="info_cohort_new_patient_download">Downloaded %d new patients for %d cohorts.</string>
+    <string formatted="false" name="info_cohort_new_patient_download">Downloaded %d new clients for %d cohorts.</string>
     <string name="info_cohort_not_downloaded">No cohorts downloaded</string>
-    <string name="info_cohort_patient_download">Downloaded 1 patient for 1 cohort</string>
-    <string name="info_cohort_patient_not_download">No patients downloaded</string>
-    <string formatted="false" name="info_cohort_patients_download">Downloaded %d patients for 1 cohort</string>
+    <string name="info_cohort_patient_download">Downloaded 1 client for 1 cohort</string>
+    <string name="info_cohort_patient_not_download">No clients downloaded</string>
+    <string formatted="false" name="info_cohort_patients_download">Downloaded %d clients for 1 cohort</string>
     <string name="info_cohort_prefixes_unavailable">No Cohort Prefixes Added</string>
     <string formatted="false" name="info_cohorts_downloaded">Downloaded %d cohorts</string>
-    <string formatted="false" name="info_cohorts_patient_download">Downloaded 1 patient for %d cohorts</string>
-    <string formatted="false" name="info_cohorts_patients_download">Downloaded %d patients for %d cohorts</string>
+    <string formatted="false" name="info_cohorts_patient_download">Downloaded 1 client for %d cohorts</string>
+    <string formatted="false" name="info_cohorts_patients_download">Downloaded %d clients for %d cohorts</string>
     <string name="info_cohorts_unavailable">No Cohorts Available</string>
     <string name="info_complete_form_unavailable">No completed and non synced forms</string>
     <string name="info_concept_delete_success">%d concepts deleted successfully!!</string>
@@ -336,18 +336,18 @@
     <string name="info_downloaded_image">Downloaded image</string>
     <string name="info_draft_form_save_success">Draft form was saved successfully.</string>
     <string name="info_encounter_download">Downloading encounters</string>
-    <string formatted="false" name="info_encounter_download_progress">Downloading encounters for patient %d of %d.
+    <string formatted="false" name="info_encounter_download_progress">Downloading encounters for client %d of %d.
     </string>
-    <string formatted="false" name="info_encounter_not_downloaded_progress">Encounters for patient %d of %d not
+    <string formatted="false" name="info_encounter_not_downloaded_progress">Encounters for client %d of %d not
         downloaded.
     </string>
     <string name="info_encounter_observation_download">Downloading observations and encounters...</string>
-    <string name="info_encounter_patient_downloaded">Downloaded 1 encounter for 1 patient</string>
+    <string name="info_encounter_patient_downloaded">Downloaded 1 encounter for 1 client</string>
     <string name="info_encounter_patient_not_downloaded">Did not download any encounters</string>
-    <string formatted="false" name="info_encounter_patients_downloaded">Downloaded 1 encounter for %d patients</string>
+    <string formatted="false" name="info_encounter_patients_downloaded">Downloaded 1 encounter for %d clients</string>
     <string name="info_encounter_unavailable">No encounters available</string>
-    <string formatted="false" name="info_encounters_patient_downloaded">Downloaded %d encounters for 1 patient</string>
-    <string formatted="false" name="info_encounters_patients_downloaded">Downloaded %d encounters for %d patients
+    <string formatted="false" name="info_encounters_patient_downloaded">Downloaded %d encounters for 1 client</string>
+    <string formatted="false" name="info_encounters_patients_downloaded">Downloaded %d encounters for %d clients
     </string>
     <string formatted="false" name="info_form_data_delete">Deleted %d forms</string>
     <string name="info_form_data_save_success">Completed form data was saved successfully.</string>
@@ -402,7 +402,7 @@
     <string formatted="false" name="info_new_observation_download_delete">Downloaded %d new observations and retired %d
         observations
     </string>
-    <string name="info_new_patient_download">Downloaded %d new patients</string>
+    <string name="info_new_patient_download">Downloaded %d new clients</string>
     <string name="info_no_cohort_download">No cohorts have been synced</string>
     <string name="info_notification_download">Downloaded %d notifications</string>
     <string name="info_notification_download_in_progress">Downloading notifications</string>
@@ -410,24 +410,24 @@
     <string name="info_observation_download">Downloading observations</string>
     <string name="info_observation_in_progress">Observations are still loading</string>
     <string name="info_observation_load">Observations are loading</string>
-    <string name="info_observation_patient_downloaded">Downloaded 1 observation for 1 patient</string>
+    <string name="info_observation_patient_downloaded">Downloaded 1 observation for 1 client</string>
     <string name="info_observation_patient_not_downloaded">Did not download any observations</string>
-    <string formatted="false" name="info_observation_patients_downloaded">Downloaded %d observations for 1 patient
+    <string formatted="false" name="info_observation_patients_downloaded">Downloaded %d observations for 1 client
     </string>
     <string name="info_observation_search">Search observations</string>
     <string name="info_observation_unavailable">No observations available</string>
-    <string formatted="false" name="info_observations_download_pogress">Downloading observations for patient %d of %d.
+    <string formatted="false" name="info_observations_download_pogress">Downloading observations for client %d of %d.
     </string>
     <string name="info_observations_load_in_progress">Observations are still loading</string>
-    <string formatted="false" name="info_observations_not_downloaded_progress">Observations for patient %d of %d not
+    <string formatted="false" name="info_observations_not_downloaded_progress">Observations for client %d of %d not
         downloaded.
     </string>
-    <string formatted="false" name="info_observations_patient_downloaded">Downloaded 1 observation for %d patients
+    <string formatted="false" name="info_observations_patient_downloaded">Downloaded 1 observation for %d clients
     </string>
-    <string formatted="false" name="info_observations_patients_downloaded">Downloaded %d observations for %d patients
+    <string formatted="false" name="info_observations_patients_downloaded">Downloaded %d observations for %d clients
     </string>
-    <string name="info_patient_data_download">Downloading Patients data</string>
-    <string name="info_patient_download">Downloading Patients</string>
+    <string name="info_patient_data_download">Downloading clients data</string>
+    <string name="info_patient_download">Downloading Clients</string>
     <string name="info_provider_delete_success">%d Providers deleted successfully</string>
     <string name="info_provider_download">Downloading providers</string>
     <string name="info_provider_downloaded">Downloaded 1 provider</string>
@@ -478,7 +478,7 @@
     <string name="title_default_encounter_provider">Default encounter provider</string>
     <string name="title_disclaimer">Licensing, Disclaimer of Warranty and Limitation of Liability</string>
     <string name="title_duplicate_form_data_warning">Duplicate form data warning</string>
-    <string name="title_fill_patient_forms_help">Fill out forms for a patient</string>
+    <string name="title_fill_patient_forms_help">Fill out forms for a client</string>
     <string name="title_font_size">Font size</string>
     <string name="title_form_auto_save_interval">Automatic form save interval (mins)</string>
     <string name="title_form_data_complete">Complete Form Data</string>
@@ -530,7 +530,7 @@
     </string>
     <string name="warning_logout_confirm">Are you sure you want to log out and exit mUzima app?</string>
     <string name="warning_registration_form_data_delete">You are about to delete registration data. This will also
-        delete patient record on device. Are you sure?
+        delete client record on device. Are you sure?
     </string>
     <string name="warning_switch_server">Switching Server: This will clear all mUzima data on your
         device, including any incomplete forms. Are you sure you want to change this setting?
