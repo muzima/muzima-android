@@ -156,7 +156,7 @@
     <string name="hint_client_search">Pesquisar clientes</string>
     <string formatted="false" name="hint_client_summary_encounters">%d Encontros</string>
     <string formatted="false" name="hint_client_summary_forms">%d Incompleto, %d Completo, %d Recomendado</string>
-    <string formatted="false" name="hint_client_summary_notifications">%d Novas Notificações, %d Total de notificações</string>
+    <string formatted="false" name="hint_client_summary_notifications">%d Novas Notificações, %d Todos de notificações</string>
     <string formatted="false" name="hint_client_summary_observations">%d Observações</string>
     <string name="hint_cohort_download">Seleccione uma ou mais coortes a partir da lista e clique no \'Próximo\' para
         baixar
@@ -196,9 +196,9 @@
     <string name="hint_custom_location_help">Aqui se baixa locais que serão mostrados nos formulários</string>
     <string name="hint_custom_provider_help">Aqui se baixa provedores que serão mostrados nos formulários</string>
     <string formatted="false" name="hint_dashboard_clients_description">%d Sincronizada</string>
-    <string formatted="false" name="hint_dashboard_cohorts_description">%d Sincronizada, %d Total</string>
+    <string formatted="false" name="hint_dashboard_cohorts_description">%d Sincronizada, %d Todos</string>
     <string formatted="false" name="hint_dashboard_forms_description">%d Incompleto, %d Completo</string>
-    <string formatted="false" name="hint_dashboard_notifications_description">%d Novo, %d Total</string>
+    <string formatted="false" name="hint_dashboard_notifications_description">%d Novo, %d Todos</string>
     <string name="hint_default_encounter_provider">O utilizador logado será utilizado como provedor de consulta padrão
     </string>
     <string name="hint_drawer_close">Fechar caixa de etiquetas</string>
