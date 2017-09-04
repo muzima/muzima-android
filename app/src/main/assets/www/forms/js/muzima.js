@@ -730,11 +730,11 @@ $(document).ready(function () {
         });
     };
 
-    var populateNonConceptFields = function (prePopulateJson) {
+    var populateNonConceptFields = function ($parentDiv, prePopulateJson) {
         $.each(prePopulateJson, function (key, value) {
-            var $elements = $('[name="' + key + '"]');
+            var $elements = $parentDiv.find('[name="' + key + '"]');
             if (value instanceof Array) {
-                 if ($elements.length < value.length) {
+                if ($elements.length < value.length) {
                     $.each(value, function (i, valueElement) {
                         if (i == 0) {
                             $.each($elements, function(i, element) {
@@ -761,6 +761,8 @@ $(document).ready(function () {
                         });
                     });
                 }
+            } else if (value instanceof Object){
+                populateNonObservations($parentDiv, value);
             } else {
                 $.each($elements, function (i, element) {
                     applyValue(element, value);
@@ -777,6 +779,69 @@ $(document).ready(function () {
         } else {
             $(element).val(value);
         }
+    };
+
+    var populateNonObservations = function ($parentDiv, prePopulateJson) {
+        $.each(prePopulateJson, function (key, value) {
+            if (value instanceof Object) {
+                // check if this is a grouping observation.
+                var $div = $parentDiv.find('div[data-group="' + key + '"]');
+                if ($div.length > 0) {
+                    // we are dealing with grouping
+                    if (value instanceof Array) {
+                        $.each(value, function (i, element) {
+                            if (i == 0) {
+                                populateNonConceptFields($div, element);
+                            } else {
+                                var $clonedDiv = $div.clone(true);
+                                document.clearValuesOnClonedFields($clonedDiv);
+                                document.removeRepeatedSubSections($clonedDiv);
+                                populateNonConceptFields($clonedDiv, element);
+                                $div.after($clonedDiv);
+                            }
+                        });
+                    } else {
+                        populateNonConceptFields($div, value);
+                    }
+                } else {
+                    // we are not dealing with repeating
+                    if (value instanceof Array) {
+                        var elements = $parentDiv.find('[data-group="' + key + '"]');
+                        if (elements.length < value.length) {
+                            $.each(value, function (i, valueElement) {
+                                if (i == 0) {
+                                    $.each(elements, function (i, element) {
+                                        applyValue(element, valueElement);
+                                    });
+                                } else {
+                                    var $div = $(elements).closest('.repeat, .custom-repeat');
+                                    var $clonedDiv = $div.clone(true);
+                                    $div.after($clonedDiv);
+                                    elements = $clonedDiv.find('[data-group="' + key + '"]');
+                                    $.each(elements, function (i, element) {
+                                        applyValue(element, valueElement);
+                                    });
+                                }
+                            });
+                        } else {
+                            $.each(value, function (i, valueElement) {
+                                $.each(elements, function (i, element) {
+                                    applyValue(element, valueElement);
+                                });
+                            });
+                        }
+                    } else {
+                        populateNonConceptFields($div, value);
+                    }
+                }
+            }
+            else {
+                var $elements = $parentDiv.find('[name="' + key + '"]');
+                $.each($elements, function (i, element) {
+                    applyValue(element, value);
+                });
+            }
+        });
     };
 
     var populateObservations = function ($parentDiv, prePopulateJson) {
@@ -860,7 +925,7 @@ $(document).ready(function () {
             if (key === 'observation') {
                 populateObservations($('form'),value);
             } else {
-                populateNonConceptFields(value);
+                populateNonObservations($('form'),value);
             }
         });
         console.timeEnd("Starting population");
@@ -872,7 +937,7 @@ $(document).ready(function () {
         //construct array of obs_datetime for use while serializing concepts
         setObsDatetimeArray(this);
 
-        var jsonResult = $.extend({}, serializeNonConceptElements(this),
+        var jsonResult = $.extend({}, serializeNonConceptElements(this), serializeNestedNonConceptElements(this),
             serializeConcepts(this), serializeNestedConcepts(this));
         var completeObject = {};
         var defaultKey = "observation";
@@ -898,16 +963,39 @@ $(document).ready(function () {
         var object = {};
         var $inputElements = $form.find('[name]').not('[data-concept]');
         $.each($inputElements, function (i, element) {
-            if ($(element).is(':checkbox') || $(element).is(':radio')) {
-                if ($(element).is(':checked')) {
+            var $closestElement = $(element).closest('.section, .group-set', $form);
+            if ($form.is($closestElement) || $closestElement.attr('data-group') == undefined ) {
+                if ($(element).is(':checkbox') || $(element).is(':radio')) {
+                    if ($(element).is(':checked')) {
+                        object = pushIntoArray(object, $(element).attr('name'), $(element).val());
+                    }
+                } else {
                     object = pushIntoArray(object, $(element).attr('name'), $(element).val());
                 }
-            } else {
-                object = pushIntoArray(object, $(element).attr('name'), $(element).val());
             }
         });
         return object;
     };
+
+    var serializeNestedNonConceptElements = function ($form) {
+        var result = {};
+        var allParentDivs = $form.find('div[data-group]').filter(':visible');
+        var nestedParentDivs = allParentDivs.find('div[data-group]');
+        var rootParentDivs = allParentDivs.not(nestedParentDivs);
+        $.each(rootParentDivs, function (i, element) {
+            var $childDivs = $(element).find('div[data-group]');
+            if($childDivs.length > 0){
+                var subResult1 = serializeNestedNonConceptElements($(element));
+                var subResult2 = serializeNonConceptElements($(element));
+                var subResultCombined = $.extend({}, subResult1,subResult2);
+                result = pushIntoArray(result, $(element).attr('data-group'), subResultCombined);
+            } else {
+                var $allNonConcepts = $(element).find('*[name]');
+                result = pushIntoArray(result, $(element).attr('data-group'), jsonifyNonConcepts($allNonConcepts));
+            }
+        });
+        return result;
+    }
 
     var serializeNestedConcepts = function ($form) {
         var result = {};
@@ -994,6 +1082,20 @@ $(document).ready(function () {
                 } else {
                     o = pushIntoArray(o, $(element).attr('data-concept'), $(element).val());
                 }
+            }
+        });
+        return o;
+    };
+
+    var jsonifyNonConcepts = function ($allNonConcepts) {
+        var o = {};
+        $.each($allNonConcepts, function (i, element) {
+            if ($(element).is(':checkbox') || $(element).is(':radio')) {
+                if ($(element).is(':checked')) {
+                    o = pushIntoArray(o, $(element).attr('name'), $(element).val());
+                }
+            } else {
+                o = pushIntoArray(o, $(element).attr('name'), $(element).val());
             }
         });
         return o;
