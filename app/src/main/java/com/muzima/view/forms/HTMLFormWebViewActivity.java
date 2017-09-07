@@ -1,9 +1,11 @@
 /*
- * Copyright (c) 2014. The Trustees of Indiana University.
+ * Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center.
  *
- * This version of the code is licensed under the MPL 2.0 Open Source license with additional
- * healthcare disclaimer. If the user is an entity intending to commercialize any application
- * that uses this code in a for-profit venture, please contact the copyright holder.
+ * This version of the code is licensed under the MPL 2.0 Open Source license
+ * with additional health care disclaimer.
+ * If the user is an entity intending to commercialize any application that uses
+ *  this code in a for-profit venture,please contact the copyright holder.
  */
 
 package com.muzima.view.forms;
@@ -128,7 +130,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         encounterProviderPreference = preferences.getBoolean("encounterProviderPreference", IS_LOGGED_IN_USER_DEFAULT_PROVIDER);
         duplicateFormDataPreference = preferences.getBoolean("duplicateFormDataPreference", IS_ALLOWED_FORM_DATA_DUPLICATION );
 
-        showProgressBar("Loading...");
+        showProgressBar(getString(R.string.hint_loading_progress));
         try {
             setupFormData();
             if (!isFormComplete()) {
@@ -152,11 +154,15 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                     Log.e(TAG, "Error while auto saving the form data", e);
                 }
                 finally{
-                    handler.postDelayed(this,  Integer.parseInt(autoSaveIntervalPreference) * DateUtils.MILLIS_PER_MINUTE);
+                    handler.postDelayed(this,
+                            Integer.parseInt(autoSaveIntervalPreference) *
+                                    DateUtils.MILLIS_PER_MINUTE);
                 }
             }
         };
-        handler.postDelayed(runnable, Integer.parseInt(autoSaveIntervalPreference) * DateUtils.MILLIS_PER_MINUTE);
+        handler.postDelayed(runnable,
+                Integer.parseInt(autoSaveIntervalPreference) *
+                        DateUtils.MILLIS_PER_MINUTE);
     }
 
     public void stopAutoSaveProcess() {

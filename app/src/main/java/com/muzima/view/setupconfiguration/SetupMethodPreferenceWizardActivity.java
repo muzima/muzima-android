@@ -1,3 +1,13 @@
+/*
+ * Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license
+ * with additional health care disclaimer.
+ * If the user is an entity intending to commercialize any application that uses
+ *  this code in a for-profit venture,please contact the copyright holder.
+ */
+
 package com.muzima.view.setupconfiguration;
 
 import android.content.Context;
@@ -10,12 +20,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.*;
 import com.azimolabs.keyboardwatcher.KeyboardWatcher;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -70,6 +76,14 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
 
         setupConfigurationAdapter.reloadData();
 
+        //set clearing ability for the imageButton under Guided setup
+        ImageButton imageButton = (ImageButton) findViewById(R.id.cancel_filter_txt);
+        imageButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                configSetupFilter.setText("");
+            }
+        });
+
         activeNextButton = (Button) findViewById(R.id.next);
         activeNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +121,6 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
 
     @Override
     public void onKeyboardShown(int keyboardSize) {
-        advancedSetupLayout.setVisibility(View.GONE);
         nextButtonLayout.setVisibility(View.GONE);
 
     }
@@ -119,6 +132,15 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
 
     }
 
+    private void hideKeyboard(){
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            view.clearFocus();
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
     private View.OnClickListener advancedSetupClickListener(){
 
         return new View.OnClickListener() {
@@ -127,6 +149,7 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
                 activateNextButton();
                 deselectGuidedSetupConfigsView();
                 selectAdvancedSetupView();
+                hideKeyboard();
             }
         };
     }
@@ -138,6 +161,7 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 activateNextButton();
                 deselectAdvancedSetupView();
+                hideKeyboard();
                 setupConfigurationAdapter.onListItemClick(position);
             }
         };

@@ -1,9 +1,11 @@
 /*
- * Copyright (c) 2014. The Trustees of Indiana University.
+ * Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center.
  *
- * This version of the code is licensed under the MPL 2.0 Open Source license with additional
- * healthcare disclaimer. If the user is an entity intending to commercialize any application
- * that uses this code in a for-profit venture, please contact the copyright holder.
+ * This version of the code is licensed under the MPL 2.0 Open Source license
+ * with additional health care disclaimer.
+ * If the user is an entity intending to commercialize any application that uses
+ *  this code in a for-profit venture,please contact the copyright holder.
  */
 
 package com.muzima.view;
@@ -101,7 +103,7 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
                 msg =getString(R.string.info_cohort_new_patient_download, downloadCount, downloadCountSec)+ getString(R.string.info_patient_data_download);
             } else if(syncType == DataSyncServiceConstants.SYNC_PATIENTS_ONLY){
                 int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
-                msg =getString(R.string.info_cohort_patient_download, downloadCount ,downloadCountSec);
+                msg =getString(R.string.info_cohorts_patients_download, downloadCount ,downloadCountSec);
             } else if(syncType == DataSyncServiceConstants.SYNC_OBSERVATIONS){
                 msg = getString(R.string.info_new_observation_download, downloadCount);
             } else if(syncType == DataSyncServiceConstants.SYNC_ENCOUNTERS){

@@ -28,7 +28,8 @@ var validateSelected = function (source) {
         // get the visible inputs element that are checked
         var checkedInput = $(fieldSet).find('input:checked');
         if (checkedInput.length == 0) {
-            errors[$(fieldSet).attr('name')] = "This question must be answered.";
+            var mandatoryQuestionValidationFailureMessage = htmlDataStore.getStringResource("hint_mandatory_question_validation_failure");
+            errors[$(fieldSet).attr('name')] = mandatoryQuestionValidationFailureMessage;
         }
     }
     return errors;
@@ -154,8 +155,10 @@ $(document).ready(function () {
                 var enteredDate = new Date(matches[3], matches[2] - 1, matches[1]);
                 var reference = new Date();
                 var today = new Date(reference.getFullYear(), reference.getMonth(), reference.getDate());
+
+                var futureDateValidationFailureMessage = htmlDataStore.getStringResource("hint_future_date_validation_failure");
                 if (enteredDate <= today) {
-                    errors[$(this).attr('name')] = "Please enter a date in the future.";
+                    errors[$(this).attr('name')] = futureDateValidationFailureMessage;
                 }
             }
             toggleValidationMessages(errors);
@@ -174,7 +177,9 @@ $(document).ready(function () {
                 var reference = new Date();
                 var today = new Date(reference.getFullYear(), reference.getMonth(), reference.getDate());
                 if (enteredDate > today) {
-                    errors[$(this).attr('name')] = "Please enter a date prior or equal to today.";
+                    var currentOrPastDateValidationFailureMessage =
+                        htmlDataStore.getStringResource("hint_current_or_past_date_validation_failure");
+                    errors[$(this).attr('name')] = currentOrPastDateValidationFailureMessage;
                 }
             }
             toggleValidationMessages(errors);
@@ -224,14 +229,14 @@ $(document).ready(function () {
 
     var addValidationMessage = function () {
         var validationError = $('#validation-error');
+        var formValidationFailureMessage =
+            htmlDataStore.getStringResource("hint_form_validation_failure");
         if (validationError.length == 0) {
             $('form').prepend(
-                '<div class="error" id="validation-error">' +
-                '    There is one or more validation check failed on this form. Please review and resubmit the form' +
-                '</div>'
+                '<div class="error" id="validation-error">' +formValidationFailureMessage + '</div>'
             );
         } else {
-            validationError.html('There is one or more validation failed on this form. Please review and resubmit the form');
+            validationError.html(formValidationFailureMessage);
         }
         $('html, body').animate({scrollTop: 0}, 'slow');
     };
@@ -351,14 +356,15 @@ $(document).ready(function () {
     /* Start - Initialize jQuery DatePicker */
 
     /* Start - CheckDigit algorithm Source: https://wiki.openmrs.org/display/docs/Check+Digit+Algorithm */
-
+    var checkDigitValidationFailureMessage = "";
     $.validator.addMethod("checkDigit", function (value, element) {
+            checkDigitValidationFailureMessage = htmlDataStore.getStringResource("hint_check_digit_validation_failure");
             var num = value.split('-');
             if (num.length != 2) {
                 return false;
             }
             return $.fn.luhnCheckDigit(num[0]) == num[1];
-        }, "Please enter digits that matches CheckDigit algorithm."
+        }, checkDigitValidationFailureMessage
     );
 
     // attach 'checkDigit' class to perform validation.
@@ -401,7 +407,7 @@ $(document).ready(function () {
     });
 
     /* Start - Checking that the current date is not in the future */
-
+    var currentOrPastDateValidationFailureMessage = "";
     $.validator.addMethod("nonFutureDate", function (value, element) {
             if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
             var pattern = /(\d{2})-(\d{2})-(\d{4})/g;
@@ -412,8 +418,10 @@ $(document).ready(function () {
             var enteredDate = new Date(matches[3], matches[2] - 1, matches[1]);
             var reference = new Date();
             var today = new Date(reference.getFullYear(), reference.getMonth(), reference.getDate());
+            currentOrPastDateValidationFailureMessage =
+                htmlDataStore.getStringResource("hint_current_or_past_date_validation_failure");
             return enteredDate <= today;
-        }, "Please enter a date prior or equal to today."
+        }, currentOrPastDateValidationFailureMessage
     );
 
     // attach 'nonFutureDate' class to perform validation.
@@ -425,6 +433,7 @@ $(document).ready(function () {
 
     /* Start - Checking that the current date is in the future */
 
+    var futureDateValidationFailureMessage = "";
     $.validator.addMethod("checkFutureDate", function (value, element) {
             if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
             var pattern = /(\d{2})-(\d{2})-(\d{4})/g;
@@ -435,6 +444,7 @@ $(document).ready(function () {
             var enteredDate = new Date(matches[3], matches[2] - 1, matches[1]);
             var reference = new Date();
             var today = new Date(reference.getFullYear(), reference.getMonth(), reference.getDate());
+            futureDateValidationFailureMessage = htmlDataStore.getStringResource("hint_future_date_validation_failure");
             return enteredDate > today;
         }, "Please enter a date in the future."
     );
@@ -447,12 +457,13 @@ $(document).ready(function () {
     /* End - checkFutureDate*/
 
     /* Start - Checking that the entered value is a valid phone number */
-
+    var phoneNumberValidationFailureMessage = "";
     $.validator.addMethod("phoneNumber", function (value, element) {
+            phoneNumberValidationFailureMessage = htmlDataStore.getStringResource("hint_phone_number_validation_failure");
             if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
             var inputLength = value.length;
             return inputLength >= 8 && inputLength <= 12;
-        }, "Invalid Phone Number. Please check and re-enter."
+        }, phoneNumberValidationFailureMessage
     );
 
     // attach 'phoneNumber' class to perform validation.
@@ -468,11 +479,13 @@ $(document).ready(function () {
         var $validator = $('form').validate();
         var errors = {};
         var result = true;
+        var optionNoneExclusiveSelectionValidationFailureMessage =
+            htmlDataStore.getStringResource("hint_option_none_exclusive_selection_validation_failure");
         $.each(nameArray, function (i, element) {
             var fieldSetElem = $('fieldset[name="' + element + '"]');
             result = isValidForNoneSelection(fieldSetElem);
             if (!result) {
-                errors[element] = "If 'None' is selected, no other options can be selected.";
+                errors[element] = optionNoneExclusiveSelectionValidationFailureMessage;
             }
         });
         if (!result) {
@@ -631,15 +644,18 @@ $(document).ready(function () {
     document.repeatValidationCheck = function($section,showErrorMessageIfInvalid) {
         var validSection = true;
         var minRepeatsParams = document.getCurrentAndMinimumRepeats($section);
+        var minimumRepeatsValidationFailureMessage =
+            htmlDataStore.getStringResource("hint_repeating_section_minimum_repeats_validation_failure");
         if(minRepeatsParams != null && minRepeatsParams.current_repeats < minRepeatsParams.minimum_repeats){
             validSection = false;
             if(showErrorMessageIfInvalid){
                 var $validationError = $section.find('.repeat-error');
                 if($validationError.length>0){
-                    $validationError.html("Minimum repeats not satisfied. Needs at least "+minRepeatsParams.minimum_repeats);
+                    $validationError.html(minimumRepeatsValidationFailureMessage + " " + minRepeatsParams.minimum_repeats);
                     $validationError.show();
                 } else {
-                    $validationError = '<div class="error repeat-error">Minimum repeats is not satisfied. Needs at least ' + minRepeatsParams.minimum_repeats + '. </div>';
+                    $validationError = '<div class="error repeat-error"> ' + minimumRepeatsValidationFailureMessage
+                        + " " + minRepeatsParams.minimum_repeats + '. </div>';
                     $section.append($validationError);
                 }
             }
@@ -1098,6 +1114,8 @@ $(document).ready(function () {
         $.each(providerNamesResults, function (key, providerName) {
             listOfProviders.push({"val": providerName.identifier, "label": providerName.name});
         });
+        var encounterProviderValidationFailureMessage =
+            htmlDataStore.getStringResource("hint_encounter_provider_validation_failure");
         $.validator.addMethod("validProviderOnly", function (value, element) {
 
             if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
@@ -1108,7 +1126,7 @@ $(document).ready(function () {
                 }
             }
             return false;
-        }, "Please provide a provider from the list of possible providers.");
+        }, encounterProviderValidationFailureMessage);
 
         // attach 'validProviderOnly' class to perform validation.
         jQuery.validator.addClassRules({
@@ -1125,6 +1143,10 @@ $(document).ready(function () {
         $.each(locationNamesResults, function (key, locationName) {
             listOfLocations.push({"val": locationName.id, "label": locationName.name});
         });
+
+        var encounterLocationValidationFailureMessage =
+            htmlDataStore.getStringResource("hint_encounter_location_validation_failure");
+
         /* Start - Checking that the user entered location exists in the list of possible locations */
         $.validator.addMethod("validLocationOnly", function (value, element) {
             if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
@@ -1135,7 +1157,7 @@ $(document).ready(function () {
                 }
             }
             return false;
-        }, "Please provide a location from the list of possible locations.");
+        }, encounterLocationValidationFailureMessage);
 
     }
 
@@ -1146,7 +1168,8 @@ $(document).ready(function () {
     /* End - validLocationOnly*/
 
     document.setupValidationForConsultation = function (value, element, listOfConsultants) {
-
+        var consultationConsultantValidationFailureMessage =
+            htmlDataStore.getStringResource("hint_consultation_consultant_validation_failure");
         /* Start - Checking that the user entered consultant exists in the list of possible consultant */
         $.validator.addMethod("validConsultantOnly", function (value, element) {
             if ($.fn.isNotRequiredAndEmpty(value, element)) return true;

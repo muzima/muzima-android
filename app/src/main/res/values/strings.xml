@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~  this code in a for-profit venture,please contact the copyright holder.
+  -->
+
 <resources>
     <string name="app_name">mUzima</string>
+    <string name="app_title">mUzima for Health Providers</string>
 
     <string name="confirm_duplicate_form_data_save">Save Duplicate Form Data</string>
-    <string name="confirm_patient_id_exists">Does the patient already have existing ID?</string>
+    <string name="confirm_patient_id_exists">Does the client already have existing ID?</string>
 
-    <string name="default_auto_save_interval">2</string>
+    <string translatable="false"     name="default_auto_save_interval">2</string>
     <string name="default_form_register">Registration Forms</string>
-    <string name="default_server">http://demo2.muzima.org</string>
+    <string translatable="false" name="default_server">http://demo2.muzima.org</string>
 
     <string name="error_action_allow">Action not allowed while sync is in progress</string>
     <string name="error_audio_chose_activity_find">Error: Activity for choosing audio not found</string>
@@ -30,16 +41,18 @@
     <string name="error_data_save">An error occurred while saving data to local repo</string>
     <string name="error_encounter_download">Could not download encounters</string>
     <string name="error_encounter_load">Encounters could not be loaded</string>
-    <string name="error_encounter_observation_download">Could not download observations for patients</string>
+    <string name="error_encounter_observation_download">Could not download observations for clients</string>
     <string name="error_exception_data_load">Load exception has been thrown while loading data</string>
     <string name="error_exception_data_upload">Exception has been thrown while uploading data</string>
+    <string name="error_form_data_delete">Could not delete some form data</string>
     <string name="error_form_download">Could not download forms</string>
     <string name="error_form_fetch">Something went wrong while fetching forms from local repo</string>
     <string name="error_form_load">Could not load forms</string>
     <string name="error_form_load_fail">Could not load form</string>
     <string name="error_form_location_load">An error occurred while loading locations for the form</string>
     <string name="error_form_patient_data_exist">There is existing form data for selected form(s).
-        Finish Incomplete data and sync Complete data to Server first before downloading the forms.</string>
+        Finish Incomplete data and sync Complete data to Server first before downloading the forms.
+    </string>
     <string name="error_form_provider_load">An error occurred while loading provider for the form</string>
     <string name="error_form_save">An error occurred while saving the form</string>
     <string name="error_form_templates_download">Could not download form templates</string>
@@ -59,12 +72,13 @@
     <string name="error_observation_unavailable">No observations Available</string>
     <string name="error_parse_exception_data_fetch">Parse exception has been thrown while fetching data</string>
     <string name="error_patient_data_form_exist">There is existing form data.
-        Finish Incomplete data and sync Complete data to Server first before syncing form templates.</string>
-    <string name="error_patient_download">Could not download patients</string>
-    <string name="error_patient_encounter_download">Could not download encounters for patients</string>
-    <string name="error_patient_fetch">An error occurred while fetching patient</string>
-    <string name="error_patient_repo_fetch">Something went wrong while fetching patients from local repo</string>
-    <string name="error_patient_search">Something went wrong while searching patient(s)</string>
+        Finish Incomplete data and sync Complete data to Server first before syncing form templates.
+    </string>
+    <string name="error_patient_download">Could not download clients</string>
+    <string name="error_patient_encounter_download">Could not download encounters for clients</string>
+    <string name="error_patient_fetch">An error occurred while fetching client</string>
+    <string name="error_patient_repo_fetch">Something went wrong while fetching clients from local repo</string>
+    <string name="error_patient_search">Something went wrong while searching client(s)</string>
     <string name="error_provider_download">Could not download providers</string>
     <string name="error_provider_fetch">Something went wrong while fetching providers from local repo</string>
     <string name="error_server_connection_unavailable">Server unreachable</string>
@@ -80,6 +94,8 @@
 
     <string name="general_accept">Accept</string>
     <string name="general_alert">Alert!</string>
+    <string name="general_agree">Agree</string>
+    <string name="general_all">All</string>
     <string name="general_application_version">Version %1$s</string>
     <string name="general_cancel">Cancel</string>
     <string name="general_caution">Caution!</string>
@@ -90,6 +106,7 @@
     <string name="general_concepts">Concepts</string>
     <string name="general_delete">Delete</string>
     <string name="general_description_unavailable">No description available</string>
+    <string name="general_disagree">Disagree</string>
     <string name="general_download">Download</string>
     <string name="general_draft">Draft</string>
     <string name="general_encounters">Encounters</string>
@@ -99,6 +116,9 @@
     <string name="general_help">Help</string>
     <string name="general_load">Load</string>
     <string name="general_locations">Locations</string>
+    <string name="general_login">Login</string>
+    <string name="general_logout">Logout</string>
+    <string name="general_next">Next</string>
     <string name="general_no">No</string>
     <string name="general_notices">Notices</string>
     <string name="general_notification">Notification</string>
@@ -106,11 +126,14 @@
     <string name="general_observations">Observations</string>
     <string name="general_ok">Ok</string>
     <string name="general_password">Password</string>
+    <string name="general_previous">Previous</string>
+    <string name="general_progress_message">This might take a while</string>
     <string name="general_providers">Providers</string>
     <string name="general_save">Save</string>
     <string name="general_search">Search</string>
     <string name="general_server">Server</string>
     <string name="general_settings">Settings</string>
+    <string name="general_synced">Synced</string>
     <string name="general_tags">Tags</string>
     <string name="general_thank_you">Thank you!</string>
     <string name="general_upload">Upload</string>
@@ -127,9 +150,11 @@
     <string name="hint_advanced_setup">Use a step by step wizard to choose what you want</string>
     <string name="hint_audio_caption">Please enter a caption for the audio</string>
     <string name="hint_audio_record">Record or choose audio</string>
+    <string name="hint_authentication_progress">Authenticating...</string>
     <string name="hint_barcode_scanner_setup">You need a barcode scanner application to register clients from
         mobile. Please check whether it\'s been installed in your device or not.
     </string>
+    <string name="hint_check_digit_validation_failure">Please enter digits that matches CheckDigit algorithm</string>
     <string name="hint_client_local_search">Your search includes client id, given name, middle name and family
         name and searched only in the device
     </string>
@@ -137,6 +162,10 @@
         name and searched on the server
     </string>
     <string name="hint_client_search">Search clients</string>
+    <string formatted="false" name="hint_client_summary_encounters">%d Encounters</string>
+    <string formatted="false" name="hint_client_summary_forms">%d Incomplete, %d Complete, %d Recommended</string>
+    <string formatted="false" name="hint_client_summary_notifications">%d New Notifications, %d Total Notifications</string>
+    <string formatted="false" name="hint_client_summary_observations">%d Observations</string>
     <string name="hint_cohort_download">Select one or more cohorts from the list and click on \'Next\' to download
     </string>
     <string name="hint_cohort_filter">Start typing to filter the cohorts...</string>
@@ -144,51 +173,82 @@
     <string name="hint_cohort_prefix_help">A cohort is a predefined group of clients for which you can fill forms and
         download observations. The prefix(es) set here will be used to download cohorts afterwards.
     </string>
-    <string name="hint_cohort_prefix_manage">Cohort prefixes restrict your cohort downloads to only those starting with the specified prefix</string>
+    <string name="hint_cohort_prefix_manage">Cohort prefixes restrict your cohort downloads to only those starting with
+        the specified prefix
+    </string>
     <string name="hint_cohort_sync">Please select cohorts from all cohorts list and click sync</string>
-    <string name="hint_cohort_wizard_help">In this step of the wizard, you download the cohorts you need. Please select the
+    <string name="hint_cohort_wizard_help">In this step of the wizard, you download the cohorts you need. Please select
+        the
         cohorts and click next.
     </string>
-    <string name="hint_complete_form_unavailable">Complete forms are available only if you have filled a form completely but have
+    <string name="hint_complete_form_unavailable">Complete forms are available only if you have filled a form completely
+        but have
         not synced it with the server
     </string>
     <string name="hint_concept_pref_add">Add concept(s) that you want observation(s) to be downloaded.</string>
     <string name="hint_configuration_search">Search a configuration</string>
+    <string name="hint_consultation_consultant_validation_failure">Please provide a consultant from the list of possible consultants</string>
     <string name="hint_crash_dialog">An unexpected error occurred forcing mUzima to stop. Please help us fix
         this by sending us error data, all you have to do is click OK.
     </string>
     <string name="hint_crash_dialog_comment_prompt">Please add your comments about the problem below.</string>
-    <string name="hint_custom_concept_help">Here you define concepts whose data will be included in later download.</string>
+    <string name="hint_current_or_past_date_validation_failure">Please enter a date prior or equal to today</string>
+    <string name="hint_custom_concept_help">Here you define concepts whose data will be included in later download.
+    </string>
     <string name="hint_custom_location_help">Here you download locations that will show up in the forms.</string>
     <string name="hint_custom_provider_help">Here you download providers that will show up in the forms.</string>
-    <string name="hint_default_encounter_provider">Logged-in user will be used as the default encounter provider</string>
+    <string formatted="false" name="hint_dashboard_clients_description">%d Synced</string>
+    <string formatted="false" name="hint_dashboard_cohorts_description">%d Synced, %d Total</string>
+    <string formatted="false" name="hint_dashboard_forms_description">%d Incomplete, %d Complete</string>
+    <string formatted="false" name="hint_dashboard_notifications_description">%d New, %d Total</string>
+    <string name="hint_default_encounter_provider">Logged-in user will be used as the default encounter provider
+    </string>
     <string name="hint_drawer_close">Tags drawer close</string>
     <string name="hint_drawer_open">Tags drawer open</string>
-    <string name="hint_duplicate_form_data_warning">Warn the user when duplicate form data for same client with same encounter date is being saved</string>
+    <string name="hint_duplicate_form_data_warning">Warn the user when duplicate form data for same client with same
+        encounter date is being saved
+    </string>
+    <string name="hint_encounter_location_validation_failure">Please provide a location from the list of possible locations</string>
+    <string name="hint_encounter_provider_validation_failure">Please provide a provider from the list of possible providers</string>
     <string name="hint_form_auto_save_interval">The value in which your forms will be automatically saved</string>
     <string name="hint_form_download">Please select forms from all forms list and click download</string>
     <string name="hint_form_list_download">Please press load to fetch available forms from the server</string>
+    <string name="hint_form_validation_failure">There is one or more validation check failed on this form. Please review and resubmit the form</string>
+    <string name="hint_future_date_validation_failure">Please enter a date in the future</string>
     <string name="hint_guided_setup">Select a preset configuration and let mUzima do the rest for you</string>
     <string name="hint_image_caption_prompt">Please enter a caption for the image</string>
-    <string name="hint_incomplete_form_unavailable">Incomplete forms are available only if you have saved a partially filled
+    <string name="hint_incomplete_form_unavailable">Incomplete forms are available only if you have saved a partially
+        filled
         form
     </string>
+    <string name="hint_last_synced">Last synced on: %s</string>
+    <string name="hint_loading_progress">Loading...</string>
     <string name="hint_local_connection_unavailable">Please connect your device and try again</string>
     <string name="hint_location_pref_add">Add location(s) that you want to download.</string>
     <string name="hint_manage_concept">Get more concepts from the server or remove concepts from this device.
-        Concepts are used to configure what observations to download.</string>
+        Concepts are used to configure what observations to download.
+    </string>
     <string name="hint_manage_location">Get more locations from the server or remove locations from this device</string>
     <string name="hint_manage_provider">Get more providers from the server or remove providers from this device</string>
+    <string name="hint_mandatory_question_validation_failure">This question must be answered</string>
     <string name="hint_notification_sync">Make sure you have connectivity to server and press the load button</string>
+    <string name="hint_option_none_exclusive_selection_validation_failure">If \'None\' is selected, no other options can be selected</string>
     <string name="hint_password_change">Did you change your password recently?</string>
     <string name="hint_password_prompt">Please Enter Password</string>
-    <string name="hint_provider_not_set">You do not have provider rights or your provider data is not downloaded, please use add provider option.</string>
+    <string name="hint_phone_number_validation_failure">Invalid Phone Number. Please check and re-enter</string>
+    <string name="hint_provider_not_set">You do not have provider rights or your provider data is not downloaded, please
+        use add provider option.
+    </string>
     <string name="hint_provider_pref_add">Add provider(s) that you want to download.</string>
     <string name="hint_real_time_sync">Enable real time synchronization of data</string>
-    <string name="hint_recommended_forms_unavailable">Please select non-registration forms from all forms list and click download
+    <string name="hint_recommended_forms_unavailable">Please select non-registration forms from all forms list and click
+        download
     </string>
     <string name="hint_registration_form_select">Please select at least one registration form!</string>
-    <string name="hint_server_connection_unavailable">Please contact your server administrator to check server connectivity</string>
+    <string name="hint_repeating_section_minimum_repeats_validation_failure">Minimum repeats not satisfied. Needs at least</string>
+    <string name="hint_server_connection_unavailable">Please contact your server administrator to check server
+        connectivity
+    </string>
     <string name="hint_server_password_prompt">Enter the OpenMRS password</string>
     <string name="hint_server_url">Server URL</string>
     <string name="hint_server_url_prompt">Please enter server URL</string>
@@ -196,14 +256,18 @@
     <string name="hint_username_prompt">Please enter username</string>
     <string name="hint_video_caption_prompt">Please enter a caption for the video</string>
     <string name="hint_video_record">Record or choose video</string>
-    <string name="hint_wizard_form_download">Select one or more form templates from the list and click on \'Next\' to download</string>
+    <string name="hint_wizard_form_download">Select one or more form templates from the list and click on \'Next\' to
+        download
+    </string>
 
     <string name="info_authentication_in_progress">Authentication in progress...</string>
     <string name="info_client_demographics_download">Downloading clients demographic...</string>
-    <string name="info_client_identifier_change">Client Identifier changed on the server. The new identifier will be used
+    <string name="info_client_identifier_change">Client Identifier changed on the server. The new identifier will be
+        used
         going forward.
     </string>
-    <string name="info_client_local_search_not_found">No clients matched your search locally. Enter at least 3 characters for
+    <string name="info_client_local_search_not_found">No clients matched your search locally. Enter at least 3
+        characters for
         remote search.
     </string>
     <string name="info_client_remote_search_not_found">No clients matched your search on the server</string>
@@ -211,15 +275,15 @@
     <string name="info_cohort_downloaded">Downloaded 1 cohort</string>
     <string name="info_cohort_fetch_in_progress">Already fetching cohorts, ignored the request</string>
     <string name="info_cohort_load">Loading Cohorts...</string>
-    <string formatted="false" name="info_cohort_new_patient_download">Downloaded %d new patients for %d cohorts.</string>
+    <string formatted="false" name="info_cohort_new_patient_download">Downloaded %d new clients for %d cohorts.</string>
     <string name="info_cohort_not_downloaded">No cohorts downloaded</string>
-    <string name="info_cohort_patient_download">Downloaded 1 patient for 1 cohort</string>
-    <string name="info_cohort_patient_not_download">No patients downloaded</string>
-    <string formatted="false" name="info_cohort_patients_download">Downloaded %d patients for 1 cohort</string>
+    <string name="info_cohort_patient_download">Downloaded 1 client for 1 cohort</string>
+    <string name="info_cohort_patient_not_download">No clients downloaded</string>
+    <string formatted="false" name="info_cohort_patients_download">Downloaded %d clients for 1 cohort</string>
     <string name="info_cohort_prefixes_unavailable">No Cohort Prefixes Added</string>
     <string formatted="false" name="info_cohorts_downloaded">Downloaded %d cohorts</string>
-    <string formatted="false" name="info_cohorts_patient_download">Downloaded 1 patient for %d cohorts</string>
-    <string formatted="false" name="info_cohorts_patients_download">Downloaded %d patients for %d cohorts</string>
+    <string formatted="false" name="info_cohorts_patient_download">Downloaded 1 client for %d cohorts</string>
+    <string formatted="false" name="info_cohorts_patients_download">Downloaded %d clients for %d cohorts</string>
     <string name="info_cohorts_unavailable">No Cohorts Available</string>
     <string name="info_complete_form_unavailable">No completed and non synced forms</string>
     <string name="info_concept_delete_success">%d concepts deleted successfully!!</string>
@@ -272,15 +336,20 @@
     <string name="info_downloaded_image">Downloaded image</string>
     <string name="info_draft_form_save_success">Draft form was saved successfully.</string>
     <string name="info_encounter_download">Downloading encounters</string>
-    <string formatted="false" name="info_encounter_download_progress">Downloading encounters for patient %d of %d.</string>
-    <string formatted="false" name="info_encounter_not_downloaded_progress">Encounters for patient %d of %d not downloaded.</string>
+    <string formatted="false" name="info_encounter_download_progress">Downloading encounters for client %d of %d.
+    </string>
+    <string formatted="false" name="info_encounter_not_downloaded_progress">Encounters for client %d of %d not
+        downloaded.
+    </string>
     <string name="info_encounter_observation_download">Downloading observations and encounters...</string>
-    <string name="info_encounter_patient_downloaded">Downloaded 1 encounter for 1 patient</string>
+    <string name="info_encounter_patient_downloaded">Downloaded 1 encounter for 1 client</string>
     <string name="info_encounter_patient_not_downloaded">Did not download any encounters</string>
-    <string formatted="false" name="info_encounter_patients_downloaded">Downloaded 1 encounter for %d patients</string>
+    <string formatted="false" name="info_encounter_patients_downloaded">Downloaded 1 encounter for %d clients</string>
     <string name="info_encounter_unavailable">No encounters available</string>
-    <string formatted="false" name="info_encounters_patient_downloaded">Downloaded %d encounters for 1 patient</string>
-    <string formatted="false" name="info_encounters_patients_downloaded">Downloaded %d encounters for %d patients</string>
+    <string formatted="false" name="info_encounters_patient_downloaded">Downloaded %d encounters for 1 client</string>
+    <string formatted="false" name="info_encounters_patients_downloaded">Downloaded %d encounters for %d clients
+    </string>
+    <string formatted="false" name="info_form_data_delete">Deleted %d forms</string>
     <string name="info_form_data_save_success">Completed form data was saved successfully.</string>
     <string name="info_form_data_upload_fail">Failed to Sync Form data to the current server. Do you still want to
         continue?
@@ -297,7 +366,8 @@
     <string name="info_form_load">Loading Forms...</string>
     <string name="info_form_metadata_download">Downloading forms metadata</string>
     <string name="info_form_not_downloaded">No forms downloaded</string>
-    <string formatted="false" name="info_form_template_concept_download">Downloaded %d form templates and %d concepts</string>
+    <string formatted="false" name="info_form_template_concept_download">Downloaded %d form templates and %d concepts
+    </string>
     <string name="info_form_template_download">Downloading Form Templates</string>
     <string name="info_form_template_downloaded">Downloaded 1 form template</string>
     <string name="info_form_template_not_downloaded">No form template downloaded</string>
@@ -321,13 +391,18 @@
     <string name="info_muzima_sync_service_finish">mUzima sync service finished</string>
     <string name="info_muzima_sync_service_in_progress">mUzima sync service running</string>
     <string name="info_new_cohort_download">Downloaded %d new cohorts</string>
-    <string formatted="false" name="info_new_cohort_download_delete">Downloaded %d new cohorts and retired %d cohorts</string>
+    <string formatted="false" name="info_new_cohort_download_delete">Downloaded %d new cohorts and retired %d cohorts
+    </string>
     <string name="info_new_encounter_download">Downloaded %d new encounters</string>
-    <string formatted="false" name="info_new_encounter_download_delete">Downloaded %d new encounters and retired %d encounters</string>
+    <string formatted="false" name="info_new_encounter_download_delete">Downloaded %d new encounters and retired %d
+        encounters
+    </string>
     <string name="info_new_notification">New Notification</string>
     <string name="info_new_observation_download">Downloaded %d new observations</string>
-    <string formatted="false" name="info_new_observation_download_delete">Downloaded %d new observations and retired %d observations</string>
-    <string name="info_new_patient_download">Downloaded %d new patients</string>
+    <string formatted="false" name="info_new_observation_download_delete">Downloaded %d new observations and retired %d
+        observations
+    </string>
+    <string name="info_new_patient_download">Downloaded %d new clients</string>
     <string name="info_no_cohort_download">No cohorts have been synced</string>
     <string name="info_notification_download">Downloaded %d notifications</string>
     <string name="info_notification_download_in_progress">Downloading notifications</string>
@@ -335,18 +410,24 @@
     <string name="info_observation_download">Downloading observations</string>
     <string name="info_observation_in_progress">Observations are still loading</string>
     <string name="info_observation_load">Observations are loading</string>
-    <string name="info_observation_patient_downloaded">Downloaded 1 observation for 1 patient</string>
+    <string name="info_observation_patient_downloaded">Downloaded 1 observation for 1 client</string>
     <string name="info_observation_patient_not_downloaded">Did not download any observations</string>
-    <string formatted="false" name="info_observation_patients_downloaded">Downloaded %d observations for 1 patient</string>
+    <string formatted="false" name="info_observation_patients_downloaded">Downloaded %d observations for 1 client
+    </string>
     <string name="info_observation_search">Search observations</string>
     <string name="info_observation_unavailable">No observations available</string>
-    <string formatted="false" name="info_observations_download_pogress">Downloading observations for patient %d of %d.</string>
+    <string formatted="false" name="info_observations_download_pogress">Downloading observations for client %d of %d.
+    </string>
     <string name="info_observations_load_in_progress">Observations are still loading</string>
-    <string formatted="false" name="info_observations_not_downloaded_progress">Observations for patient %d of %d not downloaded.</string>
-    <string formatted="false" name="info_observations_patient_downloaded">Downloaded 1 observation for %d patients</string>
-    <string formatted="false" name="info_observations_patients_downloaded">Downloaded %d observations for %d patients</string>
-    <string name="info_patient_data_download">Downloading Patients data</string>
-    <string name="info_patient_download">Downloading Patients</string>
+    <string formatted="false" name="info_observations_not_downloaded_progress">Observations for client %d of %d not
+        downloaded.
+    </string>
+    <string formatted="false" name="info_observations_patient_downloaded">Downloaded 1 observation for %d clients
+    </string>
+    <string formatted="false" name="info_observations_patients_downloaded">Downloaded %d observations for %d clients
+    </string>
+    <string name="info_patient_data_download">Downloading clients data</string>
+    <string name="info_patient_download">Downloading Clients</string>
     <string name="info_provider_delete_success">%d Providers deleted successfully</string>
     <string name="info_provider_download">Downloading providers</string>
     <string name="info_provider_downloaded">Downloaded 1 provider</string>
@@ -397,7 +478,7 @@
     <string name="title_default_encounter_provider">Default encounter provider</string>
     <string name="title_disclaimer">Licensing, Disclaimer of Warranty and Limitation of Liability</string>
     <string name="title_duplicate_form_data_warning">Duplicate form data warning</string>
-    <string name="title_fill_patient_forms_help">Fill out forms for a patient</string>
+    <string name="title_fill_patient_forms_help">Fill out forms for a client</string>
     <string name="title_font_size">Font size</string>
     <string name="title_form_auto_save_interval">Automatic form save interval (mins)</string>
     <string name="title_form_data_complete">Complete Form Data</string>
@@ -421,11 +502,15 @@
     <string name="title_manage_location">Manage locations</string>
     <string name="title_manage_provider">Manage providers</string>
     <string name="title_media_preview">Preview Media</string>
+    <string name="title_muzima_disclaimer">mUzima Disclaimer</string>
     <string name="title_muzima_training_manual">mUzima training manual</string>
+    <string name="title_observations_by_concepts">By Concepts</string>
+    <string name="title_observations_by_encounters">By Encounters</string>
     <string name="title_provider_download">Step 4: Add Provider(s)</string>
     <string name="title_provider_help">providers Help</string>
     <string name="title_provider_not_set">Unable to set as Provider</string>
     <string name="title_real_time_sync">Real time sync</string>
+    <string name="title_search_server">Search server</string>
     <string name="title_server_side_setup">Server Side Setup</string>
     <string name="title_session_timeout">Session timeout (mins)</string>
     <string name="title_video_caption">Video Caption</string>
@@ -434,19 +519,21 @@
 
     <string name="warning_cohort_prefix_exists">Cohort prefix exists</string>
     <string name="warning_empty_cohort_prefix">You cannot add an empty cohort prefix</string>
-    <string name="warning_form_close">Closing Form: This will discard all your changes.  Are you sure you would like to do this?
+    <string name="warning_form_close">Closing Form: This will discard all your changes. Are you sure you would like to
+        do this?
     </string>
-    <string name="warning_form_data_already_exists">This Form Data already exists for this client with same encounter date.</string>
+    <string name="warning_form_data_already_exists">This Form Data already exists for this client with same encounter
+        date.
+    </string>
     <string name="warning_forms_complete_and_sync">%s contains some associated forms with it. Please complete and sync
         those forms before downloading a newer version.
     </string>
     <string name="warning_logout_confirm">Are you sure you want to log out and exit mUzima app?</string>
     <string name="warning_registration_form_data_delete">You are about to delete registration data. This will also
-        delete patient record on device. Are you sure?
+        delete client record on device. Are you sure?
     </string>
     <string name="warning_switch_server">Switching Server: This will clear all mUzima data on your
         device, including any incomplete forms. Are you sure you want to change this setting?
     </string>
-    <string name="error_form_data_delete">Could not delete some form data</string>
-    <string name="info_form_data_delete">Deleted %d forms</string>
+    <string name="general_finish">Finish</string>
 </resources>

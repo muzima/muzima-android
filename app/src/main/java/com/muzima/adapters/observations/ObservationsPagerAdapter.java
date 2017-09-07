@@ -1,9 +1,11 @@
 /*
- * Copyright (c) 2014. The Trustees of Indiana University.
+ * Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center.
  *
- * This version of the code is licensed under the MPL 2.0 Open Source license with additional
- * healthcare disclaimer. If the user is an entity intending to commercialize any application
- * that uses this code in a for-profit venture, please contact the copyright holder.
+ * This version of the code is licensed under the MPL 2.0 Open Source license
+ * with additional health care disclaimer.
+ * If the user is an entity intending to commercialize any application that uses
+ *  this code in a for-profit venture,please contact the copyright holder.
  */
 
 package com.muzima.adapters.observations;
@@ -12,6 +14,7 @@ import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.SearchView;
 import com.muzima.MuzimaApplication;
+import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
@@ -28,7 +31,7 @@ public class ObservationsPagerAdapter extends MuzimaPagerAdapter implements Sear
     ObservationsListFragment observationByEncountersFragment;
 
     public ObservationsPagerAdapter(Context applicationContext, FragmentManager supportFragmentManager) {
-        super(applicationContext,supportFragmentManager);
+        super(applicationContext, supportFragmentManager);
     }
 
     @Override
@@ -40,10 +43,10 @@ public class ObservationsPagerAdapter extends MuzimaPagerAdapter implements Sear
 
         observationByDateListFragment =
                 ObservationsByConceptFragment.newInstance(conceptController, observationController);
-        observationByEncountersFragment = ObservationByEncountersFragment.newInstance(encounterController,observationController);
+        observationByEncountersFragment = ObservationByEncountersFragment.newInstance(encounterController, observationController);
 
-        pagers[TAB_BY_DATE] = new PagerView("By Concepts", observationByDateListFragment);
-        pagers[TAB_BY_ENCOUNTERS] = new PagerView("By Encounters", observationByEncountersFragment);
+        pagers[TAB_BY_DATE] = new PagerView(context.getString(R.string.title_observations_by_concepts), observationByDateListFragment);
+        pagers[TAB_BY_ENCOUNTERS] = new PagerView(context.getString(R.string.title_observations_by_encounters), observationByEncountersFragment);
 
 
     }
@@ -56,12 +59,12 @@ public class ObservationsPagerAdapter extends MuzimaPagerAdapter implements Sear
     @Override
     public boolean onQueryTextChange(String newText) {
         for (PagerView pager : pagers) {
-            ((ObservationsListFragment)pager.fragment).onSearchTextChange(newText);
+            ((ObservationsListFragment) pager.fragment).onSearchTextChange(newText);
         }
         return false;
     }
 
-    public void cancelBackgroundQueryTasks(){
+    public void cancelBackgroundQueryTasks() {
         observationByDateListFragment.onQueryTaskCancelled();
         observationByEncountersFragment.onQueryTaskCancelled();
     }
