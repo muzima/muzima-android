@@ -1,3 +1,13 @@
+<!--
+  ~ Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~  this code in a for-profit venture,please contact the copyright holder.
+  -->
+
 <resources xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
@@ -455,9 +465,9 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">32sp</item>
+        <item name="android:textSize">30sp</item>
         <item name="android:typeface">normal</item>
-        <item name="android:text">mUzima Clinic</item>
+        <item name="android:text">@string/app_title</item>
     </style>
 
     <style name="LoginActivityDivider.Style">
@@ -527,11 +537,10 @@
     </style>
 
     <style name="LoginButton">
+        <item name="android:background">@drawable/rounded_corner_loginbutton</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:text">"Login"</item>
-        <item name="android:background">@drawable/login_button_selector</item>
     </style>
 
     <style name="Button">
@@ -544,46 +553,33 @@
 
     <style name="Button.Previous">
         <item name="android:background">@drawable/previous_button_selector</item>
-        <item name="android:text">Previous</item>
+        <item name="android:text">@string/general_previous</item>
     </style>
 
     <style name="Button.InactiveNext">
         <item name="android:background">@drawable/previous_button_selector</item>
-        <item name="android:text">Next</item>
+        <item name="android:text">@string/general_next</item>
     </style>
 
     <style name="Button.Next">
         <item name="android:background">@drawable/next_button_selector</item>
-        <item name="android:text">Next</item>
+        <item name="android:text">@string/general_next</item>
     </style>
 
     <style name="Button.Finish">
         <item name="android:background">@drawable/next_button_selector</item>
-        <item name="android:text">Finish</item>
+        <item name="android:text">@string/general_finish</item>
     </style>
 
-    <style name="LoginActivityNoConnectionView">
+    <style name="LoginAuthenticatingButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:text">"No Internet Connectivity"</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">18sp</item>
         <item name="android:singleLine">true</item>
         <item name="android:padding">4dp</item>
-        <item name="android:background">@color/login_noConnectivity_background</item>
-    </style>
-
-    <style name="LoginActivityAuthenticatingView">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:text">"Authenticating..."</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:padding">4dp</item>
-        <item name="android:background">@color/login_authenticating_background</item>
+        <item name="android:background">@drawable/rounded_corner_loginbutton</item>
     </style>
 
     <style name="HelpContent">

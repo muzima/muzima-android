@@ -1,9 +1,11 @@
 /*
- * Copyright (c) 2014. The Trustees of Indiana University.
+ * Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center.
  *
- * This version of the code is licensed under the MPL 2.0 Open Source license with additional
- * healthcare disclaimer. If the user is an entity intending to commercialize any application
- * that uses this code in a for-profit venture, please contact the copyright holder.
+ * This version of the code is licensed under the MPL 2.0 Open Source license
+ * with additional health care disclaimer.
+ * If the user is an entity intending to commercialize any application that uses
+ *  this code in a for-profit venture,please contact the copyright holder.
  */
 
 package com.muzima.view.patients;
@@ -77,12 +79,12 @@ public class PatientSummaryActivity extends BaseActivity {
         } catch (IOException e) {
             Log.e(TAG, "Exception thrown when reading to phone disk", e);
         }
-        if(list.size()==0){
+        if (list.size() == 0) {
             return;
         }
 
         final String patientIdentifier = patient.getIdentifier();
-        if(list.contains(patientIdentifier)){
+        if (list.contains(patientIdentifier)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(true)
                     .setIcon(getResources().getDrawable(R.drawable.ic_warning))
@@ -214,19 +216,19 @@ public class PatientSummaryActivity extends BaseActivity {
         @Override
         protected void onPostExecute(PatientSummaryActivityMetadata patientSummaryActivityMetadata) {
             TextView formsDescription = (TextView) findViewById(R.id.formDescription);
-            formsDescription.setText(patientSummaryActivityMetadata.incompleteForms + " Incomplete, "
-                    + patientSummaryActivityMetadata.completeForms + " Complete, "
-                    + patientSummaryActivityMetadata.recommendedForms + " Recommended");
+            formsDescription.setText(getString(R.string.hint_client_summary_forms, patientSummaryActivityMetadata.incompleteForms,
+                    patientSummaryActivityMetadata.completeForms,
+                    patientSummaryActivityMetadata.recommendedForms));
 
             TextView notificationsDescription = (TextView) findViewById(R.id.notificationDescription);
-            notificationsDescription.setText(patientSummaryActivityMetadata.newNotifications + " New Notifications, "
-                    + patientSummaryActivityMetadata.totalNotifications + " Total Notifications");
+            notificationsDescription.setText(getString(R.string.hint_client_summary_notifications, patientSummaryActivityMetadata.newNotifications,
+                    patientSummaryActivityMetadata.totalNotifications));
 
             TextView observationDescription = (TextView) findViewById(R.id.observationDescription);
-            observationDescription.setText(patientSummaryActivityMetadata.observations + " Observations");
+            observationDescription.setText(getString(R.string.hint_client_summary_observations, patientSummaryActivityMetadata.observations));
 
             TextView encounterDescription = (TextView) findViewById(R.id.encounterDescription);
-            encounterDescription.setText(patientSummaryActivityMetadata.encounters + " Encounters");
+            encounterDescription.setText(getString(R.string.hint_client_summary_encounters, patientSummaryActivityMetadata.encounters));
         }
     }
 

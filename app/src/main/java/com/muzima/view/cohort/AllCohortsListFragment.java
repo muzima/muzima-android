@@ -1,9 +1,11 @@
 /*
- * Copyright (c) 2014. The Trustees of Indiana University.
+ * Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center.
  *
- * This version of the code is licensed under the MPL 2.0 Open Source license with additional
- * healthcare disclaimer. If the user is an entity intending to commercialize any application
- * that uses this code in a for-profit venture, please contact the copyright holder.
+ * This version of the code is licensed under the MPL 2.0 Open Source license
+ * with additional health care disclaimer.
+ * If the user is an entity intending to commercialize any application that uses
+ *  this code in a for-profit venture,please contact the copyright holder.
  */
 
 package com.muzima.view.cohort;
@@ -68,7 +70,7 @@ public class AllCohortsListFragment extends CohortListFragment {
 
     @Override
     protected String getSuccessMsg(Integer[] status) {
-        return "Downloaded: " + status[1] + " cohorts";
+        return getString(R.string.info_cohorts_downloaded, status[1]);
     }
 
     @Override
@@ -174,7 +176,7 @@ public class AllCohortsListFragment extends CohortListFragment {
             Date lastSyncedTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS);
             String lastSyncedMsg = getActivity().getString(R.string.info_last_sync_unavailable);
             if(lastSyncedTime != null){
-                lastSyncedMsg = "Last synced on: " + DateUtils.getFormattedDateTime(lastSyncedTime);
+                lastSyncedMsg = getString(R.string.hint_last_synced,DateUtils.getFormattedDateTime(lastSyncedTime));
             }
             syncText.setText(lastSyncedMsg);
         } catch (IOException e) {

@@ -1,3 +1,13 @@
+<!--
+  ~ Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~  this code in a for-profit venture,please contact the copyright holder.
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
                 android:layout_height="match_parent"
@@ -13,7 +23,7 @@
 
 
             android:drawableLeft="@drawable/ic_launcher_logo"
-            android:text="mUzima Disclaimer"
+            android:text="@string/title_muzima_disclaimer"
             android:textSize="20sp"
                       android:gravity="center_vertical"
             android:textAlignment="center"
@@ -48,13 +58,13 @@
         <Button
                 android:id="@+id/previous"
                 style="@style/Button.Previous"
-                android:text="Disagree"
+                android:text="@string/general_disagree"
                 android:layout_weight=".3"/>
         <Button
                 android:id="@+id/next"
                 style="@style/Button.Next"
                 android:visibility="invisible"
-                android:text="Agree"
+                android:text="@string/general_agree"
                 android:layout_weight=".3"/>
     </LinearLayout>
 
