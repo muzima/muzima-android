@@ -13,6 +13,8 @@ package com.muzima.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -69,7 +71,6 @@ public class HelpActivity extends BaseActivity {
 
         // setting list adapter
         expListView.setAdapter(listAdapter);
-        // expListView.expandGroup(0);
 
         expListView.setOnGroupExpandListener(new OnGroupExpandListener() {
             int previousGroup = -1;
@@ -121,8 +122,6 @@ public class HelpActivity extends BaseActivity {
                 else if(group_position==1 && child_position==5){
                     viewVideo(DOWNLOADING_FORMS_VIDEO);
                 }
-                /**String name = (String)listAdapter.getChild(group_position, child_position);
-                Toast.makeText(getApplicationContext(),name,Toast.LENGTH_SHORT).show();*/
                 return false;
             }
         });
@@ -138,7 +137,6 @@ public class HelpActivity extends BaseActivity {
         // Adding child data
         listDataHeader.add("Help Center");
         listDataHeader.add("mUzima Video Links");
-        //listDataHeader.add("Coming Soon..");
 
         // Adding child data
         List<String> howTo = new ArrayList<String>();
@@ -158,7 +156,6 @@ public class HelpActivity extends BaseActivity {
 
         listDataChild.put(listDataHeader.get(0), howTo); // Header, Child data
         listDataChild.put(listDataHeader.get(1), videoLinks);
-        //listDataChild.put(listDataHeader.get(2), comingSoon);
     }
 
     private void startHelpContentDisplayActivity(String filePath, String title) {
@@ -174,75 +171,15 @@ public class HelpActivity extends BaseActivity {
         startActivity(playVideoIntent);
     }
 
-    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.help, menu);
-        super.onCreateOptionsMenu(menu);
+        boolean returnValue = super.onCreateOptionsMenu(menu);
         removeHelpMenu(menu);
-        return true;
-    }
-
-    public void viewPatientFormFillingHelpContent(View view) {
-        startHelpContentDisplayActivity(ABOUT_DASHBOARD_FORM,getText(R.string.title_fill_patient_forms_help).toString());
-    }
-
-    public void viewMuzimaInitialSetupGuide(View view) {
-        startHelpContentDisplayActivity(MUZIMA_INITAL_SETUP_GUIDE,getText(R.string.title_initial_setup_guide).toString());
-    }
-
-    public void viewMuzimaUserGuide(View view) {
-        startHelpContentDisplayActivity(MUZIMA_SETTINGS,getText(R.string.title_server_side_setup).toString());
-    }
-
-    public void viewMuzimaTrainingManual(View view) {
-        startHelpContentDisplayActivity(FILL_PATIENT_FORMS,getText(R.string.title_muzima_training_manual).toString());
-    }
-
-    private void startHelpContentDisplayActivity(String filePath, String title) {
-        Intent intent = new Intent(this, WebViewActivity.class);
-        intent.putExtra(WebViewActivity.HELP_FILE_PATH_PARAM, filePath);
-        intent.putExtra(WebViewActivity.HELP_TITLE,title);
-        startActivity(intent);
-    }
-
-    private void showHelpContentView() {
-        helpContentView.setVisibility(View.VISIBLE);
-        scrollView.setVisibility(View.GONE);
+        return returnValue;
     }
 
     private void removeHelpMenu(Menu menu) {
-        MenuItem menuSettings = menu.findItem(R.id.action_help);
-        menuSettings.setVisible(false);
+        MenuItem menuHelp = menu.findItem(R.id.action_help);
+        if (menuHelp != null) menuHelp.setVisible(false);
     }
-
-    public void viewIntroductionVideo(View view) {
-        viewVideo(INTRODUCTION_VIDEO);
-    }
-
-    public void viewSettingUpMuzimaVideo(View view) {
-        viewVideo(SETTING_UP_MUZIMA_VIDEO);
-    }
-
-    public void viewTaggingFormsVideo(View view) {
-        viewVideo(TAGGING_FORMS_VIDEO);
-    }
-
-    public void viewDownloadingCohortsVideo(View view) {
-        viewVideo(DOWNLOADING_COHORTS_VIDEO);
-    }
-
-    public void viewChangeSettingsVideo(View view) {
-        viewVideo(CHANGE_SETTING_VIDEO);
-    }
-
-    public void viewDownloadingFormsVideo(View view) {
-        viewVideo(DOWNLOADING_FORMS_VIDEO);
-    }
-
-    private void viewVideo(String videoUrl){
-        Intent playVideoIntent = new Intent(Intent.ACTION_VIEW);
-        playVideoIntent.setData(Uri.parse(videoUrl));
-        startActivity(playVideoIntent);
-    }*/
 }
