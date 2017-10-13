@@ -39,7 +39,6 @@ public class SettingsActivity extends PreferenceActivity{
         super.onCreate(savedInstanceState);
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new SettingsPreferenceFragment()).commit();
-
         setupActionBar();
     }
 

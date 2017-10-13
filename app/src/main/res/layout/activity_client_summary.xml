@@ -29,7 +29,7 @@
                 android:contentDescription="Gender Image"/>
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
             style="@style/PatientDemographicsLayout"
             android:paddingTop="4dp"
             android:paddingBottom="16dp"
@@ -37,13 +37,17 @@
 
         <TextView
                 android:id="@+id/dob"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 style="@style/DashboardBaseText"/>
 
         <TextView
                 android:id="@+id/patientIdentifier"
                 style="@style/DashboardBaseText"
-                android:layout_alignParentRight="true"/>
-    </RelativeLayout>
+                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:layout_width="0dp"/>
+    </LinearLayout>
 
     <View style="@style/DividerLine"/>
     <ScrollView

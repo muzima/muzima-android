@@ -22,4 +22,5 @@
     <string translatable="false" name="preference_username">usernamePreference</string>
     <string translatable="false" name="preference_wizard_finished">wizardFinished</string>
     <string translatable="false" name="preference_disclaimer">disclaimer</string>
+    <string translatable="false" name="preference_require_medical_record_number">requireMedicalRecordNumber</string>
 </resources>

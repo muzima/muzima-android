@@ -30,6 +30,7 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
@@ -41,7 +42,6 @@ import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
 import com.muzima.util.Constants;
-import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.forms.FormWebViewActivity;
 import com.muzima.view.forms.HTMLFormWebViewActivity;
@@ -51,11 +51,8 @@ import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpSender;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.security.Security;
 import java.util.List;
 
@@ -94,6 +91,7 @@ public class MuzimaApplication extends Application {
     private CohortPrefixPreferenceService prefixesPreferenceService;
     private LocalePreferenceService localePreferenceService;
     private SetupConfigurationController setupConfigurationController;
+    private MuzimaSettingController settingsController;
     private MuzimaTimer muzimaTimer;
     public static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
@@ -210,7 +208,7 @@ public class MuzimaApplication extends Application {
         if (formController == null) {
             try {
                 formController = new FormController(muzimaContext.getFormService(), muzimaContext.getPatientService(), muzimaContext.getLastSyncTimeService(), getSntpService(),
-                        muzimaContext.getObservationService(), muzimaContext.getEncounterService());
+                        muzimaContext.getObservationService(), muzimaContext.getEncounterService(),getMuzimaSettingController());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -326,6 +324,17 @@ public class MuzimaApplication extends Application {
             }
         }
         return setupConfigurationController;
+    }
+
+    public MuzimaSettingController getMuzimaSettingController() {
+        if(settingsController == null){
+            try {
+                settingsController = new MuzimaSettingController(muzimaContext.getMuzimaSettingService());
+            } catch (IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+        return settingsController;
     }
 
     public void resetTimer(int timeOutInMin) {

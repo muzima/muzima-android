@@ -546,4 +546,10 @@
         incluindo formulários imcompletos. Tem certeza que quer mudar as configurações?
     </string>
     <string name="general_finish">Terminar</string>
+    <string name="title_require_medical_record_number">Exigir número de registro médico</string>
+    <string name="hint_require_medical_record_number">Exigir o número de registro médico do cliente durante o registro</string>
+    <string name="title_setting_refresh">Configuração de Atualização</string>
+    <string name="hint_setting_refresh">Deseja voltar a baixar essa configuração do servidor?</string>
+    <string name="info_setting_download_success">Configuração baixada e atualizada com sucesso</string>
+    <string name="warning_setting_download_failure">Não foi possível baixar ou atualizar a configuração</string>
 </resources>

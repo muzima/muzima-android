@@ -23,6 +23,7 @@ import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Location;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Notification;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
@@ -34,15 +35,14 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.utils.Constants;
-import com.muzima.utils.Constants.SERVER_CONNECTIVITY_STATUS;
 import com.muzima.utils.NetworkUtils;
-import com.muzima.utils.StringUtils;
 import com.muzima.view.progressdialog.ProgressDialogUpdateIntentService;
 import org.apache.lucene.queryParser.ParseException;
 
@@ -54,6 +54,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.LOCAL_PATIENT;
 import static java.util.Collections.singleton;
 
@@ -72,6 +73,7 @@ public class MuzimaSyncService {
     private LocationController locationController;
     private ProviderController providerController;
     private SetupConfigurationController setupConfigurationController;
+    private MuzimaSettingController settingsController;
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
         this.muzimaApplication = muzimaContext;
@@ -86,6 +88,7 @@ public class MuzimaSyncService {
         locationController = muzimaApplication.getLocationController();
         providerController = muzimaApplication.getProviderController();
         setupConfigurationController = muzimaApplication.getSetupConfigurationController();
+        settingsController = muzimaApplication.getMuzimaSettingController();
     }
 
     public int authenticate(String[] credentials){
@@ -160,7 +163,7 @@ public class MuzimaSyncService {
             Log.d(TAG, "In downloading forms: " + (endDownloadForms - startDownloadForms) / 1000 + " sec\n" +
                     "In replacing forms: " + (endDownloadForms - endSaveForms) / 1000 + " sec");
 
-            result[0] = SyncStatusConstants.SUCCESS;
+            result[0] = SUCCESS;
             result[1] = allDownloadedForms.size();
             result[2] = deletedFormCount;
 
@@ -232,7 +235,7 @@ public class MuzimaSyncService {
 
             Log.i(TAG, "Form templates replaced");
 
-            result[0] = SyncStatusConstants.SUCCESS;
+            result[0] = SUCCESS;
             result[1] = formTemplates.size();
             result[2] = concepts.size();
         } catch (FormController.FormSaveException e) {
@@ -282,7 +285,7 @@ public class MuzimaSyncService {
 
             Log.i(TAG, "Form templates replaced");
 
-            result[0] = SyncStatusConstants.SUCCESS;
+            result[0] = SUCCESS;
             result[1] = formTemplates.size();
         } catch (FormController.FormSaveException e) {
             Log.e(TAG, "Exception when trying to save forms", e);
@@ -304,7 +307,7 @@ public class MuzimaSyncService {
             locationController.saveLocations(locations);
             Log.i(TAG, "Downloaded "+locations.size()+" locations");
 
-            result[0] = SyncStatusConstants.SUCCESS;
+            result[0] = SUCCESS;
             result[1] = locations.size();
         } catch (LocationController.LocationSaveException e) {
             Log.e(TAG, "Exception when trying to save locations", e);
@@ -326,7 +329,7 @@ public class MuzimaSyncService {
             providerController.saveProviders(providers);
             Log.i(TAG, "Downloaded "+providers.size()+" providers");
 
-            result[0] = SyncStatusConstants.SUCCESS;
+            result[0] = SUCCESS;
             result[1] = providers.size();
         } catch (ProviderController.ProviderSaveException e) {
             Log.e(TAG, "Exception when trying to save providers", e);
@@ -348,7 +351,7 @@ public class MuzimaSyncService {
             conceptController.saveConcepts(concepts);
             Log.i(TAG, "Downloaded "+concepts.size()+" concepts");
 
-            result[0] = SyncStatusConstants.SUCCESS;
+            result[0] = SUCCESS;
             result[1] = concepts.size();
         } catch (ConceptController.ConceptSaveException e) {
             Log.e(TAG, "Exception when trying to save concepts", e);
@@ -371,7 +374,7 @@ public class MuzimaSyncService {
 
             cohortController.saveAllCohorts(cohorts);
             Log.i(TAG, "New cohorts are saved");
-            result[0] = SyncStatusConstants.SUCCESS;
+            result[0] = SUCCESS;
             result[1] = cohorts.size();
             result[2] = voidedCohorts.size();
         } catch (CohortController.CohortDownloadException e) {
@@ -431,7 +434,7 @@ public class MuzimaSyncService {
             Log.d(TAG, "In Downloading cohort data: " + (endDownloadCohortData - startDownloadCohortData) / 1000 + " sec\n" +
                     "In Replacing cohort members and patients: " + (cohortMemberAndPatientReplaceTime - endDownloadCohortData) / 1000 + " sec");
 
-            result[0] = SyncStatusConstants.SUCCESS;
+            result[0] = SUCCESS;
             result[1] = patientCount;
             result[2] = cohortDataList.size();
             result[3] = voidedPatients.size();
@@ -465,7 +468,7 @@ public class MuzimaSyncService {
         try {
             downloadedPatients = downloadPatientsByUUID(patientUUIDs);
             patientController.savePatients(downloadedPatients);
-            result[0] = SyncStatusConstants.SUCCESS;
+            result[0] = SUCCESS;
             result[1] = downloadedPatients.size();
         } catch (PatientController.PatientDownloadException e) {
             Log.e(TAG, "Error while downloading patients.", e);
@@ -493,7 +496,7 @@ public class MuzimaSyncService {
                 List<String> patientlist = new ArrayList();
                 patientlist.add(patient.getUuid());
                 result = downloadObservationsForPatientsByPatientUUIDs(patientlist,replaceExistingObservation);
-                if(result[0] != SyncStatusConstants.SUCCESS){
+                if(result[0] != SUCCESS){
                     Log.e(TAG, "Obs for patient " + count + " of "+ patientsTotal + " not downloaded");
                     updateProgressDialog(muzimaApplication.getString(R.string.info_observations_not_downloaded_progress, count, patientsTotal));
 
@@ -570,7 +573,7 @@ public class MuzimaSyncService {
                 Log.d(TAG, "In Saving observations : " + (endDownloadObservations - startDownloadObservations) / 1000 + " sec\n");
             }
 
-            result[0] = SyncStatusConstants.SUCCESS;
+            result[0] = SUCCESS;
             result[1] = allObservations.size();
             result[2] = voidedObservations.size();
         } catch (ObservationController.DownloadObservationException e) {
@@ -622,7 +625,7 @@ public class MuzimaSyncService {
                 List<String> patientlist = new ArrayList();
                 patientlist.add(patient.getUuid());
                 result = downloadEncountersForPatientsByPatientUUIDs(patientlist,replaceExistingEncounters);
-                if(result[0] != SyncStatusConstants.SUCCESS){
+                if(result[0] != SUCCESS){
                     Log.e(TAG, "Encounters for patient " + count + " of "+ patientsTotal + " not downloaded");
                     updateProgressDialog(muzimaApplication.getString(R.string.info_encounter_not_downloaded_progress, count, patientsTotal));
                 } else if(result[1] > 0) {
@@ -668,7 +671,7 @@ public class MuzimaSyncService {
                 Log.d(TAG, "In Saving encounters : " + (endDownloadObservations - startDownloadEncounters) / 1000 + " sec\n" );
             }
 
-            result[0] = SyncStatusConstants.SUCCESS;
+            result[0] = SUCCESS;
             result[1] = allEncounters.size();
             result[2] = voidedEncounters.size();
         } catch (EncounterController.DownloadEncounterException e) {
@@ -700,7 +703,7 @@ public class MuzimaSyncService {
     public int[] uploadAllCompletedForms() {
         int[] result = new int[1];
         try {
-            result[0] = formController.uploadAllCompletedForms() ? SyncStatusConstants.SUCCESS : SyncStatusConstants.UPLOAD_ERROR;
+            result[0] = formController.uploadAllCompletedForms() ? SUCCESS : SyncStatusConstants.UPLOAD_ERROR;
         } catch (FormController.UploadFormDataException e) {
             Log.e(TAG, "Exception thrown while uploading forms.", e);
             result[0] = SyncStatusConstants.UPLOAD_ERROR;
@@ -808,7 +811,7 @@ public class MuzimaSyncService {
             notificationController.saveNotifications(notifications);
             Log.i(TAG, "New notifications are saved");
 
-            result[0] = SyncStatusConstants.SUCCESS;
+            result[0] = SUCCESS;
             result[1] = notifications.size();
 
         } catch (NotificationController.NotificationDownloadException e) {
@@ -839,7 +842,7 @@ public class MuzimaSyncService {
         int[] result = new int[2];
         try {
             List<SetupConfiguration> setupConfigurations = setupConfigurationController.downloadAllSetupConfigurations();
-            result[0] = SyncStatusConstants.SUCCESS;
+            result[0] = SUCCESS;
             result[1] = setupConfigurations.size();
             Log.i(TAG, "Setup Configs downloaded: "+setupConfigurations.size());
             //ToDo: Remove all retired
@@ -859,7 +862,7 @@ public class MuzimaSyncService {
         try {
             SetupConfigurationTemplate setupConfigurationTemplate =
                     setupConfigurationController.downloadSetupConfigurationTemplate(uuid);
-            result[0] = SyncStatusConstants.SUCCESS;
+            result[0] = SUCCESS;
             if(setupConfigurationTemplate != null) {
                 result[1] = 1;
             }
@@ -869,6 +872,52 @@ public class MuzimaSyncService {
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
         } catch (SetupConfigurationController.SetupConfigurationSaveException e){
             Log.e(TAG, "Exception when trying to save setup configs");
+            result[0] = SyncStatusConstants.SAVE_ERROR;
+        }
+        return result;
+    }
+
+    public int[] downloadSetting(String property){
+        int[] result = new int[2];
+        try {
+            MuzimaSetting setting = settingsController.downloadSettingByProperty(property);
+            result[0] = SUCCESS;
+            if(setting != null) {
+                result[1] = 1;
+            }
+            settingsController.saveOrUpdateSetting(setting);
+        } catch (MuzimaSettingController.MuzimaSettingDownloadException e){
+            Log.e(TAG, "Exception when trying to download setting");
+            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+        } catch (MuzimaSettingController.MuzimaSettingSaveException e){
+            Log.e(TAG, "Exception when trying to save setting");
+            result[0] = SyncStatusConstants.SAVE_ERROR;
+        }
+        return result;
+    }
+
+    public int[] downloadMissingMandatorySettings(){
+
+        int[] result = new int[2];
+        try {
+            List<String> properties = settingsController.getNonDownloadedMandatorySettingsProperties();
+            for(String property:properties) {
+                MuzimaSetting setting = settingsController.downloadSettingByProperty(property);
+                result[0] = SUCCESS;
+
+                if (setting != null) {
+                    result[1]++;
+                }
+                settingsController.saveSetting(setting);
+            }
+        } catch (MuzimaSettingController.MuzimaSettingDownloadException e){
+            Log.e(TAG, "Exception when trying to download setting",e);
+            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+        } catch (MuzimaSettingController.MuzimaSettingSaveException e){
+            Log.e(TAG, "Exception when trying to save setting",e);
+            result[0] = SyncStatusConstants.SAVE_ERROR;
+        } catch (MuzimaSettingController.MuzimaSettingFetchException e){
+            Log.e(TAG, "Exception when trying touz read setting",e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
         }
         return result;
