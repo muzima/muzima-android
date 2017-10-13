@@ -64,6 +64,12 @@
                 android:summary="@string/hint_real_time_sync"
                 android:title="@string/title_real_time_sync"
                 android:key="@string/preference_real_time_sync" />
+        <CheckBoxPreference
+                android:defaultValue="false"
+                android:editable="false"
+                android:summary="@string/hint_require_medical_record_number"
+                android:title="@string/title_require_medical_record_number"
+                android:key="@string/preference_require_medical_record_number" />
 <!--
         <CheckBoxPreference
                 android:defaultValue="true"

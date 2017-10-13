@@ -16,7 +16,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,10 +33,10 @@ import com.muzima.domain.Credentials;
 import com.muzima.service.CredentialsPreferenceService;
 import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.MainActivity;
-import com.muzima.view.cohort.CohortWizardActivity;
 import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
 
 import java.util.Locale;
@@ -281,6 +280,9 @@ public class LoginActivity extends Activity {
                 LocalePreferenceService localePreferenceService = ((MuzimaApplication) getApplication()).getLocalePreferenceService();
                 String currentLocale = Locale.getDefault().toString();
                 localePreferenceService.setPreferredLocale(currentLocale);
+
+                //init a background service to download missing settings
+                downloadMissingServerSettings();
                 startNextActivity();
             } else {
                 Toast.makeText(getApplicationContext(), getErrorText(result), Toast.LENGTH_SHORT).show();
@@ -320,6 +322,10 @@ public class LoginActivity extends Activity {
             finish();
         }
 
+        private void downloadMissingServerSettings(){
+            new MissingSettingsDownloadBackgroundTask().execute();
+        }
+
         protected class Result {
             Credentials credentials;
             int status;
@@ -328,6 +334,20 @@ public class LoginActivity extends Activity {
                 this.credentials = credentials;
                 this.status = status;
             }
+        }
+    }
+
+    private class MissingSettingsDownloadBackgroundTask extends AsyncTask<String, Void,int[] > {
+        @Override
+        public int[] doInBackground(String... params){
+            MuzimaSyncService syncService = ((MuzimaApplication) getApplication()).getMuzimaSyncService();
+            return syncService.downloadMissingMandatorySettings();
+        }
+
+        @Override
+        protected void onPostExecute(int[] result) {
+            new RequireMedicalRecordNumberPreferenceService((MuzimaApplication) getApplicationContext())
+                    .getAndSaveRequireMedicalRecordNumberPreference();
         }
     }
 

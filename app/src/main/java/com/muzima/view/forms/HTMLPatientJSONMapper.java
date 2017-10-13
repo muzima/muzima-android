@@ -12,11 +12,13 @@ package com.muzima.view.forms;
 
 import android.util.Log;
 import com.muzima.api.model.FormData;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientIdentifierType;
 import com.muzima.api.model.PersonName;
 import com.muzima.api.model.User;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
@@ -37,6 +39,7 @@ public class HTMLPatientJSONMapper {
     private JSONObject patientJSON;
     private JSONObject observationJSON;
     private Patient patient;
+    private MuzimaSettingController settingController;
 
     public String map(Patient patient, FormData formData, User loggedInUser, boolean isLoggedInUserIsDefaultProvider) {
         JSONObject prepopulateJSON = new JSONObject();
@@ -83,10 +86,15 @@ public class HTMLPatientJSONMapper {
         return prepopulateJSON.toString();
     }
 
-    public Patient getPatient(String jsonPayload) throws JSONException {
+    public Patient getPatient(String jsonPayload, MuzimaSettingController settingController) throws JSONException {
+        setSettingController(settingController);
         setJSONObjects(jsonPayload);
         createPatient();
         return patient;
+    }
+
+    public void setSettingController(MuzimaSettingController settingController){
+        this.settingController = settingController;
     }
 
     private void setJSONObjects(String jsonPayload) throws JSONException {
@@ -134,8 +142,21 @@ public class HTMLPatientJSONMapper {
     private List<PatientIdentifier> getPatientIdentifiers() throws JSONException {
         List<PatientIdentifier> patientIdentifiers = new ArrayList<PatientIdentifier>();
 
-        patientIdentifiers.add(getPreferredPatientIdentifier());
         patientIdentifiers.add(getPatientUuidAsIdentifier());
+        boolean requireMedicalRecordNumber = true;
+        try {
+            MuzimaSetting identifierAutogenerationSetting = settingController.getSettingByProperty(
+                    com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING);
+            if(identifierAutogenerationSetting != null){
+                requireMedicalRecordNumber = identifierAutogenerationSetting.getValueBoolean();
+            }
+        } catch (MuzimaSettingController.MuzimaSettingFetchException e){
+            Log.e(TAG, "Cannot fetch setting ", e);
+        }
+
+        if(requireMedicalRecordNumber || patientJSON.has("patient.medical_record_number")) {
+            patientIdentifiers.add(getPreferredPatientIdentifier());
+        }
 
         List<PatientIdentifier> otherIdentifiers = getOtherPatientIdentifiers();
         if (!otherIdentifiers.isEmpty())

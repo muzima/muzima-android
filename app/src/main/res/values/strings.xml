@@ -536,4 +536,10 @@
         device, including any incomplete forms. Are you sure you want to change this setting?
     </string>
     <string name="general_finish">Finish</string>
+    <string name="title_require_medical_record_number">Require medical record number</string>
+    <string name="hint_require_medical_record_number">Require client\'s medical record number during registration</string>
+    <string name="title_setting_refresh">Refresh Setting</string>
+    <string name="hint_setting_refresh">Do you want to re-download this setting from server?</string>
+    <string name="info_setting_download_success">Downloaded and updated setting successfully</string>
+    <string name="warning_setting_download_failure">Could not download or update setting</string>
 </resources>
