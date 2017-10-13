@@ -11,14 +11,21 @@
 package com.muzima.view.forms;
 
 import android.util.Log;
+import com.muzima.api.exception.InvalidPatientIdentifierException;
+import com.muzima.api.exception.InvalidPersonAddressException;
+import com.muzima.api.exception.InvalidPersonAttributeException;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientIdentifierType;
+import com.muzima.api.model.PersonAddress;
+import com.muzima.api.model.PersonAttribute;
+import com.muzima.api.model.PersonAttributeType;
 import com.muzima.api.model.PersonName;
 import com.muzima.api.model.User;
 import com.muzima.controller.MuzimaSettingController;
+import com.muzima.controller.PatientController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
@@ -29,6 +36,7 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.muzima.utils.DateUtils.parse;
@@ -37,9 +45,10 @@ public class HTMLPatientJSONMapper {
     public static String TAG = HTMLPatientJSONMapper.class.getSimpleName();
 
     private JSONObject patientJSON;
-    private JSONObject observationJSON;
+    //private JSONObject observationJSON;
     private Patient patient;
     private MuzimaSettingController settingController;
+    private PatientController patientController;
 
     public String map(Patient patient, FormData formData, User loggedInUser, boolean isLoggedInUserIsDefaultProvider) {
         JSONObject prepopulateJSON = new JSONObject();
@@ -47,7 +56,6 @@ public class HTMLPatientJSONMapper {
         JSONObject encounterDetails = new JSONObject();
 
         try {
-            patientDetails.put("patient.medical_record_number", StringUtils.defaultString(patient.getIdentifier()));
             patientDetails.put("patient.given_name", StringUtils.defaultString(patient.getGivenName()));
             patientDetails.put("patient.middle_name", StringUtils.defaultString(patient.getMiddleName()));
             patientDetails.put("patient.family_name", StringUtils.defaultString(patient.getFamilyName()));
@@ -66,18 +74,70 @@ public class HTMLPatientJSONMapper {
             if (!patient.getIdentifiers().isEmpty()) {
                 List<PatientIdentifier> patientIdentifiers = patient.getIdentifiers();
 
-                JSONArray identifierTypeName = new JSONArray();
-                JSONArray identifierValue = new JSONArray();
+                JSONArray identifierJSONArray = new JSONArray();
 
                 for (PatientIdentifier identifier : patientIdentifiers) {
-                    if (identifier.getIdentifier() != null && !(identifier.getIdentifier().equals(patient.getIdentifier()) || identifier.getIdentifier().equals(patient.getUuid()))) {
-                        identifierTypeName.put(StringUtils.defaultString(identifier.getIdentifierType().getName()));
-                        identifierValue.put(StringUtils.defaultString(identifier.getIdentifier()));
+                    if (identifier.getIdentifier() != null){
+                        if(identifier.getIdentifier().equals(patient.getIdentifier())){
+                            JSONObject preferredIdentifierJSONObject = new JSONObject();
+                            preferredIdentifierJSONObject.put("identifier_value", identifier.getIdentifier());
+                            preferredIdentifierJSONObject.put("identifier_type_uuid", identifier.getIdentifierType().getUuid());
+                            preferredIdentifierJSONObject.put("identifier_type_name", identifier.getIdentifierType().getName());
+                            patientDetails.put("patient.medical_record_number", StringUtils.defaultString(patient.getIdentifier()));
+                        } else if (!identifier.getIdentifier().equals(patient.getUuid())) {
+                            JSONObject identifierJSONObject = new JSONObject();
+                            identifierJSONObject.put("identifier_value", identifier.getIdentifier());
+                            identifierJSONObject.put("identifier_type_uuid", identifier.getIdentifierType().getUuid());
+                            identifierJSONObject.put("identifier_type_name", identifier.getIdentifierType().getName());
+                            identifierJSONArray.put(identifierJSONObject);
+                        }
                     }
                 }
-                prepopulateJSON.put("other_identifier_type", identifierTypeName);
-                prepopulateJSON.put("other_identifier_value", identifierValue);
+                patientDetails.put("patient.otheridentifier", identifierJSONArray);
             }
+
+            if(!patient.getAtributes().isEmpty()){
+                List<PersonAttribute> attributes = patient.getAtributes();
+
+                JSONArray attributesJSONArray = new JSONArray();
+
+                for(PersonAttribute attribute : attributes){
+                    JSONObject attributeJSONObject = new JSONObject();
+                    attributeJSONObject.put("attribute_type_uuid",attribute.getAttributeType().getUuid());
+                    attributeJSONObject.put("attribute_type_name",attribute.getAttributeType().getName());
+                    attributeJSONObject.put("attribute_value",attribute.getAttribute());
+                    attributesJSONArray.put(attributeJSONObject);
+                }
+                prepopulateJSON.put("patient.personattribute",attributesJSONArray);
+            }
+
+            if(!patient.getAddresses().isEmpty()){
+                List<PersonAddress> addresses = patient.getAddresses();
+                JSONArray addressesJSONArray = new JSONArray();
+                for(PersonAddress address : addresses){
+                    JSONObject addressJSONObject = new JSONObject();
+                    addressJSONObject.put("address1",address.getAddress1());
+                    addressJSONObject.put("address2",address.getAddress2());
+                    addressJSONObject.put("address3",address.getAddress3());
+                    addressJSONObject.put("address4",address.getAddress4());
+                    addressJSONObject.put("address5",address.getAddress5());
+                    addressJSONObject.put("address6",address.getAddress6());
+                    addressJSONObject.put("cityVillage",address.getCityVillage());
+                    addressJSONObject.put("stateProvince",address.getStateProvince());
+                    addressJSONObject.put("country",address.getCountry());
+                    addressJSONObject.put("postalCode",address.getPostalCode());
+                    addressJSONObject.put("countyDistrict",address.getCountyDistrict());
+                    addressJSONObject.put("latitude",address.getLatitude());
+                    addressJSONObject.put("longitude",address.getLongitude());
+                    addressJSONObject.put("startDate",address.getStartDate());
+                    addressJSONObject.put("endDate",address.getEndDate());
+                    addressJSONObject.put("preferred",address.getPreferred());
+                    addressJSONObject.put("uuid",address.getUuid());
+                    addressesJSONArray.put(addressJSONObject);
+                }
+                prepopulateJSON.put("patient.personaddress",addressesJSONArray);
+            }
+
             prepopulateJSON.put("patient", patientDetails);
             prepopulateJSON.put("encounter", encounterDetails);
         } catch (JSONException e) {
@@ -86,11 +146,16 @@ public class HTMLPatientJSONMapper {
         return prepopulateJSON.toString();
     }
 
-    public Patient getPatient(String jsonPayload, MuzimaSettingController settingController) throws JSONException {
+    public Patient getPatient(String jsonPayload, PatientController patientController, MuzimaSettingController settingController) throws JSONException {
+        setPatientController(patientController);
         setSettingController(settingController);
         setJSONObjects(jsonPayload);
         createPatient();
         return patient;
+    }
+
+    public void setPatientController(PatientController patientController){
+        this.patientController = patientController;
     }
 
     public void setSettingController(MuzimaSettingController settingController){
@@ -100,9 +165,6 @@ public class HTMLPatientJSONMapper {
     private void setJSONObjects(String jsonPayload) throws JSONException {
         JSONObject responseJSON = new JSONObject(jsonPayload);
         patientJSON = responseJSON.getJSONObject("patient");
-        if (responseJSON.has("observation")) {
-            observationJSON = responseJSON.getJSONObject("observation");
-        }
     }
 
     private void createPatient() throws JSONException {
@@ -111,6 +173,7 @@ public class HTMLPatientJSONMapper {
         setPatientNames();
         setPatientGender();
         setPatientBirthDate();
+        setPersonAddresses();
     }
 
     private void initializePatient() throws JSONException {
@@ -165,10 +228,19 @@ public class HTMLPatientJSONMapper {
     }
 
     private PatientIdentifier getPreferredPatientIdentifier() throws JSONException {
-        String identifierValue = patientJSON.getString("patient.medical_record_number");
-        String identifierTypeName = Constants.LOCAL_PATIENT;
+        PatientIdentifier preferredPatientIdentifier = null;
+        if(patientJSON.has("patient.medical_record_number")) {
+            JSONObject identifierObject = patientJSON.getJSONObject("patient.medical_record_number");
+            try {
+                preferredPatientIdentifier = createPatientIdentifier(identifierObject);
+            } catch (InvalidPatientIdentifierException e){
+                throw new RuntimeException("Invalid patient medical record number", e);
+            }
+        } else {
+            //ToDo: Deliberate whether medical record number can be optional e.g for implementations that auto-generate identifiers at server side during patient registration
+            throw new RuntimeException("Invalid patient medical record number");
+        }
 
-        PatientIdentifier preferredPatientIdentifier = createPatientIdentifier(identifierTypeName, identifierValue);
         preferredPatientIdentifier.setPreferred(true);
 
         return preferredPatientIdentifier;
@@ -176,35 +248,109 @@ public class HTMLPatientJSONMapper {
 
     private List<PatientIdentifier> getOtherPatientIdentifiers() throws JSONException {
         List<PatientIdentifier> otherIdentifiers = new ArrayList<PatientIdentifier>();
-        if (observationJSON != null && observationJSON.has("other_identifier_type") && observationJSON.has("other_identifier_value")) {
-            Object identifierTypeNameObject = observationJSON.get("other_identifier_type");
-            Object identifierValueObject = observationJSON.get("other_identifier_value");
+        if (patientJSON != null && patientJSON.has("patient.otheridentifier")) {
+            Object otherIdentifierObject = patientJSON.get("patient.otheridentifier");
 
-            if (identifierTypeNameObject instanceof JSONArray) {
-                JSONArray identifierTypeName = (JSONArray) identifierTypeNameObject;
-                JSONArray identifierValue = (JSONArray) identifierValueObject;
-                for (int i = 0; i < identifierTypeName.length(); i++) {
-                    PatientIdentifier identifier = createPatientIdentifier(identifierTypeName.getString(i), identifierValue.getString(i));
-                    otherIdentifiers.add(identifier);
+            if (otherIdentifierObject instanceof JSONArray) {
+                JSONArray identifiers = (JSONArray) otherIdentifierObject;
+                for (int i = 0; i < identifiers.length(); i++) {
+                    try {
+                        PatientIdentifier identifier = createPatientIdentifier(identifiers.getJSONObject(i));
+                        if (identifier != null) {
+                            otherIdentifiers.add(identifier);
+                        }
+                    }catch (InvalidPatientIdentifierException e){
+                        Log.e(TAG, "Error while creating identifier.", e);
+                    }
                 }
-            } else if (identifierTypeNameObject instanceof String) {
-                String identifierTypeName = (String) identifierTypeNameObject;
-                String identifierValue = (String) identifierValueObject;
-                PatientIdentifier identifier = createPatientIdentifier(identifierTypeName, identifierValue);
-                otherIdentifiers.add(identifier);
+            } else if (otherIdentifierObject instanceof JSONObject) {
+                try {
+                    PatientIdentifier identifier = createPatientIdentifier((JSONObject) otherIdentifierObject);
+                    if (identifier != null) {
+                        otherIdentifiers.add(identifier);
+                    }
+                } catch (InvalidPatientIdentifierException e){
+                    Log.e(TAG, "Error while creating identifier.", e);
+                }
             }
         }
+
+        Iterator<String> keys = patientJSON.keys();
+        while(keys.hasNext()){
+            String key = keys.next();
+            if(key.startsWith("patient.otheridentifier^")){
+                try {
+                    otherIdentifiers.add(createPatientIdentifier(patientJSON.getJSONObject(key)));
+                } catch (InvalidPatientIdentifierException e){
+                    Log.e(TAG, "Error while creating identifier.", e);
+                }
+            }
+        }
+
         return otherIdentifiers;
     }
 
     private PatientIdentifier getPatientUuidAsIdentifier() {
-        return createPatientIdentifier(Constants.LOCAL_PATIENT, patient.getUuid());
+        try {
+            return createPatientIdentifier(Constants.LOCAL_PATIENT, null, patient.getUuid());
+        } catch (InvalidPatientIdentifierException e){
+            throw new RuntimeException("Invalid patient medical record number", e);
+        }
     }
 
-    private PatientIdentifier createPatientIdentifier(String identifierTypeName, String identifierValue) {
+    private PatientIdentifier createPatientIdentifier(JSONObject identifierJSONObject) throws JSONException,InvalidPatientIdentifierException{
+        if(identifierJSONObject.has("identifier_type") && identifierJSONObject.has("identifier_value")) {
+            JSONObject identifierType = identifierJSONObject.getJSONObject("identifier_type");
+            String identifierTypeName = null;
+            if (identifierType.has("identifier_type_name")) {
+                identifierTypeName = identifierType.getString("identifier_type_name");
+            }
+
+            String identifierTypeUuid = null;
+            if (identifierType.has("identifier_type_uuid")) {
+                identifierTypeUuid = identifierType.getString("identifier_type_uuid");
+            }
+
+            String identifierValue = null;
+            if (identifierJSONObject.has("identifier_value")) {
+                identifierValue = identifierJSONObject.getString("identifier_value");
+            }
+
+            return createPatientIdentifier(identifierTypeName, identifierTypeUuid, identifierValue);
+        } else {
+            throw new InvalidPatientIdentifierException("Cannot create patient identifier due to missing identifier_type or identifier_value");
+        }
+    }
+
+    private PatientIdentifier createPatientIdentifier(String identifierTypeName, String identifierTypeUuid, String identifierValue)
+            throws InvalidPatientIdentifierException{
+        if(StringUtils.isEmpty(identifierValue) || StringUtils.isEmpty(identifierTypeName)
+                && StringUtils.isEmpty(identifierTypeUuid)){
+            throw new InvalidPatientIdentifierException("Cannot create Identifier. Missing identifier value and identifier type name or" +
+                    " identifier type uuid");
+        }
+
         PatientIdentifier patientIdentifier = new PatientIdentifier();
-        PatientIdentifierType identifierType = new PatientIdentifierType();
-        identifierType.setName(identifierTypeName);
+        PatientIdentifierType identifierType = null;
+
+        if(!StringUtils.isEmpty(identifierTypeUuid)){
+            identifierType = patientController.getPatientIdentifierTypeByUuid(identifierTypeUuid);
+        } else if(!StringUtils.isEmpty(identifierTypeName)){
+            List<PatientIdentifierType> tmpIdentifierTypes = patientController.getPatientIdentifierTypeByName(identifierTypeName);
+            if(tmpIdentifierTypes.size() == 1){
+                identifierType = tmpIdentifierTypes.get(0);
+            }
+        }
+
+        if(identifierType == null){
+            identifierType = new PatientIdentifierType();
+            if(!StringUtils.isEmpty(identifierTypeUuid)){
+                identifierType.setUuid(identifierTypeUuid);
+            }
+            if(!StringUtils.isEmpty(identifierTypeName)){
+                identifierType.setName(identifierTypeName);
+            }
+        }
         patientIdentifier.setIdentifierType(identifierType);
         patientIdentifier.setIdentifier(identifierValue);
         return patientIdentifier;
@@ -234,5 +380,182 @@ public class HTMLPatientJSONMapper {
         personName.setMiddleName(middleName);
 
         return personName;
+    }
+
+    private void setPersonAddresses() throws JSONException {
+        List<PersonAddress> addresses = new ArrayList<>();
+        if(patientJSON.has("patient.personaddress")){
+            Object personAddress = patientJSON.get("patient.personaddress");
+            if(personAddress instanceof JSONObject){
+                try {
+                    addresses.add(createPersonAddress((JSONObject) personAddress));
+                } catch (InvalidPersonAddressException e){
+                    Log.e(TAG,"Error while creating person address.",e);
+                }
+            } else if(personAddress instanceof JSONArray){
+                JSONArray address = (JSONArray)personAddress;
+                for(int i=0; i<address.length(); i++){
+                    try {
+                        addresses.add(createPersonAddress(address.getJSONObject(i)));
+                    } catch (InvalidPersonAddressException e){
+                        Log.e(TAG,"Error while creating person address.",e);
+                    }
+                }
+            }
+        }
+
+        Iterator<String> keys = patientJSON.keys();
+        while(keys.hasNext()){
+            String key = keys.next();
+            if(key.startsWith("patient.personaddress^")){
+                try {
+                    addresses.add(createPersonAddress(patientJSON.getJSONObject(key)));
+                } catch (InvalidPersonAddressException e){
+                    Log.e(TAG,"Error while creating person address.",e);
+                }
+            }
+        }
+
+        if(!addresses.isEmpty()){
+            patient.setAddresses(addresses);
+        }
+    }
+
+    private PersonAddress createPersonAddress(JSONObject addressObject) throws JSONException,InvalidPersonAddressException{
+        PersonAddress personAddress = new PersonAddress();
+        if(addressObject.has("address1")) {
+            personAddress.setAddress1(addressObject.getString("address1"));
+        }
+        if(addressObject.has("address2")) {
+            personAddress.setAddress2(addressObject.getString("address2"));
+        }
+        if(addressObject.has("address3")) {
+            personAddress.setAddress3(addressObject.getString("address3"));
+        }
+        if(addressObject.has("address4")) {
+            personAddress.setAddress4(addressObject.getString("address4"));
+        }
+        if(addressObject.has("address5")) {
+            personAddress.setAddress5(addressObject.getString("address5"));
+        }
+        if(addressObject.has("address6")) {
+            personAddress.setAddress6(addressObject.getString("address6"));
+        }
+        if(addressObject.has("cityVillage")) {
+            personAddress.setCityVillage(addressObject.getString("cityVillage"));
+        }
+        if(addressObject.has("countyDistrict")) {
+            personAddress.setCountyDistrict(addressObject.getString("countyDistrict"));
+        }
+        if(addressObject.has("country")) {
+            personAddress.setCountry(addressObject.getString("country"));
+        }
+        if(addressObject.has("stateProvince")) {
+            personAddress.setStateProvince(addressObject.getString("stateProvince"));
+        }
+        if(addressObject.has("postalCode")) {
+            personAddress.setPostalCode(addressObject.getString("postalCode"));
+        }
+        if(addressObject.has("latitude")) {
+            personAddress.setLatitude(addressObject.getString("latitude"));
+        }
+        if(addressObject.has("longitude")) {
+            personAddress.setLongitude(addressObject.getString("longitude"));
+        }
+        if(addressObject.has("uuid")) {
+            personAddress.setUuid(addressObject.getString("uuid"));
+        }
+        if(addressObject.has("preferred")) {
+            personAddress.setPreferred(addressObject.getBoolean("preferred"));
+        }
+        if(addressObject.has("startDate")) {
+            try {
+                Date startDate = parse(addressObject.getString("startDate"));
+                personAddress.setStartDate(startDate);
+            } catch (ParseException e) {
+                Log.e(TAG, "Could not parse personaddress.startDate", e);
+            }
+        }
+        if(addressObject.has("endDate")) {
+            try {
+                Date endDate = parse(addressObject.getString("endDate"));
+                personAddress.setEndDate(endDate);
+            } catch (ParseException e) {
+                Log.e(TAG, "Could not parse personaddress.endDate", e);
+            }
+        }
+        if(personAddress.isBlank()) {
+            throw new InvalidPersonAddressException("No person address information available.");
+        }
+        return personAddress;
+    }
+
+    private void setPersonAttributes() throws JSONException{
+        List<PersonAttribute> attributes = new ArrayList<>();
+        if(patientJSON.has("patient.personattribute")){
+
+            Object personAttribute = patientJSON.get("patient.personattribute");
+            if(personAttribute instanceof JSONObject){
+                try{
+                    attributes.add(createPersonAttribute((JSONObject)personAttribute));
+                } catch (InvalidPersonAttributeException e){
+                    Log.e(TAG,"Error while creating attribute.",e);
+                }
+            } else if(personAttribute instanceof JSONArray){
+                JSONArray att = (JSONArray)personAttribute;
+                for(int i=0; i<att.length(); i++){
+                    try{
+                        attributes.add(createPersonAttribute(att.getJSONObject(i)));
+                    } catch (InvalidPersonAttributeException e){
+                        Log.e(TAG,"Error while creating attribute.",e);
+                    }
+                }
+            }
+        }
+        Iterator<String> keys = patientJSON.keys();
+        while(keys.hasNext()){
+            String key = keys.next();
+            if(key.startsWith("patient.personattribute^")){
+                try {
+                    attributes.add(createPersonAttribute(patientJSON.getJSONObject(key)));
+                } catch (InvalidPersonAttributeException e){
+                    Log.e(TAG,"Error while creating attribute.",e);
+                }
+            }
+        }
+        if(!attributes.isEmpty()) {
+            patient.setAttributes(attributes);
+        }
+    }
+
+    private PersonAttribute createPersonAttribute(JSONObject jsonObject) throws JSONException,InvalidPersonAttributeException{
+        if(!jsonObject.has("attribute_value") || !jsonObject.has("attribute_type_name")
+                && !jsonObject.has("attribute_type_uuid")) {
+            throw new InvalidPersonAttributeException("Could not create person attribute due to missing value or attribute type information");
+        } else {
+            String attributeValue = attributeValue = jsonObject.getString("attribute_value");
+            PersonAttribute attribute = new PersonAttribute();
+            attribute.setAttribute(attributeValue);
+
+            PersonAttributeType attributeType = null;
+            if (jsonObject.has("attribute_type_uuid")) {
+                String personAttributeTypeUuid = jsonObject.getString("attribute_type_uuid");
+                attributeType = patientController.getPersonAttributeTypeByUuid(personAttributeTypeUuid);
+            } else if (jsonObject.has("attribute_type_name")) {
+                String personAttributeTypeName = jsonObject.getString("attribute_type_name");
+                List<PersonAttributeType> attributeTypes = patientController.getPersonAttributeTypeByName(personAttributeTypeName);
+                if (attributeTypes != null && attributeTypes.size() == 1) {
+                    attributeType = attributeTypes.get(0);
+                }
+            }
+
+            if(attributeType == null){
+                attributeType = new PersonAttributeType();
+                attributeType.setUuid(jsonObject.getString("attribute_type_uuid"));
+                attributeType.setName(jsonObject.getString("attribute_type_name"));
+            }
+            attribute.setAttributeType(attributeType);
+            return attribute;
+        }
     }
 }

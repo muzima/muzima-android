@@ -81,9 +81,11 @@ public class FormController {
     private List<Tag> selectedTags;
     private String jsonPayload;
     private MuzimaSettingController settingController;
+    private PatientController patientController;
 
-    public FormController(FormService formService, PatientService patientService, LastSyncTimeService lastSyncTimeService, SntpService sntpService,
-                          ObservationService observationService, EncounterService encounterService, MuzimaSettingController settingController) {
+    public FormController(FormService formService, PatientService patientService, LastSyncTimeService lastSyncTimeService,
+                          SntpService sntpService, ObservationService observationService, EncounterService encounterService,
+                          PatientController patientController, MuzimaSettingController settingController) {
         this.formService = formService;
         this.patientService = patientService;
         this.lastSyncTimeService = lastSyncTimeService;
@@ -93,6 +95,7 @@ public class FormController {
         tagColors = new HashMap<String, Integer>();
         selectedTags = new ArrayList<Tag>();
         this.settingController = settingController;
+        this.patientController = patientController;
     }
 
     public int getTotalFormCount() throws FormFetchException {
@@ -535,7 +538,7 @@ public class FormController {
 
     public Patient createNewHTMLPatient(String data) {
         try {
-            Patient patient = new HTMLPatientJSONMapper().getPatient(data,settingController);
+            Patient patient = new HTMLPatientJSONMapper().getPatient(data,patientController,settingController);
             patientService.savePatient(patient);
             return patient;
         } catch (Exception e) {

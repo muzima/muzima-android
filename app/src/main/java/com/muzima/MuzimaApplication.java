@@ -186,7 +186,8 @@ public class MuzimaApplication extends Application {
     public ConceptController getConceptController() {
         if (conceptController == null) {
             try {
-                conceptController = new ConceptController(muzimaContext.getService(ConceptService.class), muzimaContext.getService(ObservationService.class));
+                conceptController = new ConceptController(muzimaContext.getService(ConceptService.class),
+                        muzimaContext.getService(ObservationService.class));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -207,8 +208,9 @@ public class MuzimaApplication extends Application {
     public FormController getFormController() {
         if (formController == null) {
             try {
-                formController = new FormController(muzimaContext.getFormService(), muzimaContext.getPatientService(), muzimaContext.getLastSyncTimeService(), getSntpService(),
-                        muzimaContext.getObservationService(), muzimaContext.getEncounterService(),getMuzimaSettingController());
+                formController = new FormController(muzimaContext.getFormService(), muzimaContext.getPatientService(),
+                        muzimaContext.getLastSyncTimeService(), getSntpService(), muzimaContext.getObservationService(),
+                        muzimaContext.getEncounterService(),getPatientController(),getMuzimaSettingController());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -219,7 +221,8 @@ public class MuzimaApplication extends Application {
     public CohortController getCohortController() {
         if (cohortController == null) {
             try {
-                cohortController = new CohortController(muzimaContext.getCohortService(), muzimaContext.getLastSyncTimeService(), getSntpService());
+                cohortController = new CohortController(muzimaContext.getCohortService(), muzimaContext.getLastSyncTimeService(),
+                        getSntpService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -275,7 +278,8 @@ public class MuzimaApplication extends Application {
     public NotificationController getNotificationController() {
         if (notificationController == null) {
             try {
-                notificationController = new NotificationController(muzimaContext.getService(NotificationService.class), muzimaContext.getFormService());
+                notificationController = new NotificationController(muzimaContext.getService(NotificationService.class),
+                        muzimaContext.getFormService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
