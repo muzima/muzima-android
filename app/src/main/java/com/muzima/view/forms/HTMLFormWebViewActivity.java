@@ -38,6 +38,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.User;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
@@ -108,6 +109,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private boolean duplicateFormDataPreference;
     final Handler handler = new Handler();
     private ProviderController providerController;
+    private PatientController patientController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +117,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         formController = ((MuzimaApplication) this.getApplicationContext()).getFormController();
         locationController = ((MuzimaApplication) this.getApplicationContext()).getLocationController();
         providerController = ((MuzimaApplication) this.getApplicationContext()).getProviderController();
+        patientController = ((MuzimaApplication) this.getApplicationContext()).getPatientController();
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
@@ -400,7 +403,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         }};
         User user = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
 
-        formData.setJsonPayload(new HTMLPatientJSONMapper().map(patient, formData, user,encounterProviderPreference));
+        formData.setJsonPayload(new HTMLPatientJSONMapper(patientController).map(patient, formData, user,encounterProviderPreference));
         return formData;
     }
 
