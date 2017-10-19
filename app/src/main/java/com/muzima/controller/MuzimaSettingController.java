@@ -1,5 +1,6 @@
 package com.muzima.controller;
 
+import android.util.Log;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.service.MuzimaSettingService;
 import org.apache.lucene.queryParser.ParseException;
@@ -8,7 +9,10 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
+
 public class MuzimaSettingController {
+    private static final String TAG = "MuzimaSettingController";
     MuzimaSettingService settingService;
 
     public MuzimaSettingController(MuzimaSettingService settingService){
@@ -37,6 +41,8 @@ public class MuzimaSettingController {
         try{
             settingService.saveSetting(setting);
         }catch(IOException e){
+            throw new MuzimaSettingSaveException(e);
+        }catch(NullPointerException e){
             throw new MuzimaSettingSaveException(e);
         }
     }
@@ -107,6 +113,20 @@ public class MuzimaSettingController {
         } catch (ParseException e){
             throw new MuzimaSettingFetchException(e);
         }
+    }
+
+    public Boolean isMedicalRecordNumberRequiredDuringRegistration(){
+        boolean requireMedicalRecordNumber = true;//should require identifier by default
+        try {
+            MuzimaSetting autogenerateIdentifierSetting = getSettingByProperty(PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING);
+            if (autogenerateIdentifierSetting != null) {
+                //if identifier auto-generation if disabled, require identifier input
+                requireMedicalRecordNumber = !autogenerateIdentifierSetting.getValueBoolean();
+            }
+        } catch (MuzimaSettingFetchException e){
+            Log.e(TAG, "Could not fetch requireMedicalRecordNumber setting. ", e);
+        }
+        return requireMedicalRecordNumber;
     }
 
     public static class MuzimaSettingFetchException extends Throwable{

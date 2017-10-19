@@ -29,6 +29,7 @@ import android.animation.ValueAnimator;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.context.Context;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.CredentialsPreferenceService;
 import com.muzima.service.LocalePreferenceService;
@@ -323,7 +324,15 @@ public class LoginActivity extends Activity {
         }
 
         private void downloadMissingServerSettings(){
-            new MissingSettingsDownloadBackgroundTask().execute();
+            try {
+                boolean isSettingsDownloadNeeded = !((MuzimaApplication) getApplication()).getMuzimaSettingController()
+                        .isAllMandatorySettingsDownloaded();
+                if (isSettingsDownloadNeeded) {
+                    new MissingSettingsDownloadBackgroundTask().execute();
+                }
+            } catch (MuzimaSettingController.MuzimaSettingFetchException e){
+
+            }
         }
 
         protected class Result {
@@ -347,7 +356,7 @@ public class LoginActivity extends Activity {
         @Override
         protected void onPostExecute(int[] result) {
             new RequireMedicalRecordNumberPreferenceService((MuzimaApplication) getApplicationContext())
-                    .getAndSaveRequireMedicalRecordNumberPreference();
+                    .saveRequireMedicalRecordNumberPreference();
         }
     }
 

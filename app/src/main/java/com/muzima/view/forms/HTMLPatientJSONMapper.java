@@ -45,7 +45,6 @@ public class HTMLPatientJSONMapper {
     public static String TAG = HTMLPatientJSONMapper.class.getSimpleName();
 
     private JSONObject patientJSON;
-    //private JSONObject observationJSON;
     private Patient patient;
     private MuzimaSettingController settingController;
     private PatientController patientController;
@@ -174,6 +173,7 @@ public class HTMLPatientJSONMapper {
         setPatientGender();
         setPatientBirthDate();
         setPersonAddresses();
+        setPersonAttributes();
     }
 
     private void initializePatient() throws JSONException {
@@ -206,19 +206,16 @@ public class HTMLPatientJSONMapper {
         List<PatientIdentifier> patientIdentifiers = new ArrayList<PatientIdentifier>();
 
         patientIdentifiers.add(getPatientUuidAsIdentifier());
-        boolean requireMedicalRecordNumber = true;
-        try {
-            MuzimaSetting identifierAutogenerationSetting = settingController.getSettingByProperty(
-                    com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING);
-            if(identifierAutogenerationSetting != null){
-                requireMedicalRecordNumber = identifierAutogenerationSetting.getValueBoolean();
-            }
-        } catch (MuzimaSettingController.MuzimaSettingFetchException e){
-            Log.e(TAG, "Cannot fetch setting ", e);
-        }
-
+        boolean requireMedicalRecordNumber = settingController.isMedicalRecordNumberRequiredDuringRegistration();
         if(requireMedicalRecordNumber || patientJSON.has("patient.medical_record_number")) {
-            patientIdentifiers.add(getPreferredPatientIdentifier());
+            PatientIdentifier medicalRecordIdentifier = getMedicalRecordNumberIdentifier();
+
+            if(medicalRecordIdentifier != null) {
+                if(requireMedicalRecordNumber){
+                    medicalRecordIdentifier.setPreferred(true);
+                }
+                patientIdentifiers.add(medicalRecordIdentifier);
+            }
         }
 
         List<PatientIdentifier> otherIdentifiers = getOtherPatientIdentifiers();
@@ -227,7 +224,7 @@ public class HTMLPatientJSONMapper {
         return patientIdentifiers;
     }
 
-    private PatientIdentifier getPreferredPatientIdentifier() throws JSONException {
+    private PatientIdentifier getMedicalRecordNumberIdentifier() throws JSONException {
         PatientIdentifier preferredPatientIdentifier = null;
         if(patientJSON.has("patient.medical_record_number")) {
             JSONObject identifierObject = patientJSON.getJSONObject("patient.medical_record_number");
@@ -237,11 +234,8 @@ public class HTMLPatientJSONMapper {
                 throw new RuntimeException("Invalid patient medical record number", e);
             }
         } else {
-            //ToDo: Deliberate whether medical record number can be optional e.g for implementations that auto-generate identifiers at server side during patient registration
-            throw new RuntimeException("Invalid patient medical record number");
+            throw new RuntimeException("Cannot find patient medical record number");
         }
-
-        preferredPatientIdentifier.setPreferred(true);
 
         return preferredPatientIdentifier;
     }
@@ -299,23 +293,11 @@ public class HTMLPatientJSONMapper {
     }
 
     private PatientIdentifier createPatientIdentifier(JSONObject identifierJSONObject) throws JSONException,InvalidPatientIdentifierException{
-        if(identifierJSONObject.has("identifier_type") && identifierJSONObject.has("identifier_value")) {
-            JSONObject identifierType = identifierJSONObject.getJSONObject("identifier_type");
-            String identifierTypeName = null;
-            if (identifierType.has("identifier_type_name")) {
-                identifierTypeName = identifierType.getString("identifier_type_name");
-            }
-
-            String identifierTypeUuid = null;
-            if (identifierType.has("identifier_type_uuid")) {
-                identifierTypeUuid = identifierType.getString("identifier_type_uuid");
-            }
-
-            String identifierValue = null;
-            if (identifierJSONObject.has("identifier_value")) {
-                identifierValue = identifierJSONObject.getString("identifier_value");
-            }
-
+        if((identifierJSONObject.has("identifier_type_uuid") || identifierJSONObject.has("identifier_type_name"))
+                && identifierJSONObject.has("identifier_value")) {
+            String identifierTypeName = (String) getFromJsonObject(identifierJSONObject, "identifier_type_name");
+            String identifierTypeUuid = (String) getFromJsonObject(identifierJSONObject, "identifier_type_uuid");
+            String identifierValue = (String) getFromJsonObject(identifierJSONObject, "identifier_value");
             return createPatientIdentifier(identifierTypeName, identifierTypeUuid, identifierValue);
         } else {
             throw new InvalidPatientIdentifierException("Cannot create patient identifier due to missing identifier_type or identifier_value");
@@ -421,53 +403,22 @@ public class HTMLPatientJSONMapper {
         }
     }
 
-    private PersonAddress createPersonAddress(JSONObject addressObject) throws JSONException,InvalidPersonAddressException{
+    private PersonAddress createPersonAddress(JSONObject addressObject) throws JSONException,InvalidPersonAddressException {
         PersonAddress personAddress = new PersonAddress();
-        if(addressObject.has("address1")) {
-            personAddress.setAddress1(addressObject.getString("address1"));
-        }
-        if(addressObject.has("address2")) {
-            personAddress.setAddress2(addressObject.getString("address2"));
-        }
-        if(addressObject.has("address3")) {
-            personAddress.setAddress3(addressObject.getString("address3"));
-        }
-        if(addressObject.has("address4")) {
-            personAddress.setAddress4(addressObject.getString("address4"));
-        }
-        if(addressObject.has("address5")) {
-            personAddress.setAddress5(addressObject.getString("address5"));
-        }
-        if(addressObject.has("address6")) {
-            personAddress.setAddress6(addressObject.getString("address6"));
-        }
-        if(addressObject.has("cityVillage")) {
-            personAddress.setCityVillage(addressObject.getString("cityVillage"));
-        }
-        if(addressObject.has("countyDistrict")) {
-            personAddress.setCountyDistrict(addressObject.getString("countyDistrict"));
-        }
-        if(addressObject.has("country")) {
-            personAddress.setCountry(addressObject.getString("country"));
-        }
-        if(addressObject.has("stateProvince")) {
-            personAddress.setStateProvince(addressObject.getString("stateProvince"));
-        }
-        if(addressObject.has("postalCode")) {
-            personAddress.setPostalCode(addressObject.getString("postalCode"));
-        }
-        if(addressObject.has("latitude")) {
-            personAddress.setLatitude(addressObject.getString("latitude"));
-        }
-        if(addressObject.has("longitude")) {
-            personAddress.setLongitude(addressObject.getString("longitude"));
-        }
-        if(addressObject.has("uuid")) {
-            personAddress.setUuid(addressObject.getString("uuid"));
-        }
-        if(addressObject.has("preferred")) {
-            personAddress.setPreferred(addressObject.getBoolean("preferred"));
-        }
+        personAddress.setAddress1((String)getFromJsonObject(addressObject,"address1"));
+        personAddress.setAddress2((String)getFromJsonObject(addressObject,"address2"));
+        personAddress.setAddress3((String)getFromJsonObject(addressObject,"address3"));
+        personAddress.setAddress4((String)getFromJsonObject(addressObject,"address4"));
+        personAddress.setAddress5((String)getFromJsonObject(addressObject,"address5"));
+        personAddress.setAddress6((String)getFromJsonObject(addressObject,"address6"));
+        personAddress.setCityVillage((String)getFromJsonObject(addressObject,"cityVillage"));
+        personAddress.setCountyDistrict((String)getFromJsonObject(addressObject,"countyDistrict"));
+        personAddress.setCountry((String)getFromJsonObject(addressObject,"country"));
+        personAddress.setStateProvince((String)getFromJsonObject(addressObject,"stateProvince"));
+        personAddress.setPostalCode((String)getFromJsonObject(addressObject,"postalCode"));
+        personAddress.setLatitude((String)getFromJsonObject(addressObject,"latitude"));
+        personAddress.setLongitude((String)getFromJsonObject(addressObject,"longitude"));
+        personAddress.setPreferred((Boolean)getFromJsonObject(addressObject, "preferred"));
         if(addressObject.has("startDate")) {
             try {
                 Date startDate = parse(addressObject.getString("startDate"));
@@ -533,7 +484,7 @@ public class HTMLPatientJSONMapper {
                 && !jsonObject.has("attribute_type_uuid")) {
             throw new InvalidPersonAttributeException("Could not create person attribute due to missing value or attribute type information");
         } else {
-            String attributeValue = attributeValue = jsonObject.getString("attribute_value");
+            String attributeValue = jsonObject.getString("attribute_value");
             PersonAttribute attribute = new PersonAttribute();
             attribute.setAttribute(attributeValue);
 
@@ -557,5 +508,12 @@ public class HTMLPatientJSONMapper {
             attribute.setAttributeType(attributeType);
             return attribute;
         }
+    }
+
+    private Object getFromJsonObject(JSONObject jsonObject, String key) throws JSONException{
+        if (jsonObject.has(key)) {
+            return jsonObject.getString(key);
+        }
+        return null;
     }
 }

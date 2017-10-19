@@ -884,13 +884,13 @@ public class MuzimaSyncService {
             result[0] = SUCCESS;
             if(setting != null) {
                 result[1] = 1;
+                settingsController.saveOrUpdateSetting(setting);
             }
-            settingsController.saveOrUpdateSetting(setting);
         } catch (MuzimaSettingController.MuzimaSettingDownloadException e){
-            Log.e(TAG, "Exception when trying to download setting");
+            Log.e(TAG, "Exception when trying to download setting.",e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
         } catch (MuzimaSettingController.MuzimaSettingSaveException e){
-            Log.e(TAG, "Exception when trying to save setting");
+            Log.e(TAG, "Exception when trying to save setting.",e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
         }
         return result;
@@ -907,8 +907,8 @@ public class MuzimaSyncService {
 
                 if (setting != null) {
                     result[1]++;
+                    settingsController.saveSetting(setting);
                 }
-                settingsController.saveSetting(setting);
             }
         } catch (MuzimaSettingController.MuzimaSettingDownloadException e){
             Log.e(TAG, "Exception when trying to download setting",e);
@@ -917,7 +917,7 @@ public class MuzimaSyncService {
             Log.e(TAG, "Exception when trying to save setting",e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
         } catch (MuzimaSettingController.MuzimaSettingFetchException e){
-            Log.e(TAG, "Exception when trying touz read setting",e);
+            Log.e(TAG, "Exception when trying to read setting",e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
         }
         return result;

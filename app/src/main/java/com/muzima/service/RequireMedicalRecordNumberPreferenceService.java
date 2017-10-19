@@ -27,26 +27,14 @@ public class RequireMedicalRecordNumberPreferenceService extends PreferenceServi
         return settings.getBoolean(key,PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING_DEFAULT_VALUE);
     }
 
-    public void getAndSaveRequireMedicalRecordNumberPreference(){
-        try {
-            MuzimaSetting setting = application.getMuzimaSettingController()
-                    .getSettingByProperty(PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING);
-            saveRequireMedicalRecordNumberPreference(setting);
-        } catch (MuzimaSettingController.MuzimaSettingFetchException e){
+    public void saveRequireMedicalRecordNumberPreference() {
+        boolean requireMedicalRecordNumber = application.getMuzimaSettingController()
+                .isMedicalRecordNumberRequiredDuringRegistration();
+        Resources resources = context.getResources();
+        String key = resources.getString(R.string.preference_require_medical_record_number);
 
-        }
-    }
-
-    private void saveRequireMedicalRecordNumberPreference(MuzimaSetting muzimaSetting) {
-        if(muzimaSetting != null) {
-            Resources resources = context.getResources();
-            String key = resources.getString(R.string.preference_require_medical_record_number);
-
-            settings.edit()
-                    .putBoolean(key, muzimaSetting.getValueBoolean())
-                    .apply();
-        } else {
-            Log.e(TAG,"Cannot save preference. Provided setting is null");
-        }
+        settings.edit()
+                .putBoolean(key, requireMedicalRecordNumber)
+                .apply();
     }
 }
