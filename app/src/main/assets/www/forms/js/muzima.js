@@ -1106,15 +1106,29 @@ $(document).ready(function () {
     var jsonifyNonConcepts = function ($allNonConcepts) {
         var o = {};
         $.each($allNonConcepts, function (i, element) {
-            if ($(element).is(':checkbox') || $(element).is(':radio')) {
-                if ($(element).is(':checked')) {
-                    o = pushIntoArray(o, $(element).attr('name'), $(element).val());
+            //if element is metadata check whether corresponding value is present
+            if(typeof $(element).attr('data-metadata-for') !== 'undefined'){
+                var correspondingValueElementName = $(element).attr('data-metadata-for');
+                var value = $(element).closest('div[data-group]').find('[name="' + correspondingValueElementName + '"]').val();
+                if(value != ''){
+                    jsonifyNonConcept(o,element);
                 }
             } else {
-                o = pushIntoArray(o, $(element).attr('name'), $(element).val());
+                jsonifyNonConcept(o,element);
             }
         });
         return o;
+    };
+
+    var jsonifyNonConcept = function(object,element){
+        if ($(element).is(':checkbox') || $(element).is(':radio')) {
+            if ($(element).is(':checked')) {
+                object = pushIntoArray(object, $(element).attr('name'), $(element).val());
+            }
+        } else {
+            object = pushIntoArray(object, $(element).attr('name'), $(element).val());
+        }
+        return object;
     };
 
     var obsDatetimeArray = null;

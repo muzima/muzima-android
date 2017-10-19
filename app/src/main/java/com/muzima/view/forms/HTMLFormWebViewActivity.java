@@ -109,7 +109,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private boolean duplicateFormDataPreference;
     final Handler handler = new Handler();
     private ProviderController providerController;
-    private PatientController patientController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +116,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         formController = ((MuzimaApplication) this.getApplicationContext()).getFormController();
         locationController = ((MuzimaApplication) this.getApplicationContext()).getLocationController();
         providerController = ((MuzimaApplication) this.getApplicationContext()).getProviderController();
-        patientController = ((MuzimaApplication) this.getApplicationContext()).getPatientController();
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
@@ -403,7 +401,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         }};
         User user = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
 
-        formData.setJsonPayload(new HTMLPatientJSONMapper(patientController).map(patient, formData, user,encounterProviderPreference));
+        formData.setJsonPayload(new HTMLPatientJSONMapper().map(patient, formData, user,encounterProviderPreference));
         return formData;
     }
 
@@ -428,7 +426,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         webView.addJavascriptInterface(imagingComponent, IMAGE);
         webView.addJavascriptInterface(audioComponent, AUDIO);
         webView.addJavascriptInterface(videoComponent, VIDEO);
-        webView.addJavascriptInterface(new HTMLFormDataStore(this, formController,locationController, formData, providerController),
+        webView.addJavascriptInterface(new HTMLFormDataStore(this,formData,(MuzimaApplication)getApplicationContext()),
                 HTML_DATA_STORE);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         if (isFormComplete()) {

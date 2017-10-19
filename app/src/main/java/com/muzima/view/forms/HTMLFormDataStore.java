@@ -24,6 +24,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.Provider;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.ProviderController;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.HTMLFormObservationCreator;
@@ -46,13 +47,17 @@ public class HTMLFormDataStore {
     private LocationController locationController;
     private FormData formData;
     private ProviderController providerController;
+    private MuzimaApplication application;
+    private MuzimaSettingController settingController;
 
-    public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity, FormController formController, LocationController locationController, FormData formData, ProviderController providerController) {
+    public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity,FormData formData, MuzimaApplication application) {
         this.formWebViewActivity = formWebViewActivity;
-        this.formController = formController;
+        this.formController = application.getFormController();
         this.formData = formData;
-        this.providerController = providerController;
-        this.locationController = locationController;
+        this.providerController = application.getProviderController();
+        this.locationController = application.getLocationController();
+        this.settingController = application.getMuzimaSettingController();
+        this.application = application;
     }
 
     @JavascriptInterface
@@ -177,5 +182,10 @@ public class HTMLFormDataStore {
     public String getStringResource(String stringResourceName){
         Context context = formWebViewActivity.getBaseContext();
         return context.getString(context.getResources().getIdentifier(stringResourceName, "string",context.getPackageName()));
+    }
+
+    @JavascriptInterface
+    public boolean isMedicalRecordNumberRequired(){
+        return settingController.isMedicalRecordNumberRequiredDuringRegistration();
     }
 }
