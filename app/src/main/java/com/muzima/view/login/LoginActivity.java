@@ -32,6 +32,7 @@ import com.muzima.api.context.Context;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.CredentialsPreferenceService;
+import com.muzima.service.LandingPagePreferenceService;
 import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
@@ -314,7 +315,7 @@ public class LoginActivity extends Activity {
         private void startNextActivity() {
             Intent intent;
             if (new WizardFinishPreferenceService(LoginActivity.this).isWizardFinished()) {
-                intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent = new LandingPagePreferenceService(getApplicationContext()).getLandingPageActivityLauchIntent();
             } else {
                 removeRemnantDataFromPreviousRunOfWizard();
                 intent = new Intent(getApplicationContext(), SetupMethodPreferenceWizardActivity.class);

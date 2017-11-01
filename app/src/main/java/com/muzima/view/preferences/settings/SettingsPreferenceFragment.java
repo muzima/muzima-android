@@ -49,6 +49,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
     private String encounterProviderPreferenceKey;
     private String duplicateFormDataPreferenceKey;
     private String fontSizePreferenceKey;
+    private String landingPagePreferenceKey;
     private String requireMedicalRecordNumberKey;
 
     private EditTextPreference serverPreference;
@@ -62,6 +63,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
     private CheckBoxPreference realTimeSyncPreference;
     private CheckBoxPreference requireMedicalRecordNumberPreference;
     private ListPreference fontSizePreference;
+    private ListPreference landingPagePreference;
 
     private String newURL;
     private Map<String, SettingsPreferenceFragment.PreferenceChangeHandler> actions = new HashMap<String, SettingsPreferenceFragment.PreferenceChangeHandler>();
@@ -180,6 +182,11 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         fontSizePreference = (ListPreference) getPreferenceScreen().findPreference(fontSizePreferenceKey);
         fontSizePreference.setSummary(fontSizePreference.getValue());
         registerListPreferenceChangeHandler(fontSizePreferenceKey, fontSizePreference);
+
+        landingPagePreferenceKey = getResources().getString(R.string.preference_landing_page);
+        landingPagePreference = (ListPreference) getPreferenceScreen().findPreference(landingPagePreferenceKey);
+        landingPagePreference.setSummary(landingPagePreference.getValue());
+        registerListPreferenceChangeHandler(landingPagePreferenceKey, landingPagePreference);
 
         requireMedicalRecordNumberKey = getResources().getString(R.string.preference_require_medical_record_number);
         requireMedicalRecordNumberPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(requireMedicalRecordNumberKey);
