@@ -552,4 +552,11 @@
     <string name="hint_setting_refresh">Deseja voltar a baixar essa configuração do servidor?</string>
     <string name="info_setting_download_success">Configuração baixada e atualizada com sucesso</string>
     <string name="warning_setting_download_failure">Não foi possível baixar ou atualizar a configuração</string>
+    <string name="title_landing_page">Página de destino</string>
+    <string name="general_dashboard">Painel de controle</string>
+    <string name="general_client_list">Lista de clientes</string>
+    <string name="general_small">Pequeno</string>
+    <string name="general_medium">Médio</string>
+    <string name="general_large">Ampla</string>
+    <string name="menu_complete_form_data_sync">Sincronizar dados completos do formulário</string>
 </resources>

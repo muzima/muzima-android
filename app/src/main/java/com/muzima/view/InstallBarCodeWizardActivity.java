@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.view.Menu;
 import com.muzima.R;
+import com.muzima.service.LandingPagePreferenceService;
 import com.muzima.utils.barcode.IntentIntegrator;
 import com.muzima.view.concept.CustomConceptWizardActivity;
 
@@ -71,7 +72,7 @@ public class InstallBarCodeWizardActivity extends BaseActivity {
         skipInstallationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new LandingPagePreferenceService(getApplicationContext()).getLandingPageActivityLauchIntent();
                 startActivity(intent);
                 finish();
             }

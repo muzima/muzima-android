@@ -542,4 +542,11 @@
     <string name="hint_setting_refresh">Do you want to re-download this setting from server?</string>
     <string name="info_setting_download_success">Downloaded and updated setting successfully</string>
     <string name="warning_setting_download_failure">Could not download or update setting</string>
+    <string name="title_landing_page">Landing Page</string>
+    <string name="general_dashboard">Dashboard</string>
+    <string name="general_client_list">Client List</string>
+    <string name="general_small">Small</string>
+    <string name="general_medium">Medium</string>
+    <string name="general_large">Large</string>
+    <string name="menu_complete_form_data_sync">Sync complete form data</string>
 </resources>

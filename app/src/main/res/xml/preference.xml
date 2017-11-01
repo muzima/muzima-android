@@ -81,10 +81,17 @@
         <ListPreference
                 android:title="@string/title_font_size"
                 android:key="@string/preference_font_size"
-                android:defaultValue="Medium"
+                android:defaultValue="@string/general_medium"
                 android:entries="@array/font_sizes"
                 android:entryValues="@array/font_sizes">
         </ListPreference>
+        <ListPreference
+            android:title="@string/title_landing_page"
+            android:key="@string/preference_landing_page"
+            android:defaultValue="@string/general_dashboard"
+            android:entries="@array/landing_pages"
+            android:entryValues="@array/landing_pages">
+    </ListPreference>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/header_provider_location_category">
