@@ -46,6 +46,8 @@ import com.muzima.utils.CustomColor;
 import com.muzima.utils.EnDeCrypt;
 import com.muzima.utils.MediaUtils;
 import com.muzima.utils.StringUtils;
+import com.muzima.view.forms.FormsActivity;
+import com.muzima.view.forms.GenericRegistrationPatientJSONMapper;
 import com.muzima.view.forms.HTMLPatientJSONMapper;
 import com.muzima.view.forms.PatientJSONMapper;
 import net.minidev.json.JSONArray;
@@ -64,7 +66,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_REGISTRATION;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION;
+import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION;
+import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION;
 import static com.muzima.utils.Constants.STATUS_UPLOADED;
 
 public class FormController {
@@ -525,20 +530,19 @@ public class FormController {
         return result;
     }
 
-    public Patient createNewPatient(String data) {
+    public Patient createNewPatient(FormData formData) {
         try {
-            Patient patient = new PatientJSONMapper(data).getPatient();
-            patientService.savePatient(patient);
-            return patient;
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-        }
-        return null;
-    }
-
-    public Patient createNewHTMLPatient(String data) {
-        try {
-            Patient patient = new HTMLPatientJSONMapper().getPatient(data,patientController,settingController);
+            Patient patient;
+            if(isGenericRegistrationHTMLFormData(formData)){
+                patient = new GenericRegistrationPatientJSONMapper().getPatient(formData.getJsonPayload(),patientController,settingController);
+            } else if(isRegistrationHTMLFormData(formData)) {
+                patient = new HTMLPatientJSONMapper().getPatient(formData.getJsonPayload());
+            } else if(isRegistrationXMLFormData(formData)){
+                patient = new PatientJSONMapper(formData.getJsonPayload()).getPatient();
+                patientService.savePatient(patient);
+            } else {
+                throw new Exception("Could not determine type of registration form. Patient not created.");
+            }
             patientService.savePatient(patient);
             return patient;
         } catch (Exception e) {
@@ -552,8 +556,9 @@ public class FormController {
             boolean result = true;
             List<FormData> allFormData = formService.getAllFormData(Constants.STATUS_COMPLETE);
 
-            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_DISCRIMINATOR_REGISTRATION), result);
-            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_DISCRIMINATOR_REGISTRATION), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_REGISTRATION), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER), result);
@@ -806,8 +811,28 @@ public class FormController {
     }
 
     public boolean isRegistrationFormData(FormData formData){
-        return formData.getDiscriminator().equals(Constants.FORM_DISCRIMINATOR_REGISTRATION)
-                || formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION);
+        return formData.getDiscriminator().equalsIgnoreCase(FORM_DISCRIMINATOR_REGISTRATION)
+                || formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_REGISTRATION)
+                || formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION);
+    }
+
+    public boolean isGenericRegistrationHTMLFormData(FormData formData) {
+        return (formData.getDiscriminator() != null)
+                && formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION);
+    }
+
+    public boolean isRegistrationHTMLFormData(FormData formData) {
+        return (formData.getDiscriminator() != null)
+                && formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_REGISTRATION);
+    }
+
+    public boolean isRegistrationXMLFormData(FormData formData) {
+        return (formData.getDiscriminator() != null)
+                && formData.getDiscriminator().equalsIgnoreCase(FORM_DISCRIMINATOR_REGISTRATION);
+    }
+
+    public boolean isEncounterFormData(FormData formData) {
+        return (formData.getDiscriminator() != null) && !isRegistrationFormData(formData);
     }
 
     public boolean isCompleteFormData(FormData formData){
