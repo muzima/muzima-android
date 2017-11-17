@@ -636,8 +636,6 @@ public class MuzimaSyncService {
                 updateProgressDialog(muzimaApplication.getString(R.string.info_encounter_not_downloaded_progress, count, patientsTotal));
             }
 
-
-
         } catch (PatientController.PatientLoadException e) {
             Log.e(TAG, "Exception thrown while loading patients.", e);
             result[0] = SyncStatusConstants.LOAD_ERROR;

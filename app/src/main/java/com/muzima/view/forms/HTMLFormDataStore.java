@@ -37,8 +37,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION;
-
 public class HTMLFormDataStore {
     private static final String TAG = "FormDataStore";
 
@@ -76,7 +74,7 @@ public class HTMLFormDataStore {
         formData.setStatus(status);
         try {
             if (isRegistrationComplete(status)) {
-                Patient newPatient = formController.createNewHTMLPatient(jsonPayload);
+                Patient newPatient = formController.createNewPatient(formData);
                 formData.setPatientUuid(newPatient.getUuid());
                 formWebViewActivity.startPatientSummaryView(newPatient);
             }
@@ -172,10 +170,7 @@ public class HTMLFormDataStore {
                 applicationContext.getEncounterController(), applicationContext.getObservationController());
     }
     private boolean isRegistrationComplete(String status) {
-        return isRegistrationForm() && status.equals(Constants.STATUS_COMPLETE);
-    }
-    public boolean isRegistrationForm() {
-        return (formData.getDiscriminator() != null) && formData.getDiscriminator().equals(FORM_JSON_DISCRIMINATOR_REGISTRATION);
+        return formController.isRegistrationFormData(formData) && status.equals(Constants.STATUS_COMPLETE);
     }
 
     @JavascriptInterface

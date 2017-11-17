@@ -14,7 +14,6 @@ import com.muzima.api.model.Tag;
 import com.muzima.utils.Constants;
 
 public class AvailableForm extends BaseForm {
-    public static final String REGISTRATION = "registration";
     private Tag[] tags;
     private boolean isDownloaded;
 
@@ -36,6 +35,7 @@ public class AvailableForm extends BaseForm {
 
     public boolean isRegistrationForm(){
         return Constants.FORM_DISCRIMINATOR_REGISTRATION.equalsIgnoreCase(getDiscriminator()) ||
-                Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION.equalsIgnoreCase(getDiscriminator());
+                Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION.equalsIgnoreCase(getDiscriminator()) ||
+                Constants.FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION.equalsIgnoreCase(getDiscriminator());
     }
 }
