@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
   ~ Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
   ~ and Vanderbilt University Medical Center.
@@ -7,18 +7,16 @@
   ~ with additional health care disclaimer.
   ~ If the user is an entity intending to commercialize any application that uses
   ~  this code in a for-profit venture,please contact the copyright holder.
-  -->
-
-<resources>
+  --><resources>
     <string name="app_name">mUzima</string>
     <string name="app_title">mUzima for Health Providers</string>
 
     <string name="confirm_duplicate_form_data_save">Save Duplicate Form Data</string>
     <string name="confirm_patient_id_exists">Does the client already have existing ID?</string>
 
-    <string translatable="false"     name="default_auto_save_interval">2</string>
+    <string name="default_auto_save_interval" translatable="false">2</string>
     <string name="default_form_register">Registration Forms</string>
-    <string translatable="false" name="default_server">http://demo2.muzima.org</string>
+    <string name="default_server" translatable="false">http://demo2.muzima.org</string>
 
     <string name="error_action_allow">Action not allowed while sync is in progress</string>
     <string name="error_audio_chose_activity_find">Error: Activity for choosing audio not found</string>
@@ -93,17 +91,19 @@
     <string name="error_wizard_interrupted">Wizard was interrupted, please logout and run the wizard again.</string>
 
     <string name="general_accept">Accept</string>
-    <string name="general_alert">Alert!</string>
     <string name="general_agree">Agree</string>
+    <string name="general_alert">Alert!</string>
     <string name="general_all">All</string>
     <string name="general_application_version">Version %1$s</string>
     <string name="general_cancel">Cancel</string>
     <string name="general_caution">Caution!</string>
+    <string name="general_client_list">Client List</string>
     <string name="general_client_register">Register client</string>
     <string name="general_clients">Clients</string>
     <string name="general_close">Close</string>
     <string name="general_cohorts">Cohorts</string>
     <string name="general_concepts">Concepts</string>
+    <string name="general_dashboard">Dashboard</string>
     <string name="general_delete">Delete</string>
     <string name="general_description_unavailable">No description available</string>
     <string name="general_disagree">Disagree</string>
@@ -111,13 +111,16 @@
     <string name="general_draft">Draft</string>
     <string name="general_encounters">Encounters</string>
     <string name="general_fail">Fail</string>
+    <string name="general_finish">Finish</string>
     <string name="general_form">Form</string>
     <string name="general_forms">Forms</string>
     <string name="general_help">Help</string>
+    <string name="general_large">Large</string>
     <string name="general_load">Load</string>
     <string name="general_locations">Locations</string>
     <string name="general_login">Login</string>
     <string name="general_logout">Logout</string>
+    <string name="general_medium">Medium</string>
     <string name="general_next">Next</string>
     <string name="general_no">No</string>
     <string name="general_notices">Notices</string>
@@ -133,6 +136,7 @@
     <string name="general_search">Search</string>
     <string name="general_server">Server</string>
     <string name="general_settings">Settings</string>
+    <string name="general_small">Small</string>
     <string name="general_synced">Synced</string>
     <string name="general_tags">Tags</string>
     <string name="general_thank_you">Thank you!</string>
@@ -246,6 +250,7 @@
     </string>
     <string name="hint_registration_form_select">Please select at least one registration form!</string>
     <string name="hint_repeating_section_minimum_repeats_validation_failure">Minimum repeats not satisfied. Needs at least</string>
+    <string name="hint_require_medical_record_number">Require client\'s medical record number during registration</string>
     <string name="hint_server_connection_unavailable">Please contact your server administrator to check server
         connectivity
     </string>
@@ -253,6 +258,7 @@
     <string name="hint_server_url">Server URL</string>
     <string name="hint_server_url_prompt">Please enter server URL</string>
     <string name="hint_session_timeout">If in-active for this time, mUzima will automatically logout</string>
+    <string name="hint_setting_refresh">Do you want to re-download this setting from server?</string>
     <string name="hint_username_prompt">Please enter username</string>
     <string name="hint_video_caption_prompt">Please enter a caption for the video</string>
     <string name="hint_video_record">Record or choose video</string>
@@ -439,6 +445,7 @@
     <string name="info_real_time_upload_success">mUzima has uploaded your data successfully</string>
     <string name="info_scanner_exists">Barcode scanner is already installed.</string>
     <string name="info_session_time_out">Your session had timed out. Please log in again to proceed.</string>
+    <string name="info_setting_download_success">Downloaded and updated setting successfully</string>
     <string name="info_setup_complete_fail">Setup completed with some failure</string>
     <string name="info_setup_complete_success">Setup completed successfully</string>
     <string name="info_setup_config_load">Loading Setup Configs</string>
@@ -449,6 +456,7 @@
     <string name="info_video_play_activity_unavailable">Error: Application for playing video not found</string>
     <string name="info_video_record_activity_unavailable">Error: Application for recording video not found</string>
 
+    <string name="menu_complete_form_data_sync">Sync complete form data</string>
     <string name="menu_form_back_to_draft">Back To Draft</string>
 
     <string name="title_activity_audio">Add Audio</string>
@@ -494,6 +502,7 @@
     <string name="title_image_choose">Choose Image</string>
     <string name="title_initial_setup_guide">mUzima initial setup guide</string>
     <string name="title_introduction_video">Video introduction to mUzima</string>
+    <string name="title_landing_page">Landing Page</string>
     <string name="title_location_download">Step 3: Add Location(s)</string>
     <string name="title_location_help">Locations Help</string>
     <string name="title_logo">MuzimaLogo</string>
@@ -510,9 +519,11 @@
     <string name="title_provider_help">providers Help</string>
     <string name="title_provider_not_set">Unable to set as Provider</string>
     <string name="title_real_time_sync">Real time sync</string>
+    <string name="title_require_medical_record_number">Require medical record number</string>
     <string name="title_search_server">Search server</string>
     <string name="title_server_side_setup">Server Side Setup</string>
     <string name="title_session_timeout">Session timeout (mins)</string>
+    <string name="title_setting_refresh">Refresh Setting</string>
     <string name="title_video_caption">Video Caption</string>
     <string name="title_video_choose">Choose Video</string>
     <string name="title_video_record">Record Video</string>
@@ -532,21 +543,8 @@
     <string name="warning_registration_form_data_delete">You are about to delete registration data. This will also
         delete client record on device. Are you sure?
     </string>
+    <string name="warning_setting_download_failure">Could not download or update setting</string>
     <string name="warning_switch_server">Switching Server: This will clear all mUzima data on your
         device, including any incomplete forms. Are you sure you want to change this setting?
     </string>
-    <string name="general_finish">Finish</string>
-    <string name="title_require_medical_record_number">Require medical record number</string>
-    <string name="hint_require_medical_record_number">Require client\'s medical record number during registration</string>
-    <string name="title_setting_refresh">Refresh Setting</string>
-    <string name="hint_setting_refresh">Do you want to re-download this setting from server?</string>
-    <string name="info_setting_download_success">Downloaded and updated setting successfully</string>
-    <string name="warning_setting_download_failure">Could not download or update setting</string>
-    <string name="title_landing_page">Landing Page</string>
-    <string name="general_dashboard">Dashboard</string>
-    <string name="general_client_list">Client List</string>
-    <string name="general_small">Small</string>
-    <string name="general_medium">Medium</string>
-    <string name="general_large">Large</string>
-    <string name="menu_complete_form_data_sync">Sync complete form data</string>
 </resources>
