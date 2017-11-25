@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
     <string name="app_name">mUzima</string>
     <string name="app_title">mUzima para Provedores de Saúde</string>
@@ -91,11 +91,13 @@
     <string name="general_application_version">Versão %1$s</string>
     <string name="general_cancel">Cancelar</string>
     <string name="general_caution">Cuidado!</string>
+    <string name="general_client_list">Lista de clientes</string>
     <string name="general_client_register">Registar cliente</string>
     <string name="general_clients">Clientes</string>
     <string name="general_close">Fechar</string>
     <string name="general_cohorts">Coortes</string>
     <string name="general_concepts">Conceitos</string>
+    <string name="general_dashboard">Painel de controle</string>
     <string name="general_delete">Apagar</string>
     <string name="general_description_unavailable">Sem descrição disponível</string>
     <string name="general_disagree">Discordo</string>
@@ -103,13 +105,16 @@
     <string name="general_draft">Rascunho</string>
     <string name="general_encounters">Visitas</string>
     <string name="general_fail">Falha</string>
+    <string name="general_finish">Terminar</string>
     <string name="general_form">Formulário</string>
     <string name="general_forms">Formulários</string>
     <string name="general_help">Ajuda</string>
+    <string name="general_large">Ampla</string>
     <string name="general_load">Carregar</string>
     <string name="general_locations">Locais</string>
     <string name="general_login">Entrar</string>
     <string name="general_logout">Sair</string>
+    <string name="general_medium">Médio</string>
     <string name="general_next">Próximo</string>
     <string name="general_no">Não</string>
     <string name="general_notices">Avisos</string>
@@ -125,6 +130,7 @@
     <string name="general_search">Pesquisar</string>
     <string name="general_server">Servidor</string>
     <string name="general_settings">Configurações</string>
+    <string name="general_small">Pequeno</string>
     <string name="general_synced">Sincronizada</string>
     <string name="general_tags">Etiquetas</string>
     <string name="general_thank_you">Obrigado!</string>
@@ -253,6 +259,7 @@
     </string>
     <string name="hint_registration_form_select">Por favor seleccione pelo menos um formulário de registo!</string>
     <string name="hint_repeating_section_minimum_repeats_validation_failure">Repetições minimas não satisfeita. Precisa uma pelo menos</string>
+    <string name="hint_require_medical_record_number">Exigir o número de registro médico do cliente durante o registro</string>
     <string name="hint_server_connection_unavailable">Por favor contacte o administrador do servidor para verificar a
         conectividade
     </string>
@@ -260,6 +267,7 @@
     <string name="hint_server_url">URL do Servidor</string>
     <string name="hint_server_url_prompt">Por favor introduza a URL do servidor</string>
     <string name="hint_session_timeout">Se inactivo para este tempo, mUzima irá automaticamente sair</string>
+    <string name="hint_setting_refresh">Deseja voltar a baixar essa configuração do servidor?</string>
     <string name="hint_username_prompt">Por favor introduza o nome do utilizador</string>
     <string name="hint_video_caption_prompt">Por favor introduza uma legenda para o vídeo</string>
     <string name="hint_video_record">Gravar ou escolher vídeo</string>
@@ -448,6 +456,7 @@
     <string name="info_real_time_upload_success">mUzima carregou os dados com sucesso</string>
     <string name="info_scanner_exists">Código de barra já está instalado.</string>
     <string name="info_session_time_out">A sessão expirou. Por favor entra de novo para proceder.</string>
+    <string name="info_setting_download_success">Configuração baixada e atualizada com sucesso</string>
     <string name="info_setup_complete_fail">Instalação completada com alguma falha</string>
     <string name="info_setup_complete_success">Instalação completada com sucesso</string>
     <string name="info_setup_config_load">Carregando Configurações de Instalação</string>
@@ -458,6 +467,7 @@
     <string name="info_video_play_activity_unavailable">Erro: Aplicação para projectar vídeo não encontrado</string>
     <string name="info_video_record_activity_unavailable">Erro: Aplicação para gravar vídeo não encontrado</string>
 
+    <string name="menu_complete_form_data_sync">Sincronizar dados completos do formulário</string>
     <string name="menu_form_back_to_draft">Voltar ao Rascunho</string>
 
     <string name="title_activity_audio">Adicionar Audio</string>
@@ -503,6 +513,7 @@
     <string name="title_image_choose">Escolher Imagem</string>
     <string name="title_initial_setup_guide">Guia inicial de instalação de mUzima</string>
     <string name="title_introduction_video">Vídeo introdutório para mUzima</string>
+    <string name="title_landing_page">Página de destino</string>
     <string name="title_location_download">Passo 3: Adicionar Local(s)</string>
     <string name="title_location_help">Ajuda com Locais</string>
     <string name="title_logo">mUzima Logotipo</string>
@@ -519,9 +530,11 @@
     <string name="title_provider_help">Ajuda com Provedores</string>
     <string name="title_provider_not_set">Incapz de definir como Provedor</string>
     <string name="title_real_time_sync">Sincronização em tempo real</string>
+    <string name="title_require_medical_record_number">Exigir número de registro médico</string>
     <string name="title_search_server">Pesquisa do servidor</string>
     <string name="title_server_side_setup">Instalação do lado do servidor</string>
     <string name="title_session_timeout">Sessão expirou (mins)</string>
+    <string name="title_setting_refresh">Configuração de Atualização</string>
     <string name="title_video_caption">Legenda do vídeo</string>
     <string name="title_video_choose">Escolha o Vídeo</string>
     <string name="title_video_record">Gravar o Vídeo</string>
@@ -542,21 +555,8 @@
     <string name="warning_registration_form_data_delete">Está para apagar dados de registo. Isto irá apagar o registo do
         cliente no dispositivo. Tem certeza?
     </string>
+    <string name="warning_setting_download_failure">Não foi possível baixar ou atualizar a configuração</string>
     <string name="warning_switch_server">Trocando o Servidor: Isto irá apagar todos dados de mUzima no seu dispositivo,
         incluindo formulários imcompletos. Tem certeza que quer mudar as configurações?
     </string>
-    <string name="general_finish">Terminar</string>
-    <string name="title_require_medical_record_number">Exigir número de registro médico</string>
-    <string name="hint_require_medical_record_number">Exigir o número de registro médico do cliente durante o registro</string>
-    <string name="title_setting_refresh">Configuração de Atualização</string>
-    <string name="hint_setting_refresh">Deseja voltar a baixar essa configuração do servidor?</string>
-    <string name="info_setting_download_success">Configuração baixada e atualizada com sucesso</string>
-    <string name="warning_setting_download_failure">Não foi possível baixar ou atualizar a configuração</string>
-    <string name="title_landing_page">Página de destino</string>
-    <string name="general_dashboard">Painel de controle</string>
-    <string name="general_client_list">Lista de clientes</string>
-    <string name="general_small">Pequeno</string>
-    <string name="general_medium">Médio</string>
-    <string name="general_large">Ampla</string>
-    <string name="menu_complete_form_data_sync">Sincronizar dados completos do formulário</string>
 </resources>
