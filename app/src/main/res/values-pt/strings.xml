@@ -470,6 +470,7 @@
     <string name="menu_complete_form_data_sync">Sincronizar dados completos do formulário</string>
     <string name="menu_form_back_to_draft">Voltar ao Rascunho</string>
 
+    <string name="title_about_dashboard_help_html">Sobre o Painel de Controle</string>
     <string name="title_activity_audio">Adicionar Audio</string>
     <string name="title_activity_client_encounters">Visitas do Cliente</string>
     <string name="title_activity_client_observations">Observações do Cliente</string>
@@ -478,18 +479,23 @@
     <string name="title_activity_image">Adicionar Imagem</string>
     <string name="title_activity_video">Adicionar Vídeo</string>
     <string name="title_advanced_setup">Instalação avançada</string>
+    <string name="title_advanced_setup_help_html">Configuração inicial para mUzima</string>
+    <string name="title_advanced_setup_help_video">Configuração inicial avançada</string>
     <string name="title_audio_caption">Legendas</string>
     <string name="title_audio_choose">Escolher Áudio</string>
     <string name="title_audio_record">Gravar Áudio</string>
     <string name="title_barcode_scanner_check">Verificar o Código de Barra</string>
     <string name="title_barcode_scanner_setup">Passo 6: Verificar o scaner de código de barra</string>
     <string name="title_client_notifications">Notificações do Cliente</string>
+    <string name="title_client_registration_help_video">Registro de cliente</string>
     <string name="title_client_scan">Examinar o ID dos Clientes</string>
     <string name="title_cohort_download">Passo 1: Baixar Coorte(s)</string>
+    <string name="title_cohort_download_help_video">Download de Coortes (sob demanda)</string>
     <string name="title_cohort_prefix_help">Definir Prefixo(s) de Ajuda de Coortes</string>
     <string name="title_cohort_prefix_manage">Gestão de prefixos de coorte</string>
     <string name="title_cohort_wizard_help">Ajuda com Baixar Coorte</string>
     <string name="title_concept_download">Passo 5: Adicionar Conceito(s)</string>
+    <string name="title_concept_download_help_video">Download de conceitos (sob demanda)</string>
     <string name="title_concept_help">Ajuda com Conceitos</string>
     <string name="title_crash_dialog">mUzima parou…</string>
     <string name="title_data_reset">Passo 3: Redefinir Dados</string>
@@ -503,17 +509,22 @@
     <string name="title_form_data_complete">Formulário de Dados Completo</string>
     <string name="title_form_data_incomplete">Formulário de Dados Imcompleto</string>
     <string name="title_form_download">Passo 2: Baixar o Modelo do Formulário</string>
+    <string name="title_form_download_help_video">Download de formulários (sob demanda)</string>
     <string name="title_form_template_all">Todos Modelos do Formulário</string>
     <string name="title_form_template_downloaded">Baixou os Modelos do Formlário</string>
     <string name="title_general_notifications">Notificações Gerais</string>
     <string name="title_guided_setup">Guia de instalação (Recomendado)</string>
+    <string name="title_guided_setup_help_video">Configuração inicial guiada</string>
     <string name="title_guided_setup_progress">Progresso da Instalação</string>
+    <string name="title_help_video_links">Links de vídeo da mUzima</string>
+    <string name="title_html_help">Centro de ajuda</string>
     <string name="title_image_caption">Título da Imagem</string>
     <string name="title_image_capture">Capturar Imagem</string>
     <string name="title_image_choose">Escolher Imagem</string>
     <string name="title_initial_setup_guide">Guia inicial de instalação de mUzima</string>
     <string name="title_introduction_video">Vídeo introdutório para mUzima</string>
     <string name="title_landing_page">Página de destino</string>
+    <string name="title_local_client_search_help_video">Pesquisa de clientes (local)</string>
     <string name="title_location_download">Passo 3: Adicionar Local(s)</string>
     <string name="title_location_help">Ajuda com Locais</string>
     <string name="title_logo">mUzima Logotipo</string>
@@ -532,9 +543,11 @@
     <string name="title_real_time_sync">Sincronização em tempo real</string>
     <string name="title_require_medical_record_number">Exigir número de registro médico</string>
     <string name="title_search_server">Pesquisa do servidor</string>
+    <string name="title_server_client_search_help_video">Pesquisa de clientes (contra servidor)</string>
     <string name="title_server_side_setup">Instalação do lado do servidor</string>
     <string name="title_session_timeout">Sessão expirou (mins)</string>
     <string name="title_setting_refresh">Configuração de Atualização</string>
+    <string name="title_settings_help_html">Configurações do mUzima</string>
     <string name="title_video_caption">Legenda do vídeo</string>
     <string name="title_video_choose">Escolha o Vídeo</string>
     <string name="title_video_record">Gravar o Vídeo</string>
@@ -551,7 +564,7 @@
         Por favor complete
         e sincroniza estes formulários antes de baixar uma nova versão.
     </string>
-    <string name="warning_logout_confirm">Tem certeza que quer sair e fechar o aplicativo mUzima ?</string>
+    <string name="warning_logout_confirm">Tem certeza que quer sair e fechar o aplicativo mUzima?</string>
     <string name="warning_registration_form_data_delete">Está para apagar dados de registo. Isto irá apagar o registo do
         cliente no dispositivo. Tem certeza?
     </string>
