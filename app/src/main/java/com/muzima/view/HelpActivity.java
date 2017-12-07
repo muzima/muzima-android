@@ -27,7 +27,6 @@ import java.util.List;
 
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
-import android.widget.Toast;
 
 public class HelpActivity extends BaseActivity {
 
@@ -41,12 +40,14 @@ public class HelpActivity extends BaseActivity {
     public static final String ABOUT_DASHBOARD_FORM = "file:///android_asset/www/help-content/About-dashboard.html";
     public static final String MUZIMA_SETTINGS = "file:///android_asset/www/help-content/Settings.html";
     public static final String FILL_PATIENT_FORMS = "file:///android_asset/www/help-content/filling-forms-for-a-patient.html";
-    public static final String INTRODUCTION_VIDEO = "https://www.youtube.com/watch?v=xnFACOHGzKg";
-    public static final String SETTING_UP_MUZIMA_VIDEO = "https://www.youtube.com/watch?v=nn7k1TL1qG0&feature=youtu.be";
-    public static final String TAGGING_FORMS_VIDEO = "https://www.youtube.com/watch?v=Ls4qpSYRep8&feature=youtu.be";
-    public static final String DOWNLOADING_COHORTS_VIDEO = "https://www.youtube.com/watch?v=uvVT9tRpCxY&feature=youtu.be";
-    public static final String CHANGE_SETTING_VIDEO = "https://www.youtube.com/watch?v=4VtkXUEP11k&feature=youtu.be";
-    public static final String DOWNLOADING_FORMS_VIDEO = "https://www.youtube.com/watch?v=8uNCq1EK8V8&feature=youtu.be";
+    public static final String GUIDED_SETUP = "https://youtu.be/aSa4CcGtGdo";
+    public static final String ADVANCED_SETUP = "https://youtu.be/3yFieYJQEbs";
+    public static final String COHORTS_DOWNLOAD_ON_DEMAND = "https://youtu.be/CcQZy32O8JQ";
+    public static final String CONCEPTS_DOWNLOAD_ON_DEMAND = "https://youtu.be/Q6QIE7z6_O0";
+    public static final String FORMS_DOWNLOAD_ON_DEMAND = "https://youtu.be/1cPF58jhLiA";
+    public static final String CLIENT_REGISTRATION = "https://youtu.be/fmjhF-juq4k";
+    public static final String LOCAL_CLIENT_SEARCH = "https://youtu.be/630daM1wxGE";
+    public static final String SERVER_CLIENT_SEARCH = "https://youtu.be/C1xDs8wWjNM";
     private TextView helpContentView;
     private View scrollView;
 
@@ -105,22 +106,28 @@ public class HelpActivity extends BaseActivity {
                 }
                 //video links
                 else if(group_position==1 && child_position==0){
-                    viewVideo(INTRODUCTION_VIDEO);
+                    viewVideo(GUIDED_SETUP);
                 }
                 else if(group_position==1 && child_position==1){
-                    viewVideo(SETTING_UP_MUZIMA_VIDEO);
+                    viewVideo(ADVANCED_SETUP);
                 }
                 else if(group_position==1 && child_position==2){
-                    viewVideo(TAGGING_FORMS_VIDEO);
+                    viewVideo(COHORTS_DOWNLOAD_ON_DEMAND);
                 }
                 else if(group_position==1 && child_position==3){
-                    viewVideo(DOWNLOADING_COHORTS_VIDEO);
+                    viewVideo(CONCEPTS_DOWNLOAD_ON_DEMAND);
                 }
                 else if(group_position==1 && child_position==4){
-                    viewVideo(CHANGE_SETTING_VIDEO);
+                    viewVideo(FORMS_DOWNLOAD_ON_DEMAND);
                 }
                 else if(group_position==1 && child_position==5){
-                    viewVideo(DOWNLOADING_FORMS_VIDEO);
+                    viewVideo(CLIENT_REGISTRATION);
+                }
+                else if(group_position==1 && child_position==6){
+                    viewVideo(LOCAL_CLIENT_SEARCH);
+                }
+                else if(group_position==1 && child_position==7){
+                    viewVideo(SERVER_CLIENT_SEARCH);
                 }
                 return false;
             }
@@ -135,24 +142,25 @@ public class HelpActivity extends BaseActivity {
         listDataChild = new HashMap<String, List<String>>();
 
         // Adding child data
-        listDataHeader.add("Help Center");
-        listDataHeader.add("mUzima Video Links");
+        listDataHeader.add(getString(R.string.title_html_help));
+        listDataHeader.add(getString(R.string.title_help_video_links));
 
         // Adding child data
         List<String> howTo = new ArrayList<String>();
-        howTo.add("Initial setup for mUzima");
-        howTo.add("About Dashboard");
-        howTo.add("mUzima Settings");
-        howTo.add("Fill out forms for a patient");
+        howTo.add(getString(R.string.title_advanced_setup_help_html));
+        howTo.add(getString(R.string.title_about_dashboard_help_html));
+        howTo.add(getString(R.string.title_settings_help_html));
+        howTo.add(getString(R.string.title_fill_patient_forms_help));
 
-        List<String> videoLinks = new ArrayList<String>();
-        videoLinks.add("Introduction to mUzima");
-        videoLinks.add("Setting up mUzima");
-        videoLinks.add("Tagging Forms");
-        videoLinks.add("Downloading Cohorts");
-        videoLinks.add("Change Settings");
-        videoLinks.add("Downloading Forms");
-
+        List<String> videoLinks = new ArrayList<>();
+        videoLinks.add(getString(R.string.title_guided_setup_help_video));
+        videoLinks.add(getString(R.string.title_advanced_setup_help_video));
+        videoLinks.add(getString(R.string.title_cohort_download_help_video));
+        videoLinks.add(getString(R.string.title_concept_download_help_video));
+        videoLinks.add(getString(R.string.title_form_download_help_video));
+        videoLinks.add(getString(R.string.title_client_registration_help_video));
+        videoLinks.add(getString(R.string.title_local_client_search_help_video));
+        videoLinks.add(getString(R.string.title_server_client_search_help_video));
 
         listDataChild.put(listDataHeader.get(0), howTo); // Header, Child data
         listDataChild.put(listDataHeader.get(1), videoLinks);
