@@ -106,7 +106,7 @@ public class FormDataStoreTest {
         formData.setDiscriminator(FORM_DISCRIMINATOR_REGISTRATION);
         Patient patient = new Patient();
         patient.setUuid(tempUUIDAssignedByDevice);
-        when(controller.createNewPatient("data")).thenReturn(patient);
+        when(controller.createNewPatient(formData)).thenReturn(patient);
         store.save("data", "xmlData", "complete");
         assertThat(formData.getXmlPayload(), is("xmlData"));
         assertThat(formData.getPatientUuid(), is(tempUUIDAssignedByDevice));

@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.view.DefaultMenuDropDownHelper;
 import com.muzima.view.login.LoginActivity;
 import com.muzima.view.preferences.settings.SettingsPreferenceFragment;
 
@@ -38,7 +39,6 @@ public class SettingsActivity extends PreferenceActivity{
         super.onCreate(savedInstanceState);
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new SettingsPreferenceFragment()).commit();
-
         setupActionBar();
     }
 
@@ -59,9 +59,9 @@ public class SettingsActivity extends PreferenceActivity{
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.dashboard, menu);
+        getMenuInflater().inflate(DefaultMenuDropDownHelper.DEFAULT_MENU, menu);
         MenuItem menuSettings = menu.findItem(R.id.action_settings);
-        menuSettings.setVisible(false);
+        if (menuSettings != null) menuSettings.setVisible(false);
         return true;
     }
 
@@ -72,7 +72,9 @@ public class SettingsActivity extends PreferenceActivity{
                 finish();
                 return true;
         }
-        return super.onOptionsItemSelected(item);
+        DefaultMenuDropDownHelper dropDownHelper = new DefaultMenuDropDownHelper(this);
+        boolean result = dropDownHelper.onOptionsItemSelected(item);
+        return result || super.onOptionsItemSelected(item);
     }
 
     public void launchLoginActivity(boolean isFirstLaunch) {

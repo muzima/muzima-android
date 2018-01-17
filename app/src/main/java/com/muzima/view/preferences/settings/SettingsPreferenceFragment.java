@@ -14,22 +14,29 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;;
+import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.scheduler.RealTimeFormUploader;
+import com.muzima.service.MuzimaSyncService;
+import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
 import com.muzima.tasks.ValidateURLTask;
+import com.muzima.util.Constants;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.preferences.SettingsActivity;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
 public class SettingsPreferenceFragment extends PreferenceFragment  implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -42,6 +49,8 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
     private String encounterProviderPreferenceKey;
     private String duplicateFormDataPreferenceKey;
     private String fontSizePreferenceKey;
+    private String landingPagePreferenceKey;
+    private String requireMedicalRecordNumberKey;
 
     private EditTextPreference serverPreference;
     private EditTextPreference usernamePreference;
@@ -52,7 +61,9 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
     //Disabling duplicate form data preference until a better workflow of flagging duplicates is thought out. See MUZIMA-488
    // private CheckBoxPreference duplicateFormDataPreference;
     private CheckBoxPreference realTimeSyncPreference;
+    private CheckBoxPreference requireMedicalRecordNumberPreference;
     private ListPreference fontSizePreference;
+    private ListPreference landingPagePreference;
 
     private String newURL;
     private Map<String, SettingsPreferenceFragment.PreferenceChangeHandler> actions = new HashMap<String, SettingsPreferenceFragment.PreferenceChangeHandler>();
@@ -151,7 +162,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                                 .setIcon(getResources().getDrawable(R.drawable.ic_warning))
                                 .setTitle(getResources().getString(R.string.title_provider_not_set))
                                 .setMessage(getResources().getString(R.string.hint_provider_not_set))
-                                .setPositiveButton("Ok", null).create().show();
+                                .setPositiveButton(getResources().getText(R.string.general_ok), null).create().show();
                         return false;
                     } else {
                         return true;
@@ -171,6 +182,57 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         fontSizePreference = (ListPreference) getPreferenceScreen().findPreference(fontSizePreferenceKey);
         fontSizePreference.setSummary(fontSizePreference.getValue());
         registerListPreferenceChangeHandler(fontSizePreferenceKey, fontSizePreference);
+
+        landingPagePreferenceKey = getResources().getString(R.string.preference_landing_page);
+        landingPagePreference = (ListPreference) getPreferenceScreen().findPreference(landingPagePreferenceKey);
+        landingPagePreference.setSummary(landingPagePreference.getValue());
+        registerListPreferenceChangeHandler(landingPagePreferenceKey, landingPagePreference);
+
+        requireMedicalRecordNumberKey = getResources().getString(R.string.preference_require_medical_record_number);
+        requireMedicalRecordNumberPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(requireMedicalRecordNumberKey);
+        requireMedicalRecordNumberPreference.setSummary(requireMedicalRecordNumberPreference.getSummary());
+        requireMedicalRecordNumberPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder
+                    .setCancelable(true)
+                    .setIcon(getResources().getDrawable(R.drawable.ic_refresh))
+                    .setTitle(getString(R.string.title_setting_refresh))
+                    .setMessage(getString(R.string.hint_setting_refresh))
+                    .setPositiveButton(getResources().getText(R.string.general_ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            new AsyncTask<Void, Void,int[] >() {
+                                @Override
+                                public int[] doInBackground(Void... params){
+                                    MuzimaSyncService syncService = ((MuzimaApplication) getActivity()
+                                            .getApplication()).getMuzimaSyncService();
+                                    return syncService.downloadSetting(Constants.ServerSettings
+                                            .PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING);
+                                }
+
+                                @Override
+                                protected void onPostExecute(int[] result) {
+                                    if(result[0] == SUCCESS) {
+                                        RequireMedicalRecordNumberPreferenceService requireMedicalRecordNumberPreferenceService
+                                                = new RequireMedicalRecordNumberPreferenceService((MuzimaApplication) getActivity()
+                                                .getApplication());
+                                        requireMedicalRecordNumberPreferenceService.saveRequireMedicalRecordNumberPreference();
+                                        requireMedicalRecordNumberPreference
+                                                .setChecked(requireMedicalRecordNumberPreferenceService.getRequireMedicalRecordNumberPreferenceValue());
+                                        Toast.makeText(getActivity(), getString(R.string.info_setting_download_success), Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getActivity(), getString(R.string.warning_setting_download_failure), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }.execute();
+                        }
+                    }).create().show();
+                return false;
+            }
+        });
 
     }
 
