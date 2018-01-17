@@ -385,12 +385,12 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         if (baseForm.hasData()) {
             formData = formController.getFormDataByUuid(((FormWithData) baseForm).getFormDataUuid());
         } else {
-            formData = createNewFormData();
+            createNewFormData();
         }
     }
 
-    private FormData createNewFormData() throws FormController.FormDataSaveException, IOException, ParseException {
-        FormData formData = new FormData() {{
+    private void createNewFormData() throws FormController.FormDataSaveException, IOException, ParseException {
+        formData = new FormData() {{
             setUuid(UUID.randomUUID().toString());
             setPatientUuid(patient.getUuid());
             setUserUuid("userUuid");
@@ -400,8 +400,11 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         }};
         User user = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
 
-        formData.setJsonPayload(new HTMLPatientJSONMapper().map(patient, formData, user,encounterProviderPreference));
-        return formData;
+        if(isGenericRegistrationForm()) {
+            formData.setJsonPayload(new GenericRegistrationPatientJSONMapper().map(patient, formData, user, encounterProviderPreference));
+        } else {
+            formData.setJsonPayload(new HTMLPatientJSONMapper().map(patient, formData, user,encounterProviderPreference));
+        }
     }
 
 
@@ -425,7 +428,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         webView.addJavascriptInterface(imagingComponent, IMAGE);
         webView.addJavascriptInterface(audioComponent, AUDIO);
         webView.addJavascriptInterface(videoComponent, VIDEO);
-        webView.addJavascriptInterface(new HTMLFormDataStore(this, formController,locationController, formData, providerController),
+        webView.addJavascriptInterface(new HTMLFormDataStore(this,formData,(MuzimaApplication)getApplicationContext()),
                 HTML_DATA_STORE);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         if (isFormComplete()) {
@@ -510,8 +513,11 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     }
 
     private boolean isEncounterForm() {
-        return formData.getDiscriminator().equalsIgnoreCase(Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER)
-                || formData.getDiscriminator().equalsIgnoreCase(Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION);
+        return formController.isEncounterFormData(formData);
+    }
+
+    private boolean isGenericRegistrationForm() {
+        return formController.isGenericRegistrationHTMLFormData(formData);
     }
 
     public Handler getHandler() {
