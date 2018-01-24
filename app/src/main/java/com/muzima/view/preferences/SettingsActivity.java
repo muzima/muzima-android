@@ -1,9 +1,11 @@
 /*
- * Copyright (c) 2014. The Trustees of Indiana University.
+ * Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center.
  *
- * This version of the code is licensed under the MPL 2.0 Open Source license with additional
- * healthcare disclaimer. If the user is an entity intending to commercialize any application
- * that uses this code in a for-profit venture, please contact the copyright holder.
+ * This version of the code is licensed under the MPL 2.0 Open Source license
+ * with additional health care disclaimer.
+ * If the user is an entity intending to commercialize any application that uses
+ *  this code in a for-profit venture,please contact the copyright holder.
  */
 
 package com.muzima.view.preferences;
@@ -16,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.view.DefaultMenuDropDownHelper;
 import com.muzima.view.login.LoginActivity;
 import com.muzima.view.preferences.settings.SettingsPreferenceFragment;
 
@@ -36,7 +39,6 @@ public class SettingsActivity extends PreferenceActivity{
         super.onCreate(savedInstanceState);
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new SettingsPreferenceFragment()).commit();
-
         setupActionBar();
     }
 
@@ -57,9 +59,9 @@ public class SettingsActivity extends PreferenceActivity{
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.dashboard, menu);
+        getMenuInflater().inflate(DefaultMenuDropDownHelper.DEFAULT_MENU, menu);
         MenuItem menuSettings = menu.findItem(R.id.action_settings);
-        menuSettings.setVisible(false);
+        if (menuSettings != null) menuSettings.setVisible(false);
         return true;
     }
 
@@ -70,7 +72,9 @@ public class SettingsActivity extends PreferenceActivity{
                 finish();
                 return true;
         }
-        return super.onOptionsItemSelected(item);
+        DefaultMenuDropDownHelper dropDownHelper = new DefaultMenuDropDownHelper(this);
+        boolean result = dropDownHelper.onOptionsItemSelected(item);
+        return result || super.onOptionsItemSelected(item);
     }
 
     public void launchLoginActivity(boolean isFirstLaunch) {

@@ -11,7 +11,7 @@
             style="@style/NotClickableSummaryItem"
             android:layout_alignParentTop="true">
         <TextView style="@style/SummaryHeader"
-              android:text="@string/title_guided_setup"/>
+                  android:text="@string/title_guided_setup"/>
         <TextView
                 android:textColor="@android:color/white"
                 android:textAlignment="center"
@@ -25,6 +25,7 @@
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:orientation="vertical"
+                  android:focusableInTouchMode="true"
                   android:id="@+id/configs_layout">
         <RelativeLayout style="@style/NotClickableSummaryItem">
             <EditText android:layout_width="match_parent"
@@ -47,12 +48,12 @@
         </RelativeLayout>
 
         <ScrollView style="@style/setupMethodConfigurationsList"
-                      android:background="@drawable/list_multi_selector_blue"
-                      android:layout_below="@+id/guided_setup_header"
-                      android:layout_height="match_parent"
-                      android:layout_width="match_parent"
-                      android:fillViewport="true"
-                      android:scrollbars="vertical">
+                    android:background="@drawable/list_multi_selector_blue"
+                    android:layout_below="@+id/guided_setup_header"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:fillViewport="true"
+                    android:scrollbars="vertical">
 
             <ListView
                     android:id="@+id/configs_wizard_list"
@@ -73,7 +74,7 @@
         <TextView style="@style/SelectableSummaryHeader"
                   android:text="@string/title_advanced_setup"
                   android:duplicateParentState="true"
-        android:background="@android:color/transparent"/>
+                  android:background="@android:color/transparent"/>
         <TextView
                 android:textColor="@android:color/white"
                 android:textAlignment="center"

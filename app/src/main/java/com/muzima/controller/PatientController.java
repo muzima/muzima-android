@@ -1,9 +1,11 @@
 /*
- * Copyright (c) 2014. The Trustees of Indiana University.
+ * Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center.
  *
- * This version of the code is licensed under the MPL 2.0 Open Source license with additional
- * healthcare disclaimer. If the user is an entity intending to commercialize any application
- * that uses this code in a for-profit venture, please contact the copyright holder.
+ * This version of the code is licensed under the MPL 2.0 Open Source license
+ * with additional health care disclaimer.
+ * If the user is an entity intending to commercialize any application that uses
+ *  this code in a for-profit venture,please contact the copyright holder.
  */
 
 package com.muzima.controller;
@@ -13,6 +15,8 @@ import android.util.Log;
 import com.muzima.api.model.CohortMembership;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
+import com.muzima.api.model.PatientIdentifierType;
+import com.muzima.api.model.PersonAttributeType;
 import com.muzima.api.service.CohortMembershipService;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.PatientService;
@@ -244,6 +248,42 @@ public class PatientController {
     public void deleteAllPatients() throws PatientDeleteException,IOException {
         List<Patient> allPatients = patientService.getAllPatients();
         patientService.deletePatients(allPatients);
+    }
+
+    public PatientIdentifierType getPatientIdentifierTypeByUuid(String uuid){
+        try {
+            return patientService.getPatientIdentifierTypeByUuid(uuid);
+        } catch (IOException e){
+            Log.e(TAG, "Error retrieving patient identifier type by uuid : " + uuid, e);
+        }
+        return null;
+    }
+
+    public List<PatientIdentifierType> getPatientIdentifierTypeByName(String name){
+        try {
+            return patientService.getPatientIdentifierTypeByName(name);
+        } catch (IOException e){
+            Log.e(TAG, "Error retrieving patient identifier type by name : " + name, e);
+        }
+        return null;
+    }
+
+    public PersonAttributeType getPersonAttributeTypeByUuid(String uuid){
+        try {
+            return patientService.getPersonAttributeTypeByUuid(uuid);
+        } catch (IOException e){
+            Log.e(TAG, "Error retrieving person attribute type by uuid : " + uuid, e);
+        }
+        return null;
+    }
+
+    public List<PersonAttributeType> getPersonAttributeTypeByName(String name){
+        try {
+            return patientService.getPersonAttributeTypeByName(name);
+        } catch (IOException e){
+            Log.e(TAG, "Error retrieving person attribute type by name : " + name, e);
+        }
+        return null;
     }
 
 

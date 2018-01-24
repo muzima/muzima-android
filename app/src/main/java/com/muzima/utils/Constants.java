@@ -1,9 +1,11 @@
 /*
- * Copyright (c) 2014. The Trustees of Indiana University.
+ * Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center.
  *
- * This version of the code is licensed under the MPL 2.0 Open Source license with additional
- * healthcare disclaimer. If the user is an entity intending to commercialize any application
- * that uses this code in a for-profit venture, please contact the copyright holder.
+ * This version of the code is licensed under the MPL 2.0 Open Source license
+ * with additional health care disclaimer.
+ * If the user is an entity intending to commercialize any application that uses
+ *  this code in a for-profit venture,please contact the copyright holder.
  */
 
 package com.muzima.utils;
@@ -30,6 +32,7 @@ public class Constants {
     public static final String FORM_JSON_DISCRIMINATOR_ENCOUNTER = "json-encounter";
     public static final String FORM_DISCRIMINATOR_REGISTRATION = "xml-registration";
     public static final String FORM_JSON_DISCRIMINATOR_REGISTRATION = "json-registration";
+    public static final String FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION = "json-generic-registration";
     public static final String FORM_JSON_DISCRIMINATOR_CONSULTATION = "json-consultation";
     public static final String FORM_DISCRIMINATOR_CONSULTATION = "consultation";
     public static final String FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE = "json-demographics-update";

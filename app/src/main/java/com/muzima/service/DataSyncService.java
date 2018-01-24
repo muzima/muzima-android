@@ -1,14 +1,17 @@
 /*
- * Copyright (c) 2014. The Trustees of Indiana University.
+ * Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center.
  *
- * This version of the code is licensed under the MPL 2.0 Open Source license with additional
- * healthcare disclaimer. If the user is an entity intending to commercialize any application
- * that uses this code in a for-profit venture, please contact the copyright holder.
+ * This version of the code is licensed under the MPL 2.0 Open Source license
+ * with additional health care disclaimer.
+ * If the user is an entity intending to commercialize any application that uses
+ *  this code in a for-profit venture,please contact the copyright holder.
  */
 
 package com.muzima.service;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -303,7 +306,9 @@ public class DataSyncService extends IntentService {
                         .setContentIntent(PendingIntent.getActivity(this, 0, new Intent(), 0))
                         .setSmallIcon(R.drawable.ic_launcher_logo)
                         .setContentTitle(title)
-                        .setContentText(msg);
+                        .setContentText(msg)
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText(msg));
+
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(MUZIMA_NOTIFICATION, mBuilder.getNotification());

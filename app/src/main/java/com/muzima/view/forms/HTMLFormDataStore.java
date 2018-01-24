@@ -1,13 +1,16 @@
 /*
- * Copyright (c) 2014. The Trustees of Indiana University.
+ * Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center.
  *
- * This version of the code is licensed under the MPL 2.0 Open Source license with additional
- * healthcare disclaimer. If the user is an entity intending to commercialize any application
- * that uses this code in a for-profit venture, please contact the copyright holder.
+ * This version of the code is licensed under the MPL 2.0 Open Source license
+ * with additional health care disclaimer.
+ * If the user is an entity intending to commercialize any application that uses
+ *  this code in a for-profit venture,please contact the copyright holder.
  */
 
 package com.muzima.view.forms;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -21,6 +24,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.Provider;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.ProviderController;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.HTMLFormObservationCreator;
@@ -33,8 +37,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION;
-
 public class HTMLFormDataStore {
     private static final String TAG = "FormDataStore";
 
@@ -43,13 +45,17 @@ public class HTMLFormDataStore {
     private LocationController locationController;
     private FormData formData;
     private ProviderController providerController;
+    private MuzimaApplication application;
+    private MuzimaSettingController settingController;
 
-    public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity, FormController formController, LocationController locationController, FormData formData, ProviderController providerController) {
+    public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity,FormData formData, MuzimaApplication application) {
         this.formWebViewActivity = formWebViewActivity;
-        this.formController = formController;
+        this.formController = application.getFormController();
         this.formData = formData;
-        this.providerController = providerController;
-        this.locationController = locationController;
+        this.providerController = application.getProviderController();
+        this.locationController = application.getLocationController();
+        this.settingController = application.getMuzimaSettingController();
+        this.application = application;
     }
 
     @JavascriptInterface
@@ -68,7 +74,7 @@ public class HTMLFormDataStore {
         formData.setStatus(status);
         try {
             if (isRegistrationComplete(status)) {
-                Patient newPatient = formController.createNewHTMLPatient(jsonPayload);
+                Patient newPatient = formController.createNewPatient(formData);
                 formData.setPatientUuid(newPatient.getUuid());
                 formWebViewActivity.startPatientSummaryView(newPatient);
             }
@@ -164,9 +170,17 @@ public class HTMLFormDataStore {
                 applicationContext.getEncounterController(), applicationContext.getObservationController());
     }
     private boolean isRegistrationComplete(String status) {
-        return isRegistrationForm() && status.equals(Constants.STATUS_COMPLETE);
+        return formController.isRegistrationFormData(formData) && status.equals(Constants.STATUS_COMPLETE);
     }
-    public boolean isRegistrationForm() {
-        return (formData.getDiscriminator() != null) && formData.getDiscriminator().equals(FORM_JSON_DISCRIMINATOR_REGISTRATION);
+
+    @JavascriptInterface
+    public String getStringResource(String stringResourceName){
+        Context context = formWebViewActivity.getBaseContext();
+        return context.getString(context.getResources().getIdentifier(stringResourceName, "string",context.getPackageName()));
+    }
+
+    @JavascriptInterface
+    public boolean isMedicalRecordNumberRequired(){
+        return settingController.isMedicalRecordNumberRequiredDuringRegistration();
     }
 }

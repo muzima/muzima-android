@@ -1,9 +1,11 @@
 /*
- * Copyright (c) 2014. The Trustees of Indiana University.
+ * Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center.
  *
- * This version of the code is licensed under the MPL 2.0 Open Source license with additional
- * healthcare disclaimer. If the user is an entity intending to commercialize any application
- * that uses this code in a for-profit venture, please contact the copyright holder.
+ * This version of the code is licensed under the MPL 2.0 Open Source license
+ * with additional health care disclaimer.
+ * If the user is an entity intending to commercialize any application that uses
+ *  this code in a for-profit venture,please contact the copyright holder.
  */
 
 package com.muzima.view;
@@ -11,11 +13,20 @@ package com.muzima.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ExpandableListView;
+import android.widget.TextView;
 import com.muzima.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+//import androidhive.dashboard.R;
+
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupExpandListener;
 
 public class HelpActivity extends BaseActivity {
 
@@ -26,84 +37,133 @@ public class HelpActivity extends BaseActivity {
     public static final int CUSTOM_LOCATION_HELP = 4;
     public static final int CUSTOM_PROVIDER_HELP = 5;
     public static final String MUZIMA_INITAL_SETUP_GUIDE = "file:///android_asset/www/help-content/mUzima_initial_setup.html";
-    public static final String PATIENT_FILLING_FORM = "file:///android_asset/www/help-content/filling-forms-for-a-patient.html";
-    public static final String MUZIMA_USER_GUIDE = "file:///android_asset/www/help-content/mUzima-user-guide.html";
-    public static final String MUZIMA_TRAINING_MANUAL = "file:///android_asset/www/help-content/mUzima-training-manual.html";
-    public static final String INTRODUCTION_VIDEO = "https://www.youtube.com/watch?v=xnFACOHGzKg";
-    public static final String SETTING_UP_MUZIMA_VIDEO = "https://www.youtube.com/watch?v=nn7k1TL1qG0&feature=youtu.be";
-    public static final String TAGGING_FORMS_VIDEO = "https://www.youtube.com/watch?v=Ls4qpSYRep8&feature=youtu.be";
-    public static final String DOWNLOADING_COHORTS_VIDEO = "https://www.youtube.com/watch?v=uvVT9tRpCxY&feature=youtu.be";
-    public static final String CHANGE_SETTING_VIDEO = "https://www.youtube.com/watch?v=4VtkXUEP11k&feature=youtu.be";
-    public static final String DOWNLOADING_FORMS_VIDEO = "https://www.youtube.com/watch?v=8uNCq1EK8V8&feature=youtu.be";
+    public static final String ABOUT_DASHBOARD_FORM = "file:///android_asset/www/help-content/About-dashboard.html";
+    public static final String MUZIMA_SETTINGS = "file:///android_asset/www/help-content/Settings.html";
+    public static final String FILL_PATIENT_FORMS = "file:///android_asset/www/help-content/filling-forms-for-a-patient.html";
+    public static final String GUIDED_SETUP = "https://youtu.be/aSa4CcGtGdo";
+    public static final String ADVANCED_SETUP = "https://youtu.be/3yFieYJQEbs";
+    public static final String COHORTS_DOWNLOAD_ON_DEMAND = "https://youtu.be/CcQZy32O8JQ";
+    public static final String CONCEPTS_DOWNLOAD_ON_DEMAND = "https://youtu.be/Q6QIE7z6_O0";
+    public static final String FORMS_DOWNLOAD_ON_DEMAND = "https://youtu.be/1cPF58jhLiA";
+    public static final String CLIENT_REGISTRATION = "https://youtu.be/fmjhF-juq4k";
+    public static final String LOCAL_CLIENT_SEARCH = "https://youtu.be/630daM1wxGE";
+    public static final String SERVER_CLIENT_SEARCH = "https://youtu.be/C1xDs8wWjNM";
     private TextView helpContentView;
     private View scrollView;
+
+    ExpandableListAdapter listAdapter;
+    ExpandableListView expListView;
+    List<String> listDataHeader;
+    HashMap<String, List<String>> listDataChild;
+    //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_help);
-        setHelpContent();
+        setContentView(R.layout.activity_help_new);
+
+        // get the listview
+        expListView = (ExpandableListView) findViewById(R.id.lvExp);
+
+        // preparing list data
+        prepareListData();
+
+        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+
+        // setting list adapter
+        expListView.setAdapter(listAdapter);
+
+        expListView.setOnGroupExpandListener(new OnGroupExpandListener() {
+            int previousGroup = -1;
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if(groupPosition != previousGroup)
+                    expListView.collapseGroup(previousGroup);
+                previousGroup = groupPosition;
+            }
+        });
+
+        expListView.expandGroup(0);
+
+        // Listview on child click listener
+        expListView.setOnChildClickListener(new OnChildClickListener()
+        {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int group_position, int child_position, long id)
+            {
+                if(group_position==0 && child_position==0){
+                    startHelpContentDisplayActivity(MUZIMA_INITAL_SETUP_GUIDE,(String)listAdapter.getChild(group_position, child_position));
+                }
+                else if(group_position==0 && child_position==1){
+                    startHelpContentDisplayActivity(ABOUT_DASHBOARD_FORM,(String)listAdapter.getChild(group_position, child_position));
+                }
+                else if(group_position==0 && child_position==2){
+                    startHelpContentDisplayActivity(MUZIMA_SETTINGS,(String)listAdapter.getChild(group_position, child_position));
+                }
+                else if(group_position==0 && child_position==3){
+                    startHelpContentDisplayActivity(FILL_PATIENT_FORMS,(String)listAdapter.getChild(group_position, child_position));
+                }
+                //video links
+                else if(group_position==1 && child_position==0){
+                    viewVideo(GUIDED_SETUP);
+                }
+                else if(group_position==1 && child_position==1){
+                    viewVideo(ADVANCED_SETUP);
+                }
+                else if(group_position==1 && child_position==2){
+                    viewVideo(COHORTS_DOWNLOAD_ON_DEMAND);
+                }
+                else if(group_position==1 && child_position==3){
+                    viewVideo(CONCEPTS_DOWNLOAD_ON_DEMAND);
+                }
+                else if(group_position==1 && child_position==4){
+                    viewVideo(FORMS_DOWNLOAD_ON_DEMAND);
+                }
+                else if(group_position==1 && child_position==5){
+                    viewVideo(CLIENT_REGISTRATION);
+                }
+                else if(group_position==1 && child_position==6){
+                    viewVideo(LOCAL_CLIENT_SEARCH);
+                }
+                else if(group_position==1 && child_position==7){
+                    viewVideo(SERVER_CLIENT_SEARCH);
+                }
+                return false;
+            }
+        });
     }
 
-    private void setHelpContent() {
-        helpContentView = (TextView) findViewById(R.id.helpContent);
-        scrollView = findViewById(R.id.helpInfoMenu);
-        int helpType = getIntent().getIntExtra(HELP_TYPE, 0);
-        switch (helpType) {
-            case COHORT_WIZARD_HELP:
-                showHelpContentView();
-                helpContentView.setText(getResources().getText(R.string.hint_cohort_wizard_help));
-                setTitle(R.string.title_cohort_wizard_help);
-                break;
-            case COHORT_PREFIX_HELP:
-                showHelpContentView();
-                helpContentView.setText(getResources().getText(R.string.hint_cohort_prefix_help));
-                setTitle(R.string.title_cohort_prefix_help);
-                break;
-            case CUSTOM_CONCEPT_HELP:
-                showHelpContentView();
-                helpContentView.setText(getResources().getText(R.string.hint_custom_concept_help));
-                setTitle(R.string.title_concept_help);
-                break;
-            case CUSTOM_LOCATION_HELP:
-                showHelpContentView();
-                helpContentView.setText(getResources().getText(R.string.hint_custom_location_help));
-                setTitle(R.string.title_location_help);
-            case CUSTOM_PROVIDER_HELP:
-                showHelpContentView();
-                helpContentView.setText(getResources().getText(R.string.hint_custom_provider_help));
-                setTitle(R.string.title_provider_help);
-                break;
-            default:
-                helpContentView.setVisibility(View.GONE);
-                scrollView.setVisibility(View.VISIBLE);
-                setTitle(R.string.general_help);
-                break;
-        }
-    }
+    /*
+     * Preparing the list data
+     */
+    private void prepareListData() {
+        listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<String, List<String>>();
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.help, menu);
-        super.onCreateOptionsMenu(menu);
-        removeHelpMenu(menu);
-        return true;
-    }
+        // Adding child data
+        listDataHeader.add(getString(R.string.title_html_help));
+        listDataHeader.add(getString(R.string.title_help_video_links));
 
-    public void viewPatientFormFillingHelpContent(View view) {
-        startHelpContentDisplayActivity(PATIENT_FILLING_FORM,getText(R.string.title_fill_patient_forms_help).toString());
-    }
+        // Adding child data
+        List<String> howTo = new ArrayList<String>();
+        howTo.add(getString(R.string.title_advanced_setup_help_html));
+        howTo.add(getString(R.string.title_about_dashboard_help_html));
+        howTo.add(getString(R.string.title_settings_help_html));
+        howTo.add(getString(R.string.title_fill_patient_forms_help));
 
-    public void viewMuzimaInitialSetupGuide(View view) {
-        startHelpContentDisplayActivity(MUZIMA_INITAL_SETUP_GUIDE,getText(R.string.title_initial_setup_guide).toString());
-    }
+        List<String> videoLinks = new ArrayList<>();
+        videoLinks.add(getString(R.string.title_guided_setup_help_video));
+        videoLinks.add(getString(R.string.title_advanced_setup_help_video));
+        videoLinks.add(getString(R.string.title_cohort_download_help_video));
+        videoLinks.add(getString(R.string.title_concept_download_help_video));
+        videoLinks.add(getString(R.string.title_form_download_help_video));
+        videoLinks.add(getString(R.string.title_client_registration_help_video));
+        videoLinks.add(getString(R.string.title_local_client_search_help_video));
+        videoLinks.add(getString(R.string.title_server_client_search_help_video));
 
-    public void viewMuzimaUserGuide(View view) {
-        startHelpContentDisplayActivity(MUZIMA_USER_GUIDE,getText(R.string.title_server_side_setup).toString());
-    }
-
-    public void viewMuzimaTrainingManual(View view) {
-        startHelpContentDisplayActivity(MUZIMA_TRAINING_MANUAL,getText(R.string.title_muzima_training_manual).toString());
+        listDataChild.put(listDataHeader.get(0), howTo); // Header, Child data
+        listDataChild.put(listDataHeader.get(1), videoLinks);
     }
 
     private void startHelpContentDisplayActivity(String filePath, String title) {
@@ -113,43 +173,21 @@ public class HelpActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    private void showHelpContentView() {
-        helpContentView.setVisibility(View.VISIBLE);
-        scrollView.setVisibility(View.GONE);
-    }
-
-    private void removeHelpMenu(Menu menu) {
-        MenuItem menuSettings = menu.findItem(R.id.action_help);
-        menuSettings.setVisible(false);
-    }
-
-    public void viewIntroductionVideo(View view) {
-        viewVideo(INTRODUCTION_VIDEO);
-    }
-
-    public void viewSettingUpMuzimaVideo(View view) {
-        viewVideo(SETTING_UP_MUZIMA_VIDEO);
-    }
-
-    public void viewTaggingFormsVideo(View view) {
-        viewVideo(TAGGING_FORMS_VIDEO);
-    }
-
-    public void viewDownloadingCohortsVideo(View view) {
-        viewVideo(DOWNLOADING_COHORTS_VIDEO);
-    }
-
-    public void viewChangeSettingsVideo(View view) {
-        viewVideo(CHANGE_SETTING_VIDEO);
-    }
-
-    public void viewDownloadingFormsVideo(View view) {
-        viewVideo(DOWNLOADING_FORMS_VIDEO);
-    }
-
     private void viewVideo(String videoUrl){
         Intent playVideoIntent = new Intent(Intent.ACTION_VIEW);
         playVideoIntent.setData(Uri.parse(videoUrl));
         startActivity(playVideoIntent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        boolean returnValue = super.onCreateOptionsMenu(menu);
+        removeHelpMenu(menu);
+        return returnValue;
+    }
+
+    private void removeHelpMenu(Menu menu) {
+        MenuItem menuHelp = menu.findItem(R.id.action_help);
+        if (menuHelp != null) menuHelp.setVisible(false);
     }
 }

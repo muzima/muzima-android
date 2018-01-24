@@ -1,9 +1,11 @@
 /*
- * Copyright (c) 2014. The Trustees of Indiana University.
+ * Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center.
  *
- * This version of the code is licensed under the MPL 2.0 Open Source license with additional
- * healthcare disclaimer. If the user is an entity intending to commercialize any application
- * that uses this code in a for-profit venture, please contact the copyright holder.
+ * This version of the code is licensed under the MPL 2.0 Open Source license
+ * with additional health care disclaimer.
+ * If the user is an entity intending to commercialize any application that uses
+ *  this code in a for-profit venture,please contact the copyright holder.
  */
 
 package com.muzima.view.login;
@@ -14,7 +16,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,14 +29,16 @@ import android.animation.ValueAnimator;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.context.Context;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.CredentialsPreferenceService;
+import com.muzima.service.LandingPagePreferenceService;
 import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.MainActivity;
-import com.muzima.view.cohort.CohortWizardActivity;
 import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
 
 import java.util.Locale;
@@ -89,6 +92,7 @@ public class LoginActivity extends Activity {
         //Hack to get it to use default font space.
         passwordText.setTypeface(Typeface.DEFAULT);
         versionText.setText(getApplicationVersion());
+        usernameText.requestFocus();
     }
 
     private void showSessionTimeOutPopUpIfNeeded() {
@@ -278,6 +282,9 @@ public class LoginActivity extends Activity {
                 LocalePreferenceService localePreferenceService = ((MuzimaApplication) getApplication()).getLocalePreferenceService();
                 String currentLocale = Locale.getDefault().toString();
                 localePreferenceService.setPreferredLocale(currentLocale);
+
+                //init a background service to download missing settings
+                downloadMissingServerSettings();
                 startNextActivity();
             } else {
                 Toast.makeText(getApplicationContext(), getErrorText(result), Toast.LENGTH_SHORT).show();
@@ -308,13 +315,25 @@ public class LoginActivity extends Activity {
         private void startNextActivity() {
             Intent intent;
             if (new WizardFinishPreferenceService(LoginActivity.this).isWizardFinished()) {
-                intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent = new LandingPagePreferenceService(getApplicationContext()).getLandingPageActivityLauchIntent();
             } else {
                 removeRemnantDataFromPreviousRunOfWizard();
                 intent = new Intent(getApplicationContext(), SetupMethodPreferenceWizardActivity.class);
             }
             startActivity(intent);
             finish();
+        }
+
+        private void downloadMissingServerSettings(){
+            try {
+                boolean isSettingsDownloadNeeded = !((MuzimaApplication) getApplication()).getMuzimaSettingController()
+                        .isAllMandatorySettingsDownloaded();
+                if (isSettingsDownloadNeeded) {
+                    new MissingSettingsDownloadBackgroundTask().execute();
+                }
+            } catch (MuzimaSettingController.MuzimaSettingFetchException e){
+
+            }
         }
 
         protected class Result {
@@ -325,6 +344,20 @@ public class LoginActivity extends Activity {
                 this.credentials = credentials;
                 this.status = status;
             }
+        }
+    }
+
+    private class MissingSettingsDownloadBackgroundTask extends AsyncTask<String, Void,int[] > {
+        @Override
+        public int[] doInBackground(String... params){
+            MuzimaSyncService syncService = ((MuzimaApplication) getApplication()).getMuzimaSyncService();
+            return syncService.downloadMissingMandatorySettings();
+        }
+
+        @Override
+        protected void onPostExecute(int[] result) {
+            new RequireMedicalRecordNumberPreferenceService((MuzimaApplication) getApplicationContext())
+                    .saveRequireMedicalRecordNumberPreference();
         }
     }
 

@@ -1,9 +1,11 @@
 /*
- * Copyright (c) 2014. The Trustees of Indiana University.
+ * Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center.
  *
- * This version of the code is licensed under the MPL 2.0 Open Source license with additional
- * healthcare disclaimer. If the user is an entity intending to commercialize any application
- * that uses this code in a for-profit venture, please contact the copyright holder.
+ * This version of the code is licensed under the MPL 2.0 Open Source license
+ * with additional health care disclaimer.
+ * If the user is an entity intending to commercialize any application that uses
+ *  this code in a for-profit venture,please contact the copyright holder.
  */
 
 package com.muzima.adapters.patients;
@@ -17,6 +19,7 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.Constants;
+import com.muzima.utils.StringUtils;
 
 import java.util.List;
 
@@ -52,7 +55,11 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
 
     public void search(String text) {
         cancelBackgroundTask();
-        backgroundQueryTask = new BackgroundQueryTask().execute(text, SEARCH);
+        if(StringUtils.isEmpty(text)) {
+            reloadData();
+        } else {
+            backgroundQueryTask = new BackgroundQueryTask().execute(text, SEARCH);
+        }
     }
 
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {

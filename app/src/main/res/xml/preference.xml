@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~  this code in a for-profit venture,please contact the copyright holder.
+  -->
+
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="@string/header_openmrs_category">
@@ -54,6 +64,12 @@
                 android:summary="@string/hint_real_time_sync"
                 android:title="@string/title_real_time_sync"
                 android:key="@string/preference_real_time_sync" />
+        <CheckBoxPreference
+                android:defaultValue="false"
+                android:editable="false"
+                android:summary="@string/hint_require_medical_record_number"
+                android:title="@string/title_require_medical_record_number"
+                android:key="@string/preference_require_medical_record_number" />
 <!--
         <CheckBoxPreference
                 android:defaultValue="true"
@@ -65,10 +81,17 @@
         <ListPreference
                 android:title="@string/title_font_size"
                 android:key="@string/preference_font_size"
-                android:defaultValue="Medium"
+                android:defaultValue="@string/general_medium"
                 android:entries="@array/font_sizes"
                 android:entryValues="@array/font_sizes">
         </ListPreference>
+        <ListPreference
+            android:title="@string/title_landing_page"
+            android:key="@string/preference_landing_page"
+            android:defaultValue="@string/general_dashboard"
+            android:entries="@array/landing_pages"
+            android:entryValues="@array/landing_pages">
+    </ListPreference>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/header_provider_location_category">

@@ -28,7 +28,8 @@ var validateSelected = function (source) {
         // get the visible inputs element that are checked
         var checkedInput = $(fieldSet).find('input:checked');
         if (checkedInput.length == 0) {
-            errors[$(fieldSet).attr('name')] = "This question must be answered.";
+            var mandatoryQuestionValidationFailureMessage = htmlDataStore.getStringResource("hint_mandatory_question_validation_failure");
+            errors[$(fieldSet).attr('name')] = mandatoryQuestionValidationFailureMessage;
         }
     }
     return errors;
@@ -154,8 +155,10 @@ $(document).ready(function () {
                 var enteredDate = new Date(matches[3], matches[2] - 1, matches[1]);
                 var reference = new Date();
                 var today = new Date(reference.getFullYear(), reference.getMonth(), reference.getDate());
+
+                var futureDateValidationFailureMessage = htmlDataStore.getStringResource("hint_future_date_validation_failure");
                 if (enteredDate <= today) {
-                    errors[$(this).attr('name')] = "Please enter a date in the future.";
+                    errors[$(this).attr('name')] = futureDateValidationFailureMessage;
                 }
             }
             toggleValidationMessages(errors);
@@ -174,7 +177,9 @@ $(document).ready(function () {
                 var reference = new Date();
                 var today = new Date(reference.getFullYear(), reference.getMonth(), reference.getDate());
                 if (enteredDate > today) {
-                    errors[$(this).attr('name')] = "Please enter a date prior or equal to today.";
+                    var currentOrPastDateValidationFailureMessage =
+                        htmlDataStore.getStringResource("hint_current_or_past_date_validation_failure");
+                    errors[$(this).attr('name')] = currentOrPastDateValidationFailureMessage;
                 }
             }
             toggleValidationMessages(errors);
@@ -224,14 +229,14 @@ $(document).ready(function () {
 
     var addValidationMessage = function () {
         var validationError = $('#validation-error');
+        var formValidationFailureMessage =
+            htmlDataStore.getStringResource("hint_form_validation_failure");
         if (validationError.length == 0) {
             $('form').prepend(
-                '<div class="error" id="validation-error">' +
-                '    There is one or more validation check failed on this form. Please review and resubmit the form' +
-                '</div>'
+                '<div class="error" id="validation-error">' +formValidationFailureMessage + '</div>'
             );
         } else {
-            validationError.html('There is one or more validation failed on this form. Please review and resubmit the form');
+            validationError.html(formValidationFailureMessage);
         }
         $('html, body').animate({scrollTop: 0}, 'slow');
     };
@@ -351,14 +356,15 @@ $(document).ready(function () {
     /* Start - Initialize jQuery DatePicker */
 
     /* Start - CheckDigit algorithm Source: https://wiki.openmrs.org/display/docs/Check+Digit+Algorithm */
-
+    var checkDigitValidationFailureMessage = "";
     $.validator.addMethod("checkDigit", function (value, element) {
+            checkDigitValidationFailureMessage = htmlDataStore.getStringResource("hint_check_digit_validation_failure");
             var num = value.split('-');
             if (num.length != 2) {
                 return false;
             }
             return $.fn.luhnCheckDigit(num[0]) == num[1];
-        }, "Please enter digits that matches CheckDigit algorithm."
+        }, checkDigitValidationFailureMessage
     );
 
     // attach 'checkDigit' class to perform validation.
@@ -401,7 +407,7 @@ $(document).ready(function () {
     });
 
     /* Start - Checking that the current date is not in the future */
-
+    var currentOrPastDateValidationFailureMessage = "";
     $.validator.addMethod("nonFutureDate", function (value, element) {
             if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
             var pattern = /(\d{2})-(\d{2})-(\d{4})/g;
@@ -412,8 +418,10 @@ $(document).ready(function () {
             var enteredDate = new Date(matches[3], matches[2] - 1, matches[1]);
             var reference = new Date();
             var today = new Date(reference.getFullYear(), reference.getMonth(), reference.getDate());
+            currentOrPastDateValidationFailureMessage =
+                htmlDataStore.getStringResource("hint_current_or_past_date_validation_failure");
             return enteredDate <= today;
-        }, "Please enter a date prior or equal to today."
+        }, currentOrPastDateValidationFailureMessage
     );
 
     // attach 'nonFutureDate' class to perform validation.
@@ -425,6 +433,7 @@ $(document).ready(function () {
 
     /* Start - Checking that the current date is in the future */
 
+    var futureDateValidationFailureMessage = "";
     $.validator.addMethod("checkFutureDate", function (value, element) {
             if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
             var pattern = /(\d{2})-(\d{2})-(\d{4})/g;
@@ -435,6 +444,7 @@ $(document).ready(function () {
             var enteredDate = new Date(matches[3], matches[2] - 1, matches[1]);
             var reference = new Date();
             var today = new Date(reference.getFullYear(), reference.getMonth(), reference.getDate());
+            futureDateValidationFailureMessage = htmlDataStore.getStringResource("hint_future_date_validation_failure");
             return enteredDate > today;
         }, "Please enter a date in the future."
     );
@@ -447,12 +457,13 @@ $(document).ready(function () {
     /* End - checkFutureDate*/
 
     /* Start - Checking that the entered value is a valid phone number */
-
+    var phoneNumberValidationFailureMessage = "";
     $.validator.addMethod("phoneNumber", function (value, element) {
+            phoneNumberValidationFailureMessage = htmlDataStore.getStringResource("hint_phone_number_validation_failure");
             if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
             var inputLength = value.length;
             return inputLength >= 8 && inputLength <= 12;
-        }, "Invalid Phone Number. Please check and re-enter."
+        }, phoneNumberValidationFailureMessage
     );
 
     // attach 'phoneNumber' class to perform validation.
@@ -468,11 +479,13 @@ $(document).ready(function () {
         var $validator = $('form').validate();
         var errors = {};
         var result = true;
+        var optionNoneExclusiveSelectionValidationFailureMessage =
+            htmlDataStore.getStringResource("hint_option_none_exclusive_selection_validation_failure");
         $.each(nameArray, function (i, element) {
             var fieldSetElem = $('fieldset[name="' + element + '"]');
             result = isValidForNoneSelection(fieldSetElem);
             if (!result) {
-                errors[element] = "If 'None' is selected, no other options can be selected.";
+                errors[element] = optionNoneExclusiveSelectionValidationFailureMessage;
             }
         });
         if (!result) {
@@ -631,15 +644,18 @@ $(document).ready(function () {
     document.repeatValidationCheck = function($section,showErrorMessageIfInvalid) {
         var validSection = true;
         var minRepeatsParams = document.getCurrentAndMinimumRepeats($section);
+        var minimumRepeatsValidationFailureMessage =
+            htmlDataStore.getStringResource("hint_repeating_section_minimum_repeats_validation_failure");
         if(minRepeatsParams != null && minRepeatsParams.current_repeats < minRepeatsParams.minimum_repeats){
             validSection = false;
             if(showErrorMessageIfInvalid){
                 var $validationError = $section.find('.repeat-error');
                 if($validationError.length>0){
-                    $validationError.html("Minimum repeats not satisfied. Needs at least "+minRepeatsParams.minimum_repeats);
+                    $validationError.html(minimumRepeatsValidationFailureMessage + " " + minRepeatsParams.minimum_repeats);
                     $validationError.show();
                 } else {
-                    $validationError = '<div class="error repeat-error">Minimum repeats is not satisfied. Needs at least ' + minRepeatsParams.minimum_repeats + '. </div>';
+                    $validationError = '<div class="error repeat-error"> ' + minimumRepeatsValidationFailureMessage
+                        + " " + minRepeatsParams.minimum_repeats + '. </div>';
                     $section.append($validationError);
                 }
             }
@@ -730,11 +746,11 @@ $(document).ready(function () {
         });
     };
 
-    var populateNonConceptFields = function (prePopulateJson) {
+    var populateNonConceptFields = function ($parentDiv, prePopulateJson) {
         $.each(prePopulateJson, function (key, value) {
-            var $elements = $('[name="' + key + '"]');
+            var $elements = $parentDiv.find('[name="' + key + '"]');
             if (value instanceof Array) {
-                 if ($elements.length < value.length) {
+                if ($elements.length < value.length) {
                     $.each(value, function (i, valueElement) {
                         if (i == 0) {
                             $.each($elements, function(i, element) {
@@ -761,6 +777,8 @@ $(document).ready(function () {
                         });
                     });
                 }
+            } else if (value instanceof Object){
+                populateNonObservations($parentDiv, value);
             } else {
                 $.each($elements, function (i, element) {
                     applyValue(element, value);
@@ -777,6 +795,69 @@ $(document).ready(function () {
         } else {
             $(element).val(value);
         }
+    };
+
+    var populateNonObservations = function ($parentDiv, prePopulateJson) {
+        $.each(prePopulateJson, function (key, value) {
+            if (value instanceof Object) {
+                // check if this is a grouping observation.
+                var $div = $parentDiv.find('div[data-group="' + key + '"]');
+                if ($div.length > 0) {
+                    // we are dealing with grouping
+                    if (value instanceof Array) {
+                        $.each(value, function (i, element) {
+                            if (i == 0) {
+                                populateNonConceptFields($div, element);
+                            } else {
+                                var $clonedDiv = $div.clone(true);
+                                document.clearValuesOnClonedFields($clonedDiv);
+                                document.removeRepeatedSubSections($clonedDiv);
+                                populateNonConceptFields($clonedDiv, element);
+                                $div.after($clonedDiv);
+                            }
+                        });
+                    } else {
+                        populateNonConceptFields($div, value);
+                    }
+                } else {
+                    // we are not dealing with repeating
+                    if (value instanceof Array) {
+                        var elements = $parentDiv.find('[data-group="' + key + '"]');
+                        if (elements.length < value.length) {
+                            $.each(value, function (i, valueElement) {
+                                if (i == 0) {
+                                    $.each(elements, function (i, element) {
+                                        applyValue(element, valueElement);
+                                    });
+                                } else {
+                                    var $div = $(elements).closest('.repeat, .custom-repeat');
+                                    var $clonedDiv = $div.clone(true);
+                                    $div.after($clonedDiv);
+                                    elements = $clonedDiv.find('[data-group="' + key + '"]');
+                                    $.each(elements, function (i, element) {
+                                        applyValue(element, valueElement);
+                                    });
+                                }
+                            });
+                        } else {
+                            $.each(value, function (i, valueElement) {
+                                $.each(elements, function (i, element) {
+                                    applyValue(element, valueElement);
+                                });
+                            });
+                        }
+                    } else {
+                        populateNonConceptFields($div, value);
+                    }
+                }
+            }
+            else {
+                var $elements = $parentDiv.find('[name="' + key + '"]');
+                $.each($elements, function (i, element) {
+                    applyValue(element, value);
+                });
+            }
+        });
     };
 
     var populateObservations = function ($parentDiv, prePopulateJson) {
@@ -860,7 +941,7 @@ $(document).ready(function () {
             if (key === 'observation') {
                 populateObservations($('form'),value);
             } else {
-                populateNonConceptFields(value);
+                populateNonObservations($('form'),value);
             }
         });
         console.timeEnd("Starting population");
@@ -872,7 +953,7 @@ $(document).ready(function () {
         //construct array of obs_datetime for use while serializing concepts
         setObsDatetimeArray(this);
 
-        var jsonResult = $.extend({}, serializeNonConceptElements(this),
+        var jsonResult = $.extend({}, serializeNonConceptElements(this), serializeNestedNonConceptElements(this),
             serializeConcepts(this), serializeNestedConcepts(this));
         var completeObject = {};
         var defaultKey = "observation";
@@ -898,16 +979,39 @@ $(document).ready(function () {
         var object = {};
         var $inputElements = $form.find('[name]').not('[data-concept]');
         $.each($inputElements, function (i, element) {
-            if ($(element).is(':checkbox') || $(element).is(':radio')) {
-                if ($(element).is(':checked')) {
+            var $closestElement = $(element).closest('.section, .group-set', $form);
+            if ($form.is($closestElement) || $closestElement.attr('data-group') == undefined ) {
+                if ($(element).is(':checkbox') || $(element).is(':radio')) {
+                    if ($(element).is(':checked')) {
+                        object = pushIntoArray(object, $(element).attr('name'), $(element).val());
+                    }
+                } else {
                     object = pushIntoArray(object, $(element).attr('name'), $(element).val());
                 }
-            } else {
-                object = pushIntoArray(object, $(element).attr('name'), $(element).val());
             }
         });
         return object;
     };
+
+    var serializeNestedNonConceptElements = function ($form) {
+        var result = {};
+        var allParentDivs = $form.find('div[data-group]').filter(':visible');
+        var nestedParentDivs = allParentDivs.find('div[data-group]');
+        var rootParentDivs = allParentDivs.not(nestedParentDivs);
+        $.each(rootParentDivs, function (i, element) {
+            var $childDivs = $(element).find('div[data-group]');
+            if($childDivs.length > 0){
+                var subResult1 = serializeNestedNonConceptElements($(element));
+                var subResult2 = serializeNonConceptElements($(element));
+                var subResultCombined = $.extend({}, subResult1,subResult2);
+                result = pushIntoArray(result, $(element).attr('data-group'), subResultCombined);
+            } else {
+                var $allNonConcepts = $(element).find('*[name]');
+                result = pushIntoArray(result, $(element).attr('data-group'), jsonifyNonConcepts($allNonConcepts));
+            }
+        });
+        return result;
+    }
 
     var serializeNestedConcepts = function ($form) {
         var result = {};
@@ -997,6 +1101,34 @@ $(document).ready(function () {
             }
         });
         return o;
+    };
+
+    var jsonifyNonConcepts = function ($allNonConcepts) {
+        var o = {};
+        $.each($allNonConcepts, function (i, element) {
+            //if element is metadata check whether corresponding value is present
+            if(typeof $(element).attr('data-metadata-for') !== 'undefined'){
+                var correspondingValueElementName = $(element).attr('data-metadata-for');
+                var value = $(element).closest('div[data-group]').find('[name="' + correspondingValueElementName + '"]').val();
+                if(value != ''){
+                    jsonifyNonConcept(o,element);
+                }
+            } else {
+                jsonifyNonConcept(o,element);
+            }
+        });
+        return o;
+    };
+
+    var jsonifyNonConcept = function(object,element){
+        if ($(element).is(':checkbox') || $(element).is(':radio')) {
+            if ($(element).is(':checked')) {
+                object = pushIntoArray(object, $(element).attr('name'), $(element).val());
+            }
+        } else {
+            object = pushIntoArray(object, $(element).attr('name'), $(element).val());
+        }
+        return object;
     };
 
     var obsDatetimeArray = null;
@@ -1098,6 +1230,8 @@ $(document).ready(function () {
         $.each(providerNamesResults, function (key, providerName) {
             listOfProviders.push({"val": providerName.identifier, "label": providerName.name});
         });
+        var encounterProviderValidationFailureMessage =
+            htmlDataStore.getStringResource("hint_encounter_provider_validation_failure");
         $.validator.addMethod("validProviderOnly", function (value, element) {
 
             if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
@@ -1108,7 +1242,7 @@ $(document).ready(function () {
                 }
             }
             return false;
-        }, "Please provide a provider from the list of possible providers.");
+        }, encounterProviderValidationFailureMessage);
 
         // attach 'validProviderOnly' class to perform validation.
         jQuery.validator.addClassRules({
@@ -1125,6 +1259,10 @@ $(document).ready(function () {
         $.each(locationNamesResults, function (key, locationName) {
             listOfLocations.push({"val": locationName.id, "label": locationName.name});
         });
+
+        var encounterLocationValidationFailureMessage =
+            htmlDataStore.getStringResource("hint_encounter_location_validation_failure");
+
         /* Start - Checking that the user entered location exists in the list of possible locations */
         $.validator.addMethod("validLocationOnly", function (value, element) {
             if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
@@ -1135,7 +1273,7 @@ $(document).ready(function () {
                 }
             }
             return false;
-        }, "Please provide a location from the list of possible locations.");
+        }, encounterLocationValidationFailureMessage);
 
     }
 
@@ -1146,7 +1284,8 @@ $(document).ready(function () {
     /* End - validLocationOnly*/
 
     document.setupValidationForConsultation = function (value, element, listOfConsultants) {
-
+        var consultationConsultantValidationFailureMessage =
+            htmlDataStore.getStringResource("hint_consultation_consultant_validation_failure");
         /* Start - Checking that the user entered consultant exists in the list of possible consultant */
         $.validator.addMethod("validConsultantOnly", function (value, element) {
             if ($.fn.isNotRequiredAndEmpty(value, element)) return true;

@@ -1,9 +1,11 @@
 /*
- * Copyright (c) 2014. The Trustees of Indiana University.
+ * Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center.
  *
- * This version of the code is licensed under the MPL 2.0 Open Source license with additional
- * healthcare disclaimer. If the user is an entity intending to commercialize any application
- * that uses this code in a for-profit venture, please contact the copyright holder.
+ * This version of the code is licensed under the MPL 2.0 Open Source license
+ * with additional health care disclaimer.
+ * If the user is an entity intending to commercialize any application that uses
+ *  this code in a for-profit venture,please contact the copyright holder.
  */
 
 package com.muzima;
@@ -29,6 +31,7 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
@@ -90,6 +93,7 @@ public class MuzimaApplication extends Application {
     private CohortPrefixPreferenceService prefixesPreferenceService;
     private LocalePreferenceService localePreferenceService;
     private SetupConfigurationController setupConfigurationController;
+    private MuzimaSettingController settingsController;
     private MuzimaTimer muzimaTimer;
     public static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
@@ -184,7 +188,8 @@ public class MuzimaApplication extends Application {
     public ConceptController getConceptController() {
         if (conceptController == null) {
             try {
-                conceptController = new ConceptController(muzimaContext.getService(ConceptService.class), muzimaContext.getService(ObservationService.class));
+                conceptController = new ConceptController(muzimaContext.getService(ConceptService.class),
+                        muzimaContext.getService(ObservationService.class));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -205,8 +210,9 @@ public class MuzimaApplication extends Application {
     public FormController getFormController() {
         if (formController == null) {
             try {
-                formController = new FormController(muzimaContext.getFormService(), muzimaContext.getPatientService(), muzimaContext.getLastSyncTimeService(), getSntpService(),
-                        muzimaContext.getObservationService(), muzimaContext.getEncounterService());
+                formController = new FormController(muzimaContext.getFormService(), muzimaContext.getPatientService(),
+                        muzimaContext.getLastSyncTimeService(), getSntpService(), muzimaContext.getObservationService(),
+                        muzimaContext.getEncounterService(),getPatientController(),getMuzimaSettingController());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -278,7 +284,8 @@ public class MuzimaApplication extends Application {
     public NotificationController getNotificationController() {
         if (notificationController == null) {
             try {
-                notificationController = new NotificationController(muzimaContext.getService(NotificationService.class), muzimaContext.getFormService());
+                notificationController = new NotificationController(muzimaContext.getService(NotificationService.class),
+                        muzimaContext.getFormService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -327,6 +334,17 @@ public class MuzimaApplication extends Application {
             }
         }
         return setupConfigurationController;
+    }
+
+    public MuzimaSettingController getMuzimaSettingController() {
+        if(settingsController == null){
+            try {
+                settingsController = new MuzimaSettingController(muzimaContext.getMuzimaSettingService());
+            } catch (IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+        return settingsController;
     }
 
     public void resetTimer(int timeOutInMin) {
