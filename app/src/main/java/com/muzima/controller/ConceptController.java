@@ -17,6 +17,7 @@ import com.muzima.api.service.ObservationService;
 import com.muzima.util.JsonUtils;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
+import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,7 +29,8 @@ import java.util.List;
 import java.util.Set;
 
 public class ConceptController {
-    private List<Concept> newConcepts = new ArrayList<Concept>();
+    public static final String TAG = "ConceptController";
+    public List<Concept> newConcepts = new ArrayList<Concept>();
     private ConceptService conceptService;
     private ObservationService observationService;
 

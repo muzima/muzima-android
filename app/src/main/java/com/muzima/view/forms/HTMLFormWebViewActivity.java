@@ -36,8 +36,11 @@ import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.User;
+import com.muzima.controller.ConceptController;
+import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.ObservationController;
 import com.muzima.controller.ProviderController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
@@ -103,6 +106,9 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private String sectionName;
     private FormController formController;
     private LocationController locationController;
+    private ConceptController conceptController;
+    private EncounterController encounterController;
+    private ObservationController observationController;
     private String autoSaveIntervalPreference;
     private boolean encounterProviderPreference;
     private boolean duplicateFormDataPreference;
@@ -114,7 +120,10 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         super.onCreate(savedInstanceState);
         formController = ((MuzimaApplication) this.getApplicationContext()).getFormController();
         locationController = ((MuzimaApplication) this.getApplicationContext()).getLocationController();
+        conceptController = ((MuzimaApplication) this.getApplicationContext()).getConceptController();
         providerController = ((MuzimaApplication) this.getApplicationContext()).getProviderController();
+        encounterController =((MuzimaApplication) this.getApplicationContext()).getEncounterController();
+        observationController =((MuzimaApplication) this.getApplicationContext()).getObservationController();
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
@@ -425,7 +434,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         webView.addJavascriptInterface(imagingComponent, IMAGE);
         webView.addJavascriptInterface(audioComponent, AUDIO);
         webView.addJavascriptInterface(videoComponent, VIDEO);
-        webView.addJavascriptInterface(new HTMLFormDataStore(this, formController,locationController, formData, providerController),
+        webView.addJavascriptInterface(new HTMLFormDataStore(this, formController,locationController, formData, providerController,conceptController,encounterController,observationController),
                 HTML_DATA_STORE);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         if (isFormComplete()) {

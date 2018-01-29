@@ -18,23 +18,34 @@ import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.model.Concept;
+import com.muzima.api.model.Observation;
+import com.muzima.api.model.Encounter;
+import com.muzima.api.model.EncounterType;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Provider;
+import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.ObservationController;
 import com.muzima.controller.ProviderController;
+import com.muzima.model.observation.Concepts;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 import net.minidev.json.JSONValue;
 import org.json.JSONException;
+import com.muzima.controller.EncounterController;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import org.json.JSONArray;
+
 
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION;
 
@@ -44,15 +55,21 @@ public class HTMLFormDataStore {
     private HTMLFormWebViewActivity formWebViewActivity;
     private FormController formController;
     private LocationController locationController;
+    private ConceptController conceptController;
+    private ObservationController observationController;
     private FormData formData;
     private ProviderController providerController;
+    private EncounterController encounterController;
 
-    public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity, FormController formController, LocationController locationController, FormData formData, ProviderController providerController) {
+    public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity, FormController formController, LocationController locationController, FormData formData, ProviderController providerController, ConceptController conceptController, EncounterController encounterController,ObservationController observationController) {
         this.formWebViewActivity = formWebViewActivity;
         this.formController = formController;
         this.formData = formData;
         this.providerController = providerController;
         this.locationController = locationController;
+        this.conceptController = conceptController;
+        this.encounterController = encounterController;
+        this.observationController = observationController;
     }
 
     @JavascriptInterface
@@ -178,4 +195,104 @@ public class HTMLFormDataStore {
         Context context = formWebViewActivity.getBaseContext();
         return context.getString(context.getResources().getIdentifier(stringResourceName, "string",context.getPackageName()));
     }
+
+    @JavascriptInterface
+    public String getConceptsss() throws JSONException {
+        List<Concept> concepts = new ArrayList<Concept>();
+        try {
+               concepts = conceptController.getConcepts();
+       } catch (ConceptController.ConceptFetchException e) {
+            Log.e(TAG, "Exception occurred while loading concepts", e);
+        }
+        catch (Exception e){
+            Log.e(TAG, "Exception occurred while loading concepts", e);
+        }
+        return JSONValue.toJSONString(concepts);
+    }
+
+    @JavascriptInterface
+    public String getEncountersByPatientuuid(String patientuuid) throws JSONException {
+        List<Encounter> encounters = new ArrayList<Encounter>();
+        try {
+            encounters = encounterController.getEncountersByPatientUuid(patientuuid);
+        } catch (EncounterController.DownloadEncounterException e) {
+            Log.e(TAG, "Exception occurred while loading encounters", e);
+        }
+        catch (Exception e){
+            Log.e(TAG, "ExceptioJSONValuen occurred while loading encounters", e);
+        }
+        return JSONValue.toJSONString(encounters);
+    }
+
+    @JavascriptInterface
+    public String getEncounterTypes(String patientuuid) throws JSONException{
+        List<Encounter> encounters = new ArrayList<Encounter>();
+        List<Encounter> encountertypes = new ArrayList<Encounter>();
+        List<String> encounterTypeArray = new ArrayList<String>();
+        try {
+            encounters = encounterController.getEncountersByPatientUuid(patientuuid);
+            for(Encounter encounter:encounters){
+                if(!(encounterTypeArray.contains(encounter.getEncounterType().getName()))){
+                    encounterTypeArray.add(encounter.getEncounterType().getName());
+                    encountertypes.add(encounter);
+                }
+            }
+        } catch (EncounterController.DownloadEncounterException e) {
+            Log.e(TAG, "Exception occurred while loading encounterTypes", e);
+        }
+        catch (Exception e){
+            Log.e(TAG, "Exception occurred while loading encounterTypes", e);
+        }
+        return JSONValue.toJSONString(encountertypes);
+    }
+
+    @JavascriptInterface
+    public String getObsByConceptId(String patientUuid,int conceptId) throws JSONException{
+        List<Observation> observations = new ArrayList<Observation>();
+        try {
+            observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid,conceptId);
+        } catch (ObservationController.LoadObservationException e) {
+            Log.e(TAG, "Exception occurred while loading observations", e);
+        }
+        catch (Exception e){
+            Log.e(TAG, "Exception occurred while loading observations", e);
+        }
+        return JSONValue.toJSONString(observations);
+    }
+
+    @JavascriptInterface
+    public String getObsByEncounterId(int encounterid){
+        List<Observation> observations = new ArrayList<Observation>();
+        try {
+            observations = observationController.getObservationsByEncounterId(encounterid);
+        } catch (ObservationController.LoadObservationException e) {
+            Log.e(TAG, "Exception occurred while loading observations", e);
+        }
+        catch (Exception e){
+            Log.e(TAG, "Exception occurred while loading observations", e);
+        }
+        return JSONValue.toJSONString(observations);
+    }
+
+    @JavascriptInterface
+    public String getObsByEncounterType(String patientUuid,String encounterType){
+        List<Observation> observations = new ArrayList<Observation>();
+        List<Encounter> encounters=new ArrayList<Encounter>();
+        try {
+            encounters = encounterController.getEncountersByPatientUuid(patientUuid);
+            for(Encounter enc:encounters){
+                if(enc.getEncounterType().getName().equals(encounterType)) {
+                    observations.addAll(observationController.getObservationsByEncounterId(enc.getId()));
+                }
+            }
+        } catch (ObservationController.LoadObservationException e) {
+            Log.e(TAG, "Exception occurred while loading observations", e);
+        } catch (EncounterController.DownloadEncounterException e) {
+            Log.e(TAG, "Exception occurred while loading encounters", e);
+        } catch (Exception e){
+            Log.e(TAG, "Exception occurred while loading observations", e);
+        }
+        return JSONValue.toJSONString(observations);
+    }
+
 }
