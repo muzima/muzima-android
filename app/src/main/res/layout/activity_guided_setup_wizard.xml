@@ -28,11 +28,13 @@
         android:layout_below="@+id/guided_setup_header">
         <ListView
                 android:id="@+id/setup_logs_list"
+                style="@style/SetUpLogList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
         </ListView>
         <TextView android:id="@+id/setup_actions_final_result"
+                style="@style/SetupActionFinalResult"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
 </LinearLayout>

@@ -32,7 +32,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
-                android:gravity="left"/>
+                android:gravity="left"
+                style="@style/EncounterFormName"/>
         <TextView
                 android:id="@+id/encounterDate"
                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -41,7 +42,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
-                android:gravity="right"/>
+                android:gravity="right"
+                style="@style/EncounterDate"/>
     </LinearLayout>
     <LinearLayout
             android:layout_width="fill_parent"
@@ -60,7 +62,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
                 android:gravity="left"
-                android:textColor="@color/secondary_text"/>
+                android:textColor="@color/secondary_text"
+                style="@style/EncounterProvider"/>
         <TextView
                 android:id="@+id/encounterLocation"
                 android:textAppearance="?android:attr/textAppearanceSmall"
@@ -69,7 +72,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
                 android:gravity="right"
-                android:textColor="@color/secondary_text"/>
+                android:textColor="@color/secondary_text"
+                style="@style/EncounterLocation"/>
     </LinearLayout>
 
 

@@ -18,6 +18,7 @@
             android:id="@+id/setup_action"
             android:textColor="@android:color/white"
             android:layout_width="wrap_content"
+            style="@style/SetUpLogList"
             android:layout_height="wrap_content"
     />
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
@@ -25,12 +26,14 @@
                 android:id="@+id/setup_action_result_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/SetUpLogList"
                 android:textColor="@color/primary_blue"/>
         <TextView
                 android:id="@+id/setup_action_result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/primary_blue"
+                style="@style/SetUpLogList"
                 android:layout_marginLeft="2dp"/>
     </LinearLayout>
 
