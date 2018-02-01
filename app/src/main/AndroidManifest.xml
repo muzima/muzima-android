@@ -40,7 +40,7 @@
                 android:name=".view.DisclaimerActivity"
                 android:label="mUzima Disclaimer">
         </activity>
-
+d
         <activity
                 android:name="com.muzima.view.MainActivity"
                 android:configChanges="orientation|screenSize"

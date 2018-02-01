@@ -56,7 +56,7 @@
                 android:orientation="vertical">
     <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="100dp"
+            style="@style/ClientSummaryGridItem"
             android:orientation="vertical"
             android:layout_marginTop="10dp"
             android:baselineAligned="false">
@@ -88,7 +88,7 @@
         </LinearLayout>
     <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="100dp"
+            style="@style/ClientSummaryGridItem"
             android:orientation="vertical"
             android:layout_marginTop="10dp"
             android:baselineAligned="false">
@@ -120,7 +120,7 @@
     </LinearLayout>
     <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="100dp"
+            style="@style/ClientSummaryGridItem"
             android:orientation="vertical"
             android:layout_marginTop="10dp"
             android:baselineAligned="false">
@@ -157,7 +157,7 @@
 
     <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="100dp"
+            style="@style/ClientSummaryGridItem"
             android:orientation="vertical"
             android:layout_marginTop="10dp"
             android:baselineAligned="false" android:layout_marginBottom="10dp">

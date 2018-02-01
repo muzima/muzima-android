@@ -64,7 +64,7 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:text="@string/hint_password_change"
-                  android:textSize="14sp"
+                  style="@style/LoginInfoQuestion"
                   android:onClick="onUpdatePasswordCheckboxClicked"/>
 
         <FrameLayout
@@ -86,6 +86,7 @@
                 android:id="@+id/version"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/Versiontext"
                 android:layout_gravity="center"/>
     </LinearLayout>
 
