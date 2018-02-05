@@ -8,7 +8,7 @@
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
 
-<LinearLayout
+<!--<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         style="@style/LoginActivityLayout"
         android:orientation="horizontal">
@@ -90,3 +90,87 @@
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LoginActivityLayout"
+    android:padding="0dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        style="@style/LoginActivityLayout">
+
+        <ImageView
+            android:id="@+id/logo"
+            style="@style/LoginActivityLogo"
+            android:contentDescription="@string/title_logo"/>
+
+        <TextView
+            android:id="@+id/title_login"
+            style="@style/LoginActivityHeader"/>
+
+        <View style="@style/LoginActivityDivider.Style"/>
+
+        <LinearLayout style="@style/LoginInfoLayout">
+
+            <EditText
+                android:id="@+id/serverUrl"
+                style="@style/LoginInfoEditText"
+                android:inputType="textUri"
+                android:text="@string/default_server"
+                android:nextFocusDown="@+id/username"
+                android:hint="@string/hint_server_url"/>
+
+            <View
+                style="@style/LoginInfoLayoutDivider"
+                android:id="@+id/server_url_divider"/>
+
+            <EditText
+                android:id="@+id/username"
+                style="@style/LoginInfoEditText"
+                android:inputType="textShortMessage"
+                android:nextFocusDown="@+id/password"
+                android:hint="@string/general_username"/>
+
+            <View style="@style/LoginInfoLayoutDivider"/>
+
+            <EditText
+                android:id="@+id/password"
+                android:hint="@string/general_password"
+                style="@style/LoginInfoEditText"
+                android:nextFocusDown="@+id/login"
+                android:inputType="textPassword"/>
+
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/update_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hint_password_change"
+            style="@style/LoginInfoQuestion"
+            android:onClick="onUpdatePasswordCheckboxClicked"/>
+
+        <FrameLayout
+            style="@style/LoginButtonLayout">
+
+            <Button
+                android:id="@+id/login"
+                style="@style/LoginButton"
+                android:text="@string/general_login"/>
+
+            <TextView
+                android:id="@+id/authenticatingText"
+                style="@style/LoginAuthenticatingButton"
+                android:text="@string/hint_authentication_progress"
+                android:visibility="gone"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Versiontext"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+</ScrollView>

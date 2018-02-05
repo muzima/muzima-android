@@ -64,7 +64,7 @@
 
     <com.muzima.view.CheckedLinearLayout
             style="@style/ClickableSummaryItem"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="20dp"
             android:id="@+id/advanced_setup_layout"
             android:background="@drawable/list_multi_selector_blue"

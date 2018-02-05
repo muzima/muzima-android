@@ -40,7 +40,7 @@
                 android:name=".view.DisclaimerActivity"
                 android:label="mUzima Disclaimer">
         </activity>
-d
+
         <activity
                 android:name="com.muzima.view.MainActivity"
                 android:configChanges="orientation|screenSize"
@@ -338,9 +338,10 @@ d
         <activity
                 android:name=".view.setupconfiguration.SetupMethodPreferenceWizardActivity"
                 android:label="Setup Method"
-                android:configChanges="orientation|screenSize"
+                android:configChanges="orientation|screenSize|keyboardHidden"
+                android:screenOrientation="portrait"
                 android:theme="@style/WizardTheme"
-                android:windowSoftInputMode="adjustResize"/>
+                android:windowSoftInputMode="adjustNothing"/>
         <activity
                 android:name=".view.setupconfiguration.GuidedConfigurationWizardActivity"
                 android:label="Guided Setup Wizard"
