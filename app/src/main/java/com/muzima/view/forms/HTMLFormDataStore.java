@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Concept;
+import com.muzima.api.model.Form;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.EncounterType;
@@ -181,7 +182,7 @@ public class HTMLFormDataStore {
     public HTMLFormObservationCreator getFormParser() {
         MuzimaApplication applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
         return new HTMLFormObservationCreator(applicationContext.getPatientController(), applicationContext.getConceptController(),
-                applicationContext.getEncounterController(), applicationContext.getObservationController());
+                applicationContext.getEncounterController(), applicationContext.getObservationController(),applicationContext.getLocationController(),applicationContext.getProviderController(),applicationContext.getFormController());
     }
     private boolean isRegistrationComplete(String status) {
         return isRegistrationForm() && status.equals(Constants.STATUS_COMPLETE);
