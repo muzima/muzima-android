@@ -23,6 +23,7 @@ import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.service.FormParser;
 import com.muzima.utils.Constants;
+
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -95,7 +96,7 @@ public class FormDataStore {
     private void parseForm(String xmlData, String status) throws ConceptController.ConceptSaveException,
             ParseException, XmlPullParserException, PatientController.PatientLoadException,
             ConceptController.ConceptFetchException, IOException, ConceptController.ConceptParseException,
-            ObservationController.ParseObservationException{
+            ObservationController.ParseObservationException {
         if (status.equals(Constants.STATUS_INCOMPLETE)){
             return;
         }
@@ -105,7 +106,7 @@ public class FormDataStore {
 
     public FormParser getFormParser() {
         return new FormParser(applicationContext.getPatientController(), applicationContext.getConceptController(),
-                applicationContext.getEncounterController(), applicationContext.getObservationController());
+                applicationContext.getEncounterController(), applicationContext.getObservationController(),applicationContext.getLocationController(),applicationContext.getProviderController(),applicationContext.getFormController());
     }
 
 
