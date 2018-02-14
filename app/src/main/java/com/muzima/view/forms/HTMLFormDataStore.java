@@ -198,7 +198,7 @@ public class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public String getConceptsss() throws JSONException {
+    public String getConcepts() throws JSONException {
         List<Concept> concepts = new ArrayList<Concept>();
         try {
                concepts = conceptController.getConcepts();
@@ -212,7 +212,7 @@ public class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public String getEncountersByPatientuuid(String patientuuid) throws JSONException {
+    public String getEncountersByPatientUuid(String patientuuid) throws JSONException {
         List<Encounter> encounters = new ArrayList<Encounter>();
         try {
             encounters = encounterController.getEncountersByPatientUuid(patientuuid);
