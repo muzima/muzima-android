@@ -28,6 +28,7 @@ import com.muzima.adapters.setupconfiguration.GuidedSetupActionLogAdapter;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.model.SetupActionLogModel;
+import com.muzima.service.LandingPagePreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.util.JsonUtils;
@@ -42,7 +43,7 @@ import com.muzima.utils.Constants.SetupLogConstants;
 
 public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
     public static final String SETUP_CONFIG_UUID_INTENT_KEY = "SETUP_CONFIG_UUID";
-    private static final String TAG = "GuidedConfigurationWizardActivity";
+    private static final String TAG = "GuidedConfigWizard";
     private SetupConfigurationTemplate setupConfigurationTemplate;
     private String progressUpdateMessage;
     private final int TOTAL_WIZARD_STEPS = 9;
@@ -59,7 +60,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             @Override
             public void onClick(View view) {
                 new WizardFinishPreferenceService(GuidedConfigurationWizardActivity.this).finishWizard();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new LandingPagePreferenceService(getApplicationContext()).getLandingPageActivityLauchIntent();
                 startActivity(intent);
                 finish();
             }
