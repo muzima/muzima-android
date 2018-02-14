@@ -11,9 +11,7 @@
 package com.muzima.controller;
 
 import android.util.Log;
-import com.muzima.api.model.CohortMember;
-import com.muzima.api.model.Patient;
-import com.muzima.api.model.PatientIdentifier;
+import com.muzima.api.model.*;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.PatientService;
 import com.muzima.utils.StringUtils;
@@ -239,6 +237,42 @@ public class PatientController {
     public void deleteAllPatients() throws PatientDeleteException,IOException {
         List<Patient> allPatients = patientService.getAllPatients();
         patientService.deletePatients(allPatients);
+    }
+
+    public PatientIdentifierType getPatientIdentifierTypeByUuid(String uuid){
+        try {
+            return patientService.getPatientIdentifierTypeByUuid(uuid);
+        } catch (IOException e){
+            Log.e(TAG, "Error retrieving patient identifier type by uuid : " + uuid, e);
+        }
+        return null;
+    }
+
+    public List<PatientIdentifierType> getPatientIdentifierTypeByName(String name){
+        try {
+            return patientService.getPatientIdentifierTypeByName(name);
+        } catch (IOException e){
+            Log.e(TAG, "Error retrieving patient identifier type by name : " + name, e);
+        }
+        return null;
+    }
+
+    public PersonAttributeType getPersonAttributeTypeByUuid(String uuid){
+        try {
+            return patientService.getPersonAttributeTypeByUuid(uuid);
+        } catch (IOException e){
+            Log.e(TAG, "Error retrieving person attribute type by uuid : " + uuid, e);
+        }
+        return null;
+    }
+
+    public List<PersonAttributeType> getPersonAttributeTypeByName(String name){
+        try {
+            return patientService.getPersonAttributeTypeByName(name);
+        } catch (IOException e){
+            Log.e(TAG, "Error retrieving person attribute type by name : " + name, e);
+        }
+        return null;
     }
 
 
