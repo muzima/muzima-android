@@ -1307,7 +1307,7 @@ $(document).ready(function () {
     /* End - validConsultantOnly*/
     /*auto-complete of concept*/
     var concepts = $("#historysearchid");
-    var conceptNamesResults = htmlDataStore.getConceptsss();
+    var conceptNamesResults = htmlDataStore.getConcepts();
     var conceptNamesResult = "";
     conceptNamesResults = JSON.parse(conceptNamesResults);
 
@@ -1367,7 +1367,7 @@ $(document).ready(function () {
         var encounters = $("#historysearchid");
         var patientuuid = $('#patient\\.uuid').val();
         var encounterNamesResult;
-        var encounterNamesResults = htmlDataStore.getEncountersByPatientuuid(patientuuid);
+        var encounterNamesResults = htmlDataStore.getEncountersByPatientUuid(patientuuid);
         encounterNamesResults = JSON.parse(encounterNamesResults);
 
         encounters.empty();
