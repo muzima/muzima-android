@@ -135,15 +135,15 @@ public class EncounterController {
 
     public List<Encounter> getEncountersByEncounterTypeNameAndPatientUuid(String name,String patientUuid) throws DownloadEncounterException{
         try{
-            return encounterService.getAllEncounterByEncounterTypeNameAndPatientUUid(name,patientUuid);
+            return encounterService.getEncountersByEncounterTypeNameAndPatientUuid(name,patientUuid);
         }catch(IOException e){
             throw new DownloadEncounterException(e);
         }
     }
 
-    public List<Encounter> getEncountersByEncounterTypeUUidAndPatientUuid(String encounterTypeUuid,String patientUuid) throws DownloadEncounterException{
+    public List<Encounter> getEncountersByEncounterTypeUuidAndPatientUuid(String encounterTypeUuid,String patientUuid) throws DownloadEncounterException{
         try{
-            return encounterService.getAllEncounterByEncounterTypeUuidAndPatientUUid(encounterTypeUuid,patientUuid);
+            return encounterService.getEncountersByEncounterTypeUuidAndPatientUuid(encounterTypeUuid,patientUuid);
         }catch(IOException e){
             throw new DownloadEncounterException(e);
         }
@@ -151,7 +151,7 @@ public class EncounterController {
 
     public List<Encounter> getEncountersByEncounterTypeIdAndPatientUuid(int encounterTypeId,String patientUuid) throws DownloadEncounterException{
         try{
-            return encounterService.getAllEncounterByEncounterTypeIdAndPatientUUid(encounterTypeId,patientUuid);
+            return encounterService.getEncountersByEncounterTypeIdAndPatientUuid(encounterTypeId,patientUuid);
         }catch(IOException e){
             throw new DownloadEncounterException(e);
         }
