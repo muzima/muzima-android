@@ -31,6 +31,7 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.ObservationController;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.ProviderController;
 import com.muzima.model.observation.Concepts;
 import com.muzima.scheduler.RealTimeFormUploader;
@@ -48,8 +49,6 @@ import java.util.List;
 import org.json.JSONArray;
 
 
-import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION;
-
 public class HTMLFormDataStore {
     private static final String TAG = "FormDataStore";
 
@@ -61,16 +60,21 @@ public class HTMLFormDataStore {
     private FormData formData;
     private ProviderController providerController;
     private EncounterController encounterController;
+    private MuzimaApplication application;
+    private MuzimaSettingController settingController;
 
-    public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity, FormController formController, LocationController locationController, FormData formData, ProviderController providerController, ConceptController conceptController, EncounterController encounterController,ObservationController observationController) {
+    public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity,FormData formData, MuzimaApplication application) {
         this.formWebViewActivity = formWebViewActivity;
-        this.formController = formController;
+        this.formController = application.getFormController();
         this.formData = formData;
-        this.providerController = providerController;
-        this.locationController = locationController;
-        this.conceptController = conceptController;
-        this.encounterController = encounterController;
-        this.observationController = observationController;
+
+        this.providerController = application.getProviderController();
+        this.locationController = application.getLocationController();
+        this.settingController = application.getMuzimaSettingController();
+        this.conceptController = application.getConceptController();
+        this.encounterController = application.getEncounterController();
+        this.observationController = application.getObservationController();
+        this.application = application;
     }
 
     @JavascriptInterface
@@ -89,7 +93,7 @@ public class HTMLFormDataStore {
         formData.setStatus(status);
         try {
             if (isRegistrationComplete(status)) {
-                Patient newPatient = formController.createNewHTMLPatient(jsonPayload);
+                Patient newPatient = formController.createNewPatient(formData);
                 formData.setPatientUuid(newPatient.getUuid());
                 formWebViewActivity.startPatientSummaryView(newPatient);
             }
@@ -185,10 +189,7 @@ public class HTMLFormDataStore {
                 applicationContext.getEncounterController(), applicationContext.getObservationController(),applicationContext.getLocationController(),applicationContext.getProviderController(),applicationContext.getFormController());
     }
     private boolean isRegistrationComplete(String status) {
-        return isRegistrationForm() && status.equals(Constants.STATUS_COMPLETE);
-    }
-    public boolean isRegistrationForm() {
-        return (formData.getDiscriminator() != null) && formData.getDiscriminator().equals(FORM_JSON_DISCRIMINATOR_REGISTRATION);
+        return formController.isRegistrationFormData(formData) && status.equals(Constants.STATUS_COMPLETE);
     }
 
     @JavascriptInterface
@@ -296,4 +297,7 @@ public class HTMLFormDataStore {
         return JSONValue.toJSONString(observations);
     }
 
+    public boolean isMedicalRecordNumberRequired(){
+        return settingController.isMedicalRecordNumberRequiredDuringRegistration();
+    }
 }
