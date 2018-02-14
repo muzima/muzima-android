@@ -29,6 +29,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Form;
@@ -53,6 +54,7 @@ import com.muzima.utils.video.VideoResult;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
+
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.lucene.queryParser.ParseException;
 import org.json.JSONException;
@@ -82,10 +84,10 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     public static final String VIDEO = "videoComponent";
     public static final String FORM = "form";
     public static final String DISCRIMINATOR = "discriminator";
-    public static final String DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS =  "2";
-    public static final String DEFAULT_FONT_SIZE =  "Medium";
-    public static final boolean IS_LOGGED_IN_USER_DEFAULT_PROVIDER =  false;
-    public static final boolean IS_ALLOWED_FORM_DATA_DUPLICATION =  true;
+    public static final String DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS = "2";
+    public static final String DEFAULT_FONT_SIZE = "Medium";
+    public static final boolean IS_LOGGED_IN_USER_DEFAULT_PROVIDER = false;
+    public static final boolean IS_ALLOWED_FORM_DATA_DUPLICATION = true;
     public static final String SAVE_AS_INCOMPLETE = "saveDraft";
     public static final String SAVE_AS_COMPLETED = "submit";
 
@@ -112,57 +114,55 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private String autoSaveIntervalPreference;
     private boolean encounterProviderPreference;
     private boolean duplicateFormDataPreference;
-    final Handler handler = new Handler();
+    final Handler handler = new Handler( );
     private ProviderController providerController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        formController = ((MuzimaApplication) this.getApplicationContext()).getFormController();
-        locationController = ((MuzimaApplication) this.getApplicationContext()).getLocationController();
-        conceptController = ((MuzimaApplication) this.getApplicationContext()).getConceptController();
-        providerController = ((MuzimaApplication) this.getApplicationContext()).getProviderController();
-        encounterController =((MuzimaApplication) this.getApplicationContext()).getEncounterController();
-        observationController =((MuzimaApplication) this.getApplicationContext()).getObservationController();
-        ActionBar actionBar = getSupportActionBar();
+        formController = ((MuzimaApplication) this.getApplicationContext( )).getFormController( );
+        locationController = ((MuzimaApplication) this.getApplicationContext( )).getLocationController( );
+        conceptController = ((MuzimaApplication) this.getApplicationContext( )).getConceptController( );
+        providerController = ((MuzimaApplication) this.getApplicationContext( )).getProviderController( );
+        encounterController = ((MuzimaApplication) this.getApplicationContext( )).getEncounterController( );
+        observationController = ((MuzimaApplication) this.getApplicationContext( )).getObservationController( );
+        ActionBar actionBar = getSupportActionBar( );
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        scanResultMap = new HashMap<String, String>();
-        imageResultMap = new HashMap<String, String>();
-        audioResultMap = new HashMap<String, String>();
-        videoResultMap = new HashMap<String, String>();
+        scanResultMap = new HashMap<String, String>( );
+        imageResultMap = new HashMap<String, String>( );
+        audioResultMap = new HashMap<String, String>( );
+        videoResultMap = new HashMap<String, String>( );
         setContentView(R.layout.activity_form_webview);
         progressDialog = new MuzimaProgressDialog(this);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext( ));
         autoSaveIntervalPreference = preferences.getString("autoSaveIntervalPreference", DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS);
         encounterProviderPreference = preferences.getBoolean("encounterProviderPreference", IS_LOGGED_IN_USER_DEFAULT_PROVIDER);
-        duplicateFormDataPreference = preferences.getBoolean("duplicateFormDataPreference", IS_ALLOWED_FORM_DATA_DUPLICATION );
+        duplicateFormDataPreference = preferences.getBoolean("duplicateFormDataPreference", IS_ALLOWED_FORM_DATA_DUPLICATION);
 
         showProgressBar(getString(R.string.hint_loading_progress));
         try {
-            setupFormData();
-            if (!isFormComplete()) {
-                startAutoSaveProcess();
+            setupFormData( );
+            if (!isFormComplete( )) {
+                startAutoSaveProcess( );
             }
-            setupWebView();
+            setupWebView( );
         } catch (Throwable t) {
-            Log.e(TAG, t.getMessage(), t);
+            Log.e(TAG, t.getMessage( ), t);
         }
-        super.onStart();
+        super.onStart( );
     }
 
     private void startAutoSaveProcess() {
-        Runnable runnable = new Runnable() {
+        Runnable runnable = new Runnable( ) {
             @Override
             public void run() {
-                try{
-                    autoSaveForm();
-                }
-                catch (Exception e) {
+                try {
+                    autoSaveForm( );
+                } catch (Exception e) {
                     Log.e(TAG, "Error while auto saving the form data", e);
-                }
-                finally{
+                } finally {
                     handler.postDelayed(this,
                             Integer.parseInt(autoSaveIntervalPreference) *
                                     DateUtils.MILLIS_PER_MINUTE);
@@ -181,20 +181,20 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     @Override
     protected void onDestroy() {
         if (progressDialog != null) {
-            progressDialog.dismiss();
+            progressDialog.dismiss( );
         }
-        stopAutoSaveProcess();
-        super.onDestroy();
+        stopAutoSaveProcess( );
+        super.onDestroy( );
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (isFormComplete() && isEncounterForm()) {
-            getMenuInflater().inflate(R.menu.menu_completed_encounter_form, menu);
-        } else if (isFormComplete() && !isEncounterForm()) {
-            getMenuInflater().inflate(R.menu.menu_completed_registration_form, menu);
+        if (isFormComplete( ) && isEncounterForm( )) {
+            getMenuInflater( ).inflate(R.menu.menu_completed_encounter_form, menu);
+        } else if (isFormComplete( ) && !isEncounterForm( )) {
+            getMenuInflater( ).inflate(R.menu.menu_completed_registration_form, menu);
         } else {
-            getMenuInflater().inflate(R.menu.menu_save_form, menu);
+            getMenuInflater( ).inflate(R.menu.menu_save_form, menu);
         }
         return true;
     }
@@ -202,38 +202,38 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     @Override
     protected void onResume() {
 
-        if (scanResultMap != null && !scanResultMap.isEmpty()) {
-            String jsonMap = new JSONObject(scanResultMap).toString();
+        if (scanResultMap != null && !scanResultMap.isEmpty( )) {
+            String jsonMap = new JSONObject(scanResultMap).toString( );
             Log.d(TAG, jsonMap);
             webView.loadUrl("javascript:document.populateBarCode(" + jsonMap + ")");
         }
 
-        if (imageResultMap != null && !imageResultMap.isEmpty()) {
-            String jsonMap = new JSONObject(imageResultMap).toString();
+        if (imageResultMap != null && !imageResultMap.isEmpty( )) {
+            String jsonMap = new JSONObject(imageResultMap).toString( );
             Log.d(TAG, "Header:" + sectionName + "json:" + jsonMap);
             webView.loadUrl("javascript:document.populateImage('" + sectionName + "', " + jsonMap + ")");
         }
 
-        if (audioResultMap != null && !audioResultMap.isEmpty()) {
-            String jsonMap = new JSONObject(audioResultMap).toString();
+        if (audioResultMap != null && !audioResultMap.isEmpty( )) {
+            String jsonMap = new JSONObject(audioResultMap).toString( );
             Log.d(TAG, "Header:" + sectionName + "json:" + jsonMap);
             webView.loadUrl("javascript:document.populateAudio('" + sectionName + "', " + jsonMap + ")");
         }
 
-        if (videoResultMap != null && !videoResultMap.isEmpty()) {
-            String jsonMap = new JSONObject(videoResultMap).toString();
+        if (videoResultMap != null && !videoResultMap.isEmpty( )) {
+            String jsonMap = new JSONObject(videoResultMap).toString( );
             Log.d(TAG, "Header:" + sectionName + "json:" + jsonMap);
             webView.loadUrl("javascript:document.populateVideo('" + sectionName + "', " + jsonMap + ")");
         }
-        super.onResume();
+        super.onResume( );
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+        switch (item.getItemId( )) {
             case R.id.form_save_as_draft:
                 try {
-                    saveDraft();
+                    saveDraft( );
                 } catch (IOException e) {
                     Log.e(TAG, "Error while saving the form data", e);
                 } catch (JSONException e) {
@@ -244,7 +244,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                 return true;
             case R.id.form_submit:
                 try {
-                    saveCompleted();
+                    saveCompleted( );
                 } catch (IOException e) {
                     Log.e(TAG, "Error while saving the form data", e);
                 } catch (JSONException e) {
@@ -254,10 +254,10 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                 }
                 return true;
             case R.id.form_close:
-                processBackButtonPressed();
+                processBackButtonPressed( );
                 return true;
             case android.R.id.home:
-                showAlertDialog();
+                showAlertDialog( );
                 return true;
             case R.id.form_back_to_draft:
                 try {
@@ -266,7 +266,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                 } catch (FormController.FormDataSaveException e) {
                     Log.e(TAG, "Error while saving the form data", e);
                 }
-                startIncompleteFormListActivity();
+                startIncompleteFormListActivity( );
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -276,44 +276,46 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private void showAlertDialog() {
         new AlertDialog.Builder(HTMLFormWebViewActivity.this)
                 .setCancelable(true)
-                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                .setTitle(getResources().getString(R.string.general_caution))
-                .setMessage(getResources().getString(R.string.warning_form_close))
-                .setPositiveButton(getString(R.string.general_yes), positiveClickListener())
+                .setIcon(getResources( ).getDrawable(R.drawable.ic_warning))
+                .setTitle(getResources( ).getString(R.string.general_caution))
+                .setMessage(getResources( ).getString(R.string.warning_form_close))
+                .setPositiveButton(getString(R.string.general_yes), positiveClickListener( ))
                 .setNegativeButton(getString(R.string.general_no), null)
-                .create()
-                .show();
+                .create( )
+                .show( );
     }
+
     public void showWarningDialog(String saveType) {
         new AlertDialog.Builder(HTMLFormWebViewActivity.this)
                 .setCancelable(true)
-                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                .setTitle(getResources().getString(R.string.title_duplicate_form_data_warning))
-                .setMessage(getResources().getString(R.string.warning_form_data_already_exists))
+                .setIcon(getResources( ).getDrawable(R.drawable.ic_warning))
+                .setTitle(getResources( ).getString(R.string.title_duplicate_form_data_warning))
+                .setMessage(getResources( ).getString(R.string.warning_form_data_already_exists))
                 .setPositiveButton(getString(R.string.confirm_duplicate_form_data_save), duplicateFormDataClickListener(saveType))
                 .setNegativeButton(getString(R.string.general_cancel), null)
-                .create()
-                .show();
+                .create( )
+                .show( );
     }
+
     public void showWarningDialog() {
         new AlertDialog.Builder(HTMLFormWebViewActivity.this)
                 .setCancelable(true)
-                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                .setTitle(getResources().getString(R.string.title_duplicate_form_data_warning))
-                .setMessage(getResources().getString(R.string.warning_form_data_already_exists))
+                .setIcon(getResources( ).getDrawable(R.drawable.ic_warning))
+                .setTitle(getResources( ).getString(R.string.title_duplicate_form_data_warning))
+                .setMessage(getResources( ).getString(R.string.warning_form_data_already_exists))
                 .setNegativeButton(getString(R.string.general_ok), null)
-                .create()
-                .show();
+                .create( )
+                .show( );
     }
 
-    private Dialog.OnClickListener duplicateFormDataClickListener(final String saveType){
+    private Dialog.OnClickListener duplicateFormDataClickListener(final String saveType) {
 
-        return new Dialog.OnClickListener() {
+        return new Dialog.OnClickListener( ) {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(saveType.equals(SAVE_AS_INCOMPLETE)){
+                if (saveType.equals(SAVE_AS_INCOMPLETE)) {
                     webView.loadUrl("javascript:document.saveDraft()");
-                }else if(saveType.equals(SAVE_AS_COMPLETED)){
+                } else if (saveType.equals(SAVE_AS_COMPLETED)) {
                     webView.loadUrl("javascript:document.submit()");
                 }
             }
@@ -323,6 +325,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     public void autoSaveForm() throws IOException, JSONException, InterruptedException {
         webView.loadUrl("javascript:document.autoSaveForm()");
     }
+
     public void saveDraft() throws IOException, JSONException, InterruptedException {
         webView.loadUrl("javascript:document.saveDraft()");
     }
@@ -334,36 +337,36 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        if (scanResult != null && barCodeComponent.getFieldName() != null && scanResult.getContents() != null) {
-            scanResultMap.put(barCodeComponent.getFieldName(), scanResult.getContents());
+        if (scanResult != null && barCodeComponent.getFieldName( ) != null && scanResult.getContents( ) != null) {
+            scanResultMap.put(barCodeComponent.getFieldName( ), scanResult.getContents( ));
         }
 
         ImageResult imageResult = ImagingComponent.parseActivityResult(requestCode, resultCode, intent);
         if (imageResult != null) {
-            sectionName = imageResult.getSectionName();
-            imageResultMap.put(imagingComponent.getImagePathField(), imageResult.getImageUri());
-            imageResultMap.put(imagingComponent.getImageCaptionField(), imageResult.getImageCaption());
+            sectionName = imageResult.getSectionName( );
+            imageResultMap.put(imagingComponent.getImagePathField( ), imageResult.getImageUri( ));
+            imageResultMap.put(imagingComponent.getImageCaptionField( ), imageResult.getImageCaption( ));
         }
 
         AudioResult audioResult = AudioComponent.parseActivityResult(requestCode, resultCode, intent);
         if (audioResult != null) {
-            sectionName = audioResult.getSectionName();
-            audioResultMap.put(audioComponent.getAudioPathField(), audioResult.getAudioUri());
-            audioResultMap.put(audioComponent.getAudioCaptionField(), audioResult.getAudioCaption());
+            sectionName = audioResult.getSectionName( );
+            audioResultMap.put(audioComponent.getAudioPathField( ), audioResult.getAudioUri( ));
+            audioResultMap.put(audioComponent.getAudioCaptionField( ), audioResult.getAudioCaption( ));
         }
 
         VideoResult videoResult = VideoComponent.parseActivityResult(requestCode, resultCode, intent);
         if (videoResult != null) {
-            sectionName = videoResult.getSectionName();
-            videoResultMap.put(videoComponent.getVideoPathField(), videoResult.getVideoUri());
-            videoResultMap.put(videoComponent.getVideoCaptionField(), videoResult.getVideoCaption());
+            sectionName = videoResult.getSectionName( );
+            videoResultMap.put(videoComponent.getVideoPathField( ), videoResult.getVideoUri( ));
+            videoResultMap.put(videoComponent.getVideoCaptionField( ), videoResult.getVideoCaption( ));
         }
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            showAlertDialog();
+            showAlertDialog( );
             return false;
         }
         return super.onKeyDown(keyCode, event);
@@ -380,49 +383,52 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     }
 
     private boolean isFormComplete() {
-        return formData.getStatus().equalsIgnoreCase(STATUS_COMPLETE);
+        return formData.getStatus( ).equalsIgnoreCase(STATUS_COMPLETE);
     }
 
     private void setupFormData()
             throws FormFetchException, FormController.FormDataFetchException, FormController.FormDataSaveException, IOException, ParseException {
-        FormController formController = ((MuzimaApplication) getApplication()).getFormController();
-        BaseForm baseForm = (BaseForm) getIntent().getSerializableExtra(FORM);
-        form = formController.getFormByUuid(baseForm.getFormUuid());
-        patient = (Patient) getIntent().getSerializableExtra(PATIENT);
-        formTemplate = formController.getFormTemplateByUuid(baseForm.getFormUuid());
+        FormController formController = ((MuzimaApplication) getApplication( )).getFormController( );
+        BaseForm baseForm = (BaseForm) getIntent( ).getSerializableExtra(FORM);
+        form = formController.getFormByUuid(baseForm.getFormUuid( ));
+        patient = (Patient) getIntent( ).getSerializableExtra(PATIENT);
+        formTemplate = formController.getFormTemplateByUuid(baseForm.getFormUuid( ));
 
-        if (baseForm.hasData()) {
-            formData = formController.getFormDataByUuid(((FormWithData) baseForm).getFormDataUuid());
+        if (baseForm.hasData( )) {
+            formData = formController.getFormDataByUuid(((FormWithData) baseForm).getFormDataUuid( ));
         } else {
-            formData = createNewFormData();
+            createNewFormData( );
         }
     }
 
-    private FormData createNewFormData() throws FormController.FormDataSaveException, IOException, ParseException {
-        FormData formData = new FormData() {{
-            setUuid(UUID.randomUUID().toString());
-            setPatientUuid(patient.getUuid());
+    private void createNewFormData() throws FormController.FormDataSaveException, IOException, ParseException {
+        formData = new FormData( ) {{
+            setUuid(UUID.randomUUID( ).toString( ));
+            setPatientUuid(patient.getUuid( ));
             setUserUuid("userUuid");
             setStatus(STATUS_INCOMPLETE);
-            setTemplateUuid(form.getUuid());
-            setDiscriminator(form.getDiscriminator());
+            setTemplateUuid(form.getUuid( ));
+            setDiscriminator(form.getDiscriminator( ));
         }};
-        User user = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
+        User user = ((MuzimaApplication) getApplicationContext( )).getAuthenticatedUser( );
 
-        formData.setJsonPayload(new HTMLPatientJSONMapper().map(patient, formData, user,encounterProviderPreference));
-        return formData;
+        if (isGenericRegistrationForm( )) {
+            formData.setJsonPayload(new GenericRegistrationPatientJSONMapper( ).map(patient, formData, user, encounterProviderPreference));
+        } else {
+            formData.setJsonPayload(new HTMLPatientJSONMapper( ).map(patient, formData, user, encounterProviderPreference));
+        }
     }
 
 
     private void setupWebView() {
         webView = (WebView) findViewById(R.id.webView);
-        webView.setWebChromeClient(createWebChromeClient());
+        webView.setWebChromeClient(createWebChromeClient( ));
 
-        getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-        getSettings().setJavaScriptEnabled(true);
-        getSettings().setDatabaseEnabled(true);
-        getSettings().setDomStorageEnabled(true);
-        getSettings().setBuiltInZoomControls(true);
+        getSettings( ).setRenderPriority(WebSettings.RenderPriority.HIGH);
+        getSettings( ).setJavaScriptEnabled(true);
+        getSettings( ).setDatabaseEnabled(true);
+        getSettings( ).setDomStorageEnabled(true);
+        getSettings( ).setBuiltInZoomControls(true);
 
         FormInstance formInstance = new FormInstance(form, formTemplate);
         webView.addJavascriptInterface(formInstance, FORM_INSTANCE);
@@ -434,41 +440,42 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         webView.addJavascriptInterface(imagingComponent, IMAGE);
         webView.addJavascriptInterface(audioComponent, AUDIO);
         webView.addJavascriptInterface(videoComponent, VIDEO);
-        webView.addJavascriptInterface(new HTMLFormDataStore(this, formController,locationController, formData, providerController,conceptController,encounterController,observationController),
-                HTML_DATA_STORE);
+        webView.addJavascriptInterface(new HTMLFormDataStore(this, formData,
+                (MuzimaApplication) getApplicationContext( )), HTML_DATA_STORE);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        if (isFormComplete()) {
-            webView.setOnTouchListener(createCompleteFormListenerToDisableInput());
+        if (isFormComplete( )) {
+            webView.setOnTouchListener(createCompleteFormListenerToDisableInput( ));
         }
-        webView.loadDataWithBaseURL("file:///android_asset/www/forms/", prePopulateData(), "text/html", "UTF-8", "");
+        webView.loadDataWithBaseURL("file:///android_asset/www/forms/", prePopulateData( ),
+                "text/html", "UTF-8", "");
     }
 
     private String prePopulateData() {
-        if (formData.getJsonPayload() == null) {
-            return formTemplate.getHtml();
+        if (formData.getJsonPayload( ) == null) {
+            return formTemplate.getHtml( );
         }
-        Document document = Jsoup.parse(formTemplate.getHtml());
-        String json = formData.getJsonPayload();
+        Document document = Jsoup.parse(formTemplate.getHtml( ));
+        String json = formData.getJsonPayload( );
         String htmlWithJSON = "<div id='pre_populate_data'>" + json + "</div>";
         document.select("body").prepend(htmlWithJSON);
-        return document.toString();
+        return document.toString( );
     }
 
     private WebChromeClient createWebChromeClient() {
-        return new WebChromeClient() {
+        return new WebChromeClient( ) {
             @Override
             public void onProgressChanged(WebView view, int progress) {
                 HTMLFormWebViewActivity.this.setProgress(progress * 1000);
                 if (progress == 100) {
-                    progressDialog.dismiss();
+                    progressDialog.dismiss( );
                 }
             }
 
             @Override
             public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-                String message = format("Javascript Log. Message: {0}, lineNumber: {1}, sourceId, {2}", consoleMessage.message(),
-                        consoleMessage.lineNumber(), consoleMessage.sourceId());
-                if (consoleMessage.messageLevel() == ERROR) {
+                String message = format("Javascript Log. Message: {0}, lineNumber: {1}, sourceId, {2}", consoleMessage.message( ),
+                        consoleMessage.lineNumber( ), consoleMessage.sourceId( ));
+                if (consoleMessage.messageLevel( ) == ERROR) {
                     Log.e(TAG, message);
                 } else {
                     Log.d(TAG, message);
@@ -479,10 +486,10 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     }
 
     private View.OnTouchListener createCompleteFormListenerToDisableInput() {
-        return new View.OnTouchListener() {
+        return new View.OnTouchListener( ) {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() != MotionEvent.ACTION_MOVE) {
+                if (motionEvent.getAction( ) != MotionEvent.ACTION_MOVE) {
                     view.setFocusable(false);
                     view.setEnabled(false);
                     return true;
@@ -493,25 +500,25 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     }
 
     private WebSettings getSettings() {
-        return webView.getSettings();
+        return webView.getSettings( );
     }
 
     private Dialog.OnClickListener positiveClickListener() {
-        return new Dialog.OnClickListener() {
+        return new Dialog.OnClickListener( ) {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                processBackButtonPressed();
+                processBackButtonPressed( );
             }
         };
     }
 
     private void processBackButtonPressed() {
         handler.removeCallbacksAndMessages(null);
-        onBackPressed();
+        onBackPressed( );
     }
 
     public void showProgressBar(final String message) {
-        runOnUiThread(new Runnable() {
+        runOnUiThread(new Runnable( ) {
             public void run() {
                 progressDialog.show(message);
             }
@@ -519,8 +526,11 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     }
 
     private boolean isEncounterForm() {
-        return formData.getDiscriminator().equalsIgnoreCase(Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER)
-                || formData.getDiscriminator().equalsIgnoreCase(Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION);
+        return formController.isEncounterFormData(formData);
+    }
+
+    private boolean isGenericRegistrationForm() {
+        return formController.isGenericRegistrationHTMLFormData(formData);
     }
 
     public Handler getHandler() {

@@ -32,6 +32,7 @@ public class Constants {
     public static final String FORM_JSON_DISCRIMINATOR_ENCOUNTER = "json-encounter";
     public static final String FORM_DISCRIMINATOR_REGISTRATION = "xml-registration";
     public static final String FORM_JSON_DISCRIMINATOR_REGISTRATION = "json-registration";
+    public static final String FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION = "json-generic-registration";
     public static final String FORM_JSON_DISCRIMINATOR_CONSULTATION = "json-consultation";
     public static final String FORM_DISCRIMINATOR_CONSULTATION = "consultation";
     public static final String FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE = "json-demographics-update";
