@@ -185,7 +185,7 @@ public class FormsActivity extends FormsActivityBase {
                 }
                 uploadAllFormsInBackgroundService();
                 return true;
-            case R.id.menu_client_add:
+            case R.id.menu_client_add_icon:
                 intent = new Intent(this, RegistrationFormsActivity.class);
                 startActivity(intent);
                 return true;

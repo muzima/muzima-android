@@ -15,7 +15,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -35,11 +37,16 @@ import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.StringUtils;
 import com.muzima.utils.barcode.IntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
 import com.muzima.view.BroadcastListenerActivity;
+import com.muzima.view.HelpActivity;
+import com.muzima.view.MainActivity;
+import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import android.support.design.widget.FloatingActionButton;
+import com.muzima.view.preferences.SettingsActivity;
 
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
@@ -247,13 +254,30 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_client_add:
+            case R.id.menu_client_add_icon:
+                callConfirmationDialog();
+                return true;
+
+            case R.id.menu_client_add_text:
                 callConfirmationDialog();
                 return true;
 
             case R.id.scan:
                 invokeBarcodeScan();
                 return true;
+
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+
+            case R.id.menu_dashboard:
+                launchDashboardActivity();
+                return true;
+
+            case R.id.menu_complete_form_data:
+                launchCompleteFormsActivity();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -338,7 +362,22 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     public void onBackPressed(){
         patientAdapter.cancelBackgroundTask();
-        super.onBackPressed();
+        if(getCallingActivity() == null){
+            launchDashboardActivity();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private void launchDashboardActivity(){
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void launchCompleteFormsActivity(){
+        Intent intent = new Intent(getApplicationContext(), FormsActivity.class);
+        intent.putExtra(FormsActivity.KEY_FORMS_TAB_TO_OPEN,3);
+        startActivity(intent);
     }
 
     @Override

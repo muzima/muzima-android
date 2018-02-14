@@ -19,6 +19,7 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.Constants;
+import com.muzima.utils.StringUtils;
 
 import java.util.List;
 
@@ -54,7 +55,11 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
 
     public void search(String text) {
         cancelBackgroundTask();
-        backgroundQueryTask = new BackgroundQueryTask().execute(text, SEARCH);
+        if(StringUtils.isEmpty(text)) {
+            reloadData();
+        } else {
+            backgroundQueryTask = new BackgroundQueryTask().execute(text, SEARCH);
+        }
     }
 
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
