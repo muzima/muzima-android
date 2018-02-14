@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+    <string name="app_title">mUzima pour les fournisseurs de soins de santé</string>
+
+    <string name="confirm_duplicate_form_data_save">Enregistrer les données dupliquées du formulaire </string>
+    <string name="confirm_patient_id_exists">Le patient a-t-il un Identifiant (ID)?</string>
+
+    <string name="default_form_register">Formulaires d\'inscription/enregistrement</string>
+
+    <string name="error_action_allow">Opération interdite lorsque la synchronisation est en cours</string>
+    <string name="error_audio_chose_activity_find">Erreur: Opération de sélection de l\'audio non trouvée</string>
+    <string name="error_audio_play_activity_find">Erreur: Opération de jouer l\'Audio n\'est pas trouvée</string>
+    <string name="error_audio_record_activity_find">Erreur: Opération d\'enregistrement de l\'audio n\'est pas trouvé</string>
+    <string name="error_authentication_fail">Echec de l\'Authentification</string>
+    <string name="error_authentication_occur">Erreur d\'authentification survenue</string>
+    <string name="error_client_download">Impossible de télécharger les données clients</string>
+    <string name="error_cohort_download">Impossible de télécharger les données cohortes</string>
+    <string name="error_cohort_fetch">Quelque chose a mal tourné lors de la récupération des données cohortes du repositoire local</string>
+    <string name="error_cohort_load">Echec du chargement des données cohortes</string>
+    <string name="error_concept_download">Impossible de télécharger des concepts</string>
+    <string name="error_concept_fetch">Quelque chose a mal tourné lors de l\'extraction des concepts du repertoire local</string>
+    <string name="error_concept_parse">Une erreur s\'est produite lors de l\'analyse des concepts dans le formulaire</string>
+    <string name="error_connection_unavailable">Une erreur de connexion est survenue lors du téléchargement des données</string>
+    <string name="error_credential_invalid">Nom d\'utilisateur, Mot de passe et Combinaison du serveur non valide.</string>
+    <string name="error_data_download">Une erreur est survenue lors du téléchargement de données depuis le serveur</string>
+    <string name="error_data_save">Une erreur est survenue lors de l\'enregistrement des données dans le repertoire local</string>
+    <string name="error_encounter_download">Echec du téléchargement des rencontres</string>
+    <string name="error_encounter_load">Impossible de charger les rencontres</string>
+    <string name="error_encounter_observation_download">Impossible de télécharger les observations pour les patients</string>
+    <string name="error_exception_data_load">L\'exception de chargement a été levée pendant le chargement des données</string>
+    <string name="error_exception_data_upload">L\' exception a été levée lors du téléchargement des données</string>
+    <string name="error_form_data_delete">Echec de supprimer certains formulaires de données</string>
+    <string name="error_form_download">Impossible de télécharger les formulaires</string>
+    <string name="error_form_fetch">Quelque chose s\'est avérée incorrecte lors de la récupération des formulaires du repositoire local</string>
+    <string name="error_form_load">Impossible de charger les formulaires</string>
+    <string name="error_form_load_fail">Impossible de charger le formulaire</string>
+    <string name="error_form_location_load">Une erreur est survenue lors du chargement des emplacements pour le formulaire</string>
+    <string name="error_form_patient_data_exist">Il existe des données de formulaire pour le(s)  formulaire(s) sélectionné(s).
+        Terminer les données incomplètes et synchroniser les données complètes au serveur d\'abord avant de télécharger les formulaires.</string>
+    <string name="error_form_provider_load">Une erreur est survenue lors du chargement de fournisseur pour le formulaire</string>
+    <string name="error_form_save">Une erreur s\'est produite lors de l\'enregistrement du formulaire</string>
+    <string name="error_form_templates_download">Impossible de télécharger les modèles de formulaire</string>
+    <string name="error_image_capture_activity_unavailable">Erreur: Application pour la capture l\'image non trouvée</string>
+    <string name="error_image_chose_activity_unavailable">Erreur: Application pour choisir l\'image non trouvée</string>
+    <string name="error_image_view_activity_unavailable">Erreur: Application de visionner l\'images non trouvée</string>
+    <string name="error_local_connection_unavailable">Connexion réseau introuvable</string>
+    <string name="error_local_repo_data_delete">Une erreur s\'est produite lors de la suppression des données du repositoire local</string>
+    <string name="error_location_download">Impossible de télécharger les emplacements</string>
+    <string name="error_location_fetch">Quelque chose a mal tourné lors de la récupération des emplacements du repositoire local</string>
+    <string name="error_notification_download">Erreur lors du téléchargement des notifications</string>
+    <string name="error_notification_fetch">Quelque chose a mal tourné lors de la récupération des notifications de la base de données locale</string>
+    <string name="error_observation_download">Impossible de télécharger les observations</string>
+    <string name="error_observation_fetch">Quelque chose a mal tourné lors de la récupération des observations du repositoire local</string>
+    <string name="error_observation_form_save">Une erreur s\'est produite lors de l\'enregistrement des observations dans le formulaire</string>
+    <string name="error_observation_load">Echec du chargement des observations</string>
+    <string name="error_observation_unavailable">Observations non disponibles</string>
+    <string name="error_parse_exception_data_fetch">abandon de l\'amalyse exceptionnelle lors de la récupération des données</string>
+    <string name="error_patient_data_form_exist">données de formulaire existantes. Terminer les données incomplètes et synchroniser les données complètes dans le serveur d\'abord avant de synchroniser les modeles des formulaire.</string>
+    <string name="error_patient_download">Impossible de télécharger les données des patients</string>
+    <string name="error_patient_encounter_download">Impossible de télécharger les rencontres des patients</string>
+    <string name="error_patient_fetch">Une erreur s\'est produite lors de l\'extraction des données du patient</string>
+    <string name="error_patient_repo_fetch">Quelque chose a mal tourné lors de l\'extraction des données des patients du repositoire local</string>
+    <string name="error_patient_search">Quelque chose a mal tourné lors de la recherche des données du (des) patient (s)</string>
+    <string name="error_provider_download">Impossible de télécharger les données des fournisseurs</string>
+    <string name="error_provider_fetch">Quelque chose a mal tourné lors de l\'extraction des données des fournisseurs du repositoire local</string>
+    <string name="error_server_connection_unavailable">Serveur inaccessible</string>
+    <string name="error_server_url_invalid">adresse URL du serveur non valide.</string>
+    <string name="error_setup_configuration_download">Impossible de charger les configurations d\'installation</string>
+    <string name="error_setup_configuration_template_download">Impossible de télécharger le modèle de configuration d\'installation</string>
+    <string name="error_sync_not_allowed">opération interdite lorsque la synchronisation est en cours</string>
+    <string name="error_tag_fetch">Une erreur s\'est produite lors de la récupération des balises du repositoire local</string>
+    <string name="error_target_application_find">Aucune application ciblée</string>
+    <string formatted="false" name="error_username_invalid_format">Caractère non valide dans le nom d\'utilisateur. Ceux-ci ne sont pas autorisés: %s</string>
+    <string name="error_wizard_interrupted">L\'assistant a été interrompu, s\'il vous plaît déconnecter et exécuter à nouveau l\'assistant.</string>
+
+    <string name="general_accept">accepter!</string>
+    <string name="general_agree">Accordé</string>
+    <string name="general_alert">Alerte!</string>
+    <string name="general_all">Tout</string>
+    <string formatted="false" name="general_application_version">Version %1$s</string>
+    <string name="general_cancel">Annuler</string>
+    <string name="general_caution">Prudence!</string>
+    <string name="general_client_list">Liste des clients</string>
+    <string name="general_client_register">Enregistrer le client</string>
+    <string name="general_clients">Clients</string>
+    <string name="general_close">Fermer</string>
+    <string name="general_cohorts">Cohortes</string>
+    <string name="general_concepts">Concepts</string>
+    <string name="general_dashboard">Tableau de bord</string>
+    <string name="general_delete">Supprimer</string>
+    <string name="general_description_unavailable">Description non disponible</string>
+    <string name="general_disagree">Desaccord</string>
+    <string name="general_download">Télécharger</string>
+    <string name="general_draft">Brouillon</string>
+    <string name="general_encounters">Rencontres</string>
+    <string name="general_fail">Échouer</string>
+    <string name="general_finish">Terminer</string>
+    <string name="general_form">Formulaire</string>
+    <string name="general_forms">Formulaires</string>
+    <string name="general_help">Aide</string>
+    <string name="general_large">Large</string>
+    <string name="general_load">charger</string>
+    <string name="general_locations">Emplacements</string>
+    <string name="general_login">S\'identifier</string>
+    <string name="general_logout">Se deconnecter</string>
+    <string name="general_medium">Moyen</string>
+    <string name="general_next">Suivant</string>
+    <string name="general_no">Non</string>
+    <string name="general_notices">Remarques</string>
+    <string name="general_notification">Notification</string>
+    <string name="general_notifications">Notifications</string>
+    <string name="general_observations">Observations</string>
+    <string name="general_ok">D\'accord/ok</string>
+    <string name="general_password">Mot de passe</string>
+    <string name="general_previous">Précedent</string>
+    <string name="general_progress_message">Ceci pourra prendre du temps</string>
+    <string name="general_providers">Fournisseurs</string>
+    <string name="general_save">sauvegarder</string>
+    <string name="general_search">Rechercher</string>
+    <string name="general_server">Serveur</string>
+    <string name="general_settings">Paramètres</string>
+    <string name="general_small">Petit</string>
+    <string name="general_synced">Synchronisé</string>
+    <string name="general_tags">Étiquettes</string>
+    <string name="general_thank_you">Merci!</string>
+    <string name="general_upload">Télécharger</string>
+    <string name="general_username">Nom d\'utilisateur</string>
+    <string name="general_view_encounter">Voir la rencontre</string>
+    <string name="general_welcome">Bienvenue</string>
+    <string name="general_yes">Oui</string>
+
+    <string name="header_cohort_category">Paramètres de cohorte</string>
+    <string name="header_muzima_category">Paramètres de mUzima</string>
+    <string name="header_openmrs_category">Paramètres de OpenMRS</string>
+    <string name="header_provider_location_category">Paramètres du fournisseur / emplacement</string>
+
+    <string name="hint_advanced_setup">Utilisez un assistant étape par étape pour choisir ce que vous voulez</string>
+    <string name="hint_audio_caption">S\'il vous plaît entrer une légende pour l\'audio</string>
+    <string name="hint_audio_record">Enregistrer ou choisir l\'audio</string>
+    <string name="hint_authentication_progress">Authentification…</string>
+    <string name="hint_barcode_scanner_setup">Vous avez besoin d\'une application de lecture de codes barres pour enregistrer les clients de            l\'appareil mobile. S\'il vous plaît vérifier si elle a été installée dans votre appareil mobile ou non.</string>
+    <string name="hint_check_digit_validation_failure">S\'il vous plait entrez les numéros qui correspondent a l\'algorithme CheckDigit </string>
+    <string name="hint_client_local_search">Votre recherche comprend le numéro identificateur du client, prenom et le nom de famille
+                 Nom et recherche uniquement dans l\'appareil</string>
+    <string name="hint_client_remote_search">Votre recherche comprend le numéro identificateur du client, prenom et le nom de famille. prénom et recherche sur le serveur</string>
+    <string name="hint_client_search">Rechercher les données des clients</string>
+    <string formatted="false" name="hint_client_summary_encounters">%d Rencontres</string>
+    <string formatted="false" name="hint_client_summary_forms">%d incomplet, %d Complet, %d Recommandé</string>
+    <string formatted="false" name="hint_client_summary_notifications">%d nouvelles notifications, %d Notifications totale</string>
+    <string formatted="false" name="hint_client_summary_observations">%d Observations</string>
+    <string name="hint_cohort_download">Sélectionnez une ou plusieurs cohortes dans la liste et cliquez sur \"Suivant\" pour télécharger</string>
+    <string name="hint_cohort_filter">Commencez à taper pour filtrer les cohortes ...</string>
+    <string name="hint_cohort_list_download">S\'il vous plaît appuyez sur charger pour récupérer la liste des cohortes disponibles à partir du serveur</string>
+    <string name="hint_cohort_prefix_help">Une cohorte est un groupe prédéfini de clients pour lequel vous pouvez remplir des formulaires et
+                 Télécharger les observations. Les préfixes définis ici seront utilisés pour télécharger les cohortes par la suite</string>
+    <string name="hint_cohort_prefix_manage">Les préfixes de cohortes limitent vos téléchargements de cohorte à ceux qui commencent par le préfixe spécifié</string>
+    <string name="hint_cohort_sync">S\'il vous plaît sélectionner les cohortes de la liste de tous les cohortes et cliquez sur synchroniser</string>
+    <string name="hint_cohort_wizard_help">Dans cette étape de l\'Assistant, vous téléchargez les cohortes dont vous avez besoin. S\'il vous plaît sélectionner les Cohortes et cliquez sur Suivant.</string>
+    <string name="hint_complete_form_unavailable">les formulaires completés sont disponibles si vous avez rempli un formulaire complètement, mais quand ils n\'ont pas été synchronisé avec le serveur</string>
+    <string name="hint_concept_pref_add">Ajoutez le(s) concept(s) voulus que les observations téléchargent.</string>
+    <string name="hint_configuration_search">Rechercher une configuration</string>
+    <string name="hint_consultation_consultant_validation_failure">Fournissaient s\'il vous plait un consultant de la liste des consultants potentiels</string>
+    <string name="hint_crash_dialog">Une erreur inattendue s\'est produite forçant mUzima à s\'arrêter. S\'il vous plaît aidez-nous à corriger celle-ci en nous envoyant des données d\'erreur, tout ce que vous avez à faire est de cliquer sur OK.</string>
+    <string name="hint_crash_dialog_comment_prompt">S\'il vous plaît ajouter vos commentaires sur le problème ci-dessous.</string>
+    <string name="hint_current_or_past_date_validation_failure">S\'il vous plait entrez une date inferieur ou égal à aujaud\'hui</string>
+    <string name="hint_custom_concept_help">Ici vous définissez les concepts dont les données seront incluses dans le téléchargement ultérieur.</string>
+    <string name="hint_custom_location_help">Ici vous téléchargez des emplacements qui apparaîtront dans les formulaires.</string>
+    <string name="hint_custom_provider_help">Ici vous téléchargez les fournisseurs qui apparaîtront dans les formulaires.</string>
+    <string formatted="false" name="hint_dashboard_clients_description">%d Synchronisé</string>
+    <string formatted="false" name="hint_dashboard_cohorts_description">%d Synchronisé, %d Total</string>
+    <string formatted="false" name="hint_dashboard_forms_description">%d Incomplet, %d Complet </string>
+    <string formatted="false" name="hint_dashboard_notifications_description">%d Nouveau, %d Total</string>
+    <string name="hint_default_encounter_provider">L\'utilisateur connecté sera utilisé comme fournisseur de rencontres par défaut</string>
+    <string name="hint_drawer_close">Tiroir des mots clés fermer</string>
+    <string name="hint_drawer_open">Tiroir des mots clés ouvert</string>
+    <string name="hint_duplicate_form_data_warning">Avertir l\'utilisateur lorsque des données du formulaire dupliquées pour le même client avec la même date de rencontre est en cours d\'enregistrement</string>
+    <string name="hint_encounter_location_validation_failure">S\'il vous plait fournissez un emplacement de la liste des potentiels emplacements</string>
+    <string name="hint_encounter_provider_validation_failure">S\'il vous plait fournissez un fournisseur de la liste des fournisseurs potentiels</string>
+    <string name="hint_form_auto_save_interval">La valeur dans laquelle vos formulaires seront enregistrés automatiquement</string>
+    <string name="hint_form_download">S\'il vous plaît sélectionner les formulaires de la liste de tous les formulaires et cliquez sur télécharger</string>
+    <string name="hint_form_list_download">S\'il vous plaît appuyez sur charger pour récupérer les formulaires disponibles à partir du serveur</string>
+    <string name="hint_form_validation_failure">Il y a une ou plusieurs echec de verification de validations sur ce formulaire</string>
+    <string name="hint_future_date_validation_failure">S\'il vous plait entrer une date du futur</string>
+    <string name="hint_guided_setup">Sélectionnez une configuration prédéfinie et laissez mUzima faire le reste pour vous</string>
+    <string name="hint_image_caption_prompt">S\'il vous plaît entrer une légende pour l\'image</string>
+    <string name="hint_incomplete_form_unavailable">Les formulaires incomplets ne sont disponibles que si vous avez enregistré un formulaire partiellement rempli</string>
+    <string formatted="false" name="hint_last_synced">Dernière synchronisation effectuée: %s</string>
+    <string name="hint_loading_progress">Chargement en cours…</string>
+    <string name="hint_local_connection_unavailable">S\'il vous plaît connecter votre appareil et essayez à nouveau</string>
+    <string name="hint_location_pref_add">Ajouter le(s) emplacement(s) que vous souhaitez télécharger.</string>
+    <string name="hint_manage_concept">Obtenez plus de concepts à partir du serveur ou supprimez les concepts de ce périphérique.
+    </string>
+    <string name="hint_manage_location">Obtenir plus d\'emplacements depuis le serveur ou supprimer les emplacements de l\'appareil</string>
+    <string name="hint_manage_provider">Obtenir plus de concepts à partir du serveur ou supprimer les concepts de ce périphérique. Les concepts sont utilisées pour configurer les observations à télécharger.</string>
+    <string name="hint_mandatory_question_validation_failure">Cette question doit etre repondue</string>
+    <string name="hint_notification_sync">Assurez-vous que vous avez une connexion vers le serveur et appuyez sur le bouton de charger</string>
+    <string name="hint_option_none_exclusive_selection_validation_failure">Si\'Aucun\' est selectionné, aucune autre option peut etre selectionnée</string>
+    <string name="hint_password_change">Avez-vous changé votre mot de passe récemment?</string>
+    <string name="hint_password_prompt">S\'il vous plaît Entrez le Mot de passe</string>
+    <string name="hint_phone_number_validation_failure">Numéro de telephone non valide. S\'il vous plait verifier et entrez de nouveau</string>
+    <string name="hint_provider_not_set">Vous n\'avez pas les droits de fournisseur ou les données de votre fournisseur ne sont pas téléchargées, s\'il vous plaît utiliser l\'option ajouter un fournisseur.</string>
+    <string name="hint_provider_pref_add">Ajoutez le(s) fournisseur(s) que vous souhaitez télécharger.</string>
+    <string name="hint_real_time_sync">Activer la synchronisation des données en temps réel </string>
+    <string name="hint_recommended_forms_unavailable">S\'il vous plaît sélectionner les formulaires de non-inscription de la liste de tous les formulaires et cliquez sur télécharger</string>
+    <string name="hint_registration_form_select">S\'il vous plaît sélectionner au moins un formulaire d\'inscription!</string>
+    <string name="hint_repeating_section_minimum_repeats_validation_failure">Les repetitions minimum non satisfaites. Besoin d\'au moins</string>
+    <string name="hint_require_medical_record_number">Exiger le numéro d\'identification médicale pendant l\'enregistrement </string>
+    <string name="hint_server_connection_unavailable">S\'il vous plaît contacter l\'administrateur de votre serveur pour vérifier la connectivité du serveur</string>
+    <string name="hint_server_password_prompt">Entrez le mot de passe de OpenMRS</string>
+    <string name="hint_server_url">URL du serveur</string>
+    <string name="hint_server_url_prompt">Entrez l\'URL du serveur</string>
+    <string name="hint_session_timeout">Si inactif pendant ce temps, mUzima se déconnectera automatiquement</string>
+    <string name="hint_setting_refresh">Voulez-vous télécharger de nouveau cette configuration de votre serveur?</string>
+    <string name="hint_username_prompt">S\'il vous plaît entrez le nom d\'utilisateur</string>
+    <string name="hint_video_caption_prompt">S\'il vous plaît entrer une légende pour la vidéo</string>
+    <string name="hint_video_record">Enregistrer ou choisir une vidéo</string>
+    <string name="hint_wizard_form_download">Sélectionnez un ou plusieurs modèles de formulaire dans la liste et cliquez sur \"Suivant\" pour télécharger</string>
+
+    <string name="info_authentication_in_progress">Authentification en cours ...</string>
+    <string name="info_client_demographics_download">téléchargement des données démographiques des clients...</string>
+    <string name="info_client_identifier_change">Identificateur du client modifié sur le serveur. Le nouveau identifiant sera utilisé à l\'avenir.</string>
+    <string name="info_client_local_search_not_found">Aucun client ne correspond à votre recherche dans l\'appareil. Entrez au moins 3 caractères pour la recherche à distance.</string>
+    <string name="info_client_remote_search_not_found">Aucun client ne correspond à votre recherche sur le serveur</string>
+    <string name="info_cohort_download">Téléchargement des cohortes</string>
+    <string name="info_cohort_downloaded">1 (une) cohorte Téléchargée </string>
+    <string name="info_cohort_fetch_in_progress">Récupération des cohortes déjà en cours, demande ignorée</string>
+    <string name="info_cohort_load">Chargement des cohortes ...</string>
+    <string formatted="false" name="info_cohort_new_patient_download">%d nouveaux clients téléchargés pour %d cohortes.</string>
+    <string name="info_cohort_not_downloaded">Aucune cohorte téléchargée</string>
+    <string name="info_cohort_patient_download"> 1 (une)patient Téléchargé pour 1(une) cohorte</string>
+    <string name="info_cohort_patient_not_download">aucun patients n\'a été téléchargé</string>
+    <string formatted="false" name="info_cohort_patients_download">%d patients Téléchargé pour 1(une) cohorte</string>
+    <string name="info_cohort_prefixes_unavailable">aucun Prefixe de Cohorte Ajouté</string>
+    <string formatted="false" name="info_cohorts_downloaded">%d cohortes Téléchargé</string>
+    <string formatted="false" name="info_cohorts_patient_download"> 1 patient Téléchargé pour%d cohortes</string>
+    <string formatted="false" name="info_cohorts_patients_download">%d patients Téléchargé pour%d cohortes</string>
+    <string name="info_cohorts_unavailable">aucune cohorte disponibles</string>
+    <string name="info_complete_form_unavailable">aucun formulaire complet et aucun formulaire synchronisé</string>
+    <string formatted="false" name="info_concept_delete_success">%d concepts supprimées avec succès!</string>
+    <string name="info_concept_download">téléchargement en cours des concepts</string>
+    <string name="info_concept_downloaded">1 (une)concept Téléchargé</string>
+    <string name="info_concept_not_downloaded">aucun concept n\'a été téléchargé</string>
+    <string name="info_concept_unavailable">Aucun concept n\'a été ajouté encore.</string>
+    <string formatted="false" name="info_concepts_downloaded">%d concepts Téléchargé</string>
+    <string name="info_disclaimer"><![CDATA[
+     <P>
+        MUzima est distribué sous les termes de la licence publique de Mozilla, v. 2.0 (MPL 2.0).
+        Une copie de la licence MPL 2.0 peut être trouvée sur http://mozilla.org/MPL/2.0/.
+    </ P><p>
+        MUzima est également distribué sous les termes de la clause de non-responsabilité Et Limitation de responsabilité de garantie suivante.
+    </ P><p><strong> Renonciation additionnelle de garantie et limitation de responsabilité </ p></ p><p>
+    Aux États-Unis ou dans d\'autres juridictions où ils peuvent appliquer,
+    L\'exclusion de la garantie et de la limitation de la responsabilité sont incorporées dans les
+    Conditions de MPL 2.0:
+    <P>
+        1. Aucune garantie de quelconque nature n\'est faite quant aux résultats que vous obtiendrez de
+        En s\'appuyant sur le code couvert (ou sur toute information ou contenu obtenu par le biais du code couvert),
+        Y compris, mais sans s\'y limiter, le respect des lois ou règlements en matière de protection des renseignements personnels ou de l\'industrie des soins cliniques
+        Normes et protocoles. L\'utilisation du code couvert ne remplace pas le
+        Les normes en pratique ou le jugement professionnel. Toute décision concernant la pertinence du traitement,
+        Ou la validité ou la fiabilité des informations ou contenus mis à disposition par le code couvert, est la seule
+        Responsabilité du prestataire de soins de santé. Par conséquent, il incombe à chaque prestataire de soins de santé
+        Pour vérifier tous les antécédents médicaux et plans de traitement avec chaque patient.
+    </ P><p>
+    2. En aucun cas et sous aucune théorie juridique, que le délit (y compris la négligence), le contrat ou
+    Autrement, tout Contributeur ou toute personne qui distribuera le Logiciel couvert tel que permis par la licence,
+    Être responsable vis-à-vis de vous pour tout dommage indirect, spécial, accessoire ou consécutif de quelque nature que ce soit,
+    Sans limitation, des dommages pour perte de bonne volonté, un arrêt de travail, une panne informatique ou un dysfonctionnement, ou
+    Et tous autres dommages ou pertes, de quelque nature que ce soit (directs ou non directs) pour compte ou associés
+    Avec l\'utilisation ou l\'incapacité d\'utiliser le contenu couvert (y compris, sans limitation, l\'utilisation de l\'information
+    Ou le contenu mis à disposition par le code couvert, toute documentation s\'y rattachant et le défaut de
+    Le code couvert pour se conformer aux lois et règlements sur la protection des renseignements personnels ou aux normes et protocoles de l\'industrie des soins médicaux);
+    Même si cette partie a été informée de la possibilité de tels dommages.
+</ P><p>
+    3. Si l\'utilisateur de cette demande est une entité qui a l\'intention de commercialiser une application qui utilise cette
+    Code dans une entreprise à but lucratif, l\'utilisateur est tenu de contacter le détenteur des droits d’auteur
+    (Copyright 2014, Les administrateurs de l\'Université d\'Indiana).
+</ P>
+
+            MUzima est distribué sous les termes de la Mozilla Public License, v. 2.0 (MPL 2.0).
+            Une copie de la licence MPL 2.0 peut être trouvée sur http://mozilla.org/MPL/2.0/.
+            </ P><p>
+            MUzima est également distribué sous les termes de la clause de non-responsabilité de garantie suivante
+            Et Limitation de responsabilité.
+            </ P><p><strong> Renonciation additionnelle de garantie et limitation de responsabilité </ p></ p><p>
+        Aux États-Unis ou dans d\'autres juridictions où ils peuvent appliquer, les
+        L\'exclusion de la garantie et de la limitation de la responsabilité sont incorporées dans les
+        Conditions de MPL 2.0:
+        <P>
+            1. Aucune garantie de quelque nature que ce soit n\'est faite quant aux résultats que vous obtiendrez de
+            En s\'appuyant sur le code visé (ou sur toute information ou contenu obtenu par le biais du code couvert),
+            Y compris, mais sans s\'y limiter, le respect des lois ou règlements en matière de protection des renseignements personnels ou de l\'industrie des soins cliniques
+            Normes et protocoles. L\'utilisation du code couvert ne remplace pas le
+            La pratique courante ou le jugement professionnel. Toute décision concernant la pertinence du traitement,
+            Ou la validité ou la fiabilité des informations ou contenus mis à disposition par le code couvert, est la seule
+            Responsabilité du prestataire de soins de santé. Par conséquent, il incombe à chaque prestataire de soins de santé
+            Pour vérifier tous les antécédents médicaux et plans de traitement avec chaque patient.
+            </ P><p>
+            2. En aucun cas et sous aucune théorie juridique, que le délit (y compris la négligence), le contrat ou
+            Autrement, tout Contributeur ou toute personne qui distribuera le Logiciel couvert tel que permis par la licence,
+            Être responsable vis-à-vis de vous pour tout dommage indirect, spécial, accessoire ou consécutif de quelque nature que ce soit,
+            Sans limitation, des dommages pour perte de bonne volonté, un arrêt de travail, une panne informatique ou un dysfonctionnement, ou
+            Et tous autres dommages ou pertes, de quelque nature que ce soit (directs ou non) pour compte ou associés
+            Avec l\'utilisation ou l\'incapacité d\'utiliser le contenu couvert (y compris, sans limitation, l\'utilisation de l\'information
+            Ou le contenu mis à disposition par le code couvert, toute la documentation s\'y rattachant et le défaut de
+            Le code couvert pour se conformer aux lois et règlements sur la protection des renseignements personnels ou aux normes et protocoles de l\'industrie des soins cliniques);
+            Même si cette partie a été informée de la possibilité de tels dommages.
+            </ P><p>
+            3. Si l\'utilisateur de cette demande est une entité qui a l\'intention de commercialiser une application qui utilise cette
+            Code dans une entreprise à but lucratif, l\'utilisateur est tenu de contacter le détenteur du copyright
+            (Copyright 2014, Les administrateurs de l\'Université d\'Indiana).
+            </ P>
+    ]]></string>
+    <string formatted="false" name="info_download_complete">Téléchargement completé avec l\'état %d</string>
+    <string name="info_downloaded_forms_unavailable">aucun formulaire n\'a été téléchargé</string>
+    <string name="info_downloaded_image">Image en Téléchargée</string>
+    <string name="info_draft_form_save_success">Le brouillon du formulaire a été enregistré avec succès.</string>
+    <string name="info_encounter_download">téléchargement des rencontres en cours</string>
+    <string formatted="false" name="info_encounter_download_progress">Téléchargement en cours des rencontres pour le patient %d de %d.</string>
+    <string formatted="false" name="info_encounter_not_downloaded_progress">Rencontres pour le patient %d %d n\'ont pas été téléchargés.</string>
+    <string name="info_encounter_observation_download">Téléchargement des observations et de rencontres ...</string>
+    <string name="info_encounter_patient_downloaded">1 (une) rencontre téléchargée pour 1(un) client</string>
+    <string name="info_encounter_patient_not_downloaded">N\'a pas téléchargé aucune rencontres</string>
+    <string formatted="false" name="info_encounter_patients_downloaded">1(une) rencontre a été Téléchargé pour %d patients</string>
+    <string name="info_encounter_unavailable">Aucune rencontre n\'est disponible</string>
+    <string formatted="false" name="info_encounters_patient_downloaded">%d rencontres Téléchargé pour 1(un) patient</string>
+    <string formatted="false" name="info_encounters_patients_downloaded">%d rencontres Téléchargés pour %d patients</string>
+    <string formatted="false" name="info_form_data_delete">Formulaires%d supprimés</string>
+    <string name="info_form_data_save_success">Les données de formulaire remplies ont été enregistrées avec succès.</string>
+    <string name="info_form_data_upload_fail">Échec de l\'envoi des données de formulaire au serveur actuel. Voulez-vous continuer?</string>
+    <string name="info_form_data_upload_sucess">chargement des données du formulaire avec succès</string>
+    <string name="info_form_delete_integrity_failure">Échec de l\'intégrité: Impossible de supprimer les données de formulaire d\'enregistrement qui ont des données de formulaire de rencontre associées </string>
+    <string name="info_form_delete_success">Formulaires supprimés avec succès</string>
+    <string formatted="false" name="info_form_download">Téléchargement en cours de %d formulaires</string>
+    <string formatted="false" name="info_form_download_delete">%d formulaires Téléchargé et %d formulaires retiré</string>
+    <string name="info_form_downloaded"> 1 (un) formuliare Téléchargé</string>
+    <string name="info_form_fetch_in_progress">Extraction des formulaires déjà en cours,demande ignorée</string>
+    <string name="info_form_load">Chargement des formulaires ...</string>
+    <string name="info_form_metadata_download">Téléchargement en cours des métadonnées des formulaires</string>
+    <string name="info_form_not_downloaded">aucun formulaires téléchargés</string>
+    <string formatted="false" name="info_form_template_concept_download">%d modèles de formulaire Téléchargé et %d concepts</string>
+    <string name="info_form_template_download">Téléchargement en cours de modèles de formulaire </string>
+    <string name="info_form_template_downloaded">1 (un)Modèle de formulaire téléchargé</string>
+    <string name="info_form_template_not_downloaded">aucun modèle de formulaire téléchargé</string>
+    <string name="info_form_template_recommended">Modèles de formulaire recommandé</string>
+    <string formatted="false" name="info_form_template_with_count_download">Téléchargement en cours de modèles de formulaire pour %d formulaires</string>
+    <string formatted="false" name="info_form_templates_downloaded">%d modèles de formulaires Téléchargés </string>
+    <string name="info_form_upload">téléchargement en cours des formulaires</string>
+    <string name="info_form_upload_in_progress">téléchargement déjà en cours des formulaires, demande ignorée</string>
+    <string name="info_form_upload_success">Formulaires téléchargés avec succès</string>
+    <string formatted="false" name="info_forms_downloaded">%d Formulaires téléchargés</string>
+    <string name="info_forms_unavailable">Aucun formulaire disponible</string>
+    <string name="info_incomplete_form_unvailable">Pas de formulaires incomplets</string>
+    <string name="info_initial_setup_progress">Configuration initiale en cours d\'exécution. Patientez s\'il vous plaît</string>
+    <string name="info_last_sync_unavailable">Pas encore synchronisé</string>
+    <string formatted="false" name="info_location_delete_success">%d emplacements supprimés avec succès</string>
+    <string name="info_location_download">Téléchargement en cours des Emplacements</string>
+    <string name="info_location_downloaded">1 (un) emplacement téléchargé</string>
+    <string name="info_location_not_downloaded">N\'a pas téléchargé aucun emplacement</string>
+    <string name="info_location_unavailable">Aucun emplacement n\'a encore été ajouté</string>
+    <string formatted="false" name="info_locations_downloaded">%d emplacements téléchargé</string>
+    <string name="info_muzima_sync_service_finish">synchronisation du service mUzima terminée</string>
+    <string name="info_muzima_sync_service_in_progress">synchronisation du service MUzima en cours d\'exécution</string>
+    <string formatted="false" name="info_new_cohort_download">%d nouvelles cohortes Téléchargée</string>
+    <string formatted="false" name="info_new_cohort_download_delete">%d nouvelles cohortes Téléchargé et  %d cohortes retirées</string>
+    <string formatted="false" name="info_new_encounter_download">%d nouvelles observations Téléchargées</string>
+    <string formatted="false" name="info_new_encounter_download_delete">%d nouvelles rencontres Téléchargées et  %d rencontres retirées</string>
+    <string name="info_new_notification">Nouvelle notification</string>
+    <string formatted="false" name="info_new_observation_download">%d nouvelles observations téléchargé</string>
+    <string formatted="false" name="info_new_observation_download_delete">%d nouvelles observations Téléchargées et  %d observations retirées</string>
+    <string formatted="false" name="info_new_patient_download">%d nouveaux patients Téléchargés</string>
+    <string name="info_no_cohort_download">Aucune cohorte n \'a été synchronisé</string>
+    <string formatted="false" name="info_notification_download">%d notifications Téléchargées</string>
+    <string name="info_notification_download_in_progress">Notifications en cours de téléchargement  </string>
+    <string name="info_notification_unavailable">Aucune notification disponible</string>
+    <string name="info_observation_download">observations en cours de Téléchargement</string>
+    <string name="info_observation_in_progress">Les observations sont encore en cours de chargement</string>
+    <string name="info_observation_load">Les observations sont en cours de chargement</string>
+    <string name="info_observation_patient_downloaded">Téléchargé 1 (une)observation pour 1(une) patient.</string>
+    <string name="info_observation_patient_not_downloaded">N\'a pas téléchargé aucune observation</string>
+    <string formatted="false" name="info_observation_patients_downloaded">%d observations Téléchargées pour 1(un) patient</string>
+    <string name="info_observation_search">recherche des observations</string>
+    <string name="info_observation_unavailable">Aucune observation disponible</string>
+    <string formatted="false" name="info_observations_download_pogress">
+Téléchargement en cours des observations pour le patient %d of %d.</string>
+    <string name="info_observations_load_in_progress">Les observations sont encore en cours de chargement</string>
+    <string formatted="false" name="info_observations_not_downloaded_progress">Observations pour le patient %d de %d ne sont pas téléchargés.</string>
+    <string formatted="false" name="info_observations_patient_downloaded">1 (une) observation Téléchargée pour %d patients</string>
+    <string formatted="false" name="info_observations_patients_downloaded">Téléchargé observations %d pour %d patients</string>
+    <string name="info_patient_data_download">Téléchargement en cours les données des patients</string>
+    <string name="info_patient_download">Téléchargement en cours des patients</string>
+    <string formatted="false" name="info_provider_delete_success">%d fournisseurs supprimés avec succés</string>
+    <string name="info_provider_download">Téléchargement en cours des fournisseurs</string>
+    <string name="info_provider_downloaded">1(une) fournisseur Téléchargé</string>
+    <string name="info_provider_load">Chargement des fournisseurs ...</string>
+    <string name="info_provider_not_downloaded">N\'a pas téléchargé aucun fournisseurs</string>
+    <string name="info_provider_unavailable">
+Aucun fournisseur n\'a encore été ajouté</string>
+    <string formatted="false" name="info_providers_downloaded">%d fournisseurs téléchargés</string>
+    <string name="info_real_time_upload">Muzima est entrain de télécharger vos données</string>
+    <string name="info_real_time_upload_success">MUzima a téléchargé vos données avec succès</string>
+    <string name="info_scanner_exists">Le scanner de code à barres est déjà installé.</string>
+    <string name="info_session_time_out">Votre session a expiré. S\'il vous plaît connecter-vous à nouveau pour continuer.</string>
+    <string name="info_setting_download_success">Telechargement et mise à jour des configuration completées avec succès</string>
+    <string name="info_setup_complete_fail">Configuration terminée avec des erreurs</string>
+    <string name="info_setup_complete_success">Configuration terminée avec succès</string>
+    <string name="info_setup_config_load">Chargement des configurations d\'installation</string>
+    <string name="info_setup_configuration_wizard_prepare">Préparation de l\'assistant de configuration</string>
+    <string name="info_tag_unavailable">Aucune etiquette n\'est disponible</string>
+    <string name="info_url_validate">Étape 1: Validation de l\'URL</string>
+    <string name="info_video_chose_activity_unavailable">Erreur: Application pour choisir la vidéo non trouvée</string>
+    <string name="info_video_play_activity_unavailable">Erreur: Application pour la lecture vidéo non trouvé</string>
+    <string name="info_video_record_activity_unavailable">Erreur: Application d\'enregistrement vidéo non trouvé</string>
+
+    <string name="menu_complete_form_data_sync">Synchronisation des données des formulaires completée </string>
+    <string name="menu_form_back_to_draft">Retour au brouillon </string>
+
+    <string name="title_about_dashboard_help_html">À propos du tableau de bord</string>
+    <string name="title_activity_audio">Ajouter Audio</string>
+    <string name="title_activity_client_encounters">Rencontres avec les clients</string>
+    <string name="title_activity_client_observations">Observations des clients</string>
+    <string name="title_activity_client_summary">Résumé du client</string>
+    <string name="title_activity_cohort_prefix">Préfixes de cohortes</string>
+    <string name="title_activity_image">Ajouter une image</string>
+    <string name="title_activity_video">Ajouter une vidéo</string>
+    <string name="title_advanced_setup">Configuration avancée</string>
+    <string name="title_advanced_setup_help_html">Configuration initiale pour mUzima</string>
+    <string name="title_advanced_setup_help_video">Configuration initiale avancée</string>
+    <string name="title_audio_caption">Légende audio</string>
+    <string name="title_audio_choose">Choisissez Audio</string>
+    <string name="title_audio_record">enregistrer Audio</string>
+    <string name="title_barcode_scanner_check">Vérifiez le Scanner de Barcode </string>
+    <string name="title_barcode_scanner_setup">Étape 6: Vérification du scanner BarCode</string>
+    <string name="title_client_notifications">Notifications de client</string>
+    <string name="title_client_registration_help_video">Enregistrement du client</string>
+    <string name="title_client_scan">Numériser ID des clients</string>
+    <string name="title_cohort_download">Etape 1: Télécharger Cohorte(s)</string>
+    <string name="title_cohort_download_help_video">Téléchargement de cohortes (sur demande)</string>
+    <string name="title_cohort_prefix_help">Définition de(s) préfixe(s) Cohorts Aide</string>
+    <string name="title_cohort_prefix_manage">Gérer les préfixes de cohorte</string>
+    <string name="title_cohort_wizard_help">Télécharger les cohortes Aide</string>
+    <string name="title_concept_download">Étape 5: Ajouter Concepts</string>
+    <string name="title_concept_download_help_video">Téléchargement de concepts (sur demande)</string>
+    <string name="title_concept_help">Aide Concepts </string>
+    <string name="title_crash_dialog">mUzima s\'est écrasé ...</string>
+    <string name="title_data_reset">Étape 3: Réinitialisation des données</string>
+    <string name="title_data_synchronize">Synchronisation des données locales</string>
+    <string name="title_default_encounter_provider">fournisseur de rencontre par défaut</string>
+    <string name="title_disclaimer">Licence, exclusion de garantie et limitation de responsabilité</string>
+    <string name="title_duplicate_form_data_warning">Avertissement de données de formulaire dupliquer</string>
+    <string name="title_fill_patient_forms_help">Remplissez les formulaires pour un patient</string>
+    <string name="title_font_size">Taille de police</string>
+    <string name="title_form_auto_save_interval">Intervalle de sauvegarde de formulaire automatique (minutes)</string>
+    <string name="title_form_data_complete">Compléter les formulaire de données </string>
+    <string name="title_form_data_incomplete">Données de formulaire incomplètes</string>
+    <string name="title_form_download">Etape 2: Telecharger les modeles des formulaires</string>
+    <string name="title_form_download_help_video">Téléchargement de formulaires (sur demande)</string>
+    <string name="title_form_template_all">Tous les modèles de formulaire</string>
+    <string name="title_form_template_downloaded">Modèles de formulaire téléchargés</string>
+    <string name="title_general_notifications">Notifications générales</string>
+    <string name="title_guided_setup">Configuration guidée (recommandée)</string>
+    <string name="title_guided_setup_help_video">Configuration initiale guidée</string>
+    <string name="title_guided_setup_progress">Progression de l\'installation</string>
+    <string name="title_help_video_links">Liens vidéo de mUzima</string>
+    <string name="title_html_help">Centre d\'aide</string>
+    <string name="title_image_caption">Légende de l\'image</string>
+    <string name="title_image_capture">Capture d\'image</string>
+    <string name="title_image_choose">Choisir l\'image</string>
+    <string name="title_initial_setup_guide">guide de configuration initiale de mUzima</string>
+    <string name="title_introduction_video">Vidéo d\'introduction à Muzima</string>
+    <string name="title_landing_page">Page d\'atterissage</string>
+    <string name="title_local_client_search_help_video">Recherche de clients (locale)</string>
+    <string name="title_location_download">Étape 3: Ajouter des emplacements</string>
+    <string name="title_location_help">aide des emplacements </string>
+    <string name="title_logo">Logo de mUzima</string>
+    <string name="title_logout_confirm">Confirmation!</string>
+    <string name="title_manage_concept">Gérer les fournisseurs</string>
+    <string name="title_manage_location">Gérer les emplacements</string>
+    <string name="title_manage_provider">Gérer les concepts</string>
+    <string name="title_media_preview">Apecue du Média</string>
+    <string name="title_muzima_disclaimer">Avertissement de mUzima</string>
+    <string name="title_muzima_training_manual">Manuel de formation mUzima</string>
+    <string name="title_observations_by_concepts">Par concepte</string>
+    <string name="title_observations_by_encounters">Par rencontre</string>
+    <string name="title_provider_download">Étape 4: Ajouter des fournisseurs</string>
+    <string name="title_provider_help">Aide fournisseur</string>
+    <string name="title_provider_not_set">Impossible de définir en tant que fournisseur</string>
+    <string name="title_real_time_sync">Synchronisation en temps réel</string>
+    <string name="title_require_medical_record_number"/>
+    <string name="title_search_server">Recherche sur le serveur</string>
+    <string name="title_server_client_search_help_video">Recherche de client (contre le serveur)</string>
+    <string name="title_server_side_setup">Configuration côté serveur</string>
+    <string name="title_session_timeout">Expiration de la session (minutes)</string>
+    <string name="title_setting_refresh">Actualiser les configurations</string>
+    <string name="title_settings_help_html">Paramètres mUzima</string>
+    <string name="title_video_caption">Légende vidéo</string>
+    <string name="title_video_choose">Choisissez Vidéo</string>
+    <string name="title_video_record">Enregistrez vidéo</string>
+
+    <string name="warning_cohort_prefix_exists">Le préfixe de cohortes existe</string>
+    <string name="warning_empty_cohort_prefix">Vous ne pouvez pas ajouter un préfixe de cohortes vide</string>
+    <string name="warning_form_close">Formulaire de clôture: Ceci annulera toutes vos modifications. Etes-vous sûr de vouloir faire ca?</string>
+    <string name="warning_form_data_already_exists">Ce formulaire de données existe déjà pour ce client avec la même date de rencontre.</string>
+    <string formatted="false" name="warning_forms_complete_and_sync">%s contient des formulaires qui lui sont associés. S\'il vous plaît compléter et synchronisez
+Ces formulaires avant de télécharger une version plus récente. </string>
+    <string name="warning_logout_confirm">Etes-vous sûr de vouloir vous déconnectez et quitter Muzima app?</string>
+    <string name="warning_registration_form_data_delete">Vous êtes sur le point de supprimer les données d\'enregistrement. Cela effacera également les données du patient sur l\'appareil. Etes-vous sur?</string>
+    <string name="warning_setting_download_failure">Echec du téléchargement ou de la mise à jour des configurations</string>
+    <string name="warning_switch_server">Changement de serveur: Cela effacera toutes les données mUzima sur votre appareil, y compris les formulaires incomplets. Etes-vous sûr de vouloir modifier ce paramètre?</string>
+</resources>

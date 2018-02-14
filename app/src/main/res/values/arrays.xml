@@ -10,18 +10,13 @@
   -->
 
 <resources>
-
-	<string-array translatable="false" name="locations">
-		<item>Home</item>
-		<item>Email</item>
-		<item>Calendar</item>
-		<item>Browser</item>
+	<string-array name="font_sizes">
+		<item>@string/general_small</item>
+		<item>@string/general_medium</item>
+		<item>@string/general_large</item>
 	</string-array>
-
-	<string-array translatable="false" name="font_sizes">
-		<item>Small</item>
-		<item>Medium</item>
-		<item>Large</item>
+	<string-array name="landing_pages">
+		<item>@string/general_dashboard</item>
+		<item>@string/general_client_list</item>
 	</string-array>
-
 </resources>

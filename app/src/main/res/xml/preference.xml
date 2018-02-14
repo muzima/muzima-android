@@ -64,6 +64,12 @@
                 android:summary="@string/hint_real_time_sync"
                 android:title="@string/title_real_time_sync"
                 android:key="@string/preference_real_time_sync" />
+        <CheckBoxPreference
+                android:defaultValue="false"
+                android:editable="false"
+                android:summary="@string/hint_require_medical_record_number"
+                android:title="@string/title_require_medical_record_number"
+                android:key="@string/preference_require_medical_record_number" />
 <!--
         <CheckBoxPreference
                 android:defaultValue="true"
@@ -75,10 +81,17 @@
         <ListPreference
                 android:title="@string/title_font_size"
                 android:key="@string/preference_font_size"
-                android:defaultValue="Medium"
+                android:defaultValue="@string/general_medium"
                 android:entries="@array/font_sizes"
                 android:entryValues="@array/font_sizes">
         </ListPreference>
+        <ListPreference
+            android:title="@string/title_landing_page"
+            android:key="@string/preference_landing_page"
+            android:defaultValue="@string/general_dashboard"
+            android:entries="@array/landing_pages"
+            android:entryValues="@array/landing_pages">
+    </ListPreference>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/header_provider_location_category">
