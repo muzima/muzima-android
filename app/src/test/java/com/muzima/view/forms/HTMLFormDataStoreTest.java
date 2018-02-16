@@ -49,12 +49,12 @@ public class HTMLFormDataStoreTest {
         formWebViewActivity = mock(HTMLFormWebViewActivity.class);
         formData = mock(FormData.class);
         htmlFormObservationCreator = mock(HTMLFormObservationCreator.class);
-        htmlFormDataStore = new HTMLFormDataStore(formWebViewActivity, formController,locationController , formData, providerController){
-            @Override
-            public HTMLFormObservationCreator getFormParser(){
-                return htmlFormObservationCreator;
-            }
-        };
+//        htmlFormDataStore = new HTMLFormDataStore(formWebViewActivity, formController,locationController , formData, providerController){
+//            @Override
+//            public HTMLFormObservationCreator getFormParser(){
+//                return htmlFormObservationCreator;
+//            }
+//        };
     }
 
     @Test
