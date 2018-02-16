@@ -25,7 +25,7 @@ description = 'Muzima-Android'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '25.0.0'
 
     useLibrary 'org.apache.http.legacy'
 
