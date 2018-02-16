@@ -293,7 +293,7 @@
     <string name="info_cohorts_unavailable">No Cohorts Available</string>
     <string name="info_complete_form_unavailable">No completed and non synced forms</string>
     <string name="info_concept_delete_success">%d concepts deleted successfully!!</string>
-    <string name="info_concept_download">Downloading concepts</string>
+    <string name="info_concept_download">Downloading Concepts</string>
     <string name="info_concept_downloaded">Downloaded 1 concept</string>
     <string name="info_concept_not_downloaded">Did not download any concepts</string>
     <string name="info_concept_unavailable">No Concepts added yet.</string>
@@ -341,7 +341,7 @@
     <string name="info_downloaded_forms_unavailable">No forms have been downloaded</string>
     <string name="info_downloaded_image">Downloaded image</string>
     <string name="info_draft_form_save_success">Draft form was saved successfully.</string>
-    <string name="info_encounter_download">Downloading encounters</string>
+    <string name="info_encounter_download">Downloading Encounters</string>
     <string formatted="false" name="info_encounter_download_progress">Downloading encounters for client %d of %d.
     </string>
     <string formatted="false" name="info_encounter_not_downloaded_progress">Encounters for client %d of %d not
@@ -413,7 +413,7 @@
     <string name="info_notification_download">Downloaded %d notifications</string>
     <string name="info_notification_download_in_progress">Downloading notifications</string>
     <string name="info_notification_unavailable">No notifications available</string>
-    <string name="info_observation_download">Downloading observations</string>
+    <string name="info_observation_download">Downloading Observations</string>
     <string name="info_observation_in_progress">Observations are still loading</string>
     <string name="info_observation_load">Observations are loading</string>
     <string name="info_observation_patient_downloaded">Downloaded 1 observation for 1 client</string>
@@ -435,7 +435,7 @@
     <string name="info_patient_data_download">Downloading clients data</string>
     <string name="info_patient_download">Downloading Clients</string>
     <string name="info_provider_delete_success">%d Providers deleted successfully</string>
-    <string name="info_provider_download">Downloading providers</string>
+    <string name="info_provider_download">Downloading Providers</string>
     <string name="info_provider_downloaded">Downloaded 1 provider</string>
     <string name="info_provider_load">Loading Providers...</string>
     <string name="info_provider_not_downloaded">Did not download any providers</string>

@@ -8,8 +8,8 @@
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              style="@style/DashboardTableContainer" android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            style="@style/DashboardTableContainer" android:layout_width="fill_parent" android:layout_height="fill_parent">
     <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
@@ -25,15 +25,12 @@
         <TextView
                 android:id="@+id/title_login"
                 style="@style/LoginActivityHeader"/>
-
-    </LinearLayout>
-    <LinearLayout
-            style="@style/NotClickableSummaryItem">
-        <TextView
-                android:id="@+id/currentUser"
-                style="@style/DashboardTitleText"/>
-    </LinearLayout>
-    <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <LinearLayout
+                style="@style/NotClickableSummaryItem">
+            <TextView
+                    android:id="@+id/currentUser"
+                    style="@style/DashboardTitleText"/>
+        </LinearLayout>
         <LinearLayout android:layout_width="fill_parent"
                       android:layout_height="wrap_content"
                       android:orientation="vertical"
@@ -138,9 +135,7 @@
                     </TextView>
 
                 </RelativeLayout>
-
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
-
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
