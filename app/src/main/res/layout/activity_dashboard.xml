@@ -17,9 +17,13 @@
             android:padding="20dp"
             style="@style/LoginActivityLayout">
 
+        <ImageView
+            android:id="@+id/logo"
+            style="@style/LoginActivityLogo"
+            android:contentDescription="@string/title_logo"/>
+
         <TextView
                 android:id="@+id/title_login"
-                android:drawableTop="@drawable/ic_launcher_logo"
                 style="@style/LoginActivityHeader"/>
 
     </LinearLayout>
@@ -37,9 +41,7 @@
 
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="100dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
+                style="@style/ClickableGridItemHeight"
                 android:baselineAligned="false"
                 android:weightSum="100">
 
@@ -86,9 +88,7 @@
 
             <LinearLayout android:layout_width="fill_parent"
                           android:weightSum="100"
-                          android:layout_marginTop="10dp"
-                          android:layout_marginBottom="10dp"
-                          android:layout_height="100dp"
+                          style="@style/ClickableGridItemHeight"
                           android:baselineAligned="false">
 
                 <RelativeLayout

@@ -10,12 +10,15 @@
 
 package com.muzima.controller;
 
+import android.util.Log;
+
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.service.SntpService;
 import com.muzima.utils.StringUtils;
+import com.muzima.api.model.EncounterType;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -120,6 +123,38 @@ public class EncounterController {
             throw new SaveEncounterException(e);
         }
 
+    }
+
+    public List<EncounterType> getEncounterTypes() throws DownloadEncounterException {
+        try {
+            return encounterService.getAllEncounterTypes();
+        } catch (IOException e) {
+            throw new DownloadEncounterException(e);
+        }
+    }
+
+    public List<Encounter> getEncountersByEncounterTypeNameAndPatientUuid(String name,String patientUuid) throws DownloadEncounterException{
+        try{
+            return encounterService.getEncountersByEncounterTypeNameAndPatientUuid(name,patientUuid);
+        }catch(IOException e){
+            throw new DownloadEncounterException(e);
+        }
+    }
+
+    public List<Encounter> getEncountersByEncounterTypeUuidAndPatientUuid(String encounterTypeUuid,String patientUuid) throws DownloadEncounterException{
+        try{
+            return encounterService.getEncountersByEncounterTypeUuidAndPatientUuid(encounterTypeUuid,patientUuid);
+        }catch(IOException e){
+            throw new DownloadEncounterException(e);
+        }
+    }
+
+    public List<Encounter> getEncountersByEncounterTypeIdAndPatientUuid(int encounterTypeId,String patientUuid) throws DownloadEncounterException{
+        try{
+            return encounterService.getEncountersByEncounterTypeIdAndPatientUuid(encounterTypeId,patientUuid);
+        }catch(IOException e){
+            throw new DownloadEncounterException(e);
+        }
     }
 
     public void deleteEncounters(List<Encounter> encounters) throws DeleteEncounterException {
