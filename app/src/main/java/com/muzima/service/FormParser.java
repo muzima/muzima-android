@@ -17,8 +17,11 @@ import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
+import com.muzima.controller.FormController;
+import com.muzima.controller.LocationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
+import com.muzima.controller.ProviderController;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -29,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
+import org.json.JSONException;
 
 import static android.util.Xml.newPullParser;
 import static com.muzima.utils.DateUtils.parse;
@@ -36,6 +40,8 @@ import static com.muzima.utils.DateUtils.parse;
 public class FormParser {
 
     private final PatientController patientController;
+    private final LocationController locationController;
+    private final ProviderController providerController;
     private final ConceptController conceptController;
     private final EncounterController encounterController;
     private final ObservationController observationController;
@@ -47,13 +53,13 @@ public class FormParser {
     private Encounter encounter;
     private List<Observation> observations;
 
-    public FormParser(PatientController patientController, ConceptController conceptController, EncounterController encounterController, ObservationController observationController) {
-        this(newPullParser(), patientController, conceptController, encounterController, observationController);
+    public FormParser(PatientController patientController, ConceptController conceptController, EncounterController encounterController, ObservationController observationController, LocationController locationController, ProviderController providerController, FormController formController) {
+        this(newPullParser(), patientController, conceptController, encounterController, observationController, locationController, providerController,formController);
 
     }
 
     public FormParser(XmlPullParser parser, PatientController patientController,
-                      ConceptController conceptController, EncounterController encounterController, ObservationController observationController) {
+                      ConceptController conceptController, EncounterController encounterController, ObservationController observationController,LocationController locationController, ProviderController providerController,FormController formController) {
         this.encounterController = encounterController;
         this.observationController = observationController;
         try {
@@ -65,8 +71,10 @@ public class FormParser {
         }
         this.parser = parser;
         this.patientController = patientController;
+        this.locationController = locationController;
+        this.providerController = providerController;
         this.conceptController = conceptController;
-        this.observationParserUtility = new ObservationParserUtility(conceptController);
+        this.observationParserUtility = new ObservationParserUtility(conceptController,locationController,providerController,formController);
     }
 
     public List<Observation> parseAndSaveObservations(String xml, String formDataUuid)
@@ -127,9 +135,21 @@ public class FormParser {
 
     private Encounter createEncounter(XmlPullParser parser, String formDataUuid) throws XmlPullParserException, IOException, ParseException {
         Encounter encounter = null;
+        String formUuid = "";
+        String providerId="";
+        int locationId=0;
         while (!isEndOf("encounter")) {
+            if (isStartOf("encounter.form_uuid")) {
+                 formUuid = String.valueOf(parser.nextText());
+            }
+            if (isStartOf("encounter.provider_id")) {
+                 providerId = String.valueOf(parser.nextText());
+            }
+            if (isStartOf("encounter.location_id")) {
+                 locationId = Integer.parseInt(String.valueOf(parser.nextText()));
+            }
             if (isStartOf("encounter.encounter_datetime")) {
-                encounter = observationParserUtility.getEncounterEntity(parse(parser.nextText()), patient,formDataUuid);
+                encounter = observationParserUtility.getEncounterEntity(parse(parser.nextText()), formUuid, providerId, locationId, patient, formDataUuid);
             }
             parser.next();
         }

@@ -11,22 +11,30 @@
 package com.muzima.service;
 
 import android.util.Log;
+
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.ConceptName;
 import com.muzima.api.model.ConceptType;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.EncounterType;
+import com.muzima.api.model.Form;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonName;
+import com.muzima.api.model.Provider;
 import com.muzima.controller.ConceptController;
+import com.muzima.controller.FormController;
 import com.muzima.controller.ObservationController;
 import com.muzima.utils.StringUtils;
+import com.muzima.controller.LocationController;
+import com.muzima.controller.ProviderController;
+import com.muzima.api.service.LocationService;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,22 +47,30 @@ import static java.util.Arrays.asList;
 public class ObservationParserUtility {
 
     private ConceptController conceptController;
+    public LocationController locationController;
+    public FormController formController;
+    private LocationService locationService;
+    public ProviderController providerController;
     private List<Concept> newConceptList;
 
-    public ObservationParserUtility(ConceptController conceptController) {
+    public ObservationParserUtility(ConceptController conceptController,LocationController locationController, ProviderController providerController,FormController formController) {
         this.conceptController = conceptController;
+        this.locationController = locationController;
+        this.providerController = providerController;
+        this.formController = formController;
         this.newConceptList = new ArrayList<Concept>();
     }
 
-    public Encounter getEncounterEntity(Date encounterDateTime, Patient patient, String formDataUuid) {
+    public Encounter getEncounterEntity(Date encounterDateTime,String  formUuid,String providerId, int locationId, Patient patient, String formDataUuid) {
         Encounter encounter = new Encounter();
-        encounter.setProvider(getDummyProvider());
+        encounter.setProvider(getDummyProvider(providerId));
         encounter.setUuid(getEncounterUUID());
-        encounter.setLocation(getDummyLocation());
-        encounter.setEncounterType(getDummyEncounterType());
+        encounter.setLocation(getDummyLocation(locationId));
+        encounter.setEncounterType(getDummyEncounterType(formUuid));
         encounter.setEncounterDatetime(encounterDateTime);
         encounter.setFormDataUuid(formDataUuid);
         encounter.setPatient(patient);
+
         return encounter;
     }
 
@@ -99,7 +115,12 @@ public class ObservationParserUtility {
         } else if (concept.isNumeric()) {
             observation.setValueNumeric(getDoubleValue(value));
         } else {
-            observation.setValueText(value);
+            String conceptName = getConceptName(value);
+            if(!(StringUtils.isEmpty(conceptName))){
+                observation.setValueText(conceptName);
+            }else {
+                observation.setValueText(value);
+            }
         }
         return observation;
     }
@@ -121,28 +142,67 @@ public class ObservationParserUtility {
         return valueCoded;
     }
 
-    private EncounterType getDummyEncounterType() {
+    private EncounterType getDummyEncounterType(String formUuid) {
+        String encounterTypeName="";
+        String encountertypeUuid="";
+        try{
+            Form form = formController.getFormByUuid(formUuid);
+            encounterTypeName=form.getEncounterType().getName();
+        } catch (FormController.FormFetchException e) {
+            e.printStackTrace( );
+        }
         EncounterType encounterType = new EncounterType();
-        encounterType.setUuid("encounterTypeForObservationsCreatedOnPhone");
-        encounterType.setName("encounterTypeForObservationsCreatedOnPhone");
+        encounterType.setUuid(encountertypeUuid);
+        encounterType.setName(encounterTypeName);
         return encounterType;
     }
 
-    private Location getDummyLocation() {
+    private Location getDummyLocation(int locationId) {
+        List<Location> allLocations = new ArrayList<Location>();
+        try {
+            allLocations = locationController.getAllLocations();
+        } catch (LocationController.LocationLoadException e) {
+            Log.e("Location Error:","= error loading locations ="+e);
+            e.printStackTrace( );
+        }
+        String locationName = "";
+        String locationUuid = "";
+        for(Location loc:allLocations) {
+            if(loc.getId()==locationId){
+                locationName=loc.getName();
+                locationUuid=loc.getUuid();
+            }
+        }
         Location dummyLocation = new Location();
-        dummyLocation.setUuid("locationForObservationsCreatedOnPhone");
-        dummyLocation.setName("Created On Phone");
+        dummyLocation.setUuid(locationUuid);
+        dummyLocation.setName(locationName);
         return dummyLocation;
     }
 
-    private Person getDummyProvider() {
+    private Person getDummyProvider(String providerId) {
+        List<Provider> allProviders = new ArrayList<Provider>();
+        try {
+            allProviders = providerController.getAllProviders();
+        } catch (ProviderController.ProviderLoadException e) {
+            e.printStackTrace( );
+        }
+        String providerName = "";
+        String providerUuid = "";
+        String providerIdentifier = "";
+        for(Provider prov:allProviders){
+            if(prov.getIdentifier().equals(providerId)){
+                providerName = prov.getName();
+                providerUuid = prov.getUuid();
+                providerIdentifier = prov.getIdentifier();
+            }
+        }
         Person provider = new Person();
-        provider.setUuid("providerForObservationsCreatedOnPhone");
+        provider.setUuid(providerUuid);
         provider.setGender("NA");
         PersonName personName = new PersonName();
-        personName.setFamilyName("Taken");
-        personName.setGivenName(" on");
-        personName.setMiddleName("phone");
+        personName.setFamilyName(providerName);
+        personName.setGivenName(" ");
+        personName.setMiddleName(providerIdentifier);
         personName.setPreferred(true);
         ArrayList<PersonName> names = new ArrayList<PersonName>();
         names.add(personName);

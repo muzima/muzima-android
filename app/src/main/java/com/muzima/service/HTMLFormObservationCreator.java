@@ -13,12 +13,17 @@ package com.muzima.service;
 import android.util.Log;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
+import com.muzima.api.model.Form;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
+import com.muzima.controller.LocationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
+import com.muzima.controller.FormController;
+import com.muzima.controller.ProviderController;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +45,7 @@ public class HTMLFormObservationCreator {
     private EncounterController encounterController;
     private ObservationController observationController;
     private ObservationParserUtility observationParserUtility;
+    private FormController formController;
 
     private Patient patient;
     private Encounter encounter;
@@ -47,12 +53,13 @@ public class HTMLFormObservationCreator {
     private String TAG = "HTMLFormObservationCreator";
 
     public HTMLFormObservationCreator(PatientController patientController, ConceptController conceptController,
-                                      EncounterController encounterController, ObservationController observationController) {
+                                      EncounterController encounterController, ObservationController observationController, LocationController locationController, ProviderController providerController,FormController formController) {
         this.patientController = patientController;
         this.conceptController = conceptController;
         this.encounterController = encounterController;
+        this.formController =formController;
         this.observationController = observationController;
-        this.observationParserUtility = new ObservationParserUtility(conceptController);
+        this.observationParserUtility = new ObservationParserUtility(conceptController, locationController, providerController, formController);
     }
 
     public void createAndPersistObservations(String jsonResponse,String formDataUuid) {
@@ -164,7 +171,7 @@ public class HTMLFormObservationCreator {
     }
 
     private Encounter createEncounter(JSONObject encounterJSON, String formDataUuid) throws JSONException, ParseException {
-        return observationParserUtility.getEncounterEntity(parse(encounterJSON.getString("encounter.encounter_datetime")), patient,formDataUuid);
+        return observationParserUtility.getEncounterEntity(parse(encounterJSON.getString("encounter.encounter_datetime")),encounterJSON.getString("encounter.form_uuid"), encounterJSON.getString("encounter.provider_id"),Integer.parseInt(encounterJSON.getString("encounter.location_id")), patient,formDataUuid);
     }
 
     public Date getEncounterDateFromFormDate(String jsonResponse){
