@@ -12,6 +12,8 @@ package com.muzima.view.preferences.settings;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.os.Build;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.service.MuzimaSyncService;
@@ -37,7 +39,11 @@ public class SyncFormDataTask extends AsyncTask<String, Void, Boolean> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressDialog = new ProgressDialog(settingsPreferenceFragment.getContext());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            progressDialog = new ProgressDialog(settingsPreferenceFragment.getContext());
+        }else{
+            progressDialog = new ProgressDialog(settingsPreferenceFragment.getActivity());
+        }
         progressDialog.setMessage(settingsPreferenceFragment.getString(R.string.title_data_synchronize));
 
         progressDialog.show();
