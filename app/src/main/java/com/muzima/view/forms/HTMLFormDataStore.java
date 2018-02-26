@@ -307,28 +307,32 @@ public class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public String checkForPossibleFormDuplicate(String formUuid, String encounterDateTime, String patientUuid) throws FormController.FormDataFetchException {
-        List<FormData> allFormData = new ArrayList<FormData>();
-        allFormData = formController.getAllFormDataByPatientUuid(patientUuid, Constants.STATUS_INCOMPLETE);
-        for(FormData formData:allFormData){
-            Date encounterDate = formData.getEncounterDate();
-            String formDataUuid = formData.getTemplateUuid();
+    public String checkForPossibleFormDuplicate(String formUuid, String encounterDateTime, String patientUuid,String encounterPayLoad) throws FormController.FormDataFetchException, JSONException {
+        JSONObject mainObject = new JSONObject(encounterPayLoad);
+        JSONObject encounterObject = mainObject.getJSONObject("encounter");
+        if(!(encounterObject.has("encounter.encounter_datetime"))) {
+            List<FormData> allFormData = new ArrayList<FormData>( );
+            allFormData = formController.getAllFormDataByPatientUuid(patientUuid, Constants.STATUS_INCOMPLETE);
+            for (FormData formData : allFormData) {
+                Date encounterDate = formData.getEncounterDate( );
+                String formDataUuid = formData.getTemplateUuid( );
 
-            final String dateFormat = "dd-MM-yyyy";
+                final String dateFormat = "dd-MM-yyyy";
 
-            SimpleDateFormat newDateFormat = new SimpleDateFormat("dd-MM-yy HH:mm:ss");
-            Date d = null;
-            try {
-                d = newDateFormat.parse(newDateFormat.format(encounterDate));
-            } catch (ParseException e) {
-                e.printStackTrace( );
-            }
-            newDateFormat.applyPattern(dateFormat);
-            String convertedEncounterDate=newDateFormat.format(d);
+                SimpleDateFormat newDateFormat = new SimpleDateFormat("dd-MM-yy HH:mm:ss");
+                Date d = null;
+                try {
+                    d = newDateFormat.parse(newDateFormat.format(encounterDate));
+                } catch (ParseException e) {
+                    e.printStackTrace( );
+                }
+                newDateFormat.applyPattern(dateFormat);
+                String convertedEncounterDate = newDateFormat.format(d);
 
-            if(convertedEncounterDate.equals(encounterDateTime) && formDataUuid.equals(formUuid)){
-                formWebViewActivity.showWarningDialog();
-                return null;
+                if (convertedEncounterDate.equals(encounterDateTime) && formDataUuid.equals(formUuid)) {
+                    formWebViewActivity.showWarningDialog( );
+                    return null;
+                }
             }
         }
         return null;
