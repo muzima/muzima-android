@@ -1311,7 +1311,8 @@ $(document).ready(function () {
         var formUuid=$('#encounter\\.form_uuid').val();
         var encounterDateTime=$('#encounter\\.encounter_datetime').val();
         var patientUuid=$('#patient\\.uuid').val();
-        htmlDataStore.checkForPossibleFormDuplicate(formUuid,encounterDateTime,patientUuid);
+        var formData = $.trim($('#pre_populate_data').html());
+        htmlDataStore.checkForPossibleFormDuplicate(formUuid,encounterDateTime,patientUuid,formData);
     });
     /*End of Checking For Possibility Of Duplicate Form on encounter date change*/
 
@@ -1320,7 +1321,9 @@ $(document).ready(function () {
         var formUuid=$('#encounter\\.form_uuid').val();
         var encounterDateTime=$('#encounter\\.encounter_datetime').val();
         var patientUuid=$('#patient\\.uuid').val();
-        htmlDataStore.checkForPossibleFormDuplicate(formUuid,encounterDateTime,patientUuid);
+        var formData = $.trim($('#pre_populate_data').html());
+
+        htmlDataStore.checkForPossibleFormDuplicate(formUuid,encounterDateTime,patientUuid,formData);
     });
     /*End of Checking For Possibility Of Duplicate Form on Form Load*/
 });
