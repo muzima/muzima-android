@@ -33,6 +33,7 @@ import com.muzima.controller.LocationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.ProviderController;
+import com.muzima.model.collections.IncompleteForms;
 import com.muzima.model.observation.Concepts;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.HTMLFormObservationCreator;
@@ -42,11 +43,15 @@ import net.minidev.json.JSONValue;
 import org.json.JSONException;
 import com.muzima.controller.EncounterController;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 public class HTMLFormDataStore {
@@ -299,5 +304,33 @@ public class HTMLFormDataStore {
 
     public boolean isMedicalRecordNumberRequired(){
         return settingController.isMedicalRecordNumberRequiredDuringRegistration();
+    }
+
+    @JavascriptInterface
+    public String checkForPossibleFormDuplicate(String formUuid, String encounterDateTime, String patientUuid) throws FormController.FormDataFetchException {
+        List<FormData> allFormData = new ArrayList<FormData>();
+        allFormData = formController.getAllFormDataByPatientUuid(patientUuid, Constants.STATUS_INCOMPLETE);
+        for(FormData formData:allFormData){
+            Date encounterDate = formData.getEncounterDate();
+            String formDataUuid = formData.getTemplateUuid();
+
+            final String dateFormat = "dd-MM-yyyy";
+
+            SimpleDateFormat newDateFormat = new SimpleDateFormat("dd-MM-yy HH:mm:ss");
+            Date d = null;
+            try {
+                d = newDateFormat.parse(newDateFormat.format(encounterDate));
+            } catch (ParseException e) {
+                e.printStackTrace( );
+            }
+            newDateFormat.applyPattern(dateFormat);
+            String convertedEncounterDate=newDateFormat.format(d);
+
+            if(convertedEncounterDate.equals(encounterDateTime) && formDataUuid.equals(formUuid)){
+                formWebViewActivity.showWarningDialog();
+                return null;
+            }
+        }
+        return null;
     }
 }

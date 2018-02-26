@@ -1305,4 +1305,13 @@ $(document).ready(function () {
         "valid-consultant-only": {validConsultantOnly: true}
     });
     /* End - validConsultantOnly*/
+
+    /*Start of Checking For Possibility Of Duplicate Form*/
+    $( "#encounter\\.encounter_datetime" ).change(function() {
+        var formUuid=$('#encounter\\.form_uuid').val();
+        var encounterDateTime=$('#encounter\\.encounter_datetime').val();
+        var patientUuid=$('#patient\\.uuid').val();
+        htmlDataStore.checkForPossibleFormDuplicate(formUuid,encounterDateTime,patientUuid);
+    });
+    /*End of Checking For Possibility Of Duplicate Form*/
 });
