@@ -307,7 +307,7 @@ public class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public String checkForPossibleFormDuplicate(String formUuid, String encounterDateTime, String patientUuid,String encounterPayLoad) throws FormController.FormDataFetchException, JSONException {
+    public void checkForPossibleFormDuplicate(String formUuid, String encounterDateTime, String patientUuid,String encounterPayLoad) throws FormController.FormDataFetchException, JSONException {
         JSONObject mainObject = new JSONObject(encounterPayLoad);
         JSONObject encounterObject = mainObject.getJSONObject("encounter");
         if(!(encounterObject.has("encounter.encounter_datetime"))) {
@@ -331,10 +331,9 @@ public class HTMLFormDataStore {
 
                 if (convertedEncounterDate.equals(encounterDateTime) && formDataUuid.equals(formUuid)) {
                     formWebViewActivity.showWarningDialog( );
-                    return null;
+                    break;
                 }
             }
         }
-        return null;
     }
 }
