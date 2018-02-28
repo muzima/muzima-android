@@ -336,4 +336,24 @@ public class HTMLFormDataStore {
             }
         }
     }
+
+    @JavascriptInterface
+    public String getDefaultEncounterLocationPreference() throws LocationController.LocationLoadException {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(formWebViewActivity.getApplicationContext());
+        String defaultLocationName = preferences.getString("defaultEncounterLocation",getStringResource("no_default_encounter_location"));
+        String defaultValue = getStringResource("no_default_encounter_location");
+        List<Location> defaultLocation = new ArrayList<Location>();
+        List<Location> locations = new ArrayList<Location>();
+
+        locations = locationController.getAllLocations();
+        if(!defaultLocationName.equals(defaultValue)){
+             for(Location loc:locations) {
+                 if(Integer.toString(loc.getId()).equals(defaultLocationName)) {
+                     defaultLocation.add(loc);
+                 }
+             }
+            return JSONValue.toJSONString(defaultLocation);
+        }
+        return JSONValue.toJSONString(locations);
+    }
 }
