@@ -278,7 +278,8 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         } catch (LocationController.LocationLoadException e) {
             e.printStackTrace( );
         }
-        String locationName = "";
+
+        String locationName = getResources().getString(R.string.no_default_encounter_location);
         for (Location location : locations) {
             if(Integer.toString(location.getId()).equals(defaultEncounterLocationPreference.getValue())){
                 locationName=location.getName();
