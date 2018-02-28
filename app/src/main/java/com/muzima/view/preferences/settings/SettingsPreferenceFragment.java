@@ -24,6 +24,8 @@ import android.preference.PreferenceFragment;;
 import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.model.Location;
+import com.muzima.controller.LocationController;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
@@ -33,7 +35,9 @@ import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.preferences.SettingsActivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
@@ -177,6 +181,32 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         duplicateFormDataPreference = (CheckBoxPreference)getPreferenceScreen().findPreference(duplicateFormDataPreferenceKey);
         duplicateFormDataPreference.setSummary(duplicateFormDataPreference.getSummary());
         */
+
+        ListPreference listPreferenceCategory = (ListPreference) findPreference(getResources().getString(R.string.preference_default_encounter_location));
+        if (listPreferenceCategory != null) {
+
+            LocationController locationController = ((MuzimaApplication) getActivity().getApplication()).getLocationController();
+            List<Location> locations = new ArrayList<Location>();
+            try {
+                locations = locationController.getAllLocations();
+            } catch (LocationController.LocationLoadException e) {
+                e.printStackTrace( );
+            }
+            CharSequence entries[] = new String[locations.size()+1];
+            CharSequence entryValues[] = new String[locations.size()+1];
+
+            entries[0] = "No Default encounter location";
+            entryValues[0] = "No Default encounter location";
+            int i = 1;
+            for (Location location : locations) {
+                entries[i] = location.getName();
+                entryValues[i] = Integer.toString(location.getId());
+                i++;
+            }
+            listPreferenceCategory.setEntries(entries);
+            listPreferenceCategory.setEntryValues(entryValues);
+        }
+
 
         fontSizePreferenceKey = getResources().getString(R.string.preference_font_size);
         fontSizePreference = (ListPreference) getPreferenceScreen().findPreference(fontSizePreferenceKey);
