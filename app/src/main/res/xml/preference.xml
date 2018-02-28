@@ -110,7 +110,7 @@
             android:summary="@string/hint_default_encounter_location"
             android:title="@string/title_default_encounter_location"
             android:key="@string/preference_default_encounter_location"
-            android:defaultValue="@string/general_dashboard">
+            android:defaultValue="@string/no_default_encounter_location">
         </ListPreference>
         <Preference
                 android:title="@string/title_manage_location"

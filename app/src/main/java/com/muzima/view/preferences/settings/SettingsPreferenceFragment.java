@@ -195,8 +195,8 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             CharSequence entries[] = new String[locations.size()+1];
             CharSequence entryValues[] = new String[locations.size()+1];
 
-            entries[0] = "No Default encounter location";
-            entryValues[0] = "No Default encounter location";
+            entries[0] = getResources().getString(R.string.no_default_encounter_location);
+            entryValues[0] = getResources().getString(R.string.no_default_encounter_location);
             int i = 1;
             for (Location location : locations) {
                 entries[i] = location.getName();
