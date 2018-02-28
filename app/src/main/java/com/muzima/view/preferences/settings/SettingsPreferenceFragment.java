@@ -21,6 +21,7 @@ import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;;
+import android.util.Log;
 import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -34,6 +35,8 @@ import com.muzima.util.Constants;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.preferences.SettingsActivity;
+
+import org.apache.commons.lang.math.NumberUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -268,8 +271,21 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
 
         defaultEncounterLocationkey = getResources().getString(R.string.preference_default_encounter_location);
         defaultEncounterLocationPreference = (ListPreference) getPreferenceScreen().findPreference(defaultEncounterLocationkey);
-        defaultEncounterLocationPreference.setSummary(defaultEncounterLocationPreference.getValue());
-        registerListPreferenceChangeHandler(defaultEncounterLocationkey, defaultEncounterLocationPreference);
+        LocationController locationController = ((MuzimaApplication) getActivity().getApplication()).getLocationController();
+        List<Location> locations = new ArrayList<Location>();
+        try {
+            locations = locationController.getAllLocations();
+        } catch (LocationController.LocationLoadException e) {
+            e.printStackTrace( );
+        }
+        String locationName = "";
+        for (Location location : locations) {
+            if(Integer.toString(location.getId()).equals(defaultEncounterLocationPreference.getValue())){
+                locationName=location.getName();
+            }
+        }
+        defaultEncounterLocationPreference.setSummary(locationName);
+        registerListPreferenceChangeHandlerForDefaultLocation(defaultEncounterLocationkey, defaultEncounterLocationPreference);
 
     }
 
@@ -312,6 +328,33 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             @Override
             public void handle(SharedPreferences sharedPreferences) {
                 preference.setSummary(sharedPreferences.getString(key, StringUtils.EMPTY));
+            }
+        });
+    }
+
+    private void registerListPreferenceChangeHandlerForDefaultLocation(final String key, final ListPreference preference) {
+
+        actions.put(key, new PreferenceChangeHandler() {
+            @Override
+            public void handle(SharedPreferences sharedPreferences) {
+                if(NumberUtils.isNumber(sharedPreferences.getString(key, StringUtils.EMPTY))){
+                    LocationController locationController = ((MuzimaApplication) getActivity().getApplication()).getLocationController();
+                    List<Location> locations = new ArrayList<Location>();
+                    try {
+                        locations = locationController.getAllLocations();
+                    } catch (LocationController.LocationLoadException e) {
+                        e.printStackTrace( );
+                    }
+                    String locationName = "";
+                    for (Location location : locations) {
+                        if(Integer.toString(location.getId()).equals(sharedPreferences.getString(key, StringUtils.EMPTY))){
+                            locationName=location.getName();
+                        }
+                    }
+                    preference.setSummary(locationName);
+                }else {
+                    preference.setSummary(sharedPreferences.getString(key, StringUtils.EMPTY));
+                }
             }
         });
     }
