@@ -49,6 +49,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -264,11 +265,11 @@ public class HTMLFormDataStore {
         catch (Exception e){
             Log.e(TAG, "Exception occurred while loading observations", e);
         }
-        return JSONValue.toJSONString(observations);
+        return createObsJsonArray(observations);
     }
 
     @JavascriptInterface
-    public String getObsByEncounterId(int encounterid){
+    public String getObsByEncounterId(int encounterid) throws JSONException {
         List<Observation> observations = new ArrayList<Observation>();
         try {
             observations = observationController.getObservationsByEncounterId(encounterid);
@@ -278,11 +279,11 @@ public class HTMLFormDataStore {
         catch (Exception e){
             Log.e(TAG, "Exception occurred while loading observations", e);
         }
-        return JSONValue.toJSONString(observations);
+        return createObsJsonArray(observations);
     }
 
     @JavascriptInterface
-    public String getObsByEncounterType(String patientUuid,String encounterType){
+    public String getObsByEncounterType(String patientUuid,String encounterType) throws JSONException {
         List<Observation> observations = new ArrayList<Observation>();
         List<Encounter> encounters=new ArrayList<Encounter>();
         try {
@@ -299,9 +300,53 @@ public class HTMLFormDataStore {
         } catch (Exception e){
             Log.e(TAG, "Exception occurred while loading observations", e);
         }
-        return JSONValue.toJSONString(observations);
+        return createObsJsonArray(observations);
     }
+    public String createObsJsonArray(List<Observation> observations) throws JSONException {
+        int i = 0;
+        JSONArray arr = new JSONArray();
+        HashMap<String, JSONObject> map = new HashMap<String, JSONObject>( );
+        for (Observation obs : observations) {
+            Concept concepts = new Concept();
+            String conceptUuid = obs.getConcept().getUuid();
+            if (conceptUuid.substring(0, 21).equals("ConceptCreatedOnPhone")) {
+                conceptUuid = conceptUuid.substring(21);
+            }
+            if (!conceptUuid.isEmpty()) {
+                try {
+                    concepts = conceptController.downloadConceptByUuid(obs.getConcept().getUuid());
+                } catch (ConceptController.ConceptDownloadException e) {
+                    e.printStackTrace();
+                }
+            }
+            final String dateFormat = "dd-MM-yyyy";
 
+            SimpleDateFormat newDateFormat = new SimpleDateFormat("dd-MM-yy HH:mm:ss");
+            Date d = null;
+            try {
+                d = newDateFormat.parse(newDateFormat.format(obs.getObservationDatetime()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            newDateFormat.applyPattern(dateFormat);
+            String convertedEncounterDate = newDateFormat.format(d);
+
+            JSONObject json = new JSONObject();
+            if (concepts != null) {
+                json.put("conceptName", concepts.getName());
+            } else {
+                json.put("conceptName", "Concept Created On Phone");
+            }
+            json.put("obsDate", convertedEncounterDate);
+            json.put("valueCoded", obs.getValueCoded().getName());
+            json.put("valueNumeric", obs.getValueNumeric());
+            json.put("valueText", obs.getValueText());
+            map.put("json" + i, json);
+            arr.put(map.get("json" + i));
+            i++;
+        }
+        return arr.toString();
+    }
     public boolean isMedicalRecordNumberRequired(){
         return settingController.isMedicalRecordNumberRequiredDuringRegistration();
     }
