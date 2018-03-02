@@ -255,7 +255,7 @@ public class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public String getObsByConceptId(String patientUuid,int conceptId) throws JSONException{
+    public String getObsByConceptId(String patientUuid,int conceptId) throws JSONException, ConceptController.ConceptFetchException {
         List<Observation> observations = new ArrayList<Observation>();
         try {
             observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid,conceptId);
@@ -269,7 +269,7 @@ public class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public String getObsByEncounterId(int encounterid) throws JSONException {
+    public String getObsByEncounterId(int encounterid) throws JSONException, ConceptController.ConceptFetchException {
         List<Observation> observations = new ArrayList<Observation>();
         try {
             observations = observationController.getObservationsByEncounterId(encounterid);
@@ -283,7 +283,7 @@ public class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public String getObsByEncounterType(String patientUuid,String encounterType) throws JSONException {
+    public String getObsByEncounterType(String patientUuid,String encounterType) throws JSONException, ConceptController.ConceptFetchException {
         List<Observation> observations = new ArrayList<Observation>();
         List<Encounter> encounters=new ArrayList<Encounter>();
         try {
@@ -302,25 +302,21 @@ public class HTMLFormDataStore {
         }
         return createObsJsonArray(observations);
     }
-    public String createObsJsonArray(List<Observation> observations) throws JSONException {
+    public String createObsJsonArray(List<Observation> observations) throws JSONException, ConceptController.ConceptFetchException {
         int i = 0;
         JSONArray arr = new JSONArray();
         HashMap<String, JSONObject> map = new HashMap<String, JSONObject>( );
+        List<Concept> concepts =new ArrayList<Concept>();
+        concepts = conceptController.getConcepts();
         for (Observation obs : observations) {
-            Concept concepts = new Concept();
+            String conceptName="";
             String conceptUuid = obs.getConcept().getUuid();
-            if (conceptUuid.substring(0, 21).equals("ConceptCreatedOnPhone")) {
-                conceptUuid = conceptUuid.substring(21);
-            }
-            if (!conceptUuid.isEmpty()) {
-                try {
-                    concepts = conceptController.downloadConceptByUuid(obs.getConcept().getUuid());
-                } catch (ConceptController.ConceptDownloadException e) {
-                    e.printStackTrace();
+            for(Concept concept:concepts){
+                if(concept.getUuid().equals(conceptUuid)){
+                    conceptName = concept.getName();
                 }
             }
             final String dateFormat = "dd-MM-yyyy";
-
             SimpleDateFormat newDateFormat = new SimpleDateFormat("dd-MM-yy HH:mm:ss");
             Date d = null;
             try {
@@ -332,8 +328,8 @@ public class HTMLFormDataStore {
             String convertedEncounterDate = newDateFormat.format(d);
 
             JSONObject json = new JSONObject();
-            if (concepts != null) {
-                json.put("conceptName", concepts.getName());
+            if (!conceptName.isEmpty()) {
+                json.put("conceptName", conceptName);
             } else {
                 json.put("conceptName", "Concept Created On Phone");
             }
