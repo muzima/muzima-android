@@ -61,13 +61,14 @@ public class ObservationParserUtility {
         this.newConceptList = new ArrayList<Concept>();
     }
 
-    public Encounter getEncounterEntity(Date encounterDateTime,String  formUuid,String providerId, int locationId, Patient patient, String formDataUuid) {
+    public Encounter getEncounterEntity(Date encounterDateTime,String  formUuid,String providerId, int locationId, String userSystemId, Patient patient, String formDataUuid) {
         Encounter encounter = new Encounter();
         encounter.setProvider(getDummyProvider(providerId));
         encounter.setUuid(getEncounterUUID());
         encounter.setLocation(getDummyLocation(locationId));
         encounter.setEncounterType(getDummyEncounterType(formUuid));
         encounter.setEncounterDatetime(encounterDateTime);
+        encounter.setUserSystemId(userSystemId);
         encounter.setFormDataUuid(formDataUuid);
         encounter.setPatient(patient);
 
