@@ -54,6 +54,7 @@ public class HTMLPatientJSONMapper {
                 patientDetails.put("patient.birth_date", DateUtils.getFormattedDate(patient.getBirthdate()));
             }
             encounterDetails.put("encounter.form_uuid", StringUtils.defaultString(formData.getTemplateUuid()));
+            encounterDetails.put("encounter.user_system_id", StringUtils.defaultString(formData.getUserSystemId()));
 
             if (isLoggedInUserIsDefaultProvider) {
                 encounterDetails.put("encounter.provider_id_select", loggedInUser.getSystemId());
