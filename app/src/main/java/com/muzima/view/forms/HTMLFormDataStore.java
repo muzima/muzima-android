@@ -354,6 +354,7 @@ public class HTMLFormDataStore {
         if(!(encounterObject.has("encounter.encounter_datetime"))) {
             List<FormData> allFormData = new ArrayList<FormData>( );
             allFormData = formController.getAllFormDataByPatientUuid(patientUuid, Constants.STATUS_INCOMPLETE);
+
             for (FormData formData : allFormData) {
                 Date encounterDate = formData.getEncounterDate( );
                 String formDataUuid = formData.getTemplateUuid( );
@@ -369,8 +370,7 @@ public class HTMLFormDataStore {
                 }
                 newDateFormat.applyPattern(dateFormat);
                 String convertedEncounterDate = newDateFormat.format(d);
-
-                if (convertedEncounterDate.equals(encounterDateTime) && formDataUuid.equals(formUuid)) {
+                if (convertedEncounterDate.equals(encounterDateTime.substring(0,10)) && formDataUuid.equals(formUuid)) {
                     formWebViewActivity.showWarningDialog( );
                     break;
                 }
