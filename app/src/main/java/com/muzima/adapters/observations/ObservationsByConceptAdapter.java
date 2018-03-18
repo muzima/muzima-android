@@ -16,8 +16,10 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.muzima.R;
 import com.muzima.api.model.Observation;
@@ -46,8 +48,9 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             convertView = layoutInflater.inflate(R.layout.item_observation_by_concept_list, parent, false);
             holder = new ObservationsByConceptViewHolder();
-            holder.headerText = (TextView) convertView
-                    .findViewById(R.id.observation_header);
+            holder.headerText = (TextView) convertView.findViewById(R.id.observation_header);
+            holder.addObsButton = (ImageButton) convertView.findViewById(R.id.add_individual_obs_imagebutton);
+            holder.headerLayout = (RelativeLayout)convertView.findViewById(R.id.observation_header_layout);
             holder.observationLayout = (LinearLayout) convertView
                     .findViewById(R.id.observation_layout);
             convertView.setTag(holder);
@@ -78,6 +81,8 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
 
     protected class ObservationsByConceptViewHolder extends ViewHolder{
         TextView headerText;
+        ImageButton addObsButton;
+        RelativeLayout headerLayout;
 
         public ObservationsByConceptViewHolder() {
             super();
@@ -85,7 +90,8 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
 
         private void renderItem(ConceptWithObservations item) {
             int conceptColor = observationController.getConceptColor(item.getConcept().getUuid());
-            headerText.setBackgroundColor(conceptColor);
+            headerLayout.setBackgroundColor(conceptColor);
+            addObsButton.setBackgroundColor(conceptColor);
             addEncounterObservations(item.getObservations());
             headerText.setText(getConceptDisplay(item.getConcept()));
         }
