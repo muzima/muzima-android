@@ -67,6 +67,8 @@ dependencies {
     compile group: 'com.madgag', name: 'scprov-jdk15on', version:'1.47.0.2'
     compile fileTree('lib/stickylistheaders-1.0.0.jar')
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version:'2.4.0'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version:'2.4.0'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.4.0'
     compile group: 'lucene.transform', name: 'lucenetransform', version:'0.9.2.2'
     compile group: 'ch.acra', name: 'acra', version:'4.5.0'
 
