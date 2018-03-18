@@ -57,37 +57,6 @@ public class KenyaEmrShrModel {
         this.cardDetails = cardDetails;
     }
 
-    public static KenyaEmrShrModel createSHRModelFromJsonString(String jsonSHRModel) throws IOException{
-        ObjectMapper objectMapper = new ObjectMapper();
-        KenyaEmrShrModel shrModel = objectMapper.readValue(jsonSHRModel,KenyaEmrShrModel.class);
-        return shrModel;
-    }
-
-    public static String createJsonSHRModel(KenyaEmrShrModel shrModel) throws IOException{
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(shrModel);
-    }
-
-    public static KenyaEmrShrModel createBlankSHRModel(){
-        try {
-            return createSHRModelFromJsonString("{ " +
-                    "\"SHR\": \"***wholly encryted by the middleware/library***\", " +
-                    "\"ADDENDUM\": {" +
-                    "\"CARD_DETAILS\": {\"STATUS\": \"ACTIVE/INACTIVE\",\"REASON\": \"LOST/DEATH/DAMAGED\",\"LAST_UPDATED\": \"20180101\",\"LAST_UPDATED_FACILITY\": \"10829\"}," +
-                    "\"IDENTIFIERS\": [" +
-                    "{\"ID\": \"12345678-ADFGHJY-0987654-NHYI890\",\"IDENTIFIER_TYPE\": \"CARD_SERIAL_NUMBER\",\"ASSIGNING_AUTHORITY\": \"CARD_REGISTRY\",\"ASSIGNING_FACILITY\": \"10829\"}," +
-                    "{\"ID\": \"12345678\",\"IDENTIFIER_TYPE\": \"HEI_NUMBER\",\"ASSIGNING_AUTHORITY\": \"MCH\",\"ASSIGNING_FACILITY\": \"10829\"}," +
-                    "{\"ID\": \"12345678\",\"IDENTIFIER_TYPE\": \"CCC_NUMBER\",\"ASSIGNING_AUTHORITY\": \"CCC\",\"ASSIGNING_FACILITY\": \"10829\"}," +
-                    "{\"ID\": \"001\",\"IDENTIFIER_TYPE\": \"HTS_NUMBER\",\"ASSIGNING_AUTHORITY\": \"HTS\",\"ASSIGNING_FACILITY\": \"10829\"}," +
-                    "{\"ID\": \"12345678\",\"IDENTIFIER_TYPE\": \"PMTCT_NUMBER\",\"ASSIGNING_AUTHORITY\": \"PMTCT\",\"ASSIGNING_FACILITY\": \"10829\"}" +
-                    "] }" +
-                    "}");
-        } catch (IOException e) {
-            Log.e("SHR Model","Cannot create SHR model",e);
-        }
-        return null;
-    }
-
     @JsonProperty("PATIENT_IDENTIFICATION")
     public PatientIdentification getPatientIdentification() {
         return patientIdentification;
