@@ -10,18 +10,23 @@
 
 package com.muzima.adapters.observations;
 
+import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.muzima.R;
+import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
@@ -31,9 +36,21 @@ import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.StringUtils;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+
+
 public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWithObservations> {
 
     private static final String TAG = "ObservationsByConceptAdapter";
+    private LayoutInflater layoutInflater;
+    private View addNewObservationValuesDialog;
+    private android.support.v7.app.AlertDialog addIndividualObsDialog;
+    private HashMap<Integer,Concept> rederedConceptsVisualizationMap = new HashMap<>(); //enable visualization of what is rendered on the UI. for ease of access.
+    private EditText obsDialogEditText;
+    private Button obsDialogAddButton;
+    private Button obsDialogCancelButton;
 
     public ObservationsByConceptAdapter(FragmentActivity activity, int itemCohortsList,
                                         ConceptController conceptController,
@@ -42,7 +59,42 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
+
+        /**
+         * Prepare add obs dialog
+         */
+        layoutInflater = (LayoutInflater)parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        android.support.v7.app.AlertDialog.Builder addIndividualObservationsDialogBuilder = new android.support.v7.app.AlertDialog.Builder(
+                parent.getContext()
+        );
+        addNewObservationValuesDialog = layoutInflater.inflate(R.layout.add_individual_obs_dialog_layout, null);
+
+        addIndividualObservationsDialogBuilder.setView(addNewObservationValuesDialog);
+        addIndividualObservationsDialogBuilder
+                .setCancelable(true);
+
+        addIndividualObsDialog = addIndividualObservationsDialogBuilder.create();
+
+        obsDialogEditText = (EditText) addNewObservationValuesDialog.findViewById(R.id.obs_new_value_edittext);
+        obsDialogAddButton = (Button) addNewObservationValuesDialog.findViewById(R.id.add_new_obs_button);
+        obsDialogCancelButton = (Button) addNewObservationValuesDialog.findViewById(R.id.cancel_dialog_button);
+
+        obsDialogCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addIndividualObsDialog.cancel();
+            }
+        });
+
+        obsDialogAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                addIndividualObsDialog.cancel();
+            }
+        });
+
         ObservationsByConceptViewHolder holder;
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
@@ -54,12 +106,30 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
             holder.observationLayout = (LinearLayout) convertView
                     .findViewById(R.id.observation_layout);
             convertView.setTag(holder);
+
+            holder.addObsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.e(TAG.toUpperCase(),"set up click listener A");
+                    addObservation();
+                    Log.e(TAG.toUpperCase(),"set up click listener B");
+                }
+            });
         } else {
             holder = (ObservationsByConceptViewHolder) convertView.getTag();
         }
 
         holder.renderItem(getItem(position));
+        /**
+         * Update Concepts Map
+         */
+        Concept conceptAtThisPosition = getItem(position).getConcept();
+        rederedConceptsVisualizationMap.put(position,conceptAtThisPosition);
         return convertView;
+    }
+
+    public void addObservation(){
+
     }
 
     @Override
@@ -94,6 +164,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
             addObsButton.setBackgroundColor(conceptColor);
             addEncounterObservations(item.getObservations());
             headerText.setText(getConceptDisplay(item.getConcept()));
+
         }
 
         @Override
