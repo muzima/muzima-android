@@ -30,6 +30,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.muzima.R;
@@ -52,6 +53,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
     private LinearLayout tabsContainer;
     private ViewPager pager;
+    private ImageButton addObsButton;
 
     private int tabCount;
 
@@ -100,9 +102,14 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
         setFillViewport(true);
         setWillNotDraw(false);
 
+        addObsButton = new ImageButton(context);
         tabsContainer = new LinearLayout(context);
         tabsContainer.setOrientation(LinearLayout.HORIZONTAL);
         tabsContainer.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+
+
+        addObsButton.setImageResource(R.drawable.ic_action_add_white);
+
         addView(tabsContainer);
 
         DisplayMetrics dm = getResources().getDisplayMetrics();
