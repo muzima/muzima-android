@@ -34,6 +34,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.service.JSONInputOutputToDisk;
 import com.muzima.utils.Constants;
 import com.muzima.view.BaseActivity;
+import com.muzima.view.SHRObservationsDataActivity;
 import com.muzima.view.encounters.EncountersActivity;
 import com.muzima.view.forms.PatientFormsActivity;
 import com.muzima.view.notifications.PatientNotificationActivity;
@@ -162,6 +163,12 @@ public class PatientSummaryActivity extends BaseActivity {
     public void showEncounters(View v) {
         Intent intent = new Intent(this, EncountersActivity.class);
         intent.putExtra(PATIENT, patient);
+        startActivity(intent);
+    }
+
+    public void showSHRObservations(View v){
+        Intent intent = new Intent(PatientSummaryActivity.this, SHRObservationsDataActivity.class);
+        intent.putExtra(PATIENT,patient);
         startActivity(intent);
     }
 
