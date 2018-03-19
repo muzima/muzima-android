@@ -1,6 +1,5 @@
 
 package com.muzima.model.shr.kenyaemr;
-
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.HashMap;
@@ -142,5 +141,4 @@ public class NextOfKin {
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
-
 }

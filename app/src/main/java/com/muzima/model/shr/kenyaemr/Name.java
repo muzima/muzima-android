@@ -1,4 +1,3 @@
-
 package com.muzima.model.shr.kenyaemr;
 
 import com.fasterxml.jackson.annotation.*;
@@ -82,5 +81,4 @@ public class Name {
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
-
 }

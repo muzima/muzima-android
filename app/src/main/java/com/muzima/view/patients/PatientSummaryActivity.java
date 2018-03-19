@@ -34,6 +34,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.service.JSONInputOutputToDisk;
 import com.muzima.utils.Constants;
 import com.muzima.view.BaseActivity;
+import com.muzima.view.SHRObservationsDataActivity;
 import com.muzima.view.encounters.EncountersActivity;
 import com.muzima.view.forms.PatientFormsActivity;
 import com.muzima.view.notifications.PatientNotificationActivity;
@@ -51,6 +52,7 @@ public class PatientSummaryActivity extends BaseActivity {
     private BackgroundQueryTask mBackgroundQueryTask;
 
     private Patient patient;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,8 @@ public class PatientSummaryActivity extends BaseActivity {
             Toast.makeText(this, R.string.error_patient_fetch, Toast.LENGTH_SHORT).show();
             finish();
         }
+
+        imageView = (ImageView) findViewById(R.id.sync_status_imageview);
     }
 
     private void notifyOfIdChange() {
@@ -163,6 +167,16 @@ public class PatientSummaryActivity extends BaseActivity {
         Intent intent = new Intent(this, EncountersActivity.class);
         intent.putExtra(PATIENT, patient);
         startActivity(intent);
+    }
+
+    public void showSHRObservations(View v){
+        Intent intent = new Intent(PatientSummaryActivity.this, SHRObservationsDataActivity.class);
+        intent.putExtra(PATIENT,patient);
+        startActivity(intent);
+    }
+
+    public void switchSyncStatus(View view){
+        imageView.setImageResource(R.drawable.ic_action_shr_synced);
     }
 
     private static class PatientSummaryActivityMetadata {

@@ -5,7 +5,6 @@ import com.muzima.api.service.SmartCardRecordService;
 
 import java.io.IOException;
 
-
 public class SmartCardController {
     public static final String TAG ="SmartCardController";
 
@@ -14,6 +13,7 @@ public class SmartCardController {
     public SmartCardController(SmartCardRecordService smartCardRecordService){
         this.smartCardRecordService = smartCardRecordService;
     }
+
     public void saveSmartCardRecord(SmartCardRecord smartCardRecord) throws SmartCardRecordSaveException {
         try {
             smartCardRecordService.saveSmartCardRecord(smartCardRecord);
@@ -21,6 +21,7 @@ public class SmartCardController {
             throw new SmartCardRecordSaveException(e);
         }
     }
+
     public void updateSmartCardRecord(SmartCardRecord smartCardRecord) throws SmartCardRecordSaveException {
         try {
             smartCardRecordService.updateSmartCardRecord(smartCardRecord);
@@ -28,6 +29,7 @@ public class SmartCardController {
             throw new SmartCardRecordSaveException(e);
         }
     }
+
     public SmartCardRecord getSmartCardRecordByUuid(String uuid) throws SmartCardRecordFetchException {
         try {
             return smartCardRecordService.getSmartCardRecordByUuid(uuid);
@@ -35,6 +37,7 @@ public class SmartCardController {
             throw new SmartCardRecordFetchException(e);
         }
     }
+
     public SmartCardRecord getSmartCardRecordByPersonUuid(String patientUuid) throws SmartCardRecordFetchException {
         try {
             return smartCardRecordService.getSmartCardRecordByPersonUuid(patientUuid);
@@ -42,6 +45,7 @@ public class SmartCardController {
             throw new SmartCardRecordFetchException(e);
         }
     }
+
     void syncSmartCardRecord(SmartCardRecord smartCardRecord) throws SmartCardSharedHealthSyncFetchException {
         try {
             smartCardRecordService.syncSmartCardRecord(smartCardRecord);
