@@ -20,7 +20,6 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import com.muzima.R;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -37,7 +36,7 @@ import java.util.Map;
  * <p/>
  * <h2>Initiating a barcode scan</h2>
  * <p/>
- * <p>To integrate, create an instance of {@code IntentIntegrator} and call {@link #initiateScan()} and wait
+ * <p>To integrate, create an instance of {@code BarCodeScannerIntentIntegrator} and call {@link #initiateScan()} and wait
  * for the result in your app.</p>
  * <p/>
  * <p>It does require that the Barcode Scanner (or work-alike) application is installed. The
@@ -48,7 +47,7 @@ import java.util.Map;
  * <p/>
  * <pre>{@code
  * public void onActivityResult(int requestCode, int resultCode, Intent intent) {
- *   IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+ *   IntentResult scanResult = BarCodeScannerIntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
  *   if (scanResult != null) {
  *     // handle scan result
  *   }
@@ -62,7 +61,7 @@ import java.util.Map;
  * <p>Second, just call this in response to a user action somewhere to begin the scan process:</p>
  * <p/>
  * <pre>{@code
- * IntentIntegrator integrator = new IntentIntegrator(yourActivity);
+ * BarCodeScannerIntentIntegrator integrator = new BarCodeScannerIntentIntegrator(yourActivity);
  * integrator.initiateScan();
  * }</pre>
  * <p/>
@@ -110,10 +109,10 @@ import java.util.Map;
  * @author Prasanna V(ThoughtWorks)
  */
 
-public class IntentIntegrator {
+public class BarCodeScannerIntentIntegrator {
 
-    public static final int REQUEST_CODE = 0x0000c0db; // Only use bottom 16 bits
-    private static final String TAG = IntentIntegrator.class.getSimpleName();
+    public static final int BARCODE_SCAN_REQUEST_CODE = 0x0000c0db; // Only use bottom 16 bits
+    private static final String TAG = BarCodeScannerIntentIntegrator.class.getSimpleName();
 
     public static final String DEFAULT_TITLE = "Install Barcode Scanner?";
     public static final String DEFAULT_MESSAGE =
@@ -150,7 +149,7 @@ public class IntentIntegrator {
     private List<String> targetApplications;
     private final Map<String, Object> moreExtras;
 
-    public IntentIntegrator(Activity activity) {
+    public BarCodeScannerIntentIntegrator(Activity activity) {
         this.activity = activity;
         title = DEFAULT_TITLE;
         message = DEFAULT_MESSAGE;
@@ -271,7 +270,7 @@ public class IntentIntegrator {
         intentScan.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intentScan.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         attachMoreExtras(intentScan);
-        startActivityForResult(intentScan, REQUEST_CODE);
+        startActivityForResult(intentScan, BARCODE_SCAN_REQUEST_CODE);
         return null;
     }
 
@@ -362,7 +361,7 @@ public class IntentIntegrator {
      *         the fields will be null.
      */
     public static IntentResult parseActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == REQUEST_CODE) {
+        if (requestCode == BARCODE_SCAN_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 String formatName = intent.getStringExtra("SCAN_RESULT_FORMAT");

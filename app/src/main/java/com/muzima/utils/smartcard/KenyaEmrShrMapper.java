@@ -82,7 +82,7 @@ public class KenyaEmrShrMapper {
      * @throws IOException
      */
     public static KenyaEmrShrModel createInitialSHRModelForPatient(Patient patient) throws IOException{
-        patient.getIdentifier("CA")
+        patient.getIdentifier("CA");
         return null;
     }
 
