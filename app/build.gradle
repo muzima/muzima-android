@@ -11,6 +11,9 @@
 buildscript {
     repositories {
         jcenter()
+        maven {
+            url 'https://maven.google.com'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.1'
@@ -34,7 +37,7 @@ android {
         targetSdkVersion 23
         versionCode 8
         versionName "2.1.0"
-        manifestPlaceholders = [versionCode:defaultConfig.versionCode, versionName:defaultConfig.versionName]
+        manifestPlaceholders = [versionCode: defaultConfig.versionCode, versionName: defaultConfig.versionName]
     }
 
     packagingOptions {
@@ -56,37 +59,39 @@ android {
 }
 
 repositories {
-     mavenLocal()
-     jcenter()
-     maven { url "http://repo.maven.apache.org/maven2" }
-     maven { url "https://raw.github.com/muzima/muzima-maven/master/releases" }
-     maven { url "https://raw.github.com/muzima/muzima-maven/search-api" }
-     maven { url "https://raw.github.com/muzima/muzima-maven/muzima-api" }
+    mavenLocal()
+    jcenter()
+    maven { url "http://repo.maven.apache.org/maven2" }
+    maven { url "https://raw.github.com/muzima/muzima-maven/master/releases" }
+    maven { url "https://raw.github.com/muzima/muzima-maven/search-api" }
+    maven { url "https://raw.github.com/muzima/muzima-maven/muzima-api" }
 }
 dependencies {
-    compile group: 'com.madgag', name: 'scprov-jdk15on', version:'1.47.0.2'
+    compile group: 'com.madgag', name: 'scprov-jdk15on', version: '1.47.0.2'
     compile fileTree('lib/stickylistheaders-1.0.0.jar')
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version:'2.4.0'
-    compile group: 'lucene.transform', name: 'lucenetransform', version:'0.9.2.2'
-    compile group: 'ch.acra', name: 'acra', version:'4.5.0'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.4.0'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.4.0'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.4.0'
+    compile group: 'lucene.transform', name: 'lucenetransform', version: '0.9.2.2'
+    compile group: 'ch.acra', name: 'acra', version: '4.5.0'
 
-    compile group: 'com.android.support', name: 'appcompat-v7', version:'23.0.0'
-    compile group: 'com.android.support', name:'design', version:'23.0.0'
-    compile group: 'com.azimolabs.keyboardwatcher', name: 'keyboardwatcher', version:'0.1.3'
-    compile group: 'org.jsoup', name: 'jsoup', version:'1.7.3'
-    compile(group: 'com.muzima', name: 'muzima-api', version:'1.1.3') {
+    compile group: 'com.android.support', name: 'appcompat-v7', version: '23.0.0'
+    compile group: 'com.android.support', name: 'design', version: '23.0.0'
+    compile group: 'com.azimolabs.keyboardwatcher', name: 'keyboardwatcher', version: '0.1.3'
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.7.3'
+    compile(group: 'com.muzima', name: 'muzima-api', version: '1.1.4') {
         exclude(module: 'guice')
     }
-    compile group: 'com.google.inject', name: 'guice', version:'3.0', classifier:'no_aop'
+    compile group: 'com.google.inject', name: 'guice', version: '3.0', classifier: 'no_aop'
     testCompile fileTree('lib/stickylistheaders-1.0.0.jar')
     testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'
-    testCompile group: 'junit', name: 'junit-dep', version:'4.10'
+    testCompile group: 'junit', name: 'junit-dep', version: '4.10'
     testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: '1.3'
-    testCompile group: 'org.mockito', name: 'mockito-core', version:'1.8.5'
-    testCompile group: 'org.robolectric', name: 'robolectric', version:'3.1.1'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '1.8.5'
+    testCompile group: 'org.robolectric', name: 'robolectric', version: '3.1.1'
     testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
-    testCompile group: 'xmlpull', name: 'xmlpull', version:'1.1.3.4d_b4_min'
-    testCompile(group: 'com.muzima', name: 'muzima-api', version:'1.1.3') {
+    testCompile group: 'xmlpull', name: 'xmlpull', version: '1.1.3.4d_b4_min'
+    testCompile(group: 'com.muzima', name: 'muzima-api', version: '1.1.4') {
         exclude(module: 'guice')
     }
 }
