@@ -40,6 +40,7 @@ import com.muzima.utils.Fonts;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.barcode.IntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
+import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.MainActivity;
@@ -347,13 +348,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     public void invokeBarcodeScan() {
         IntentIntegrator scanIntegrator = new IntentIntegrator(this);
-
         scanIntegrator.initiateScan();
     }
 
     public void invokeShrApplication(){
-        IntentIntegrator shrIntegrator = new IntentIntegrator(this);
-        shrIntegrator.initiateScan();
+        SmartCardIntentIntegrator shrIntegrator = new SmartCardIntentIntegrator(this);
+        shrIntegrator.initiateCardRead();
     }
 
     @Override
