@@ -112,4 +112,42 @@ public class Constants {
         public static final String ACTION_FAILURE_STATUS_LOG = "FAIL";
     }
 
+    public static class Shr{
+        public static class KenyaEmr{
+            public static class IdentifierType{
+                public static class CARD_SERIAL_NUMBER{
+                    public static final String name = "SMART CARD SERIAL NUMBER";
+                    public static final String uuid = "8f842498-1c5b-11e8-accf-0ed5f89f718b";
+                }
+                public static class CCC_NO{
+                    public static final String name = "UNIQUE PATIENT NUMBER/CCC No";
+                    public static final String uuid = "05ee9cf4-7242-4a17-b4d4-00f707265c8a";
+                }
+                public static class GODS_NUMBER{
+                    public static final String name = "GODS NUMBER";
+                    public static final String uuid = "9aedb9ae-1cbd-11e8-accf-0ed5f89f718b";
+                }
+                public static class HEI_UNIQUE_NUMBER{
+                    public static final String name = "HEI UNIQUE NUMBER";
+                    public static final String uuid = "0691f522-dd67-4eeb-92c8-af5083baf338";
+                }
+                public static class HTS_NUMBER{
+                    public static final String name = "HTS NUMBER";
+                    public static final String uuid = "e6af3782-1cb3-11e8-accf-0ed5f89f718b";
+                }
+                public static class NATIONAL_ID{
+                    public static final String name = "NATIONAL ID";
+                    public static final String uuid = "49af6cdc-7968-4abb-bf46-de10d7f4859f";
+                }
+            }
+
+            public static class Concept{
+                public static class ANC_NUMBER{
+                    public static final String name = "ANC NUMBER";
+                    public static final String uuid = "161655AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+                }
+            }
+        }
+    }
+
 }
