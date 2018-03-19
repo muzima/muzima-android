@@ -11,6 +11,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
 	  xmlns:custom="http://schemas.android.com/apk/res-auto">
 	<item
+		android:id="@+id/shr_card"
+		android:icon="@drawable/ic_action_shr_card"
+		custom:showAsAction="always"
+		android:title="@string/title_client_scan"/>
+	<item
 			android:id="@+id/scan"
 			android:icon="@drawable/barcode_icon"
 			custom:showAsAction="always"
