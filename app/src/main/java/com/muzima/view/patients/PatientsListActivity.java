@@ -36,9 +36,11 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
+import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
+import com.muzima.utils.smartcard.KenyaEmrShrMapper;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
 import com.muzima.view.BroadcastListenerActivity;
@@ -412,7 +414,22 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             if (smartCardRecord != null) {
                 String shrPayload = smartCardRecord.getPlainPayload();
                 Log.e("SHR_REQ", "Read Activity result invoked with value..." + shrPayload);
-                searchView.setQuery(shrPayload, false);
+                /**
+                 * TODO Develop logic to obtain patient card serial number as identifier.
+                 * todo - Pass card number to searchView for Querying
+                 *
+                 */
+                try {
+                    Patient patient = KenyaEmrShrMapper.extractPatientFromShrModel(shrPayload);
+                    Log.e("EMR_IN",patient.getFamilyName());
+                    String cardNumber = patient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name)
+                            .getUuid();
+                    searchView.setQuery(cardNumber, false);
+                    searchView.setVisibility(VISIBLE);
+                } catch (KenyaEmrShrMapper.ShrParseException e) {
+                    Log.e("EMR_IN","EMR Error ",e);
+                }
+
             }
         } else {
             /**
