@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.util.Log;
 import com.muzima.api.model.SmartCardRecord;
+import com.muzima.utils.StringUtils;
 
 import java.io.IOException;
 
@@ -70,7 +71,12 @@ public class SmartCardIntentIntegrator {
                 smartCardRecord.setEncryptedPayload(jsonSHRModel);
                 result.setSHRModel(smartCardRecord);
             }else if (resultCode == Activity.RESULT_CANCELED) {
-                result.setErrors(intent.getStringExtra(EXTRA_ERRORS));
+                String errors = intent.getStringExtra(EXTRA_ERRORS);
+                if(StringUtils.isEmpty(errors)){
+                    result.setErrors("Could not complete request");
+                } else {
+                    result.setErrors(errors);
+                }
             }
             return result;
         }
