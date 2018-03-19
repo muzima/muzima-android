@@ -273,11 +273,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             case R.id.menu_dashboard:
                 launchDashboardActivity();
                 return true;
-
             case R.id.menu_complete_form_data:
                 launchCompleteFormsActivity();
                 return true;
-
+            case R.id.shr_card:
+                invokeShrApplication();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -348,6 +349,11 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         IntentIntegrator scanIntegrator = new IntentIntegrator(this);
 
         scanIntegrator.initiateScan();
+    }
+
+    public void invokeShrApplication(){
+        IntentIntegrator shrIntegrator = new IntentIntegrator(this);
+        shrIntegrator.initiateScan();
     }
 
     @Override

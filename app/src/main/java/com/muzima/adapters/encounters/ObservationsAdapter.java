@@ -25,7 +25,7 @@ public abstract class ObservationsAdapter extends ListAdapter<Observation> {
 
     public ObservationsAdapter(Context context, int textViewResourceId,ObservationController observationController){
         super(context, textViewResourceId);
-        this.observationController=observationController;
+        this.observationController = observationController;
     }
 
     protected abstract class ViewHolder {

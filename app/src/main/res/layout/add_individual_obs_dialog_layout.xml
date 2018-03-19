@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_margin="22dp"
+    android:background="@color/primary_black"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <LinearLayout
+        android:id="@+id/obs_concept_name_linear_layout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/observation_name_textview"
+            android:text="Observation:"
+            android:textColor="@android:color/white"
+            android:padding="8dp"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/obs_new_value_edittext"
+            android:hint=""
+            android:textColor="@android:color/white"
+            android:ems="100"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_below="@+id/obs_concept_name_linear_layout"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="22dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/cancel_dialog_button"
+            android:padding="8dp"
+            android:visibility="gone"
+            android:layout_marginStart="16dp"
+            android:text="@string/general_cancel"
+            android:textSize="16sp"
+            android:background="@android:color/black"
+            android:textColor="@android:color/white"
+            android:layout_marginEnd="26dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/add_new_obs_button"
+            android:text="@string/general_ok"
+            android:textSize="16sp"
+            android:textColor="@color/primary_blue"
+            android:background="@android:color/black"
+            android:layout_marginStart="26dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+
+
+
+</RelativeLayout>
