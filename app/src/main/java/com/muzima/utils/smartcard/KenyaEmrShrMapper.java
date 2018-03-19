@@ -1,12 +1,23 @@
 package com.muzima.utils.smartcard;
 
 import android.util.Log;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.PatientIdentifier;
+import com.muzima.api.model.PatientIdentifierType;
+import com.muzima.api.model.PersonName;
+import com.muzima.model.shr.kenyaemr.ExternalPatientId;
+import com.muzima.model.shr.kenyaemr.InternalPatientId;
 import com.muzima.model.shr.kenyaemr.KenyaEmrShrModel;
+import com.muzima.model.shr.kenyaemr.PatientIdentification;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class KenyaEmrShrMapper {
@@ -17,9 +28,14 @@ public class KenyaEmrShrMapper {
      * @return Representation of the JSON input as KenyaEmrShrModel object
      * @throws IOException
      */
-    public static KenyaEmrShrModel createSHRModelFromJson(String jsonSHRModel) throws IOException {
+    public static KenyaEmrShrModel createSHRModelFromJson(String jsonSHRModel) throws ShrParseException {
         ObjectMapper objectMapper = new ObjectMapper();
-        KenyaEmrShrModel shrModel = objectMapper.readValue(jsonSHRModel,KenyaEmrShrModel.class);
+        KenyaEmrShrModel shrModel = null;
+        try {
+            shrModel = objectMapper.readValue(jsonSHRModel,KenyaEmrShrModel.class);
+        } catch (IOException e) {
+            throw new ShrParseException(e);
+        }
         return shrModel;
     }
 
@@ -29,9 +45,13 @@ public class KenyaEmrShrMapper {
      * @return JSON representation of SHR model
      * @throws IOException
      */
-    public static String createJsonFromSHRModel(KenyaEmrShrModel shrModel) throws IOException{
+    public static String createJsonFromSHRModel(KenyaEmrShrModel shrModel) throws ShrParseException{
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(shrModel);
+        try {
+            return objectMapper.writeValueAsString(shrModel);
+        } catch (IOException e) {
+            throw new ShrParseException(e);
+        }
     }
 
     /**
@@ -40,8 +60,9 @@ public class KenyaEmrShrMapper {
      * @return Patient object extracted from SHR model
      * @throws IOException
      */
-    public static Patient extractPatientFromShrModel(String shrModel) throws IOException{
-        return null;
+    public static Patient extractPatientFromShrModel(String shrModel) throws ShrParseException{
+        KenyaEmrShrModel kenyaEmrShrModel = createSHRModelFromJson(shrModel);
+        return extractPatientFromShrModel(kenyaEmrShrModel);
     }
 
     /**
@@ -50,8 +71,62 @@ public class KenyaEmrShrMapper {
      * @return Patient object extracted from SHR model
      * @throws IOException
      */
-    public static Patient extractPatientFromShrModel(KenyaEmrShrModel shrModel) throws IOException{
-        return null;
+    public static Patient extractPatientFromShrModel(KenyaEmrShrModel shrModel) throws ShrParseException{
+        try {
+            Patient patient = new Patient();
+            PatientIdentification identification = shrModel.getPatientIdentification();
+
+            //set patient Name
+            PersonName personName = new PersonName();
+            personName.setFamilyName(identification.getPatientName().getFirstName());
+            personName.setGivenName(identification.getPatientName().getLastName());
+            personName.setMiddleName(identification.getPatientName().getMiddleName());
+            List<PersonName> names = new ArrayList<>();
+            names.add(personName);
+            patient.setNames(names);
+
+            //set Identifiers
+            List<PatientIdentifier> identifiers = new ArrayList<PatientIdentifier>();
+            //External ID
+            ExternalPatientId externalPatientId = identification.getExternalPatientId();
+            PatientIdentifier patientIdentifier = new PatientIdentifier();
+            PatientIdentifierType identifierType = new PatientIdentifierType();
+            identifierType.setName(externalPatientId.getIdentifierType());
+            patientIdentifier.setIdentifierType(identifierType);
+            patientIdentifier.setIdentifier(externalPatientId.getID());
+            identifiers.add(patientIdentifier);
+
+            //Internal IDs
+            List<InternalPatientId> internalPatientIds = identification.getInternalPatientIds();
+            for (InternalPatientId internalPatientId : internalPatientIds) {
+                patientIdentifier = new PatientIdentifier();
+                identifierType = new PatientIdentifierType();
+                identifierType.setName(internalPatientId.getIdentifierType());
+                patientIdentifier.setIdentifierType(identifierType);
+                patientIdentifier.setIdentifier(internalPatientId.getID());
+                identifiers.add(patientIdentifier);
+            }
+            patient.setIdentifiers(identifiers);
+
+            //date of birth
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyymmdd");
+            String dateOfBirth = identification.getDateOfBirth();
+            Date dob = dateFormatter.parse(identification.getDateOfBirth());
+            patient.setBirthdate(dob);
+
+            //Gender
+            String gender = identification.getSex();
+            if(gender.equalsIgnoreCase("M")){
+                patient.setGender("M");
+            } else if (gender.equalsIgnoreCase("F")){
+                patient.setGender("F");
+            } else {
+                throw new ShrParseException("Could not determine gender from SHR model");
+            }
+            return patient;
+        } catch (ParseException e){
+            throw new ShrParseException(e);
+        }
     }
 
     /**
@@ -60,7 +135,7 @@ public class KenyaEmrShrMapper {
      * @return Observations List extracted from SHR model
      * @throws IOException
      */
-    public static List<Observation> extractObservationsFromShrModel(String shrModel) throws IOException{
+    public static List<Observation> extractObservationsFromShrModel(String shrModel) throws ShrParseException{
         return null;
     }
 
@@ -70,7 +145,7 @@ public class KenyaEmrShrMapper {
      * @return Observations List extracted from SHR model
      * @throws IOException
      */
-    public static List<Observation> extractObservationsFromShrModel(KenyaEmrShrModel shrModel) throws IOException{
+    public static List<Observation> extractObservationsFromShrModel(KenyaEmrShrModel shrModel) throws ShrParseException{
         return null;
     }
 
@@ -81,7 +156,7 @@ public class KenyaEmrShrMapper {
      * @return KenyaEmrShrModel representation of newlyCreatedSHR
      * @throws IOException
      */
-    public static KenyaEmrShrModel createInitialSHRModelForPatient(Patient patient) throws IOException{
+    public static KenyaEmrShrModel createInitialSHRModelForPatient(Patient patient) throws ShrParseException{
         return null;
     }
 
@@ -93,7 +168,7 @@ public class KenyaEmrShrMapper {
      * @return KenyaEmrShrModel representation of newlyCreatedSHR
      * @throws IOException
      */
-    public static KenyaEmrShrModel updateSHRModelPatientDetailsForPatient(Patient patient, KenyaEmrShrModel shrModel) throws IOException{
+    public static KenyaEmrShrModel updateSHRModelPatientDetailsForPatient(Patient patient, KenyaEmrShrModel shrModel) throws ShrParseException{
         return null;
     }
 
@@ -104,7 +179,20 @@ public class KenyaEmrShrMapper {
      * @return
      * @throws IOException
      */
-    public static KenyaEmrShrModel addObservationsToShrModel(KenyaEmrShrModel shrModel, List<Observation> observations ) throws IOException{
+    public static KenyaEmrShrModel addObservationsToShrModel(KenyaEmrShrModel shrModel, List<Observation> observations ) throws ShrParseException{
         return null;
+    }
+
+
+    static class ShrParseException extends Throwable {
+        ShrParseException(Throwable throwable) {
+            super(throwable);
+        }
+        ShrParseException(String message) {
+            super(message);
+        }
+        ShrParseException(String message, Throwable e) {
+            super(message,e);
+        }
     }
 }
