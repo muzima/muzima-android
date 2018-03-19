@@ -11,6 +11,9 @@
 buildscript {
     repositories {
         jcenter()
+        maven {
+            url 'https://maven.google.com'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.1'
@@ -80,7 +83,6 @@ dependencies {
         exclude(module: 'guice')
     }
     compile group: 'com.google.inject', name: 'guice', version: '3.0', classifier: 'no_aop'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile fileTree('lib/stickylistheaders-1.0.0.jar')
     testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'
     testCompile group: 'junit', name: 'junit-dep', version: '4.10'
