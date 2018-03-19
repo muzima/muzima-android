@@ -24,7 +24,11 @@ public abstract class MuzimaPagerAdapter extends FragmentPagerAdapter{
         super(fm);
         this.context = context;
         initPagerViews();
+
+
     }
+
+
 
     @Override
     public Fragment getItem(int position) {
@@ -56,6 +60,9 @@ public abstract class MuzimaPagerAdapter extends FragmentPagerAdapter{
         public PagerView(String title, MuzimaListFragment fragment) {
             this.title = title;
             this.fragment = fragment;
+
+
+
         }
     }
 }

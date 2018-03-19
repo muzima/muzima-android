@@ -2,7 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_margin="22dp"
-    android:background="@android:color/white"
+    android:background="@color/primary_black"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -17,7 +17,7 @@
         <TextView
             android:id="@+id/observation_name_textview"
             android:text="Observation:"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:padding="8dp"
             android:textSize="18sp"
             android:layout_width="wrap_content"
@@ -26,6 +26,7 @@
         <EditText
             android:id="@+id/obs_new_value_edittext"
             android:hint=""
+            android:textColor="@android:color/white"
             android:ems="100"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -45,10 +46,12 @@
         <Button
             android:id="@+id/cancel_dialog_button"
             android:padding="8dp"
+            android:visibility="gone"
             android:layout_marginStart="16dp"
             android:text="@string/general_cancel"
-            android:background="@android:color/white"
-            android:textColor="@android:color/holo_red_light"
+            android:textSize="16sp"
+            android:background="@android:color/black"
+            android:textColor="@android:color/white"
             android:layout_marginEnd="26dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -56,8 +59,9 @@
         <Button
             android:id="@+id/add_new_obs_button"
             android:text="@string/general_ok"
+            android:textSize="16sp"
             android:textColor="@color/primary_blue"
-            android:background="@android:color/white"
+            android:background="@android:color/black"
             android:layout_marginStart="26dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

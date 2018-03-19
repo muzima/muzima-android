@@ -11,6 +11,7 @@
 package com.muzima.adapters.observations;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
@@ -51,6 +52,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
     private EditText obsDialogEditText;
     private Button obsDialogAddButton;
     private Button obsDialogCancelButton;
+    private TextView headerText;
 
     public ObservationsByConceptAdapter(FragmentActivity activity, int itemCohortsList,
                                         ConceptController conceptController,
@@ -65,7 +67,8 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
          * Prepare add obs dialog
          */
         layoutInflater = (LayoutInflater)parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        android.support.v7.app.AlertDialog.Builder addIndividualObservationsDialogBuilder = new android.support.v7.app.AlertDialog.Builder(
+        android.support.v7.app.AlertDialog.Builder addIndividualObservationsDialogBuilder =
+                new android.support.v7.app.AlertDialog.Builder(
                 parent.getContext()
         );
         addNewObservationValuesDialog = layoutInflater.inflate(R.layout.add_individual_obs_dialog_layout, null);
@@ -110,9 +113,8 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
             holder.addObsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.e(TAG.toUpperCase(),"set up click listener A");
                     addObservation();
-                    Log.e(TAG.toUpperCase(),"set up click listener B");
+                   // Log.e("Header",holder.headerText.getText().toString());
                 }
             });
         } else {
@@ -129,8 +131,12 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
     }
 
     public void addObservation(){
+        addIndividualObsDialog.show();
+        //TODO Develop add obs logic.
+
 
     }
+
 
     @Override
     public void reloadData() {
@@ -149,10 +155,12 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         setRunningBackgroundQueryTask(backgroundQueryTask);
     }
 
+
+
     protected class ObservationsByConceptViewHolder extends ViewHolder{
-        TextView headerText;
         ImageButton addObsButton;
         RelativeLayout headerLayout;
+        TextView headerText;
 
         public ObservationsByConceptViewHolder() {
             super();
@@ -164,7 +172,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
             addObsButton.setBackgroundColor(conceptColor);
             addEncounterObservations(item.getObservations());
             headerText.setText(getConceptDisplay(item.getConcept()));
-
+            Log.e("YNO",getConceptDisplay(item.getConcept()));
         }
 
         @Override
@@ -193,6 +201,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
             observationDateView.setText(DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime()));
             observationDateView.setTypeface(Fonts.roboto_light(getContext()));
             observationDateView.setTextColor(conceptColor);
+
         }
 
         @Override
