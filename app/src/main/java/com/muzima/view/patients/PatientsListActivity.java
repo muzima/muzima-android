@@ -49,7 +49,6 @@ import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 
 import android.support.design.widget.FloatingActionButton;
-import android.widget.Toast;
 
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
@@ -61,6 +60,8 @@ import static com.muzima.utils.barcode.BarCodeScannerIntentIntegrator.*;
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.*;
 
 import com.muzima.api.model.SmartCardRecord;
+
+
 
 
 public class PatientsListActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener,
@@ -272,7 +273,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 callConfirmationDialog();
                 return true;
 
-            case R.id.scan:
+            case R.id.bar_card_scan:
                 invokeBarcodeScan();
                 return true;
 
@@ -286,7 +287,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             case R.id.menu_complete_form_data:
                 launchCompleteFormsActivity();
                 return true;
-            case R.id.shr_card:
+            case R.id.scan_shr_card:
                 invokeShrApplication();
                 return true;
             default:
@@ -297,7 +298,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     protected void onResume() {
         super.onResume();
-        if (!intentBarcodeResults || !intentShrResults)
+        if (!intentBarcodeResults)
             patientAdapter.reloadData();
     }
 
@@ -409,9 +410,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             /**
              * Card was read successfully and a result returned.
              */
-            intentShrResults = true;
             SmartCardRecord smartCardRecord = cardReadIntentResult.getSmartCardRecord();
             if (smartCardRecord != null) {
+                intentShrResults = false;
                 String shrPayload = smartCardRecord.getPlainPayload();
                 Log.e("SHR_REQ", "Read Activity result invoked with value..." + shrPayload);
                 /**
@@ -421,8 +422,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                  */
                 try {
                     Patient patient = KenyaEmrShrMapper.extractPatientFromShrModel(shrPayload);
-                    Log.e("EMR_IN",patient.getFamilyName());
-                    String cardNumber = patient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name)
+                    Log.e("EMR_IN",patient.getDisplayName());
+                    String cardNumber = patient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.shr_name)
                             .getUuid();
                     searchView.setQuery(cardNumber, false);
                     searchView.setVisibility(VISIBLE);
