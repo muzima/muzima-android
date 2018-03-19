@@ -118,6 +118,7 @@ public class Constants {
                 public static class CARD_SERIAL_NUMBER{
                     public static final String name = "SMART CARD SERIAL NUMBER";
                     public static final String uuid = "8f842498-1c5b-11e8-accf-0ed5f89f718b";
+                    public static final String shr_name = "CARD_SERIAL_NUMBER";
                 }
                 public static class CCC_NO{
                     public static final String name = "UNIQUE PATIENT NUMBER/CCC No";
