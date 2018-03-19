@@ -11,10 +11,14 @@
 package com.muzima.view.observations;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
+
 import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsByConceptAdapter;
 import com.muzima.controller.ConceptController;
@@ -28,6 +32,8 @@ public class ObservationsByConceptFragment extends ObservationsListFragment {
         f.conceptController = conceptController;
         return f;
     }
+
+   
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +58,12 @@ public class ObservationsByConceptFragment extends ObservationsListFragment {
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        //TODO Remove temp code
+
     }
+
+
+
 
     @Override
     public void onQueryTaskCancelled(){

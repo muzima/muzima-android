@@ -184,13 +184,13 @@
                         android:layout_height="wrap_content"
                         android:gravity="left"
                         android:text="@string/general_notifications"
-                        android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                     <TextView
                         android:id="@+id/notificationDescription"
                         style="@style/DashboardItemDescription"
                         android:layout_alignParentBottom="true"
-                        android:text="##"></TextView>
+                        android:text="##"/>
 
                 </RelativeLayout>
             </LinearLayout>
@@ -226,7 +226,18 @@
                         android:id="@+id/shr_card_Description"
                         style="@style/DashboardItemDescription"
                         android:layout_alignParentBottom="true"
-                        android:text="##"/>
+                        android:text="Data syc required"/>
+
+                    <ImageView
+                        android:id="@+id/sync_status_imageview"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:onClick="switchSyncStatus"
+                        android:contentDescription="card_sync_status"
+                        android:src="@drawable/ic_action_shr_sync_needed"
+                        android:background="@drawable/grid_buttons"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                 </RelativeLayout>
             </LinearLayout>
 
