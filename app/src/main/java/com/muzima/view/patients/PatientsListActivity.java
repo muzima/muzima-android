@@ -15,9 +15,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -30,6 +29,7 @@ import android.widget.TextView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.SearchView;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
@@ -37,17 +37,17 @@ import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.Fonts;
-import com.muzima.utils.StringUtils;
-import com.muzima.utils.barcode.IntentIntegrator;
+import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
+import com.muzima.utils.smartcard.SmartCardIntentResult;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.HelpActivity;
 import com.muzima.view.MainActivity;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
+
 import android.support.design.widget.FloatingActionButton;
-import com.muzima.view.preferences.SettingsActivity;
+import android.widget.Toast;
 
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
@@ -55,6 +55,11 @@ import static android.view.View.VISIBLE;
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
+import static com.muzima.utils.barcode.BarCodeScannerIntentIntegrator.*;
+import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.*;
+
+import com.muzima.api.model.SmartCardRecord;
+
 
 public class PatientsListActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener,
         ListAdapter.BackgroundListQueryTaskListener {
@@ -93,7 +98,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         setupNoDataView();
         setupListView(cohortId);
 
-        fabSearchButton =  (FloatingActionButton) findViewById(R.id.fab_search);
+        fabSearchButton = (FloatingActionButton) findViewById(R.id.fab_search);
         fabSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,12 +125,13 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             }
         });
     }
+
     @Override
-    public void onReceive(Context context, Intent intent){
+    public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS, SyncStatusConstants.UNKNOWN_ERROR);
         int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
-        int downloadCount = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY,0);
+        int downloadCount = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
         String[] patientUUIDs = intent.getStringArrayExtra(DataSyncServiceConstants.PATIENT_UUID_FOR_DOWNLOAD);
 
         if (syncType == DataSyncServiceConstants.DOWNLOAD_PATIENT_ONLY) {
@@ -168,7 +174,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             }
 
         });
-        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener(){
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (hasFocus) {
@@ -186,17 +192,17 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 }
             }
         });
-        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener(){
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View view, boolean hasFocus){
-                if(hasFocus){
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
                     fabSearchButton.setVisibility(GONE);
                 } else {
                     fabSearchButton.postDelayed(new Runnable() {
                         public void run() {
                             fabSearchButton.setVisibility(VISIBLE);
                         }
-                    },500);
+                    }, 500);
                     searchMenuItem.setVisible(false);
                 }
 
@@ -341,48 +347,94 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     @Override
-    public void onQueryTaskCancelled(){}
+    public void onQueryTaskCancelled() {
+    }
 
     @Override
-    public void onQueryTaskCancelled(Object errorDefinition){}
+    public void onQueryTaskCancelled(Object errorDefinition) {
+    }
 
     public void invokeBarcodeScan() {
-        IntentIntegrator scanIntegrator = new IntentIntegrator(this);
+        BarCodeScannerIntentIntegrator scanIntegrator = new BarCodeScannerIntentIntegrator(this);
         scanIntegrator.initiateScan();
     }
 
-    public void invokeShrApplication(){
+    public void invokeShrApplication() {
         SmartCardIntentIntegrator shrIntegrator = new SmartCardIntentIntegrator(this);
         shrIntegrator.initiateCardRead();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
-        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
-        if (scanningResult != null) {
+        /**
+         * Confirm request code, to distingush SHR card calls request from
+         * barcode requests.
+         */
+        switch (requestCode) {
+            case SMARTCARD_READ_REQUEST_CODE:
+                readSmartCardWithDefaultWorkflow(requestCode, resultCode, dataIntent);
+                break;
+            case BARCODE_SCAN_REQUEST_CODE:
+                IntentResult scanningResult = BarCodeScannerIntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
+                if (scanningResult != null) {
+                    intentBarcodeResults = true;
+                    searchView.setQuery(scanningResult.getContents(), false);
+                }
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    public void readSmartCardWithDefaultWorkflow(int requestCode, int resultCode, Intent dataIntent) {
+        Log.e("SHR_REQ", "Read Activity result invoked...");
+        SmartCardIntentResult cardReadIntentResult = null;
+        try {
+            cardReadIntentResult = SmartCardIntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.e("SHR_REQ", "Read Activity result invoked with value..." + cardReadIntentResult.isSuccessResult());
+
+        if (cardReadIntentResult.isSuccessResult()) {
             intentBarcodeResults = true;
-            searchView.setQuery(scanningResult.getContents(), false);
+            SmartCardRecord smartCardRecord = cardReadIntentResult.getSmartCardRecord();
+            if (smartCardRecord != null) {
+                String shrPayload = smartCardRecord.getPlainPayload();
+                Log.e("SHR_REQ", "Read Activity result invoked with value..." + shrPayload);
+                searchView.setQuery(shrPayload, false);
+            }
+        } else {
+            Snackbar.make(findViewById(R.id.patient_lists_layout), "Card read failed.", Snackbar.LENGTH_LONG)
+                    .setAction("RETRY", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            invokeShrApplication();
+                        }
+                    })
+                    .show();
         }
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         patientAdapter.cancelBackgroundTask();
-        if(getCallingActivity() == null){
+        if (getCallingActivity() == null) {
             launchDashboardActivity();
         } else {
             super.onBackPressed();
         }
     }
 
-    private void launchDashboardActivity(){
+    private void launchDashboardActivity() {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
 
-    private void launchCompleteFormsActivity(){
+    private void launchCompleteFormsActivity() {
         Intent intent = new Intent(getApplicationContext(), FormsActivity.class);
-        intent.putExtra(FormsActivity.KEY_FORMS_TAB_TO_OPEN,3);
+        intent.putExtra(FormsActivity.KEY_FORMS_TAB_TO_OPEN, 3);
         startActivity(intent);
     }
 

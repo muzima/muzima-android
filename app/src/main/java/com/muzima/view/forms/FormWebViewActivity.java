@@ -37,7 +37,7 @@ import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
 import com.muzima.utils.Constants;
 import com.muzima.utils.audio.AudioResult;
-import com.muzima.utils.barcode.IntentIntegrator;
+import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
 import com.muzima.utils.imaging.ImageResult;
 import com.muzima.utils.video.VideoResult;
@@ -201,7 +201,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        IntentResult scanResult = BarCodeScannerIntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanResult != null) {
             scanResultMap.put(barCodeComponent.getFieldName(), scanResult.getContents());
         }
