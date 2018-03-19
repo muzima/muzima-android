@@ -79,6 +79,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private SearchView searchView;
     private MenuItem searchMenuItem;
     private boolean intentBarcodeResults = false;
+    private boolean intentShrResults = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -294,7 +295,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     protected void onResume() {
         super.onResume();
-        if (!intentBarcodeResults)
+        if (!intentBarcodeResults || !intentShrResults)
             patientAdapter.reloadData();
     }
 
@@ -348,10 +349,13 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     @Override
     public void onQueryTaskCancelled() {
+        Log.e("TAG","Cancelled...");
     }
 
     @Override
     public void onQueryTaskCancelled(Object errorDefinition) {
+        Log.e("TAG","Cancelled...");
+
     }
 
     public void invokeBarcodeScan() {
@@ -390,15 +394,20 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     public void readSmartCardWithDefaultWorkflow(int requestCode, int resultCode, Intent dataIntent) {
         Log.e("SHR_REQ", "Read Activity result invoked...");
         SmartCardIntentResult cardReadIntentResult = null;
+
         try {
             cardReadIntentResult = SmartCardIntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         Log.e("SHR_REQ", "Read Activity result invoked with value..." + cardReadIntentResult.isSuccessResult());
 
         if (cardReadIntentResult.isSuccessResult()) {
-            intentBarcodeResults = true;
+            /**
+             * Card was read successfully and a result returned.
+             */
+            intentShrResults = true;
             SmartCardRecord smartCardRecord = cardReadIntentResult.getSmartCardRecord();
             if (smartCardRecord != null) {
                 String shrPayload = smartCardRecord.getPlainPayload();
@@ -406,7 +415,10 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 searchView.setQuery(shrPayload, false);
             }
         } else {
-            Snackbar.make(findViewById(R.id.patient_lists_layout), "Card read failed.", Snackbar.LENGTH_LONG)
+            /**
+             * Card read was interrupted and failed
+             */
+            Snackbar.make(findViewById(R.id.patient_lists_layout), "Card read failed."+cardReadIntentResult.getErrors(), Snackbar.LENGTH_LONG)
                     .setAction("RETRY", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
