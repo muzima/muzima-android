@@ -12,6 +12,8 @@ import com.muzima.model.shr.kenyaemr.ExternalPatientId;
 import com.muzima.model.shr.kenyaemr.InternalPatientId;
 import com.muzima.model.shr.kenyaemr.KenyaEmrShrModel;
 import com.muzima.model.shr.kenyaemr.PatientIdentification;
+import com.muzima.utils.Constants;
+import com.muzima.utils.Constants.Shr.KenyaEmr.IdentifierType;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -101,6 +103,12 @@ public class KenyaEmrShrMapper {
             for (InternalPatientId internalPatientId : internalPatientIds) {
                 patientIdentifier = new PatientIdentifier();
                 identifierType = new PatientIdentifierType();
+                String identifierTypeName = null;
+                switch (internalPatientId.getIdentifierType()){
+                    case IdentifierType.CARD_SERIAL_NUMBER.shr_name:
+                        identifierTypeName = IdentifierType.CARD_SERIAL_NUMBER.name;
+                        break;
+                }
                 identifierType.setName(internalPatientId.getIdentifierType());
                 patientIdentifier.setIdentifierType(identifierType);
                 patientIdentifier.setIdentifier(internalPatientId.getID());
