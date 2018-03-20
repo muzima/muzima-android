@@ -22,8 +22,8 @@ public class SmartCardIntentIntegrator {
     public static String AUTH_TOKEN_VALUE = "123";
     public static String EXTRA_ERRORS = "errors";
     public static String EXTRA_MESSAGE = "message";
-    public static int SMARTCARD_READ_REQUEST_CODE = 98;
-    public static int SMARTCARD_WRITE_REQUEST_CODE = 99;
+    public static final int SMARTCARD_READ_REQUEST_CODE = 98;
+    public static final int SMARTCARD_WRITE_REQUEST_CODE = 99;
     Activity activity;
     public SmartCardIntentIntegrator(Activity activity){
         this.activity = activity;
