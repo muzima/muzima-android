@@ -12,7 +12,6 @@ package com.muzima.view.patients;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,7 +23,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -95,6 +93,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private CohortController cohortController;
     private AlertDialog alertDialog;
     private TextView searchDialogTextView;
+    private Button yesOptionShrSearchButton;
+    private Button noOptionShrSearchButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,6 +160,24 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         alertDialog.setCancelable(true);
 
         searchDialogTextView = (TextView) dialogView.findViewById(R.id.patent_dialog_message_textview);
+        yesOptionShrSearchButton = (Button)dialogView.findViewById(R.id.yes_shr_search_dialog);
+        noOptionShrSearchButton = (Button)dialogView.findViewById(R.id.no_shr_search_dialog);
+
+        yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callConfirmationDialog();
+                hideDialog();
+            }
+        });
+
+        noOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideDialog();
+            }
+        });
+
 
     }
 
@@ -451,8 +469,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 String shrPayload = smartCardRecord.getPlainPayload();
                 Log.e("SHR_REQ", "Read Activity result invoked with value..." + shrPayload);
                 /**
-                 * TODO Develop logic to obtain patient card serial number as identifier.
-                 * todo - Pass card number to searchView for Querying
+                 * TODO Fix server side search bugs.
                  *
                  */
                 try {
@@ -476,7 +493,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                     }
 
                     if (shrToMuzimaMatchingPatient == null) {
-                        searchDialogTextView.setText("Card Number  for " + shrPatient.getDisplayName().toLowerCase() + " NOT found.");
+                        searchDialogTextView.setText("Card Number  for " + shrPatient.getDisplayName().toLowerCase() + " NOT found.Register shr patient?");
 
                     }
 
@@ -592,6 +609,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     private  void hideDialog(){
         if(alertDialog.isShowing())
-            alertDialog.dismiss();
+            alertDialog.cancel();
     }
 }
