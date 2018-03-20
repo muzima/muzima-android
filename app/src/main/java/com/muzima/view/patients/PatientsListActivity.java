@@ -57,6 +57,7 @@ import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 
 import android.support.design.widget.FloatingActionButton;
+import android.widget.Toast;
 
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
@@ -110,7 +111,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private PatientsListActivity.BackgroundPatientServerSearchQueryTask patientServerSearchQueryTask;
     private PatientsListActivity.BackgroundPatientDownloadTask patientDownloadTask;
 
-    private AlertDialog alertDialog;
+    private AlertDialog activityResultNotifyAlertDialog;
+    private AlertDialog localSearchResultNotifyAlertDialog;
+
     private TextView searchDialogTextView;
     private Button yesOptionShrSearchButton;
     private Button noOptionShrSearchButton;
@@ -363,18 +366,48 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     }
 
-    public void preparedActivityResultHandlerDialog(Context context){
-        AlertDialog alertDialog;
+    public void prepareLocalSearchNotifyDialog(Context context){
 
         LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = layoutInflater.inflate(R.layout.patient_shr_card_search_dialog, null);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientsListActivity.this);
 
-        alertDialog = alertBuilder
+        localSearchResultNotifyAlertDialog = alertBuilder
                 .setView(dialogView)
                 .create();
 
-        alertDialog.setCancelable(true);
+        localSearchResultNotifyAlertDialog.setCancelable(true);
+        searchDialogTextView = (TextView) dialogView.findViewById(R.id.patent_dialog_message_textview);
+        yesOptionShrSearchButton = (Button) dialogView.findViewById(R.id.yes_shr_search_dialog);
+        noOptionShrSearchButton = (Button) dialogView.findViewById(R.id.no_shr_search_dialog);
+
+        yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callConfirmationDialog();
+                hideDialog();
+            }
+        });
+
+        noOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideDialog();
+            }
+        });
+    }
+
+    public void preparedActivityResultHandlerDialog(Context context){
+
+        LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = layoutInflater.inflate(R.layout.patient_shr_card_search_dialog, null);
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientsListActivity.this);
+
+        activityResultNotifyAlertDialog = alertBuilder
+                .setView(dialogView)
+                .create();
+
+        activityResultNotifyAlertDialog.setCancelable(true);
         searchDialogTextView = (TextView) dialogView.findViewById(R.id.patent_dialog_message_textview);
         yesOptionShrSearchButton = (Button) dialogView.findViewById(R.id.yes_shr_search_dialog);
         noOptionShrSearchButton = (Button) dialogView.findViewById(R.id.no_shr_search_dialog);
@@ -489,15 +522,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     public void readSmartCardWithDefaultWorkflow(int requestCode, int resultCode, Intent dataIntent) {
 
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientsListActivity.this);
-        LayoutInflater layoutInflater = this.getLayoutInflater();
-        View dialogView = layoutInflater.inflate(R.layout.patient_shr_card_search_dialog, null);
-
-        alertDialog = alertBuilder
-                .setView(dialogView)
-                .create();
-
-        alertDialog.setCancelable(true);
+        preparedActivityResultHandlerDialog(getApplicationContext());
 
         SmartCardIntentResult cardReadIntentResult = null;
 
@@ -527,8 +552,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
                     shrToMuzimaMatchingPatient = null;
 
-                    searchDialogTextView.setText("Searching shr locally...");
-
+                    Toast.makeText(getApplicationContext(),"Searching Patient Locally",Toast.LENGTH_LONG).show();
                     executeLocalPatientSearchInBackgroundTask();
 
                     searchView.setQuery(cardNumber, false);
@@ -582,8 +606,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     private void hideDialog() {
-        if (alertDialog.isShowing())
-            alertDialog.cancel();
+        if (activityResultNotifyAlertDialog.isShowing())
+            activityResultNotifyAlertDialog.cancel();
     }
 
     public class BackgroundPatientDownloadTask extends AsyncTask<Void,Void,Void>{
@@ -606,12 +630,22 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         @Override
         protected void onPostExecute(Void val) {
             super.onPostExecute(val);
+            patientAdapter.reloadData();
+            patientAdapter.notifyDataSetChanged();
         }
     }
 
     public class BackgroundPatientServerSearchQueryTask extends AsyncTask<Void, Void, Patient> {
 
         Patient foundPatient = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            prepareLocalSearchNotifyDialog(getApplicationContext());
+            searchDialogTextView.setText("Searching Local data");
+            localSearchResultNotifyAlertDialog.cancel();
+        }
 
         @Override
         protected Patient doInBackground(Void... voids) {
@@ -631,7 +665,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                      * close search and return patient.
                      */
                     shrToMuzimaMatchingPatient = searchResultPatient;
-                    alertDialog.setTitle("Search successful, " + patient.getDisplayName() + " record found.");
+                    activityResultNotifyAlertDialog.setTitle("Search successful, " + patient.getDisplayName() + " record found.");
                     /**
                      * TODO Display download optionDialog
                      *
@@ -650,7 +684,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 searchDialogTextView.setText("Shr patient search was successful.");
                 /**
                  * shr patient found in mUzima data layer.
-                 *
                  */
                 try {
                     smartCardController.saveSmartCardRecord(smartCardRecord);
@@ -659,7 +692,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 }
             } else {
                 progressDialog.hide();
-                alertDialog.show();
+                activityResultNotifyAlertDialog.show();
                 searchDialogTextView.setText("Card Number  for " + shrPatient.getDisplayName().toLowerCase() + " NOT found.Register shr patient?");
 
             }
@@ -671,6 +704,11 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     public class BackgroundPatientLocalSearchQueryTask extends AsyncTask<Void, Void, Patient> {
 
         Patient foundPatient = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
 
         @Override
         protected Patient doInBackground(Void... voids) {
@@ -693,7 +731,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                              * close search and return patient.
                              */
                             foundPatient = searchResultPatient;
-                            alertDialog.setTitle("Search successful, " + patient.getDisplayName() + " record found.");
+                            activityResultNotifyAlertDialog.setTitle("Search successful, " + patient.getDisplayName() + " record found.");
                             hideDialog();
                             break;
                         }
@@ -719,7 +757,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             if (shrToMuzimaMatchingPatient == null) {
                 searchDialogTextView.setText("Card Number  for " + shrPatient.getDisplayName().toLowerCase() + " NOT found.Register shr patient?");
             } else {
-                searchDialogTextView.setText("Patient search was successful.");
+                Toast.makeText(getApplicationContext(),"Found Patient Shr Record "+shrPatient.getIdentifier("").getIdentifier(),Toast.LENGTH_LONG);
                 /**
                  * shr patient found in mUzima data layer.
                  *
@@ -730,6 +768,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                     e.printStackTrace();
                 }
             }
+            activityResultNotifyAlertDialog.dismiss();
         }
 
     }
