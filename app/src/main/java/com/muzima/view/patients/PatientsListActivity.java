@@ -43,6 +43,7 @@ import com.muzima.api.service.SmartCardRecordService;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.SmartCardController;
+import com.muzima.model.shr.kenyaemr.KenyaEmrShrModel;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
@@ -188,7 +189,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         smartCardController = new SmartCardController(smartCardService);
         //TODO Fix above def mismatch.
     }
-
 
 
     @Override
@@ -367,9 +367,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     }
 
-    public void prepareLocalSearchNotifyDialog(Context context){
+    public void prepareLocalSearchNotifyDialog(Context context) {
 
-        LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = layoutInflater.inflate(R.layout.patient_shr_card_search_dialog, null);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientsListActivity.this);
 
@@ -398,9 +398,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         });
     }
 
-    public void preparedActivityResultHandlerDialog(Context context){
+    public void preparedActivityResultHandlerDialog(Context context) {
 
-        LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = layoutInflater.inflate(R.layout.patient_shr_card_search_dialog, null);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientsListActivity.this);
 
@@ -416,14 +416,21 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // callConfirmationDialog();
+                // callConfirmationDialog();
                 /**
                  * Register patient using shrPatient
                  */
                 shrPatient.setUuid(UUID.randomUUID().toString());
                 try {
                     patientController.savePatient(shrPatient);
-                } catch (PatientController.PatientSaveException e) {
+                    //todo save shr
+                    if (smartCardRecord != null) {
+                        smartCardController.saveSmartCardRecord(smartCardRecord);
+                        KenyaEmrShrModel kenyaEmrShrModel = KenyaEmrShrMapper.createSHRModelFromJson(smartCardRecord.getPlainPayload());
+                        KenyaEmrShrMapper.createNewObservationsAndEncountersFromShrModel(muzimaApplication, kenyaEmrShrModel, shrPatient);
+                    }else
+                        Log.e(TAG, "Unable to save smart card record");
+                } catch (PatientController.PatientSaveException | SmartCardController.SmartCardRecordSaveException | KenyaEmrShrMapper.ShrParseException | KenyaEmrShrMapper.ShrSaveException e) {
                     e.printStackTrace();
                 }
                 hideDialog();
@@ -548,7 +555,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             /**
              * Card was read successfully and a result returned.
              */
-            SmartCardRecord smartCardRecord = cardReadIntentResult.getSmartCardRecord();
+            smartCardRecord = cardReadIntentResult.getSmartCardRecord();
             if (smartCardRecord != null) {
                 intentShrResults = false;
                 String shrPayload = smartCardRecord.getPlainPayload();
@@ -562,7 +569,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
                     shrToMuzimaMatchingPatient = null;
 
-                    Toast.makeText(getApplicationContext(),"Searching Patient Locally",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Searching Patient Locally", Toast.LENGTH_LONG).show();
                     executeLocalPatientSearchInBackgroundTask();
 
                     searchView.setQuery(cardNumber, false);
@@ -620,7 +627,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             activityResultNotifyAlertDialog.cancel();
     }
 
-    public class BackgroundPatientDownloadTask extends AsyncTask<Void,Void,Void>{
+    public class BackgroundPatientDownloadTask extends AsyncTask<Void, Void, Void> {
 
         Patient downloadedPatient = null;
 
@@ -767,7 +774,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             if (shrToMuzimaMatchingPatient == null) {
                 searchDialogTextView.setText("Card Number  for " + shrPatient.getDisplayName().toLowerCase() + " NOT found.Register shr patient?");
             } else {
-                Toast.makeText(getApplicationContext(),"Found Patient Shr Record "+shrPatient.getIdentifier("").getIdentifier(),Toast.LENGTH_LONG);
+                Toast.makeText(getApplicationContext(), "Found Patient Shr Record " + shrPatient.getIdentifier("").getIdentifier(), Toast.LENGTH_LONG);
                 /**
                  * shr patient found in mUzima data layer.
                  *
@@ -793,7 +800,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         mBackgroundQueryTask.execute();
     }
 
-    private void executeDownloadPatientInBackgroundTask(){
+    private void executeDownloadPatientInBackgroundTask() {
         patientDownloadTask = new PatientsListActivity.BackgroundPatientDownloadTask();
         patientDownloadTask.execute();
 
