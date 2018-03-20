@@ -11,12 +11,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
 	  xmlns:custom="http://schemas.android.com/apk/res-auto">
 	<item
-		android:id="@+id/shr_card"
+		android:id="@+id/scan_shr_card"
 		android:icon="@drawable/ic_action_shr_card"
 		custom:showAsAction="always"
-		android:title="@string/title_client_scan"/>
+		android:title="@string/scan_card_id_title"/>
+
 	<item
-			android:id="@+id/scan"
+		android:id="@+id/menu_client_add_icon"
+		android:icon="@drawable/ic_action_add_client"
+		android:title="@string/hint_client_search"
+		custom:showAsAction="always" />
+
+	<item
+			android:id="@+id/bar_card_scan"
 			android:icon="@drawable/barcode_icon"
 			custom:showAsAction="always"
 			android:title="@string/title_client_scan"/>
@@ -25,11 +32,6 @@
 			custom:actionViewClass="android.support.v7.widget.SearchView"
 			android:icon="@drawable/ic_search"
 			android:visible="false"
-			custom:showAsAction="always"
-			android:title="@string/hint_client_search"/>
-	<item
-			android:id="@+id/menu_client_add_icon"
-			android:icon="@drawable/ic_action_add_client"
 			custom:showAsAction="always"
 			android:title="@string/hint_client_search"/>
 	<item

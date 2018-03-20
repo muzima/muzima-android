@@ -192,7 +192,7 @@ public class KenyaEmrShrMapper {
     }
 
 
-    static class ShrParseException extends Throwable {
+    public static class ShrParseException extends Throwable {
         ShrParseException(Throwable throwable) {
             super(throwable);
         }
