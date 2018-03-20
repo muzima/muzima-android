@@ -563,4 +563,5 @@
     <string name="shr_data_title_text">SHR Data</string>
     <string name="add_individual_observation_text">Add Individual Observation</string>
     <string name="scan_card_id_title">Scan card id</string>
+    <string name="patient_shr_search_dialog_title">Patient SHR Search</string>
 </resources>
