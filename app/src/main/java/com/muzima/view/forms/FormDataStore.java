@@ -45,7 +45,6 @@ public class FormDataStore {
         this.formController = formController;
         this.formData = formData;
         this.applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
-
     }
 
     @JavascriptInterface
