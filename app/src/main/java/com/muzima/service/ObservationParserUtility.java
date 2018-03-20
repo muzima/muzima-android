@@ -12,6 +12,7 @@ package com.muzima.service;
 
 import android.util.Log;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.ConceptName;
 import com.muzima.api.model.ConceptType;
@@ -53,11 +54,11 @@ public class ObservationParserUtility {
     public ProviderController providerController;
     private List<Concept> newConceptList;
 
-    public ObservationParserUtility(ConceptController conceptController,LocationController locationController, ProviderController providerController,FormController formController) {
-        this.conceptController = conceptController;
-        this.locationController = locationController;
-        this.providerController = providerController;
-        this.formController = formController;
+    public ObservationParserUtility(MuzimaApplication muzimaApplication) {
+        this.conceptController = muzimaApplication.getConceptController();
+        this.locationController = muzimaApplication.getLocationController();
+        this.providerController = muzimaApplication.getProviderController();
+        this.formController = muzimaApplication.getFormController();
         this.newConceptList = new ArrayList<Concept>();
     }
 

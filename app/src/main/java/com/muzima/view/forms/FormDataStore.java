@@ -105,8 +105,7 @@ public class FormDataStore {
     }
 
     public FormParser getFormParser() {
-        return new FormParser(applicationContext.getPatientController(), applicationContext.getConceptController(),
-                applicationContext.getEncounterController(), applicationContext.getObservationController(),applicationContext.getLocationController(),applicationContext.getProviderController(),applicationContext.getFormController());
+        return new FormParser(applicationContext);
     }
 
 
