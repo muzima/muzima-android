@@ -74,6 +74,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 
 public class PatientsListActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener,
@@ -415,7 +416,16 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callConfirmationDialog();
+               // callConfirmationDialog();
+                /**
+                 * Register patient using shrPatient
+                 */
+                shrPatient.setUuid(UUID.randomUUID().toString());
+                try {
+                    patientController.savePatient(shrPatient);
+                } catch (PatientController.PatientSaveException e) {
+                    e.printStackTrace();
+                }
                 hideDialog();
             }
         });
