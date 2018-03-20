@@ -12,12 +12,15 @@ package com.muzima.view.patients;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -34,8 +37,14 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
+import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Patient;
+import com.muzima.api.service.SmartCardRecordService;
+import com.muzima.controller.CohortController;
 import com.muzima.controller.PatientController;
+import com.muzima.controller.SmartCardController;
+import com.muzima.model.shr.kenyaemr.KenyaEmrShrModel;
+import com.muzima.service.MuzimaSyncService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
@@ -49,6 +58,7 @@ import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 
 import android.support.design.widget.FloatingActionButton;
+import android.widget.Toast;
 
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
@@ -61,7 +71,11 @@ import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.*;
 
 import com.muzima.api.model.SmartCardRecord;
 
-
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 
 public class PatientsListActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener,
@@ -83,6 +97,32 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private MenuItem searchMenuItem;
     private boolean intentBarcodeResults = false;
     private boolean intentShrResults = false;
+
+    private PatientController patientController;
+    private MuzimaApplication muzimaApplication;
+    private CohortController cohortController;
+    private SmartCardController smartCardController;
+    private SmartCardRecordService smartCardService;
+    private SmartCardRecord smartCardRecord;
+    private MuzimaSyncService muzimaSyncService;
+
+    Patient shrPatient;
+    Patient shrToMuzimaMatchingPatient;
+
+    private PatientsListActivity.BackgroundPatientLocalSearchQueryTask mBackgroundQueryTask;
+    private PatientsListActivity.BackgroundPatientServerSearchQueryTask patientServerSearchQueryTask;
+    private PatientsListActivity.BackgroundPatientDownloadTask patientDownloadTask;
+
+    private AlertDialog activityResultNotifyAlertDialog;
+    private AlertDialog localSearchResultNotifyAlertDialog;
+
+    private TextView searchDialogTextView;
+    private Button yesOptionShrSearchButton;
+    private Button noOptionShrSearchButton;
+
+    private ProgressDialog progressDialog;
+
+    private final String TAG = this.getClass().getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +168,28 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 startActivity(intent);
             }
         });
+
+
+        muzimaApplication = (MuzimaApplication) getApplicationContext();
+        muzimaSyncService = muzimaApplication.getMuzimaSyncService();
+        patientController = muzimaApplication.getPatientController();
+        cohortController = muzimaApplication.getCohortController();
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
+        /**
+         * Construct PatientController||SmartCardController||CohortController==>
+         * for Local and Server side patient search including SmartCard Tx
+         * events.
+         */
+        try {
+            smartCardService = muzimaApplication.getMuzimaContext().getSmartCardRecordService();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        smartCardController = new SmartCardController(smartCardService);
+        //TODO Fix above def mismatch.
     }
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -284,9 +345,11 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             case R.id.menu_dashboard:
                 launchDashboardActivity();
                 return true;
+
             case R.id.menu_complete_form_data:
                 launchCompleteFormsActivity();
                 return true;
+
             case R.id.scan_shr_card:
                 invokeShrApplication();
                 return true;
@@ -298,8 +361,88 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     protected void onResume() {
         super.onResume();
+        preparedActivityResultHandlerDialog(getApplicationContext());
         if (!intentBarcodeResults)
             patientAdapter.reloadData();
+
+    }
+
+    public void prepareLocalSearchNotifyDialog(Context context) {
+
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = layoutInflater.inflate(R.layout.patient_shr_card_search_dialog, null);
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientsListActivity.this);
+
+        localSearchResultNotifyAlertDialog = alertBuilder
+                .setView(dialogView)
+                .create();
+
+        localSearchResultNotifyAlertDialog.setCancelable(true);
+        searchDialogTextView = (TextView) dialogView.findViewById(R.id.patent_dialog_message_textview);
+        yesOptionShrSearchButton = (Button) dialogView.findViewById(R.id.yes_shr_search_dialog);
+        noOptionShrSearchButton = (Button) dialogView.findViewById(R.id.no_shr_search_dialog);
+
+        yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callConfirmationDialog();
+                hideDialog();
+            }
+        });
+
+        noOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideDialog();
+            }
+        });
+    }
+
+    public void preparedActivityResultHandlerDialog(Context context) {
+
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = layoutInflater.inflate(R.layout.patient_shr_card_search_dialog, null);
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientsListActivity.this);
+
+        activityResultNotifyAlertDialog = alertBuilder
+                .setView(dialogView)
+                .create();
+
+        activityResultNotifyAlertDialog.setCancelable(true);
+        searchDialogTextView = (TextView) dialogView.findViewById(R.id.patent_dialog_message_textview);
+        yesOptionShrSearchButton = (Button) dialogView.findViewById(R.id.yes_shr_search_dialog);
+        noOptionShrSearchButton = (Button) dialogView.findViewById(R.id.no_shr_search_dialog);
+
+        yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // callConfirmationDialog();
+                /**
+                 * Register patient using shrPatient
+                 */
+                shrPatient.setUuid(UUID.randomUUID().toString());
+                try {
+                    patientController.savePatient(shrPatient);
+                    //todo save shr
+                    if (smartCardRecord != null) {
+                        smartCardController.saveSmartCardRecord(smartCardRecord);
+                        KenyaEmrShrModel kenyaEmrShrModel = KenyaEmrShrMapper.createSHRModelFromJson(smartCardRecord.getPlainPayload());
+                        KenyaEmrShrMapper.createNewObservationsAndEncountersFromShrModel(muzimaApplication, kenyaEmrShrModel, shrPatient);
+                    }else
+                        Log.e(TAG, "Unable to save smart card record");
+                } catch (PatientController.PatientSaveException | SmartCardController.SmartCardRecordSaveException | KenyaEmrShrMapper.ShrParseException | KenyaEmrShrMapper.ShrSaveException e) {
+                    e.printStackTrace();
+                }
+                hideDialog();
+            }
+        });
+
+        noOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideDialog();
+            }
+        });
     }
 
     private void setupListView(String cohortId) {
@@ -352,12 +495,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     @Override
     public void onQueryTaskCancelled() {
-        Log.e("TAG","Cancelled...");
+        Log.e("TAG", "Cancelled...");
     }
 
     @Override
     public void onQueryTaskCancelled(Object errorDefinition) {
-        Log.e("TAG","Cancelled...");
+        Log.e("TAG", "Cancelled...");
 
     }
 
@@ -374,7 +517,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
         /**
-         * Confirm request code, to distingush SHR card calls request from
+         * Confirm request code, to distinguish SHR card calls request from
          * barcode requests.
          */
         switch (requestCode) {
@@ -395,7 +538,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     public void readSmartCardWithDefaultWorkflow(int requestCode, int resultCode, Intent dataIntent) {
-        Log.e("SHR_REQ", "Read Activity result invoked...");
+
+        preparedActivityResultHandlerDialog(getApplicationContext());
+
         SmartCardIntentResult cardReadIntentResult = null;
 
         try {
@@ -403,32 +548,36 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        //todo remove logging code.
         Log.e("SHR_REQ", "Read Activity result invoked with value..." + cardReadIntentResult.isSuccessResult());
 
         if (cardReadIntentResult.isSuccessResult()) {
             /**
              * Card was read successfully and a result returned.
              */
-            SmartCardRecord smartCardRecord = cardReadIntentResult.getSmartCardRecord();
+            smartCardRecord = cardReadIntentResult.getSmartCardRecord();
             if (smartCardRecord != null) {
                 intentShrResults = false;
                 String shrPayload = smartCardRecord.getPlainPayload();
                 Log.e("SHR_REQ", "Read Activity result invoked with value..." + shrPayload);
-                /**
-                 * TODO Develop logic to obtain patient card serial number as identifier.
-                 * todo - Pass card number to searchView for Querying
-                 *
-                 */
+
                 try {
-                    Patient patient = KenyaEmrShrMapper.extractPatientFromShrModel(shrPayload);
-                    Log.e("EMR_IN",patient.getDisplayName());
-                    String cardNumber = patient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.shr_name)
+                    shrPatient = KenyaEmrShrMapper.extractPatientFromShrModel(shrPayload);
+                    Log.e("EMR_IN", shrPatient.getDisplayName());
+                    String cardNumber = shrPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.shr_name)
                             .getUuid();
+
+                    shrToMuzimaMatchingPatient = null;
+
+                    Toast.makeText(getApplicationContext(), "Searching Patient Locally", Toast.LENGTH_LONG).show();
+                    executeLocalPatientSearchInBackgroundTask();
+
                     searchView.setQuery(cardNumber, false);
                     searchView.setVisibility(VISIBLE);
+
+
                 } catch (KenyaEmrShrMapper.ShrParseException e) {
-                    Log.e("EMR_IN","EMR Error ",e);
+                    Log.e("EMR_IN", "EMR Error ", e);
                 }
 
             }
@@ -436,7 +585,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             /**
              * Card read was interrupted and failed
              */
-            Snackbar.make(findViewById(R.id.patient_lists_layout), "Card read failed."+cardReadIntentResult.getErrors(), Snackbar.LENGTH_LONG)
+            Snackbar.make(findViewById(R.id.patient_lists_layout), "Card read failed." + cardReadIntentResult.getErrors(), Snackbar.LENGTH_LONG)
                     .setAction("RETRY", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -471,5 +620,189 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    private void hideDialog() {
+        if (activityResultNotifyAlertDialog.isShowing())
+            activityResultNotifyAlertDialog.cancel();
+    }
+
+    public class BackgroundPatientDownloadTask extends AsyncTask<Void, Void, Void> {
+
+        Patient downloadedPatient = null;
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            List<String> uuidsList = Collections.singletonList(shrToMuzimaMatchingPatient.getUuid());
+            String[] uuids = {};
+            int index = 0;
+            for (String uuid : uuidsList) {
+                assert uuids != null;
+                uuids[index] = uuid;
+            }
+            muzimaSyncService.downloadPatients(uuids);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void val) {
+            super.onPostExecute(val);
+            patientAdapter.reloadData();
+            patientAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public class BackgroundPatientServerSearchQueryTask extends AsyncTask<Void, Void, Patient> {
+
+        Patient foundPatient = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            prepareLocalSearchNotifyDialog(getApplicationContext());
+            searchDialogTextView.setText("Searching Local data");
+            localSearchResultNotifyAlertDialog.cancel();
+        }
+
+        @Override
+        protected Patient doInBackground(Void... voids) {
+            MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
+            Patient patient = null;
+            PatientController patientController = muzimaApplication.getPatientController();
+            /**
+             * Search for Patient locally without invoking search view
+             */
+            List<Patient> localSearchResultPatients = new ArrayList<>();
+            localSearchResultPatients = patientController.searchPatientOnServer(shrPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.shr_name).getIdentifier());
+            for (Patient searchResultPatient : localSearchResultPatients) {
+                if (searchResultPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.shr_name)
+                        .equals(patient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.shr_name))) {
+                    /**
+                     * Search result contains patient obtained from PSmart
+                     * close search and return patient.
+                     */
+                    shrToMuzimaMatchingPatient = searchResultPatient;
+                    activityResultNotifyAlertDialog.setTitle("Search successful, " + patient.getDisplayName() + " record found.");
+                    /**
+                     * TODO Display download optionDialog
+                     *
+                     */
+                    executeDownloadPatientInBackgroundTask();
+                    hideDialog();
+                    break;
+                }
+            }
+            return patient;
+        }
+
+        @Override
+        protected void onPostExecute(Patient patient) {
+            if (shrToMuzimaMatchingPatient != null) {
+                searchDialogTextView.setText("Shr patient search was successful.");
+                /**
+                 * shr patient found in mUzima data layer.
+                 */
+                try {
+                    smartCardController.saveSmartCardRecord(smartCardRecord);
+                } catch (SmartCardController.SmartCardRecordSaveException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                progressDialog.hide();
+                activityResultNotifyAlertDialog.show();
+                searchDialogTextView.setText("Card Number  for " + shrPatient.getDisplayName().toLowerCase() + " NOT found.Register shr patient?");
+
+            }
+
+        }
+    }
+
+
+    public class BackgroundPatientLocalSearchQueryTask extends AsyncTask<Void, Void, Patient> {
+
+        Patient foundPatient = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Patient doInBackground(Void... voids) {
+            MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
+            Patient patient = null;
+            PatientController patientController = muzimaApplication.getPatientController();
+            CohortController cohortController = muzimaApplication.getCohortController();
+            /**
+             * Search for Patient locally without invoking search view
+             */
+            List<Patient> localSearchResultPatients = new ArrayList<>();
+            try {
+                for (Cohort cohort : cohortController.getSyncedCohorts()) {
+                    localSearchResultPatients = patientController.searchPatientLocally(shrPatient.getDisplayName(), cohort.getUuid());
+                    for (Patient searchResultPatient : localSearchResultPatients) {
+                        if (searchResultPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.shr_name)
+                                .equals(patient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.shr_name))) {
+                            /**
+                             * Search result contains patient obtained from PSmart
+                             * close search and return patient.
+                             */
+                            foundPatient = searchResultPatient;
+                            activityResultNotifyAlertDialog.setTitle("Search successful, " + patient.getDisplayName() + " record found.");
+                            hideDialog();
+                            break;
+                        }
+                    }
+                }
+            } catch (CohortController.CohortFetchException | PatientController.PatientLoadException e) {
+                Log.e(TAG, "Unable to search for patient locally." + e.getMessage());
+                e.printStackTrace();
+            }
+            return patient;
+        }
+
+        @Override
+        protected void onPostExecute(Patient patient) {
+            shrToMuzimaMatchingPatient = foundPatient;
+            if (shrToMuzimaMatchingPatient == null) {
+                /**
+                 * Search data on server.
+                 */
+                executePatientServerSearchInBackgroundQueryTask();
+            }
+
+            if (shrToMuzimaMatchingPatient == null) {
+                searchDialogTextView.setText("Card Number  for " + shrPatient.getDisplayName().toLowerCase() + " NOT found.Register shr patient?");
+            } else {
+                Toast.makeText(getApplicationContext(), "Found Patient Shr Record " + shrPatient.getIdentifier("").getIdentifier(), Toast.LENGTH_LONG);
+                /**
+                 * shr patient found in mUzima data layer.
+                 *
+                 */
+                try {
+                    smartCardController.saveSmartCardRecord(smartCardRecord);
+                } catch (SmartCardController.SmartCardRecordSaveException e) {
+                    e.printStackTrace();
+                }
+            }
+            activityResultNotifyAlertDialog.dismiss();
+        }
+
+    }
+
+    private void executePatientServerSearchInBackgroundQueryTask() {
+        patientServerSearchQueryTask = new PatientsListActivity.BackgroundPatientServerSearchQueryTask();
+        patientServerSearchQueryTask.execute();
+    }
+
+    private void executeLocalPatientSearchInBackgroundTask() {
+        mBackgroundQueryTask = new BackgroundPatientLocalSearchQueryTask();
+        mBackgroundQueryTask.execute();
+    }
+
+    private void executeDownloadPatientInBackgroundTask() {
+        patientDownloadTask = new PatientsListActivity.BackgroundPatientDownloadTask();
+        patientDownloadTask.execute();
+
     }
 }
