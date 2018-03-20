@@ -189,6 +189,7 @@ public class KenyaEmrShrMapper {
                 patientIdentifier.setIdentifierType(identifierType);
                 patientIdentifier.setIdentifier(internalPatientId.getID());
                 identifiers.add(patientIdentifier);
+                Log.e("KenyaEmrShrMapper","Added determine Kenyaemr identifier name for "+identifierTypeName+ " = "+patientIdentifier.getIdentifier() );
             } else {
                 Log.e("KenyaEmrShrMapper","Could not determine Kenyaemr identifier name for "
                         + internalPatientId.getIdentifierType());
@@ -211,7 +212,9 @@ public class KenyaEmrShrMapper {
     public static void createNewObservationsAndEncountersFromShrModel(MuzimaApplication muzimaApplication, KenyaEmrShrModel shrModel, final Patient patient)
             throws ShrParseException, ShrSaveException {
         List<String> payloads = createJsonEncounterPayloadFromShrModel(shrModel, patient);
+        Log.e("KenyaEmrShrMapper","Saving encounters data ");
         for(final String payload:payloads) {
+            Log.e("KenyaEmrShrMapper","Saving payload data ");
             final String newFormDataUuid = UUID.randomUUID().toString();
             HTMLFormObservationCreator htmlFormObservationCreator = new HTMLFormObservationCreator(muzimaApplication);
             htmlFormObservationCreator.createObservationsAndRelatedEntities(payload, newFormDataUuid);
@@ -255,6 +258,7 @@ public class KenyaEmrShrMapper {
 
             FormController formController = muzimaApplication.getFormController();
             try {
+                Log.e("KenyaEmrShrMapper","Saving form data ");
                 formController.saveFormData(formData);
             } catch (FormController.FormDataSaveException e) {
                 Log.e("ShrMapper","Could not save Form Data",e);
@@ -283,6 +287,7 @@ public class KenyaEmrShrMapper {
         JSONObject observationDetails = new JSONObject();
         JSONObject encounterDetails = new JSONObject();
 
+        Log.e("KenyaEmrShrMapper","Processing HIV test ");
 
         encounterDetails.put("encounter.provider_id", hivTest.getProviderDetails().getId());
         encounterDetails.put("encounter.location_id", hivTest.getFacility());
