@@ -148,120 +148,120 @@ public class Constants {
                 }
             }
 
-            public static class Concept {
+            public static class CONCEPTS {
                 public static class ANC_NUMBER {
                     public static final String name = "ANC NUMBER";
                     public static final String uuid = "161655AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
                     public static final String shr_name = "ANC_NUMBER";
                 }
 
-                public static class HIV_TEST {
+                public static class HIV_TESTS {
                     public static class TEST_RESULT {
                         public static final String name = "TEST RESULT";
-                        public static final String concept = "159427";
+                        public static final int concept_id = 159427;
                         public static final String type = "Coded";
 
                         public static class ANSWERS {
                             public static class POSITIVE {
                                 public static final String name = "POSITIVE";
-                                public static final String concept = "703";
+                                public static final int concept_id = 703;
                             }
 
                             public static class NEGATIVE {
                                 public static final String name = "NEGATIVE";
-                                public static final String concept = "664";
+                                public static final int concept_id = 664;
                             }
 
                             public static class INCONCLUSIVE {
                                 public static final String name = "INCONCLUSIVE";
-                                public static final String concept = "1138";
+                                public static final int concept_id = 1138;
                             }
                         }
                     }
 
                     public static class TEST_TYPE {
                         public static final String name = "TEST TYPE";
-                        public static final String concept = "162084";
+                        public static final int concept_id = 162084;
                         public static final String type = "Coded";
 
                         public static class ANSWERS {
                             public static class SCREENING {
                                 public static final String name = "SCREENING";
-                                public static final String concept = "162080";
+                                public static final int concept_id = 162080;
                             }
 
                             public static class CONFIRMATORY {
                                 public static final String name = "CONFIRMATORY";
-                                public static final String concept = "162082";
+                                public static final int concept_id = 162082;
                             }
                         }
                     }
 
                     public static class TEST_STRATEGY {
                         public static final String name = "TEST STRATEGY";
-                        public static final String concept = "164956";
+                        public static final int concept_id = 164956;
                         public static final String type = "Coded";
 
                         public static class ANSWERS {
                             public static class HP {
                                 public static final String name = "HP";
-                                public static final String concept = "164163";
+                                public static final int concept_id = 164163;
                             }
 
                             public static class NP {
                                 public static final String name = "NP";
-                                public static final String concept = "164953";
+                                public static final int concept_id = 164953;
                             }
 
                             public static class VI {
                                 public static final String name = "VI";
-                                public static final String concept = "164954";
+                                public static final int concept_id = 164954;
                             }
 
                             public static class VS {
                                 public static final String name = "VS";
-                                public static final String concept = "164955";
+                                public static final int concept_id = 164955;
                             }
 
                             public static class HB {
                                 public static final String name = "HB";
-                                public static final String concept = "159938";
+                                public static final int concept_id = 159938;
                             }
 
                             public static class MO {
                                 public static final String name = "MO";
-                                public static final String concept = "159939";
+                                public static final int concept_id = 159939;
                             }
                         }
                     }
 
                     public static class TEST_FACILITY {
                         public static final String name = "TEST FACILITY";
-                        public static final String concept = "162724";
+                        public static final int concept_id = 162724;
                         public static final String type = "Text";
                     }
 
                     public static class PROVIDER_DETAILS {
                         public static class NAME {
                             public static final String name = "NAME";
-                            public static final String concept = "1473";
+                            public static final int concept_id = 1473;
                             public static final String type = "Text";
                         }
 
                         public static class ID {
-                            public static final String name = "NAME";
-                            public static final String concept = "163161";
+                            public static final String name = "ID";
+                            public static final int concept_id = 163161;
                             public static final String type = "Text";
                         }
                     }
-                }
 
-                public static class Encounter {
-                    public static final String ENCOUNTER_TYPE_UUID = "9bc15e94-2794-11e8-b467-0ed5f89f718b";
-                }
+                    public static class ENCOUNTER {
+                        public static final String ENCOUNTER_TYPE_UUID = "9bc15e94-2794-11e8-b467-0ed5f89f718b";
+                    }
 
-                public static class Form {
-                    public static final String FORM_UUID = "9bc157d2-2794-11e8-b467-0ed5f89f718b";
+                    public static class FORM {
+                        public static final String FORM_UUID = "9bc157d2-2794-11e8-b467-0ed5f89f718b";
+                    }
                 }
             }
         }
