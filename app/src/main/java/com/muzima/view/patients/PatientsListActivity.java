@@ -37,7 +37,7 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Patient;
-import com.muzima.api.service.SmartCardSharedHealthRecordService;
+import com.muzima.api.service.SmartCardRecordService;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.SmartCardController;
@@ -95,7 +95,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private MuzimaApplication muzimaApplication;
     private CohortController cohortController;
     private SmartCardController smartCardController;
-    private SmartCardSharedHealthRecordService smartCardSharedHealthRecordService;
+    private SmartCardRecordService smartCardService;
 
     private AlertDialog alertDialog;
     private TextView searchDialogTextView;
@@ -153,7 +153,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
          * events.
          */
         try {
-            smartCardSharedHealthRecordService = muzimaApplication.getMuzimaContext().getSmartCardSharedHealthRecordService();
+            smartCardService = muzimaApplication.getMuzimaContext().getSmartCardRecordService();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -161,7 +161,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         muzimaApplication = (MuzimaApplication) getApplicationContext();
         patientController = muzimaApplication.getPatientController();
         cohortController = muzimaApplication.getCohortController();
-        smartCardController = new SmartCardController(smartCardSharedHealthRecordService);
+        smartCardController = new SmartCardController(smartCardService);
         //TODO Fix above def mismatch.
 
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientsListActivity.this);
