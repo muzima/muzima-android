@@ -37,8 +37,10 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Patient;
+import com.muzima.api.service.SmartCardSharedHealthRecordService;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.PatientController;
+import com.muzima.controller.SmartCardController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
@@ -64,6 +66,7 @@ import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.*;
 
 import com.muzima.api.model.SmartCardRecord;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,6 +94,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private PatientController patientController;
     private MuzimaApplication muzimaApplication;
     private CohortController cohortController;
+    private SmartCardController smartCardController;
+    private SmartCardSharedHealthRecordService smartCardSharedHealthRecordService;
+
     private AlertDialog alertDialog;
     private TextView searchDialogTextView;
     private Button yesOptionShrSearchButton;
@@ -142,12 +148,21 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         });
 
         /**
-         * Construct PatientController for Local patient search
+         * Construct PatientController||SmartCardController||CohortController==>
+         * for Local and Server side patient search including SmartCard Tx
          * events.
          */
+        try {
+            smartCardSharedHealthRecordService = muzimaApplication.getMuzimaContext().getSmartCardSharedHealthRecordService();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         muzimaApplication = (MuzimaApplication) getApplicationContext();
         patientController = muzimaApplication.getPatientController();
         cohortController = muzimaApplication.getCohortController();
+        smartCardController = new SmartCardController(smartCardSharedHealthRecordService);
+        //TODO Fix above def mismatch.
 
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientsListActivity.this);
         LayoutInflater layoutInflater = this.getLayoutInflater();
@@ -494,7 +509,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
                     if (shrToMuzimaMatchingPatient == null) {
                         searchDialogTextView.setText("Card Number  for " + shrPatient.getDisplayName().toLowerCase() + " NOT found.Register shr patient?");
-
+                    } else {
+                        /**
+                         * shr patient found in mUzima data layer.
+                         *
+                         */
+                        smartCardController.saveSmartCardRecord(smartCardRecord);
                     }
 
 
@@ -504,9 +524,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
                 } catch (KenyaEmrShrMapper.ShrParseException e) {
                     Log.e("EMR_IN", "EMR Error ", e);
-                } catch (PatientController.PatientLoadException e) {
-                    e.printStackTrace();
-                } catch (CohortController.CohortFetchException e) {
+                } catch (PatientController.PatientLoadException | CohortController.CohortFetchException | SmartCardController.SmartCardRecordSaveException e) {
                     e.printStackTrace();
                 }
 
