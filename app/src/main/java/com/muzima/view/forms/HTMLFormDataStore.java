@@ -185,8 +185,7 @@ public class HTMLFormDataStore {
 
     public HTMLFormObservationCreator getFormParser() {
         MuzimaApplication applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
-        return new HTMLFormObservationCreator(applicationContext.getPatientController(), applicationContext.getConceptController(),
-                applicationContext.getEncounterController(), applicationContext.getObservationController(),applicationContext.getLocationController(),applicationContext.getProviderController(),applicationContext.getFormController());
+        return new HTMLFormObservationCreator(applicationContext);
     }
     private boolean isRegistrationComplete(String status) {
         return formController.isRegistrationFormData(formData) && status.equals(Constants.STATUS_COMPLETE);
