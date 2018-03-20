@@ -429,12 +429,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                     //todo save shr
                     if (smartCardRecord != null) {
                         smartCardController.saveSmartCardRecord(smartCardRecord);
-                        Toast.makeText(getApplicationContext(),"Patient registered.",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Patient registered.", Toast.LENGTH_LONG).show();
                         KenyaEmrShrModel kenyaEmrShrModel = KenyaEmrShrMapper.createSHRModelFromJson(smartCardRecord.getPlainPayload());
                         KenyaEmrShrMapper.createNewObservationsAndEncountersFromShrModel(muzimaApplication, kenyaEmrShrModel, shrPatient);
-                        Log.e(TAG,"Patient registered");
+                        Log.e(TAG, "Patient registered");
 
-                    }else
+                    } else
                         Log.e(TAG, "Unable to save smart card record");
 
                 } catch (PatientController.PatientSaveException | SmartCardController.SmartCardRecordSaveException | KenyaEmrShrMapper.ShrParseException | KenyaEmrShrMapper.ShrSaveException e) {
@@ -737,7 +737,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         @Override
         protected Patient doInBackground(Void... voids) {
             String searchTerm = shrPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name).getIdentifier();
-            Log.e("SEARCHING","Search TERM: "+Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name + " : "+searchTerm);
+            Log.e("SEARCHING", "Search TERM: " + Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name + " : " + searchTerm);
             MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
             Patient patient = null;
             PatientController patientController = muzimaApplication.getPatientController();
@@ -747,7 +747,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
              */
             List<Patient> localSearchResultPatients = new ArrayList<>();
             try {
-                //for (Cohort cohort : cohortController.getSyncedCohorts()) {
+
                 localSearchResultPatients = patientController.searchPatientLocally(searchTerm, null);
                 for (Patient searchResultPatient : localSearchResultPatients) {
                     PatientIdentifier identifier = searchResultPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name);
@@ -763,8 +763,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                         break;
                     }
                 }
+
                 //}
-            } catch ( PatientController.PatientLoadException e) {
+            } catch (PatientController.PatientLoadException e) {
                 Log.e(TAG, "Unable to search for patient locally." + e.getMessage());
                 e.printStackTrace();
             }
