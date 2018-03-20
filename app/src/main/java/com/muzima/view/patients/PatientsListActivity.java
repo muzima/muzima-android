@@ -147,6 +147,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             }
         });
 
+
+
+        muzimaApplication = (MuzimaApplication) getApplicationContext();
+        patientController = muzimaApplication.getPatientController();
+        cohortController = muzimaApplication.getCohortController();
+
         /**
          * Construct PatientController||SmartCardController||CohortController==>
          * for Local and Server side patient search including SmartCard Tx
@@ -157,10 +163,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        muzimaApplication = (MuzimaApplication) getApplicationContext();
-        patientController = muzimaApplication.getPatientController();
-        cohortController = muzimaApplication.getCohortController();
         smartCardController = new SmartCardController(smartCardService);
         //TODO Fix above def mismatch.
 
