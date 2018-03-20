@@ -39,6 +39,7 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.service.SmartCardRecordService;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.PatientController;
@@ -731,6 +732,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
         @Override
         protected Patient doInBackground(Void... voids) {
+            String searchTerm = shrPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name).getIdentifier();
+            Log.e("SEARCHING","Search TERM: "+Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name + " : "+searchTerm);
             MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
             Patient patient = null;
             PatientController patientController = muzimaApplication.getPatientController();
@@ -740,23 +743,24 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
              */
             List<Patient> localSearchResultPatients = new ArrayList<>();
             try {
-                for (Cohort cohort : cohortController.getSyncedCohorts()) {
-                    localSearchResultPatients = patientController.searchPatientLocally(shrPatient.getDisplayName(), cohort.getUuid());
+                //for (Cohort cohort : cohortController.getSyncedCohorts()) {
+                    localSearchResultPatients = patientController.searchPatientLocally(searchTerm, null);
                     for (Patient searchResultPatient : localSearchResultPatients) {
-                        if (searchResultPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name)
-                                .equals(patient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name))) {
+                        PatientIdentifier identifier = searchResultPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name);
+                        if (searchResultPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name).getIdentifier()
+                                .equals(shrPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name).getIdentifier())) {
                             /**
                              * Search result contains patient obtained from PSmart
                              * close search and return patient.
                              */
                             foundPatient = searchResultPatient;
-                            activityResultNotifyAlertDialog.setTitle("Search successful, " + patient.getDisplayName() + " record found.");
+                            activityResultNotifyAlertDialog.setTitle("Search successful, " + shrPatient.getDisplayName() + " record found.");
                             hideDialog();
                             break;
                         }
                     }
-                }
-            } catch (CohortController.CohortFetchException | PatientController.PatientLoadException e) {
+                //}
+            } catch ( PatientController.PatientLoadException e) {
                 Log.e(TAG, "Unable to search for patient locally." + e.getMessage());
                 e.printStackTrace();
             }
@@ -776,7 +780,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             if (shrToMuzimaMatchingPatient == null) {
                 searchDialogTextView.setText("Card Number  for " + shrPatient.getDisplayName().toLowerCase() + " NOT found.Register shr patient?");
             } else {
-                Toast.makeText(getApplicationContext(), "Found Patient Shr Record " + shrPatient.getIdentifier("").getIdentifier(), Toast.LENGTH_LONG);
+                Toast.makeText(getApplicationContext(), "Found Patient Shr Record " + shrPatient.getDisplayName(), Toast.LENGTH_LONG);
                 /**
                  * shr patient found in mUzima data layer.
                  *
@@ -786,6 +790,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 } catch (SmartCardController.SmartCardRecordSaveException e) {
                     e.printStackTrace();
                 }
+                Intent intent = new Intent(PatientsListActivity.this, PatientSummaryActivity.class);
+                intent.putExtra(PatientSummaryActivity.PATIENT, shrToMuzimaMatchingPatient);
+                startActivity(intent);
             }
             activityResultNotifyAlertDialog.dismiss();
         }
@@ -798,6 +805,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     private void executeLocalPatientSearchInBackgroundTask() {
+
         mBackgroundQueryTask = new BackgroundPatientLocalSearchQueryTask();
         mBackgroundQueryTask.execute();
     }
