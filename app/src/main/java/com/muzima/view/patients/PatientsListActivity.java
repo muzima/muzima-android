@@ -428,6 +428,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                         smartCardController.saveSmartCardRecord(smartCardRecord);
                         KenyaEmrShrModel kenyaEmrShrModel = KenyaEmrShrMapper.createSHRModelFromJson(smartCardRecord.getPlainPayload());
                         KenyaEmrShrMapper.createNewObservationsAndEncountersFromShrModel(muzimaApplication, kenyaEmrShrModel, shrPatient);
+                        Toast.makeText(getApplicationContext(),"Patient registered.",Toast.LENGTH_LONG).show();
+                        Log.e(TAG,"Patient registered");
                     }else
                         Log.e(TAG, "Unable to save smart card record");
                 } catch (PatientController.PatientSaveException | SmartCardController.SmartCardRecordSaveException | KenyaEmrShrMapper.ShrParseException | KenyaEmrShrMapper.ShrSaveException e) {
@@ -564,7 +566,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 try {
                     shrPatient = KenyaEmrShrMapper.extractPatientFromShrModel(shrPayload);
                     Log.e("EMR_IN", shrPatient.getDisplayName());
-                    String cardNumber = shrPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.shr_name)
+                    String cardNumber = shrPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name)
                             .getUuid();
 
                     shrToMuzimaMatchingPatient = null;
@@ -673,10 +675,10 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
              * Search for Patient locally without invoking search view
              */
             List<Patient> localSearchResultPatients = new ArrayList<>();
-            localSearchResultPatients = patientController.searchPatientOnServer(shrPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.shr_name).getIdentifier());
+            localSearchResultPatients = patientController.searchPatientOnServer(shrPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name).getIdentifier());
             for (Patient searchResultPatient : localSearchResultPatients) {
-                if (searchResultPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.shr_name)
-                        .equals(patient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.shr_name))) {
+                if (searchResultPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name)
+                        .equals(patient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name))) {
                     /**
                      * Search result contains patient obtained from PSmart
                      * close search and return patient.
@@ -741,8 +743,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 for (Cohort cohort : cohortController.getSyncedCohorts()) {
                     localSearchResultPatients = patientController.searchPatientLocally(shrPatient.getDisplayName(), cohort.getUuid());
                     for (Patient searchResultPatient : localSearchResultPatients) {
-                        if (searchResultPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.shr_name)
-                                .equals(patient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.shr_name))) {
+                        if (searchResultPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name)
+                                .equals(patient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name))) {
                             /**
                              * Search result contains patient obtained from PSmart
                              * close search and return patient.
