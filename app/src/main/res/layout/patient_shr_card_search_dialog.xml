@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/theme_color"
     android:orientation="vertical"
-    android:padding="16dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -21,7 +20,7 @@
             android:textColor="@android:color/white"
             android:textSize="21sp"
             android:layout_marginTop="8dp"
-            android:text="@string/patient_shr_search_dialog_title"
+            android:text="Patient SHR Search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -37,12 +36,50 @@
     <TextView
         android:id="@+id/patent_dialog_message_textview"
         android:textColor="@android:color/white"
-        android:layout_margin="8dp"
+        android:layout_margin="4dp"
+        android:padding="8dp"
         android:textAlignment="center"
         android:textSize="16sp"
-        android:text="SHR card for Maryan was not found."
+        android:text="SHR card for Maryan was not found. Register shr patient?"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <RelativeLayout
+        android:layout_marginTop="1dp"
+        android:layout_below="@+id/patent_dialog_message_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_margin="4dp"
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/yes_shr_search_dialog"
+                android:background="@color/theme_color"
+                android:text="@string/general_yes"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/no_shr_search_dialog"
+                android:background="@color/theme_color"
+                android:text="@string/general_no"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
 
 </LinearLayout>
