@@ -14,6 +14,7 @@ import com.muzima.model.shr.kenyaemr.KenyaEmrShrModel;
 import com.muzima.model.shr.kenyaemr.PatientIdentification;
 import com.muzima.utils.Constants;
 import com.muzima.utils.Constants.Shr.KenyaEmr.IdentifierType;
+import com.muzima.utils.Constants.Shr.KenyaEmr.Concept;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -77,43 +78,11 @@ public class KenyaEmrShrMapper {
         try {
             Patient patient = new Patient();
             PatientIdentification identification = shrModel.getPatientIdentification();
-
-            //set patient Name
-            PersonName personName = new PersonName();
-            personName.setFamilyName(identification.getPatientName().getFirstName());
-            personName.setGivenName(identification.getPatientName().getLastName());
-            personName.setMiddleName(identification.getPatientName().getMiddleName());
-            List<PersonName> names = new ArrayList<>();
-            names.add(personName);
+            List<PersonName> names = extractPatientNamesFromShrModel(shrModel);
             patient.setNames(names);
 
             //set Identifiers
-            List<PatientIdentifier> identifiers = new ArrayList<PatientIdentifier>();
-            //External ID
-            ExternalPatientId externalPatientId = identification.getExternalPatientId();
-            PatientIdentifier patientIdentifier = new PatientIdentifier();
-            PatientIdentifierType identifierType = new PatientIdentifierType();
-            identifierType.setName(externalPatientId.getIdentifierType());
-            patientIdentifier.setIdentifierType(identifierType);
-            patientIdentifier.setIdentifier(externalPatientId.getID());
-            identifiers.add(patientIdentifier);
-
-            //Internal IDs
-            List<InternalPatientId> internalPatientIds = identification.getInternalPatientIds();
-            for (InternalPatientId internalPatientId : internalPatientIds) {
-                patientIdentifier = new PatientIdentifier();
-                identifierType = new PatientIdentifierType();
-                String identifierTypeName = null;
-                switch (internalPatientId.getIdentifierType()){
-                    case IdentifierType.CARD_SERIAL_NUMBER.shr_name:
-                        identifierTypeName = IdentifierType.CARD_SERIAL_NUMBER.name;
-                        break;
-                }
-                identifierType.setName(internalPatientId.getIdentifierType());
-                patientIdentifier.setIdentifierType(identifierType);
-                patientIdentifier.setIdentifier(internalPatientId.getID());
-                identifiers.add(patientIdentifier);
-            }
+            List<PatientIdentifier> identifiers = extractPatientIdentifiersFromShrModel(shrModel);
             patient.setIdentifiers(identifiers);
 
             //date of birth
@@ -138,13 +107,86 @@ public class KenyaEmrShrMapper {
     }
 
     /**
+     *
+     * @param shrModel
+     * @return
+     */
+    public static List<PersonName> extractPatientNamesFromShrModel(KenyaEmrShrModel shrModel){
+        PatientIdentification identification = shrModel.getPatientIdentification();
+        PersonName personName = new PersonName();
+        personName.setFamilyName(identification.getPatientName().getFirstName());
+        personName.setGivenName(identification.getPatientName().getLastName());
+        personName.setMiddleName(identification.getPatientName().getMiddleName());
+
+        List<PersonName> names = new ArrayList<>();
+        names.add(personName);
+
+        return names;
+    }
+
+    public static List<PatientIdentifier> extractPatientIdentifiersFromShrModel(KenyaEmrShrModel shrModel){
+        List<PatientIdentifier> identifiers = new ArrayList<PatientIdentifier>();
+        PatientIdentification identification = shrModel.getPatientIdentification();
+        //External ID
+        ExternalPatientId externalPatientId = identification.getExternalPatientId();
+        PatientIdentifier patientIdentifier = new PatientIdentifier();
+        PatientIdentifierType identifierType = new PatientIdentifierType();
+        identifierType.setName(externalPatientId.getIdentifierType());
+        patientIdentifier.setIdentifierType(identifierType);
+        patientIdentifier.setIdentifier(externalPatientId.getID());
+        identifiers.add(patientIdentifier);
+
+        //Internal IDs
+        List<InternalPatientId> internalPatientIds = identification.getInternalPatientIds();
+        for (InternalPatientId internalPatientId : internalPatientIds) {
+            patientIdentifier = new PatientIdentifier();
+            identifierType = new PatientIdentifierType();
+            String identifierTypeName = null;
+            switch (internalPatientId.getIdentifierType()){
+                case IdentifierType.CARD_SERIAL_NUMBER.shr_name:
+                    identifierTypeName = IdentifierType.CARD_SERIAL_NUMBER.name;
+                    break;
+                case IdentifierType.CCC_NUMBER.shr_name:
+                    identifierTypeName = IdentifierType.CCC_NUMBER.name;
+                    break;
+                case IdentifierType.GODS_NUMBER.shr_name:
+                    identifierTypeName = IdentifierType.GODS_NUMBER.name;
+                    break;
+                case IdentifierType.HEI_NUMBER.shr_name:
+                    identifierTypeName = IdentifierType.HEI_NUMBER.name;
+                    break;
+                case IdentifierType.HTS_NUMBER.shr_name:
+                    identifierTypeName = IdentifierType.HTS_NUMBER.name;
+                    break;
+                case IdentifierType.NATIONAL_ID.shr_name:
+                    identifierTypeName = IdentifierType.NATIONAL_ID.name;
+                    break;
+                case Concept.ANC_NUMBER.shr_name:
+                    identifierTypeName = Concept.ANC_NUMBER.name;
+                    break;
+            }
+            if(identifierTypeName != null) {
+                identifierType.setName(identifierTypeName);
+                patientIdentifier.setIdentifierType(identifierType);
+                patientIdentifier.setIdentifier(internalPatientId.getID());
+                identifiers.add(patientIdentifier);
+            } else {
+                Log.e("KenyaEmrShrMapper","Could not determine Kenyaemr identifier name for "
+                        + internalPatientId.getIdentifierType());
+            }
+        }
+        return identifiers;
+    }
+
+    /**
      * Extracts Observations List from a JSON representation of the SHR model
      * @param shrModel the JSON representation of the SHR model
      * @return Observations List extracted from SHR model
      * @throws IOException
      */
     public static List<Observation> extractObservationsFromShrModel(String shrModel) throws ShrParseException{
-        return null;
+        KenyaEmrShrModel kenyaEmrShrModel = createSHRModelFromJson(shrModel);
+        return extractObservationsFromShrModel(shrModel);
     }
 
     /**
@@ -154,6 +196,8 @@ public class KenyaEmrShrMapper {
      * @throws IOException
      */
     public static List<Observation> extractObservationsFromShrModel(KenyaEmrShrModel shrModel) throws ShrParseException{
+        List<Observation> observations = new ArrayList<>();
+
         return null;
     }
 
