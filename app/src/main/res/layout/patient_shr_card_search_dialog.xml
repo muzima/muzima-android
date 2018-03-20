@@ -11,6 +11,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:contentDescription="@string/shr_card_text"
             android:layout_margin="8dp"
             android:src="@drawable/ic_action_shr_card"
             android:layout_width="wrap_content"
@@ -19,8 +20,8 @@
         <TextView
             android:textColor="@android:color/white"
             android:textSize="21sp"
-            android:layout_marginTop="8dp"
-            android:text="Patient SHR Search"
+            android:layout_marginTop="2dp"
+            android:text="@string/patient_shr_search_title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -61,7 +62,6 @@
                 android:id="@+id/yes_shr_search_dialog"
                 android:background="@color/theme_color"
                 android:text="@string/general_yes"
-                android:textSize="16sp"
                 android:textColor="@android:color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -70,7 +70,6 @@
                 android:id="@+id/no_shr_search_dialog"
                 android:background="@color/theme_color"
                 android:text="@string/general_no"
-                android:textSize="16sp"
                 android:textColor="@android:color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

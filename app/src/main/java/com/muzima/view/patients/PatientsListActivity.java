@@ -180,38 +180,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         }
         smartCardController = new SmartCardController(smartCardService);
         //TODO Fix above def mismatch.
-
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientsListActivity.this);
-        LayoutInflater layoutInflater = this.getLayoutInflater();
-        View dialogView = layoutInflater.inflate(R.layout.patient_shr_card_search_dialog, null);
-
-        alertDialog = alertBuilder
-                .setView(dialogView)
-                .create();
-
-        alertDialog.setCancelable(true);
-
-        searchDialogTextView = (TextView) dialogView.findViewById(R.id.patent_dialog_message_textview);
-        yesOptionShrSearchButton = (Button) dialogView.findViewById(R.id.yes_shr_search_dialog);
-        noOptionShrSearchButton = (Button) dialogView.findViewById(R.id.no_shr_search_dialog);
-
-        yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callConfirmationDialog();
-                hideDialog();
-            }
-        });
-
-        noOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideDialog();
-            }
-        });
-
-
     }
+
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -367,9 +338,11 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             case R.id.menu_dashboard:
                 launchDashboardActivity();
                 return true;
+
             case R.id.menu_complete_form_data:
                 launchCompleteFormsActivity();
                 return true;
+
             case R.id.scan_shr_card:
                 invokeShrApplication();
                 return true;
@@ -381,8 +354,41 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     protected void onResume() {
         super.onResume();
+        preparedActivityResultHandlerDialog(getApplicationContext());
         if (!intentBarcodeResults)
             patientAdapter.reloadData();
+
+    }
+
+    public void preparedActivityResultHandlerDialog(Context context){
+
+        LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = layoutInflater.inflate(R.layout.patient_shr_card_search_dialog, null);
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientsListActivity.this);
+
+        alertDialog = alertBuilder
+                .setView(dialogView)
+                .create();
+
+        alertDialog.setCancelable(true);
+        searchDialogTextView = (TextView) dialogView.findViewById(R.id.patent_dialog_message_textview);
+        yesOptionShrSearchButton = (Button) dialogView.findViewById(R.id.yes_shr_search_dialog);
+        noOptionShrSearchButton = (Button) dialogView.findViewById(R.id.no_shr_search_dialog);
+
+        yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callConfirmationDialog();
+                hideDialog();
+            }
+        });
+
+        noOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideDialog();
+            }
+        });
     }
 
     private void setupListView(String cohortId) {
