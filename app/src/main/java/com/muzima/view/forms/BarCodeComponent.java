@@ -12,7 +12,7 @@ package com.muzima.view.forms;
 
 import android.app.Activity;
 import android.webkit.JavascriptInterface;
-import com.muzima.utils.barcode.IntentIntegrator;
+import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 
 public class BarCodeComponent {
 
@@ -27,8 +27,8 @@ public class BarCodeComponent {
     @JavascriptInterface
     public void startBarCodeIntent(String fieldName) {
         this.fieldName = fieldName;
-        IntentIntegrator intentIntegrator = new IntentIntegrator(activity);
-        intentIntegrator.initiateScan();
+        BarCodeScannerIntentIntegrator barCodeScannerIntentIntegrator = new BarCodeScannerIntentIntegrator(activity);
+        barCodeScannerIntentIntegrator.initiateScan();
     }
 
     public String getFieldName() {
