@@ -426,15 +426,27 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                     patientController.savePatient(shrPatient);
                     //todo save shr
                     if (smartCardRecord != null) {
-                        smartCardController.saveSmartCardRecord(smartCardRecord);
+                        smartCardRecord.setUuid(UUID.randomUUID().toString());
+                        smartCardRecord.setPersonUuid(shrPatient.getUuid());
+                        Log.e(TAG,"PERSONUUUUUUUUUUUUUID "+shrPatient.getUuid());
+                        try {
+                            smartCardController.saveSmartCardRecord(smartCardRecord);
+                        } catch (SmartCardController.SmartCardRecordSaveException e) {
+                            Log.e(TAG,"Cannot save shr ",e);
+                        }
                         KenyaEmrShrModel kenyaEmrShrModel = KenyaEmrShrMapper.createSHRModelFromJson(smartCardRecord.getPlainPayload());
                         KenyaEmrShrMapper.createNewObservationsAndEncountersFromShrModel(muzimaApplication, kenyaEmrShrModel, shrPatient);
                         Toast.makeText(getApplicationContext(),"Patient registered.",Toast.LENGTH_LONG).show();
                         Log.e(TAG,"Patient registered");
+
+
+                        Intent intent = new Intent(PatientsListActivity.this, PatientSummaryActivity.class);
+                        intent.putExtra(PatientSummaryActivity.PATIENT, shrPatient);
+                        startActivity(intent);
                     }else
                         Log.e(TAG, "Unable to save smart card record");
-                } catch (PatientController.PatientSaveException | SmartCardController.SmartCardRecordSaveException | KenyaEmrShrMapper.ShrParseException | KenyaEmrShrMapper.ShrSaveException e) {
-                    e.printStackTrace();
+                } catch (PatientController.PatientSaveException | KenyaEmrShrMapper.ShrParseException e) {
+                    Log.e(TAG, "Error",e);
                 }
                 hideDialog();
             }
@@ -786,9 +798,22 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                  *
                  */
                 try {
-                    smartCardController.saveSmartCardRecord(smartCardRecord);
-                } catch (SmartCardController.SmartCardRecordSaveException e) {
-                    e.printStackTrace();
+                    try {
+                        SmartCardRecord sm = smartCardController.getSmartCardRecordByPersonUuid(shrToMuzimaMatchingPatient.getUuid());
+                        if (sm != null) {
+                            smartCardRecord.setUuid(sm.getUuid());
+                            smartCardController.updateSmartCardRecord(smartCardRecord);
+                        } else {
+                            smartCardRecord.setUuid(UUID.randomUUID().toString());
+                            smartCardController.saveSmartCardRecord(smartCardRecord);
+                        }
+                    } catch(SmartCardController.SmartCardRecordSaveException | SmartCardController.SmartCardRecordFetchException e){
+                        Log.e(TAG,"Failed to write or update shr",e);
+                    }
+                    KenyaEmrShrModel kenyaEmrShrModel = KenyaEmrShrMapper.createSHRModelFromJson(smartCardRecord.getPlainPayload());
+                    KenyaEmrShrMapper.createNewObservationsAndEncountersFromShrModel(muzimaApplication, kenyaEmrShrModel, shrToMuzimaMatchingPatient);
+                } catch (KenyaEmrShrMapper.ShrParseException e) {
+                    Log.e(TAG,"Failed to parse shr",e);
                 }
                 Intent intent = new Intent(PatientsListActivity.this, PatientSummaryActivity.class);
                 intent.putExtra(PatientSummaryActivity.PATIENT, shrToMuzimaMatchingPatient);
