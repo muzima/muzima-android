@@ -571,8 +571,11 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 try {
                     shrPatient = KenyaEmrShrMapper.extractPatientFromShrModel(shrPayload);
                     Log.e("EMR_IN", shrPatient.getDisplayName());
-                    String cardNumber = shrPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name)
-                            .getUuid();
+                    PatientIdentifier patientIdentifier = shrPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name);
+                    String cardNumber = "";
+                    if (cardNumber!= null) {
+                      cardNumber = patientIdentifier.getUuid();
+                    }
 
                     shrToMuzimaMatchingPatient = null;
 
@@ -592,7 +595,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             /**
              * Card read was interrupted and failed
              */
-            Snackbar.make(findViewById(R.id.patient_lists_layout), "Card read failed." + cardReadIntentResult.getErrors(), Snackbar.LENGTH_LONG)
+            Snackbar.make(findViewById(R.id.patient_lists_layout), "Card read was interrupted." + cardReadIntentResult.getErrors(), Snackbar.LENGTH_LONG)
                     .setAction("RETRY", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -666,9 +669,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            prepareLocalSearchNotifyDialog(getApplicationContext());
-            searchDialogTextView.setText("Searching Local data");
-            localSearchResultNotifyAlertDialog.cancel();
         }
 
         @Override
@@ -689,13 +689,11 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                      * close search and return patient.
                      */
                     shrToMuzimaMatchingPatient = searchResultPatient;
-                    activityResultNotifyAlertDialog.setTitle("Search successful, " + patient.getDisplayName() + " record found.");
                     /**
                      * TODO Display download optionDialog
                      *
                      */
                     executeDownloadPatientInBackgroundTask();
-                    hideDialog();
                     break;
                 }
             }
@@ -705,7 +703,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         @Override
         protected void onPostExecute(Patient patient) {
             if (shrToMuzimaMatchingPatient != null) {
-                searchDialogTextView.setText("Shr patient search was successful.");
                 /**
                  * shr patient found in mUzima data layer.
                  */
@@ -715,9 +712,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                     e.printStackTrace();
                 }
             } else {
-                progressDialog.hide();
-                activityResultNotifyAlertDialog.show();
-                searchDialogTextView.setText("Card Number  for " + shrPatient.getDisplayName().toLowerCase() + " NOT found.Register shr patient?");
 
             }
 
