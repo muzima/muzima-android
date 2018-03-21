@@ -148,7 +148,11 @@ public class ObservationParserUtility {
         String encountertypeUuid="";
         try{
             Form form = formController.getFormByUuid(formUuid);
-            encounterTypeName=form.getEncounterType().getName();
+            if(form == null){
+                encounterTypeName = "encounterType";
+            } else {
+                encounterTypeName = form.getEncounterType().getName();
+            }
         } catch (FormController.FormFetchException e) {
             e.printStackTrace( );
         }
