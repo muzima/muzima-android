@@ -177,17 +177,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         cohortController = muzimaApplication.getCohortController();
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
-        /**
-         * Construct PatientController||SmartCardController||CohortController==>
-         * for Local and Server side patient search including SmartCard Tx
-         * events.
-         */
-        try {
-            smartCardService = muzimaApplication.getMuzimaContext().getSmartCardRecordService();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        smartCardController = new SmartCardController(smartCardService);
+
+        smartCardController = ((MuzimaApplication)getApplicationContext()).getSmartCardController();
     }
 
 
@@ -431,7 +422,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                     if (smartCardRecord != null) {
                         smartCardRecord.setUuid(UUID.randomUUID().toString());
                         smartCardRecord.setPersonUuid(shrPatient.getUuid());
-                        Log.e(TAG, "PERSONUUUUUUUUUUUUUID " + shrPatient.getUuid());
                         try {
                             smartCardController.saveSmartCardRecord(smartCardRecord);
                         } catch (SmartCardController.SmartCardRecordSaveException e) {
@@ -586,7 +576,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         try {
             cardReadIntentResult = SmartCardIntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG,"Could not get result",e);
         }
         //todo remove logging code.
         Log.e("SHR_REQ", "Read Activity result invoked with value..." + cardReadIntentResult.isSuccessResult());
@@ -822,6 +812,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                             smartCardController.updateSmartCardRecord(smartCardRecord);
                         } else {
                             smartCardRecord.setUuid(UUID.randomUUID().toString());
+                            smartCardRecord.setPersonUuid(shrToMuzimaMatchingPatient.getUuid());
                             smartCardController.saveSmartCardRecord(smartCardRecord);
                         }
                     } catch (SmartCardController.SmartCardRecordSaveException | SmartCardController.SmartCardRecordFetchException e) {
