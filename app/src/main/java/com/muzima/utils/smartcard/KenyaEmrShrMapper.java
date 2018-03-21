@@ -210,9 +210,9 @@ public class KenyaEmrShrMapper {
     }
 
     public static void createNewObservationsAndEncountersFromShrModel(MuzimaApplication muzimaApplication, KenyaEmrShrModel shrModel, final Patient patient)
-            throws ShrParseException, ShrSaveException {
-        List<String> payloads = createJsonEncounterPayloadFromShrModel(shrModel, patient);
+            throws ShrParseException {
         Log.e("KenyaEmrShrMapper","Saving encounters data ");
+        List<String> payloads = createJsonEncounterPayloadFromShrModel(shrModel, patient);
         for(final String payload:payloads) {
             Log.e("KenyaEmrShrMapper","Saving payload data ");
             final String newFormDataUuid = UUID.randomUUID().toString();
@@ -268,10 +268,15 @@ public class KenyaEmrShrMapper {
 
     public static List<String> createJsonEncounterPayloadFromShrModel(KenyaEmrShrModel shrModel, Patient patient) throws ShrParseException {
         try {
+            Log.e("KenyaEmrShrMapper","Obtaining payloads ");
             List<String> encounters = new ArrayList<>();
             List<HIVTest> hivTests = shrModel.getHivTests();
-            for (HIVTest hivTest : hivTests) {
-                encounters.add(createJsonEncounterPayloadFromHivTest(hivTest,patient));
+            if(hivTests != null) {
+                for (HIVTest hivTest : hivTests) {
+                    encounters.add(createJsonEncounterPayloadFromHivTest(hivTest, patient));
+                }
+            } else {
+                Log.e("KenyaEmrShrMapper","No HIV Tests found");
             }
             return encounters;
         } catch(ParseException e){
@@ -455,19 +460,6 @@ public class KenyaEmrShrMapper {
             super(message);
         }
         ShrParseException(String message, Throwable e) {
-            super(message,e);
-        }
-    }
-
-
-    public static class ShrSaveException extends Throwable {
-        ShrSaveException(Throwable throwable) {
-            super(throwable);
-        }
-        ShrSaveException(String message) {
-            super(message);
-        }
-        ShrSaveException(String message, Throwable e) {
             super(message,e);
         }
     }

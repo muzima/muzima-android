@@ -414,8 +414,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         yesOptionShrSearchButton = (Button) dialogView.findViewById(R.id.yes_shr_search_dialog);
         noOptionShrSearchButton = (Button) dialogView.findViewById(R.id.no_shr_search_dialog);
 
-        searchDialogTextView.setText("shr Patient is not found, would you like to register this patient ?");
-
         yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -428,17 +426,27 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                     patientController.savePatient(shrPatient);
                     //todo save shr
                     if (smartCardRecord != null) {
-                        smartCardController.saveSmartCardRecord(smartCardRecord);
-                        Toast.makeText(getApplicationContext(), "Patient registered.", Toast.LENGTH_LONG).show();
+                        smartCardRecord.setUuid(UUID.randomUUID().toString());
+                        smartCardRecord.setPersonUuid(shrPatient.getUuid());
+                        Log.e(TAG,"PERSONUUUUUUUUUUUUUID "+shrPatient.getUuid());
+                        try {
+                            smartCardController.saveSmartCardRecord(smartCardRecord);
+                        } catch (SmartCardController.SmartCardRecordSaveException e) {
+                            Log.e(TAG,"Cannot save shr ",e);
+                        }
                         KenyaEmrShrModel kenyaEmrShrModel = KenyaEmrShrMapper.createSHRModelFromJson(smartCardRecord.getPlainPayload());
                         KenyaEmrShrMapper.createNewObservationsAndEncountersFromShrModel(muzimaApplication, kenyaEmrShrModel, shrPatient);
-                        Log.e(TAG, "Patient registered");
+                        Toast.makeText(getApplicationContext(),"Patient registered.",Toast.LENGTH_LONG).show();
+                        Log.e(TAG,"Patient registered");
 
-                    } else
+
+                        Intent intent = new Intent(PatientsListActivity.this, PatientSummaryActivity.class);
+                        intent.putExtra(PatientSummaryActivity.PATIENT, shrPatient);
+                        startActivity(intent);
+                    }else
                         Log.e(TAG, "Unable to save smart card record");
-
-                } catch (PatientController.PatientSaveException | SmartCardController.SmartCardRecordSaveException | KenyaEmrShrMapper.ShrParseException | KenyaEmrShrMapper.ShrSaveException e) {
-                    e.printStackTrace();
+                } catch (PatientController.PatientSaveException | KenyaEmrShrMapper.ShrParseException e) {
+                    Log.e(TAG, "Error",e);
                 }
                 hideDialog();
             }
@@ -571,11 +579,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 try {
                     shrPatient = KenyaEmrShrMapper.extractPatientFromShrModel(shrPayload);
                     Log.e("EMR_IN", shrPatient.getDisplayName());
-                    PatientIdentifier patientIdentifier = shrPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name);
-                    String cardNumber = "";
-                    if (cardNumber!= null) {
-                      cardNumber = patientIdentifier.getUuid();
-                    }
+                    String cardNumber = shrPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name)
+                            .getUuid();
 
                     shrToMuzimaMatchingPatient = null;
 
@@ -595,7 +600,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             /**
              * Card read was interrupted and failed
              */
-            Snackbar.make(findViewById(R.id.patient_lists_layout), "Card read was interrupted." + cardReadIntentResult.getErrors(), Snackbar.LENGTH_LONG)
+            Snackbar.make(findViewById(R.id.patient_lists_layout), "Card read failed." + cardReadIntentResult.getErrors(), Snackbar.LENGTH_LONG)
                     .setAction("RETRY", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -669,6 +674,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            prepareLocalSearchNotifyDialog(getApplicationContext());
+            searchDialogTextView.setText("Searching Local data");
+            localSearchResultNotifyAlertDialog.cancel();
         }
 
         @Override
@@ -689,11 +697,13 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                      * close search and return patient.
                      */
                     shrToMuzimaMatchingPatient = searchResultPatient;
+                    activityResultNotifyAlertDialog.setTitle("Search successful, " + patient.getDisplayName() + " record found.");
                     /**
                      * TODO Display download optionDialog
                      *
                      */
                     executeDownloadPatientInBackgroundTask();
+                    hideDialog();
                     break;
                 }
             }
@@ -703,6 +713,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         @Override
         protected void onPostExecute(Patient patient) {
             if (shrToMuzimaMatchingPatient != null) {
+                searchDialogTextView.setText("Shr patient search was successful.");
                 /**
                  * shr patient found in mUzima data layer.
                  */
@@ -712,6 +723,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                     e.printStackTrace();
                 }
             } else {
+                progressDialog.hide();
+                activityResultNotifyAlertDialog.show();
+                searchDialogTextView.setText("Card Number  for " + shrPatient.getDisplayName().toLowerCase() + " NOT found.Register shr patient?");
 
             }
 
@@ -731,7 +745,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         @Override
         protected Patient doInBackground(Void... voids) {
             String searchTerm = shrPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name).getIdentifier();
-            Log.e("SEARCHING", "Search TERM: " + Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name + " : " + searchTerm);
+            Log.e("SEARCHING","Search TERM: "+Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name + " : "+searchTerm);
             MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
             Patient patient = null;
             PatientController patientController = muzimaApplication.getPatientController();
@@ -741,7 +755,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
              */
             List<Patient> localSearchResultPatients = new ArrayList<>();
             try {
-
+                //for (Cohort cohort : cohortController.getSyncedCohorts()) {
                 localSearchResultPatients = patientController.searchPatientLocally(searchTerm, null);
                 for (Patient searchResultPatient : localSearchResultPatients) {
                     PatientIdentifier identifier = searchResultPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name);
@@ -757,9 +771,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                         break;
                     }
                 }
-
                 //}
-            } catch (PatientController.PatientLoadException e) {
+            } catch ( PatientController.PatientLoadException e) {
                 Log.e(TAG, "Unable to search for patient locally." + e.getMessage());
                 e.printStackTrace();
             }
@@ -785,9 +798,22 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                  *
                  */
                 try {
-                    smartCardController.saveSmartCardRecord(smartCardRecord);
-                } catch (SmartCardController.SmartCardRecordSaveException e) {
-                    e.printStackTrace();
+                    try {
+                        SmartCardRecord sm = smartCardController.getSmartCardRecordByPersonUuid(shrToMuzimaMatchingPatient.getUuid());
+                        if (sm != null) {
+                            smartCardRecord.setUuid(sm.getUuid());
+                            smartCardController.updateSmartCardRecord(smartCardRecord);
+                        } else {
+                            smartCardRecord.setUuid(UUID.randomUUID().toString());
+                            smartCardController.saveSmartCardRecord(smartCardRecord);
+                        }
+                    } catch(SmartCardController.SmartCardRecordSaveException | SmartCardController.SmartCardRecordFetchException e){
+                        Log.e(TAG,"Failed to write or update shr",e);
+                    }
+                    KenyaEmrShrModel kenyaEmrShrModel = KenyaEmrShrMapper.createSHRModelFromJson(smartCardRecord.getPlainPayload());
+                    KenyaEmrShrMapper.createNewObservationsAndEncountersFromShrModel(muzimaApplication, kenyaEmrShrModel, shrToMuzimaMatchingPatient);
+                } catch (KenyaEmrShrMapper.ShrParseException e) {
+                    Log.e(TAG,"Failed to parse shr",e);
                 }
                 Intent intent = new Intent(PatientsListActivity.this, PatientSummaryActivity.class);
                 intent.putExtra(PatientSummaryActivity.PATIENT, shrToMuzimaMatchingPatient);
