@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -53,6 +54,7 @@ public class PatientSummaryActivity extends BaseActivity {
 
     private Patient patient;
     private ImageView imageView;
+    private Boolean isRegisteredOnShr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class PatientSummaryActivity extends BaseActivity {
         Bundle intentExtras = getIntent().getExtras();
         if (intentExtras != null) {
             patient = (Patient) intentExtras.getSerializable(PATIENT);
+            isRegisteredOnShr = intentExtras.getBoolean("isRegisteredOnShr");
         }
 
         try {
@@ -141,8 +144,27 @@ public class PatientSummaryActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.client_summary, menu);
+        MenuItem shrCardMenuItem = menu.getItem(0);
+        if (isRegisteredOnShr){
+            shrCardMenuItem.setVisible(true);
+        }else {
+            shrCardMenuItem.setIcon(R.drawable.ic_action_no_shr_card);
+        }
         super.onCreateOptionsMenu(menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.shr_client_summary:
+                //todo write card workspace.
+
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void showForms(View v) {
@@ -169,13 +191,13 @@ public class PatientSummaryActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    public void showSHRObservations(View v){
+    public void showSHRObservations(View v) {
         Intent intent = new Intent(PatientSummaryActivity.this, SHRObservationsDataActivity.class);
-        intent.putExtra(PATIENT,patient);
+        intent.putExtra(PATIENT, patient);
         startActivity(intent);
     }
 
-    public void switchSyncStatus(View view){
+    public void switchSyncStatus(View view) {
         imageView.setImageResource(R.drawable.ic_action_shr_synced);
     }
 

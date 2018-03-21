@@ -66,10 +66,12 @@ public class FormControllerTest {
     private FormService formService;
     private PatientService patientService;
     private LastSyncTimeService lastSyncTimeService;
+    private PatientController patientController;
     private ObservationService observationService;
     private EncounterService encounterService;
     private SntpService sntpService;
     private LastSyncTime lastSyncTime;
+    private MuzimaSettingController muzimaSettingsController;
     private Date mockDate;
 
     @Before
@@ -80,7 +82,9 @@ public class FormControllerTest {
         sntpService = mock(SntpService.class);
         observationService = mock(ObservationService.class);
         encounterService = mock(EncounterService.class);
-        formController = new FormController(formService, patientService, lastSyncTimeService, sntpService,observationService, encounterService);
+        patientController = mock(PatientController.class);
+        muzimaSettingsController = mock(MuzimaSettingController.class);
+        formController = new FormController(formService, patientService, lastSyncTimeService, sntpService,observationService, encounterService,patientController,muzimaSettingsController);
         lastSyncTime = mock(LastSyncTime.class);
         mockDate = mock(Date.class);
     }
