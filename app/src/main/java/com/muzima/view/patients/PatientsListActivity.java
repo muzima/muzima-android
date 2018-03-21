@@ -37,7 +37,6 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
-import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.service.SmartCardRecordService;
@@ -114,7 +113,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private PatientsListActivity.BackgroundPatientServerSearchQueryTask patientServerSearchQueryTask;
     private PatientsListActivity.BackgroundPatientDownloadTask patientDownloadTask;
 
-    private AlertDialog activityResultNotifyAlertDialog;
+    private AlertDialog negativeServerSearchResultNotifyAlertDialog;
     private AlertDialog localSearchResultNotifyAlertDialog;
 
     private TextView searchDialogTextView;
@@ -366,7 +365,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     protected void onResume() {
         super.onResume();
-        preparedActivityResultHandlerDialog(getApplicationContext());
+        preparedServerSearchNegativeResultHandlerDialog(getApplicationContext());
         if (!intentBarcodeResults)
             patientAdapter.reloadData();
 
@@ -386,37 +385,41 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         searchDialogTextView = (TextView) dialogView.findViewById(R.id.patent_dialog_message_textview);
         yesOptionShrSearchButton = (Button) dialogView.findViewById(R.id.yes_shr_search_dialog);
         noOptionShrSearchButton = (Button) dialogView.findViewById(R.id.no_shr_search_dialog);
+        searchDialogTextView.setText("Patient NOT Found. Would you like to search server ?");
 
         yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callConfirmationDialog();
-                hideDialog();
+                executePatientServerSearchInBackgroundQueryTask();
+                localSearchResultNotifyAlertDialog.cancel();
+                localSearchResultNotifyAlertDialog.dismiss();
             }
         });
 
         noOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hideDialog();
+                localSearchResultNotifyAlertDialog.cancel();
+                localSearchResultNotifyAlertDialog.dismiss();
             }
         });
     }
 
-    public void preparedActivityResultHandlerDialog(Context context) {
+    public void preparedServerSearchNegativeResultHandlerDialog(Context context) {
 
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = layoutInflater.inflate(R.layout.patient_shr_card_search_dialog, null);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientsListActivity.this);
 
-        activityResultNotifyAlertDialog = alertBuilder
+        negativeServerSearchResultNotifyAlertDialog = alertBuilder
                 .setView(dialogView)
                 .create();
 
-        activityResultNotifyAlertDialog.setCancelable(true);
+        negativeServerSearchResultNotifyAlertDialog.setCancelable(true);
         searchDialogTextView = (TextView) dialogView.findViewById(R.id.patent_dialog_message_textview);
         yesOptionShrSearchButton = (Button) dialogView.findViewById(R.id.yes_shr_search_dialog);
         noOptionShrSearchButton = (Button) dialogView.findViewById(R.id.no_shr_search_dialog);
+        searchDialogTextView.setText("Patient not found on server. Would you like to register patient ?");
 
         yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -463,7 +466,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         noOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hideDialog();
+                negativeServerSearchResultNotifyAlertDialog.cancel();
+                negativeServerSearchResultNotifyAlertDialog.dismiss();
             }
         });
     }
@@ -663,8 +667,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     private void hideDialog() {
-        if (activityResultNotifyAlertDialog.isShowing())
-            activityResultNotifyAlertDialog.cancel();
+        if (negativeServerSearchResultNotifyAlertDialog.isShowing())
+            negativeServerSearchResultNotifyAlertDialog.cancel();
     }
 
     public class BackgroundPatientDownloadTask extends AsyncTask<Void, Void, Void> {
@@ -699,6 +703,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            preparedServerSearchNegativeResultHandlerDialog(getApplicationContext());
+            Toast.makeText(getApplicationContext(),"Searching server.",Toast.LENGTH_LONG).show();
         }
 
         @Override
@@ -709,9 +715,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             /**
              * Search for Patient locally without invoking search view
              */
-            List<Patient> localSearchResultPatients = new ArrayList<>();
-            localSearchResultPatients = patientController.searchPatientOnServer(shrPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name).getIdentifier());
-            for (Patient searchResultPatient : localSearchResultPatients) {
+            List<Patient> serverSearchResultPatients = new ArrayList<>();
+            serverSearchResultPatients = patientController.searchPatientOnServer(shrPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name).getIdentifier());
+            for (Patient searchResultPatient : serverSearchResultPatients) {
                 if (searchResultPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name)
                         .equals(patient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name))) {
                     /**
@@ -719,7 +725,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                      * close search and return patient.
                      */
                     shrToMuzimaMatchingPatient = searchResultPatient;
-                    activityResultNotifyAlertDialog.setTitle("Search successful, " + patient.getDisplayName() + " record found.");
+                    negativeServerSearchResultNotifyAlertDialog.setTitle("Search successful, " + patient.getDisplayName() + " record found.");
                     /**
                      * TODO Display download optionDialog
                      *
@@ -735,7 +741,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         @Override
         protected void onPostExecute(Patient patient) {
             if (shrToMuzimaMatchingPatient != null) {
-                searchDialogTextView.setText("Shr patient search was successful.");
                 /**
                  * shr patient found in mUzima data layer.
                  */
@@ -744,21 +749,22 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 } catch (SmartCardController.SmartCardRecordSaveException e) {
                     e.printStackTrace();
                 }
-            } else {
-                progressDialog.hide();
+            } else if(shrToMuzimaMatchingPatient == null){
+                negativeServerSearchResultNotifyAlertDialog.show();
             }
 
         }
     }
 
 
-    public class BackgroundPatientLocalSearchQueryTask extends AsyncTask<Void, Void, Patient> {
+    private class BackgroundPatientLocalSearchQueryTask extends AsyncTask<Void, Void, Patient> {
 
         Patient foundPatient = null;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            prepareLocalSearchNotifyDialog(getApplicationContext());
         }
 
         @Override
@@ -804,7 +810,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 /**
                  * Search data on server.
                  */
-                executePatientServerSearchInBackgroundQueryTask();
+                localSearchResultNotifyAlertDialog.show();
+
+               // executePatientServerSearchInBackgroundQueryTask();
             }
 
             if (shrToMuzimaMatchingPatient == null) {
@@ -847,7 +855,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     private void executeLocalPatientSearchInBackgroundTask() {
-
         mBackgroundQueryTask = new BackgroundPatientLocalSearchQueryTask();
         mBackgroundQueryTask.execute();
     }
