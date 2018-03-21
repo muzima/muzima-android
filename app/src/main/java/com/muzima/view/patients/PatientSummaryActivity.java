@@ -147,6 +147,8 @@ public class PatientSummaryActivity extends BaseActivity {
         MenuItem shrCardMenuItem = menu.getItem(0);
         if (isRegisteredOnShr){
             shrCardMenuItem.setVisible(true);
+        }else {
+            shrCardMenuItem.setIcon(R.drawable.ic_action_no_shr_card);
         }
         super.onCreateOptionsMenu(menu);
         return true;
