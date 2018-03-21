@@ -4,9 +4,11 @@ import android.util.Log;
 
 import com.muzima.api.model.SmartCardRecord;
 
+import java.util.List;
+
 public class SmartCardIntentResult {
     private SmartCardRecord smartCardRecord;
-    private String errors;
+    private List<String> errors;
 
     public void setSHRModel(SmartCardRecord smartCardRecord) {
         this.smartCardRecord = smartCardRecord;
@@ -16,11 +18,11 @@ public class SmartCardIntentResult {
         return smartCardRecord;
     }
 
-    public void setErrors(String errors) {
+    public void setErrors(List<String> errors) {
         this.errors = errors;
     }
 
-    public String getErrors() {
+    public List<String> getErrors() {
         return errors;
     }
 
