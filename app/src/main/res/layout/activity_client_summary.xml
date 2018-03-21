@@ -12,21 +12,21 @@
     style="@style/DashboardTableContainer">
 
     <RelativeLayout
-        style="@style/PatientDemographicsLayout"
-        android:background="@color/primary_black">
+            style="@style/PatientDemographicsLayout"
+            android:background="@color/primary_black">
 
         <TextView
-            android:id="@+id/patientName"
-            style="@style/DashboardMediumTitleText"
-            android:layout_alignParentLeft="true" />
+                android:id="@+id/patientName"
+                style="@style/DashboardMediumTitleText"
+                android:layout_alignParentLeft="true"/>
 
         <ImageView
-            android:id="@+id/genderImg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:contentDescription="Gender Image"
-            android:paddingTop="20dp" />
+                android:id="@+id/genderImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:contentDescription="Gender Image"
+                android:paddingTop="20dp"/>
     </RelativeLayout>
 
     <LinearLayout
