@@ -70,6 +70,7 @@ public class PatientSummaryActivity extends BaseActivity {
     private SmartCardRecordService smartCardRecordService;
     private SmartCardController smartCardController;
     private MuzimaApplication muzimaApplication;
+    private PatientController patientController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +90,9 @@ public class PatientSummaryActivity extends BaseActivity {
             Toast.makeText(this, R.string.error_patient_fetch, Toast.LENGTH_SHORT).show();
             finish();
         }
-        muzimaApplication = (MuzimaApplication)getApplicationContext();
+        muzimaApplication = (MuzimaApplication) getApplicationContext();
+        patientController = muzimaApplication.getPatientController();
+
         try {
             smartCardRecordService = muzimaApplication.getMuzimaContext().getSmartCardRecordService();
             smartCardController = new SmartCardController(smartCardRecordService);
@@ -98,8 +101,11 @@ public class PatientSummaryActivity extends BaseActivity {
             e.printStackTrace();
         }
         imageView = (ImageView) findViewById(R.id.sync_status_imageview);
-
-        prepareWriteToCardOptionDialog(getApplicationContext());
+        if (isRegisteredOnShr) {
+            prepareWriteToCardOptionDialog(getApplicationContext());
+        } else {
+            prepareNonShrWriteToCardOptionDialog(getApplicationContext());
+        }
     }
 
     private void notifyOfIdChange() {
@@ -312,7 +318,7 @@ public class PatientSummaryActivity extends BaseActivity {
         searchDialogTextView = (TextView) dialogView.findViewById(R.id.patent_dialog_message_textview);
         yesOptionShrSearchButton = (Button) dialogView.findViewById(R.id.yes_shr_search_dialog);
         noOptionShrSearchButton = (Button) dialogView.findViewById(R.id.no_shr_search_dialog);
-        searchDialogTextView.setText("Do you want to write to card ?");
+        searchDialogTextView.setText("Do you want to write shr to card ?");
 
         yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -362,5 +368,114 @@ public class PatientSummaryActivity extends BaseActivity {
                 writeShrDataOptionDialog.dismiss();
             }
         });
+    }
+
+    public void prepareNonShrWriteToCardOptionDialog(Context context) {
+
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = layoutInflater.inflate(R.layout.write_to_card_option_dialog_layout, null);
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientSummaryActivity.this);
+
+        writeShrDataOptionDialog = alertBuilder
+                .setView(dialogView)
+                .create();
+
+        writeShrDataOptionDialog.setCancelable(true);
+        searchDialogTextView = (TextView) dialogView.findViewById(R.id.patent_dialog_message_textview);
+        yesOptionShrSearchButton = (Button) dialogView.findViewById(R.id.yes_shr_search_dialog);
+        noOptionShrSearchButton = (Button) dialogView.findViewById(R.id.no_shr_search_dialog);
+        searchDialogTextView.setText("Client does not have an shr. Do you want to create new shr and write to card ?");
+
+        yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Toast.makeText(v.getContext(), "Data has been written to card.", Toast.LENGTH_LONG).show();
+
+                if (smartCardRecord != null) {
+                    smartCardRecord.setUuid(UUID.randomUUID().toString());
+                    smartCardRecord.setPersonUuid(patient.getUuid());
+
+                    try {
+                        smartCardController.saveSmartCardRecord(smartCardRecord);
+                    } catch (SmartCardController.SmartCardRecordSaveException e) {
+                        Log.e(TAG, "Cannot save shr ", e);
+                    }
+
+                    KenyaEmrShrModel kenyaEmrShrModel = null;
+
+                    try {
+                        kenyaEmrShrModel = KenyaEmrShrMapper.createSHRModelFromJson(smartCardRecord.getPlainPayload());
+                    } catch (KenyaEmrShrMapper.ShrParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        KenyaEmrShrMapper.createNewObservationsAndEncountersFromShrModel(muzimaApplication, kenyaEmrShrModel, patient);
+                    } catch (KenyaEmrShrMapper.ShrParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    Toast.makeText(v.getContext(), "Data has been written to card.", Toast.LENGTH_LONG).show();
+                    writeShrDataOptionDialog.dismiss();
+                    writeShrDataOptionDialog.cancel();
+                } else
+                    Log.e(TAG, "Unable to save smart card record");
+            }
+
+        });
+
+        noOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                writeShrDataOptionDialog.cancel();
+                writeShrDataOptionDialog.dismiss();
+            }
+        });
+    }
+
+
+    public void registerNewShrRecord(){
+        /**
+         * Register patient using shrPatient
+         */
+        try {
+            if (smartCardRecord != null) {
+                smartCardRecord.setUuid(UUID.randomUUID().toString());
+                smartCardRecord.setPersonUuid(patient.getUuid());
+                try {
+                    smartCardController.saveSmartCardRecord(smartCardRecord);
+                } catch (SmartCardController.SmartCardRecordSaveException e) {
+                    Toast.makeText(getApplicationContext(), "Cannot save shr ",Toast.LENGTH_LONG).show();
+                }
+                KenyaEmrShrModel kenyaEmrShrModel = KenyaEmrShrMapper.createInitialSHRModelForPatient(patient);
+                String jsonShrModel = KenyaEmrShrMapper.createJsonFromSHRModel(kenyaEmrShrModel);
+
+                SmartCardRecord smartCardRecord = new SmartCardRecord();
+                smartCardRecord.setPlainPayload(jsonShrModel);
+                smartCardRecord.setPersonUuid(patient.getUuid());
+                smartCardRecord.setUuid(UUID.randomUUID().toString());
+
+                smartCardRecord.setType(Constants.Shr.KenyaEmr.SMART_CARD_RECORD_TYPE);
+
+                smartCardController.saveSmartCardRecord(smartCardRecord);
+
+                Toast.makeText(getApplicationContext(), "SHR has been Recorded.", Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(PatientSummaryActivity.this, PatientSummaryActivity.class);
+                /**
+                 * todo check if this patient is registred in shr
+                 * before opening PatientSummary activity
+                 */
+                intent.putExtra("isRegisteredOnShr", true);
+                intent.putExtra(PatientSummaryActivity.PATIENT, patient);
+                startActivity(intent);
+            } else
+                Log.e(TAG, "Unable to save smart card record");
+        } catch (KenyaEmrShrMapper.ShrParseException e) {
+            Log.e(TAG, "Error", e);
+        } catch (SmartCardController.SmartCardRecordSaveException e) {
+            e.printStackTrace();
+        }
     }
 }
