@@ -268,8 +268,8 @@ public class Constants {
                         public static final String name = "IMMUNIZATION";
                         public static final int concept_id = 1421;
                     }
-                    public static class VACCINATION {
-                        public static final String name = "VACCINATION";
+                    public static class VACCINE {
+                        public static final String name = "VACCINE";
                         public static final int concept_id = 984;
                         public static class ANSWERS {
                             public static class BCG {
@@ -357,6 +357,11 @@ public class Constants {
                                 public static final int sequence = 3;
                             }
                         }
+                    }
+
+                    public static class SEQUENCE {
+                        public static final String name = "SEQUENCE";
+                        public static final int concept_id = 1418;
                     }
 
                     public static class ENCOUNTER {
