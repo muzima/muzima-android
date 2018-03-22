@@ -185,7 +185,7 @@ public class KenyaEmrShrMapper {
                     identifierTypeName = CONCEPTS.ANC_NUMBER.name;
                     break;
             }
-            if(identifierTypeName != null) {
+            if(identifierTypeName != null && internalPatientId.getID()!= null) {
                 identifierType.setName(identifierTypeName);
                 patientIdentifier.setIdentifierType(identifierType);
                 patientIdentifier.setIdentifier(internalPatientId.getID());
@@ -278,6 +278,15 @@ public class KenyaEmrShrMapper {
                 }
             } else {
                 Log.e("KenyaEmrShrMapper","No HIV Tests found");
+            }
+
+            List<Immunization> immunizations = shrModel.getImmunizations();
+            if(immunizations != null) {
+                for (Immunization immunization : immunizations) {
+                    encounters.add(createJsonEncounterPayloadFromImmunization(immunization, patient));
+                }
+            } else {
+                Log.e("KenyaEmrShrMapper","No Immunizations found");
             }
             return encounters;
         } catch(ParseException e){
@@ -567,6 +576,7 @@ public class KenyaEmrShrMapper {
      * @throws IOException
      */
     public static KenyaEmrShrModel createInitialSHRModelForPatient(Patient patient) throws ShrParseException{
+
         return null;
     }
 
