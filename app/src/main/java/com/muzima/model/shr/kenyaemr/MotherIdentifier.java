@@ -6,12 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "ID",
-    "IDENTIFIER_TYPE",
-    "ASSIGNING_AUTHORITY",
-    "ASSIGNING_FACILITY"
-})
+
 public class MotherIdentifier {
 
     @JsonProperty("ID")

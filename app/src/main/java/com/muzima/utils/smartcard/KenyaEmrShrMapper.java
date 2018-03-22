@@ -104,7 +104,9 @@ public class KenyaEmrShrMapper {
 
             //set Identifiers
             List<PatientIdentifier> identifiers = extractPatientIdentifiersFromShrModel(shrModel);
-            patient.setIdentifiers(identifiers);
+            if(!identifiers.isEmpty()) {
+                patient.setIdentifiers(identifiers);
+            }
 
             //date of birth
             Date dob = DateUtils.parseDateByPattern(identification.getDateOfBirth(),"yyyymmdd");
@@ -155,10 +157,13 @@ public class KenyaEmrShrMapper {
         ExternalPatientId externalPatientId = identification.getExternalPatientId();
         PatientIdentifier patientIdentifier = new PatientIdentifier();
         PatientIdentifierType identifierType = new PatientIdentifierType();
-        identifierType.setName(externalPatientId.getIdentifierType());
-        patientIdentifier.setIdentifierType(identifierType);
-        patientIdentifier.setIdentifier(externalPatientId.getID());
-        identifiers.add(patientIdentifier);
+
+        if(!StringUtils.isEmpty(externalPatientId.getIdentifierType()) && !StringUtils.isEmpty(externalPatientId.getID())) {
+            identifierType.setName(externalPatientId.getIdentifierType());
+            patientIdentifier.setIdentifierType(identifierType);
+            patientIdentifier.setIdentifier(externalPatientId.getID());
+            identifiers.add(patientIdentifier);
+        }
 
         //Internal IDs
         List<InternalPatientId> internalPatientIds = identification.getInternalPatientIds();

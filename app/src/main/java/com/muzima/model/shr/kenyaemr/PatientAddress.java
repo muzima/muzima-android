@@ -6,10 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "PHYSICAL_ADDRESS",
-    "POSTAL_ADDRESS"
-})
+
 public class PatientAddress {
 
     @JsonProperty("PHYSICAL_ADDRESS")
