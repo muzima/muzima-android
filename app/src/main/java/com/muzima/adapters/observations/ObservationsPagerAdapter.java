@@ -45,7 +45,7 @@ public class ObservationsPagerAdapter extends MuzimaPagerAdapter implements Sear
 
         observationByConceptListFragment =
                 ObservationsByConceptFragment.newInstance(conceptController, observationController,isShrData);
-        observationByEncountersFragment = ObservationByEncountersFragment.newInstance(encounterController, observationController);
+        observationByEncountersFragment = ObservationByEncountersFragment.newInstance(encounterController, observationController,isShrData);
 
         pagers[TAB_BY_DATE] = new PagerView(context.getString(R.string.title_observations_by_concepts), observationByConceptListFragment);
         pagers[TAB_BY_ENCOUNTERS] = new PagerView(context.getString(R.string.title_observations_by_encounters), observationByEncountersFragment);

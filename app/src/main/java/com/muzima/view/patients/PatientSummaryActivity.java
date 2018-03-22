@@ -194,7 +194,6 @@ public class PatientSummaryActivity extends BaseActivity {
     public void showSHRObservations(View v) {
         Intent intent = new Intent(PatientSummaryActivity.this, SHRObservationsDataActivity.class);
         intent.putExtra(PATIENT, patient);
-        //intent.putExtra("",true);
         startActivity(intent);
     }
 
