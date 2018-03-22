@@ -10,10 +10,13 @@
 
 package com.muzima.adapters.observations;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,29 +51,30 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
     private LayoutInflater layoutInflater;
     private View addNewObservationValuesDialog;
     private android.support.v7.app.AlertDialog addIndividualObsDialog;
-    private HashMap<Integer,Concept> rederedConceptsVisualizationMap = new HashMap<>(); //enable visualization of what is rendered on the UI. for ease of access.
+    private HashMap<Integer, Concept> rederedConceptsVisualizationMap = new HashMap<>(); //enable visualization of what is rendered on the UI. for ease of access.
     private EditText obsDialogEditText;
     private Button obsDialogAddButton;
-    private Button obsDialogCancelButton;
     private TextView headerText;
+    private Boolean isShrData;
 
     public ObservationsByConceptAdapter(FragmentActivity activity, int itemCohortsList,
                                         ConceptController conceptController,
-                                        ObservationController observationController) {
-        super(activity, itemCohortsList, null,conceptController, observationController);
+                                        ObservationController observationController,Boolean isShrData) {
+        super(activity, itemCohortsList, null, conceptController, observationController);
+        this.isShrData = isShrData;
+
     }
 
     @Override
     public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
-
         /**
          * Prepare add obs dialog
          */
-        layoutInflater = (LayoutInflater)parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layoutInflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         android.support.v7.app.AlertDialog.Builder addIndividualObservationsDialogBuilder =
                 new android.support.v7.app.AlertDialog.Builder(
-                parent.getContext()
-        );
+                        parent.getContext()
+                );
         addNewObservationValuesDialog = layoutInflater.inflate(R.layout.add_individual_obs_dialog_layout, null);
 
         addIndividualObservationsDialogBuilder.setView(addNewObservationValuesDialog);
@@ -81,19 +85,10 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
 
         obsDialogEditText = (EditText) addNewObservationValuesDialog.findViewById(R.id.obs_new_value_edittext);
         obsDialogAddButton = (Button) addNewObservationValuesDialog.findViewById(R.id.add_new_obs_button);
-        obsDialogCancelButton = (Button) addNewObservationValuesDialog.findViewById(R.id.cancel_dialog_button);
-
-        obsDialogCancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addIndividualObsDialog.cancel();
-            }
-        });
 
         obsDialogAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 addIndividualObsDialog.cancel();
             }
         });
@@ -105,7 +100,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
             holder = new ObservationsByConceptViewHolder();
             holder.headerText = (TextView) convertView.findViewById(R.id.observation_header);
             holder.addObsButton = (ImageButton) convertView.findViewById(R.id.add_individual_obs_imagebutton);
-            holder.headerLayout = (RelativeLayout)convertView.findViewById(R.id.observation_header_layout);
+            holder.headerLayout = (RelativeLayout) convertView.findViewById(R.id.observation_header_layout);
             holder.observationLayout = (LinearLayout) convertView
                     .findViewById(R.id.observation_layout);
             convertView.setTag(holder);
@@ -114,7 +109,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
                 @Override
                 public void onClick(View v) {
                     addObservation();
-                   // Log.e("Header",holder.headerText.getText().toString());
+                    // Log.e("Header",holder.headerText.getText().toString());
                 }
             });
         } else {
@@ -126,11 +121,12 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
          * Update Concepts Map
          */
         Concept conceptAtThisPosition = getItem(position).getConcept();
-        rederedConceptsVisualizationMap.put(position,conceptAtThisPosition);
+        rederedConceptsVisualizationMap.put(position, conceptAtThisPosition);
         return convertView;
     }
 
-    public void addObservation(){
+
+    public void addObservation() {
         addIndividualObsDialog.show();
         //TODO Develop add obs logic.
 
@@ -141,23 +137,22 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
     @Override
     public void reloadData() {
         cancelBackgroundQueryTask();
-        AsyncTask<Void,?,?> backgroundQueryTask = new ObservationsByConceptBackgroundTask(this,
-                new ConceptsByPatient(conceptController, observationController, patientUuid));
+        AsyncTask<Void, ?, ?> backgroundQueryTask = new ObservationsByConceptBackgroundTask(this,
+                new ConceptsByPatient(conceptController, observationController, patientUuid),isShrData);
         BackgroundTaskHelper.executeInParallel(backgroundQueryTask);
         setRunningBackgroundQueryTask(backgroundQueryTask);
     }
 
     public void search(String term) {
         cancelBackgroundQueryTask();
-        AsyncTask<Void,?,?> backgroundQueryTask = new ObservationsByConceptBackgroundTask(this,
-                new ConceptsBySearch(conceptController,observationController, patientUuid, term));
+        AsyncTask<Void, ?, ?> backgroundQueryTask = new ObservationsByConceptBackgroundTask(this,
+                new ConceptsBySearch(conceptController, observationController, patientUuid, term),isShrData);
         BackgroundTaskHelper.executeInParallel(backgroundQueryTask);
         setRunningBackgroundQueryTask(backgroundQueryTask);
     }
 
 
-
-    protected class ObservationsByConceptViewHolder extends ViewHolder{
+    protected class ObservationsByConceptViewHolder extends ViewHolder {
         ImageButton addObsButton;
         RelativeLayout headerLayout;
         TextView headerText;
@@ -172,7 +167,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
             addObsButton.setBackgroundColor(conceptColor);
             addEncounterObservations(item.getObservations());
             headerText.setText(getConceptDisplay(item.getConcept()));
-            Log.e("YNO",getConceptDisplay(item.getConcept()));
+            Log.e("YNO", getConceptDisplay(item.getConcept()));
         }
 
         @Override
@@ -183,7 +178,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
 
             TextView observationValue = (TextView) layout.findViewById(R.id.observation_value);
             ImageView observationComplexHolder = (ImageView) layout.findViewById(R.id.observation_complex);
-            if (StringUtils.equals(observationConceptType, "Complex")){
+            if (StringUtils.equals(observationConceptType, "Complex")) {
                 observationValue.setVisibility(View.GONE);
                 observationComplexHolder.setVisibility(View.VISIBLE);
             } else {

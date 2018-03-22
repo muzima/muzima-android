@@ -20,6 +20,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
     private ViewPager viewPager;
     private ObservationsPagerAdapter observationsPagerAdapter;
     private PagerSlidingTabStrip pagerTabsLayout;
+    private final Boolean IS_SHR_DATA = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
 
     private void initPager() {
         viewPager = (ViewPager) findViewById(R.id.pager);
-        observationsPagerAdapter = new ObservationsPagerAdapter(getApplicationContext(), getSupportFragmentManager());
+        observationsPagerAdapter = new ObservationsPagerAdapter(getApplicationContext(), getSupportFragmentManager(),IS_SHR_DATA);
         observationsPagerAdapter.initPagerViews();
         viewPager.setAdapter(observationsPagerAdapter);
     }
