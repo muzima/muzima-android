@@ -263,6 +263,116 @@ public class Constants {
                         public static final String FORM_UUID = "9bc157d2-2794-11e8-b467-0ed5f89f718b";
                     }
                 }
+                public static class IMMUNIZATION {
+                    public static class GROUP {
+                        public static final String name = "IMMUNIZATION";
+                        public static final int concept_id = 1421;
+                    }
+                    public static class VACCINE {
+                        public static final String name = "VACCINE";
+                        public static final int concept_id = 984;
+                        public static class ANSWERS {
+                            public static class BCG {
+                                public static final String name = "BCG";
+                                public static final int concept_id = 886;
+                            }
+                            public static class OPV_AT_BIRTH {
+                                public static final String name = "OPV_AT_BIRTH";
+                                public static final int concept_id = 783;
+                                public static final int sequence = 0;
+                            }
+                            public static class OPV1 {
+                                public static final String name = "OPV1";
+                                public static final int concept_id = 783;
+                                public static final int sequence = 1;
+                            }
+                            public static class OPV2 {
+                                public static final String name = "OPV2";
+                                public static final int concept_id = 783;
+                                public static final int sequence = 2;
+                            }
+                            public static class OPV3 {
+                                public static final String name = "OPV3";
+                                public static final int concept_id = 783;
+                                public static final int sequence = 3;
+                            }
+                            public static class IPV {
+                                public static final String name = "IPV";
+                                public static final int concept_id = 1422;
+                                public static final int sequence = 1;
+                            }
+                            public static class PCV10_1 {
+                                public static final String name = "PCV10-1";
+                                public static final int concept_id = 162342;
+                                public static final int sequence = 1;
+                            }
+                            public static class PCV10_2 {
+                                public static final String name = "PCV10-2";
+                                public static final int concept_id = 162342;
+                                public static final int sequence = 2;
+                            }
+                            public static class PCV10_3 {
+                                public static final String name = "PCV10-3";
+                                public static final int concept_id = 162342;
+                                public static final int sequence = 3;
+                            }
+                            public static class ROTA1 {
+                                public static final String name = "ROTA1";
+                                public static final int concept_id = 83531;
+                                public static final int sequence = 1;
+                            }
+                            public static class ROTA2 {
+                                public static final String name = "ROTA2";
+                                public static final int concept_id = 83531;
+                                public static final int sequence = 2;
+                            }
+                            public static class MEASLES6 {
+                                public static final String name = "MEASLES6";
+                                public static final int concept_id = 36;
+                                public static final int sequence = 1;
+                            }
+                            public static class MEASLES9 {
+                                public static final String name = "MEASLES9";
+                                public static final int concept_id = 162586;
+                                public static final int sequence = 1;
+                            }
+                            public static class MEASLES18 {
+                                public static final String name = "MEASLES18";
+                                public static final int concept_id = 162586;
+                                public static final int sequence = 2;
+                            }
+                            public static class PENTA1 {
+                                public static final String name = "PENTA1";
+                                public static final int concept_id = 159694;
+                                public static final int sequence = 1;
+                            }
+                            public static class PENTA2 {
+                                public static final String name = "PENTA2";
+                                public static final int concept_id = 159694;
+                                public static final int sequence = 2;
+                            }
+                            public static class PENTA3 {
+                                public static final String name = "PENTA3";
+                                public static final int concept_id = 159694;
+                                public static final int sequence = 3;
+                            }
+                        }
+                    }
+
+                    public static class SEQUENCE {
+                        public static final String name = "SEQUENCE";
+                        public static final int concept_id = 1418;
+                    }
+
+                    public static class ENCOUNTER {
+                        public static final String ENCOUNTER_TYPE_UUID = "9bc15e94-2794-11e8-b467-0ed5f89f718b";
+                    }
+
+                    public static class FORM {
+                        public static final String FORM_UUID = "9bc157d2-2794-11e8-b467-0ed5f89f718b";
+                    }
+
+                }
             }
         }
     }
