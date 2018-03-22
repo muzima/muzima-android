@@ -301,7 +301,7 @@ public class PatientSummaryActivity extends BaseActivity {
     public void prepareWriteToCardOptionDialog(Context context) {
 
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialogView = layoutInflater.inflate(R.layout.patient_shr_card_search_dialog, null);
+        View dialogView = layoutInflater.inflate(R.layout.write_to_card_option_dialog_layout, null);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientSummaryActivity.this);
 
         writeShrDataOptionDialog = alertBuilder
@@ -317,6 +317,8 @@ public class PatientSummaryActivity extends BaseActivity {
         yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Toast.makeText(v.getContext(), "Data has been written to card.", Toast.LENGTH_LONG).show();
 
                 if (smartCardRecord != null) {
                     smartCardRecord.setUuid(UUID.randomUUID().toString());
@@ -342,7 +344,9 @@ public class PatientSummaryActivity extends BaseActivity {
                         e.printStackTrace();
                     }
 
-                    Toast.makeText(getApplicationContext(), "Data has been written to card.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(v.getContext(), "Data has been written to card.", Toast.LENGTH_LONG).show();
+                    writeShrDataOptionDialog.dismiss();
+                    writeShrDataOptionDialog.cancel();
                 } else
                     Log.e(TAG, "Unable to save smart card record");
             }
