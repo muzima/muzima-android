@@ -114,7 +114,11 @@ public class Constants {
 
     //This is a hack. Better to use configuration file from server side to obtain SHR definition
     public static class Shr{
+
         public static class KenyaEmr{
+
+            public static String SMART_CARD_RECORD_TYPE = "KenyaEmrShr";
+
             public static class IdentifierType{
                 public static class CARD_SERIAL_NUMBER{
                     public static final String name = "SMART CARD SERIAL NUMBER";
