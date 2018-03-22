@@ -6,15 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "NOK_NAME",
-    "RELATIONSHIP",
-    "ADDRESS",
-    "PHONE_NUMBER",
-    "SEX",
-    "DATE_OF_BIRTH",
-    "CONTACT_ROLE"
-})
+
 public class NextOfKin {
 
     @JsonProperty("NOK_NAME")

@@ -597,19 +597,20 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
                 try {
                     shrPatient = KenyaEmrShrMapper.extractPatientFromShrModel(shrPayload);
-                    Log.e("EMR_IN", shrPatient.getDisplayName());
-                    PatientIdentifier cardNumberIdentifier = shrPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name);
+                    if(shrPatient != null) {
+                        PatientIdentifier cardNumberIdentifier = shrPatient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name);
 
-                    shrToMuzimaMatchingPatient = null;
+                        shrToMuzimaMatchingPatient = null;
 
-                    if(cardNumberIdentifier == null){
-                        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
-                        alertBuilder.setMessage("Could not find Card Serial number in shared health record")
-                        .setCancelable(true)
-                        .show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Searching Patient Locally", Toast.LENGTH_LONG).show();
-                        executeLocalPatientSearchInBackgroundTask();
+                        if (cardNumberIdentifier == null) {
+                            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+                            alertBuilder.setMessage("Could not find Card Serial number in shared health record")
+                                    .setCancelable(true)
+                                    .show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Searching Patient Locally", Toast.LENGTH_LONG).show();
+                            executeLocalPatientSearchInBackgroundTask();
+                        }
                     }
 
 

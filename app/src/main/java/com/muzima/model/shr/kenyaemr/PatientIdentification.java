@@ -7,20 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "EXTERNAL_PATIENT_ID",
-    "INTERNAL_PATIENT_ID",
-    "PATIENT_NAME",
-    "DATE_OF_BIRTH",
-    "DATE_OF_BIRTH_PRECISION",
-    "SEX",
-    "DEATH_DATE",
-    "DEATH_INDICATOR",
-    "PATIENT_ADDRESS",
-    "PHONE_NUMBER",
-    "MARITAL_STATUS",
-    "MOTHER_DETAILS"
-})
+
 public class PatientIdentification {
 
     @JsonProperty("EXTERNAL_PATIENT_ID")
