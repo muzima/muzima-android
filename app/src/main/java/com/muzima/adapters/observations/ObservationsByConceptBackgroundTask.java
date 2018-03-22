@@ -102,6 +102,8 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
         conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_TYPE.name);
         conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_FACILITY.name);
         conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_STRATEGY.name);
+        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.VACCINE.name);
+
 
         shrConcepts = conceptIds;
     }
