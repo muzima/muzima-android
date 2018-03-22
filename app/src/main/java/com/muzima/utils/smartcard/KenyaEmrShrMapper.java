@@ -130,18 +130,22 @@ public class KenyaEmrShrMapper {
      * @param shrModel
      * @return
      */
-    public static List<PersonName> extractPatientNamesFromShrModel(KenyaEmrShrModel shrModel){
+    public static List<PersonName> extractPatientNamesFromShrModel(KenyaEmrShrModel shrModel) throws ShrParseException {
         PatientIdentification identification = shrModel.getPatientIdentification();
-        final PersonName personName = new PersonName();
-        personName.setFamilyName(identification.getPatientName().getFirstName());
-        personName.setGivenName(identification.getPatientName().getLastName());
-        personName.setMiddleName(identification.getPatientName().getMiddleName());
+        if(identification != null && identification.getPatientName()!= null) {
+            final PersonName personName = new PersonName();
+            personName.setFamilyName(identification.getPatientName().getFirstName());
+            personName.setGivenName(identification.getPatientName().getLastName());
+            personName.setMiddleName(identification.getPatientName().getMiddleName());
 
-        List<PersonName> names = new ArrayList<PersonName>(){{
-            add(personName);
-        }};
+            List<PersonName> names = new ArrayList<PersonName>(){{
+                add(personName);
+            }};
 
-        return names;
+            return names;
+        } else {
+            throw new ShrParseException("Could not find patient names");
+        }
     }
 
     public static List<PatientIdentifier> extractPatientIdentifiersFromShrModel(KenyaEmrShrModel shrModel){
@@ -185,7 +189,7 @@ public class KenyaEmrShrMapper {
                     identifierTypeName = CONCEPTS.ANC_NUMBER.name;
                     break;
             }
-            if(identifierTypeName != null && internalPatientId.getID()!= null) {
+            if(!StringUtils.isEmpty(identifierTypeName) && !StringUtils.isEmpty(internalPatientId.getID())) {
                 identifierType.setName(identifierTypeName);
                 patientIdentifier.setIdentifierType(identifierType);
                 patientIdentifier.setIdentifier(internalPatientId.getID());
