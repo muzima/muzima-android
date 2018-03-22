@@ -7,10 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "MOTHER_NAME",
-    "MOTHER_IDENTIFIER"
-})
+
 public class MotherDetails {
 
     @JsonProperty("MOTHER_NAME")

@@ -6,13 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "VILLAGE",
-    "WARD",
-    "SUB_COUNTY",
-    "COUNTY",
-    "NEAREST_LANDMARK"
-})
+
 public class PhysicalAddress {
 
     @JsonProperty("VILLAGE")
