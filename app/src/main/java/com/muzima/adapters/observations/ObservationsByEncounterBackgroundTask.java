@@ -25,10 +25,12 @@ public class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Encou
 
     private EncounterAction encounterAction;
     private ObservationsByEncounterAdapter observationsByEncounterAdapter;
+    private Boolean isShrEncounter = false;
 
-    public ObservationsByEncounterBackgroundTask(ObservationsByEncounterAdapter observationsByEncounterAdapter, EncounterAction encounterAction) {
+    public ObservationsByEncounterBackgroundTask(ObservationsByEncounterAdapter observationsByEncounterAdapter, EncounterAction encounterAction,Boolean isShrEncounter) {
         this.observationsByEncounterAdapter = observationsByEncounterAdapter;
         this.encounterAction = encounterAction;
+        this.isShrEncounter = isShrEncounter;
     }
 
     @Override
@@ -37,15 +39,53 @@ public class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Encou
             observationsByEncounterAdapter.getBackgroundListQueryTaskListener().onQueryTaskStarted();
         }
     }
-
     @Override
     protected Encounters doInBackground(Void... params) {
+        Encounters encountersWithObservations = null;
+        if (isShrEncounter){
+            encountersWithObservations = getShrEncounterWithObservations();
+        }else {
+            encountersWithObservations = getNonShrEncounterWithObservations();
+        }
+        return encountersWithObservations;
+    }
+
+    private Encounters getShrEncounterWithObservations() {
         Encounters encountersWithObservations = null;
         Encounters temp = null;
         try {
             List<Encounter> encounters = encounterAction.getEncounters();
+
             for(Encounter encounter : encounters) {
-                if(!isCancelled()) {
+                if(!isCancelled() && encounter.getEncounterType().getName().contains("encounterType")) {
+                    temp = encounterAction.get(encounter);
+                    if (temp != null) {
+                        temp.sortByDate();
+                        if (encountersWithObservations == null) {
+                            encountersWithObservations = temp;
+                        } else {
+                            encountersWithObservations.addAll(temp);
+                        }
+                        publishProgress(temp);
+                    }
+                } else {
+                    break;
+                }
+            }
+        } catch (ObservationController.LoadObservationException e) {
+            Log.w("Observations", String.format("Exception while loading observations for %s.", encounterAction), e);
+        }
+        return encountersWithObservations;
+    }
+
+    private Encounters getNonShrEncounterWithObservations() {
+        Encounters encountersWithObservations = null;
+        Encounters temp = null;
+        try {
+            List<Encounter> encounters = encounterAction.getEncounters();
+
+            for(Encounter encounter : encounters) {
+                if(!isCancelled() ) {
                     temp = encounterAction.get(encounter);
                     if (temp != null) {
                         temp.sortByDate();
