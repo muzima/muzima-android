@@ -129,6 +129,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_list);
         Bundle intentExtras = getIntent().getExtras();
+
         if (intentExtras != null) {
             quickSearch = intentExtras.getBoolean(QUICK_SEARCH);
             cohortId = intentExtras.getString(COHORT_ID);
@@ -205,11 +206,11 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                     PatientController patientController = ((MuzimaApplication) getApplicationContext()).getPatientController();
                     Patient patient = patientController.getPatientByUuid(patientUUIDs[0]);
                     intent = new Intent(this, PatientSummaryActivity.class);
+
                     /**
                      * todo check if this patient is registred in shr
                      * before opening PatientSummary activity
                      */
-                    intent.putExtra("isRegisteredOnShr", true);
                     intent.putExtra(PatientSummaryActivity.PATIENT, patient);
                     startActivity(intent);
                 } catch (PatientController.PatientLoadException e) {
@@ -501,11 +502,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         patientAdapter.cancelBackgroundTask();
         Patient patient = patientAdapter.getItem(position);
         Intent intent = new Intent(this, PatientSummaryActivity.class);
-        /**
-         * todo check if this patient is registred in shr
-         * before opening PatientSummary activity
-         */
-        intent.putExtra("isRegisteredOnShr", true);
+
+        if (patient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name) != null ){
+            intent.putExtra("isRegisteredOnShr", true);
+        }else {
+            intent.putExtra("isRegisteredOnShr", false);
+        }
         intent.putExtra(PatientSummaryActivity.PATIENT, patient);
         startActivity(intent);
     }
