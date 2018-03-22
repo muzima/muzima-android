@@ -55,16 +55,18 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
     private EditText obsDialogEditText;
     private Button obsDialogAddButton;
     private TextView headerText;
+    private Boolean isShrData;
 
     public ObservationsByConceptAdapter(FragmentActivity activity, int itemCohortsList,
                                         ConceptController conceptController,
-                                        ObservationController observationController) {
+                                        ObservationController observationController,Boolean isShrData) {
         super(activity, itemCohortsList, null, conceptController, observationController);
+        this.isShrData = isShrData;
+
     }
 
     @Override
     public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
-
         /**
          * Prepare add obs dialog
          */
@@ -136,7 +138,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
     public void reloadData() {
         cancelBackgroundQueryTask();
         AsyncTask<Void, ?, ?> backgroundQueryTask = new ObservationsByConceptBackgroundTask(this,
-                new ConceptsByPatient(conceptController, observationController, patientUuid));
+                new ConceptsByPatient(conceptController, observationController, patientUuid),isShrData);
         BackgroundTaskHelper.executeInParallel(backgroundQueryTask);
         setRunningBackgroundQueryTask(backgroundQueryTask);
     }
@@ -144,7 +146,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
     public void search(String term) {
         cancelBackgroundQueryTask();
         AsyncTask<Void, ?, ?> backgroundQueryTask = new ObservationsByConceptBackgroundTask(this,
-                new ConceptsBySearch(conceptController, observationController, patientUuid, term));
+                new ConceptsBySearch(conceptController, observationController, patientUuid, term),isShrData);
         BackgroundTaskHelper.executeInParallel(backgroundQueryTask);
         setRunningBackgroundQueryTask(backgroundQueryTask);
     }
