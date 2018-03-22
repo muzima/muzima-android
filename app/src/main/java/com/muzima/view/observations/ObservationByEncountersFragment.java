@@ -19,14 +19,17 @@ import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 
 public class ObservationByEncountersFragment extends ObservationsListFragment{
+
+    private Boolean isShrEncounter = false;
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
     }
 
-    public static ObservationByEncountersFragment newInstance(EncounterController encounterController, ObservationController observationController) {
+    public static ObservationByEncountersFragment newInstance(EncounterController encounterController, ObservationController observationController,Boolean isShrEncounter) {
         ObservationByEncountersFragment f = new ObservationByEncountersFragment();
         f.observationController = observationController;
         f.encounterController = encounterController;
+        f.isShrEncounter = isShrEncounter;
 
         return f;
     }
@@ -35,7 +38,7 @@ public class ObservationByEncountersFragment extends ObservationsListFragment{
     public void onCreate(Bundle savedInstanceState) {
         if(listAdapter == null){
             listAdapter = new ObservationsByEncounterAdapter(
-                    getActivity(), R.layout.item_observation_by_encounter_list,encounterController, conceptController, observationController);
+                    getActivity(), R.layout.item_observation_by_encounter_list,encounterController, conceptController, observationController,isShrEncounter);
         }
         noDataMsg = getActivity().getResources().getString(R.string.info_observation_in_progress);
         super.onCreate(savedInstanceState);
