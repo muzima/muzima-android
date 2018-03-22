@@ -26,10 +26,13 @@ import com.muzima.controller.ObservationController;
 
 public class ObservationsByConceptFragment extends ObservationsListFragment {
 
-    public static ObservationsByConceptFragment newInstance(ConceptController conceptController, ObservationController observationController) {
+    private Boolean isShrData;
+
+    public static ObservationsByConceptFragment newInstance(ConceptController conceptController, ObservationController observationController,Boolean isShrData) {
         ObservationsByConceptFragment f = new ObservationsByConceptFragment();
         f.observationController = observationController;
         f.conceptController = conceptController;
+        f.isShrData = isShrData;
         return f;
     }
 
@@ -39,7 +42,7 @@ public class ObservationsByConceptFragment extends ObservationsListFragment {
     public void onCreate(Bundle savedInstanceState) {
         if(listAdapter == null){
             listAdapter = new ObservationsByConceptAdapter(
-                    getActivity(), R.layout.item_observation_by_concept_list, conceptController, observationController);
+                    getActivity(), R.layout.item_observation_by_concept_list, conceptController, observationController,isShrData);
         }
         noDataMsg = getActivity().getResources().getString(R.string.info_observation_in_progress);
         super.onCreate(savedInstanceState);
