@@ -9,7 +9,8 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/DashboardTableContainer">
+              android:id="@+id/shr_client_summary_view"
+              style="@style/DashboardTableContainer">
 
     <RelativeLayout
             style="@style/PatientDemographicsLayout"
