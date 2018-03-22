@@ -6,11 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "FIRST_NAME",
-    "MIDDLE_NAME",
-    "LAST_NAME"
-})
+
 public class Name {
 
     @JsonProperty("FIRST_NAME")

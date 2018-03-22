@@ -19,6 +19,7 @@ import com.muzima.controller.FormController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.shr.kenyaemr.ExternalPatientId;
 import com.muzima.model.shr.kenyaemr.HIVTest;
+import com.muzima.model.shr.kenyaemr.Immunization;
 import com.muzima.model.shr.kenyaemr.InternalPatientId;
 import com.muzima.model.shr.kenyaemr.KenyaEmrShrModel;
 import com.muzima.model.shr.kenyaemr.PatientIdentification;
@@ -103,7 +104,9 @@ public class KenyaEmrShrMapper {
 
             //set Identifiers
             List<PatientIdentifier> identifiers = extractPatientIdentifiersFromShrModel(shrModel);
-            patient.setIdentifiers(identifiers);
+            if(!identifiers.isEmpty()) {
+                patient.setIdentifiers(identifiers);
+            }
 
             //date of birth
             Date dob = DateUtils.parseDateByPattern(identification.getDateOfBirth(),"yyyymmdd");
@@ -129,18 +132,22 @@ public class KenyaEmrShrMapper {
      * @param shrModel
      * @return
      */
-    public static List<PersonName> extractPatientNamesFromShrModel(KenyaEmrShrModel shrModel){
+    public static List<PersonName> extractPatientNamesFromShrModel(KenyaEmrShrModel shrModel) throws ShrParseException {
         PatientIdentification identification = shrModel.getPatientIdentification();
-        final PersonName personName = new PersonName();
-        personName.setFamilyName(identification.getPatientName().getFirstName());
-        personName.setGivenName(identification.getPatientName().getLastName());
-        personName.setMiddleName(identification.getPatientName().getMiddleName());
+        if(identification != null && identification.getPatientName()!= null) {
+            final PersonName personName = new PersonName();
+            personName.setFamilyName(identification.getPatientName().getFirstName());
+            personName.setGivenName(identification.getPatientName().getLastName());
+            personName.setMiddleName(identification.getPatientName().getMiddleName());
 
-        List<PersonName> names = new ArrayList<PersonName>(){{
-            add(personName);
-        }};
+            List<PersonName> names = new ArrayList<PersonName>(){{
+                add(personName);
+            }};
 
-        return names;
+            return names;
+        } else {
+            throw new ShrParseException("Could not find patient names");
+        }
     }
 
     public static List<PatientIdentifier> extractPatientIdentifiersFromShrModel(KenyaEmrShrModel shrModel){
@@ -150,10 +157,13 @@ public class KenyaEmrShrMapper {
         ExternalPatientId externalPatientId = identification.getExternalPatientId();
         PatientIdentifier patientIdentifier = new PatientIdentifier();
         PatientIdentifierType identifierType = new PatientIdentifierType();
-        identifierType.setName(externalPatientId.getIdentifierType());
-        patientIdentifier.setIdentifierType(identifierType);
-        patientIdentifier.setIdentifier(externalPatientId.getID());
-        identifiers.add(patientIdentifier);
+
+        if(!StringUtils.isEmpty(externalPatientId.getIdentifierType()) && !StringUtils.isEmpty(externalPatientId.getID())) {
+            identifierType.setName(externalPatientId.getIdentifierType());
+            patientIdentifier.setIdentifierType(identifierType);
+            patientIdentifier.setIdentifier(externalPatientId.getID());
+            identifiers.add(patientIdentifier);
+        }
 
         //Internal IDs
         List<InternalPatientId> internalPatientIds = identification.getInternalPatientIds();
@@ -184,7 +194,7 @@ public class KenyaEmrShrMapper {
                     identifierTypeName = CONCEPTS.ANC_NUMBER.name;
                     break;
             }
-            if(identifierTypeName != null) {
+            if(!StringUtils.isEmpty(identifierTypeName) && !StringUtils.isEmpty(internalPatientId.getID())) {
                 identifierType.setName(identifierTypeName);
                 patientIdentifier.setIdentifierType(identifierType);
                 patientIdentifier.setIdentifier(internalPatientId.getID());
@@ -277,6 +287,15 @@ public class KenyaEmrShrMapper {
                 }
             } else {
                 Log.e("KenyaEmrShrMapper","No HIV Tests found");
+            }
+
+            List<Immunization> immunizations = shrModel.getImmunizations();
+            if(immunizations != null) {
+                for (Immunization immunization : immunizations) {
+                    encounters.add(createJsonEncounterPayloadFromImmunization(immunization, patient));
+                }
+            } else {
+                Log.e("KenyaEmrShrMapper","No Immunizations found");
             }
             return encounters;
         } catch(ParseException e){
@@ -416,6 +435,147 @@ public class KenyaEmrShrMapper {
 
         return encounterJSON.toString();
     }
+    public static String createJsonEncounterPayloadFromImmunization(Immunization immunization, Patient patient) throws JSONException, ParseException{
+        JSONObject encounterJSON = new JSONObject();
+        JSONObject patientDetails = new JSONObject();
+        JSONObject observationDetails = new JSONObject();
+        JSONObject encounterDetails = new JSONObject();
+
+        Log.e("KenyaEmrShrMapper","Processing Immunization ");
+
+
+        encounterDetails.put("encounter.provider_id", "SHR_USER");
+        encounterDetails.put("encounter.location_id", "SHR_FACILITY");
+
+        Date encounterDateTime = DateUtils.parseDateByPattern(immunization.getDateAdministered(), "yyyymmdd");
+        encounterDetails.put("encounter.encounter_datetime", DateUtils.getFormattedDate(encounterDateTime));
+
+        encounterDetails.put("encounter.form_uuid", StringUtils.defaultString(CONCEPTS.IMMUNIZATION.FORM.FORM_UUID));
+        encounterJSON.put("encounter",encounterDetails);
+
+        patientDetails.put("patient.medical_record_number", StringUtils.defaultString(patient.getIdentifier()));
+        patientDetails.put("patient.given_name", StringUtils.defaultString(patient.getGivenName()));
+        patientDetails.put("patient.middle_name", StringUtils.defaultString(patient.getMiddleName()));
+        patientDetails.put("patient.family_name", StringUtils.defaultString(patient.getFamilyName()));
+        patientDetails.put("patient.sex", StringUtils.defaultString(patient.getGender()));
+        patientDetails.put("patient.uuid", StringUtils.defaultString(patient.getUuid()));
+        if (patient.getBirthdate() != null) {
+            patientDetails.put("patient.birth_date", DateUtils.getFormattedDate(patient.getBirthdate()));
+        }
+
+        encounterJSON.put("patient",patientDetails);
+
+        JSONObject vaccineJson = new JSONObject();
+
+        String answer = null;
+        int sequence = -1;
+        String vaccine = immunization.getName();
+        switch (vaccine){
+            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.BCG.name:
+                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.BCG.concept_id + "^"
+                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.BCG.name + "^" + "99DCT";
+                break;
+            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.IPV.name:
+                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.IPV.concept_id + "^"
+                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.IPV.name + "^" + "99DCT";
+                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.IPV.sequence;
+                break;
+            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES6.name:
+                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES6.concept_id + "^"
+                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES6.name + "^" + "99DCT";
+                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES6.sequence;
+                break;
+            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES9.name:
+                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES9.concept_id + "^"
+                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES9.name + "^" + "99DCT";
+                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES9.sequence;
+                break;
+            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES18.name:
+                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES18.concept_id + "^"
+                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES18.name + "^" + "99DCT";
+                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES18.sequence;
+                break;
+            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV1.name:
+                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV1.concept_id + "^"
+                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV1.name + "^" + "99DCT";
+                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV1.sequence;
+                break;
+            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV2.name:
+                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV2.concept_id + "^"
+                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV2.name + "^" + "99DCT";
+                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV2.sequence;
+                break;
+            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV3.name:
+                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV3.concept_id + "^"
+                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV3.name + "^" + "99DCT";
+                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV3.sequence;
+                break;
+            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV_AT_BIRTH.name:
+                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV_AT_BIRTH.concept_id + "^"
+                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV_AT_BIRTH.name + "^" + "99DCT";
+                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV_AT_BIRTH.sequence;
+                break;
+            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_1.name:
+                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_1.concept_id + "^"
+                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_1.name + "^" + "99DCT";
+                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_1.sequence;
+                break;
+            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_2.name:
+                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_2.concept_id + "^"
+                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_2.name + "^" + "99DCT";
+                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_2.sequence;
+                break;
+            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_3.name:
+                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_3.concept_id + "^"
+                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_3.name + "^" + "99DCT";
+                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_3.sequence;
+                break;
+            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA1.name:
+                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA1.concept_id + "^"
+                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA1.name + "^" + "99DCT";
+                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA1.sequence;
+                break;
+            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA2.name:
+                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA2.concept_id + "^"
+                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA2.name + "^" + "99DCT";
+                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA2.sequence;
+                break;
+            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA3.name:
+                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA3.concept_id + "^"
+                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA3.name + "^" + "99DCT";
+                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA3.sequence;
+                break;
+            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA1.name:
+                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA1.concept_id + "^"
+                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA1.name + "^" + "99DCT";
+                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA1.sequence;
+                break;
+            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA2.name:
+                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA2.concept_id + "^"
+                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA2.name + "^" + "99DCT";
+                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA2.sequence;
+        }
+        if(sequence != -1){
+            String conceptQuestion = CONCEPTS.IMMUNIZATION.VACCINE.concept_id + "^"
+                    + CONCEPTS.IMMUNIZATION.VACCINE.name + "^" + "99DCT";
+            vaccineJson.put(conceptQuestion, answer);
+        }
+        if(!StringUtils.isEmpty(answer)){
+            String conceptQuestion = CONCEPTS.IMMUNIZATION.VACCINE.concept_id + "^"
+                    + CONCEPTS.IMMUNIZATION.VACCINE.name + "^" + "99DCT";
+            vaccineJson.put(conceptQuestion, answer);
+
+            String groupConceptQuestion = CONCEPTS.IMMUNIZATION.GROUP.concept_id + "^"
+                    + CONCEPTS.IMMUNIZATION.GROUP.name + "^" + "99DCT";
+            observationDetails.put(groupConceptQuestion,vaccineJson);
+            encounterJSON.put("observation",observationDetails);
+        }
+
+        encounterJSON.put("patient",patientDetails);
+        encounterJSON.put("encounter",encounterDetails);
+
+        return encounterJSON.toString();
+    }
 
     /**
      * Creates a new SHR Model for a given Patient. Iterates through patient demographics, identifiers, addresses and
@@ -425,6 +585,7 @@ public class KenyaEmrShrMapper {
      * @throws IOException
      */
     public static KenyaEmrShrModel createInitialSHRModelForPatient(Patient patient) throws ShrParseException{
+
         return null;
     }
 

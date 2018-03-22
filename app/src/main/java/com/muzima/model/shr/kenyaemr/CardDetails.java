@@ -7,12 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "STATUS",
-    "REASON",
-    "LAST_UPDATED",
-    "LAST_UPDATED_FACILITY"
-})
+
 public class CardDetails {
 
     @JsonProperty("STATUS")

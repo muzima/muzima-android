@@ -31,12 +31,16 @@ import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.SmartCardRecord;
 import com.muzima.api.model.User;
-import com.muzima.api.service.SmartCardRecordService;
-import com.muzima.controller.*;
-import com.muzima.model.shr.kenyaemr.KenyaEmrShrModel;
+import com.muzima.controller.EncounterController;
+import com.muzima.controller.FormController;
+import com.muzima.controller.NotificationController;
+import com.muzima.controller.ObservationController;
+import com.muzima.controller.PatientController;
+import com.muzima.controller.SmartCardController;
 import com.muzima.service.JSONInputOutputToDisk;
 import com.muzima.utils.Constants;
-import com.muzima.utils.smartcard.KenyaEmrShrMapper;
+import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
+import com.muzima.utils.smartcard.SmartCardIntentResult;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.SHRObservationsDataActivity;
 import com.muzima.view.encounters.EncountersActivity;
@@ -49,6 +53,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.muzima.utils.DateUtils.getFormattedDate;
+import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 
 public class PatientSummaryActivity extends BaseActivity {
     private static final String TAG = "PatientSummaryActivity";
@@ -190,12 +195,71 @@ public class PatientSummaryActivity extends BaseActivity {
         switch (item.getItemId()) {
             case R.id.shr_client_summary:
                 //todo write card workspace.
-                writeShrDataOptionDialog.show();
+
+                invokeShrApplication();
+
                 break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void invokeShrApplication() {
+        SmartCardController smartCardController = ((MuzimaApplication)getApplicationContext()).getSmartCardController();
+        SmartCardRecord smartCardRecord = null;
+        try {
+            smartCardRecord = smartCardController.getSmartCardRecordByPersonUuid(patient.getUuid());
+        } catch (SmartCardController.SmartCardRecordFetchException e) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(true)
+                    .setMessage("Could not obtain smartcard record for writing to card. "+e.getMessage())
+                    .show();
+            Log.e(TAG,"Could not obtain smartcard record for writing to card",e);
+        }
+        if(smartCardRecord != null) {
+            SmartCardIntentIntegrator shrIntegrator = new SmartCardIntentIntegrator(this);
+            try {
+                shrIntegrator.initiateCardWrite(smartCardRecord.getPlainPayload());
+            } catch (IOException e) {
+                Log.e(TAG,"Could not write to card",e);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setCancelable(true)
+                        .setMessage("Could not write to card. "+e.getMessage())
+                        .show();
+            }
+            Toast.makeText(getApplicationContext(), "Opening Card Reader", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
+        switch (requestCode) {
+            case SMARTCARD_READ_REQUEST_CODE:
+                SmartCardIntentResult cardReadIntentResult = null;
+                try {
+                    cardReadIntentResult = SmartCardIntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
+                    if(cardReadIntentResult.isSuccessResult()){
+                        Toast.makeText(this,"Successfully written to card. ",Toast.LENGTH_LONG).show();
+                    } else {
+                        StringBuilder stringBuilder = new StringBuilder();
+                        List<String> errors = cardReadIntentResult.getErrors();
+                        if(errors != null && errors.size()>0) {
+                            for (String error:errors) {
+                                stringBuilder.append(error);
+                            }
+                        }
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setCancelable(true)
+                                .setMessage("Could not write to card. "+errors)
+                                .show();
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG,"Could not get result",e);
+                }
+                break;
+        }
     }
 
     public void showForms(View v) {

@@ -7,11 +7,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import com.muzima.api.model.SmartCardRecord;
 import com.muzima.utils.StringUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SmartCardIntentIntegrator {
     private static String TAG = "CardIntentIntegrator";
@@ -71,12 +74,19 @@ public class SmartCardIntentIntegrator {
                 smartCardRecord.setEncryptedPayload(jsonSHRModel);
                 result.setSHRModel(smartCardRecord);
             }else if (resultCode == Activity.RESULT_CANCELED) {
-                String errors = intent.getStringExtra(EXTRA_ERRORS);
-                if(StringUtils.isEmpty(errors)){
-                    result.setErrors("Could not complete request");
-                } else {
-                    result.setErrors(errors);
+                Bundle bundle = intent.getExtras();
+                Object errorMessages = bundle.get(EXTRA_ERRORS);
+                List<String> returnedMessages = new ArrayList<>();
+                if(errorMessages instanceof String){
+                    if(StringUtils.isEmpty((String)errorMessages)){
+                        returnedMessages.add((String)errorMessages);
+                    } else {
+                        returnedMessages.add("Could not complete request");
+                    }
+                } else if(errorMessages instanceof ArrayList){
+                    returnedMessages.addAll( (List<String>)errorMessages);
                 }
+                result.setErrors(returnedMessages);
             }
             return result;
         }

@@ -36,6 +36,7 @@ import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
 import com.muzima.controller.SetupConfigurationController;
+import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.LocalePreferenceService;
@@ -92,6 +93,7 @@ public class MuzimaApplication extends Application {
     private LocalePreferenceService localePreferenceService;
     private SetupConfigurationController setupConfigurationController;
     private MuzimaSettingController settingsController;
+    private SmartCardController smartCardController;
     private MuzimaTimer muzimaTimer;
     public static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
@@ -339,6 +341,16 @@ public class MuzimaApplication extends Application {
             }
         }
         return settingsController;
+    }
+    public SmartCardController getSmartCardController() {
+        if(smartCardController == null){
+            try {
+                smartCardController = new SmartCardController(muzimaContext.getSmartCardRecordService());
+            } catch (IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+        return smartCardController;
     }
 
     public void resetTimer(int timeOutInMin) {
