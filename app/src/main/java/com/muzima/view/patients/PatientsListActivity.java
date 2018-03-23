@@ -363,7 +363,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     }
 
-    public void prepareLocalSearchNotifyDialog(Context context) {
+    public void prepareLocalSearchNotifyDialog(Context context,Patient patient) {
 
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = layoutInflater.inflate(R.layout.patient_shr_card_search_dialog, null);
@@ -377,7 +377,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         searchDialogTextView = (TextView) dialogView.findViewById(R.id.patent_dialog_message_textview);
         yesOptionShrSearchButton = (Button) dialogView.findViewById(R.id.yes_shr_search_dialog);
         noOptionShrSearchButton = (Button) dialogView.findViewById(R.id.no_shr_search_dialog);
-        searchDialogTextView.setText("Patient NOT Found. Would you like to search server ?");
+        searchDialogTextView
+                .setText("Smartcard client ["+patient.getDisplayName()+"] not in mUzima list. Search the client in server now ?");
 
         yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -411,7 +412,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         searchDialogTextView = (TextView) dialogView.findViewById(R.id.patent_dialog_message_textview);
         yesOptionShrSearchButton = (Button) dialogView.findViewById(R.id.yes_shr_search_dialog);
         noOptionShrSearchButton = (Button) dialogView.findViewById(R.id.no_shr_search_dialog);
-        searchDialogTextView.setText("Patient not found on server. Would you like to register patient ?");
+        searchDialogTextView.setText("Smartcard client  not in server. Register client in mUzima now ?");
 
         yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -760,7 +761,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            prepareLocalSearchNotifyDialog(getApplicationContext());
+            prepareLocalSearchNotifyDialog(getApplicationContext(),shrPatient);
         }
 
         @Override

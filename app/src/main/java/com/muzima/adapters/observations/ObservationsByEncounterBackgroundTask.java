@@ -109,7 +109,7 @@ public class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Encou
     @Override
     protected void onPostExecute(Encounters encountersWithObservations) {
         if (encountersWithObservations == null) {
-            Toast.makeText(observationsByEncounterAdapter.getContext(), observationsByEncounterAdapter.getContext().getString(R.string.error_observation_fetch), Toast.LENGTH_SHORT).show();
+            Toast.makeText(observationsByEncounterAdapter.getContext(),"This patient does not have any SHR data.", Toast.LENGTH_SHORT).show();
             return;
         }
         if (observationsByEncounterAdapter.getBackgroundListQueryTaskListener() != null) {
