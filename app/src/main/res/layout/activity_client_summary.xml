@@ -234,6 +234,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentBottom="true"
                         android:onClick="switchSyncStatus"
+                        android:visibility="gone"
                         android:contentDescription="card_sync_status"
                         android:src="@drawable/ic_action_shr_sync_needed"
                         android:background="@drawable/grid_buttons"

@@ -44,7 +44,7 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
         this.conceptAction = conceptAction;
         this.isShrData = isShrData;
 
-        if (isShrData){
+        if (isShrData) {
             loadComposedShrConceptId();
         }
     }
@@ -59,20 +59,22 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
     @Override
     protected Concepts doInBackground(Void... params) {
         Concepts conceptsWithObservations = null;
-        if (isShrData){
+        if (isShrData) {
             conceptsWithObservations = getShrConceptWithObservations();
-        }else {
+        } else {
             conceptsWithObservations = getNonShrConceptWithObservations();
         }
         return conceptsWithObservations;
     }
 
 
-
     @Override
     protected void onPostExecute(Concepts conceptsWithObservations) {
         if (conceptsWithObservations == null) {
-            Toast.makeText(observationsByConceptAdapter.getContext(), observationsByConceptAdapter.getContext().getString(R.string.error_observation_fetch), Toast.LENGTH_SHORT).show();
+            if (isShrData) {
+                Toast.makeText(observationsByConceptAdapter.getContext(), "This patient does not have any SHR data.", Toast.LENGTH_SHORT).show();
+            } else
+                Toast.makeText(observationsByConceptAdapter.getContext(), observationsByConceptAdapter.getContext().getString(R.string.error_observation_fetch), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -97,12 +99,12 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
 
     private void loadComposedShrConceptId() {
         List<String> conceptIds = new ArrayList<>();
-
         conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_RESULT.name);
         conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_TYPE.name);
-        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_FACILITY.name);
         conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_STRATEGY.name);
         conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.VACCINE.name);
+        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.SEQUENCE.name);
+        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.GROUP.name);
 
 
         shrConcepts = conceptIds;
