@@ -12,17 +12,26 @@ import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientIdentifierType;
+import com.muzima.api.model.PersonAddress;
 import com.muzima.api.model.PersonName;
+import com.muzima.api.model.SmartCardRecord;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.ObservationController;
+import com.muzima.controller.PatientController;
+import com.muzima.controller.SmartCardController;
+import com.muzima.model.observation.EncounterWithObservations;
+import com.muzima.model.observation.Encounters;
 import com.muzima.model.shr.kenyaemr.ExternalPatientId;
 import com.muzima.model.shr.kenyaemr.HIVTest;
 import com.muzima.model.shr.kenyaemr.Immunization;
 import com.muzima.model.shr.kenyaemr.InternalPatientId;
 import com.muzima.model.shr.kenyaemr.KenyaEmrShrModel;
+import com.muzima.model.shr.kenyaemr.PatientAddress;
 import com.muzima.model.shr.kenyaemr.PatientIdentification;
+import com.muzima.model.shr.kenyaemr.PatientName;
+import com.muzima.model.shr.kenyaemr.PhysicalAddress;
 import com.muzima.model.shr.kenyaemr.ProviderDetails;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.utils.Constants;
@@ -42,9 +51,9 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
-import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 
 public class KenyaEmrShrMapper {
+    private static final String TAG = KenyaEmrShrMapper.class.getSimpleName();
 
     /**
      * Converts an SHR model from JSON representation to KenyaEmrShrModel
@@ -109,7 +118,7 @@ public class KenyaEmrShrMapper {
             }
 
             //date of birth
-            Date dob = DateUtils.parseDateByPattern(identification.getDateOfBirth(),"yyyymmdd");
+            Date dob = DateUtils.parseDateByPattern(identification.getDateOfBirth(),"yyyyMMdd");
             patient.setBirthdate(dob);
 
             //Gender
@@ -148,6 +157,79 @@ public class KenyaEmrShrMapper {
         } else {
             throw new ShrParseException("Could not find patient names");
         }
+    }
+
+    public static KenyaEmrShrModel putIdentifiersIntoShrModel(KenyaEmrShrModel shrModel,List<PatientIdentifier> identifiers ){
+        PatientIdentification patientIdentification = shrModel.getPatientIdentification();
+        if(patientIdentification == null){
+            patientIdentification = new PatientIdentification();
+        }
+
+        List<InternalPatientId> internalPatientIds = patientIdentification.getInternalPatientIds();
+        if(internalPatientIds == null){
+            internalPatientIds = new ArrayList<>();
+        }
+
+        String assigningFacility = "10829";
+
+        for(PatientIdentifier identifier:identifiers){
+
+            try {
+                String shrIdentifierTypeName = null;
+                String assigningAuthority = null;
+
+                switch (identifier.getIdentifierType().getName()) {
+                    case IdentifierType.GODS_NUMBER.name:
+                        ExternalPatientId externalPatientId = patientIdentification.getExternalPatientId();
+                        if(externalPatientId == null){
+                            externalPatientId = new ExternalPatientId();
+                        }
+                        externalPatientId.setIdentifierType(IdentifierType.GODS_NUMBER.shr_name);
+                        externalPatientId.setID(identifier.getIdentifier());
+                        externalPatientId.setAssigningAuthority("MPI");
+                        externalPatientId.setAssigningFacility(assigningFacility);
+                        patientIdentification.setExternalPatientId(externalPatientId);
+                        break;
+                    case IdentifierType.CARD_SERIAL_NUMBER.name:
+                        shrIdentifierTypeName = IdentifierType.CARD_SERIAL_NUMBER.shr_name;
+                        assigningAuthority = "CARD_REGISTRY";
+                        break;
+                    case IdentifierType.CCC_NUMBER.name:
+                        shrIdentifierTypeName = IdentifierType.CCC_NUMBER.shr_name;
+                        assigningAuthority = "CCC";
+                        break;
+                    case IdentifierType.HEI_NUMBER.name:
+                        shrIdentifierTypeName = IdentifierType.HEI_NUMBER.shr_name;
+                        assigningAuthority = "MCH";
+                        break;
+                    case IdentifierType.HTS_NUMBER.name:
+                        shrIdentifierTypeName = IdentifierType.HTS_NUMBER.shr_name;
+                        assigningAuthority = "HTS";
+                        break;
+                    case IdentifierType.NATIONAL_ID.name:
+                        shrIdentifierTypeName = IdentifierType.NATIONAL_ID.shr_name;
+                        assigningAuthority = "GK";
+                        break;
+                    case CONCEPTS.ANC_NUMBER.name:
+                        shrIdentifierTypeName = CONCEPTS.ANC_NUMBER.shr_name;
+                        assigningAuthority = "ANC";
+                        break;
+                }
+                if(!StringUtils.isEmpty(shrIdentifierTypeName) && !StringUtils.isEmpty(identifier.getIdentifier())){
+                    InternalPatientId internalPatientId = new InternalPatientId();
+                    internalPatientId.setIdentifierType(shrIdentifierTypeName);
+                    internalPatientId.setAssigningAuthority(assigningAuthority);
+                    internalPatientId.setID(identifier.getIdentifier());
+                    internalPatientId.setAssigningFacility(assigningFacility);
+                    internalPatientIds.add(internalPatientId);
+                }
+            }catch(Exception e){
+                Log.e(TAG,"Could not add identifier",e);
+            }
+        }
+        patientIdentification.setInternalPatientIds(internalPatientIds);
+        shrModel.setPatientIdentification(patientIdentification);
+        return shrModel;
     }
 
     public static List<PatientIdentifier> extractPatientIdentifiersFromShrModel(KenyaEmrShrModel shrModel){
@@ -316,7 +398,7 @@ public class KenyaEmrShrMapper {
         encounterDetails.put("encounter.provider_id", hivTest.getProviderDetails().getId());
         encounterDetails.put("encounter.location_id", hivTest.getFacility());
 
-        Date encounterDateTime = DateUtils.parseDateByPattern(hivTest.getDate(), "yyyymmdd");
+        Date encounterDateTime = DateUtils.parseDateByPattern(hivTest.getDate(), "yyyyMMdd");
         encounterDetails.put("encounter.encounter_datetime", DateUtils.getFormattedDate(encounterDateTime));
 
         encounterDetails.put("encounter.form_uuid", StringUtils.defaultString(CONCEPTS.HIV_TESTS.FORM.FORM_UUID));
@@ -447,7 +529,7 @@ public class KenyaEmrShrMapper {
         encounterDetails.put("encounter.provider_id", "SHR_USER");
         encounterDetails.put("encounter.location_id", "SHR_FACILITY");
 
-        Date encounterDateTime = DateUtils.parseDateByPattern(immunization.getDateAdministered(), "yyyymmdd");
+        Date encounterDateTime = DateUtils.parseDateByPattern(immunization.getDateAdministered(), "yyyyMMdd");
         encounterDetails.put("encounter.encounter_datetime", DateUtils.getFormattedDate(encounterDateTime));
 
         encounterDetails.put("encounter.form_uuid", StringUtils.defaultString(CONCEPTS.IMMUNIZATION.FORM.FORM_UUID));
@@ -577,6 +659,43 @@ public class KenyaEmrShrMapper {
         return encounterJSON.toString();
     }
 
+    public static void updateSHRSmartCardRecordForPatient(MuzimaApplication application, String patientUuid){
+        try {
+            ObservationController observationController = application.getObservationController();
+            SmartCardController smartCardController = application.getSmartCardController();
+            PatientController patientController = application.getPatientController();
+            SmartCardRecord smartCardRecord = smartCardController.getSmartCardRecordByPersonUuid(patientUuid);
+
+            Patient patient = patientController.getPatientByUuid(patientUuid);
+            if(smartCardRecord == null && patient != null){
+                KenyaEmrShrModel shrModel = KenyaEmrShrMapper.createInitialSHRModelForPatient(patient);
+                String jsonShr = KenyaEmrShrMapper.createJsonFromSHRModel(shrModel);
+                smartCardRecord = new SmartCardRecord();
+                smartCardRecord.setPlainPayload(jsonShr);
+                smartCardRecord.setPersonUuid(patient.getUuid());
+                smartCardRecord.setUuid(UUID.randomUUID().toString());
+                smartCardController.updateSmartCardRecord(smartCardRecord);
+            } else {
+                Encounters encountersWithObservations = observationController.getEncountersWithObservations(patient.getUuid());
+                KenyaEmrShrModel shrModel = KenyaEmrShrMapper.createSHRModelFromJson(smartCardRecord.getPlainPayload());
+                shrModel = KenyaEmrShrMapper.addEncounterObservationsToShrModel(shrModel, encountersWithObservations);
+                String jsonShr = KenyaEmrShrMapper.createJsonFromSHRModel(shrModel);
+                smartCardRecord.setPlainPayload(jsonShr);
+                smartCardController.updateSmartCardRecord(smartCardRecord);
+            }
+        } catch (KenyaEmrShrMapper.ShrParseException e) {
+            Log.e(TAG, "Cannot get HIV Encounter");
+        } catch (SmartCardController.SmartCardRecordFetchException e) {
+            Log.e(TAG, "Cannot get HIV Encounter");
+        } catch (SmartCardController.SmartCardRecordSaveException e) {
+            Log.e(TAG, "Cannot get HIV Encounter");
+        } catch (ObservationController.LoadObservationException e) {
+            Log.e(TAG, "Cannot get HIV Encounter");
+        } catch (PatientController.PatientLoadException e) {
+            Log.e(TAG, "Cannot get HIV Encounter");
+        }
+    }
+
     /**
      * Creates a new SHR Model for a given Patient. Iterates through patient demographics, identifiers, addresses and
      * attributes to construct this model
@@ -585,31 +704,250 @@ public class KenyaEmrShrMapper {
      * @throws IOException
      */
     public static KenyaEmrShrModel createInitialSHRModelForPatient(Patient patient) throws ShrParseException{
+        KenyaEmrShrModel shrModel = new KenyaEmrShrModel();
+        PatientIdentification identification = new PatientIdentification();
 
-        return null;
-    }
+        PatientName patientName = new PatientName();
 
-    /**
-     * Updates SHR Model Patient details for a given Patient. Iterates through patient demographics, identifiers, addresses and
-     * attributes to update this model
-     * @param patient the Patient Object for which to update SHR
-     * @param shrModel the SHR model Object for which to update Patient details
-     * @return KenyaEmrShrModel representation of newlyCreatedSHR
-     * @throws IOException
-     */
-    public static KenyaEmrShrModel updateSHRModelPatientDetailsForPatient(Patient patient, KenyaEmrShrModel shrModel) throws ShrParseException{
-        return null;
+        patientName.setFirstName(patient.getFamilyName());
+        patientName.setLastName(patient.getGivenName());
+        patientName.setMiddleName(patient.getMiddleName());
+        identification.setPatientName(patientName);
+
+        String dateOfBirth = DateUtils.getFormattedDate(patient.getBirthdate(),"yyyyMMdd");
+        identification.setDateOfBirth(dateOfBirth);
+
+        String dateObBirthPrecision = "EXACT";
+        if(patient.getBirthdateEstimated()){
+            dateObBirthPrecision = "ESTIMATED";
+        }
+        identification.setDateOfBirthPrecision(dateObBirthPrecision);
+
+        PersonAddress kenyaEmrPersonAddress = patient.getPreferredAddress();
+        if(kenyaEmrPersonAddress == null){
+            List<PersonAddress> kenyaEmrPersonAddresses = patient.getAddresses();
+            if(kenyaEmrPersonAddresses.size() > 0){
+                kenyaEmrPersonAddress = kenyaEmrPersonAddresses.get(0);
+            }
+        }
+        if(kenyaEmrPersonAddress != null){
+            PatientAddress shrAddress = identification.getPatientAddress();
+            if(shrAddress == null){
+                shrAddress = new PatientAddress();
+            }
+
+            PhysicalAddress physicalAddress = shrAddress.getPhysicalAddress();
+            if(physicalAddress == null){
+                physicalAddress = new PhysicalAddress();
+            }
+
+            physicalAddress.setCounty(kenyaEmrPersonAddress.getCountry());
+            physicalAddress.setSubcounty(kenyaEmrPersonAddress.getCountyDistrict());
+            physicalAddress.setWard(kenyaEmrPersonAddress.getAddress4());
+            physicalAddress.setNearestLandmark(kenyaEmrPersonAddress.getAddress2());
+            physicalAddress.setVillage(kenyaEmrPersonAddress.getCityVillage());
+            shrAddress.setPostalAddress(kenyaEmrPersonAddress.getAddress1());
+            identification.setPatientAddress(shrAddress);
+        }
+
+        shrModel = putIdentifiersIntoShrModel(shrModel,patient.getIdentifiers());
+        EncounterController encounterController = null;
+        ObservationController observationController = null;
+        try {
+            List<Encounter> encounters = encounterController.getEncountersByEncounterTypeUuidAndPatientUuid(
+                    CONCEPTS.HIV_TESTS.ENCOUNTER.ENCOUNTER_TYPE_UUID, patient.getUuid());
+            Encounters encountersWithObservations = new Encounters();
+            for(Encounter encounter:encounters) {
+                Encounters encounterObs = observationController.getObservationsByEncounterUuid(encounter.getUuid());
+                if(!encounters.isEmpty()){
+                    encountersWithObservations.addAll(encounterObs);
+                }
+            }
+            if(!encountersWithObservations.isEmpty()){
+                shrModel = addEncounterObservationsToShrModel(shrModel,encountersWithObservations);
+            }
+        } catch (EncounterController.DownloadEncounterException e) {
+            Log.e(TAG,"Could not obtain encounterType");
+        } catch (ObservationController.LoadObservationException e) {
+            Log.e(TAG,"Could not obtain Observations");
+        }
+
+
+        return shrModel;
     }
 
     /**
      * Adds Observations to an SHR model
      * @param shrModel
-     * @param observations
+     * @param encountersWithObservations
      * @return
      * @throws IOException
      */
-    public static KenyaEmrShrModel addObservationsToShrModel(KenyaEmrShrModel shrModel, List<Observation> observations ) throws ShrParseException{
-        return null;
+    public static KenyaEmrShrModel addEncounterObservationsToShrModel(KenyaEmrShrModel shrModel, Encounters encountersWithObservations ) throws ShrParseException{
+        List<HIVTest> hivTests = shrModel.getHivTests() == null ? new ArrayList<HIVTest>() : shrModel.getHivTests();
+        List<Immunization> immunizations = shrModel.getImmunizations() == null ? new ArrayList<Immunization>() : shrModel.getImmunizations();
+        for(EncounterWithObservations encounterWithObservations: encountersWithObservations){
+            Encounter encounter = encounterWithObservations.getEncounter();
+            if(encounter.getEncounterType().getUuid().equalsIgnoreCase(CONCEPTS.HIV_TESTS.ENCOUNTER.ENCOUNTER_TYPE_UUID)){
+                HIVTest hivTest = getHivTestFromEncounter(encounterWithObservations);
+                if(hivTest != null){
+                    hivTests.add(hivTest);
+                }
+            } else if(encounter.getEncounterType().getUuid().equalsIgnoreCase(CONCEPTS.IMMUNIZATION.ENCOUNTER.ENCOUNTER_TYPE_UUID)){
+                Immunization immunization = getImmunizationFromEncounter(encounterWithObservations);
+                if(immunization != null){
+                    immunizations.add(immunization);
+                }
+            }
+        }
+        shrModel.setHivTests(hivTests);
+        shrModel.setImmunizations(immunizations);
+        return shrModel;
+    }
+
+    public static HIVTest getHivTestFromEncounter(EncounterWithObservations encounterWithObservations){
+        List<Observation> observations = encounterWithObservations.getObservations();
+        HIVTest hivTest = new HIVTest();
+        ProviderDetails providerDetails = null;
+        for(Observation observation:observations){
+            Concept answerConcept = null;
+            String shrAnswer = null;
+            switch(observation.getConcept().getId()){
+                case CONCEPTS.HIV_TESTS.TEST_RESULT.concept_id:
+                    answerConcept = observation.getValueCoded();
+                    if(answerConcept!= null) {
+                        switch (answerConcept.getId()) {
+                            case CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.POSITIVE.concept_id:
+                                shrAnswer = CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.POSITIVE.name;
+                                break;
+                            case CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.NEGATIVE.concept_id:
+                                shrAnswer = CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.NEGATIVE.name;
+                                break;
+                            case CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.INCONCLUSIVE.concept_id:
+                                shrAnswer = CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.INCONCLUSIVE.name;
+                                break;
+                        }
+                        if(!StringUtils.isEmpty(shrAnswer)){
+                            hivTest.setResult(shrAnswer);
+                        }
+                    }
+                    break;
+
+                case CONCEPTS.HIV_TESTS.TEST_TYPE.concept_id:
+                    answerConcept = observation.getValueCoded();
+                    if(answerConcept!= null) {
+                        switch (answerConcept.getId()) {
+                            case CONCEPTS.HIV_TESTS.TEST_TYPE.ANSWERS.CONFIRMATORY.concept_id:
+                                shrAnswer = CONCEPTS.HIV_TESTS.TEST_TYPE.ANSWERS.CONFIRMATORY.name;
+                                break;
+                            case CONCEPTS.HIV_TESTS.TEST_TYPE.ANSWERS.SCREENING.concept_id:
+                                shrAnswer = CONCEPTS.HIV_TESTS.TEST_TYPE.ANSWERS.SCREENING.name;
+                                break;
+                        }
+                        if(!StringUtils.isEmpty(shrAnswer)){
+                            hivTest.setType(shrAnswer);
+                        }
+                    }
+                    break;
+
+                case CONCEPTS.HIV_TESTS.TEST_STRATEGY.concept_id:
+                    answerConcept = observation.getValueCoded();
+                    if(answerConcept!= null) {
+                        switch (answerConcept.getId()) {
+                            case CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.NP.concept_id:
+                                shrAnswer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.NP.name;
+                                break;
+                            case CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.HB.concept_id:
+                                shrAnswer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.HB.name;
+                                break;
+                            case CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.HP.concept_id:
+                                shrAnswer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.HB.name;
+                                break;
+                            case CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.MO.concept_id:
+                                shrAnswer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.MO.name;
+                                break;
+                            case CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.VI.concept_id:
+                                shrAnswer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.VI.name;
+                                break;
+                            case CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.VS.concept_id:
+                                shrAnswer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.VS.name;
+                                break;
+                        }
+                        if(!StringUtils.isEmpty(shrAnswer)){
+                            hivTest.setStrategy(shrAnswer);
+                        }
+                    }
+                    break;
+
+                case CONCEPTS.HIV_TESTS.TEST_FACILITY.concept_id:
+                    hivTest.setFacility(observation.getValueAsString());
+                    break;
+
+                case CONCEPTS.HIV_TESTS.PROVIDER_DETAILS.ID.concept_id:
+                    if(providerDetails == null){
+                        providerDetails = new ProviderDetails();
+                    }
+                    providerDetails.setId(observation.getValueAsString());
+                    break;
+
+                case CONCEPTS.HIV_TESTS.PROVIDER_DETAILS.NAME.concept_id:
+                    if(providerDetails == null){
+                        providerDetails = new ProviderDetails();
+                    }
+                    providerDetails.setName(observation.getValueAsString());
+                    break;
+            }
+        }
+        if(providerDetails != null){
+            hivTest.setProviderDetails(providerDetails);
+        }
+
+        return hivTest;
+    }
+
+    public static Immunization getImmunizationFromEncounter(EncounterWithObservations encounterWithObservations){
+        List<Observation> observations = encounterWithObservations.getObservations();
+        Immunization immunization = new Immunization();
+        for(Observation observation:observations){
+            String answer = null;
+            Concept concept = observation.getConcept();
+            Concept valueCoded = observation.getValueCoded();
+            if(concept.getId() == CONCEPTS.IMMUNIZATION.VACCINE.concept_id && valueCoded!= null) {
+                switch (valueCoded.getId()) {
+                    case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.BCG.concept_id:
+                        answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.BCG.name;
+                        break;
+                    case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.IPV.concept_id:
+                        answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.IPV.name;
+                        break;
+                    case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES6.concept_id:
+                        answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES6.name;
+                        break;
+                    case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES9.concept_id:
+                        answer = valueCoded.getName();
+                        break;
+                    case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV2.concept_id:
+                        answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.IPV.name;
+                        break;
+                    case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_1.concept_id:
+                        answer = valueCoded.getName();
+                        break;
+                    case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA1.concept_id:
+                        answer = valueCoded.getName();
+                        break;
+                    case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA1.concept_id:
+                        answer = valueCoded.getName();
+                }
+                if(!StringUtils.isEmpty(answer)){
+                    immunization.setName(answer);
+                    Date obsDateTime = observation.getObservationDatetime();
+                    String dateAdministered = DateUtils.getFormattedDate(obsDateTime, "yyyyMMdd");
+                    immunization.setDateAdministered(dateAdministered);
+                    break;
+                }
+            }
+        }
+        return immunization;
     }
 
 

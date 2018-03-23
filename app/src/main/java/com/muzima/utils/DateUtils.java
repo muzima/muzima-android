@@ -40,6 +40,11 @@ public class DateUtils {
         return formattedDate.format(date);
     }
 
+    public static String getFormattedDate(Date date, String pattern){
+        SimpleDateFormat formattedDate = new SimpleDateFormat(pattern);
+        return formattedDate.format(date);
+    }
+
     public static String getMonthNameFormattedDate(Date date){
         SimpleDateFormat formattedDate = new SimpleDateFormat("dd MMM yyyy");
         return formattedDate.format(date);
