@@ -656,6 +656,8 @@ public class KenyaEmrShrMapper {
         encounterJSON.put("patient",patientDetails);
         encounterJSON.put("encounter",encounterDetails);
 
+        Log.e("KenyaEmrShrMapper","IMMUNIZATION PAYLOAD: "+encounterJSON.toString());
+
         return encounterJSON.toString();
     }
 
@@ -668,7 +670,7 @@ public class KenyaEmrShrMapper {
 
             Patient patient = patientController.getPatientByUuid(patientUuid);
             if(smartCardRecord == null && patient != null){
-                KenyaEmrShrModel shrModel = KenyaEmrShrMapper.createInitialSHRModelForPatient(patient);
+                KenyaEmrShrModel shrModel = KenyaEmrShrMapper.createInitialSHRModelForPatient(application,patient);
                 String jsonShr = KenyaEmrShrMapper.createJsonFromSHRModel(shrModel);
                 smartCardRecord = new SmartCardRecord();
                 smartCardRecord.setPlainPayload(jsonShr);
@@ -703,7 +705,7 @@ public class KenyaEmrShrMapper {
      * @return KenyaEmrShrModel representation of newlyCreatedSHR
      * @throws IOException
      */
-    public static KenyaEmrShrModel createInitialSHRModelForPatient(Patient patient) throws ShrParseException{
+    public static KenyaEmrShrModel createInitialSHRModelForPatient(MuzimaApplication application, Patient patient) throws ShrParseException{
         KenyaEmrShrModel shrModel = new KenyaEmrShrModel();
         PatientIdentification identification = new PatientIdentification();
 
@@ -723,7 +725,12 @@ public class KenyaEmrShrMapper {
         }
         identification.setDateOfBirthPrecision(dateObBirthPrecision);
 
-        PersonAddress kenyaEmrPersonAddress = patient.getPreferredAddress();
+        PersonAddress kenyaEmrPersonAddress = null;
+        try{
+            kenyaEmrPersonAddress = patient.getPreferredAddress();
+        } catch(NullPointerException e){
+            Log.e(TAG,"Could not get preferred Address");
+        }
         if(kenyaEmrPersonAddress == null){
             List<PersonAddress> kenyaEmrPersonAddresses = patient.getAddresses();
             if(kenyaEmrPersonAddresses.size() > 0){
@@ -751,8 +758,8 @@ public class KenyaEmrShrMapper {
         }
 
         shrModel = putIdentifiersIntoShrModel(shrModel,patient.getIdentifiers());
-        EncounterController encounterController = null;
-        ObservationController observationController = null;
+        EncounterController encounterController = application.getEncounterController();
+        ObservationController observationController = application.getObservationController();
         try {
             List<Encounter> encounters = encounterController.getEncountersByEncounterTypeUuidAndPatientUuid(
                     CONCEPTS.HIV_TESTS.ENCOUNTER.ENCOUNTER_TYPE_UUID, patient.getUuid());
