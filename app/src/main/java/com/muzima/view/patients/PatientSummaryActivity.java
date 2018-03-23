@@ -51,6 +51,7 @@ import com.muzima.view.encounters.EncountersActivity;
 import com.muzima.view.forms.PatientFormsActivity;
 import com.muzima.view.notifications.PatientNotificationActivity;
 import com.muzima.view.observations.ObservationsActivity;
+import org.apache.lucene.util.fst.BytesRefFSTEnum;
 
 import java.io.IOException;
 import java.util.List;
@@ -58,6 +59,7 @@ import java.util.UUID;
 
 import static com.muzima.utils.DateUtils.getFormattedDate;
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
+import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_WRITE_REQUEST_CODE;
 
 public class PatientSummaryActivity extends BaseActivity {
     private static final String TAG = "PatientSummaryActivity";
@@ -268,6 +270,10 @@ public class PatientSummaryActivity extends BaseActivity {
                 } catch (Exception e) {
                     Log.e(TAG, "Could not get result", e);
                 }
+                break;
+
+            case SMARTCARD_WRITE_REQUEST_CODE:
+                //todo write to card
                 break;
         }
     }
