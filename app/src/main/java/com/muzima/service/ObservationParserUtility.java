@@ -12,6 +12,7 @@ package com.muzima.service;
 
 import android.util.Log;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.ConceptName;
 import com.muzima.api.model.ConceptType;
@@ -53,11 +54,11 @@ public class ObservationParserUtility {
     public ProviderController providerController;
     private List<Concept> newConceptList;
 
-    public ObservationParserUtility(ConceptController conceptController,LocationController locationController, ProviderController providerController,FormController formController) {
-        this.conceptController = conceptController;
-        this.locationController = locationController;
-        this.providerController = providerController;
-        this.formController = formController;
+    public ObservationParserUtility(MuzimaApplication muzimaApplication) {
+        this.conceptController = muzimaApplication.getConceptController();
+        this.locationController = muzimaApplication.getLocationController();
+        this.providerController = muzimaApplication.getProviderController();
+        this.formController = muzimaApplication.getFormController();
         this.newConceptList = new ArrayList<Concept>();
     }
 
@@ -87,7 +88,13 @@ public class ObservationParserUtility {
         }
         Concept observedConcept = conceptController.getConceptByName(conceptName);
         if (observedConcept == null) {
-            observedConcept = buildDummyConcept(conceptName);
+            String conceptId = getConceptId(rawConceptName);
+            int intConceptId = Integer.parseInt(conceptId);
+            if(intConceptId >0){
+                observedConcept = buildDummyConceptWithId(intConceptId, conceptName);
+            } else {
+                observedConcept = buildDummyConcept(conceptName);
+            }
             newConceptList.add(observedConcept);
         }
         return observedConcept;
@@ -101,7 +108,6 @@ public class ObservationParserUtility {
         }
         Observation observation = new Observation();
         observation.setUuid(getObservationUuid());
-        observation.setConcept(concept);
         observation.setValueCoded(defaultValueCodedConcept());
         if (concept.isCoded()) {
             try {
@@ -117,11 +123,22 @@ public class ObservationParserUtility {
         } else {
             String conceptName = getConceptName(value);
             if(!(StringUtils.isEmpty(conceptName))){
-                observation.setValueText(conceptName);
+                try {
+                    Concept valueCoded = getConceptEntity(value);
+                    observation.setValueCoded(valueCoded);
+                } catch (ConceptController.ConceptParseException e) {
+                    observation.setValueText(conceptName);
+                }
             }else {
                 observation.setValueText(value);
             }
         }
+        if(observation.getValueCoded() != null && !concept.isCoded()){
+            ConceptType conceptType = new ConceptType();
+            conceptType.setName("Coded");
+            concept.setConceptType(conceptType);
+        }
+        observation.setConcept(concept);
         return observation;
     }
 
@@ -147,7 +164,11 @@ public class ObservationParserUtility {
         String encountertypeUuid="";
         try{
             Form form = formController.getFormByUuid(formUuid);
-            encounterTypeName=form.getEncounterType().getName();
+            if(form == null){
+                encounterTypeName = "encounterType";
+            } else {
+                encounterTypeName = form.getEncounterType().getName();
+            }
         } catch (FormController.FormFetchException e) {
             e.printStackTrace( );
         }
@@ -223,6 +244,20 @@ public class ObservationParserUtility {
         return concept;
     }
 
+    private Concept buildDummyConceptWithId(int id, String conceptName) {
+        Concept concept = new Concept();
+        concept.setUuid(CONCEPT_CREATED_ON_PHONE + UUID.randomUUID());
+        ConceptName dummyConceptName = new ConceptName();
+        dummyConceptName.setName(conceptName);
+        dummyConceptName.setPreferred(true);
+        concept.setConceptNames(asList(dummyConceptName));
+        ConceptType conceptType = new ConceptType();
+        conceptType.setName("ConceptTypeCreatedOnThePhone");
+        concept.setConceptType(conceptType);
+        concept.setId(id);
+        return concept;
+    }
+
     private Concept getConceptFromExistingList(String conceptName) {
         for (Concept concept : newConceptList) {
             if (conceptName.equals(concept.getName())) {
@@ -235,6 +270,13 @@ public class ObservationParserUtility {
     private static String getConceptName(String peek) {
         if (!StringUtils.isEmpty(peek) && peek.split("\\^").length > 1) {
             return peek.split("\\^")[1];
+        }
+        return "";
+    }
+
+    private static String getConceptId(String peek) {
+        if (!StringUtils.isEmpty(peek) && peek.split("\\^").length > 1) {
+            return peek.split("\\^")[0];
         }
         return "";
     }

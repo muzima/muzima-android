@@ -11,10 +11,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               style="@style/ObservationListElement">
 
-    <TextView
+    <RelativeLayout
+        android:id="@+id/observation_header_layout"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginStart="8dp"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/observation_header"
-            style="@style/ObservationGroupByConceptHeader">
-    </TextView>
+            android:textColor="#ffffff">
+        </TextView>
+
+        <ImageButton
+            android:id="@+id/add_individual_obs_imagebutton"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_action_add_white"
+            android:contentDescription="@string/add_individual_observation_text"
+            android:layout_width="32dp"
+            android:layout_height="32dp" />
+
+    </RelativeLayout>
+
 
     <HorizontalScrollView
             android:id="@+id/observation_scroller"

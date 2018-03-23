@@ -11,7 +11,7 @@
 package com.muzima.utils.barcode;
 
 /**
- * <p>Encapsulates the result of a barcode scan invoked through {@link IntentIntegrator}.</p>
+ * <p>Encapsulates the result of a barcode scan invoked through {@link BarCodeScannerIntentIntegrator}.</p>
  *
  * @author Sean Owen
  */
