@@ -27,17 +27,24 @@ import com.muzima.api.model.FormData;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Provider;
+import com.muzima.api.model.SmartCardRecord;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.MuzimaSettingController;
+import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
+import com.muzima.controller.SmartCardController;
 import com.muzima.model.observation.Concepts;
+import com.muzima.model.observation.EncounterWithObservations;
+import com.muzima.model.observation.Encounters;
+import com.muzima.model.shr.kenyaemr.KenyaEmrShrModel;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.smartcard.KenyaEmrShrMapper;
 import net.minidev.json.JSONValue;
 import org.json.JSONException;
 import com.muzima.controller.EncounterController;
@@ -46,6 +53,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+
 import org.json.JSONArray;
 
 
@@ -106,6 +115,9 @@ public class HTMLFormDataStore {
             if (!keepFormOpen) {
                 formWebViewActivity.finish();
                 if (status.equals("complete")) {
+
+                    KenyaEmrShrMapper.updateSHRSmartCardRecordForPatient(application,formData.getPatientUuid());
+
                     Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.info_form_data_save_success), Toast.LENGTH_SHORT).show();
                     RealTimeFormUploader.getInstance().uploadAllCompletedForms(formWebViewActivity.getApplicationContext());
                 }
@@ -185,8 +197,7 @@ public class HTMLFormDataStore {
 
     public HTMLFormObservationCreator getFormParser() {
         MuzimaApplication applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
-        return new HTMLFormObservationCreator(applicationContext.getPatientController(), applicationContext.getConceptController(),
-                applicationContext.getEncounterController(), applicationContext.getObservationController(),applicationContext.getLocationController(),applicationContext.getProviderController(),applicationContext.getFormController());
+        return new HTMLFormObservationCreator(applicationContext);
     }
     private boolean isRegistrationComplete(String status) {
         return formController.isRegistrationFormData(formData) && status.equals(Constants.STATUS_COMPLETE);

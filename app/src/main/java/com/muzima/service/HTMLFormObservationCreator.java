@@ -11,7 +11,9 @@
 package com.muzima.service;
 
 import android.util.Log;
+import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Concept;
+import com.muzima.api.model.ConceptType;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.Observation;
@@ -34,6 +36,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import static com.muzima.utils.DateUtils.parse;
 import static java.util.Arrays.asList;
@@ -52,14 +55,13 @@ public class HTMLFormObservationCreator {
     private List<Observation> observations;
     private String TAG = "HTMLFormObservationCreator";
 
-    public HTMLFormObservationCreator(PatientController patientController, ConceptController conceptController,
-                                      EncounterController encounterController, ObservationController observationController, LocationController locationController, ProviderController providerController,FormController formController) {
-        this.patientController = patientController;
-        this.conceptController = conceptController;
-        this.encounterController = encounterController;
-        this.formController =formController;
-        this.observationController = observationController;
-        this.observationParserUtility = new ObservationParserUtility(conceptController, locationController, providerController, formController);
+    public HTMLFormObservationCreator(MuzimaApplication muzimaApplication) {
+        this.patientController = muzimaApplication.getPatientController();
+        this.conceptController = muzimaApplication.getConceptController();
+        this.encounterController = muzimaApplication.getEncounterController();
+        this.formController = muzimaApplication.getFormController();
+        this.observationController = muzimaApplication.getObservationController();
+        this.observationParserUtility = new ObservationParserUtility(muzimaApplication);
     }
 
     public void createAndPersistObservations(String jsonResponse,String formDataUuid) {
@@ -77,8 +79,18 @@ public class HTMLFormObservationCreator {
         }
     }
 
+    public void createObservationsAndRelatedEntities(String jsonResponse,String formDataUuid) {
+        parseJSONResponse(jsonResponse,formDataUuid);
+    }
+
     public List<Observation> getObservations() {
         return observations;
+    }
+    public Encounter getEncounter() {
+        return encounter;
+    }
+    public List<Concept> getNewConceptList() {
+        return observationParserUtility.getNewConceptList();
     }
 
     private void parseJSONResponse(String jsonResponse, String formDataUuid) {
@@ -157,6 +169,11 @@ public class HTMLFormObservationCreator {
         try {
             Concept concept = observationParserUtility.getConceptEntity(conceptName);
             Observation observation = observationParserUtility.getObservationEntity(concept, value);
+            if(observation.getValueCoded() != null && !concept.isCoded()){
+                ConceptType conceptType = new ConceptType();
+                conceptType.setName("Coded");
+                concept.setConceptType(conceptType);
+            }
             observation.setEncounter(encounter);
             observation.setPerson(patient);
             observation.setObservationDatetime(encounter.getEncounterDatetime());
@@ -171,7 +188,9 @@ public class HTMLFormObservationCreator {
     }
 
     private Encounter createEncounter(JSONObject encounterJSON, String formDataUuid) throws JSONException, ParseException {
-        return observationParserUtility.getEncounterEntity(parse(encounterJSON.getString("encounter.encounter_datetime")),encounterJSON.getString("encounter.form_uuid"), encounterJSON.getString("encounter.provider_id"),Integer.parseInt(encounterJSON.getString("encounter.location_id")), patient,formDataUuid);
+        return observationParserUtility.getEncounterEntity(parse(encounterJSON.getString("encounter.encounter_datetime")),
+                encounterJSON.getString("encounter.form_uuid"), encounterJSON.getString("encounter.provider_id"),
+                Integer.parseInt(encounterJSON.getString("encounter.location_id")), patient,formDataUuid);
     }
 
     public Date getEncounterDateFromFormDate(String jsonResponse){
