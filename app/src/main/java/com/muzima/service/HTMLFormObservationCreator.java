@@ -13,6 +13,7 @@ package com.muzima.service;
 import android.util.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Concept;
+import com.muzima.api.model.ConceptType;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.Observation;
@@ -168,6 +169,11 @@ public class HTMLFormObservationCreator {
         try {
             Concept concept = observationParserUtility.getConceptEntity(conceptName);
             Observation observation = observationParserUtility.getObservationEntity(concept, value);
+            if(observation.getValueCoded() != null && !concept.isCoded()){
+                ConceptType conceptType = new ConceptType();
+                conceptType.setName("Coded");
+                concept.setConceptType(conceptType);
+            }
             observation.setEncounter(encounter);
             observation.setPerson(patient);
             observation.setObservationDatetime(encounter.getEncounterDatetime());

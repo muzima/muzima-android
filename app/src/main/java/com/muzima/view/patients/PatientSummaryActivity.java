@@ -448,7 +448,7 @@ public class PatientSummaryActivity extends BaseActivity {
     public void registerNewShrRecord() {
 
         try {
-            KenyaEmrShrModel kenyaEmrShrModel = KenyaEmrShrMapper.createInitialSHRModelForPatient(patient);
+            KenyaEmrShrModel kenyaEmrShrModel = KenyaEmrShrMapper.createInitialSHRModelForPatient(muzimaApplication,patient);
             String jsonShrModel = KenyaEmrShrMapper.createJsonFromSHRModel(kenyaEmrShrModel);
 
             if (jsonShrModel != null) {

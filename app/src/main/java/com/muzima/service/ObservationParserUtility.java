@@ -108,7 +108,6 @@ public class ObservationParserUtility {
         }
         Observation observation = new Observation();
         observation.setUuid(getObservationUuid());
-        observation.setConcept(concept);
         observation.setValueCoded(defaultValueCodedConcept());
         if (concept.isCoded()) {
             try {
@@ -134,6 +133,12 @@ public class ObservationParserUtility {
                 observation.setValueText(value);
             }
         }
+        if(observation.getValueCoded() != null && !concept.isCoded()){
+            ConceptType conceptType = new ConceptType();
+            conceptType.setName("Coded");
+            concept.setConceptType(conceptType);
+        }
+        observation.setConcept(concept);
         return observation;
     }
 
