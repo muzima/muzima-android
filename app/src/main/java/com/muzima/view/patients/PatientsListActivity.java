@@ -493,11 +493,18 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         patientAdapter.cancelBackgroundTask();
         Patient patient = patientAdapter.getItem(position);
         Intent intent = new Intent(this, PatientSummaryActivity.class);
+        SmartCardController smartCardController = ((MuzimaApplication) getApplicationContext()).getSmartCardController();
+        try {
+            if (smartCardController.getSmartCardRecordByPersonUuid(patient.getUuid()) != null){
+                intent.putExtra("isRegisteredOnShr", true);
+                Log.e("TAG","isShr");
+            }else {
+                Log.e("TAG","isNotShr");
 
-        if (patient.getIdentifier(Constants.Shr.KenyaEmr.IdentifierType.CARD_SERIAL_NUMBER.name) != null ){
-            intent.putExtra("isRegisteredOnShr", true);
-        }else {
-            intent.putExtra("isRegisteredOnShr", false);
+                intent.putExtra("isRegisteredOnShr", false);
+            }
+        } catch (SmartCardController.SmartCardRecordFetchException e) {
+            e.printStackTrace();
         }
         intent.putExtra(PatientSummaryActivity.PATIENT, patient);
         startActivity(intent);
@@ -722,7 +729,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                      * close search and return patient.
                      */
                     shrToMuzimaMatchingPatient = searchResultPatient;
-                    negativeServerSearchResultNotifyAlertDialog.setTitle("Search successful, " + patient.getDisplayName() + " record found.");
+                    negativeServerSearchResultNotifyAlertDialog.setTitle("Search successful, " + patient.getGivenName() + " record found.");
                     /**
                      * TODO Display download optionDialog
                      *
@@ -814,7 +821,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
             if (shrToMuzimaMatchingPatient == null) {
             } else {
-                Toast.makeText(getApplicationContext(), "Found Patient Shr Record " + shrPatient.getDisplayName(), Toast.LENGTH_LONG);
+                Toast.makeText(getApplicationContext(), "Found Patient Shr Record " + shrPatient.getGivenName(), Toast.LENGTH_LONG);
                 /**
                  * shr patient found in mUzima data layer.
                  *
