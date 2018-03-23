@@ -200,9 +200,11 @@ public class PatientSummaryActivity extends BaseActivity {
             case R.id.shr_client_summary:
                 //todo write card workspace.
                 if (isRegisteredOnShr) {
+                    Log.e("TAG","is Patient shr");
                     prepareWriteToCardOptionDialog(getApplicationContext());
                     writeShrDataOptionDialog.show();
                 } else {
+                    Log.e("TAG","is Patient not shr");
                     prepareNonShrWriteToCardOptionDialog(getApplicationContext());
                     writeShrDataOptionDialog.show();
                 }
@@ -438,6 +440,7 @@ public class PatientSummaryActivity extends BaseActivity {
         noOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                searchDialogTextView.setText("");
                 writeShrDataOptionDialog.cancel();
                 writeShrDataOptionDialog.dismiss();
             }
