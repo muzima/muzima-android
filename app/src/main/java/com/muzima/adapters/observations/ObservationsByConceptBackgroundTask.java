@@ -36,7 +36,7 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
     private ConceptAction conceptAction;
     private ObservationsByConceptAdapter observationsByConceptAdapter;
     private Boolean isShrData = false;
-    private List<String> shrConcepts = new ArrayList<>();
+    private List<Integer> shrConcepts = new ArrayList<>();
 
     public ObservationsByConceptBackgroundTask(ObservationsByConceptAdapter observationsByConceptAdapter,
                                                ConceptAction conceptAction, boolean isShrData) {
@@ -98,13 +98,13 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
     }
 
     private void loadComposedShrConceptId() {
-        List<String> conceptIds = new ArrayList<>();
-        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_RESULT.name);
-        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_TYPE.name);
-        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_STRATEGY.name);
-        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.VACCINE.name);
-        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.SEQUENCE.name);
-        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.GROUP.name);
+        List<Integer> conceptIds = new ArrayList<>();
+        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_RESULT.concept_id);
+        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_TYPE.concept_id);
+        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_STRATEGY.concept_id);
+        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.VACCINE.concept_id);
+        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.SEQUENCE.concept_id);
+        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.GROUP.concept_id);
 
 
         shrConcepts = conceptIds;
@@ -116,7 +116,7 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
         try {
             List<Concept> concepts = conceptAction.getConcepts();
             for (Concept concept : concepts) {
-                if (!isCancelled()) {
+                if (!isCancelled() && !concept.getName().contains("ID") && !concept.getName().contains("NAME") && !concept.getName().contains("TEST FACILITY")) {
                     temp = conceptAction.get(concept);
                     if (temp != null) {
                         temp.sortByDate();
@@ -128,7 +128,7 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
                         publishProgress(temp);
                     }
                 } else {
-                    break;
+                //    break;
                 }
             }
         } catch (ObservationController.LoadObservationException e) {
@@ -143,7 +143,10 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
         try {
             List<Concept> concepts = conceptAction.getConcepts();
             for (Concept concept : concepts) {
-                if (!isCancelled() && shrConcepts.contains(concept.getName())) {
+                Log.e("TAG","Concept Name"+concept.getName()+", Concept Id ="+concept.getId());
+            }
+            for (Concept concept : concepts) {
+                if (!isCancelled() && shrConcepts.contains(concept.getId())) {
                     temp = conceptAction.get(concept);
                     if (temp != null) {
                         temp.sortByDate();

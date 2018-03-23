@@ -61,7 +61,6 @@ public class ObservationsByConceptFragment extends ObservationsListFragment {
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        //TODO Remove temp code
 
     }
 
