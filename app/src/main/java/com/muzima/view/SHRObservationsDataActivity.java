@@ -61,7 +61,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.observation_list, menu);
+        getMenuInflater().inflate(R.menu.shr_observations_list, menu);
         SearchView searchView = (SearchView) menu.findItem(R.id.search)
                 .getActionView();
         searchView.setQueryHint(getString(R.string.info_observation_search));

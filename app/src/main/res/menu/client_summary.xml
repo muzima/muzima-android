@@ -15,7 +15,7 @@
             android:id="@+id/shr_client_summary"
             android:title=""
             app:showAsAction="always"
-            android:icon="@drawable/ic_action_shr_card"/>
+            android:icon="@drawable/ic_action_write_card"/>
 
 
 </menu>
