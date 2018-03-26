@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -202,11 +203,11 @@ public class PatientSummaryActivity extends BaseActivity {
             case R.id.shr_client_summary:
                 //todo write card workspace.
                 if (isRegisteredOnShr) {
-                    Log.e("TAG","is Patient shr");
+                    Log.e("TAG", "is Patient shr");
                     prepareWriteToCardOptionDialog(getApplicationContext());
                     writeShrDataOptionDialog.show();
                 } else {
-                    Log.e("TAG","is Patient not shr");
+                    Log.e("TAG", "is Patient not shr");
                     prepareNonShrWriteToCardOptionDialog(getApplicationContext());
                     writeShrDataOptionDialog.show();
                 }
@@ -273,7 +274,46 @@ public class PatientSummaryActivity extends BaseActivity {
                 break;
 
             case SMARTCARD_WRITE_REQUEST_CODE:
-                //todo write to card
+                SmartCardIntentResult cardWriteIntentResult = null;
+                try {
+                    cardWriteIntentResult = SmartCardIntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
+                    List<String> writeErrors = cardWriteIntentResult.getErrors();
+
+                    if (writeErrors == null) {
+                        Snackbar.make(findViewById(R.id.shr_client_summary_view), "Smart card data write was successful.", Snackbar.LENGTH_LONG)
+                                .show();
+
+                    } else if (writeErrors != null) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            Snackbar.make(findViewById(R.id.shr_client_summary_view), "Smart card data write failed." + writeErrors.get(0), Snackbar.LENGTH_LONG)
+                                    .setActionTextColor(getResources().getColor(android.R.color.holo_red_dark, null))
+                                    .setAction("RETRY", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            invokeShrApplication();
+                                        }
+                                    })
+                                    .show();
+                        } else {
+
+                            Snackbar.make(findViewById(R.id.shr_client_summary_view), "Smart card data write failed." + writeErrors.get(0), Snackbar.LENGTH_LONG)
+                                    .setActionTextColor(getResources().getColor(android.R.color.holo_red_dark))
+                                    .setAction("RETRY", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            invokeShrApplication();
+                                        }
+                                    })
+                                    .show();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+                writeShrDataOptionDialog.dismiss();
+                writeShrDataOptionDialog.cancel();
                 break;
         }
     }
@@ -457,7 +497,7 @@ public class PatientSummaryActivity extends BaseActivity {
     public void registerNewShrRecord() {
 
         try {
-            KenyaEmrShrModel kenyaEmrShrModel = KenyaEmrShrMapper.createInitialSHRModelForPatient(muzimaApplication,patient);
+            KenyaEmrShrModel kenyaEmrShrModel = KenyaEmrShrMapper.createInitialSHRModelForPatient(muzimaApplication, patient);
             String jsonShrModel = KenyaEmrShrMapper.createJsonFromSHRModel(kenyaEmrShrModel);
 
             if (jsonShrModel != null) {
