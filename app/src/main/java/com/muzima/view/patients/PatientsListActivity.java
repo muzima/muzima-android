@@ -178,6 +178,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         cohortController = muzimaApplication.getCohortController();
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
+        progressDialog.setIndeterminate(true);
 
         smartCardController = ((MuzimaApplication) getApplicationContext()).getSmartCardController();
     }
@@ -387,6 +388,10 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 executePatientServerSearchInBackgroundQueryTask();
                 localSearchResultNotifyAlertDialog.cancel();
                 localSearchResultNotifyAlertDialog.dismiss();
+                //todo integrate progress dialog.
+                progressDialog.setMessage("Searching server...");
+                progressDialog.show();
+
             }
         });
 
@@ -560,6 +565,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         switch (requestCode) {
             case SMARTCARD_READ_REQUEST_CODE:
                 readSmartCardWithDefaultWorkflow(requestCode, resultCode, dataIntent);
+                progressDialog.dismiss();
+                progressDialog.cancel();
                 break;
             case BARCODE_SCAN_REQUEST_CODE:
                 IntentResult scanningResult = BarCodeScannerIntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
@@ -748,6 +755,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
         @Override
         protected void onPostExecute(Patient patient) {
+            progressDialog.cancel();
             if (shrToMuzimaMatchingPatient != null) {
                 /**
                  * shr patient found in mUzima data layer.
@@ -760,7 +768,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             } else if (shrToMuzimaMatchingPatient == null) {
                 negativeServerSearchResultNotifyAlertDialog.show();
             }
-
         }
     }
 
