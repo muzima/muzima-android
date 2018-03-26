@@ -19,7 +19,7 @@
 			android:title="@string/hint_client_search"/>
 	
 	<item
-			android:id="@+id/shr_card_write"
+			android:id="@+id/obs_shr_card_write"
 			android:title="@string/write_shr_to_card_text"
 			android:icon="@drawable/ic_action_shr_card"
 			custom:showAsAction="always"/>
