@@ -474,7 +474,7 @@ public class PatientSummaryActivity extends BaseActivity {
 
                 Intent intent = new Intent(PatientSummaryActivity.this, PatientSummaryActivity.class);
                 /**
-                 * todo check if this patient is registred in shr
+                 * todo check if this patient is registered in shr
                  * before opening PatientSummary activity
                  */
                 intent.putExtra("isRegisteredOnShr", true);
