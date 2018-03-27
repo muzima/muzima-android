@@ -12,6 +12,7 @@ package com.muzima.adapters.observations;
 
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -41,32 +42,33 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
         return backgroundListQueryTaskListener;
     }
 
-    public ObservationsAdapter(FragmentActivity context, int textViewResourceId,
+    public ObservationsAdapter(FragmentActivity fragmentActivity, int textViewResourceId,
                                EncounterController encounterController,
                                ConceptController conceptController, ObservationController observationController) {
-        super(context, textViewResourceId);
+        super(fragmentActivity, textViewResourceId);
+
         this.encounterController = encounterController;
         this.conceptController = conceptController;
         this.observationController = observationController;
-        Patient patient = (Patient) context.getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
+        Patient patient = (Patient) fragmentActivity.getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
         patientUuid = patient.getUuid();
     }
 
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
-            this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
+        this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
     }
 
-    public void cancelBackgroundQueryTask(){
-        if(backgroundQueryTask != null){
+    public void cancelBackgroundQueryTask() {
+        if (backgroundQueryTask != null) {
             backgroundQueryTask.cancel(true);
         }
     }
 
-    protected void setRunningBackgroundQueryTask(AsyncTask<?,?,?> backgroundQueryTask){
+    protected void setRunningBackgroundQueryTask(AsyncTask<?, ?, ?> backgroundQueryTask) {
         this.backgroundQueryTask = backgroundQueryTask;
     }
 
-    protected abstract class ViewHolder{
+    protected abstract class ViewHolder {
 
         protected LayoutInflater inflater;
         protected LinearLayout observationLayout;
@@ -78,12 +80,26 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
         }
 
         protected void addEncounterObservations(List<Observation> observations) {
+
+            List<Observation> observationListToRemove = new ArrayList<>();
+            for (Observation observation : observations) {
+                if (observation.getConcept().getId() == 163161 || observation.getConcept().getId() == 1473){
+                    observationListToRemove.add(observation);
+                }
+            }
+
+            observations.removeAll(observationListToRemove);
+
             for (int i = 0; i < observations.size(); i++) {
                 LinearLayout layout = getLinearLayoutForObservation(i);
                 Observation observation = observations.get(i);
-
                 setObservation(layout, observation);
+
+                Log.e("ERT", "Encounter Obs " + observation.getConcept().getName() +" Concept ID"+observation.getConcept().getId());
             }
+
+            Log.e("ERT", "---------=-==============----------=========-------==========-----");
+
 
             shrink(observations.size());
         }
@@ -133,10 +149,12 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
 
         protected String getConceptDisplay(Concept concept) {
             String text = concept.getName();
-            if(concept.getConceptType().getName().equals(Concept.NUMERIC_TYPE)){
-                text += " (" + concept.getUnit() +")";
+            if (concept.getConceptType().getName().equals(Concept.NUMERIC_TYPE)) {
+                text += " (" + concept.getUnit() + ")";
             }
             return text;
         }
+
+
     }
 }

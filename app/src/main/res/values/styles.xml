@@ -369,7 +369,7 @@
     </style>
 
     <style name="ObservationByConceptElement">
-        <item name="android:layout_width">@dimen/observation_element_by_concept_height</item>
+        <!--<item name="android:layout_width">@dimen/observation_element_by_concept_height</item>-->
         <item name="android:layout_height">@dimen/observation_element_by_concept_height</item>
         <item name="android:orientation">vertical</item>
         <item name="android:background">@android:color/white</item>
