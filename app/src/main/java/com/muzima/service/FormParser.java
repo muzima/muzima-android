@@ -205,7 +205,7 @@ public class FormParser {
     private Observation getObservation(Stack<String> conceptNames, String codedObservationName)
             throws ConceptController.ConceptFetchException, ConceptController.ConceptParseException,
             ObservationController.ParseObservationException {
-        Concept conceptEntity = observationParserUtility.getConceptEntity(conceptNames.peek());
+        Concept conceptEntity = observationParserUtility.getConceptEntity(conceptNames.peek(),false);
         return observationParserUtility.getObservationEntity(conceptEntity, codedObservationName);
     }
 

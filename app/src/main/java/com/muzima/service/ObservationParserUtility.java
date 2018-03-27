@@ -75,7 +75,7 @@ public class ObservationParserUtility {
         return encounter;
     }
 
-    public Concept getConceptEntity(String rawConceptName) throws ConceptController.ConceptFetchException,
+    public Concept getConceptEntity(String rawConceptName, boolean isCoded) throws ConceptController.ConceptFetchException,
             ConceptController.ConceptParseException{
         String conceptName = getConceptName(rawConceptName);
         if(StringUtils.isEmpty(conceptName)){
@@ -91,9 +91,9 @@ public class ObservationParserUtility {
             String conceptId = getConceptId(rawConceptName);
             int intConceptId = Integer.parseInt(conceptId);
             if(intConceptId >0){
-                observedConcept = buildDummyConceptWithId(intConceptId, conceptName);
+                observedConcept = buildDummyConcept(intConceptId, conceptName,isCoded);
             } else {
-                observedConcept = buildDummyConcept(conceptName);
+                observedConcept = buildDummyConcept(conceptName,isCoded);
             }
             newConceptList.add(observedConcept);
         }
@@ -109,9 +109,10 @@ public class ObservationParserUtility {
         Observation observation = new Observation();
         observation.setUuid(getObservationUuid());
         observation.setValueCoded(defaultValueCodedConcept());
+
         if (concept.isCoded()) {
             try {
-                Concept valueCoded = getConceptEntity(value);
+                Concept valueCoded = getConceptEntity(value,false);
                 observation.setValueCoded(valueCoded);
             } catch (ConceptController.ConceptParseException e) {
                 throw new ConceptController.ConceptParseException("Could not get value for coded concept '"
@@ -121,22 +122,7 @@ public class ObservationParserUtility {
         } else if (concept.isNumeric()) {
             observation.setValueNumeric(getDoubleValue(value));
         } else {
-            String conceptName = getConceptName(value);
-            if(!(StringUtils.isEmpty(conceptName))){
-                try {
-                    Concept valueCoded = getConceptEntity(value);
-                    observation.setValueCoded(valueCoded);
-                } catch (ConceptController.ConceptParseException e) {
-                    observation.setValueText(conceptName);
-                }
-            }else {
-                observation.setValueText(value);
-            }
-        }
-        if(observation.getValueCoded() != null && !concept.isCoded()){
-            ConceptType conceptType = new ConceptType();
-            conceptType.setName("Coded");
-            concept.setConceptType(conceptType);
+            observation.setValueText(value);
         }
         observation.setConcept(concept);
         return observation;
@@ -231,20 +217,11 @@ public class ObservationParserUtility {
         return provider;
     }
 
-    private Concept buildDummyConcept(String conceptName) {
-        Concept concept = new Concept();
-        concept.setUuid(CONCEPT_CREATED_ON_PHONE + UUID.randomUUID());
-        ConceptName dummyConceptName = new ConceptName();
-        dummyConceptName.setName(conceptName);
-        dummyConceptName.setPreferred(true);
-        concept.setConceptNames(asList(dummyConceptName));
-        ConceptType conceptType = new ConceptType();
-        conceptType.setName("ConceptTypeCreatedOnThePhone");
-        concept.setConceptType(conceptType);
-        return concept;
+    private Concept buildDummyConcept(String conceptName,boolean isCoded) {
+        return buildDummyConcept(0, conceptName, isCoded);
     }
 
-    private Concept buildDummyConceptWithId(int id, String conceptName) {
+    private Concept buildDummyConcept(int conceptId, String conceptName, boolean isCoded) {
         Concept concept = new Concept();
         concept.setUuid(CONCEPT_CREATED_ON_PHONE + UUID.randomUUID());
         ConceptName dummyConceptName = new ConceptName();
@@ -252,9 +229,15 @@ public class ObservationParserUtility {
         dummyConceptName.setPreferred(true);
         concept.setConceptNames(asList(dummyConceptName));
         ConceptType conceptType = new ConceptType();
-        conceptType.setName("ConceptTypeCreatedOnThePhone");
+        if(isCoded) {
+            conceptType.setName("Coded");
+        } else {
+            conceptType.setName("ConceptTypeCreatedOnThePhone");
+        }
         concept.setConceptType(conceptType);
-        concept.setId(id);
+        if(conceptId > 0) {
+            concept.setId(conceptId);
+        }
         return concept;
     }
 
@@ -279,6 +262,10 @@ public class ObservationParserUtility {
             return peek.split("\\^")[0];
         }
         return "";
+    }
+
+    public static boolean isFormattedAsConcept(String peek) {
+        return !StringUtils.isEmpty(peek) && peek.split("\\^").length > 1;
     }
 
     private String getEncounterUUID() {
