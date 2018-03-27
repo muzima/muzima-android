@@ -98,7 +98,6 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
                 @Override
                 public void onClick(View v) {
                     addObservation();
-                    // Log.e("Header",holder.headerText.getText().toString());
                 }
             });
 

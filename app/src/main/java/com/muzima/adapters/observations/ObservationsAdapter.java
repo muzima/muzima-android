@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
+
     private static final String TAG = "ObservationsAdapter";
     protected final String patientUuid;
     protected ConceptController conceptController;
@@ -86,11 +87,7 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
                 Observation observation = observations.get(i);
                 setObservation(layout, observation);
 
-                Log.e("ERT", "Encounter Obs " + observation.getConcept().getName() +" Concept ID"+observation.getConcept().getId());
             }
-
-            Log.e("ERT", "---------=-==============----------=========-------==========-----");
-
 
             shrink(observations.size());
         }
@@ -102,6 +99,7 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
                 observationViewHolders.add(layout);
                 observationLayout.addView(layout);
             } else {
+                Log.e("Index","get(i) indexes"+i);
                 layout = observationViewHolders.get(i);
             }
 
