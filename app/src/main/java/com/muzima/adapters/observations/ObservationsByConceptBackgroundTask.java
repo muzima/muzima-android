@@ -59,7 +59,11 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
     @Override
     protected Concepts doInBackground(Void... params) {
         Concepts conceptsWithObservations = null;
-        conceptsWithObservations = getNonShrConceptWithObservations();
+        if (isShrData) {
+            conceptsWithObservations = getShrConceptWithObservations();
+        } else {
+            conceptsWithObservations = getNonShrConceptWithObservations();
+        }
 
         return conceptsWithObservations;
     }
@@ -113,7 +117,7 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
         try {
             List<Concept> concepts = conceptAction.getConcepts();
             for (Concept concept : concepts) {
-                if (!isCancelled()) {
+                if (!isCancelled() && !concept.getName().contains("NAME") && !concept.getName().contains("ID") && !concept.getName().contains("TEST FACILITY")) {
                     temp = conceptAction.get(concept);
                     if (temp != null) {
                         temp.sortByDate();
@@ -125,7 +129,7 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
                         publishProgress(temp);
                     }
                 } else {
-                    break;
+                    //break;
                 }
             }
         } catch (ObservationController.LoadObservationException e) {
@@ -141,7 +145,7 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
             List<Concept> concepts = conceptAction.getConcepts();
 
             for (Concept concept : concepts) {
-                if (!isCancelled()) {
+                if (!isCancelled() && shrConcepts.contains(concept.getId())) {
                     temp = conceptAction.get(concept);
                     if (temp != null) {
                         temp.sortByDate();
@@ -153,7 +157,7 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
                         publishProgress(temp);
                     }
                 } else {
-                    break;
+                    // break;
                 }
             }
         } catch (ObservationController.LoadObservationException e) {
