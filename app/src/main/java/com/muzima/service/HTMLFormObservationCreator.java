@@ -53,7 +53,7 @@ public class HTMLFormObservationCreator {
     private Patient patient;
     private Encounter encounter;
     private List<Observation> observations;
-    private String TAG = "HTMLFormObservationCreator";
+    private String TAG = HTMLFormObservationCreator.class.getSimpleName();
 
     public HTMLFormObservationCreator(MuzimaApplication muzimaApplication) {
         this.patientController = muzimaApplication.getPatientController();
@@ -167,13 +167,8 @@ public class HTMLFormObservationCreator {
     private Observation createObservation(String conceptName, String value) throws JSONException,
             ConceptController.ConceptFetchException, ConceptController.ConceptSaveException{
         try {
-            Concept concept = observationParserUtility.getConceptEntity(conceptName);
+            Concept concept = observationParserUtility.getConceptEntity(conceptName, observationParserUtility.isFormattedAsConcept(value));
             Observation observation = observationParserUtility.getObservationEntity(concept, value);
-            if(observation.getValueCoded() != null && !concept.isCoded()){
-                ConceptType conceptType = new ConceptType();
-                conceptType.setName("Coded");
-                concept.setConceptType(conceptType);
-            }
             observation.setEncounter(encounter);
             observation.setPerson(patient);
             observation.setObservationDatetime(encounter.getEncounterDatetime());
