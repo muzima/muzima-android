@@ -12,8 +12,10 @@ import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientIdentifierType;
+import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonAddress;
 import com.muzima.api.model.PersonName;
+import com.muzima.api.model.Provider;
 import com.muzima.api.model.SmartCardRecord;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
@@ -929,13 +931,27 @@ public class KenyaEmrShrMapper {
                     break;
             }
         }
-        if(providerDetails != null){
-            hivTest.setProviderDetails(providerDetails);
-        }
         if(isHivEncounter == false){
             return null;
         }
 
+        if(hivTest.getFacility() == null){
+            //ToDo: get facility id from encounter location attributes
+            hivTest.setFacility("1234");
+        }
+
+        if(providerDetails == null){
+            providerDetails = new ProviderDetails();
+            Person provider = encounterWithObservations.getEncounter().getProvider();
+            if(provider != null){
+                providerDetails.setId(provider.getMiddleName());
+                providerDetails.setName(provider.getDisplayName());
+            }
+        }
+
+        if(providerDetails != null){
+            hivTest.setProviderDetails(providerDetails);
+        }
 
         return hivTest;
     }
