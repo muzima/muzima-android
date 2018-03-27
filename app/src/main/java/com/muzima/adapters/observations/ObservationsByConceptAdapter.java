@@ -25,12 +25,11 @@ import com.muzima.api.model.Observation;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.ConceptWithObservations;
-import com.muzima.utils.BackgroundTaskHelper;
-import com.muzima.utils.DateUtils;
-import com.muzima.utils.Fonts;
-import com.muzima.utils.StringUtils;
+import com.muzima.utils.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWithObservations> {
@@ -44,12 +43,14 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
     private Button obsDialogAddButton;
     private TextView headerText;
     private Boolean isShrData;
+    private List<Integer> shrConcepts;
 
     public ObservationsByConceptAdapter(FragmentActivity activity, int itemCohortsList,
                                         ConceptController conceptController,
                                         ObservationController observationController,Boolean isShrData) {
         super(activity, itemCohortsList, null, conceptController, observationController);
         this.isShrData = isShrData;
+        loadComposedShrConceptId();
 
     }
 
@@ -165,6 +166,18 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
             String observationConceptType = observation.getConcept().getConceptType().getName();
 
             TextView observationValue = (TextView) layout.findViewById(R.id.observation_value);
+            ImageView shrEnabledImage = (ImageView) layout.findViewById(R.id.shr_card_obs_image_view);
+
+            if (isShrData){
+                shrEnabledImage.setVisibility(View.VISIBLE);
+            }else {
+                shrEnabledImage.setVisibility(View.INVISIBLE);
+            }
+
+            if (shrConcepts.contains(observation.getConcept().getId())){
+                shrEnabledImage.setVisibility(View.VISIBLE);
+            }
+
             ImageView observationComplexHolder = (ImageView) layout.findViewById(R.id.observation_complex);
             if (StringUtils.equals(observationConceptType, "Complex")) {
                 observationValue.setVisibility(View.GONE);
@@ -196,5 +209,18 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         protected int getObservationElementHeight() {
             return R.dimen.observation_element_by_concept_height;
         }
+    }
+
+    private void loadComposedShrConceptId() {
+        List<Integer> conceptIds = new ArrayList<>();
+        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_RESULT.concept_id);
+        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_TYPE.concept_id);
+        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_STRATEGY.concept_id);
+        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.VACCINE.concept_id);
+        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.SEQUENCE.concept_id);
+        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.GROUP.concept_id);
+
+
+        shrConcepts = conceptIds;
     }
 }
