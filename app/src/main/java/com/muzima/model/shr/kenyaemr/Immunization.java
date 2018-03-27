@@ -6,10 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "NAME",
-    "DATE_ADMINISTERED"
-})
 public class Immunization {
 
     @JsonProperty("NAME")

@@ -222,6 +222,7 @@ public class PatientSummaryActivity extends BaseActivity {
         SmartCardController smartCardController = ((MuzimaApplication) getApplicationContext()).getSmartCardController();
         SmartCardRecord smartCardRecord = null;
         try {
+            KenyaEmrShrMapper.updateSHRSmartCardRecordForPatient((MuzimaApplication) getApplicationContext(),patient.getUuid());
             smartCardRecord = smartCardController.getSmartCardRecordByPersonUuid(patient.getUuid());
         } catch (SmartCardController.SmartCardRecordFetchException e) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -229,6 +230,12 @@ public class PatientSummaryActivity extends BaseActivity {
                     .setMessage("Could not obtain smartcard record for writing to card. " + e.getMessage())
                     .show();
             Log.e(TAG, "Could not obtain smartcard record for writing to card", e);
+        } catch (KenyaEmrShrMapper.ShrParseException e) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(true)
+                    .setMessage("Could not update smartcard record before writing to card. " + e.getMessage())
+                    .show();
+            Log.e(TAG, "Could not update smartcard record before writing to card", e);
         }
         if (smartCardRecord != null) {
             SmartCardIntentIntegrator shrIntegrator = new SmartCardIntentIntegrator(this);
