@@ -691,11 +691,13 @@ public class KenyaEmrShrMapper {
                 Date latHivShrUpdateDateTime = null;
                 List<HIVTest> hivTests = shrModel.getHivTests();
                 for(HIVTest hivTest:hivTests){
-                    Date date = DateUtils.parseDateByPattern(hivTest.getDate(),"yyyyMMdd");
-                    if(latHivShrUpdateDateTime == null){
-                        latHivShrUpdateDateTime = date;
-                    } else if(latHivShrUpdateDateTime.before(date)){
-                        latHivShrUpdateDateTime = date;
+                    if(hivTest.getDate() != null) {
+                        Date date = DateUtils.parseDateByPattern(hivTest.getDate(), "yyyyMMdd");
+                        if (latHivShrUpdateDateTime == null) {
+                            latHivShrUpdateDateTime = date;
+                        } else if (latHivShrUpdateDateTime.before(date)) {
+                            latHivShrUpdateDateTime = date;
+                        }
                     }
                 }
 
