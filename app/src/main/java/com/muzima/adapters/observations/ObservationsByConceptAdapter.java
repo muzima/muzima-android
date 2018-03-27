@@ -10,25 +10,15 @@
 
 package com.muzima.adapters.observations;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.*;
 import com.muzima.R;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
@@ -40,9 +30,7 @@ import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.StringUtils;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 
 public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWithObservations> {
@@ -63,6 +51,11 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         super(activity, itemCohortsList, null, conceptController, observationController);
         this.isShrData = isShrData;
 
+    }
+
+    @Override
+    public ConceptWithObservations getItem(int position) {
+        return super.getItem(position);
     }
 
     @Override
@@ -113,6 +106,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
                     // Log.e("Header",holder.headerText.getText().toString());
                 }
             });
+
         } else {
             holder = (ObservationsByConceptViewHolder) convertView.getTag();
         }
@@ -168,7 +162,6 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
             addObsButton.setBackgroundColor(conceptColor);
             addEncounterObservations(item.getObservations());
             headerText.setText(getConceptDisplay(item.getConcept()));
-            Log.e("YNO", getConceptDisplay(item.getConcept()));
         }
 
         @Override
