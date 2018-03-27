@@ -71,7 +71,6 @@ import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.*;
 
 import com.muzima.api.model.SmartCardRecord;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -121,7 +120,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private Button yesOptionShrSearchButton;
     private Button noOptionShrSearchButton;
 
-    private ProgressDialog progressDialog;
+    private ProgressDialog serverSearchProgressDialog;
+    private ProgressDialog patientRegistrationDialog;
 
     private final String TAG = this.getClass().getName();
 
@@ -176,8 +176,13 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         muzimaSyncService = muzimaApplication.getMuzimaSyncService();
         patientController = muzimaApplication.getPatientController();
         cohortController = muzimaApplication.getCohortController();
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(false);
+        serverSearchProgressDialog = new ProgressDialog(this);
+        patientRegistrationDialog = new ProgressDialog(this);
+
+        serverSearchProgressDialog.setCancelable(false);
+        serverSearchProgressDialog.setIndeterminate(true);
+        patientRegistrationDialog.setCancelable(false);
+        patientRegistrationDialog.setIndeterminate(true);
 
         smartCardController = ((MuzimaApplication) getApplicationContext()).getSmartCardController();
     }
@@ -387,6 +392,10 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 executePatientServerSearchInBackgroundQueryTask();
                 localSearchResultNotifyAlertDialog.cancel();
                 localSearchResultNotifyAlertDialog.dismiss();
+                //todo integrate progress dialog.
+                serverSearchProgressDialog.setMessage("Searching server...");
+                serverSearchProgressDialog.show();
+
             }
         });
 
@@ -560,6 +569,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         switch (requestCode) {
             case SMARTCARD_READ_REQUEST_CODE:
                 readSmartCardWithDefaultWorkflow(requestCode, resultCode, dataIntent);
+                serverSearchProgressDialog.dismiss();
+                serverSearchProgressDialog.cancel();
                 break;
             case BARCODE_SCAN_REQUEST_CODE:
                 IntentResult scanningResult = BarCodeScannerIntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
@@ -595,6 +606,10 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             cardReadIntentResult = SmartCardIntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
         } catch (Exception e) {
             Log.e(TAG, "Could not get result", e);
+        }
+        if (cardReadIntentResult == null){
+            Toast.makeText(getApplicationContext(),"Card Read Failed",Toast.LENGTH_LONG).show();
+            return;
         }
         //todo remove logging code.
         Log.e("SHR_REQ", "Read Activity result invoked with value..." + cardReadIntentResult.isSuccessResult());
@@ -738,6 +753,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                      * TODO Display download optionDialog
                      *
                      */
+                    patientRegistrationDialog.dismiss();
+                    patientRegistrationDialog.cancel();
                     executeDownloadPatientInBackgroundTask();
                     hideDialog();
                     break;
@@ -748,6 +765,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
         @Override
         protected void onPostExecute(Patient patient) {
+            serverSearchProgressDialog.cancel();
             if (shrToMuzimaMatchingPatient != null) {
                 /**
                  * shr patient found in mUzima data layer.
@@ -760,7 +778,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             } else if (shrToMuzimaMatchingPatient == null) {
                 negativeServerSearchResultNotifyAlertDialog.show();
             }
-
         }
     }
 
@@ -877,6 +894,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                patientRegistrationDialog.show();
                 Toast.makeText(v.getContext(),"Registering patient",Toast.LENGTH_LONG).show();
                 Snackbar.make(v,"Regsitering patient...",Snackbar.LENGTH_LONG).show();
                 //todo registration workflow
@@ -912,6 +930,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                     Toast.makeText(getApplicationContext(), "Patient registered.", Toast.LENGTH_LONG).show();
                     Log.e(TAG, "Patient registered");
 
+                    patientRegistrationDialog.cancel();
+                    patientRegistrationDialog.dismiss();
 
                     Intent intent = new Intent(PatientsListActivity.this, PatientSummaryActivity.class);
                     /**
@@ -922,8 +942,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                     intent.putExtra(PatientSummaryActivity.PATIENT, shrPatient);
                     startActivity(intent);
 
-                    registerShrPatientLocallyDialog.cancel();
-                    registerShrPatientLocallyDialog.dismiss();
+
                 }
             }
         });

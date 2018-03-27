@@ -100,7 +100,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
             holder = new ObservationsByConceptViewHolder();
             holder.headerText = (TextView) convertView.findViewById(R.id.observation_header);
             holder.addObsButton = (ImageButton) convertView.findViewById(R.id.add_individual_obs_imagebutton);
-            holder.addObsButton.setVisibility(View.INVISIBLE);
+            holder.addObsButton.setVisibility(View.VISIBLE);
             holder.headerLayout = (RelativeLayout) convertView.findViewById(R.id.observation_header_layout);
             holder.observationLayout = (LinearLayout) convertView
                     .findViewById(R.id.observation_layout);

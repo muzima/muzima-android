@@ -567,4 +567,5 @@
     <string name="shr_card_text">SHR Card</string>
     <string name="patient_shr_search_title_text">Patient SHR Search</string>
     <string name="search_patient_on_server_option_title_text">Patient is not avaible locally, would you like to search server?</string>
+	<string name="write_shr_to_card_text">Write shr to card</string>
 </resources>

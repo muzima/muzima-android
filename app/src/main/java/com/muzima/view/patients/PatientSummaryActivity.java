@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -51,6 +52,7 @@ import com.muzima.view.encounters.EncountersActivity;
 import com.muzima.view.forms.PatientFormsActivity;
 import com.muzima.view.notifications.PatientNotificationActivity;
 import com.muzima.view.observations.ObservationsActivity;
+import org.apache.lucene.util.fst.BytesRefFSTEnum;
 
 import java.io.IOException;
 import java.util.List;
@@ -58,6 +60,7 @@ import java.util.UUID;
 
 import static com.muzima.utils.DateUtils.getFormattedDate;
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
+import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_WRITE_REQUEST_CODE;
 
 public class PatientSummaryActivity extends BaseActivity {
     private static final String TAG = "PatientSummaryActivity";
@@ -200,11 +203,11 @@ public class PatientSummaryActivity extends BaseActivity {
             case R.id.shr_client_summary:
                 //todo write card workspace.
                 if (isRegisteredOnShr) {
-                    Log.e("TAG","is Patient shr");
+                    Log.e("TAG", "is Patient shr");
                     prepareWriteToCardOptionDialog(getApplicationContext());
                     writeShrDataOptionDialog.show();
                 } else {
-                    Log.e("TAG","is Patient not shr");
+                    Log.e("TAG", "is Patient not shr");
                     prepareNonShrWriteToCardOptionDialog(getApplicationContext());
                     writeShrDataOptionDialog.show();
                 }
@@ -268,6 +271,49 @@ public class PatientSummaryActivity extends BaseActivity {
                 } catch (Exception e) {
                     Log.e(TAG, "Could not get result", e);
                 }
+                break;
+
+            case SMARTCARD_WRITE_REQUEST_CODE:
+                SmartCardIntentResult cardWriteIntentResult = null;
+                try {
+                    cardWriteIntentResult = SmartCardIntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
+                    List<String> writeErrors = cardWriteIntentResult.getErrors();
+
+                    if (writeErrors == null) {
+                        Snackbar.make(findViewById(R.id.shr_client_summary_view), "Smart card data write was successful.", Snackbar.LENGTH_LONG)
+                                .show();
+
+                    } else if (writeErrors != null) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            Snackbar.make(findViewById(R.id.shr_client_summary_view), "Smart card data write failed." + writeErrors.get(0), Snackbar.LENGTH_LONG)
+                                    .setActionTextColor(getResources().getColor(android.R.color.holo_red_dark, null))
+                                    .setAction("RETRY", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            invokeShrApplication();
+                                        }
+                                    })
+                                    .show();
+                        } else {
+
+                            Snackbar.make(findViewById(R.id.shr_client_summary_view), "Smart card data write failed." + writeErrors.get(0), Snackbar.LENGTH_LONG)
+                                    .setActionTextColor(getResources().getColor(android.R.color.holo_red_dark))
+                                    .setAction("RETRY", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            invokeShrApplication();
+                                        }
+                                    })
+                                    .show();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+                writeShrDataOptionDialog.dismiss();
+                writeShrDataOptionDialog.cancel();
                 break;
         }
     }
@@ -451,7 +497,7 @@ public class PatientSummaryActivity extends BaseActivity {
     public void registerNewShrRecord() {
 
         try {
-            KenyaEmrShrModel kenyaEmrShrModel = KenyaEmrShrMapper.createInitialSHRModelForPatient(muzimaApplication,patient);
+            KenyaEmrShrModel kenyaEmrShrModel = KenyaEmrShrMapper.createInitialSHRModelForPatient(muzimaApplication, patient);
             String jsonShrModel = KenyaEmrShrMapper.createJsonFromSHRModel(kenyaEmrShrModel);
 
             if (jsonShrModel != null) {
@@ -468,7 +514,7 @@ public class PatientSummaryActivity extends BaseActivity {
 
                 Intent intent = new Intent(PatientSummaryActivity.this, PatientSummaryActivity.class);
                 /**
-                 * todo check if this patient is registred in shr
+                 * todo check if this patient is registered in shr
                  * before opening PatientSummary activity
                  */
                 intent.putExtra("isRegisteredOnShr", true);
