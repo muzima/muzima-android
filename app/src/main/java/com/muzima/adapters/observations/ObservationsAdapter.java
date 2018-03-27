@@ -76,20 +76,19 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
         List<LinearLayout> observationViewHolders;
 
         protected ViewHolder() {
-            observationViewHolders = new ArrayList<LinearLayout>();
+            observationViewHolders = new ArrayList<>();
             inflater = LayoutInflater.from(getContext());
         }
 
         protected void addEncounterObservations(List<Observation> observations) {
-
-            for (int i = 0; i < observations.size(); i++) {
+            //draws each concept row
+            for (int i = 0; i < observations.size(); i++) { //populate this concept's rows.
                 LinearLayout layout = getLinearLayoutForObservation(i);
                 Observation observation = observations.get(i);
                 setObservation(layout, observation);
-
             }
 
-            shrink(observations.size());
+            shrink(observations.size()); //mover to next row
         }
 
         protected LinearLayout getLinearLayoutForObservation(int i) {
@@ -98,8 +97,8 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
                 layout = (LinearLayout) inflater.inflate(getObservationLayout(), null);
                 observationViewHolders.add(layout);
                 observationLayout.addView(layout);
-            } else {
-                Log.e("Index","get(i) indexes"+i);
+            }
+            else {
                 layout = observationViewHolders.get(i);
             }
 

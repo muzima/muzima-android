@@ -150,7 +150,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
             super();
         }
 
-        private void renderItem(ConceptWithObservations item) {
+        private void renderItem(ConceptWithObservations item) { //obs display outer loop
             int conceptColor = observationController.getConceptColor(item.getConcept().getUuid());
             headerLayout.setBackgroundColor(conceptColor);
             addObsButton.setBackgroundColor(conceptColor);
