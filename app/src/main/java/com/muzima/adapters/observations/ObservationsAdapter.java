@@ -81,15 +81,6 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
 
         protected void addEncounterObservations(List<Observation> observations) {
 
-            List<Observation> observationListToRemove = new ArrayList<>();
-            for (Observation observation : observations) {
-                if (observation.getConcept().getId() == 163161 || observation.getConcept().getId() == 1473){
-                    observationListToRemove.add(observation);
-                }
-            }
-
-            observations.removeAll(observationListToRemove);
-
             for (int i = 0; i < observations.size(); i++) {
                 LinearLayout layout = getLinearLayoutForObservation(i);
                 Observation observation = observations.get(i);

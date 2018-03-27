@@ -54,11 +54,6 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
     }
 
     @Override
-    public ConceptWithObservations getItem(int position) {
-        return super.getItem(position);
-    }
-
-    @Override
     public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
         /**
          * Prepare add obs dialog
