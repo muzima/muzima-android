@@ -59,11 +59,8 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
     @Override
     protected Concepts doInBackground(Void... params) {
         Concepts conceptsWithObservations = null;
-        if (isShrData) {
-            conceptsWithObservations = getShrConceptWithObservations();
-        } else {
-            conceptsWithObservations = getNonShrConceptWithObservations();
-        }
+        conceptsWithObservations = getNonShrConceptWithObservations();
+
         return conceptsWithObservations;
     }
 
@@ -116,7 +113,7 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
         try {
             List<Concept> concepts = conceptAction.getConcepts();
             for (Concept concept : concepts) {
-                if (!isCancelled() && !concept.getName().contains("ID") && !concept.getName().contains("NAME") && !concept.getName().contains("TEST FACILITY")) {
+                if (!isCancelled()) {
                     temp = conceptAction.get(concept);
                     if (temp != null) {
                         temp.sortByDate();
@@ -128,7 +125,7 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
                         publishProgress(temp);
                     }
                 } else {
-                //    break;
+                    break;
                 }
             }
         } catch (ObservationController.LoadObservationException e) {
@@ -142,11 +139,9 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
         Concepts temp = null;
         try {
             List<Concept> concepts = conceptAction.getConcepts();
+
             for (Concept concept : concepts) {
-                Log.e("TAG","Concept Name"+concept.getName()+", Concept Id ="+concept.getId());
-            }
-            for (Concept concept : concepts) {
-                if (!isCancelled() && shrConcepts.contains(concept.getId())) {
+                if (!isCancelled()) {
                     temp = conceptAction.get(concept);
                     if (temp != null) {
                         temp.sortByDate();
@@ -158,7 +153,7 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
                         publishProgress(temp);
                     }
                 } else {
-                    //no fallback required here any longer.
+                    break;
                 }
             }
         } catch (ObservationController.LoadObservationException e) {
