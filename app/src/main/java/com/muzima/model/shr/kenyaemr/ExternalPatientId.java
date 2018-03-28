@@ -99,7 +99,7 @@ public class ExternalPatientId {
         this.additionalProperties.put(name, value);
     }
 
-    public boolean hasBlankMandatoryValues(){
+    public boolean lacksMandatoryValues(){
         return StringUtils.isEmpty(identifierType) || StringUtils.isEmpty(assigningFacility)
                 || StringUtils.isEmpty(id);
     }

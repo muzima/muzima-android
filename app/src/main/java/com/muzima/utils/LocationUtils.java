@@ -51,6 +51,12 @@ public class LocationUtils {
             location = new Location();
             location.setName("MFL " + facilityCode);
             location.setUuid(UUID.randomUUID().toString());
+            try {
+                int id = Integer.parseInt(facilityCode) + 1000000;
+                location.setId(id);
+            } catch (NumberFormatException e) {
+                location.setId(1000000);
+            }
 
             if(locationAttributeType == null){
                 locationAttributeType = new LocationAttributeType();

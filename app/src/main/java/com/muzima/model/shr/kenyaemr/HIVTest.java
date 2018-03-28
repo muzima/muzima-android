@@ -2,6 +2,7 @@
 package com.muzima.model.shr.kenyaemr;
 
 import com.fasterxml.jackson.annotation.*;
+import com.muzima.utils.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -119,5 +120,11 @@ public class HIVTest {
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
+    }
+
+    public boolean lacksMandatoryValues(){
+        return StringUtils.isEmpty(result) || StringUtils.isEmpty(type)
+                || StringUtils.isEmpty(strategy) || StringUtils.isEmpty(facility)
+                || providerDetails.lacksMandatoryValues();
     }
 }

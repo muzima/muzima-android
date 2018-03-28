@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +78,7 @@ public class KenyaEmrShrModel {
 
     @JsonProperty("HIV_TEST")
     public List<HIVTest> getHivTests() {
-        return hivTests;
+        return hivTests == null ?  new ArrayList<HIVTest>() : hivTests;
     }
 
     @JsonProperty("HIV_TEST")
@@ -87,7 +88,7 @@ public class KenyaEmrShrModel {
 
     @JsonProperty("Immunization")
     public List<Immunization> getImmunizations() {
-        return immunizations;
+        return immunizations == null ? new ArrayList<Immunization>() : immunizations;
     }
 
     @JsonProperty("Immunization")

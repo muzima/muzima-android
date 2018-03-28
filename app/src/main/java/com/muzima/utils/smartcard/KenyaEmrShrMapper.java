@@ -175,17 +175,10 @@ public class KenyaEmrShrMapper {
             try {
                 String shrIdentifierTypeName = null;
                 String assigningAuthority = null;
-                String assigningFacility = LocationUtils.getKenyaEmrMasterFacilityListCode(identifier.getLocation());
+                String assigningFacility = "111111";// LocationUtils.getKenyaEmrMasterFacilityListCode(identifier.getLocation());
                 if(StringUtils.isEmpty(assigningFacility)) {
-                    throw new ShrParseException("Cannot get Facility MFL code from encounter location");
+                    throw new ShrParseException("Cannot get Facility MFL code from identifier location");
                 }
-
-                //ToDo: Update registration to set facility location from formData
-                //ToDo: Update encounter handler to parse mfl_encounter_id
-                //ToDo Generate demographics update payload and other payloads
-                //ToDo Upload payloads
-                //ToDo Introduce tab for
-
 
                 switch (identifier.getIdentifierType().getName()) {
                     case PersonIdentifierType.GODS_NUMBER.name:
@@ -249,7 +242,7 @@ public class KenyaEmrShrMapper {
             PatientIdentifier patientIdentifier = null;
             //External ID
             ExternalPatientId externalPatientId = identification.getExternalPatientId();
-            if(!externalPatientId.hasBlankMandatoryValues()) {
+            if(!externalPatientId.lacksMandatoryValues()) {
                 patientIdentifier = PatientIdentifierUtils.getOrCreateKenyaEmrIdentifierType(muzimaApplication, externalPatientId.getID(),
                         externalPatientId.getIdentifierType(), externalPatientId.getAssigningFacility());
                 identifiers.add(patientIdentifier);
@@ -258,7 +251,7 @@ public class KenyaEmrShrMapper {
             //Internal IDs
             List<InternalPatientId> internalPatientIds = identification.getInternalPatientIds();
             for (InternalPatientId internalPatientId : internalPatientIds) {
-                if(!internalPatientId.hasBlankMandatoryValues()) {
+                if(!internalPatientId.lacksMandatoryValues()) {
                     patientIdentifier = PatientIdentifierUtils.getOrCreateKenyaEmrIdentifierType(muzimaApplication, internalPatientId.getID(),
                             internalPatientId.getIdentifierType(), internalPatientId.getAssigningFacility());
                     identifiers.add(patientIdentifier);
@@ -270,17 +263,6 @@ public class KenyaEmrShrMapper {
         }
 
         return identifiers;
-    }
-
-    /**
-     * Extracts Observations List from a JSON representation of the SHR model
-     * @param shrModel the JSON representation of the SHR model
-     * @return Observations List extracted from SHR model
-     * @throws IOException
-     */
-    public static List<Observation> extractObservationsFromShrModel(String shrModel) throws ShrParseException{
-        KenyaEmrShrModel kenyaEmrShrModel = createSHRModelFromJson(shrModel);
-        return extractObservationsFromShrModel(shrModel);
     }
 
     public static void createNewObservationsAndEncountersFromShrModel(MuzimaApplication muzimaApplication, KenyaEmrShrModel shrModel, final Patient patient)
@@ -347,7 +329,9 @@ public class KenyaEmrShrMapper {
             List<HIVTest> hivTests = shrModel.getHivTests();
             if(hivTests != null) {
                 for (HIVTest hivTest : hivTests) {
-                    encounters.add(createJsonEncounterPayloadFromHivTest(muzimaApplication, hivTest, patient));
+                    if(!hivTest.lacksMandatoryValues()) {
+                        encounters.add(createJsonEncounterPayloadFromHivTest(muzimaApplication, hivTest, patient));
+                    }
                 }
             } else {
                 Log.e("KenyaEmrShrMapper","No HIV Tests found");
@@ -356,7 +340,9 @@ public class KenyaEmrShrMapper {
             List<Immunization> immunizations = shrModel.getImmunizations();
             if(immunizations != null) {
                 for (Immunization immunization : immunizations) {
-                    encounters.add(createJsonEncounterPayloadFromImmunization(immunization, patient));
+                    if (!immunization.lacksMandatoryValues()) {
+                        encounters.add(createJsonEncounterPayloadFromImmunization(immunization, patient));
+                    }
                 }
             } else {
                 Log.e("KenyaEmrShrMapper","No Immunizations found");
@@ -775,6 +761,8 @@ public class KenyaEmrShrMapper {
             identification.setPatientAddress(shrAddress);
         }
 
+        shrModel.setPatientIdentification(identification);
+
         shrModel = putIdentifiersIntoShrModel(shrModel,patient.getIdentifiers());
         EncounterController encounterController = application.getEncounterController();
         ObservationController observationController = application.getObservationController();
@@ -797,8 +785,6 @@ public class KenyaEmrShrMapper {
         } catch (ObservationController.LoadObservationException e) {
             Log.e(TAG,"Could not obtain Observations");
         }
-
-
         return shrModel;
     }
 
@@ -935,7 +921,7 @@ public class KenyaEmrShrMapper {
 
         if(hivTest.getFacility() == null){
             Location location = encounterWithObservations.getEncounter().getLocation();
-            String facility = LocationUtils.getKenyaEmrMasterFacilityListCode(location);
+            String facility = "10999";//LocationUtils.getKenyaEmrMasterFacilityListCode(location);
             if(!StringUtils.isEmpty(facility)) {
                 hivTest.setFacility(facility);
             } else {
@@ -954,6 +940,14 @@ public class KenyaEmrShrMapper {
 
         if(providerDetails != null){
             hivTest.setProviderDetails(providerDetails);
+        }
+
+        Date encounterDate = encounterWithObservations.getEncounter().getEncounterDatetime();
+        if(encounterDate != null) {
+            String date = DateUtils.getFormattedDate(encounterDate, "yyyyMMdd");
+            hivTest.setDate(date);
+        } else {
+            throw new ShrParseException("Cannot get encounter date from encounter");
         }
 
         return hivTest;
