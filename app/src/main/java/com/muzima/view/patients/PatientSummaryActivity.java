@@ -551,7 +551,16 @@ public class PatientSummaryActivity extends BaseActivity {
 
 
         } catch (KenyaEmrShrMapper.ShrParseException e) {
-            Log.e(TAG, "Error", e);
+            writeShrDataOptionDialog.cancel();
+            writeShrDataOptionDialog.dismiss();
+            Snackbar.make(findViewById(R.id.shr_client_summary_view),"Unexpected Error Occured"+e.getMessage(),Snackbar.LENGTH_LONG)
+                    .setAction("RETRY", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            registerNewShrRecord();
+                        }
+                    })
+                    .show();
         } catch (SmartCardController.SmartCardRecordSaveException e) {
             e.printStackTrace();
         }
