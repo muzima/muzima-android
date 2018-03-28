@@ -37,7 +37,9 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
     private static final String TAG = "ObservationsByConceptAdapter";
     private LayoutInflater layoutInflater;
     private View addNewObservationValuesDialog;
+    private View obsDetailsDialog;
     private android.support.v7.app.AlertDialog addIndividualObsDialog;
+    private android.support.v7.app.AlertDialog obsDetailsViewDialog;
     private HashMap<Integer, Concept> rederedConceptsVisualizationMap = new HashMap<>(); //enable visualization of what is rendered on the UI. for ease of access.
     private EditText obsDialogEditText;
     private Button obsDialogAddButton;
@@ -160,7 +162,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         }
 
         @Override
-        protected void setObservation(LinearLayout layout, Observation observation) {
+        protected void setObservation(LinearLayout layout, final Observation observation) {
             int conceptColor = observationController.getConceptColor(observation.getConcept().getUuid());
 
             String observationConceptType = observation.getConcept().getConceptType().getName();
@@ -198,6 +200,13 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
             observationDateView.setTypeface(Fonts.roboto_light(getContext()));
             observationDateView.setTextColor(conceptColor);
 
+            observationValue.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    displayObservationDetailsDialog(observation,v);
+                }
+            });
+
         }
 
         @Override
@@ -220,7 +229,59 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.SEQUENCE.concept_id);
         conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.GROUP.concept_id);
 
-
         shrConcepts = conceptIds;
+    }
+
+    public void displayObservationDetailsDialog(Observation observation,View view){
+        /**
+         * Prepare add obs dialog
+         */
+        TextView encounterDateTextView;
+        TextView encounterLocationTextView;
+        TextView encounterTypeTextView;
+        TextView providerNameTextView;
+        TextView providerIdentifierTextView;
+        TextView conceptNameTextView;
+        TextView conceptDescriptionTextView;
+        TextView obsValueTextView;
+        TextView commentTextView;
+        Button dismissDialogButton;
+
+        layoutInflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        android.support.v7.app.AlertDialog.Builder addIndividualObservationsDialogBuilder =
+                new android.support.v7.app.AlertDialog.Builder(
+                        view.getContext()
+                );
+        obsDetailsDialog = layoutInflater.inflate(R.layout.obs_details_dialog_layout, null);
+
+        dismissDialogButton = (Button)obsDetailsDialog.findViewById(R.id.dismiss_dialog_button);
+        encounterDateTextView = (TextView)obsDetailsDialog.findViewById(R.id.encounter_date_value_textview);
+        encounterLocationTextView = (TextView)obsDetailsDialog.findViewById(R.id.encounter_location_value_textview);
+        conceptNameTextView = (TextView)obsDetailsDialog.findViewById(R.id.concept_name_value_textview);
+
+       // encounterDateTextView.setText(observation.getEncounter().getEncounterDatetime().toString());
+//        encounterLocationTextView.setText(observation.getEncounter().getLocation().getName());
+        conceptNameTextView.setText(observation.getConcept().getName());
+
+
+        addIndividualObservationsDialogBuilder.setView(obsDetailsDialog);
+        addIndividualObservationsDialogBuilder
+                .setCancelable(true);
+
+        obsDetailsViewDialog = addIndividualObservationsDialogBuilder.create();
+        obsDetailsViewDialog.show();;
+
+        dismissDialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                obsDetailsViewDialog.dismiss();
+                obsDetailsViewDialog.cancel();
+            }
+        });
+
+
+
+
+
     }
 }
