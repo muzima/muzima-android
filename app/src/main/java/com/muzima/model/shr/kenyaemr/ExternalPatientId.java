@@ -2,6 +2,7 @@
 package com.muzima.model.shr.kenyaemr;
 
 import com.fasterxml.jackson.annotation.*;
+import com.muzima.utils.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -96,5 +97,10 @@ public class ExternalPatientId {
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
+    }
+
+    public boolean hasBlankMandatoryValues(){
+        return StringUtils.isEmpty(identifierType) || StringUtils.isEmpty(assigningFacility)
+                || StringUtils.isEmpty(id);
     }
 }
