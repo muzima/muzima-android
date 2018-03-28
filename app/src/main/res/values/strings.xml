@@ -572,4 +572,5 @@
     <string name="title_default_encounter_location">Default Encounter Location</string>
     <string name="hint_default_encounter_location">This selected encounter location will be the default encounter location for all forms</string>
     <string name="no_default_encounter_location">No default encounter location</string>
+    <string name="general_not_available_text">Not Available</string>
 </resources>
