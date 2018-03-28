@@ -257,7 +257,12 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         dismissDialogButton = (Button)obsDetailsDialog.findViewById(R.id.dismiss_dialog_button);
         encounterDateTextView = (TextView)obsDetailsDialog.findViewById(R.id.encounter_date_value_textview);
         encounterLocationTextView = (TextView)obsDetailsDialog.findViewById(R.id.encounter_location_value_textview);
+        encounterTypeTextView = (TextView)obsDetailsViewDialog.findViewById(R.id.encounter_type_value_textview);
+        providerNameTextView = (TextView)obsDetailsViewDialog.findViewById(R.id.concept_name_value_textview);
+        providerIdentifierTextView = (TextView)obsDetailsViewDialog.findViewById(R.id.provider_identify_type_value_textView);
         conceptNameTextView = (TextView)obsDetailsDialog.findViewById(R.id.concept_name_value_textview);
+        conceptDescriptionTextView = (TextView)obsDetailsViewDialog.findViewById(R.id.concept_description_value_textview);
+
 
        // encounterDateTextView.setText(observation.getEncounter().getEncounterDatetime().toString());
 //        encounterLocationTextView.setText(observation.getEncounter().getLocation().getName());
@@ -278,10 +283,5 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
                 obsDetailsViewDialog.cancel();
             }
         });
-
-
-
-
-
     }
 }

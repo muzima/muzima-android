@@ -1305,4 +1305,37 @@ $(document).ready(function () {
         "valid-consultant-only": {validConsultantOnly: true}
     });
     /* End - validConsultantOnly*/
+
+    /*Start of Checking For Possibility Of Duplicate Form on encounter Date change*/
+    $("#encounter\\.encounter_datetime" ).change(function() {
+        var formUuid=$('#encounter\\.form_uuid').val();
+        var encounterDateTime=$('#encounter\\.encounter_datetime').val();
+        var patientUuid=$('#patient\\.uuid').val();
+        var formData = $.trim($('#pre_populate_data').html());
+        htmlDataStore.checkForPossibleFormDuplicate(formUuid,encounterDateTime,patientUuid,formData);
+    });
+    /*End of Checking For Possibility Of Duplicate Form on encounter date change*/
+
+    /*Start of Checking For Possibility Of Duplicate Form on Form Load*/
+    $(window).load(function() {
+        var formUuid=$('#encounter\\.form_uuid').val();
+        var encounterDateTime=$('#encounter\\.encounter_datetime').val();
+        var patientUuid=$('#patient\\.uuid').val();
+        var formData = $.trim($('#pre_populate_data').html());
+
+        htmlDataStore.checkForPossibleFormDuplicate(formUuid,encounterDateTime,patientUuid,formData);
+    });
+    /*End of Checking For Possibility Of Duplicate Form on Form Load*/
+
+    /*setting default encounter location*/
+    var defaultEncounterLocationSetting = htmlDataStore.getDefaultEncounterLocationSetting();
+    if(defaultEncounterLocationSetting){
+        var defaultEncounterLocation = htmlDataStore.getDefaultEncounterLocationPreference();
+        defaultEncounterLocation = JSON.parse(defaultEncounterLocation);
+        $.each(defaultEncounterLocation, function () {
+            $("#encounter\\.location_id").val(this.name);
+            $('[name="encounter\\.location_id"]').val(this.id);
+        });
+    }
+    /*end of Setting Default encounter Location*/
 });

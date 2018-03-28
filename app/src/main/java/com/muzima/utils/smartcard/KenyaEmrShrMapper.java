@@ -1,17 +1,18 @@
 package com.muzima.utils.smartcard;
 
 import android.util.Log;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Concept;
-import com.muzima.api.model.ConceptName;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.FormData;
+import com.muzima.api.model.Location;
+import com.muzima.api.model.LocationAttribute;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientIdentifierType;
+import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonAddress;
 import com.muzima.api.model.PersonName;
 import com.muzima.api.model.SmartCardRecord;
@@ -35,16 +36,16 @@ import com.muzima.model.shr.kenyaemr.PhysicalAddress;
 import com.muzima.model.shr.kenyaemr.ProviderDetails;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.utils.Constants;
-import com.muzima.utils.Constants.Shr.KenyaEmr.IdentifierType;
+import com.muzima.utils.Constants.Shr.KenyaEmr.PersonIdentifierType;
 import com.muzima.utils.Constants.Shr.KenyaEmr.CONCEPTS;
 import com.muzima.utils.DateUtils;
+import com.muzima.utils.LocationUtils;
 import com.muzima.utils.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -159,7 +160,7 @@ public class KenyaEmrShrMapper {
         }
     }
 
-    public static KenyaEmrShrModel putIdentifiersIntoShrModel(KenyaEmrShrModel shrModel,List<PatientIdentifier> identifiers ){
+    public static KenyaEmrShrModel putIdentifiersIntoShrModel(KenyaEmrShrModel shrModel,List<PatientIdentifier> identifiers ) throws ShrParseException {
         PatientIdentification patientIdentification = shrModel.getPatientIdentification();
         if(patientIdentification == null){
             patientIdentification = new PatientIdentification();
@@ -170,44 +171,48 @@ public class KenyaEmrShrMapper {
             internalPatientIds = new ArrayList<>();
         }
 
-        String assigningFacility = "10829";
-
         for(PatientIdentifier identifier:identifiers){
 
             try {
                 String shrIdentifierTypeName = null;
                 String assigningAuthority = null;
+                String assigningFacility = LocationUtils.getKenyaEmrMasterFacilityListCode(identifier.getLocation());
+                if(StringUtils.isEmpty(assigningFacility)) {
+                    throw new ShrParseException("Cannot get Facility MFL code from encounter location");
+                }
+
+
 
                 switch (identifier.getIdentifierType().getName()) {
-                    case IdentifierType.GODS_NUMBER.name:
+                    case PersonIdentifierType.GODS_NUMBER.name:
                         ExternalPatientId externalPatientId = patientIdentification.getExternalPatientId();
                         if(externalPatientId == null){
                             externalPatientId = new ExternalPatientId();
                         }
-                        externalPatientId.setIdentifierType(IdentifierType.GODS_NUMBER.shr_name);
+                        externalPatientId.setIdentifierType(PersonIdentifierType.GODS_NUMBER.shr_name);
                         externalPatientId.setID(identifier.getIdentifier());
                         externalPatientId.setAssigningAuthority("MPI");
                         externalPatientId.setAssigningFacility(assigningFacility);
                         patientIdentification.setExternalPatientId(externalPatientId);
                         break;
-                    case IdentifierType.CARD_SERIAL_NUMBER.name:
-                        shrIdentifierTypeName = IdentifierType.CARD_SERIAL_NUMBER.shr_name;
+                    case PersonIdentifierType.CARD_SERIAL_NUMBER.name:
+                        shrIdentifierTypeName = PersonIdentifierType.CARD_SERIAL_NUMBER.shr_name;
                         assigningAuthority = "CARD_REGISTRY";
                         break;
-                    case IdentifierType.CCC_NUMBER.name:
-                        shrIdentifierTypeName = IdentifierType.CCC_NUMBER.shr_name;
+                    case PersonIdentifierType.CCC_NUMBER.name:
+                        shrIdentifierTypeName = PersonIdentifierType.CCC_NUMBER.shr_name;
                         assigningAuthority = "CCC";
                         break;
-                    case IdentifierType.HEI_NUMBER.name:
-                        shrIdentifierTypeName = IdentifierType.HEI_NUMBER.shr_name;
+                    case PersonIdentifierType.HEI_NUMBER.name:
+                        shrIdentifierTypeName = PersonIdentifierType.HEI_NUMBER.shr_name;
                         assigningAuthority = "MCH";
                         break;
-                    case IdentifierType.HTS_NUMBER.name:
-                        shrIdentifierTypeName = IdentifierType.HTS_NUMBER.shr_name;
+                    case PersonIdentifierType.HTS_NUMBER.name:
+                        shrIdentifierTypeName = PersonIdentifierType.HTS_NUMBER.shr_name;
                         assigningAuthority = "HTS";
                         break;
-                    case IdentifierType.NATIONAL_ID.name:
-                        shrIdentifierTypeName = IdentifierType.NATIONAL_ID.shr_name;
+                    case PersonIdentifierType.NATIONAL_ID.name:
+                        shrIdentifierTypeName = PersonIdentifierType.NATIONAL_ID.shr_name;
                         assigningAuthority = "GK";
                         break;
                     case CONCEPTS.ANC_NUMBER.name:
@@ -254,23 +259,23 @@ public class KenyaEmrShrMapper {
             identifierType = new PatientIdentifierType();
             String identifierTypeName = null;
             switch (internalPatientId.getIdentifierType()){
-                case IdentifierType.CARD_SERIAL_NUMBER.shr_name:
-                    identifierTypeName = IdentifierType.CARD_SERIAL_NUMBER.name;
+                case PersonIdentifierType.CARD_SERIAL_NUMBER.shr_name:
+                    identifierTypeName = PersonIdentifierType.CARD_SERIAL_NUMBER.name;
                     break;
-                case IdentifierType.CCC_NUMBER.shr_name:
-                    identifierTypeName = IdentifierType.CCC_NUMBER.name;
+                case PersonIdentifierType.CCC_NUMBER.shr_name:
+                    identifierTypeName = PersonIdentifierType.CCC_NUMBER.name;
                     break;
-                case IdentifierType.GODS_NUMBER.shr_name:
-                    identifierTypeName = IdentifierType.GODS_NUMBER.name;
+                case PersonIdentifierType.GODS_NUMBER.shr_name:
+                    identifierTypeName = PersonIdentifierType.GODS_NUMBER.name;
                     break;
-                case IdentifierType.HEI_NUMBER.shr_name:
-                    identifierTypeName = IdentifierType.HEI_NUMBER.name;
+                case PersonIdentifierType.HEI_NUMBER.shr_name:
+                    identifierTypeName = PersonIdentifierType.HEI_NUMBER.name;
                     break;
-                case IdentifierType.HTS_NUMBER.shr_name:
-                    identifierTypeName = IdentifierType.HTS_NUMBER.name;
+                case PersonIdentifierType.HTS_NUMBER.shr_name:
+                    identifierTypeName = PersonIdentifierType.HTS_NUMBER.name;
                     break;
-                case IdentifierType.NATIONAL_ID.shr_name:
-                    identifierTypeName = IdentifierType.NATIONAL_ID.name;
+                case PersonIdentifierType.NATIONAL_ID.shr_name:
+                    identifierTypeName = PersonIdentifierType.NATIONAL_ID.name;
                     break;
                 case CONCEPTS.ANC_NUMBER.shr_name:
                     identifierTypeName = CONCEPTS.ANC_NUMBER.name;
@@ -396,7 +401,7 @@ public class KenyaEmrShrMapper {
         Log.e("KenyaEmrShrMapper","Processing HIV test ");
 
         encounterDetails.put("encounter.provider_id", hivTest.getProviderDetails().getId());
-        encounterDetails.put("encounter.location_id", hivTest.getFacility());
+        encounterDetails.put("encounter.location_mfl_id", hivTest.getFacility());
 
         Date encounterDateTime = DateUtils.parseDateByPattern(hivTest.getDate(), "yyyyMMdd");
         encounterDetails.put("encounter.encounter_datetime", DateUtils.getFormattedDate(encounterDateTime));
@@ -526,8 +531,8 @@ public class KenyaEmrShrMapper {
         Log.e("KenyaEmrShrMapper","Processing Immunization ");
 
 
-        encounterDetails.put("encounter.provider_id", "SHR_USER");
-        encounterDetails.put("encounter.location_id", "SHR_FACILITY");
+        encounterDetails.put("encounter.provider_id", "DEFAULT_SHR_USER");
+        encounterDetails.put("encounter.location_mfl_id", "DEFAULT_SHR_FACILITY");
 
         Date encounterDateTime = DateUtils.parseDateByPattern(immunization.getDateAdministered(), "yyyyMMdd");
         encounterDetails.put("encounter.encounter_datetime", DateUtils.getFormattedDate(encounterDateTime));
@@ -689,11 +694,13 @@ public class KenyaEmrShrMapper {
                 Date latHivShrUpdateDateTime = null;
                 List<HIVTest> hivTests = shrModel.getHivTests();
                 for(HIVTest hivTest:hivTests){
-                    Date date = DateUtils.parseDateByPattern(hivTest.getDate(),"yyyyMMdd");
-                    if(latHivShrUpdateDateTime == null){
-                        latHivShrUpdateDateTime = date;
-                    } else if(latHivShrUpdateDateTime.before(date)){
-                        latHivShrUpdateDateTime = date;
+                    if(hivTest.getDate() != null) {
+                        Date date = DateUtils.parseDateByPattern(hivTest.getDate(), "yyyyMMdd");
+                        if (latHivShrUpdateDateTime == null) {
+                            latHivShrUpdateDateTime = date;
+                        } else if (latHivShrUpdateDateTime.before(date)) {
+                            latHivShrUpdateDateTime = date;
+                        }
                     }
                 }
 
@@ -789,6 +796,7 @@ public class KenyaEmrShrMapper {
                     encountersWithObservations.addAll(encounterObs);
                 }
             }
+
             if(!encountersWithObservations.isEmpty()){
                 shrModel = addEncounterObservationsToShrModel(shrModel,encountersWithObservations);
             }
@@ -832,7 +840,7 @@ public class KenyaEmrShrMapper {
         return shrModel;
     }
 
-    public static HIVTest getHivTestFromEncounter(EncounterWithObservations encounterWithObservations){
+    public static HIVTest getHivTestFromEncounter(EncounterWithObservations encounterWithObservations) throws ShrParseException {
         List<Observation> observations = encounterWithObservations.getObservations();
         HIVTest hivTest = new HIVTest();
         ProviderDetails providerDetails = null;
@@ -929,13 +937,32 @@ public class KenyaEmrShrMapper {
                     break;
             }
         }
-        if(providerDetails != null){
-            hivTest.setProviderDetails(providerDetails);
-        }
         if(isHivEncounter == false){
             return null;
         }
 
+        if(hivTest.getFacility() == null){
+            Location location = encounterWithObservations.getEncounter().getLocation();
+            String facility = LocationUtils.getKenyaEmrMasterFacilityListCode(location);
+            if(!StringUtils.isEmpty(facility)) {
+                hivTest.setFacility(facility);
+            } else {
+                throw new ShrParseException("Cannot get Facility MFL code from encounter location");
+            }
+        }
+
+        if(providerDetails == null){
+            providerDetails = new ProviderDetails();
+            Person provider = encounterWithObservations.getEncounter().getProvider();
+            if(provider != null){
+                providerDetails.setId(provider.getMiddleName());
+                providerDetails.setName(provider.getDisplayName());
+            }
+        }
+
+        if(providerDetails != null){
+            hivTest.setProviderDetails(providerDetails);
+        }
 
         return hivTest;
     }
