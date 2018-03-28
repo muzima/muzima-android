@@ -402,7 +402,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         noOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                prepareRegisterLocallyDialog(getApplicationContext());
                 localSearchResultNotifyAlertDialog.cancel();
                 localSearchResultNotifyAlertDialog.dismiss();
                 registerShrPatientLocallyDialog.show();
@@ -789,6 +788,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            prepareRegisterLocallyDialog(getApplicationContext());
             prepareLocalSearchNotifyDialog(getApplicationContext(), shrPatient);
         }
 
