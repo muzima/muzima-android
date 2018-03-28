@@ -50,26 +50,23 @@ public class PatientIdentifierUtils {
         }
 
         if (!StringUtils.isEmpty(identifierTypeName) && !StringUtils.isEmpty(identifierTypeUuid)){
-            PatientIdentifierType identifierType = getOrCreateDummyPatientIdentifierType(muzimaApplication.getPatientController() ,identifierTypeName, identifierTypeUuid);
+            PatientIdentifierType identifierType = getOrCreateDummyPatientIdentifierType(muzimaApplication ,identifierTypeName, identifierTypeUuid);
             patientIdentifier.setIdentifierType(identifierType);
         } else {
             throw new Exception("Cannot create identifier. Could not determine identifier type name or uuid");
         }
 
-        Location location;
-        try {
-            location = LocationUtils.getOrCreateDummyLocationByKenyaEmrMasterFacilityListCode(muzimaApplication.getLocationController(),assigningFacility);
-        } catch (LocationController.LocationLoadException e) {
-            throw new Exception("Cannot create identifier. Could not get or create identifier location",e);
-        }
+        Location location = LocationUtils.getOrCreateDummyLocationByKenyaEmrMasterFacilityListCode(muzimaApplication,assigningFacility);
         patientIdentifier.setLocation(location);
 
         return patientIdentifier;
     }
 
-    public static PatientIdentifierType getOrCreateDummyPatientIdentifierType(PatientController patientController, String identifierTypeName, String identifierTypeUuid){
+    public static PatientIdentifierType getOrCreateDummyPatientIdentifierType(MuzimaApplication muzimaApplication, String identifierTypeName, String identifierTypeUuid){
         PatientIdentifierType identifierType = null;
         List<PatientIdentifierType> identifierTypes = null;
+
+        PatientController patientController = muzimaApplication.getPatientController();
 
         if(!StringUtils.isEmpty(identifierTypeName)){
             identifierTypes = patientController.getPatientIdentifierTypeByName(identifierTypeName);
