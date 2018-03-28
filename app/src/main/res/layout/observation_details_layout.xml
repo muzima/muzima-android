@@ -119,7 +119,7 @@
 		
 		<TextView
 				android:id="@+id/provider_identify_type"
-				android:text="Practisioner ID:"
+				android:text="Provider Identifier:"
 				android:padding="8dp"
 				android:layout_below="@+id/provider_name_textview"
 				android:textColor="@android:color/black"
@@ -166,7 +166,7 @@
 		<TextView
 				android:id="@+id/concept_name_value_textview"
 				android:textColor="@android:color/black"
-				android:text="HIV TEST RESULTS"
+				android:text=""
 				android:padding="8dp"
 				android:layout_marginEnd="16dp"
 				android:layout_alignParentEnd="true"
@@ -184,7 +184,7 @@
 		
 		<TextView
 				android:id="@+id/concept_description_value_textview"
-				android:text="NO description"
+				android:text="No description"
 				android:padding="8dp"
 				android:layout_marginEnd="16dp"
 				android:layout_alignParentEnd="true"
@@ -201,23 +201,54 @@
 			android:textColor="@android:color/white"
 			android:textSize="16sp"
 			android:textStyle="bold"
+			android:text="Observation Details"
 			android:background="@android:color/holo_green_light"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"/>
 	
-	<RelativeLayout android:layout_width="match_parent"
-	                android:layout_height="wrap_content">
-		<Button
-				android:id="@+id/dismiss_dialog_button"
+	<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+		
+		<TextView
+				android:id="@+id/observation_value_textview"
+				android:text="Observation Value:"
+				android:padding="8dp"
+				android:layout_alignParentTop="true"
+				android:textColor="@android:color/black"
 				android:layout_width="wrap_content"
-				android:background="@drawable/rounded_corner_loginbutton"
-				android:text="DONE"
-				android:layout_alignParentEnd="true"
-				android:layout_margin="16dp"
-				android:textAlignment="center"
 				android:layout_height="wrap_content"/>
+		
+		<TextView
+				android:id="@+id/observertion_value_indicator_textview"
+				android:textColor="@android:color/black"
+				android:text=""
+				android:padding="8dp"
+				android:layout_marginEnd="16dp"
+				android:layout_alignParentEnd="true"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		
+		<TextView
+				android:id="@+id/observation_description_textview"
+				android:text="Captured Date:"
+				android:padding="8dp"
+				android:layout_below="@+id/observation_value_textview"
+				android:textColor="@android:color/black"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		
+		<TextView
+				android:id="@+id/observation_description_value_textview"
+				android:text="No description"
+				android:padding="8dp"
+				android:layout_marginEnd="16dp"
+				android:layout_alignParentEnd="true"
+				android:textColor="@android:color/black"
+				android:layout_below="@+id/observertion_value_indicator_textview"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+	
 	</RelativeLayout>
-	
-	
 
 </LinearLayout>
