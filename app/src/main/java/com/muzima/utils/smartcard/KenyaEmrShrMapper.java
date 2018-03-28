@@ -40,6 +40,7 @@ import com.muzima.utils.Constants.Shr.KenyaEmr.PersonIdentifierType;
 import com.muzima.utils.Constants.Shr.KenyaEmr.CONCEPTS;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.LocationUtils;
+import com.muzima.utils.PatientIdentifierUtils;
 import com.muzima.utils.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,9 +95,9 @@ public class KenyaEmrShrMapper {
      * @return Patient object extracted from SHR model
      * @throws IOException
      */
-    public static Patient extractPatientFromShrModel(String shrModel) throws ShrParseException{
+    public static Patient extractPatientFromShrModel(MuzimaApplication muzimaApplication,String shrModel) throws ShrParseException{
         KenyaEmrShrModel kenyaEmrShrModel = createSHRModelFromJson(shrModel);
-        return extractPatientFromShrModel(kenyaEmrShrModel);
+        return extractPatientFromShrModel(muzimaApplication, kenyaEmrShrModel);
     }
 
     /**
@@ -105,7 +106,7 @@ public class KenyaEmrShrMapper {
      * @return Patient object extracted from SHR model
      * @throws IOException
      */
-    public static Patient extractPatientFromShrModel(KenyaEmrShrModel shrModel) throws ShrParseException{
+    public static Patient extractPatientFromShrModel(MuzimaApplication muzimaApplication, KenyaEmrShrModel shrModel) throws ShrParseException{
         try {
             Patient patient = new Patient();
             PatientIdentification identification = shrModel.getPatientIdentification();
@@ -113,7 +114,7 @@ public class KenyaEmrShrMapper {
             patient.setNames(names);
 
             //set Identifiers
-            List<PatientIdentifier> identifiers = extractPatientIdentifiersFromShrModel(shrModel);
+            List<PatientIdentifier> identifiers = extractPatientIdentifiersFromShrModel(muzimaApplication, shrModel);
             if(!identifiers.isEmpty()) {
                 patient.setIdentifiers(identifiers);
             }
@@ -181,6 +182,11 @@ public class KenyaEmrShrMapper {
                     throw new ShrParseException("Cannot get Facility MFL code from encounter location");
                 }
 
+                //ToDo: Update registration to set facility location from formData
+                //ToDo: Update encounter handler to parse mfl_encounter_id
+                //ToDo Generate demographics update payload and other payloads
+                //ToDo Upload payloads
+                //ToDo Introduce tab for
 
 
                 switch (identifier.getIdentifierType().getName()) {
@@ -237,61 +243,29 @@ public class KenyaEmrShrMapper {
         return shrModel;
     }
 
-    public static List<PatientIdentifier> extractPatientIdentifiersFromShrModel(KenyaEmrShrModel shrModel){
+    public static List<PatientIdentifier> extractPatientIdentifiersFromShrModel(MuzimaApplication muzimaApplication,KenyaEmrShrModel shrModel){
         List<PatientIdentifier> identifiers = new ArrayList<PatientIdentifier>();
-        PatientIdentification identification = shrModel.getPatientIdentification();
-        //External ID
-        ExternalPatientId externalPatientId = identification.getExternalPatientId();
-        PatientIdentifier patientIdentifier = new PatientIdentifier();
-        PatientIdentifierType identifierType = new PatientIdentifierType();
+        try {
 
-        if(!StringUtils.isEmpty(externalPatientId.getIdentifierType()) && !StringUtils.isEmpty(externalPatientId.getID())) {
-            identifierType.setName(externalPatientId.getIdentifierType());
-            patientIdentifier.setIdentifierType(identifierType);
-            patientIdentifier.setIdentifier(externalPatientId.getID());
+            PatientIdentification identification = shrModel.getPatientIdentification();
+            //External ID
+            ExternalPatientId externalPatientId = identification.getExternalPatientId();
+            PatientIdentifier patientIdentifier = PatientIdentifierUtils.getOrCreateKenyaEmrIdentifierType(muzimaApplication, externalPatientId.getID(),
+                    externalPatientId.getIdentifierType(), externalPatientId.getAssigningFacility());
             identifiers.add(patientIdentifier);
+
+            //Internal IDs
+            List<InternalPatientId> internalPatientIds = identification.getInternalPatientIds();
+            for (InternalPatientId internalPatientId : internalPatientIds) {
+                patientIdentifier = PatientIdentifierUtils.getOrCreateKenyaEmrIdentifierType(muzimaApplication, internalPatientId.getID(),
+                        internalPatientId.getIdentifierType(), internalPatientId.getAssigningFacility());
+                identifiers.add(patientIdentifier);
+            }
+
+        } catch (Exception e){
+            Log.e("KenyaEmrShrMapper","Could not create Kenyaemr identifier for ",e);
         }
 
-        //Internal IDs
-        List<InternalPatientId> internalPatientIds = identification.getInternalPatientIds();
-        for (InternalPatientId internalPatientId : internalPatientIds) {
-            patientIdentifier = new PatientIdentifier();
-            identifierType = new PatientIdentifierType();
-            String identifierTypeName = null;
-            switch (internalPatientId.getIdentifierType()){
-                case PersonIdentifierType.CARD_SERIAL_NUMBER.shr_name:
-                    identifierTypeName = PersonIdentifierType.CARD_SERIAL_NUMBER.name;
-                    break;
-                case PersonIdentifierType.CCC_NUMBER.shr_name:
-                    identifierTypeName = PersonIdentifierType.CCC_NUMBER.name;
-                    break;
-                case PersonIdentifierType.GODS_NUMBER.shr_name:
-                    identifierTypeName = PersonIdentifierType.GODS_NUMBER.name;
-                    break;
-                case PersonIdentifierType.HEI_NUMBER.shr_name:
-                    identifierTypeName = PersonIdentifierType.HEI_NUMBER.name;
-                    break;
-                case PersonIdentifierType.HTS_NUMBER.shr_name:
-                    identifierTypeName = PersonIdentifierType.HTS_NUMBER.name;
-                    break;
-                case PersonIdentifierType.NATIONAL_ID.shr_name:
-                    identifierTypeName = PersonIdentifierType.NATIONAL_ID.name;
-                    break;
-                case CONCEPTS.ANC_NUMBER.shr_name:
-                    identifierTypeName = CONCEPTS.ANC_NUMBER.name;
-                    break;
-            }
-            if(!StringUtils.isEmpty(identifierTypeName) && !StringUtils.isEmpty(internalPatientId.getID())) {
-                identifierType.setName(identifierTypeName);
-                patientIdentifier.setIdentifierType(identifierType);
-                patientIdentifier.setIdentifier(internalPatientId.getID());
-                identifiers.add(patientIdentifier);
-                Log.e("KenyaEmrShrMapper","Added determine Kenyaemr identifier name for "+identifierTypeName+ " = "+patientIdentifier.getIdentifier() );
-            } else {
-                Log.e("KenyaEmrShrMapper","Could not determine Kenyaemr identifier name for "
-                        + internalPatientId.getIdentifierType());
-            }
-        }
         return identifiers;
     }
 
@@ -393,6 +367,16 @@ public class KenyaEmrShrMapper {
     }
 
     public static String createJsonEncounterPayloadFromHivTest(HIVTest hivTest, Patient patient) throws JSONException, ParseException {
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println(" createJsonEncounterPayloadFromHivTest() ");
+        System.out.println(" DATE: "+hivTest.getDate());
+        System.out.println(" RESULT: "+hivTest.getResult());
+        System.out.println(" TYPE: "+hivTest.getType());
+        System.out.println(" STRATEGY: "+hivTest.getStrategy());
+        System.out.println(" FACILITY: "+hivTest.getFacility());
+        System.out.println(" PROVIDER DETAILS: ID : "+hivTest.getProviderDetails().getId());
+        System.out.println("                 NAME : "+hivTest.getProviderDetails().getName());
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         JSONObject encounterJSON = new JSONObject();
         JSONObject patientDetails = new JSONObject();
         JSONObject observationDetails = new JSONObject();
