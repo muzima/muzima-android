@@ -13,14 +13,13 @@ package com.muzima.model.observation;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class ConceptWithObservations {
+
     private Concept concept;
     private List<Observation> observations;
+    private List<Integer> metaDataObservations = new ArrayList<>();
 
     public ConceptWithObservations() {
         observations = new ArrayList<Observation>();
@@ -35,7 +34,9 @@ public class ConceptWithObservations {
     }
 
     public List<Observation> getObservations() {
+        defineMetadataConceptsForFilters();
         Collections.sort(observations, observationDateTimeComparator);
+
         return observations;
     }
 
@@ -61,6 +62,10 @@ public class ConceptWithObservations {
         int result = concept != null ? concept.hashCode() : 0;
         result = 31 * result + (observations != null ? observations.hashCode() : 0);
         return result;
+    }
+
+    private void defineMetadataConceptsForFilters(){
+        metaDataObservations =  Arrays.asList(1473,163161,162724);
     }
 
     private final Comparator<Observation> observationDateTimeComparator = new Comparator<Observation>() {

@@ -12,6 +12,7 @@ package com.muzima.adapters.observations;
 
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
+
     private static final String TAG = "ObservationsAdapter";
     protected final String patientUuid;
     protected ConceptController conceptController;
@@ -41,51 +43,52 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
         return backgroundListQueryTaskListener;
     }
 
-    public ObservationsAdapter(FragmentActivity context, int textViewResourceId,
+    public ObservationsAdapter(FragmentActivity fragmentActivity, int textViewResourceId,
                                EncounterController encounterController,
                                ConceptController conceptController, ObservationController observationController) {
-        super(context, textViewResourceId);
+        super(fragmentActivity, textViewResourceId);
+
         this.encounterController = encounterController;
         this.conceptController = conceptController;
         this.observationController = observationController;
-        Patient patient = (Patient) context.getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
+        Patient patient = (Patient) fragmentActivity.getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
         patientUuid = patient.getUuid();
     }
 
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
-            this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
+        this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
     }
 
-    public void cancelBackgroundQueryTask(){
-        if(backgroundQueryTask != null){
+    public void cancelBackgroundQueryTask() {
+        if (backgroundQueryTask != null) {
             backgroundQueryTask.cancel(true);
         }
     }
 
-    protected void setRunningBackgroundQueryTask(AsyncTask<?,?,?> backgroundQueryTask){
+    protected void setRunningBackgroundQueryTask(AsyncTask<?, ?, ?> backgroundQueryTask) {
         this.backgroundQueryTask = backgroundQueryTask;
     }
 
-    protected abstract class ViewHolder{
+    protected abstract class ViewHolder {
 
         protected LayoutInflater inflater;
         protected LinearLayout observationLayout;
         List<LinearLayout> observationViewHolders;
 
         protected ViewHolder() {
-            observationViewHolders = new ArrayList<LinearLayout>();
+            observationViewHolders = new ArrayList<>();
             inflater = LayoutInflater.from(getContext());
         }
 
         protected void addEncounterObservations(List<Observation> observations) {
-            for (int i = 0; i < observations.size(); i++) {
+            //draws each concept row
+            for (int i = 0; i < observations.size(); i++) { //populate this concept's rows.
                 LinearLayout layout = getLinearLayoutForObservation(i);
                 Observation observation = observations.get(i);
-
                 setObservation(layout, observation);
             }
 
-            shrink(observations.size());
+            shrink(observations.size()); //mover to next row
         }
 
         protected LinearLayout getLinearLayoutForObservation(int i) {
@@ -94,7 +97,8 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
                 layout = (LinearLayout) inflater.inflate(getObservationLayout(), null);
                 observationViewHolders.add(layout);
                 observationLayout.addView(layout);
-            } else {
+            }
+            else {
                 layout = observationViewHolders.get(i);
             }
 
@@ -133,10 +137,12 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
 
         protected String getConceptDisplay(Concept concept) {
             String text = concept.getName();
-            if(concept.getConceptType().getName().equals(Concept.NUMERIC_TYPE)){
-                text += " (" + concept.getUnit() +")";
+            if (concept.getConceptType().getName().equals(Concept.NUMERIC_TYPE)) {
+                text += " (" + concept.getUnit() + ")";
             }
             return text;
         }
+
+
     }
 }
