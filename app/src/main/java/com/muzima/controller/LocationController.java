@@ -13,9 +13,13 @@ package com.muzima.controller;
 import android.util.Log;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Location;
+import com.muzima.api.model.LocationAttribute;
+import com.muzima.api.model.LocationAttributeType;
 import com.muzima.api.service.LocationService;
 import com.muzima.service.HTMLLocationParser;
 import com.muzima.service.LocationParser;
+import com.muzima.utils.StringUtils;
+import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -101,6 +105,45 @@ public class LocationController {
     public Location getLocationByUuid(String uuid) throws LocationLoadException {
         try {
             return locationService.getLocationByUuid(uuid);
+        } catch (IOException e) {
+            throw new LocationLoadException(e);
+        }
+    }
+
+    public List<LocationAttributeType> getLocationAttributesByName(String name) throws LocationLoadException {
+        try {
+            return locationService.getLocationAttributesTypeByName(name);
+        } catch (IOException e) {
+            throw new LocationLoadException(e);
+        } catch (ParseException e) {
+            throw new LocationLoadException(e);
+        }
+    }
+
+    public LocationAttributeType getLocationAttributeByUuid(String uuid) throws LocationLoadException {
+        try {
+            return locationService.getLocationAttributeTypeByUuid(uuid);
+        } catch (IOException e) {
+            throw new LocationLoadException(e);
+        } catch (ParseException e) {
+            throw new LocationLoadException(e);
+        }
+    }
+
+    public Location getLocationByAttributeType(LocationAttributeType attributeType,String attribute) throws LocationLoadException {
+        try {
+            List<Location> locations = locationService.getAllLocations();
+            for(Location location:locations){
+                LocationAttribute locationAttribute = location.getAttribute(attributeType.getName());
+                if(locationAttribute != null && StringUtils.equalsIgnoreCase(locationAttribute.getAttribute(),attribute)){
+                    return location;
+                }
+                locationAttribute = location.getAttribute(attributeType.getUuid());
+                if(locationAttribute != null && StringUtils.equalsIgnoreCase(locationAttribute.getAttribute(),attribute)){
+                    return location;
+                }
+            }
+            return null;
         } catch (IOException e) {
             throw new LocationLoadException(e);
         }
