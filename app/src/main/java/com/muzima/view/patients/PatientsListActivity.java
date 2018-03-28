@@ -111,6 +111,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private PatientsListActivity.BackgroundPatientLocalSearchQueryTask mBackgroundQueryTask;
     private PatientsListActivity.BackgroundPatientServerSearchQueryTask patientServerSearchQueryTask;
     private PatientsListActivity.BackgroundPatientDownloadTask patientDownloadTask;
+    private PatientsListActivity.RegisterPatientBackgroundTask patientRegistrationTask;
 
     private AlertDialog negativeServerSearchResultNotifyAlertDialog;
     private AlertDialog localSearchResultNotifyAlertDialog;
@@ -121,7 +122,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private Button noOptionShrSearchButton;
 
     private ProgressDialog serverSearchProgressDialog;
-    private ProgressDialog patientRegistrationDialog;
+    private ProgressDialog patientRegistrationProgressDialog;
 
     private final String TAG = this.getClass().getName();
 
@@ -177,12 +178,10 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         patientController = muzimaApplication.getPatientController();
         cohortController = muzimaApplication.getCohortController();
         serverSearchProgressDialog = new ProgressDialog(this);
-        patientRegistrationDialog = new ProgressDialog(this);
 
         serverSearchProgressDialog.setCancelable(false);
         serverSearchProgressDialog.setIndeterminate(true);
-        patientRegistrationDialog.setCancelable(false);
-        patientRegistrationDialog.setIndeterminate(true);
+
 
         smartCardController = ((MuzimaApplication) getApplicationContext()).getSmartCardController();
     }
@@ -606,12 +605,10 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         } catch (Exception e) {
             Log.e(TAG, "Could not get result", e);
         }
-        if (cardReadIntentResult == null){
-            Toast.makeText(getApplicationContext(),"Card Read Failed",Toast.LENGTH_LONG).show();
+        if (cardReadIntentResult == null) {
+            Toast.makeText(getApplicationContext(), "Card Read Failed", Toast.LENGTH_LONG).show();
             return;
         }
-        //todo remove logging code.
-        Log.e("SHR_REQ", "Read Activity result invoked with value..." + cardReadIntentResult.isSuccessResult());
 
         if (cardReadIntentResult.isSuccessResult()) {
             /**
@@ -621,10 +618,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             if (smartCardRecord != null) {
                 intentShrResults = false;
                 String shrPayload = smartCardRecord.getPlainPayload();
-                Log.e("SHR_REQ", "Read Activity result invoked with value..." + shrPayload);
 
                 try {
-                    shrPatient = KenyaEmrShrMapper.extractPatientFromShrModel(muzimaApplication,shrPayload);
+                    shrPatient = KenyaEmrShrMapper.extractPatientFromShrModel(muzimaApplication, shrPayload);
                     if (shrPatient != null) {
                         PatientIdentifier cardNumberIdentifier = shrPatient.getIdentifier(Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.name);
 
@@ -637,15 +633,14 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                                     .show();
                         } else {
                             Toast.makeText(getApplicationContext(), "Searching Patient Locally", Toast.LENGTH_LONG).show();
+                            prepareRegisterLocallyDialog(getApplicationContext());
+                            prepareLocalSearchNotifyDialog(getApplicationContext(), shrPatient);
                             executeLocalPatientSearchInBackgroundTask();
                         }
                     }
-
-
                 } catch (KenyaEmrShrMapper.ShrParseException e) {
                     Log.e("EMR_IN", "EMR Error ", e);
                 }
-
             }
         } else {
             /**
@@ -752,8 +747,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                      * TODO Display download optionDialog
                      *
                      */
-                    patientRegistrationDialog.dismiss();
-                    patientRegistrationDialog.cancel();
+                    patientRegistrationProgressDialog.dismiss();
+                    patientRegistrationProgressDialog.cancel();
                     executeDownloadPatientInBackgroundTask();
                     hideDialog();
                     break;
@@ -788,8 +783,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            prepareRegisterLocallyDialog(getApplicationContext());
-            prepareLocalSearchNotifyDialog(getApplicationContext(), shrPatient);
+
         }
 
         @Override
@@ -820,7 +814,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                         break;
                     }
                 }
-                //}
             } catch (PatientController.PatientLoadException e) {
                 Log.e(TAG, "Unable to search for patient locally." + e.getMessage());
                 e.printStackTrace();
@@ -876,7 +869,79 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     }
 
+    private class RegisterPatientBackgroundTask extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            shrPatient.setUuid(UUID.randomUUID().toString());
+            try {
+                patientController.savePatient(shrPatient);
+            } catch (PatientController.PatientSaveException e) {
+                e.printStackTrace();
+            }
+            if (smartCardRecord != null) {
+                smartCardRecord.setUuid(UUID.randomUUID().toString());
+                smartCardRecord.setPersonUuid(shrPatient.getUuid());
+                try {
+                    smartCardController.saveSmartCardRecord(smartCardRecord);
+                } catch (SmartCardController.SmartCardRecordSaveException e) {
+                    Log.e(TAG, "Cannot save shr ", e);
+                }
+                KenyaEmrShrModel kenyaEmrShrModel = null;
+                try {
+                    kenyaEmrShrModel = KenyaEmrShrMapper.createSHRModelFromJson(smartCardRecord.getPlainPayload());
+                } catch (KenyaEmrShrMapper.ShrParseException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    KenyaEmrShrMapper.createNewObservationsAndEncountersFromShrModel(muzimaApplication, kenyaEmrShrModel, shrPatient);
+                } catch (KenyaEmrShrMapper.ShrParseException e) {
+                    e.printStackTrace();
+                }
+//                Toast.makeText(getApplicationContext(), "Patient registered.", Toast.LENGTH_LONG).show();
+                Log.e(TAG, "Patient registered");
+
+            }
+            return true;
+        }
+
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            if (patientRegistrationProgressDialog != null){
+                patientRegistrationProgressDialog.dismiss();
+                patientRegistrationProgressDialog.cancel();
+            }else {
+
+            }
+
+
+
+            Intent intent = new Intent(PatientsListActivity.this, PatientSummaryActivity.class);
+            /**
+             * todo check if this patient is registred in shr
+             * before opening PatientSummary activity
+             */
+            intent.putExtra("isRegisteredOnShr", true);
+            intent.putExtra(PatientSummaryActivity.PATIENT, shrPatient);
+            startActivity(intent);
+            super.onPostExecute(aBoolean);
+        }
+    }
+
     public void prepareRegisterLocallyDialog(Context context) {
+
+        patientRegistrationProgressDialog = new ProgressDialog(this);
+        patientRegistrationProgressDialog.setCancelable(false);
+        patientRegistrationProgressDialog.setIndeterminate(true);
+        patientRegistrationProgressDialog.setTitle(getString(R.string.registering_patient_message_title_text));
 
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = layoutInflater.inflate(R.layout.patient_shr_card_search_dialog, null);
@@ -895,51 +960,10 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                patientRegistrationDialog.show();
-                Toast.makeText(v.getContext(),"Registering patient",Toast.LENGTH_LONG).show();
-                Snackbar.make(v,"Regsitering patient...",Snackbar.LENGTH_LONG).show();
-                shrPatient.setUuid(UUID.randomUUID().toString());
-                try {
-                    patientController.savePatient(shrPatient);
-                } catch (PatientController.PatientSaveException e) {
-                    e.printStackTrace();
-                }
-                if (smartCardRecord != null) {
-                    smartCardRecord.setUuid(UUID.randomUUID().toString());
-                    smartCardRecord.setPersonUuid(shrPatient.getUuid());
-                    try {
-                        smartCardController.saveSmartCardRecord(smartCardRecord);
-                    } catch (SmartCardController.SmartCardRecordSaveException e) {
-                        Log.e(TAG, "Cannot save shr ", e);
-                    }
-                    KenyaEmrShrModel kenyaEmrShrModel = null;
-                    try {
-                        kenyaEmrShrModel = KenyaEmrShrMapper.createSHRModelFromJson(smartCardRecord.getPlainPayload());
-                    } catch (KenyaEmrShrMapper.ShrParseException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        KenyaEmrShrMapper.createNewObservationsAndEncountersFromShrModel(muzimaApplication, kenyaEmrShrModel, shrPatient);
-                    } catch (KenyaEmrShrMapper.ShrParseException e) {
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(getApplicationContext(), "Patient registered.", Toast.LENGTH_LONG).show();
-                    Log.e(TAG, "Patient registered");
-
-                    patientRegistrationDialog.cancel();
-                    patientRegistrationDialog.dismiss();
-
-                    Intent intent = new Intent(PatientsListActivity.this, PatientSummaryActivity.class);
-                    /**
-                     * todo check if this patient is registred in shr
-                     * before opening PatientSummary activity
-                     */
-                    intent.putExtra("isRegisteredOnShr", true);
-                    intent.putExtra(PatientSummaryActivity.PATIENT, shrPatient);
-                    startActivity(intent);
-
-
-                }
+                registerShrPatientLocallyDialog.dismiss();
+                registerShrPatientLocallyDialog.cancel();
+                patientRegistrationProgressDialog.show();
+                executePatientRegistrationBackgroundTask();
             }
         });
 
@@ -966,5 +990,10 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         patientDownloadTask = new PatientsListActivity.BackgroundPatientDownloadTask();
         patientDownloadTask.execute();
 
+    }
+
+    private void executePatientRegistrationBackgroundTask(){
+        patientRegistrationTask = new RegisterPatientBackgroundTask();
+        patientRegistrationTask.execute();
     }
 }
