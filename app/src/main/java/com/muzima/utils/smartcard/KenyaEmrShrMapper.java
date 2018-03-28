@@ -246,22 +246,27 @@ public class KenyaEmrShrMapper {
         try {
 
             PatientIdentification identification = shrModel.getPatientIdentification();
+            PatientIdentifier patientIdentifier = null;
             //External ID
             ExternalPatientId externalPatientId = identification.getExternalPatientId();
-            PatientIdentifier patientIdentifier = PatientIdentifierUtils.getOrCreateKenyaEmrIdentifierType(muzimaApplication, externalPatientId.getID(),
-                    externalPatientId.getIdentifierType(), externalPatientId.getAssigningFacility());
-            identifiers.add(patientIdentifier);
+            if(!externalPatientId.hasBlankMandatoryValues()) {
+                patientIdentifier = PatientIdentifierUtils.getOrCreateKenyaEmrIdentifierType(muzimaApplication, externalPatientId.getID(),
+                        externalPatientId.getIdentifierType(), externalPatientId.getAssigningFacility());
+                identifiers.add(patientIdentifier);
+            }
 
             //Internal IDs
             List<InternalPatientId> internalPatientIds = identification.getInternalPatientIds();
             for (InternalPatientId internalPatientId : internalPatientIds) {
-                patientIdentifier = PatientIdentifierUtils.getOrCreateKenyaEmrIdentifierType(muzimaApplication, internalPatientId.getID(),
-                        internalPatientId.getIdentifierType(), internalPatientId.getAssigningFacility());
-                identifiers.add(patientIdentifier);
+                if(!internalPatientId.hasBlankMandatoryValues()) {
+                    patientIdentifier = PatientIdentifierUtils.getOrCreateKenyaEmrIdentifierType(muzimaApplication, internalPatientId.getID(),
+                            internalPatientId.getIdentifierType(), internalPatientId.getAssigningFacility());
+                    identifiers.add(patientIdentifier);
+                }
             }
 
         } catch (Exception e){
-            Log.e("KenyaEmrShrMapper","Could not create Kenyaemr identifier ",e);
+            Log.e("KenyaEmrShrMapper","Could not create Kenyaemr identifier",e);
         }
 
         return identifiers;
