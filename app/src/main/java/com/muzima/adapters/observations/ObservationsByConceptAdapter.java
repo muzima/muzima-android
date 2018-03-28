@@ -19,10 +19,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.*;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
+import com.muzima.controller.ProviderController;
 import com.muzima.model.observation.ConceptWithObservations;
 import com.muzima.utils.*;
 
@@ -46,6 +48,8 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
     private TextView headerText;
     private Boolean isShrData;
     private List<Integer> shrConcepts;
+    private MuzimaApplication muzimaApplication;
+    private ProviderController providerController;
 
     public ObservationsByConceptAdapter(FragmentActivity activity, int itemCohortsList,
                                         ConceptController conceptController,
@@ -53,6 +57,8 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         super(activity, itemCohortsList, null, conceptController, observationController);
         this.isShrData = isShrData;
         loadComposedShrConceptId();
+        this.muzimaApplication = (MuzimaApplication) getContext().getApplicationContext();
+        this.providerController = muzimaApplication.getProviderController();
 
     }
 
@@ -121,8 +127,6 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
     public void addObservation() {
         addIndividualObsDialog.show();
         //TODO Develop add obs logic.
-
-
     }
 
 
@@ -194,13 +198,15 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
 
             View divider = layout.findViewById(R.id.divider);
             divider.setBackgroundColor(conceptColor);
+            divider.setFocusable(true);
+            divider.setClickable(true);
 
             TextView observationDateView = (TextView) layout.findViewById(R.id.observation_date);
             observationDateView.setText(DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime()));
             observationDateView.setTypeface(Fonts.roboto_light(getContext()));
             observationDateView.setTextColor(conceptColor);
 
-            observationValue.setOnClickListener(new View.OnClickListener() {
+            layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     displayObservationDetailsDialog(observation, v);
@@ -235,6 +241,9 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
     public void displayObservationDetailsDialog(Observation observation, View view) {
 
         int conceptColor = observationController.getConceptColor(observation.getConcept().getUuid());
+        String observationConceptType = observation.getConcept().getConceptType().getName();
+        String encounterDate = DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime());
+
 
         /**
          * Prepare add obs dialog
@@ -247,13 +256,13 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         TextView conceptNameTextView;
         TextView conceptDescriptionTextView;
         TextView obsValueTextView;
-        TextView commentTextView;
+        TextView dateTextView;
         Button dismissDialogButton;
 
-        TextView firstHeader;
-        TextView secondHeader;
-        TextView thirdHeader;
-        TextView fourthHeader;
+        TextView encounterDetailsHeader;
+        TextView providerDetailsHeader;
+        TextView conceptDetailsHeader;
+        TextView observationDetailsHeader;
 
 
         layoutInflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -280,16 +289,25 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         providerIdentifierTextView = (TextView) obsDetailsDialog.findViewById(R.id.provider_identify_type_value_textView);
         conceptNameTextView = (TextView) obsDetailsDialog.findViewById(R.id.concept_name_value_textview);
         conceptDescriptionTextView = (TextView) obsDetailsDialog.findViewById(R.id.concept_description_value_textview);
+        obsValueTextView = (TextView)obsDetailsDialog.findViewById(R.id.observertion_value_indicator_textview);
+        encounterDetailsHeader = (TextView) obsDetailsDialog.findViewById(R.id.obs_details_header);
+        providerDetailsHeader = (TextView) obsDetailsDialog.findViewById(R.id.obs_details_second_header);
+        conceptDetailsHeader = (TextView) obsDetailsDialog.findViewById(R.id.obs_details_third_header);
+        observationDetailsHeader = (TextView) obsDetailsDialog.findViewById(R.id.obs_details_fourth_header);
+        dateTextView = (TextView)obsDetailsDialog.findViewById(R.id.observation_description_value_textview);
 
-        firstHeader = (TextView) obsDetailsDialog.findViewById(R.id.obs_details_header);
-        secondHeader = (TextView) obsDetailsDialog.findViewById(R.id.obs_details_second_header);
-        thirdHeader = (TextView) obsDetailsDialog.findViewById(R.id.obs_details_third_header);
-        fourthHeader = (TextView) obsDetailsDialog.findViewById(R.id.obs_details_fourth_header);
-
-        List<TextView> obsDetailsHeaderTextViews = Arrays.asList(firstHeader,secondHeader,thirdHeader,fourthHeader);
+        List<TextView> obsDetailsHeaderTextViews = Arrays.asList(encounterDetailsHeader,providerDetailsHeader,conceptDetailsHeader,observationDetailsHeader);
+        dateTextView.setText(observation.getObservationDatetime().toString().substring(0,19));
 
         for (TextView obsDetailsHeaderTextView : obsDetailsHeaderTextViews) {
             obsDetailsHeaderTextView.setBackgroundColor(conceptColor);
+        }
+
+        if (StringUtils.equals(observationConceptType, "Complex")) {
+            obsValueTextView.setText("Complex Obs");
+        } else {
+            String observationValue = observation.getValueAsString();
+            obsValueTextView.setText(observationValue);
         }
 
         conceptNameTextView.setText(observation.getConcept().getName());
@@ -301,19 +319,25 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
 
         Encounter encounter = observation.getEncounter();
 
+        try {
+            Provider provider = providerController.getAllProviders().get(0);
+            providerNameTextView.setText(provider.getName());
+            providerIdentifierTextView.setText(provider.getIdentifier());
+
+        } catch (ProviderController.ProviderLoadException e) {
+            Log.e("LOG",e.getMessage());
+        }
+
         if (encounter != null) {
             Person provider = encounter.getProvider();
 
             if (provider != null) {
                 String providerName = encounter.getProvider().getDisplayName();
-                providerNameTextView.setText(providerName);
+
                 PersonAttribute providerIdentifier = encounter.getProvider().getAtributes().get(0);
                 String attributeType = providerIdentifier.getAttributeType().getName();
                 String attributeValue = providerIdentifier.getAttribute();
                 providerIdentifierTextView.setText(attributeValue);
-            } else {
-                providerNameTextView.setText(R.string.general_not_available_text);
-                providerIdentifierTextView.setText(R.string.general_not_available_text);
             }
 
             if (encounter.getLocation() != null) {
@@ -330,12 +354,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
                 encounterTypeTextView.setText(R.string.general_not_available_text);
             }
 
-            if (encounter.getEncounterDatetime() != null){
-                String encounterDate = encounter.getEncounterDatetime().toString();
-                encounterDateTextView.setText(encounterDate);
-            }else {
-                encounterDateTextView.setText(R.string.general_not_available_text);
-            }
+            encounterDateTextView.setText(encounterDate);
 
         } else {
             providerNameTextView.setText(R.string.general_not_available_text);
