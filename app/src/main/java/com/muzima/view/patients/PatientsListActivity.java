@@ -411,6 +411,11 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     public void preparedServerSearchNegativeResultHandlerDialog(Context context) {
 
+        patientRegistrationProgressDialog = new ProgressDialog(this);
+        patientRegistrationProgressDialog.setCancelable(false);
+        patientRegistrationProgressDialog.setIndeterminate(true);
+        patientRegistrationProgressDialog.setTitle(getString(R.string.registering_patient_message_title_text));
+
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = layoutInflater.inflate(R.layout.patient_shr_card_search_dialog, null);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientsListActivity.this);
@@ -428,40 +433,10 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // callConfirmationDialog();
-                /**
-                 * Register patient using shrPatient
-                 */
-                shrPatient.setUuid(UUID.randomUUID().toString());
-                try {
-                    patientController.savePatient(shrPatient);
-                    if (smartCardRecord != null) {
-                        smartCardRecord.setUuid(UUID.randomUUID().toString());
-                        smartCardRecord.setPersonUuid(shrPatient.getUuid());
-                        try {
-                            smartCardController.saveSmartCardRecord(smartCardRecord);
-                        } catch (SmartCardController.SmartCardRecordSaveException e) {
-                            Log.e(TAG, "Cannot save shr ", e);
-                        }
-                        KenyaEmrShrModel kenyaEmrShrModel = KenyaEmrShrMapper.createSHRModelFromJson(smartCardRecord.getPlainPayload());
-                        KenyaEmrShrMapper.createNewObservationsAndEncountersFromShrModel(muzimaApplication, kenyaEmrShrModel, shrPatient);
-                        Toast.makeText(getApplicationContext(), "Patient registered.", Toast.LENGTH_LONG).show();
-                        Log.e(TAG, "Patient registered");
-
-
-                        Intent intent = new Intent(PatientsListActivity.this, PatientSummaryActivity.class);
-                        /**
-                         * todo check if this patient is registred in shr
-                         * before opening PatientSummary activity
-                         */
-                        intent.putExtra("isRegisteredOnShr", true);
-                        intent.putExtra(PatientSummaryActivity.PATIENT, shrPatient);
-                        startActivity(intent);
-                    } else
-                        Log.e(TAG, "Unable to save smart card record");
-                } catch (PatientController.PatientSaveException | KenyaEmrShrMapper.ShrParseException e) {
-                    Log.e(TAG, "Error", e);
-                }
+                negativeServerSearchResultNotifyAlertDialog.dismiss();
+                negativeServerSearchResultNotifyAlertDialog.cancel();
+                patientRegistrationProgressDialog.show();
+                executePatientRegistrationBackgroundTask();
                 hideDialog();
             }
         });
