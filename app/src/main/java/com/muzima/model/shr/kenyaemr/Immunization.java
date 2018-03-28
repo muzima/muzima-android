@@ -1,6 +1,7 @@
 package com.muzima.model.shr.kenyaemr;
 
 import com.fasterxml.jackson.annotation.*;
+import com.muzima.utils.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,5 +62,9 @@ public class Immunization {
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
+    }
+
+    public boolean lacksMandatoryValues(){
+        return StringUtils.isEmpty(name) || StringUtils.isEmpty(dateAdministered);
     }
 }

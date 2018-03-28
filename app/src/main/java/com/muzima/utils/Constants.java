@@ -169,7 +169,7 @@ public class Constants {
 
                 public static class HIV_TESTS {
                     public static class TEST_RESULT {
-                        public static final String name = "TEST RESULT";
+                        public static final String name = "FINAL HIV RESULTS";
                         public static final int concept_id = 159427;
                         public static final String type = "Coded";
 
