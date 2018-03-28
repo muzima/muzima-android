@@ -573,4 +573,5 @@
     <string name="hint_default_encounter_location">This selected encounter location will be the default encounter location for all forms</string>
     <string name="no_default_encounter_location">No default encounter location</string>
     <string name="general_not_available_text">Not Available</string>
+    <string name="registering_patient_message_title_text">Registering patient in mUzima...</string>
 </resources>
