@@ -7,11 +7,9 @@ import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Location;
-import com.muzima.api.model.LocationAttribute;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
-import com.muzima.api.model.PatientIdentifierType;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonAddress;
 import com.muzima.api.model.PersonName;
@@ -263,7 +261,7 @@ public class KenyaEmrShrMapper {
             }
 
         } catch (Exception e){
-            Log.e("KenyaEmrShrMapper","Could not create Kenyaemr identifier for ",e);
+            Log.e("KenyaEmrShrMapper","Could not create Kenyaemr identifier ",e);
         }
 
         return identifiers;
@@ -283,7 +281,7 @@ public class KenyaEmrShrMapper {
     public static void createNewObservationsAndEncountersFromShrModel(MuzimaApplication muzimaApplication, KenyaEmrShrModel shrModel, final Patient patient)
             throws ShrParseException {
         Log.e("KenyaEmrShrMapper","Saving encounters data ");
-        List<String> payloads = createJsonEncounterPayloadFromShrModel(shrModel, patient);
+        List<String> payloads = createJsonEncounterPayloadFromShrModel(muzimaApplication, shrModel, patient);
         for(final String payload:payloads) {
             Log.e("KenyaEmrShrMapper","Saving payload data ");
             final String newFormDataUuid = UUID.randomUUID().toString();
@@ -337,14 +335,14 @@ public class KenyaEmrShrMapper {
         }
     }
 
-    public static List<String> createJsonEncounterPayloadFromShrModel(KenyaEmrShrModel shrModel, Patient patient) throws ShrParseException {
+    public static List<String> createJsonEncounterPayloadFromShrModel(MuzimaApplication muzimaApplication, KenyaEmrShrModel shrModel, Patient patient) throws ShrParseException {
         try {
             Log.e("KenyaEmrShrMapper","Obtaining payloads ");
             List<String> encounters = new ArrayList<>();
             List<HIVTest> hivTests = shrModel.getHivTests();
             if(hivTests != null) {
                 for (HIVTest hivTest : hivTests) {
-                    encounters.add(createJsonEncounterPayloadFromHivTest(hivTest, patient));
+                    encounters.add(createJsonEncounterPayloadFromHivTest(muzimaApplication, hivTest, patient));
                 }
             } else {
                 Log.e("KenyaEmrShrMapper","No HIV Tests found");
@@ -366,7 +364,7 @@ public class KenyaEmrShrMapper {
         }
     }
 
-    public static String createJsonEncounterPayloadFromHivTest(HIVTest hivTest, Patient patient) throws JSONException, ParseException {
+    public static String createJsonEncounterPayloadFromHivTest(MuzimaApplication muzimaApplication,HIVTest hivTest, Patient patient) throws ShrParseException {
         System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         System.out.println(" createJsonEncounterPayloadFromHivTest() ");
         System.out.println(" DATE: "+hivTest.getDate());
@@ -384,127 +382,132 @@ public class KenyaEmrShrMapper {
 
         Log.e("KenyaEmrShrMapper","Processing HIV test ");
 
-        encounterDetails.put("encounter.provider_id", hivTest.getProviderDetails().getId());
-        encounterDetails.put("encounter.location_mfl_id", hivTest.getFacility());
+        try {
+            encounterDetails.put("encounter.provider_id", hivTest.getProviderDetails().getId());
+            Location location = LocationUtils.getOrCreateDummyLocationByKenyaEmrMasterFacilityListCode(muzimaApplication, hivTest.getFacility());
+            encounterDetails.put("encounter.location_id", location.getId());
 
-        Date encounterDateTime = DateUtils.parseDateByPattern(hivTest.getDate(), "yyyyMMdd");
-        encounterDetails.put("encounter.encounter_datetime", DateUtils.getFormattedDate(encounterDateTime));
+            Date encounterDateTime = DateUtils.parseDateByPattern(hivTest.getDate(), "yyyyMMdd");
+            encounterDetails.put("encounter.encounter_datetime", DateUtils.getFormattedDate(encounterDateTime));
 
-        encounterDetails.put("encounter.form_uuid", StringUtils.defaultString(CONCEPTS.HIV_TESTS.FORM.FORM_UUID));
-        encounterJSON.put("encounter",encounterDetails);
+            encounterDetails.put("encounter.form_uuid", StringUtils.defaultString(CONCEPTS.HIV_TESTS.FORM.FORM_UUID));
+            encounterJSON.put("encounter", encounterDetails);
 
-        patientDetails.put("patient.medical_record_number", StringUtils.defaultString(patient.getIdentifier()));
-        patientDetails.put("patient.given_name", StringUtils.defaultString(patient.getGivenName()));
-        patientDetails.put("patient.middle_name", StringUtils.defaultString(patient.getMiddleName()));
-        patientDetails.put("patient.family_name", StringUtils.defaultString(patient.getFamilyName()));
-        patientDetails.put("patient.sex", StringUtils.defaultString(patient.getGender()));
-        patientDetails.put("patient.uuid", StringUtils.defaultString(patient.getUuid()));
-        if (patient.getBirthdate() != null) {
-            patientDetails.put("patient.birth_date", DateUtils.getFormattedDate(patient.getBirthdate()));
+            patientDetails.put("patient.medical_record_number", StringUtils.defaultString(patient.getIdentifier()));
+            patientDetails.put("patient.given_name", StringUtils.defaultString(patient.getGivenName()));
+            patientDetails.put("patient.middle_name", StringUtils.defaultString(patient.getMiddleName()));
+            patientDetails.put("patient.family_name", StringUtils.defaultString(patient.getFamilyName()));
+            patientDetails.put("patient.sex", StringUtils.defaultString(patient.getGender()));
+            patientDetails.put("patient.uuid", StringUtils.defaultString(patient.getUuid()));
+            if (patient.getBirthdate() != null) {
+                patientDetails.put("patient.birth_date", DateUtils.getFormattedDate(patient.getBirthdate()));
+            }
+
+            encounterJSON.put("patient", patientDetails);
+
+            //Test Result
+            String answer = null;
+            String testResult = hivTest.getResult();
+            switch (testResult) {
+                case CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.POSITIVE.name:
+                    answer = CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.POSITIVE.concept_id + "^"
+                            + CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.POSITIVE.name + "^" + "99DCT";
+                    break;
+                case CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.NEGATIVE.name:
+                    answer = CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.NEGATIVE.concept_id + "^"
+                            + CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.NEGATIVE.name + "^" + "99DCT";
+                    break;
+                case CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.INCONCLUSIVE.name:
+                    answer = CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.INCONCLUSIVE.concept_id + "^"
+                            + CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.INCONCLUSIVE.name + "^" + "99DCT";
+            }
+            if (!StringUtils.isEmpty(answer)) {
+                String conceptQuestion = CONCEPTS.HIV_TESTS.TEST_RESULT.concept_id + "^"
+                        + CONCEPTS.HIV_TESTS.TEST_RESULT.name + "^" + "99DCT";
+                observationDetails.put(conceptQuestion, answer);
+            }
+
+            //Test Type
+            answer = null;
+            String testType = hivTest.getType();
+            switch (testType) {
+                case CONCEPTS.HIV_TESTS.TEST_TYPE.ANSWERS.SCREENING.name:
+                    answer = CONCEPTS.HIV_TESTS.TEST_TYPE.ANSWERS.SCREENING.concept_id + "^"
+                            + CONCEPTS.HIV_TESTS.TEST_TYPE.ANSWERS.SCREENING.name + "^" + "99DCT";
+                    break;
+                case CONCEPTS.HIV_TESTS.TEST_TYPE.ANSWERS.CONFIRMATORY.name:
+                    answer = CONCEPTS.HIV_TESTS.TEST_TYPE.ANSWERS.CONFIRMATORY.concept_id + "^"
+                            + CONCEPTS.HIV_TESTS.TEST_TYPE.ANSWERS.CONFIRMATORY.name + "^" + "99DCT";
+            }
+            if (!StringUtils.isEmpty(answer)) {
+                String conceptQuestion = CONCEPTS.HIV_TESTS.TEST_TYPE.concept_id + "^"
+                        + CONCEPTS.HIV_TESTS.TEST_TYPE.name + "^" + "99DCT";
+                observationDetails.put(conceptQuestion, answer);
+            }
+
+            //Test Strategy
+            answer = null;
+            String testStrategy = hivTest.getStrategy();
+            switch (testStrategy) {
+                case CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.HP.name:
+                    answer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.HP.concept_id + "^"
+                            + CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.HP.name + "^" + "99DCT";
+                    break;
+                case CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.NP.name:
+                    answer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.NP.concept_id + "^"
+                            + CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.NP.name + "^" + "99DCT";
+                    break;
+                case CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.VI.name:
+                    answer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.VI.concept_id + "^"
+                            + CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.VI.name + "^" + "99DCT";
+                    break;
+                case CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.VS.name:
+                    answer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.VS.concept_id + "^"
+                            + CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.VS.name + "^" + "99DCT";
+                    break;
+                case CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.HB.name:
+                    answer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.HB.concept_id + "^"
+                            + CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.HB.name + "^" + "99DCT";
+                    break;
+                case CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.MO.name:
+                    answer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.MO.concept_id + "^"
+                            + CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.MO.name + "^" + "99DCT";
+                    break;
+            }
+            if (!StringUtils.isEmpty(answer)) {
+                String conceptQuestion = CONCEPTS.HIV_TESTS.TEST_STRATEGY.concept_id + "^"
+                        + CONCEPTS.HIV_TESTS.TEST_STRATEGY.name + "^" + "99DCT";
+                observationDetails.put(conceptQuestion, answer);
+            }
+
+            //Test Facility
+            String facility = hivTest.getFacility();
+            if (!StringUtils.isEmpty(facility)) {
+                String conceptQuestion = CONCEPTS.HIV_TESTS.TEST_FACILITY.concept_id + "^"
+                        + CONCEPTS.HIV_TESTS.TEST_FACILITY.name + "^" + "99DCT";
+                observationDetails.put(conceptQuestion, facility);
+            }
+
+            //Test Details
+            ProviderDetails providerDetails = hivTest.getProviderDetails();
+            if (providerDetails != null) {
+                String conceptQuestion = CONCEPTS.HIV_TESTS.PROVIDER_DETAILS.NAME.concept_id + "^"
+                        + CONCEPTS.HIV_TESTS.PROVIDER_DETAILS.NAME.name + "^" + "99DCT";
+                observationDetails.put(conceptQuestion, providerDetails.getName());
+
+                conceptQuestion = CONCEPTS.HIV_TESTS.PROVIDER_DETAILS.ID.concept_id + "^"
+                        + CONCEPTS.HIV_TESTS.PROVIDER_DETAILS.ID.name + "^" + "99DCT";
+                observationDetails.put(conceptQuestion, providerDetails.getId());
+            }
+
+            encounterJSON.put("patient", patientDetails);
+            encounterJSON.put("observation", observationDetails);
+            encounterJSON.put("encounter", encounterDetails);
+
+            return encounterJSON.toString();
+        } catch (Exception e){
+            throw new ShrParseException(e);
         }
-
-        encounterJSON.put("patient",patientDetails);
-
-        //Test Result
-        String answer = null;
-        String testResult = hivTest.getResult();
-        switch (testResult){
-            case CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.POSITIVE.name:
-                answer = CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.POSITIVE.concept_id + "^"
-                        + CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.POSITIVE.name + "^" + "99DCT";
-                break;
-            case CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.NEGATIVE.name:
-                answer = CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.NEGATIVE.concept_id + "^"
-                        + CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.NEGATIVE.name + "^" + "99DCT";
-                break;
-            case CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.INCONCLUSIVE.name:
-                answer = CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.INCONCLUSIVE.concept_id + "^"
-                        + CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.INCONCLUSIVE.name + "^" + "99DCT";
-        }
-        if(!StringUtils.isEmpty(answer)){
-            String conceptQuestion = CONCEPTS.HIV_TESTS.TEST_RESULT.concept_id + "^"
-                    + CONCEPTS.HIV_TESTS.TEST_RESULT.name + "^" + "99DCT";
-            observationDetails.put(conceptQuestion, answer);
-        }
-
-        //Test Type
-        answer = null;
-        String testType = hivTest.getType();
-        switch (testType){
-            case CONCEPTS.HIV_TESTS.TEST_TYPE.ANSWERS.SCREENING.name:
-                answer = CONCEPTS.HIV_TESTS.TEST_TYPE.ANSWERS.SCREENING.concept_id + "^"
-                        + CONCEPTS.HIV_TESTS.TEST_TYPE.ANSWERS.SCREENING.name + "^" + "99DCT";
-                break;
-            case CONCEPTS.HIV_TESTS.TEST_TYPE.ANSWERS.CONFIRMATORY.name:
-                answer = CONCEPTS.HIV_TESTS.TEST_TYPE.ANSWERS.CONFIRMATORY.concept_id + "^"
-                        + CONCEPTS.HIV_TESTS.TEST_TYPE.ANSWERS.CONFIRMATORY.name + "^" + "99DCT";
-        }
-        if(!StringUtils.isEmpty(answer)){
-            String conceptQuestion = CONCEPTS.HIV_TESTS.TEST_TYPE.concept_id + "^"
-                    + CONCEPTS.HIV_TESTS.TEST_TYPE.name + "^" + "99DCT";
-            observationDetails.put(conceptQuestion, answer);
-        }
-
-        //Test Strategy
-        answer = null;
-        String testStrategy = hivTest.getStrategy();
-        switch (testStrategy){
-            case CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.HP.name:
-                answer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.HP.concept_id + "^"
-                        + CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.HP.name + "^" + "99DCT";
-                break;
-            case CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.NP.name:
-                answer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.NP.concept_id + "^"
-                        + CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.NP.name + "^" + "99DCT";
-                break;
-            case CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.VI.name:
-                answer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.VI.concept_id + "^"
-                        + CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.VI.name + "^" + "99DCT";
-                break;
-            case CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.VS.name:
-                answer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.VS.concept_id + "^"
-                        + CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.VS.name + "^" + "99DCT";
-                break;
-            case CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.HB.name:
-                answer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.HB.concept_id + "^"
-                        + CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.HB.name + "^" + "99DCT";
-                break;
-            case CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.MO.name:
-                answer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.MO.concept_id + "^"
-                        + CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.MO.name + "^" + "99DCT";
-                break;
-        }
-        if(!StringUtils.isEmpty(answer)){
-            String conceptQuestion = CONCEPTS.HIV_TESTS.TEST_STRATEGY.concept_id + "^"
-                    + CONCEPTS.HIV_TESTS.TEST_STRATEGY.name + "^" + "99DCT";
-            observationDetails.put(conceptQuestion, answer);
-        }
-
-        //Test Facility
-        String facility = hivTest.getFacility();
-        if(!StringUtils.isEmpty(facility)){
-            String conceptQuestion = CONCEPTS.HIV_TESTS.TEST_FACILITY.concept_id + "^"
-                    + CONCEPTS.HIV_TESTS.TEST_FACILITY.name + "^" + "99DCT";
-            observationDetails.put(conceptQuestion, facility);
-        }
-
-        //Test Details
-        ProviderDetails providerDetails = hivTest.getProviderDetails();
-        if(providerDetails != null){
-            String conceptQuestion = CONCEPTS.HIV_TESTS.PROVIDER_DETAILS.NAME.concept_id + "^"
-                    + CONCEPTS.HIV_TESTS.PROVIDER_DETAILS.NAME.name + "^" + "99DCT";
-            observationDetails.put(conceptQuestion, providerDetails.getName());
-
-            conceptQuestion = CONCEPTS.HIV_TESTS.PROVIDER_DETAILS.ID.concept_id + "^"
-                    + CONCEPTS.HIV_TESTS.PROVIDER_DETAILS.ID.name + "^" + "99DCT";
-            observationDetails.put(conceptQuestion, providerDetails.getId());
-        }
-
-        encounterJSON.put("patient",patientDetails);
-        encounterJSON.put("observation",observationDetails);
-        encounterJSON.put("encounter",encounterDetails);
-
-        return encounterJSON.toString();
     }
     public static String createJsonEncounterPayloadFromImmunization(Immunization immunization, Patient patient) throws JSONException, ParseException{
         JSONObject encounterJSON = new JSONObject();
