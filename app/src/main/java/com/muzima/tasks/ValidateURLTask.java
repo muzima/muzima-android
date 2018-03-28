@@ -12,6 +12,8 @@ package com.muzima.tasks;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.util.Log;
+
 import com.muzima.R;
 import com.muzima.view.preferences.SettingsActivity;
 
@@ -21,12 +23,14 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import com.muzima.utils.NetworkUtils;
 
 
 public class ValidateURLTask extends AsyncTask<String, Void, Boolean> {
 
     private final SettingsPreferenceFragment settingsPreferenceFragment;
     private ProgressDialog progressDialog;
+    private NetworkUtils networkUtils;
 
     public ValidateURLTask(SettingsPreferenceFragment settingsPreferenceFragment) {
         this.settingsPreferenceFragment = settingsPreferenceFragment;
@@ -42,17 +46,16 @@ public class ValidateURLTask extends AsyncTask<String, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(String... strings) {
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet(strings[0] + "/ws/rest/v1/session");
+        String url;
         try {
-            HttpResponse httpResponse = httpclient.execute(httpGet);
-            if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                return true;
-            }
+            url=strings[0]+ "/ws/rest/v1/session";
+            boolean urlStatus= com.muzima.util.NetworkUtils.isAddressReachable(url);
+
+            return urlStatus;
+
         } catch (Exception e) {
             return false;
         }
-        return false;
     }
 
     @Override

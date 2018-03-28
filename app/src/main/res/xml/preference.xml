@@ -106,6 +106,12 @@
             <intent android:targetPackage="com.muzima"
                     android:targetClass="com.muzima.view.preferences.ProviderPreferenceActivity"/>
         </Preference>
+        <ListPreference
+            android:summary="@string/hint_default_encounter_location"
+            android:title="@string/title_default_encounter_location"
+            android:key="@string/preference_default_encounter_location"
+            android:defaultValue="@string/no_default_encounter_location">
+        </ListPreference>
         <Preference
                 android:title="@string/title_manage_location"
                 android:summary="@string/hint_manage_location">

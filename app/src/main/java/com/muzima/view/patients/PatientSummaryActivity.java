@@ -225,15 +225,25 @@ public class PatientSummaryActivity extends BaseActivity {
             KenyaEmrShrMapper.updateSHRSmartCardRecordForPatient((MuzimaApplication) getApplicationContext(),patient.getUuid());
             smartCardRecord = smartCardController.getSmartCardRecordByPersonUuid(patient.getUuid());
         } catch (SmartCardController.SmartCardRecordFetchException e) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setCancelable(true)
-                    .setMessage("Could not obtain smartcard record for writing to card. " + e.getMessage())
+            Snackbar.make(findViewById(R.id.shr_client_summary_view), "Could not fetch smartcard record. "+e.getMessage(), Snackbar.LENGTH_LONG)
+                    .setActionTextColor(getResources().getColor(android.R.color.holo_red_dark))
+                    .setAction("RETRY", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            invokeShrApplication();
+                        }
+                    })
                     .show();
             Log.e(TAG, "Could not obtain smartcard record for writing to card", e);
         } catch (KenyaEmrShrMapper.ShrParseException e) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setCancelable(true)
-                    .setMessage("Could not update smartcard record before writing to card. " + e.getMessage())
+            Snackbar.make(findViewById(R.id.shr_client_summary_view), "Could not obtain smartcard record for writing to card. "+e.getMessage(), Snackbar.LENGTH_LONG)
+                    .setActionTextColor(getResources().getColor(android.R.color.holo_red_dark))
+                    .setAction("RETRY", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            invokeShrApplication();
+                        }
+                    })
                     .show();
             Log.e(TAG, "Could not update smartcard record before writing to card", e);
         }
