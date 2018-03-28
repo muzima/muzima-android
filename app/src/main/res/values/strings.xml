@@ -568,4 +568,7 @@
     <string name="patient_shr_search_title_text">Patient SHR Search</string>
     <string name="search_patient_on_server_option_title_text">Patient is not avaible locally, would you like to search server?</string>
 	<string name="write_shr_to_card_text">Write shr to card</string>
+    <string name="title_default_encounter_location">Default Encounter Location</string>
+    <string name="hint_default_encounter_location">This selected encounter location will be the default encounter location for all forms</string>
+    <string name="no_default_encounter_location">No default encounter location</string>
 </resources>
