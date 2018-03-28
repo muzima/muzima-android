@@ -95,7 +95,7 @@ public class HTMLFormObservationCreatorTest {
     @Before
     public void setUp() throws PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         initMocks(this);
-        htmlFormObservationCreator = new HTMLFormObservationCreator(patientController, conceptController, encounterController, observationController, locationController, providerController, formController);
+        htmlFormObservationCreator = new HTMLFormObservationCreator(null);
 
         when(patientController.getPatientByUuid("9090900-asdsa-asdsannidj-qwnkika")).thenReturn(patient);
 
