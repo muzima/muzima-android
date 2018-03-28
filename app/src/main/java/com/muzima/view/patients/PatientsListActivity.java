@@ -624,7 +624,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 Log.e("SHR_REQ", "Read Activity result invoked with value..." + shrPayload);
 
                 try {
-                    shrPatient = KenyaEmrShrMapper.extractPatientFromShrModel(shrPayload);
+                    shrPatient = KenyaEmrShrMapper.extractPatientFromShrModel(muzimaApplication,shrPayload);
                     if (shrPatient != null) {
                         PatientIdentifier cardNumberIdentifier = shrPatient.getIdentifier(Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.name);
 

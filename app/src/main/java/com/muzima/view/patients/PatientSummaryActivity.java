@@ -224,6 +224,7 @@ public class PatientSummaryActivity extends BaseActivity {
         try {
             KenyaEmrShrMapper.updateSHRSmartCardRecordForPatient((MuzimaApplication) getApplicationContext(),patient.getUuid());
             smartCardRecord = smartCardController.getSmartCardRecordByPersonUuid(patient.getUuid());
+            System.out.println("WRITING SHR: "+smartCardRecord.getPlainPayload());
         } catch (SmartCardController.SmartCardRecordFetchException e) {
             Snackbar.make(findViewById(R.id.shr_client_summary_view), "Could not fetch smartcard record. "+e.getMessage(), Snackbar.LENGTH_LONG)
                     .setActionTextColor(getResources().getColor(android.R.color.holo_red_dark))
