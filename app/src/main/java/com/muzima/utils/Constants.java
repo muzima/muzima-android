@@ -119,7 +119,15 @@ public class Constants {
 
             public static String SMART_CARD_RECORD_TYPE = "KenyaEmrShr";
 
-            public static class IdentifierType{
+            public static class LocationAttributeType{
+                public static class MASTER_FACILITY_CODE {
+                    public static final String name = "Master Facility Code";
+                    public static final String uuid = "4c4b11f6-44b0-4345-816b-bddfa093c583";
+                    public static final String default_mfl_name = "4c4b11f6-44b0-4345-816b-bddfa093c583";
+                }
+            }
+
+            public static class PersonIdentifierType {
                 public static class CARD_SERIAL_NUMBER{
                     public static final String name = "SMART CARD SERIAL NUMBER";
                     public static final String uuid = "8f842498-1c5b-11e8-accf-0ed5f89f718b";
