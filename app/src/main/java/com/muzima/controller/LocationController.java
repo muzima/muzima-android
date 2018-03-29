@@ -166,6 +166,17 @@ public class LocationController {
         return null;
     }
 
+    public Location getLocationById(int id) throws LocationLoadException  {
+        try {
+            return locationService.getLocationById(id);
+        } catch (IOException e) {
+            throw new LocationLoadException(e);
+        }
+        catch (org.apache.lucene.queryParser.ParseException e) {
+            throw new LocationLoadException(e);
+        }
+    }
+
     public void deleteLocation(Location location) throws LocationDeleteException {
         try {
             locationService.deleteLocation(location);
