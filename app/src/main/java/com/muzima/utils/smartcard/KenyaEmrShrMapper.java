@@ -175,7 +175,7 @@ public class KenyaEmrShrMapper {
             try {
                 String shrIdentifierTypeName = null;
                 String assigningAuthority = null;
-                String assigningFacility = "111111";// LocationUtils.getKenyaEmrMasterFacilityListCode(identifier.getLocation());
+                String assigningFacility = "10829";// LocationUtils.getKenyaEmrMasterFacilityListCode(identifier.getLocation());
                 if(StringUtils.isEmpty(assigningFacility)) {
                     throw new ShrParseException("Cannot get Facility MFL code from identifier location");
                 }
@@ -917,7 +917,7 @@ public class KenyaEmrShrMapper {
 
         if(StringUtils.isEmpty(hivTest.getFacility())){
             Location location = encounterWithObservations.getEncounter().getLocation();
-            String facility = "10999";//LocationUtils.getKenyaEmrMasterFacilityListCode(location);
+            String facility = "10829";//LocationUtils.getKenyaEmrMasterFacilityListCode(location);
             if(!StringUtils.isEmpty(facility)) {
                 hivTest.setFacility(facility);
             } else {
@@ -945,6 +945,9 @@ public class KenyaEmrShrMapper {
         } else {
             throw new ShrParseException("Cannot get encounter date from encounter");
         }
+        //Add date
+        String date = DateUtils.getFormattedDate(encounterWithObservations.getEncounter().getEncounterDatetime(),"yyyyMMdd");
+        hivTest.setDate(date);
 
         return hivTest;
     }
