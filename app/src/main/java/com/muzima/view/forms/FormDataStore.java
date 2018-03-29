@@ -54,7 +54,7 @@ public class FormDataStore {
         formData.setStatus(status);
         try {
             if (isRegistrationComplete(status)) {
-                Patient newPatient = formController.createNewPatient(formData);
+                Patient newPatient = formController.createNewPatient(applicationContext,formData);
                 formData.setPatientUuid(newPatient.getUuid());
                 formWebViewActivity.startPatientSummaryView(newPatient);
             }

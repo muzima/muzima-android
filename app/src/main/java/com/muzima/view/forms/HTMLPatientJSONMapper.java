@@ -11,14 +11,18 @@
 package com.muzima.view.forms;
 
 import android.util.Log;
+import com.muzima.MuzimaApplication;
 import com.muzima.api.model.FormData;
+import com.muzima.api.model.Location;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientIdentifierType;
 import com.muzima.api.model.PersonName;
 import com.muzima.api.model.User;
+import com.muzima.controller.LocationController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
+import com.muzima.utils.LocationUtils;
 import com.muzima.utils.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,7 +40,9 @@ public class HTMLPatientJSONMapper {
 
     private JSONObject patientJSON;
     private JSONObject observationJSON;
+    private JSONObject encounterJSON;
     private Patient patient;
+    private MuzimaApplication muzimaApplication;
 
     public String map(Patient patient, FormData formData, User loggedInUser, boolean isLoggedInUserIsDefaultProvider) {
         JSONObject prepopulateJSON = new JSONObject();
@@ -83,7 +89,8 @@ public class HTMLPatientJSONMapper {
         return prepopulateJSON.toString();
     }
 
-    public Patient getPatient(String jsonPayload) throws JSONException {
+    public Patient getPatient(MuzimaApplication muzimaApplication, String jsonPayload) throws JSONException {
+        this.muzimaApplication = muzimaApplication;
         setJSONObjects(jsonPayload);
         createPatient();
         return patient;
@@ -92,6 +99,7 @@ public class HTMLPatientJSONMapper {
     private void setJSONObjects(String jsonPayload) throws JSONException {
         JSONObject responseJSON = new JSONObject(jsonPayload);
         patientJSON = responseJSON.getJSONObject("patient");
+        encounterJSON = responseJSON.getJSONObject("encounter");
         if (responseJSON.has("observation")) {
             observationJSON = responseJSON.getJSONObject("observation");
         }
@@ -132,28 +140,44 @@ public class HTMLPatientJSONMapper {
     }
 
     private List<PatientIdentifier> getPatientIdentifiers() throws JSONException {
+        Location location = getEncounterLocation();
         List<PatientIdentifier> patientIdentifiers = new ArrayList<PatientIdentifier>();
 
-        patientIdentifiers.add(getPreferredPatientIdentifier());
-        patientIdentifiers.add(getPatientUuidAsIdentifier());
+        patientIdentifiers.add(getPreferredPatientIdentifier(location));
+        patientIdentifiers.add(getPatientUuidAsIdentifier(location));
 
-        List<PatientIdentifier> otherIdentifiers = getOtherPatientIdentifiers();
+        List<PatientIdentifier> otherIdentifiers = getOtherPatientIdentifiers(location);
         if (!otherIdentifiers.isEmpty())
             patientIdentifiers.addAll(otherIdentifiers);
         return patientIdentifiers;
     }
 
-    private PatientIdentifier getPreferredPatientIdentifier() throws JSONException {
+    private Location getEncounterLocation() throws JSONException {
+        String locationId = encounterJSON.getString("encounter.location_id");
+        LocationController locationController = muzimaApplication.getLocationController();
+        try {
+            Location location = locationController.getLocationById(Integer.parseInt(locationId));
+            if(location == null){
+                throw new JSONException("Could not find location in local repo");
+            }
+            return location;
+        } catch (LocationController.LocationLoadException e) {
+            throw new JSONException("Could not find location in local repo");
+        }
+    }
+
+    private PatientIdentifier getPreferredPatientIdentifier(Location location) throws JSONException {
         String identifierValue = patientJSON.getString("patient.medical_record_number");
         String identifierTypeName = Constants.LOCAL_PATIENT;
 
         PatientIdentifier preferredPatientIdentifier = createPatientIdentifier(identifierTypeName, identifierValue);
         preferredPatientIdentifier.setPreferred(true);
+        preferredPatientIdentifier.setLocation(location);
 
         return preferredPatientIdentifier;
     }
 
-    private List<PatientIdentifier> getOtherPatientIdentifiers() throws JSONException {
+    private List<PatientIdentifier> getOtherPatientIdentifiers(Location location) throws JSONException {
         List<PatientIdentifier> otherIdentifiers = new ArrayList<PatientIdentifier>();
         if (observationJSON != null && observationJSON.has("other_identifier_type") && observationJSON.has("other_identifier_value")) {
             Object identifierTypeNameObject = observationJSON.get("other_identifier_type");
@@ -164,20 +188,24 @@ public class HTMLPatientJSONMapper {
                 JSONArray identifierValue = (JSONArray) identifierValueObject;
                 for (int i = 0; i < identifierTypeName.length(); i++) {
                     PatientIdentifier identifier = createPatientIdentifier(identifierTypeName.getString(i), identifierValue.getString(i));
+                    identifier.setLocation(location);
                     otherIdentifiers.add(identifier);
                 }
             } else if (identifierTypeNameObject instanceof String) {
                 String identifierTypeName = (String) identifierTypeNameObject;
                 String identifierValue = (String) identifierValueObject;
                 PatientIdentifier identifier = createPatientIdentifier(identifierTypeName, identifierValue);
+                identifier.setLocation(location);
                 otherIdentifiers.add(identifier);
             }
         }
         return otherIdentifiers;
     }
 
-    private PatientIdentifier getPatientUuidAsIdentifier() {
-        return createPatientIdentifier(Constants.LOCAL_PATIENT, patient.getUuid());
+    private PatientIdentifier getPatientUuidAsIdentifier(Location location) {
+        PatientIdentifier identifier =  createPatientIdentifier(Constants.LOCAL_PATIENT, patient.getUuid());
+        identifier.setLocation(location);
+        return identifier;
     }
 
     private PatientIdentifier createPatientIdentifier(String identifierTypeName, String identifierValue) {

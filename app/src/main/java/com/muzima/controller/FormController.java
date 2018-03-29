@@ -11,6 +11,7 @@
 package com.muzima.controller;
 
 import android.util.Log;
+import com.muzima.MuzimaApplication;
 import com.muzima.api.model.APIName;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Form;
@@ -535,13 +536,13 @@ public class FormController {
         return result;
     }
 
-    public Patient createNewPatient(FormData formData) {
+    public Patient createNewPatient(MuzimaApplication muzimaApplication,FormData formData) {
         try {
             Patient patient;
             if(isGenericRegistrationHTMLFormData(formData)){
                 patient = new GenericRegistrationPatientJSONMapper().getPatient(formData.getJsonPayload(),patientController,settingController);
             } else if(isRegistrationHTMLFormData(formData)) {
-                patient = new HTMLPatientJSONMapper().getPatient(formData.getJsonPayload());
+                patient = new HTMLPatientJSONMapper().getPatient(muzimaApplication,formData.getJsonPayload());
             } else if(isRegistrationXMLFormData(formData)){
                 patient = new PatientJSONMapper(formData.getJsonPayload()).getPatient();
                 patientService.savePatient(patient);
