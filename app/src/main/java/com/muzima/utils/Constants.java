@@ -192,7 +192,7 @@ public class Constants {
                     }
 
                     public static class TEST_TYPE {
-                        public static final String name = "TEST TYPE";
+                        public static final String name = "TYPE OF TEST";
                         public static final int concept_id = 162084;
                         public static final String type = "Coded";
 
@@ -210,7 +210,7 @@ public class Constants {
                     }
 
                     public static class TEST_STRATEGY {
-                        public static final String name = "TEST STRATEGY";
+                        public static final String name = "HIV TESTING SERVICES STRATEGY";
                         public static final int concept_id = 164956;
                         public static final String type = "Coded";
 

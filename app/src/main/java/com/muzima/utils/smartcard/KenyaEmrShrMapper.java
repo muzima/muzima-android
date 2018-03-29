@@ -799,19 +799,15 @@ public class KenyaEmrShrMapper {
         List<HIVTest> hivTests = shrModel.getHivTests() == null ? new ArrayList<HIVTest>() : shrModel.getHivTests();
         List<Immunization> immunizations = shrModel.getImmunizations() == null ? new ArrayList<Immunization>() : shrModel.getImmunizations();
         for(EncounterWithObservations encounterWithObservations: encountersWithObservations){
-            Encounter encounter = encounterWithObservations.getEncounter();
-            //if(encounter.getEncounterType().getUuid().equalsIgnoreCase(CONCEPTS.HIV_TESTS.ENCOUNTER.ENCOUNTER_TYPE_UUID)){
-                HIVTest hivTest = getHivTestFromEncounter(encounterWithObservations);
-                if(hivTest != null){
-                    hivTests.add(hivTest);
-                } else {
-                    //} else if(encounter.getEncounterType().getUuid().equalsIgnoreCase(CONCEPTS.IMMUNIZATION.ENCOUNTER.ENCOUNTER_TYPE_UUID)){
-                    Immunization immunization = getImmunizationFromEncounter(encounterWithObservations);
-                    if (immunization != null) {
-                        immunizations.add(immunization);
-                    }
+            HIVTest hivTest = getHivTestFromEncounter(encounterWithObservations);
+            if(hivTest != null){
+                hivTests.add(hivTest);
+            } else {
+                Immunization immunization = getImmunizationFromEncounter(encounterWithObservations);
+                if (immunization != null) {
+                    immunizations.add(immunization);
                 }
-            //}
+            }
         }
         shrModel.setHivTests(hivTests);
         shrModel.setImmunizations(immunizations);
@@ -824,7 +820,7 @@ public class KenyaEmrShrMapper {
         ProviderDetails providerDetails = null;
         boolean isHivEncounter = false;
         for(Observation observation:observations){
-            Concept answerConcept = null;
+            Concept answerConcept;
             String shrAnswer = null;
             switch(observation.getConcept().getId()){
                 case CONCEPTS.HIV_TESTS.TEST_RESULT.concept_id:
@@ -919,7 +915,7 @@ public class KenyaEmrShrMapper {
             return null;
         }
 
-        if(hivTest.getFacility() == null){
+        if(StringUtils.isEmpty(hivTest.getFacility())){
             Location location = encounterWithObservations.getEncounter().getLocation();
             String facility = "10999";//LocationUtils.getKenyaEmrMasterFacilityListCode(location);
             if(!StringUtils.isEmpty(facility)) {
