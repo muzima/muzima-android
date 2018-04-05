@@ -948,6 +948,9 @@ public class KenyaEmrShrMapper {
             throw new ShrParseException("Cannot get encounter date from encounter");
         }
 
+        String date = DateUtils.getFormattedDate(encounterWithObservations.getEncounter().getEncounterDatetime(),"yyyyMMdd");
+        hivTest.setDate(date);
+
         return hivTest;
     }
 
