@@ -95,7 +95,9 @@ public class KenyaEmrShrMapper {
      */
     public static Patient extractPatientFromShrModel(MuzimaApplication muzimaApplication,String shrModel) throws ShrParseException{
         KenyaEmrShrModel kenyaEmrShrModel = createSHRModelFromJson(shrModel);
-        return extractPatientFromShrModel(muzimaApplication, kenyaEmrShrModel);
+        if(kenyaEmrShrModel.getCardDetails().getLastUpdated() != null && kenyaEmrShrModel.getPatientIdentification().getDateOfBirth() != null)
+            return extractPatientFromShrModel(muzimaApplication, kenyaEmrShrModel);
+        return null;
     }
 
     /**
@@ -947,6 +949,9 @@ public class KenyaEmrShrMapper {
         } else {
             throw new ShrParseException("Cannot get encounter date from encounter");
         }
+
+        String date = DateUtils.getFormattedDate(encounterWithObservations.getEncounter().getEncounterDatetime(),"yyyyMMdd");
+        hivTest.setDate(date);
 
         return hivTest;
     }

@@ -593,28 +593,33 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             if (smartCardRecord != null) {
                 intentShrResults = false;
                 String shrPayload = smartCardRecord.getPlainPayload();
+                System.out.println(" PlainPayload: "+shrPayload);
+                if(!shrPayload.equals("") && !shrPayload.isEmpty()) {
+                    try {
+                        shrPatient = KenyaEmrShrMapper.extractPatientFromShrModel(muzimaApplication, shrPayload);
+                        if (shrPatient != null) {
+                            PatientIdentifier cardNumberIdentifier = shrPatient.getIdentifier(Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.name);
 
-                try {
-                    shrPatient = KenyaEmrShrMapper.extractPatientFromShrModel(muzimaApplication, shrPayload);
-                    if (shrPatient != null) {
-                        PatientIdentifier cardNumberIdentifier = shrPatient.getIdentifier(Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.name);
+                            shrToMuzimaMatchingPatient = null;
 
-                        shrToMuzimaMatchingPatient = null;
-
-                        if (cardNumberIdentifier == null) {
-                            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
-                            alertBuilder.setMessage("Could not find Card Serial number in shared health record")
-                                    .setCancelable(true)
-                                    .show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Searching Patient Locally", Toast.LENGTH_LONG).show();
-                            prepareRegisterLocallyDialog(getApplicationContext());
-                            prepareLocalSearchNotifyDialog(getApplicationContext(), shrPatient);
-                            executeLocalPatientSearchInBackgroundTask();
+                            if (cardNumberIdentifier == null) {
+                                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+                                alertBuilder.setMessage("Could not find Card Serial number in shared health record")
+                                        .setCancelable(true)
+                                        .show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Searching Patient Locally", Toast.LENGTH_LONG).show();
+                                prepareRegisterLocallyDialog(getApplicationContext());
+                                prepareLocalSearchNotifyDialog(getApplicationContext(), shrPatient);
+                                executeLocalPatientSearchInBackgroundTask();
+                            }
                         }
+                        else {
+                            Toast.makeText(getApplicationContext(), "This card seems to be blank", Toast.LENGTH_LONG).show();
+                        }
+                    } catch (KenyaEmrShrMapper.ShrParseException e) {
+                        Log.e("EMR_IN", "EMR Error ", e);
                     }
-                } catch (KenyaEmrShrMapper.ShrParseException e) {
-                    Log.e("EMR_IN", "EMR Error ", e);
                 }
             }
         } else {
