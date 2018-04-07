@@ -53,7 +53,15 @@ public class StringUtils {
         return str1 == null ? str2 == null : str1.equals(str2);
     }
     public static boolean equalsIgnoreCase(String str1, String str2) {
-        return str1 == null ? str2 == null : str1.equalsIgnoreCase(str2);
+        if(str1 == null)
+            return str2 == null;
+        if(str1.equalsIgnoreCase(str2)) {
+            System.out.println("equals [" + str1 + "," + str2 + "]");
+            return true;
+        } else{
+            System.out.println("not equals [" + str1 + "," + str2 + "]");
+            return false;
+        }
     }
 
     public static int nullSafeCompare(String str1, String str2){

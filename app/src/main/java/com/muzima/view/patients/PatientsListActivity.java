@@ -352,7 +352,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 return true;
 
             case R.id.scan_shr_card:
-                invokeShrApplication();
+                readSmartCard();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -479,19 +479,16 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         patientAdapter.cancelBackgroundTask();
         Patient patient = patientAdapter.getItem(position);
         Intent intent = new Intent(this, PatientSummaryActivity.class);
-        SmartCardController smartCardController = ((MuzimaApplication) getApplicationContext()).getSmartCardController();
+        /*SmartCardController smartCardController = ((MuzimaApplication) getApplicationContext()).getSmartCardController();
         try {
             if (smartCardController.getSmartCardRecordByPersonUuid(patient.getUuid()) != null) {
                 intent.putExtra("isRegisteredOnShr", true);
-                Log.e("TAG", "isShr");
             } else {
-                Log.e("TAG", "isNotShr");
-
                 intent.putExtra("isRegisteredOnShr", false);
             }
         } catch (SmartCardController.SmartCardRecordFetchException e) {
             e.printStackTrace();
-        }
+        }*/
         intent.putExtra(PatientSummaryActivity.PATIENT, patient);
         startActivity(intent);
     }
@@ -527,7 +524,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         scanIntegrator.initiateScan();
     }
 
-    public void invokeShrApplication() {
+    public void readSmartCard() {
         SmartCardIntentIntegrator shrIntegrator = new SmartCardIntentIntegrator(this);
         shrIntegrator.initiateCardRead();
         Toast.makeText(getApplicationContext(), "Opening Card Reader", Toast.LENGTH_LONG).show();
@@ -541,7 +538,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
          */
         switch (requestCode) {
             case SMARTCARD_READ_REQUEST_CODE:
-                readSmartCardWithDefaultWorkflow(requestCode, resultCode, dataIntent);
+                processSmartCardReadResult(requestCode, resultCode, dataIntent);
                 serverSearchProgressDialog.dismiss();
                 serverSearchProgressDialog.cancel();
                 break;
@@ -558,7 +555,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                             .setAction("RETRY", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    invokeShrApplication();
+                                    readSmartCard();
                                 }
                             })
                             .show();
@@ -570,9 +567,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     }
 
-    public void readSmartCardWithDefaultWorkflow(int requestCode, int resultCode, Intent dataIntent) {
-
-
+    public void processSmartCardReadResult(int requestCode, int resultCode, Intent dataIntent) {
         SmartCardIntentResult cardReadIntentResult = null;
 
         try {
@@ -630,7 +625,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                     .setAction("RETRY", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            invokeShrApplication();
+                            readSmartCard();
                         }
                     })
                     .show();
@@ -842,7 +837,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 }
                 Intent intent = new Intent(PatientsListActivity.this, PatientSummaryActivity.class);
                 intent.putExtra(PatientSummaryActivity.PATIENT, shrToMuzimaMatchingPatient);
-                intent.putExtra("isRegisteredOnShr", true);
+                //intent.putExtra("isRegisteredOnShr", true);
                 startActivity(intent);
             }
         }
@@ -909,7 +904,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
              * todo check if this patient is registred in shr
              * before opening PatientSummary activity
              */
-            intent.putExtra("isRegisteredOnShr", true);
+            //intent.putExtra("isRegisteredOnShr", true);
             intent.putExtra(PatientSummaryActivity.PATIENT, shrPatient);
             startActivity(intent);
             super.onPostExecute(aBoolean);

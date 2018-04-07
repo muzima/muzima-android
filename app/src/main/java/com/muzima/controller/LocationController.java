@@ -120,7 +120,7 @@ public class LocationController {
         }
     }
 
-    public LocationAttributeType getLocationAttributeByUuid(String uuid) throws LocationLoadException {
+    public LocationAttributeType getLocationAttributeTypeByUuid(String uuid) throws LocationLoadException {
         try {
             return locationService.getLocationAttributeTypeByUuid(uuid);
         } catch (IOException e) {
@@ -130,7 +130,7 @@ public class LocationController {
         }
     }
 
-    public Location getLocationByAttributeType(LocationAttributeType attributeType,String attribute) throws LocationLoadException {
+    public Location getLocationByAttributeTypeAndValue(LocationAttributeType attributeType,String attribute) throws LocationLoadException {
         try {
             List<Location> locations = locationService.getAllLocations();
             for(Location location:locations){

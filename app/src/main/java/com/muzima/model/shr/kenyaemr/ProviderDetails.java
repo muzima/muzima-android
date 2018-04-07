@@ -68,4 +68,13 @@ public class ProviderDetails {
     public boolean lacksMandatoryValues(){
         return StringUtils.isEmpty(name) || StringUtils.isEmpty(id);
     }
+
+    public boolean equals(Object o) {
+        if(o instanceof ProviderDetails) {
+            ProviderDetails providerDetails = (ProviderDetails) o;
+            return StringUtils.equalsIgnoreCase(this.getName(), providerDetails.getName())
+                    && StringUtils.equalsIgnoreCase(this.getId(), providerDetails.getId());
+        }
+        return false;
+    }
 }

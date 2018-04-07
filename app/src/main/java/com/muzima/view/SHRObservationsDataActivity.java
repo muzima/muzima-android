@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -178,12 +177,12 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
                     List<String> writeErrors = cardWriteIntentResult.getErrors();
 
                     if (writeErrors == null) {
-                        Snackbar.make(findViewById(R.id.shr_client_summary_view), "Smart card data write was successful.", Snackbar.LENGTH_LONG)
+                        Snackbar.make(findViewById(R.id.client_summary_view), "Smart card data write was successful.", Snackbar.LENGTH_LONG)
                                 .show();
 
                     } else if (writeErrors != null) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            Snackbar.make(findViewById(R.id.shr_client_summary_view), "Smart card data write failed." + writeErrors.get(0), Snackbar.LENGTH_LONG)
+                            Snackbar.make(findViewById(R.id.client_summary_view), "Smart card data write failed." + writeErrors.get(0), Snackbar.LENGTH_LONG)
                                     .setActionTextColor(getResources().getColor(android.R.color.holo_red_dark, null))
                                     .setAction("RETRY", new View.OnClickListener() {
                                         @Override
@@ -194,7 +193,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
                                     .show();
                         } else {
 
-                            Snackbar.make(findViewById(R.id.shr_client_summary_view), "Smart card data write failed." + writeErrors.get(0), Snackbar.LENGTH_LONG)
+                            Snackbar.make(findViewById(R.id.client_summary_view), "Smart card data write failed." + writeErrors.get(0), Snackbar.LENGTH_LONG)
                                     .setActionTextColor(getResources().getColor(android.R.color.holo_red_dark))
                                     .setAction("RETRY", new View.OnClickListener() {
                                         @Override

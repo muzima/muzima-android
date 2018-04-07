@@ -3,6 +3,7 @@ package com.muzima.utils;
 import android.util.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Location;
+import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientIdentifierType;
 import com.muzima.controller.LocationController;
@@ -11,8 +12,8 @@ import com.muzima.controller.PatientController;
 import java.util.List;
 
 public class PatientIdentifierUtils {
-    public static PatientIdentifier getOrCreateKenyaEmrIdentifierType(MuzimaApplication muzimaApplication,String identifierValue, String shrIdentifierTypeName,
-                                                                 String assigningFacility) throws Exception {
+    public static PatientIdentifier getOrCreateKenyaEmrIdentifier(MuzimaApplication muzimaApplication, String identifierValue, String shrIdentifierTypeName,
+                                                                  String assigningFacility) throws Exception {
         PatientIdentifier patientIdentifier = new PatientIdentifier();
         patientIdentifier.setIdentifier(identifierValue);
 
