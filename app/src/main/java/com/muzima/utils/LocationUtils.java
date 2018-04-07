@@ -1,5 +1,7 @@
 package com.muzima.utils;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Location;
@@ -7,7 +9,10 @@ import com.muzima.api.model.LocationAttribute;
 import com.muzima.api.model.LocationAttributeType;
 import com.muzima.controller.LocationController;
 import com.muzima.utils.Constants.Shr.KenyaEmr;
+import net.minidev.json.JSONValue;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class LocationUtils {
@@ -38,10 +43,27 @@ public class LocationUtils {
         Location location = null;
         LocationAttributeType locationAttributeType = null;
         try {
-            locationAttributeType = locationController.getLocationAttributeByUuid(KenyaEmr.LocationAttributeType.MASTER_FACILITY_CODE.uuid);
+            locationAttributeType = locationController.getLocationAttributeTypeByUuid(KenyaEmr.LocationAttributeType.MASTER_FACILITY_CODE.uuid);
 
             if (locationAttributeType != null) {
-                location = locationController.getLocationByAttributeType(locationAttributeType, facilityCode);
+                System.out.println("locationAttributeType != null");
+                location = locationController.getLocationByAttributeTypeAndValue(locationAttributeType, facilityCode);
+            } else {
+                boolean locationFound = false;
+                for(Location location1:locationController.getAllLocations()){
+                    for(LocationAttribute locationAttribute: location1.getAttributes()){
+                        if(StringUtils.equalsIgnoreCase(locationAttribute.getAttributeType().getUuid(),
+                                KenyaEmr.LocationAttributeType.MASTER_FACILITY_CODE.uuid)){
+                            location = location1;
+                            System.out.println("location found getAttributeType(): "+locationAttribute.getAttributeType().getUuid() + " NAME: "+location1.getName());
+                            locationFound = true;
+                            break;
+                        }
+                    }
+                    if(locationFound){
+                        break;
+                    }
+                }
             }
         } catch (LocationController.LocationLoadException e){
             Log.e(TAG, "Failed to get location",e);
@@ -67,6 +89,7 @@ public class LocationUtils {
             LocationAttribute locationAttribute = new LocationAttribute();
             locationAttribute.setAttribute(facilityCode);
             locationAttribute.setAttributeType(locationAttributeType);
+            locationAttribute.setUuid(UUID.randomUUID().toString());
             location.addAttribute(locationAttribute);
             try {
                 locationController.saveLocation(location);
@@ -75,6 +98,25 @@ public class LocationUtils {
             }
         }
         return location;
+    }
 
+    public static Location getDefaultEncounterLocationPreference(MuzimaApplication muzimaApplication) throws Exception {
+        try {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication);
+
+            String defaultLocationName = preferences.getString("defaultEncounterLocation", null);
+            List<Location> defaultLocation = new ArrayList<Location>();
+            List<Location> locations = muzimaApplication.getLocationController().getAllLocations();
+            if (defaultLocationName != null && locations != null) {
+                for (Location loc : locations) {
+                    if (Integer.toString(loc.getId()).equals(defaultLocationName)) {
+                        return loc;
+                    }
+                }
+            }
+            return null;
+        } catch (LocationController.LocationLoadException e) {
+            throw new Exception("Cannot retrieve locations",e);
+        }
     }
 }

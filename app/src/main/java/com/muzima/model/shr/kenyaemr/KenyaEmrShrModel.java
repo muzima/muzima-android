@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.muzima.utils.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,18 +26,35 @@ public class KenyaEmrShrModel {
     private List<NextOfKin> nextOfKins = null;
     @JsonProperty("HIV_TEST")
     private List<HIVTest> hivTests = null;
-    @JsonProperty("Immunization")
+    @JsonProperty("IMMUNIZATION")
     private List<Immunization> immunizations = null;
     @JsonProperty("CARD_DETAILS")
     private CardDetails cardDetails;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
+    public static final String newShrModelTemplate =
+            "{  \"CARD_DETAILS\": {}," +
+                "\"HIV_TEST\": []," +
+                "\"IMMUNIZATION\": []," +
+                "\"PATIENT_IDENTIFICATION\": {" +
+                    "\"EXTERNAL_PATIENT_ID\": {}," +
+                    "\"INTERNAL_PATIENT_ID\": []," +
+                    "\"MOTHER_DETAILS\": {" +
+                        "\"MOTHER_IDENTIFIER\": []," +
+                        "\"MOTHER_NAME\": {}" +
+                    "}," +
+                    "\"PATIENT_ADDRESS\": {}" +
+                "}," +
+                "\"VERSION\": \"1.0.0\"" +
+            "}";
+
     /**
      * No args constructor for use in serialization
      * 
      */
     public KenyaEmrShrModel() {
+
     }
 
     /**
@@ -86,12 +104,12 @@ public class KenyaEmrShrModel {
         this.hivTests = hivTests;
     }
 
-    @JsonProperty("Immunization")
+    @JsonProperty("IMMUNIZATION")
     public List<Immunization> getImmunizations() {
         return immunizations == null ? new ArrayList<Immunization>() : immunizations;
     }
 
-    @JsonProperty("Immunization")
+    @JsonProperty("IMMUNIZATION")
     public void setImmunizations(List<Immunization> immunizations) {
         this.immunizations = immunizations;
     }
@@ -115,6 +133,16 @@ public class KenyaEmrShrModel {
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
+
+    @JsonIgnore
+    public boolean isNewShrModel(){
+        try {
+            return StringUtils.isEmpty(getPatientIdentification().getExternalPatientId().getID());
+        } catch (NullPointerException e){
+            return true;
+        }
+    }
+
 
 
 }

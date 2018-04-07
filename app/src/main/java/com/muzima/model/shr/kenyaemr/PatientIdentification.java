@@ -1,6 +1,7 @@
 package com.muzima.model.shr.kenyaemr;
 
 import com.fasterxml.jackson.annotation.*;
+import com.muzima.utils.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -203,5 +204,17 @@ public class PatientIdentification {
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
+    }
+
+    public InternalPatientId getInternalPatientIdByIdentifierType(String identifierType){
+        if(internalPatientIds != null){
+            for(InternalPatientId internalPatientId: internalPatientIds){
+                System.out.println("COMPARE IDENTIFIERTYPES: "+internalPatientId.getIdentifierType() + ", "+identifierType);
+                if(StringUtils.equals(internalPatientId.getIdentifierType(),identifierType)){
+                    return internalPatientId;
+                }
+            }
+        }
+        return null;
     }
 }

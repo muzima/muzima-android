@@ -127,4 +127,32 @@ public class HIVTest {
                 || StringUtils.isEmpty(strategy) || StringUtils.isEmpty(facility)
                 || providerDetails.lacksMandatoryValues();
     }
+
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof HIVTest) {
+            HIVTest hivTest = (HIVTest) o;
+            if(StringUtils.equalsIgnoreCase(this.getDate(), hivTest.getDate())
+                    && StringUtils.equalsIgnoreCase(this.getResult(), hivTest.getResult())
+                    && StringUtils.equalsIgnoreCase(this.getType(), hivTest.getType())
+                    && StringUtils.equalsIgnoreCase(this.getStrategy(), hivTest.getStrategy())
+                    && StringUtils.equalsIgnoreCase(this.getFacility(), hivTest.getFacility())
+                    && this.getProviderDetails().equals(hivTest.getProviderDetails())){
+                System.out.println("test match");
+                return true;
+            } else {
+                System.out.println("test not match");
+            }
+        }
+        return false;
+    }
+
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        builder.append("DATE: " +getDate());
+        builder.append(", RESULT: " +getResult());
+        builder.append(", STRATEGY: " +getStrategy());
+        builder.append(", FACILITY: " +getFacility());
+        return builder.toString();
+    }
 }

@@ -67,4 +67,13 @@ public class Immunization {
     public boolean lacksMandatoryValues(){
         return StringUtils.isEmpty(name) || StringUtils.isEmpty(dateAdministered);
     }
+
+    public boolean equals(Object o){
+        if(o instanceof Immunization) {
+            Immunization immunization = (Immunization) o;
+            return StringUtils.equalsIgnoreCase(this.getDateAdministered(), immunization.getDateAdministered())
+                    && StringUtils.equalsIgnoreCase(this.getName(), immunization.getName());
+        }
+        return false;
+    }
 }

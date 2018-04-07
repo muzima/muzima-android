@@ -179,8 +179,7 @@ public class KenyaEmrShrMapper {
                 String assigningAuthority = null;
                 String assigningFacility = LocationUtils.getKenyaEmrMasterFacilityListCode(identifier.getLocation());
                 if(StringUtils.isEmpty(assigningFacility)) {
-                    assigningFacility = "10829";
-                    //throw new ShrParseException("Cannot get Facility MFL code from identifier location");
+                    assigningFacility = Constants.Shr.KenyaEmr.DEFAULT_SHR_FACILITY.MFL_CODE;
                 }
 
                 switch (identifier.getIdentifierType().getName()) {
@@ -242,11 +241,11 @@ public class KenyaEmrShrMapper {
         try {
 
             PatientIdentification identification = shrModel.getPatientIdentification();
-            PatientIdentifier patientIdentifier = null;
+            PatientIdentifier patientIdentifier;
             //External ID
             ExternalPatientId externalPatientId = identification.getExternalPatientId();
             if(!externalPatientId.lacksMandatoryValues()) {
-                patientIdentifier = PatientIdentifierUtils.getOrCreateKenyaEmrIdentifierType(muzimaApplication, externalPatientId.getID(),
+                patientIdentifier = PatientIdentifierUtils.getOrCreateKenyaEmrIdentifier(muzimaApplication, externalPatientId.getID(),
                         externalPatientId.getIdentifierType(), externalPatientId.getAssigningFacility());
                 identifiers.add(patientIdentifier);
             }
@@ -255,7 +254,7 @@ public class KenyaEmrShrMapper {
             List<InternalPatientId> internalPatientIds = identification.getInternalPatientIds();
             for (InternalPatientId internalPatientId : internalPatientIds) {
                 if(!internalPatientId.lacksMandatoryValues()) {
-                    patientIdentifier = PatientIdentifierUtils.getOrCreateKenyaEmrIdentifierType(muzimaApplication, internalPatientId.getID(),
+                    patientIdentifier = PatientIdentifierUtils.getOrCreateKenyaEmrIdentifier(muzimaApplication, internalPatientId.getID(),
                             internalPatientId.getIdentifierType(), internalPatientId.getAssigningFacility());
                     identifiers.add(patientIdentifier);
                 }
@@ -344,7 +343,7 @@ public class KenyaEmrShrMapper {
             if(immunizations != null) {
                 for (Immunization immunization : immunizations) {
                     if (!immunization.lacksMandatoryValues()) {
-                        encounters.add(createJsonEncounterPayloadFromImmunization(immunization, patient));
+                        encounters.add(createJsonEncounterPayloadFromImmunization(muzimaApplication, immunization, patient));
                     }
                 }
             } else {
@@ -359,16 +358,6 @@ public class KenyaEmrShrMapper {
     }
 
     public static String createJsonEncounterPayloadFromHivTest(MuzimaApplication muzimaApplication,HIVTest hivTest, Patient patient) throws ShrParseException {
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println(" createJsonEncounterPayloadFromHivTest() ");
-        System.out.println(" DATE: "+hivTest.getDate());
-        System.out.println(" RESULT: "+hivTest.getResult());
-        System.out.println(" TYPE: "+hivTest.getType());
-        System.out.println(" STRATEGY: "+hivTest.getStrategy());
-        System.out.println(" FACILITY: "+hivTest.getFacility());
-        System.out.println(" PROVIDER DETAILS: ID : "+hivTest.getProviderDetails().getId());
-        System.out.println("                 NAME : "+hivTest.getProviderDetails().getName());
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         JSONObject encounterJSON = new JSONObject();
         JSONObject patientDetails = new JSONObject();
         JSONObject observationDetails = new JSONObject();
@@ -503,148 +492,153 @@ public class KenyaEmrShrMapper {
             throw new ShrParseException(e);
         }
     }
-    public static String createJsonEncounterPayloadFromImmunization(Immunization immunization, Patient patient) throws JSONException, ParseException{
-        JSONObject encounterJSON = new JSONObject();
-        JSONObject patientDetails = new JSONObject();
-        JSONObject observationDetails = new JSONObject();
-        JSONObject encounterDetails = new JSONObject();
+    public static String createJsonEncounterPayloadFromImmunization(MuzimaApplication muzimaApplication, Immunization immunization, Patient patient) throws JSONException, ParseException, ShrParseException {
+        try {
+            JSONObject encounterJSON = new JSONObject();
+            JSONObject patientDetails = new JSONObject();
+            JSONObject observationDetails = new JSONObject();
+            JSONObject encounterDetails = new JSONObject();
 
-        Log.e("KenyaEmrShrMapper","Processing Immunization ");
+            Log.e("KenyaEmrShrMapper", "Processing Immunization ");
 
 
-        encounterDetails.put("encounter.provider_id", "DEFAULT_SHR_USER");
-        encounterDetails.put("encounter.location_mfl_id", "DEFAULT_SHR_FACILITY");
+            encounterDetails.put("encounter.provider_id", Constants.Shr.KenyaEmr.DEFAULT_SHR_USER.id);
+            Location location = LocationUtils.getOrCreateDummyLocationByKenyaEmrMasterFacilityListCode(muzimaApplication, Constants.Shr.KenyaEmr.DEFAULT_SHR_FACILITY.MFL_CODE);
+            encounterDetails.put("encounter.location_id", location.getId());
 
-        Date encounterDateTime = DateUtils.parseDateByPattern(immunization.getDateAdministered(), "yyyyMMdd");
-        encounterDetails.put("encounter.encounter_datetime", DateUtils.getFormattedDate(encounterDateTime));
+            Date encounterDateTime = DateUtils.parseDateByPattern(immunization.getDateAdministered(), "yyyyMMdd");
+            encounterDetails.put("encounter.encounter_datetime", DateUtils.getFormattedDate(encounterDateTime));
 
-        encounterDetails.put("encounter.form_uuid", StringUtils.defaultString(CONCEPTS.IMMUNIZATION.FORM.FORM_UUID));
-        encounterJSON.put("encounter",encounterDetails);
+            encounterDetails.put("encounter.form_uuid", StringUtils.defaultString(CONCEPTS.IMMUNIZATION.FORM.FORM_UUID));
+            encounterJSON.put("encounter", encounterDetails);
 
-        patientDetails.put("patient.medical_record_number", StringUtils.defaultString(patient.getIdentifier()));
-        patientDetails.put("patient.given_name", StringUtils.defaultString(patient.getGivenName()));
-        patientDetails.put("patient.middle_name", StringUtils.defaultString(patient.getMiddleName()));
-        patientDetails.put("patient.family_name", StringUtils.defaultString(patient.getFamilyName()));
-        patientDetails.put("patient.sex", StringUtils.defaultString(patient.getGender()));
-        patientDetails.put("patient.uuid", StringUtils.defaultString(patient.getUuid()));
-        if (patient.getBirthdate() != null) {
-            patientDetails.put("patient.birth_date", DateUtils.getFormattedDate(patient.getBirthdate()));
+            patientDetails.put("patient.medical_record_number", StringUtils.defaultString(patient.getIdentifier()));
+            patientDetails.put("patient.given_name", StringUtils.defaultString(patient.getGivenName()));
+            patientDetails.put("patient.middle_name", StringUtils.defaultString(patient.getMiddleName()));
+            patientDetails.put("patient.family_name", StringUtils.defaultString(patient.getFamilyName()));
+            patientDetails.put("patient.sex", StringUtils.defaultString(patient.getGender()));
+            patientDetails.put("patient.uuid", StringUtils.defaultString(patient.getUuid()));
+            if (patient.getBirthdate() != null) {
+                patientDetails.put("patient.birth_date", DateUtils.getFormattedDate(patient.getBirthdate()));
+            }
+
+            encounterJSON.put("patient", patientDetails);
+
+            JSONObject vaccineJson = new JSONObject();
+
+            String answer = null;
+            int sequence = -1;
+            String vaccine = immunization.getName();
+            switch (vaccine) {
+                case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.BCG.name:
+                    answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.BCG.concept_id + "^"
+                            + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.BCG.name + "^" + "99DCT";
+                    break;
+                case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.IPV.name:
+                    answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.IPV.concept_id + "^"
+                            + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.IPV.name + "^" + "99DCT";
+                    sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.IPV.sequence;
+                    break;
+                case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES6.name:
+                    answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES6.concept_id + "^"
+                            + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES6.name + "^" + "99DCT";
+                    sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES6.sequence;
+                    break;
+                case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES9.name:
+                    answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES9.concept_id + "^"
+                            + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES9.name + "^" + "99DCT";
+                    sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES9.sequence;
+                    break;
+                case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES18.name:
+                    answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES18.concept_id + "^"
+                            + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES18.name + "^" + "99DCT";
+                    sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES18.sequence;
+                    break;
+                case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV1.name:
+                    answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV1.concept_id + "^"
+                            + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV1.name + "^" + "99DCT";
+                    sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV1.sequence;
+                    break;
+                case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV2.name:
+                    answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV2.concept_id + "^"
+                            + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV2.name + "^" + "99DCT";
+                    sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV2.sequence;
+                    break;
+                case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV3.name:
+                    answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV3.concept_id + "^"
+                            + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV3.name + "^" + "99DCT";
+                    sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV3.sequence;
+                    break;
+                case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV_AT_BIRTH.name:
+                    answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV_AT_BIRTH.concept_id + "^"
+                            + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV_AT_BIRTH.name + "^" + "99DCT";
+                    sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV_AT_BIRTH.sequence;
+                    break;
+                case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_1.name:
+                    answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_1.concept_id + "^"
+                            + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_1.name + "^" + "99DCT";
+                    sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_1.sequence;
+                    break;
+                case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_2.name:
+                    answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_2.concept_id + "^"
+                            + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_2.name + "^" + "99DCT";
+                    sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_2.sequence;
+                    break;
+                case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_3.name:
+                    answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_3.concept_id + "^"
+                            + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_3.name + "^" + "99DCT";
+                    sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_3.sequence;
+                    break;
+                case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA1.name:
+                    answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA1.concept_id + "^"
+                            + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA1.name + "^" + "99DCT";
+                    sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA1.sequence;
+                    break;
+                case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA2.name:
+                    answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA2.concept_id + "^"
+                            + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA2.name + "^" + "99DCT";
+                    sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA2.sequence;
+                    break;
+                case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA3.name:
+                    answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA3.concept_id + "^"
+                            + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA3.name + "^" + "99DCT";
+                    sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA3.sequence;
+                    break;
+                case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA1.name:
+                    answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA1.concept_id + "^"
+                            + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA1.name + "^" + "99DCT";
+                    sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA1.sequence;
+                    break;
+                case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA2.name:
+                    answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA2.concept_id + "^"
+                            + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA2.name + "^" + "99DCT";
+                    sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA2.sequence;
+            }
+            if (sequence != -1) {
+                String conceptQuestion = CONCEPTS.IMMUNIZATION.VACCINE.concept_id + "^"
+                        + CONCEPTS.IMMUNIZATION.VACCINE.name + "^" + "99DCT";
+                vaccineJson.put(conceptQuestion, answer);
+            }
+            if (!StringUtils.isEmpty(answer)) {
+                String conceptQuestion = CONCEPTS.IMMUNIZATION.VACCINE.concept_id + "^"
+                        + CONCEPTS.IMMUNIZATION.VACCINE.name + "^" + "99DCT";
+                vaccineJson.put(conceptQuestion, answer);
+
+                String groupConceptQuestion = CONCEPTS.IMMUNIZATION.GROUP.concept_id + "^"
+                        + CONCEPTS.IMMUNIZATION.GROUP.name + "^" + "99DCT";
+                observationDetails.put(groupConceptQuestion, vaccineJson);
+                encounterJSON.put("observation", observationDetails);
+            }
+
+            encounterJSON.put("patient", patientDetails);
+            encounterJSON.put("encounter", encounterDetails);
+
+            Log.e("KenyaEmrShrMapper", "IMMUNIZATION PAYLOAD: " + encounterJSON.toString());
+
+            return encounterJSON.toString();
+        } catch (Exception e){
+            throw new ShrParseException(e);
         }
-
-        encounterJSON.put("patient",patientDetails);
-
-        JSONObject vaccineJson = new JSONObject();
-
-        String answer = null;
-        int sequence = -1;
-        String vaccine = immunization.getName();
-        switch (vaccine){
-            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.BCG.name:
-                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.BCG.concept_id + "^"
-                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.BCG.name + "^" + "99DCT";
-                break;
-            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.IPV.name:
-                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.IPV.concept_id + "^"
-                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.IPV.name + "^" + "99DCT";
-                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.IPV.sequence;
-                break;
-            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES6.name:
-                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES6.concept_id + "^"
-                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES6.name + "^" + "99DCT";
-                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES6.sequence;
-                break;
-            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES9.name:
-                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES9.concept_id + "^"
-                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES9.name + "^" + "99DCT";
-                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES9.sequence;
-                break;
-            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES18.name:
-                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES18.concept_id + "^"
-                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES18.name + "^" + "99DCT";
-                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.MEASLES18.sequence;
-                break;
-            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV1.name:
-                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV1.concept_id + "^"
-                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV1.name + "^" + "99DCT";
-                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV1.sequence;
-                break;
-            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV2.name:
-                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV2.concept_id + "^"
-                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV2.name + "^" + "99DCT";
-                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV2.sequence;
-                break;
-            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV3.name:
-                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV3.concept_id + "^"
-                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV3.name + "^" + "99DCT";
-                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV3.sequence;
-                break;
-            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV_AT_BIRTH.name:
-                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV_AT_BIRTH.concept_id + "^"
-                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV_AT_BIRTH.name + "^" + "99DCT";
-                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.OPV_AT_BIRTH.sequence;
-                break;
-            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_1.name:
-                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_1.concept_id + "^"
-                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_1.name + "^" + "99DCT";
-                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_1.sequence;
-                break;
-            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_2.name:
-                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_2.concept_id + "^"
-                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_2.name + "^" + "99DCT";
-                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_2.sequence;
-                break;
-            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_3.name:
-                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_3.concept_id + "^"
-                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_3.name + "^" + "99DCT";
-                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PCV10_3.sequence;
-                break;
-            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA1.name:
-                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA1.concept_id + "^"
-                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA1.name + "^" + "99DCT";
-                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA1.sequence;
-                break;
-            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA2.name:
-                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA2.concept_id + "^"
-                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA2.name + "^" + "99DCT";
-                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA2.sequence;
-                break;
-            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA3.name:
-                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA3.concept_id + "^"
-                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA3.name + "^" + "99DCT";
-                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.PENTA3.sequence;
-                break;
-            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA1.name:
-                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA1.concept_id + "^"
-                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA1.name + "^" + "99DCT";
-                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA1.sequence;
-                break;
-            case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA2.name:
-                answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA2.concept_id + "^"
-                        + CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA2.name + "^" + "99DCT";
-                sequence = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.ROTA2.sequence;
-        }
-        if(sequence != -1){
-            String conceptQuestion = CONCEPTS.IMMUNIZATION.VACCINE.concept_id + "^"
-                    + CONCEPTS.IMMUNIZATION.VACCINE.name + "^" + "99DCT";
-            vaccineJson.put(conceptQuestion, answer);
-        }
-        if(!StringUtils.isEmpty(answer)){
-            String conceptQuestion = CONCEPTS.IMMUNIZATION.VACCINE.concept_id + "^"
-                    + CONCEPTS.IMMUNIZATION.VACCINE.name + "^" + "99DCT";
-            vaccineJson.put(conceptQuestion, answer);
-
-            String groupConceptQuestion = CONCEPTS.IMMUNIZATION.GROUP.concept_id + "^"
-                    + CONCEPTS.IMMUNIZATION.GROUP.name + "^" + "99DCT";
-            observationDetails.put(groupConceptQuestion,vaccineJson);
-            encounterJSON.put("observation",observationDetails);
-        }
-
-        encounterJSON.put("patient",patientDetails);
-        encounterJSON.put("encounter",encounterDetails);
-
-        Log.e("KenyaEmrShrMapper","IMMUNIZATION PAYLOAD: "+encounterJSON.toString());
-
-        return encounterJSON.toString();
     }
 
     public static void updateSHRSmartCardRecordForPatient(MuzimaApplication application, String patientUuid) throws ShrParseException {
@@ -659,40 +653,17 @@ public class KenyaEmrShrMapper {
                 throw new PatientController.PatientLoadException("Could not find patient with Uuid: "+patientUuid);
             }
             if(smartCardRecord == null ){
-                KenyaEmrShrModel shrModel = KenyaEmrShrMapper.createInitialSHRModelForPatient(application,patient);
-                String jsonShr = KenyaEmrShrMapper.createJsonFromSHRModel(shrModel);
-                smartCardRecord = new SmartCardRecord();
-                smartCardRecord.setPlainPayload(jsonShr);
-                smartCardRecord.setPersonUuid(patient.getUuid());
-                smartCardRecord.setUuid(UUID.randomUUID().toString());
-                smartCardController.updateSmartCardRecord(smartCardRecord);
+                throw new ShrParseException("Could not update Shr. Existing Shr not found");
             } else {
                 Encounters encountersWithObservations = observationController.getEncountersWithObservations(patient.getUuid());
                 Encounters newEncountersWithObservations = new Encounters();
 
-                KenyaEmrShrModel shrModel = KenyaEmrShrMapper.createSHRModelFromJson(smartCardRecord.getPlainPayload());
-
-                Date latHivShrUpdateDateTime = null;
-                List<HIVTest> hivTests = shrModel.getHivTests();
-                for(HIVTest hivTest:hivTests){
-                    if(hivTest.getDate() != null) {
-                        Date date = DateUtils.parseDateByPattern(hivTest.getDate(), "yyyyMMdd");
-                        if (latHivShrUpdateDateTime == null) {
-                            latHivShrUpdateDateTime = date;
-                        } else if (latHivShrUpdateDateTime.before(date)) {
-                            latHivShrUpdateDateTime = date;
-                        }
-                    }
-                }
+                KenyaEmrShrModel shrModel = createSHRModelFromJson(smartCardRecord.getPlainPayload());
 
                 for (EncounterWithObservations encounter:encountersWithObservations){
-                   // Date encounterDateTime = encounter.getEncounter().getEncounterDatetime();
-                    //if(latHivShrUpdateDateTime == null){
-                     //   newEncountersWithObservations.add(encounter);
-                    //} else if(latHivShrUpdateDateTime.before(encounterDateTime)){
-                        newEncountersWithObservations.add(encounter);
-                    //}
+                    newEncountersWithObservations.add(encounter);
                 }
+
                 shrModel = KenyaEmrShrMapper.addEncounterObservationsToShrModel(shrModel, newEncountersWithObservations);
 
                 String jsonShr = KenyaEmrShrMapper.createJsonFromSHRModel(shrModel);
@@ -712,8 +683,8 @@ public class KenyaEmrShrMapper {
      * @return KenyaEmrShrModel representation of newlyCreatedSHR
      * @throws IOException
      */
-    public static KenyaEmrShrModel createInitialSHRModelForPatient(MuzimaApplication application, Patient patient) throws ShrParseException{
-        KenyaEmrShrModel shrModel = new KenyaEmrShrModel();
+    public static KenyaEmrShrModel createInitialSHRModelForPatient(MuzimaApplication muzimaApplication, Patient patient, String cardSerialNumber) throws ShrParseException{
+        KenyaEmrShrModel shrModel = createSHRModelFromJson(KenyaEmrShrModel.newShrModelTemplate);
         PatientIdentification identification = new PatientIdentification();
 
         PatientName patientName = new PatientName();
@@ -764,11 +735,37 @@ public class KenyaEmrShrMapper {
             identification.setPatientAddress(shrAddress);
         }
 
+        //add card serial number as identifier
+        List<InternalPatientId> internalPatientIds = identification.getInternalPatientIds();
+        if(internalPatientIds == null){
+            internalPatientIds = new ArrayList<>();
+        }
+
+        InternalPatientId internalPatientId = new InternalPatientId();
+        internalPatientId.setIdentifierType(PersonIdentifierType.CARD_SERIAL_NUMBER.shr_name);
+        internalPatientId.setAssigningAuthority("CARD_REGISTRY");
+        internalPatientId.setID(cardSerialNumber);
+
+        Location defaultLocation = null;
+        try {
+            defaultLocation = LocationUtils.getDefaultEncounterLocationPreference(muzimaApplication);
+        } catch (Exception e) {
+            Log.e(TAG, "Could not get default location",e);
+        }
+        String assigningFacility = LocationUtils.getKenyaEmrMasterFacilityListCode(defaultLocation);
+        if(StringUtils.isEmpty(assigningFacility)) {
+            assigningFacility = Constants.Shr.KenyaEmr.DEFAULT_SHR_FACILITY.MFL_CODE;
+        }
+        internalPatientId.setAssigningFacility(assigningFacility);
+        internalPatientIds.add(internalPatientId);
+
+        identification.setInternalPatientIds(internalPatientIds);
         shrModel.setPatientIdentification(identification);
 
         shrModel = putIdentifiersIntoShrModel(shrModel,patient.getIdentifiers());
-        EncounterController encounterController = application.getEncounterController();
-        ObservationController observationController = application.getObservationController();
+
+        EncounterController encounterController = muzimaApplication.getEncounterController();
+        ObservationController observationController = muzimaApplication.getObservationController();
         try {
             List<Encounter> encounters = encounterController.getEncountersByEncounterTypeUuidAndPatientUuid(
                     CONCEPTS.HIV_TESTS.ENCOUNTER.ENCOUNTER_TYPE_UUID, patient.getUuid());
@@ -804,11 +801,34 @@ public class KenyaEmrShrMapper {
         for(EncounterWithObservations encounterWithObservations: encountersWithObservations){
             HIVTest hivTest = getHivTestFromEncounter(encounterWithObservations);
             if(hivTest != null){
-                hivTests.add(hivTest);
+                boolean testExists = false;
+                for (HIVTest shrHivTest : hivTests ){
+                    if(shrHivTest.equals(hivTest)){
+                        System.out.println("TEST MATCH");
+                        System.out.println(shrHivTest + " : " + hivTest);
+                        testExists = true;
+                        break;
+                    } else {
+                        System.out.println("TEST NOT MATCH");
+                        System.out.println(shrHivTest + " : " + hivTest);
+                    }
+                }
+                if(!testExists) {
+
+                    hivTests.add(hivTest);
+                }
             } else {
                 Immunization immunization = getImmunizationFromEncounter(encounterWithObservations);
+                boolean immunizationExists = false;
                 if (immunization != null) {
-                    immunizations.add(immunization);
+                    for(Immunization shrImmunization: immunizations){
+                        if(immunization.equals(shrImmunization)){
+                            immunizationExists = true;
+                            break;
+                        }
+                    }
+                    if(!immunizationExists)
+                        immunizations.add(immunization);
                 }
             }
         }
@@ -877,7 +897,7 @@ public class KenyaEmrShrMapper {
                                 shrAnswer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.HB.name;
                                 break;
                             case CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.HP.concept_id:
-                                shrAnswer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.HB.name;
+                                shrAnswer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.HP.name;
                                 break;
                             case CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.MO.concept_id:
                                 shrAnswer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.MO.name;
@@ -924,7 +944,7 @@ public class KenyaEmrShrMapper {
             if(!StringUtils.isEmpty(facility)) {
                 hivTest.setFacility(facility);
             } else {
-                hivTest.setFacility("10829");
+                hivTest.setFacility(Constants.Shr.KenyaEmr.DEFAULT_SHR_FACILITY.MFL_CODE);
                 //throw new ShrParseException("Cannot get Facility MFL code from encounter location");
             }
         }
@@ -934,7 +954,7 @@ public class KenyaEmrShrMapper {
             Person provider = encounterWithObservations.getEncounter().getProvider();
             if(provider != null){
                 providerDetails.setId(provider.getMiddleName());
-                providerDetails.setName(provider.getDisplayName());
+                providerDetails.setName(provider.getFamilyName() + " " + provider.getGivenName());
             }
         }
 
