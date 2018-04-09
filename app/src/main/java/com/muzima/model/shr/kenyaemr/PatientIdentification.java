@@ -209,7 +209,6 @@ public class PatientIdentification {
     public InternalPatientId getInternalPatientIdByIdentifierType(String identifierType){
         if(internalPatientIds != null){
             for(InternalPatientId internalPatientId: internalPatientIds){
-                System.out.println("COMPARE IDENTIFIERTYPES: "+internalPatientId.getIdentifierType() + ", "+identifierType);
                 if(StringUtils.equals(internalPatientId.getIdentifierType(),identifierType)){
                     return internalPatientId;
                 }

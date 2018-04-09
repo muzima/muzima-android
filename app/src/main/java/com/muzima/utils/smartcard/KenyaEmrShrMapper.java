@@ -7,6 +7,7 @@ import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Location;
+import com.muzima.api.model.LocationAttribute;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
@@ -14,6 +15,7 @@ import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonAddress;
 import com.muzima.api.model.PersonName;
 import com.muzima.api.model.SmartCardRecord;
+import com.muzima.api.model.User;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
@@ -40,6 +42,8 @@ import com.muzima.utils.DateUtils;
 import com.muzima.utils.LocationUtils;
 import com.muzima.utils.PatientIdentifierUtils;
 import com.muzima.utils.StringUtils;
+import com.muzima.view.forms.GenericRegistrationPatientJSONMapper;
+import com.muzima.view.forms.HTMLPatientJSONMapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,7 +54,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_SHR_DEMOGRAPHICS_UPDATE;
+import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION;
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
+import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 
 public class KenyaEmrShrMapper {
     private static final String TAG = KenyaEmrShrMapper.class.getSimpleName();
@@ -135,6 +142,69 @@ public class KenyaEmrShrMapper {
             return patient;
         } catch (ParseException e){
             throw new ShrParseException(e);
+        }
+    }
+
+    public static void createAndSaveRegistrationPayloadForPatient(MuzimaApplication muzimaApplication, final Patient patient){
+        try {
+            FormData formData = new FormData() {{
+                setUuid(UUID.randomUUID().toString());
+                setPatientUuid(patient.getUuid());
+                setUserUuid("userUuid");
+                setStatus(STATUS_COMPLETE);
+                setTemplateUuid(Constants.Shr.KenyaEmr.REGISTRATION.FORM.FORM_UUID);
+                setDiscriminator(FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION);
+            }};
+
+            User user = muzimaApplication.getAuthenticatedUser();
+
+            formData.setJsonPayload(new HTMLPatientJSONMapper().map(patient, formData, user, true));
+            muzimaApplication.getFormController().saveFormData(formData);
+        } catch (Throwable E){
+            Log.e(TAG, "Could not create and save registration payload");
+        }
+    }
+
+    public static void updatePatientDemographicsWithCardSerialNumberAsIdentifier(MuzimaApplication muzimaApplication, final Patient patient, final String cardSerialNumber){
+        try {
+            Location defaultLocation = LocationUtils.getDefaultEncounterLocationPreference(muzimaApplication);
+            if(defaultLocation != null) {
+                LocationAttribute attribute= defaultLocation.getAttribute(Constants.Shr.KenyaEmr.LocationAttributeType.MASTER_FACILITY_CODE.name);
+                String facilityMflCode = attribute.getAttribute();
+                PatientIdentifier patientIdentifier = PatientIdentifierUtils.getOrCreateKenyaEmrIdentifier(muzimaApplication,
+                        cardSerialNumber, Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.shr_name,
+                        facilityMflCode);
+                patient.addIdentifier(patientIdentifier);
+                muzimaApplication.getPatientController().updatePatient(patient);
+
+                //ToDo: Create demographics update payload for card serial number
+                FormData formData = new FormData() {{
+                    setUuid(UUID.randomUUID().toString());
+                    setPatientUuid(patient.getUuid());
+                    setUserUuid("userUuid");
+                    setStatus(STATUS_COMPLETE);
+                    setTemplateUuid(Constants.Shr.KenyaEmr.REGISTRATION.FORM.FORM_UUID);
+                    setDiscriminator(FORM_JSON_DISCRIMINATOR_SHR_DEMOGRAPHICS_UPDATE);
+                }};
+
+                User user = muzimaApplication.getAuthenticatedUser();
+
+                JSONObject formDataJSON = new JSONObject(new HTMLPatientJSONMapper().map(patient, formData, user, true));
+                JSONObject demographicsUpdateJson = new JSONObject();
+
+                JSONObject newIdentifierJson = new JSONObject();
+                newIdentifierJson.put("identifier_type_name", PersonIdentifierType.CARD_SERIAL_NUMBER.name);
+                newIdentifierJson.put("identifier_type_uuid", PersonIdentifierType.CARD_SERIAL_NUMBER.uuid);
+                newIdentifierJson.put("identifier_value", cardSerialNumber);
+
+                demographicsUpdateJson.put("demographicsupdate.otheridentifier",newIdentifierJson);
+                formDataJSON.put("demographicsupdate", demographicsUpdateJson);
+
+                formData.setJsonPayload(formDataJSON.toString());
+                muzimaApplication.getFormController().saveFormData(formData);
+            }
+        } catch (Throwable e){
+            Log.e(TAG, "Error updating patient identifier. ",e);
         }
     }
 
@@ -310,7 +380,7 @@ public class KenyaEmrShrMapper {
                 setUserUuid("userUuid");
                 setStatus(STATUS_COMPLETE);
                 setTemplateUuid(StringUtils.defaultString(CONCEPTS.HIV_TESTS.FORM.FORM_UUID));
-                setDiscriminator(Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER);
+                setDiscriminator(Constants.FORM_JSON_DISCRIMINATOR_SHR_ENCOUNTER);
                 setJsonPayload(payload);
             }};
 
@@ -327,33 +397,74 @@ public class KenyaEmrShrMapper {
     public static List<String> createJsonEncounterPayloadFromShrModel(MuzimaApplication muzimaApplication, KenyaEmrShrModel shrModel, Patient patient) throws ShrParseException {
         try {
             Log.e("KenyaEmrShrMapper","Obtaining payloads ");
-            List<String> encounters = new ArrayList<>();
-            List<HIVTest> hivTests = shrModel.getHivTests();
-            if(hivTests != null) {
-                for (HIVTest hivTest : hivTests) {
-                    if(!hivTest.lacksMandatoryValues()) {
-                        encounters.add(createJsonEncounterPayloadFromHivTest(muzimaApplication, hivTest, patient));
-                    }
-                }
-            } else {
-                Log.e("KenyaEmrShrMapper","No HIV Tests found");
-            }
 
+            List<String> encounterPayloads = new ArrayList<>();
+            List<HIVTest> hivTests = shrModel.getHivTests();
             List<Immunization> immunizations = shrModel.getImmunizations();
-            if(immunizations != null) {
-                for (Immunization immunization : immunizations) {
-                    if (!immunization.lacksMandatoryValues()) {
-                        encounters.add(createJsonEncounterPayloadFromImmunization(muzimaApplication, immunization, patient));
+            if(hivTests != null || immunizations != null) {
+                Encounters encountersWithObservations = muzimaApplication.getObservationController().getEncountersWithObservations(patient.getUuid());
+
+                List<HIVTest> existingHivTests = new ArrayList<>();
+                List<Immunization> existingImmunizations = new ArrayList<>();
+                for (EncounterWithObservations encounterWithObservations : encountersWithObservations) {
+                    HIVTest hivTest = getHivTestFromEncounter(encounterWithObservations);
+                    if(hivTest != null && !hivTest.lacksMandatoryValues()){
+                        existingHivTests.add(hivTest);
+                    }
+
+                    Immunization immunization = getImmunizationFromEncounter(encounterWithObservations);
+                    if(immunization != null && !immunization.lacksMandatoryValues()){
+                        existingImmunizations.add(immunization);
                     }
                 }
-            } else {
-                Log.e("KenyaEmrShrMapper","No Immunizations found");
+
+                if (hivTests != null) {
+                    for (HIVTest hivTest : hivTests) {
+                        if (!hivTest.lacksMandatoryValues()) {
+                            boolean testExists = false;
+                            for(HIVTest existingHivTest: existingHivTests){
+                                if(hivTest.equals(existingHivTest)){
+                                    testExists = true;
+                                    break;
+                                }
+                            }
+
+                            if(!testExists) {
+                                encounterPayloads.add(createJsonEncounterPayloadFromHivTest(muzimaApplication, hivTest, patient));
+                            }
+                        }
+                    }
+                } else {
+                    Log.e("KenyaEmrShrMapper", "No HIV Tests found");
+                }
+
+                if (immunizations != null) {
+                    for (Immunization immunization : immunizations) {
+                        if (!immunization.lacksMandatoryValues()) {
+                            boolean immunizationExists = false;
+                            for(Immunization existingImmunization : existingImmunizations){
+                                if(immunization.equals(existingImmunization)){
+                                    immunizationExists = true;
+                                    break;
+                                }
+                            }
+
+                            if(!immunizationExists) {
+                                encounterPayloads.add(createJsonEncounterPayloadFromImmunization(muzimaApplication, immunization, patient));
+                            }
+                        }
+                    }
+                } else {
+                    Log.e("KenyaEmrShrMapper", "No Immunizations found");
+                }
             }
-            return encounters;
+            return encounterPayloads;
         } catch(ParseException e){
             throw new ShrParseException("Could not parse SHR model",e);
         } catch(JSONException e){
             throw new ShrParseException("Could not parse SHR model",e);
+        } catch(ObservationController.LoadObservationException e){
+            throw new ShrParseException("Could not load observations",e);
         }
     }
 
@@ -656,19 +767,15 @@ public class KenyaEmrShrMapper {
                 throw new ShrParseException("Could not update Shr. Existing Shr not found");
             } else {
                 Encounters encountersWithObservations = observationController.getEncountersWithObservations(patient.getUuid());
-                Encounters newEncountersWithObservations = new Encounters();
 
-                KenyaEmrShrModel shrModel = createSHRModelFromJson(smartCardRecord.getPlainPayload());
+                if(!encountersWithObservations.isEmpty()) {
+                    KenyaEmrShrModel shrModel = createSHRModelFromJson(smartCardRecord.getPlainPayload());
+                    shrModel = addEncounterObservationsToShrModel(shrModel, encountersWithObservations);
 
-                for (EncounterWithObservations encounter:encountersWithObservations){
-                    newEncountersWithObservations.add(encounter);
+                    String jsonShr = KenyaEmrShrMapper.createJsonFromSHRModel(shrModel);
+                    smartCardRecord.setPlainPayload(jsonShr);
+                    smartCardController.updateSmartCardRecord(smartCardRecord);
                 }
-
-                shrModel = KenyaEmrShrMapper.addEncounterObservationsToShrModel(shrModel, newEncountersWithObservations);
-
-                String jsonShr = KenyaEmrShrMapper.createJsonFromSHRModel(shrModel);
-                smartCardRecord.setPlainPayload(jsonShr);
-                smartCardController.updateSmartCardRecord(smartCardRecord);
             }
         } catch (Throwable e) {
             Log.e(TAG, "Cannot add encounters to patient SHR ",e);
@@ -804,13 +911,8 @@ public class KenyaEmrShrMapper {
                 boolean testExists = false;
                 for (HIVTest shrHivTest : hivTests ){
                     if(shrHivTest.equals(hivTest)){
-                        System.out.println("TEST MATCH");
-                        System.out.println(shrHivTest + " : " + hivTest);
                         testExists = true;
                         break;
-                    } else {
-                        System.out.println("TEST NOT MATCH");
-                        System.out.println(shrHivTest + " : " + hivTest);
                     }
                 }
                 if(!testExists) {

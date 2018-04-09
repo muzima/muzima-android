@@ -36,6 +36,9 @@ public class Constants {
     public static final String FORM_JSON_DISCRIMINATOR_CONSULTATION = "json-consultation";
     public static final String FORM_DISCRIMINATOR_CONSULTATION = "consultation";
     public static final String FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE = "json-demographics-update";
+    public static final String FORM_JSON_DISCRIMINATOR_SHR_ENCOUNTER = "json-shr-encounter";
+    public static final String FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION = "json-shr-registration";
+    public static final String FORM_JSON_DISCRIMINATOR_SHR_DEMOGRAPHICS_UPDATE = "json-shr-demographics-update";
 
     private static final String APP_EXTERNAL_DIR_ROOT =  Environment.getExternalStorageDirectory().getPath() + "/muzima";
     public static final String APP_MEDIA_DIR = APP_EXTERNAL_DIR_ROOT + "/media";
@@ -388,7 +391,12 @@ public class Constants {
                     public static class FORM {
                         public static final String FORM_UUID = "9bc157d2-2794-11e8-b467-0ed5f89f718b";
                     }
+                }
+            }
 
+            public static class REGISTRATION {
+                public static class FORM {
+                    public static final String FORM_UUID = "d84e4db1-149b-43a6-bb9a-d66317b5aceb";
                 }
             }
         }
