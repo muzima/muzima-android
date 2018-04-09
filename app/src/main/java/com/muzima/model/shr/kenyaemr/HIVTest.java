@@ -137,7 +137,7 @@ public class HIVTest {
                     && StringUtils.equalsIgnoreCase(this.getType(), hivTest.getType())
                     && StringUtils.equalsIgnoreCase(this.getStrategy(), hivTest.getStrategy())
                     && StringUtils.equalsIgnoreCase(this.getFacility(), hivTest.getFacility())
-                    && this.getProviderDetails().equals(hivTest.getProviderDetails()));
+                    && this.getProviderDetails().equals(hivTest.getProviderDetails());
         }
         return false;
     }
