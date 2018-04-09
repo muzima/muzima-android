@@ -561,9 +561,11 @@ public class PatientSummaryActivity extends BaseActivity {
                                         .getInternalPatientIdByIdentifierType(Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.shr_name);
                                 if(shrInternalPatientId != null && !StringUtils.isEmpty(shrInternalPatientId.getID())){
                                     //ToDo: check whether card serial number already assigned
-                                    registerNewShrRecord(shrInternalPatientId.getID());
+                                    registerNewShrRecord();
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Could not obtain card serial number: ", Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(getApplicationContext(), "Could not obtain card serial number: ", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "Read successful but the card appears to be blank: ", Toast.LENGTH_LONG).show();
+                                    registerNewShrRecord();
                                 }
 
                             } else {
@@ -601,10 +603,10 @@ public class PatientSummaryActivity extends BaseActivity {
                     .show();
         }
     }
-    public void registerNewShrRecord(final String cardSerialNumber) {
+    public void registerNewShrRecord() {
 
         try {
-            KenyaEmrShrModel kenyaEmrShrModel = KenyaEmrShrMapper.createInitialSHRModelForPatient(muzimaApplication, patient, cardSerialNumber);
+            KenyaEmrShrModel kenyaEmrShrModel = KenyaEmrShrMapper.createInitialSHRModelForPatient(muzimaApplication, patient);
             String jsonShrModel = KenyaEmrShrMapper.createJsonFromSHRModel(kenyaEmrShrModel);
 
             if (jsonShrModel != null) {
@@ -620,18 +622,18 @@ public class PatientSummaryActivity extends BaseActivity {
                 Toast.makeText(getApplicationContext(), "SHR has been Recorded.", Toast.LENGTH_LONG).show();
 
                 //create identifier with card serial number
-                KenyaEmrShrMapper.updatePatientDemographicsWithCardSerialNumberAsIdentifier(muzimaApplication,patient,cardSerialNumber);
+                //KenyaEmrShrMapper.updatePatientDemographicsWithCardSerialNumberAsIdentifier(muzimaApplication,patient,cardSerialNumber);
                 //refresh UI
                 recreate();
 
                 //write SHR to card
-                initiateShrWriteToCard();
+                //initiateShrWriteToCard();
             } else {
                 Snackbar.make(findViewById(R.id.client_summary_view), "", Snackbar.LENGTH_LONG)
                         .setAction("RETRY", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                registerNewShrRecord(cardSerialNumber);
+                                registerNewShrRecord();
                             }
                         });
             }
@@ -644,7 +646,7 @@ public class PatientSummaryActivity extends BaseActivity {
                     .setAction("RETRY", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            registerNewShrRecord(cardSerialNumber);
+                            registerNewShrRecord();
                         }
                     })
                     .show();

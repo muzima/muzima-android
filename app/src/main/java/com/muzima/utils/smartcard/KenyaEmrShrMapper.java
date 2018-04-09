@@ -790,7 +790,7 @@ public class KenyaEmrShrMapper {
      * @return KenyaEmrShrModel representation of newlyCreatedSHR
      * @throws IOException
      */
-    public static KenyaEmrShrModel createInitialSHRModelForPatient(MuzimaApplication muzimaApplication, Patient patient, String cardSerialNumber) throws ShrParseException{
+    public static KenyaEmrShrModel createInitialSHRModelForPatient(MuzimaApplication muzimaApplication, Patient patient) throws ShrParseException{
         KenyaEmrShrModel shrModel = createSHRModelFromJson(KenyaEmrShrModel.newShrModelTemplate);
         PatientIdentification identification = new PatientIdentification();
 
@@ -851,7 +851,7 @@ public class KenyaEmrShrMapper {
         InternalPatientId internalPatientId = new InternalPatientId();
         internalPatientId.setIdentifierType(PersonIdentifierType.CARD_SERIAL_NUMBER.shr_name);
         internalPatientId.setAssigningAuthority("CARD_REGISTRY");
-        internalPatientId.setID(cardSerialNumber);
+        internalPatientId.setID("");
 
         Location defaultLocation = null;
         try {
