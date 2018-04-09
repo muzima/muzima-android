@@ -792,7 +792,10 @@ public class KenyaEmrShrMapper {
      */
     public static KenyaEmrShrModel createInitialSHRModelForPatient(MuzimaApplication muzimaApplication, Patient patient) throws ShrParseException{
         KenyaEmrShrModel shrModel = createSHRModelFromJson(KenyaEmrShrModel.newShrModelTemplate);
-        PatientIdentification identification = new PatientIdentification();
+        PatientIdentification identification = shrModel.getPatientIdentification();
+        if(identification == null){
+            identification = new PatientIdentification();
+        }
 
         PatientName patientName = new PatientName();
 

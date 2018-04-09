@@ -494,7 +494,7 @@ public class PatientSummaryActivity extends BaseActivity {
                 }
 
                 if(defaultLocation != null) {
-                    readSmartCard();
+                    registerNewShrRecord();
                 } else {
                     dismissWriteShrDataDialogue();
 
@@ -624,10 +624,11 @@ public class PatientSummaryActivity extends BaseActivity {
                 //create identifier with card serial number
                 //KenyaEmrShrMapper.updatePatientDemographicsWithCardSerialNumberAsIdentifier(muzimaApplication,patient,cardSerialNumber);
                 //refresh UI
+                dismissWriteShrDataDialogue();
                 recreate();
 
                 //write SHR to card
-                //initiateShrWriteToCard();
+                initiateShrWriteToCard();
             } else {
                 Snackbar.make(findViewById(R.id.client_summary_view), "", Snackbar.LENGTH_LONG)
                         .setAction("RETRY", new View.OnClickListener() {
