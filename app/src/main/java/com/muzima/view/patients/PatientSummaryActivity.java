@@ -30,6 +30,7 @@ import android.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.patients.PatientAdapterHelper;
+import com.muzima.api.model.FormData;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.LocationAttribute;
 import com.muzima.api.model.LocationAttributeType;
@@ -237,7 +238,6 @@ public class PatientSummaryActivity extends BaseActivity {
         try {
             KenyaEmrShrMapper.updateSHRSmartCardRecordForPatient((MuzimaApplication) getApplicationContext(),patient.getUuid());
             smartCardRecord = smartCardController.getSmartCardRecordByPersonUuid(patient.getUuid());
-            System.out.println("WRITING SHR: "+smartCardRecord.getPlainPayload());
         } catch (SmartCardController.SmartCardRecordFetchException e) {
             Snackbar.make(findViewById(R.id.client_summary_view), "Could not fetch smartcard record. "+e.getMessage(), Snackbar.LENGTH_LONG)
                     .setActionTextColor(getResources().getColor(android.R.color.holo_red_dark))
@@ -620,21 +620,7 @@ public class PatientSummaryActivity extends BaseActivity {
                 Toast.makeText(getApplicationContext(), "SHR has been Recorded.", Toast.LENGTH_LONG).show();
 
                 //create identifier with card serial number
-                try {
-                    if(defaultLocation != null) {
-                        LocationAttribute attribute= defaultLocation.getAttribute(Constants.Shr.KenyaEmr.LocationAttributeType.MASTER_FACILITY_CODE.name);
-                        String facilityMflCode = attribute.getAttribute();
-                        PatientIdentifier patientIdentifier = PatientIdentifierUtils.getOrCreateKenyaEmrIdentifier(muzimaApplication,
-                                cardSerialNumber, Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.shr_name,
-                                facilityMflCode);
-                        patient.addIdentifier(patientIdentifier);
-                        muzimaApplication.getPatientController().updatePatient(patient);
-
-                        //ToDo: Create demographics update payload for card serial number
-                    }
-                } catch (Throwable e){
-                    Log.e(TAG, "Error updating patient identifier. ",e);
-                }
+                KenyaEmrShrMapper.updatePatientDemographicsWithCardSerialNumberAsIdentifier(muzimaApplication,patient,cardSerialNumber);
                 //refresh UI
                 recreate();
 

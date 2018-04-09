@@ -46,7 +46,6 @@ public class LocationUtils {
             locationAttributeType = locationController.getLocationAttributeTypeByUuid(KenyaEmr.LocationAttributeType.MASTER_FACILITY_CODE.uuid);
 
             if (locationAttributeType != null) {
-                System.out.println("locationAttributeType != null");
                 location = locationController.getLocationByAttributeTypeAndValue(locationAttributeType, facilityCode);
             } else {
                 boolean locationFound = false;
@@ -55,7 +54,6 @@ public class LocationUtils {
                         if(StringUtils.equalsIgnoreCase(locationAttribute.getAttributeType().getUuid(),
                                 KenyaEmr.LocationAttributeType.MASTER_FACILITY_CODE.uuid)){
                             location = location1;
-                            System.out.println("location found getAttributeType(): "+locationAttribute.getAttributeType().getUuid() + " NAME: "+location1.getName());
                             locationFound = true;
                             break;
                         }

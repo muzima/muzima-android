@@ -479,16 +479,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         patientAdapter.cancelBackgroundTask();
         Patient patient = patientAdapter.getItem(position);
         Intent intent = new Intent(this, PatientSummaryActivity.class);
-        /*SmartCardController smartCardController = ((MuzimaApplication) getApplicationContext()).getSmartCardController();
-        try {
-            if (smartCardController.getSmartCardRecordByPersonUuid(patient.getUuid()) != null) {
-                intent.putExtra("isRegisteredOnShr", true);
-            } else {
-                intent.putExtra("isRegisteredOnShr", false);
-            }
-        } catch (SmartCardController.SmartCardRecordFetchException e) {
-            e.printStackTrace();
-        }*/
+
         intent.putExtra(PatientSummaryActivity.PATIENT, patient);
         startActivity(intent);
     }
@@ -588,7 +579,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             if (smartCardRecord != null) {
                 intentShrResults = false;
                 String shrPayload = smartCardRecord.getPlainPayload();
-                System.out.println(" PlainPayload: "+shrPayload);
                 if(!shrPayload.equals("") && !shrPayload.isEmpty()) {
                     try {
                         shrPatient = KenyaEmrShrMapper.extractPatientFromShrModel(muzimaApplication, shrPayload);
@@ -837,7 +827,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 }
                 Intent intent = new Intent(PatientsListActivity.this, PatientSummaryActivity.class);
                 intent.putExtra(PatientSummaryActivity.PATIENT, shrToMuzimaMatchingPatient);
-                //intent.putExtra("isRegisteredOnShr", true);
                 startActivity(intent);
             }
         }
@@ -858,6 +847,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             shrPatient.setUuid(UUID.randomUUID().toString());
             try {
                 patientController.savePatient(shrPatient);
+                KenyaEmrShrMapper.createAndSaveRegistrationPayloadForPatient(muzimaApplication,shrPatient);
             } catch (PatientController.PatientSaveException e) {
                 e.printStackTrace();
             }
@@ -880,7 +870,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 } catch (KenyaEmrShrMapper.ShrParseException e) {
                     e.printStackTrace();
                 }
-//                Toast.makeText(getApplicationContext(), "Patient registered.", Toast.LENGTH_LONG).show();
                 Log.e(TAG, "Patient registered");
 
             }
@@ -897,14 +886,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
             }
 
-
-
             Intent intent = new Intent(PatientsListActivity.this, PatientSummaryActivity.class);
-            /**
-             * todo check if this patient is registred in shr
-             * before opening PatientSummary activity
-             */
-            //intent.putExtra("isRegisteredOnShr", true);
             intent.putExtra(PatientSummaryActivity.PATIENT, shrPatient);
             startActivity(intent);
             super.onPostExecute(aBoolean);

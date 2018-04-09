@@ -71,6 +71,7 @@ import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_REGISTRATION;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION;
+import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION;
 import static com.muzima.utils.Constants.STATUS_UPLOADED;
 
 public class FormController {
@@ -392,6 +393,7 @@ public class FormController {
         try {
             formData.setSaveTime(new Date());
             formService.saveFormData(formData);
+
         } catch (IOException e) {
             throw new FormDataSaveException(e);
         }
@@ -564,11 +566,14 @@ public class FormController {
 
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_DISCRIMINATOR_REGISTRATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_REGISTRATION), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_SHR_DEMOGRAPHICS_UPDATE), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER), result);
-            return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER), result);
+            return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_SHR_ENCOUNTER), result);
         } catch (IOException e) {
             throw new UploadFormDataException(e);
         } catch (JSONException e) {
