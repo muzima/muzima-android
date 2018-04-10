@@ -68,11 +68,11 @@ public class SmartCardIntentIntegrator {
             if (requestCode == SMARTCARD_READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
                 String jsonSHRModel = intent.getStringExtra(EXTRA_MESSAGE);
                 smartCardRecord.setPlainPayload(jsonSHRModel);
-                result.setSHRModel(smartCardRecord);
+                result.setSmartCardRecord(smartCardRecord);
             }else if (requestCode == SMARTCARD_WRITE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
                 String jsonSHRModel = intent.getStringExtra(EXTRA_MESSAGE);
                 smartCardRecord.setEncryptedPayload(jsonSHRModel);
-                result.setSHRModel(smartCardRecord);
+                result.setSmartCardRecord(smartCardRecord);
             }else if (resultCode == Activity.RESULT_CANCELED) {
                 Bundle bundle = intent.getExtras();
                 Object errorMessages = bundle.get(EXTRA_ERRORS);
