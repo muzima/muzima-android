@@ -10,7 +10,7 @@ public class SmartCardIntentResult {
     private SmartCardRecord smartCardRecord;
     private List<String> errors;
 
-    public void setSHRModel(SmartCardRecord smartCardRecord) {
+    public void setSmartCardRecord(SmartCardRecord smartCardRecord) {
         this.smartCardRecord = smartCardRecord;
     }
 

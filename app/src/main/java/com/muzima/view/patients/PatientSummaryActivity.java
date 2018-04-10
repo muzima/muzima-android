@@ -292,6 +292,18 @@ public class PatientSummaryActivity extends BaseActivity {
                     if (writeErrors == null) {
                         Snackbar.make(findViewById(R.id.client_summary_view), "Smart card data write was successful.", Snackbar.LENGTH_LONG)
                                 .show();
+                        SmartCardRecord result = cardWriteIntentResult.getSmartCardRecord();
+                        try {
+                            SmartCardRecord smartCardRecord = smartCardController.getSmartCardRecordByPersonUuid(patient.getUuid());
+                            smartCardRecord.setEncryptedPayload(result.getEncryptedPayload());
+                            smartCardRecord.setWrittenToCard(true);
+                            smartCardRecord.setSyncedToServer(false);
+                            smartCardController.updateSmartCardRecord(smartCardRecord);
+                        } catch (SmartCardController.SmartCardRecordFetchException e) {
+                            Log.e(TAG,"Could not retrieve SHR from local storage");
+                        } catch (SmartCardController.SmartCardRecordSaveException e) {
+                            Log.e(TAG,"Could not save SHR from local storage");
+                        }
 
                     } else if (writeErrors != null) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
