@@ -24,6 +24,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.controller.SmartCardController;
 import com.muzima.model.observation.EncounterWithObservations;
 import com.muzima.model.observation.Encounters;
+import com.muzima.model.shr.kenyaemr.CardDetails;
 import com.muzima.model.shr.kenyaemr.ExternalPatientId;
 import com.muzima.model.shr.kenyaemr.HIVTest;
 import com.muzima.model.shr.kenyaemr.Immunization;
@@ -790,8 +791,24 @@ public class KenyaEmrShrMapper {
      * @return KenyaEmrShrModel representation of newlyCreatedSHR
      * @throws IOException
      */
-    public static KenyaEmrShrModel createInitialSHRModelForPatient(MuzimaApplication muzimaApplication, Patient patient) throws ShrParseException{
+    public static KenyaEmrShrModel createInitialSHRModelForPatient(MuzimaApplication muzimaApplication, Patient patient, String cardSerialNumber) throws ShrParseException{
         KenyaEmrShrModel shrModel = createSHRModelFromJson(KenyaEmrShrModel.newShrModelTemplate);
+        // Card details
+        CardDetails cardDetails = shrModel.getCardDetails();
+        String cardStatus = "ACTIVE";
+        String cardReason = "";
+        String cardLastUpdated = DateUtils.getFormattedDate(new Date(),"yyyyMMdd");
+        String cardLastUpdateFacility = Constants.Shr.KenyaEmr.DEFAULT_SHR_FACILITY.MFL_CODE;
+
+        if(cardDetails == null){
+            cardDetails = new CardDetails();
+        }
+        cardDetails.setStatus(cardStatus);
+        cardDetails.setReason(cardReason);
+        cardDetails.setLastUpdated(cardLastUpdated);
+        cardDetails.setLastUpdatedFacility(cardLastUpdateFacility);
+
+        //Patient identification
         PatientIdentification identification = shrModel.getPatientIdentification();
         if(identification == null){
             identification = new PatientIdentification();
@@ -812,6 +829,139 @@ public class KenyaEmrShrMapper {
             dateObBirthPrecision = "ESTIMATED";
         }
         identification.setDateOfBirthPrecision(dateObBirthPrecision);
+        identification.setSex(patient.getGender());
+
+        PersonAddress kenyaEmrPersonAddress = null;
+        try{
+            kenyaEmrPersonAddress = patient.getPreferredAddress();
+        } catch(NullPointerException e){
+            Log.e(TAG,"Could not get preferred Address");
+        }
+        if(kenyaEmrPersonAddress == null){
+            List<PersonAddress> kenyaEmrPersonAddresses = patient.getAddresses();
+            if(kenyaEmrPersonAddresses.size() > 0){
+                kenyaEmrPersonAddress = kenyaEmrPersonAddresses.get(0);
+            }
+        }
+        if(kenyaEmrPersonAddress != null){
+            PatientAddress shrAddress = identification.getPatientAddress();
+            if(shrAddress == null){
+                shrAddress = new PatientAddress();
+            }
+
+            PhysicalAddress physicalAddress = shrAddress.getPhysicalAddress();
+            if(physicalAddress == null){
+                physicalAddress = new PhysicalAddress();
+            }
+
+            physicalAddress.setCounty(kenyaEmrPersonAddress.getCountry());
+            physicalAddress.setSubcounty(kenyaEmrPersonAddress.getCountyDistrict());
+            physicalAddress.setWard(kenyaEmrPersonAddress.getAddress4());
+            physicalAddress.setNearestLandmark(kenyaEmrPersonAddress.getAddress2());
+            physicalAddress.setVillage(kenyaEmrPersonAddress.getCityVillage());
+            shrAddress.setPostalAddress(kenyaEmrPersonAddress.getAddress1());
+            identification.setPatientAddress(shrAddress);
+        }
+
+        //add card serial number as identifier
+        List<InternalPatientId> internalPatientIds = identification.getInternalPatientIds();
+        if(internalPatientIds == null){
+            internalPatientIds = new ArrayList<>();
+        }
+
+        InternalPatientId internalPatientId = new InternalPatientId();
+        internalPatientId.setIdentifierType(PersonIdentifierType.CARD_SERIAL_NUMBER.shr_name);
+        internalPatientId.setAssigningAuthority("CARD_REGISTRY");
+        internalPatientId.setID(cardSerialNumber);
+
+        Location defaultLocation = null;
+        try {
+            defaultLocation = LocationUtils.getDefaultEncounterLocationPreference(muzimaApplication);
+        } catch (Exception e) {
+            Log.e(TAG, "Could not get default location",e);
+        }
+        String assigningFacility = LocationUtils.getKenyaEmrMasterFacilityListCode(defaultLocation);
+        if(StringUtils.isEmpty(assigningFacility)) {
+            assigningFacility = Constants.Shr.KenyaEmr.DEFAULT_SHR_FACILITY.MFL_CODE;
+        }
+        internalPatientId.setAssigningFacility(assigningFacility);
+        internalPatientIds.add(internalPatientId);
+
+        identification.setInternalPatientIds(internalPatientIds);
+
+        shrModel.setCardDetails(cardDetails);
+        shrModel.setPatientIdentification(identification);
+        shrModel = putIdentifiersIntoShrModel(shrModel,patient.getIdentifiers());
+
+        EncounterController encounterController = muzimaApplication.getEncounterController();
+        ObservationController observationController = muzimaApplication.getObservationController();
+        try {
+            List<Encounter> encounters = encounterController.getEncountersByEncounterTypeUuidAndPatientUuid(
+                    CONCEPTS.HIV_TESTS.ENCOUNTER.ENCOUNTER_TYPE_UUID, patient.getUuid());
+            Encounters encountersWithObservations = new Encounters();
+            for(Encounter encounter:encounters) {
+                Encounters encounterObs = observationController.getObservationsByEncounterUuid(encounter.getUuid());
+                if(!encounters.isEmpty()){
+                    encountersWithObservations.addAll(encounterObs);
+                }
+            }
+
+            if(!encountersWithObservations.isEmpty()){
+                shrModel = addEncounterObservationsToShrModel(shrModel,encountersWithObservations);
+            }
+        } catch (EncounterController.DownloadEncounterException e) {
+            Log.e(TAG,"Could not obtain encounterType");
+        } catch (ObservationController.LoadObservationException e) {
+            Log.e(TAG,"Could not obtain Observations");
+        }
+        return shrModel;
+    }
+    /**
+     * Creates a new SHR Model for a given Patient. Iterates through patient demographics, identifiers, addresses and
+     * attributes to construct this model
+     * @param patient the Patient Object for which to create new SHR
+     * @return KenyaEmrShrModel representation of newlyCreatedSHR
+     * @throws IOException
+     */
+    public static KenyaEmrShrModel createInitialSHRModelForPatient(MuzimaApplication muzimaApplication, Patient patient ) throws ShrParseException{
+        KenyaEmrShrModel shrModel = createSHRModelFromJson(KenyaEmrShrModel.newShrModelTemplate);
+        // Card details
+        CardDetails cardDetails = shrModel.getCardDetails();
+        String cardStatus = "ACTIVE";
+        String cardReason = "";
+        String cardLastUpdated = DateUtils.getFormattedDate(new Date(),"yyyyMMdd");
+        String cardLastUpdateFacility = Constants.Shr.KenyaEmr.DEFAULT_SHR_FACILITY.MFL_CODE;
+
+        if(cardDetails == null){
+            cardDetails = new CardDetails();
+        }
+        cardDetails.setStatus(cardStatus);
+        cardDetails.setReason(cardReason);
+        cardDetails.setLastUpdated(cardLastUpdated);
+        cardDetails.setLastUpdatedFacility(cardLastUpdateFacility);
+
+        //Patient identification
+        PatientIdentification identification = shrModel.getPatientIdentification();
+        if(identification == null){
+            identification = new PatientIdentification();
+        }
+
+        PatientName patientName = new PatientName();
+
+        patientName.setFirstName(patient.getFamilyName());
+        patientName.setLastName(patient.getGivenName());
+        patientName.setMiddleName(patient.getMiddleName());
+        identification.setPatientName(patientName);
+
+        String dateOfBirth = DateUtils.getFormattedDate(patient.getBirthdate(),"yyyyMMdd");
+        identification.setDateOfBirth(dateOfBirth);
+
+        String dateObBirthPrecision = "EXACT";
+        if(patient.getBirthdateEstimated()){
+            dateObBirthPrecision = "ESTIMATED";
+        }
+        identification.setDateOfBirthPrecision(dateObBirthPrecision);
+        identification.setSex(patient.getGender());
 
         PersonAddress kenyaEmrPersonAddress = null;
         try{
@@ -870,8 +1020,9 @@ public class KenyaEmrShrMapper {
         internalPatientIds.add(internalPatientId);
 
         identification.setInternalPatientIds(internalPatientIds);
-        shrModel.setPatientIdentification(identification);
 
+        shrModel.setCardDetails(cardDetails);
+        shrModel.setPatientIdentification(identification);
         shrModel = putIdentifiersIntoShrModel(shrModel,patient.getIdentifiers());
 
         EncounterController encounterController = muzimaApplication.getEncounterController();
