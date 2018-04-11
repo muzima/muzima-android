@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.Menu;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.patients.PatientAdapterHelper;
@@ -45,8 +48,11 @@ import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.SmartCardController;
+import com.muzima.model.shr.kenyaemr.Addendum.Identifier;
+import com.muzima.model.shr.kenyaemr.Addendum.WriteResponse;
 import com.muzima.model.shr.kenyaemr.InternalPatientId;
 import com.muzima.model.shr.kenyaemr.KenyaEmrShrModel;
+import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.JSONInputOutputToDisk;
 import com.muzima.utils.Constants;
 import com.muzima.utils.LocationUtils;
@@ -62,7 +68,10 @@ import com.muzima.view.forms.PatientFormsActivity;
 import com.muzima.view.notifications.PatientNotificationActivity;
 import com.muzima.view.observations.ObservationsActivity;
 
+import org.json.JSONArray;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -293,12 +302,27 @@ public class PatientSummaryActivity extends BaseActivity {
                         Snackbar.make(findViewById(R.id.client_summary_view), "Smart card data write was successful.", Snackbar.LENGTH_LONG)
                                 .show();
                         SmartCardRecord result = cardWriteIntentResult.getSmartCardRecord();
+
                         try {
                             SmartCardRecord smartCardRecord = smartCardController.getSmartCardRecordByPersonUuid(patient.getUuid());
                             smartCardRecord.setEncryptedPayload(result.getEncryptedPayload());
                             smartCardRecord.setWrittenToCard(true);
                             smartCardRecord.setSyncedToServer(false);
                             smartCardController.updateSmartCardRecord(smartCardRecord);
+
+                            //Deserialize result.getEncryptedPayload() to WriteResponse
+                            // get the card serial writeresponse.getcarddetails.
+                            WriteResponse writeResponse = new ObjectMapper().readValue(result.getEncryptedPayload(), WriteResponse.class);
+                            String cardSerial = null;
+                            List<Identifier> addendumIdentifiers = writeResponse.getAddendum().getIdentifiers();
+                            for (Identifier id : addendumIdentifiers) {
+                                if(id.getIdentifierType().equals("CARD_SERIAL_NUMBER")) {
+                                    cardSerial = id.getId();
+                                    break;
+                                }
+                            }
+                            KenyaEmrShrMapper.updatePatientDemographicsWithCardSerialNumberAsIdentifier(muzimaApplication,patient,cardSerial);
+
                         } catch (SmartCardController.SmartCardRecordFetchException e) {
                             Log.e(TAG,"Could not retrieve SHR from local storage");
                         } catch (SmartCardController.SmartCardRecordSaveException e) {
@@ -719,4 +743,6 @@ public class PatientSummaryActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
+
+
 }

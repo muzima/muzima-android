@@ -2,6 +2,7 @@ package com.muzima.utils.smartcard;
 
 import android.util.Log;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
@@ -30,6 +31,9 @@ import com.muzima.model.shr.kenyaemr.HIVTest;
 import com.muzima.model.shr.kenyaemr.Immunization;
 import com.muzima.model.shr.kenyaemr.InternalPatientId;
 import com.muzima.model.shr.kenyaemr.KenyaEmrShrModel;
+import com.muzima.model.shr.kenyaemr.MotherDetails;
+import com.muzima.model.shr.kenyaemr.MotherIdentifier;
+import com.muzima.model.shr.kenyaemr.MotherName;
 import com.muzima.model.shr.kenyaemr.PatientAddress;
 import com.muzima.model.shr.kenyaemr.PatientIdentification;
 import com.muzima.model.shr.kenyaemr.PatientName;
@@ -45,6 +49,8 @@ import com.muzima.utils.PatientIdentifierUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.forms.GenericRegistrationPatientJSONMapper;
 import com.muzima.view.forms.HTMLPatientJSONMapper;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -813,13 +819,30 @@ public class KenyaEmrShrMapper {
         if(identification == null){
             identification = new PatientIdentification();
         }
-
+      //Patient name
         PatientName patientName = new PatientName();
 
         patientName.setFirstName(patient.getFamilyName());
         patientName.setLastName(patient.getGivenName());
         patientName.setMiddleName(patient.getMiddleName());
         identification.setPatientName(patientName);
+
+        //Mother Details
+        MotherDetails motherDetails = new MotherDetails();
+        //Mother_identifier
+        List<MotherIdentifier> motherIdentifiers = motherDetails.getMotherIdentifiers();
+        if(motherIdentifiers == null){
+            motherIdentifiers = new ArrayList<>();
+        }
+        //Mother_name
+        MotherName motherName = new MotherName();
+        motherName.setFirstName("");
+        motherName.setMiddleName("");
+        motherName.setLastName("");
+
+        motherDetails.setMotherName(motherName);
+        motherDetails.setMotherIdentifiers(motherIdentifiers);
+        identification.setMotherDetails(motherDetails);
 
         String dateOfBirth = DateUtils.getFormattedDate(patient.getBirthdate(),"yyyyMMdd");
         identification.setDateOfBirth(dateOfBirth);
@@ -830,38 +853,47 @@ public class KenyaEmrShrMapper {
         }
         identification.setDateOfBirthPrecision(dateObBirthPrecision);
         identification.setSex(patient.getGender());
+        identification.setMaritalStatus("");
+        identification.setPhoneNumber("");
+        identification.setDeathDate("");
+        identification.setDeathIndicator("N");
 
-        PersonAddress kenyaEmrPersonAddress = null;
-        try{
-            kenyaEmrPersonAddress = patient.getPreferredAddress();
-        } catch(NullPointerException e){
-            Log.e(TAG,"Could not get preferred Address");
-        }
-        if(kenyaEmrPersonAddress == null){
-            List<PersonAddress> kenyaEmrPersonAddresses = patient.getAddresses();
-            if(kenyaEmrPersonAddresses.size() > 0){
-                kenyaEmrPersonAddress = kenyaEmrPersonAddresses.get(0);
-            }
-        }
-        if(kenyaEmrPersonAddress != null){
-            PatientAddress shrAddress = identification.getPatientAddress();
-            if(shrAddress == null){
-                shrAddress = new PatientAddress();
-            }
+        //Patient address
+        PatientAddress patientAddress = new PatientAddress();
+//        PersonAddress kenyaEmrPersonAddress = null;
+//        try{
+//            kenyaEmrPersonAddress = patient.getPreferredAddress();
+//        } catch(NullPointerException e){
+//            Log.e(TAG,"Could not get preferred Address");
+//        }
+//        if(kenyaEmrPersonAddress == null){
+//            List<PersonAddress> kenyaEmrPersonAddresses = patient.getAddresses();
+//            if(kenyaEmrPersonAddresses.size() > 0){
+//                kenyaEmrPersonAddress = kenyaEmrPersonAddresses.get(0);
+//            }
+//        }
+//        if(kenyaEmrPersonAddress != null){
+//            PatientAddress postalAddress = identification.getPatientAddress();
+//            if(postalAddress == null){
+//                postalAddress = new PatientAddress();
+//            }
 
-            PhysicalAddress physicalAddress = shrAddress.getPhysicalAddress();
-            if(physicalAddress == null){
-                physicalAddress = new PhysicalAddress();
-            }
-
-            physicalAddress.setCounty(kenyaEmrPersonAddress.getCountry());
-            physicalAddress.setSubcounty(kenyaEmrPersonAddress.getCountyDistrict());
-            physicalAddress.setWard(kenyaEmrPersonAddress.getAddress4());
-            physicalAddress.setNearestLandmark(kenyaEmrPersonAddress.getAddress2());
-            physicalAddress.setVillage(kenyaEmrPersonAddress.getCityVillage());
-            shrAddress.setPostalAddress(kenyaEmrPersonAddress.getAddress1());
-            identification.setPatientAddress(shrAddress);
+        PhysicalAddress physicalAddress = new PhysicalAddress();
+        if(physicalAddress == null){
+            physicalAddress = new PhysicalAddress();
         }
+        physicalAddress.setCounty("");
+        physicalAddress.setSubcounty("");
+        physicalAddress.setWard("");
+        physicalAddress.setNearestLandmark("");
+        physicalAddress.setVillage("");
+
+        //postalAddress.setPostalAddress(kenyaEmrPersonAddress.getAddress1());
+
+        patientAddress.setPhysicalAddress(physicalAddress);
+        patientAddress.setPostalAddress("");
+        identification.setPatientAddress(patientAddress);
+        //  }
 
         //add card serial number as identifier
         List<InternalPatientId> internalPatientIds = identification.getInternalPatientIds();
@@ -945,13 +977,30 @@ public class KenyaEmrShrMapper {
         if(identification == null){
             identification = new PatientIdentification();
         }
-
+       //Patient Name
         PatientName patientName = new PatientName();
 
         patientName.setFirstName(patient.getFamilyName());
         patientName.setLastName(patient.getGivenName());
         patientName.setMiddleName(patient.getMiddleName());
         identification.setPatientName(patientName);
+
+        //Mother Details
+        MotherDetails motherDetails = new MotherDetails();
+                    //Mother_identifier
+        List<MotherIdentifier> motherIdentifiers = motherDetails.getMotherIdentifiers();
+        if(motherIdentifiers == null){
+            motherIdentifiers = new ArrayList<>();
+        }
+                  //Mother_name
+        MotherName motherName = new MotherName();
+        motherName.setFirstName("");
+        motherName.setMiddleName("");
+        motherName.setLastName("");
+
+        motherDetails.setMotherName(motherName);
+        motherDetails.setMotherIdentifiers(motherIdentifiers);
+        identification.setMotherDetails(motherDetails);
 
         String dateOfBirth = DateUtils.getFormattedDate(patient.getBirthdate(),"yyyyMMdd");
         identification.setDateOfBirth(dateOfBirth);
@@ -962,38 +1011,47 @@ public class KenyaEmrShrMapper {
         }
         identification.setDateOfBirthPrecision(dateObBirthPrecision);
         identification.setSex(patient.getGender());
+        identification.setMaritalStatus("");
+        identification.setPhoneNumber("");
+        identification.setDeathDate("");
+        identification.setDeathIndicator("N");
 
-        PersonAddress kenyaEmrPersonAddress = null;
-        try{
-            kenyaEmrPersonAddress = patient.getPreferredAddress();
-        } catch(NullPointerException e){
-            Log.e(TAG,"Could not get preferred Address");
-        }
-        if(kenyaEmrPersonAddress == null){
-            List<PersonAddress> kenyaEmrPersonAddresses = patient.getAddresses();
-            if(kenyaEmrPersonAddresses.size() > 0){
-                kenyaEmrPersonAddress = kenyaEmrPersonAddresses.get(0);
-            }
-        }
-        if(kenyaEmrPersonAddress != null){
-            PatientAddress shrAddress = identification.getPatientAddress();
-            if(shrAddress == null){
-                shrAddress = new PatientAddress();
-            }
+        //Patient address
+        PatientAddress patientAddress = new PatientAddress();
+//        PersonAddress kenyaEmrPersonAddress = null;
+//        try{
+//            kenyaEmrPersonAddress = patient.getPreferredAddress();
+//        } catch(NullPointerException e){
+//            Log.e(TAG,"Could not get preferred Address");
+//        }
+//        if(kenyaEmrPersonAddress == null){
+//            List<PersonAddress> kenyaEmrPersonAddresses = patient.getAddresses();
+//            if(kenyaEmrPersonAddresses.size() > 0){
+//                kenyaEmrPersonAddress = kenyaEmrPersonAddresses.get(0);
+//            }
+//        }
+//        if(kenyaEmrPersonAddress != null){
+//            PatientAddress postalAddress = identification.getPatientAddress();
+//            if(postalAddress == null){
+//                postalAddress = new PatientAddress();
+//            }
 
-            PhysicalAddress physicalAddress = shrAddress.getPhysicalAddress();
+            PhysicalAddress physicalAddress = new PhysicalAddress();
             if(physicalAddress == null){
                 physicalAddress = new PhysicalAddress();
             }
+            physicalAddress.setCounty("");
+            physicalAddress.setSubcounty("");
+            physicalAddress.setWard("");
+            physicalAddress.setNearestLandmark("");
+            physicalAddress.setVillage("");
 
-            physicalAddress.setCounty(kenyaEmrPersonAddress.getCountry());
-            physicalAddress.setSubcounty(kenyaEmrPersonAddress.getCountyDistrict());
-            physicalAddress.setWard(kenyaEmrPersonAddress.getAddress4());
-            physicalAddress.setNearestLandmark(kenyaEmrPersonAddress.getAddress2());
-            physicalAddress.setVillage(kenyaEmrPersonAddress.getCityVillage());
-            shrAddress.setPostalAddress(kenyaEmrPersonAddress.getAddress1());
-            identification.setPatientAddress(shrAddress);
-        }
+            //postalAddress.setPostalAddress(kenyaEmrPersonAddress.getAddress1());
+
+            patientAddress.setPhysicalAddress(physicalAddress);
+            patientAddress.setPostalAddress("");
+            identification.setPatientAddress(patientAddress);
+      //  }
 
         //add card serial number as identifier
         List<InternalPatientId> internalPatientIds = identification.getInternalPatientIds();
