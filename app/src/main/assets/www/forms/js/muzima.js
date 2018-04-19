@@ -1326,4 +1326,16 @@ $(document).ready(function () {
         htmlDataStore.checkForPossibleFormDuplicate(formUuid,encounterDateTime,patientUuid,formData);
     });
     /*End of Checking For Possibility Of Duplicate Form on Form Load*/
+
+    /*setting default encounter location*/
+    var defaultEncounterLocationSetting = htmlDataStore.getDefaultEncounterLocationSetting();
+    if(defaultEncounterLocationSetting){
+        var defaultEncounterLocation = htmlDataStore.getDefaultEncounterLocationPreference();
+        defaultEncounterLocation = JSON.parse(defaultEncounterLocation);
+        $.each(defaultEncounterLocation, function () {
+            $("#encounter\\.location_id").val(this.name);
+            $('[name="encounter\\.location_id"]').val(this.id);
+        });
+    }
+    /*end of Setting Default encounter Location*/
 });

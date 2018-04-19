@@ -21,9 +21,12 @@ import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;;
+import android.util.Log;
 import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.model.Location;
+import com.muzima.controller.LocationController;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
@@ -33,7 +36,11 @@ import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.preferences.SettingsActivity;
 
+import org.apache.commons.lang.math.NumberUtils;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
@@ -51,6 +58,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
     private String fontSizePreferenceKey;
     private String landingPagePreferenceKey;
     private String requireMedicalRecordNumberKey;
+    private String defaultEncounterLocationkey;
 
     private EditTextPreference serverPreference;
     private EditTextPreference usernamePreference;
@@ -64,6 +72,8 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
     private CheckBoxPreference requireMedicalRecordNumberPreference;
     private ListPreference fontSizePreference;
     private ListPreference landingPagePreference;
+    private ListPreference defaultEncounterLocationPreference;
+
 
     private String newURL;
     private Map<String, SettingsPreferenceFragment.PreferenceChangeHandler> actions = new HashMap<String, SettingsPreferenceFragment.PreferenceChangeHandler>();
@@ -234,6 +244,50 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             }
         });
 
+        ListPreference listPreferenceCategory = (ListPreference) findPreference(getResources().getString(R.string.preference_default_encounter_location));
+        if (listPreferenceCategory != null) {
+
+            LocationController locationController = ((MuzimaApplication) getActivity().getApplication()).getLocationController();
+            List<Location> locations = new ArrayList<Location>();
+            try {
+                locations = locationController.getAllLocations();
+            } catch (LocationController.LocationLoadException e) {
+                e.printStackTrace( );
+            }
+            CharSequence entries[] = new String[locations.size()+1];
+            CharSequence entryValues[] = new String[locations.size()+1];
+
+            entries[0] = getResources().getString(R.string.no_default_encounter_location);
+            entryValues[0] = getResources().getString(R.string.no_default_encounter_location);
+            int i = 1;
+            for (Location location : locations) {
+                entries[i] = location.getName();
+                entryValues[i] = Integer.toString(location.getId());
+                i++;
+            }
+            listPreferenceCategory.setEntries(entries);
+            listPreferenceCategory.setEntryValues(entryValues);
+        }
+
+        defaultEncounterLocationkey = getResources().getString(R.string.preference_default_encounter_location);
+        defaultEncounterLocationPreference = (ListPreference) getPreferenceScreen().findPreference(defaultEncounterLocationkey);
+        LocationController locationController = ((MuzimaApplication) getActivity().getApplication()).getLocationController();
+        List<Location> locations = new ArrayList<Location>();
+        try {
+            locations = locationController.getAllLocations();
+        } catch (LocationController.LocationLoadException e) {
+            e.printStackTrace( );
+        }
+
+        String locationName = getResources().getString(R.string.no_default_encounter_location);
+        for (Location location : locations) {
+            if(Integer.toString(location.getId()).equals(defaultEncounterLocationPreference.getValue())){
+                locationName=location.getName();
+            }
+        }
+        defaultEncounterLocationPreference.setSummary(locationName);
+        registerListPreferenceChangeHandlerForDefaultLocation(defaultEncounterLocationkey, defaultEncounterLocationPreference);
+
     }
 
     @Override
@@ -275,6 +329,33 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             @Override
             public void handle(SharedPreferences sharedPreferences) {
                 preference.setSummary(sharedPreferences.getString(key, StringUtils.EMPTY));
+            }
+        });
+    }
+
+    private void registerListPreferenceChangeHandlerForDefaultLocation(final String key, final ListPreference preference) {
+
+        actions.put(key, new PreferenceChangeHandler() {
+            @Override
+            public void handle(SharedPreferences sharedPreferences) {
+                if(NumberUtils.isNumber(sharedPreferences.getString(key, StringUtils.EMPTY))){
+                    LocationController locationController = ((MuzimaApplication) getActivity().getApplication()).getLocationController();
+                    List<Location> locations = new ArrayList<Location>();
+                    try {
+                        locations = locationController.getAllLocations();
+                    } catch (LocationController.LocationLoadException e) {
+                        e.printStackTrace( );
+                    }
+                    String locationName = "";
+                    for (Location location : locations) {
+                        if(Integer.toString(location.getId()).equals(sharedPreferences.getString(key, StringUtils.EMPTY))){
+                            locationName=location.getName();
+                        }
+                    }
+                    preference.setSummary(locationName);
+                }else {
+                    preference.setSummary(sharedPreferences.getString(key, StringUtils.EMPTY));
+                }
             }
         });
     }
