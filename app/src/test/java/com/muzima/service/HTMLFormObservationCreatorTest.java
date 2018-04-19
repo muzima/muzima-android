@@ -16,8 +16,11 @@ import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
+import com.muzima.controller.FormController;
+import com.muzima.controller.LocationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
+import com.muzima.controller.ProviderController;
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
@@ -63,6 +66,15 @@ public class HTMLFormObservationCreatorTest {
     private ObservationController observationController;
 
     @Mock
+    private LocationController locationController;
+
+    @Mock
+    private ProviderController providerController;
+
+    @Mock
+    private FormController formController;
+
+    @Mock
     private Patient patient;
 
     @Captor
@@ -82,7 +94,7 @@ public class HTMLFormObservationCreatorTest {
     @Before
     public void setUp() throws PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         initMocks(this);
-        htmlFormObservationCreator = new HTMLFormObservationCreator(patientController, conceptController, encounterController, observationController);
+        htmlFormObservationCreator = new HTMLFormObservationCreator(patientController, conceptController, encounterController, observationController, locationController, providerController, formController);
 
         when(patientController.getPatientByUuid("9090900-asdsa-asdsannidj-qwnkika")).thenReturn(patient);
 
