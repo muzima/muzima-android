@@ -23,12 +23,15 @@ import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.ProviderController;
+import com.muzima.utils.DateUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -178,7 +181,9 @@ public class HTMLFormObservationCreator {
         try {
             JSONObject jsonObject = new JSONObject(jsonResponse);
             JSONObject jsonObjectInner = jsonObject.getJSONObject("encounter");
-            return parse(jsonObjectInner.getString("encounter.encounter_datetime"));
+            //return parse(jsonObjectInner.getString("encounter.encounter_datetime"));
+            DateFormat dateTimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+            return  dateTimeFormat.parse(jsonObjectInner.getString("encounter.encounter_datetime"));
         } catch (JSONException e) {
             Log.e(TAG, "Error while parsing response JSON", e);
         } catch (ParseException e) {
