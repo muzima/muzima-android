@@ -171,7 +171,7 @@ public class HTMLFormObservationCreator {
     }
 
     private Encounter createEncounter(JSONObject encounterJSON, String formDataUuid) throws JSONException, ParseException {
-        return observationParserUtility.getEncounterEntity(parse(encounterJSON.getString("encounter.encounter_datetime")),encounterJSON.getString("encounter.form_uuid"), encounterJSON.getString("encounter.provider_id"),Integer.parseInt(encounterJSON.getString("encounter.location_id")), patient,formDataUuid);
+        return observationParserUtility.getEncounterEntity(parse(encounterJSON.getString("encounter.encounter_datetime")),encounterJSON.getString("encounter.form_uuid"), encounterJSON.getString("encounter.provider_id"),Integer.parseInt(encounterJSON.getString("encounter.location_id")), encounterJSON.getString("encounter.user_system_id"), patient,formDataUuid);
     }
 
     public Date getEncounterDateFromFormDate(String jsonResponse){
