@@ -41,6 +41,7 @@ import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
 import com.muzima.controller.SetupConfigurationController;
+import com.muzima.controller.SmartCardController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.progressdialog.ProgressDialogUpdateIntentService;
@@ -714,6 +715,17 @@ public class MuzimaSyncService {
         try {
             result[0] = formController.uploadAllCompletedForms() ? SUCCESS : SyncStatusConstants.UPLOAD_ERROR;
         } catch (FormController.UploadFormDataException e) {
+            Log.e(TAG, "Exception thrown while uploading forms.", e);
+            result[0] = SyncStatusConstants.UPLOAD_ERROR;
+        }
+        return result;
+    }
+
+    public int[] uploadEncryptedSmartCardRecords() {
+        int[] result = new int[1];
+        try {
+            result[0] = muzimaApplication.getSmartCardController().syncEncryptedSmartCardRecordsToServer() ? SUCCESS : SyncStatusConstants.UPLOAD_ERROR;
+        } catch (SmartCardController.SmartCardRecordFetchException e) {
             Log.e(TAG, "Exception thrown while uploading forms.", e);
             result[0] = SyncStatusConstants.UPLOAD_ERROR;
         }
