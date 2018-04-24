@@ -4,6 +4,7 @@ import com.muzima.api.model.SmartCardRecord;
 import com.muzima.api.service.SmartCardRecordService;
 
 import java.io.IOException;
+import java.util.List;
 
 public class SmartCardController {
     public static final String TAG ="SmartCardController";
@@ -46,11 +47,24 @@ public class SmartCardController {
         }
     }
 
-    void syncSmartCardRecord(SmartCardRecord smartCardRecord) throws SmartCardSharedHealthSyncFetchException {
+    public boolean syncEncryptedSmartCardRecordsToServer() throws SmartCardRecordFetchException {
         try {
-            smartCardRecordService.syncSmartCardRecord(smartCardRecord);
+            boolean isSuccess = false;
+            List<SmartCardRecord> smartCardRecords = smartCardRecordService.getAllSmartCardRecords();
+            for(SmartCardRecord smartCardRecord : smartCardRecords){
+                isSuccess = syncSmartCardRecord(smartCardRecord);
+            }
+            return isSuccess;
         } catch (IOException e) {
-            throw new SmartCardSharedHealthSyncFetchException(e);
+            throw new SmartCardRecordFetchException(e);
+        }
+    }
+
+    public boolean syncSmartCardRecord(SmartCardRecord smartCardRecord) throws SmartCardRecordFetchException {
+        try {
+            return smartCardRecordService.syncSmartCardRecord(smartCardRecord);
+        } catch (IOException e) {
+            throw new SmartCardRecordFetchException(e);
         }
     }
 
@@ -63,12 +77,6 @@ public class SmartCardController {
 
     public static class SmartCardRecordFetchException extends Throwable {
         public SmartCardRecordFetchException(Throwable throwable) {
-            super(throwable);
-        }
-    }
-
-    public static class SmartCardSharedHealthSyncFetchException extends Throwable {
-        public SmartCardSharedHealthSyncFetchException(Throwable throwable) {
             super(throwable);
         }
     }
