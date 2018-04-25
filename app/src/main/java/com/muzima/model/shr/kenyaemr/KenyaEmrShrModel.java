@@ -37,6 +37,7 @@ public class KenyaEmrShrModel {
             "{  \"CARD_DETAILS\": {}," +
                 "\"HIV_TEST\": []," +
                 "\"IMMUNIZATION\": []," +
+                 "\"NEXT_OF_KIN\": []," +
                 "\"PATIENT_IDENTIFICATION\": {" +
                     "\"EXTERNAL_PATIENT_ID\": {}," +
                     "\"INTERNAL_PATIENT_ID\": []," +
