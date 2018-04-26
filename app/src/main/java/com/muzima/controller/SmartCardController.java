@@ -1,10 +1,15 @@
 package com.muzima.controller;
 
+import android.util.Log;
 import com.muzima.api.model.SmartCardRecord;
 import com.muzima.api.service.SmartCardRecordService;
+import com.muzima.utils.StringUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UPLOAD_ERROR;
 
 public class SmartCardController {
     public static final String TAG ="SmartCardController";
@@ -47,17 +52,24 @@ public class SmartCardController {
         }
     }
 
-    public boolean syncEncryptedSmartCardRecordsToServer() throws SmartCardRecordFetchException {
+    public List<SmartCardRecord> getAllSmartCardRecords() throws SmartCardRecordFetchException {
+        boolean isSuccess = false;
         try {
-            boolean isSuccess = false;
-            List<SmartCardRecord> smartCardRecords = smartCardRecordService.getAllSmartCardRecords();
-            for(SmartCardRecord smartCardRecord : smartCardRecords){
-                isSuccess = syncSmartCardRecord(smartCardRecord);
-            }
-            return isSuccess;
+            return smartCardRecordService.getAllSmartCardRecords();
         } catch (IOException e) {
             throw new SmartCardRecordFetchException(e);
         }
+    }
+
+    public List<SmartCardRecord> getSmartCardRecordWithNonUploadedData() throws SmartCardRecordFetchException {
+        List<SmartCardRecord> smartCardRecords = getAllSmartCardRecords();
+        List<SmartCardRecord> smartCardRecordWithNonUploadedData = new ArrayList<SmartCardRecord>();
+        for(SmartCardRecord smartCardRecord : smartCardRecords){
+            if(!StringUtils.isEmpty(smartCardRecord.getEncryptedPayload())) {
+                smartCardRecordWithNonUploadedData.add(smartCardRecord);
+            }
+        }
+        return smartCardRecordWithNonUploadedData;
     }
 
     public boolean syncSmartCardRecord(SmartCardRecord smartCardRecord) throws SmartCardRecordFetchException {
