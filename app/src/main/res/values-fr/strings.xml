@@ -412,8 +412,9 @@ Aucun fournisseur n\'a encore été ajouté</string>
     <string name="info_video_play_activity_unavailable">Erreur: Application pour la lecture vidéo non trouvé</string>
     <string name="info_video_record_activity_unavailable">Erreur: Application d\'enregistrement vidéo non trouvé</string>
 
-    <string name="menu_complete_form_data_sync">Synchronisation des données des formulaires completée </string>
+    <string name="menu_form_data_sync">Synchronisation des données des formulaires </string>
     <string name="menu_form_back_to_draft">Retour au brouillon </string>
+    <string name="menu_shr_data_sync" formatted="false">Synchroniser les données SHR (%d)</string>
 
     <string name="title_about_dashboard_help_html">À propos du tableau de bord</string>
     <string name="title_activity_audio">Ajouter Audio</string>

@@ -721,17 +721,6 @@ public class MuzimaSyncService {
         return result;
     }
 
-    public int[] uploadEncryptedSmartCardRecords() {
-        int[] result = new int[1];
-        try {
-            result[0] = muzimaApplication.getSmartCardController().syncEncryptedSmartCardRecordsToServer() ? SUCCESS : SyncStatusConstants.UPLOAD_ERROR;
-        } catch (SmartCardController.SmartCardRecordFetchException e) {
-            Log.e(TAG, "Exception thrown while uploading forms.", e);
-            result[0] = SyncStatusConstants.UPLOAD_ERROR;
-        }
-        return result;
-    }
-
     public void consolidatePatients() {
         List<Patient> allLocalPatients = patientController.getAllPatientsCreatedLocallyAndNotSynced();
         for (Patient localPatient : allLocalPatients) {

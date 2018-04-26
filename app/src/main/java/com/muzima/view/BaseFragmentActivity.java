@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
 
 public class BaseFragmentActivity extends AppCompatActivity {
@@ -72,6 +73,25 @@ public class BaseFragmentActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(DefaultMenuDropDownHelper.DEFAULT_MENU, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu){
+        MenuItem syncShrMenuItem = menu.findItem(R.id.menu_shr_data_sync);
+        if(syncShrMenuItem != null) {
+            try {
+                int count = ((MuzimaApplication)getApplicationContext()).getSmartCardController().getSmartCardRecordWithNonUploadedData().size();
+                 if(count > 0){
+                     syncShrMenuItem.setVisible(true);
+                     syncShrMenuItem.setTitle(getString(R.string.menu_shr_data_sync, count));
+                 } else {
+                     syncShrMenuItem.setVisible(false);
+                 }
+            } catch (SmartCardController.SmartCardRecordFetchException e) {
+                Log.e(BaseFragmentActivity.class.getSimpleName(), "Error fetching smartcard records");
+            }
+        }
         return true;
     }
 

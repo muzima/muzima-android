@@ -467,8 +467,9 @@
     <string name="info_video_play_activity_unavailable">Erro: Aplicação para projectar vídeo não encontrado</string>
     <string name="info_video_record_activity_unavailable">Erro: Aplicação para gravar vídeo não encontrado</string>
 
-    <string name="menu_complete_form_data_sync">Sincronizar dados completos do formulário</string>
+    <string name="menu_form_data_sync">Sincronizar dados do formulário</string>
     <string name="menu_form_back_to_draft">Voltar ao Rascunho</string>
+    <string name="menu_shr_data_sync" formatted="false">Sincronizar dados SHR (%d)</string>
 
     <string name="title_about_dashboard_help_html">Sobre o Painel de Controle</string>
     <string name="title_activity_audio">Adicionar Audio</string>

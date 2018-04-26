@@ -357,8 +357,9 @@
     <string name="info_video_play_activity_unavailable">Tatizo: mfumo wa kucheza video haupo</string>
     <string name="info_video_record_activity_unavailable">Tatizo: mfumo wa kurekodi video haupo</string>
 
-    <string name="menu_complete_form_data_sync">Landanisha fomu kamilifu za data</string>
+    <string name="menu_form_data_sync">Landanisha data za fomu</string>
     <string name="menu_form_back_to_draft">rudi katika drafti</string>
+    <string name="menu_shr_data_sync" formatted="false">Landanisha data za SHR (%d)</string>
 
     <string name="title_about_dashboard_help_html">Kuhusu dashibodi</string>
     <string name="title_activity_audio">Ongeza sauti</string>
