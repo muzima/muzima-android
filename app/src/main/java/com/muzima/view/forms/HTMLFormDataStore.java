@@ -95,6 +95,7 @@ public class HTMLFormDataStore {
 
     @JavascriptInterface
     public void saveHTML(String jsonPayload, String status, boolean keepFormOpen) {
+        jsonPayload = injectUserSystemIdToEncounterPayload(jsonPayload);
         formData.setJsonPayload(jsonPayload);
         formData.setStatus(status);
         try {
@@ -103,6 +104,7 @@ public class HTMLFormDataStore {
                 formData.setPatientUuid(newPatient.getUuid());
                 formWebViewActivity.startPatientSummaryView(newPatient);
             }
+
             parseForm(jsonPayload, status);
             Date encounterDate = getEncounterDateFromForm(jsonPayload);
             formData.setEncounterDate(encounterDate);
@@ -408,5 +410,21 @@ public class HTMLFormDataStore {
             return JSONValue.toJSONString(defaultLocation);
         }
         return JSONValue.toJSONString(locations);
+    }
+
+    public String injectUserSystemIdToEncounterPayload(String jsonPayload){
+        try {
+            JSONObject jsonObject = new JSONObject(jsonPayload);
+            JSONObject jsonObjectInner = jsonObject.getJSONObject("encounter");
+            String user_system_id = ((MuzimaApplication) formWebViewActivity.getApplicationContext()).getAuthenticatedUser( ).getSystemId();
+            jsonObjectInner.put("encounter.user_system_id",user_system_id);
+            jsonObject.put("encounter",jsonObjectInner);
+            jsonPayload = jsonObject.toString();
+
+            return  jsonPayload;
+        } catch (JSONException e) {
+            Log.e(TAG, "Error while parsing response JSON", e);
+        }
+        return jsonPayload;
     }
 }
