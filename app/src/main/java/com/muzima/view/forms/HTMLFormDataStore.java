@@ -356,10 +356,9 @@ public class HTMLFormDataStore {
         if(!(encounterObject.has("encounter.encounter_datetime"))) {
             List<FormData> allFormData = new ArrayList<FormData>( );
             allFormData = formController.getAllFormDataByPatientUuid(patientUuid, Constants.STATUS_INCOMPLETE);
-
             for (FormData formData : allFormData) {
-                Date encounterDate = formData.getEncounterDate( );
-                String formDataUuid = formData.getTemplateUuid( );
+                Date encounterDate = formData.getEncounterDate();
+                String formDataUuid = formData.getTemplateUuid();
 
                 final String dateFormat = "dd-MM-yyyy";
 
@@ -425,6 +424,7 @@ public class HTMLFormDataStore {
         } catch (JSONException e) {
             Log.e(TAG, "Error while parsing response JSON", e);
         }
+
         return jsonPayload;
     }
 }
