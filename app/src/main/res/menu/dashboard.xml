@@ -16,6 +16,11 @@
         custom:showAsAction="never"
         android:title="@string/general_settings"/>
     <item
+        android:id="@+id/action_provider_reports"
+        android:orderInCategory="3"
+        custom:showAsAction="never"
+        android:title="Provider Reports"/>
+    <item
         android:id="@+id/action_help"
         android:orderInCategory="2"
         custom:showAsAction="never"
@@ -27,5 +32,4 @@
         custom:showAsAction="never"
         android:title="@string/general_logout">
     </item>
-
 </menu>

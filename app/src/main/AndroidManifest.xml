@@ -163,6 +163,15 @@
                 android:value="com.muzima.view.MainActivity" />
         </activity>
         <activity
+            android:name=".view.forms.CompleteFormsActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="Complete Forms"
+            android:parentActivityName=".view.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.muzima.view.MainActivity" />
+        </activity>
+        <activity
             android:name=".view.forms.FormWebViewActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_form"
