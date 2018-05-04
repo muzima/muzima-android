@@ -18,7 +18,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.muzima.R;
 import com.muzima.utils.StringUtils;
+import com.muzima.view.forms.CompleteFormsActivity;
+import com.muzima.view.forms.FormsActivity;
+import com.muzima.view.forms.PatientFormsActivity;
 import com.muzima.view.login.LoginActivity;
+import com.muzima.view.preferences.ProviderPreferenceActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
 public class DefaultMenuDropDownHelper {
@@ -46,6 +50,10 @@ public class DefaultMenuDropDownHelper {
                 return true;
             case R.id.action_settings:
                 intent = new Intent(activity, SettingsActivity.class);
+                activity.startActivity(intent);
+                return true;
+            case R.id.action_provider_reports:
+                intent = new Intent(activity, CompleteFormsActivity.class);
                 activity.startActivity(intent);
                 return true;
             case R.id.action_help:
