@@ -415,10 +415,12 @@ public class HTMLFormDataStore {
         try {
             JSONObject jsonObject = new JSONObject(jsonPayload);
             JSONObject jsonObjectInner = jsonObject.getJSONObject("encounter");
-            String user_system_id = ((MuzimaApplication) formWebViewActivity.getApplicationContext()).getAuthenticatedUser( ).getSystemId();
-            jsonObjectInner.put("encounter.user_system_id",user_system_id);
-            jsonObject.put("encounter",jsonObjectInner);
-            jsonPayload = jsonObject.toString();
+            if(!(jsonObjectInner.has("encounter.user_system_id"))) {
+                String user_system_id = ((MuzimaApplication) formWebViewActivity.getApplicationContext( )).getAuthenticatedUser( ).getSystemId( );
+                jsonObjectInner.put("encounter.user_system_id", user_system_id);
+                jsonObject.put("encounter", jsonObjectInner);
+                jsonPayload = jsonObject.toString( );
+            }
 
             return  jsonPayload;
         } catch (JSONException e) {
