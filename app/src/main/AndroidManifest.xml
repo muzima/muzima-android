@@ -163,9 +163,9 @@
                 android:value="com.muzima.view.MainActivity" />
         </activity>
         <activity
-            android:name=".view.forms.CompleteFormsActivity"
+            android:name=".view.forms.ProviderReportsFormActivity"
             android:configChanges="orientation|screenSize"
-            android:label="Complete Forms"
+            android:label="Provider Reports"
             android:parentActivityName=".view.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
