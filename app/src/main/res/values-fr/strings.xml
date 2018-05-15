@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
+    <string name="app_name">mUzima</string>
     <string name="app_title">mUzima pour les fournisseurs de soins de santé</string>
 
     <string name="confirm_duplicate_form_data_save">Enregistrer les données dupliquées du formulaire </string>
-    <string name="confirm_patient_id_exists">Le patient a-t-il un Identifiant (ID)?</string>
+    <string name="confirm_patient_id_exists">Le client a-t-il un Identifiant (ID)?</string>
 
     <string name="default_form_register">Formulaires d\'inscription/enregistrement</string>
 
@@ -20,7 +21,7 @@
     <string name="error_concept_download">Impossible de télécharger des concepts</string>
     <string name="error_concept_fetch">Quelque chose a mal tourné lors de l\'extraction des concepts du repertoire local</string>
     <string name="error_concept_parse">Une erreur s\'est produite lors de l\'analyse des concepts dans le formulaire</string>
-    <string name="error_connection_unavailable">Une erreur de connexion est survenue lors du téléchargement des données</string>
+    <string name="error_connection_data_download">Une erreur de connexion est survenue lors du téléchargement des données</string>
     <string name="error_credential_invalid">Nom d\'utilisateur, Mot de passe et Combinaison du serveur non valide.</string>
     <string name="error_data_download">Une erreur est survenue lors du téléchargement de données depuis le serveur</string>
     <string name="error_data_save">Une erreur est survenue lors de l\'enregistrement des données dans le repertoire local</string>
@@ -60,7 +61,7 @@
     <string name="error_patient_encounter_download">Impossible de télécharger les rencontres des patients</string>
     <string name="error_patient_fetch">Une erreur s\'est produite lors de l\'extraction des données du patient</string>
     <string name="error_patient_repo_fetch">Quelque chose a mal tourné lors de l\'extraction des données des patients du repositoire local</string>
-    <string name="error_patient_search">Quelque chose a mal tourné lors de la recherche des données du (des) patient (s)</string>
+    <string name="error_patient_search">Quelque chose a mal tourné lors de la recherche des données du (des) client (s)</string>
     <string name="error_provider_download">Impossible de télécharger les données des fournisseurs</string>
     <string name="error_provider_fetch">Quelque chose a mal tourné lors de l\'extraction des données des fournisseurs du repositoire local</string>
     <string name="error_server_connection_unavailable">Serveur inaccessible</string>
@@ -227,12 +228,12 @@
     <string name="info_cohort_load">Chargement des cohortes ...</string>
     <string formatted="false" name="info_cohort_new_patient_download">%d nouveaux clients téléchargés pour %d cohortes.</string>
     <string name="info_cohort_not_downloaded">Aucune cohorte téléchargée</string>
-    <string name="info_cohort_patient_download"> 1 (une)patient Téléchargé pour 1(une) cohorte</string>
+    <string name="info_cohort_patient_download"> 1 (une)client Téléchargé pour 1(une) cohorte</string>
     <string name="info_cohort_patient_not_download">aucun patients n\'a été téléchargé</string>
     <string formatted="false" name="info_cohort_patients_download">%d patients Téléchargé pour 1(une) cohorte</string>
     <string name="info_cohort_prefixes_unavailable">aucun Prefixe de Cohorte Ajouté</string>
     <string formatted="false" name="info_cohorts_downloaded">%d cohortes Téléchargé</string>
-    <string formatted="false" name="info_cohorts_patient_download"> 1 patient Téléchargé pour%d cohortes</string>
+    <string formatted="false" name="info_cohorts_patient_download"> 1 client Téléchargé pour%d cohortes</string>
     <string formatted="false" name="info_cohorts_patients_download">%d patients Téléchargé pour%d cohortes</string>
     <string name="info_cohorts_unavailable">aucune cohorte disponibles</string>
     <string name="info_complete_form_unavailable">aucun formulaire complet et aucun formulaire synchronisé</string>
@@ -316,8 +317,8 @@
     <string name="info_downloaded_image">Image en Téléchargée</string>
     <string name="info_draft_form_save_success">Le brouillon du formulaire a été enregistré avec succès.</string>
     <string name="info_encounter_download">téléchargement des rencontres en cours</string>
-    <string formatted="false" name="info_encounter_download_progress">Téléchargement en cours des rencontres pour le patient %d de %d.</string>
-    <string formatted="false" name="info_encounter_not_downloaded_progress">Rencontres pour le patient %d %d n\'ont pas été téléchargés.</string>
+    <string formatted="false" name="info_encounter_download_progress">Téléchargement en cours des rencontres pour le client%d de %d.</string>
+    <string formatted="false" name="info_encounter_not_downloaded_progress">Rencontres pour le client %d %d n\'ont pas été téléchargés.</string>
     <string name="info_encounter_observation_download">Téléchargement des observations et de rencontres ...</string>
     <string name="info_encounter_patient_downloaded">1 (une) rencontre téléchargée pour 1(un) client</string>
     <string name="info_encounter_patient_not_downloaded">N\'a pas téléchargé aucune rencontres</string>
@@ -382,9 +383,9 @@
     <string name="info_observation_search">recherche des observations</string>
     <string name="info_observation_unavailable">Aucune observation disponible</string>
     <string formatted="false" name="info_observations_download_pogress">
-Téléchargement en cours des observations pour le patient %d of %d.</string>
+Téléchargement en cours des observations pour le client %d of %d.</string>
     <string name="info_observations_load_in_progress">Les observations sont encore en cours de chargement</string>
-    <string formatted="false" name="info_observations_not_downloaded_progress">Observations pour le patient %d de %d ne sont pas téléchargés.</string>
+    <string formatted="false" name="info_observations_not_downloaded_progress">Observations pour le client %d de %d ne sont pas téléchargés.</string>
     <string formatted="false" name="info_observations_patient_downloaded">1 (une) observation Téléchargée pour %d patients</string>
     <string formatted="false" name="info_observations_patients_downloaded">Téléchargé observations %d pour %d patients</string>
     <string name="info_patient_data_download">Téléchargement en cours les données des patients</string>
@@ -505,7 +506,25 @@ Aucun fournisseur n\'a encore été ajouté</string>
     <string formatted="false" name="warning_forms_complete_and_sync">%s contient des formulaires qui lui sont associés. S\'il vous plaît compléter et synchronisez
 Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="warning_logout_confirm">Etes-vous sûr de vouloir vous déconnectez et quitter Muzima app?</string>
-    <string name="warning_registration_form_data_delete">Vous êtes sur le point de supprimer les données d\'enregistrement. Cela effacera également les données du patient sur l\'appareil. Etes-vous sur?</string>
+    <string name="warning_registration_form_data_delete">Vous êtes sur le point de supprimer les données d\'enregistrement. Cela effacera également les données du client sur l\'appareil. Etes-vous sur?</string>
     <string name="warning_setting_download_failure">Echec du téléchargement ou de la mise à jour des configurations</string>
     <string name="warning_switch_server">Changement de serveur: Cela effacera toutes les données mUzima sur votre appareil, y compris les formulaires incomplets. Etes-vous sûr de vouloir modifier ce paramètre?</string>
+    <string name="shr_data_title_text">SHR Data</string>
+    <string name="add_individual_observation_text">Ajouter une observation individuelle</string>
+    <string name="scan_card_id_title">ID de carte de numérisation</string>
+    <string name="patient_shr_search_dialog_title">Client SHR Search</string>
+    <string name="shr_card_text">Carte SHR</string>
+    <string name="patient_shr_search_title_text">Client SHR Search</string>
+    <string name="search_patient_on_server_option_title_text">Le client n\'est pas disponible localement, souhaitez-vous
+        effectuer une recherche sur le serveur?
+    </string>
+    <string name="write_shr_to_card_text">Ecrire SHR à la carte</string>
+    <string name="shr_extracted_data_text">SHR extrait des données</string>
+    <string name="title_default_encounter_location">Emplacement de rencontre par défaut</string>
+    <string name="hint_default_encounter_location">Cet emplacement de rencontre sélectionné sera l\'emplacement de rencontre
+        par défaut pour tous les formulaires
+    </string>
+    <string name="no_default_encounter_location">Aucun lieu de rencontre par défaut</string>
+    <string name="general_not_available_text">Indisponible</string>
+    <string name="registering_patient_message_title_text">Enregistrement du client dans mUzima ...</string>
 </resources>

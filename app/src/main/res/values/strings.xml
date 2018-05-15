@@ -577,14 +577,14 @@
     </string>
     <string name="shr_data_title_text">SHR Data</string>
     <string name="add_individual_observation_text">Add Individual Observation</string>
-    <string name="scan_card_id_title">Scan card id</string>
-    <string name="patient_shr_search_dialog_title">Patient SHR Search</string>
+    <string name="scan_card_id_title">Scan card ID</string>
+    <string name="patient_shr_search_dialog_title">Client SHR Search</string>
     <string name="shr_card_text">SHR Card</string>
-    <string name="patient_shr_search_title_text">Patient SHR Search</string>
+    <string name="patient_shr_search_title_text">Client SHR Search</string>
     <string name="search_patient_on_server_option_title_text">Patient is not avaible locally, would you like to search
         server?
     </string>
-    <string name="write_shr_to_card_text">Write shr to card</string>
+    <string name="write_shr_to_card_text">Write SHR to Card</string>
     <string name="shr_extracted_data_text">SHR extracted data</string>
     <string name="title_default_encounter_location">Default Encounter Location</string>
     <string name="hint_default_encounter_location">This selected encounter location will be the default encounter
@@ -592,5 +592,5 @@
     </string>
     <string name="no_default_encounter_location">No default encounter location</string>
     <string name="general_not_available_text">Not Available</string>
-    <string name="registering_patient_message_title_text">Registering patient in mUzima...</string>
+    <string name="registering_patient_message_title_text">Registering client in mUzima...</string>
 </resources>
