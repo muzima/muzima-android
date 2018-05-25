@@ -95,6 +95,7 @@ public class HTMLFormDataStore {
 
     @JavascriptInterface
     public void saveHTML(String jsonPayload, String status, boolean keepFormOpen) {
+        jsonPayload = injectUserSystemIdToEncounterPayload(jsonPayload);
         formData.setJsonPayload(jsonPayload);
         formData.setStatus(status);
 
@@ -364,10 +365,9 @@ public class HTMLFormDataStore {
         if(!(encounterObject.has("encounter.encounter_datetime"))) {
             List<FormData> allFormData = new ArrayList<FormData>( );
             allFormData = formController.getAllFormDataByPatientUuid(patientUuid, Constants.STATUS_INCOMPLETE);
-
             for (FormData formData : allFormData) {
-                Date encounterDate = formData.getEncounterDate( );
-                String formDataUuid = formData.getTemplateUuid( );
+                Date encounterDate = formData.getEncounterDate();
+                String formDataUuid = formData.getTemplateUuid();
 
                 final String dateFormat = "dd-MM-yyyy";
 
@@ -475,5 +475,23 @@ public class HTMLFormDataStore {
             Log.e(TAG, "Error while parsing response JSON", e);
         }
         return null;
+    }
+    public String injectUserSystemIdToEncounterPayload(String jsonPayload){
+        try {
+            JSONObject jsonObject = new JSONObject(jsonPayload);
+            JSONObject jsonObjectInner = jsonObject.getJSONObject("encounter");
+            if(!(jsonObjectInner.has("encounter.user_system_id"))) {
+                String user_system_id = ((MuzimaApplication) formWebViewActivity.getApplicationContext( )).getAuthenticatedUser( ).getSystemId( );
+                jsonObjectInner.put("encounter.user_system_id", user_system_id);
+                jsonObject.put("encounter", jsonObjectInner);
+                jsonPayload = jsonObject.toString( );
+            }
+
+            return  jsonPayload;
+        } catch (JSONException e) {
+            Log.e(TAG, "Error while parsing response JSON", e);
+        }
+
+        return jsonPayload;
     }
 }
