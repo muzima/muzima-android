@@ -134,6 +134,7 @@ public class FormParser {
         String formUuid = "";
         String providerId="";
         int locationId=0;
+        String userSystemId="";
         while (!isEndOf("encounter")) {
             if (isStartOf("encounter.form_uuid")) {
                  formUuid = String.valueOf(parser.nextText());
@@ -144,8 +145,11 @@ public class FormParser {
             if (isStartOf("encounter.location_id")) {
                  locationId = Integer.parseInt(String.valueOf(parser.nextText()));
             }
+            if (isStartOf("encounter.user_system_id")) {
+                userSystemId = String.valueOf(parser.nextText());
+            }
             if (isStartOf("encounter.encounter_datetime")) {
-                encounter = observationParserUtility.getEncounterEntity(parse(parser.nextText()), formUuid, providerId, locationId, patient, formDataUuid);
+                encounter = observationParserUtility.getEncounterEntity(parse(parser.nextText()), formUuid, providerId, locationId, userSystemId, patient, formDataUuid);
             }
             parser.next();
         }
