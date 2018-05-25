@@ -24,6 +24,10 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.EncounterController;
 import com.muzima.utils.DateUtils;
 
+import net.minidev.json.JSONValue;
+
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class EncountersByPatientAdapter extends EncountersAdapter {
@@ -102,8 +106,23 @@ public class EncountersByPatientAdapter extends EncountersAdapter {
             }catch(EncounterController.DownloadEncounterException e){
                 Log.e(this.getClass().getSimpleName(),"Could not get patient encounters",e);
             }
+
+            Collections.sort(encounters, encountersDateTimeComparator);
             return encounters;
         }
+
+        private Comparator<Encounter> encountersDateTimeComparator = new Comparator<Encounter>() {
+            @Override
+            public int compare(Encounter lhs, Encounter rhs) {
+                if (lhs.getEncounterDatetime()==null)
+                    return -1;
+                if (rhs.getEncounterDatetime()==null)
+                    return 1;
+                return -(lhs.getEncounterDatetime()
+                        .compareTo(rhs.getEncounterDatetime()));
+            }
+        };
+
 
         @Override
         protected void onPostExecute(List<Encounter> encounters){

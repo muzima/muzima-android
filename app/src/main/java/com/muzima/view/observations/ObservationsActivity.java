@@ -83,6 +83,7 @@ public class ObservationsActivity extends BroadcastListenerActivity {
                 .getActionView();
         searchView.setQueryHint(getString(R.string.info_observation_search));
         searchView.setOnQueryTextListener(observationsPagerAdapter);
+        super.onCreateOptionsMenu(menu);
         return true;
     }
 

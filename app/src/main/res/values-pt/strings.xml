@@ -4,7 +4,7 @@
     <string name="app_title">mUzima para Provedores de Saúde</string>
 
     <string name="confirm_duplicate_form_data_save">Guardar Dados do Formulãrio Duplicado</string>
-    <string name="confirm_patient_id_exists">O paciente já tem o Identificador?</string>
+    <string name="confirm_patient_id_exists">O cliente já tem o Identificador?</string>
 
     <string name="default_form_register">Formulário de Registos</string>
 
@@ -66,9 +66,9 @@
     </string>
     <string name="error_patient_download">Não poderá baixar clientes</string>
     <string name="error_patient_encounter_download">Não poderá baixar visitas para os clientes</string>
-    <string name="error_patient_fetch">Ocorreu um erro enquanto buscava o paciente</string>
+    <string name="error_patient_fetch">Ocorreu um erro enquanto buscava o cliente</string>
     <string name="error_patient_repo_fetch">Algo deu errado enquanto buscava clientes do repositório local</string>
-    <string name="error_patient_search">Algo deu errado enquanto procurava paciente(s)</string>
+    <string name="error_patient_search">Algo deu errado enquanto procurava cliente(s)</string>
     <string name="error_provider_download">Não poderá baixar provedores</string>
     <string name="error_provider_fetch">Algo deu errado enquanto buscava provedores do repositório local</string>
     <string name="error_server_connection_unavailable">Servidor está inacessível
@@ -327,7 +327,7 @@
             ou a validade ou fiabilidade das informações ou conteúdos disponibilizados pelo código fechado é a única
             responsabilidade do provedor de cuidados de saúde. Consequentemente, incumbe a cada provedor de cuidados de
             saúde
-            para verificar toda a história médica e planos de tratamento com cada paciente.
+            para verificar toda a história médica e planos de tratamento com cada cliente.
         </p><p>
             2. Sob nenhuma circunstância e sob nenhuma teoria legal, se o delito (incluindo negligência), contracto ou
             caso contrário, qualquer Colaborador ou qualquer pessoa que distribuir o Software Fechado conforme permitido
@@ -467,8 +467,9 @@
     <string name="info_video_play_activity_unavailable">Erro: Aplicação para projectar vídeo não encontrado</string>
     <string name="info_video_record_activity_unavailable">Erro: Aplicação para gravar vídeo não encontrado</string>
 
-    <string name="menu_complete_form_data_sync">Sincronizar dados completos do formulário</string>
+    <string name="menu_form_data_sync">Sincronizar dados do formulário</string>
     <string name="menu_form_back_to_draft">Voltar ao Rascunho</string>
+    <string name="menu_shr_data_sync" formatted="false">Sincronizar dados SHR (%d)</string>
 
     <string name="title_about_dashboard_help_html">Sobre o Painel de Controle</string>
     <string name="title_activity_audio">Adicionar Audio</string>
@@ -572,4 +573,20 @@
     <string name="warning_switch_server">Trocando o Servidor: Isto irá apagar todos dados de mUzima no seu dispositivo,
         incluindo formulários imcompletos. Tem certeza que quer mudar as configurações?
     </string>
+    <string name="shr_data_title_text">Dados SHR</string>
+    <string name="add_individual_observation_text">Adicionar observação individual</string>
+    <string name="scan_card_id_title">ID do cartão de digitalização</string>
+    <string name="patient_shr_search_dialog_title">Pesquisa SHR Paciente</string>
+    <string name="shr_card_text">Carta SHR</string>
+    <string name="patient_shr_search_title_text">Pesquisa SHR Paciente</string>
+    <string name="search_patient_on_server_option_title_text">Cliente não está disponível localmente, gostaria de
+        pesquisar no servidor?</string>
+    <string name="write_shr_to_card_text">Escrever shr para cartão</string>
+    <string name="shr_extracted_data_text">Dados extraídos de SHR</string>
+    <string name="title_default_encounter_location">Localização padrão do encontro</string>
+    <string name="hint_default_encounter_location">Esse local de encontro selecionado será o local de encontro padrão
+        para todos os formulários</string>
+    <string name="no_default_encounter_location">Nenhum local de encontro padrão</string>
+    <string name="general_not_available_text">Não disponível</string>
+    <string name="registering_patient_message_title_text">Registrando cliente em mUzima ...</string>
 </resources>
