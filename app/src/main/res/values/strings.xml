@@ -41,7 +41,7 @@
     <string name="error_encounter_load">Encounters could not be loaded</string>
     <string name="error_encounter_observation_download">Could not download observations for clients</string>
     <string name="error_exception_data_load">Load exception has been thrown while loading data</string>
-    <string name="error_exception_data_upload">Exception has been thrown while uploading data</string>
+    <string name="error_exception_data_upload">Server could not process uploaded data</string>
     <string name="error_form_data_delete">Could not delete some form data</string>
     <string name="error_form_download">Could not download forms</string>
     <string name="error_form_fetch">Something went wrong while fetching forms from local repo</string>
@@ -574,4 +574,7 @@
     <string name="no_default_encounter_location">No default encounter location</string>
     <string name="general_not_available_text">Not Available</string>
     <string name="registering_patient_message_title_text">Registering patient in mUzima...</string>
+    <string name="null_encounter_date_error">An error occurred while saving the form. Encounter date must be provided</string>
+    <string name="null_encounter_location_error">An error occurred while saving the form. Encounter location must be provided</string>
+    <string name="null_encounter_provider_error">An error occurred while saving the form. Encounter provider must be provided</string>
 </resources>
