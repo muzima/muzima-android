@@ -25,12 +25,15 @@ import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.ProviderController;
+import com.muzima.utils.DateUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -185,14 +188,17 @@ public class HTMLFormObservationCreator {
     private Encounter createEncounter(JSONObject encounterJSON, String formDataUuid) throws JSONException, ParseException {
         return observationParserUtility.getEncounterEntity(parse(encounterJSON.getString("encounter.encounter_datetime")),
                 encounterJSON.getString("encounter.form_uuid"), encounterJSON.getString("encounter.provider_id"),
-                Integer.parseInt(encounterJSON.getString("encounter.location_id")), patient,formDataUuid);
+                Integer.parseInt(encounterJSON.getString("encounter.location_id")), encounterJSON.getString("encounter.user_system_id"),
+                patient,formDataUuid);
     }
 
     public Date getEncounterDateFromFormDate(String jsonResponse){
         try {
             JSONObject jsonObject = new JSONObject(jsonResponse);
             JSONObject jsonObjectInner = jsonObject.getJSONObject("encounter");
-            return parse(jsonObjectInner.getString("encounter.encounter_datetime"));
+            //return parse(jsonObjectInner.getString("encounter.encounter_datetime"));
+            DateFormat dateTimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+            return  dateTimeFormat.parse(jsonObjectInner.getString("encounter.encounter_datetime"));
         } catch (JSONException e) {
             Log.e(TAG, "Error while parsing response JSON", e);
         } catch (ParseException e) {

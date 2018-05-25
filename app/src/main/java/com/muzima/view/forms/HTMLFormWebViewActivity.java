@@ -404,6 +404,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         formData = new FormData( ) {{
             setUuid(UUID.randomUUID( ).toString( ));
             setPatientUuid(patient.getUuid( ));
+            setUserSystemId(((MuzimaApplication) getApplicationContext( )).getAuthenticatedUser( ).getSystemId());
             setUserUuid("userUuid");
             setStatus(STATUS_INCOMPLETE);
             setTemplateUuid(form.getUuid( ));
