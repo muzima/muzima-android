@@ -198,7 +198,11 @@ public class HTMLFormObservationCreator {
             JSONObject jsonObjectInner = jsonObject.getJSONObject("encounter");
             //return parse(jsonObjectInner.getString("encounter.encounter_datetime"));
             DateFormat dateTimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-            return  dateTimeFormat.parse(jsonObjectInner.getString("encounter.encounter_datetime"));
+            String dateTime = jsonObjectInner.getString("encounter.encounter_datetime");
+            if(dateTime.length()<=10){
+                 dateTime = dateTime.concat(" 00:00");
+            }
+            return  dateTimeFormat.parse(dateTime);
         } catch (JSONException e) {
             Log.e(TAG, "Error while parsing response JSON", e);
         } catch (ParseException e) {

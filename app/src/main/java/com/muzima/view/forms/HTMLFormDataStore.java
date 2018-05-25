@@ -104,37 +104,48 @@ public class HTMLFormDataStore {
 
     @JavascriptInterface
     public void saveHTML(String jsonPayload, String status, boolean keepFormOpen) {
+        jsonPayload = injectUserSystemIdToEncounterPayload(jsonPayload);
         formData.setJsonPayload(jsonPayload);
         formData.setStatus(status);
+
+        getEncounterDateTimeFromFrom(jsonPayload);
+        getEncounterProviderFromFrom(jsonPayload);
+        getEncounterLocationFromFrom(jsonPayload);
+
+        boolean encounterDetailsStatus = true;
         try {
-            if (isRegistrationComplete(status)) {
-                Patient newPatient = formController.createNewPatient(application,formData);
-                formData.setPatientUuid(newPatient.getUuid());
-                formWebViewActivity.startPatientSummaryView(newPatient);
+            if(status.equals("complete")) {
+                encounterDetailsStatus = getEncounterDetailsStatusFromForm(jsonPayload);
             }
-            parseForm(jsonPayload, status);
-            Date encounterDate = getEncounterDateFromForm(jsonPayload);
-            formData.setEncounterDate(encounterDate);
-            formController.saveFormData(formData);
-            formWebViewActivity.setResult(FormsActivity.RESULT_OK);
-            Log.i(TAG, "Saving form data ...");
-            if (!keepFormOpen) {
-                formWebViewActivity.finish();
-                if (status.equals("complete")) {
+            if(encounterDetailsStatus) {
+              if (isRegistrationComplete(status)) {
+                  Patient newPatient = formController.createNewPatient(application,formData);
+                  formData.setPatientUuid(newPatient.getUuid());
+                  formWebViewActivity.startPatientSummaryView(newPatient);
+              }
+              parseForm(jsonPayload, status);
+              Date encounterDate = getEncounterDateFromForm(jsonPayload);
+              formData.setEncounterDate(encounterDate);
+              formController.saveFormData(formData);
+              formWebViewActivity.setResult(FormsActivity.RESULT_OK);
+              Log.i(TAG, "Saving form data ...");
+              if (!keepFormOpen) {
+                  formWebViewActivity.finish();
+                  if (status.equals("complete")) {
 
-                    Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.info_form_data_save_success), Toast.LENGTH_SHORT).show();
-                    RealTimeFormUploader.getInstance().uploadAllCompletedForms(formWebViewActivity.getApplicationContext());
-                }
-                if (status.equals("incomplete")) {
-                    Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.info_draft_form_save_success), Toast.LENGTH_SHORT).show();
+                      Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.info_form_data_save_success), Toast.LENGTH_SHORT).show();
+                      RealTimeFormUploader.getInstance().uploadAllCompletedForms(formWebViewActivity.getApplicationContext());
+                    }
+                    if (status.equals("incomplete")) {
+                        Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.info_draft_form_save_success), Toast.LENGTH_SHORT).show( );
+                    }
                 }
             }
-
         } catch (FormController.FormDataSaveException e) {
-            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_save), Toast.LENGTH_SHORT).show();
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_save), Toast.LENGTH_SHORT).show( );
             Log.e(TAG, "Exception occurred while saving form data", e);
         } catch (Exception e) {
-            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_save), Toast.LENGTH_SHORT).show();
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_save), Toast.LENGTH_SHORT).show( );
             Log.e(TAG, "Exception occurred while saving form data", e);
         }
     }
@@ -363,10 +374,9 @@ public class HTMLFormDataStore {
         if(!(encounterObject.has("encounter.encounter_datetime"))) {
             List<FormData> allFormData = new ArrayList<FormData>( );
             allFormData = formController.getAllFormDataByPatientUuid(patientUuid, Constants.STATUS_INCOMPLETE);
-
             for (FormData formData : allFormData) {
-                Date encounterDate = formData.getEncounterDate( );
-                String formDataUuid = formData.getTemplateUuid( );
+                Date encounterDate = formData.getEncounterDate();
+                String formDataUuid = formData.getTemplateUuid();
 
                 final String dateFormat = "dd-MM-yyyy";
 
@@ -417,5 +427,80 @@ public class HTMLFormDataStore {
             return JSONValue.toJSONString(defaultLocation);
         }
         return JSONValue.toJSONString(locations);
+    }
+
+    public boolean getEncounterDetailsStatusFromForm(String jsonResponse) {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonResponse);
+            JSONObject jsonObjectInner = jsonObject.getJSONObject("encounter");
+            String encounterProvider = jsonObjectInner.getString("encounter.provider_id");
+            String encounterDate = jsonObjectInner.getString("encounter.encounter_datetime");
+            String encounterLocation = jsonObjectInner.getString("encounter.location_id");
+            if(encounterLocation.isEmpty() || encounterDate.isEmpty() || encounterProvider.isEmpty()){
+                return false;
+            }else{
+                return true;
+            }
+        } catch (JSONException e) {
+            Log.e(TAG, "Error while parsing response JSON", e);
+        }
+        return false;
+    }
+
+    public String getEncounterDateTimeFromFrom(String jsonResponse){
+        try {
+            JSONObject jsonObject = new JSONObject(jsonResponse);
+            JSONObject jsonObjectInner = jsonObject.getJSONObject("encounter");
+            String encounterProvider = jsonObjectInner.getString("encounter.provider_id");
+            return encounterProvider;
+        } catch (JSONException e) {
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.null_encounter_date_error), Toast.LENGTH_SHORT).show( );
+            Log.e(TAG, "Error while parsing response JSON", e);
+        }
+        return null;
+    }
+
+    public String getEncounterProviderFromFrom(String jsonResponse){
+        try {
+            JSONObject jsonObject = new JSONObject(jsonResponse);
+            JSONObject jsonObjectInner = jsonObject.getJSONObject("encounter");
+            String encounterProvider = jsonObjectInner.getString("encounter.provider_id");
+            return encounterProvider;
+        } catch (JSONException e) {
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.null_encounter_provider_error), Toast.LENGTH_SHORT).show( );
+            Log.e(TAG, "Error while parsing response JSON", e);
+        }
+        return null;
+    }
+
+    public String getEncounterLocationFromFrom(String jsonResponse){
+        try {
+            JSONObject jsonObject = new JSONObject(jsonResponse);
+            JSONObject jsonObjectInner = jsonObject.getJSONObject("encounter");
+            String encounterLocation = jsonObjectInner.getString("encounter.location_id");
+            return encounterLocation;
+        } catch (JSONException e) {
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.null_encounter_location_error), Toast.LENGTH_SHORT).show( );
+            Log.e(TAG, "Error while parsing response JSON", e);
+        }
+        return null;
+    }
+    public String injectUserSystemIdToEncounterPayload(String jsonPayload){
+        try {
+            JSONObject jsonObject = new JSONObject(jsonPayload);
+            JSONObject jsonObjectInner = jsonObject.getJSONObject("encounter");
+            if(!(jsonObjectInner.has("encounter.user_system_id"))) {
+                String user_system_id = ((MuzimaApplication) formWebViewActivity.getApplicationContext( )).getAuthenticatedUser( ).getSystemId( );
+                jsonObjectInner.put("encounter.user_system_id", user_system_id);
+                jsonObject.put("encounter", jsonObjectInner);
+                jsonPayload = jsonObject.toString( );
+            }
+
+            return  jsonPayload;
+        } catch (JSONException e) {
+            Log.e(TAG, "Error while parsing response JSON", e);
+        }
+
+        return jsonPayload;
     }
 }
