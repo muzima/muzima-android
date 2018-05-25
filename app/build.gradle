@@ -77,7 +77,6 @@ dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.4.0'
     compile group: 'lucene.transform', name: 'lucenetransform', version: '0.9.2.2'
     compile group: 'ch.acra', name: 'acra', version: '4.5.0'
-
     compile group: 'com.android.support', name: 'appcompat-v7', version:'23.0.0'
     compile group: 'com.android.support', name:'design', version:'23.0.0'
     compile group: 'com.azimolabs.keyboardwatcher', name: 'keyboardwatcher', version:'0.1.3'
