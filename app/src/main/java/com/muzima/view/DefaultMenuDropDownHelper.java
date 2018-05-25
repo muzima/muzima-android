@@ -17,6 +17,7 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.muzima.R;
+import com.muzima.tasks.EncryptedSharedHealthRecordSyncTask;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.forms.ProviderReportsFormActivity;
 import com.muzima.view.login.LoginActivity;
@@ -66,6 +67,9 @@ public class DefaultMenuDropDownHelper {
 
                 launchLoginActivity(false);
                 activity.finish();
+                return true;
+            case R.id.menu_shr_data_sync:
+                EncryptedSharedHealthRecordSyncTask.uploadEncryptedSharedHealthRecords(activity.getApplicationContext());
                 return true;
             default:
                 return false;

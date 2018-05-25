@@ -164,28 +164,11 @@
                     android:value="com.muzima.view.MainActivity"/>
         </activity>
         <activity
-<<<<<<< HEAD
-            android:name=".view.forms.ProviderReportsFormActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="Provider Reports"
-            android:parentActivityName=".view.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.MainActivity" />
-        </activity>
-        <activity
-            android:name=".view.forms.FormWebViewActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/general_form"
-            android:parentActivityName=".view.forms.FormsActivity"
-            android:windowSoftInputMode="adjustResize">
-=======
                 android:name=".view.forms.FormWebViewActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/general_form"
                 android:parentActivityName=".view.forms.FormsActivity"
                 android:windowSoftInputMode="adjustResize">
->>>>>>> 04ebf7d0bf60e12cfdeb94033f68c68319398b7d
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.forms.FormsActivity"/>

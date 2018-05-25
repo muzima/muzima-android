@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
+    <string name="app_name">mUzima</string>
     <string name="app_title">Mfumo wa mUzima kwa watoa huduma za afya</string>
 
     <string name="confirm_duplicate_form_data_save">Hifadhi Data maradufu katika Fomu</string>
@@ -357,8 +358,9 @@
     <string name="info_video_play_activity_unavailable">Tatizo: mfumo wa kucheza video haupo</string>
     <string name="info_video_record_activity_unavailable">Tatizo: mfumo wa kurekodi video haupo</string>
 
-    <string name="menu_complete_form_data_sync">Landanisha fomu kamilifu za data</string>
+    <string name="menu_form_data_sync">Landanisha data za fomu</string>
     <string name="menu_form_back_to_draft">rudi katika drafti</string>
+    <string name="menu_shr_data_sync" formatted="false">Landanisha data za SHR (%d)</string>
 
     <string name="title_about_dashboard_help_html">Kuhusu dashibodi</string>
     <string name="title_activity_audio">Ongeza sauti</string>
@@ -451,4 +453,22 @@
     <string name="warning_registration_form_data_delete">Kitendo hichi kitapelekea kufutwa kwa data za usajili hivyo basi rekodi ya mgojwa pia itafutwa kutoka kwenye kifaa hichi. Je una uhakika wa kuendelea? </string>
     <string name="warning_setting_download_failure">Imeshindikana kupakua kisasisho cha utaratibu</string>
     <string name="warning_switch_server">Ubadilishaji wa seva: Kitendo hiki kitafuta data zote za mUzima katika kifaa chako, ikiwa ni pamoja na fomu zozote ambazo hazijakamilika bado. Una hakika unataka kubadili mpangilio huu?</string>
+    <string name="shr_data_title_text">SHR Data</string>
+    <string name="add_individual_observation_text">Ongeza Uchunguzi wa daktari</string>
+    <string name="scan_card_id_title">Futa Kitambulisho cha kadi</string>
+    <string name="patient_shr_search_dialog_title">Utafutaji wa SHR</string>
+    <string name="shr_card_text">Kadi ya SHR</string>
+    <string name="patient_shr_search_title_text">Utafutaji wa SHR</string>
+    <string name="search_patient_on_server_option_title_text">
+        Mteja haipatikani kwenye kifaa, ungependa kutafuta seva?
+    </string>
+    <string name="write_shr_to_card_text">Andika SHR kwa Kadi</string>
+    <string name="shr_extracted_data_text">Data zilizochukuliwa kutoka SHR</string>
+    <string name="title_default_encounter_location">Lokesheni ya Kikawaida</string>
+    <string name="hint_default_encounter_location">
+        Lokesheni iliyochaguliwa itakuwa eneo la kukutana na default kwa fomu zote
+    </string>
+    <string name="no_default_encounter_location">Hakuna lokesheni ya default</string>
+    <string name="general_not_available_text">Haipatikani</string>
+    <string name="registering_patient_message_title_text">Kuandikisha mteja katika mUzima ...</string>
 </resources>
