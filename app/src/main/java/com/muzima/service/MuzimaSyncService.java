@@ -45,6 +45,9 @@ import com.muzima.controller.SmartCardController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.progressdialog.ProgressDialogUpdateIntentService;
+
+import net.minidev.json.JSONValue;
+
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -712,11 +715,27 @@ public class MuzimaSyncService {
 
     public int[] uploadAllCompletedForms() {
         int[] result = new int[1];
+
         try {
-            result[0] = formController.uploadAllCompletedForms() ? SUCCESS : SyncStatusConstants.UPLOAD_ERROR;
+             result[0] = formController.uploadAllCompletedForms() ? SUCCESS : SyncStatusConstants.UPLOAD_ERROR;
         } catch (FormController.UploadFormDataException e) {
             Log.e(TAG, "Exception thrown while uploading forms.", e);
-            result[0] = SyncStatusConstants.UPLOAD_ERROR;
+            String exceptionError = e.getMessage();
+            String []  exceptionErrorArray= exceptionError.split(":", 0);
+            String uploadError = "";
+            int i=0;
+            for (String error : exceptionErrorArray) {
+                if(i==0) {
+                    uploadError = error.trim();
+                }
+                i++;
+            }
+            if(uploadError.equals("java.net.ConnectException")){
+                result[0] = SyncStatusConstants.SERVER_CONNECTION_ERROR;
+            }
+            else {
+                result[0] = SyncStatusConstants.UPLOAD_ERROR;
+            }
         }
         return result;
     }
