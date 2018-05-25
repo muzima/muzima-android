@@ -12,41 +12,94 @@ package com.muzima.view.forms;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.util.Log;
+import android.view.View;
+import android.webkit.ConsoleMessage;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Provider;
-import com.muzima.api.service.FormService;
 import com.muzima.utils.Constants;
 import com.muzima.controller.FormController.FormDataFetchException;
 import com.muzima.controller.FormController;
+import com.muzima.view.progressdialog.MuzimaProgressDialog;
 import org.json.JSONException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
 import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_REGISTRATION;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION;
+import static java.text.MessageFormat.format;
 
 
 public class ProviderReportsFormActivity extends FormsActivityBase {
-    public static final String TAG = "FormsActivity";
+    public static final String TAG = "ProviderReportsFormActivity";
     public Provider provider;
     public FormController formController;
-    public FormService formService;
+    private MuzimaProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_with_pager);
-        Intent intent = getIntent();
-        initPager();
-        initPagerIndicator();
+        setContentView(R.layout.activity_form_webview);
+        progressDialog = new MuzimaProgressDialog(this);
+        setupWebView();
+    }
+    private void setupWebView() {
+        WebView webView;
+        webView = (WebView) findViewById(R.id.webView);
+        webView.setWebChromeClient(createWebChromeClient( ));
 
+        webView.getSettings( ).setRenderPriority(WebSettings.RenderPriority.HIGH);
+        webView.getSettings( ).setJavaScriptEnabled(true);
+        webView.getSettings( ).setDatabaseEnabled(true);
+        webView.getSettings( ).setDomStorageEnabled(true);
+        webView.getSettings( ).setBuiltInZoomControls(true);
+
+        webView.addJavascriptInterface(this, "reportInterface");
+        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+
+        webView.loadUrl("file:///android_asset/www/reports/HTS_provider_report.html");
     }
 
+    private WebChromeClient createWebChromeClient() {
+        return new WebChromeClient( ) {
+            @Override
+            public void onProgressChanged(WebView view, int progress) {
+                ProviderReportsFormActivity.this.setProgress(progress * 1000);
+                if (progress == 100) {
+                    progressDialog.dismiss( );
+                }
+            }
+
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                String message = format("Javascript Log. Message: {0}, lineNumber: {1}, sourceId, {2}", consoleMessage.message( ),
+                        consoleMessage.lineNumber( ), consoleMessage.sourceId( ));
+                if (consoleMessage.messageLevel( ) == ERROR) {
+                    Log.e(TAG, message);
+                } else {
+                    Log.d(TAG, message);
+                }
+                return true;
+            }
+        };
+    }
+    @Override
+    protected void onDestroy() {
+        if (progressDialog != null) {
+            progressDialog.dismiss( );
+        }
+        super.onDestroy( );
+    }
     @Override
     protected MuzimaPagerAdapter createFormsPagerAdapter() {
         try {
@@ -65,6 +118,7 @@ public class ProviderReportsFormActivity extends FormsActivityBase {
         return (MuzimaPagerAdapter) allNonRegForms;
 
     }
+    @JavascriptInterface
     public Integer totalTestedCount() throws IOException, JSONException {                                     //All tested
         Integer count = 0;
         MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
@@ -77,6 +131,7 @@ public class ProviderReportsFormActivity extends FormsActivityBase {
         try {
             allFormData = muzimaApplication.getFormController().getAllFormData(Constants.STATUS_COMPLETE);
         } catch (FormDataFetchException e) {
+            Log.e(TAG,"Error while fetching form data",e);
         }
         for (FormData formData : allFormData) {
             if (!isRegistrationFormData(formData)) {
@@ -90,6 +145,8 @@ public class ProviderReportsFormActivity extends FormsActivityBase {
         }
         return count;
     }
+
+    @JavascriptInterface
     public Integer totalPositiveCount() throws IOException, JSONException {                                //Total positive
         Integer count = 0;
         MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
@@ -102,6 +159,7 @@ public class ProviderReportsFormActivity extends FormsActivityBase {
         try {
             allFormData = muzimaApplication.getFormController().getAllFormData(Constants.STATUS_COMPLETE);
         } catch (FormDataFetchException e) {
+            Log.e(TAG,"Error while fetching form data",e);
         }
         for (FormData formData : allFormData) {
             if (!isRegistrationFormData(formData)) {
@@ -119,6 +177,8 @@ public class ProviderReportsFormActivity extends FormsActivityBase {
         }
         return count;
     }
+
+    @JavascriptInterface
     public Integer totalLinkedCount() throws IOException, JSONException {                                //Total linked
         Integer count = 0;
         MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
@@ -131,6 +191,7 @@ public class ProviderReportsFormActivity extends FormsActivityBase {
         try {
             allFormData = muzimaApplication.getFormController().getAllFormData(Constants.STATUS_COMPLETE);
         } catch (FormDataFetchException e) {
+            Log.e(TAG,"Error while fetching form data",e);
         }
         for (FormData formData : allFormData) {
             if (!isRegistrationFormData(formData)) {
