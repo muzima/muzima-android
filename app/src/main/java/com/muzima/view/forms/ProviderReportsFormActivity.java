@@ -125,6 +125,10 @@ public class ProviderReportsFormActivity extends FormsActivityBase {
 
     }
     @JavascriptInterface
+    public String totalTestedCountInterface() throws IOException, JSONException {
+        return totalTestedCount().toString();
+    }
+
     public Integer totalTestedCount() throws IOException, JSONException {                                     //All tested
         Integer count = 0;
         MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
@@ -154,6 +158,11 @@ public class ProviderReportsFormActivity extends FormsActivityBase {
     }
 
     @JavascriptInterface
+    public String totalPositiveCountInterface() throws IOException, JSONException {
+        return totalPositiveCount().toString();
+    }
+
+    //Total positive
     public Integer totalPositiveCount() throws IOException, JSONException {                                //Total positive
         Integer count = 0;
         MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
@@ -187,6 +196,11 @@ public class ProviderReportsFormActivity extends FormsActivityBase {
     }
 
     @JavascriptInterface
+    public String totalLinkedCountInterface() throws IOException, JSONException {
+        return totalLinkedCount().toString();
+    }
+
+    //Total linked
     public Integer totalLinkedCount() throws IOException, JSONException {                                //Total linked
         Integer count = 0;
         MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
@@ -220,6 +234,10 @@ public class ProviderReportsFormActivity extends FormsActivityBase {
     }
 
     @JavascriptInterface
+    public String totalContactsCountInterface() throws IOException, JSONException {
+        return totalContactsCount().toString();
+    }
+    //Total linked
     public Integer totalContactsCount() throws IOException, JSONException {                                //Total linked
         Integer count = 0;
         MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
