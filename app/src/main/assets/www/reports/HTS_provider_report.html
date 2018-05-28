@@ -31,17 +31,17 @@
 </body>
 <script>
     $(document).ready(function () {
-        var totalTested = reportInterface.totalTestedCount() | 0;
+        var totalTested = reportInterface.totalTestedCountInterface();
         $('#totalTested').html(totalTested);
 
-        var totalPositive = reportInterface.totalPositiveCount() | 0;
+        var totalPositive = reportInterface.totalPositiveCountInterface();
         $('#totalPositive').html(totalPositive);
 
-        var totalLinked = reportInterface.totalLinkedCount() | 0;
-        $('#totalLinked').html(" "+totalLinked);
+        var totalLinked = reportInterface.totalLinkedCountInterface();
+        $('#totalLinked').html(totalLinked);
 
-        var totalIdentified = reportInterface.totalContactsCount() | 0;
-        $('#totalIdentified').html(" "+totalIdentified);
+        var totalIdentified = reportInterface.totalContactsCountInterface();
+        $('#totalIdentified').html(totalIdentified);
 
     });
 </script>
