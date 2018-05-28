@@ -218,6 +218,8 @@ public class ProviderReportsFormActivity extends FormsActivityBase {
         System.out.println("Total linked"+count);
         return count;
     }
+
+    @JavascriptInterface
     public Integer totalContactsCount() throws IOException, JSONException {                                //Total linked
         Integer count = 0;
         MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();

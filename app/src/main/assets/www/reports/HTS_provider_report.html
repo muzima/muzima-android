@@ -12,7 +12,7 @@
 </head>
 
 <body>
-<h2>HTS summary</h2>
+<h2>HTS Summary</h2>
 <table class="table tbl-bordered">
     <tr>
         <td>Total tested</td><td id="totalTested">--</td>
@@ -39,6 +39,9 @@
 
         var totalLinked = reportInterface.totalLinkedCount() | 0;
         $('#totalLinked').html(" "+totalLinked);
+
+        var totalIdentified = reportInterface.totalContactsCount() | 0;
+        $('#totalIdentified').html(" "+totalIdentified);
 
     });
 </script>
