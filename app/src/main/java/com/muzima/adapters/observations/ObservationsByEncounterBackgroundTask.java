@@ -61,6 +61,7 @@ public class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Encou
         try {
             List<Encounter> encounters = encounterAction.getEncounters();
 
+            Collections.sort(encounters, encountersDateTimeComparator);
             for(Encounter encounter : encounters) {
                 if(!isCancelled() && encounter.getEncounterType().getName().contains("encounterType")) {
                     temp = encounterAction.get(encounter);
@@ -88,6 +89,7 @@ public class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Encou
         Encounters temp = null;
         try {
             List<Encounter> encounters = encounterAction.getEncounters();
+
             Collections.sort(encounters, encountersDateTimeComparator);
             for(Encounter encounter : encounters) {
                 if(!isCancelled() ) {

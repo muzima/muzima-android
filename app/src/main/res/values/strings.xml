@@ -168,7 +168,8 @@
     <string name="hint_client_search">Search clients</string>
     <string name="hint_client_summary_encounters" formatted="false">%d Encounters</string>
     <string name="hint_client_summary_forms" formatted="false">%d Incomplete, %d Complete, %d Recommended</string>
-    <string name="hint_client_summary_notifications" formatted="false">%d New Notifications, %d Total Notifications</string>
+    <string name="hint_client_summary_notifications" formatted="false">%d New Notifications, %d Total Notifications
+    </string>
     <string name="hint_client_summary_observations" formatted="false">%d Observations</string>
     <string name="hint_cohort_download">Select one or more cohorts from the list and click on \'Next\' to download
     </string>
@@ -191,7 +192,9 @@
     </string>
     <string name="hint_concept_pref_add">Add concept(s) that you want observation(s) to be downloaded.</string>
     <string name="hint_configuration_search">Search a configuration</string>
-    <string name="hint_consultation_consultant_validation_failure">Please provide a consultant from the list of possible consultants</string>
+    <string name="hint_consultation_consultant_validation_failure">Please provide a consultant from the list of possible
+        consultants
+    </string>
     <string name="hint_crash_dialog">An unexpected error occurred forcing mUzima to stop. Please help us fix
         this by sending us error data, all you have to do is click OK.
     </string>
@@ -212,12 +215,18 @@
     <string name="hint_duplicate_form_data_warning">Warn the user when duplicate form data for same client with same
         encounter date is being saved
     </string>
-    <string name="hint_encounter_location_validation_failure">Please provide a location from the list of possible locations</string>
-    <string name="hint_encounter_provider_validation_failure">Please provide a provider from the list of possible providers</string>
+    <string name="hint_encounter_location_validation_failure">Please provide a location from the list of possible
+        locations
+    </string>
+    <string name="hint_encounter_provider_validation_failure">Please provide a provider from the list of possible
+        providers
+    </string>
     <string name="hint_form_auto_save_interval">The value in which your forms will be automatically saved</string>
     <string name="hint_form_download">Please select forms from all forms list and click download</string>
     <string name="hint_form_list_download">Please press load to fetch available forms from the server</string>
-    <string name="hint_form_validation_failure">There is one or more validation check failed on this form. Please review and resubmit the form</string>
+    <string name="hint_form_validation_failure">There is one or more validation check failed on this form. Please review
+        and resubmit the form
+    </string>
     <string name="hint_future_date_validation_failure">Please enter a date in the future</string>
     <string name="hint_guided_setup">Select a preset configuration and let mUzima do the rest for you</string>
     <string name="hint_image_caption_prompt">Please enter a caption for the image</string>
@@ -236,7 +245,9 @@
     <string name="hint_manage_provider">Get more providers from the server or remove providers from this device</string>
     <string name="hint_mandatory_question_validation_failure">This question must be answered</string>
     <string name="hint_notification_sync">Make sure you have connectivity to server and press the load button</string>
-    <string name="hint_option_none_exclusive_selection_validation_failure">If \'None\' is selected, no other options can be selected</string>
+    <string name="hint_option_none_exclusive_selection_validation_failure">If \'None\' is selected, no other options can
+        be selected
+    </string>
     <string name="hint_password_change">Did you change your password recently?</string>
     <string name="hint_password_prompt">Please Enter Password</string>
     <string name="hint_phone_number_validation_failure">Invalid Phone Number. Please check and re-enter</string>
@@ -249,8 +260,11 @@
         download
     </string>
     <string name="hint_registration_form_select">Please select at least one registration form!</string>
-    <string name="hint_repeating_section_minimum_repeats_validation_failure">Minimum repeats not satisfied. Needs at least</string>
-    <string name="hint_require_medical_record_number">Require client\'s medical record number during registration</string>
+    <string name="hint_repeating_section_minimum_repeats_validation_failure">Minimum repeats not satisfied. Needs at
+        least
+    </string>
+    <string name="hint_require_medical_record_number">Require client\'s medical record number during registration
+    </string>
     <string name="hint_server_connection_unavailable">Please contact your server administrator to check server
         connectivity
     </string>
@@ -456,8 +470,9 @@
     <string name="info_video_play_activity_unavailable">Error: Application for playing video not found</string>
     <string name="info_video_record_activity_unavailable">Error: Application for recording video not found</string>
 
-    <string name="menu_complete_form_data_sync">Sync complete form data</string>
+    <string name="menu_form_data_sync">Sync form data</string>
     <string name="menu_form_back_to_draft">Back To Draft</string>
+    <string name="menu_shr_data_sync" formatted="false">Sync SHR data (%d)</string>
 
     <string name="title_about_dashboard_help_html">About Dashboard</string>
     <string name="title_activity_audio">Add Audio</string>
@@ -562,15 +577,19 @@
     </string>
     <string name="shr_data_title_text">SHR Data</string>
     <string name="add_individual_observation_text">Add Individual Observation</string>
-    <string name="scan_card_id_title">Scan card id</string>
-    <string name="patient_shr_search_dialog_title">Patient SHR Search</string>
+    <string name="scan_card_id_title">Scan card ID</string>
+    <string name="patient_shr_search_dialog_title">Client SHR Search</string>
     <string name="shr_card_text">SHR Card</string>
-    <string name="patient_shr_search_title_text">Patient SHR Search</string>
-    <string name="search_patient_on_server_option_title_text">Patient is not avaible locally, would you like to search server?</string>
-	<string name="write_shr_to_card_text">Write shr to card</string>
+    <string name="patient_shr_search_title_text">Client SHR Search</string>
+    <string name="search_patient_on_server_option_title_text">Patient is not avaible locally, would you like to search
+        server?
+    </string>
+    <string name="write_shr_to_card_text">Write SHR to Card</string>
     <string name="shr_extracted_data_text">SHR extracted data</string>
     <string name="title_default_encounter_location">Default Encounter Location</string>
-    <string name="hint_default_encounter_location">This selected encounter location will be the default encounter location for all forms</string>
+    <string name="hint_default_encounter_location">This selected encounter location will be the default encounter
+        location for all forms
+    </string>
     <string name="no_default_encounter_location">No default encounter location</string>
     <string name="general_not_available_text">Not Available</string>
     <string name="registering_patient_message_title_text">Registering patient in mUzima...</string>

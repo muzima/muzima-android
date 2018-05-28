@@ -13,10 +13,12 @@ package com.muzima.view;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.controller.SmartCardController;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -63,5 +65,25 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void removeSettingsMenu(Menu menu) {
         dropDownHelper.removeSettingsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu){
+        MenuItem syncShrMenuItem = menu.findItem(R.id.menu_shr_data_sync);
+        if(syncShrMenuItem != null) {
+            try {
+                int count = ((MuzimaApplication)getApplicationContext()).getSmartCardController().getSmartCardRecordWithNonUploadedData().size();
+                if(count > 0){
+                    syncShrMenuItem.setVisible(true);
+                    syncShrMenuItem.setTitle(getString(R.string.menu_shr_data_sync, count));
+                } else {
+                    syncShrMenuItem.setVisible(false);
+                }
+            } catch (SmartCardController.SmartCardRecordFetchException e) {
+                Log.e(BaseFragmentActivity.class.getSimpleName(), "Error fetching smartcard records");
+            }
+        }
+        return true;
     }
 }

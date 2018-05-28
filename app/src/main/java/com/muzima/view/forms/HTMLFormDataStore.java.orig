@@ -114,14 +114,34 @@ public class HTMLFormDataStore {
 
         boolean encounterDetailsStatus = true;
         try {
+<<<<<<< HEAD
+            if (isRegistrationComplete(status)) {
+                Patient newPatient = formController.createNewPatient(application,formData);
+                formData.setPatientUuid(newPatient.getUuid());
+                formWebViewActivity.startPatientSummaryView(newPatient);
+            }
+            parseForm(jsonPayload, status);
+            Date encounterDate = getEncounterDateFromForm(jsonPayload);
+            formData.setEncounterDate(encounterDate);
+            formController.saveFormData(formData);
+            formWebViewActivity.setResult(FormsActivity.RESULT_OK);
+            Log.i(TAG, "Saving form data ...");
+            if (!keepFormOpen) {
+                formWebViewActivity.finish();
+                if (status.equals("complete")) {
+
+                    Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.info_form_data_save_success), Toast.LENGTH_SHORT).show();
+                    RealTimeFormUploader.getInstance().uploadAllCompletedForms(formWebViewActivity.getApplicationContext());
+=======
             if(status.equals("complete")) {
                 encounterDetailsStatus = getEncounterDetailsStatusFromForm(jsonPayload);
             }
             if(encounterDetailsStatus) {
                 if (isRegistrationComplete(status)) {
-                    Patient newPatient = formController.createNewPatient(application,formData);
+                    Patient newPatient = formController.createNewPatient(formData);
                     formData.setPatientUuid(newPatient.getUuid());
                     formWebViewActivity.startPatientSummaryView(newPatient);
+>>>>>>> ea3540acfe01a7bbd5521271404631ea922f2c0f
                 }
                 parseForm(jsonPayload, status);
                 Date encounterDate = getEncounterDateFromForm(jsonPayload);
@@ -130,10 +150,10 @@ public class HTMLFormDataStore {
                 formWebViewActivity.setResult(FormsActivity.RESULT_OK);
                 Log.i(TAG, "Saving form data ...");
                 if (!keepFormOpen) {
-                    formWebViewActivity.finish();
+                    formWebViewActivity.finish( );
                     if (status.equals("complete")) {
-                        Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.info_form_data_save_success), Toast.LENGTH_SHORT).show();
-                        RealTimeFormUploader.getInstance().uploadAllCompletedForms(formWebViewActivity.getApplicationContext());
+                        Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.info_form_data_save_success), Toast.LENGTH_SHORT).show( );
+                        RealTimeFormUploader.getInstance( ).uploadAllCompletedForms(formWebViewActivity.getApplicationContext( ));
                     }
                     if (status.equals("incomplete")) {
                         Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.info_draft_form_save_success), Toast.LENGTH_SHORT).show( );
