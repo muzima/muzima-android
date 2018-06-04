@@ -572,4 +572,12 @@
     <string name="warning_switch_server">Trocando o Servidor: Isto irá apagar todos dados de mUzima no seu dispositivo,
         incluindo formulários imcompletos. Tem certeza que quer mudar as configurações?
     </string>
+    <string name="title_default_encounter_location">Localização padrão do encontro</string>
+    <string name="hint_default_encounter_location">Esse local de encontro selecionado será o local de encontro padrão para todos os formulários</string>
+    <string name="no_default_encounter_location">Nenhum local de encontro padrão</string>
+    <string name="form_encounter_date">Data de encontro</string>
+    <string name="form_encounter_location">Localização do encontro</string>
+    <string name="form_encounter_provider">Provedor de encontro</string>
+    <string name="title_missing_form_encounter_details_error">Detalhes do encontro ausente</string>
+    <string name="message_missing_form_encounter_details_error">deve ser providenciado</string>
 </resources>
