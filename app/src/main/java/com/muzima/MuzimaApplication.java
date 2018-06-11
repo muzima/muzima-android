@@ -57,22 +57,22 @@ import java.security.Security;
 import java.util.List;
 
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
-
-@ReportsCrashes(
-
-        formKey = "",
-        reportType = HttpSender.Type.JSON,
-        httpMethod = HttpSender.Method.POST,
-        formUri = "http://acra.muzima.org/report",
-        formUriBasicAuthLogin = "muzima-reporter",
-        formUriBasicAuthPassword = "OMHKOHV8LVfv3c553n6Oqkof",
-        mode = ReportingInteractionMode.DIALOG,
-        resDialogText = R.string.hint_crash_dialog,
-        resDialogIcon = android.R.drawable.ic_dialog_info,
-        resDialogTitle = R.string.title_crash_dialog,
-        resDialogCommentPrompt = R.string.hint_crash_dialog_comment_prompt,
-        resDialogOkToast = R.string.general_thank_you
-)
+//
+//@ReportsCrashes(
+//
+//        formKey = "",
+//        reportType = HttpSender.Type.JSON,
+//        httpMethod = HttpSender.Method.POST,
+//        formUri = "http://acra.muzima.org/report",
+//        formUriBasicAuthLogin = "muzima-reporter",
+//        formUriBasicAuthPassword = "OMHKOHV8LVfv3c553n6Oqkof",
+//        mode = ReportingInteractionMode.DIALOG,
+//        resDialogText = R.string.hint_crash_dialog,
+//        resDialogIcon = android.R.drawable.ic_dialog_info,
+//        resDialogTitle = R.string.title_crash_dialog,
+//        resDialogCommentPrompt = R.string.hint_crash_dialog_comment_prompt,
+//        resDialogOkToast = R.string.general_thank_you
+//) todo re-enable crash reporting to accra
 
 
 public class MuzimaApplication extends Application {
