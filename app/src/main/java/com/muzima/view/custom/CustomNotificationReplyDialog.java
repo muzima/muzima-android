@@ -77,9 +77,11 @@ public class CustomNotificationReplyDialog extends Dialog {
             notificationController.saveNotification(replyNotification);
 
             Toast.makeText(context, "Your reply was sent successfully ", Toast.LENGTH_LONG).show();
+            cancel();
             return true;
         } catch (NotificationController.NotificationSaveException e) {
             e.printStackTrace();
+            cancel();
             return false;
         }
     }

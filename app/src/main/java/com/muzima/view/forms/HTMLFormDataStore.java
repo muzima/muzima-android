@@ -476,6 +476,7 @@ public class HTMLFormDataStore {
         }
         return null;
     }
+
     public String injectUserSystemIdToEncounterPayload(String jsonPayload){
         try {
             JSONObject jsonObject = new JSONObject(jsonPayload);
