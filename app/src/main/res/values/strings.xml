@@ -566,4 +566,6 @@
     <string name="null_encounter_date_error">An error occurred while saving the form. Encounter date must be provided</string>
     <string name="null_encounter_location_error">An error occurred while saving the form. Encounter location must be provided</string>
     <string name="null_encounter_provider_error">An error occurred while saving the form. Encounter provider must be provided</string>
+    <string name="to_text">To</string>
+    <string name="reply_hint_text">write your reply here..</string>
 </resources>
