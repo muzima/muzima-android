@@ -507,4 +507,12 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="warning_registration_form_data_delete">Vous êtes sur le point de supprimer les données d\'enregistrement. Cela effacera également les données du patient sur l\'appareil. Etes-vous sur?</string>
     <string name="warning_setting_download_failure">Echec du téléchargement ou de la mise à jour des configurations</string>
     <string name="warning_switch_server">Changement de serveur: Cela effacera toutes les données mUzima sur votre appareil, y compris les formulaires incomplets. Etes-vous sûr de vouloir modifier ce paramètre?</string>
+    <string name="title_default_encounter_location">Emplacement de rencontre par défaut</string>
+    <string name="hint_default_encounter_location">Cet emplacement de rencontre sélectionné sera l\'emplacement de rencontrepar défaut pour tous les formulaires</string>
+    <string name="no_default_encounter_location">Aucun lieu de rencontre par défaut</string>
+    <string name="form_encounter_date">Date de rencontre</string>
+    <string name="form_encounter_location">Lieu de rencontre</string>
+    <string name="form_encounter_provider">Fournisseur de rencontres</string>
+    <string name="title_missing_form_encounter_details_error">Détails de Rencontre manquante</string>
+    <string name="message_missing_form_encounter_details_error">doit être fourni</string>
 </resources>
