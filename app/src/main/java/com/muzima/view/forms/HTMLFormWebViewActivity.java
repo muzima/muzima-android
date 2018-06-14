@@ -537,5 +537,16 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     public Handler getHandler() {
         return handler;
     }
+
+    public void showMissingEncounterDetailsDialog(String message) {
+        new AlertDialog.Builder(HTMLFormWebViewActivity.this)
+                .setCancelable(true)
+                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                .setTitle(getResources().getString(R.string.title_missing_form_encounter_details_error))
+                .setMessage(message)
+                .setNegativeButton(getString(R.string.general_ok), null)
+                .create( )
+                .show( );
+    }
 }
 

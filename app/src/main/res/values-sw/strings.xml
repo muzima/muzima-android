@@ -451,4 +451,12 @@
     <string name="warning_registration_form_data_delete">Kitendo hichi kitapelekea kufutwa kwa data za usajili hivyo basi rekodi ya mgojwa pia itafutwa kutoka kwenye kifaa hichi. Je una uhakika wa kuendelea? </string>
     <string name="warning_setting_download_failure">Imeshindikana kupakua kisasisho cha utaratibu</string>
     <string name="warning_switch_server">Ubadilishaji wa seva: Kitendo hiki kitafuta data zote za mUzima katika kifaa chako, ikiwa ni pamoja na fomu zozote ambazo hazijakamilika bado. Una hakika unataka kubadili mpangilio huu?</string>
+    <string name="title_default_encounter_location">Lokesheni ya Kikawaida</string>
+    <string name="hint_default_encounter_location">Lokesheni iliyochaguliwa itakuwa eneo la kukutana na chaguo-msingi kwa fomu zote</string>
+    <string name="no_default_encounter_location">Hakuna lokesheni ya chaguo-msingi</string>
+    <string name="form_encounter_date">Tarehe ya kukutana</string>
+    <string name="form_encounter_location">Eneo la kukutana</string>
+    <string name="form_encounter_provider">Mtoa huduma</string>
+    <string name="title_missing_form_encounter_details_error">Maelezo ya kukutana hayapo</string>
+    <string name="message_missing_form_encounter_details_error">lazima yatolewa</string>
 </resources>
