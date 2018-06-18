@@ -527,4 +527,9 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="no_default_encounter_location">Aucun lieu de rencontre par défaut</string>
     <string name="general_not_available_text">Indisponible</string>
     <string name="registering_patient_message_title_text">Enregistrement du client dans mUzima ...</string>
+    <string name="form_encounter_date">Date de rencontre</string>
+    <string name="form_encounter_location">Lieu de rencontre</string>
+    <string name="form_encounter_provider">Fournisseur de rencontres</string>
+    <string name="title_missing_form_encounter_details_error">Détails de Rencontre manquante</string>
+    <string name="message_missing_form_encounter_details_error">doit être fourni</string>
 </resources>
