@@ -483,6 +483,9 @@ public class KenyaEmrSHRMapper {
             Location location = LocationUtils.getOrCreateDummyLocationByKenyaEmrMasterFacilityListCode(muzimaApplication, hivTest.getFacility());
             encounterDetails.put("encounter.location_id", location.getId());
 
+            String user_system_id = muzimaApplication.getAuthenticatedUser( ).getSystemId( );
+            encounterDetails.put("encounter.user_system_id", user_system_id);
+
             Date encounterDateTime = DateUtils.parseDateByPattern(hivTest.getDate(), "yyyyMMdd");
             encounterDetails.put("encounter.encounter_datetime", DateUtils.getFormattedDate(encounterDateTime));
 
