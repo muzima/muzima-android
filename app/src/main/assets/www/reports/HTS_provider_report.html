@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<head>
+    <link href="../forms/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../forms/css/muzima.css" rel="stylesheet">
+    <link href="../forms/css/ui-darkness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="../forms/css/style.css" type="text/css" media="screen, projection">
+    <script type="text/javascript" src="../forms/js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="../forms/js/scripts.js"></script>
+    <!--script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script-->
+
+</head>
+
+<body>
+<h2>HTS Summary</h2>
+<table class="table tbl-bordered">
+    <tr>
+        <td>Total tested</td><td id="totalTested">--</td>
+    </tr>
+    <tr>
+        <td>Total positive</td><td id="totalPositive">--</td>
+    </tr>
+    <tr>
+        <td>Total Linked</td><td id="totalLinked">--</td>
+    </tr>
+    <tr>
+        <td>Contacts Identified</td><td id="totalIdentified">--</td>
+    </tr>
+</table>
+
+</body>
+<script>
+    $(document).ready(function () {
+        var totalTested = reportInterface.totalTestedCountInterface();
+        $('#totalTested').html(totalTested);
+
+        var totalPositive = reportInterface.totalPositiveCountInterface();
+        $('#totalPositive').html(totalPositive);
+
+        var totalLinked = reportInterface.totalLinkedCountInterface();
+        $('#totalLinked').html(totalLinked);
+
+        var totalIdentified = reportInterface.totalContactsCountInterface();
+        $('#totalIdentified').html(totalIdentified);
+
+    });
+</script>
+</html>

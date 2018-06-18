@@ -217,8 +217,8 @@ public class HTMLFormDataStore {
     public String getConcepts() throws JSONException {
         List<Concept> concepts = new ArrayList<Concept>();
         try {
-               concepts = conceptController.getConcepts();
-       } catch (ConceptController.ConceptFetchException e) {
+            concepts = conceptController.getConcepts();
+        } catch (ConceptController.ConceptFetchException e) {
             Log.e(TAG, "Exception occurred while loading concepts", e);
         }
         catch (Exception e){
@@ -409,11 +409,11 @@ public class HTMLFormDataStore {
 
         locations = locationController.getAllLocations();
         if(!defaultLocationName.equals(defaultValue)){
-             for(Location loc:locations) {
-                 if(Integer.toString(loc.getId()).equals(defaultLocationName)) {
-                     defaultLocation.add(loc);
-                 }
-             }
+            for(Location loc:locations) {
+                if(Integer.toString(loc.getId()).equals(defaultLocationName)) {
+                    defaultLocation.add(loc);
+                }
+            }
             return JSONValue.toJSONString(defaultLocation);
         }
         return JSONValue.toJSONString(locations);

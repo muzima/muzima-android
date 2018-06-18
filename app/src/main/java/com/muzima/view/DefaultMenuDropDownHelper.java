@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import com.muzima.R;
 import com.muzima.tasks.EncryptedSharedHealthRecordSyncTask;
 import com.muzima.utils.StringUtils;
+import com.muzima.view.forms.ProviderReportsFormActivity;
 import com.muzima.view.login.LoginActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
@@ -47,6 +48,10 @@ public class DefaultMenuDropDownHelper {
                 return true;
             case R.id.action_settings:
                 intent = new Intent(activity, SettingsActivity.class);
+                activity.startActivity(intent);
+                return true;
+            case R.id.action_provider_reports:
+                intent = new Intent(activity, ProviderReportsFormActivity.class);
                 activity.startActivity(intent);
                 return true;
             case R.id.action_help:
