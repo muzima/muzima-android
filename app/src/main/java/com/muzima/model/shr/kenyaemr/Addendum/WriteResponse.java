@@ -2,10 +2,6 @@ package com.muzima.model.shr.kenyaemr.Addendum;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Created by patrick on 11/04/2018.
- */
-
 public class WriteResponse {
 
     @JsonProperty("SHR")

@@ -42,7 +42,6 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
     private ViewPager viewPager;
     private ObservationsPagerAdapter observationsPagerAdapter;
     private PagerSlidingTabStrip pagerTabsLayout;
-    private final Boolean IS_SHR_DATA = true;
     private Patient patient;
     private AlertDialog writeShrDataOptionDialog;
     private TextView searchDialogTextView;
@@ -73,7 +72,9 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
 
     private void initPager() {
         viewPager = (ViewPager) findViewById(R.id.pager);
-        observationsPagerAdapter = new ObservationsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), IS_SHR_DATA);
+
+        Boolean isSHRData = true;
+        observationsPagerAdapter = new ObservationsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), isSHRData);
         observationsPagerAdapter.initPagerViews();
         viewPager.setAdapter(observationsPagerAdapter);
     }

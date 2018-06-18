@@ -460,13 +460,13 @@
     <string name="shr_card_text">Kadi ya SHR</string>
     <string name="patient_shr_search_title_text">Utafutaji wa SHR</string>
     <string name="search_patient_on_server_option_title_text">
-        Mteja haipatikani kwenye kifaa, ungependa kutafuta seva?
+        Mteja hapatikani kwenye kifaa, ungependa kutafuta seva?
     </string>
     <string name="write_shr_to_card_text">Andika SHR kwa Kadi</string>
     <string name="shr_extracted_data_text">Data zilizochukuliwa kutoka SHR</string>
     <string name="title_default_encounter_location">Lokesheni ya Kikawaida</string>
     <string name="hint_default_encounter_location">
-        Lokesheni iliyochaguliwa itakuwa eneo la kukutana na default kwa fomu zote
+        Lokesheni iliyochaguliwa itakuwa chaguo msingi kwa fomu zote
     </string>
     <string name="no_default_encounter_location">Hakuna lokesheni ya default</string>
     <string name="general_not_available_text">Haipatikani</string>
