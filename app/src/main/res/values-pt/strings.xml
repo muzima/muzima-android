@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
+    <string name="add_individual_observation_text">Adicionar observação individual</string>
+
     <string name="app_name">mUzima</string>
     <string name="app_title">mUzima para Provedores de Saúde</string>
 
@@ -84,6 +86,14 @@
     <string name="error_wizard_interrupted">Wizard foi interrompido, por favor de sair e executar o wizard de novo.
     </string>
 
+    <string name="failure_obtain_smartcard_record">Não foi possível obter o registro de cartão inteligente para gravação no cartão.</string>
+    <string name="failure_reading_card">Leitura de cartão falhada</string>
+    <string name="failure_writing_smartcard">Falha ao gravar dados do cartão inteligente.</string>
+
+    <string name="form_encounter_date">Data de encontro</string>
+    <string name="form_encounter_location">Localização do encontro</string>
+    <string name="form_encounter_provider">Provedor de encontro</string>
+
     <string name="general_accept">Aceitar</string>
     <string name="general_agree">Concordo</string>
     <string name="general_alert">Alerta!</string>
@@ -117,6 +127,8 @@
     <string name="general_medium">Médio</string>
     <string name="general_next">Próximo</string>
     <string name="general_no">Não</string>
+    <string name="general_not_available_text">Não disponível</string>
+    <string name="general_notice">Aviso prévio</string>
     <string name="general_notices">Avisos</string>
     <string name="general_notification">Notificação</string>
     <string name="general_notifications">Notificações</string>
@@ -126,6 +138,8 @@
     <string name="general_previous">Anterior</string>
     <string name="general_progress_message">Isso pode demorar um pouco</string>
     <string name="general_providers">Provedores</string>
+    <string name="general_requirement">Requerimento</string>
+    <string name="general_retry">RETRIBUIÇÃO</string>
     <string name="general_save">Gravar</string>
     <string name="general_search">Pesquisar</string>
     <string name="general_server">Servidor</string>
@@ -134,6 +148,7 @@
     <string name="general_synced">Sincronizada</string>
     <string name="general_tags">Etiquetas</string>
     <string name="general_thank_you">Obrigado!</string>
+    <string name="general_unexpected_error_occurred">Erro inesperado Ocorreu</string>
     <string name="general_upload">Carregar</string>
     <string name="general_username">Nome do utilizador</string>
     <string name="general_view_encounter">Ver visita</string>
@@ -152,6 +167,7 @@
     <string name="hint_barcode_scanner_setup">Precisa de aplicativo de scanner de código de barra para registar os
         clientes a partir do telefone. Por favor verifique se isto está instalado no dispositivo ou não.
     </string>
+    <string name="hint_card_not_empty">O cartão não está vazio. Por favor, use um novo cartão.</string>
     <string name="hint_check_digit_validation_failure">Por favor introduza os dígitos que correspondem ao algoritmo de verificação de dígitos</string>
     <string name="hint_client_local_search">Sua pesquisa inclui ID do cliente, primeiro nome, nome do meio e apélido e
         pesquisado somente no dispositivo
@@ -195,6 +211,8 @@
     </string>
     <string name="hint_crash_dialog_comment_prompt">Por favor adicione os seus comentários sobre o problema abaixo
     </string>
+    <string name="hint_create_new_shr">O cliente não possui um SHR. Você quer criar novos SHR e gravar no cartão?
+    </string>
     <string name="hint_current_or_past_date_validation_failure">Por favor introduza uma data anterior ou igual a hoje</string>
     <string name="hint_custom_concept_help">Aqui se define conceitos em que os dados serão incluídos no descarregamento
         mais tarde
@@ -205,6 +223,8 @@
     <string formatted="false" name="hint_dashboard_cohorts_description">%d Sincronizada, %d Todos</string>
     <string formatted="false" name="hint_dashboard_forms_description">%d Incompleto, %d Completo</string>
     <string formatted="false" name="hint_dashboard_notifications_description">%d Novo, %d Todos</string>
+    <string name="hint_default_encounter_location">Esse local de encontro selecionado será o local de encontro padrão
+        para todos os formulários</string>
     <string name="hint_default_encounter_provider">O utilizador logado será utilizado como provedor de consulta padrão
     </string>
     <string name="hint_drawer_close">Fechar caixa de etiquetas</string>
@@ -228,6 +248,7 @@
     <string name="hint_incomplete_form_unavailable">Formulários incompletos estão disponíveis somente se tiver guardado
         um formulário preenchido parcialmente
     </string>
+    <string name="hint_install_psmart">Gostaria de instalar o aplicativo P-Smart?</string>
     <string name="hint_last_synced">Última sincronização em: %s</string>
     <string name="hint_loading_progress">Carregando...</string>
     <string name="hint_local_connection_unavailable">Por favor conecte o dispositivo e tente de novo</string>
@@ -245,6 +266,7 @@
     <string name="hint_notification_sync">Certifique que tem conectividade com o servidor e pressione no botão
         carregar
     </string>
+    <string name="hint_opening_card_reader">Abrindo o leitor de cartão</string>
     <string name="hint_option_none_exclusive_selection_validation_failure">Se \'Nenhum\' é seleccionado, nehuma outra opção pode ser seleccionada</string>
     <string name="hint_password_change">Alterou a sua senha recentemente?</string>
     <string name="hint_password_prompt">Por favor Introduza a Senha</string>
@@ -267,6 +289,8 @@
     <string name="hint_server_url">URL do Servidor</string>
     <string name="hint_server_url_prompt">Por favor introduza a URL do servidor</string>
     <string name="hint_session_timeout">Se inactivo para este tempo, mUzima irá automaticamente sair</string>
+    <string name="hint_set_default_encounter_location_for_shr">Por favor, defina localização encontro padrão, de modo a permitir a escrita de novo cartão
+    </string>
     <string name="hint_setting_refresh">Deseja voltar a baixar essa configuração do servidor?</string>
     <string name="hint_username_prompt">Por favor introduza o nome do utilizador</string>
     <string name="hint_video_caption_prompt">Por favor introduza uma legenda para o vídeo</string>
@@ -274,6 +298,7 @@
     <string name="hint_wizard_form_download">Seleccione um ou mais modelos a partir da lista e clique no \'Próximo\'
         para baixar
     </string>
+    <string name="hint_write_shr_to_card">Você quer escrever o Registro de Saúde Compartilhado no cartão?</string>
 
     <string name="info_authentication_in_progress">Autenticação em progresso…</string>
     <string name="info_client_demographics_download">Baixando demográfico de clientes…</string>
@@ -467,9 +492,29 @@
     <string name="info_video_play_activity_unavailable">Erro: Aplicação para projectar vídeo não encontrado</string>
     <string name="info_video_record_activity_unavailable">Erro: Aplicação para gravar vídeo não encontrado</string>
 
-    <string name="menu_form_data_sync">Sincronizar dados do formulário</string>
     <string name="menu_form_back_to_draft">Voltar ao Rascunho</string>
-    <string name="menu_shr_data_sync" formatted="false">Sincronizar dados SHR (%d)</string>
+    <string name="menu_form_data_sync">Sincronizar dados do formulário</string>
+    <string formatted="false" name="menu_shr_data_sync">Sincronizar dados SHR (%d)</string>
+
+    <string name="message_missing_form_encounter_details_error">deve ser providenciado</string>
+
+    <string name="no_default_encounter_location">Nenhum local de encontro padrão</string>
+
+    <string name="patient_shr_search_dialog_title">Pesquisa SHR Paciente</string>
+    <string name="patient_shr_search_title_text">Pesquisa SHR Paciente</string>
+
+    <string name="registering_patient_message_title_text">Registrando cliente em mUzima ...</string>
+
+    <string name="scan_card_id_title">ID do cartão de digitalização</string>
+
+    <string name="search_patient_on_server_option_title_text">Cliente não está disponível localmente, gostaria de
+        pesquisar no servidor?</string>
+
+    <string name="shr_card_text">Carta SHR</string>
+    <string name="shr_data_title_text">Dados SHR</string>
+    <string name="shr_extracted_data_text">Dados extraídos de SHR</string>
+
+    <string name="success_writing_smartcard">Os dados do cartão inteligente foram escritos com sucesso.</string>
 
     <string name="title_about_dashboard_help_html">Sobre o Painel de Controle</string>
     <string name="title_activity_audio">Adicionar Audio</string>
@@ -501,6 +546,7 @@
     <string name="title_crash_dialog">mUzima parou…</string>
     <string name="title_data_reset">Passo 3: Redefinir Dados</string>
     <string name="title_data_synchronize">Passo 2: Sincronizar Dados Locais</string>
+    <string name="title_default_encounter_location">Localização padrão do encontro</string>
     <string name="title_default_encounter_provider">Provedor de visita padrão</string>
     <string name="title_disclaimer">Licença, Aviso Legal de Garantia e Limitação de Responsabilidade</string>
     <string name="title_duplicate_form_data_warning">Aviso de dados duplicados</string>
@@ -523,6 +569,7 @@
     <string name="title_image_capture">Capturar Imagem</string>
     <string name="title_image_choose">Escolher Imagem</string>
     <string name="title_initial_setup_guide">Guia inicial de instalação de mUzima</string>
+    <string name="title_install_psmart">Instalar o aplicativo P-Smart</string>
     <string name="title_introduction_video">Vídeo introdutório para mUzima</string>
     <string name="title_landing_page">Página de destino</string>
     <string name="title_local_client_search_help_video">Pesquisa de clientes (local)</string>
@@ -534,6 +581,7 @@
     <string name="title_manage_location">Gestão de locais</string>
     <string name="title_manage_provider">Gestão de provedores</string>
     <string name="title_media_preview">Prever Mídia</string>
+    <string name="title_missing_form_encounter_details_error">Detalhes do encontro ausente</string>
     <string name="title_muzima_disclaimer">Aviso Legal de mUzima</string>
     <string name="title_muzima_training_manual">Manual de treino de mUzima</string>
     <string name="title_observations_by_concepts">Por Conceitos</string>
@@ -573,25 +621,6 @@
     <string name="warning_switch_server">Trocando o Servidor: Isto irá apagar todos dados de mUzima no seu dispositivo,
         incluindo formulários imcompletos. Tem certeza que quer mudar as configurações?
     </string>
-    <string name="shr_data_title_text">Dados SHR</string>
-    <string name="add_individual_observation_text">Adicionar observação individual</string>
-    <string name="scan_card_id_title">ID do cartão de digitalização</string>
-    <string name="patient_shr_search_dialog_title">Pesquisa SHR Paciente</string>
-    <string name="shr_card_text">Carta SHR</string>
-    <string name="patient_shr_search_title_text">Pesquisa SHR Paciente</string>
-    <string name="search_patient_on_server_option_title_text">Cliente não está disponível localmente, gostaria de
-        pesquisar no servidor?</string>
+
     <string name="write_shr_to_card_text">Escrever shr para cartão</string>
-    <string name="shr_extracted_data_text">Dados extraídos de SHR</string>
-    <string name="title_default_encounter_location">Localização padrão do encontro</string>
-    <string name="hint_default_encounter_location">Esse local de encontro selecionado será o local de encontro padrão
-        para todos os formulários</string>
-    <string name="no_default_encounter_location">Nenhum local de encontro padrão</string>
-    <string name="general_not_available_text">Não disponível</string>
-    <string name="registering_patient_message_title_text">Registrando cliente em mUzima ...</string>
-    <string name="form_encounter_date">Data de encontro</string>
-    <string name="form_encounter_location">Localização do encontro</string>
-    <string name="form_encounter_provider">Provedor de encontro</string>
-    <string name="title_missing_form_encounter_details_error">Detalhes do encontro ausente</string>
-    <string name="message_missing_form_encounter_details_error">deve ser providenciado</string>
 </resources>

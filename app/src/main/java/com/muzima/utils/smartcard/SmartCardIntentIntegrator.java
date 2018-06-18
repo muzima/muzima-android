@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import com.muzima.R;
 import com.muzima.api.model.SmartCardRecord;
 import com.muzima.utils.StringUtils;
 
@@ -104,8 +105,8 @@ public class SmartCardIntentIntegrator {
 
     private AlertDialog showInstallPsmartAppDownloadDialog() {
         AlertDialog.Builder downloadDialog = new AlertDialog.Builder(activity);
-        downloadDialog.setTitle("Install P-Smart app");
-        downloadDialog.setMessage("Would you like to install P-Smart app?");
+        downloadDialog.setTitle(activity.getString(R.string.title_install_psmart));
+        downloadDialog.setMessage(activity.getString(R.string.hint_install_psmart));
         downloadDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -119,7 +120,7 @@ public class SmartCardIntentIntegrator {
                 }
             }
         });
-        downloadDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        downloadDialog.setNegativeButton(R.string.general_no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
             }
