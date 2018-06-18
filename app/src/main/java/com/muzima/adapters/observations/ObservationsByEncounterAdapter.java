@@ -32,10 +32,14 @@ import com.muzima.utils.Fonts;
 import com.muzima.utils.StringUtils;
 
 public class ObservationsByEncounterAdapter extends ObservationsAdapter<EncounterWithObservations> {
+
+    private Boolean isShrData = false;
+
     public ObservationsByEncounterAdapter(FragmentActivity activity, int item_observation_list,
                                           EncounterController encounterController, ConceptController conceptController,
-                                          ObservationController observationController) {
+                                          ObservationController observationController,Boolean isShrData) {
         super(activity,item_observation_list,encounterController, conceptController,observationController);
+        this.isShrData = isShrData;
     }
 
 
@@ -66,7 +70,7 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
     public void reloadData() {
         cancelBackgroundQueryTask();
         AsyncTask<Void,?,?> backgroundQueryTask = new ObservationsByEncounterBackgroundTask(this,
-                new EncountersByPatient(encounterController,observationController, patientUuid));
+                new EncountersByPatient(encounterController,observationController, patientUuid),isShrData);
         BackgroundTaskHelper.executeInParallel(backgroundQueryTask);
         setRunningBackgroundQueryTask(backgroundQueryTask);
     }
@@ -74,7 +78,7 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
     public void search(String query) {
         cancelBackgroundQueryTask();
         AsyncTask<Void,?,?> backgroundQueryTask = new ObservationsByEncounterBackgroundTask(this,
-                new EncountersBySearch(encounterController,observationController, patientUuid, query));
+                new EncountersBySearch(encounterController,observationController, patientUuid, query),isShrData);
         BackgroundTaskHelper.executeInParallel(backgroundQueryTask);
         setRunningBackgroundQueryTask(backgroundQueryTask);
     }

@@ -36,6 +36,9 @@ public class Constants {
     public static final String FORM_JSON_DISCRIMINATOR_CONSULTATION = "json-consultation";
     public static final String FORM_DISCRIMINATOR_CONSULTATION = "consultation";
     public static final String FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE = "json-demographics-update";
+    public static final String FORM_JSON_DISCRIMINATOR_SHR_ENCOUNTER = "json-shr-encounter";
+    public static final String FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION = "json-shr-registration";
+    public static final String FORM_JSON_DISCRIMINATOR_SHR_DEMOGRAPHICS_UPDATE = "json-shr-demographics-update";
 
     private static final String APP_EXTERNAL_DIR_ROOT =  Environment.getExternalStorageDirectory().getPath() + "/muzima";
     public static final String APP_MEDIA_DIR = APP_EXTERNAL_DIR_ROOT + "/media";
@@ -69,6 +72,7 @@ public class Constants {
         public static final int DOWNLOAD_PATIENT_ONLY = 9;
         public static final int SYNC_NOTIFICATIONS = 10;
         public static final int SYNC_REAL_TIME_UPLOAD_FORMS =11;
+        public static final int SYNC_SHR =12;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;
@@ -110,6 +114,293 @@ public class Constants {
     public static class SetupLogConstants{
         public static final String ACTION_SUCCESS_STATUS_LOG = "OK";
         public static final String ACTION_FAILURE_STATUS_LOG = "FAIL";
+    }
+
+    //This is a hack. Better to use configuration file from server side to obtain SHR definition
+    public static class Shr{
+
+        public static class KenyaEmr{
+
+            public static String SMART_CARD_RECORD_TYPE = "KenyaEmrShr";
+            public static class DEFAULT_SHR_USER{
+                public static final String id = "shr_user";
+            }
+            public static class DEFAULT_SHR_FACILITY {
+                public static final String MFL_CODE = "10829";
+            }
+
+            public static class LocationAttributeType{
+                public static class MASTER_FACILITY_CODE {
+                    public static final String name = "Master Facility Code";
+                    public static final String uuid = "4c4b11f6-44b0-4345-816b-bddfa093c583";
+                }
+            }
+
+            public static class PersonIdentifierType {
+                public static class CARD_SERIAL_NUMBER{
+                    public static final String name = "SMART CARD SERIAL NUMBER";
+                    public static final String uuid = "8f842498-1c5b-11e8-accf-0ed5f89f718b";
+                    public static final String shr_name = "CARD_SERIAL_NUMBER";
+                }
+                public static class CCC_NUMBER{
+                    public static final String name = "UNIQUE PATIENT NUMBER/CCC No";
+                    public static final String uuid = "05ee9cf4-7242-4a17-b4d4-00f707265c8a";
+                    public static final String shr_name = "CCC_NUMBER";
+                }
+                public static class GODS_NUMBER{
+                    public static final String name = "GODS NUMBER";
+                    public static final String uuid = "9aedb9ae-1cbd-11e8-accf-0ed5f89f718b";
+                    public static final String shr_name = "GODS_NUMBER";
+                }
+                public static class HEI_NUMBER{
+                    public static final String name = "HEI UNIQUE NUMBER";
+                    public static final String uuid = "0691f522-dd67-4eeb-92c8-af5083baf338";
+                    public static final String shr_name = "HEI_NUMBER";
+                }
+                public static class HTS_NUMBER{
+                    public static final String name = "HTS NUMBER";
+                    public static final String uuid = "e6af3782-1cb3-11e8-accf-0ed5f89f718b";
+                    public static final String shr_name = "HTS_NUMBER";
+                }
+                public static class NATIONAL_ID{
+                    public static final String name = "NATIONAL ID";
+                    public static final String uuid = "49af6cdc-7968-4abb-bf46-de10d7f4859f";
+                    public static final String shr_name = "NATIONAL_ID";
+                }
+            }
+
+            public static class CONCEPTS {
+                public static class ANC_NUMBER {
+                    public static final String name = "ANC NUMBER";
+                    public static final String uuid = "161655AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+                    public static final String shr_name = "ANC_NUMBER";
+                }
+
+                public static class HIV_TESTS {
+                    public static class TEST_RESULT {
+                        public static final String name = "FINAL HIV RESULTS";
+                        public static final int concept_id = 159427;
+                        public static final String type = "Coded";
+
+                        public static class ANSWERS {
+                            public static class POSITIVE {
+                                public static final String name = "POSITIVE";
+                                public static final int concept_id = 703;
+                            }
+
+                            public static class NEGATIVE {
+                                public static final String name = "NEGATIVE";
+                                public static final int concept_id = 664;
+                            }
+
+                            public static class INCONCLUSIVE {
+                                public static final String name = "INCONCLUSIVE";
+                                public static final int concept_id = 1138;
+                            }
+                        }
+                    }
+
+                    public static class TEST_TYPE {
+                        public static final String name = "TYPE OF TEST";
+                        public static final int concept_id = 162084;
+                        public static final String type = "Coded";
+
+                        public static class ANSWERS {
+                            public static class SCREENING {
+                                public static final String name = "SCREENING";
+                                public static final int concept_id = 162080;
+                            }
+
+                            public static class CONFIRMATORY {
+                                public static final String name = "CONFIRMATORY";
+                                public static final int concept_id = 162082;
+                            }
+                        }
+                    }
+
+                    public static class TEST_STRATEGY {
+                        public static final String name = "HIV TESTING SERVICES STRATEGY";
+                        public static final int concept_id = 164956;
+                        public static final String type = "Coded";
+
+                        public static class ANSWERS {
+                            public static class HP {
+                                public static final String name = "HP";
+                                public static final int concept_id = 164163;
+                            }
+
+                            public static class NP {
+                                public static final String name = "NP";
+                                public static final int concept_id = 164953;
+                            }
+
+                            public static class VI {
+                                public static final String name = "VI";
+                                public static final int concept_id = 164954;
+                            }
+
+                            public static class VS {
+                                public static final String name = "VS";
+                                public static final int concept_id = 164955;
+                            }
+
+                            public static class HB {
+                                public static final String name = "HB";
+                                public static final int concept_id = 159938;
+                            }
+
+                            public static class MO {
+                                public static final String name = "MO";
+                                public static final int concept_id = 159939;
+                            }
+                        }
+                    }
+
+                    public static class TEST_FACILITY {
+                        public static final String name = "TEST FACILITY";
+                        public static final int concept_id = 162724;
+                        public static final String type = "Text";
+                    }
+
+                    public static class PROVIDER_DETAILS {
+                        public static class NAME {
+                            public static final String name = "NAME";
+                            public static final int concept_id = 1473;
+                            public static final String type = "Text";
+                        }
+
+                        public static class ID {
+                            public static final String name = "ID";
+                            public static final int concept_id = 163161;
+                            public static final String type = "Text";
+                        }
+                    }
+
+                    public static class ENCOUNTER {
+                        public static final String ENCOUNTER_TYPE_UUID = "9bc15e94-2794-11e8-b467-0ed5f89f718b";
+                    }
+
+                    public static class FORM {
+                        public static final String FORM_UUID = "9bc157d2-2794-11e8-b467-0ed5f89f718b";
+                    }
+                }
+                public static class IMMUNIZATION {
+                    public static class GROUP {
+                        public static final String name = "IMMUNIZATION";
+                        public static final int concept_id = 1421;
+                    }
+                    public static class VACCINE {
+                        public static final String name = "VACCINE";
+                        public static final int concept_id = 984;
+                        public static class ANSWERS {
+                            public static class BCG {
+                                public static final String name = "BCG";
+                                public static final int concept_id = 886;
+                            }
+                            public static class OPV_AT_BIRTH {
+                                public static final String name = "OPV_AT_BIRTH";
+                                public static final int concept_id = 783;
+                                public static final int sequence = 0;
+                            }
+                            public static class OPV1 {
+                                public static final String name = "OPV1";
+                                public static final int concept_id = 783;
+                                public static final int sequence = 1;
+                            }
+                            public static class OPV2 {
+                                public static final String name = "OPV2";
+                                public static final int concept_id = 783;
+                                public static final int sequence = 2;
+                            }
+                            public static class OPV3 {
+                                public static final String name = "OPV3";
+                                public static final int concept_id = 783;
+                                public static final int sequence = 3;
+                            }
+                            public static class IPV {
+                                public static final String name = "IPV";
+                                public static final int concept_id = 1422;
+                                public static final int sequence = 1;
+                            }
+                            public static class PCV10_1 {
+                                public static final String name = "PCV10-1";
+                                public static final int concept_id = 162342;
+                                public static final int sequence = 1;
+                            }
+                            public static class PCV10_2 {
+                                public static final String name = "PCV10-2";
+                                public static final int concept_id = 162342;
+                                public static final int sequence = 2;
+                            }
+                            public static class PCV10_3 {
+                                public static final String name = "PCV10-3";
+                                public static final int concept_id = 162342;
+                                public static final int sequence = 3;
+                            }
+                            public static class ROTA1 {
+                                public static final String name = "ROTA1";
+                                public static final int concept_id = 83531;
+                                public static final int sequence = 1;
+                            }
+                            public static class ROTA2 {
+                                public static final String name = "ROTA2";
+                                public static final int concept_id = 83531;
+                                public static final int sequence = 2;
+                            }
+                            public static class MEASLES6 {
+                                public static final String name = "MEASLES6";
+                                public static final int concept_id = 36;
+                                public static final int sequence = 1;
+                            }
+                            public static class MEASLES9 {
+                                public static final String name = "MEASLES9";
+                                public static final int concept_id = 162586;
+                                public static final int sequence = 1;
+                            }
+                            public static class MEASLES18 {
+                                public static final String name = "MEASLES18";
+                                public static final int concept_id = 162586;
+                                public static final int sequence = 2;
+                            }
+                            public static class PENTA1 {
+                                public static final String name = "PENTA1";
+                                public static final int concept_id = 159694;
+                                public static final int sequence = 1;
+                            }
+                            public static class PENTA2 {
+                                public static final String name = "PENTA2";
+                                public static final int concept_id = 159694;
+                                public static final int sequence = 2;
+                            }
+                            public static class PENTA3 {
+                                public static final String name = "PENTA3";
+                                public static final int concept_id = 159694;
+                                public static final int sequence = 3;
+                            }
+                        }
+                    }
+
+                    public static class SEQUENCE {
+                        public static final String name = "SEQUENCE";
+                        public static final int concept_id = 1418;
+                    }
+
+                    public static class ENCOUNTER {
+                        public static final String ENCOUNTER_TYPE_UUID = "9bc15e94-2794-11e8-b467-0ed5f89f718b";
+                    }
+
+                    public static class FORM {
+                        public static final String FORM_UUID = "9bc157d2-2794-11e8-b467-0ed5f89f718b";
+                    }
+                }
+            }
+
+            public static class REGISTRATION {
+                public static class FORM {
+                    public static final String FORM_UUID = "d84e4db1-149b-43a6-bb9a-d66317b5aceb";
+                }
+            }
+        }
     }
 
 }

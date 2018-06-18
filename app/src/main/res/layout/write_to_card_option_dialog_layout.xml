@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:background="@color/theme_color"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+	
+	<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+		
+		<ImageView
+				android:contentDescription="@string/shr_card_text"
+				android:layout_marginTop="8dp"
+				android:src="@drawable/ic_action_shr_card"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+		
+		<TextView
+				android:textColor="@android:color/white"
+				android:textSize="14sp"
+				android:layout_marginLeft="4dp"
+				android:layout_marginTop="16dp"
+				android:text="Write shr to card"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+	
+	</LinearLayout>
+	
+	<View
+			android:layout_marginBottom="8dp"
+			android:layout_marginTop="8dp"
+			android:background="@android:color/holo_blue_bright"
+			android:layout_width="match_parent"
+			android:layout_height="1dp"/>
+	
+	<TextView
+			android:id="@+id/patent_dialog_message_textview"
+			android:textColor="@android:color/white"
+			android:textAlignment="center"
+			android:textSize="14sp"
+			android:layout_marginLeft="16dp"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" />
+	
+	<RelativeLayout
+			android:layout_marginTop="1dp"
+			android:layout_below="@+id/patent_dialog_message_textview"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+		
+		<LinearLayout
+				android:layout_margin="4dp"
+				android:orientation="horizontal"
+				android:layout_alignParentEnd="true"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content">
+			
+			<Button
+					android:id="@+id/yes_shr_search_dialog"
+					android:background="@color/theme_color"
+					android:text="@string/general_yes"
+					android:textColor="@android:color/white"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+			
+			<Button
+					android:id="@+id/no_shr_search_dialog"
+					android:background="@color/theme_color"
+					android:text="@string/general_no"
+					android:textColor="@android:color/white"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+		
+		
+		</LinearLayout>
+	
+	
+	
+	</RelativeLayout>
+
+</LinearLayout>

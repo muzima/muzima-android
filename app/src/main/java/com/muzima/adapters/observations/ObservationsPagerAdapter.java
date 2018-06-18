@@ -27,11 +27,13 @@ public class ObservationsPagerAdapter extends MuzimaPagerAdapter implements Sear
 
     private static final int TAB_BY_DATE = 0;
     private static final int TAB_BY_ENCOUNTERS = 1;
-    private ObservationsListFragment observationByDateListFragment;
+    private ObservationsListFragment observationByConceptListFragment;
     ObservationsListFragment observationByEncountersFragment;
+    private Boolean isShrData;
 
-    public ObservationsPagerAdapter(Context applicationContext, FragmentManager supportFragmentManager) {
+    public ObservationsPagerAdapter(Context applicationContext, FragmentManager supportFragmentManager,Boolean isShrData) {
         super(applicationContext, supportFragmentManager);
+        this.isShrData = isShrData;
     }
 
     @Override
@@ -41,14 +43,12 @@ public class ObservationsPagerAdapter extends MuzimaPagerAdapter implements Sear
         ObservationController observationController = ((MuzimaApplication) context.getApplicationContext()).getObservationController();
         EncounterController encounterController = ((MuzimaApplication) context.getApplicationContext()).getEncounterController();
 
-        observationByDateListFragment =
-                ObservationsByConceptFragment.newInstance(conceptController, observationController);
-        observationByEncountersFragment = ObservationByEncountersFragment.newInstance(encounterController, observationController);
+        observationByConceptListFragment =
+                ObservationsByConceptFragment.newInstance(conceptController, observationController,isShrData);
+        observationByEncountersFragment = ObservationByEncountersFragment.newInstance(encounterController, observationController,isShrData);
 
-        pagers[TAB_BY_DATE] = new PagerView(context.getString(R.string.title_observations_by_concepts), observationByDateListFragment);
+        pagers[TAB_BY_DATE] = new PagerView(context.getString(R.string.title_observations_by_concepts), observationByConceptListFragment);
         pagers[TAB_BY_ENCOUNTERS] = new PagerView(context.getString(R.string.title_observations_by_encounters), observationByEncountersFragment);
-
-
     }
 
     @Override
@@ -65,7 +65,7 @@ public class ObservationsPagerAdapter extends MuzimaPagerAdapter implements Sear
     }
 
     public void cancelBackgroundQueryTasks() {
-        observationByDateListFragment.onQueryTaskCancelled();
+        observationByConceptListFragment.onQueryTaskCancelled();
         observationByEncountersFragment.onQueryTaskCancelled();
     }
 }

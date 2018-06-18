@@ -37,6 +37,7 @@ import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
+import com.muzima.util.MuzimaLogger;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.MainActivity;
 import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
@@ -277,6 +278,8 @@ public class LoginActivity extends Activity {
         @Override
         protected void onPostExecute(Result result) {
             if (result.status == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
+                MuzimaLogger.log(((MuzimaApplication)getApplicationContext()).getMuzimaContext(),"LOGIN_SUCCESS",
+                        "{\"userId\":\"" +result.credentials.getUserName()+"\"}");
                 new CredentialsPreferenceService(getApplicationContext()).saveCredentials(result.credentials);
                 ((MuzimaApplication) getApplication()).restartTimer();
                 LocalePreferenceService localePreferenceService = ((MuzimaApplication) getApplication()).getLocalePreferenceService();
@@ -287,6 +290,8 @@ public class LoginActivity extends Activity {
                 downloadMissingServerSettings();
                 startNextActivity();
             } else {
+                MuzimaLogger.log(((MuzimaApplication)getApplicationContext()).getMuzimaContext(),"LOGIN_FAILURE",
+                        "{\"userId\":\"" +result.credentials.getUserName()+"\"}");
                 Toast.makeText(getApplicationContext(), getErrorText(result), Toast.LENGTH_SHORT).show();
                 if (authenticatingText.getVisibility() == View.VISIBLE || flipFromLoginToAuthAnimator.isRunning()) {
                     flipFromLoginToAuthAnimator.cancel();

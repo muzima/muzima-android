@@ -17,21 +17,4 @@
         android:icon="@drawable/ic_search"
         custom:showAsAction="always"
         android:title="@string/hint_client_search"/>
-    <item
-            android:id="@+id/action_settings"
-            android:orderInCategory="1"
-            custom:showAsAction="never"
-            android:title="@string/general_settings"/>
-    <item
-            android:id="@+id/action_help"
-            android:orderInCategory="2"
-            custom:showAsAction="never"
-            android:title="@string/general_help">
-    </item>
-    <item
-            android:id="@+id/action_logout"
-            android:orderInCategory="3"
-            custom:showAsAction="never"
-            android:title="@string/general_logout">
-    </item>
 </menu>

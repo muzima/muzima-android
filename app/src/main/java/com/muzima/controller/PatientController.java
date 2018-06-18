@@ -292,6 +292,9 @@ public class PatientController {
         public PatientLoadException(Throwable e) {
             super(e);
         }
+        public PatientLoadException(String message) {
+            super(message);
+        }
     }
 
     public static class PatientDeleteException extends Throwable {

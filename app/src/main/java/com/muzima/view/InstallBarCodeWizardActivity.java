@@ -18,7 +18,7 @@ import android.widget.Button;
 import android.view.Menu;
 import com.muzima.R;
 import com.muzima.service.LandingPagePreferenceService;
-import com.muzima.utils.barcode.IntentIntegrator;
+import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.view.concept.CustomConceptWizardActivity;
 
 public class InstallBarCodeWizardActivity extends BaseActivity {
@@ -56,8 +56,8 @@ public class InstallBarCodeWizardActivity extends BaseActivity {
         installBarCodeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                IntentIntegrator intentIntegrator = new IntentIntegrator(InstallBarCodeWizardActivity.this);
-                AlertDialog alertDialog = intentIntegrator.checkForScannerAppInstallation();
+                BarCodeScannerIntentIntegrator barCodeScannerIntentIntegrator = new BarCodeScannerIntentIntegrator(InstallBarCodeWizardActivity.this);
+                AlertDialog alertDialog = barCodeScannerIntentIntegrator.checkForScannerAppInstallation();
                 if (alertDialog == null) {
                     findViewById(R.id.scanner_already_exists).setVisibility(View.VISIBLE);
                     Button skip = (Button)findViewById(R.id.skip);

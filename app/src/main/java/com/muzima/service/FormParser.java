@@ -11,6 +11,7 @@
 package com.muzima.service;
 
 import android.util.Log;
+import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
@@ -39,12 +40,12 @@ import static com.muzima.utils.DateUtils.parse;
 
 public class FormParser {
 
-    private final PatientController patientController;
     private final LocationController locationController;
     private final ProviderController providerController;
     private final ConceptController conceptController;
     private final EncounterController encounterController;
     private final ObservationController observationController;
+    private final PatientController patientController;
     private final ObservationParserUtility observationParserUtility;
 
     private XmlPullParser parser;
@@ -53,15 +54,14 @@ public class FormParser {
     private Encounter encounter;
     private List<Observation> observations;
 
-    public FormParser(PatientController patientController, ConceptController conceptController, EncounterController encounterController, ObservationController observationController, LocationController locationController, ProviderController providerController, FormController formController) {
-        this(newPullParser(), patientController, conceptController, encounterController, observationController, locationController, providerController,formController);
+    public FormParser(MuzimaApplication muzimaApplication) {
 
-    }
-
-    public FormParser(XmlPullParser parser, PatientController patientController,
-                      ConceptController conceptController, EncounterController encounterController, ObservationController observationController,LocationController locationController, ProviderController providerController,FormController formController) {
-        this.encounterController = encounterController;
-        this.observationController = observationController;
+        this.locationController = muzimaApplication.getLocationController();
+        this.providerController = muzimaApplication.getProviderController();
+        this.conceptController = muzimaApplication.getConceptController();
+        this.encounterController = muzimaApplication.getEncounterController();
+        this.observationController = muzimaApplication.getObservationController();
+        this.patientController = muzimaApplication.getPatientController();
         try {
             if (parser != null) {
                 parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
@@ -70,11 +70,7 @@ public class FormParser {
             throw new ParseFormException(e);
         }
         this.parser = parser;
-        this.patientController = patientController;
-        this.locationController = locationController;
-        this.providerController = providerController;
-        this.conceptController = conceptController;
-        this.observationParserUtility = new ObservationParserUtility(conceptController,locationController,providerController,formController);
+        this.observationParserUtility = new ObservationParserUtility(muzimaApplication);
     }
 
     public List<Observation> parseAndSaveObservations(String xml, String formDataUuid)
@@ -213,7 +209,7 @@ public class FormParser {
     private Observation getObservation(Stack<String> conceptNames, String codedObservationName)
             throws ConceptController.ConceptFetchException, ConceptController.ConceptParseException,
             ObservationController.ParseObservationException {
-        Concept conceptEntity = observationParserUtility.getConceptEntity(conceptNames.peek());
+        Concept conceptEntity = observationParserUtility.getConceptEntity(conceptNames.peek(),false);
         return observationParserUtility.getObservationEntity(conceptEntity, codedObservationName);
     }
 
