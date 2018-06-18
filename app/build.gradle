@@ -97,7 +97,6 @@ dependencies {
         exclude(module: 'guice')
     }
     compile 'com.android.support:support-v13:23.4.0'
-    testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
 }
 task wrapper(type: Wrapper) {
     gradleVersion = '3.1'
