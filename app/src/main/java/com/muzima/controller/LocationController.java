@@ -112,7 +112,7 @@ public class LocationController {
 
     public List<LocationAttributeType> getLocationAttributesByName(String name) throws LocationLoadException {
         try {
-            return locationService.getLocationAttributesTypeByName(name);
+            return locationService.getLocationAttributeTypesByName(name);
         } catch (IOException e) {
             throw new LocationLoadException(e);
         } catch (ParseException e) {

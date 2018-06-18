@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
+    <string name="add_individual_observation_text">Ongeza Uchunguzi wa daktari</string>
+
     <string name="app_name">mUzima</string>
     <string name="app_title">Mfumo wa mUzima kwa watoa huduma za afya</string>
 
@@ -73,6 +75,15 @@
     <string formatted="false" name="error_username_invalid_format">Herufi isiyoruhusiwa katika jina. Zifuatazo ni herufi zisizoruhusiwa: %s</string>
     <string name="error_wizard_interrupted">Sogora imekatizwa ikiwa kazini, tafadhali toka nje na uianzishe sogora tena.</string>
 
+    <string name="failure_obtain_smartcard_record">Haikuweza kupata rekodi ya smartcard ya kuandika kadi.</string>
+    <string name="failure_obtaining_card_serial_number">Haikuweza kupata serial ya kadi</string>
+    <string name="failure_reading_card">Kadi ya Kusoma Imeshindwa</string>
+    <string name="failure_writing_smartcard">Imeshindwa kuandika data ya kadi ya Smart.</string>
+
+    <string name="form_encounter_date">Tarehe ya kukutana</string>
+    <string name="form_encounter_location">Eneo la kukutana</string>
+    <string name="form_encounter_provider">Mtoa huduma</string>
+
     <string name="general_accept">Kubali</string>
     <string name="general_agree">Afiki</string>
     <string name="general_alert">Tahadhari!</string>
@@ -106,6 +117,8 @@
     <string name="general_medium">Wastani</string>
     <string name="general_next">Ijayo/Ingine</string>
     <string name="general_no">Hapana</string>
+    <string name="general_not_available_text">Haipatikani</string>
+    <string name="general_notice">Angalia</string>
     <string name="general_notices">Ilani/Tangazo</string>
     <string name="general_notification">Taarifa/ Eneo la taarifa</string>
     <string name="general_notifications">Taarifa/ Eneo la taarifa</string>
@@ -115,6 +128,8 @@
     <string name="general_previous">lililopita/Awali</string>
     <string name="general_progress_message">Jambo hili huenda likachukua muda/kipindi fulani</string>
     <string name="general_providers">watoa huduma</string>
+    <string name="general_requirement">Requirement</string>
+    <string name="general_retry">JARIBU TENA</string>
     <string name="general_save">Hifadhi</string>
     <string name="general_search">Tafuta</string>
     <string name="general_server">Seva</string>
@@ -123,6 +138,7 @@
     <string name="general_synced">iliyo landanishwa</string>
     <string name="general_tags">Tagi</string>
     <string name="general_thank_you">Asante</string>
+    <string name="general_unexpected_error_occurred">Hitilafu isiyotarajiwa</string>
     <string name="general_upload">Pakia</string>
     <string name="general_username">jina la mtumiaji.</string>
     <string name="general_view_encounter">Tazama inkaunta</string>
@@ -139,6 +155,7 @@
     <string name="hint_audio_record">Rekodi au chagua sauti</string>
     <string name="hint_authentication_progress">Inakutambulisha….</string>
     <string name="hint_barcode_scanner_setup">Unahitaji mfumo wa kusoma baakodi kuandikisha wateja kwa simu. Tafadhali hakikisha kama mfumo huo upo tayari katika simu yako ama la.</string>
+    <string name="hint_card_not_empty">Kadi si tupu. Tafadhali tumia kadi mpya.</string>
     <string name="hint_check_digit_validation_failure">Tafadhali weka tarakimu zinazolingana na kanuni za kuangalia tarakimu</string>
     <string name="hint_client_local_search">Utafutaji wako umehusisha id ya mteja, jina la kupewa, jina la kati na jina la familia na umefanyika katika kifaa pekee.</string>
     <string name="hint_client_remote_search">Utafutaji wako umehusisha namabari ya mteja, jina la kupewa, jina la kati na jina la familia na umefanyika katika seva.</string>
@@ -160,6 +177,8 @@
     <string name="hint_consultation_consultant_validation_failure">Tafadhali weka mshauri kutoka kwenye orodha ya washauri wapatikanao.</string>
     <string name="hint_crash_dialog">Tatizo lisilotarajiwa limetokea linaloilazimisha mUzima isimame. Tafadhali tusaidie kutatua tatizo hili kwa kututumia data zinazohusiana na tatizo hili. Unachotakiwa kufanya ni kubofya OK basi.</string>
     <string name="hint_crash_dialog_comment_prompt">Tafadhali weka maoni yako kwenye sehemu ilioko chini kuhusu tatizo lililoko. </string>
+    <string name="hint_create_new_shr">Mteja hana SHR. Je, unataka kujenga SHR mpya na kuandika kadi?
+    </string>
     <string name="hint_current_or_past_date_validation_failure">Tafadhali weka tarehe ya mapema ama inayokadiriana na tarehe ya leo.</string>
     <string name="hint_custom_concept_help">Katika sehemu hii unaainisha dhana ambazo data zake zitaambatanishwa katika upakuaji utakaofanyika baadaye</string>
     <string name="hint_custom_location_help">Katika sehemu hii utapakua sehemu/mahali ambako patatokea katika fomu.</string>
@@ -168,6 +187,7 @@
     <string formatted="false" name="hint_dashboard_cohorts_description">%d iliyo/yenye kulandanishwa, %d Jumla </string>
     <string formatted="false" name="hint_dashboard_forms_description">%d Pungufu,%d kamili.</string>
     <string formatted="false" name="hint_dashboard_notifications_description">%d Mpya, %d Jumla</string>
+    <string name="hint_default_encounter_location">Lokesheni iliyochaguliwa itakuwa eneo la kukutana na chaguo-msingi kwa fomu zote</string>
     <string name="hint_default_encounter_provider">Mtumiaji aliyeingia atatumika kama mtoa huduma wa inkaunta ikiwa hatajazwa.</string>
     <string name="hint_drawer_close">droo ya tagi funga</string>
     <string name="hint_drawer_open">droo ya tagi fungua</string>
@@ -182,6 +202,7 @@
     <string name="hint_guided_setup">Tafadhali chagua usanidi uliowekwa kisha mUzima itakufanyia yaliyosalia.</string>
     <string name="hint_image_caption_prompt">Tafadhali ingiza maelezo mafupi kwa ajili ya picha/taswira</string>
     <string name="hint_incomplete_form_unavailable">Fomu ambazo hazijakamilika zinakuwepo pale ambapo umehifadhi fomu ambazo hazikujazwa kikamilifu</string>
+    <string name="hint_install_psmart">Ungependa kusakinisha programu ya P-Smart?</string>
     <string formatted="false" name="hint_last_synced">imelandanishwa mwisho siku/tarehe: %s</string>
     <string name="hint_loading_progress">Inapakiwa…</string>
     <string name="hint_local_connection_unavailable">Tafadhali unganisha kifaa chako na ujaribu tena</string>
@@ -191,6 +212,7 @@
     <string name="hint_manage_provider">Pata watoa huduma wengine/zaidi kutoka kwenye Seva ama ondosha watoa huduma kutoka kwenye kifaa hichi.</string>
     <string name="hint_mandatory_question_validation_failure">Swali hili ni lazima lijibiwe.</string>
     <string name="hint_notification_sync">Hakikisha una mawasiliano na seva kisha bonyeza kitufe cha kupakia</string>
+    <string name="hint_opening_card_reader">Kufungua Kadi Reader</string>
     <string name="hint_option_none_exclusive_selection_validation_failure">Kama hakuna lolote lililochaguliwa, hamna chaguo lingine linaeza chaguliwa</string>
     <string name="hint_password_change">Je, Umebadili nywila yako muda mfupi uliopita?</string>
     <string name="hint_password_prompt">Tafadhali ingiza nywila</string>
@@ -207,11 +229,14 @@
     <string name="hint_server_url">URL ya seva</string>
     <string name="hint_server_url_prompt">Tafadhali ingiza URL ya seva</string>
     <string name="hint_session_timeout">Kama si amilifu kwa muda huu, mUzima itakutoa nje otomatiki</string>
+    <string name="hint_set_default_encounter_location_for_shr">Tafadhali weka eneo la kukutana na default ili kuwezesha kuandika kadi mpya
+    </string>
     <string name="hint_setting_refresh">Je, ungependa kuupakuwa tena mpangilio huu kutoka kwenye Seva.</string>
     <string name="hint_username_prompt">Tafadhali ingiza jina la mtumiaji</string>
     <string name="hint_video_caption_prompt">Tafadhali ingiza maelezo mafupi kwa ajili ya video hii</string>
     <string name="hint_video_record">Rekodi au chagua video</string>
     <string name="hint_wizard_form_download">Chagua kiolezo kimoja au zaidi kutoka katika orodha kisha bofya \'Ifuatayo\' ili kupakua</string>
+    <string name="hint_write_shr_to_card">Je, unataka kuandika Rekodi ya Afya ya Pamoja kwa kadi?</string>
 
     <string name="info_authentication_in_progress">Uthibitisho wa utambulisho unaendelea…</string>
     <string name="info_client_demographics_download">Upakuaji wa taarifa za kidemografia za wateja…</string>
@@ -358,9 +383,30 @@
     <string name="info_video_play_activity_unavailable">Tatizo: mfumo wa kucheza video haupo</string>
     <string name="info_video_record_activity_unavailable">Tatizo: mfumo wa kurekodi video haupo</string>
 
-    <string name="menu_form_data_sync">Landanisha data za fomu</string>
     <string name="menu_form_back_to_draft">rudi katika drafti</string>
-    <string name="menu_shr_data_sync" formatted="false">Landanisha data za SHR (%d)</string>
+    <string name="menu_form_data_sync">Landanisha data za fomu</string>
+    <string formatted="false" name="menu_shr_data_sync">Landanisha data za SHR (%d)</string>
+
+    <string name="message_missing_form_encounter_details_error">lazima yatolewa</string>
+
+    <string name="no_default_encounter_location">Hakuna lokesheni ya chaguo-msingi</string>
+
+    <string name="patient_shr_search_dialog_title">Utafutaji wa SHR</string>
+    <string name="patient_shr_search_title_text">Utafutaji wa SHR</string>
+
+    <string name="registering_patient_message_title_text">Kuandikisha mteja katika mUzima ...</string>
+
+    <string name="scan_card_id_title">Futa Kitambulisho cha kadi</string>
+
+    <string name="search_patient_on_server_option_title_text">
+        Mteja hapatikani kwenye kifaa, ungependa kutafuta seva?
+    </string>
+
+    <string name="shr_card_text">Kadi ya SHR</string>
+    <string name="shr_data_title_text">SHR Data</string>
+    <string name="shr_extracted_data_text">Data zilizochukuliwa kutoka SHR</string>
+
+    <string name="success_writing_smartcard">Data ya kadi ya Smart imeandikwa kwa mafanikio.</string>
 
     <string name="title_about_dashboard_help_html">Kuhusu dashibodi</string>
     <string name="title_activity_audio">Ongeza sauti</string>
@@ -392,6 +438,7 @@
     <string name="title_crash_dialog">Mfumo wa mUzima umepatwa na dosari.</string>
     <string name="title_data_reset">Hatua 3: Rudisha data kama mwanzo</string>
     <string name="title_data_synchronize">hatua 2: Ulandanishi wa data katika hifadhi ya kifaa unafanyika</string>
+    <string name="title_default_encounter_location">Lokesheni ya Kikawaida</string>
     <string name="title_default_encounter_provider">Mtoa huduma wa inkaunta aliyechaguliwa</string>
     <string name="title_disclaimer">Utoaji wa leseni,kibadhi cha ilani yakujitoa hatiani na kizuizi cha dhima yenye kikomo</string>
     <string name="title_duplicate_form_data_warning">Onyo la fomu kujazwa zaidi ya mara moja na data zilezile</string>
@@ -414,6 +461,7 @@
     <string name="title_image_capture">Chukua picha</string>
     <string name="title_image_choose">Chagua picha</string>
     <string name="title_initial_setup_guide">Muongozo wa kutumia muzima kwa mara ya kwanza</string>
+    <string name="title_install_psmart">Sakinisha programu ya P-Smart</string>
     <string name="title_introduction_video">utangulizi wa video kwa muzima</string>
     <string name="title_landing_page">Ukurasa wa mwanzo kwenye mfumo.</string>
     <string name="title_local_client_search_help_video">Utafutaji wa mteja (wa ndani)</string>
@@ -425,6 +473,7 @@
     <string name="title_manage_location">Dhibiti sehemu</string>
     <string name="title_manage_provider">Dhibiti watoa huduma</string>
     <string name="title_media_preview">Hakiki chombo cha habari</string>
+    <string name="title_missing_form_encounter_details_error">Maelezo ya kukutana hayapo</string>
     <string name="title_muzima_disclaimer">Ilani ya kujitoa hatiani</string>
     <string name="title_muzima_training_manual">Maelekezo ya kufundishia mUzima</string>
     <string name="title_observations_by_concepts">Kwa dhana husika</string>
@@ -453,22 +502,6 @@
     <string name="warning_registration_form_data_delete">Kitendo hichi kitapelekea kufutwa kwa data za usajili hivyo basi rekodi ya mgojwa pia itafutwa kutoka kwenye kifaa hichi. Je una uhakika wa kuendelea? </string>
     <string name="warning_setting_download_failure">Imeshindikana kupakua kisasisho cha utaratibu</string>
     <string name="warning_switch_server">Ubadilishaji wa seva: Kitendo hiki kitafuta data zote za mUzima katika kifaa chako, ikiwa ni pamoja na fomu zozote ambazo hazijakamilika bado. Una hakika unataka kubadili mpangilio huu?</string>
-    <string name="shr_data_title_text">SHR Data</string>
-    <string name="add_individual_observation_text">Ongeza Uchunguzi wa daktari</string>
-    <string name="scan_card_id_title">Futa Kitambulisho cha kadi</string>
-    <string name="patient_shr_search_dialog_title">Utafutaji wa SHR</string>
-    <string name="shr_card_text">Kadi ya SHR</string>
-    <string name="patient_shr_search_title_text">Utafutaji wa SHR</string>
-    <string name="search_patient_on_server_option_title_text">
-        Mteja haipatikani kwenye kifaa, ungependa kutafuta seva?
-    </string>
+
     <string name="write_shr_to_card_text">Andika SHR kwa Kadi</string>
-    <string name="shr_extracted_data_text">Data zilizochukuliwa kutoka SHR</string>
-    <string name="title_default_encounter_location">Lokesheni ya Kikawaida</string>
-    <string name="hint_default_encounter_location">
-        Lokesheni iliyochaguliwa itakuwa eneo la kukutana na default kwa fomu zote
-    </string>
-    <string name="no_default_encounter_location">Hakuna lokesheni ya default</string>
-    <string name="general_not_available_text">Haipatikani</string>
-    <string name="registering_patient_message_title_text">Kuandikisha mteja katika mUzima ...</string>
 </resources>
