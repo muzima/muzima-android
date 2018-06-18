@@ -46,7 +46,7 @@ import static java.text.MessageFormat.format;
 
 
 public class ProviderReportsFormActivity extends FormsActivityBase {
-    public static final String TAG = "ProviderReportsFormActivity";
+    public static final String TAG = ProviderReportsFormActivity.class.getSimpleName();
     public Provider provider;
     public FormController formController;
     private MuzimaProgressDialog progressDialog;
@@ -113,9 +113,9 @@ public class ProviderReportsFormActivity extends FormsActivityBase {
             totalLinkedCount();
             totalContactsCount();
         } catch (IOException e) {
-
+            Log.e(TAG,"Error generating report",e);
         } catch (JSONException e) {
-
+            Log.e(TAG,"Error generating report",e);
         }
 
 
@@ -145,15 +145,14 @@ public class ProviderReportsFormActivity extends FormsActivityBase {
         }
         for (FormData formData : allFormData) {
             if (!isRegistrationFormData(formData)) {
-                org.json.JSONObject object = new org.json.JSONObject(formData.getJsonPayload());
-                String formUuid = ((org.json.JSONObject) object.get("encounter")).get("encounter.form_uuid").toString();
+                JSONObject object = new JSONObject(formData.getJsonPayload());
+                String formUuid = ((JSONObject) object.get("encounter")).get("encounter.form_uuid").toString();
                if(formUuid.equals("84c21c60-1910-4e0a-8579-a303d94b6c7b")){                                                 // Selects HTS forms by UUID
                    htsFormData.add(formData);
                    count = htsFormData.size();
                }
             }
         }
-        System.out.println("Total tested"+count);
         return count;
     }
 
@@ -179,7 +178,7 @@ public class ProviderReportsFormActivity extends FormsActivityBase {
         }
         for (FormData formData : allFormData) {
             if (!isRegistrationFormData(formData)) {
-                org.json.JSONObject object = new org.json.JSONObject(formData.getJsonPayload());
+                JSONObject object = new JSONObject(formData.getJsonPayload());
                 String formUuid = ((org.json.JSONObject) object.get("encounter")).get("encounter.form_uuid").toString();
                 if (formUuid.equals("84c21c60-1910-4e0a-8579-a303d94b6c7b")) {                                                 // Selects HTS forms by UUID
                     String finalHIVResult = ((org.json.JSONObject) object.get("observation")).get("159427^FINAL HIV RESULTS^99DCT").toString();
@@ -191,7 +190,6 @@ public class ProviderReportsFormActivity extends FormsActivityBase {
 
             }
         }
-        System.out.println("Total positive"+count);
         return count;
     }
 
@@ -226,10 +224,8 @@ public class ProviderReportsFormActivity extends FormsActivityBase {
                         count = linkageFormData.size();
                     }
                 }
-
             }
         }
-        System.out.println("Total linked"+count);
         return count;
     }
 
@@ -245,20 +241,19 @@ public class ProviderReportsFormActivity extends FormsActivityBase {
 
         List<FormData> contactsFormData = new ArrayList<FormData>();
         List<FormData> allFormData = null;
-       // String[] contacts ={};
         try {
             allFormData = muzimaApplication.getFormController().getAllFormData(Constants.STATUS_COMPLETE);
         } catch (FormDataFetchException e) {
+            Log.e(TAG,"Error getting form data",e);
         }
         for (FormData formData : allFormData) {
             if (!isRegistrationFormData(formData)) {
                 org.json.JSONObject object = new org.json.JSONObject(formData.getJsonPayload());
                 String formUuid = ((org.json.JSONObject) object.get("encounter")).get("encounter.form_uuid").toString();
                 if (formUuid.equals("8ba71e39-bc0f-408a-9dbc-19982ffd0f14")) {                                                 // Selects contact listing forms by UUID
-                   String contactsObservation = ((org.json.JSONObject) object.get("observation")).get("160593^Expected^99DCT").toString();
+                   String contactsObservation = ((JSONObject) object.get("observation")).get("160593^Expected^99DCT").toString();
                     JSONArray jsonArray = new JSONArray(contactsObservation);
                        count = jsonArray.getJSONObject(0).length();
-                        //System.out.println("array length is: "+count);/*the result is 1! */
                     }
             }
         }
