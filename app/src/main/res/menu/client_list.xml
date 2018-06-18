@@ -11,7 +11,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
 	  xmlns:custom="http://schemas.android.com/apk/res-auto">
 	<item
-			android:id="@+id/scan"
+		android:id="@+id/scan_shr_card"
+		android:icon="@drawable/ic_action_write_card"
+		custom:showAsAction="always"
+		android:title="@string/scan_card_id_title"/>
+
+	<item
+		android:id="@+id/menu_client_add_icon"
+		android:icon="@drawable/ic_action_add_client"
+		android:title="@string/hint_client_search"
+		custom:showAsAction="always" />
+
+	<item
+			android:id="@+id/bar_card_scan"
 			android:icon="@drawable/barcode_icon"
 			custom:showAsAction="always"
 			android:title="@string/title_client_scan"/>
@@ -23,18 +35,13 @@
 			custom:showAsAction="always"
 			android:title="@string/hint_client_search"/>
 	<item
-			android:id="@+id/menu_client_add_icon"
-			android:icon="@drawable/ic_action_add_client"
-			custom:showAsAction="always"
-			android:title="@string/hint_client_search"/>
-	<item
 			android:id="@+id/menu_client_add_text"
 			custom:showAsAction="never"
 			android:title="@string/general_client_register"/>
 	<item
 			android:id="@+id/menu_complete_form_data"
 			custom:showAsAction="never"
-			android:title="@string/menu_complete_form_data_sync"/>
+			android:title="@string/menu_form_data_sync"/>
 	<item
 			android:id="@+id/menu_dashboard"
 			custom:showAsAction="never"

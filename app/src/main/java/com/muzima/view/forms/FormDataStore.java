@@ -45,7 +45,6 @@ public class FormDataStore {
         this.formController = formController;
         this.formData = formData;
         this.applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
-
     }
 
     @JavascriptInterface
@@ -55,7 +54,7 @@ public class FormDataStore {
         formData.setStatus(status);
         try {
             if (isRegistrationComplete(status)) {
-                Patient newPatient = formController.createNewPatient(formData);
+                Patient newPatient = formController.createNewPatient(applicationContext,formData);
                 formData.setPatientUuid(newPatient.getUuid());
                 formWebViewActivity.startPatientSummaryView(newPatient);
             }
@@ -105,8 +104,7 @@ public class FormDataStore {
     }
 
     public FormParser getFormParser() {
-        return new FormParser(applicationContext.getPatientController(), applicationContext.getConceptController(),
-                applicationContext.getEncounterController(), applicationContext.getObservationController(),applicationContext.getLocationController(),applicationContext.getProviderController(),applicationContext.getFormController());
+        return new FormParser(applicationContext);
     }
 
 

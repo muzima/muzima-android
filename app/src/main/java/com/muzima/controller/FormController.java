@@ -11,6 +11,7 @@
 package com.muzima.controller;
 
 import android.util.Log;
+import com.muzima.MuzimaApplication;
 import com.muzima.api.model.APIName;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Form;
@@ -70,6 +71,7 @@ import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_REGISTRATION;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION;
+import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION;
 import static com.muzima.utils.Constants.STATUS_UPLOADED;
 
 public class FormController {
@@ -391,6 +393,7 @@ public class FormController {
         try {
             formData.setSaveTime(new Date());
             formService.saveFormData(formData);
+
         } catch (IOException e) {
             throw new FormDataSaveException(e);
         }
@@ -452,14 +455,17 @@ public class FormController {
             List<FormData> allFormData = formService.getAllFormData(Constants.STATUS_COMPLETE);
             for (FormData formData : allFormData) {
                 Patient patient = patientService.getPatientByUuid(formData.getPatientUuid());
-                CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder()
-                        .withForm(formService.getFormByUuid(formData.getTemplateUuid()))
-                        .withFormDataUuid(formData.getUuid())
-                        .withPatient(patient)
-                        .withLastModifiedDate(formData.getSaveTime())
-                        .withEncounterDate(formData.getEncounterDate())
-                        .build();
-                completeForms.add(completeForm);
+                Form form = formService.getFormByUuid(formData.getTemplateUuid());
+                if(form != null) {
+                    CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder()
+                            .withForm(form)
+                            .withFormDataUuid(formData.getUuid())
+                            .withPatient(patient)
+                            .withLastModifiedDate(formData.getSaveTime())
+                            .withEncounterDate(formData.getEncounterDate())
+                            .build();
+                    completeForms.add(completeForm);
+                }
             }
         } catch (IOException e) {
             throw new FormFetchException(e);
@@ -490,12 +496,14 @@ public class FormController {
             List<FormData> allFormData = formService.getFormDataByPatient(patientUuid, Constants.STATUS_COMPLETE);
             for (FormData formData : allFormData) {
                 Form form = formService.getFormByUuid(formData.getTemplateUuid());
-                completePatientForms.add(new CompleteFormBuilder()
-                        .withForm(form)
-                        .withFormDataUuid(formData.getUuid())
-                        .withLastModifiedDate(formData.getSaveTime())
-                        .withEncounterDate(formData.getEncounterDate())
-                        .build());
+                if(form != null) {
+                    completePatientForms.add(new CompleteFormBuilder()
+                            .withForm(form)
+                            .withFormDataUuid(formData.getUuid())
+                            .withLastModifiedDate(formData.getSaveTime())
+                            .withEncounterDate(formData.getEncounterDate())
+                            .build());
+                }
             }
         } catch (IOException e) {
             throw new FormFetchException(e);
@@ -530,13 +538,13 @@ public class FormController {
         return result;
     }
 
-    public Patient createNewPatient(FormData formData) {
+    public Patient createNewPatient(MuzimaApplication muzimaApplication,FormData formData) {
         try {
             Patient patient;
             if(isGenericRegistrationHTMLFormData(formData)){
                 patient = new GenericRegistrationPatientJSONMapper().getPatient(formData.getJsonPayload(),patientController,settingController);
             } else if(isRegistrationHTMLFormData(formData)) {
-                patient = new HTMLPatientJSONMapper().getPatient(formData.getJsonPayload());
+                patient = new HTMLPatientJSONMapper().getPatient(muzimaApplication,formData.getJsonPayload());
             } else if(isRegistrationXMLFormData(formData)){
                 patient = new PatientJSONMapper(formData.getJsonPayload()).getPatient();
                 patientService.savePatient(patient);
@@ -558,11 +566,14 @@ public class FormController {
 
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_DISCRIMINATOR_REGISTRATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_REGISTRATION), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_SHR_DEMOGRAPHICS_UPDATE), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER), result);
-            return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER), result);
+            return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_SHR_ENCOUNTER), result);
         } catch (IOException e) {
             throw new UploadFormDataException(e);
         } catch (JSONException e) {

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:background="@android:color/white"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+	
+	<TextView
+			android:padding="14dp"
+			android:textColor="@android:color/white"
+			android:text="Encounter Details"
+			android:textSize="16sp"
+			android:textStyle="bold"
+			android:layout_marginBottom="8dp"
+			android:background="@android:color/holo_green_light"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/obs_details_header"/>
+	
+	<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+		
+		<TextView
+				android:id="@+id/encounter_date_textview"
+				android:text="Encounter Date:"
+				android:padding="8dp"
+				android:layout_alignParentTop="true"
+				android:textColor="@android:color/black"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		
+		<TextView
+				android:id="@+id/encounter_date_value_textview"
+				android:textColor="@android:color/black"
+				android:text="21/02/2018"
+				android:padding="8dp"
+				android:layout_marginEnd="16dp"
+				android:layout_alignParentEnd="true"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		
+		<TextView
+				android:id="@+id/encounter_type_textview"
+				android:text="Encounter Type:"
+				android:padding="8dp"
+				android:layout_below="@+id/encounter_date_textview"
+				android:textColor="@android:color/black"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		
+		<TextView
+				android:id="@+id/encounter_type_value_textview"
+				android:text="Single Encounter"
+				android:padding="8dp"
+				android:layout_marginEnd="16dp"
+				android:layout_alignParentEnd="true"
+				android:textColor="@android:color/black"
+				android:layout_below="@+id/encounter_date_value_textview"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		
+		<TextView
+				android:id="@+id/encounter_location_textview"
+				android:text="Encounter Location:"
+				android:padding="8dp"
+				android:layout_below="@+id/encounter_type_textview"
+				android:textColor="@android:color/black"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		
+		<TextView
+				android:id="@+id/encounter_location_value_textview"
+				android:layout_below="@+id/encounter_type_value_textview"
+				android:text="Mosoriat Hospital"
+				android:padding="8dp"
+				android:layout_marginEnd="16dp"
+				android:layout_alignParentEnd="true"
+				android:textColor="@android:color/black"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+	
+	
+	</RelativeLayout>
+	
+	<TextView
+			android:id="@+id/obs_details_second_header"
+			android:padding="14dp"
+			android:textColor="@android:color/white"
+			android:text="Provider Details"
+			android:textSize="16sp"
+			android:textStyle="bold"
+			android:background="@android:color/holo_green_light"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+	
+	<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+		
+		<TextView
+				android:id="@+id/provider_name_textview"
+				android:text="Provider Name:"
+				android:padding="8dp"
+				android:layout_alignParentTop="true"
+				android:textColor="@android:color/black"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		
+		<TextView
+				android:id="@+id/provider_name_value_textview"
+				android:textColor="@android:color/black"
+				android:text="Super User"
+				android:padding="8dp"
+				android:layout_marginEnd="16dp"
+				android:layout_alignParentEnd="true"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		
+		<TextView
+				android:id="@+id/provider_identify_type"
+				android:text="Provider Identifier:"
+				android:padding="8dp"
+				android:layout_below="@+id/provider_name_textview"
+				android:textColor="@android:color/black"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		
+		<TextView
+				android:id="@+id/provider_identify_type_value_textView"
+				android:text="Single Encounter"
+				android:padding="8dp"
+				android:layout_marginEnd="16dp"
+				android:layout_alignParentEnd="true"
+				android:textColor="@android:color/black"
+				android:layout_below="@+id/provider_name_value_textview"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+	
+	</RelativeLayout>
+	
+	<TextView
+			android:id="@+id/obs_details_third_header"
+			android:padding="14dp"
+			android:textColor="@android:color/white"
+			android:text="Concept Details"
+			android:textSize="16sp"
+			android:textStyle="bold"
+			android:background="@android:color/holo_green_light"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+	
+	<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+		
+		<TextView
+				android:id="@+id/concept_name_textview"
+				android:text="Concept Name:"
+				android:padding="8dp"
+				android:layout_alignParentTop="true"
+				android:textColor="@android:color/black"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		
+		<TextView
+				android:id="@+id/concept_name_value_textview"
+				android:textColor="@android:color/black"
+				android:text=""
+				android:padding="8dp"
+				android:layout_marginEnd="16dp"
+				android:layout_alignParentEnd="true"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		
+		<TextView
+				android:id="@+id/concept_description_textview"
+				android:text="Concept Descrition"
+				android:padding="8dp"
+				android:layout_below="@+id/concept_name_textview"
+				android:textColor="@android:color/black"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		
+		<TextView
+				android:id="@+id/concept_description_value_textview"
+				android:text="No description"
+				android:padding="8dp"
+				android:layout_marginEnd="16dp"
+				android:layout_alignParentEnd="true"
+				android:textColor="@android:color/black"
+				android:layout_below="@+id/concept_name_value_textview"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+	
+	</RelativeLayout>
+	
+	<TextView
+			android:id="@+id/obs_details_fourth_header"
+			android:padding="14dp"
+			android:textColor="@android:color/white"
+			android:textSize="16sp"
+			android:textStyle="bold"
+			android:text="Observation Details"
+			android:background="@android:color/holo_green_light"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+	
+	<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+		
+		<TextView
+				android:id="@+id/observation_value_textview"
+				android:text="Observation Value:"
+				android:padding="8dp"
+				android:layout_alignParentTop="true"
+				android:textColor="@android:color/black"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		
+		<TextView
+				android:id="@+id/observertion_value_indicator_textview"
+				android:textColor="@android:color/black"
+				android:text=""
+				android:padding="8dp"
+				android:layout_marginEnd="16dp"
+				android:layout_alignParentEnd="true"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		
+		<TextView
+				android:id="@+id/observation_description_textview"
+				android:text="Captured Date:"
+				android:padding="8dp"
+				android:layout_below="@+id/observation_value_textview"
+				android:textColor="@android:color/black"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		
+		<TextView
+				android:id="@+id/observation_description_value_textview"
+				android:text="No description"
+				android:padding="8dp"
+				android:layout_marginEnd="16dp"
+				android:layout_alignParentEnd="true"
+				android:textColor="@android:color/black"
+				android:layout_below="@+id/observertion_value_indicator_textview"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+	
+	</RelativeLayout>
+
+</LinearLayout>

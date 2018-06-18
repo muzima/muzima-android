@@ -19,10 +19,8 @@ import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Concept;
-import com.muzima.api.model.Form;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Encounter;
-import com.muzima.api.model.EncounterType;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Patient;
@@ -33,8 +31,7 @@ import com.muzima.controller.LocationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.ProviderController;
-import com.muzima.model.collections.IncompleteForms;
-import com.muzima.model.observation.Concepts;
+import com.muzima.model.shr.kenyaemr.KenyaEmrSHRModel;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.utils.Constants;
@@ -43,14 +40,13 @@ import net.minidev.json.JSONValue;
 import org.json.JSONException;
 import com.muzima.controller.EncounterController;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -104,9 +100,10 @@ public class HTMLFormDataStore {
             if(status.equals("complete")) {
                 encounterDetailsValidityStatus = areMandatoryEncounterDetailsInForm(jsonPayload);
             }
+
             if(encounterDetailsValidityStatus) {
                 if (isRegistrationComplete(status)) {
-                    Patient newPatient = formController.createNewPatient(formData);
+                    Patient newPatient = formController.createNewPatient(application,formData);
                     formData.setPatientUuid(newPatient.getUuid());
                     formWebViewActivity.startPatientSummaryView(newPatient);
                 }
@@ -204,8 +201,7 @@ public class HTMLFormDataStore {
 
     public HTMLFormObservationCreator getFormParser() {
         MuzimaApplication applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
-        return new HTMLFormObservationCreator(applicationContext.getPatientController(), applicationContext.getConceptController(),
-                applicationContext.getEncounterController(), applicationContext.getObservationController(),applicationContext.getLocationController(),applicationContext.getProviderController(),applicationContext.getFormController());
+        return new HTMLFormObservationCreator(applicationContext);
     }
     private boolean isRegistrationComplete(String status) {
         return formController.isRegistrationFormData(formData) && status.equals(Constants.STATUS_COMPLETE);

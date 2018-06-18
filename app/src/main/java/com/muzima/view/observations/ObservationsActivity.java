@@ -10,11 +10,16 @@
 
 package com.muzima.view.observations;
 
+import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.support.v7.widget.SearchView;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.TextView;
+import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsPagerAdapter;
 import com.muzima.api.model.Patient;
@@ -29,6 +34,8 @@ public class ObservationsActivity extends BroadcastListenerActivity {
     private ViewPager viewPager;
     private ObservationsPagerAdapter observationsPagerAdapter;
     private PagerSlidingTabStrip pagerTabsLayout;
+    private TextView encounterDateTextView;
+    private final Boolean IS_SHR_DATA = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +46,8 @@ public class ObservationsActivity extends BroadcastListenerActivity {
         setupActionBar();
         initPager();
         initPagerIndicator();
+        encounterDateTextView = (TextView) findViewById(R.id.date_value_textview);
+
     }
 
     private void initPagerIndicator() {
@@ -54,7 +63,7 @@ public class ObservationsActivity extends BroadcastListenerActivity {
 
     private void initPager() {
         viewPager = (ViewPager) findViewById(R.id.pager);
-        observationsPagerAdapter = new ObservationsPagerAdapter(getApplicationContext(), getSupportFragmentManager());
+        observationsPagerAdapter = new ObservationsPagerAdapter(getApplicationContext(), getSupportFragmentManager(),IS_SHR_DATA);
         observationsPagerAdapter.initPagerViews();
         viewPager.setAdapter(observationsPagerAdapter);
     }
@@ -74,12 +83,30 @@ public class ObservationsActivity extends BroadcastListenerActivity {
                 .getActionView();
         searchView.setQueryHint(getString(R.string.info_observation_search));
         searchView.setOnQueryTextListener(observationsPagerAdapter);
+        super.onCreateOptionsMenu(menu);
         return true;
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         super.onBackPressed();
         observationsPagerAdapter.cancelBackgroundQueryTasks();
+    }
+
+    public void showDatePicketDialog(View view) {
+        Toast.makeText(view.getContext(),"Date set as ",Toast.LENGTH_LONG).show();
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(view.getContext(), new DateSetListener(), 2018, 3, 21);
+        datePickerDialog.show();
+    }
+
+    public class DateSetListener implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+          //  encounterDateTextView.setText(year+"/"+monthOfYear+"/"+dayOfMonth);
+            //todo pass data value to encounter date text
+            Toast.makeText(view.getContext(),"Date set as "+year+"/"+monthOfYear+"/"+dayOfMonth,Toast.LENGTH_LONG).show();
+        }
     }
 }

@@ -36,12 +36,14 @@ import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
 import com.muzima.controller.SetupConfigurationController;
+import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
 import com.muzima.util.Constants;
+import com.muzima.util.MuzimaLogger;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.forms.FormWebViewActivity;
 import com.muzima.view.forms.HTMLFormWebViewActivity;
@@ -92,6 +94,7 @@ public class MuzimaApplication extends Application {
     private LocalePreferenceService localePreferenceService;
     private SetupConfigurationController setupConfigurationController;
     private MuzimaSettingController settingsController;
+    private SmartCardController smartCardController;
     private MuzimaTimer muzimaTimer;
     public static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
@@ -340,6 +343,16 @@ public class MuzimaApplication extends Application {
         }
         return settingsController;
     }
+    public SmartCardController getSmartCardController() {
+        if(smartCardController == null){
+            try {
+                smartCardController = new SmartCardController(muzimaContext.getSmartCardRecordService());
+            } catch (IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+        return smartCardController;
+    }
 
     public void resetTimer(int timeOutInMin) {
         muzimaTimer = muzimaTimer.resetTimer(timeOutInMin);
@@ -350,6 +363,10 @@ public class MuzimaApplication extends Application {
     }
 
     public void logOut() {
+        if(authenticatedUser != null) {
+            MuzimaLogger.log(getMuzimaContext(), "USER_LOGOUT",
+                    "{\"userId\":\"" + authenticatedUser.getUsername() + "\"}");
+        }
         saveBeforeExit();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String passwordKey = getResources().getString(R.string.preference_password);

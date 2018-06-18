@@ -12,15 +12,20 @@ package com.muzima.model.observation;
 
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
+import com.muzima.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+
 public class ConceptWithObservations {
+
     private Concept concept;
     private List<Observation> observations;
+    private List<Integer> metaDataObservations = new ArrayList<>();
 
     public ConceptWithObservations() {
         observations = new ArrayList<Observation>();
@@ -35,7 +40,9 @@ public class ConceptWithObservations {
     }
 
     public List<Observation> getObservations() {
+        defineMetadataConceptsForFilters();
         Collections.sort(observations, observationDateTimeComparator);
+
         return observations;
     }
 
@@ -61,6 +68,12 @@ public class ConceptWithObservations {
         int result = concept != null ? concept.hashCode() : 0;
         result = 31 * result + (observations != null ? observations.hashCode() : 0);
         return result;
+    }
+
+    private void defineMetadataConceptsForFilters(){
+        metaDataObservations =  Arrays.asList(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.PROVIDER_DETAILS.NAME.concept_id,
+                Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.PROVIDER_DETAILS.ID.concept_id,
+                Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_FACILITY.concept_id);
     }
 
     private final Comparator<Observation> observationDateTimeComparator = new Comparator<Observation>() {

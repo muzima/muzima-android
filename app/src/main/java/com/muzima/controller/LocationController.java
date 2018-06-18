@@ -13,9 +13,13 @@ package com.muzima.controller;
 import android.util.Log;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Location;
+import com.muzima.api.model.LocationAttribute;
+import com.muzima.api.model.LocationAttributeType;
 import com.muzima.api.service.LocationService;
 import com.muzima.service.HTMLLocationParser;
 import com.muzima.service.LocationParser;
+import com.muzima.utils.StringUtils;
+import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -106,6 +110,45 @@ public class LocationController {
         }
     }
 
+    public List<LocationAttributeType> getLocationAttributesByName(String name) throws LocationLoadException {
+        try {
+            return locationService.getLocationAttributeTypesByName(name);
+        } catch (IOException e) {
+            throw new LocationLoadException(e);
+        } catch (ParseException e) {
+            throw new LocationLoadException(e);
+        }
+    }
+
+    public LocationAttributeType getLocationAttributeTypeByUuid(String uuid) throws LocationLoadException {
+        try {
+            return locationService.getLocationAttributeTypeByUuid(uuid);
+        } catch (IOException e) {
+            throw new LocationLoadException(e);
+        } catch (ParseException e) {
+            throw new LocationLoadException(e);
+        }
+    }
+
+    public Location getLocationByAttributeTypeAndValue(LocationAttributeType attributeType,String attribute) throws LocationLoadException {
+        try {
+            List<Location> locations = locationService.getAllLocations();
+            for(Location location:locations){
+                LocationAttribute locationAttribute = location.getAttribute(attributeType.getName());
+                if(locationAttribute != null && StringUtils.equalsIgnoreCase(locationAttribute.getAttribute(),attribute)){
+                    return location;
+                }
+                locationAttribute = location.getAttribute(attributeType.getUuid());
+                if(locationAttribute != null && StringUtils.equalsIgnoreCase(locationAttribute.getAttribute(),attribute)){
+                    return location;
+                }
+            }
+            return null;
+        } catch (IOException e) {
+            throw new LocationLoadException(e);
+        }
+    }
+
     public Location getLocationByName(String name) throws LocationLoadException  {
         try {
             List<Location> locations = locationService.getLocationsByName(name);
@@ -121,6 +164,17 @@ public class LocationController {
             throw new LocationLoadException(e);
         }
         return null;
+    }
+
+    public Location getLocationById(int id) throws LocationLoadException  {
+        try {
+            return locationService.getLocationById(id);
+        } catch (IOException e) {
+            throw new LocationLoadException(e);
+        }
+        catch (org.apache.lucene.queryParser.ParseException e) {
+            throw new LocationLoadException(e);
+        }
     }
 
     public void deleteLocation(Location location) throws LocationDeleteException {
