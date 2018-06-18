@@ -18,15 +18,30 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.api.model.*;
+import com.muzima.api.model.Concept;
+import com.muzima.api.model.Encounter;
+import com.muzima.api.model.Observation;
+import com.muzima.api.model.Person;
+import com.muzima.api.model.PersonAttribute;
+import com.muzima.api.model.Provider;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.ProviderController;
 import com.muzima.model.observation.ConceptWithObservations;
-import com.muzima.utils.*;
+import com.muzima.utils.BackgroundTaskHelper;
+import com.muzima.utils.Constants;
+import com.muzima.utils.DateUtils;
+import com.muzima.utils.Fonts;
+import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -318,8 +333,10 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         }
 
         Encounter encounter = observation.getEncounter();
-
         try {
+           //ToDo: Get Encounter provider instead of first provider from local repo
+            //ToDo: Delink Provider from Person, since Provider is not necessarily a Person OpenMRS
+
             Provider provider = providerController.getAllProviders().get(0);
             providerNameTextView.setText(provider.getName());
             providerIdentifierTextView.setText(provider.getIdentifier());

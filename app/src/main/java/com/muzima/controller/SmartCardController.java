@@ -44,9 +44,9 @@ public class SmartCardController {
         }
     }
 
-    public SmartCardRecord getSmartCardRecordByPersonUuid(String patientUuid) throws SmartCardRecordFetchException {
+    public SmartCardRecord getSmartCardRecordByPersonUuid(String personUuid) throws SmartCardRecordFetchException {
         try {
-            return smartCardRecordService.getSmartCardRecordByPersonUuid(patientUuid);
+            return smartCardRecordService.getSmartCardRecordByPersonUuid(personUuid);
         } catch (IOException e) {
             throw new SmartCardRecordFetchException(e);
         }

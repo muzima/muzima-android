@@ -1,9 +1,7 @@
 package com.muzima.model.shr.kenyaemr.Addendum;
 
-/**
- * Created by patrick on 11/04/2018.
- */
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public class Identifier {
