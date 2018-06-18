@@ -2,7 +2,6 @@ package com.muzima.utils.smartcard;
 
 import android.util.Log;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
@@ -13,7 +12,6 @@ import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.Person;
-import com.muzima.api.model.PersonAddress;
 import com.muzima.api.model.PersonName;
 import com.muzima.api.model.SmartCardRecord;
 import com.muzima.api.model.User;
@@ -30,7 +28,7 @@ import com.muzima.model.shr.kenyaemr.ExternalPatientId;
 import com.muzima.model.shr.kenyaemr.HIVTest;
 import com.muzima.model.shr.kenyaemr.Immunization;
 import com.muzima.model.shr.kenyaemr.InternalPatientId;
-import com.muzima.model.shr.kenyaemr.KenyaEmrShrModel;
+import com.muzima.model.shr.kenyaemr.KenyaEmrSHRModel;
 import com.muzima.model.shr.kenyaemr.MotherDetails;
 import com.muzima.model.shr.kenyaemr.MotherIdentifier;
 import com.muzima.model.shr.kenyaemr.MotherName;
@@ -47,10 +45,8 @@ import com.muzima.utils.DateUtils;
 import com.muzima.utils.LocationUtils;
 import com.muzima.utils.PatientIdentifierUtils;
 import com.muzima.utils.StringUtils;
-import com.muzima.view.forms.GenericRegistrationPatientJSONMapper;
 import com.muzima.view.forms.HTMLPatientJSONMapper;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -64,22 +60,21 @@ import java.util.UUID;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_SHR_DEMOGRAPHICS_UPDATE;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION;
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
-import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 
-public class KenyaEmrShrMapper {
-    private static final String TAG = KenyaEmrShrMapper.class.getSimpleName();
+public class KenyaEmrSHRMapper {
+    private static final String TAG = KenyaEmrSHRMapper.class.getSimpleName();
 
     /**
-     * Converts an SHR model from JSON representation to KenyaEmrShrModel
+     * Converts an SHR model from JSON representation to KenyaEmrSHRModel
      * @param jsonSHRModel the JSON representation of the SHR model
-     * @return Representation of the JSON input as KenyaEmrShrModel object
+     * @return Representation of the JSON input as KenyaEmrSHRModel object
      * @throws IOException
      */
-    public static KenyaEmrShrModel createSHRModelFromJson(String jsonSHRModel) throws ShrParseException {
+    public static KenyaEmrSHRModel createSHRModelFromJson(String jsonSHRModel) throws ShrParseException {
         ObjectMapper objectMapper = new ObjectMapper();
-        KenyaEmrShrModel shrModel = null;
+        KenyaEmrSHRModel shrModel = null;
         try {
-            shrModel = objectMapper.readValue(jsonSHRModel,KenyaEmrShrModel.class);
+            shrModel = objectMapper.readValue(jsonSHRModel,KenyaEmrSHRModel.class);
         } catch (IOException e) {
             throw new ShrParseException(e);
         }
@@ -87,12 +82,12 @@ public class KenyaEmrShrMapper {
     }
 
     /**
-     * Converts a KenyaEmrShrModel representation of SHR to JSON representation
-     * @param shrModel the KenyaEmrShrModel Object representation of the SHR model
+     * Converts a KenyaEmrSHRModel representation of SHR to JSON representation
+     * @param shrModel the KenyaEmrSHRModel Object representation of the SHR model
      * @return JSON representation of SHR model
      * @throws IOException
      */
-    public static String createJsonFromSHRModel(KenyaEmrShrModel shrModel) throws ShrParseException{
+    public static String createJsonFromSHRModel(KenyaEmrSHRModel shrModel) throws ShrParseException{
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.writeValueAsString(shrModel);
@@ -108,19 +103,19 @@ public class KenyaEmrShrMapper {
      * @throws IOException
      */
     public static Patient extractPatientFromShrModel(MuzimaApplication muzimaApplication,String shrModel) throws ShrParseException{
-        KenyaEmrShrModel kenyaEmrShrModel = createSHRModelFromJson(shrModel);
+        KenyaEmrSHRModel kenyaEmrShrModel = createSHRModelFromJson(shrModel);
         if(kenyaEmrShrModel.getCardDetails().getLastUpdated() != null && kenyaEmrShrModel.getPatientIdentification().getDateOfBirth() != null)
             return extractPatientFromShrModel(muzimaApplication, kenyaEmrShrModel);
         return null;
     }
 
     /**
-     * Extracts a Patient Object from a KenyaEmrShrModel Object of SHR model
-     * @param shrModel the KenyaEmrShrModel Object representation of the SHR model
+     * Extracts a Patient Object from a KenyaEmrSHRModel Object of SHR model
+     * @param shrModel the KenyaEmrSHRModel Object representation of the SHR model
      * @return Patient object extracted from SHR model
      * @throws IOException
      */
-    public static Patient extractPatientFromShrModel(MuzimaApplication muzimaApplication, KenyaEmrShrModel shrModel) throws ShrParseException{
+    public static Patient extractPatientFromShrModel(MuzimaApplication muzimaApplication, KenyaEmrSHRModel shrModel) throws ShrParseException{
         try {
             Patient patient = new Patient();
             PatientIdentification identification = shrModel.getPatientIdentification();
@@ -128,7 +123,7 @@ public class KenyaEmrShrMapper {
             patient.setNames(names);
 
             //set Identifiers
-            List<PatientIdentifier> identifiers = extractPatientIdentifiersFromShrModel(muzimaApplication, shrModel);
+            List<PatientIdentifier> identifiers = extractPatientIdentifiersFromSHRModel(muzimaApplication, shrModel);
             if(!identifiers.isEmpty()) {
                 patient.setIdentifiers(identifiers);
             }
@@ -220,7 +215,7 @@ public class KenyaEmrShrMapper {
      * @param shrModel
      * @return
      */
-    public static List<PersonName> extractPatientNamesFromShrModel(KenyaEmrShrModel shrModel) throws ShrParseException {
+    public static List<PersonName> extractPatientNamesFromShrModel(KenyaEmrSHRModel shrModel) throws ShrParseException {
         PatientIdentification identification = shrModel.getPatientIdentification();
         if(identification != null && identification.getPatientName()!= null) {
             final PersonName personName = new PersonName();
@@ -238,7 +233,7 @@ public class KenyaEmrShrMapper {
         }
     }
 
-    public static KenyaEmrShrModel putIdentifiersIntoShrModel(KenyaEmrShrModel shrModel,List<PatientIdentifier> identifiers ) throws ShrParseException {
+    public static KenyaEmrSHRModel putIdentifiersIntoSHRModel(KenyaEmrSHRModel shrModel,List<PatientIdentifier> identifiers ) throws ShrParseException {
         PatientIdentification patientIdentification = shrModel.getPatientIdentification();
         if(patientIdentification == null){
             patientIdentification = new PatientIdentification();
@@ -313,7 +308,7 @@ public class KenyaEmrShrMapper {
         return shrModel;
     }
 
-    public static List<PatientIdentifier> extractPatientIdentifiersFromShrModel(MuzimaApplication muzimaApplication,KenyaEmrShrModel shrModel){
+    public static List<PatientIdentifier> extractPatientIdentifiersFromSHRModel(MuzimaApplication muzimaApplication, KenyaEmrSHRModel shrModel){
         List<PatientIdentifier> identifiers = new ArrayList<PatientIdentifier>();
         try {
 
@@ -344,7 +339,7 @@ public class KenyaEmrShrMapper {
         return identifiers;
     }
 
-    public static void createNewObservationsAndEncountersFromShrModel(MuzimaApplication muzimaApplication, KenyaEmrShrModel shrModel, final Patient patient)
+    public static void createNewObservationsAndEncountersFromShrModel(MuzimaApplication muzimaApplication, KenyaEmrSHRModel shrModel, final Patient patient)
             throws ShrParseException {
         Log.e("KenyaEmrShrMapper","Saving encounters data ");
         List<String> payloads = createJsonEncounterPayloadFromShrModel(muzimaApplication, shrModel, patient);
@@ -401,7 +396,7 @@ public class KenyaEmrShrMapper {
         }
     }
 
-    public static List<String> createJsonEncounterPayloadFromShrModel(MuzimaApplication muzimaApplication, KenyaEmrShrModel shrModel, Patient patient) throws ShrParseException {
+    public static List<String> createJsonEncounterPayloadFromShrModel(MuzimaApplication muzimaApplication, KenyaEmrSHRModel shrModel, Patient patient) throws ShrParseException {
         try {
             Log.e("KenyaEmrShrMapper","Obtaining payloads ");
 
@@ -490,7 +485,6 @@ public class KenyaEmrShrMapper {
 
             String user_system_id = muzimaApplication.getAuthenticatedUser( ).getSystemId( );
             encounterDetails.put("encounter.user_system_id", user_system_id);
-            encounterDetails.put("encounter.location_id", location.getId());
 
             Date encounterDateTime = DateUtils.parseDateByPattern(hivTest.getDate(), "yyyyMMdd");
             encounterDetails.put("encounter.encounter_datetime", DateUtils.getFormattedDate(encounterDateTime));
@@ -780,10 +774,10 @@ public class KenyaEmrShrMapper {
                 Encounters encountersWithObservations = observationController.getEncountersWithObservations(patient.getUuid());
 
                 if(!encountersWithObservations.isEmpty()) {
-                    KenyaEmrShrModel shrModel = createSHRModelFromJson(smartCardRecord.getPlainPayload());
+                    KenyaEmrSHRModel shrModel = createSHRModelFromJson(smartCardRecord.getPlainPayload());
                     shrModel = addEncounterObservationsToShrModel(shrModel, encountersWithObservations);
 
-                    String jsonShr = KenyaEmrShrMapper.createJsonFromSHRModel(shrModel);
+                    String jsonShr = KenyaEmrSHRMapper.createJsonFromSHRModel(shrModel);
                     smartCardRecord.setPlainPayload(jsonShr);
                     smartCardController.updateSmartCardRecord(smartCardRecord);
                 }
@@ -798,11 +792,11 @@ public class KenyaEmrShrMapper {
      * Creates a new SHR Model for a given Patient. Iterates through patient demographics, identifiers, addresses and
      * attributes to construct this model
      * @param patient the Patient Object for which to create new SHR
-     * @return KenyaEmrShrModel representation of newlyCreatedSHR
+     * @return KenyaEmrSHRModel representation of newlyCreatedSHR
      * @throws IOException
      */
-    public static KenyaEmrShrModel createInitialSHRModelForPatient(MuzimaApplication muzimaApplication, Patient patient, String cardSerialNumber) throws ShrParseException{
-        KenyaEmrShrModel shrModel = createSHRModelFromJson(KenyaEmrShrModel.newShrModelTemplate);
+    public static KenyaEmrSHRModel createInitialSHRModelForPatient(MuzimaApplication muzimaApplication, Patient patient, String cardSerialNumber) throws ShrParseException{
+        KenyaEmrSHRModel shrModel = createSHRModelFromJson(KenyaEmrSHRModel.newShrModelTemplate);
         // Card details
         CardDetails cardDetails = shrModel.getCardDetails();
         String cardStatus = "ACTIVE";
@@ -927,7 +921,7 @@ public class KenyaEmrShrMapper {
 
         shrModel.setCardDetails(cardDetails);
         shrModel.setPatientIdentification(identification);
-        shrModel = putIdentifiersIntoShrModel(shrModel,patient.getIdentifiers());
+        shrModel = putIdentifiersIntoSHRModel(shrModel,patient.getIdentifiers());
 
         EncounterController encounterController = muzimaApplication.getEncounterController();
         ObservationController observationController = muzimaApplication.getObservationController();
@@ -956,11 +950,11 @@ public class KenyaEmrShrMapper {
      * Creates a new SHR Model for a given Patient. Iterates through patient demographics, identifiers, addresses and
      * attributes to construct this model
      * @param patient the Patient Object for which to create new SHR
-     * @return KenyaEmrShrModel representation of newlyCreatedSHR
+     * @return KenyaEmrSHRModel representation of newlyCreatedSHR
      * @throws IOException
      */
-    public static KenyaEmrShrModel createInitialSHRModelForPatient(MuzimaApplication muzimaApplication, Patient patient ) throws ShrParseException{
-        KenyaEmrShrModel shrModel = createSHRModelFromJson(KenyaEmrShrModel.newShrModelTemplate);
+    public static KenyaEmrSHRModel createInitialSHRModelForPatient(MuzimaApplication muzimaApplication, Patient patient ) throws ShrParseException{
+        KenyaEmrSHRModel shrModel = createSHRModelFromJson(KenyaEmrSHRModel.newShrModelTemplate);
         // Card details
         CardDetails cardDetails = shrModel.getCardDetails();
         String cardStatus = "ACTIVE";
@@ -1085,7 +1079,7 @@ public class KenyaEmrShrMapper {
 
         shrModel.setCardDetails(cardDetails);
         shrModel.setPatientIdentification(identification);
-        shrModel = putIdentifiersIntoShrModel(shrModel,patient.getIdentifiers());
+        shrModel = putIdentifiersIntoSHRModel(shrModel,patient.getIdentifiers());
 
         EncounterController encounterController = muzimaApplication.getEncounterController();
         ObservationController observationController = muzimaApplication.getObservationController();
@@ -1118,7 +1112,7 @@ public class KenyaEmrShrMapper {
      * @return
      * @throws IOException
      */
-    public static KenyaEmrShrModel addEncounterObservationsToShrModel(KenyaEmrShrModel shrModel, Encounters encountersWithObservations ) throws ShrParseException{
+    public static KenyaEmrSHRModel addEncounterObservationsToShrModel(KenyaEmrSHRModel shrModel, Encounters encountersWithObservations ) throws ShrParseException{
         List<HIVTest> hivTests = shrModel.getHivTests() == null ? new ArrayList<HIVTest>() : shrModel.getHivTests();
         List<Immunization> immunizations = shrModel.getImmunizations() == null ? new ArrayList<Immunization>() : shrModel.getImmunizations();
         for(EncounterWithObservations encounterWithObservations: encountersWithObservations){

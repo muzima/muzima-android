@@ -43,13 +43,13 @@ import com.muzima.api.service.SmartCardRecordService;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.SmartCardController;
-import com.muzima.model.shr.kenyaemr.KenyaEmrShrModel;
+import com.muzima.model.shr.kenyaemr.KenyaEmrSHRModel;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
-import com.muzima.utils.smartcard.KenyaEmrShrMapper;
+import com.muzima.utils.smartcard.KenyaEmrSHRMapper;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
 import com.muzima.view.BroadcastListenerActivity;
@@ -66,8 +66,8 @@ import static android.view.View.VISIBLE;
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
-import static com.muzima.utils.barcode.BarCodeScannerIntentIntegrator.*;
-import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.*;
+import static com.muzima.utils.barcode.BarCodeScannerIntentIntegrator.BARCODE_SCAN_REQUEST_CODE;
+import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 
 import com.muzima.api.model.SmartCardRecord;
 
@@ -581,7 +581,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 String shrPayload = smartCardRecord.getPlainPayload();
                 if(!shrPayload.equals("") && !shrPayload.isEmpty()) {
                     try {
-                        shrPatient = KenyaEmrShrMapper.extractPatientFromShrModel(muzimaApplication, shrPayload);
+                        shrPatient = KenyaEmrSHRMapper.extractPatientFromShrModel(muzimaApplication, shrPayload);
                         if (shrPatient != null) {
                             PatientIdentifier cardNumberIdentifier = shrPatient.getIdentifier(Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.name);
 
@@ -602,7 +602,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                         else {
                             Toast.makeText(getApplicationContext(), "This card seems to be blank", Toast.LENGTH_LONG).show();
                         }
-                    } catch (KenyaEmrShrMapper.ShrParseException e) {
+                    } catch (KenyaEmrSHRMapper.ShrParseException e) {
                         Log.e("EMR_IN", "EMR Error ", e);
                     }
                 }
@@ -820,9 +820,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                     } catch (SmartCardController.SmartCardRecordSaveException | SmartCardController.SmartCardRecordFetchException e) {
                         Log.e(TAG, "Failed to write or update shr", e);
                     }
-                    KenyaEmrShrModel kenyaEmrShrModel = KenyaEmrShrMapper.createSHRModelFromJson(smartCardRecord.getPlainPayload());
-                    KenyaEmrShrMapper.createNewObservationsAndEncountersFromShrModel(muzimaApplication, kenyaEmrShrModel, shrToMuzimaMatchingPatient);
-                } catch (KenyaEmrShrMapper.ShrParseException e) {
+                    KenyaEmrSHRModel kenyaEmrShrModel = KenyaEmrSHRMapper.createSHRModelFromJson(smartCardRecord.getPlainPayload());
+                    KenyaEmrSHRMapper.createNewObservationsAndEncountersFromShrModel(muzimaApplication, kenyaEmrShrModel, shrToMuzimaMatchingPatient);
+                } catch (KenyaEmrSHRMapper.ShrParseException e) {
                     Log.e(TAG, "Failed to parse shr", e);
                 }
                 Intent intent = new Intent(PatientsListActivity.this, PatientSummaryActivity.class);
@@ -847,7 +847,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             shrPatient.setUuid(UUID.randomUUID().toString());
             try {
                 patientController.savePatient(shrPatient);
-                KenyaEmrShrMapper.createAndSaveRegistrationPayloadForPatient(muzimaApplication,shrPatient);
+                KenyaEmrSHRMapper.createAndSaveRegistrationPayloadForPatient(muzimaApplication,shrPatient);
             } catch (PatientController.PatientSaveException e) {
                 e.printStackTrace();
             }
@@ -859,15 +859,15 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 } catch (SmartCardController.SmartCardRecordSaveException e) {
                     Log.e(TAG, "Cannot save shr ", e);
                 }
-                KenyaEmrShrModel kenyaEmrShrModel = null;
+                KenyaEmrSHRModel kenyaEmrShrModel = null;
                 try {
-                    kenyaEmrShrModel = KenyaEmrShrMapper.createSHRModelFromJson(smartCardRecord.getPlainPayload());
-                } catch (KenyaEmrShrMapper.ShrParseException e) {
+                    kenyaEmrShrModel = KenyaEmrSHRMapper.createSHRModelFromJson(smartCardRecord.getPlainPayload());
+                } catch (KenyaEmrSHRMapper.ShrParseException e) {
                     e.printStackTrace();
                 }
                 try {
-                    KenyaEmrShrMapper.createNewObservationsAndEncountersFromShrModel(muzimaApplication, kenyaEmrShrModel, shrPatient);
-                } catch (KenyaEmrShrMapper.ShrParseException e) {
+                    KenyaEmrSHRMapper.createNewObservationsAndEncountersFromShrModel(muzimaApplication, kenyaEmrShrModel, shrPatient);
+                } catch (KenyaEmrSHRMapper.ShrParseException e) {
                     e.printStackTrace();
                 }
                 Log.e(TAG, "Patient registered");

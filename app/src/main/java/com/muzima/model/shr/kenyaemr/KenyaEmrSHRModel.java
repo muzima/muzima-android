@@ -1,16 +1,12 @@
 package com.muzima.model.shr.kenyaemr;
 
-import android.util.Log;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.muzima.utils.StringUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +14,7 @@ import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 
-public class KenyaEmrShrModel {
+public class KenyaEmrSHRModel {
 
     @JsonProperty("PATIENT_IDENTIFICATION")
     private PatientIdentification patientIdentification;
@@ -54,7 +50,7 @@ public class KenyaEmrShrModel {
      * No args constructor for use in serialization
      * 
      */
-    public KenyaEmrShrModel() {
+    public KenyaEmrSHRModel() {
 
     }
 
@@ -66,7 +62,7 @@ public class KenyaEmrShrModel {
      * @param hivTests
      * @param cardDetails
      */
-    public KenyaEmrShrModel(PatientIdentification patientIdentification, List<NextOfKin> nextOfKins, List<HIVTest> hivTests, List<Immunization> immunizations, CardDetails cardDetails) {
+    public KenyaEmrSHRModel(PatientIdentification patientIdentification, List<NextOfKin> nextOfKins, List<HIVTest> hivTests, List<Immunization> immunizations, CardDetails cardDetails) {
         super();
         this.patientIdentification = patientIdentification;
         this.nextOfKins = nextOfKins;

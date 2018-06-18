@@ -42,7 +42,6 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
     private ViewPager viewPager;
     private ObservationsPagerAdapter observationsPagerAdapter;
     private PagerSlidingTabStrip pagerTabsLayout;
-    private final Boolean IS_SHR_DATA = true;
     private Patient patient;
     private AlertDialog writeShrDataOptionDialog;
     private TextView searchDialogTextView;
@@ -73,7 +72,9 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
 
     private void initPager() {
         viewPager = (ViewPager) findViewById(R.id.pager);
-        observationsPagerAdapter = new ObservationsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), IS_SHR_DATA);
+
+        Boolean isSHRData = true;
+        observationsPagerAdapter = new ObservationsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), isSHRData);
         observationsPagerAdapter.initPagerViews();
         viewPager.setAdapter(observationsPagerAdapter);
     }
@@ -123,7 +124,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
         } catch (SmartCardController.SmartCardRecordFetchException e) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(true)
-                    .setMessage("Could not obtain smartcard record for writing to card. " + e.getMessage())
+                    .setMessage(getString(R.string.failure_obtain_smartcard_record) + e.getMessage())
                     .show();
             Log.e("TAG", "Could not obtain smartcard record for writing to card", e);
         }
@@ -177,14 +178,14 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
                     List<String> writeErrors = cardWriteIntentResult.getErrors();
 
                     if (writeErrors == null) {
-                        Snackbar.make(findViewById(R.id.client_summary_view), "Smart card data write was successful.", Snackbar.LENGTH_LONG)
+                        Snackbar.make(findViewById(R.id.client_summary_view), R.string.success_writing_smartcard, Snackbar.LENGTH_LONG)
                                 .show();
 
                     } else if (writeErrors != null) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            Snackbar.make(findViewById(R.id.client_summary_view), "Smart card data write failed." + writeErrors.get(0), Snackbar.LENGTH_LONG)
+                            Snackbar.make(findViewById(R.id.client_summary_view), getString(R.string.failure_writing_smartcard) + writeErrors.get(0), Snackbar.LENGTH_LONG)
                                     .setActionTextColor(getResources().getColor(android.R.color.holo_red_dark, null))
-                                    .setAction("RETRY", new View.OnClickListener() {
+                                    .setAction(R.string.general_retry, new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             invokeShrApplication();
@@ -193,9 +194,9 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
                                     .show();
                         } else {
 
-                            Snackbar.make(findViewById(R.id.client_summary_view), "Smart card data write failed." + writeErrors.get(0), Snackbar.LENGTH_LONG)
+                            Snackbar.make(findViewById(R.id.client_summary_view), getString(R.string.failure_writing_smartcard) + writeErrors.get(0), Snackbar.LENGTH_LONG)
                                     .setActionTextColor(getResources().getColor(android.R.color.holo_red_dark))
-                                    .setAction("RETRY", new View.OnClickListener() {
+                                    .setAction(R.string.general_retry, new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             invokeShrApplication();
@@ -227,7 +228,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
         searchDialogTextView = (TextView) dialogView.findViewById(R.id.patent_dialog_message_textview);
         yesOptionShrSearchButton = (Button) dialogView.findViewById(R.id.yes_shr_search_dialog);
         noOptionShrSearchButton = (Button) dialogView.findViewById(R.id.no_shr_search_dialog);
-        searchDialogTextView.setText("Do you want to write shr to card ?");
+        searchDialogTextView.setText(getString(R.string.hint_write_shr_to_card));
 
         yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override

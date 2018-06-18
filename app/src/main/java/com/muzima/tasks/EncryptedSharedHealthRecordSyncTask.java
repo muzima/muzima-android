@@ -32,13 +32,11 @@ public class EncryptedSharedHealthRecordSyncTask {
 
         @Override
         protected void onPreExecute() {
-            System.out.println("onPreExecute");
 
             Toast.makeText(EncryptedSharedHealthRecordSyncTask.context, "Uploading SHR Data", Toast.LENGTH_SHORT).show();
         }
         @Override
         protected void onPostExecute(Integer[] result){
-            System.out.println("onPostExecute");
             if(result[0] == SUCCESS) {
                 Toast.makeText(EncryptedSharedHealthRecordSyncTask.context, "Uploaded " + result[1] +" SHR Data items", Toast.LENGTH_SHORT).show();
             } else {
@@ -50,7 +48,6 @@ public class EncryptedSharedHealthRecordSyncTask {
 
         @Override
         protected Integer[] doInBackground(Void... voids) {
-            System.out.println("doInBackground");
             Integer[] result = {0,0,0};
             try {
                 SmartCardController smartCardController = ((MuzimaApplication)context).getSmartCardController();
