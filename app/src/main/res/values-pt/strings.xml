@@ -589,4 +589,9 @@
     <string name="no_default_encounter_location">Nenhum local de encontro padrão</string>
     <string name="general_not_available_text">Não disponível</string>
     <string name="registering_patient_message_title_text">Registrando cliente em mUzima ...</string>
+    <string name="form_encounter_date">Data de encontro</string>
+    <string name="form_encounter_location">Localização do encontro</string>
+    <string name="form_encounter_provider">Provedor de encontro</string>
+    <string name="title_missing_form_encounter_details_error">Detalhes do encontro ausente</string>
+    <string name="message_missing_form_encounter_details_error">deve ser providenciado</string>
 </resources>
