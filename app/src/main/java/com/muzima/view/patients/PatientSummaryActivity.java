@@ -150,7 +150,7 @@ public class PatientSummaryActivity extends BaseActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(true)
                     .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                    .setTitle("Notice")
+                    .setTitle(getString(R.string.general_notice))
                     .setMessage(getString(R.string.info_client_identifier_change))
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
@@ -238,9 +238,9 @@ public class PatientSummaryActivity extends BaseActivity {
             KenyaEmrSHRMapper.updateSHRSmartCardRecordForPatient((MuzimaApplication) getApplicationContext(),patient.getUuid());
             smartCardRecord = smartCardController.getSmartCardRecordByPersonUuid(patient.getUuid());
         } catch (SmartCardController.SmartCardRecordFetchException e) {
-            Snackbar.make(findViewById(R.id.client_summary_view), "Could not fetch smartcard record. "+e.getMessage(), Snackbar.LENGTH_LONG)
+            Snackbar.make(findViewById(R.id.client_summary_view), R.string.failure_obtain_smartcard_record+e.getMessage(), Snackbar.LENGTH_LONG)
                     .setActionTextColor(getResources().getColor(android.R.color.holo_red_dark))
-                    .setAction("RETRY", new View.OnClickListener() {
+                    .setAction(R.string.general_retry, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             initiateShrWriteToCard();
@@ -249,16 +249,16 @@ public class PatientSummaryActivity extends BaseActivity {
                     .show();
             Log.e(TAG, "Could not obtain smartcard record for writing to card", e);
         } catch (KenyaEmrSHRMapper.ShrParseException e) {
-            Snackbar.make(findViewById(R.id.client_summary_view), "Could not obtain smartcard record for writing to card. "+e.getMessage(), Snackbar.LENGTH_LONG)
+            Snackbar.make(findViewById(R.id.client_summary_view), R.string.failure_obtain_smartcard_record+e.getMessage(), Snackbar.LENGTH_LONG)
                     .setActionTextColor(getResources().getColor(android.R.color.holo_red_dark))
-                    .setAction("RETRY", new View.OnClickListener() {
+                    .setAction(R.string.general_retry, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             initiateShrWriteToCard();
                         }
                     })
                     .show();
-            Log.e(TAG, "Could not update smartcard record before writing to card", e);
+            Log.e(TAG, getString(R.string.failure_updating_smartcard_record_for_writing), e);
         }
         if (smartCardRecord != null) {
             SmartCardIntentIntegrator shrIntegrator = new SmartCardIntentIntegrator(this);
@@ -268,10 +268,10 @@ public class PatientSummaryActivity extends BaseActivity {
                 Log.e(TAG, "Could not write to card", e);
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setCancelable(true)
-                        .setMessage("Could not write to card. " + e.getMessage())
+                        .setMessage(R.string.failure_writing_smartcard + e.getMessage())
                         .show();
             }
-            Toast.makeText(getApplicationContext(), "Opening Card Reader", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.hint_opening_card_reader), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -289,7 +289,7 @@ public class PatientSummaryActivity extends BaseActivity {
                     List<String> writeErrors = cardWriteIntentResult.getErrors();
 
                     if (writeErrors == null) {
-                        Snackbar.make(findViewById(R.id.client_summary_view), "Smart card data write was successful.", Snackbar.LENGTH_LONG)
+                        Snackbar.make(findViewById(R.id.client_summary_view), R.string.success_writing_smartcard, Snackbar.LENGTH_LONG)
                                 .show();
                         SmartCardRecord result = cardWriteIntentResult.getSmartCardRecord();
 
@@ -321,9 +321,9 @@ public class PatientSummaryActivity extends BaseActivity {
 
                     } else if (writeErrors != null) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            Snackbar.make(findViewById(R.id.client_summary_view), "Smart card data write failed." + writeErrors.get(0), Snackbar.LENGTH_LONG)
+                            Snackbar.make(findViewById(R.id.client_summary_view), R.string.failure_writing_smartcard + writeErrors.get(0), Snackbar.LENGTH_LONG)
                                     .setActionTextColor(getResources().getColor(android.R.color.holo_red_dark, null))
-                                    .setAction("RETRY", new View.OnClickListener() {
+                                    .setAction(R.string.general_retry, new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             initiateShrWriteToCard();
@@ -332,9 +332,9 @@ public class PatientSummaryActivity extends BaseActivity {
                                     .show();
                         } else {
 
-                            Snackbar.make(findViewById(R.id.client_summary_view), "Smart card data write failed." + writeErrors.get(0), Snackbar.LENGTH_LONG)
+                            Snackbar.make(findViewById(R.id.client_summary_view), R.string.failure_writing_smartcard + writeErrors.get(0), Snackbar.LENGTH_LONG)
                                     .setActionTextColor(getResources().getColor(android.R.color.holo_red_dark))
-                                    .setAction("RETRY", new View.OnClickListener() {
+                                    .setAction(R.string.general_retry, new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             initiateShrWriteToCard();
@@ -474,7 +474,7 @@ public class PatientSummaryActivity extends BaseActivity {
         searchDialogTextView = (TextView) dialogView.findViewById(R.id.patent_dialog_message_textview);
         yesOptionShrSearchButton = (Button) dialogView.findViewById(R.id.yes_shr_search_dialog);
         noOptionShrSearchButton = (Button) dialogView.findViewById(R.id.no_shr_search_dialog);
-        searchDialogTextView.setText("Do you want to write SHR to card ?");
+        searchDialogTextView.setText(R.string.hint_write_shr_to_card);
 
         yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -506,7 +506,7 @@ public class PatientSummaryActivity extends BaseActivity {
         searchDialogTextView = (TextView) dialogView.findViewById(R.id.patent_dialog_message_textview);
         yesOptionShrSearchButton = (Button) dialogView.findViewById(R.id.yes_shr_search_dialog);
         noOptionShrSearchButton = (Button) dialogView.findViewById(R.id.no_shr_search_dialog);
-        searchDialogTextView.setText("Client does not have an SHR. Do you want to create new SHR and write to card ?");
+        searchDialogTextView.setText(getString(R.string.hint_create_new_shr));
 
         yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -525,9 +525,9 @@ public class PatientSummaryActivity extends BaseActivity {
                     dismissWriteShrDataDialogue();
 
                     AlertDialog alertDialog = new AlertDialog.Builder(PatientSummaryActivity.this).create();
-                    alertDialog.setTitle("Requirement");
-                    alertDialog.setMessage("Please set default encounter location so as to enable writing new card");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    alertDialog.setTitle(getString(R.string.general_requirement));
+                    alertDialog.setMessage(getString(R.string.hint_set_default_encounter_location_for_shr));
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.general_ok),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
@@ -556,7 +556,7 @@ public class PatientSummaryActivity extends BaseActivity {
     public void readSmartCard(){
         SmartCardIntentIntegrator shrIntegrator = new SmartCardIntentIntegrator(this);
         shrIntegrator.initiateCardRead();
-        Toast.makeText(getApplicationContext(), "Opening Card Reader", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), R.string.hint_opening_card_reader, Toast.LENGTH_LONG).show();
     }
 
     public void processSmartCardReadResult(int requestCode, int resultCode, Intent dataIntent) {
@@ -570,7 +570,7 @@ public class PatientSummaryActivity extends BaseActivity {
         }
 
         if (cardReadIntentResult == null) {
-            Toast.makeText(getApplicationContext(), "Card Read Failed", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.failure_reading_card), Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -589,16 +589,15 @@ public class PatientSummaryActivity extends BaseActivity {
                                     //ToDo: check whether card serial number already assigned
                                     registerNewShrRecord(shrInternalPatientId.getID());
                                 } else {
-                                    //Toast.makeText(getApplicationContext(), "Could not obtain card serial number: ", Toast.LENGTH_LONG).show();
-                                    Toast.makeText(getApplicationContext(), "Read successful but the card appears to be blank: ", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), getString(R.string.hint_card_blank), Toast.LENGTH_LONG).show();
                                     registerNewShrRecord();
                                 }
 
                             } else {
                                 AlertDialog alertDialog = new AlertDialog.Builder(PatientSummaryActivity.this).create();
                                 alertDialog.setTitle("Error");
-                                alertDialog.setMessage("The card is not empty. Please use a new card.");
-                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                alertDialog.setMessage(getString(R.string.hint_card_not_empty));
+                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.general_ok),
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
@@ -608,7 +607,7 @@ public class PatientSummaryActivity extends BaseActivity {
                             }
                         }
                         else {
-                            Toast.makeText(getApplicationContext(), "Could not obtain card serial number", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.failure_obtaining_card_serial_number), Toast.LENGTH_LONG).show();
                         }
                     } catch (KenyaEmrSHRMapper.ShrParseException e) {
                         Log.e(TAG, "EMR Error ", e);
@@ -620,7 +619,7 @@ public class PatientSummaryActivity extends BaseActivity {
              * Card read was interrupted and failed
              */
             Snackbar.make(findViewById(R.id.client_summary_view), "Card read failed." + cardReadIntentResult.getErrors(), Snackbar.LENGTH_LONG)
-                    .setAction("RETRY", new View.OnClickListener() {
+                    .setAction(R.string.general_retry, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             readSmartCard();
@@ -657,7 +656,7 @@ public class PatientSummaryActivity extends BaseActivity {
                 //initiateShrWriteToCard();
             } else {
                 Snackbar.make(findViewById(R.id.client_summary_view), "", Snackbar.LENGTH_LONG)
-                        .setAction("RETRY", new View.OnClickListener() {
+                        .setAction(R.string.general_retry, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 registerNewShrRecord(cardSerialNumber);
@@ -670,7 +669,7 @@ public class PatientSummaryActivity extends BaseActivity {
             writeShrDataOptionDialog.cancel();
             writeShrDataOptionDialog.dismiss();
             Snackbar.make(findViewById(R.id.client_summary_view),"Unexpected Error Occured "+e.getMessage(),Snackbar.LENGTH_LONG)
-                    .setAction("RETRY", new View.OnClickListener() {
+                    .setAction(R.string.general_retry, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             registerNewShrRecord(cardSerialNumber);
@@ -709,7 +708,7 @@ public class PatientSummaryActivity extends BaseActivity {
                 // initiateShrWriteToCard();
             } else {
                 Snackbar.make(findViewById(R.id.client_summary_view), "", Snackbar.LENGTH_LONG)
-                        .setAction("RETRY", new View.OnClickListener() {
+                        .setAction(R.string.general_retry, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 registerNewShrRecord();
@@ -721,8 +720,8 @@ public class PatientSummaryActivity extends BaseActivity {
         } catch (KenyaEmrSHRMapper.ShrParseException e) {
             writeShrDataOptionDialog.cancel();
             writeShrDataOptionDialog.dismiss();
-            Snackbar.make(findViewById(R.id.client_summary_view),"Unexpected Error Occured "+e.getMessage(),Snackbar.LENGTH_LONG)
-                    .setAction("RETRY", new View.OnClickListener() {
+            Snackbar.make(findViewById(R.id.client_summary_view),getString(R.string.general_unexpected_error_occurred)+e.getMessage(),Snackbar.LENGTH_LONG)
+                    .setAction(R.string.general_retry, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             registerNewShrRecord();
