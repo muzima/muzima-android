@@ -67,9 +67,9 @@ public class HTMLFormDataStore {
 
     public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity,FormData formData, MuzimaApplication application) {
         this.formWebViewActivity = formWebViewActivity;
-        this.formController = application.getFormController();
         this.formData = formData;
 
+        this.formController = application.getFormController();
         this.providerController = application.getProviderController();
         this.locationController = application.getLocationController();
         this.settingController = application.getMuzimaSettingController();
@@ -98,42 +98,45 @@ public class HTMLFormDataStore {
         boolean encounterDetailsValidityStatus = true;
         try {
             if(status.equals("complete")) {
-                encounterDetailsValidityStatus = areMandatoryEncounterDetailsInForm(jsonPayload);
+               encounterDetailsValidityStatus = areMandatoryEncounterDetailsInForm(jsonPayload);
             }
 
-            if(encounterDetailsValidityStatus) {
-                if (isRegistrationComplete(status)) {
-                    Patient newPatient = formController.createNewPatient(application,formData);
-                    formData.setPatientUuid(newPatient.getUuid());
-                    formWebViewActivity.startPatientSummaryView(newPatient);
-                }
-                parseForm(jsonPayload, status);
-                Date encounterDate = getEncounterDateFromForm(jsonPayload);
-                formData.setEncounterDate(encounterDate);
-                formController.saveFormData(formData);
-                formWebViewActivity.setResult(FormsActivity.RESULT_OK);
-                Log.i(TAG, "Saving form data ...");
-                if (!keepFormOpen) {
-                    formWebViewActivity.finish( );
-                    if (status.equals("complete")) {
-                        Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.info_form_data_save_success), Toast.LENGTH_SHORT).show( );
-                        RealTimeFormUploader.getInstance( ).uploadAllCompletedForms(formWebViewActivity.getApplicationContext( ));
-                    }
-                    if (status.equals("incomplete")) {
-                        Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.info_draft_form_save_success), Toast.LENGTH_SHORT).show( );
-                    }
-                }
-            }else{
-                String missingMandatoryEncounterDetailsMessage = checkMisssingMandatoryEncounterDetails(jsonPayload);
-                String message = missingMandatoryEncounterDetailsMessage.concat(" ");
-                message = message.concat(formWebViewActivity.getString(R.string.message_missing_form_encounter_details_error));
+                if (encounterDetailsValidityStatus) {
 
-                formWebViewActivity.showMissingEncounterDetailsDialog(message);
-            }
+                    if (isRegistrationComplete(status)) {
+                        Patient newPatient = formController.createNewPatient(application, formData);
+                        formData.setPatientUuid(newPatient.getUuid());
+                        formWebViewActivity.startPatientSummaryView(newPatient);
+                    }
+
+                    parseForm(jsonPayload, status);
+
+                    Date encounterDate = getEncounterDateFromForm(jsonPayload);
+                    formData.setEncounterDate(encounterDate);
+                    formController.saveFormData(formData);
+                    formWebViewActivity.setResult(FormsActivity.RESULT_OK);
+                    Log.i(TAG, "Saving form data ...");
+                    if (!keepFormOpen) {
+                        formWebViewActivity.finish();
+                        if (status.equals("complete")) {
+                            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.info_form_data_save_success), Toast.LENGTH_SHORT).show();
+                            RealTimeFormUploader.getInstance().uploadAllCompletedForms(formWebViewActivity.getApplicationContext());
+                        }
+                        if (status.equals("incomplete")) {
+                            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.info_draft_form_save_success), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } else {
+                    String missingMandatoryEncounterDetailsMessage = checkMisssingMandatoryEncounterDetails(jsonPayload);
+                    String message = missingMandatoryEncounterDetailsMessage.concat(" ");
+                    message = message.concat(formWebViewActivity.getString(R.string.message_missing_form_encounter_details_error));
+
+                    formWebViewActivity.showMissingEncounterDetailsDialog(message);
+                }
         } catch (FormController.FormDataSaveException e) {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_save), Toast.LENGTH_SHORT).show( );
             Log.e(TAG, "Exception occurred while saving form data", e);
-        } catch (Exception e) {
+       // } catch (Exception e) {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_save), Toast.LENGTH_SHORT).show( );
             Log.e(TAG, "Exception occurred while saving form data", e);
         }

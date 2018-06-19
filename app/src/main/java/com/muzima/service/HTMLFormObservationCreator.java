@@ -69,6 +69,7 @@ public class HTMLFormObservationCreator {
 
     public void createAndPersistObservations(String jsonResponse,String formDataUuid) {
         parseJSONResponse(jsonResponse,formDataUuid);
+
         try {
             saveObservationsAndRelatedEntities();
         } catch (ConceptController.ConceptSaveException e) {
@@ -87,7 +88,7 @@ public class HTMLFormObservationCreator {
     }
 
     public List<Observation> getObservations() {
-        return observations;
+        return observations != null ? observations : new ArrayList<Observation>();
     }
     public Encounter getEncounter() {
         return encounter;
@@ -100,9 +101,13 @@ public class HTMLFormObservationCreator {
         try {
             JSONObject responseJSON = new JSONObject(jsonResponse);
             patient = getPatient(responseJSON.getJSONObject("patient"));
-            encounter = createEncounter(responseJSON.getJSONObject("encounter"),formDataUuid);
+            encounter = createEncounter(responseJSON.getJSONObject("encounter"), formDataUuid);
+
+
             if (responseJSON.has("observation")) {
                 observations = extractObservationFromJSONObject(responseJSON.getJSONObject("observation"));
+
+            } else {
             }
         } catch (PatientController.PatientLoadException e) {
             Log.e(TAG, "Error while fetching Patient", e);
@@ -119,10 +124,12 @@ public class HTMLFormObservationCreator {
 
     private void saveObservationsAndRelatedEntities() throws EncounterController.SaveEncounterException,
             ObservationController.SaveObservationException, ConceptController.ConceptSaveException {
+
+
         try {
             encounterController.saveEncounters(asList(encounter));
             conceptController.saveConcepts(observationParserUtility.getNewConceptList());
-            if(observations != null && !observations.isEmpty()){
+            if (observations != null && !observations.isEmpty()) {
                 observationController.saveObservations(observations);
             }
         } catch (Exception e) {
@@ -186,7 +193,8 @@ public class HTMLFormObservationCreator {
     }
 
     private Encounter createEncounter(JSONObject encounterJSON, String formDataUuid) throws JSONException, ParseException {
-        return observationParserUtility.getEncounterEntity(parse(encounterJSON.getString("encounter.encounter_datetime")),
+        Date encounterDate = parse(encounterJSON.getString("encounter.encounter_datetime"));
+        return observationParserUtility.getEncounterEntity(encounterDate,
                 encounterJSON.getString("encounter.form_uuid"), encounterJSON.getString("encounter.provider_id"),
                 Integer.parseInt(encounterJSON.getString("encounter.location_id")),
                 encounterJSON.getString("encounter.user_system_id"), patient,formDataUuid);

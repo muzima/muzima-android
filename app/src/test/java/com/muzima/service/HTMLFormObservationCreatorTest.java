@@ -10,6 +10,7 @@
 
 package com.muzima.service;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
@@ -43,6 +44,8 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.matchers.JUnitMatchers.hasItem;
+import static org.mockito.Matchers.isNotNull;
+import static org.mockito.Matchers.notNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -53,6 +56,9 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class HTMLFormObservationCreatorTest {
 
     private HTMLFormObservationCreator htmlFormObservationCreator;
+
+    @Mock
+    MuzimaApplication muzimaApplication;
 
     @Mock
     private PatientController patientController;
@@ -95,7 +101,14 @@ public class HTMLFormObservationCreatorTest {
     @Before
     public void setUp() throws PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         initMocks(this);
-        htmlFormObservationCreator = new HTMLFormObservationCreator(null);
+        when(muzimaApplication.getPatientController()).thenReturn(patientController);
+        when(muzimaApplication.getConceptController()).thenReturn(conceptController);
+        when(muzimaApplication.getEncounterController()).thenReturn(encounterController);
+        when(muzimaApplication.getFormController()).thenReturn(formController);
+        when(muzimaApplication.getObservationController()).thenReturn(observationController);
+        when(muzimaApplication.getProviderController()).thenReturn(providerController);
+        when(muzimaApplication.getLocationController()).thenReturn(locationController);
+        htmlFormObservationCreator = new HTMLFormObservationCreator(muzimaApplication);
 
         when(patientController.getPatientByUuid("9090900-asdsa-asdsannidj-qwnkika")).thenReturn(patient);
 
@@ -115,8 +128,8 @@ public class HTMLFormObservationCreatorTest {
 
         htmlFormObservationCreator.createAndPersistObservations(readFile(),formDataUuid);
         List<Observation> observations = htmlFormObservationCreator.getObservations();
-
-        assertThat(observations.size(), is(30));
+        assertTrue("Number of processed observations should be 30. Currently " + observations.size() + " On file : ",
+                observations.size() == 30);
     }
 
     @Test
@@ -136,11 +149,15 @@ public class HTMLFormObservationCreatorTest {
     @Test
     public void shouldCheckIfEncounterHasMinimumAttributes() throws Exception, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         htmlFormObservationCreator.createAndPersistObservations(readFile(),formDataUuid);
-        Encounter encounter = htmlFormObservationCreator.getObservations().get(0).getEncounter();
+        List<Observation> observations = htmlFormObservationCreator.getObservations();
+        assertThat(observations, notNullValue());
+        assertTrue(observations.size() > 0);
+        Encounter encounter = observations.get(0).getEncounter();
         assertThat(encounter.getEncounterDatetime(), notNullValue());
         assertThat(encounter.getPatient(), notNullValue());
         assertThat(encounter.getProvider(), notNullValue());
         assertThat(encounter.getLocation(), notNullValue());
+        assertThat(encounter.getUserSystemId(), notNullValue());
     }
 
     @Test
@@ -167,10 +184,12 @@ public class HTMLFormObservationCreatorTest {
                 multiValuedObservations.add(observation);
             }
         }
-        List<String> expectedValues = asList("7056^REFERRED TO CLINIC^99DCT", "6436^DISPENSARY^99DCT");
+        List<String> expectedValues = asList("REFERRED TO CLINIC", "DISPENSARY");
         assertThat(multiValuedObservations.size(), is(2));
-        assertThat(expectedValues, hasItem(multiValuedObservations.get(0).getValueText()));
-        assertThat(expectedValues, hasItem(multiValuedObservations.get(1).getValueText()));
+        assertThat(multiValuedObservations.get(0).getValueCoded(), notNullValue());
+        assertThat(expectedValues, hasItem(multiValuedObservations.get(0).getValueCoded().getName()));
+        assertThat(multiValuedObservations.get(1).getValueCoded(), notNullValue());
+        assertThat(expectedValues, hasItem(multiValuedObservations.get(1).getValueCoded().getName()));
     }
 
     @Test
@@ -183,7 +202,7 @@ public class HTMLFormObservationCreatorTest {
         verify(conceptController).saveConcepts(conceptArgumentCaptor.capture());
 
         List<Concept> value = conceptArgumentCaptor.getValue();
-        assertThat(value.size(), is(22));
+        assertThat(value.size(), is(33));
 
         verify(observationController).saveObservations(observationArgumentCaptor.capture());
         assertThat(observationArgumentCaptor.getValue().size(), is(30));
