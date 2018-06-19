@@ -78,6 +78,8 @@
     <string name="failure_obtain_smartcard_record">Haikuweza kupata rekodi ya smartcard ya kuandika kadi.</string>
     <string name="failure_obtaining_card_serial_number">Haikuweza kupata serial ya kadi</string>
     <string name="failure_reading_card">Kadi ya Kusoma Imeshindwa</string>
+    <string name="failure_updating_smartcard_record_for_writing">Haikuweza kurekodi rekodi ya smartcard kabla ya kuandika kadi
+    </string>
     <string name="failure_writing_smartcard">Imeshindwa kuandika data ya kadi ya Smart.</string>
 
     <string name="form_encounter_date">Tarehe ya kukutana</string>
@@ -155,6 +157,7 @@
     <string name="hint_audio_record">Rekodi au chagua sauti</string>
     <string name="hint_authentication_progress">Inakutambulisha….</string>
     <string name="hint_barcode_scanner_setup">Unahitaji mfumo wa kusoma baakodi kuandikisha wateja kwa simu. Tafadhali hakikisha kama mfumo huo upo tayari katika simu yako ama la.</string>
+    <string name="hint_card_blank">Soma mafanikio lakini kadi haionekana tupu.</string>
     <string name="hint_card_not_empty">Kadi si tupu. Tafadhali tumia kadi mpya.</string>
     <string name="hint_check_digit_validation_failure">Tafadhali weka tarakimu zinazolingana na kanuni za kuangalia tarakimu</string>
     <string name="hint_client_local_search">Utafutaji wako umehusisha id ya mteja, jina la kupewa, jina la kati na jina la familia na umefanyika katika kifaa pekee.</string>
@@ -390,6 +393,10 @@
     <string name="message_missing_form_encounter_details_error">lazima yatolewa</string>
 
     <string name="no_default_encounter_location">Hakuna lokesheni ya chaguo-msingi</string>
+
+    <string name="null_encounter_date_error">Hitilafu ilitokea wakati wa kuhifadhi fomu. Tarehe ya kukutana inapaswa kutolewa</string>
+    <string name="null_encounter_location_error">Hitilafu ilitokea wakati wa kuhifadhi fomu. Kukutana na eneo lazima kutolewa</string>
+    <string name="null_encounter_provider_error">Hitilafu ilitokea wakati wa kuhifadhi fomu. Mtoa mkutano lazima atoe</string>
 
     <string name="patient_shr_search_dialog_title">Utafutaji wa SHR</string>
     <string name="patient_shr_search_title_text">Utafutaji wa SHR</string>

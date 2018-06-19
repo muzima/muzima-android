@@ -563,4 +563,9 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="warning_switch_server">Changement de serveur: Cela effacera toutes les données mUzima sur votre appareil, y compris les formulaires incomplets. Etes-vous sûr de vouloir modifier ce paramètre?</string>
 
     <string name="write_shr_to_card_text">Ecrire SHR à la carte</string>
+    <string name="failure_updating_smartcard_record_for_writing">Impossible de mettre à jour l\'enregistrement de la carte à puce avant d\'écrire sur la carte</string>
+    <string name="hint_card_blank">Lire réussie mais la carte semble être vide:</string>
+    <string name="null_encounter_date_error">Une erreur est survenue lors de l\'enregistrement du formulaire. La date de la rencontre doit être fournie</string>
+    <string name="null_encounter_location_error">Une erreur est survenue lors de l\'enregistrement du formulaire. L\'emplacement de la rencontre doit être fourni</string>
+    <string name="null_encounter_provider_error">Une erreur est survenue lors de l\'enregistrement du formulaire. Le fournisseur de rencontres doit être fourni</string>
 </resources>
