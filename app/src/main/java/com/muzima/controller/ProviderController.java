@@ -154,9 +154,9 @@ public class ProviderController {
             return providerService.getProviderBySystemId(systemId);
         } catch (IOException e) {
             Log.e(TAG,"Cannot obtain provider by system ID : "+systemId, e);
+            throw new RuntimeException(e);
         }
     }
-
     public List<Provider> getRelatedProviders(List<FormTemplate> formTemplates, String systemId) throws ProviderDownloadException, ProviderLoadException {
         HashSet<Provider> providers = new HashSet<Provider>();
         HTMLProviderParser htmlParserUtils = new HTMLProviderParser();
