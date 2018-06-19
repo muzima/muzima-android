@@ -23,6 +23,7 @@ public class DateUtils {
     }
 
     public static Date parse(String dateAsString) throws ParseException {
+
         String datePattern = "[\\d]{2}-[\\d]{2}-[\\d]{4}";
         Pattern pattern = Pattern.compile(datePattern);
         Matcher matcher = pattern.matcher(dateAsString);

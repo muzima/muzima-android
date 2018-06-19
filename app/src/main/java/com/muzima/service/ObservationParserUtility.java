@@ -46,6 +46,7 @@ import static com.muzima.util.Constants.OBSERVATION_CREATED_ON_PHONE;
 import static java.util.Arrays.asList;
 
 public class ObservationParserUtility {
+    private static final String TAG = ObservationParserUtility.class.getSimpleName();
 
     private ConceptController conceptController;
     public LocationController locationController;
@@ -147,17 +148,18 @@ public class ObservationParserUtility {
     }
 
     private EncounterType getDummyEncounterType(String formUuid) {
-        String encounterTypeName="";
-        String encountertypeUuid="";
+        String encounterTypeName= "encounterType";
+        String encountertypeUuid="encounterTypeForObservationsCreatedOnPhone";
         try{
             Form form = formController.getFormByUuid(formUuid);
-            if(form == null){
-                encounterTypeName = "encounterType";
-            } else {
+            if(form != null){
                 encounterTypeName = form.getEncounterType().getName();
+                encountertypeUuid = form.getEncounterType().getUuid();
             }
         } catch (FormController.FormFetchException e) {
-            e.printStackTrace( );
+            Log.e(TAG,"Could not retrieve list of forms",e);
+        } catch (NullPointerException e){
+            Log.e(TAG,"Could not retrieve list of forms",e);
         }
         EncounterType encounterType = new EncounterType();
         encounterType.setUuid(encountertypeUuid);
@@ -170,8 +172,9 @@ public class ObservationParserUtility {
         try {
             allLocations = locationController.getAllLocations();
         } catch (LocationController.LocationLoadException e) {
-            Log.e("Location Error:","= error loading locations ="+e);
-            e.printStackTrace( );
+            Log.e(TAG,"Error retrieving locations ",e);
+        } catch (NullPointerException e){
+            Log.e(TAG,"Could not retrieve list of locations",e);
         }
         String locationName = "";
         String locationUuid = "";
@@ -192,7 +195,9 @@ public class ObservationParserUtility {
         try {
             allProviders = providerController.getAllProviders();
         } catch (ProviderController.ProviderLoadException e) {
-            e.printStackTrace( );
+            Log.e(TAG,"Could not retrieve list of providers",e);
+        } catch (NullPointerException e){
+            Log.e(TAG,"Could not retrieve list of providers",e);
         }
         String providerName = "";
         String providerUuid = "";
@@ -203,6 +208,13 @@ public class ObservationParserUtility {
                 providerUuid = prov.getUuid();
                 providerIdentifier = prov.getIdentifier();
             }
+        }
+        if(StringUtils.isEmpty(providerUuid)){
+            providerUuid = "providerForObservationsCreatedOnPhone";
+        }
+
+        if(StringUtils.isEmpty(providerIdentifier)){
+            providerIdentifier = "PICOP";//User visible identifier code for Provider Identifier Created On Phone
         }
         Person provider = new Person();
         provider.setUuid(providerUuid);

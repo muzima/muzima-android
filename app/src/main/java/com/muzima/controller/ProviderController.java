@@ -153,7 +153,7 @@ public class ProviderController {
         try {
             return providerService.getProviderBySystemId(systemId);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Log.e(TAG,"Cannot obtain provider by system ID : "+systemId, e);
         }
     }
 

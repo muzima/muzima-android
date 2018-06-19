@@ -11,22 +11,41 @@
 package com.muzima.model;
 
 import com.muzima.api.model.Tag;
+import com.muzima.utils.Constants;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class AvailableFormTest {
+    String[] registrationDiscriminators = {Constants.FORM_DISCRIMINATOR_REGISTRATION,
+            Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION,
+            Constants.FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION,
+            Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION};
+
+    String[] nonRegistrationDiscriminators = {Constants.FORM_DISCRIMINATOR_CONSULTATION,
+            Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION,
+            Constants.FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE, Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER,
+            Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER, Constants.FORM_JSON_DISCRIMINATOR_SHR_DEMOGRAPHICS_UPDATE,
+            Constants.FORM_JSON_DISCRIMINATOR_SHR_ENCOUNTER};
     @Test
-    public void shouldReturnFalseIfThereAreNoTags() throws Exception {
+    public void shouldReturnFalseIfHasNoRegistrationDiscriminator() throws Exception {
         AvailableForm availableForm = new AvailableForm();
+
         assertFalse(availableForm.isRegistrationForm());
+
+        for(String discriminator: nonRegistrationDiscriminators) {
+            availableForm.setDiscriminator(discriminator);
+            assertFalse(availableForm.isRegistrationForm());
+        }
     }
 
     @Test
-    public void shouldReturnTrueIfThereIsARegistrationTag() throws Exception {
+    public void shouldReturnTrueIfHasRegistrationDiscriminator() throws Exception {
         AvailableForm availableForm = new AvailableForm();
-        availableForm.setTags(new Tag[]{new Tag(){{setName("Registration");}}});
-        assertTrue(availableForm.isRegistrationForm());
+        for(String discriminator: registrationDiscriminators) {
+            availableForm.setDiscriminator(discriminator);
+            assertTrue(availableForm.isRegistrationForm());
+        }
     }
 }

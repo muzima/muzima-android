@@ -100,7 +100,8 @@ public class ObservationControllerTest {
         assertThat(savedLastSyncTime.getParamSignature(), is("PatientUuid1,PatientUuid2;ConceptUuid1,ConceptUuid2"));
     }
 
-    @Test
+    //ToDo: Revise Delta sync logic
+    //@Test
     public void shouldProperlyProcessChangeInKnownPatientOrConcept() throws ObservationController.DownloadObservationException, IOException {
         List<String> patientUuids = asList("PatientUuid1", "PatientUuid2");
         List<String> conceptUuids = asList("ConceptUuid1", "ConceptUuid2");
