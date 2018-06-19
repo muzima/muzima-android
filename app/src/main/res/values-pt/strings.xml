@@ -87,7 +87,11 @@
     </string>
 
     <string name="failure_obtain_smartcard_record">Não foi possível obter o registro de cartão inteligente para gravação no cartão.</string>
+    <string name="failure_obtaining_card_serial_number">Não foi possível obter o número de série do cartão</string>
     <string name="failure_reading_card">Leitura de cartão falhada</string>
+    <string name="failure_updating_smartcard_record_for_writing">Não foi possível atualizar o registro de cartão inteligente
+        antes de gravar no cartão
+    </string>
     <string name="failure_writing_smartcard">Falha ao gravar dados do cartão inteligente.</string>
 
     <string name="form_encounter_date">Data de encontro</string>
@@ -167,6 +171,7 @@
     <string name="hint_barcode_scanner_setup">Precisa de aplicativo de scanner de código de barra para registar os
         clientes a partir do telefone. Por favor verifique se isto está instalado no dispositivo ou não.
     </string>
+    <string name="hint_card_blank">Leia com sucesso, mas o cartão parece estar em branco:</string>
     <string name="hint_card_not_empty">O cartão não está vazio. Por favor, use um novo cartão.</string>
     <string name="hint_check_digit_validation_failure">Por favor introduza os dígitos que correspondem ao algoritmo de verificação de dígitos</string>
     <string name="hint_client_local_search">Sua pesquisa inclui ID do cliente, primeiro nome, nome do meio e apélido e
@@ -499,6 +504,10 @@
     <string name="message_missing_form_encounter_details_error">deve ser providenciado</string>
 
     <string name="no_default_encounter_location">Nenhum local de encontro padrão</string>
+
+    <string name="null_encounter_date_error">Hitilafu ilitokea wakati wa kuhifadhi fomu. Tarehe ya kukutana inapaswa kutolewa</string>
+    <string name="null_encounter_location_error">Ocorreu um erro ao salvar o formulário. A localização do encontro deve ser fornecida</string>
+    <string name="null_encounter_provider_error">Ocorreu um erro ao salvar o formulário. Provedor de encontro deve ser fornecido</string>
 
     <string name="patient_shr_search_dialog_title">Pesquisa SHR Paciente</string>
     <string name="patient_shr_search_title_text">Pesquisa SHR Paciente</string>
