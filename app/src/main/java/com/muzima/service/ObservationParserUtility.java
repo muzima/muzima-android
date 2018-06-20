@@ -203,7 +203,8 @@ public class ObservationParserUtility {
         String providerUuid = "";
         String providerIdentifier = "";
         for(Provider prov:allProviders){
-            if(prov.getIdentifier().equals(providerId)){
+            String identifier = prov.getIdentifier();
+            if(identifier != null && identifier.equals(providerId)){
                 providerName = prov.getName();
                 providerUuid = prov.getUuid();
                 providerIdentifier = prov.getIdentifier();
