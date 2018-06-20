@@ -99,5 +99,5 @@ dependencies {
     compile 'com.android.support:support-v13:23.4.0'
 }
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.1'
+    gradleVersion = '3.4.1'
 }
