@@ -66,8 +66,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
     private EditTextPreference passwordPreference;
     private EditTextPreference autoSaveIntervalPreference;
     private CheckBoxPreference encounterProviderPreference;
-    //Disabling duplicate form data preference until a better workflow of flagging duplicates is thought out. See MUZIMA-488
-   // private CheckBoxPreference duplicateFormDataPreference;
+    private CheckBoxPreference duplicateFormDataPreference;
     private CheckBoxPreference realTimeSyncPreference;
     private CheckBoxPreference requireMedicalRecordNumberPreference;
     private ListPreference fontSizePreference;
@@ -182,11 +181,11 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             }
         });
 
-        /*
+
         duplicateFormDataPreferenceKey = getResources().getString(R.string.preference_duplicate_form_data_key);
         duplicateFormDataPreference = (CheckBoxPreference)getPreferenceScreen().findPreference(duplicateFormDataPreferenceKey);
         duplicateFormDataPreference.setSummary(duplicateFormDataPreference.getSummary());
-        */
+
 
         fontSizePreferenceKey = getResources().getString(R.string.preference_font_size);
         fontSizePreference = (ListPreference) getPreferenceScreen().findPreference(fontSizePreferenceKey);
