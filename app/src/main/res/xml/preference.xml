@@ -70,14 +70,14 @@
                 android:summary="@string/hint_require_medical_record_number"
                 android:title="@string/title_require_medical_record_number"
                 android:key="@string/preference_require_medical_record_number" />
-<!--
+
         <CheckBoxPreference
                 android:defaultValue="true"
                 android:checked="true"
                 android:key="@string/preference_duplicate_form_data_key"
                 android:summary="@string/hint_duplicate_form_data_warning"
                 android:title="@string/title_duplicate_form_data_warning" />
--->
+
         <ListPreference
                 android:title="@string/title_font_size"
                 android:key="@string/preference_font_size"
