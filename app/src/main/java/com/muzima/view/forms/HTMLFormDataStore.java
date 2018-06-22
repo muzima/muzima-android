@@ -369,7 +369,12 @@ public class HTMLFormDataStore {
             JSONObject encounterObject = mainObject.getJSONObject("encounter");
             if (!(encounterObject.has("encounter.encounter_datetime"))) {
                 List<FormData> allFormData = new ArrayList<FormData>( );
-                allFormData = formController.getAllFormDataByPatientUuid(patientUuid, Constants.STATUS_INCOMPLETE);
+                List<FormData> incompleteForms = new ArrayList<FormData>( );
+                List<FormData> completeForms = new ArrayList<FormData>( );
+                incompleteForms = formController.getAllFormDataByPatientUuid(patientUuid, Constants.STATUS_INCOMPLETE);
+                completeForms = formController.getAllFormDataByPatientUuid(patientUuid, Constants.STATUS_COMPLETE);
+                allFormData.addAll(incompleteForms);
+                allFormData.addAll(completeForms);
                 for (FormData formData : allFormData) {
                     Date encounterDate = formData.getEncounterDate( );
                     String formDataUuid = formData.getTemplateUuid( );
