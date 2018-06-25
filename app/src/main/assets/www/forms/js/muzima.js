@@ -353,7 +353,27 @@ $(document).ready(function () {
         changeYear: true
     });
 
-    /* Start - Initialize jQuery DatePicker */
+    /* End - Initialize jQuery DatePicker */
+
+    /*Start - Initialize jQuery DateTimePicker */
+    $('.datetimepicker').datetimepicker({
+        format:'d-m-Y H:i',
+        changeMonth: true,
+        changeYear: true,
+        step : 5,
+        defaultDate:new Date()
+    });
+
+    var dt = new Date();
+    var time = dt.getHours() + ":" + dt.getMinutes();
+    var dateFormat = "dd-3mm-yy";
+    var currentDate = $.datepicker.formatDate(dateFormat, new Date());
+
+    var encounterDatetime = $('.datetimepicker');
+    if ($(encounterDatetime).val() == "") {
+        $(encounterDatetime).val(currentDate+' '+time);
+    }
+    /*End - Initialize jQuery DateTimePicker */
 
     /* Start - CheckDigit algorithm Source: https://wiki.openmrs.org/display/docs/Check+Digit+Algorithm */
     var checkDigitValidationFailureMessage = "";
