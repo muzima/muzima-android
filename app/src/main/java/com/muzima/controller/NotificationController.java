@@ -10,21 +10,22 @@
 
 package com.muzima.controller;
 
+import android.os.AsyncTask;
+import android.util.Log;
+
+import com.muzima.api.exception.ValidationFailureException;
 import com.muzima.api.model.Form;
-import com.muzima.api.model.FormData;
 import com.muzima.api.model.Notification;
 import com.muzima.api.model.Tag;
 import com.muzima.api.service.FormService;
 import com.muzima.api.service.NotificationService;
-import com.muzima.api.service.PatientService;
-import org.apache.lucene.queryParser.ParseException;
+import com.muzima.utils.Constants;
 
+import org.apache.lucene.queryParser.ParseException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_CONSULTATION;
-import static com.muzima.utils.Constants.STATUS_UPLOADED;
 
 public class NotificationController {
     private NotificationService notificationService;
@@ -52,8 +53,8 @@ public class NotificationController {
     }
 
     public int getAllNotificationsByReceiverCount(String receiverUuid, String status) throws NotificationFetchException, ParseException {
-        List<Notification> notifications =  getAllNotificationsByReceiver(receiverUuid, status);
-        return   notifications == null ? 0 : notifications.size();
+        List<Notification> notifications = getAllNotificationsByReceiver(receiverUuid, status);
+        return notifications == null ? 0 : notifications.size();
     }
 
     public List<Notification> getNotificationsForPatient(String patientUuid, String receiverUuid, String status) throws NotificationFetchException {
@@ -65,16 +66,16 @@ public class NotificationController {
     }
 
     public int getNotificationsCountForPatient(String patientUuid, String receiverUuid, String status) throws NotificationFetchException {
-        List<Notification> notifications =  getNotificationsForPatient(patientUuid, receiverUuid, status);
-        return   notifications == null ? 0 : notifications.size();
+        List<Notification> notifications = getNotificationsForPatient(patientUuid, receiverUuid, status);
+        return notifications == null ? 0 : notifications.size();
     }
 
     public boolean patientHasNotifications(String patientUuid, String receiverUuid, String status) throws NotificationFetchException {
-        List<Notification> notifications =  getNotificationsForPatient(patientUuid, receiverUuid, status);
+        List<Notification> notifications = getNotificationsForPatient(patientUuid, receiverUuid, status);
         return (notifications != null && notifications.size() > 0);
     }
 
-    public List<Notification> downloadNotificationByReceiver(String receiverUuid) throws NotificationDownloadException, ParseException {
+    public List<Notification> downloadNotificationByReceiver(String receiverUuid) throws NotificationDownloadException {
         try {
             return notificationService.downloadNotificationByReceiver(receiverUuid);
         } catch (IOException e) {
@@ -84,21 +85,28 @@ public class NotificationController {
 
     public void saveNotification(Notification notification) throws NotificationSaveException {
         try {
+            Log.e("TAG", "Notification" + notification.toString());
             notificationService.saveNotification(notification);
+            if (!(notification.getStatus().equals(Constants.NotificationStatusConstants.NOTIFICATION_UPLOADED))) {
+                notificationService.uploadNotification(notification);
+            }
         } catch (IOException e) {
             throw new NotificationSaveException(e);
+        } catch (ValidationFailureException e) {
+            Log.e(getClass().getSimpleName(), "Unable to upload notification.");
         }
     }
 
-   public void saveNotifications(List<Notification> notifications) throws NotificationSaveException {
+    public void saveNotifications(List<Notification> notifications) throws NotificationSaveException {
         try {
             notificationService.saveNotifications(notifications);
+            new NotificationsUploadBackgroudTask().execute();
         } catch (IOException e) {
             throw new NotificationSaveException(e);
         }
     }
 
-   public void deleteNotifications(Notification notification) throws NotificationDeleteException {
+    public void deleteNotifications(Notification notification) throws NotificationDeleteException {
         try {
             notificationService.deleteNotification(notification);
         } catch (IOException e) {
@@ -114,17 +122,17 @@ public class NotificationController {
         }
     }
 
-    public boolean isConsultationForm(Form form){
+    public boolean isConsultationForm(Form form) {
         if (form == null)
             return false;
 
         Tag[] tags = form.getTags();
 
-        if(tags == null){
+        if (tags == null) {
             return false;
         }
         for (Tag tag : tags) {
-            if(FORM_DISCRIMINATOR_CONSULTATION.equalsIgnoreCase(tag.getName())){
+            if (FORM_DISCRIMINATOR_CONSULTATION.equalsIgnoreCase(tag.getName())) {
                 return true;
             }
         }
@@ -152,6 +160,66 @@ public class NotificationController {
     public static class NotificationDeleteException extends Throwable {
         public NotificationDeleteException(Throwable throwable) {
             super(throwable);
+        }
+    }
+
+    private class NotificationUploadBackgroundTask extends AsyncTask<Notification,Void,Void> {
+
+        @Override
+        protected Void doInBackground(Notification... notifications) {
+
+            for (Notification notification : notifications) {
+                if (!(notification.getStatus().equals(Constants.NotificationStatusConstants.NOTIFICATION_UPLOADED))) {
+                    try {
+                        notificationService.uploadNotification(notification);
+                    }catch (ValidationFailureException e) {
+                        Log.e(getClass().getSimpleName(), "Unable to upload notification.");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return  null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    private class NotificationsUploadBackgroudTask extends AsyncTask<Notification, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Notification... notifications) {
+            for (Notification notification : notifications) {
+                if (!(notification.getStatus().equals(Constants.NotificationStatusConstants.NOTIFICATION_UPLOADED))) {
+                    try {
+                        notificationService.uploadNotification(notification);
+                    }catch (ValidationFailureException e) {
+                        Log.e(getClass().getSimpleName(), "Unable to upload notification.");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
         }
     }
 }
