@@ -353,7 +353,18 @@ $(document).ready(function () {
         changeYear: true
     });
 
-    /* Start - Initialize jQuery DatePicker */
+    /* End - Initialize jQuery DatePicker */
+
+    /*Start - Initialize jQuery DateTimePicker */
+    $('.datetimepicker').datetimepicker({
+        format:'dd-mm-yyyy hh:ii',
+        changeMonth: true,
+        changeYear: true,
+        step : 5,
+        defaultDate:new Date()
+    });
+
+    /*End - Initialize jQuery DateTimePicker */
 
     /* Start - CheckDigit algorithm Source: https://wiki.openmrs.org/display/docs/Check+Digit+Algorithm */
     var checkDigitValidationFailureMessage = "";
