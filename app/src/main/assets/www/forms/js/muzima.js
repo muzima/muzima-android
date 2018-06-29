@@ -357,7 +357,7 @@ $(document).ready(function () {
 
     /*Start - Initialize jQuery DateTimePicker */
     $('.datetimepicker').datetimepicker({
-        format:'d-m-Y H:i',
+        format:'dd-mm-yyyy hh:ii',
         changeMonth: true,
         changeYear: true,
         step : 5,
