@@ -361,6 +361,7 @@ $(document).ready(function () {
         changeMonth: true,
         changeYear: true,
         step : 5,
+        autoclose:true,
         defaultDate:new Date()
     });
 
