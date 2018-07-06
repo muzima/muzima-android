@@ -172,7 +172,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             }
         });
 
-
         muzimaApplication = (MuzimaApplication) getApplicationContext();
         muzimaSyncService = muzimaApplication.getMuzimaSyncService();
         patientController = muzimaApplication.getPatientController();
@@ -181,7 +180,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
         serverSearchProgressDialog.setCancelable(false);
         serverSearchProgressDialog.setIndeterminate(true);
-
 
         smartCardController = ((MuzimaApplication) getApplicationContext()).getSmartCardController();
     }
