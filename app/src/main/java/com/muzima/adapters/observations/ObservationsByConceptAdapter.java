@@ -112,7 +112,9 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
             holder = new ObservationsByConceptViewHolder();
             holder.headerText = (TextView) convertView.findViewById(R.id.observation_header);
             holder.addObsButton = (ImageButton) convertView.findViewById(R.id.add_individual_obs_imagebutton);
-            holder.addObsButton.setVisibility(View.VISIBLE);
+            //Disabling Add Obs Button until MUZIMA-615 is fixed
+            //ToDo: Fix MUZIMA-615
+            holder.addObsButton.setVisibility(View.GONE);
             holder.headerLayout = (RelativeLayout) convertView.findViewById(R.id.observation_header_layout);
             holder.observationLayout = (LinearLayout) convertView
                     .findViewById(R.id.observation_layout);

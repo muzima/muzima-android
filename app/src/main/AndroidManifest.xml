@@ -164,16 +164,6 @@
                     android:value="com.muzima.view.MainActivity"/>
         </activity>
         <activity
-
-            android:name=".view.forms.ProviderReportsFormActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="Provider Reports"
-            android:parentActivityName=".view.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.MainActivity" />
-        </activity>
-        <activity
             android:name=".view.forms.FormWebViewActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_form"
@@ -341,6 +331,25 @@
                 android:label="Guided Setup Wizard"
                 android:theme="@style/WizardTheme"/>
         <!-- Wizard Activities End -->
+
+        <activity
+                android:name=".view.reports.ProviderReportViewActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="Provider Reports"
+                android:parentActivityName=".view.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.MainActivity" />
+        </activity>
+        <activity
+                android:name=".view.reports.ProviderReportListActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="Provider Reports"
+                android:parentActivityName=".view.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.MainActivity" />
+        </activity>
 
         <receiver android:name=".utils.ConnectivityChangeReceiver">
             <intent-filter>
