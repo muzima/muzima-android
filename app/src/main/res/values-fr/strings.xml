@@ -79,6 +79,7 @@
     <string name="failure_obtain_smartcard_record">Impossible d\'obtenir un enregistrement de carte à puce pour écrire sur la carte.</string>
     <string name="failure_obtaining_card_serial_number">Impossible d\'obtenir le numéro de série de la carte</string>
     <string name="failure_reading_card">La lecture de la carte a échoué</string>
+    <string name="failure_updating_smartcard_record_for_writing">Impossible de mettre à jour l\'enregistrement de la carte à puce avant d\'écrire sur la carte</string>
     <string name="failure_writing_smartcard">Échec de l\'écriture des données de la carte à puce.</string>
 
     <string name="form_encounter_date">Date de rencontre</string>
@@ -157,6 +158,7 @@
     <string name="hint_audio_record">Enregistrer ou choisir l\'audio</string>
     <string name="hint_authentication_progress">Authentification…</string>
     <string name="hint_barcode_scanner_setup">Vous avez besoin d\'une application de lecture de codes barres pour enregistrer les clients de            l\'appareil mobile. S\'il vous plaît vérifier si elle a été installée dans votre appareil mobile ou non.</string>
+    <string name="hint_card_blank">Lire réussie mais la carte semble être vide:</string>
     <string name="hint_card_not_empty">La carte n\'est pas vide. S\'il vous plaît utiliser une nouvelle carte.</string>
     <string name="hint_check_digit_validation_failure">S\'il vous plait entrez les numéros qui correspondent a l\'algorithme CheckDigit </string>
     <string name="hint_client_local_search">Votre recherche comprend le numéro identificateur du client, prenom et le nom de famille
@@ -230,6 +232,8 @@
     <string name="hint_recommended_forms_unavailable">S\'il vous plaît sélectionner les formulaires de non-inscription de la liste de tous les formulaires et cliquez sur télécharger</string>
     <string name="hint_registration_form_select">S\'il vous plaît sélectionner au moins un formulaire d\'inscription!</string>
     <string name="hint_repeating_section_minimum_repeats_validation_failure">Les repetitions minimum non satisfaites. Besoin d\'au moins</string>
+    <string name="hint_reports_unavailable">S\'il vous plaît sélectionner les rapports de la liste de tous les formulaires
+        et cliquez sur télécharger</string>
     <string name="hint_require_medical_record_number">Exiger le numéro d\'identification médicale pendant l\'enregistrement </string>
     <string name="hint_server_connection_unavailable">S\'il vous plaît contacter l\'administrateur de votre serveur pour vérifier la connectivité du serveur</string>
     <string name="hint_server_password_prompt">Entrez le mot de passe de OpenMRS</string>
@@ -344,6 +348,7 @@
     <string formatted="false" name="info_download_complete">Téléchargement completé avec l\'état %d</string>
     <string name="info_downloaded_forms_unavailable">aucun formulaire n\'a été téléchargé</string>
     <string name="info_downloaded_image">Image en Téléchargée</string>
+    <string name="info_downloaded_reports_unavailable">Aucun rapport n\'a été téléchargé</string>
     <string name="info_draft_form_save_success">Le brouillon du formulaire a été enregistré avec succès.</string>
     <string name="info_encounter_download">téléchargement des rencontres en cours</string>
     <string formatted="false" name="info_encounter_download_progress">Téléchargement en cours des rencontres pour le client%d de %d.</string>
@@ -449,6 +454,10 @@ Aucun fournisseur n\'a encore été ajouté</string>
     <string name="message_missing_form_encounter_details_error">doit être fourni</string>
 
     <string name="no_default_encounter_location">Aucun lieu de rencontre par défaut</string>
+
+    <string name="null_encounter_date_error">Une erreur est survenue lors de l\'enregistrement du formulaire. La date de la rencontre doit être fournie</string>
+    <string name="null_encounter_location_error">Une erreur est survenue lors de l\'enregistrement du formulaire. L\'emplacement de la rencontre doit être fourni</string>
+    <string name="null_encounter_provider_error">Une erreur est survenue lors de l\'enregistrement du formulaire. Le fournisseur de rencontres doit être fourni</string>
 
     <string name="patient_shr_search_dialog_title">Client SHR Search</string>
     <string name="patient_shr_search_title_text">Client SHR Search</string>
@@ -565,9 +574,4 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="warning_switch_server">Changement de serveur: Cela effacera toutes les données mUzima sur votre appareil, y compris les formulaires incomplets. Etes-vous sûr de vouloir modifier ce paramètre?</string>
 
     <string name="write_shr_to_card_text">Ecrire SHR à la carte</string>
-    <string name="failure_updating_smartcard_record_for_writing">Impossible de mettre à jour l\'enregistrement de la carte à puce avant d\'écrire sur la carte</string>
-    <string name="hint_card_blank">Lire réussie mais la carte semble être vide:</string>
-    <string name="null_encounter_date_error">Une erreur est survenue lors de l\'enregistrement du formulaire. La date de la rencontre doit être fournie</string>
-    <string name="null_encounter_location_error">Une erreur est survenue lors de l\'enregistrement du formulaire. L\'emplacement de la rencontre doit être fourni</string>
-    <string name="null_encounter_provider_error">Une erreur est survenue lors de l\'enregistrement du formulaire. Le fournisseur de rencontres doit être fourni</string>
 </resources>

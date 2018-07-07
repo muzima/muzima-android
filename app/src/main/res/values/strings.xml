@@ -292,6 +292,7 @@
     <string name="hint_repeating_section_minimum_repeats_validation_failure">Minimum repeats not satisfied. Needs at
         least
     </string>
+    <string name="hint_reports_unavailable">Please select reports from all forms list and click download</string>
     <string name="hint_require_medical_record_number">Require client\'s medical record number during registration
     </string>
     <string name="hint_server_connection_unavailable">Please contact your server administrator to check server
@@ -387,6 +388,7 @@
     <string name="info_download_complete">Download complete with status %d</string>
     <string name="info_downloaded_forms_unavailable">No forms have been downloaded</string>
     <string name="info_downloaded_image">Downloaded image</string>
+    <string name="info_downloaded_reports_unavailable">No reports have been downloaded</string>
     <string name="info_draft_form_save_success">Draft form was saved successfully.</string>
     <string name="info_encounter_download">Downloading Encounters</string>
     <string formatted="false" name="info_encounter_download_progress">Downloading encounters for client %d of %d.

@@ -227,6 +227,7 @@
     <string name="hint_recommended_forms_unavailable">Tafadhali chagua fomu ambazo si za uandikishaji kutoka katika orodha ya fomu zote kisha bofya pakuwa</string>
     <string name="hint_registration_form_select">Tafadhali chagua angalau fomu moja ya uandikishaji!</string>
     <string name="hint_repeating_section_minimum_repeats_validation_failure">Kuna kutoridhishwa kwa kurejelewa. Pana haja ya kurejelewa japo kwa uchache.</string>
+    <string name="hint_reports_unavailable">Tafadhali chagua ripoti kutoka orodha zote za fomu na bonyeza kubofya</string>
     <string name="hint_require_medical_record_number">Inahitaji rekodi za matibabu za mteja/mgonjwa wakati wa uandikishaji.</string>
     <string name="hint_server_connection_unavailable">Tafadhali wasiliana na msimamizi wako  wa Seva ilikupata uunganisho na Seva.</string>
     <string name="hint_server_password_prompt">Ingiza nywila ya OpenMRS</string>
@@ -291,6 +292,7 @@
     <string formatted="false" name="info_download_complete">Udukuzi umekamilika na hali %d</string>
     <string name="info_downloaded_forms_unavailable">Hakuna fomu zilizodukuliwa</string>
     <string name="info_downloaded_image">Taswira/Picha imedukuliwa</string>
+    <string name="info_downloaded_reports_unavailable">Hakuna ripoti zimepakuliwa</string>
     <string name="info_draft_form_save_success">Fomu ya drafti imefanikiwa kuhifadhiwa</string>
     <string name="info_encounter_download">Inkaunta zinapakuliwa.</string>
     <string formatted="false" name="info_encounter_download_progress">Upakuaji wa inkaunta kwa mgonjwa %d kati ya %d.</string>

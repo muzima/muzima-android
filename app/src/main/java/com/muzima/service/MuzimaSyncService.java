@@ -472,6 +472,7 @@ public class MuzimaSyncService {
         try {
             downloadedPatients = downloadPatientsByUUID(patientUUIDs);
             patientController.savePatients(downloadedPatients);
+            Log.e(TAG, "DOWNLOADED PATIENTS.");
             result[0] = SUCCESS;
             result[1] = downloadedPatients.size();
         } catch (PatientController.PatientDownloadException e) {
