@@ -40,6 +40,8 @@ public class Constants {
     public static final String FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION = "json-shr-registration";
     public static final String FORM_JSON_DISCRIMINATOR_SHR_DEMOGRAPHICS_UPDATE = "json-shr-demographics-update";
 
+    public static final String FORM_DISCRIMINATOR_PROVIDER_REPORT = "provider-report";
+
     private static final String APP_EXTERNAL_DIR_ROOT =  Environment.getExternalStorageDirectory().getPath() + "/muzima";
     public static final String APP_MEDIA_DIR = APP_EXTERNAL_DIR_ROOT + "/media";
     public static final String APP_IMAGE_DIR = APP_MEDIA_DIR + "/image";

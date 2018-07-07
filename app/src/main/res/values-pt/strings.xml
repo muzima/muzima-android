@@ -287,6 +287,8 @@
     </string>
     <string name="hint_registration_form_select">Por favor seleccione pelo menos um formulário de registo!</string>
     <string name="hint_repeating_section_minimum_repeats_validation_failure">Repetições minimas não satisfeita. Precisa uma pelo menos</string>
+    <string name="hint_reports_unavailable">Por favor, selecione relatórios de todas as listas de formulários e clique
+        em download</string>
     <string name="hint_require_medical_record_number">Exigir o número de registro médico do cliente durante o registro</string>
     <string name="hint_server_connection_unavailable">Por favor contacte o administrador do servidor para verificar a
         conectividade
@@ -387,6 +389,7 @@
     <string formatted="false" name="info_download_complete">Descarregamento completo com o estado %d</string>
     <string name="info_downloaded_forms_unavailable">Nenhum formulário foi baixado</string>
     <string name="info_downloaded_image">Baixou a imagem</string>
+    <string name="info_downloaded_reports_unavailable">Nenhum relatório foi baixado</string>
     <string name="info_draft_form_save_success">Racunho do formulário foi guardado com sucesso</string>
     <string name="info_encounter_download">Baixando visitas</string>
     <string formatted="false" name="info_encounter_download_progress">Baixando visitas para cliente %d de %d</string>
