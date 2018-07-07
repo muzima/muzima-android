@@ -164,6 +164,7 @@
     <string name="general_view_encounter">View encounter</string>
     <string name="general_welcome">Welcome</string>
     <string name="general_yes">Yes</string>
+    <string name="general_reports">Reports</string>
 
     <string name="header_cohort_category">Cohort Settings</string>
     <string name="header_muzima_category">mUzima Settings</string>
@@ -615,6 +616,7 @@
     <string name="title_video_caption">Video Caption</string>
     <string name="title_video_choose">Choose Video</string>
     <string name="title_video_record">Record Video</string>
+    <string name="title_activity_client_reports">Client Reports</string>
 
     <string name="warning_cohort_prefix_exists">Cohort prefix exists</string>
     <string name="warning_empty_cohort_prefix">You cannot add an empty cohort prefix</string>

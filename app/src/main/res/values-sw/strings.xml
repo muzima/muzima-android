@@ -146,6 +146,7 @@
     <string name="general_view_encounter">Tazama inkaunta</string>
     <string name="general_welcome">Karibu</string>
     <string name="general_yes">Ndiyo</string>
+    <string name="general_reports">Report</string>
 
     <string name="header_cohort_category">Mipangilio ya kikundi</string>
     <string name="header_muzima_category">Mipangilio ya mUzima</string>
@@ -499,6 +500,7 @@
     <string name="title_video_caption">Maelezo mafupi ya video</string>
     <string name="title_video_choose">Chagua video</string>
     <string name="title_video_record">Rekodi video</string>
+    <string name="title_activity_client_reports">Client Reports</string>
 
     <string name="warning_cohort_prefix_exists">Kiambishi awali cha kikundi kinapatikanwa</string>
     <string name="warning_empty_cohort_prefix">Huwezi kuongeza kiambishi awali cha jina la kikundi kilicho tupu</string>

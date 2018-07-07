@@ -136,6 +136,37 @@
 
                 </RelativeLayout>
             </LinearLayout>
+
+            <LinearLayout android:layout_width="fill_parent"
+                          android:weightSum="100"
+                          style="@style/ClickableGridItemHeight"
+                          android:baselineAligned="false">
+
+                <RelativeLayout
+                        style="@style/ClickableGridItem"
+                        android:layout_weight="50"
+                        android:layout_marginRight="5dp"
+                        android:paddingRight="5dp"
+                        android:onClick="reportsList">
+
+                    <TextView
+                            style="@style/DashboardListItemPrimaryText"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:text="@string/general_reports">
+                    </TextView>
+
+                    <TextView
+                            android:id="@+id/reportDescription"
+                            style="@style/DashboardItemDescription"
+                            android:layout_alignParentBottom="true"
+                            android:text="## Incomplete, ## Outbox">
+                    </TextView>
+
+                </RelativeLayout>
+                
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
