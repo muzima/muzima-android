@@ -158,6 +158,7 @@
     <string name="general_view_encounter">Ver visita</string>
     <string name="general_welcome">Bem vindo</string>
     <string name="general_yes">Sim</string>
+    <string name="general_reports">Report</string>
 
     <string name="header_cohort_category">Configurações de coorte</string>
     <string name="header_muzima_category">Configurações de mUzima</string>
@@ -609,6 +610,7 @@
     <string name="title_video_caption">Legenda do vídeo</string>
     <string name="title_video_choose">Escolha o Vídeo</string>
     <string name="title_video_record">Gravar o Vídeo</string>
+    <string name="title_activity_client_reports">Client Reports</string>
 
     <string name="warning_cohort_prefix_exists">Prefixo de coorte existe</string>
     <string name="warning_empty_cohort_prefix">Não pode adicionar um prefixo para coorte vazia</string>

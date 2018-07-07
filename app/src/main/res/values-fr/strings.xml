@@ -145,6 +145,7 @@
     <string name="general_view_encounter">Voir la rencontre</string>
     <string name="general_welcome">Bienvenue</string>
     <string name="general_yes">Oui</string>
+    <string name="general_reports">Report</string>
 
     <string name="header_cohort_category">Paramètres de cohorte</string>
     <string name="header_muzima_category">Paramètres de mUzima</string>
@@ -550,6 +551,7 @@ Aucun fournisseur n\'a encore été ajouté</string>
     <string name="title_video_caption">Légende vidéo</string>
     <string name="title_video_choose">Choisissez Vidéo</string>
     <string name="title_video_record">Enregistrez vidéo</string>
+    <string name="title_activity_client_reports">Client Reports</string>
 
     <string name="warning_cohort_prefix_exists">Le préfixe de cohortes existe</string>
     <string name="warning_empty_cohort_prefix">Vous ne pouvez pas ajouter un préfixe de cohortes vide</string>

@@ -60,6 +60,7 @@ import com.muzima.view.encounters.EncountersActivity;
 import com.muzima.view.forms.PatientFormsActivity;
 import com.muzima.view.notifications.PatientNotificationActivity;
 import com.muzima.view.observations.ObservationsActivity;
+import com.muzima.view.reports.PatientReportsActivity;
 
 import java.io.IOException;
 import java.util.List;
@@ -380,6 +381,12 @@ public class PatientSummaryActivity extends BaseActivity {
 
     public void showSHRObservations(View v) {
         Intent intent = new Intent(PatientSummaryActivity.this, SHRObservationsDataActivity.class);
+        intent.putExtra(PATIENT, patient);
+        startActivity(intent);
+    }
+    
+    public void showReports(View v) {
+        Intent intent = new Intent(this, PatientReportsActivity.class);
         intent.putExtra(PATIENT, patient);
         startActivity(intent);
     }
