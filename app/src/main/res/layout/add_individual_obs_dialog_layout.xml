@@ -26,9 +26,24 @@
 				android:id="@+id/obs_new_value_edittext"
 				android:hint=""
 				android:textColor="@android:color/white"
-				android:ems="100"
+				android:ems="50"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"/>
+
+		<Spinner
+			android:id="@+id/obs_new_value_spinner"
+			android:ems="50"
+			android:visibility="gone"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+
+		<TextView
+			android:id="@+id/obs_new_value_date"
+			android:ems="50"
+			android:textColor="@android:color/white"
+			android:onClick="showDatePicketDialog"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
 	
 	</LinearLayout>
 	
@@ -62,7 +77,6 @@
 			
 			<TextView
 					android:id="@+id/date_value_textview"
-					android:text="21 March 2018"
 					android:textColor="@android:color/white"
 					android:onClick="showDatePicketDialog"
 					android:layout_width="wrap_content"
