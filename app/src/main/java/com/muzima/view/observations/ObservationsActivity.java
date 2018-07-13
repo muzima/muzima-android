@@ -99,7 +99,6 @@ public class ObservationsActivity extends BroadcastListenerActivity {
     }
 
     public void showDatePicketDialog(View view) {
-        Toast.makeText(view.getContext(),"Date set as ",Toast.LENGTH_LONG).show();
         encounterDateTextView = (TextView) view;
         DatePickerDialog datePickerDialog = new DatePickerDialog(view.getContext(), new DateSetListener(),today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
@@ -119,8 +118,6 @@ public class ObservationsActivity extends BroadcastListenerActivity {
                 day = "0"+dayOfMonth;
             }
             encounterDateTextView.setText(day+"-"+month+"-"+year);
-            //todo pass data value to encounter date text
-            Toast.makeText(view.getContext(),"Date set as "+year+"/"+monthOfYear+"/"+dayOfMonth,Toast.LENGTH_LONG).show();
         }
     }
 }
