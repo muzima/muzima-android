@@ -12,7 +12,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +24,6 @@ import com.muzima.api.model.EncounterType;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
-import com.muzima.api.model.Person;
 import com.muzima.api.model.Provider;
 
 import java.text.DateFormat;
@@ -40,12 +38,14 @@ import java.util.UUID;
 
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
+import com.muzima.controller.LocationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.MuzimaApplication;
+import com.muzima.controller.ProviderController;
+import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.utils.IndividualObsJsonMapper;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 public class CustomObsEntryDialog extends Dialog {
 
@@ -60,7 +60,6 @@ public class CustomObsEntryDialog extends Dialog {
     private Calendar obsRecordDate = Calendar.getInstance();
     private static final Calendar today = Calendar.getInstance();
     private ObservationController observationController;
-    private EncounterController encounterController;
     private TextView observation_name_textview;
     private MuzimaApplication muzimaApplication;
     private Spinner codedObsSpinner;
@@ -171,8 +170,6 @@ public class CustomObsEntryDialog extends Dialog {
         });
 
     }
-
-
 
     public void showDatePicketDialog(View view) {
         DatePickerDialog datePickerDialog = new DatePickerDialog(view.getContext(), new DateSetListener(), today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH));

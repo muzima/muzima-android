@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import java.util.UUID;
 
+import com.muzima.controller.FormController;
 import com.muzima.view.MainActivity;
 import com.muzima.MuzimaApplication;
 import com.muzima.view.forms.HTMLPatientJSONMapper;
@@ -32,10 +33,12 @@ public class IndividualObsJsonMapper {
     private FormData formData;
     private Observation observation;
     private MuzimaApplication muzimaApplication;
+    private FormController formController;
 
     public IndividualObsJsonMapper(Observation observation, Patient patient, MuzimaApplication muzimaApplication){
         this.observation = observation;
         this.muzimaApplication = muzimaApplication;
+        this.formController = muzimaApplication.getFormController();
         this.patient =patient;
     }
 
@@ -49,6 +52,7 @@ public class IndividualObsJsonMapper {
         formData.setPatientUuid(patient.getUuid());
         formData.setStatus(STATUS_COMPLETE);
         formData.setUserUuid(currentUser.getUuid());
+        formData.setTemplateUuid(UUID.randomUUID().toString());
         formData.setUuid(UUID.randomUUID().toString());
         formData.setUserSystemId((muzimaApplication).getAuthenticatedUser( ).getSystemId());
         formData.setSaveTime(observation.getObservationDatetime());
@@ -66,12 +70,16 @@ public class IndividualObsJsonMapper {
         String payload = new HTMLPatientJSONMapper().map(patient, formData, currentUser, true);
         try {
             JSONObject jsonObject = new JSONObject(payload);
+            JSONObject discriminatorObject = new JSONObject();
             JSONObject jsonObjectInner = jsonObject.getJSONObject("encounter");
             if(!(jsonObjectInner.has("encounter.encounter_datetime"))) {
                 jsonObjectInner.put("encounter.encounter_datetime", formData.getEncounterDate());
                 jsonObject.put("encounter", jsonObjectInner);
-                payload = jsonObject.toString( );
             }
+            discriminatorObject.put("discriminator", Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS);
+            jsonObject.put("discriminator",discriminatorObject);
+            payload = jsonObject.toString();
+
             return  payload;
         } catch (JSONException e) {
             Log.e(getClass().getSimpleName(), "Error while parsing response JSON", e);
