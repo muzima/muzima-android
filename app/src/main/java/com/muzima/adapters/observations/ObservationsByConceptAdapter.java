@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -80,7 +81,6 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         this.muzimaApplication = (MuzimaApplication) getContext().getApplicationContext();
         this.providerController = muzimaApplication.getProviderController();
         this.patient = patient;
-
     }
 
     @Override
@@ -254,13 +254,11 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
                 public void onClick(View v) {
                     Concept concept = observation.getConcept();
                     customObsEntryDialog.setConcept(concept);
-                    //to set provider
-                    //customObsEntryDialog.setProvider(MainActivity.globaleProvider);
+                    customObsEntryDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+                    customObsEntryDialog.setCancelable(false);
                     customObsEntryDialog.show();
                 }
-
             });
-
         }
 
         @Override
