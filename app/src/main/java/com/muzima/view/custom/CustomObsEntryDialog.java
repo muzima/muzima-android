@@ -3,12 +3,14 @@ package com.muzima.view.custom;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.muzima.R;
+import com.muzima.adapters.observations.ObservationsPagerAdapter;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.ConceptType;
 import com.muzima.api.model.Encounter;
@@ -36,14 +39,13 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import com.muzima.controller.EncounterController;
+
 import com.muzima.controller.FormController;
-import com.muzima.controller.LocationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.MuzimaApplication;
-import com.muzima.controller.ProviderController;
-import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.utils.IndividualObsJsonMapper;
+import com.muzima.view.observations.ObservationsActivity;
+import com.muzima.view.patients.PatientSummaryActivity;
 
 import org.json.JSONException;
 
@@ -64,9 +66,11 @@ public class CustomObsEntryDialog extends Dialog {
     private MuzimaApplication muzimaApplication;
     private Spinner codedObsSpinner;
     private Patient patient;
+    private  Context context;
     private FormData formData;
     private FormController formController;
     private TextView dateTimeValueEditText;
+    private Button cancelDialogButton;
 
     public CustomObsEntryDialog(@NonNull Context context, MuzimaApplication muzimaApplication, Patient patient) {
         super(context);
@@ -74,6 +78,7 @@ public class CustomObsEntryDialog extends Dialog {
         this.observationController = muzimaApplication.getObservationController();
         this.formController = muzimaApplication.getFormController();
         this.patient = patient;
+        this.context = context;
     }
 
 
@@ -84,6 +89,7 @@ public class CustomObsEntryDialog extends Dialog {
         setContentView(R.layout.add_individual_obs_dialog_layout);
 
         saveEnteredObsValueButton = (Button) findViewById(R.id.add_new_obs_button);
+        cancelDialogButton = (Button) findViewById(R.id.cancel_dialog_button);
         observationValueEditText = (EditText) findViewById(R.id.obs_new_value_edittext);
         encounterDateTextView = (TextView) findViewById(R.id.date_value_textview);
         dateTimeValueEditText = (TextView) findViewById(R.id.obs_new_value_date);
@@ -109,13 +115,14 @@ public class CustomObsEntryDialog extends Dialog {
                 dateTimeValueEditText.setText(dateFormat.format(date));
                 codedObsSpinner.setVisibility(View.GONE);
                 observationValueEditText.setVisibility(View.GONE);
+                encounterDateTextView.setInputType(InputType.TYPE_CLASS_DATETIME);
             }
 
             if (concept.isNumeric()) {
                 observationValueEditText.setVisibility(View.VISIBLE);
                 codedObsSpinner.setVisibility(View.GONE);
                 dateTimeValueEditText.setVisibility(View.GONE);
-                observation_name_textview.setInputType(InputType.TYPE_CLASS_NUMBER);
+                observationValueEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
             }
 
             if (!concept.isNumeric() && !concept.isDatetime() && !concept.isCoded()){
@@ -123,12 +130,30 @@ public class CustomObsEntryDialog extends Dialog {
             }
         }
 
+        cancelDialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancel();
+            }
+        });
+
         saveEnteredObsValueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean conceptIsDouble = false;
+                if(concept.isNumeric()){
+                    try  {
+                         Double.valueOf(observationValueEditText.getText().toString());
+                         conceptIsDouble = true;
+                    } catch (NumberFormatException e){
+                         conceptIsDouble = false;
+                    }
+                }
                 if((!concept.isCoded() && !concept.isDatetime()) && (observationValueEditText.getText().toString()).isEmpty()) {
                     Toast.makeText(getContext( ),  concept.getName()+" Observation value is needed ", Toast.LENGTH_SHORT).show();
-                }else {
+                } else if(concept.isNumeric() && !conceptIsDouble){
+                    Toast.makeText(getContext( ),  concept.getName()+" must be a number ", Toast.LENGTH_SHORT).show();
+                } else {
                     Observation newObs = constructObservation(concept);
 
                     if (newObs != null && newObs.getConcept( ).getUuid( ) != null) {
@@ -148,6 +173,10 @@ public class CustomObsEntryDialog extends Dialog {
                             }
 
                             Toast.makeText(getContext( ), concept.getName( ) + " observation saved succesfully.", Toast.LENGTH_SHORT).show( );
+                            Intent intent = new Intent(context,ObservationsActivity.class);
+                            intent.putExtra(PatientSummaryActivity.PATIENT,patient);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            context.startActivity(intent);
                             cancel( );
                         } catch (ObservationController.SaveObservationException e) {
                             Log.e("","Error While Saving Observations");
@@ -163,6 +192,13 @@ public class CustomObsEntryDialog extends Dialog {
         });
 
         encounterDateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePicketDialog(v);
+            }
+        });
+
+        dateTimeValueEditText.setOnClickListener(new View.OnClickListener( ) {
             @Override
             public void onClick(View v) {
                 showDatePicketDialog(v);

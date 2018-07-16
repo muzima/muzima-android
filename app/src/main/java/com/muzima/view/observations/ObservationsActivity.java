@@ -22,11 +22,14 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
+import com.muzima.view.custom.CustomObsEntryDialog;
 import com.muzima.view.custom.PagerSlidingTabStrip;
 import com.muzima.view.patients.PatientSummaryActivity;
 

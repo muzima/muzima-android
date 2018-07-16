@@ -73,7 +73,7 @@ public class IndividualObsJsonMapper {
             JSONObject discriminatorObject = new JSONObject();
             JSONObject jsonObjectInner = jsonObject.getJSONObject("encounter");
             if(!(jsonObjectInner.has("encounter.encounter_datetime"))) {
-                jsonObjectInner.put("encounter.encounter_datetime", formData.getEncounterDate());
+                jsonObjectInner.put("encounter.encounter_datetime", DateUtils.getFormattedDateTime(formData.getEncounterDate()));
                 jsonObject.put("encounter", jsonObjectInner);
             }
             discriminatorObject.put("discriminator", Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS);
