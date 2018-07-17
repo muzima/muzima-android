@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+ * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
  * and Vanderbilt University Medical Center.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
@@ -39,6 +39,8 @@ public class Constants {
     public static final String FORM_JSON_DISCRIMINATOR_SHR_ENCOUNTER = "json-shr-encounter";
     public static final String FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION = "json-shr-registration";
     public static final String FORM_JSON_DISCRIMINATOR_SHR_DEMOGRAPHICS_UPDATE = "json-shr-demographics-update";
+
+    public static final String FORM_DISCRIMINATOR_PROVIDER_REPORT = "provider-report";
 
     private static final String APP_EXTERNAL_DIR_ROOT =  Environment.getExternalStorageDirectory().getPath() + "/muzima";
     public static final String APP_MEDIA_DIR = APP_EXTERNAL_DIR_ROOT + "/media";

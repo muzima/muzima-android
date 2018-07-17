@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+ * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
  * and Vanderbilt University Medical Center.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
@@ -172,7 +172,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             }
         });
 
-
         muzimaApplication = (MuzimaApplication) getApplicationContext();
         muzimaSyncService = muzimaApplication.getMuzimaSyncService();
         patientController = muzimaApplication.getPatientController();
@@ -181,7 +180,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
         serverSearchProgressDialog.setCancelable(false);
         serverSearchProgressDialog.setIndeterminate(true);
-
 
         smartCardController = ((MuzimaApplication) getApplicationContext()).getSmartCardController();
     }
@@ -659,13 +657,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
         @Override
         protected Void doInBackground(Void... voids) {
-            List<String> uuidsList = Collections.singletonList(shrToMuzimaMatchingPatient.getUuid());
-            String[] uuids = {};
-            int index = 0;
-            for (String uuid : uuidsList) {
-                assert uuids != null;
-                uuids[index] = uuid;
-            }
+            String[] uuids = {shrToMuzimaMatchingPatient.getUuid()};
             muzimaSyncService.downloadPatients(uuids);
             return null;
         }
@@ -699,25 +691,13 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
              */
             List<Patient> serverSearchResultPatients = new ArrayList<>();
             serverSearchResultPatients = patientController.searchPatientOnServer(shrPatient.getIdentifier(Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.name).getIdentifier());
-            for (Patient searchResultPatient : serverSearchResultPatients) {
-                if (searchResultPatient.getIdentifier(Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.name)
-                        .equals(patient.getIdentifier(Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.name))) {
-                    /**
-                     * Search result contains patient obtained from PSmart
-                     * close search and return patient.
-                     */
-                    shrToMuzimaMatchingPatient = searchResultPatient;
-                    negativeServerSearchResultNotifyAlertDialog.setTitle("Search successful, " + patient.getGivenName() + " record found.");
-                    /**
-                     * TODO Display download optionDialog
-                     *
-                     */
-                    patientRegistrationProgressDialog.dismiss();
-                    patientRegistrationProgressDialog.cancel();
-                    executeDownloadPatientInBackgroundTask();
-                    hideDialog();
-                    break;
-                }
+
+            if(serverSearchResultPatients.size() == 1){
+                patientRegistrationProgressDialog.dismiss();
+                patientRegistrationProgressDialog.cancel();
+                shrToMuzimaMatchingPatient = serverSearchResultPatients.get(0);
+                executeDownloadPatientInBackgroundTask();
+                hideDialog();
             }
             return patient;
         }

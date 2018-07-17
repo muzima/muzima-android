@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+  ~ Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
   ~ and Vanderbilt University Medical Center.
   ~
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
@@ -162,16 +162,6 @@
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.MainActivity"/>
-        </activity>
-        <activity
-
-            android:name=".view.forms.ProviderReportsFormActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="Provider Reports"
-            android:parentActivityName=".view.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.MainActivity" />
         </activity>
         <activity
             android:name=".view.forms.FormWebViewActivity"
@@ -341,6 +331,25 @@
                 android:label="Guided Setup Wizard"
                 android:theme="@style/WizardTheme"/>
         <!-- Wizard Activities End -->
+
+        <activity
+                android:name=".view.reports.ProviderReportViewActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="Provider Reports"
+                android:parentActivityName=".view.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.MainActivity" />
+        </activity>
+        <activity
+                android:name=".view.reports.ProviderReportListActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="Provider Reports"
+                android:parentActivityName=".view.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.MainActivity" />
+        </activity>
 
         <receiver android:name=".utils.ConnectivityChangeReceiver">
             <intent-filter>

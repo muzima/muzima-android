@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+ * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
  * and Vanderbilt University Medical Center.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
@@ -112,7 +112,9 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
             holder = new ObservationsByConceptViewHolder();
             holder.headerText = (TextView) convertView.findViewById(R.id.observation_header);
             holder.addObsButton = (ImageButton) convertView.findViewById(R.id.add_individual_obs_imagebutton);
-            holder.addObsButton.setVisibility(View.VISIBLE);
+            //Disabling Add Obs Button until MUZIMA-615 is fixed
+            //ToDo: Fix MUZIMA-615
+            holder.addObsButton.setVisibility(View.GONE);
             holder.headerLayout = (RelativeLayout) convertView.findViewById(R.id.observation_header_layout);
             holder.observationLayout = (LinearLayout) convertView
                     .findViewById(R.id.observation_layout);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+ * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
  * and Vanderbilt University Medical Center.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
@@ -39,5 +39,9 @@ public class AvailableForm extends BaseForm {
                 Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION.equalsIgnoreCase(getDiscriminator()) ||
                 Constants.FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION.equalsIgnoreCase(getDiscriminator()) ||
                 Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION.equalsIgnoreCase(getDiscriminator());
+    }
+
+    public boolean isProviderReport(){
+        return Constants.FORM_DISCRIMINATOR_PROVIDER_REPORT.equalsIgnoreCase(getDiscriminator());
     }
 }

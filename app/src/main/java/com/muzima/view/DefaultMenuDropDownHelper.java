@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+ * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
  * and Vanderbilt University Medical Center.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
@@ -19,9 +19,9 @@ import android.view.MenuItem;
 import com.muzima.R;
 import com.muzima.tasks.EncryptedSharedHealthRecordSyncTask;
 import com.muzima.utils.StringUtils;
-import com.muzima.view.forms.ProviderReportsFormActivity;
 import com.muzima.view.login.LoginActivity;
 import com.muzima.view.preferences.SettingsActivity;
+import com.muzima.view.reports.ProviderReportListActivity;
 
 public class DefaultMenuDropDownHelper {
     public static int DEFAULT_MENU = R.menu.dashboard;
@@ -51,7 +51,7 @@ public class DefaultMenuDropDownHelper {
                 activity.startActivity(intent);
                 return true;
             case R.id.action_provider_reports:
-                intent = new Intent(activity, ProviderReportsFormActivity.class);
+                intent = new Intent(activity, ProviderReportListActivity.class);
                 activity.startActivity(intent);
                 return true;
             case R.id.action_help:
