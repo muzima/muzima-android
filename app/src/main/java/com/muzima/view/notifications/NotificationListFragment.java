@@ -51,7 +51,7 @@ public abstract class NotificationListFragment extends MuzimaListFragment implem
     }
 
     protected View setupMainView(LayoutInflater inflater, ViewGroup container){
-        return inflater.inflate(R.layout.layout_list, container, false);
+        return inflater.inflate(R.layout.layout_notifications_list, container, false);
     }
 
     @Override
