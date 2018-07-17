@@ -14,6 +14,7 @@ import com.muzima.api.model.Tag;
 import com.muzima.utils.Constants;
 
 public class AvailableForm extends BaseForm {
+
     private Tag[] tags;
     private boolean isDownloaded;
 
