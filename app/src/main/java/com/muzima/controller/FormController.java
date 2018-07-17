@@ -10,6 +10,7 @@
 
 package com.muzima.controller;
 
+import android.content.Context;
 import android.util.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.APIName;
@@ -449,7 +450,7 @@ public class FormController {
         return incompleteForms;
     }
 
-    public CompleteFormsWithPatientData getAllCompleteFormsWithPatientData() throws FormFetchException {
+    public CompleteFormsWithPatientData getAllCompleteFormsWithPatientData(Context context) throws FormFetchException {
         CompleteFormsWithPatientData completeForms = new CompleteFormsWithPatientData();
 
         try {
@@ -466,6 +467,28 @@ public class FormController {
                             .withEncounterDate(formData.getEncounterDate())
                             .build();
                     completeForms.add(completeForm);
+                }else{
+                    if(formData.getDiscriminator() != null){
+                        if(formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS)){
+                            CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder()
+                                    .withIndividualObsForm(form,context)
+                                    .withFormDataUuid(formData.getUuid())
+                                    .withPatient(patient)
+                                    .withLastModifiedDate(formData.getSaveTime())
+                                    .withEncounterDate(formData.getEncounterDate())
+                                    .build();
+                            completeForms.add(completeForm);
+                        }else if(formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION)){
+                            CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder()
+                                    .withShrRegistartionForm(form,context)
+                                    .withFormDataUuid(formData.getUuid())
+                                    .withPatient(patient)
+                                    .withLastModifiedDate(formData.getSaveTime())
+                                    .withEncounterDate(formData.getEncounterDate())
+                                    .build();
+                            completeForms.add(completeForm);
+                        }
+                    }
                 }
             }
         } catch (IOException e) {
@@ -517,7 +540,7 @@ public class FormController {
     }
 
     public int countAllCompleteForms() throws FormFetchException {
-        return getAllCompleteFormsWithPatientData().size();
+        return getAllCompleteFormsWithPatientData(null).size();
     }
 
     public int getCompleteFormsCountForPatient(String patientId) throws FormFetchException {

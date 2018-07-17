@@ -513,4 +513,8 @@
     <string name="warning_switch_server">Ubadilishaji wa seva: Kitendo hiki kitafuta data zote za mUzima katika kifaa chako, ikiwa ni pamoja na fomu zozote ambazo hazijakamilika bado. Una hakika unataka kubadili mpangilio huu?</string>
 
     <string name="write_shr_to_card_text">Andika SHR kwa Kadi</string>
+    <string name="shr_registration">Usajili wa SHR</string>
+    <string name="shr_registration_description">Data ya Usajili wa SHR</string>
+    <string name="individual_obs">Uchunguzi wa kibinafsi</string>
+    <string name="individual_obs_description">Uchunguzi wa kibinafsi</string>
 </resources>

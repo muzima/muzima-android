@@ -57,7 +57,6 @@ public class IndividualObsJsonMapper {
         formData.setUserSystemId((muzimaApplication).getAuthenticatedUser( ).getSystemId());
         formData.setSaveTime(observation.getObservationDatetime());
         formData.setXmlPayload(null);
-
         patientEncounterPayload = createJsonPayloadFromPatientEncounter(patient,formData);
         jsonPayload = createJsonPayloadFromObs(observation);
 
