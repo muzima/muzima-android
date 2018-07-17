@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+ * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
  * and Vanderbilt University Medical Center.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
@@ -472,6 +472,7 @@ public class MuzimaSyncService {
         try {
             downloadedPatients = downloadPatientsByUUID(patientUUIDs);
             patientController.savePatients(downloadedPatients);
+            Log.e(TAG, "DOWNLOADED PATIENTS.");
             result[0] = SUCCESS;
             result[1] = downloadedPatients.size();
         } catch (PatientController.PatientDownloadException e) {

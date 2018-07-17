@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+ * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
  * and Vanderbilt University Medical Center.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
@@ -584,7 +584,17 @@ public class FormController {
     public AvailableForms getRecommendedForms() throws FormFetchException {
         AvailableForms result = new AvailableForms();
         for (AvailableForm form : getAvailableFormByTags(null)) {
-            if (form.isDownloaded() && !form.isRegistrationForm()) {
+            if (form.isDownloaded() && !form.isRegistrationForm() && !form.isProviderReport()) {
+                result.add(form);
+            }
+        }
+        return result;
+    }
+
+    public AvailableForms getProviderReports() throws FormFetchException {
+        AvailableForms result = new AvailableForms();
+        for (AvailableForm form : getAvailableFormByTags(null)) {
+            if (form.isDownloaded() && form.isProviderReport()) {
                 result.add(form);
             }
         }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
-  ~ Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
+  ~ Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
   ~ and Vanderbilt University Medical Center.
   ~
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
@@ -291,6 +291,7 @@
     <string name="hint_repeating_section_minimum_repeats_validation_failure">Minimum repeats not satisfied. Needs at
         least
     </string>
+    <string name="hint_reports_unavailable">Please select reports from all forms list and click download</string>
     <string name="hint_require_medical_record_number">Require client\'s medical record number during registration
     </string>
     <string name="hint_server_connection_unavailable">Please contact your server administrator to check server
@@ -376,7 +377,7 @@
         even if such party shall have been informed of the possibility of such damages.
         </p><p>
         3. mUzima is copyrighted to The Trustees of Indiana University, Moi University, and Vanderbilt University
-	Medical Center (2014-2017).
+	Medical Center (2014-2018).
         </p><p>
 	4.  If the user of this application is an entity intending to commercialize or make a profit out of any
 	application that uses this code in a for-profit venture, the user is required to contact the copyright holder
@@ -386,6 +387,7 @@
     <string name="info_download_complete">Download complete with status %d</string>
     <string name="info_downloaded_forms_unavailable">No forms have been downloaded</string>
     <string name="info_downloaded_image">Downloaded image</string>
+    <string name="info_downloaded_reports_unavailable">No reports have been downloaded</string>
     <string name="info_draft_form_save_success">Draft form was saved successfully.</string>
     <string name="info_encounter_download">Downloading Encounters</string>
     <string formatted="false" name="info_encounter_download_progress">Downloading encounters for client %d of %d.
