@@ -19,6 +19,7 @@ public abstract class FormWithData extends BaseForm {
     private Date lastModifiedDate;
     private Patient patient;
     private Date encounterDate;
+    private String discriminator;
 
     public Date getLastModifiedDate() {
         return lastModifiedDate;
@@ -50,5 +51,13 @@ public abstract class FormWithData extends BaseForm {
 
     public void setEncounterDate(Date encounterDate) {
         this.encounterDate = encounterDate;
+    }
+
+    public String getDiscriminator() {
+        return discriminator;
+    }
+
+    public void setDiscriminator(String discriminator) {
+        this.discriminator = discriminator;
     }
 }

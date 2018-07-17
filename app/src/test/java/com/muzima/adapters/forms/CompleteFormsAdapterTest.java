@@ -43,11 +43,12 @@ import static org.mockito.Mockito.when;
 public class CompleteFormsAdapterTest {
     private CompleteFormsAdapter formsAdapter;
     private FormController formController;
+    private Context context;
 
     @Before
     public void setUp() throws Exception {
         formController = mock(FormController.class);
-        Context context = mock(Context.class);
+        context = mock(Context.class);
         formsAdapter = new CompleteFormsAdapter(context, 0, formController){
             @Override
             public void addAll(Collection<? extends CompleteFormWithPatientData> collection) {
@@ -65,7 +66,7 @@ public class CompleteFormsAdapterTest {
         CompleteFormsWithPatientData completeFormsWithPatientData = new CompleteFormsWithPatientData();
         completeFormsWithPatientData.add(new CompleteFormWithPatientData());
 
-        when(formController.getAllCompleteFormsWithPatientData()).thenReturn(completeFormsWithPatientData);
+        when(formController.getAllCompleteFormsWithPatientData(context)).thenReturn(completeFormsWithPatientData);
 
         queryTask.execute();
         Robolectric.flushBackgroundThreadScheduler();
@@ -82,7 +83,8 @@ public class CompleteFormsAdapterTest {
             add(completeFormWithPatientData(patient2));
             add(completeFormWithPatientData(patient1));
         }};
-        when(formController.getAllCompleteFormsWithPatientData()).thenReturn(completeFormsWithPatientData);
+
+        when(formController.getAllCompleteFormsWithPatientData(context)).thenReturn(completeFormsWithPatientData);
         StickyListHeadersListView listView = new StickyListHeadersListView(RuntimeEnvironment.application);
         listView.setAdapter(formsAdapter);
         formsAdapter.setListView(listView);
