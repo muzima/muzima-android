@@ -28,7 +28,7 @@ import com.muzima.api.model.Notification;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Provider;
-import com.muzima.api.model.SetupConfiguration;
+import com.muzima.api.model.SetupConfiguration;c
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;

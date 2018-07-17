@@ -165,6 +165,8 @@
     <string name="general_welcome">Welcome</string>
     <string name="general_yes">Yes</string>
 
+    <string name="to_text">To</string>
+
     <string name="header_cohort_category">Cohort Settings</string>
     <string name="header_muzima_category">mUzima Settings</string>
     <string name="header_openmrs_category">OpenMRS Settings</string>
@@ -639,4 +641,5 @@
     </string>
 
     <string name="write_shr_to_card_text">Write SHR to Card</string>
+    <string name="reply_hint_text">send your reply</string>
 </resources>
