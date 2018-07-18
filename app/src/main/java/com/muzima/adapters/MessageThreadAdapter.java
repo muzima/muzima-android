@@ -86,7 +86,7 @@ public class MessageThreadAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
-        String loggedInUserUuid = ((MuzimaApplication)convertView.getContext()).getAuthenticatedUser().getPerson().getUuid();
+        String loggedInUserUuid = ((MuzimaApplication)context.getApplicationContext()).getAuthenticatedUser().getPerson().getUuid();
         if (convertView == null) {
             if (chatModelList.get(position).getSender().getUuid().equals(loggedInUserUuid)) {
                 view = inflater.inflate(R.layout.item_layout_send, null);
