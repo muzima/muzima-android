@@ -7,9 +7,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
-<<<<<<< HEAD
+
 import com.muzima.MuzimaApplication;
-=======
 import com.muzima.adapters.MessageThreadAdapter;
 import com.muzima.api.model.Notification;
 import com.muzima.api.model.Patient;
@@ -18,7 +17,7 @@ import com.muzima.api.model.PersonName;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ProviderController;
 import com.muzima.utils.Constants;
->>>>>>> eb0f1005332b21894d792722dab46cfe0add0d51
+import com.muzima.utils.DateUtils;
 import com.muzima.view.BaseActivity;
 import com.muzima.R;
 import com.muzima.api.model.Provider;
@@ -27,6 +26,8 @@ import com.muzima.view.MainActivity;
 
 import org.apache.lucene.queryParser.ParseException;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -79,6 +80,8 @@ public class ConversionActivity extends BaseActivity {
             Log.e(getClass().getSimpleName(),"Unable to obtain outgoing messages");
         }catch (NotificationController.NotificationFetchException e){
             Log.e(getClass().getSimpleName(),"Unable to obtain outgoing messages");
+        } catch (NotificationController.NotificationSaveException e) {
+            e.printStackTrace( );
         }
 
         setUpMessage();
@@ -106,35 +109,21 @@ public class ConversionActivity extends BaseActivity {
 
     private com.muzima.api.model.Notification createNotificationFromMessage(String messageItem) {
         List<PersonName> personNames = new ArrayList<>();
-
-        Person receiver = new Person();
-        PersonName familyName = new PersonName();
-        PersonName givenName = new PersonName();
-        familyName.setFamilyName(loggedInUser.getFamilyName());
-        givenName.setGivenName(loggedInUser.getGivenName());
-
-
-        personNames.add(familyName);
-        personNames.add(givenName);
-
-        receiver.setUuid(provider.getUuid());
-        receiver.setNames(personNames);
-
         com.muzima.api.model.Notification notification = new com.muzima.api.model.Notification();
         notification.setPatient(new Patient());
         notification.setPayload(messageItem);
         notification.setStatus(Constants.NotificationStatusConstants.NOTIFICATION_UNREAD);
-        notification.setReceiver(receiver);
+        notification.setReceiver(provider.getPerson());
         notification.setSender(loggedInUser);
         notification.setSource("Mobile Device");
-        notification.setSubject("PHR Message");
+        notification.setSubject("Provider Message");
         notification.setDateCreated(new Date());
 
         return notification;
     }
 
     public void setUpMessage(){
-//        for (Notification providerSentMessage : providerSentMessages) {
+//        for (Notification providerSentMessage : allMessagesThreadForPerson) {
 //            providerSentMessage.getDateCreated();
 //            chats.add(new MessageItem(providerSentMessage.getPayload(),true));
 //        }
@@ -142,8 +131,26 @@ public class ConversionActivity extends BaseActivity {
         chats.addAll(patientSentMessages);
     }
 
-    public void getOutgoingMessages() throws ParseException, ProviderController.ProviderLoadException, NotificationController.NotificationFetchException {
-        patientSentMessages = notificationController.getAllNotificationsByReceiver(providerController.getAllProviders().get(0).getUuid(),null);
+    public void getOutgoingMessages() throws ParseException, ProviderController.ProviderLoadException, NotificationController.NotificationFetchException, NotificationController.NotificationSaveException {
+        List<Notification> allMessagesThreadForPerson = new ArrayList<>();
+        List<Notification> notificationBySender = new ArrayList<>();
+        List<Notification> notificationByReceiver = new ArrayList<>();
+        try {
+            notificationBySender = notificationController.getAllNotificationsBySender(provider.getPerson().getUuid());
+            notificationByReceiver = notificationController.getAllNotificationsByReceiver(provider.getPerson().getUuid());
+            allMessagesThreadForPerson.addAll(notificationBySender);
+            allMessagesThreadForPerson.addAll(notificationByReceiver);
+        } catch (NotificationController.NotificationFetchException e) {
+            e.printStackTrace( );
+        } catch (ParseException e) {
+            e.printStackTrace( );
+        }
+
+        for(Notification notification:notificationBySender){
+            notification.setStatus(Constants.NotificationStatusConstants.NOTIFICATION_READ);
+            notificationController.saveNotification(notification);
+        }
+        patientSentMessages = allMessagesThreadForPerson;
     }
 
 }

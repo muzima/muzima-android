@@ -73,37 +73,6 @@ public abstract class ProvidersAdapter extends ListAdapter<Provider> {
         }
         holder.setName(getItem(position).getName( ));
         holder.markUnreadNotification( );
-
-//        Notification replyNotification = new Notification();
-//        replyNotification.setStatus(Constants.NotificationStatusConstants.NOTIFICATION_UNREAD);
-//        replyNotification.setPatient(new Patient());
-//        replyNotification.setReceiver(getItem(position).getPerson());
-//        replyNotification.setSender(muzimaApplication.getAuthenticatedUser().getPerson());
-//        replyNotification.setSource("mUzima Mobile Device");
-//        replyNotification.setDateCreated(new Date());
-//        replyNotification.setUuid(UUID.randomUUID().toString());
-//        replyNotification.setSubject("No Subject");
-//        replyNotification.setUploadStatus(Constants.NotificationStatusConstants.NOTIFICATION_NOT_UPLOADED);
-//        replyNotification.setPayload("Message from super User");
-//        try {
-//            notificationController.saveNotification(replyNotification);
-//        } catch (NotificationController.NotificationSaveException e) {
-//            e.printStackTrace( );
-//        }
-
-        List<Notification> allMessagesThreadForPerson = new ArrayList<>();
-        List<Notification> notificationBySender = new ArrayList<>();
-        List<Notification> notificationByReceiver = new ArrayList<>();
-        try {
-            notificationBySender = notificationController.getAllNotificationsBySender(getItem(position).getPerson().getUuid());
-            notificationByReceiver = notificationController.getAllNotificationsByReceiver(getItem(position).getPerson().getUuid());
-            allMessagesThreadForPerson.addAll(notificationBySender);
-            allMessagesThreadForPerson.addAll(notificationByReceiver);
-        } catch (NotificationController.NotificationFetchException e) {
-            e.printStackTrace( );
-        } catch (ParseException e) {
-            e.printStackTrace( );
-        }
         return convertView;
     }
 
