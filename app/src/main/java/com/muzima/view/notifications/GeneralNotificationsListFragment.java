@@ -19,6 +19,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.notification.GeneralProvidersListAdapter;
 import com.muzima.api.model.Notification;
+import com.muzima.api.model.Provider;
 import com.muzima.controller.ProviderController;
 
 public class GeneralNotificationsListFragment extends NotificationListFragment {
@@ -45,7 +46,10 @@ public class GeneralNotificationsListFragment extends NotificationListFragment {
 //        Notification notification = (Notification) listAdapter.getItem(position);
 //        Intent notificationIntent = new Intent(getActivity(), NotificationActivity.class);
 //        notificationIntent.putExtra(NotificationActivity.NOTIFICATION, notification);
-
-        startActivity(new Intent(getActivity(),ConversionActivity.class));
+        Provider provider = (Provider) adapterView.getItemAtPosition(position);
+        provider.getName();
+        Intent intent = new Intent(getActivity(),ConversionActivity.class);
+        intent.putExtra("provider",provider);
+        startActivity(intent);
     }
 }
