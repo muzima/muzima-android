@@ -1,6 +1,7 @@
 package com.muzima.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import com.muzima.api.model.Notification;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.github.library.bubbleview.BubbleTextView;
+import com.muzima.utils.DateUtils;
 
 import java.util.List;
 
@@ -86,20 +88,20 @@ public class MessageThreadAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
+        int i=0;
         String loggedInUserUuid = ((MuzimaApplication)context.getApplicationContext()).getAuthenticatedUser().getPerson().getUuid();
-        if (convertView == null) {
-            if (chatModelList.get(position).getSender().getUuid().equals(loggedInUserUuid)) {
-                view = inflater.inflate(R.layout.item_layout_send, null);
-                BubbleTextView bubbleTextView = view.findViewById(R.id.chat_textview);
-                bubbleTextView.setText(chatModelList.get(position).getPayload());
-            } else
-                view = inflater.inflate(R.layout.item_receive_layout, null);
+        String senderUuid = chatModelList.get(position).getSender().getUuid();
+        String receiverUuid = chatModelList.get(position).getReceiver().getUuid();
+        String message = chatModelList.get(position).getPayload();
+        if (senderUuid.equals(loggedInUserUuid)) {
+            view = inflater.inflate(R.layout.item_layout_send, null);
             BubbleTextView bubbleTextView = view.findViewById(R.id.chat_textview);
-            bubbleTextView.setText(chatModelList.get(position).getPayload());
+            bubbleTextView.setText(message);
+        } else {
+            view = inflater.inflate(R.layout.item_receive_layout, null);
+            BubbleTextView bubbleTextView = view.findViewById(R.id.chat_textview);
+            bubbleTextView.setText(message);
         }
-
-        BubbleTextView bubbleTextView = view.findViewById(R.id.chat_textview);
-        bubbleTextView.setText(chatModelList.get(position).getPayload());
 
         return view;
     }
