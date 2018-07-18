@@ -38,11 +38,12 @@
 
             <EditText
                 android:id="@+id/type_message_editText"
-                android:layout_width="310dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
+                android:layout_toLeftOf="@+id/send_message_fab"
                 android:background="@drawable/curved_button_white"
                 android:gravity="left"
                 android:hint="Type a message"
