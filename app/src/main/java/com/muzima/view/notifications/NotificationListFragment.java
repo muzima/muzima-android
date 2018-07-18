@@ -20,12 +20,16 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
+import com.muzima.adapters.notification.GeneralProvidersListAdapter;
 import com.muzima.adapters.notification.NotificationAdapter;
+import com.muzima.adapters.providers.ProvidersAdapter;
 import com.muzima.controller.NotificationController;
+import com.muzima.controller.ProviderController;
 import com.muzima.view.MuzimaListFragment;
 
 public abstract class NotificationListFragment extends MuzimaListFragment implements ListAdapter.BackgroundListQueryTaskListener{
 
+    protected ProviderController providerController;
     protected NotificationController notificationController;
     protected FrameLayout progressBarContainer;
     protected LinearLayout noDataView;
@@ -43,7 +47,11 @@ public abstract class NotificationListFragment extends MuzimaListFragment implem
         if (listAdapter != null) {
             list.setAdapter(listAdapter);
             list.setOnItemClickListener(this);
-            ((NotificationAdapter)listAdapter).setBackgroundListQueryTaskListener(this);
+            if (listAdapter instanceof GeneralProvidersListAdapter){
+                ((ProvidersAdapter)listAdapter).setBackgroundListQueryTaskListener(this);
+            }else {
+                ((NotificationAdapter)listAdapter).setBackgroundListQueryTaskListener(this);
+            }
         }
         list.setEmptyView(notificationsLayout.findViewById(R.id.no_data_layout));
 
