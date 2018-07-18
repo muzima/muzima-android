@@ -371,6 +371,7 @@
                 android:launchMode="singleInstance"
                 android:theme="@android:style/Theme.Dialog"/>
         <activity android:name=".view.SHRObservationsDataActivity"/>
+        <activity android:name=".view.notifications.ConversionActivity" />
     </application>
 
 </manifest>
