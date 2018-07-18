@@ -66,6 +66,7 @@ public class NotificationActivity extends BaseActivity {
 
         Intent intent = getIntent();
         notification = (Notification) intent.getSerializableExtra(NOTIFICATION);
+        Log.e(getClass().getSimpleName()," Sender is "+notification.getSender().getUuid()+" and Receiver is "+notification.getReceiver().getUuid());
         notificationPatient = (Patient) intent.getSerializableExtra(PATIENT);
         if (notification != null) {
 
@@ -73,7 +74,7 @@ public class NotificationActivity extends BaseActivity {
                 getNotificationEncounter(notificationPatient);
 
             displayNotification();
-            markAsRead();
+            markAsRead(notification);
         }
 
         replyNotiticationImageView.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +107,7 @@ public class NotificationActivity extends BaseActivity {
         }
     }
 
-    private void markAsRead() {
+    private void markAsRead(Notification notification) {
         NotificationController notificationController = ((MuzimaApplication) getApplicationContext()).getNotificationController();
         notification.setStatus(Constants.NotificationStatusConstants.NOTIFICATION_READ);
         try {

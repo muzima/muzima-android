@@ -74,6 +74,7 @@ public class CustomNotificationReplyDialog extends Dialog {
             replyNotification.setDateCreated(new Date());
             replyNotification.setUuid(UUID.randomUUID().toString());
             replyNotification.setSubject(notificationSubject);
+            replyNotification.setUploadStatus(Constants.NotificationStatusConstants.NOTIFICATION_NOT_UPLOADED);
             replyNotification.setPayload(replyEditText.getText().toString());
             notificationController.saveNotification(replyNotification);
 

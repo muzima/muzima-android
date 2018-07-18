@@ -836,7 +836,7 @@ public class MuzimaSyncService {
             List<Notification> notifications;
             notifications = notificationController.downloadNotificationByReceiver(receiverUuid);
             Log.i(TAG, "Notifications download successful");
-            notificationController.deleteAllNotifications(receiverUuid);
+           // notificationController.deleteAllNotifications(receiverUuid);
             Log.i(TAG, "Old notifications are deleted");
             notificationController.saveNotifications(notifications);
             Log.i(TAG, "New notifications are saved");
@@ -848,7 +848,7 @@ public class MuzimaSyncService {
             Log.e(TAG, "Exception when trying to download notifications", e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
-        } catch (NotificationController.NotificationDeleteException e) {
+        } /*catch (NotificationController.NotificationDeleteException e) {
             Log.e(TAG, "Exception occurred while deleting existing notifications", e);
             result[0] = SyncStatusConstants.DELETE_ERROR;
             return result;
@@ -856,15 +856,15 @@ public class MuzimaSyncService {
             Log.e(TAG, "Exception occurred while fetching existing notifications", e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
-        } catch (NotificationController.NotificationSaveException e) {
+        }*/ catch (NotificationController.NotificationSaveException e) {
             Log.e(TAG, "Exception when trying to save notifications", e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
             return result;
-        } catch (ParseException e) {
+        } /*catch (ParseException e) {
             Log.e(TAG, "Exception when trying to download notifications", e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
-        }
+        }*/
         return result;
     }
 
