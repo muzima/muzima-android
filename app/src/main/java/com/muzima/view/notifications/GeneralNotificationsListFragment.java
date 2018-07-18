@@ -15,22 +15,22 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import com.muzima.R;
-import com.muzima.adapters.notification.GeneralNotificationsListAdapter;
+import com.muzima.adapters.notification.GeneralProvidersListAdapter;
 import com.muzima.api.model.Notification;
-import com.muzima.controller.NotificationController;
+import com.muzima.controller.ProviderController;
 
 public class GeneralNotificationsListFragment extends NotificationListFragment {
 
-    public static GeneralNotificationsListFragment newInstance(NotificationController notificationController) {
+    public static GeneralNotificationsListFragment newInstance(ProviderController providerController) {
         GeneralNotificationsListFragment f = new GeneralNotificationsListFragment();
-        f.notificationController = notificationController;
+        f.providerController = providerController;
         return f;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if (listAdapter == null) {
-            listAdapter = new GeneralNotificationsListAdapter(getActivity(), R.layout.item_notifications_list, notificationController);
+            listAdapter = new GeneralProvidersListAdapter(getActivity(), R.layout.item_providers_list, providerController);
         }
         noDataMsg = getActivity().getResources().getString(R.string.info_notification_unavailable);
         noDataTip = getActivity().getResources().getString(R.string.hint_notification_sync);
@@ -39,10 +39,10 @@ public class GeneralNotificationsListFragment extends NotificationListFragment {
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        Notification notification = (Notification) listAdapter.getItem(position);
-        Intent notificationIntent = new Intent(getActivity(), NotificationActivity.class);
-        notificationIntent.putExtra(NotificationActivity.NOTIFICATION, notification);
+//        Notification notification = (Notification) listAdapter.getItem(position);
+//        Intent notificationIntent = new Intent(getActivity(), NotificationActivity.class);
+//        notificationIntent.putExtra(NotificationActivity.NOTIFICATION, notification);
 
-        startActivityForResult(notificationIntent, 0);
+        startActivity(new Intent(getActivity(),ConversionActivity.class));
     }
 }
