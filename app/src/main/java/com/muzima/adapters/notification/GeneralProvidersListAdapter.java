@@ -32,9 +32,13 @@ import java.util.List;
  */
 public class GeneralProvidersListAdapter extends ProvidersAdapter {
     private static final String TAG = "GeneralAdapter";
+    private MuzimaApplication muzimaApplication;
+    private ProviderController providerController;
 
-    public GeneralProvidersListAdapter(Context context, int textViewResourceId, ProviderController providerController) {
-        super(context, textViewResourceId, providerController);
+    public GeneralProvidersListAdapter(Context context, int textViewResourceId, MuzimaApplication muzimaApplication) {
+        super(context, textViewResourceId, muzimaApplication);
+        this.muzimaApplication = muzimaApplication;
+        this.providerController = muzimaApplication.getProviderController();
     }
 
     @Override
@@ -68,7 +72,11 @@ public class GeneralProvidersListAdapter extends ProvidersAdapter {
             //Removes the current items from the list.
             GeneralProvidersListAdapter.this.clear();
             //Adds recently fetched items to the list.
-            addAll(allProviders);
+            for (Provider provider:allProviders) {
+                if(provider.getPerson()!=null &&  !(muzimaApplication.getAuthenticatedUser().getPerson().getUuid().equals(provider.getPerson().getUuid()))) {
+                    add(provider);
+                }
+            }
             //Send a data change request to the list, so the page can be reloaded.
             notifyDataSetChanged();
 

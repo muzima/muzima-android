@@ -2,6 +2,7 @@ package com.muzima.view.notifications;
 
 import android.os.Bundle;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.view.BaseActivity;
 import com.muzima.R;
 
