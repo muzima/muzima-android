@@ -14,6 +14,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.notification.GeneralProvidersListAdapter;
 import com.muzima.api.model.Notification;
@@ -21,16 +23,17 @@ import com.muzima.controller.ProviderController;
 
 public class GeneralNotificationsListFragment extends NotificationListFragment {
 
-    public static GeneralNotificationsListFragment newInstance(ProviderController providerController) {
+    public static GeneralNotificationsListFragment newInstance(MuzimaApplication muzimaApplication) {
         GeneralNotificationsListFragment f = new GeneralNotificationsListFragment();
-        f.providerController = providerController;
+        f.providerController = muzimaApplication.getProviderController();
+        f.muzimaApplication = muzimaApplication;
         return f;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if (listAdapter == null) {
-            listAdapter = new GeneralProvidersListAdapter(getActivity(), R.layout.item_providers_list, providerController);
+            listAdapter = new GeneralProvidersListAdapter(getActivity(), R.layout.item_providers_list, muzimaApplication);
         }
         noDataMsg = getActivity().getResources().getString(R.string.info_notification_unavailable);
         noDataTip = getActivity().getResources().getString(R.string.hint_notification_sync);

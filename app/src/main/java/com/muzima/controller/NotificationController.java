@@ -64,8 +64,37 @@ public class NotificationController {
         }
     }
 
+    public List<Notification> getAllNotificationsByReceiver(String receiverUuid) throws NotificationFetchException, ParseException {
+        try {
+            return notificationService.getNotificationByReceiver(receiverUuid);
+        } catch (IOException e) {
+            throw new NotificationFetchException(e);
+        }
+    }
+
+    public List<Notification> getAllNotificationsBySender(String senderUuid, String status) throws NotificationFetchException, ParseException {
+        try {
+            return notificationService.getNotificationBySender(senderUuid, status);
+        } catch (IOException e) {
+            throw new NotificationFetchException(e);
+        }
+    }
+
+    public List<Notification> getAllNotificationsBySender(String senderUuid) throws NotificationFetchException, ParseException {
+        try {
+            return notificationService.getNotificationBySender(senderUuid);
+        } catch (IOException e) {
+            throw new NotificationFetchException(e);
+        }
+    }
+
     public int getAllNotificationsByReceiverCount(String receiverUuid, String status) throws NotificationFetchException, ParseException {
         List<Notification> notifications = getAllNotificationsByReceiver(receiverUuid, status);
+        return notifications == null ? 0 : notifications.size();
+    }
+
+    public int getAllNotificationsBySenderCount(String senderUuid, String status) throws NotificationFetchException, ParseException {
+        List<Notification> notifications = getAllNotificationsBySender(senderUuid, status);
         return notifications == null ? 0 : notifications.size();
     }
 

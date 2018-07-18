@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.notification.GeneralProvidersListAdapter;
@@ -33,6 +35,7 @@ public abstract class NotificationListFragment extends MuzimaListFragment implem
     protected NotificationController notificationController;
     protected FrameLayout progressBarContainer;
     protected LinearLayout noDataView;
+    protected MuzimaApplication muzimaApplication;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
