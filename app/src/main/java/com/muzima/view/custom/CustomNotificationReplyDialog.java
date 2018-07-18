@@ -1,5 +1,5 @@
 package com.muzima.view.custom;
-}
+
 
 import android.app.Dialog;
 import android.content.Context;
