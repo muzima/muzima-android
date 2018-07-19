@@ -81,13 +81,12 @@ public class ConversionActivity extends BaseActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                List<Notification> messageItems = Collections.singletonList(new Notification(composeEditText.getText().toString()));
+                List<Notification> messageItems = null;
+                Notification notification = createNotificationFromMessage(composeEditText.getText().toString());
+                messageItems = Collections.singletonList(notification);
                 adapter.updateResults(messageItems);
                 adapter.notifyDataSetChanged();
                 composeEditText.setText("");
-
-                com.muzima.api.model.Notification notification = createNotificationFromMessage(messageItems.get(0));
 
                 try {
                     notificationController.saveNotification(notification);
