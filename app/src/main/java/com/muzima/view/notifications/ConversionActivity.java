@@ -53,13 +53,14 @@ public class ConversionActivity extends BaseActivity {
         provider = (Provider) data.get("provider");
         getSupportActionBar().setTitle(provider.getName());
 
-        loggedInUser = muzimaApplication.getAuthenticatedUser().getPerson();
 
         chatListView = findViewById(R.id.chat_list_view);
         adapter = new MessageThreadAdapter(chats, this);
         muzimaApplication = (MuzimaApplication) getApplicationContext();
         notificationController = muzimaApplication.getNotificationController();
         providerController = muzimaApplication.getProviderController();
+
+        loggedInUser = muzimaApplication.getAuthenticatedUser().getPerson();
 
         floatingActionButton = findViewById(R.id.send_message_fab);
         composeEditText = findViewById(R.id.type_message_editText);
