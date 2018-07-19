@@ -88,12 +88,10 @@ public class NotificationController {
             Log.e("TAG", "Notification" + notification.toString());
             notificationService.saveNotification(notification);
             if (!(notification.getStatus().equals(Constants.NotificationStatusConstants.NOTIFICATION_UPLOADED))) {
-                notificationService.uploadNotification(notification);
+                new NotificationsUploadBackgroudTask().execute(notification);
             }
         } catch (IOException e) {
             throw new NotificationSaveException(e);
-        } catch (ValidationFailureException e) {
-            Log.e(getClass().getSimpleName(), "Unable to upload notification.");
         }
     }
 
