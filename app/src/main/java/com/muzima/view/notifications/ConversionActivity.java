@@ -9,6 +9,7 @@ import android.widget.ListView;
 
 import com.muzima.adapters.MessageThreadAdapter;
 import com.muzima.api.model.Notification;
+import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonName;
 import com.muzima.controller.NotificationController;
@@ -40,6 +41,7 @@ public class ConversionActivity extends BaseActivity {
     ProviderController providerController;
     FloatingActionButton floatingActionButton;
     EditText composeEditText;
+    Provider provider;
     List<Notification> patientSentMessages;
 
     @Override
@@ -48,7 +50,7 @@ public class ConversionActivity extends BaseActivity {
         setContentView(R.layout.conversation_thread_activity_layout);
 
         Bundle data = getIntent().getExtras();
-        Provider provider = (Provider) data.get("provider");
+        provider = (Provider) data.get("provider");
         getSupportActionBar().setTitle(provider.getName());
 
         loggedInUser = muzimaApplication.getAuthenticatedUser().getPerson();
@@ -105,22 +107,21 @@ public class ConversionActivity extends BaseActivity {
         PersonName familyName = new PersonName();
         PersonName givenName = new PersonName();
         familyName.setFamilyName(loggedInUser.getFamilyName());
-        givenName.setGivenName(.getName());
+        givenName.setGivenName(loggedInUser.getGivenName());
 
 
         personNames.add(familyName);
         personNames.add(givenName);
 
-        receiver.setUuid(MainActivity.globleProvider.getUuid());
+        receiver.setUuid(provider.getUuid());
         receiver.setNames(personNames);
-        receiver.setUuid(MainActivity.globleProvider.getUuid());
 
         com.muzima.api.model.Notification notification = new com.muzima.api.model.Notification();
-        notification.setPatient(MainActivity.globalPhrPatient);
-        notification.setPayload(messageItem.getChatMessage());
+        notification.setPatient(new Patient());
+        notification.setPayload(messageItem);
         notification.setStatus(Constants.NotificationStatusConstants.NOTIFICATION_UNREAD);
         notification.setReceiver(receiver);
-        notification.setSender(MainActivity.globalPhrPatient);
+        notification.setSender(loggedInUser);
         notification.setSource("Mobile Device");
         notification.setSubject("PHR Message");
         notification.setDateCreated(new Date());
