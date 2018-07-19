@@ -68,7 +68,9 @@ repositories {
     maven { url "https://raw.github.com/muzima/muzima-maven/master/releases" }
     maven { url "https://raw.github.com/muzima/muzima-maven/search-api" }
     maven { url "https://raw.github.com/muzima/muzima-maven/muzima-api" }
+    maven { url 'https://jitpack.io' }
 }
+
 dependencies {
     compile 'de.hdodenhof:circleimageview:1.2.1'
     compile group: 'com.madgag', name: 'scprov-jdk15on', version: '1.47.0.2'
@@ -83,6 +85,8 @@ dependencies {
     compile 'com.android.support:support-v4:27.1.0'
     compile group: 'com.azimolabs.keyboardwatcher', name: 'keyboardwatcher', version: '0.1.3'
     compile group: 'org.jsoup', name: 'jsoup', version: '1.7.3'
+    compile 'com.github.lguipeng:BubbleView:1.0.1'
+
     compile(group: 'com.muzima', name: 'muzima-api', version: '1.1.4') {
         exclude(module: 'guice')
     }
