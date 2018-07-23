@@ -642,4 +642,5 @@
 
     <string name="write_shr_to_card_text">Write SHR to Card</string>
     <string name="reply_hint_text">send your reply</string>
+    <string name="date_temp">June 8</string>
 </resources>

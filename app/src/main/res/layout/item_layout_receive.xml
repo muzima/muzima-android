@@ -28,7 +28,7 @@
 
     <TextView
         android:id="@+id/date_send_text_view"
-        android:text="June 8"
+        android:text="@string/date_temp"
         android:textColor="@android:color/white"
         android:layout_toRightOf="@+id/chat_textview"
         android:layout_alignBaseline="@+id/chat_textview"
