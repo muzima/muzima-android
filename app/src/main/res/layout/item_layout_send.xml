@@ -25,7 +25,15 @@
         app:arrowPosition="14dp"
         app:arrowLocation="right"
         app:bubbleColor="@android:color/holo_green_dark"
-        app:arrowCenter="true"
-        />
+        app:arrowCenter="true"/>
+
+    <TextView
+        android:id="@+id/date_send_text_view"
+        android:text="June 8"
+        android:textColor="@android:color/white"
+        android:layout_toLeftOf="@+id/chat_textview"
+        android:layout_alignBaseline="@+id/chat_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>
