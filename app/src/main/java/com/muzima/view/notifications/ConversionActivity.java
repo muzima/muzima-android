@@ -58,9 +58,8 @@ public class ConversionActivity extends BaseActivity {
         provider = (Provider) data.get("provider");
         getSupportActionBar().setTitle(provider.getName());
 
-
         chatListView = (ListView) findViewById(R.id.chat_list_view);
-        adapter = new MessageThreadAdapter(chats, this);
+        adapter = new MessageThreadAdapter(chats, this,provider);
         muzimaApplication = (MuzimaApplication) getApplicationContext();
         notificationController = muzimaApplication.getNotificationController();
         providerController = muzimaApplication.getProviderController();
