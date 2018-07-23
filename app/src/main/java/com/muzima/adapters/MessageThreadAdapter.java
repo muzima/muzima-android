@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import com.muzima.api.model.Notification;
 import com.muzima.MuzimaApplication;
@@ -12,6 +13,8 @@ import com.muzima.R;
 import com.github.library.bubbleview.BubbleTextView;
 import com.muzima.api.model.Provider;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class MessageThreadAdapter extends BaseAdapter {
@@ -89,16 +92,24 @@ public class MessageThreadAdapter extends BaseAdapter {
         View view = convertView;
         int i=0;
         String loggedInUserUuid = ((MuzimaApplication)context.getApplicationContext()).getAuthenticatedUser().getPerson().getUuid();
+        Notification notification = chatModelList.get(position);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
+        Date dateCreated = notification.getDateCreated();
+        String sendDate = simpleDateFormat.format(dateCreated);
         String senderUuid = chatModelList.get(position).getSender().getUuid();
         String receiverUuid = chatModelList.get(position).getReceiver().getUuid();
         String message = chatModelList.get(position).getPayload();
         if (senderUuid.equals(loggedInUserUuid)) {
             view = inflater.inflate(R.layout.item_layout_send, null);
             BubbleTextView bubbleTextView = view.findViewById(R.id.chat_textview);
+            TextView textView = view.findViewById(R.id.date_send_text_view);
+            textView.setText(sendDate);
             bubbleTextView.setText(message);
         } else {
             view = inflater.inflate(R.layout.item_layout_receive, null);
             BubbleTextView bubbleTextView = view.findViewById(R.id.chat_textview);
+            TextView textView = view.findViewById(R.id.date_send_text_view);
+            textView.setText(sendDate);
             bubbleTextView.setText(message);
         }
 
