@@ -35,6 +35,7 @@ import static com.muzima.api.model.APIName.DOWNLOAD_NOTIFICATIONS;
 import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_CONSULTATION;
 
 public class NotificationController {
+
     private NotificationService notificationService;
     private FormService formService;
     private MuzimaApplication muzimaApplication;
