@@ -59,7 +59,7 @@ public class ConversionActivity extends BaseActivity {
         getSupportActionBar().setTitle(provider.getName());
 
 
-        chatListView = findViewById(R.id.chat_list_view);
+        chatListView = (ListView) findViewById(R.id.chat_list_view);
         adapter = new MessageThreadAdapter(chats, this);
         muzimaApplication = (MuzimaApplication) getApplicationContext();
         notificationController = muzimaApplication.getNotificationController();
@@ -67,8 +67,8 @@ public class ConversionActivity extends BaseActivity {
 
         loggedInUser = muzimaApplication.getAuthenticatedUser().getPerson();
 
-        floatingActionButton = findViewById(R.id.send_message_fab);
-        composeEditText = findViewById(R.id.type_message_editText);
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.send_message_fab);
+        composeEditText = (EditText) findViewById(R.id.type_message_editText);
         chatListView.setAdapter(adapter);
 
 //        getIncomingMessages();
@@ -113,6 +113,7 @@ public class ConversionActivity extends BaseActivity {
         notification.setPatient(new Patient());
         notification.setPayload(messageItem);
         notification.setStatus(Constants.NotificationStatusConstants.NOTIFICATION_UNREAD);
+        notification.setUploadStatus(Constants.NotificationStatusConstants.NOTIFICATION_NOT_UPLOADED);
         notification.setReceiver(provider.getPerson());
         notification.setSender(loggedInUser);
         notification.setSource("Mobile Device");
