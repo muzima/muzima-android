@@ -27,6 +27,7 @@ import com.muzima.utils.Constants;
 
 import org.apache.lucene.queryParser.ParseException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -132,27 +133,11 @@ public class NotificationController {
 
     public void saveNotification(Notification notification) throws NotificationSaveException {
         try {
-            Log.e("TAG", "Notification" + notification.toString());
-            if(notification.getUploadStatus()==null){
-                notification.setUploadStatus(Constants.NotificationStatusConstants.NOTIFICATION_UPLOADED);
-                notificationService.saveNotification(notification);
-                Log.e("Uploaded: ","Notification Uploaded for Null status");
-            }
-            else if (!(notification.getUploadStatus().equals(Constants.NotificationStatusConstants.NOTIFICATION_NOT_UPLOADED))) {
-                //if(notificationService.uploadNotification(notification)){
-                    notification.setUploadStatus(Constants.NotificationStatusConstants.NOTIFICATION_UPLOADED);
-                    notificationService.saveNotification(notification);
-                    Log.e("Uploaded: ","Notification Uploaded");
-               // }
-            }else{
-                notificationService.saveNotification(notification);
-                Log.e("Uploaded: ","Notification Saved");
-            }
+            notificationService.saveNotification(notification);
+            new NotificationUploadBackgroundTask().execute();
         } catch (IOException e) {
             throw new NotificationSaveException(e);
-        } /*catch (ValidationFailureException e) {
-            Log.e(getClass().getSimpleName(), "Unable to upload notification.");
-        }*/
+        }
     }
 
     public void saveNotifications(List<Notification> notifications) throws NotificationSaveException {
@@ -225,22 +210,26 @@ public class NotificationController {
 
         @Override
         protected Void doInBackground(Notification... notifications) {
-
-            for (Notification notification : notifications) {
-                if (!(notification.getUploadStatus().equals(Constants.NotificationStatusConstants.NOTIFICATION_NOT_UPLOADED))) {
-                    try {
-                        if(notificationService.uploadNotification(notification)){
-                            notification.setUploadStatus(Constants.NotificationStatusConstants.NOTIFICATION_UPLOADED);
-                            notificationController.saveNotification(notification);
-                        }
-                    } catch (ValidationFailureException e) {
-                        Log.e(getClass().getSimpleName(), "Unable to upload notification.");
-                    } catch (IOException e) {
-                        Log.e(getClass().getSimpleName(),"Encountered an IOException "+e);
-                    }  catch (NotificationSaveException e) {
-                        Log.e(getClass().getSimpleName(), "Unable to Save Notification "+e);
+            List<Notification> senderNotifications = new ArrayList<>();
+            try {
+                senderNotifications = notificationController.getNotificationByUploadStatus(Constants.NotificationStatusConstants.NOTIFICATION_NOT_UPLOADED);
+            }catch (IOException e) {
+                Log.e(getClass().getSimpleName(),"Unable to load Notifications"+e);
+            }
+            for (Notification notification : senderNotifications) {
+               try {
+                    if(notificationService.uploadNotification(notification)){
+                        notification.setUploadStatus(Constants.NotificationStatusConstants.NOTIFICATION_UPLOADED);
+                        notificationController.saveNotification(notification);
                     }
+                } catch (ValidationFailureException e) {
+                    Log.e(getClass().getSimpleName(), "Unable to upload notification.");
+                } catch (IOException e) {
+                    Log.e(getClass().getSimpleName(),"Encountered an IOException "+e);
+                }  catch (NotificationSaveException e) {
+                    Log.e(getClass().getSimpleName(), "Unable to Save Notification "+e);
                 }
+
             }
             return  null;
         }
@@ -266,21 +255,26 @@ public class NotificationController {
 
         @Override
         protected Void doInBackground(Notification... notifications) {
-            for (Notification notification : notifications) {
-                if (!(notification.getUploadStatus().equals(Constants.NotificationStatusConstants.NOTIFICATION_NOT_UPLOADED))) {
-                    try {
-                        if(notificationService.uploadNotification(notification)){
-                            notification.setUploadStatus(Constants.NotificationStatusConstants.NOTIFICATION_UPLOADED);
-                            notificationController.saveNotification(notification);
-                        }
-                    }catch (ValidationFailureException e) {
-                        Log.e(getClass().getSimpleName(), "Unable to upload notification. "+e);
-                    } catch (IOException e) {
-                        Log.e(getClass().getSimpleName(),"Encountered an IOException "+e);
-                    } catch (NotificationSaveException e) {
-                        Log.e(getClass().getSimpleName(),"Unable to save notification "+e);
+            List<Notification> senderNotifications = new ArrayList<>();
+            try {
+                senderNotifications = notificationController.getNotificationByUploadStatus(Constants.NotificationStatusConstants.NOTIFICATION_NOT_UPLOADED);
+            } catch (IOException e) {
+                Log.e(getClass().getSimpleName(),"Unable to load Notifications"+e);
+            }
+            for (Notification notification : senderNotifications) {
+               try {
+                    if(notificationService.uploadNotification(notification)){
+                         notification.setUploadStatus(Constants.NotificationStatusConstants.NOTIFICATION_UPLOADED);
+                        notificationController.saveNotification(notification);
                     }
+                }catch (ValidationFailureException e) {
+                    Log.e(getClass().getSimpleName(), "Unable to upload notification. "+e);
+                } catch (IOException e) {
+                    Log.e(getClass().getSimpleName(),"Encountered an IOException "+e);
+                } catch (NotificationSaveException e) {
+                    Log.e(getClass().getSimpleName(),"Unable to save notification "+e);
                 }
+
             }
             return null;
         }
@@ -289,5 +283,9 @@ public class NotificationController {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
         }
+    }
+
+    public List<Notification> getNotificationByUploadStatus(String uploadStatus) throws IOException {
+        return notificationService.getNotificationByUploadStatus(uploadStatus);
     }
 }

@@ -13,16 +13,18 @@ import com.muzima.R;
 import com.github.library.bubbleview.BubbleTextView;
 import com.muzima.utils.DateUtils;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-public class MessageThreadAdapter extends BaseAdapter {
+public class MessageThreadAdapter extends BaseAdapter{
 
     private List<Notification> chatModelList;
     private Context context;
     private LayoutInflater inflater;
 
-    public MessageThreadAdapter(List<Notification> chatModelList, Context context) {
-        this.chatModelList = chatModelList;
+    public MessageThreadAdapter(List<Notification> chatModelLists, Context context) {
+        this.chatModelList = chatModelLists;
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -87,23 +89,35 @@ public class MessageThreadAdapter extends BaseAdapter {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        Collections.sort(chatModelList, new NotificationComparator());
         View view = convertView;
         int i=0;
         String loggedInUserUuid = ((MuzimaApplication)context.getApplicationContext()).getAuthenticatedUser().getPerson().getUuid();
         String senderUuid = chatModelList.get(position).getSender().getUuid();
-        String receiverUuid = chatModelList.get(position).getReceiver().getUuid();
         String message = chatModelList.get(position).getPayload();
         if (senderUuid.equals(loggedInUserUuid)) {
             view = inflater.inflate(R.layout.item_layout_send, null);
-            BubbleTextView bubbleTextView = view.findViewById(R.id.chat_textview);
+            BubbleTextView bubbleTextView = (BubbleTextView) view.findViewById(R.id.chat_textview);
             bubbleTextView.setText(message);
         } else {
             view = inflater.inflate(R.layout.item_receive_layout, null);
-            BubbleTextView bubbleTextView = view.findViewById(R.id.chat_textview);
+            BubbleTextView bubbleTextView = (BubbleTextView) view.findViewById(R.id.chat_textview);
             bubbleTextView.setText(message);
         }
 
         return view;
+    }
+
+    public class NotificationComparator implements Comparator<Notification>{
+        @Override
+        public int compare(Notification lhs, Notification rhs) {
+            if (lhs.getDateCreated()==null)
+                return 0;
+            if (rhs.getDateCreated()==null)
+                return 0;
+
+            return lhs.getDateCreated().compareTo(rhs.getDateCreated());
+        }
     }
 }
 
