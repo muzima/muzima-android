@@ -53,7 +53,7 @@ public class JSONInputOutputToDisk extends PreferenceService{
         final File dir = new File(String.valueOf(context.getFilesDir()));
         dir.mkdirs();
         FileOutputStream fOut = context.openFileOutput(FILE_NAME,
-                Context.MODE_WORLD_READABLE);
+                Context.MODE_PRIVATE);
         OutputStreamWriter osw = new OutputStreamWriter(fOut);
         osw.write(dataToWrite);
         osw.close();
