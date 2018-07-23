@@ -6,15 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import com.muzima.api.model.Notification;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.github.library.bubbleview.BubbleTextView;
-import com.muzima.utils.DateUtils;
+import com.muzima.api.model.Provider;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class MessageThreadAdapter extends BaseAdapter{
@@ -23,8 +26,10 @@ public class MessageThreadAdapter extends BaseAdapter{
     private Context context;
     private LayoutInflater inflater;
 
-    public MessageThreadAdapter(List<Notification> chatModelLists, Context context) {
-        this.chatModelList = chatModelLists;
+
+
+    public MessageThreadAdapter(List<Notification> chatModelList, Context context,Provider selectedProvider) {
+        this.chatModelList = chatModelList;
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -92,16 +97,25 @@ public class MessageThreadAdapter extends BaseAdapter{
         Collections.sort(chatModelList, new NotificationComparator());
         View view = convertView;
         int i=0;
+
         String loggedInUserUuid = ((MuzimaApplication)context.getApplicationContext()).getAuthenticatedUser().getPerson().getUuid();
+        Notification notification = chatModelList.get(position);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy HH:mm:ss");
+        Date dateCreated = notification.getDateCreated();
+        String sendDate = simpleDateFormat.format(dateCreated);
         String senderUuid = chatModelList.get(position).getSender().getUuid();
         String message = chatModelList.get(position).getPayload();
         if (senderUuid.equals(loggedInUserUuid)) {
             view = inflater.inflate(R.layout.item_layout_send, null);
             BubbleTextView bubbleTextView = (BubbleTextView) view.findViewById(R.id.chat_textview);
+            TextView textView = (TextView) view.findViewById(R.id.date_send_text_view);
+            textView.setText(sendDate);
             bubbleTextView.setText(message);
         } else {
-            view = inflater.inflate(R.layout.item_receive_layout, null);
+            view = inflater.inflate(R.layout.item_layout_receive, null);
             BubbleTextView bubbleTextView = (BubbleTextView) view.findViewById(R.id.chat_textview);
+            TextView textView = (TextView) view.findViewById(R.id.date_send_text_view);
+            textView.setText(sendDate);
             bubbleTextView.setText(message);
         }
 
