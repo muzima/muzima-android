@@ -60,7 +60,7 @@ public class ConversionActivity extends BaseActivity {
 
 
         chatListView = findViewById(R.id.chat_list_view);
-        adapter = new MessageThreadAdapter(chats, this);
+        adapter = new MessageThreadAdapter(chats, this,provider);
         muzimaApplication = (MuzimaApplication) getApplicationContext();
         notificationController = muzimaApplication.getNotificationController();
         providerController = muzimaApplication.getProviderController();
