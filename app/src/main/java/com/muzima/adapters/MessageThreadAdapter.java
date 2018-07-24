@@ -148,7 +148,7 @@ public class MessageThreadAdapter extends BaseAdapter{
                 datePosition.add(position);
                 date.add(sendDate);
                 initialDate = sendDate;
-            }else if(datePosition.contains(pgit osition)) {
+            }else if(datePosition.contains(position)) {
                 datetextView.setVisibility(View.VISIBLE);
                 datetextView.setText(sendDate);
                 initialDate = sendDate;
