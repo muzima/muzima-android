@@ -11,21 +11,18 @@
         android:id="@+id/chat_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/date_set_text"
         android:padding="10dp"
         android:text="Hello tom"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="10dp"
         android:textColor="@android:color/white"
-        app:arrowWidth="8dp"
         app:angle="8dp"
+        app:arrowCenter="true"
         app:arrowHeight="8dp"
-        app:arrowPosition="14dp"
         app:arrowLocation="right"
-        app:bubbleColor="@android:color/holo_green_dark"
-        app:arrowCenter="true"/>
+        app:arrowPosition="14dp"
+        app:arrowWidth="8dp"
+        app:bubbleColor="@android:color/holo_green_dark" />
 
     <TextView
         android:id="@+id/date_send_text_view"
@@ -35,5 +32,16 @@
         android:layout_alignBaseline="@+id/chat_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/date_set_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:padding="10dp"
+        android:background="@color/drawer_background"
+        android:text="Date" />
 
 </RelativeLayout>
