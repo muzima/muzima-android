@@ -387,8 +387,10 @@ public class PatientSummaryActivity extends BaseActivity {
     
     public void showReports(View v) {
         Intent intent = new Intent(this, PatientReportsActivity.class);
-        intent.putExtra(PATIENT, patient);
+        intent.putExtra("url", "http://www.google.com");
         startActivity(intent);
+        //intent.putExtra(PATIENT, patient);
+       // startActivity(intent);
     }
 
     public void switchSyncStatus(View view) {
