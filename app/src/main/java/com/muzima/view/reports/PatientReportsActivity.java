@@ -14,51 +14,34 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.adapters.forms.PatientFormsPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.Constants;
+import com.muzima.view.BaseActivity;
+import com.muzima.view.WebViewActivity;
 import com.muzima.view.forms.FormsActivityBase;
 import com.muzima.view.patients.PatientSummaryActivity;
 
-public class PatientReportsActivity extends FormsActivityBase {
+public class PatientReportsActivity extends BaseActivity {
     private static final String TAG = "PatientReportsActivity";
     private Patient patient;
+    private WebView myWebView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_with_pager);
-        Intent intent = getIntent();
-        patient = (Patient) intent.getSerializableExtra(PatientSummaryActivity.PATIENT);
-        initPager();
-        initPagerIndicator();
-        getSupportActionBar().setTitle(patient.getSummary());
-    }
-
-
-    @Override
-    protected MuzimaPagerAdapter createFormsPagerAdapter() {
-        return new PatientFormsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), patient);
-    }
-
-    @Override
-    protected void onReceive(Context context, Intent intent) {
-
-        super.onReceive(context, intent);
-
-        int syncStatus = intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_STATUS, Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR);
-        int syncType = intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, -1);
-
-
-        if(syncType == Constants.DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS) {
-            SharedPreferences sp = getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", MODE_PRIVATE);
-            if (sp.getBoolean("active", false) == true) {
-                if (syncStatus == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
-                    ((PatientFormsPagerAdapter) formsPagerAdapter).onFormUploadFinish();
-                }
-            }
-        }
+        setContentView(R.layout.activity_patient_reports);
+    
+        String url = getIntent().getStringExtra("url");
+        myWebView = (WebView) findViewById(R.id.activity_main_webview);
+        myWebView.setWebViewClient(new WebViewClient());
+        WebSettings webSettings = myWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        myWebView.loadUrl(url);
     }
 }

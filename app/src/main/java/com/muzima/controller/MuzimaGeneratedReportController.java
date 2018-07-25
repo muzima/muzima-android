@@ -11,6 +11,7 @@
 package com.muzima.controller;
 
 import com.muzima.api.model.MuzimaGeneratedReport;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.service.MuzimaGeneratedReportService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.service.SntpService;
@@ -47,6 +48,14 @@ public class MuzimaGeneratedReportController {
             throw new MuzimaGeneratedReportFetchException(e);
         }
     }
+    
+    public List<MuzimaGeneratedReport> downloadLastPriorityMuzimaGeneratedReportByPatientUuid(String patientUuid) throws MuzimaGeneratedReportDownloadException {
+        try {
+            return muzimaGeneratedReportService.downloadMuzimaGeneratedReportByPatientUuid(patientUuid);
+        } catch (IOException e) {
+            throw new MuzimaGeneratedReportDownloadException(e);
+        }
+    }
 
     public static class MuzimaGeneratedReportFetchException extends Throwable {
         public MuzimaGeneratedReportFetchException(Throwable throwable) {
@@ -56,6 +65,11 @@ public class MuzimaGeneratedReportController {
     
     public static class MuzimaGeneratedReportException extends Throwable {
         public MuzimaGeneratedReportException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+    public static class MuzimaGeneratedReportDownloadException extends Throwable {
+        public MuzimaGeneratedReportDownloadException(Throwable throwable) {
             super(throwable);
         }
     }
