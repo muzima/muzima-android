@@ -261,13 +261,22 @@
         </activity>
 
         <activity
-                android:name=".view.reports.PatientReportsActivity"
+                android:name=".view.reports.PatientReportListViewActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/title_activity_client_reports"
                 android:parentActivityName=".view.patients.PatientSummaryActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.patients.PatientSummaryActivity"/>
+        </activity>
+        <activity
+                android:name=".view.reports.PatientReportWebActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_client_reports"
+                android:parentActivityName=".view.reports.PatientReportListViewActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.reports.PatientReportListViewActivity"/>
         </activity>
         <activity
                 android:name=".utils.audio.AudioIntent"
@@ -353,15 +362,6 @@
 
         <activity
                 android:name=".view.reports.ProviderReportViewActivity"
-                android:configChanges="orientation|screenSize"
-                android:label="Provider Reports"
-                android:parentActivityName=".view.MainActivity">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.muzima.view.MainActivity" />
-        </activity>
-        <activity
-                android:name=".view.reports.ProviderReportListActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="Provider Reports"
                 android:parentActivityName=".view.MainActivity">

@@ -10,6 +10,7 @@
 
 package com.muzima.controller;
 
+import com.muzima.api.model.Form;
 import com.muzima.api.model.MuzimaGeneratedReport;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.service.MuzimaGeneratedReportService;
@@ -27,7 +28,7 @@ public class MuzimaGeneratedReportController {
     private LastSyncTimeService lastSyncTimeService;
     private SntpService sntpService;
 
-    public MuzimaGeneratedReportController(MuzimaGeneratedReportService muzimaGeneratedReportService, LastSyncTimeService lastSyncTimeService, SntpService sntpService) {
+    public MuzimaGeneratedReportController(MuzimaGeneratedReportService muzimaGeneratedReportService) {
         this.muzimaGeneratedReportService = muzimaGeneratedReportService;
         this.lastSyncTimeService = lastSyncTimeService;
         this.sntpService = sntpService;
@@ -56,6 +57,15 @@ public class MuzimaGeneratedReportController {
             throw new MuzimaGeneratedReportDownloadException(e);
         }
     }
+    
+    public void saveAllMuzimaGeneratedReports(List<MuzimaGeneratedReport> muzimaGeneratedReports) throws MuzimaGeneratedReportSaveException {
+        try {
+            for (MuzimaGeneratedReport muzimaGeneratedReport : muzimaGeneratedReports)
+            muzimaGeneratedReportService.saveMuzimaGeneratedReport(muzimaGeneratedReport);
+        } catch (IOException e) {
+            throw new MuzimaGeneratedReportSaveException(e);
+        }
+    }
 
     public static class MuzimaGeneratedReportFetchException extends Throwable {
         public MuzimaGeneratedReportFetchException(Throwable throwable) {
@@ -70,6 +80,11 @@ public class MuzimaGeneratedReportController {
     }
     public static class MuzimaGeneratedReportDownloadException extends Throwable {
         public MuzimaGeneratedReportDownloadException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+    public static class MuzimaGeneratedReportSaveException extends Throwable {
+        public MuzimaGeneratedReportSaveException(Throwable throwable) {
             super(throwable);
         }
     }

@@ -21,7 +21,6 @@ import com.muzima.tasks.EncryptedSharedHealthRecordSyncTask;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.login.LoginActivity;
 import com.muzima.view.preferences.SettingsActivity;
-import com.muzima.view.reports.ProviderReportListActivity;
 
 public class DefaultMenuDropDownHelper {
     public static int DEFAULT_MENU = R.menu.dashboard;
@@ -50,10 +49,7 @@ public class DefaultMenuDropDownHelper {
                 intent = new Intent(activity, SettingsActivity.class);
                 activity.startActivity(intent);
                 return true;
-            case R.id.action_provider_reports:
-                intent = new Intent(activity, ProviderReportListActivity.class);
-                activity.startActivity(intent);
-                return true;
+           
             case R.id.action_help:
                 intent = new Intent(activity, HelpActivity.class);
                 activity.startActivity(intent);

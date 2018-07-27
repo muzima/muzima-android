@@ -33,12 +33,14 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.api.model.Location;
+import com.muzima.api.model.MuzimaGeneratedReport;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.SmartCardRecord;
 import com.muzima.api.model.User;
 import com.muzima.api.service.SmartCardRecordService;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
+import com.muzima.controller.MuzimaGeneratedReportController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
@@ -60,7 +62,7 @@ import com.muzima.view.encounters.EncountersActivity;
 import com.muzima.view.forms.PatientFormsActivity;
 import com.muzima.view.notifications.PatientNotificationActivity;
 import com.muzima.view.observations.ObservationsActivity;
-import com.muzima.view.reports.PatientReportsActivity;
+import com.muzima.view.reports.PatientReportListViewActivity;
 
 import java.io.IOException;
 import java.util.List;
@@ -385,9 +387,20 @@ public class PatientSummaryActivity extends BaseActivity {
         startActivity(intent);
     }
     
-    public void showReports(View v) {
-        Intent intent = new Intent(this, PatientReportsActivity.class);
-        intent.putExtra("url", "http://www.google.com");
+    public void showReports(View v) throws MuzimaGeneratedReportController.MuzimaGeneratedReportException,
+            MuzimaGeneratedReportController.MuzimaGeneratedReportSaveException {
+    
+        MuzimaGeneratedReportController muzimaGeneratedReportController = ((MuzimaApplication) getApplicationContext()).getMuzimaGeneratedReportController();
+        List<MuzimaGeneratedReport> muzimaGeneratedReports= muzimaGeneratedReportController.getAllMuzimaGeneratedReportService("5fa02a1e-27ec-4726-9c24-9b1797582ce3");
+        muzimaGeneratedReportController.saveAllMuzimaGeneratedReports(muzimaGeneratedReports);
+        Intent intent = new Intent(this, PatientReportListViewActivity.class);
+        /*if(muzimaGeneratedReports.size()!= 0){
+            Toast.makeText(getApplicationContext(), getString(R.string.hint_card_blank), Toast.LENGTH_LONG).show();
+            intent.putExtra("url", "http://www.google.com");
+        }
+        else{
+            intent.putExtra("url", "http://www.cricinfo.com");
+        }*/
         startActivity(intent);
         //intent.putExtra(PATIENT, patient);
        // startActivity(intent);
