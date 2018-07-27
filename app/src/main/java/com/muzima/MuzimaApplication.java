@@ -22,7 +22,6 @@ import com.muzima.api.model.User;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.LocationService;
-import com.muzima.api.service.MuzimaGeneratedReportService;
 import com.muzima.api.service.NotificationService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.ProviderService;
