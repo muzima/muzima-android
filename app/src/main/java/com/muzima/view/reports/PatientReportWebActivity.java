@@ -27,8 +27,9 @@ import com.muzima.view.WebViewActivity;
 import com.muzima.view.forms.FormsActivityBase;
 import com.muzima.view.patients.PatientSummaryActivity;
 
-public class PatientReportsActivity extends BaseActivity {
-    private static final String TAG = "PatientReportsActivity";
+public class PatientReportWebActivity extends BaseActivity {
+    
+    private static final String TAG = "PatientReportWebActivity";
     private Patient patient;
     private WebView myWebView;
 
@@ -36,7 +37,7 @@ public class PatientReportsActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_reports);
-    
+        
         String url = getIntent().getStringExtra("url");
         myWebView = (WebView) findViewById(R.id.activity_main_webview);
         myWebView.setWebViewClient(new WebViewClient());

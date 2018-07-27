@@ -22,6 +22,7 @@ import com.muzima.api.model.User;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.LocationService;
+import com.muzima.api.service.MuzimaGeneratedReportService;
 import com.muzima.api.service.NotificationService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.ProviderService;
@@ -30,6 +31,7 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.MuzimaGeneratedReportController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
@@ -95,6 +97,7 @@ public class MuzimaApplication extends Application {
     private SetupConfigurationController setupConfigurationController;
     private MuzimaSettingController settingsController;
     private SmartCardController smartCardController;
+    private MuzimaGeneratedReportController muzimaGeneratedReportController;
     private MuzimaTimer muzimaTimer;
     public static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
@@ -352,6 +355,17 @@ public class MuzimaApplication extends Application {
             }
         }
         return smartCardController;
+    }
+    
+    public MuzimaGeneratedReportController getMuzimaGeneratedReportController() {
+        if (muzimaGeneratedReportController == null) {
+            try {
+                muzimaGeneratedReportController = new MuzimaGeneratedReportController(muzimaContext.getMuzimaGeneratedReportService());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return muzimaGeneratedReportController;
     }
 
     public void resetTimer(int timeOutInMin) {
