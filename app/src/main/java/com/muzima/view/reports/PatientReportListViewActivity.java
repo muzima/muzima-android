@@ -19,16 +19,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.model.MuzimaGeneratedReport;
 import com.muzima.api.model.Patient;
+import com.muzima.controller.MuzimaGeneratedReportController;
+import com.muzima.view.BaseActivity;
+import com.muzima.view.patients.PatientSummaryActivity;
 
-public class PatientReportListViewActivity extends Activity {
+import java.util.List;
+
+public class PatientReportListViewActivity extends BaseActivity {
     
     private static final String TAG = "PatientReportListViewActivity";
     
-    String[] values = new String[] { "Android List View", "Adapter implementation", "Simple List View In Android",
-            "Create List View Android", "Android Example", "List View Source Code", "List View Array Adapter",
-            "Android Example List View" };
+    String[] reportNames = new String[] { "Patient Report 1", "Patient Report 2", "Patient Report 3" };
     
     ListView listView;
     
@@ -40,26 +45,47 @@ public class PatientReportListViewActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test);
-        
         listView = (ListView) findViewById(R.id.list);
-        
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
-                android.R.id.text1, values);
+                android.R.id.text1, reportNames);
         listView.setAdapter(adapter);
         
+        Intent intent = getIntent();
+        patient = (Patient) intent.getSerializableExtra(PatientSummaryActivity.PATIENT);
+        MuzimaGeneratedReportController muzimaGeneratedReportController = ((MuzimaApplication) getApplicationContext()).getMuzimaGeneratedReportController();
+      
+        List<MuzimaGeneratedReport> muzimaGeneratedReports = null;
+        try {
+            muzimaGeneratedReports = muzimaGeneratedReportController.getAllMuzimaGeneratedReportsByPatientUuid(patient.getUuid());
+        }
+        catch (MuzimaGeneratedReportController.MuzimaGeneratedReportException e) {
+            e.printStackTrace();
+        }
+        if(muzimaGeneratedReports.size()==0) {
+            try {
+                muzimaGeneratedReports = muzimaGeneratedReportController.downloadLastPriorityMuzimaGeneratedReportByPatientUuid(patient.getUuid());
+                muzimaGeneratedReportController.saveAllMuzimaGeneratedReports(muzimaGeneratedReports);
+            }
+            catch (MuzimaGeneratedReportController.MuzimaGeneratedReportSaveException e) {
+                e.printStackTrace();
+            }
+            catch (MuzimaGeneratedReportController.MuzimaGeneratedReportDownloadException e) {
+                e.printStackTrace();
+            }
+        }
+        Toast.makeText(getApplicationContext(), "Size is : "+muzimaGeneratedReports.size(), Toast.LENGTH_LONG).show();
+    
+    
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 
-                // ListView Clicked item index
-                int itemPosition = position;
-                
                 // ListView Clicked item value
                 String itemValue = (String) listView.getItemAtPosition(position);
                 
                 // Show Alert 
-                Toast.makeText(getApplicationContext(), "Position :" + itemPosition + "  ListItem : " + itemValue,
+                Toast.makeText(getApplicationContext(), "Position :" + position + "  ListItem : " + itemValue,
                         Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(), PatientReportWebActivity.class);
                 

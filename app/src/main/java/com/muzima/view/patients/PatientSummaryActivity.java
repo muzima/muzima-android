@@ -387,23 +387,14 @@ public class PatientSummaryActivity extends BaseActivity {
         startActivity(intent);
     }
     
-    public void showReports(View v) throws MuzimaGeneratedReportController.MuzimaGeneratedReportException,
-            MuzimaGeneratedReportController.MuzimaGeneratedReportSaveException {
+    public void showReports(View v){
+        Toast.makeText(getApplicationContext(), "11111111111111111111", Toast.LENGTH_LONG).show();
     
-        MuzimaGeneratedReportController muzimaGeneratedReportController = ((MuzimaApplication) getApplicationContext()).getMuzimaGeneratedReportController();
-        List<MuzimaGeneratedReport> muzimaGeneratedReports= muzimaGeneratedReportController.getAllMuzimaGeneratedReportService("5fa02a1e-27ec-4726-9c24-9b1797582ce3");
-        muzimaGeneratedReportController.saveAllMuzimaGeneratedReports(muzimaGeneratedReports);
+    
         Intent intent = new Intent(this, PatientReportListViewActivity.class);
-        /*if(muzimaGeneratedReports.size()!= 0){
-            Toast.makeText(getApplicationContext(), getString(R.string.hint_card_blank), Toast.LENGTH_LONG).show();
-            intent.putExtra("url", "http://www.google.com");
-        }
-        else{
-            intent.putExtra("url", "http://www.cricinfo.com");
-        }*/
+        Toast.makeText(getApplicationContext(), "77777777777777777", Toast.LENGTH_LONG).show();
+        intent.putExtra(PATIENT, patient);
         startActivity(intent);
-        //intent.putExtra(PATIENT, patient);
-       // startActivity(intent);
     }
 
     public void switchSyncStatus(View view) {

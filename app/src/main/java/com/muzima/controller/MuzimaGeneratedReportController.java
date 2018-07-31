@@ -34,7 +34,7 @@ public class MuzimaGeneratedReportController {
         this.sntpService = sntpService;
     }
 
-    public List<MuzimaGeneratedReport> getAllMuzimaGeneratedReportService(String uuid) throws MuzimaGeneratedReportException {
+    public List<MuzimaGeneratedReport> getAllMuzimaGeneratedReportsByPatientUuid(String uuid) throws MuzimaGeneratedReportException {
         try {
             return muzimaGeneratedReportService.getMuzimaGeneratedReportByPatientUuid(uuid);
         } catch (IOException e) {

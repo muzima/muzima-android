@@ -46,3 +46,5 @@ public class PatientReportWebActivity extends BaseActivity {
         myWebView.loadUrl(url);
     }
 }
+
+
