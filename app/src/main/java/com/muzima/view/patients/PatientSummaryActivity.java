@@ -62,6 +62,7 @@ import com.muzima.view.encounters.EncountersActivity;
 import com.muzima.view.forms.PatientFormsActivity;
 import com.muzima.view.notifications.PatientNotificationActivity;
 import com.muzima.view.observations.ObservationsActivity;
+import com.muzima.view.reports.PatientReportButtonActivity;
 import com.muzima.view.reports.PatientReportListViewActivity;
 
 import java.io.IOException;
@@ -388,11 +389,7 @@ public class PatientSummaryActivity extends BaseActivity {
     }
     
     public void showReports(View v){
-        Toast.makeText(getApplicationContext(), "11111111111111111111", Toast.LENGTH_LONG).show();
-    
-    
-        Intent intent = new Intent(this, PatientReportListViewActivity.class);
-        Toast.makeText(getApplicationContext(), "77777777777777777", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, PatientReportButtonActivity.class);
         intent.putExtra(PATIENT, patient);
         startActivity(intent);
     }

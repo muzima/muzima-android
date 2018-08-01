@@ -44,16 +44,47 @@ public class PatientReportListViewActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.test);
-        listView = (ListView) findViewById(R.id.list);
+        setContentView(R.layout.activity_patient_test_button);
+        
+       /* listView = (ListView) findViewById(R.id.list);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
                 android.R.id.text1, reportNames);
-        listView.setAdapter(adapter);
+        listView.setAdapter(adapter);*/
         
         Intent intent = getIntent();
         patient = (Patient) intent.getSerializableExtra(PatientSummaryActivity.PATIENT);
+        
+    
+       /* listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                
+                // ListView Clicked item value
+                String itemValue = (String) listView.getItemAtPosition(position);
+                
+                // Show Alert 
+                Toast.makeText(getApplicationContext(), "Position :" + position + "  ListItem : " + itemValue,
+                        Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(), PatientReportWebActivity.class);
+                
+                intent.putExtra("url", "http://www.cricinfo.com");
+                
+                startActivity(intent);
+                
+            }
+        });*/
+        Toast.makeText(getApplicationContext(), "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee ", Toast.LENGTH_LONG).show();
+    
+    
+    }
+    
+    public void downloadReport(View v){
+        Toast.makeText(getApplicationContext(), "11111111111111111111", Toast.LENGTH_LONG).show();
+    
+       
         MuzimaGeneratedReportController muzimaGeneratedReportController = ((MuzimaApplication) getApplicationContext()).getMuzimaGeneratedReportController();
-      
+    
         List<MuzimaGeneratedReport> muzimaGeneratedReports = null;
         try {
             muzimaGeneratedReports = muzimaGeneratedReportController.getAllMuzimaGeneratedReportsByPatientUuid(patient.getUuid());
@@ -76,24 +107,11 @@ public class PatientReportListViewActivity extends BaseActivity {
         Toast.makeText(getApplicationContext(), "Size is : "+muzimaGeneratedReports.size(), Toast.LENGTH_LONG).show();
     
     
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                
-                // ListView Clicked item value
-                String itemValue = (String) listView.getItemAtPosition(position);
-                
-                // Show Alert 
-                Toast.makeText(getApplicationContext(), "Position :" + position + "  ListItem : " + itemValue,
-                        Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getApplicationContext(), PatientReportWebActivity.class);
-                
-                intent.putExtra("url", "http://www.cricinfo.com");
-                
-                startActivity(intent);
-                
-            }
-        });
+        Intent intent = new Intent(getApplicationContext(), PatientReportWebActivity.class);
+    
+        intent.putExtra("url", "http://www.cricinfo.com");
+        
+        Toast.makeText(getApplicationContext(), "77777777777777777", Toast.LENGTH_LONG).show();
+        startActivity(intent);
     }
 }
