@@ -23,6 +23,7 @@ import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Location;
+import com.muzima.api.model.MuzimaGeneratedReport;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Notification;
 import com.muzima.api.model.Observation;
@@ -35,6 +36,7 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.MuzimaGeneratedReportController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
@@ -78,6 +80,7 @@ public class MuzimaSyncService {
     private ProviderController providerController;
     private SetupConfigurationController setupConfigurationController;
     private MuzimaSettingController settingsController;
+    private MuzimaGeneratedReportController muzimaGeneratedReportController;
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
         this.muzimaApplication = muzimaContext;
@@ -93,6 +96,7 @@ public class MuzimaSyncService {
         providerController = muzimaApplication.getProviderController();
         setupConfigurationController = muzimaApplication.getSetupConfigurationController();
         settingsController = muzimaApplication.getMuzimaSettingController();
+        muzimaGeneratedReportController = muzimaApplication.getMuzimaGeneratedReportController();
     }
 
     public int authenticate(String[] credentials){
@@ -866,6 +870,45 @@ public class MuzimaSyncService {
             return result;
         }
         return result;
+    }
+    
+    public int[] downloadMuzimaGeneratedReports(String receiverUuid) {
+        int[] result = new int[2];
+        
+        try {
+            List<MuzimaGeneratedReport> muzimaGeneratedReports = muzimaGeneratedReportController.getAllMuzimaGeneratedReportsByPatientUuid(receiverUuid);
+           
+            if(muzimaGeneratedReports.size()>0){
+                muzimaGeneratedReportController.deleteMuzimaGeneratedReport(muzimaGeneratedReports.get(0)); 
+            }
+           
+            Log.i(TAG, "Muzima Generated Report is deleted");
+            muzimaGeneratedReports= muzimaGeneratedReportController.downloadLastPriorityMuzimaGeneratedReportByPatientUuid(receiverUuid);
+            Log.i(TAG, "Muzima Generated Report download successful");
+            
+            muzimaGeneratedReportController.saveAllMuzimaGeneratedReports(muzimaGeneratedReports);
+            Log.i(TAG, "New notifications are saved");
+            
+            result[0] = SUCCESS;
+            result[1] = muzimaGeneratedReports.size();
+            
+        } catch (MuzimaGeneratedReportController.MuzimaGeneratedReportDownloadException e) {
+            Log.e(TAG, "Exception when trying to download notifications", e);
+            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            return result;
+        } catch (MuzimaGeneratedReportController.MuzimaGeneratedReportDeleteException e) {
+            Log.e(TAG, "Exception occurred while deleting existing notifications", e);
+            result[0] = SyncStatusConstants.DELETE_ERROR;
+            return result;
+        }
+        catch (MuzimaGeneratedReportController.MuzimaGeneratedReportSaveException e) {
+            Log.e(TAG, "Exception when trying to save notifications", e);
+            result[0] = SyncStatusConstants.SAVE_ERROR;
+            return result;
+        } 
+        catch (MuzimaGeneratedReportController.MuzimaGeneratedReportException e) {
+            e.printStackTrace();
+        } return result;
     }
 
     public int[] downloadSetupConfigurations(){
