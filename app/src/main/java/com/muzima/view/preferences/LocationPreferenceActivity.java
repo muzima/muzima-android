@@ -30,6 +30,7 @@ import com.muzima.R;
 import com.muzima.adapters.concept.AutoCompleteLocationAdapter;
 import com.muzima.adapters.concept.SelectedLocationAdapter;
 import com.muzima.api.model.Location;
+import com.muzima.controller.MuzimaGeneratedReportController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.BroadcastListenerActivity;
@@ -132,8 +133,8 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
     }
 
     @Override
-    protected void onReceive(Context context, Intent intent) {
-        super.onReceive(context, intent);
+    protected void onReceive(Context context, Intent intent){
+           super.onReceive(context, intent);
 
         int syncStatus = intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_STATUS, Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR);
         int syncType = intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, -1);

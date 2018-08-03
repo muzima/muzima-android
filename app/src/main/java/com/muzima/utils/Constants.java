@@ -75,6 +75,7 @@ public class Constants {
         public static final int SYNC_NOTIFICATIONS = 10;
         public static final int SYNC_REAL_TIME_UPLOAD_FORMS =11;
         public static final int SYNC_SHR =12;
+        public static final int SYNC_MUZIMA_GENERATED_REPORTS = 13;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;

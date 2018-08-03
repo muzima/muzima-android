@@ -9,6 +9,7 @@
  */
 package com.muzima.view.reports;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -22,21 +23,28 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.encounters.EncountersByPatientAdapter;
 import com.muzima.adapters.patients.PatientAdapterHelper;
+import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.MuzimaGeneratedReport;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.User;
+import com.muzima.controller.CohortController;
 import com.muzima.controller.MuzimaGeneratedReportController;
 import com.muzima.controller.PatientController;
+import com.muzima.tasks.MuzimaGeneratedReportDownloadTask;
+import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.encounters.EncounterSummaryActivity;
+import com.muzima.view.notifications.SyncNotificationsIntent;
 import com.muzima.view.patients.PatientSummaryActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.muzima.utils.DateUtils.getFormattedDate;
 
-public class PatientReportButtonActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener, ListAdapter.BackgroundListQueryTaskListener {
+public class PatientReportButtonActivity extends BroadcastListenerActivity {
     private Patient patient;
     private EncountersByPatientAdapter encountersByPatientAdapter;
     private View noDataView;
@@ -89,41 +97,16 @@ public class PatientReportButtonActivity extends BroadcastListenerActivity imple
         noDataMsgTextView.setText("Encounters are still loading");
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
     }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        Encounter encounter = encountersByPatientAdapter.getItem(position);
-        Intent intent = new Intent(this,EncounterSummaryActivity.class);
-        intent.putExtra(EncounterSummaryActivity.ENCOUNTER,encounter);
-        intent.putExtra(PatientSummaryActivity.PATIENT,patient);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onQueryTaskStarted() {}
-
-    @Override
-    public void onQueryTaskFinish() {
-        if(encountersByPatientAdapter.isEmpty()) {
-            setupNoDataView();
-        }
-    }
-
-    @Override
-    public void onQueryTaskCancelled(){}
-
-    @Override
-    public void onQueryTaskCancelled(Object errorDefinition){}
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.client_summary, menu);
-        super.onCreateOptionsMenu(menu);
-        return true;
-    }
     
-    public void downloadReport(View v){
-        Toast.makeText(getApplicationContext(), "11111111111111111111", Toast.LENGTH_LONG).show();
+    
+    public void downloadReport(View v) {
+    
+        new SyncMuzimaGeneratedReportIntent(this, patient.getUuid()).start();
+    }
+
+    
+    public void downloadReports(View v){
+        /*Toast.makeText(getApplicationContext(), "11111111111111111111", Toast.LENGTH_LONG).show();
         
         
         MuzimaGeneratedReportController muzimaGeneratedReportController = ((MuzimaApplication) getApplicationContext()).getMuzimaGeneratedReportController();
@@ -155,7 +138,23 @@ public class PatientReportButtonActivity extends BroadcastListenerActivity imple
         intent.putExtra("url", "http://www.cricinfo.com");
         
         Toast.makeText(getApplicationContext(), "77777777777777777", Toast.LENGTH_LONG).show();
-        startActivity(intent);
+        startActivity(intent);*/
+        new MuzimaGeneratedReportDownloadTask(getApplicationContext()).execute(patient);
+    }
+    @Override
+    protected void onReceive(Context context, Intent intent){
+      super.onReceive(context, intent);
+        
+        int syncType = intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, -1);
+        
+        if (syncType == Constants.DataSyncServiceConstants.SYNC_MUZIMA_GENERATED_REPORTS) {
+            Intent i = new Intent(getApplicationContext(), PatientReportWebActivity.class);
+    
+            i.putExtra("url", "http://www.cricinfo.com");
+            
+               Toast.makeText(getApplicationContext(), "77777777777777777", Toast.LENGTH_LONG).show();
+            startActivity(i);
+        }
     }
 }
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         

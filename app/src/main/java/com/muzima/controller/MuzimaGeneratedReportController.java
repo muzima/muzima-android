@@ -66,6 +66,15 @@ public class MuzimaGeneratedReportController {
             throw new MuzimaGeneratedReportSaveException(e);
         }
     }
+    
+    public void deleteMuzimaGeneratedReport(MuzimaGeneratedReport muzimaGeneratedReport) throws MuzimaGeneratedReportDeleteException {
+        try {
+            
+                muzimaGeneratedReportService.deleteMuzimaGeneratedReport(muzimaGeneratedReport);
+        } catch (IOException e) {
+            throw new MuzimaGeneratedReportDeleteException(e);
+        }
+    }
 
     public static class MuzimaGeneratedReportFetchException extends Throwable {
         public MuzimaGeneratedReportFetchException(Throwable throwable) {
@@ -85,6 +94,12 @@ public class MuzimaGeneratedReportController {
     }
     public static class MuzimaGeneratedReportSaveException extends Throwable {
         public MuzimaGeneratedReportSaveException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+    
+    public static class MuzimaGeneratedReportDeleteException extends Throwable {
+        public MuzimaGeneratedReportDeleteException(Throwable throwable) {
             super(throwable);
         }
     }
