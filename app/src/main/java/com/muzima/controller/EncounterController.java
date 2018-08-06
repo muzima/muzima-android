@@ -44,6 +44,10 @@ public class EncounterController {
         this.sntpService = sntpService;
     }
 
+
+
+
+
     public void replaceEncounters(List<Encounter> allEncounters) throws ReplaceEncounterException {
         try {
             encounterService.updateEncounters(allEncounters);
