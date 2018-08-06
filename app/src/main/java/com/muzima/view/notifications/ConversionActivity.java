@@ -2,10 +2,12 @@ package com.muzima.view.notifications;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Scroller;
 
 
 import com.muzima.MuzimaApplication;
@@ -100,9 +102,12 @@ public class ConversionActivity extends BaseActivity {
                 } catch (NotificationController.NotificationSaveException e) {
                     e.printStackTrace();
                 }
-
             }
         });
+
+        composeEditText.setScroller(new Scroller(getApplicationContext()));
+        composeEditText.setVerticalScrollBarEnabled(true);
+        composeEditText.setMovementMethod(new ScrollingMovementMethod());
 
     }
 
