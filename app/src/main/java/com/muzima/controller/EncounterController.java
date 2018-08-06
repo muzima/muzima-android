@@ -10,8 +10,6 @@
 
 package com.muzima.controller;
 
-import android.util.Log;
-
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.EncounterService;
@@ -43,10 +41,6 @@ public class EncounterController {
         this.lastSyncTimeService = lastSyncTimeService;
         this.sntpService = sntpService;
     }
-
-
-
-
 
     public void replaceEncounters(List<Encounter> allEncounters) throws ReplaceEncounterException {
         try {
