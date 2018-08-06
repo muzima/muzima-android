@@ -140,7 +140,21 @@ public class CohortController {
         } catch (IOException e) {
             throw new CohortSaveException(e);
         }
+    }
 
+    public void saveOrUpdateCohorts(List<Cohort> cohorts) throws CohortSaveException {
+        try {
+            for(Cohort cohort: cohorts){
+                if(cohortService.getCohortByUuid(cohort.getUuid()) == null){
+                    cohortService.saveCohort(cohort);
+                } else {
+                    cohortService.updateCohort(cohort);
+                }
+            }
+            cohortService.saveCohorts(cohorts);
+        } catch (IOException e) {
+            throw new CohortSaveException(e);
+        }
     }
 
     public void deleteAllCohorts() throws CohortDeleteException {
@@ -184,6 +198,23 @@ public class CohortController {
         }
     }
 
+    public boolean isUpdateAvailable(Cohort cohort) {
+        try {
+            return cohortService.countCohortMembers(cohort.getUuid()) !=  cohort.getSize();
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    public boolean isUpdateAvailable() throws CohortFetchException {
+            for(Cohort cohort: getAllCohorts()){
+                if(isUpdateAvailable(cohort)){
+                    return true;
+                }
+            }
+        return false;
+    }
+
     public int countSyncedCohorts() throws CohortFetchException {
         return getSyncedCohorts().size();
     }
@@ -209,6 +240,18 @@ public class CohortController {
     public List<Cohort> downloadCohortByName(String name) throws CohortDownloadException {
         try {
             return cohortService.downloadCohortsByName(name);
+        } catch (IOException e) {
+            throw new CohortDownloadException(e);
+        }
+    }
+
+    public List<Cohort> downloadCohortsByUuidList(String[] uuidList) throws CohortDownloadException {
+        try {
+            List<Cohort> cohortList = new ArrayList<>();
+            for(String uuid:uuidList){
+                cohortList.add(cohortService.downloadCohortByUuid(uuid));
+            }
+            return cohortList;
         } catch (IOException e) {
             throw new CohortDownloadException(e);
         }

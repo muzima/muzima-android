@@ -45,7 +45,7 @@ public abstract class CohortsAdapter extends ListAdapter<Cohort> {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.setTextToName(getItem(position).getName());
+        holder.setTextToName(getItem(position).getName() + "("+getItem(position).getSize()+ ")");
         return convertView;
     }
 
@@ -56,9 +56,11 @@ public abstract class CohortsAdapter extends ListAdapter<Cohort> {
     public class ViewHolder {
         private CheckedTextView name;
         private ImageView downloadedImage;
+        private ImageView pendingUpdateImage;
 
         public ViewHolder(View convertView) {
             this.downloadedImage = (ImageView) convertView.findViewById(R.id.downloadImg);
+            this.pendingUpdateImage = (ImageView) convertView.findViewById(R.id.pendingUpdateImg);
             this.name = (CheckedTextView) convertView
                     .findViewById(R.id.cohort_name);
         }
@@ -69,6 +71,14 @@ public abstract class CohortsAdapter extends ListAdapter<Cohort> {
 
         public void hideDownloadImage() {
             downloadedImage.setVisibility(View.GONE);
+        }
+
+        public void displayPendingUpdateImage() {
+            pendingUpdateImage.setVisibility(View.VISIBLE);
+        }
+
+        public void hidePendingUpdateImage() {
+            pendingUpdateImage.setVisibility(View.GONE);
         }
 
         public void setTextToName(String text) {

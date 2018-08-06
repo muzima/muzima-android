@@ -376,7 +376,35 @@ public class MuzimaSyncService {
             List<Cohort> voidedCohorts = deleteVoidedCohorts(cohorts);
             cohorts.removeAll(voidedCohorts);
 
-            cohortController.saveAllCohorts(cohorts);
+            cohortController.saveOrUpdateCohorts(cohorts);
+            Log.i(TAG, "New cohorts are saved");
+            result[0] = SUCCESS;
+            result[1] = cohorts.size();
+            result[2] = voidedCohorts.size();
+        } catch (CohortController.CohortDownloadException e) {
+            Log.e(TAG, "Exception when trying to download cohorts", e);
+            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            return result;
+        } catch (CohortController.CohortSaveException e) {
+            Log.e(TAG, "Exception when trying to save cohorts", e);
+            result[0] = SyncStatusConstants.SAVE_ERROR;
+            return result;
+        } catch (CohortController.CohortDeleteException e) {
+            Log.e(TAG, "Exception occurred while deleting voided cohorts", e);
+            result[0] = SyncStatusConstants.DELETE_ERROR;
+            return result;
+        }
+        return result;
+    }
+
+    public int[] downloadCohorts(String[] cohortUuids) {
+        int[] result = new int[3];
+        try {
+            List<Cohort> cohorts = cohortController.downloadCohortsByUuidList(cohortUuids);
+            List<Cohort> voidedCohorts = deleteVoidedCohorts(cohorts);
+            cohorts.removeAll(voidedCohorts);
+
+            cohortController.saveOrUpdateCohorts(cohorts);
             Log.i(TAG, "New cohorts are saved");
             result[0] = SUCCESS;
             result[1] = cohorts.size();
@@ -442,6 +470,9 @@ public class MuzimaSyncService {
             result[1] = patientCount;
             result[2] = cohortDataList.size();
             result[3] = voidedPatients.size();
+
+            //download cohorts to obtain updated metadata
+            downloadCohorts(cohortUuids);
         } catch (CohortController.CohortDownloadException e) {
             Log.e(TAG, "Exception thrown while downloading cohort data.", e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
