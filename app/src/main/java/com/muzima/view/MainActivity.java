@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.Menu;
@@ -179,6 +180,7 @@ public class MainActivity extends BroadcastListenerActivity {
             try {
                 homeActivityMetadata.totalCohorts = cohortController.countAllCohorts();
                 homeActivityMetadata.syncedCohorts = cohortController.countSyncedCohorts();
+                homeActivityMetadata.cohortUpdateAvailable = cohortController.isUpdateAvailable();
                 homeActivityMetadata.syncedPatients = patientController.countAllPatients();
                 homeActivityMetadata.incompleteForms = formController.countAllIncompleteForms();
                 homeActivityMetadata.completeAndUnsyncedForms = formController.countAllCompleteForms();
@@ -214,6 +216,13 @@ public class MainActivity extends BroadcastListenerActivity {
             cohortsDescriptionView.setText(getString(R.string.hint_dashboard_cohorts_description,
                     homeActivityMetadata.syncedCohorts, homeActivityMetadata.totalCohorts));
 
+            ImageView cortUpdateAvailable = (ImageView) mMainView.findViewById(R.id.pendingUpdateImg);
+            if(homeActivityMetadata.cohortUpdateAvailable){
+                cortUpdateAvailable.setVisibility(View.VISIBLE);
+            } else {
+                cortUpdateAvailable.setVisibility(View.GONE);
+            }
+
             TextView patientDescriptionView = (TextView) mMainView.findViewById(R.id.patientDescription);
             patientDescriptionView.setText(getString(R.string.hint_dashboard_clients_description,
                     homeActivityMetadata.syncedPatients));
@@ -239,6 +248,7 @@ public class MainActivity extends BroadcastListenerActivity {
         int completeAndUnsyncedForms;
         int newNotifications;
         int totalNotifications;
+        boolean cohortUpdateAvailable;
     }
 
     @Override

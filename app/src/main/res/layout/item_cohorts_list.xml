@@ -30,4 +30,14 @@
             android:src="@drawable/ic_action_blue_tick_circle"
             android:visibility="gone"
             android:contentDescription="@string/info_downloaded_image"/>
+    <ImageView
+            android:id="@+id/pendingUpdateImg"
+            android:layout_weight="20"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="top|right"
+            android:src="@drawable/pending_update"
+            android:tint="#990000"
+            android:visibility="gone"
+            android:contentDescription="@string/info_downloaded_image"/>
 </com.muzima.view.CheckedLinearLayout>
