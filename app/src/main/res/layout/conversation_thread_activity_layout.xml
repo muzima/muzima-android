@@ -33,22 +33,39 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/type_message_editText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_toLeftOf="@+id/send_message_fab"
-                android:background="@drawable/curved_button_white"
-                android:gravity="left"
-                android:hint="Type a message"
-                android:padding="10dp"
-                android:textColor="@android:color/black" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/type_message_editText"
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_toLeftOf="@+id/send_message_fab"
+                    android:background="@drawable/curved_button_white"
+                    android:gravity="left"
+                    android:hint="Type a message"
+                    android:padding="10dp"
+                    android:textColor="@android:color/black" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/send_message_fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_action_send"
+                    android:layout_gravity="end"
+                    app:fabSize="mini" />
+
+            </LinearLayout>
+
 
             <!--<LinearLayout-->
             <!--android:orientation="horizontal"-->
@@ -96,14 +113,7 @@
             <!--</LinearLayout>-->
 
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/send_message_fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_action_send"
-                app:fabSize="mini" />
+
 
 
         </RelativeLayout>
