@@ -12,6 +12,7 @@ package com.muzima.adapters.setupconfiguration;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,8 +34,9 @@ public class GuidedSetupActionLogAdapter extends ListAdapter<SetupActionLogModel
     public void reloadData(){}
 
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
@@ -50,39 +52,39 @@ public class GuidedSetupActionLogAdapter extends ListAdapter<SetupActionLogModel
         holder.setSetupActionResultStatus(getItem(position).getSetupActionResultStatus());
         return convertView;
     }
-    public class ViewHolder {
-        private TextView setupAction;
-        private TextView setupActionResult;
-        private TextView setupActionResultStatus;
+    class ViewHolder {
+        private final TextView setupAction;
+        private final TextView setupActionResult;
+        private final TextView setupActionResultStatus;
 
-        public ViewHolder(View convertView) {
-            setupAction = (TextView) convertView
+        ViewHolder(View convertView) {
+            setupAction = convertView
                     .findViewById(R.id.setup_action);
-            setupActionResult = (TextView) convertView
+            setupActionResult = convertView
                     .findViewById(R.id.setup_action_result);
-            setupActionResultStatus = (TextView) convertView
+            setupActionResultStatus = convertView
                     .findViewById(R.id.setup_action_result_status);
         }
 
-        public void setSetupAction(String text) {
+        void setSetupAction(String text) {
             setupAction.setText(text);
             setupAction.setTypeface(Fonts.roboto_medium(getContext()));
         }
 
-        public void setSetupActionResult(String text) {
+        void setSetupActionResult(String text) {
             setupActionResult.setText(text);
             setupActionResult.setTypeface(Fonts.roboto_medium(getContext()));
         }
 
-        public void setSetupActionResultStatus(String text){
+        void setSetupActionResultStatus(String text){
             if(!StringUtils.isEmpty(text) && StringUtils.equals(text, Constants.SetupLogConstants.ACTION_FAILURE_STATUS_LOG)){
                 setupActionResultStatus.setTextColor(Color.RED);
                 setupActionResult.setTextColor(Color.RED);
-                setupActionResultStatus.setText((getContext().getString(R.string.general_fail)).toUpperCase() + ": ");
+                setupActionResultStatus.setText(String.format("%s: ", (getContext().getString(R.string.general_fail)).toUpperCase()));
             } else if(!StringUtils.isEmpty(text) && StringUtils.equals(text, Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG)){
                 setupActionResultStatus.setTextColor(ContextCompat.getColor(getContext(),R.color.primary_blue));
                 setupActionResult.setTextColor(ContextCompat.getColor(getContext(),R.color.primary_blue));
-                setupActionResultStatus.setText((getContext().getString(R.string.general_ok)).toUpperCase() + ": ");
+                setupActionResultStatus.setText(String.format("%s: ", (getContext().getString(R.string.general_ok)).toUpperCase()));
             }
         }
     }

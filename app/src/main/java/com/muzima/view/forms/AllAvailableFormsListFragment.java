@@ -80,7 +80,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     @Override
     protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
         View view = inflater.inflate(R.layout.layout_synced_list, container, false);
-        syncText = (TextView) view.findViewById(R.id.sync_text);
+        syncText = view.findViewById(R.id.sync_text);
         updateSyncTime();
         return view;
     }
@@ -132,7 +132,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
                 return true;
             }
         } catch (FormController.FormFetchException e) {
-            Log.i(TAG, "Error getting forms with patient data");
+            Log.i(getClass().getSimpleName(), "Error getting forms with patient data");
         }
         return false;
     }
@@ -148,9 +148,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         Iterator<? extends FormWithData> incompleteFormsIterator = formWithData.iterator();
         if (incompleteFormsIterator.hasNext()) {
             FormWithData incompleteForm = incompleteFormsIterator.next();
-            if (selectedFormsUuids.contains(incompleteForm.getFormUuid())) {
-                return true;
-            }
+            return selectedFormsUuids.contains(incompleteForm.getFormUuid());
         }
         return false;
     }
@@ -171,12 +169,12 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
             }
             syncText.setText(lastSyncedMsg);
         } catch (IOException e) {
-            Log.i(TAG, "Error getting forms last sync time");
+            Log.i(getClass().getSimpleName(), "Error getting forms last sync time");
         }
     }
 
     private List<String> getSelectedForms() {
-        List<String> formUUIDs = new ArrayList<String>();
+        List<String> formUUIDs = new ArrayList<>();
         SparseBooleanArray checkedItemPositions = list.getCheckedItemPositions();
         for (int i = 0; i < checkedItemPositions.size(); i++) {
             if (checkedItemPositions.valueAt(i)) {
@@ -190,7 +188,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         void onTemplateDownloadComplete();
     }
 
-    public final class NewFormsActionModeCallback implements ActionMode.Callback {
+    final class NewFormsActionModeCallback implements ActionMode.Callback {
 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
@@ -237,7 +235,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
                     new AsyncTask<Void, Void, int[]>() {
                         @Override
                         protected void onPreExecute() {
-                            Log.i(TAG, "Canceling timeout timer!");
+                            Log.i(getClass().getSimpleName(), "Canceling timeout timer!");
                             ((MuzimaApplication) getActivity().getApplicationContext()).cancelTimer();
                             ((FormsActivity) getActivity()).showProgressBar();
                         }

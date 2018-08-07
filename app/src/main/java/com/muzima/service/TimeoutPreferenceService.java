@@ -16,7 +16,7 @@ import android.preference.PreferenceManager;
 import com.muzima.R;
 
 public class TimeoutPreferenceService extends PreferenceService {
-    private static String DEFAULT_TIMEOUT_IN_MIN = "5";
+    private static final String DEFAULT_TIMEOUT_IN_MIN = "5";
     private final SharedPreferences settings;
 
     public TimeoutPreferenceService(Context context) {

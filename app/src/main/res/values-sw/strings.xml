@@ -180,7 +180,7 @@
     <string name="hint_consultation_consultant_validation_failure">Tafadhali weka mshauri kutoka kwenye orodha ya washauri wapatikanao.</string>
     <string name="hint_crash_dialog">Tatizo lisilotarajiwa limetokea linaloilazimisha mUzima isimame. Tafadhali tusaidie kutatua tatizo hili kwa kututumia data zinazohusiana na tatizo hili. Unachotakiwa kufanya ni kubofya OK basi.</string>
     <string name="hint_crash_dialog_comment_prompt">Tafadhali weka maoni yako kwenye sehemu ilioko chini kuhusu tatizo lililoko. </string>
-    <string name="hint_create_new_shr">Mteja hana SHR. Je, unataka kujenga SHR mpya na kuandika kadi?
+    <string name="hint_create_new_SHR">Mteja hana SHR. Je, unataka kujenga SHR mpya na kuandika kadi?
     </string>
     <string name="hint_current_or_past_date_validation_failure">Tafadhali weka tarehe ya mapema ama inayokadiriana na tarehe ya leo.</string>
     <string name="hint_custom_concept_help">Katika sehemu hii unaainisha dhana ambazo data zake zitaambatanishwa katika upakuaji utakaofanyika baadaye</string>
@@ -233,14 +233,14 @@
     <string name="hint_server_url">URL ya seva</string>
     <string name="hint_server_url_prompt">Tafadhali ingiza URL ya seva</string>
     <string name="hint_session_timeout">Kama si amilifu kwa muda huu, mUzima itakutoa nje otomatiki</string>
-    <string name="hint_set_default_encounter_location_for_shr">Tafadhali weka eneo la kukutana na default ili kuwezesha kuandika kadi mpya
+    <string name="hint_set_default_encounter_location_for_SHR">Tafadhali weka eneo la kukutana na default ili kuwezesha kuandika kadi mpya
     </string>
     <string name="hint_setting_refresh">Je, ungependa kuupakuwa tena mpangilio huu kutoka kwenye Seva.</string>
     <string name="hint_username_prompt">Tafadhali ingiza jina la mtumiaji</string>
     <string name="hint_video_caption_prompt">Tafadhali ingiza maelezo mafupi kwa ajili ya video hii</string>
     <string name="hint_video_record">Rekodi au chagua video</string>
     <string name="hint_wizard_form_download">Chagua kiolezo kimoja au zaidi kutoka katika orodha kisha bofya \'Ifuatayo\' ili kupakua</string>
-    <string name="hint_write_shr_to_card">Je, unataka kuandika Rekodi ya Afya ya Pamoja kwa kadi?</string>
+    <string name="hint_write_SHR_to_card">Je, unataka kuandika Rekodi ya Afya ya Pamoja kwa kadi?</string>
 
     <string name="info_authentication_in_progress">Uthibitisho wa utambulisho unaendelea…</string>
     <string name="info_client_demographics_download">Upakuaji wa taarifa za kidemografia za wateja…</string>
@@ -390,7 +390,7 @@
 
     <string name="menu_form_back_to_draft">rudi katika drafti</string>
     <string name="menu_form_data_sync">Landanisha data za fomu</string>
-    <string formatted="false" name="menu_shr_data_sync">Landanisha data za SHR (%d)</string>
+    <string formatted="false" name="menu_SHR_data_sync">Landanisha data za SHR (%d)</string>
 
     <string name="message_missing_form_encounter_details_error">lazima yatolewa</string>
 
@@ -400,10 +400,10 @@
     <string name="null_encounter_location_error">Hitilafu ilitokea wakati wa kuhifadhi fomu. Kukutana na eneo lazima kutolewa</string>
     <string name="null_encounter_provider_error">Hitilafu ilitokea wakati wa kuhifadhi fomu. Mtoa mkutano lazima atoe</string>
 
-    <string name="patient_shr_search_dialog_title">Utafutaji wa SHR</string>
-    <string name="patient_shr_search_title_text">Utafutaji wa SHR</string>
+    <string name="patient_SHR_search_dialog_title">Utafutaji wa SHR</string>
+    <string name="patient_SHR_search_title_text">Utafutaji wa SHR</string>
 
-    <string name="registering_patient_message_title_text">Kuandikisha mteja katika mUzima ...</string>
+    <string name="registering_patient_message_title_text">Kuandikisha mteja katika mUzima …</string>
 
     <string name="scan_card_id_title">Futa Kitambulisho cha kadi</string>
 
@@ -411,9 +411,9 @@
         Mteja hapatikani kwenye kifaa, ungependa kutafuta seva?
     </string>
 
-    <string name="shr_card_text">Kadi ya SHR</string>
-    <string name="shr_data_title_text">SHR Data</string>
-    <string name="shr_extracted_data_text">Data zilizochukuliwa kutoka SHR</string>
+    <string name="SHR_card_text">Kadi ya SHR</string>
+    <string name="SHR_data_title_text">SHR Data</string>
+    <string name="SHR_extracted_data_text">Data zilizochukuliwa kutoka SHR</string>
 
     <string name="success_writing_smartcard">Data ya kadi ya Smart imeandikwa kwa mafanikio.</string>
 
@@ -512,5 +512,6 @@
     <string name="warning_setting_download_failure">Imeshindikana kupakua kisasisho cha utaratibu</string>
     <string name="warning_switch_server">Ubadilishaji wa seva: Kitendo hiki kitafuta data zote za mUzima katika kifaa chako, ikiwa ni pamoja na fomu zozote ambazo hazijakamilika bado. Una hakika unataka kubadili mpangilio huu?</string>
 
-    <string name="write_shr_to_card_text">Andika SHR kwa Kadi</string>
+    <string name="write_SHR_to_card_text">Andika SHR kwa Kadi</string>
+    <string name="number_hashtag_representation">##</string>
 </resources>

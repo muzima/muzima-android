@@ -16,7 +16,7 @@ import android.webkit.JavascriptInterface;
 import com.muzima.R;
 
 public class MuzimaProgressDialog {
-    private ProgressDialog dialog;
+    private final ProgressDialog dialog;
 
     public MuzimaProgressDialog(Activity activity) {
         this(new ProgressDialog(activity, R.style.alertDialogTheme));

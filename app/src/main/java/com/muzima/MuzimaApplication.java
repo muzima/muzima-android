@@ -60,21 +60,21 @@ import java.util.List;
 
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 
-//@ReportsCrashes(
-//
-//        formKey = "",
-//        reportType = HttpSender.Type.JSON,
-//        httpMethod = HttpSender.Method.POST,
-//        formUri = "http://acra.muzima.org/report",
-//        formUriBasicAuthLogin = "muzima-reporter",
-//        formUriBasicAuthPassword = "OMHKOHV8LVfv3c553n6Oqkof",
-//        mode = ReportingInteractionMode.DIALOG,
-//        resDialogText = R.string.hint_crash_dialog,
-//        resDialogIcon = android.R.drawable.ic_dialog_info,
-//        resDialogTitle = R.string.title_crash_dialog,
-//        resDialogCommentPrompt = R.string.hint_crash_dialog_comment_prompt,
-//        resDialogOkToast = R.string.general_thank_you
-//)
+@ReportsCrashes(
+
+        formKey = "",
+        reportType = HttpSender.Type.JSON,
+        httpMethod = HttpSender.Method.POST,
+        formUri = "http://acra.muzima.org/report",
+        formUriBasicAuthLogin = "muzima-reporter",
+        formUriBasicAuthPassword = "OMHKOHV8LVfv3c553n6Oqkof",
+        mode = ReportingInteractionMode.DIALOG,
+        resDialogText = R.string.hint_crash_dialog,
+        resDialogIcon = android.R.drawable.ic_dialog_info,
+        resDialogTitle = R.string.title_crash_dialog,
+        resDialogCommentPrompt = R.string.hint_crash_dialog_comment_prompt,
+        resDialogOkToast = R.string.general_thank_you
+)
 
 
 public class MuzimaApplication extends Application {
@@ -96,7 +96,7 @@ public class MuzimaApplication extends Application {
     private MuzimaSettingController settingsController;
     private SmartCardController smartCardController;
     private MuzimaTimer muzimaTimer;
-    public static final String APP_DIR = "/data/data/com.muzima";
+    private static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
     private User authenticatedUser;
 
@@ -146,8 +146,6 @@ public class MuzimaApplication extends Application {
         try {
             ContextFactory.setProperty(Constants.LUCENE_DIRECTORY_PATH, APP_DIR);
             muzimaContext = ContextFactory.createContext();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -397,6 +395,7 @@ public class MuzimaApplication extends Application {
 
     public boolean isRunningInBackground() {
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        assert manager != null;
         List<ActivityManager.RunningTaskInfo> tasks = manager.getRunningTasks(1);
         return tasks.get(0).topActivity.getClassName().contains("Launcher");
     }

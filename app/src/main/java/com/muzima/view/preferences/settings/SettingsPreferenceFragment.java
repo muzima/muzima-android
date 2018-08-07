@@ -20,8 +20,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceFragment;;
-import android.util.Log;
+import android.preference.PreferenceFragment;
 import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -47,35 +46,14 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 
 public class SettingsPreferenceFragment extends PreferenceFragment  implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private String serverPreferenceKey;
-    private String usernamePreferenceKey;
-    private String timeoutPreferenceKey;
-    private String passwordPreferenceKey;
-    private String autoSavePreferenceKey;
-    private String realTimeSyncPreferenceKey;
-    private String encounterProviderPreferenceKey;
-    private String duplicateFormDataPreferenceKey;
-    private String fontSizePreferenceKey;
-    private String landingPagePreferenceKey;
-    private String requireMedicalRecordNumberKey;
-    private String defaultEncounterLocationkey;
-
     private EditTextPreference serverPreference;
-    private EditTextPreference usernamePreference;
-    private EditTextPreference timeoutPreference;
-    private EditTextPreference passwordPreference;
-    private EditTextPreference autoSaveIntervalPreference;
     private CheckBoxPreference encounterProviderPreference;
-    private CheckBoxPreference duplicateFormDataPreference;
     private CheckBoxPreference realTimeSyncPreference;
     private CheckBoxPreference requireMedicalRecordNumberPreference;
-    private ListPreference fontSizePreference;
-    private ListPreference landingPagePreference;
-    private ListPreference defaultEncounterLocationPreference;
 
 
     private String newURL;
-    private Map<String, SettingsPreferenceFragment.PreferenceChangeHandler> actions = new HashMap<String, SettingsPreferenceFragment.PreferenceChangeHandler>();
+    private final Map<String, SettingsPreferenceFragment.PreferenceChangeHandler> actions = new HashMap<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -83,7 +61,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preference);
 
-        serverPreferenceKey = getResources().getString(R.string.preference_server);
+        String serverPreferenceKey = getResources().getString(R.string.preference_server);
         serverPreference = (EditTextPreference) getPreferenceScreen().findPreference(serverPreferenceKey);
         serverPreference.setSummary(serverPreference.getText());
         serverPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -103,14 +81,14 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                 return false;
             }
         });
-        usernamePreferenceKey = getResources().getString(R.string.preference_username);
-        usernamePreference = (EditTextPreference) getPreferenceScreen().findPreference(usernamePreferenceKey);
+        String usernamePreferenceKey = getResources().getString(R.string.preference_username);
+        EditTextPreference usernamePreference = (EditTextPreference) getPreferenceScreen().findPreference(usernamePreferenceKey);
         usernamePreference.setSummary(usernamePreference.getText());
         usernamePreference.setEnabled(false);
         usernamePreference.setSelectable(false);
 
-        timeoutPreferenceKey = getResources().getString(R.string.preference_timeout);
-        timeoutPreference = (EditTextPreference) getPreferenceScreen().findPreference(timeoutPreferenceKey);
+        String timeoutPreferenceKey = getResources().getString(R.string.preference_timeout);
+        EditTextPreference timeoutPreference = (EditTextPreference) getPreferenceScreen().findPreference(timeoutPreferenceKey);
         timeoutPreference.setSummary(timeoutPreference.getText());
         timeoutPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -121,12 +99,12 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             }
         });
 
-        autoSavePreferenceKey = getResources().getString(R.string.preference_auto_save_interval);
-        autoSaveIntervalPreference = (EditTextPreference) getPreferenceScreen().findPreference(autoSavePreferenceKey);
+        String autoSavePreferenceKey = getResources().getString(R.string.preference_auto_save_interval);
+        EditTextPreference autoSaveIntervalPreference = (EditTextPreference) getPreferenceScreen().findPreference(autoSavePreferenceKey);
         autoSaveIntervalPreference.setSummary(autoSaveIntervalPreference.getText());
 
-        passwordPreferenceKey = getResources().getString(R.string.preference_password);
-        passwordPreference = (EditTextPreference) getPreferenceScreen().findPreference(passwordPreferenceKey);
+        String passwordPreferenceKey = getResources().getString(R.string.preference_password);
+        EditTextPreference passwordPreference = (EditTextPreference) getPreferenceScreen().findPreference(passwordPreferenceKey);
         if (passwordPreference.getText() != null) {
             passwordPreference.setSummary(passwordPreference.getText().replaceAll(".", "*"));
         }
@@ -134,7 +112,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         passwordPreference.setSelectable(false);
 
 
-        realTimeSyncPreferenceKey = getResources().getString(R.string.preference_real_time_sync);
+        String realTimeSyncPreferenceKey = getResources().getString(R.string.preference_real_time_sync);
         realTimeSyncPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(realTimeSyncPreferenceKey);
         realTimeSyncPreference.setSummary(realTimeSyncPreference.getSummary());
         realTimeSyncPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -154,7 +132,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         registerTextPreferenceChangeHandler(timeoutPreferenceKey, timeoutPreference);
         registerCheckboxPreferenceChangeHandler(realTimeSyncPreferenceKey, realTimeSyncPreference);
 
-        encounterProviderPreferenceKey = getResources().getString(R.string.preference_encounter_provider_key);
+        String encounterProviderPreferenceKey = getResources().getString(R.string.preference_encounter_provider_key);
         encounterProviderPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(encounterProviderPreferenceKey);
         encounterProviderPreference.setSummary(encounterProviderPreference.getSummary());
 
@@ -182,22 +160,22 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         });
 
 
-        duplicateFormDataPreferenceKey = getResources().getString(R.string.preference_duplicate_form_data_key);
-        duplicateFormDataPreference = (CheckBoxPreference)getPreferenceScreen().findPreference(duplicateFormDataPreferenceKey);
+        String duplicateFormDataPreferenceKey = getResources().getString(R.string.preference_duplicate_form_data_key);
+        CheckBoxPreference duplicateFormDataPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(duplicateFormDataPreferenceKey);
         duplicateFormDataPreference.setSummary(duplicateFormDataPreference.getSummary());
 
 
-        fontSizePreferenceKey = getResources().getString(R.string.preference_font_size);
-        fontSizePreference = (ListPreference) getPreferenceScreen().findPreference(fontSizePreferenceKey);
+        String fontSizePreferenceKey = getResources().getString(R.string.preference_font_size);
+        ListPreference fontSizePreference = (ListPreference) getPreferenceScreen().findPreference(fontSizePreferenceKey);
         fontSizePreference.setSummary(fontSizePreference.getValue());
         registerListPreferenceChangeHandler(fontSizePreferenceKey, fontSizePreference);
 
-        landingPagePreferenceKey = getResources().getString(R.string.preference_landing_page);
-        landingPagePreference = (ListPreference) getPreferenceScreen().findPreference(landingPagePreferenceKey);
+        String landingPagePreferenceKey = getResources().getString(R.string.preference_landing_page);
+        ListPreference landingPagePreference = (ListPreference) getPreferenceScreen().findPreference(landingPagePreferenceKey);
         landingPagePreference.setSummary(landingPagePreference.getValue());
         registerListPreferenceChangeHandler(landingPagePreferenceKey, landingPagePreference);
 
-        requireMedicalRecordNumberKey = getResources().getString(R.string.preference_require_medical_record_number);
+        String requireMedicalRecordNumberKey = getResources().getString(R.string.preference_require_medical_record_number);
         requireMedicalRecordNumberPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(requireMedicalRecordNumberKey);
         requireMedicalRecordNumberPreference.setSummary(requireMedicalRecordNumberPreference.getSummary());
         requireMedicalRecordNumberPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -247,7 +225,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         if (listPreferenceCategory != null) {
 
             LocationController locationController = ((MuzimaApplication) getActivity().getApplication()).getLocationController();
-            List<Location> locations = new ArrayList<Location>();
+            List<Location> locations = new ArrayList<>();
             try {
                 locations = locationController.getAllLocations();
             } catch (LocationController.LocationLoadException e) {
@@ -268,10 +246,10 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             listPreferenceCategory.setEntryValues(entryValues);
         }
 
-        defaultEncounterLocationkey = getResources().getString(R.string.preference_default_encounter_location);
-        defaultEncounterLocationPreference = (ListPreference) getPreferenceScreen().findPreference(defaultEncounterLocationkey);
+        String defaultEncounterLocationkey = getResources().getString(R.string.preference_default_encounter_location);
+        ListPreference defaultEncounterLocationPreference = (ListPreference) getPreferenceScreen().findPreference(defaultEncounterLocationkey);
         LocationController locationController = ((MuzimaApplication) getActivity().getApplication()).getLocationController();
-        List<Location> locations = new ArrayList<Location>();
+        List<Location> locations = new ArrayList<>();
         try {
             locations = locationController.getAllLocations();
         } catch (LocationController.LocationLoadException e) {
@@ -307,8 +285,8 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         }
     }
 
-    private static interface PreferenceChangeHandler {
-        public void handle(SharedPreferences sharedPreferences);
+    private interface PreferenceChangeHandler {
+        void handle(SharedPreferences sharedPreferences);
     }
 
 
@@ -339,7 +317,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             public void handle(SharedPreferences sharedPreferences) {
                 if(NumberUtils.isNumber(sharedPreferences.getString(key, StringUtils.EMPTY))){
                     LocationController locationController = ((MuzimaApplication) getActivity().getApplication()).getLocationController();
-                    List<Location> locations = new ArrayList<Location>();
+                    List<Location> locations = new ArrayList<>();
                     try {
                         locations = locationController.getAllLocations();
                     } catch (LocationController.LocationLoadException e) {

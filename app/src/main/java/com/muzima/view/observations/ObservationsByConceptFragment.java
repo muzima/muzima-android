@@ -11,13 +11,10 @@
 package com.muzima.view.observations;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Toast;
 
 import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsByConceptAdapter;
@@ -50,8 +47,7 @@ public class ObservationsByConceptFragment extends ObservationsListFragment {
 
     @Override
     protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
-        View view = inflater.inflate(R.layout.layout_synced_list, container, false);
-        return view;
+        return inflater.inflate(R.layout.layout_synced_list, container, false);
     }
 
     @Override

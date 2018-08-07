@@ -36,25 +36,25 @@ public class HelpActivity extends BaseActivity {
     public static final int CUSTOM_CONCEPT_HELP = 3;
     public static final int CUSTOM_LOCATION_HELP = 4;
     public static final int CUSTOM_PROVIDER_HELP = 5;
-    public static final String MUZIMA_INITAL_SETUP_GUIDE = "file:///android_asset/www/help-content/mUzima_initial_setup.html";
-    public static final String ABOUT_DASHBOARD_FORM = "file:///android_asset/www/help-content/About-dashboard.html";
-    public static final String MUZIMA_SETTINGS = "file:///android_asset/www/help-content/Settings.html";
-    public static final String FILL_PATIENT_FORMS = "file:///android_asset/www/help-content/filling-forms-for-a-patient.html";
-    public static final String GUIDED_SETUP = "https://youtu.be/aSa4CcGtGdo";
-    public static final String ADVANCED_SETUP = "https://youtu.be/3yFieYJQEbs";
-    public static final String COHORTS_DOWNLOAD_ON_DEMAND = "https://youtu.be/CcQZy32O8JQ";
-    public static final String CONCEPTS_DOWNLOAD_ON_DEMAND = "https://youtu.be/Q6QIE7z6_O0";
-    public static final String FORMS_DOWNLOAD_ON_DEMAND = "https://youtu.be/1cPF58jhLiA";
-    public static final String CLIENT_REGISTRATION = "https://youtu.be/fmjhF-juq4k";
-    public static final String LOCAL_CLIENT_SEARCH = "https://youtu.be/630daM1wxGE";
-    public static final String SERVER_CLIENT_SEARCH = "https://youtu.be/C1xDs8wWjNM";
+    private static final String MUZIMA_INITAL_SETUP_GUIDE = "file:///android_asset/www/help-content/mUzima_initial_setup.html";
+    private static final String ABOUT_DASHBOARD_FORM = "file:///android_asset/www/help-content/About-dashboard.html";
+    private static final String MUZIMA_SETTINGS = "file:///android_asset/www/help-content/Settings.html";
+    private static final String FILL_PATIENT_FORMS = "file:///android_asset/www/help-content/filling-forms-for-a-patient.html";
+    private static final String GUIDED_SETUP = "https://youtu.be/aSa4CcGtGdo";
+    private static final String ADVANCED_SETUP = "https://youtu.be/3yFieYJQEbs";
+    private static final String COHORTS_DOWNLOAD_ON_DEMAND = "https://youtu.be/CcQZy32O8JQ";
+    private static final String CONCEPTS_DOWNLOAD_ON_DEMAND = "https://youtu.be/Q6QIE7z6_O0";
+    private static final String FORMS_DOWNLOAD_ON_DEMAND = "https://youtu.be/1cPF58jhLiA";
+    private static final String CLIENT_REGISTRATION = "https://youtu.be/fmjhF-juq4k";
+    private static final String LOCAL_CLIENT_SEARCH = "https://youtu.be/630daM1wxGE";
+    private static final String SERVER_CLIENT_SEARCH = "https://youtu.be/C1xDs8wWjNM";
     private TextView helpContentView;
     private View scrollView;
 
-    ExpandableListAdapter listAdapter;
-    ExpandableListView expListView;
-    List<String> listDataHeader;
-    HashMap<String, List<String>> listDataChild;
+    private ExpandableListAdapter listAdapter;
+    private ExpandableListView expListView;
+    private List<String> listDataHeader;
+    private HashMap<String, List<String>> listDataChild;
     //
 
     @Override
@@ -63,7 +63,7 @@ public class HelpActivity extends BaseActivity {
         setContentView(R.layout.activity_help_new);
 
         // get the listview
-        expListView = (ExpandableListView) findViewById(R.id.lvExp);
+        expListView = findViewById(R.id.lvExp);
 
         // preparing list data
         prepareListData();
@@ -138,15 +138,15 @@ public class HelpActivity extends BaseActivity {
      * Preparing the list data
      */
     private void prepareListData() {
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
+        listDataHeader = new ArrayList<>();
+        listDataChild = new HashMap<>();
 
         // Adding child data
         listDataHeader.add(getString(R.string.title_html_help));
         listDataHeader.add(getString(R.string.title_help_video_links));
 
         // Adding child data
-        List<String> howTo = new ArrayList<String>();
+        List<String> howTo = new ArrayList<>();
         howTo.add(getString(R.string.title_advanced_setup_help_html));
         howTo.add(getString(R.string.title_about_dashboard_help_html));
         howTo.add(getString(R.string.title_settings_help_html));

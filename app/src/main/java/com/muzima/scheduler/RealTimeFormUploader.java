@@ -19,7 +19,7 @@ import com.muzima.utils.NetworkUtils;
 import com.muzima.view.forms.RealTimeUploadFormIntent;
 
 public class RealTimeFormUploader {
-    private static RealTimeFormUploader INSTANCE = new RealTimeFormUploader();
+    private static final RealTimeFormUploader INSTANCE = new RealTimeFormUploader();
     private static final String TAG = "RealTimeFormUploader";
 
     public static RealTimeFormUploader getInstance() {
@@ -44,7 +44,7 @@ public class RealTimeFormUploader {
                 new RealTimeUploadFormIntent(applicationContext).start();
             }
         } catch (FormController.FormFetchException e) {
-            Log.e(TAG, "Error while trying to access completed form data", e);
+            Log.e(getClass().getSimpleName(), "Error while trying to access completed form data", e);
         }
     }
 }

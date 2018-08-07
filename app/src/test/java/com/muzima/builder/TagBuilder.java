@@ -13,7 +13,7 @@ package com.muzima.builder;
 import com.muzima.api.model.Tag;
 
 public class TagBuilder {
-    public String name;
+    private String name;
     private String uuid;
 
     public static TagBuilder tag() {

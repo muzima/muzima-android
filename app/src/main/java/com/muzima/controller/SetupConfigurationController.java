@@ -21,7 +21,7 @@ import java.util.List;
 public class SetupConfigurationController {
 
     private static final String TAG = "FormController";
-    private SetupConfigurationService setupConfigurationService;
+    private final SetupConfigurationService setupConfigurationService;
     public SetupConfigurationController(SetupConfigurationService setupConfigurationService){
         this.setupConfigurationService = setupConfigurationService;
     }

@@ -26,7 +26,7 @@ public class PatientNotificationsListFragment extends NotificationListFragment {
     public static PatientNotificationsListFragment newInstance(NotificationController notificationController, Patient patient) {
         PatientNotificationsListFragment f = new PatientNotificationsListFragment();
         f.notificationController = notificationController;
-        f.patient = patient;
+        PatientNotificationsListFragment.patient = patient;
         return f;
     }
 

@@ -16,7 +16,6 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.controller.NotificationController;
-import com.muzima.controller.ProviderController;
 import com.muzima.view.notifications.GeneralNotificationsListFragment;
 import com.muzima.view.notifications.PatientsNotificationsListFragment;
 
@@ -26,8 +25,8 @@ import com.muzima.view.notifications.PatientsNotificationsListFragment;
 public class NotificationsPagerAdapter extends MuzimaPagerAdapter {
     private static final String TAG = "NotificationPagerAdapter";
 
-    public static final int TAB_PATIENT = 0;
-    public static final int TAB_GENERAL = 1;
+    private static final int TAB_PATIENT = 0;
+    private static final int TAB_GENERAL = 1;
 
     public NotificationsPagerAdapter(Context context, FragmentManager supportFragmentManager) {
         super(context, supportFragmentManager);

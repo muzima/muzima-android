@@ -10,14 +10,13 @@
 
 package com.muzima.view.notifications;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -31,18 +30,18 @@ import com.muzima.view.MuzimaListFragment;
 
 public abstract class NotificationListFragment extends MuzimaListFragment implements ListAdapter.BackgroundListQueryTaskListener{
 
-    protected ProviderController providerController;
-    protected NotificationController notificationController;
-    protected FrameLayout progressBarContainer;
-    protected LinearLayout noDataView;
-    protected MuzimaApplication muzimaApplication;
+    ProviderController providerController;
+    NotificationController notificationController;
+    private FrameLayout progressBarContainer;
+    private LinearLayout noDataView;
+    MuzimaApplication muzimaApplication;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View notificationsLayout = setupMainView(inflater,container);
-        list = (ListView) notificationsLayout.findViewById(R.id.list);
-        progressBarContainer = (FrameLayout) notificationsLayout.findViewById(R.id.progressbarContainer);
-        noDataView = (LinearLayout) notificationsLayout.findViewById(R.id.no_data_layout);
+        list = notificationsLayout.findViewById(R.id.list);
+        progressBarContainer = notificationsLayout.findViewById(R.id.progressbarContainer);
+        noDataView = notificationsLayout.findViewById(R.id.no_data_layout);
 
         setupNoDataView(notificationsLayout);
 
@@ -61,7 +60,7 @@ public abstract class NotificationListFragment extends MuzimaListFragment implem
         return notificationsLayout;
     }
 
-    protected View setupMainView(LayoutInflater inflater, ViewGroup container){
+    private View setupMainView(LayoutInflater inflater, ViewGroup container){
         return inflater.inflate(R.layout.layout_notifications_list, container, false);
     }
 

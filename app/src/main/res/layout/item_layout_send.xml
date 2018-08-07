@@ -14,7 +14,7 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/date_set_text"
         android:padding="10dp"
-        android:text="Hello tom"
+        android:text="@string/hello_general"
         android:textColor="@android:color/white"
         app:angle="8dp"
         app:arrowCenter="true"
@@ -26,7 +26,7 @@
 
     <TextView
         android:id="@+id/date_send_text_view"
-        android:text="June 8"
+        android:text="@string/june_8_sample_date"
         android:textColor="@android:color/white"
         android:layout_toLeftOf="@+id/chat_textview"
         android:layout_alignBaseline="@+id/chat_textview"
@@ -42,6 +42,6 @@
         android:layout_marginBottom="10dp"
         android:padding="10dp"
         android:background="@color/drawer_background"
-        android:text="Date" />
+        android:text="@string/general_date" />
 
 </RelativeLayout>

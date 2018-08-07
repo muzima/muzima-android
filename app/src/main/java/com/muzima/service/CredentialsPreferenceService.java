@@ -19,7 +19,7 @@ import com.muzima.domain.Credentials;
 
 public class CredentialsPreferenceService extends PreferenceService {
 
-    private SharedPreferences settings;
+    private final SharedPreferences settings;
 
     public CredentialsPreferenceService(Context context) {
         super(context);

@@ -33,13 +33,12 @@ import static org.mockito.Mockito.when;
 public class PreferenceServiceTest {
 
     private CohortPrefixPreferenceService preferenceService;
-    private MuzimaApplication muzimaApplication;
     private SharedPreferences sharedPref;
 
 
     @Before
     public void setUp() throws Exception {
-        muzimaApplication = mock(MuzimaApplication.class);
+        MuzimaApplication muzimaApplication = mock(MuzimaApplication.class);
         sharedPref = mock(SharedPreferences.class);
         when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, MODE_PRIVATE)).thenReturn(sharedPref);
         when(muzimaApplication.getSharedPreferences(anyString(), anyInt())).thenReturn(sharedPref);

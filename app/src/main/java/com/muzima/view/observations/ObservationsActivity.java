@@ -33,9 +33,6 @@ public class ObservationsActivity extends BroadcastListenerActivity {
     public boolean quickSearch = false;
     private ViewPager viewPager;
     private ObservationsPagerAdapter observationsPagerAdapter;
-    private PagerSlidingTabStrip pagerTabsLayout;
-    private TextView encounterDateTextView;
-    private final Boolean IS_SHR_DATA = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +43,12 @@ public class ObservationsActivity extends BroadcastListenerActivity {
         setupActionBar();
         initPager();
         initPagerIndicator();
-        encounterDateTextView = (TextView) findViewById(R.id.date_value_textview);
+        TextView encounterDateTextView = findViewById(R.id.date_value_textview);
 
     }
 
     private void initPagerIndicator() {
-        pagerTabsLayout = (PagerSlidingTabStrip) findViewById(R.id.pager_indicator);
+        PagerSlidingTabStrip pagerTabsLayout = findViewById(R.id.pager_indicator);
         pagerTabsLayout.setTextColor(Color.WHITE);
         pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));
         pagerTabsLayout.setSelectedTextColor(getResources().getColor(R.color.tab_indicator));
@@ -62,8 +59,9 @@ public class ObservationsActivity extends BroadcastListenerActivity {
     }
 
     private void initPager() {
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        observationsPagerAdapter = new ObservationsPagerAdapter(getApplicationContext(), getSupportFragmentManager(),IS_SHR_DATA);
+        viewPager = findViewById(R.id.pager);
+        Boolean IS_SHR_DATA = false;
+        observationsPagerAdapter = new ObservationsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), IS_SHR_DATA);
         observationsPagerAdapter.initPagerViews();
         viewPager.setAdapter(observationsPagerAdapter);
     }
@@ -100,7 +98,7 @@ public class ObservationsActivity extends BroadcastListenerActivity {
         datePickerDialog.show();
     }
 
-    public class DateSetListener implements DatePickerDialog.OnDateSetListener {
+    class DateSetListener implements DatePickerDialog.OnDateSetListener {
 
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {

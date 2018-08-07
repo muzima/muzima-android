@@ -45,7 +45,6 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
     private SelectedConceptAdapter selectedConceptAdapter;
     private ListView selectedConceptListView;
     private AutoCompleteTextView autoCompleteConceptTextView;
-    private AutoCompleteConceptAdapter autoCompleteConceptAdapter;
     private boolean actionModeActive = false;
     private ActionMode actionMode;
 
@@ -54,7 +53,7 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
 
-        selectedConceptListView = (ListView) findViewById(R.id.concept_preference_list);
+        selectedConceptListView = findViewById(R.id.concept_preference_list);
         final MuzimaApplication applicationContext = (MuzimaApplication) getApplicationContext();
         selectedConceptAdapter = new SelectedConceptAdapter(this, R.layout.item_concept_list,
                 (applicationContext).getConceptController());
@@ -64,8 +63,8 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
         selectedConceptListView.setClickable(true);
         selectedConceptListView.setEmptyView(findViewById(R.id.no_concept_added));
         selectedConceptListView.setOnItemClickListener(selectedConceptOnClickListener());
-        autoCompleteConceptTextView = (AutoCompleteTextView) findViewById(R.id.concept_add_concept);
-        autoCompleteConceptAdapter = new AutoCompleteConceptAdapter(applicationContext, R.layout.item_option_autocomplete, autoCompleteConceptTextView);
+        autoCompleteConceptTextView = findViewById(R.id.concept_add_concept);
+        AutoCompleteConceptAdapter autoCompleteConceptAdapter = new AutoCompleteConceptAdapter(applicationContext, R.layout.item_option_autocomplete, autoCompleteConceptTextView);
         autoCompleteConceptTextView.setAdapter(autoCompleteConceptAdapter);
         autoCompleteConceptTextView.setOnItemClickListener(autoCompleteOnClickListener());
 
@@ -99,7 +98,7 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
             public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
                 Concept selectedConcept = (Concept) parent.getItemAtPosition(position);
                 if (selectedConceptAdapter.doesConceptAlreadyExist(selectedConcept)) {
-                    Log.e(TAG, "Concept Already exists");
+                    Log.e(getClass().getSimpleName(), "Concept Already exists");
                     Toast.makeText(ConceptPreferenceActivity.this, "Concept " + selectedConcept.getName() + " already exists", Toast.LENGTH_SHORT).show();
                 } else {
                     selectedConceptAdapter.addConcept(selectedConcept);
@@ -151,7 +150,7 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
         return inflater.inflate(R.layout.layout_list, container, false);
     }
 
-    public final class DeleteConceptsActionModeCallback implements ActionMode.Callback {
+    final class DeleteConceptsActionModeCallback implements ActionMode.Callback {
 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
@@ -189,14 +188,14 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
         }
     }
 
-    public void endActionMode() {
+    private void endActionMode() {
         if (actionMode != null) {
             actionMode.finish();
         }
     }
 
     private List<Concept> getSelectedConcepts() {
-        List<Concept> concepts = new ArrayList<Concept>();
+        List<Concept> concepts = new ArrayList<>();
         SparseBooleanArray checkedItemPositions = selectedConceptListView.getCheckedItemPositions();
         for (int i = 0; i < checkedItemPositions.size(); i++) {
             if (checkedItemPositions.valueAt(i)) {

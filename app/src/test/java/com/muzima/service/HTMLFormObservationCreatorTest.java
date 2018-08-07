@@ -44,8 +44,6 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.matchers.JUnitMatchers.hasItem;
-import static org.mockito.Matchers.isNotNull;
-import static org.mockito.Matchers.notNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -58,6 +56,7 @@ public class HTMLFormObservationCreatorTest {
     private HTMLFormObservationCreator htmlFormObservationCreator;
 
     @Mock
+    private
     MuzimaApplication muzimaApplication;
 
     @Mock
@@ -85,12 +84,15 @@ public class HTMLFormObservationCreatorTest {
     private Patient patient;
 
     @Captor
+    private
     ArgumentCaptor<List<Encounter>> encounterArgumentCaptor;
 
     @Captor
+    private
     ArgumentCaptor<List<Observation>> observationArgumentCaptor;
 
     @Captor
+    private
     ArgumentCaptor<List<Concept>> conceptArgumentCaptor;
 
     private String mockConceptName;

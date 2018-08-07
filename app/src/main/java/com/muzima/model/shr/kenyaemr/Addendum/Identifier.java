@@ -2,8 +2,6 @@ package com.muzima.model.shr.kenyaemr.Addendum;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
-
 public class Identifier {
 
     @JsonProperty("ID")

@@ -31,7 +31,7 @@ public class EncounterWithObservationsTest {
         encounterWithObservations.addObservation(observation1);
         encounterWithObservations.addObservation(observation2);
 
-        List<Observation> expected = new ArrayList<Observation>();
+        List<Observation> expected = new ArrayList<>();
         expected.add(observation2);
         expected.add(observation1);
         assertThat(encounterWithObservations.getObservations(), is(expected));
@@ -47,7 +47,7 @@ public class EncounterWithObservationsTest {
         encounterWithObservations.addObservation(observation2);
         encounterWithObservations.addObservation(observation3);
 
-        List<Observation> expected = new ArrayList<Observation>();
+        List<Observation> expected = new ArrayList<>();
         expected.add(observation2);
         expected.add(observation3);
         expected.add(observation1);

@@ -47,7 +47,6 @@ import com.muzima.utils.CustomColor;
 import com.muzima.utils.EnDeCrypt;
 import com.muzima.utils.MediaUtils;
 import com.muzima.utils.StringUtils;
-import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.forms.GenericRegistrationPatientJSONMapper;
 import com.muzima.view.forms.HTMLPatientJSONMapper;
 import com.muzima.view.forms.PatientJSONMapper;
@@ -63,7 +62,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -77,18 +75,17 @@ import static com.muzima.utils.Constants.STATUS_UPLOADED;
 public class FormController {
 
     private static final String TAG = "FormController";
-    private final String REGISTRATION = "registration";
-    private FormService formService;
-    private PatientService patientService;
-    private LastSyncTimeService lastSyncTimeService;
-    private SntpService sntpService;
-    private ObservationService observationService;
-    private EncounterService encounterService;
-    private Map<String, Integer> tagColors;
+    private final FormService formService;
+    private final PatientService patientService;
+    private final LastSyncTimeService lastSyncTimeService;
+    private final SntpService sntpService;
+    private final ObservationService observationService;
+    private final EncounterService encounterService;
+    private final Map<String, Integer> tagColors;
     private List<Tag> selectedTags;
     private String jsonPayload;
-    private MuzimaSettingController settingController;
-    private PatientController patientController;
+    private final MuzimaSettingController settingController;
+    private final PatientController patientController;
 
     public FormController(FormService formService, PatientService patientService, LastSyncTimeService lastSyncTimeService,
                           SntpService sntpService, ObservationService observationService, EncounterService encounterService,
@@ -99,8 +96,8 @@ public class FormController {
         this.sntpService = sntpService;
         this.observationService = observationService;
         this.encounterService = encounterService;
-        tagColors = new HashMap<String, Integer>();
-        selectedTags = new ArrayList<Tag>();
+        tagColors = new HashMap<>();
+        selectedTags = new ArrayList<>();
         this.settingController = settingController;
         this.patientController = patientController;
     }
@@ -163,7 +160,7 @@ public class FormController {
         if (tagsUuid == null || tagsUuid.isEmpty()) {
             return forms;
         }
-        List<Form> filteredForms = new ArrayList<Form>();
+        List<Form> filteredForms = new ArrayList<>();
         for (Form form : forms) {
             Tag[] formTags = form.getTags();
             for (Tag formTag : formTags) {
@@ -178,7 +175,7 @@ public class FormController {
     }
 
     public List<Tag> getAllTags() throws FormFetchException {
-        List<Tag> allTags = new ArrayList<Tag>();
+        List<Tag> allTags = new ArrayList<>();
         List<Form> allForms = null;
         try {
             allForms = formService.getAllForms();
@@ -196,7 +193,7 @@ public class FormController {
     }
 
     public List<Tag> getAllTagsExcludingRegistrationTag() throws FormFetchException {
-        List<Tag> allTags = new ArrayList<Tag>();
+        List<Tag> allTags = new ArrayList<>();
         for (Tag tag : getAllTags()) {
             if (!isRegistrationTag(tag)) {
                 allTags.add(tag);
@@ -234,7 +231,7 @@ public class FormController {
     }
 
     public List<FormTemplate> downloadFormTemplates(String[] formUuids) throws FormFetchException {
-        ArrayList<FormTemplate> formTemplates = new ArrayList<FormTemplate>();
+        ArrayList<FormTemplate> formTemplates = new ArrayList<>();
         for (String uuid : formUuids) {
             formTemplates.add(downloadFormTemplateByUuid(uuid));
         }
@@ -415,7 +412,7 @@ public class FormController {
         }
     }
 
-    public int countAllFormDataByPatientUuid(String patientUuid, String status) throws FormDataFetchException {
+    private int countAllFormDataByPatientUuid(String patientUuid, String status) throws FormDataFetchException {
         try {
             return formService.countFormDataByPatient(patientUuid, status);
         } catch (IOException e) {
@@ -554,7 +551,7 @@ public class FormController {
             patientService.savePatient(patient);
             return patient;
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
+            Log.e("FormController", e.getMessage(), e);
         }
         return null;
     }
@@ -574,9 +571,7 @@ public class FormController {
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER), result);
             return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_SHR_ENCOUNTER), result);
-        } catch (IOException e) {
-            throw new UploadFormDataException(e);
-        } catch (JSONException e) {
+        } catch (IOException | JSONException e) {
             throw new UploadFormDataException(e);
         }
     }
@@ -606,6 +601,7 @@ public class FormController {
     }
 
     private boolean isRegistrationTag(Tag formTag) {
+        String REGISTRATION = "registration";
         return REGISTRATION.equalsIgnoreCase(formTag.getName());
     }
 
@@ -619,7 +615,7 @@ public class FormController {
     }
 
     public static class UploadFormDataException extends Throwable {
-        public UploadFormDataException(Throwable throwable) {
+        UploadFormDataException(Throwable throwable) {
             super(throwable);
         }
     }
@@ -655,7 +651,7 @@ public class FormController {
     }
 
     public List<FormData> getUnUploadedFormData(String templateUUID) throws FormDataFetchException {
-        List<FormData> incompleteFormData = new ArrayList<FormData>();
+        List<FormData> incompleteFormData = new ArrayList<>();
         try {
             List<FormData> formDataByTemplateUUID = formService.getFormDataByTemplateUUID(templateUUID);
             for (FormData formData : formDataByTemplateUUID) {
@@ -670,7 +666,7 @@ public class FormController {
     }
 
     private List<FormData> getFormsWithDiscriminator(List<FormData> allFormData, String discriminator) {
-        List<FormData> requiredForms = new ArrayList<FormData>();
+        List<FormData> requiredForms = new ArrayList<>();
         for (FormData formData : allFormData) {
             if (formData.getDiscriminator().equals(discriminator)) {
                 requiredForms.add(formData);
@@ -710,32 +706,30 @@ public class FormController {
                 JsonUtils.replaceAsString(obj, base, "consultation.sourceUuid", formData.getUuid());
                 formData.setJsonPayload(obj.toJSONString());
             } catch (ParseException e) {
-                Log.e(TAG, e.getMessage(), e);
+                Log.e("", e.getMessage(), e);
             }
         }
         return formData;
     }
 
     private void traverseJson(JSONObject json) {
-        Iterator<String> keys = json.keySet().iterator();
-        while(keys.hasNext()){
-            String key = keys.next();
+        for (String key : json.keySet()) {
             String val = null;
-            try{
-                Object obj =  JsonUtils.readAsObject(json.toJSONString(), "$['" + key + "']");
-                if (obj instanceof JSONArray){
+            try {
+                Object obj = JsonUtils.readAsObject(json.toJSONString(), "$['" + key + "']");
+                if (obj instanceof JSONArray) {
                     JSONArray arr = (JSONArray) obj;
                     for (Object object : arr) {
                         traverseJson((JSONObject) object);
                     }
                 } else {
-                    traverseJson((JSONObject)obj);
+                    traverseJson((JSONObject) obj);
                 }
-            } catch(Exception e){
+            } catch (Exception e) {
                 val = json.get(key).toString();
             }
 
-            if(val != null) {
+            if (val != null) {
                 replaceMediaPathWithMedia(key, val);
             }
         }
@@ -760,7 +754,7 @@ public class FormController {
             traverseJson((JSONObject) jp.parse(jsonPayload));
             formData.setJsonPayload(jsonPayload);
         } catch (ParseException e) {
-            Log.e(TAG, e.getMessage(), e);
+            Log.e("FormController", e.getMessage(), e);
         }
         return formData;
     }
@@ -780,13 +774,13 @@ public class FormController {
                     byte[] fileBytes = new byte[(int) f.length()];
                     int read = fis.read(fileBytes);
                     if (read != f.length()) {
-                        Log.e(TAG, "File read is not equal to the length of the file itself.");
+                        Log.e("FormController", "File read is not equal to the length of the file itself.");
                     }
 
                     //convert the decrypted media to Base64 string
                     mediaString = MediaUtils.toBase64(fileBytes);
                 } catch (Exception e) {
-                    Log.e(TAG, e.getMessage(), e);
+                    Log.e("FormController", e.getMessage(), e);
                 }
 
                 // and encrypt again
@@ -819,12 +813,9 @@ public class FormController {
         return false;
     }
 
-    public boolean isRegistrationFormDataWithEncounterForm(String formUuid) throws FormDataFetchException{
+    public boolean isRegistrationFormDataWithEncounterForm(String formUuid) throws FormDataFetchException {
         FormData formData = getFormDataByUuid(formUuid);
-        if(isRegistrationFormData(formData)){
-            return hasEncounterForm(formData);
-        }
-        return false;
+        return isRegistrationFormData(formData) && hasEncounterForm(formData);
     }
 
     private boolean hasEncounterForm(FormData registrationFormData) throws FormDataFetchException{
@@ -842,12 +833,12 @@ public class FormController {
                 && formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION);
     }
 
-    public boolean isRegistrationHTMLFormData(FormData formData) {
+    private boolean isRegistrationHTMLFormData(FormData formData) {
         return (formData.getDiscriminator() != null)
                 && formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_REGISTRATION);
     }
 
-    public boolean isRegistrationXMLFormData(FormData formData) {
+    private boolean isRegistrationXMLFormData(FormData formData) {
         return (formData.getDiscriminator() != null)
                 && formData.getDiscriminator().equalsIgnoreCase(FORM_DISCRIMINATOR_REGISTRATION);
     }
@@ -856,7 +847,7 @@ public class FormController {
         return (formData.getDiscriminator() != null) && !isRegistrationFormData(formData);
     }
 
-    public boolean isCompleteFormData(FormData formData){
+    private boolean isCompleteFormData(FormData formData){
         return StringUtils.equals(formData.getStatus(), Constants.STATUS_COMPLETE);
     }
 
@@ -899,7 +890,7 @@ public class FormController {
         return remnantData;
     }
 
-    public void deleteEncounterFormDataAndRelatedPatientData(List<FormData> formDataList) throws FormDeleteException{
+    private void deleteEncounterFormDataAndRelatedPatientData(List<FormData> formDataList) throws FormDeleteException{
         try {
             for (FormData formData : formDataList) {
                 if (isCompleteFormData(formData)) {

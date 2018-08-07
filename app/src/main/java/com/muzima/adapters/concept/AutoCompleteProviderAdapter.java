@@ -33,9 +33,9 @@ public class AutoCompleteProviderAdapter extends AutoCompleteBaseAdapter<Provide
         try {
             return providerController.downloadProviderFromServerByName(constraint.toString());
         } catch (ProviderController.ProviderDownloadException e) {
-            Log.e(TAG, "Unable to download providers!", e);
+            Log.e(getClass().getSimpleName(), "Unable to download providers!", e);
         }
-        return new ArrayList<Provider>();
+        return new ArrayList<>();
     }
 
     @Override

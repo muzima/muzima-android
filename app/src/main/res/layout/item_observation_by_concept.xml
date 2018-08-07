@@ -29,7 +29,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
-			android:contentDescription="Complex Obs"
+			android:contentDescription="@string/complex_obs"
 			android:src="@android:drawable/ic_menu_gallery"
 			android:visibility="gone"/>
 	
@@ -37,8 +37,8 @@
 			android:id="@+id/divider"
 			android:layout_width="match_parent"
 			android:layout_height="1dp"
-			android:layout_marginLeft="8dp"
-			android:layout_marginRight="8dp"
+			android:layout_marginStart="8dp"
+			android:layout_marginEnd="8dp"
 	/>
 	
 	<TextView
@@ -51,8 +51,8 @@
 	</TextView>
 	
 	<ImageView
-			android:id="@+id/shr_card_obs_image_view"
-			android:contentDescription="@string/shr_extracted_data_text"
+			android:id="@+id/SHR_card_obs_image_view"
+			android:contentDescription="@string/SHR_extracted_data_text"
 			android:src="@drawable/ic_action_shr_card"
 			android:visibility="gone"
 			android:layout_gravity="end"

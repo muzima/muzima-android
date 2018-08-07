@@ -31,21 +31,21 @@ import java.util.List;
  * @see com.muzima.api.model.Observation
  * @see Concept
  */
-public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concepts, Concepts> {
+class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concepts, Concepts> {
 
-    private ConceptAction conceptAction;
-    private ObservationsByConceptAdapter observationsByConceptAdapter;
-    private Boolean isShrData = false;
-    private List<Integer> shrConcepts = new ArrayList<>();
+    private final ConceptAction conceptAction;
+    private final ObservationsByConceptAdapter observationsByConceptAdapter;
+    private Boolean isSHRData = false;
+    private List<Integer> SHRConcepts = new ArrayList<>();
 
     public ObservationsByConceptBackgroundTask(ObservationsByConceptAdapter observationsByConceptAdapter,
-                                               ConceptAction conceptAction, boolean isShrData) {
+                                               ConceptAction conceptAction, boolean isSHRData) {
         this.observationsByConceptAdapter = observationsByConceptAdapter;
         this.conceptAction = conceptAction;
-        this.isShrData = isShrData;
+        this.isSHRData = isSHRData;
 
-        if (isShrData) {
-            loadComposedShrConceptId();
+        if (isSHRData) {
+            loadComposedSHRConceptId();
         }
     }
 
@@ -59,10 +59,10 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
     @Override
     protected Concepts doInBackground(Void... params) {
         Concepts conceptsWithObservations = null;
-        if (isShrData) {
-            conceptsWithObservations = getShrConceptWithObservations();
+        if (isSHRData) {
+            conceptsWithObservations = getSHRConceptWithObservations();
         } else {
-            conceptsWithObservations = getNonShrConceptWithObservations();
+            conceptsWithObservations = getNonSHRConceptWithObservations();
         }
 
         return conceptsWithObservations;
@@ -72,7 +72,7 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
     @Override
     protected void onPostExecute(Concepts conceptsWithObservations) {
         if (conceptsWithObservations == null) {
-            if (isShrData) {
+            if (isSHRData) {
                 Toast.makeText(observationsByConceptAdapter.getContext(), "This patient does not have any SHR data.", Toast.LENGTH_SHORT).show();
             } else
                 Toast.makeText(observationsByConceptAdapter.getContext(), observationsByConceptAdapter.getContext().getString(R.string.error_observation_fetch), Toast.LENGTH_SHORT).show();
@@ -98,7 +98,7 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
         observationsByConceptAdapter.notifyDataSetChanged();
     }
 
-    private void loadComposedShrConceptId() {
+    private void loadComposedSHRConceptId() {
         List<Integer> conceptIds = new ArrayList<>();
         conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_RESULT.concept_id);
         conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_TYPE.concept_id);
@@ -108,10 +108,10 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
         conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.GROUP.concept_id);
 
 
-        shrConcepts = conceptIds;
+        SHRConcepts = conceptIds;
     }
 
-    private Concepts getNonShrConceptWithObservations() {
+    private Concepts getNonSHRConceptWithObservations() {
         Concepts conceptsWithObservations = null;
         Concepts temp = null;
         try {
@@ -138,14 +138,14 @@ public class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concept
         return conceptsWithObservations;
     }
 
-    private Concepts getShrConceptWithObservations() {
+    private Concepts getSHRConceptWithObservations() {
         Concepts conceptsWithObservations = null;
         Concepts temp = null;
         try {
             List<Concept> concepts = conceptAction.getConcepts();
 
             for (Concept concept : concepts) {
-                if (!isCancelled() && shrConcepts.contains(concept.getId())) {
+                if (!isCancelled() && SHRConcepts.contains(concept.getId())) {
                     temp = conceptAction.get(concept);
                     if (temp != null) {
                         temp.sortByDate();

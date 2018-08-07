@@ -34,7 +34,7 @@ public class SyncedCohortsAdapter extends CohortsAdapter{
         new BackgroundQueryTask().execute();
     }
 
-    public class BackgroundQueryTask extends AsyncTask<Void, Void, List<Cohort>> {
+    class BackgroundQueryTask extends AsyncTask<Void, Void, List<Cohort>> {
 
         @Override
         protected void onPreExecute() {
@@ -48,9 +48,9 @@ public class SyncedCohortsAdapter extends CohortsAdapter{
             List<Cohort> syncedCohorts = null;
             try {
                 syncedCohorts = cohortController.getSyncedCohorts();
-                Log.i(TAG, "#Synced Cohorts: " + syncedCohorts.size());
+                Log.i(getClass().getSimpleName(), "#Synced Cohorts: " + syncedCohorts.size());
             } catch (CohortController.CohortFetchException e) {
-                Log.e(TAG, "Exception occurred while fetching local synced cohorts ", e);
+                Log.e(getClass().getSimpleName(), "Exception occurred while fetching local synced cohorts ", e);
             }
             return syncedCohorts;
         }

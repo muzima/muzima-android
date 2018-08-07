@@ -54,7 +54,6 @@ public class FormDataStoreTest {
     @Mock
     private FormParser formParser;
     private MuzimaApplication muzimaApplication;
-    private ObservationController obsController;
 
 
     @Before
@@ -65,7 +64,7 @@ public class FormDataStoreTest {
         formData = new FormData();
         formData.setPatientUuid("adasdssd");
         muzimaApplication = mock(MuzimaApplication.class);
-        obsController = mock(ObservationController.class);
+        ObservationController obsController = mock(ObservationController.class);
         when(muzimaApplication.getObservationController()).thenReturn(obsController);
         when(activity.getApplicationContext()).thenReturn(muzimaApplication);
         store = new FormDataStore(activity, controller, formData){

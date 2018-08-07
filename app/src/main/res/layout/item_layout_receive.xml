@@ -14,7 +14,7 @@
         android:layout_below="@+id/date_set_text"
         android:layout_marginTop="42dp"
         android:padding="10dp"
-        android:text="Hello tom"
+        android:text="@string/hello_general"
         android:textColor="@android:color/white"
         app:angle="8dp"
         app:arrowCenter="true"
@@ -43,6 +43,6 @@
         android:layout_marginBottom="10dp"
         android:padding="10dp"
         android:background="@color/drawer_background"
-        android:text="Date" />
+        android:text="@string/date_general" />
 
 </RelativeLayout>

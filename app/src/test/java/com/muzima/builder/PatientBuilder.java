@@ -17,8 +17,6 @@ import com.muzima.api.model.PersonName;
 import java.util.Collections;
 import java.util.Date;
 
-import static java.util.Arrays.asList;
-
 public class PatientBuilder {
     private String identifier;
     private Date birthDate;

@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="Jaquiline:Provider"
+        android:text="@string/provider_name_general"
         android:textColor="@android:color/white"
         android:textSize="16sp" />
 
@@ -27,7 +27,7 @@
 
         <TextView
             android:id="@+id/provider_identifier"
-            android:text="Date/identifier"
+            android:text="@string/new_messages_number_text"
             android:layout_alignParentEnd="true"
             android:textAlignment="viewEnd"
             android:layout_margin="16dp"

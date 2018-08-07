@@ -10,10 +10,7 @@
 
 package com.muzima.utils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import static android.text.TextUtils.split;
@@ -27,9 +24,7 @@ public class StringUtils {
             return "";
         }
         StringBuilder builder = new StringBuilder();
-        Iterator<String> valuesIterator = values.iterator();
-        while (valuesIterator.hasNext()) {
-            String next = valuesIterator.next();
+        for (String next : values) {
             builder.append(next).append(",");
         }
         String commaSeparated = builder.toString();

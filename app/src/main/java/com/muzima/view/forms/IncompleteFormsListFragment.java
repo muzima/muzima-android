@@ -56,7 +56,7 @@ public class IncompleteFormsListFragment extends FormsFragmentWithSectionedListA
     }
 
     @Override
-    public boolean onItemLongClick() {
+    public void onItemLongClick() {
         if (!actionModeActive) {
             actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
             actionModeActive = true;
@@ -66,7 +66,6 @@ public class IncompleteFormsListFragment extends FormsFragmentWithSectionedListA
             actionMode.finish();
         }
         actionMode.setTitle(String.valueOf(numOfSelectedForms));
-        return false;
     }
 
     @Override

@@ -8,6 +8,7 @@
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
 
+<!--suppress ALL -->
 <form>
     <patient>
         <patient_identifier.identifier_type_id>1</patient_identifier.identifier_type_id>
@@ -30,9 +31,9 @@
     <obs concept="1238^MEDICAL RECORD OBSERVATIONS^99DCT">
         <procedures_done_this_visit_detailed concept="7480^PROCEDURES DONE THIS VISIT, DETAILED^99DCT">
             <body_part concept="8265^BODY PART^99DCT">
-                <date></date>
-                <time></time>
-                <value></value>
+                <date />
+                <time />
+                <value />
             </body_part>
         </procedures_done_this_visit_detailed>
     </obs>

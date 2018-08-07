@@ -36,11 +36,11 @@ public class DisclaimerActivity extends Activity {
         setContentView(R.layout.activity_disclaimer);
 
         String disclaimerText = getResources().getString(R.string.info_disclaimer);
-        final TextView disclaimerTextView = (TextView) findViewById(R.id.disclaimer_text_view);
+        final TextView disclaimerTextView = findViewById(R.id.disclaimer_text_view);
         disclaimerTextView.setText(Html.fromHtml(disclaimerText));
         Linkify.addLinks(disclaimerTextView, Linkify.ALL);
 
-        final Button nextButton = (Button) findViewById(R.id.next);
+        final Button nextButton = findViewById(R.id.next);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -48,7 +48,7 @@ public class DisclaimerActivity extends Activity {
             }
         });
 
-        Button prevButton = (Button) findViewById(R.id.previous);
+        Button prevButton = findViewById(R.id.previous);
         prevButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -56,7 +56,7 @@ public class DisclaimerActivity extends Activity {
             }
         });
 
-        final ScrollViewWithDetection scrollViewWithDetection = (ScrollViewWithDetection) findViewById(R.id.disclaimer_scroller);
+        final ScrollViewWithDetection scrollViewWithDetection = findViewById(R.id.disclaimer_scroller);
         scrollViewWithDetection.setOnBottomReachedListener(new ScrollViewWithDetection.OnBottomReachedListener() {
             @Override
             public void onBottomReached() {

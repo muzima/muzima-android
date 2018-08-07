@@ -726,7 +726,7 @@ public class MuzimaSyncServiceTest {
     @Test
     public void shouldDeleteVoidedObservationsWhenDownloadingObservations() throws ObservationController.DeleteObservationException, ObservationController.DownloadObservationException, ReplaceObservationException, ConceptController.ConceptFetchException {
         List<String> patientUuids = Collections.singletonList("patientUuid");
-        List<Observation> observations = new ArrayList<Observation>();
+        List<Observation> observations = new ArrayList<>();
         Observation anObservation = mock(Observation.class);
         when(anObservation.isVoided()).thenReturn(false);
         observations.add(anObservation);

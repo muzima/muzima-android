@@ -50,7 +50,7 @@ public class CompleteFormBuilderTest {
         saveTimeCalender.set(2014,8,29,10,10,10); //MONTH  Jan = 0, dec = 11
         Date formSaveDateTime = saveTimeCalender.getTime();
         CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder().withLastModifiedDate(formSaveDateTime).build();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("STANDARD_DATE_FORMAT HH:mm:ss");
         String formSaveTime = dateFormat.format(completeForm.getLastModifiedDate());
         assertThat(formSaveTime, is("29-09-2014 10:10:10"));
     }
