@@ -18,9 +18,7 @@ import android.widget.AdapterView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.notification.GeneralProvidersListAdapter;
-import com.muzima.api.model.Notification;
 import com.muzima.api.model.Provider;
-import com.muzima.controller.ProviderController;
 
 public class GeneralNotificationsListFragment extends NotificationListFragment {
 

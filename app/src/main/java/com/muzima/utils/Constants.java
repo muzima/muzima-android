@@ -15,6 +15,7 @@ import android.os.Environment;
 //TODO: This class should be burnt and flushed. Constants in an anti-pattern and and a sure sign that your abstractions are wrong: Zabil
 //TODO: Burnt?? Maybe or may not be - Prasanna
 public class Constants {
+
     public static final String SYNC_PREF = "SyncMetaData";
     public static final String COHORT_PREFIX_PREF = "CohortPrefixPref";
     public static final String COHORT_PREFIX_PREF_KEY = "CohortPrefixPrefKey";
@@ -36,20 +37,23 @@ public class Constants {
     public static final String FORM_JSON_DISCRIMINATOR_CONSULTATION = "json-consultation";
     public static final String FORM_DISCRIMINATOR_CONSULTATION = "consultation";
     public static final String FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE = "json-demographics-update";
-    public static final String FORM_JSON_DISCRIMINATOR_SHR_ENCOUNTER = "json-shr-encounter";
-    public static final String FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION = "json-shr-registration";
-    public static final String FORM_JSON_DISCRIMINATOR_SHR_DEMOGRAPHICS_UPDATE = "json-shr-demographics-update";
+    public static final String FORM_JSON_DISCRIMINATOR_SHR_ENCOUNTER = "json-SHR-encounter";
+    public static final String FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION = "json-SHR-registration";
+    public static final String FORM_JSON_DISCRIMINATOR_SHR_DEMOGRAPHICS_UPDATE = "json-SHR-demographics-update";
 
     public static final String FORM_DISCRIMINATOR_PROVIDER_REPORT = "provider-report";
 
     private static final String APP_EXTERNAL_DIR_ROOT =  Environment.getExternalStorageDirectory().getPath() + "/muzima";
-    public static final String APP_MEDIA_DIR = APP_EXTERNAL_DIR_ROOT + "/media";
+    private static final String APP_MEDIA_DIR = APP_EXTERNAL_DIR_ROOT + "/media";
     public static final String APP_IMAGE_DIR = APP_MEDIA_DIR + "/image";
     public static final String APP_AUDIO_DIR = APP_MEDIA_DIR + "/audio";
     public static final String APP_VIDEO_DIR = APP_MEDIA_DIR + "/video";
     public static final String TMP_FILE_PATH = APP_EXTERNAL_DIR_ROOT + "/.cache";
 
     public static final int PATIENT_LOAD_PAGE_SIZE = 10;
+
+    public static final String STANDARD_DATE_FORMAT = "yyyy-MM-dd";
+    public static final String STANDARD_DATE_LOCALE_FORMAT = "yyyy-MM-dd hh:mm";
 
     public static class DataSyncServiceConstants {
         public static final String SYNC_TYPE = "sync_type";
@@ -121,13 +125,13 @@ public class Constants {
     }
 
     //This is a hack. Better to use configuration file from server side to obtain SHR definition
-    public static class Shr{
+    public static class Shr {
 
         public static class KenyaEmr{
 
-            public static String SMART_CARD_RECORD_TYPE = "KenyaEmrShr";
+            public static final String SMART_CARD_RECORD_TYPE = "KenyaEmrSHR";
             public static class DEFAULT_SHR_USER{
-                public static final String id = "shr_user";
+                public static final String id = "SHR_user";
             }
             public static class DEFAULT_SHR_FACILITY {
                 public static final String MFL_CODE = "10829";
@@ -389,7 +393,7 @@ public class Constants {
                         public static final int concept_id = 1418;
                     }
 
-                    public static class ENCOUNTER {
+                    static class ENCOUNTER {
                         public static final String ENCOUNTER_TYPE_UUID = "9bc15e94-2794-11e8-b467-0ed5f89f718b";
                     }
 

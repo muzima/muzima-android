@@ -12,6 +12,7 @@ package com.muzima.adapters.notification;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +33,8 @@ import java.util.List;
  */
 public class GeneralProvidersListAdapter extends ProvidersAdapter {
     private static final String TAG = "GeneralAdapter";
-    private MuzimaApplication muzimaApplication;
-    private ProviderController providerController;
+    private final MuzimaApplication muzimaApplication;
+    private final ProviderController providerController;
 
     public GeneralProvidersListAdapter(Context context, int textViewResourceId, MuzimaApplication muzimaApplication) {
         super(context, textViewResourceId, muzimaApplication);
@@ -46,16 +47,16 @@ public class GeneralProvidersListAdapter extends ProvidersAdapter {
         new LoadBackgroundQueryTask().execute();
     }
 
+    @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = super.getView(position, convertView, parent);
-        return view;
+        return super.getView(position, convertView, parent);
     }
 
     /**
      * Responsible to define contract to PatientNotificationsBackgroundQueryTask.
      */
-    public abstract class ProvidersListBackgroundQueryTask extends AsyncTask<Void, Void, List<Provider>> {
+    abstract class ProvidersListBackgroundQueryTask extends AsyncTask<Void, Void, List<Provider>> {
         @Override
         protected void onPreExecute() {
             if (backgroundListQueryTaskListener != null) {
@@ -91,25 +92,23 @@ public class GeneralProvidersListAdapter extends ProvidersAdapter {
     /**
      * Responsible to load notifications from database. Runs in Background.
      */
-    public class LoadBackgroundQueryTask extends ProvidersListBackgroundQueryTask {
+    protected class LoadBackgroundQueryTask extends ProvidersListBackgroundQueryTask {
 
         @Override
         protected List<Provider> doInBackground(Void... voids) {
             List<Provider> allProvider = null;
             List<Provider> filteredNotifications = new ArrayList<>();
             try {
-                Log.i(TAG, "Fetching general notifications from Database...");
+                Log.i(getClass().getSimpleName(), "Fetching general notifications from Database...");
                 User authenticatedUser = ((MuzimaApplication) getContext().getApplicationContext()).getAuthenticatedUser();
                 if (authenticatedUser != null) {
                     allProvider = providerController.getAllProviders();
-                    for (Provider provider : allProvider) {
-                        filteredNotifications.add(provider);
-                    }
+                    filteredNotifications.addAll(allProvider);
                 }
-                Log.d(TAG, "#Retrieved " + (allProvider != null ? allProvider.size() : 0) + " notifications from Database." +
+                Log.d(getClass().getSimpleName(), "#Retrieved " + (allProvider != null ? allProvider.size() : 0) + " notifications from Database." +
                         " And filtered " + (filteredNotifications != null ? filteredNotifications.size() : 0) + " general notifications");
             } catch (ProviderController.ProviderLoadException e) {
-                Log.e(TAG, "Exception occurred while fetching the notifications", e);
+                Log.e(getClass().getSimpleName(), "Exception occurred while fetching the notifications", e);
             }
             return filteredNotifications;
         }

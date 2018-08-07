@@ -11,7 +11,6 @@
 package com.muzima.view.notifications;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,21 +34,15 @@ import com.muzima.view.BaseActivity;
 import com.muzima.view.custom.CustomNotificationReplyDialog;
 import com.muzima.view.observations.ObservationsActivity;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 
 public class NotificationActivity extends BaseActivity {
 
-    public static final String TAG = "NotificationActivity";
+    private static final String TAG = "NotificationActivity";
     public static final String NOTIFICATION = "Notification";
     public static final String PATIENT = "patient";
     private Notification notification;
     private Encounter notificationEncounter;
-    private View viewEncounterButton;
-    private ImageView replyNotiticationImageView;
-    private NotificationController notificationController;
     private Patient notificationPatient;
     private Provider loggedInProvider;
 
@@ -58,9 +51,9 @@ public class NotificationActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
 
-        notificationController = ((MuzimaApplication)getApplicationContext()).getNotificationController();
+        NotificationController notificationController = ((MuzimaApplication) getApplicationContext()).getNotificationController();
 
-        replyNotiticationImageView = (ImageView) findViewById(R.id.reply_notification_image_icon);
+        ImageView replyNotiticationImageView = findViewById(R.id.reply_notification_image_icon);
 
         loggedInProvider = null;
 
@@ -86,23 +79,23 @@ public class NotificationActivity extends BaseActivity {
     }
 
     private void displayNotification()  {
-        TextView subjectView  = (TextView) findViewById(R.id.subject);
+        TextView subjectView  = findViewById(R.id.subject);
         subjectView.setText(notification.getSubject());
 
-        TextView notificationDate = (TextView) findViewById(R.id.dateSent);
-        notificationDate.setText("Sent: " + DateUtils.getMonthNameFormattedDate(notification.getDateCreated()));
+        TextView notificationDate = findViewById(R.id.dateSent);
+        notificationDate.setText(String.format("Sent: %s", DateUtils.getMonthNameFormattedDate(notification.getDateCreated())));
 
-        TextView sentBy = (TextView) findViewById(R.id.sentBy);
+        TextView sentBy = findViewById(R.id.sentBy);
         Person person = notification.getSender();
         if (person != null)
             sentBy.setText(person.getDisplayName());
 
-        TextView details = (TextView) findViewById(R.id.notificationDetail);
+        TextView details = findViewById(R.id.notificationDetail);
         details.setText(notification.getPayload());
 
         //hide view form button if form is not available
         if (notificationEncounter == null) {
-            viewEncounterButton = findViewById(R.id.viewEncounter);
+            View viewEncounterButton = findViewById(R.id.viewEncounter);
             viewEncounterButton.setVisibility(View.GONE);
         }
     }
@@ -113,7 +106,7 @@ public class NotificationActivity extends BaseActivity {
         try {
             notificationController.saveNotification(notification);
         } catch (NotificationController.NotificationSaveException e) {
-            Log.e(TAG, "Error updating notification " + e.getMessage(), e);
+            Log.e(getClass().getSimpleName(), "Error updating notification " + e.getMessage(), e);
         }
     }
 
@@ -139,7 +132,7 @@ public class NotificationActivity extends BaseActivity {
                     notificationEncounter =  encounter;
             }
         } catch (EncounterController.DownloadEncounterException e) {
-            Log.e(TAG, "Error getting encounter data " + e.getMessage(), e);
+            Log.e(getClass().getSimpleName(), "Error getting encounter data " + e.getMessage(), e);
         }
     }
 

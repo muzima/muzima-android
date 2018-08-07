@@ -13,18 +13,16 @@ import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGE
 
 public class MuzimaSettingController {
     private static final String TAG = "MuzimaSettingController";
-    MuzimaSettingService settingService;
+    private final MuzimaSettingService settingService;
 
     public MuzimaSettingController(MuzimaSettingService settingService){
         this.settingService = settingService;
     }
 
-    public MuzimaSetting getSettingByProperty(String property) throws MuzimaSettingFetchException{
+    private MuzimaSetting getSettingByProperty(String property) throws MuzimaSettingFetchException{
         try {
             return settingService.getSettingByProperty(property);
-        } catch (IOException e){
-            throw new MuzimaSettingFetchException(e);
-        } catch (ParseException e){
+        } catch (IOException | ParseException e){
             throw new MuzimaSettingFetchException(e);
         }
     }
@@ -40,9 +38,7 @@ public class MuzimaSettingController {
     public void saveSetting(MuzimaSetting setting) throws MuzimaSettingSaveException {
         try{
             settingService.saveSetting(setting);
-        }catch(IOException e){
-            throw new MuzimaSettingSaveException(e);
-        }catch(NullPointerException e){
+        }catch(IOException | NullPointerException e){
             throw new MuzimaSettingSaveException(e);
         }
     }
@@ -62,11 +58,7 @@ public class MuzimaSettingController {
             } else {
                 settingService.saveSetting(setting);
             }
-        }catch(IOException e){
-            throw new MuzimaSettingSaveException(e);
-        }catch(ParseException e){
-            throw new MuzimaSettingSaveException(e);
-        }catch(NullPointerException e){
+        }catch(IOException | NullPointerException | ParseException e){
             throw new MuzimaSettingSaveException(e);
         }
     }
@@ -98,9 +90,7 @@ public class MuzimaSettingController {
     public List<String> getNonDownloadedMandatorySettingsProperties()throws MuzimaSettingFetchException{
         try {
             return settingService.getNonDownloadedMandatorySettingsProperties();
-        }catch (IOException e){
-            throw new MuzimaSettingFetchException(e);
-        } catch (ParseException e){
+        }catch (IOException | ParseException e){
             throw new MuzimaSettingFetchException(e);
         }
     }
@@ -108,9 +98,7 @@ public class MuzimaSettingController {
     public Boolean isAllMandatorySettingsDownloaded() throws MuzimaSettingFetchException{
         try {
             return settingService.isAllMandatorySettingsDownloaded();
-        } catch (IOException e){
-            throw new MuzimaSettingFetchException(e);
-        } catch (ParseException e){
+        } catch (IOException | ParseException e){
             throw new MuzimaSettingFetchException(e);
         }
     }
@@ -124,25 +112,25 @@ public class MuzimaSettingController {
                 requireMedicalRecordNumber = !autogenerateIdentifierSetting.getValueBoolean();
             }
         } catch (MuzimaSettingFetchException e){
-            Log.e(TAG, "Could not fetch requireMedicalRecordNumber setting. ", e);
+            Log.e(getClass().getSimpleName(), "Could not fetch requireMedicalRecordNumber setting. ", e);
         }
         return requireMedicalRecordNumber;
     }
 
     public static class MuzimaSettingFetchException extends Throwable{
-        public MuzimaSettingFetchException(Throwable throwable){
+        MuzimaSettingFetchException(Throwable throwable){
             super(throwable);
         }
     }
 
     public static class MuzimaSettingSaveException extends Throwable{
-        public MuzimaSettingSaveException(Throwable throwable){
+        MuzimaSettingSaveException(Throwable throwable){
             super(throwable);
         }
     }
 
     public static class MuzimaSettingDownloadException extends Throwable{
-        public MuzimaSettingDownloadException(Throwable throwable){
+        MuzimaSettingDownloadException(Throwable throwable){
             super(throwable);
         }
     }

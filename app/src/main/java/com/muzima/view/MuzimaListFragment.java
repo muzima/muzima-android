@@ -34,9 +34,9 @@ public abstract class MuzimaListFragment extends Fragment implements AdapterView
     }
 
     protected void setupNoDataView(View formsLayout) {
-        TextView noDataMsgTextView = (TextView) formsLayout.findViewById(R.id.no_data_msg);
+        TextView noDataMsgTextView = formsLayout.findViewById(R.id.no_data_msg);
         noDataMsgTextView.setText(noDataMsg);
-        TextView noDataTipTextView = (TextView) formsLayout.findViewById(R.id.no_data_tip);
+        TextView noDataTipTextView = formsLayout.findViewById(R.id.no_data_tip);
         noDataTipTextView.setText(noDataTip);
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(getActivity()));
         noDataTipTextView.setTypeface(Fonts.roboto_light(getActivity()));
@@ -58,7 +58,7 @@ public abstract class MuzimaListFragment extends Fragment implements AdapterView
         unselectAllItems(list);
     }
 
-    public void unselectAllItems(ListView listView) {
+    protected void unselectAllItems(ListView listView) {
         if(listView==null){
             return;
         }
@@ -68,7 +68,7 @@ public abstract class MuzimaListFragment extends Fragment implements AdapterView
     }
 
     protected void updateDataLoadStatus(View layout, String noDataMsg){
-        TextView noDataMsgTextView = (TextView) layout.findViewById(R.id.no_data_msg);
+        TextView noDataMsgTextView = layout.findViewById(R.id.no_data_msg);
         noDataMsgTextView.setText(noDataMsg);
     }
 }

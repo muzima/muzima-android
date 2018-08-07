@@ -3,7 +3,6 @@ package com.muzima.view.custom;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Notification;
 import com.muzima.api.model.Patient;
@@ -25,13 +23,12 @@ import java.util.UUID;
 
 public class CustomNotificationReplyDialog extends Dialog {
 
-    private Patient notificationPatient;
-    private Person sender;
-    private String notificationSubject;
-    private Context context;
-    private NotificationController notificationController;
+    private final Patient notificationPatient;
+    private final Person sender;
+    private final String notificationSubject;
+    private final Context context;
+    private final NotificationController notificationController;
 
-    private ImageView sendReplyImageView;
     private EditText replyEditText;
 
     public CustomNotificationReplyDialog(@NonNull Context context, Patient notificationPatient, Person sender, String subject, NotificationController notificationController) {
@@ -50,8 +47,8 @@ public class CustomNotificationReplyDialog extends Dialog {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.reply_notification_dialog_layout);
 
-        sendReplyImageView = (ImageView) findViewById(R.id.send1_notification_reply_image_button);
-        replyEditText = (EditText) findViewById(R.id.reply_edit_text);
+        ImageView sendReplyImageView = findViewById(R.id.send1_notification_reply_image_button);
+        replyEditText = findViewById(R.id.reply_edit_text);
 
         sendReplyImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +58,7 @@ public class CustomNotificationReplyDialog extends Dialog {
         });
     }
 
-    private boolean saveNotificationReply() {
+    private void saveNotificationReply() {
 
         try {
 
@@ -79,10 +76,8 @@ public class CustomNotificationReplyDialog extends Dialog {
             notificationController.saveNotification(replyNotification);
 
             Toast.makeText(context, "Your reply was sent successfully ", Toast.LENGTH_LONG).show();
-            return true;
         } catch (NotificationController.NotificationSaveException e) {
             e.printStackTrace();
-            return false;
         }
     }
 

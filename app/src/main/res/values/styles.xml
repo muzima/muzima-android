@@ -84,7 +84,7 @@
     <style name="setupMethodConfigurationsList">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_marginLeft">25dp</item>
+        <item name="android:layout_marginStart">25dp</item>
         <item name="android:orientation">vertical</item>
         <item name="android:background">@color/primary_black</item>
     </style>
@@ -126,7 +126,7 @@
         <item name="android:paddingLeft">10dp</item>
         <item name="android:capitalize">words</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">20dp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="DashboardMediumTitleText" parent="DashboardTitleText">
@@ -142,7 +142,7 @@
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
         <item name="android:textStyle">bold</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="DashboardListItemMediumHeadingText" parent="DashboardListItemPrimaryText">
@@ -150,7 +150,7 @@
     </style>
 
     <style name="RegisterText" parent="DashboardBaseText">
-        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginStart">8dp</item>
         <item name="android:textColor">#DDDDDD</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>
@@ -171,8 +171,8 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:background">@drawable/grid_buttons</item>
         <item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_marginLeft">5dp</item>
-        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
         <item name="android:paddingLeft">5dp</item>
         <item name="android:paddingRight">5dp</item>
         <item name="android:paddingTop">4dp</item>

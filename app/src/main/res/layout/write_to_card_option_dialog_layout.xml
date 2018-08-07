@@ -11,7 +11,7 @@
 			android:layout_height="wrap_content">
 		
 		<ImageView
-				android:contentDescription="@string/shr_card_text"
+				android:contentDescription="@string/SHR_card_text"
 				android:layout_marginTop="8dp"
 				android:src="@drawable/ic_action_shr_card"
 				android:layout_width="wrap_content"
@@ -20,9 +20,9 @@
 		<TextView
 				android:textColor="@android:color/white"
 				android:textSize="14sp"
-				android:layout_marginLeft="4dp"
+				android:layout_marginStart="4dp"
 				android:layout_marginTop="16dp"
-				android:text="Write shr to card"
+				android:text="@string/write_shr_to_card_general"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content" />
 	
@@ -40,7 +40,7 @@
 			android:textColor="@android:color/white"
 			android:textAlignment="center"
 			android:textSize="14sp"
-			android:layout_marginLeft="16dp"
+			android:layout_marginStart="16dp"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content" />
 	
@@ -58,7 +58,7 @@
 				android:layout_height="wrap_content">
 			
 			<Button
-					android:id="@+id/yes_shr_search_dialog"
+					android:id="@+id/yes_SHR_search_dialog"
 					android:background="@color/theme_color"
 					android:text="@string/general_yes"
 					android:textColor="@android:color/white"
@@ -66,7 +66,7 @@
 					android:layout_height="wrap_content" />
 			
 			<Button
-					android:id="@+id/no_shr_search_dialog"
+					android:id="@+id/no_SHR_search_dialog"
 					android:background="@color/theme_color"
 					android:text="@string/general_no"
 					android:textColor="@android:color/white"

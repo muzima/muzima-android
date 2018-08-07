@@ -44,14 +44,14 @@ public enum CustomColor {
     BLUSH("#E05D6F"),
     COOL_AID("#A40778");
 
-    private int color;
+    private final int color;
     private static final Random random = new Random();
 
     public int getColor() {
         return color;
     }
 
-    private CustomColor(String color){
+    CustomColor(String color){
         this.color = Color.parseColor(color);
     }
 

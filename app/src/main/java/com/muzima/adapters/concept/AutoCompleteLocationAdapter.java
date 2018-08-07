@@ -37,9 +37,9 @@ public class AutoCompleteLocationAdapter extends AutoCompleteBaseAdapter<Locatio
         try {
             return locationController.downloadLocationFromServerByName(constraint.toString());
         } catch (LocationController.LocationDownloadException e) {
-            Log.e(TAG, "Unable to download locations!", e);
+            Log.e(getClass().getSimpleName(), "Unable to download locations!", e);
         }
-        return new ArrayList<Location>();
+        return new ArrayList<>();
     }
 
     @Override

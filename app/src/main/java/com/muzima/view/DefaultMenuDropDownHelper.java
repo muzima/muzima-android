@@ -24,8 +24,8 @@ import com.muzima.view.preferences.SettingsActivity;
 import com.muzima.view.reports.ProviderReportListActivity;
 
 public class DefaultMenuDropDownHelper {
-    public static int DEFAULT_MENU = R.menu.dashboard;
-    private Activity activity;
+    public static final int DEFAULT_MENU = R.menu.dashboard;
+    private final Activity activity;
 
     public DefaultMenuDropDownHelper(Activity activity){
         this.activity = activity;
@@ -68,7 +68,7 @@ public class DefaultMenuDropDownHelper {
                 launchLoginActivity(false);
                 activity.finish();
                 return true;
-            case R.id.menu_shr_data_sync:
+            case R.id.menu_SHR_data_sync:
                 EncryptedSharedHealthRecordSyncTask.uploadEncryptedSharedHealthRecords(activity.getApplicationContext());
                 return true;
             default:

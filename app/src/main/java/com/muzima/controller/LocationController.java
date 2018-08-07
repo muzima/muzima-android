@@ -28,9 +28,9 @@ import java.util.List;
 
 public class LocationController {
 
-    public static final String TAG = "LocationController";
-    private LocationService locationService;
-    public List<Location> newLocations = new ArrayList<Location>();
+    private static final String TAG = "LocationController";
+    private final LocationService locationService;
+    private List<Location> newLocations = new ArrayList<>();
 
     public LocationController(LocationService locationService){
         this.locationService = locationService;
@@ -40,25 +40,25 @@ public class LocationController {
         try {
             return locationService.downloadLocationsByName(name);
         } catch (IOException e) {
-            Log.e(TAG, "Error while searching for patients in the server", e);
+            Log.e(getClass().getSimpleName(), "Error while searching for patients in the server", e);
             throw new LocationDownloadException(e);
         }
     }
 
-    public List<Location> downloadLocationsFromServerByName(List<String> names) throws LocationDownloadException {
-        HashSet<Location> result = new HashSet<Location>();
+    private List<Location> downloadLocationsFromServerByName(List<String> names) throws LocationDownloadException {
+        HashSet<Location> result = new HashSet<>();
         for (String name : names) {
             List<Location> locations = downloadLocationFromServerByName(name);
             result.addAll(locations);
         }
-        return new ArrayList<Location>(result);
+        return new ArrayList<>(result);
     }
 
     public Location downloadLocationFromServerByUuid(String uuid) throws LocationDownloadException {
         try {
             return locationService.downloadLocationByUuid(uuid);
         } catch (IOException e) {
-            Log.e(TAG, "Error while searching for patients in the server", e);
+            Log.e(getClass().getSimpleName(), "Error while searching for patients in the server", e);
             throw new LocationDownloadException(e);
         }
     }
@@ -71,7 +71,7 @@ public class LocationController {
                 if(location != null) result.add(location);
             }
         } catch (IOException e) {
-            Log.e(TAG, "Error while searching for patients in the server", e);
+            Log.e(getClass().getSimpleName(), "Error while searching for patients in the server", e);
             throw new LocationDownloadException(e);
         }
         return new ArrayList<>(result);
@@ -89,7 +89,7 @@ public class LocationController {
         try {
             locationService.saveLocation(location);
         } catch (IOException e) {
-            Log.e(TAG, "Error while saving the location : " + location.getUuid(), e);
+            Log.e(getClass().getSimpleName(), "Error while saving the location : " + location.getUuid(), e);
             throw new LocationSaveException(e);
         }
     }
@@ -113,9 +113,7 @@ public class LocationController {
     public List<LocationAttributeType> getLocationAttributesByName(String name) throws LocationLoadException {
         try {
             return locationService.getLocationAttributeTypesByName(name);
-        } catch (IOException e) {
-            throw new LocationLoadException(e);
-        } catch (ParseException e) {
+        } catch (IOException | ParseException e) {
             throw new LocationLoadException(e);
         }
     }
@@ -123,9 +121,7 @@ public class LocationController {
     public LocationAttributeType getLocationAttributeTypeByUuid(String uuid) throws LocationLoadException {
         try {
             return locationService.getLocationAttributeTypeByUuid(uuid);
-        } catch (IOException e) {
-            throw new LocationLoadException(e);
-        } catch (ParseException e) {
+        } catch (IOException | ParseException e) {
             throw new LocationLoadException(e);
         }
     }
@@ -157,10 +153,7 @@ public class LocationController {
                     return location;
                 }
             }
-        } catch (IOException e) {
-            throw new LocationLoadException(e);
-        }
-        catch (org.apache.lucene.queryParser.ParseException e) {
+        } catch (IOException | ParseException e) {
             throw new LocationLoadException(e);
         }
         return null;
@@ -169,10 +162,7 @@ public class LocationController {
     public Location getLocationById(int id) throws LocationLoadException  {
         try {
             return locationService.getLocationById(id);
-        } catch (IOException e) {
-            throw new LocationLoadException(e);
-        }
-        catch (org.apache.lucene.queryParser.ParseException e) {
+        } catch (IOException | ParseException e) {
             throw new LocationLoadException(e);
         }
     }
@@ -195,11 +185,11 @@ public class LocationController {
     }
 
     public List<Location> getRelatedLocations(List<FormTemplate> formTemplates) throws LocationDownloadException {
-        HashSet<Location> locations = new HashSet<Location>();
+        HashSet<Location> locations = new HashSet<>();
         LocationParser xmlParserUtils = new LocationParser();
         HTMLLocationParser htmlParserUtils = new HTMLLocationParser();
         for (FormTemplate formTemplate : formTemplates) {
-            List<String> names = new ArrayList<String>();
+            List<String> names = new ArrayList<>();
             if (formTemplate.isHTMLForm()) {
                 names = htmlParserUtils.parse(formTemplate.getHtml());
             } else {
@@ -207,7 +197,7 @@ public class LocationController {
             }
             locations.addAll(downloadLocationsFromServerByName(names));
         }
-        return new ArrayList<Location>(locations);
+        return new ArrayList<>(locations);
     }
 
     public void newLocations(List<Location> locations) throws LocationLoadException {
@@ -225,7 +215,7 @@ public class LocationController {
     }
 
     public static class LocationSaveException extends Throwable {
-        public LocationSaveException(Throwable throwable) {
+        LocationSaveException(Throwable throwable) {
             super(throwable);
         }
     }
@@ -243,7 +233,7 @@ public class LocationController {
     }
 
     public static class LocationDeleteException extends Throwable {
-        public LocationDeleteException(Throwable e) {
+        LocationDeleteException(Throwable e) {
             super(e);
         }
     }

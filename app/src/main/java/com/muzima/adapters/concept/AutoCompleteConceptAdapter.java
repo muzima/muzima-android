@@ -35,9 +35,9 @@ public class AutoCompleteConceptAdapter extends AutoCompleteBaseAdapter<Concept>
         try {
             return conceptController.downloadConceptsByNamePrefix(constraint.toString());
         } catch (ConceptController.ConceptDownloadException e) {
-            Log.e(TAG, "Unable to download concepts!", e);
+            Log.e(getClass().getSimpleName(), "Unable to download concepts!", e);
         }
-        return new ArrayList<Concept>();
+        return new ArrayList<>();
     }
 
     @Override

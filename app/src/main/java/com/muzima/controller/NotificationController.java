@@ -36,15 +36,14 @@ import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_CONSULTATION;
 
 public class NotificationController {
 
-    private NotificationService notificationService;
-    private FormService formService;
-    private MuzimaApplication muzimaApplication;
-    private SntpService sntpService;
-    private NotificationController notificationController;
+    private final NotificationService notificationService;
+    private final MuzimaApplication muzimaApplication;
+    private final SntpService sntpService;
+    private final NotificationController notificationController;
 
     public NotificationController(NotificationService notificationService, FormService formService, MuzimaApplication muzimaApplication, SntpService sntpService) {
         this.notificationService = notificationService;
-        this.formService = formService;
+        FormService formService1 = formService;
         this.muzimaApplication = muzimaApplication;
         this.sntpService = sntpService;
         this.notificationController = this;
@@ -74,7 +73,7 @@ public class NotificationController {
         }
     }
 
-    public List<Notification> getAllNotificationsBySender(String senderUuid, String status) throws NotificationFetchException, ParseException {
+    private List<Notification> getAllNotificationsBySender(String senderUuid, String status) throws NotificationFetchException, ParseException {
         try {
             return notificationService.getNotificationBySender(senderUuid, status);
         } catch (IOException e) {
@@ -184,25 +183,25 @@ public class NotificationController {
     }
 
     public static class NotificationDownloadException extends Throwable {
-        public NotificationDownloadException(Throwable throwable) {
+        NotificationDownloadException(Throwable throwable) {
             super(throwable);
         }
     }
 
     public static class NotificationFetchException extends Throwable {
-        public NotificationFetchException(Throwable throwable) {
+        NotificationFetchException(Throwable throwable) {
             super(throwable);
         }
     }
 
     public static class NotificationSaveException extends Throwable {
-        public NotificationSaveException(Throwable throwable) {
+        NotificationSaveException(Throwable throwable) {
             super(throwable);
         }
     }
 
-    public static class NotificationDeleteException extends Throwable {
-        public NotificationDeleteException(Throwable throwable) {
+    static class NotificationDeleteException extends Throwable {
+        NotificationDeleteException(Throwable throwable) {
             super(throwable);
         }
     }
@@ -233,12 +232,6 @@ public class NotificationController {
 
             }
             return  null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
         }
 
         @Override
@@ -286,7 +279,7 @@ public class NotificationController {
         }
     }
 
-    public List<Notification> getNotificationByUploadStatus(String uploadStatus) throws IOException {
+    private List<Notification> getNotificationByUploadStatus(String uploadStatus) throws IOException {
         return notificationService.getNotificationByUploadStatus(uploadStatus);
     }
 }

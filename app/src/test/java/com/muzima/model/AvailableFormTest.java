@@ -10,7 +10,6 @@
 
 package com.muzima.model;
 
-import com.muzima.api.model.Tag;
 import com.muzima.utils.Constants;
 import org.junit.Test;
 
@@ -18,12 +17,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class AvailableFormTest {
-    String[] registrationDiscriminators = {Constants.FORM_DISCRIMINATOR_REGISTRATION,
+    private final String[] registrationDiscriminators = {Constants.FORM_DISCRIMINATOR_REGISTRATION,
             Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION,
             Constants.FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION,
             Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION};
 
-    String[] nonRegistrationDiscriminators = {Constants.FORM_DISCRIMINATOR_CONSULTATION,
+    private final String[] nonRegistrationDiscriminators = {Constants.FORM_DISCRIMINATOR_CONSULTATION,
             Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION,
             Constants.FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE, Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER,
             Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER, Constants.FORM_JSON_DISCRIMINATOR_SHR_DEMOGRAPHICS_UPDATE,

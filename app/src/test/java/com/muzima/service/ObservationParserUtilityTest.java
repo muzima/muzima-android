@@ -48,6 +48,7 @@ public class ObservationParserUtilityTest {
     private ObservationParserUtility observationParserUtility;
 
     @Mock
+    private
     MuzimaApplication muzimaApplication;
 
     @Mock

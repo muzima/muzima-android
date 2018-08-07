@@ -18,9 +18,9 @@ import com.muzima.view.MuzimaListFragment;
 
 public abstract class MuzimaPagerAdapter extends FragmentPagerAdapter{
     protected PagerView[] pagers;
-    protected Context context;
+    protected final Context context;
 
-    public MuzimaPagerAdapter(Context context, FragmentManager fm) {
+    protected MuzimaPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
         this.context = context;
         initPagerViews();
@@ -54,8 +54,8 @@ public abstract class MuzimaPagerAdapter extends FragmentPagerAdapter{
     }
 
     public static class PagerView {
-        public String title;
-        public MuzimaListFragment fragment;
+        final String title;
+        public final MuzimaListFragment fragment;
 
         public PagerView(String title, MuzimaListFragment fragment) {
             this.title = title;

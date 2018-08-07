@@ -40,7 +40,7 @@ public class PatientIdentification {
     @JsonProperty("MOTHER_DETAILS")
     private MotherDetails motherDetails;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<>();
 
     /**
      * No args constructor for use in serialization

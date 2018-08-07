@@ -10,7 +10,6 @@ import android.widget.ListView;
 import android.widget.Scroller;
 
 
-import com.muzima.MuzimaApplication;
 import com.muzima.adapters.MessageThreadAdapter;
 import com.muzima.api.model.Notification;
 import com.muzima.api.model.Patient;
@@ -19,17 +18,13 @@ import com.muzima.api.model.PersonName;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ProviderController;
 import com.muzima.utils.Constants;
-import com.muzima.utils.DateUtils;
 import com.muzima.view.BaseActivity;
 import com.muzima.R;
 import com.muzima.api.model.Provider;
 import com.muzima.MuzimaApplication;
-import com.muzima.view.MainActivity;
 
 import org.apache.lucene.queryParser.ParseException;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -39,17 +34,13 @@ import java.util.List;
 
 public class ConversionActivity extends BaseActivity {
 
-    Person loggedInUser;
-    ListView chatListView;
-    List<Notification> chats = new ArrayList<>();
-    MessageThreadAdapter adapter;
-    MuzimaApplication muzimaApplication;
-    NotificationController notificationController;
-    ProviderController providerController;
-    FloatingActionButton floatingActionButton;
-    EditText composeEditText;
-    Provider provider;
-    List<Notification> patientSentMessages;
+    private Person loggedInUser;
+    private final List<Notification> chats = new ArrayList<>();
+    private MessageThreadAdapter adapter;
+    private NotificationController notificationController;
+    private EditText composeEditText;
+    private Provider provider;
+    private List<Notification> patientSentMessages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,26 +51,22 @@ public class ConversionActivity extends BaseActivity {
         provider = (Provider) data.get("provider");
         getSupportActionBar().setTitle(provider.getName());
 
-        chatListView = (ListView) findViewById(R.id.chat_list_view);
+        ListView chatListView = findViewById(R.id.chat_list_view);
         adapter = new MessageThreadAdapter(chats, this,provider);
-        muzimaApplication = (MuzimaApplication) getApplicationContext();
+        MuzimaApplication muzimaApplication = (MuzimaApplication) getApplicationContext();
         notificationController = muzimaApplication.getNotificationController();
-        providerController = muzimaApplication.getProviderController();
+        ProviderController providerController = muzimaApplication.getProviderController();
 
         loggedInUser = muzimaApplication.getAuthenticatedUser().getPerson();
 
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.send_message_fab);
-        composeEditText = (EditText) findViewById(R.id.type_message_editText);
+        FloatingActionButton floatingActionButton = findViewById(R.id.send_message_fab);
+        composeEditText = findViewById(R.id.type_message_editText);
         chatListView.setAdapter(adapter);
 
 //        getIncomingMessages();
         try {
             getOutgoingMessages();
-        } catch (ParseException e) {
-            Log.e(getClass().getSimpleName(),"Unable to obtain outgoing messages");
-        }catch(ProviderController.ProviderLoadException e){
-            Log.e(getClass().getSimpleName(),"Unable to obtain outgoing messages");
-        }catch (NotificationController.NotificationFetchException e){
+        } catch (ParseException | NotificationController.NotificationFetchException | ProviderController.ProviderLoadException e) {
             Log.e(getClass().getSimpleName(),"Unable to obtain outgoing messages");
         } catch (NotificationController.NotificationSaveException e) {
             e.printStackTrace( );
@@ -127,7 +114,7 @@ public class ConversionActivity extends BaseActivity {
         return notification;
     }
 
-    public void setUpMessage(){
+    private void setUpMessage(){
 //        for (Notification providerSentMessage : allMessagesThreadForPerson) {
 //            providerSentMessage.getDateCreated();
 //            chats.add(new MessageItem(providerSentMessage.getPayload(),true));
@@ -136,7 +123,7 @@ public class ConversionActivity extends BaseActivity {
         chats.addAll(patientSentMessages);
     }
 
-    public void getOutgoingMessages() throws ParseException, ProviderController.ProviderLoadException, NotificationController.NotificationFetchException, NotificationController.NotificationSaveException {
+    private void getOutgoingMessages() throws ParseException, ProviderController.ProviderLoadException, NotificationController.NotificationFetchException, NotificationController.NotificationSaveException {
         List<Notification> allMessagesThreadForPerson = new ArrayList<>();
         List<Notification> notificationBySender = new ArrayList<>();
         List<Notification> notificationByReceiver = new ArrayList<>();
@@ -145,9 +132,7 @@ public class ConversionActivity extends BaseActivity {
             notificationByReceiver = notificationController.getAllNotificationsByReceiver(provider.getPerson().getUuid());
             allMessagesThreadForPerson.addAll(notificationBySender);
             allMessagesThreadForPerson.addAll(notificationByReceiver);
-        } catch (NotificationController.NotificationFetchException e) {
-            e.printStackTrace( );
-        } catch (ParseException e) {
+        } catch (NotificationController.NotificationFetchException | ParseException e) {
             e.printStackTrace( );
         }
 

@@ -24,6 +24,7 @@ import org.mockito.ArgumentCaptor;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +49,6 @@ public class CohortControllerTest {
     private CohortController controller;
     private CohortService cohortService;
     private LastSyncTimeService lastSyncTimeService;
-    private LastSyncTime lastSyncTime;
     private Date anotherMockDate;
     private SntpService sntpService;
     private Date mockDate;
@@ -59,14 +59,14 @@ public class CohortControllerTest {
         lastSyncTimeService = mock(LastSyncTimeService.class);
         sntpService = mock(SntpService.class);
         controller = new CohortController(cohortService, lastSyncTimeService, sntpService);
-        lastSyncTime = mock(LastSyncTime.class);
+        LastSyncTime lastSyncTime = mock(LastSyncTime.class);
         anotherMockDate = mock(Date.class);
         mockDate = mock(Date.class);
     }
 
     @Test
     public void getAllCohorts_shouldReturnAllAvailableCohorts() throws IOException, ParseException, CohortController.CohortFetchException {
-        List<Cohort> cohorts = new ArrayList<Cohort>();
+        List<Cohort> cohorts = new ArrayList<>();
         when(cohortService.getAllCohorts()).thenReturn(cohorts);
 
         assertThat(controller.getAllCohorts(), is(cohorts));
@@ -83,7 +83,7 @@ public class CohortControllerTest {
 
     @Test
     public void downloadAllCohorts_shouldReturnDownloadedCohorts() throws CohortController.CohortDownloadException, IOException {
-        List<Cohort> downloadedCohorts = new ArrayList<Cohort>();
+        List<Cohort> downloadedCohorts = new ArrayList<>();
         when(cohortService.downloadCohortsByName(StringUtils.EMPTY)).thenReturn(downloadedCohorts);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS)).thenReturn(null);
         controller.downloadAllCohorts();
@@ -236,15 +236,15 @@ public class CohortControllerTest {
         }};
 
 
-        ArrayList<Cohort> agePrefixedCohortList1 = new ArrayList<Cohort>();
+        ArrayList<Cohort> agePrefixedCohortList1 = new ArrayList<>();
         agePrefixedCohortList1.add(cohort11);
         agePrefixedCohortList1.add(cohort2);
 
-        ArrayList<Cohort> agePrefixedCohortList2 = new ArrayList<Cohort>();
+        ArrayList<Cohort> agePrefixedCohortList2 = new ArrayList<>();
         agePrefixedCohortList2.add(cohort12);
         agePrefixedCohortList2.add(cohort2);
 
-        ArrayList<Cohort> encounterPerfixedCohortList = new ArrayList<Cohort>();
+        ArrayList<Cohort> encounterPerfixedCohortList = new ArrayList<>();
         encounterPerfixedCohortList.add(cohort3);
         encounterPerfixedCohortList.add(cohort4);
 
@@ -324,7 +324,7 @@ public class CohortControllerTest {
 
     @Test
     public void getSyncedCohortsCount_shouldReturnTotalNumberOfSyncedCohorts() throws IOException, ParseException, CohortController.CohortFetchException {
-        List<Cohort> cohorts = new ArrayList<Cohort>();
+        List<Cohort> cohorts = new ArrayList<>();
         cohorts.add(new Cohort());
 
         when(cohortService.getAllCohorts()).thenReturn(cohorts);
@@ -334,7 +334,7 @@ public class CohortControllerTest {
 
     @Test
     public void getSyncedCohortsCount_shouldReturnZeroIfNoCohortIsSynced() throws IOException, ParseException, CohortController.CohortFetchException {
-        List<Cohort> cohorts = new ArrayList<Cohort>();
+        List<Cohort> cohorts = new ArrayList<>();
 
         when(cohortService.getAllCohorts()).thenReturn(cohorts);
 
@@ -344,7 +344,7 @@ public class CohortControllerTest {
     @Test
     public void getSyncedCohorts_shouldReturnTheCohortsWhichHaveMoreThanOneMember() throws CohortController.CohortReplaceException, IOException, ParseException, CohortController.CohortFetchException {
         Cohort cohort = new Cohort();
-        when(cohortService.getAllCohorts()).thenReturn(asList(cohort));
+        when(cohortService.getAllCohorts()).thenReturn(Collections.singletonList(cohort));
         when(cohortService.countCohortMembers(anyString())).thenReturn(1);
         assertThat(controller.getSyncedCohorts(), hasItem(cohort));
     }
@@ -352,7 +352,7 @@ public class CohortControllerTest {
     @Test
     public void getSyncedCohorts_shouldNotReturnCohortsIfTheyHaveNoMembers() throws CohortController.CohortReplaceException, IOException, ParseException, CohortController.CohortFetchException {
         Cohort cohort = new Cohort();
-        when(cohortService.getAllCohorts()).thenReturn(asList(cohort));
+        when(cohortService.getAllCohorts()).thenReturn(Collections.singletonList(cohort));
         when(cohortService.countCohortMembers(anyString())).thenReturn(0);
         assertThat(controller.getSyncedCohorts().size(), is(0));
     }

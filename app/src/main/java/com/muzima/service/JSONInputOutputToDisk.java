@@ -24,7 +24,7 @@ import java.util.List;
 
 public class JSONInputOutputToDisk extends PreferenceService{
 
-    public static final String FILE_NAME = "IdOfPatientWithChangedUuid.txt";
+    private static final String FILE_NAME = "IdOfPatientWithChangedUuid.txt";
     public JSONInputOutputToDisk(Context context) {
         super(context);
         initialize();
@@ -63,7 +63,7 @@ public class JSONInputOutputToDisk extends PreferenceService{
         FileInputStream FileInputStream = context.openFileInput(FILE_NAME);
         InputStreamReader inputStreamReader = new InputStreamReader(FileInputStream);
 
-        StringBuffer outStringBuffer = new StringBuffer();
+        StringBuilder outStringBuffer = new StringBuilder();
         String inputLine = "";
         BufferedReader inputBuffer = new BufferedReader(inputStreamReader);
         while ((inputLine = inputBuffer.readLine()) != null) {

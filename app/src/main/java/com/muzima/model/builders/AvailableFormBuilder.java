@@ -14,7 +14,7 @@ import com.muzima.api.model.Form;
 import com.muzima.model.AvailableForm;
 
 public class AvailableFormBuilder{
-    private AvailableForm availableForm;
+    private final AvailableForm availableForm;
 
     public AvailableFormBuilder() {
         availableForm = new AvailableForm();

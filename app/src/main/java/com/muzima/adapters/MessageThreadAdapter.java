@@ -1,7 +1,6 @@
 package com.muzima.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +20,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
+
 public class MessageThreadAdapter extends BaseAdapter{
 
-    private List<Notification> chatModelList;
-    private Context context;
-    private LayoutInflater inflater;
+    private final List<Notification> chatModelList;
+    private final Context context;
+    private final LayoutInflater inflater;
     private String initialDate ="";
-    private List datePosition = new ArrayList();
-    private List date = new ArrayList();
+    private final List datePosition = new ArrayList();
+    private final List date = new ArrayList();
 
 
 
@@ -107,7 +108,7 @@ public class MessageThreadAdapter extends BaseAdapter{
         String loggedInUserUuid = ((MuzimaApplication)context.getApplicationContext()).getAuthenticatedUser().getPerson().getUuid();
         Notification notification = chatModelList.get(position);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(STANDARD_DATE_FORMAT);
         Date dateCreated = notification.getDateCreated();
         String sendDate = simpleDateFormat.format(dateCreated);
 
@@ -118,9 +119,9 @@ public class MessageThreadAdapter extends BaseAdapter{
         String message = chatModelList.get(position).getPayload();
         if (senderUuid.equals(loggedInUserUuid)) {
             view = inflater.inflate(R.layout.item_layout_send, null);
-            BubbleTextView bubbleTextView = (BubbleTextView) view.findViewById(R.id.chat_textview);
-            TextView textView = (TextView) view.findViewById(R.id.date_send_text_view);
-            TextView datetextView = (TextView) view.findViewById(R.id.date_set_text);
+            BubbleTextView bubbleTextView = view.findViewById(R.id.chat_textview);
+            TextView textView = view.findViewById(R.id.date_send_text_view);
+            TextView datetextView = view.findViewById(R.id.date_set_text);
             textView.setText(sendTime);
             if(initialDate.compareTo(sendDate)!=0 && initialDate.compareTo(sendDate)!=1 && !date.contains(sendDate)) {
                 datetextView.setVisibility(View.VISIBLE);
@@ -138,9 +139,9 @@ public class MessageThreadAdapter extends BaseAdapter{
             bubbleTextView.setText(message);
         } else {
             view = inflater.inflate(R.layout.item_layout_receive, null);
-            BubbleTextView bubbleTextView = (BubbleTextView) view.findViewById(R.id.chat_textview);
-            TextView textView = (TextView) view.findViewById(R.id.date_send_text_view);
-            TextView datetextView = (TextView) view.findViewById(R.id.date_set_text);
+            BubbleTextView bubbleTextView = view.findViewById(R.id.chat_textview);
+            TextView textView = view.findViewById(R.id.date_send_text_view);
+            TextView datetextView = view.findViewById(R.id.date_set_text);
             textView.setText(sendTime);
             if(initialDate.compareTo(sendDate)!=0 && initialDate.compareTo(sendDate)!=1 && !date.contains(sendDate)) {
                 datetextView.setVisibility(View.VISIBLE);
@@ -161,7 +162,7 @@ public class MessageThreadAdapter extends BaseAdapter{
         return view;
     }
 
-    public class NotificationComparator implements Comparator<Notification>{
+    class NotificationComparator implements Comparator<Notification>{
         @Override
         public int compare(Notification lhs, Notification rhs) {
             if (lhs.getDateCreated()==null)

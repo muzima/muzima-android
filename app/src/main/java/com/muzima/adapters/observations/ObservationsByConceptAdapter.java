@@ -45,7 +45,6 @@ import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -53,41 +52,33 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
 
     private static final String TAG = "ObservationsByConceptAdapter";
     private LayoutInflater layoutInflater;
-    private View addNewObservationValuesDialog;
-    private View obsDetailsDialog;
     private android.support.v7.app.AlertDialog addIndividualObsDialog;
     private android.support.v7.app.AlertDialog obsDetailsViewDialog;
-    private HashMap<Integer, Concept> rederedConceptsVisualizationMap = new HashMap<>(); //enable visualization of what is rendered on the UI. for ease of access.
-    private EditText obsDialogEditText;
-    private Button obsDialogAddButton;
     private TextView headerText;
-    private Boolean isShrData;
-    private List<Integer> shrConcepts;
-    private MuzimaApplication muzimaApplication;
-    private ProviderController providerController;
+    private final Boolean isSHRData;
+    private List<Integer> SHRConcepts;
+    private final ProviderController providerController;
 
     public ObservationsByConceptAdapter(FragmentActivity activity, int itemCohortsList,
                                         ConceptController conceptController,
-                                        ObservationController observationController, Boolean isShrData) {
+                                        ObservationController observationController, Boolean isSHRData) {
         super(activity, itemCohortsList, null, conceptController, observationController);
-        this.isShrData = isShrData;
-        loadComposedShrConceptId();
-        this.muzimaApplication = (MuzimaApplication) getContext().getApplicationContext();
+        this.isSHRData = isSHRData;
+        loadComposedSHRConceptId();
+        MuzimaApplication muzimaApplication = (MuzimaApplication) getContext().getApplicationContext();
         this.providerController = muzimaApplication.getProviderController();
 
     }
 
+    @NonNull
     @Override
     public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
-        /**
-         * Prepare add obs dialog
-         */
         layoutInflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         android.support.v7.app.AlertDialog.Builder addIndividualObservationsDialogBuilder =
                 new android.support.v7.app.AlertDialog.Builder(
                         parent.getContext()
                 );
-        addNewObservationValuesDialog = layoutInflater.inflate(R.layout.add_individual_obs_dialog_layout, null);
+        View addNewObservationValuesDialog = layoutInflater.inflate(R.layout.add_individual_obs_dialog_layout, null);
 
         addIndividualObservationsDialogBuilder.setView(addNewObservationValuesDialog);
         addIndividualObservationsDialogBuilder
@@ -95,8 +86,8 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
 
         addIndividualObsDialog = addIndividualObservationsDialogBuilder.create();
 
-        obsDialogEditText = (EditText) addNewObservationValuesDialog.findViewById(R.id.obs_new_value_edittext);
-        obsDialogAddButton = (Button) addNewObservationValuesDialog.findViewById(R.id.add_new_obs_button);
+        EditText obsDialogEditText = addNewObservationValuesDialog.findViewById(R.id.obs_new_value_edittext);
+        Button obsDialogAddButton = addNewObservationValuesDialog.findViewById(R.id.add_new_obs_button);
 
         obsDialogAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,13 +101,13 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             convertView = layoutInflater.inflate(R.layout.item_observation_by_concept_list, parent, false);
             holder = new ObservationsByConceptViewHolder();
-            holder.headerText = (TextView) convertView.findViewById(R.id.observation_header);
-            holder.addObsButton = (ImageButton) convertView.findViewById(R.id.add_individual_obs_imagebutton);
+            holder.headerText = convertView.findViewById(R.id.observation_header);
+            holder.addObsButton = convertView.findViewById(R.id.add_individual_obs_imagebutton);
             //Disabling Add Obs Button until MUZIMA-615 is fixed
             //ToDo: Fix MUZIMA-615
             holder.addObsButton.setVisibility(View.GONE);
-            holder.headerLayout = (RelativeLayout) convertView.findViewById(R.id.observation_header_layout);
-            holder.observationLayout = (LinearLayout) convertView
+            holder.headerLayout = convertView.findViewById(R.id.observation_header_layout);
+            holder.observationLayout = convertView
                     .findViewById(R.id.observation_layout);
             convertView.setTag(holder);
 
@@ -132,16 +123,13 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         }
 
         holder.renderItem(getItem(position));
-        /**
-         * Update Concepts Map
-         */
         Concept conceptAtThisPosition = getItem(position).getConcept();
-        rederedConceptsVisualizationMap.put(position, conceptAtThisPosition);
+       // rederedConceptsVisualizationMap.put(position, conceptAtThisPosition);
         return convertView;
     }
 
 
-    public void addObservation() {
+    private void addObservation() {
         addIndividualObsDialog.show();
         //TODO Develop add obs logic.
     }
@@ -151,7 +139,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
     public void reloadData() {
         cancelBackgroundQueryTask();
         AsyncTask<Void, ?, ?> backgroundQueryTask = new ObservationsByConceptBackgroundTask(this,
-                new ConceptsByPatient(conceptController, observationController, patientUuid), isShrData);
+                new ConceptsByPatient(conceptController, observationController, patientUuid), isSHRData);
         BackgroundTaskHelper.executeInParallel(backgroundQueryTask);
         setRunningBackgroundQueryTask(backgroundQueryTask);
     }
@@ -159,7 +147,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
     public void search(String term) {
         cancelBackgroundQueryTask();
         AsyncTask<Void, ?, ?> backgroundQueryTask = new ObservationsByConceptBackgroundTask(this,
-                new ConceptsBySearch(conceptController, observationController, patientUuid, term), isShrData);
+                new ConceptsBySearch(conceptController, observationController, patientUuid, term), isSHRData);
         BackgroundTaskHelper.executeInParallel(backgroundQueryTask);
         setRunningBackgroundQueryTask(backgroundQueryTask);
     }
@@ -170,7 +158,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         RelativeLayout headerLayout;
         TextView headerText;
 
-        public ObservationsByConceptViewHolder() {
+        ObservationsByConceptViewHolder() {
             super();
         }
 
@@ -188,20 +176,20 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
 
             String observationConceptType = observation.getConcept().getConceptType().getName();
 
-            TextView observationValue = (TextView) layout.findViewById(R.id.observation_value);
-            ImageView shrEnabledImage = (ImageView) layout.findViewById(R.id.shr_card_obs_image_view);
+            TextView observationValue = layout.findViewById(R.id.observation_value);
+            ImageView SHREnabledImage = layout.findViewById(R.id.SHR_card_obs_image_view);
 
-            if (isShrData) {
-                shrEnabledImage.setVisibility(View.VISIBLE);
+            if (isSHRData) {
+                SHREnabledImage.setVisibility(View.VISIBLE);
             } else {
-                shrEnabledImage.setVisibility(View.INVISIBLE);
+                SHREnabledImage.setVisibility(View.INVISIBLE);
             }
 
-            if (shrConcepts.contains(observation.getConcept().getId())) {
-                shrEnabledImage.setVisibility(View.VISIBLE);
+            if (SHRConcepts.contains(observation.getConcept().getId())) {
+                SHREnabledImage.setVisibility(View.VISIBLE);
             }
 
-            ImageView observationComplexHolder = (ImageView) layout.findViewById(R.id.observation_complex);
+            ImageView observationComplexHolder = layout.findViewById(R.id.observation_complex);
             if (StringUtils.equals(observationConceptType, "Complex")) {
                 observationValue.setVisibility(View.GONE);
                 observationComplexHolder.setVisibility(View.VISIBLE);
@@ -218,7 +206,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
             divider.setFocusable(true);
             divider.setClickable(true);
 
-            TextView observationDateView = (TextView) layout.findViewById(R.id.observation_date);
+            TextView observationDateView = layout.findViewById(R.id.observation_date);
             observationDateView.setText(DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime()));
             observationDateView.setTypeface(Fonts.roboto_light(getContext()));
             observationDateView.setTextColor(conceptColor);
@@ -243,7 +231,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         }
     }
 
-    private void loadComposedShrConceptId() {
+    private void loadComposedSHRConceptId() {
         List<Integer> conceptIds = new ArrayList<>();
         conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_RESULT.concept_id);
         conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_TYPE.concept_id);
@@ -252,19 +240,16 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.SEQUENCE.concept_id);
         conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.GROUP.concept_id);
 
-        shrConcepts = conceptIds;
+        SHRConcepts = conceptIds;
     }
 
-    public void displayObservationDetailsDialog(Observation observation, View view) {
+    private void displayObservationDetailsDialog(Observation observation, View view) {
 
         int conceptColor = observationController.getConceptColor(observation.getConcept().getUuid());
         String observationConceptType = observation.getConcept().getConceptType().getName();
         String encounterDate = DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime());
 
 
-        /**
-         * Prepare add obs dialog
-         */
         TextView encounterDateTextView;
         TextView encounterLocationTextView;
         TextView encounterTypeTextView;
@@ -287,7 +272,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
                 new android.support.v7.app.AlertDialog.Builder(
                         view.getContext()
                 );
-        obsDetailsDialog = layoutInflater.inflate(R.layout.obs_details_dialog_layout, null);
+        View obsDetailsDialog = layoutInflater.inflate(R.layout.obs_details_dialog_layout, null);
 
         addIndividualObservationsDialogBuilder.setView(obsDetailsDialog);
         addIndividualObservationsDialogBuilder
@@ -295,23 +280,22 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
 
         obsDetailsViewDialog = addIndividualObservationsDialogBuilder.create();
         obsDetailsViewDialog.show();
-        ;
 
 
-        dismissDialogButton = (Button) obsDetailsDialog.findViewById(R.id.dismiss_dialog_button);
-        encounterDateTextView = (TextView) obsDetailsDialog.findViewById(R.id.encounter_date_value_textview);
-        encounterLocationTextView = (TextView) obsDetailsDialog.findViewById(R.id.encounter_location_value_textview);
-        encounterTypeTextView = (TextView) obsDetailsDialog.findViewById(R.id.encounter_type_value_textview);
-        providerNameTextView = (TextView) obsDetailsDialog.findViewById(R.id.provider_name_value_textview);
-        providerIdentifierTextView = (TextView) obsDetailsDialog.findViewById(R.id.provider_identify_type_value_textView);
-        conceptNameTextView = (TextView) obsDetailsDialog.findViewById(R.id.concept_name_value_textview);
-        conceptDescriptionTextView = (TextView) obsDetailsDialog.findViewById(R.id.concept_description_value_textview);
-        obsValueTextView = (TextView)obsDetailsDialog.findViewById(R.id.observertion_value_indicator_textview);
-        encounterDetailsHeader = (TextView) obsDetailsDialog.findViewById(R.id.obs_details_header);
-        providerDetailsHeader = (TextView) obsDetailsDialog.findViewById(R.id.obs_details_second_header);
-        conceptDetailsHeader = (TextView) obsDetailsDialog.findViewById(R.id.obs_details_third_header);
-        observationDetailsHeader = (TextView) obsDetailsDialog.findViewById(R.id.obs_details_fourth_header);
-        dateTextView = (TextView)obsDetailsDialog.findViewById(R.id.observation_description_value_textview);
+        dismissDialogButton = obsDetailsDialog.findViewById(R.id.dismiss_dialog_button);
+        encounterDateTextView = obsDetailsDialog.findViewById(R.id.encounter_date_value_textview);
+        encounterLocationTextView = obsDetailsDialog.findViewById(R.id.encounter_location_value_textview);
+        encounterTypeTextView = obsDetailsDialog.findViewById(R.id.encounter_type_value_textview);
+        providerNameTextView = obsDetailsDialog.findViewById(R.id.provider_name_value_textview);
+        providerIdentifierTextView = obsDetailsDialog.findViewById(R.id.provider_identify_type_value_textView);
+        conceptNameTextView = obsDetailsDialog.findViewById(R.id.concept_name_value_textview);
+        conceptDescriptionTextView = obsDetailsDialog.findViewById(R.id.concept_description_value_textview);
+        obsValueTextView = obsDetailsDialog.findViewById(R.id.observertion_value_indicator_textview);
+        encounterDetailsHeader = obsDetailsDialog.findViewById(R.id.obs_details_header);
+        providerDetailsHeader = obsDetailsDialog.findViewById(R.id.obs_details_second_header);
+        conceptDetailsHeader = obsDetailsDialog.findViewById(R.id.obs_details_third_header);
+        observationDetailsHeader = obsDetailsDialog.findViewById(R.id.obs_details_fourth_header);
+        dateTextView = obsDetailsDialog.findViewById(R.id.observation_description_value_textview);
 
         List<TextView> obsDetailsHeaderTextViews = Arrays.asList(encounterDetailsHeader,providerDetailsHeader,conceptDetailsHeader,observationDetailsHeader);
         dateTextView.setText(observation.getObservationDatetime().toString().substring(0,19));
@@ -321,7 +305,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         }
 
         if (StringUtils.equals(observationConceptType, "Complex")) {
-            obsValueTextView.setText("Complex Obs");
+            obsValueTextView.setText(R.string.complex_obs);
         } else {
             String observationValue = observation.getValueAsString();
             obsValueTextView.setText(observationValue);
@@ -330,8 +314,8 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         conceptNameTextView.setText(observation.getConcept().getName());
         String conceptDescription = observation.getConcept().getUnit();
 
-        if (conceptDescription != null || conceptDescription != "") {
-            conceptDescriptionTextView.setText("Unit Name: " + conceptDescription);
+        if (!conceptDescription.isEmpty()) {
+            conceptDescriptionTextView.setText(String.format("Unit Name: %s", conceptDescription));
         }
 
         Encounter encounter = observation.getEncounter();

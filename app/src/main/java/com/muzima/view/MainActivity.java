@@ -80,8 +80,7 @@ public class MainActivity extends BroadcastListenerActivity {
     private boolean checkIfDisclaimerIsAccepted() {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String disclaimerKey = getResources().getString(R.string.preference_disclaimer);
-        boolean disclaimerAccepted = settings.getBoolean(disclaimerKey, false);
-        return disclaimerAccepted;
+        return settings.getBoolean(disclaimerKey, false);
     }
 
     @Override
@@ -166,7 +165,7 @@ public class MainActivity extends BroadcastListenerActivity {
         startActivity(intent);
     }
 
-    public class BackgroundQueryTask extends AsyncTask<Void, Void, HomeActivityMetadata> {
+    class BackgroundQueryTask extends AsyncTask<Void, Void, HomeActivityMetadata> {
 
         @Override
         protected HomeActivityMetadata doInBackground(Void... voids) {
@@ -195,39 +194,35 @@ public class MainActivity extends BroadcastListenerActivity {
                     homeActivityMetadata.totalNotifications = 0;
                 }
             } catch (CohortController.CohortFetchException e) {
-                Log.w(TAG, "CohortFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
+                Log.w(getClass().getSimpleName(), "CohortFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
             } catch (PatientController.PatientLoadException e) {
-                Log.w(TAG, "PatientLoadException occurred while fetching metadata in MainActivityBackgroundTask", e);
+                Log.w(getClass().getSimpleName(), "PatientLoadException occurred while fetching metadata in MainActivityBackgroundTask", e);
             } catch (FormController.FormFetchException e) {
-                Log.w(TAG, "FormFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
+                Log.w(getClass().getSimpleName(), "FormFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
             } catch (NotificationController.NotificationFetchException e) {
-                Log.w(TAG, "NotificationFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
+                Log.w(getClass().getSimpleName(), "NotificationFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
             } catch (ParseException e) {
-                Log.w(TAG, "ParseException occurred while fetching metadata in MainActivityBackgroundTask", e);
+                Log.w(getClass().getSimpleName(), "ParseException occurred while fetching metadata in MainActivityBackgroundTask", e);
             }
             return homeActivityMetadata;
         }
 
         @Override
         protected void onPostExecute(HomeActivityMetadata homeActivityMetadata) {
-            TextView cohortsDescriptionView = (TextView) mMainView.findViewById(R.id.cohortDescription);
-            cohortsDescriptionView.setText(getString(R.string.hint_dashboard_cohorts_description,
-                    homeActivityMetadata.syncedCohorts, homeActivityMetadata.totalCohorts));
+            TextView cohortsDescriptionView = mMainView.findViewById(R.id.cohortDescription);
+            cohortsDescriptionView.setText(String.format("%s,%d,%d", getResources().getString(R.string.hint_dashboard_cohorts_description), homeActivityMetadata.syncedCohorts, homeActivityMetadata.totalCohorts));
 
-            TextView patientDescriptionView = (TextView) mMainView.findViewById(R.id.patientDescription);
-            patientDescriptionView.setText(getString(R.string.hint_dashboard_clients_description,
-                    homeActivityMetadata.syncedPatients));
+            TextView patientDescriptionView = mMainView.findViewById(R.id.patientDescription);
+            patientDescriptionView.setText(getString(R.string.hint_dashboard_clients_description)+","+homeActivityMetadata.syncedPatients);
 
-            TextView formsDescription = (TextView) mMainView.findViewById(R.id.formDescription);
-            formsDescription.setText(getString(R.string.hint_dashboard_forms_description,
-                    homeActivityMetadata.incompleteForms, homeActivityMetadata.completeAndUnsyncedForms));
+            TextView formsDescription = mMainView.findViewById(R.id.formDescription);
+            formsDescription.setText(String.format("%s,%d,%d", getString(R.string.hint_dashboard_forms_description), homeActivityMetadata.incompleteForms, homeActivityMetadata.completeAndUnsyncedForms));
 
-            TextView notificationsDescription = (TextView) mMainView.findViewById(R.id.notificationDescription);
-            notificationsDescription.setText(getString(R.string.hint_dashboard_notifications_description,
-                    homeActivityMetadata.newNotifications, homeActivityMetadata.totalNotifications));
+            TextView notificationsDescription = mMainView.findViewById(R.id.notificationDescription);
+            notificationsDescription.setText(String.format("%s,%d,%d", getString(R.string.hint_dashboard_notifications_description), homeActivityMetadata.newNotifications, homeActivityMetadata.totalNotifications));
 
-            TextView currentUser = (TextView) findViewById(R.id.currentUser);
-            currentUser.setText(getResources().getString(R.string.general_welcome) + " " + credentials.getUserName());
+            TextView currentUser = findViewById(R.id.currentUser);
+            currentUser.setText(String.format("%s %s", getResources().getString(R.string.general_welcome), credentials.getUserName()));
         }
     }
 
@@ -249,6 +244,7 @@ public class MainActivity extends BroadcastListenerActivity {
 
     private void setupActionbar() {
         ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(false);

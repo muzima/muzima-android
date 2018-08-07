@@ -15,7 +15,7 @@
 		
 		<TextView
 				android:id="@+id/observation_name_textview"
-				android:text="Observation:"
+				android:text="@string/observation_text_dialog"
 				android:textColor="@android:color/white"
 				android:padding="8dp"
 				android:textSize="18sp"
@@ -24,7 +24,6 @@
 		
 		<EditText
 				android:id="@+id/obs_new_value_edittext"
-				android:hint=""
 				android:textColor="@android:color/white"
 				android:ems="100"
 				android:layout_width="wrap_content"
@@ -55,14 +54,14 @@
 					android:padding="8dp"
 					android:textSize="16sp"
 					android:textColor="@android:color/white"
-					android:text="Encounter Date"
+					android:text="@string/encounter_date_dialog_label"
 					android:layout_alignParentTop="true"
 					android:layout_alignParentStart="true"
 					android:id="@+id/encounter_data_chooser"/>
 			
 			<TextView
 					android:id="@+id/date_value_textview"
-					android:text="21 March 2018"
+					android:text="@string/sample_date_rep"
 					android:textColor="@android:color/white"
 					android:onClick="showDatePicketDialog"
 					android:layout_width="wrap_content"

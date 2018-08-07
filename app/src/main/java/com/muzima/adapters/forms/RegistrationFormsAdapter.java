@@ -20,7 +20,7 @@ import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
  */
 public class RegistrationFormsAdapter extends FormsAdapter<AvailableForm> {
     private static final String TAG = "RegistrationFormsAdapter";
-    private AvailableForms availableForms;
+    private final AvailableForms availableForms;
 
 
     public RegistrationFormsAdapter(Context context, int textViewResourceId, FormController formController, AvailableForms availableForms) {
@@ -33,9 +33,9 @@ public class RegistrationFormsAdapter extends FormsAdapter<AvailableForm> {
         new BackgroundQueryTask(this).execute();
     }
 
-    public class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<AvailableForm> {
+    class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<AvailableForm> {
 
-        public BackgroundQueryTask(FormsAdapter formsAdapter) {
+        BackgroundQueryTask(FormsAdapter formsAdapter) {
             super(formsAdapter);
         }
 

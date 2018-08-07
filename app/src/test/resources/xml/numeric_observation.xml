@@ -8,6 +8,7 @@
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
 
+<!--suppress ALL -->
 <form>
     <patient>
         <patient_identifier.identifier_type_id>1</patient_identifier.identifier_type_id>

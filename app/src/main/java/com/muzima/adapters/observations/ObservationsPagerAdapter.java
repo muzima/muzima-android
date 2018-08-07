@@ -28,8 +28,8 @@ public class ObservationsPagerAdapter extends MuzimaPagerAdapter implements Sear
     private static final int TAB_BY_DATE = 0;
     private static final int TAB_BY_ENCOUNTERS = 1;
     private ObservationsListFragment observationByConceptListFragment;
-    ObservationsListFragment observationByEncountersFragment;
-    private Boolean isShrData;
+    private ObservationsListFragment observationByEncountersFragment;
+    private final Boolean isShrData;
 
     public ObservationsPagerAdapter(Context applicationContext, FragmentManager supportFragmentManager,Boolean isShrData) {
         super(applicationContext, supportFragmentManager);

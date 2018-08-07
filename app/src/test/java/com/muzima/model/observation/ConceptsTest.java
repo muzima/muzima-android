@@ -13,7 +13,7 @@ package com.muzima.model.observation;
 
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
-import org.junit.Before;
+
 import org.junit.Test;
 
 import java.util.Date;
@@ -24,10 +24,6 @@ import static org.junit.matchers.JUnitMatchers.hasItem;
 import static org.junit.matchers.JUnitMatchers.hasItems;
 
 public class ConceptsTest {
-
-    @Before
-    public void setUp() throws Exception {
-    }
 
     @Test
     public void shouldAddSingleObservation() throws Exception {

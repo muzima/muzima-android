@@ -12,6 +12,7 @@ package com.muzima.adapters.encounters;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,15 +25,13 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.EncounterController;
 import com.muzima.utils.DateUtils;
 
-import net.minidev.json.JSONValue;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class EncountersByPatientAdapter extends EncountersAdapter {
-    protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
-    protected final String patientUuid;
+    private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
+    private final String patientUuid;
 
 
     public EncountersByPatientAdapter(Activity activity, int textViewResourceId, EncounterController encounterController, Patient patient) {
@@ -45,8 +44,9 @@ public class EncountersByPatientAdapter extends EncountersAdapter {
         new BackgroundQueryTask().execute(patientUuid);
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         Encounter encounter=getItem(position);
         Context context = getContext();
         EncountersByPatientViewHolder holder;
@@ -56,10 +56,10 @@ public class EncountersByPatientAdapter extends EncountersAdapter {
             convertView.setClickable(false);
             convertView.setFocusable(false);
             holder = new EncountersByPatientViewHolder();
-            holder.encounterDate = (TextView) convertView.findViewById(R.id.encounterDate);
-            holder.encounterFormName = (TextView) convertView.findViewById(R.id.encounterFormName);
-            holder.encounterLocation = (TextView) convertView.findViewById(R.id.encounterLocation);
-            holder.encounterProvider = (TextView) convertView.findViewById(R.id.encounterProvider);
+            holder.encounterDate = convertView.findViewById(R.id.encounterDate);
+            holder.encounterFormName = convertView.findViewById(R.id.encounterFormName);
+            holder.encounterLocation = convertView.findViewById(R.id.encounterLocation);
+            holder.encounterProvider = convertView.findViewById(R.id.encounterProvider);
             convertView.setTag(holder);
         }else {
             holder = (EncountersByPatientViewHolder) convertView.getTag();
@@ -83,10 +83,10 @@ public class EncountersByPatientAdapter extends EncountersAdapter {
     }
 
     private class EncountersByPatientViewHolder extends ViewHolder {
-        public TextView encounterProvider;
-        public TextView encounterDate;
-        public TextView encounterLocation;
-        public TextView encounterFormName;
+        TextView encounterProvider;
+        TextView encounterDate;
+        TextView encounterLocation;
+        TextView encounterFormName;
     }
 
     private class BackgroundQueryTask extends AsyncTask<String, Void, List<Encounter>> {
@@ -111,7 +111,7 @@ public class EncountersByPatientAdapter extends EncountersAdapter {
             return encounters;
         }
 
-        private Comparator<Encounter> encountersDateTimeComparator = new Comparator<Encounter>() {
+        private final Comparator<Encounter> encountersDateTimeComparator = new Comparator<Encounter>() {
             @Override
             public int compare(Encounter lhs, Encounter rhs) {
                 if (lhs.getEncounterDatetime()==null)

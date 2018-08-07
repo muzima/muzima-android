@@ -41,12 +41,8 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
     public boolean quickSearch = false;
     private ViewPager viewPager;
     private ObservationsPagerAdapter observationsPagerAdapter;
-    private PagerSlidingTabStrip pagerTabsLayout;
     private Patient patient;
-    private AlertDialog writeShrDataOptionDialog;
-    private TextView searchDialogTextView;
-    private Button yesOptionShrSearchButton;
-    private Button noOptionShrSearchButton;
+    private AlertDialog writeSHRDataOptionDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +56,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
     }
 
     private void initPagerIndicator() {
-        pagerTabsLayout = (PagerSlidingTabStrip) findViewById(R.id.pager_indicator);
+        PagerSlidingTabStrip pagerTabsLayout = findViewById(R.id.pager_indicator);
         pagerTabsLayout.setTextColor(Color.WHITE);
         pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));
         pagerTabsLayout.setSelectedTextColor(getResources().getColor(R.color.tab_indicator));
@@ -71,7 +67,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
     }
 
     private void initPager() {
-        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager = findViewById(R.id.pager);
 
         Boolean isSHRData = true;
         observationsPagerAdapter = new ObservationsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), isSHRData);
@@ -100,9 +96,9 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.obs_shr_card_write:
+            case R.id.obs_SHR_card_write:
                 prepareWriteToCardOptionDialog(getApplicationContext());
-                writeShrDataOptionDialog.show();
+                writeSHRDataOptionDialog.show();
                 break;
             default:
                 break;
@@ -116,7 +112,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
         observationsPagerAdapter.cancelBackgroundQueryTasks();
     }
 
-    public void invokeShrApplication() {
+    private void invokeSHRApplication() {
         SmartCardController smartCardController = ((MuzimaApplication) getApplicationContext()).getSmartCardController();
         SmartCardRecord smartCardRecord = null;
         try {
@@ -129,9 +125,9 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
             Log.e("TAG", "Could not obtain smartcard record for writing to card", e);
         }
         if (smartCardRecord != null) {
-            SmartCardIntentIntegrator shrIntegrator = new SmartCardIntentIntegrator(this);
+            SmartCardIntentIntegrator SHRIntegrator = new SmartCardIntentIntegrator(this);
             try {
-                shrIntegrator.initiateCardWrite(smartCardRecord.getPlainPayload());
+                SHRIntegrator.initiateCardWrite(smartCardRecord.getPlainPayload());
             } catch (IOException e) {
                 Log.e("TAG", "Could not write to card", e);
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -188,7 +184,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
                                     .setAction(R.string.general_retry, new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            invokeShrApplication();
+                                            invokeSHRApplication();
                                         }
                                     })
                                     .show();
@@ -199,7 +195,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
                                     .setAction(R.string.general_retry, new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            invokeShrApplication();
+                                            invokeSHRApplication();
                                         }
                                     })
                                     .show();
@@ -208,41 +204,41 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                writeShrDataOptionDialog.dismiss();
-                writeShrDataOptionDialog.cancel();
+                writeSHRDataOptionDialog.dismiss();
+                writeSHRDataOptionDialog.cancel();
                 break;
         }
     }
 
-    public void prepareWriteToCardOptionDialog(Context context) {
+    private void prepareWriteToCardOptionDialog(Context context) {
 
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = layoutInflater.inflate(R.layout.write_to_card_option_dialog_layout, null);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(SHRObservationsDataActivity.this);
 
-        writeShrDataOptionDialog = alertBuilder
+        writeSHRDataOptionDialog = alertBuilder
                 .setView(dialogView)
                 .create();
 
-        writeShrDataOptionDialog.setCancelable(true);
-        searchDialogTextView = (TextView) dialogView.findViewById(R.id.patent_dialog_message_textview);
-        yesOptionShrSearchButton = (Button) dialogView.findViewById(R.id.yes_shr_search_dialog);
-        noOptionShrSearchButton = (Button) dialogView.findViewById(R.id.no_shr_search_dialog);
-        searchDialogTextView.setText(getString(R.string.hint_write_shr_to_card));
+        writeSHRDataOptionDialog.setCancelable(true);
+        TextView searchDialogTextView = dialogView.findViewById(R.id.patent_dialog_message_textview);
+        Button yesOptionSHRSearchButton = dialogView.findViewById(R.id.yes_SHR_search_dialog);
+        Button noOptionSHRSearchButton = dialogView.findViewById(R.id.no_SHR_search_dialog);
+        searchDialogTextView.setText(getString(R.string.hint_write_SHR_to_card));
 
-        yesOptionShrSearchButton.setOnClickListener(new View.OnClickListener() {
+        yesOptionSHRSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                invokeShrApplication();
+                invokeSHRApplication();
             }
 
         });
 
-        noOptionShrSearchButton.setOnClickListener(new View.OnClickListener(){
+        noOptionSHRSearchButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                writeShrDataOptionDialog.cancel();
-                writeShrDataOptionDialog.dismiss();
+                writeSHRDataOptionDialog.cancel();
+                writeSHRDataOptionDialog.dismiss();
             }
         });
     }

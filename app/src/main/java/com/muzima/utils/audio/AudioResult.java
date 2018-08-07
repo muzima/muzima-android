@@ -40,10 +40,8 @@ public final class AudioResult {
 
     @Override
     public String toString() {
-        StringBuilder dialogText = new StringBuilder(255);
-        dialogText.append("SectionName: ").append(sectionName).append('\n');
-        dialogText.append("AudioUri: ").append(audioUri).append('\n');
-        dialogText.append("AudioCaption: ").append(audioCaption).append('\n');
-        return dialogText.toString();
+        return "SectionName: " + sectionName + '\n' +
+                "AudioUri: " + audioUri + '\n' +
+                "AudioCaption: " + audioCaption + '\n';
     }
 }

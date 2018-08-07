@@ -17,10 +17,10 @@ import com.muzima.model.observation.Encounters;
 
 import java.util.List;
 
-public class EncountersByPatient extends EncounterAction {
-    private String patientUuid;
-    private ObservationController observationController;
-    private EncounterController encounterController;
+class EncountersByPatient extends EncounterAction {
+    private final String patientUuid;
+    private final ObservationController observationController;
+    private final EncounterController encounterController;
 
     public EncountersByPatient(EncounterController encounterController,ObservationController observationController, String patientUuid) {
         this.observationController = observationController;

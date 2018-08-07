@@ -10,6 +10,7 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class DownloadedFormsAdapter extends FormsAdapter<DownloadedForm> {
         super(context, textViewResourceId, formController);
     }
 
+    @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = super.getView(position, convertView, parent);
@@ -60,9 +62,9 @@ public class DownloadedFormsAdapter extends FormsAdapter<DownloadedForm> {
     /**
      * Responsible to fetch all the
      */
-    public class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<DownloadedForm> {
+    class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<DownloadedForm> {
 
-        public BackgroundQueryTask(FormsAdapter formsAdapter) {
+        BackgroundQueryTask(FormsAdapter formsAdapter) {
             super(formsAdapter);
         }
 
@@ -73,9 +75,9 @@ public class DownloadedFormsAdapter extends FormsAdapter<DownloadedForm> {
                 try {
                     FormsAdapter formsAdapter = adapterWeakReference.get();
                     downloadedForms = formsAdapter.getFormController().getAllDownloadedForms();
-                    Log.i(TAG, "#Forms with templates: " + downloadedForms.size());
+                    Log.i(getClass().getSimpleName(), "#Forms with templates: " + downloadedForms.size());
                 } catch (FormController.FormFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local forms ", e);
+                    Log.w(getClass().getSimpleName(), "Exception occurred while fetching local forms ", e);
                 }
             }
             return downloadedForms;
