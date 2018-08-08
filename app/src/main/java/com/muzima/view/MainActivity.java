@@ -209,20 +209,25 @@ public class MainActivity extends BroadcastListenerActivity {
 
         @Override
         protected void onPostExecute(HomeActivityMetadata homeActivityMetadata) {
-            TextView cohortsDescriptionView = mMainView.findViewById(R.id.cohortDescription);
-            cohortsDescriptionView.setText(String.format("%s,%d,%d", getResources().getString(R.string.hint_dashboard_cohorts_description), homeActivityMetadata.syncedCohorts, homeActivityMetadata.totalCohorts));
+            TextView cohortsDescriptionView = (TextView) mMainView.findViewById(R.id.cohortDescription);
+            cohortsDescriptionView.setText(getString(R.string.hint_dashboard_cohorts_description,
+                    homeActivityMetadata.syncedCohorts, homeActivityMetadata.totalCohorts));
 
-            TextView patientDescriptionView = mMainView.findViewById(R.id.patientDescription);
-            patientDescriptionView.setText(getString(R.string.hint_dashboard_clients_description)+","+homeActivityMetadata.syncedPatients);
+            TextView patientDescriptionView = (TextView) mMainView.findViewById(R.id.patientDescription);
+            patientDescriptionView.setText(getString(R.string.hint_dashboard_clients_description,
+                    homeActivityMetadata.syncedPatients));
 
-            TextView formsDescription = mMainView.findViewById(R.id.formDescription);
-            formsDescription.setText(String.format("%s,%d,%d", getString(R.string.hint_dashboard_forms_description), homeActivityMetadata.incompleteForms, homeActivityMetadata.completeAndUnsyncedForms));
+            TextView formsDescription = (TextView) mMainView.findViewById(R.id.formDescription);
+            formsDescription.setText(getString(R.string.hint_dashboard_forms_description,
+                    homeActivityMetadata.incompleteForms, homeActivityMetadata.completeAndUnsyncedForms));
 
-            TextView notificationsDescription = mMainView.findViewById(R.id.notificationDescription);
-            notificationsDescription.setText(String.format("%s,%d,%d", getString(R.string.hint_dashboard_notifications_description), homeActivityMetadata.newNotifications, homeActivityMetadata.totalNotifications));
+            TextView notificationsDescription = (TextView) mMainView.findViewById(R.id.notificationDescription);
+            notificationsDescription.setText(getString(R.string.hint_dashboard_notifications_description,
+                    homeActivityMetadata.newNotifications, homeActivityMetadata.totalNotifications));
 
-            TextView currentUser = findViewById(R.id.currentUser);
-            currentUser.setText(String.format("%s %s", getResources().getString(R.string.general_welcome), credentials.getUserName()));
+            TextView currentUser = (TextView) findViewById(R.id.currentUser);
+            currentUser.setText(getResources().getString(R.string.general_welcome) + " " + credentials.getUserName());
+
         }
     }
 
