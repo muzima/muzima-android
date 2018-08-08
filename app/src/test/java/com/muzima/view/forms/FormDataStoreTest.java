@@ -57,7 +57,7 @@ public class FormDataStoreTest {
 
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         initMocks(this);
         controller = mock(FormController.class);
         activity = mock(FormWebViewActivity.class);
@@ -76,7 +76,7 @@ public class FormDataStoreTest {
     }
 
     @Test
-    public void save_shouldSaveFormDataWithStatus() throws Exception, FormController.FormDataSaveException {
+    public void save_shouldSaveFormDataWithStatus() throws FormController.FormDataSaveException {
         store.save("data", "xmldata", "status");
         verify(controller).saveFormData(formData);
         verify(activity).finish();
@@ -85,7 +85,7 @@ public class FormDataStoreTest {
     }
 
     @Test
-    public void save_shouldNotFinishTheActivityIfThereIsAnExceptionWhileSaving() throws Exception, FormController.FormDataSaveException {
+    public void save_shouldNotFinishTheActivityIfThereIsAnExceptionWhileSaving() throws FormController.FormDataSaveException {
         doThrow(new FormController.FormDataSaveException(null)).when(controller).saveFormData(formData);
         when(activity.getString(anyInt())).thenReturn("success");
         store.save("data", "xmldata", "status");
@@ -93,13 +93,13 @@ public class FormDataStoreTest {
     }
 
     @Test
-    public void getFormPayload_shouldGetTheFormDataPayload() throws Exception {
+    public void getFormPayload_shouldGetTheFormDataPayload() {
         formData.setJsonPayload("payload");
         assertThat(store.getFormPayload(), is("payload"));
     }
 
     @Test
-    public void shouldCreateANewPatientAndStoreHisUUIDAsPatientUUID() throws Exception {
+    public void shouldCreateANewPatientAndStoreHisUUIDAsPatientUUID() {
         String tempUUIDAssignedByDevice = "newUUID";
         formData.setPatientUuid(null);
         formData.setDiscriminator(FORM_DISCRIMINATOR_REGISTRATION);

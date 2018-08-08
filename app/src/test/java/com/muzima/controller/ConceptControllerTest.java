@@ -40,7 +40,7 @@ public class ConceptControllerTest {
     private ConceptController controller;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         initMocks(this);
         controller = new ConceptController(service,observationService);
     }

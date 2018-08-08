@@ -363,7 +363,7 @@ public class FormController {
         }
     }
 
-    public CompleteFormWithPatientData getCompleteFormDataByUuid(String formDataUuid) throws FormDataFetchException, FormFetchException {
+    public CompleteFormWithPatientData getCompleteFormDataByUuid(String formDataUuid) throws FormFetchException {
         CompleteFormWithPatientData completeForm = null;
 
         try {
@@ -571,7 +571,7 @@ public class FormController {
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER), result);
             return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_SHR_ENCOUNTER), result);
-        } catch (IOException | JSONException e) {
+        } catch (IOException e) {
             throw new UploadFormDataException(e);
         }
     }
@@ -675,7 +675,7 @@ public class FormController {
         return requiredForms;
     }
 
-    boolean uploadFormDataToServer(List<FormData> allFormData, boolean result) throws IOException, JSONException {
+    boolean uploadFormDataToServer(List<FormData> allFormData, boolean result) throws IOException {
         for (FormData formData : allFormData) {
             String rawPayload = formData.getJsonPayload();
             // inject consultation.sourceUuid

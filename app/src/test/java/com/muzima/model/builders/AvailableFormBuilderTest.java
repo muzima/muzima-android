@@ -22,7 +22,7 @@ import static org.junit.Assert.assertThat;
 public class AvailableFormBuilderTest {
 
     @Test
-    public void withAvailableForm_shouldSetGivenValues() throws Exception {
+    public void withAvailableForm_shouldSetGivenValues() {
         Form form = new Form();
         form.setName("name");
         form.setName("description");
@@ -47,7 +47,7 @@ public class AvailableFormBuilderTest {
     }
 
     @Test
-    public void withDownloadStatus_shouldSetDownloadStatus() throws Exception {
+    public void withDownloadStatus_shouldSetDownloadStatus() {
         AvailableForm availableForm = new AvailableFormBuilder().withDownloadStatus(true).build();
 
         assertThat(availableForm.isDownloaded(), is(true));

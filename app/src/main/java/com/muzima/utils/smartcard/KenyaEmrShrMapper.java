@@ -231,7 +231,7 @@ public class KenyaEmrShrMapper {
         }
     }
 
-    private static KenyaEmrSHRModel putIdentifiersIntoSHRModel(KenyaEmrSHRModel shrModel, List<PatientIdentifier> identifiers) throws ShrParseException {
+    private static KenyaEmrSHRModel putIdentifiersIntoSHRModel(KenyaEmrSHRModel shrModel, List<PatientIdentifier> identifiers) {
         PatientIdentification patientIdentification = shrModel.getPatientIdentification();
         if(patientIdentification == null){
             patientIdentification = new PatientIdentification();
@@ -458,8 +458,6 @@ public class KenyaEmrShrMapper {
                 }
             }
             return encounterPayloads;
-        } catch(ParseException | JSONException e){
-            throw new ShrParseException("Could not parse SHR model",e);
         } catch(ObservationController.LoadObservationException e){
             throw new ShrParseException("Could not load observations",e);
         }
@@ -603,7 +601,7 @@ public class KenyaEmrShrMapper {
             throw new ShrParseException(e);
         }
     }
-    private static String createJsonEncounterPayloadFromImmunization(MuzimaApplication muzimaApplication, Immunization immunization, Patient patient) throws JSONException, ParseException, ShrParseException {
+    private static String createJsonEncounterPayloadFromImmunization(MuzimaApplication muzimaApplication, Immunization immunization, Patient patient) throws ShrParseException {
         try {
             JSONObject encounterJSON = new JSONObject();
             JSONObject patientDetails = new JSONObject();

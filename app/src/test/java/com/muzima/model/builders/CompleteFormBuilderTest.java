@@ -24,7 +24,7 @@ import static org.junit.Assert.assertThat;
 public class CompleteFormBuilderTest {
 
     @Test
-    public void withCompleteForm_shouldSetGivenValues() throws Exception {
+    public void withCompleteForm_shouldSetGivenValues() {
         Form form = new Form();
         form.setName("name");
         form.setName("description");
@@ -38,14 +38,14 @@ public class CompleteFormBuilderTest {
     }
 
     @Test
-    public void withFormDataId_shouldSetFromDataUuid() throws Exception {
+    public void withFormDataId_shouldSetFromDataUuid() {
         CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder().withFormDataUuid("uuid").build();
 
         assertThat(completeForm.getFormDataUuid(), is("uuid"));
     }
 
     @Test
-    public void withLastModifiedDate_shouldSetLastModifiedDate() throws Exception {
+    public void withLastModifiedDate_shouldSetLastModifiedDate() {
         Calendar saveTimeCalender = Calendar.getInstance();
         saveTimeCalender.set(2014,8,29,10,10,10); //MONTH  Jan = 0, dec = 11
         Date formSaveDateTime = saveTimeCalender.getTime();

@@ -31,7 +31,7 @@ class ZiggyFileLoader {
     }
 
     @JavascriptInterface
-    public String getJSFiles() throws IOException, URISyntaxException {
+    public String getJSFiles() throws IOException {
         StringBuilder builder = new StringBuilder();
         String[] fileNames = assetManager.list(ziggyDirectoryPath);
         for (String fileName : fileNames) {

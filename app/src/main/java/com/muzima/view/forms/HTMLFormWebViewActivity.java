@@ -363,7 +363,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     }
 
     private void setupFormData()
-            throws FormFetchException, FormController.FormDataFetchException, FormController.FormDataSaveException, IOException, ParseException {
+            throws FormFetchException, FormController.FormDataFetchException {
         FormController formController = ((MuzimaApplication) getApplication( )).getFormController( );
         BaseForm baseForm = (BaseForm) getIntent( ).getSerializableExtra(FORM);
         form = formController.getFormByUuid(baseForm.getFormUuid( ));

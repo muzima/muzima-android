@@ -51,7 +51,7 @@ public class ObservationControllerTest {
     private SntpService sntpService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         observationService = mock(ObservationService.class);
         conceptService = mock(ConceptService.class);
         EncounterService encounterService = mock(EncounterService.class);

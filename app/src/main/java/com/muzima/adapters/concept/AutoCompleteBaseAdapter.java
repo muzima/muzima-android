@@ -147,7 +147,7 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             convertView = layoutInflater.inflate(R.layout.item_option_autocomplete, parent, false);
             holder = new ViewHolder();
-            holder.name = (TextView) convertView.findViewById(R.id.option_autocomplete_name);
+            holder.name = convertView.findViewById(R.id.option_autocomplete_name);
             convertView.setTag(holder);
         }
         holder = (ViewHolder) convertView.getTag();

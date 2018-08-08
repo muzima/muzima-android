@@ -45,7 +45,7 @@ public class EncounterControllerTest {
     private SntpService sntpService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         encounterService = mock(EncounterService.class);
         lastSyncTimeService = mock(LastSyncTimeService.class);
         sntpService = mock(SntpService.class);

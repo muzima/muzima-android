@@ -144,7 +144,7 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public String getLocationNamesFromDevice() throws JSONException {
+    public String getLocationNamesFromDevice() {
         List<Location> locationsOnDevice = new ArrayList<>();
         try {
             locationsOnDevice = locationController.getAllLocations();
@@ -156,7 +156,7 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public String getProviderNamesFromDevice() throws JSONException {
+    public String getProviderNamesFromDevice() {
         List<Provider> providersOnDevice = new ArrayList<>();
         try {
             providersOnDevice = providerController.getAllProviders();
@@ -218,7 +218,7 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public String getConcepts() throws JSONException {
+    public String getConcepts() {
         List<Concept> concepts = new ArrayList<>();
         try {
             concepts = conceptController.getConcepts();
@@ -229,7 +229,7 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public String getEncountersByPatientUuid(String patientuuid) throws JSONException {
+    public String getEncountersByPatientUuid(String patientuuid) {
         List<Encounter> encounters = new ArrayList<>();
         try {
             encounters = encounterController.getEncountersByPatientUuid(patientuuid);
@@ -243,7 +243,7 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public String getEncounterTypes(String patientuuid) throws JSONException{
+    public String getEncounterTypes(String patientuuid) {
         List<Encounter> encounters = new ArrayList<>();
         List<Encounter> encountertypes = new ArrayList<>();
         List<String> encounterTypeArray = new ArrayList<>();
@@ -373,7 +373,7 @@ class HTMLFormDataStore {
                     try {
                         d = newDateFormat.parse(newDateFormat.format(encounterDate));
                     } catch (ParseException e) {
-                        e.printStackTrace( );
+                        Log.e(getClass().getSimpleName(),e.getMessage());
                     }
                     newDateFormat.applyPattern(dateFormat);
                     String convertedEncounterDate = newDateFormat.format(d);

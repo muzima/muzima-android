@@ -268,7 +268,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         }
     }
 
-    private FormData createNewFormData() throws FormController.FormDataSaveException {
+    private FormData createNewFormData() {
         FormData formData = new FormData() {{
             setUuid(UUID.randomUUID().toString());
             setPatientUuid(patient.getUuid());

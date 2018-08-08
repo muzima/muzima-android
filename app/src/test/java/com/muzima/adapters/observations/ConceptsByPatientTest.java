@@ -19,7 +19,7 @@ import static org.mockito.Mockito.verify;
 
 public class ConceptsByPatientTest {
     @Test
-    public void shouldGetObservationsByPatientUUID() throws Exception, ObservationController.LoadObservationException {
+    public void shouldGetObservationsByPatientUUID() throws ObservationController.LoadObservationException {
         ObservationController controller = mock(ObservationController.class);
         ConceptController conceptController = mock(ConceptController.class);
         ConceptsByPatient byPatient = new ConceptsByPatient(conceptController,controller, "uuid");

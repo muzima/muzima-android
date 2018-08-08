@@ -155,7 +155,7 @@ public class FormParser {
     }
 
     private List<Observation> createObservations(XmlPullParser parser) throws XmlPullParserException,
-            IOException, ConceptController.ConceptFetchException, ParseException, ConceptController.ConceptSaveException,
+            IOException, ConceptController.ConceptFetchException,
             ConceptController.ConceptParseException, ObservationController.ParseObservationException{
         List<Observation> observationList = new ArrayList<>();
         Stack<String> conceptNames = new Stack<>();

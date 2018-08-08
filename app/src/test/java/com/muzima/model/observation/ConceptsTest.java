@@ -26,13 +26,13 @@ import static org.junit.matchers.JUnitMatchers.hasItems;
 public class ConceptsTest {
 
     @Test
-    public void shouldAddSingleObservation() throws Exception {
+    public void shouldAddSingleObservation() {
         final Observation observation = createObservation(createConcept("uuid1"), "o1");
         assertThat(new Concepts(observation), hasItem(conceptWithObservations(observation)));
     }
 
     @Test
-    public void shouldAddMultipleObservation() throws Exception {
+    public void shouldAddMultipleObservation() {
         final Concept concept = createConcept("uuid1");
 
         final Observation observation = createObservation(concept, "o1");
@@ -42,7 +42,7 @@ public class ConceptsTest {
     }
 
     @Test
-    public void shouldGroupObservationsByConcept() throws Exception {
+    public void shouldGroupObservationsByConcept() {
 
         Observation observation1 = createObservation(createConcept("c1"), "01");
         Observation observation2 = createObservation(createConcept("c2"), "02");
@@ -52,7 +52,7 @@ public class ConceptsTest {
     }
 
     @Test
-    public void shouldSortTheConceptsByDate() throws Exception {
+    public void shouldSortTheConceptsByDate() {
         final Observation observation1 = createObservation(createConcept("c1"), "01", new Date(1));
         final Observation observation2 = createObservation(createConcept("c2"), "02", new Date(3));
         final Observation observation3 = createObservation(createConcept("c1"), "03", new Date(2));

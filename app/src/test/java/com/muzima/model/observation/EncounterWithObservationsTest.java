@@ -24,7 +24,7 @@ import static org.junit.Assert.assertThat;
 
 public class EncounterWithObservationsTest {
     @Test
-    public void shouldOrderTheObservationsByConceptName() throws Exception {
+    public void shouldOrderTheObservationsByConceptName() {
         EncounterWithObservations encounterWithObservations = new EncounterWithObservations();
         Observation observation1 = getObservation("o1", "c1", "Weight");
         Observation observation2 = getObservation("o2", "c2", "Blood Type");

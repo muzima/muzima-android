@@ -108,13 +108,8 @@ public class PatientSummaryActivity extends BaseActivity {
             }
         }
 
-        try {
-            setupPatientMetadata();
-            notifyOfIdChange();
-        } catch (PatientController.PatientLoadException e) {
-            Toast.makeText(this, R.string.error_patient_fetch, Toast.LENGTH_SHORT).show();
-            finish();
-        }
+        setupPatientMetadata();
+        notifyOfIdChange();
         muzimaApplication = (MuzimaApplication) getApplicationContext();
 
         try {
@@ -179,7 +174,7 @@ public class PatientSummaryActivity extends BaseActivity {
         super.onStop();
     }
 
-    private void setupPatientMetadata() throws PatientController.PatientLoadException {
+    private void setupPatientMetadata() {
 
         TextView patientName = findViewById(R.id.patientName);
         patientName.setText(PatientAdapterHelper.getPatientFormattedName(patient));
@@ -261,15 +256,7 @@ public class PatientSummaryActivity extends BaseActivity {
         }
         if (smartCardRecord != null) {
             SmartCardIntentIntegrator SHRIntegrator = new SmartCardIntentIntegrator(this);
-            try {
-                SHRIntegrator.initiateCardWrite(smartCardRecord.getPlainPayload());
-            } catch (IOException e) {
-                Log.e(getClass().getSimpleName(), "Could not write to card", e);
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setCancelable(true)
-                        .setMessage(R.string.failure_writing_smartcard + e.getMessage())
-                        .show();
-            }
+            SHRIntegrator.initiateCardWrite(smartCardRecord.getPlainPayload());
             Toast.makeText(getApplicationContext(), getString(R.string.hint_opening_card_reader), Toast.LENGTH_LONG).show();
         }
     }
@@ -437,19 +424,20 @@ public class PatientSummaryActivity extends BaseActivity {
 
         @Override
         protected void onPostExecute(PatientSummaryActivityMetadata patientSummaryActivityMetadata) {
-            TextView formsDescription = findViewById(R.id.formDescription);
-            formsDescription.setText(getString(R.string.hint_client_summary_forms)+","+ patientSummaryActivityMetadata.incompleteForms+","+
-                    patientSummaryActivityMetadata.completeForms+","+patientSummaryActivityMetadata.recommendedForms);
+            TextView formsDescription = (TextView) findViewById(R.id.formDescription);
+            formsDescription.setText(getString(R.string.hint_client_summary_forms, patientSummaryActivityMetadata.incompleteForms,
+                    patientSummaryActivityMetadata.completeForms,
+                    patientSummaryActivityMetadata.recommendedForms));
 
-            TextView notificationsDescription = findViewById(R.id.notificationDescription);
-            notificationsDescription.setText(getString(R.string.hint_client_summary_notifications)+","+patientSummaryActivityMetadata.newNotifications+","+
-                    patientSummaryActivityMetadata.totalNotifications);
+            TextView notificationsDescription = (TextView) findViewById(R.id.notificationDescription);
+            notificationsDescription.setText(getString(R.string.hint_client_summary_notifications, patientSummaryActivityMetadata.newNotifications,
+                    patientSummaryActivityMetadata.totalNotifications));
 
-            TextView observationDescription = findViewById(R.id.observationDescription);
-            observationDescription.setText(getString(R.string.hint_client_summary_observations)+","+patientSummaryActivityMetadata.observations);
+            TextView observationDescription = (TextView) findViewById(R.id.observationDescription);
+            observationDescription.setText(getString(R.string.hint_client_summary_observations, patientSummaryActivityMetadata.observations));
 
-            TextView encounterDescription = findViewById(R.id.encounterDescription);
-            encounterDescription.setText(getString(R.string.hint_client_summary_encounters)+","+ patientSummaryActivityMetadata.encounters);
+            TextView encounterDescription = (TextView) findViewById(R.id.encounterDescription);
+            encounterDescription.setText(getString(R.string.hint_client_summary_encounters, patientSummaryActivityMetadata.encounters));
         }
     }
 

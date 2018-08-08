@@ -56,7 +56,7 @@ public class HTMLFormDataStoreTest {
     private EncounterController encounterController;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         FormController formController = mock(FormController.class);
         LocationController locationController = mock(LocationController.class);
         ProviderController providerController = mock(ProviderController.class);

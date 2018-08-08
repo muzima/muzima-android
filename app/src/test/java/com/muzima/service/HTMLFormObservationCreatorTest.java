@@ -125,8 +125,7 @@ public class HTMLFormObservationCreatorTest {
     }
 
     @Test
-    public void shouldParseJSONResponseAndCreateObservation() throws PatientController.PatientLoadException,
-            JSONException, ParseException, ConceptController.ConceptFetchException {
+    public void shouldParseJSONResponseAndCreateObservation() {
 
         htmlFormObservationCreator.createAndPersistObservations(readFile(),formDataUuid);
         List<Observation> observations = htmlFormObservationCreator.getObservations();
@@ -135,7 +134,7 @@ public class HTMLFormObservationCreatorTest {
     }
 
     @Test
-    public void shouldCheckIfAllObservationsHaveEncounterObservationTimeAndPatient() throws Exception, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
+    public void shouldCheckIfAllObservationsHaveEncounterObservationTimeAndPatient() {
         htmlFormObservationCreator.createAndPersistObservations(readFile(),formDataUuid);
         List<Observation> observations = htmlFormObservationCreator.getObservations();
 
@@ -149,7 +148,7 @@ public class HTMLFormObservationCreatorTest {
     }
 
     @Test
-    public void shouldCheckIfEncounterHasMinimumAttributes() throws Exception, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
+    public void shouldCheckIfEncounterHasMinimumAttributes() {
         htmlFormObservationCreator.createAndPersistObservations(readFile(),formDataUuid);
         List<Observation> observations = htmlFormObservationCreator.getObservations();
         assertThat(observations, notNullValue());
@@ -163,7 +162,7 @@ public class HTMLFormObservationCreatorTest {
     }
 
     @Test
-    public void shouldCheckIfAllObservationsHasEitherAFetchedConceptOrNewConcept() throws Exception, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
+    public void shouldCheckIfAllObservationsHasEitherAFetchedConceptOrNewConcept() {
         htmlFormObservationCreator.createAndPersistObservations(readFile(),formDataUuid);
         List<Observation> observations = htmlFormObservationCreator.getObservations();
 
@@ -176,8 +175,7 @@ public class HTMLFormObservationCreatorTest {
     }
 
     @Test
-    public void shouldCheckIfMultipleObservationsAreCreatedForMultiValuedConcepts() throws Exception, PatientController.PatientLoadException,
-            ConceptController.ConceptFetchException {
+    public void shouldCheckIfMultipleObservationsAreCreatedForMultiValuedConcepts() {
         htmlFormObservationCreator.createAndPersistObservations(readFile(),formDataUuid);
         List<Observation> observations = htmlFormObservationCreator.getObservations();
         List<Observation> multiValuedObservations = new ArrayList<>();
