@@ -14,8 +14,11 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/date_set_text"
         android:padding="10dp"
+        android:maxWidth="320dp"
         android:text="@string/hello_general"
         android:textColor="@android:color/white"
+        android:textSize="21sp"
+        android:layout_marginStart="6dp"
         app:angle="8dp"
         app:arrowCenter="true"
         app:arrowHeight="8dp"
@@ -29,7 +32,7 @@
         android:text="@string/june_8_sample_date"
         android:textColor="@android:color/white"
         android:layout_toLeftOf="@+id/chat_textview"
-        android:layout_alignBaseline="@+id/chat_textview"
+        android:layout_alignBottom="@+id/chat_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

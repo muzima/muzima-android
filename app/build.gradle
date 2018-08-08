@@ -39,7 +39,7 @@ android {
         manifestPlaceholders = [versionCode: defaultConfig.versionCode, versionName: defaultConfig.versionName]
 
         //mUzima-android code base is beyond method ref limit - Enabled multidex - disabled jumbo dex option.
-        //refer to TODO MUZIMA-621
+        //refer to TODO look at MUZIMA-621
         multiDexEnabled true
 
     }
