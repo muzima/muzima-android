@@ -365,13 +365,13 @@
                 android:exported="false"/>
 
         <activity
-                android:name="org.acra.CraSHReportDialog"
+                android:name="org.acra.CrashReportDialog"
                 android:excludeFromRecents="true"
                 android:finishOnTaskLaunch="true"
                 android:launchMode="singleInstance"
                 android:theme="@android:style/Theme.Dialog"/>
         <activity android:name=".view.SHRObservationsDataActivity"/>
-        <activity android:name=".view.notifications.ConversionActivity" />
+        <activity android:name=".view.notifications.ConversationActivity" />
     </application>
 
 </manifest>

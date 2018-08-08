@@ -46,7 +46,7 @@ public class GeneralNotificationsListFragment extends NotificationListFragment {
 //        notificationIntent.putExtra(NotificationActivity.NOTIFICATION, notification);
         Provider provider = (Provider) adapterView.getItemAtPosition(position);
         provider.getName();
-        Intent intent = new Intent(getActivity(),ConversionActivity.class);
+        Intent intent = new Intent(getActivity(),ConversationActivity.class);
         intent.putExtra("provider",provider);
         startActivity(intent);
     }

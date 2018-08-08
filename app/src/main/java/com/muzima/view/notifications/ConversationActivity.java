@@ -1,13 +1,19 @@
 package com.muzima.view.notifications;
 
+import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Scroller;
+import android.widget.Toast;
 
 
 import com.muzima.adapters.MessageThreadAdapter;
@@ -31,8 +37,7 @@ import java.util.Date;
 import java.util.List;
 
 
-
-public class ConversionActivity extends BaseActivity {
+public class ConversationActivity extends BaseActivity {
 
     private Person loggedInUser;
     private final List<Notification> chats = new ArrayList<>();
@@ -52,43 +57,85 @@ public class ConversionActivity extends BaseActivity {
         getSupportActionBar().setTitle(provider.getName());
 
         ListView chatListView = findViewById(R.id.chat_list_view);
-        adapter = new MessageThreadAdapter(chats, this,provider);
+        adapter = new MessageThreadAdapter(chats, this, provider);
         MuzimaApplication muzimaApplication = (MuzimaApplication) getApplicationContext();
         notificationController = muzimaApplication.getNotificationController();
         ProviderController providerController = muzimaApplication.getProviderController();
 
         loggedInUser = muzimaApplication.getAuthenticatedUser().getPerson();
 
-        FloatingActionButton floatingActionButton = findViewById(R.id.send_message_fab);
+        final FloatingActionButton floatingActionButton = findViewById(R.id.send_message_fab);
         composeEditText = findViewById(R.id.type_message_editText);
         chatListView.setAdapter(adapter);
+
+        floatingActionButton.setBackgroundColor(getResources().getColor(R.color.hint_text_grey));
 
 //        getIncomingMessages();
         try {
             getOutgoingMessages();
         } catch (NotificationController.NotificationSaveException e) {
-            Log.e(getClass().getSimpleName(),e.getMessage());
+            Log.e(getClass().getSimpleName(), e.getMessage());
         }
 
         setUpMessage();
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            floatingActionButton.setImageDrawable(getDrawable(R.drawable.ic_action_need_attention));
+        }
+
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Notification> messageItems = null;
-                Notification notification = createNotificationFromMessage(composeEditText.getText().toString());
-                messageItems = Collections.singletonList(notification);
-                adapter.updateResults(messageItems);
-                adapter.notifyDataSetChanged();
-                composeEditText.setText("");
+                if (!composeEditText.getText().toString().isEmpty()) {
+                    List<Notification> messageItems = null;
+                    Notification notification = createNotificationFromMessage(composeEditText.getText().toString());
+                    messageItems = Collections.singletonList(notification);
+                    adapter.updateResults(messageItems);
+                    adapter.notifyDataSetChanged();
+                    composeEditText.setText("");
 
-                try {
-                    notificationController.saveNotification(notification);
-                } catch (NotificationController.NotificationSaveException e) {
-                    e.printStackTrace();
+                    try {
+                        notificationController.saveNotification(notification);
+                    } catch (NotificationController.NotificationSaveException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.error_empty_message_text, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        composeEditText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() != 0) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        floatingActionButton.setImageDrawable(getDrawable(R.drawable.ic_action_send));
+                    }
+                } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        floatingActionButton.setImageDrawable(getDrawable(R.drawable.ic_action_need_attention));
+                    }
                 }
             }
         });
+
+//        if (!composeEditText.getText().toString().isEmpty()){
+//                    floatingActionButton.setBackgroundColor(getResources().getColor(R.color.primary_blue));
+//                }
+//                return false;
+//            }
+//        });
 
         composeEditText.setScroller(new Scroller(getApplicationContext()));
         composeEditText.setVerticalScrollBarEnabled(true);
@@ -112,7 +159,7 @@ public class ConversionActivity extends BaseActivity {
         return notification;
     }
 
-    private void setUpMessage(){
+    private void setUpMessage() {
 //        for (Notification providerSentMessage : allMessagesThreadForPerson) {
 //            providerSentMessage.getDateCreated();
 //            chats.add(new MessageItem(providerSentMessage.getPayload(),true));
@@ -131,10 +178,10 @@ public class ConversionActivity extends BaseActivity {
             allMessagesThreadForPerson.addAll(notificationBySender);
             allMessagesThreadForPerson.addAll(notificationByReceiver);
         } catch (NotificationController.NotificationFetchException e) {
-            Log.e(getClass().getSimpleName(),e.getMessage());
+            Log.e(getClass().getSimpleName(), e.getMessage());
         }
 
-        for(Notification notification:notificationBySender){
+        for (Notification notification : notificationBySender) {
             notification.setStatus(Constants.NotificationStatusConstants.NOTIFICATION_READ);
             notificationController.saveNotification(notification);
         }

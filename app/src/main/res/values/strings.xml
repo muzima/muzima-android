@@ -705,4 +705,5 @@
     <string name="client_registration_question_text">Would you like to register client in mUzima ?</string>
     <string name="general_loading_encounters">Encounters are still loading</string>
     <string name="number_hashtag_representation">##</string>
+    <string name="error_empty_message_text">Cannot send empty message.</string>
 </resources>
