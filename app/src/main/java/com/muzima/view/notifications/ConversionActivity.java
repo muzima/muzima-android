@@ -66,10 +66,8 @@ public class ConversionActivity extends BaseActivity {
 //        getIncomingMessages();
         try {
             getOutgoingMessages();
-        } catch (ParseException | NotificationController.NotificationFetchException | ProviderController.ProviderLoadException e) {
-            Log.e(getClass().getSimpleName(),"Unable to obtain outgoing messages");
         } catch (NotificationController.NotificationSaveException e) {
-            e.printStackTrace( );
+            Log.e(getClass().getSimpleName(),e.getMessage());
         }
 
         setUpMessage();
@@ -123,7 +121,7 @@ public class ConversionActivity extends BaseActivity {
         chats.addAll(patientSentMessages);
     }
 
-    private void getOutgoingMessages() throws ParseException, ProviderController.ProviderLoadException, NotificationController.NotificationFetchException, NotificationController.NotificationSaveException {
+    private void getOutgoingMessages() throws NotificationController.NotificationSaveException {
         List<Notification> allMessagesThreadForPerson = new ArrayList<>();
         List<Notification> notificationBySender = new ArrayList<>();
         List<Notification> notificationByReceiver = new ArrayList<>();
@@ -132,8 +130,8 @@ public class ConversionActivity extends BaseActivity {
             notificationByReceiver = notificationController.getAllNotificationsByReceiver(provider.getPerson().getUuid());
             allMessagesThreadForPerson.addAll(notificationBySender);
             allMessagesThreadForPerson.addAll(notificationByReceiver);
-        } catch (NotificationController.NotificationFetchException | ParseException e) {
-            e.printStackTrace( );
+        } catch (NotificationController.NotificationFetchException e) {
+            Log.e(getClass().getSimpleName(),e.getMessage());
         }
 
         for(Notification notification:notificationBySender){

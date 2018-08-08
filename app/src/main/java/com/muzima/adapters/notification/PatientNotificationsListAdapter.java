@@ -109,7 +109,7 @@ public class PatientNotificationsListAdapter extends NotificationAdapter {
                 }
                 Log.d(getClass().getSimpleName(), "#Retrieved " + (allNotifications != null ? allNotifications.size():0) + " notifications from Database." +
                         " And filtered " + (filteredNotifications != null ? filteredNotifications.size():0) + " client notifications");
-            } catch (NotificationController.NotificationFetchException | PatientController.PatientLoadException | ParseException e) {
+            } catch (NotificationController.NotificationFetchException | PatientController.PatientLoadException e) {
                 Log.e(getClass().getSimpleName(), "Exception occurred while fetching the notifications", e);
             }
             return filteredNotifications;

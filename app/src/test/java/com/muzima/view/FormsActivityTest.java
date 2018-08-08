@@ -28,14 +28,14 @@ public class FormsActivityTest {
     private ListView formsListView;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
 //        activity = new FormsActivity();
 //        activity.onCreate(null);
 //        formsListView = (ListView) activity.findViewById(R.id.forms_list);
     }
 
     @Test
-    public void onCreate_listviewShouldHaveAnAdapter() throws Exception {
+    public void onCreate_listviewShouldHaveAnAdapter() {
 //        assertNotNull(formsListView.getAdapter());
     }
 }

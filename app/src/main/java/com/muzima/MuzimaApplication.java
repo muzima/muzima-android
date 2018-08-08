@@ -102,6 +102,8 @@ public class MuzimaApplication extends Application {
 
     static {
         // see http://rtyley.github.io/spongycastle/
+        //TODO There is need to start using Google provided security provider (AndroidOpenSSL)
+        //TODO Shipping with both spongycastler  and the default AndroidOpenSSL significantly increases the apk size.
         Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
     }
 

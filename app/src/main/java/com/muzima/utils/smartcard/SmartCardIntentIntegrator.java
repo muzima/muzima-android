@@ -49,7 +49,7 @@ public class SmartCardIntentIntegrator {
         startIntentActivityForResult(intent,SMARTCARD_READ_REQUEST_CODE);
 
     }
-    public void initiateCardWrite(String SHRModel) throws IOException {
+    public void initiateCardWrite(String SHRModel) {
         Intent intent = new Intent();
         intent.setAction(ACTION_WRITE_DATA);
         intent.putExtra(EXTRA_AUTH_TOKEN,AUTH_TOKEN_VALUE);

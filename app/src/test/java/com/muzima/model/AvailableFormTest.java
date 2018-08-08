@@ -28,7 +28,7 @@ public class AvailableFormTest {
             Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER, Constants.FORM_JSON_DISCRIMINATOR_SHR_DEMOGRAPHICS_UPDATE,
             Constants.FORM_JSON_DISCRIMINATOR_SHR_ENCOUNTER};
     @Test
-    public void shouldReturnFalseIfHasNoRegistrationDiscriminator() throws Exception {
+    public void shouldReturnFalseIfHasNoRegistrationDiscriminator() {
         AvailableForm availableForm = new AvailableForm();
 
         assertFalse(availableForm.isRegistrationForm());
@@ -40,7 +40,7 @@ public class AvailableFormTest {
     }
 
     @Test
-    public void shouldReturnTrueIfHasRegistrationDiscriminator() throws Exception {
+    public void shouldReturnTrueIfHasRegistrationDiscriminator() {
         AvailableForm availableForm = new AvailableForm();
         for(String discriminator: registrationDiscriminators) {
             availableForm.setDiscriminator(discriminator);

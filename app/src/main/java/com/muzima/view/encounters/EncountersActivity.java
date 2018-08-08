@@ -42,17 +42,12 @@ public class EncountersActivity extends BroadcastListenerActivity implements Ada
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_encounters);
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
-        try {
-            setupPatientMetadata();
-            setupStillLoadingView();
-            setupPatientEncounters();
-        } catch (PatientController.PatientLoadException e) {
-            Toast.makeText(this, getString(R.string.error_patient_fetch), Toast.LENGTH_SHORT).show();
-            finish();
-        }
+        setupPatientMetadata();
+        setupStillLoadingView();
+        setupPatientEncounters();
     }
 
-    private void setupPatientMetadata() throws PatientController.PatientLoadException {
+    private void setupPatientMetadata() {
 
         TextView patientName = findViewById(R.id.patientName);
 

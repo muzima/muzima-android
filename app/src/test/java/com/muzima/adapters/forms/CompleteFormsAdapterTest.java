@@ -48,7 +48,7 @@ public class CompleteFormsAdapterTest {
     private FormController formController;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         formController = mock(FormController.class);
         Context context = mock(Context.class);
         formsAdapter = new CompleteFormsAdapter(context, 0, formController){
@@ -76,7 +76,7 @@ public class CompleteFormsAdapterTest {
     }
 
     @Test
-    public void shouldGroupPatients() throws Exception, FormController.FormFetchException {
+    public void shouldGroupPatients() throws FormController.FormFetchException {
         BackgroundQueryTask queryTask = new BackgroundQueryTask(formsAdapter);
         final Patient patient1 = patient("identifier1");
         final Patient patient2 = patient("identifier2");

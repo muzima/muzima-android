@@ -69,8 +69,7 @@ public class MainActivity extends BroadcastListenerActivity {
     private void showIncompleteWizardWarning() {
         if (!new WizardFinishPreferenceService(this).isWizardFinished()) {
             if (checkIfDisclaimerIsAccepted()) {
-                Toast
-                        .makeText(getApplicationContext(), getString(R.string.error_wizard_interrupted), Toast.LENGTH_LONG)
+                Toast.makeText(getApplicationContext(), getString(R.string.error_wizard_interrupted), Toast.LENGTH_LONG)
                         .show();
             }
 
@@ -209,23 +208,23 @@ public class MainActivity extends BroadcastListenerActivity {
 
         @Override
         protected void onPostExecute(HomeActivityMetadata homeActivityMetadata) {
-            TextView cohortsDescriptionView = (TextView) mMainView.findViewById(R.id.cohortDescription);
+            TextView cohortsDescriptionView = mMainView.findViewById(R.id.cohortDescription);
             cohortsDescriptionView.setText(getString(R.string.hint_dashboard_cohorts_description,
                     homeActivityMetadata.syncedCohorts, homeActivityMetadata.totalCohorts));
 
-            TextView patientDescriptionView = (TextView) mMainView.findViewById(R.id.patientDescription);
+            TextView patientDescriptionView = mMainView.findViewById(R.id.patientDescription);
             patientDescriptionView.setText(getString(R.string.hint_dashboard_clients_description,
                     homeActivityMetadata.syncedPatients));
 
-            TextView formsDescription = (TextView) mMainView.findViewById(R.id.formDescription);
+            TextView formsDescription = mMainView.findViewById(R.id.formDescription);
             formsDescription.setText(getString(R.string.hint_dashboard_forms_description,
                     homeActivityMetadata.incompleteForms, homeActivityMetadata.completeAndUnsyncedForms));
 
-            TextView notificationsDescription = (TextView) mMainView.findViewById(R.id.notificationDescription);
+            TextView notificationsDescription = mMainView.findViewById(R.id.notificationDescription);
             notificationsDescription.setText(getString(R.string.hint_dashboard_notifications_description,
                     homeActivityMetadata.newNotifications, homeActivityMetadata.totalNotifications));
 
-            TextView currentUser = (TextView) findViewById(R.id.currentUser);
+            TextView currentUser = findViewById(R.id.currentUser);
             currentUser.setText(getResources().getString(R.string.general_welcome) + " " + credentials.getUserName());
 
         }

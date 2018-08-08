@@ -38,7 +38,10 @@ android {
         versionName "2.2.0"
         manifestPlaceholders = [versionCode: defaultConfig.versionCode, versionName: defaultConfig.versionName]
 
+        //mUzima-android code base is beyond method ref limit - Enabled multidex - disabled jumbo dex option.
+        //refer to TODO MUZIMA-621
         multiDexEnabled true
+
     }
 
     packagingOptions {
@@ -57,9 +60,7 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
-    dexOptions {
-        jumboMode true
-    }
+
 }
 
 repositories {
@@ -87,11 +88,11 @@ dependencies {
     compile group: 'com.azimolabs.keyboardwatcher', name: 'keyboardwatcher', version: '0.1.3'
     compile group: 'org.jsoup', name: 'jsoup', version: '1.7.3'
     compile 'com.github.lguipeng:BubbleView:1.0.1'
-
     compile(group: 'com.muzima', name: 'muzima-api', version: '1.1.4') {
         exclude(module: 'guice')
     }
     compile group: 'com.google.inject', name: 'guice', version: '3.0', classifier: 'no_aop'
+
     testCompile fileTree('lib/stickylistheaders-1.0.0.jar')
     testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'
     testCompile group: 'junit', name: 'junit-dep', version: '4.10'

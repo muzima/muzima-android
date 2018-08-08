@@ -49,7 +49,7 @@ public class NotificationController {
         this.notificationController = this;
     }
 
-    public Notification getNotificationByUuid(String uuid) throws NotificationFetchException, ParseException {
+    public Notification getNotificationByUuid(String uuid) throws NotificationFetchException {
         try {
             return notificationService.getNotificationByUuid(uuid);
         } catch (IOException e) {
@@ -57,7 +57,7 @@ public class NotificationController {
         }
     }
 
-    public List<Notification> getAllNotificationsByReceiver(String receiverUuid, String status) throws NotificationFetchException, ParseException {
+    public List<Notification> getAllNotificationsByReceiver(String receiverUuid, String status) throws NotificationFetchException {
         try {
             return notificationService.getNotificationByReceiver(receiverUuid, status);
         } catch (IOException e) {
@@ -65,7 +65,7 @@ public class NotificationController {
         }
     }
 
-    public List<Notification> getAllNotificationsByReceiver(String receiverUuid) throws NotificationFetchException, ParseException {
+    public List<Notification> getAllNotificationsByReceiver(String receiverUuid) throws NotificationFetchException {
         try {
             return notificationService.getNotificationByReceiver(receiverUuid);
         } catch (IOException e) {
@@ -73,7 +73,7 @@ public class NotificationController {
         }
     }
 
-    private List<Notification> getAllNotificationsBySender(String senderUuid, String status) throws NotificationFetchException, ParseException {
+    private List<Notification> getAllNotificationsBySender(String senderUuid, String status) throws NotificationFetchException {
         try {
             return notificationService.getNotificationBySender(senderUuid, status);
         } catch (IOException e) {
@@ -81,7 +81,7 @@ public class NotificationController {
         }
     }
 
-    public List<Notification> getAllNotificationsBySender(String senderUuid) throws NotificationFetchException, ParseException {
+    public List<Notification> getAllNotificationsBySender(String senderUuid) throws NotificationFetchException {
         try {
             return notificationService.getNotificationBySender(senderUuid);
         } catch (IOException e) {

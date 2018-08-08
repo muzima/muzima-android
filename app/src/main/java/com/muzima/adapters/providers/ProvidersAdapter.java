@@ -2,6 +2,7 @@ package com.muzima.adapters.providers;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +56,7 @@ public abstract class ProvidersAdapter extends ListAdapter<Provider> {
                 holder.setId("");
             }
         } catch (NotificationController.NotificationFetchException | ParseException e) {
-            e.printStackTrace( );
+            Log.e(getClass().getSimpleName(),e.getMessage());
         }
         holder.setName(getItem(position).getName( ));
         holder.markUnreadNotification( );

@@ -31,7 +31,7 @@ import static org.junit.matchers.JUnitMatchers.containsString;
 public class HTMLPatientJSONMapperTest {
 
     @Test
-    public void shouldAddPatientDetailsOnJSONFromPatient() throws Exception {
+    public void shouldAddPatientDetailsOnJSONFromPatient() {
         Date birthdate = new Date();
         SimpleDateFormat formattedDate = new SimpleDateFormat(STANDARD_DATE_FORMAT);
         Patient patient = patient(new Date());
@@ -52,7 +52,7 @@ public class HTMLPatientJSONMapperTest {
     }
 
     @Test
-    public void shouldNotFailIFBirthDateIsNull() throws Exception {
+    public void shouldNotFailIFBirthDateIsNull() {
         Patient patient = patient(null);
         HTMLPatientJSONMapper htmlPatientJSONMapper = new HTMLPatientJSONMapper();
         User user = new User();

@@ -21,6 +21,7 @@ import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.util.Log;
 import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -229,7 +230,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             try {
                 locations = locationController.getAllLocations();
             } catch (LocationController.LocationLoadException e) {
-                e.printStackTrace( );
+                Log.e(getClass().getSimpleName(),e.getMessage());
             }
             CharSequence entries[] = new String[locations.size()+1];
             CharSequence entryValues[] = new String[locations.size()+1];
@@ -253,7 +254,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         try {
             locations = locationController.getAllLocations();
         } catch (LocationController.LocationLoadException e) {
-            e.printStackTrace( );
+            Log.e(getClass().getSimpleName(),e.getMessage());
         }
 
         String locationName = getResources().getString(R.string.no_default_encounter_location);
@@ -321,7 +322,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                     try {
                         locations = locationController.getAllLocations();
                     } catch (LocationController.LocationLoadException e) {
-                        e.printStackTrace( );
+                        Log.e(getClass().getSimpleName(),e.getMessage());
                     }
                     String locationName = "";
                     for (Location location : locations) {

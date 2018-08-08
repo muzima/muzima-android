@@ -230,7 +230,7 @@ public class PatientController {
         }
     }
 
-    public void deleteAllPatients() throws PatientDeleteException,IOException {
+    public void deleteAllPatients() throws IOException {
         List<Patient> allPatients = patientService.getAllPatients();
         patientService.deletePatients(allPatients);
     }

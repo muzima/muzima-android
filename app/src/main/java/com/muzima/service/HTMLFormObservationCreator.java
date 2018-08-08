@@ -164,8 +164,8 @@ public class HTMLFormObservationCreator {
         return observations;
     }
 
-    private Observation createObservation(String conceptName, String value) throws JSONException,
-            ConceptController.ConceptFetchException, ConceptController.ConceptSaveException{
+    private Observation createObservation(String conceptName, String value) throws
+            ConceptController.ConceptFetchException {
         try {
             Concept concept = observationParserUtility.getConceptEntity(conceptName, ObservationParserUtility.isFormattedAsConcept(value));
             Observation observation = observationParserUtility.getObservationEntity(concept, value);

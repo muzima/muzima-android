@@ -126,15 +126,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
         }
         if (smartCardRecord != null) {
             SmartCardIntentIntegrator SHRIntegrator = new SmartCardIntentIntegrator(this);
-            try {
-                SHRIntegrator.initiateCardWrite(smartCardRecord.getPlainPayload());
-            } catch (IOException e) {
-                Log.e("TAG", "Could not write to card", e);
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setCancelable(true)
-                        .setMessage("Could not write to card. " + e.getMessage())
-                        .show();
-            }
+            SHRIntegrator.initiateCardWrite(smartCardRecord.getPlainPayload());
             Toast.makeText(getApplicationContext(), "Opening Card Reader", Toast.LENGTH_LONG).show();
         }
     }
