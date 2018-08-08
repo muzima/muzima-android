@@ -17,11 +17,11 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
-            android:layout_margin="8dp"
-            android:src="@drawable/edit_a" />
+            android:layout_margin="8dp"/>
 
         <LinearLayout
             android:id="@+id/no_data_layout"

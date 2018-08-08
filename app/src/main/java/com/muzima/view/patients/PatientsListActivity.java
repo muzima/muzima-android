@@ -79,6 +79,7 @@ import java.util.UUID;
 
 public class PatientsListActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener,
         ListAdapter.BackgroundListQueryTaskListener {
+
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
     private static final String QUICK_SEARCH = "quickSearch";

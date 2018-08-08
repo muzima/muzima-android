@@ -73,7 +73,7 @@
     <string name="error_sync_not_allowed">opération interdite lorsque la synchronisation est en cours</string>
     <string name="error_tag_fetch">Une erreur s\'est produite lors de la récupération des balises du repositoire local</string>
     <string name="error_target_application_find">Aucune application ciblée</string>
-    <string formatted="false" name="error_username_invalid_format">Caractère non valide dans le nom d\'utilisateur. Ceux-ci ne sont pas autorisés: %%s</string>
+    <string formatted="false" name="error_username_invalid_format">Caractère non valide dans le nom d\'utilisateur. Ceux-ci ne sont pas autorisés: %s</string>
     <string name="error_wizard_interrupted">L\'assistant a été interrompu, s\'il vous plaît déconnecter et exécuter à nouveau l\'assistant.</string>
 
     <string name="failure_obtain_smartcard_record">Impossible d\'obtenir un enregistrement de carte à puce pour écrire sur la carte.</string>
@@ -90,7 +90,7 @@
     <string name="general_agree">Accordé</string>
     <string name="general_alert">Alerte!</string>
     <string name="general_all">Tout</string>
-    <string formatted="false" name="general_application_version">Version %%1$s</string>
+    <string formatted="false" name="general_application_version">Version %1$s</string>
     <string name="general_cancel">Annuler</string>
     <string name="general_caution">Prudence!</string>
     <string name="general_client_list">Liste des clients</string>
@@ -164,10 +164,10 @@
                  Nom et recherche uniquement dans l\'appareil</string>
     <string name="hint_client_remote_search">Votre recherche comprend le numéro identificateur du client, prenom et le nom de famille. prénom et recherche sur le serveur</string>
     <string name="hint_client_search">Rechercher les données des clients</string>
-    <string formatted="false" name="hint_client_summary_encounters">%%d Rencontres</string>
-    <string formatted="false" name="hint_client_summary_forms">%%d incomplet, %%d Complet, %%d Recommandé</string>
-    <string formatted="false" name="hint_client_summary_notifications">%%d nouvelles notifications, %%d Notifications totale</string>
-    <string formatted="false" name="hint_client_summary_observations">%%d Observations</string>
+    <string formatted="false" name="hint_client_summary_encounters">%d Rencontres</string>
+    <string formatted="false" name="hint_client_summary_forms">%d incomplet, %d Complet, %d Recommandé</string>
+    <string formatted="false" name="hint_client_summary_notifications">%d nouvelles notifications, %d Notifications totale</string>
+    <string formatted="false" name="hint_client_summary_observations">%d Observations</string>
     <string name="hint_cohort_download">Sélectionnez une ou plusieurs cohortes dans la liste et cliquez sur \"Suivant\" pour télécharger</string>
     <string name="hint_cohort_filter">Commencez à taper pour filtrer les cohortes …</string>
     <string name="hint_cohort_list_download">S\'il vous plaît appuyez sur charger pour récupérer la liste des cohortes disponibles à partir du serveur</string>
@@ -188,10 +188,10 @@
     <string name="hint_custom_concept_help">Ici vous définissez les concepts dont les données seront incluses dans le téléchargement ultérieur.</string>
     <string name="hint_custom_location_help">Ici vous téléchargez des emplacements qui apparaîtront dans les formulaires.</string>
     <string name="hint_custom_provider_help">Ici vous téléchargez les fournisseurs qui apparaîtront dans les formulaires.</string>
-    <string formatted="false" name="hint_dashboard_clients_description">%%d Synchronisé</string>
-    <string formatted="false" name="hint_dashboard_cohorts_description">%%d Synchronisé, %%d Total</string>
-    <string formatted="false" name="hint_dashboard_forms_description">%%d Incomplet, %%d Complet </string>
-    <string formatted="false" name="hint_dashboard_notifications_description">%%d Nouveau, %%d Total</string>
+    <string formatted="false" name="hint_dashboard_clients_description">%d Synchronisé</string>
+    <string formatted="false" name="hint_dashboard_cohorts_description">%d Synchronisé, %d Total</string>
+    <string formatted="false" name="hint_dashboard_forms_description">%d Incomplet, %d Complet </string>
+    <string formatted="false" name="hint_dashboard_notifications_description">%d Nouveau, %d Total</string>
     <string name="hint_default_encounter_location">Cet emplacement de rencontre sélectionné sera l\'emplacement de rencontre
         par défaut pour tous les formulaires
     </string>
@@ -210,7 +210,7 @@
     <string name="hint_image_caption_prompt">S\'il vous plaît entrer une légende pour l\'image</string>
     <string name="hint_incomplete_form_unavailable">Les formulaires incomplets ne sont disponibles que si vous avez enregistré un formulaire partiellement rempli</string>
     <string name="hint_install_psmart">Voulez-vous installer l\'application P-Smart?</string>
-    <string formatted="false" name="hint_last_synced">Dernière synchronisation effectuée: %%s</string>
+    <string formatted="false" name="hint_last_synced">Dernière synchronisation effectuée: %s</string>
     <string name="hint_loading_progress">Chargement en cours…</string>
     <string name="hint_local_connection_unavailable">S\'il vous plaît connecter votre appareil et essayez à nouveau</string>
     <string name="hint_location_pref_add">Ajouter le(s) emplacement(s) que vous souhaitez télécharger.</string>
@@ -258,23 +258,23 @@
     <string name="info_cohort_downloaded">1 (une) cohorte Téléchargée </string>
     <string name="info_cohort_fetch_in_progress">Récupération des cohortes déjà en cours, demande ignorée</string>
     <string name="info_cohort_load">Chargement des cohortes …</string>
-    <string formatted="false" name="info_cohort_new_patient_download">%%d nouveaux clients téléchargés pour %%d cohortes.</string>
+    <string formatted="false" name="info_cohort_new_patient_download">%d nouveaux clients téléchargés pour %d cohortes.</string>
     <string name="info_cohort_not_downloaded">Aucune cohorte téléchargée</string>
     <string name="info_cohort_patient_download"> 1 (une)client Téléchargé pour 1(une) cohorte</string>
     <string name="info_cohort_patient_not_download">aucun patients n\'a été téléchargé</string>
-    <string formatted="false" name="info_cohort_patients_download">%%d patients Téléchargé pour 1(une) cohorte</string>
+    <string formatted="false" name="info_cohort_patients_download">%d patients Téléchargé pour 1(une) cohorte</string>
     <string name="info_cohort_prefixes_unavailable">aucun Prefixe de Cohorte Ajouté</string>
-    <string formatted="false" name="info_cohorts_downloaded">%%d cohortes Téléchargé</string>
-    <string formatted="false" name="info_cohorts_patient_download"> 1 client Téléchargé pour%%d cohortes</string>
-    <string formatted="false" name="info_cohorts_patients_download">%%d patients Téléchargé pour%%d cohortes</string>
+    <string formatted="false" name="info_cohorts_downloaded">%d cohortes Téléchargé</string>
+    <string formatted="false" name="info_cohorts_patient_download"> 1 client Téléchargé pour%d cohortes</string>
+    <string formatted="false" name="info_cohorts_patients_download">%d patients Téléchargé pour%d cohortes</string>
     <string name="info_cohorts_unavailable">aucune cohorte disponibles</string>
     <string name="info_complete_form_unavailable">aucun formulaire complet et aucun formulaire synchronisé</string>
-    <string formatted="false" name="info_concept_delete_success">%%d concepts supprimées avec succès!</string>
+    <string formatted="false" name="info_concept_delete_success">%d concepts supprimées avec succès!</string>
     <string name="info_concept_download">téléchargement en cours des concepts</string>
     <string name="info_concept_downloaded">1 (une)concept Téléchargé</string>
     <string name="info_concept_not_downloaded">aucun concept n\'a été téléchargé</string>
     <string name="info_concept_unavailable">Aucun concept n\'a été ajouté encore.</string>
-    <string formatted="false" name="info_concepts_downloaded">%%d concepts Téléchargé</string>
+    <string formatted="false" name="info_concepts_downloaded">%d concepts Téléchargé</string>
     <string name="info_disclaimer"><![CDATA[
      <P>
         MUzima est distribué sous les termes de la licence publique de Mozilla, v. 2.0 (MPL 2.0).
@@ -344,59 +344,59 @@
             (Copyright 2014, Les administrateurs de l\'Université d\'Indiana).
             </ P>
     ]]></string>
-    <string formatted="false" name="info_download_complete">Téléchargement completé avec l\'état %%d</string>
+    <string formatted="false" name="info_download_complete">Téléchargement completé avec l\'état %d</string>
     <string name="info_downloaded_forms_unavailable">aucun formulaire n\'a été téléchargé</string>
     <string name="info_downloaded_image">Image en Téléchargée</string>
     <string name="info_downloaded_reports_unavailable">Aucun rapport n\'a été téléchargé</string>
     <string name="info_draft_form_save_success">Le brouillon du formulaire a été enregistré avec succès.</string>
     <string name="info_encounter_download">téléchargement des rencontres en cours</string>
-    <string formatted="false" name="info_encounter_download_progress">Téléchargement en cours des rencontres pour le client%%d de %%d.</string>
-    <string formatted="false" name="info_encounter_not_downloaded_progress">Rencontres pour le client %%d %%d n\'ont pas été téléchargés.</string>
+    <string formatted="false" name="info_encounter_download_progress">Téléchargement en cours des rencontres pour le client%d de %d.</string>
+    <string formatted="false" name="info_encounter_not_downloaded_progress">Rencontres pour le client %d %d n\'ont pas été téléchargés.</string>
     <string name="info_encounter_observation_download">Téléchargement des observations et de rencontres …</string>
     <string name="info_encounter_patient_downloaded">1 (une) rencontre téléchargée pour 1(un) client</string>
     <string name="info_encounter_patient_not_downloaded">N\'a pas téléchargé aucune rencontres</string>
-    <string formatted="false" name="info_encounter_patients_downloaded">1(une) rencontre a été Téléchargé pour %%d patients</string>
+    <string formatted="false" name="info_encounter_patients_downloaded">1(une) rencontre a été Téléchargé pour %d patients</string>
     <string name="info_encounter_unavailable">Aucune rencontre n\'est disponible</string>
-    <string formatted="false" name="info_encounters_patient_downloaded">%%d rencontres Téléchargé pour 1(un) patient</string>
-    <string formatted="false" name="info_encounters_patients_downloaded">%%d rencontres Téléchargés pour %%d patients</string>
-    <string formatted="false" name="info_form_data_delete">Formulaires%%d supprimés</string>
+    <string formatted="false" name="info_encounters_patient_downloaded">%d rencontres Téléchargé pour 1(un) patient</string>
+    <string formatted="false" name="info_encounters_patients_downloaded">%d rencontres Téléchargés pour %d patients</string>
+    <string formatted="false" name="info_form_data_delete">Formulaires%d supprimés</string>
     <string name="info_form_data_save_success">Les données de formulaire remplies ont été enregistrées avec succès.</string>
     <string name="info_form_data_upload_fail">Échec de l\'envoi des données de formulaire au serveur actuel. Voulez-vous continuer?</string>
     <string name="info_form_data_upload_sucess">chargement des données du formulaire avec succès</string>
     <string name="info_form_delete_integrity_failure">Échec de l\'intégrité: Impossible de supprimer les données de formulaire d\'enregistrement qui ont des données de formulaire de rencontre associées </string>
     <string name="info_form_delete_success">Formulaires supprimés avec succès</string>
-    <string formatted="false" name="info_form_download">Téléchargement en cours de %%d formulaires</string>
-    <string formatted="false" name="info_form_download_delete">%%d formulaires Téléchargé et %%d formulaires retiré</string>
+    <string formatted="false" name="info_form_download">Téléchargement en cours de %d formulaires</string>
+    <string formatted="false" name="info_form_download_delete">%d formulaires Téléchargé et %d formulaires retiré</string>
     <string name="info_form_downloaded"> 1 (un) formuliare Téléchargé</string>
     <string name="info_form_fetch_in_progress">Extraction des formulaires déjà en cours,demande ignorée</string>
     <string name="info_form_load">Chargement des formulaires …</string>
     <string name="info_form_metadata_download">Téléchargement en cours des métadonnées des formulaires</string>
     <string name="info_form_not_downloaded">aucun formulaires téléchargés</string>
-    <string formatted="false" name="info_form_template_concept_download">%%d modèles de formulaire Téléchargé et %%d concepts</string>
+    <string formatted="false" name="info_form_template_concept_download">%d modèles de formulaire Téléchargé et %d concepts</string>
     <string name="info_form_template_download">Téléchargement en cours de modèles de formulaire </string>
     <string name="info_form_template_downloaded">1 (un)Modèle de formulaire téléchargé</string>
     <string name="info_form_template_not_downloaded">aucun modèle de formulaire téléchargé</string>
     <string name="info_form_template_recommended">Modèles de formulaire recommandé</string>
-    <string formatted="false" name="info_form_template_with_count_download">Téléchargement en cours de modèles de formulaire pour %%d formulaires</string>
-    <string formatted="false" name="info_form_templates_downloaded">%%d modèles de formulaires Téléchargés </string>
+    <string formatted="false" name="info_form_template_with_count_download">Téléchargement en cours de modèles de formulaire pour %d formulaires</string>
+    <string formatted="false" name="info_form_templates_downloaded">%d modèles de formulaires Téléchargés </string>
     <string name="info_form_upload">téléchargement en cours des formulaires</string>
     <string name="info_form_upload_in_progress">téléchargement déjà en cours des formulaires, demande ignorée</string>
     <string name="info_form_upload_success">Formulaires téléchargés avec succès</string>
-    <string formatted="false" name="info_forms_downloaded">%%d Formulaires téléchargés</string>
+    <string formatted="false" name="info_forms_downloaded">%d Formulaires téléchargés</string>
     <string name="info_forms_unavailable">Aucun formulaire disponible</string>
     <string name="info_incomplete_form_unvailable">Pas de formulaires incomplets</string>
     <string name="info_initial_setup_progress">Configuration initiale en cours d\'exécution. Patientez s\'il vous plaît</string>
     <string name="info_last_sync_unavailable">Pas encore synchronisé</string>
-    <string formatted="false" name="info_location_delete_success">%%d emplacements supprimés avec succès</string>
+    <string formatted="false" name="info_location_delete_success">%d emplacements supprimés avec succès</string>
     <string name="info_location_download">Téléchargement en cours des Emplacements</string>
     <string name="info_location_downloaded">1 (un) emplacement téléchargé</string>
     <string name="info_location_not_downloaded">N\'a pas téléchargé aucun emplacement</string>
     <string name="info_location_unavailable">Aucun emplacement n\'a encore été ajouté</string>
-    <string formatted="false" name="info_locations_downloaded">%%d emplacements téléchargé</string>
+    <string formatted="false" name="info_locations_downloaded">%d emplacements téléchargé</string>
     <string name="info_muzima_sync_service_finish">synchronisation du service mUzima terminée</string>
     <string name="info_muzima_sync_service_in_progress">synchronisation du service MUzima en cours d\'exécution</string>
-    <string formatted="false" name="info_new_cohort_download">%%d nouvelles cohortes Téléchargée</string>
-    <string formatted="false" name="info_new_cohort_download_delete">%%d nouvelles cohortes Téléchargé et  %%d cohortes retirées</string>
+    <string formatted="false" name="info_new_cohort_download">%d nouvelles cohortes Téléchargée</string>
+    <string formatted="false" name="info_new_cohort_download_delete">%d nouvelles cohortes Téléchargé et  %%d cohortes retirées</string>
     <string formatted="false" name="info_new_encounter_download">%%d nouvelles observations Téléchargées</string>
     <string formatted="false" name="info_new_encounter_download_delete">%%d nouvelles rencontres Téléchargées et  %%d rencontres retirées</string>
     <string name="info_new_notification">Nouvelle notification</string>
