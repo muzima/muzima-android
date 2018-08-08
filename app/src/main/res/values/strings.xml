@@ -88,7 +88,7 @@
     <string name="error_sync_not_allowed">Action not allowed while sync is in progress</string>
     <string name="error_tag_fetch">Something went wrong while fetching tags from local repo</string>
     <string name="error_target_application_find">No target applications</string>
-    <string name="error_username_invalid_format">Invalid Character in Username. These are not allowed: %%s
+    <string name="error_username_invalid_format">Invalid Character in Username. These are not allowed: %s
     </string>
     <string name="error_wizard_interrupted">Wizard was interrupted, please logout and run the wizard again.</string>
 
@@ -108,7 +108,7 @@
     <string name="general_agree">Agree</string>
     <string name="general_alert">Alert!</string>
     <string name="general_all">All</string>
-    <string name="general_application_version">Version %%1$s</string>
+    <string name="general_application_version">Version %1$s</string>
     <string name="general_cancel">Cancel</string>
     <string name="general_caution">Caution!</string>
     <string name="general_client_list">Client List</string>
@@ -189,11 +189,12 @@
         name and searched on the server
     </string>
     <string name="hint_client_search">Search clients</string>
-    <string formatted="false" name="hint_client_summary_encounters">%%d Encounters</string>
-    <string formatted="false" name="hint_client_summary_forms">%%d Incomplete, %%d Complete, %%d Recommended</string>
-    <string formatted="false" name="hint_client_summary_notifications">%%d New Notifications, %%d Total Notifications
+    <string formatted="false" name="hint_client_summary_encounters">%d Encounters</string>
+    <string formatted="false" name="hint_client_summary_forms">%d Incomplete, %d Complete, %d Recommended</string>
+    <string formatted="false" name="hint_client_summary_notifications">%d New Notifications, %d Total Notifications
     </string>
-    <string formatted="false" name="hint_client_summary_observations">%%d Observations</string>
+    <string formatted="false" name="info_form_download_delete">Downloaded %d forms and retired %d forms</string>
+    <string formatted="false" name="hint_client_summary_observations">%d Observations</string>
     <string name="hint_cohort_download">Select one or more cohorts from the list and click on \'Next\' to download
     </string>
     <string name="hint_cohort_filter">Start typing to filter the cohorts…</string>
@@ -229,10 +230,10 @@
     </string>
     <string name="hint_custom_location_help">Here you download locations that will show up in the forms.</string>
     <string name="hint_custom_provider_help">Here you download providers that will show up in the forms.</string>
-    <string formatted="false" name="hint_dashboard_clients_description">%%d Synced</string>
-    <string formatted="false" name="hint_dashboard_cohorts_description">%%d Synced, %%d Total</string>
-    <string formatted="false" name="hint_dashboard_forms_description">%%d Incomplete, %%d Complete</string>
-    <string formatted="false" name="hint_dashboard_notifications_description">%%d New, %%d Total</string>
+    <string formatted="false" name="hint_dashboard_clients_description">%d Synced</string>
+    <string formatted="false" name="hint_dashboard_cohorts_description">%d Synced, %d Total</string>
+    <string formatted="false" name="hint_dashboard_forms_description">%d Incomplete, %d Complete</string>
+    <string formatted="false" name="hint_dashboard_notifications_description">%d New, %d Total</string>
     <string name="hint_default_encounter_location">This selected encounter location will be the default encounter
         location for all forms
     </string>
@@ -263,7 +264,7 @@
         form
     </string>
     <string name="hint_install_psmart">Would you like to install P-Smart app?</string>
-    <string name="hint_last_synced">Last synced on: %%s</string>
+    <string name="hint_last_synced">Last synced on: %s</string>
     <string name="hint_loading_progress">Loading…</string>
     <string name="hint_local_connection_unavailable">Please connect your device and try again</string>
     <string name="hint_location_pref_add">Add location(s) that you want to download.</string>
@@ -330,23 +331,23 @@
     <string name="info_cohort_downloaded">Downloaded 1 cohort</string>
     <string name="info_cohort_fetch_in_progress">Already fetching cohorts, ignored the request</string>
     <string name="info_cohort_load">Loading Cohorts…</string>
-    <string formatted="false" name="info_cohort_new_patient_download">Downloaded %%d new clients for %%d cohorts.</string>
+    <string formatted="false" name="info_cohort_new_patient_download">Downloaded %d new clients for %d cohorts.</string>
     <string name="info_cohort_not_downloaded">No cohorts downloaded</string>
     <string name="info_cohort_patient_download">Downloaded 1 client for 1 cohort</string>
     <string name="info_cohort_patient_not_download">No clients downloaded</string>
-    <string formatted="false" name="info_cohort_patients_download">Downloaded %%d clients for 1 cohort</string>
+    <string formatted="false" name="info_cohort_patients_download">Downloaded %d clients for 1 cohort</string>
     <string name="info_cohort_prefixes_unavailable">No Cohort Prefixes Added</string>
-    <string formatted="false" name="info_cohorts_downloaded">Downloaded %%d cohorts</string>
-    <string formatted="false" name="info_cohorts_patient_download">Downloaded 1 client for %%d cohorts</string>
-    <string formatted="false" name="info_cohorts_patients_download">Downloaded %%d clients for %%d cohorts</string>
+    <string formatted="false" name="info_cohorts_downloaded">Downloaded %d cohorts</string>
+    <string formatted="false" name="info_cohorts_patient_download">Downloaded 1 client for %d cohorts</string>
+    <string formatted="false" name="info_cohorts_patients_download">Downloaded %d clients for %d cohorts</string>
     <string name="info_cohorts_unavailable">No Cohorts Available</string>
     <string name="info_complete_form_unavailable">No completed and non synced forms</string>
-    <string name="info_concept_delete_success">%%d concepts deleted successfully!!</string>
+    <string name="info_concept_delete_success">%d concepts deleted successfully!!</string>
     <string name="info_concept_download">Downloading Concepts</string>
     <string name="info_concept_downloaded">Downloaded 1 concept</string>
     <string name="info_concept_not_downloaded">Did not download any concepts</string>
     <string name="info_concept_unavailable">No Concepts added yet.</string>
-    <string formatted="false" name="info_concepts_downloaded">Downloaded %%d concepts</string>
+    <string formatted="false" name="info_concepts_downloaded">Downloaded %d concepts</string>
     <string name="info_disclaimer"><![CDATA[
         <p>
         mUzima is distributed under the terms of the Mozilla Public License, v. 2.0 (MPL 2.0).
@@ -386,26 +387,26 @@
 	through mUzima.mobile@gmail.com
 	</p>
         ]]></string>
-    <string name="info_download_complete">Download complete with status %%d</string>
+    <string name="info_download_complete">Download complete with status %d</string>
     <string name="info_downloaded_forms_unavailable">No forms have been downloaded</string>
     <string name="info_downloaded_image">Downloaded image</string>
     <string name="info_downloaded_reports_unavailable">No reports have been downloaded</string>
     <string name="info_draft_form_save_success">Draft form was saved successfully.</string>
     <string name="info_encounter_download">Downloading Encounters</string>
-    <string formatted="false" name="info_encounter_download_progress">Downloading encounters for client %%d of %%d.
+    <string formatted="false" name="info_encounter_download_progress">Downloading encounters for client %d of %d.
     </string>
-    <string formatted="false" name="info_encounter_not_downloaded_progress">Encounters for client %%d of %%d not
+    <string formatted="false" name="info_encounter_not_downloaded_progress">Encounters for client %d of %d not
         downloaded.
     </string>
     <string name="info_encounter_observation_download">Downloading observations and encounters…</string>
     <string name="info_encounter_patient_downloaded">Downloaded 1 encounter for 1 client</string>
     <string name="info_encounter_patient_not_downloaded">Did not download any encounters</string>
-    <string formatted="false" name="info_encounter_patients_downloaded">Downloaded 1 encounter for %%d clients</string>
+    <string formatted="false" name="info_encounter_patients_downloaded">Downloaded 1 encounter for %d clients</string>
     <string name="info_encounter_unavailable">No encounters available</string>
-    <string formatted="false" name="info_encounters_patient_downloaded">Downloaded %%d encounters for 1 client</string>
-    <string formatted="false" name="info_encounters_patients_downloaded">Downloaded %%d encounters for %%d clients
+    <string formatted="false" name="info_encounters_patient_downloaded">Downloaded %d encounters for 1 client</string>
+    <string formatted="false" name="info_encounters_patients_downloaded">Downloaded %d encounters for %d clients
     </string>
-    <string formatted="false" name="info_form_data_delete">Deleted %%d forms</string>
+    <string formatted="false" name="info_form_data_delete">Deleted %d forms</string>
     <string name="info_form_data_save_success">Completed form data was saved successfully.</string>
     <string name="info_form_data_upload_fail">Failed to Sync Form data to the current server. Do you still want to
         continue?
@@ -416,51 +417,50 @@
     </string>
     <string name="info_form_delete_success">Forms deleted successfully</string>
     <string name="info_form_download">Downloading Forms</string>
-    <string formatted="false" name="info_form_download_delete">Downloaded %%d forms and retired %%d forms</string>
     <string name="info_form_downloaded">Downloaded 1 form</string>
     <string name="info_form_fetch_in_progress">Already fetching forms, ignored the request</string>
     <string name="info_form_load">Loading Forms…</string>
     <string name="info_form_metadata_download">Downloading forms metadata</string>
     <string name="info_form_not_downloaded">No forms downloaded</string>
-    <string formatted="false" name="info_form_template_concept_download">Downloaded %%d form templates and %%d concepts
+    <string formatted="false" name="info_form_template_concept_download">Downloaded %d form templates and %d concepts
     </string>
     <string name="info_form_template_download">Downloading Form Templates</string>
     <string name="info_form_template_downloaded">Downloaded 1 form template</string>
     <string name="info_form_template_not_downloaded">No form template downloaded</string>
     <string name="info_form_template_recommended">Recommended Form Templates</string>
-    <string name="info_form_template_with_count_download">Downloading form templates for %%d forms</string>
-    <string formatted="false" name="info_form_templates_downloaded">Downloaded %%d form templates</string>
+    <string name="info_form_template_with_count_download">Downloading form templates for %d forms</string>
+    <string formatted="false" name="info_form_templates_downloaded">Downloaded %d form templates</string>
     <string name="info_form_upload">Uploading Forms</string>
     <string name="info_form_upload_in_progress">Already uploading forms, ignored the request</string>
     <string name="info_form_upload_success">Forms uploaded successfully</string>
-    <string name="info_forms_downloaded">Downloaded %%d forms</string>
+    <string name="info_forms_downloaded">Downloaded %d forms</string>
     <string name="info_forms_unavailable">No forms available</string>
     <string name="info_incomplete_form_unvailable">No incomplete forms</string>
     <string name="info_initial_setup_progress">Initial setup running. Please wait</string>
     <string name="info_last_sync_unavailable">Not synced yet</string>
-    <string name="info_location_delete_success">%%d locations deleted successfully</string>
+    <string name="info_location_delete_success">%d locations deleted successfully</string>
     <string name="info_location_download">Downloading Locations</string>
     <string name="info_location_downloaded">Downloaded 1 location</string>
     <string name="info_location_not_downloaded">Did not download any locations</string>
     <string name="info_location_unavailable">No locations have been added yet</string>
-    <string formatted="false" name="info_locations_downloaded">Downloaded %%d locations</string>
+    <string formatted="false" name="info_locations_downloaded">Downloaded %d locations</string>
     <string name="info_muzima_sync_service_finish">mUzima sync service finished</string>
     <string name="info_muzima_sync_service_in_progress">mUzima sync service running</string>
-    <string name="info_new_cohort_download">Downloaded %%d new cohorts</string>
-    <string formatted="false" name="info_new_cohort_download_delete">Downloaded %%d new cohorts and retired %%d cohorts
+    <string name="info_new_cohort_download">Downloaded %d new cohorts</string>
+    <string formatted="false" name="info_new_cohort_download_delete">Downloaded %d new cohorts and retired %d cohorts
     </string>
-    <string name="info_new_encounter_download">Downloaded %%d new encounters</string>
-    <string formatted="false" name="info_new_encounter_download_delete">Downloaded %%d new encounters and retired %%d
+    <string name="info_new_encounter_download">Downloaded %d new encounters</string>
+    <string formatted="false" name="info_new_encounter_download_delete">Downloaded %d new encounters and retired %d
         encounters
     </string>
     <string name="info_new_notification">New Notification</string>
-    <string name="info_new_observation_download">Downloaded %%d new observations</string>
-    <string formatted="false" name="info_new_observation_download_delete">Downloaded %%d new observations and retired %%d
+    <string name="info_new_observation_download">Downloaded %d new observations</string>
+    <string formatted="false" name="info_new_observation_download_delete">Downloaded %d new observations and retired %d
         observations
     </string>
-    <string name="info_new_patient_download">Downloaded %%d new clients</string>
+    <string name="info_new_patient_download">Downloaded %d new clients</string>
     <string name="info_no_cohort_download">No cohorts have been synced</string>
-    <string name="info_notification_download">Downloaded %%d notifications</string>
+    <string name="info_notification_download">Downloaded %d notifications</string>
     <string name="info_notification_download_in_progress">Downloading notifications</string>
     <string name="info_notification_unavailable">No notifications available</string>
     <string name="info_observation_download">Downloading Observations</string>
@@ -468,29 +468,29 @@
     <string name="info_observation_load">Observations are loading</string>
     <string name="info_observation_patient_downloaded">Downloaded 1 observation for 1 client</string>
     <string name="info_observation_patient_not_downloaded">Did not download any observations</string>
-    <string formatted="false" name="info_observation_patients_downloaded">Downloaded %%d observations for 1 client
+    <string formatted="false" name="info_observation_patients_downloaded">Downloaded %d observations for 1 client
     </string>
     <string name="info_observation_search">Search observations</string>
     <string name="info_observation_unavailable">No observations available</string>
-    <string formatted="false" name="info_observations_download_pogress">Downloading observations for client %%d of %%d.
+    <string formatted="false" name="info_observations_download_pogress">Downloading observations for client %d of %d.
     </string>
     <string name="info_observations_load_in_progress">Observations are still loading</string>
-    <string formatted="false" name="info_observations_not_downloaded_progress">Observations for client %%d of %%d not
+    <string formatted="false" name="info_observations_not_downloaded_progress">Observations for client %d of %d not
         downloaded.
     </string>
-    <string formatted="false" name="info_observations_patient_downloaded">Downloaded 1 observation for %%d clients
+    <string formatted="false" name="info_observations_patient_downloaded">Downloaded 1 observation for %d clients
     </string>
-    <string formatted="false" name="info_observations_patients_downloaded">Downloaded %%d observations for %%d clients
+    <string formatted="false" name="info_observations_patients_downloaded">Downloaded %d observations for %d clients
     </string>
     <string name="info_patient_data_download">Downloading clients data</string>
     <string name="info_patient_download">Downloading Clients</string>
-    <string name="info_provider_delete_success">%%d Providers deleted successfully</string>
+    <string name="info_provider_delete_success">%d Providers deleted successfully</string>
     <string name="info_provider_download">Downloading Providers</string>
     <string name="info_provider_downloaded">Downloaded 1 provider</string>
     <string name="info_provider_load">Loading Providers…</string>
     <string name="info_provider_not_downloaded">Did not download any providers</string>
     <string name="info_provider_unavailable">No providers have been added yet</string>
-    <string formatted="false" name="info_providers_downloaded">Downloaded %%d providers</string>
+    <string formatted="false" name="info_providers_downloaded">Downloaded %d providers</string>
     <string name="info_real_time_upload">mUzima is uploading your data</string>
     <string name="info_real_time_upload_success">mUzima has uploaded your data successfully</string>
     <string name="info_scanner_exists">Barcode scanner is already installed.</string>
@@ -508,7 +508,7 @@
 
     <string name="menu_form_back_to_draft">Back To Draft</string>
     <string name="menu_form_data_sync">Sync form data</string>
-    <string formatted="false" name="menu_SHR_data_sync">Sync SHR data (%%d)</string>
+    <string formatted="false" name="menu_SHR_data_sync">Sync SHR data (%d)</string>
 
     <string name="message_missing_form_encounter_details_error">must be provided</string>
 
@@ -628,7 +628,7 @@
     <string name="warning_form_data_already_exists">This Form Data already exists for this client with same encounter
         date.
     </string>
-    <string name="warning_forms_complete_and_sync">%%s contains some associated forms with it. Please complete and sync
+    <string name="warning_forms_complete_and_sync">%s contains some associated forms with it. Please complete and sync
         those forms before downloading a newer version.
     </string>
     <string name="warning_logout_confirm">Are you sure you want to log out and exit mUzima app?</string>

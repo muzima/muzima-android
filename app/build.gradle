@@ -37,6 +37,8 @@ android {
         versionCode 9
         versionName "2.2.0"
         manifestPlaceholders = [versionCode: defaultConfig.versionCode, versionName: defaultConfig.versionName]
+
+        multiDexEnabled true
     }
 
     packagingOptions {
