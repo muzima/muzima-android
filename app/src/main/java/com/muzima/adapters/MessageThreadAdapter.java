@@ -110,7 +110,10 @@ public class MessageThreadAdapter extends BaseAdapter{
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(STANDARD_DATE_FORMAT);
         Date dateCreated = notification.getDateCreated();
-        String sendDate = simpleDateFormat.format(dateCreated);
+        String sendDate = "";
+        if(dateCreated!=null) {
+             sendDate = simpleDateFormat.format(dateCreated);
+        }
 
         SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm");
         Date timeCreated = notification.getDateCreated();
