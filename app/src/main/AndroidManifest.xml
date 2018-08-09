@@ -372,6 +372,9 @@
                 android:theme="@android:style/Theme.Dialog"/>
         <activity android:name=".view.SHRObservationsDataActivity"/>
         <activity android:name=".view.notifications.ConversationActivity" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="70e802951d17c2d41d3591d642d1621cd703d32a" />
     </application>
 
 </manifest>
