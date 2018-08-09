@@ -66,6 +66,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_action_send"
                     android:layout_gravity="end"
+                    android:baselineAlignBottom="true"
                     app:fabSize="mini" />
 
             </LinearLayout>

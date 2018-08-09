@@ -31,7 +31,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
-        android:layout_alignBaseline="@+id/chat_textview"
         android:layout_alignBottom="@+id/chat_textview"
         android:layout_toEndOf="@+id/chat_textview"
         android:text="@string/date_temp"
