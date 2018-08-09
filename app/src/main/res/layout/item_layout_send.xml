@@ -14,7 +14,7 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/date_set_text"
         android:padding="10dp"
-        android:maxWidth="320dp"
+        android:maxWidth="300dp"
         android:text="@string/hello_general"
         android:textColor="@android:color/white"
         android:textSize="21sp"
