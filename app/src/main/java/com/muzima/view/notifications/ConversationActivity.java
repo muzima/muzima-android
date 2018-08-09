@@ -65,7 +65,7 @@ public class ConversationActivity extends BaseActivity {
 
         loggedInUser = muzimaApplication.getAuthenticatedUser().getPerson();
 
-        final Button floatingActionButton = findViewById(R.id.send_message_fab);
+        final FloatingActionButton floatingActionButton = findViewById(R.id.send_message_fab);
         composeEditText = findViewById(R.id.type_message_editText);
         chatListView.setAdapter(adapter);
 
