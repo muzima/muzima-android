@@ -29,106 +29,60 @@
         android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="600dp"
-        app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+        app:layout_behavior="appbar_scrolling_view_behavior">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/type_message_editText"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="60dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/curved_button_white"
+                        android:gravity="left"
+                        android:text="ddgdhddddd
+dd
 
-                <EditText
-                    android:id="@+id/type_message_editText"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:minHeight="60dp"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/curved_button_white"
-                    android:gravity="left"
-                    android:maxLines="5"
-                    android:hint="@string/type_a_message_hint"
-                    android:padding="4dp"
-                    android:scrollY="60dp"
-                    android:scrollHorizontally="true"
-                    android:scrollbarAlwaysDrawVerticalTrack="true"
-                    android:scrollbars="vertical"
-                    android:textColor="@android:color/black" />
-
-            </LinearLayout>
+fd
+fd
+dd
+d
+fd
+fd
+dd
+d
+d
+dd
+d
+d
+d
+dd
+"
+                        android:hint="@string/type_a_message_hint"
+                        android:padding="4dp"
+                        android:scrollY="60dp"
+                        android:scrollHorizontally="true"
+                        android:scrollbarAlwaysDrawVerticalTrack="true"
+                        android:scrollbars="vertical"
+                        android:textColor="@android:color/black" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/send_message_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="end"
-                android:layout_marginEnd="17dp"
+                android:layout_marginBottom="10dp"
                 android:src="@drawable/ic_action_send"
                 app:fabSize="mini" />
 
+        </LinearLayout>
 
-
-            <!--<LinearLayout-->
-            <!--android:orientation="horizontal"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content">-->
-
-            <!--<ImageButton-->
-            <!--android:id="@+id/attach_image_button"-->
-            <!--android:contentDescription="@string/attach_image_desc_text"-->
-            <!--android:src="@drawable/ic_action_image_attach"-->
-            <!--android:background="@android:color/white"-->
-            <!--android:layout_marginStart="18dp"-->
-            <!--android:layout_marginBottom="6dp"-->
-            <!--android:layout_width="32dp"-->
-            <!--android:layout_height="32dp" />-->
-
-            <!--<ImageButton-->
-            <!--android:id="@+id/take_photo_button"-->
-            <!--android:contentDescription="@string/attach_photo_via_camera_text"-->
-            <!--android:src="@drawable/ic_action_camera_attach"-->
-            <!--android:background="@android:color/white"-->
-            <!--android:layout_marginStart="30dp"-->
-            <!--android:layout_width="32dp"-->
-            <!--android:layout_height="32dp" />-->
-
-            <!--<ImageButton-->
-            <!--android:id="@+id/attach_video_button"-->
-            <!--android:contentDescription="@string/attach_video_using_camera"-->
-            <!--android:src="@drawable/ic_action_camera_video_attach"-->
-            <!--android:background="@android:color/white"-->
-            <!--android:layout_marginStart="30dp"-->
-            <!--android:layout_width="32dp"-->
-            <!--android:layout_height="32dp" />-->
-
-            <!--<ImageButton-->
-            <!--android:id="@+id/attach_file_button"-->
-            <!--android:contentDescription="@string/attach_files_desc_text"-->
-            <!--android:layout_width="32dp"-->
-            <!--android:layout_height="32dp"-->
-            <!--android:layout_marginStart="30dp"-->
-            <!--android:background="@android:color/white"-->
-            <!--android:src="@drawable/ic_action_file_attach" />-->
-
-
-            <!--</LinearLayout>-->
-
-
-
-
-
-        </RelativeLayout>
 
     </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>
-
-
