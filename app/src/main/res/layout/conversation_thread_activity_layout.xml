@@ -19,6 +19,8 @@
             android:layout_alignBottom="@+id/message_editText"
             android:layout_below="@+id/conversation_thread_toolbar"
             android:divider="@android:color/transparent"
+            android:transcriptMode="alwaysScroll"
+            android:stackFromBottom="true"
             android:dividerHeight="10dp" />
 
     </LinearLayout>
@@ -48,27 +50,30 @@
                     android:layout_marginBottom="2dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_toLeftOf="@+id/send_message_fab"
                     android:background="@drawable/curved_button_white"
                     android:gravity="left"
+                    android:maxLines="5"
                     android:hint="@string/type_a_message_hint"
                     android:padding="4dp"
-
                     android:scrollY="60dp"
                     android:scrollHorizontally="true"
                     android:scrollbarAlwaysDrawVerticalTrack="true"
                     android:scrollbars="vertical"
                     android:textColor="@android:color/black" />
 
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/send_message_fab"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_action_send"
-                    android:layout_gravity="end"
-                    app:fabSize="mini" />
-
             </LinearLayout>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/send_message_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="end"
+                android:layout_marginEnd="17dp"
+                android:src="@drawable/ic_action_send"
+                app:fabSize="mini" />
+
 
 
             <!--<LinearLayout-->
