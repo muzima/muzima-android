@@ -10,6 +10,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Scroller;
@@ -64,7 +65,7 @@ public class ConversationActivity extends BaseActivity {
 
         loggedInUser = muzimaApplication.getAuthenticatedUser().getPerson();
 
-        final FloatingActionButton floatingActionButton = findViewById(R.id.send_message_fab);
+        final Button floatingActionButton = findViewById(R.id.send_message_fab);
         composeEditText = findViewById(R.id.type_message_editText);
         chatListView.setAdapter(adapter);
 
@@ -78,14 +79,15 @@ public class ConversationActivity extends BaseActivity {
         }
 
         setUpMessage();
+        Log.e(getClass().getSimpleName(), "Click Logged");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            floatingActionButton.setImageDrawable(getDrawable(R.drawable.ic_action_need_attention));
+            floatingActionButton.setBackground(getDrawable(R.drawable.ic_action_need_attention));
         }
-
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e(getClass().getSimpleName(), "Click Logged");
                 if (!composeEditText.getText().toString().isEmpty()) {
                     List<Notification> messageItems = null;
                     Notification notification = createNotificationFromMessage(composeEditText.getText().toString());
@@ -120,11 +122,11 @@ public class ConversationActivity extends BaseActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        floatingActionButton.setImageDrawable(getDrawable(R.drawable.ic_action_send));
+                        floatingActionButton.setBackground(getDrawable(R.drawable.ic_action_send));
                     }
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        floatingActionButton.setImageDrawable(getDrawable(R.drawable.ic_action_need_attention));
+                        floatingActionButton.setBackground(getDrawable(R.drawable.ic_action_need_attention));
                     }
                 }
             }

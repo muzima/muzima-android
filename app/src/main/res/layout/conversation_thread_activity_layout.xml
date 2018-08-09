@@ -32,48 +32,6 @@
         android:elevation="600dp"
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/type_message_editText"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:minHeight="60dp"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/curved_button_white"
-                    android:gravity="left"
-                    android:maxLines="5"
-                    android:hint="@string/type_a_message_hint"
-                    android:padding="4dp"
-                    android:scrollY="60dp"
-                    android:scrollHorizontally="true"
-                    android:scrollbarAlwaysDrawVerticalTrack="true"
-                    android:scrollbars="vertical"
-                    android:textColor="@android:color/black" />
-
-            </LinearLayout>
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/send_message_fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="end"
-                android:layout_marginEnd="17dp"
-                android:src="@drawable/ic_action_send"
-                app:fabSize="mini" />
-
 
 
             <!--<LinearLayout-->
@@ -120,14 +78,57 @@
 
 
             <!--</LinearLayout>-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="horizontal">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/type_message_editText"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="60dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/curved_button_white"
+                    android:gravity="left"
+                    android:hint="@string/type_a_message_hint"
+                    android:padding="4dp"
+                    android:scrollY="60dp"
+                    android:scrollHorizontally="true"
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    android:scrollbars="vertical"
+                    android:textColor="@android:color/black" />
 
 
-
-
-
-        </RelativeLayout>
-
+            </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/send_message_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_action_send"
+            app:fabSize="mini" />
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>
 
