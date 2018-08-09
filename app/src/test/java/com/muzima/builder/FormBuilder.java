@@ -44,7 +44,7 @@ public class FormBuilder {
         return this;
     }
 
-    public FormBuilder withTags(getClass().getSimpleName()[] tags) {
+    public FormBuilder withTags(Tag [] tags) {
         this.tags = tags;
         return this;
     }
