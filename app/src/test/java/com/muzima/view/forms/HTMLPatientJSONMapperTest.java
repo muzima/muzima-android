@@ -22,6 +22,7 @@ import org.robolectric.annotation.Config;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.containsString;
