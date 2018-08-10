@@ -101,7 +101,6 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
 
         addIndividualObsDialog = addIndividualObservationsDialogBuilder.create();
 
-        //obsDialogEditText = (EditText) addNewObservationValuesDialog.findViewById(R.id.obs_new_value_edittext);
         obsDialogAddButton = (Button) addNewObservationValuesDialog.findViewById(R.id.add_new_obs_button);
 
         customObsEntryDialog = new CustomObsEntryDialog(parent.getContext(),muzimaApplication,patient);
