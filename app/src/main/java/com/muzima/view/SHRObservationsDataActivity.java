@@ -74,7 +74,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
         viewPager = (ViewPager) findViewById(R.id.pager);
 
         Boolean isSHRData = true;
-        observationsPagerAdapter = new ObservationsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), isSHRData);
+        observationsPagerAdapter = new ObservationsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), isSHRData, patient);
         observationsPagerAdapter.initPagerViews();
         viewPager.setAdapter(observationsPagerAdapter);
     }
