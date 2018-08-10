@@ -41,8 +41,10 @@ import com.muzima.view.patients.PatientSummaryActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static com.muzima.utils.DateUtils.getFormattedDate;
+import static com.muzima.view.patients.PatientSummaryActivity.PATIENT;
 
 public class PatientReportButtonActivity extends BroadcastListenerActivity {
     private Patient patient;
@@ -53,7 +55,7 @@ public class PatientReportButtonActivity extends BroadcastListenerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_test_button);
-        patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
+        patient = (Patient) getIntent().getSerializableExtra(PATIENT);
         try {
             setupPatientMetadata();
             
@@ -61,7 +63,7 @@ public class PatientReportButtonActivity extends BroadcastListenerActivity {
             Toast.makeText(this, getString(R.string.error_patient_fetch), Toast.LENGTH_SHORT).show();
             finish();
         }
-        Toast.makeText(getApplicationContext(), "00000000000000", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "00000000000000"+patient.getUuid(), Toast.LENGTH_LONG).show();
     }
 
     private void setupPatientMetadata() throws PatientController.PatientLoadException {
@@ -106,39 +108,7 @@ public class PatientReportButtonActivity extends BroadcastListenerActivity {
 
     
     public void downloadReports(View v){
-        /*Toast.makeText(getApplicationContext(), "11111111111111111111", Toast.LENGTH_LONG).show();
-        
-        
-        MuzimaGeneratedReportController muzimaGeneratedReportController = ((MuzimaApplication) getApplicationContext()).getMuzimaGeneratedReportController();
-        
-        List<MuzimaGeneratedReport> muzimaGeneratedReports = null;
-        try {
-            muzimaGeneratedReports = muzimaGeneratedReportController.getAllMuzimaGeneratedReportsByPatientUuid(patient.getUuid());
-        }
-        catch (MuzimaGeneratedReportController.MuzimaGeneratedReportException e) {
-            e.printStackTrace();
-        }
-        if(muzimaGeneratedReports.size()==0) {
-            try {
-                muzimaGeneratedReports = muzimaGeneratedReportController.downloadLastPriorityMuzimaGeneratedReportByPatientUuid(patient.getUuid());
-                muzimaGeneratedReportController.saveAllMuzimaGeneratedReports(muzimaGeneratedReports);
-            }
-            catch (MuzimaGeneratedReportController.MuzimaGeneratedReportSaveException e) {
-                e.printStackTrace();
-            }
-            catch (MuzimaGeneratedReportController.MuzimaGeneratedReportDownloadException e) {
-                e.printStackTrace();
-            }
-        }
-        Toast.makeText(getApplicationContext(), "Size is : "+muzimaGeneratedReports.size(), Toast.LENGTH_LONG).show();
-        
-        
-        Intent intent = new Intent(getApplicationContext(), PatientReportWebActivity.class);
-        
-        intent.putExtra("url", "http://www.cricinfo.com");
-        
-        Toast.makeText(getApplicationContext(), "77777777777777777", Toast.LENGTH_LONG).show();
-        startActivity(intent);*/
+  
         new MuzimaGeneratedReportDownloadTask(getApplicationContext()).execute(patient);
     }
     @Override
@@ -149,10 +119,8 @@ public class PatientReportButtonActivity extends BroadcastListenerActivity {
         
         if (syncType == Constants.DataSyncServiceConstants.SYNC_MUZIMA_GENERATED_REPORTS) {
             Intent i = new Intent(getApplicationContext(), PatientReportWebActivity.class);
-    
+            i.putExtra(PATIENT, patient);
             i.putExtra("url", "http://www.cricinfo.com");
-            
-               Toast.makeText(getApplicationContext(), "77777777777777777", Toast.LENGTH_LONG).show();
             startActivity(i);
         }
     }
