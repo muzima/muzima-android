@@ -31,7 +31,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.muzima.api.model.APIName.DOWNLOAD_NOTIFICATIONS;
+import static com.muzima.api.model.APIName.DOWNLOAD_NOTIFICATIONS_BY_RECEIVER;
+import static com.muzima.api.model.APIName.DOWNLOAD_NOTIFICATIONS_BY_SENDER;
 import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_CONSULTATION;
 
 public class NotificationController {
@@ -120,16 +121,32 @@ public class NotificationController {
     public List<Notification> downloadNotificationByReceiver(String receiverUuid) throws NotificationDownloadException {
         try {
             LastSyncTimeService lastSyncTimeService = muzimaApplication.getMuzimaContext().getLastSyncTimeService();
-            Date lastSyncTimeForNotifications = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_NOTIFICATIONS);
+            Date lastSyncTimeForNotifications = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_NOTIFICATIONS_BY_RECEIVER);
             List<Notification> notification =  notificationService.downloadNotificationByReceiver(receiverUuid,lastSyncTimeForNotifications);
-            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_NOTIFICATIONS, sntpService.getLocalTime());
+            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_NOTIFICATIONS_BY_RECEIVER, sntpService.getLocalTime());
             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
-            Log.e("Notification Size:"," = "+notification.size()+" = "+lastSyncTimeForNotifications+" and "+lastSyncTime.getLastSyncDate());
+            Log.e("Receiver Notification Size:"," = "+notification.size()+" = "+lastSyncTimeForNotifications+" and "+lastSyncTime.getLastSyncDate());
             return notification;
         } catch (IOException e) {
             throw new NotificationDownloadException(e);
         }
     }
+
+    public List<Notification> downloadNotificationBySender(String senderUuid) throws NotificationDownloadException {
+        try {
+            LastSyncTimeService lastSyncTimeService = muzimaApplication.getMuzimaContext().getLastSyncTimeService();
+            Date lastSyncTimeForNotifications = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_NOTIFICATIONS_BY_SENDER);
+            List<Notification> senderNotifications = notificationService.downloadNotificationBySender(senderUuid,lastSyncTimeForNotifications);
+            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_NOTIFICATIONS_BY_SENDER, sntpService.getLocalTime());
+            lastSyncTimeService.saveLastSyncTime(lastSyncTime);
+            Log.e("Sender Notification Size:"," = "+senderNotifications.size()+" = "+lastSyncTimeForNotifications+" and "+lastSyncTime.getLastSyncDate());
+            return senderNotifications;
+        } catch (IOException e) {
+            throw new NotificationDownloadException(e);
+        }
+    }
+
+
 
     public void saveNotification(Notification notification) throws NotificationSaveException {
         try {

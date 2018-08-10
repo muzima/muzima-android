@@ -829,10 +829,12 @@ public class MuzimaSyncService {
             List<Notification> notifications;
             notifications = notificationController.downloadNotificationByReceiver(receiverUuid);
             Log.i(getClass().getSimpleName(), "Notifications download successful");
-           // notificationController.deleteAllNotifications(receiverUuid);
-            Log.i(getClass().getSimpleName(), "Old notifications are deleted");
             notificationController.saveNotifications(notifications);
             Log.i(getClass().getSimpleName(), "New notifications are saved");
+
+            List<Notification> senderNotifications;
+            senderNotifications = notificationController.downloadNotificationBySender(receiverUuid);
+            notificationController.saveNotifications(senderNotifications);
 
             result[0] = SUCCESS;
             result[1] = notifications.size();
