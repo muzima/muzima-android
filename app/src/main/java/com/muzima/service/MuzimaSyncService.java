@@ -58,6 +58,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
@@ -81,6 +82,7 @@ public class MuzimaSyncService {
     private SetupConfigurationController setupConfigurationController;
     private MuzimaSettingController settingsController;
     private MuzimaGeneratedReportController muzimaGeneratedReportController;
+    private Logger logger;
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
         this.muzimaApplication = muzimaContext;
@@ -883,11 +885,16 @@ public class MuzimaSyncService {
             }
            
             Log.i(TAG, "Muzima Generated Report is deleted");
+            logger =Logger.getLogger(this.getClass().getName());
+            logger.warning("kkkkkkkkkkkkkkkkkk report deleted");
+    
             muzimaGeneratedReports= muzimaGeneratedReportController.downloadLastPriorityMuzimaGeneratedReportByPatientUuid(receiverUuid);
             Log.i(TAG, "Muzima Generated Report download successful");
-            
+            logger.warning("kkkkkkkkkkkkkkkkkk report download successful");
+            logger.warning("kkkkkkkkkkkkkkkkkk before saving"+muzimaGeneratedReports.size());
             muzimaGeneratedReportController.saveAllMuzimaGeneratedReports(muzimaGeneratedReports);
-            Log.i(TAG, "New notifications are saved");
+            logger.warning("after savingssssssssssssssssssssssss"+muzimaGeneratedReports.size());
+            Log.i(TAG, "New Generated Report is saved");
             
             result[0] = SUCCESS;
             result[1] = muzimaGeneratedReports.size();
