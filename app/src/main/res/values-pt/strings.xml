@@ -635,4 +635,8 @@
     </string>
 
     <string name="write_shr_to_card_text">Escrever shr para cartão</string>
+    <string name="shr_registration">Registro de SHR</string>
+    <string name="shr_registration_description">Dados de registro de SHR</string>
+    <string name="individual_obs">Obs Individual</string>
+    <string name="individual_obs_description">Obs Individual</string>
 </resources>
