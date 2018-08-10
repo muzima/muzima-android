@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.muzima.utils.DateUtils.getFormattedDate;
+import static com.muzima.view.patients.PatientSummaryActivity.PATIENT;
 
 public class PatientReportButtonActivity extends BroadcastListenerActivity {
     private Patient patient;
@@ -53,7 +54,7 @@ public class PatientReportButtonActivity extends BroadcastListenerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_test_button);
-        patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
+        patient = (Patient) getIntent().getSerializableExtra(PATIENT);
         try {
             setupPatientMetadata();
             
@@ -149,11 +150,11 @@ public class PatientReportButtonActivity extends BroadcastListenerActivity {
         
         if (syncType == Constants.DataSyncServiceConstants.SYNC_MUZIMA_GENERATED_REPORTS) {
             Intent i = new Intent(getApplicationContext(), PatientReportWebActivity.class);
+            intent.putExtra(PATIENT, patient);
+            
+            startActivity(i);
     
             i.putExtra("url", "http://www.cricinfo.com");
-            
-               Toast.makeText(getApplicationContext(), "77777777777777777", Toast.LENGTH_LONG).show();
-            startActivity(i);
         }
     }
 }

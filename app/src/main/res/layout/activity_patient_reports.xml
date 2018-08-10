@@ -32,6 +32,13 @@
 
     <View style="@style/DividerLine"/>
 
+    <Button xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/button_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Download Report"
+            android:onClick="showReport" />
+
     <WebView
             android:id="@+id/activity_main_webview"
             android:layout_width="match_parent"
