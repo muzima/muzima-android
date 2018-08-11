@@ -203,7 +203,8 @@ public class FormsActivity extends FormsActivityBase {
 
     private boolean hasFormsWithData() {
         try {
-            if (!(formController.getAllIncompleteFormsWithPatientData().isEmpty() && formController.getAllCompleteFormsWithPatientData().isEmpty())) {
+            if (!(formController.getAllIncompleteFormsWithPatientData().isEmpty() &&
+                    formController.getAllCompleteFormsWithPatientData(getApplicationContext()).isEmpty())) {
                 return true;
             }
         } catch (FormController.FormFetchException e) {

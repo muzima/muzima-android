@@ -574,4 +574,8 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="warning_switch_server">Changement de serveur: Cela effacera toutes les données mUzima sur votre appareil, y compris les formulaires incomplets. Etes-vous sûr de vouloir modifier ce paramètre?</string>
 
     <string name="write_shr_to_card_text">Ecrire SHR à la carte</string>
+    <string name="shr_registration">Enregistrement SHR</string>
+    <string name="shr_registration_description">SHR Données d\'enregistrement</string>
+    <string name="individual_obs">Obs. Individuel</string>
+    <string name="individual_obs_description">Obs. Individuel</string>
 </resources>

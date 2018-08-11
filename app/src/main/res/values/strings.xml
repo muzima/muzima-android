@@ -643,4 +643,8 @@
     </string>
 
     <string name="write_shr_to_card_text">Write SHR to Card</string>
+    <string name="shr_registration">SHR Registration</string>
+    <string name="shr_registration_description">SHR Registration Data</string>
+    <string name="individual_obs">Individual Obs</string>
+    <string name="individual_obs_description">Individual Obs</string>
 </resources>

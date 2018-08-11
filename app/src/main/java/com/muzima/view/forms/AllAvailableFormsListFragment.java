@@ -127,7 +127,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     private boolean patientDataExistsWithSelectedForms() {
         try {
             IncompleteFormsWithPatientData incompleteForms = formController.getAllIncompleteFormsWithPatientData();
-            CompleteFormsWithPatientData completeForms = formController.getAllCompleteFormsWithPatientData();
+            CompleteFormsWithPatientData completeForms = formController.getAllCompleteFormsWithPatientData(getActivity().getApplicationContext());
             if (patientDataExistsWithSelectedForms(incompleteForms) || patientDataExistsWithSelectedForms(completeForms)) {
                 return true;
             }
