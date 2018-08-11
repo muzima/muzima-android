@@ -40,7 +40,6 @@ import com.muzima.api.model.User;
 import com.muzima.api.service.SmartCardRecordService;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
-import com.muzima.controller.MuzimaGeneratedReportController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
@@ -63,7 +62,6 @@ import com.muzima.view.forms.PatientFormsActivity;
 import com.muzima.view.notifications.PatientNotificationActivity;
 import com.muzima.view.observations.ObservationsActivity;
 import com.muzima.view.reports.PatientReportButtonActivity;
-import com.muzima.view.reports.PatientReportListViewActivity;
 
 import java.io.IOException;
 import java.util.List;

@@ -10,9 +10,7 @@
 
 package com.muzima.controller;
 
-import com.muzima.api.model.Form;
 import com.muzima.api.model.MuzimaGeneratedReport;
-import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.service.MuzimaGeneratedReportService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.service.SntpService;
