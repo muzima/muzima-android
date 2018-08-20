@@ -62,24 +62,25 @@ import java.util.List;
 
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 
-@ReportsCrashes(
-
-        formKey = "",
-        reportType = HttpSender.Type.JSON,
-        httpMethod = HttpSender.Method.POST,
-        formUri = "http://acra.muzima.org/report",
-        formUriBasicAuthLogin = "muzima-reporter",
-        formUriBasicAuthPassword = "OMHKOHV8LVfv3c553n6Oqkof",
-        mode = ReportingInteractionMode.DIALOG,
-        resDialogText = R.string.hint_crash_dialog,
-        resDialogIcon = android.R.drawable.ic_dialog_info,
-        resDialogTitle = R.string.title_crash_dialog,
-        resDialogCommentPrompt = R.string.hint_crash_dialog_comment_prompt,
-        resDialogOkToast = R.string.general_thank_you
-)
+//@ReportsCrashes(
+//
+//        formKey = "",
+//        reportType = HttpSender.Type.JSON,
+//        httpMethod = HttpSender.Method.POST,
+//        formUri = "http://acra.muzima.org/report",
+//        formUriBasicAuthLogin = "muzima-reporter",
+//        formUriBasicAuthPassword = "OMHKOHV8LVfv3c553n6Oqkof",
+//        mode = ReportingInteractionMode.DIALOG,
+//        resDialogText = R.string.hint_crash_dialog,
+//        resDialogIcon = android.R.drawable.ic_dialog_info,
+//        resDialogTitle = R.string.title_crash_dialog,
+//        resDialogCommentPrompt = R.string.hint_crash_dialog_comment_prompt,
+//        resDialogOkToast = R.string.general_thank_you
+//)
 
 
 public class MuzimaApplication extends Application {
+
     private Context muzimaContext;
     private Activity currentActivity;
     private FormController formController;
@@ -147,13 +148,14 @@ public class MuzimaApplication extends Application {
         muzimaTimer = getTimer(this);
 
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
         try {
             ContextFactory.setProperty(Constants.LUCENE_DIRECTORY_PATH, APP_DIR);
             muzimaContext = ContextFactory.createContext();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+        Fabric.with(this, new Crashlytics());
     }
 
     public Context getMuzimaContext() {
