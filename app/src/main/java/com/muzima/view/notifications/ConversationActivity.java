@@ -1,5 +1,8 @@
 package com.muzima.view.notifications;
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +27,7 @@ import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonName;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ProviderController;
+import com.muzima.scheduler.MuzimaJobScheduler;
 import com.muzima.utils.Constants;
 import com.muzima.view.BaseActivity;
 import com.muzima.R;
@@ -36,6 +40,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import static com.muzima.utils.Constants.DataSyncServiceConstants.MuzimaJobSchedularConstants.MESSAGE_SYNC_JOB_ID;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.MuzimaJobSchedularConstants.MUZIMA_JOB_PERIODIC;
 
 
 public class ConversationActivity extends BaseActivity {

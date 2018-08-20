@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.muzima.R;
 import com.muzima.api.context.Context;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.domain.Credentials;
+import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.service.CredentialsPreferenceService;
 import com.muzima.service.LandingPagePreferenceService;
 import com.muzima.service.LocalePreferenceService;
@@ -284,6 +286,7 @@ public class LoginActivity extends Activity {
 
                 //init a background service to download missing settings
                 downloadMissingServerSettings();
+
                 startNextActivity();
             } else {
                 MuzimaLogger.log(((MuzimaApplication)getApplicationContext()).getMuzimaContext(),"LOGIN_FAILURE",
@@ -313,10 +316,16 @@ public class LoginActivity extends Activity {
             }
         }
 
+
+
         private void startNextActivity() {
             Intent intent;
             if (new WizardFinishPreferenceService(LoginActivity.this).isWizardFinished()) {
                 intent = new LandingPagePreferenceService(getApplicationContext()).getLandingPageActivityLauchIntent();
+                MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getApplicationContext());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob();
+                }
             } else {
                 removeRemnantDataFromPreviousRunOfWizard();
                 intent = new Intent(getApplicationContext(), SetupMethodPreferenceWizardActivity.class);
