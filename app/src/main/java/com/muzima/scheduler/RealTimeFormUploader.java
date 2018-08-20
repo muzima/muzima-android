@@ -19,6 +19,7 @@ import com.muzima.utils.NetworkUtils;
 import com.muzima.view.forms.RealTimeUploadFormIntent;
 
 public class RealTimeFormUploader {
+
     private static final RealTimeFormUploader INSTANCE = new RealTimeFormUploader();
     private static final String TAG = "RealTimeFormUploader";
 
