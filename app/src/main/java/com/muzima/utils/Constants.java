@@ -12,6 +12,8 @@ package com.muzima.utils;
 
 import android.os.Environment;
 
+import com.muzima.BuildConfig;
+
 //TODO: This class should be burnt and flushed. Constants in an anti-pattern and and a sure sign that your abstractions are wrong: Zabil
 //TODO: Burnt?? Maybe or may not be - Prasanna
 public class Constants {
@@ -99,6 +101,17 @@ public class Constants {
             public static final int INVALID_CREDENTIALS_ERROR = 15;
             public static final int INVALID_CHARACTER_IN_USERNAME = 16;
             public static final String INVALID_CHARACTER_FOR_USERNAME = ",;.-/@#$%&*+='\"|~`<>";
+        }
+
+        public static class MuzimaJobSchedularConstants {
+            public static final String MUZIMA_JOB_SCHEDULE_INTENT = BuildConfig.APPLICATION_ID+" muzima scheduled job";
+            public static final String WORK_DURATION_KEY = "work duration";
+            public static final int MESSAGE_SYNC_JOB_ID = 22;
+            public static final int MSG_INDICATOR_START = 18;
+            public static final int MSG_INDICATOR_STOP = 19;
+            public static final int MSG_COLOR_START = 20;
+            public static final int JOB_INDICATOR_STOP = 21;
+            public static final long MUZIMA_JOB_PERIODIC = 5000;
         }
     }
 
