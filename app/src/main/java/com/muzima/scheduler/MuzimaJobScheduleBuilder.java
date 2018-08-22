@@ -29,7 +29,10 @@ public class MuzimaJobScheduleBuilder {
     public void schedulePeriodicBackgroundJob(){
         if (!isJobAlreadyScheduled(context)){
             handleScheduledPeriodicDataSyncJob();
+            Log.e(getClass().getSimpleName(),"============Background task is scheduled=============");
         }else{
+            cancelPeriodicBackgroundDataSyncJob();
+            schedulePeriodicBackgroundJob();
             Log.e(getClass().getSimpleName(),"There is already a background service running.");
 
         }
@@ -56,21 +59,34 @@ public class MuzimaJobScheduleBuilder {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
 
             int resultCode = JobScheduler.RESULT_FAILURE;
+            JobInfo mUzimaJobInfo;
 
-            JobInfo mUzimaJobInfo = new JobInfo
-                    .Builder(MESSAGE_SYNC_JOB_ID, componentName)
-                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                    .setPeriodic(MUZIMA_JOB_PERIODIC)
-                    .build();
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+                mUzimaJobInfo = new JobInfo
+                        .Builder(MESSAGE_SYNC_JOB_ID, componentName)
+                        .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                        .setMinimumLatency(MUZIMA_JOB_PERIODIC)
+                        .build();
+            }else {
+                mUzimaJobInfo = new JobInfo
+                        .Builder(MESSAGE_SYNC_JOB_ID, componentName)
+                        .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                        .setOverrideDeadline(MUZIMA_JOB_PERIODIC)
+                        .build();
+            }
+
+
             JobScheduler jobScheduler = (JobScheduler) context.getSystemService(JOB_SCHEDULER_SERVICE);
             if (jobScheduler != null) {
                 resultCode = jobScheduler.schedule(mUzimaJobInfo);
+                Log.e(getClass().getSimpleName(),"============Background task is scheduled level 2=============");
+
             }
 
             if (resultCode == JobScheduler.RESULT_SUCCESS)
-                Toast.makeText(context, "mUzima is syncing your latest records..", Toast.LENGTH_SHORT).show();
+                Log.e(getClass().getSimpleName(),"============Background task is scheduled resultCode success=============");
             else
-                Toast.makeText(context, "mUzima was unable to sync data.", Toast.LENGTH_SHORT).show();
+                Log.e(getClass().getSimpleName(),"============Background task is scheduled failed =============");
         }
 
     }

@@ -823,7 +823,7 @@ public class MuzimaSyncService {
 
 
     public int[] downloadNotifications(String receiverUuid) {
-        Log.e("===","=========================== Downloading messages in Job==================");
+        Log.e(getClass().getSimpleName(),"Downloading messages in MuzimaSyncService");
         int[] result = new int[2];
 
         try {

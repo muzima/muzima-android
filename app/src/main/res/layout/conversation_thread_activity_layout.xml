@@ -109,8 +109,8 @@
                     android:scrollbars="vertical"
                     android:textColor="@android:color/black" />
 
-
             </LinearLayout>
+
             </RelativeLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
