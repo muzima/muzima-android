@@ -27,6 +27,7 @@ import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonName;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ProviderController;
+import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.scheduler.MuzimaJobScheduler;
 import com.muzima.utils.Constants;
 import com.muzima.view.BaseActivity;
@@ -108,6 +109,11 @@ public class ConversationActivity extends BaseActivity {
                     } catch (NotificationController.NotificationSaveException e) {
                         e.printStackTrace();
                     }
+
+                    MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getApplicationContext());
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob();
+                    }
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.error_empty_message_text, Toast.LENGTH_SHORT).show();
                 }
@@ -139,13 +145,6 @@ public class ConversationActivity extends BaseActivity {
             }
         });
 
-//        if (!composeEditText.getText().toString().isEmpty()){
-//                    floatingActionButton.setBackgroundColor(getResources().getColor(R.color.primary_blue));
-//                }
-//                return false;
-//            }
-//        });
-
         composeEditText.setScroller(new Scroller(getApplicationContext()));
         composeEditText.setVerticalScrollBarEnabled(true);
         composeEditText.setMovementMethod(new ScrollingMovementMethod());
@@ -169,11 +168,6 @@ public class ConversationActivity extends BaseActivity {
     }
 
     private void setUpMessage() {
-//        for (Notification providerSentMessage : allMessagesThreadForPerson) {
-//            providerSentMessage.getDateCreated();
-//            chats.add(new MessageItem(providerSentMessage.getPayload(),true));
-//        }
-
         chats.addAll(patientSentMessages);
     }
 
