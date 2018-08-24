@@ -49,15 +49,15 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content">
 	</TextView>
-	
+
 	<ImageView
-			android:id="@+id/SHR_card_obs_image_view"
-			android:contentDescription="@string/SHR_extracted_data_text"
-			android:src="@drawable/ic_action_shr_card"
-			android:visibility="gone"
-			android:layout_gravity="end"
-			android:layout_marginBottom="12dp"
-			android:layout_width="12dp"
-			android:layout_height="12dp"/>
+		android:id="@+id/shr_card_obs_image_view"
+		android:contentDescription=""
+		android:src="@drawable/ic_action_shr_card"
+		android:visibility="gone"
+		android:layout_gravity="end"
+		android:layout_marginBottom="12dp"
+		android:layout_width="12dp"
+		android:layout_height="12dp"/>
 
 </LinearLayout>

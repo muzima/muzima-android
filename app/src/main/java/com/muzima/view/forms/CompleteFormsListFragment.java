@@ -13,6 +13,7 @@ package com.muzima.view.forms;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.muzima.adapters.forms.CompleteFormsAdapter;
 import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.model.CompleteFormWithPatientData;
+import com.muzima.utils.Constants;
 
 public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAdapter implements FormsAdapter.MuzimaClickListener{
 
@@ -94,7 +96,13 @@ public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAda
 
     @Override
     public void onItemClick(int position) {
-        FormViewIntent intent = new FormViewIntent(getActivity(), (CompleteFormWithPatientData) listAdapter.getItem(position));
-        getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
+        CompleteFormWithPatientData completeFormWithPatientData = (CompleteFormWithPatientData) listAdapter.getItem(position);
+        if(completeFormWithPatientData.getDiscriminator() != null) {
+            if(!completeFormWithPatientData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS)
+                    && !completeFormWithPatientData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION)) {
+                FormViewIntent intent = new FormViewIntent(getActivity(), (CompleteFormWithPatientData) listAdapter.getItem(position));
+                getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
+            }
+        }
     }
 }
