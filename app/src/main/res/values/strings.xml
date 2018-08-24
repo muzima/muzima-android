@@ -706,4 +706,10 @@
     <string name="general_loading_encounters">Encounters are still loading</string>
     <string name="number_hashtag_representation">##</string>
     <string name="error_empty_message_text">Cannot send empty message.</string>
+    <string name="write_shr_to_card_text">Write SHR to Card</string>
+    <string name="shr_registration">SHR Registration</string>
+    <string name="shr_registration_description">SHR Registration Data</string>
+    <string name="individual_obs">Individual Obs</string>
+    <string name="individual_obs_description">Individual Obs</string>
+
 </resources>

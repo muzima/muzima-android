@@ -13,9 +13,12 @@ package com.muzima.adapters.observations;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
+import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
@@ -28,12 +31,14 @@ public class ObservationsPagerAdapter extends MuzimaPagerAdapter implements Sear
     private static final int TAB_BY_DATE = 0;
     private static final int TAB_BY_ENCOUNTERS = 1;
     private ObservationsListFragment observationByConceptListFragment;
-    private ObservationsListFragment observationByEncountersFragment;
-    private final Boolean isShrData;
+    ObservationsListFragment observationByEncountersFragment;
+    private Boolean isShrData;
+    private Patient patient;
 
-    public ObservationsPagerAdapter(Context applicationContext, FragmentManager supportFragmentManager,Boolean isShrData) {
+    public ObservationsPagerAdapter(Context applicationContext, FragmentManager supportFragmentManager, Boolean isShrData, Patient patient) {
         super(applicationContext, supportFragmentManager);
         this.isShrData = isShrData;
+        this.patient = patient;
     }
 
     @Override
@@ -44,7 +49,7 @@ public class ObservationsPagerAdapter extends MuzimaPagerAdapter implements Sear
         EncounterController encounterController = ((MuzimaApplication) context.getApplicationContext()).getEncounterController();
 
         observationByConceptListFragment =
-                ObservationsByConceptFragment.newInstance(conceptController, observationController,isShrData);
+                ObservationsByConceptFragment.newInstance(conceptController, observationController,isShrData,patient);
         observationByEncountersFragment = ObservationByEncountersFragment.newInstance(encounterController, observationController,isShrData);
 
         pagers[TAB_BY_DATE] = new PagerView(context.getString(R.string.title_observations_by_concepts), observationByConceptListFragment);

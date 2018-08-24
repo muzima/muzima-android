@@ -617,4 +617,5 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="synced_total_label_text">## Synced, ## Total</string>
     <string name="enter_concept_name_text">Entrez le nom du concept ...</string>
     <string name="number_hashtag_representation">##</string>
+
 </resources>

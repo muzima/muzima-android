@@ -11,44 +11,54 @@
 package com.muzima.view.observations;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
+import com.muzima.view.custom.CustomObsEntryDialog;
 import com.muzima.view.custom.PagerSlidingTabStrip;
 import com.muzima.view.patients.PatientSummaryActivity;
+
+import java.util.Calendar;
 
 public class ObservationsActivity extends BroadcastListenerActivity {
 
     public boolean quickSearch = false;
     private ViewPager viewPager;
     private ObservationsPagerAdapter observationsPagerAdapter;
+    private PagerSlidingTabStrip pagerTabsLayout;
+    private static final Calendar today = Calendar.getInstance();
+    private TextView encounterDateTextView;
+    private final Boolean IS_SHR_DATA = false;
+    private Patient patient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_observations);
-
         // Show the Up button in the action bar.
         setupActionBar();
         initPager();
         initPagerIndicator();
-        TextView encounterDateTextView = findViewById(R.id.date_value_textview);
-
+        encounterDateTextView = (TextView) findViewById(R.id.date_value_textview);
     }
 
     private void initPagerIndicator() {
-        PagerSlidingTabStrip pagerTabsLayout = findViewById(R.id.pager_indicator);
+        pagerTabsLayout = (PagerSlidingTabStrip) findViewById(R.id.pager_indicator);
         pagerTabsLayout.setTextColor(Color.WHITE);
         pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));
         pagerTabsLayout.setSelectedTextColor(getResources().getColor(R.color.tab_indicator));
@@ -59,9 +69,9 @@ public class ObservationsActivity extends BroadcastListenerActivity {
     }
 
     private void initPager() {
-        viewPager = findViewById(R.id.pager);
-        Boolean IS_SHR_DATA = false;
-        observationsPagerAdapter = new ObservationsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), IS_SHR_DATA);
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
+        observationsPagerAdapter = new ObservationsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), IS_SHR_DATA, patient);
         observationsPagerAdapter.initPagerViews();
         viewPager.setAdapter(observationsPagerAdapter);
     }
@@ -92,19 +102,25 @@ public class ObservationsActivity extends BroadcastListenerActivity {
     }
 
     public void showDatePicketDialog(View view) {
-        Toast.makeText(view.getContext(),"Date set as ",Toast.LENGTH_LONG).show();
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(view.getContext(), new DateSetListener(), 2018, 3, 21);
+        encounterDateTextView = (TextView) view;
+        DatePickerDialog datePickerDialog = new DatePickerDialog(view.getContext(), new DateSetListener(),today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
     }
 
-    class DateSetListener implements DatePickerDialog.OnDateSetListener {
+    public class DateSetListener implements DatePickerDialog.OnDateSetListener {
 
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-          //  encounterDateTextView.setText(year+"/"+monthOfYear+"/"+dayOfMonth);
-            //todo pass data value to encounter date text
-            Toast.makeText(view.getContext(),"Date set as "+year+"/"+monthOfYear+"/"+dayOfMonth,Toast.LENGTH_LONG).show();
+            monthOfYear = monthOfYear+1;
+            String month = ""+monthOfYear;
+            if(monthOfYear<10){
+                month = "0"+monthOfYear;
+            }
+            String day = ""+dayOfMonth;
+            if(dayOfMonth<10){
+                day = "0"+dayOfMonth;
+            }
+            encounterDateTextView.setText(day+"-"+month+"-"+year);
         }
     }
 }
