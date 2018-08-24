@@ -35,6 +35,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
+
 /**
  * Responsible to list down the forms in the order of the Patient details. Here you can identify forms by the patient name.
  * @param <T> T is of the type FormsWithData.
@@ -177,7 +179,7 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
 
             String formSaveTime = null;
             if (form.getLastModifiedDate() != null) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("STANDARD_DATE_FORMAT HH:mm:ss");
+                SimpleDateFormat dateFormat = new SimpleDateFormat(STANDARD_DATE_FORMAT.concat(" HH:mm:ss"));
                 formSaveTime = dateFormat.format(form.getLastModifiedDate());
             }
 
