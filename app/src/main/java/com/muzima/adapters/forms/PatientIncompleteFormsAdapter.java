@@ -21,7 +21,6 @@ import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
  * Responsible to list down all the incomplete forms for a specific patient.
  */
 public class PatientIncompleteFormsAdapter extends FormsWithDataAdapter<IncompleteForm> {
-    private static final String TAG = "PatientIncompleteFormsAdapter";
     private final String patientId;
 
     public PatientIncompleteFormsAdapter(Context context, int textViewResourceId, FormController formController, String patientId) {

@@ -61,7 +61,6 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
     private MuzimaProgressDialog progressDialog;
     private ListView listView;
     private boolean isProcessDialogOn = false;
-    private static final String TAG = "FormTemplateWizardActivity";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

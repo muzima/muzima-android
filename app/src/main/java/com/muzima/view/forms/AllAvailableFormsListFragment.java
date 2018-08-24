@@ -48,7 +48,6 @@ import java.util.Iterator;
 import java.util.List;
 
 public class AllAvailableFormsListFragment extends FormsListFragment {
-    private static final String TAG = AllAvailableFormsListFragment.class.getSimpleName();
     private ActionMode actionMode;
     private boolean actionModeActive = false;
     private OnTemplateDownloadComplete templateDownloadCompleteListener;

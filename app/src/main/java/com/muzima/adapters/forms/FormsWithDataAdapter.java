@@ -30,7 +30,6 @@ import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
  * @param <T> T is of the type FormsWithData.
  */
 public abstract class FormsWithDataAdapter<T extends FormWithData> extends FormsAdapter<T> {
-    private static final String TAG = "FormsWithDataAdapter";
 
     private final List<String> selectedFormsUuid;
     private MuzimaClickListener muzimaClickListener;

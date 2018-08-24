@@ -46,7 +46,6 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 
 
 public class FormsActivity extends FormsActivityBase {
-    private static final String TAG = "FormsActivity";
 
     private DrawerLayout mainLayout;
     private TagsListAdapter tagsListAdapter;

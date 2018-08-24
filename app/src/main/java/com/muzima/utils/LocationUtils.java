@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class LocationUtils {
-    private static final String TAG = LocationUtils.class.getSimpleName();
     private static String getLocationAttributeValue(Location location, String locationAttributeType){
         if(location != null){
             LocationAttribute locationAttribute = location.getAttribute(locationAttributeType);

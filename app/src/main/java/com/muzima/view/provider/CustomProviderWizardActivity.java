@@ -29,7 +29,6 @@ import com.muzima.view.preferences.ProviderPreferenceActivity;
 
 
 public class CustomProviderWizardActivity extends ProviderPreferenceActivity {
-    private static final String TAG = "CustomProviderWizardActivity";
     private MuzimaProgressDialog muzimaProgressDialog;
     private boolean isProcessDialogOn = false;
     private PowerManager.WakeLock wakeLock = null;

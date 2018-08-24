@@ -26,7 +26,6 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.MuzimaJobSched
 @SuppressLint("NewApi")
 public class MuzimaJobScheduler extends JobService {
 
-    final String TAG = getClass().getSimpleName();
     private NotificationController notificationController;
     private MuzimaSyncService muzimaSynService;
     private String authenticatedUserUuid;
@@ -53,7 +52,7 @@ public class MuzimaJobScheduler extends JobService {
 
         }else {
             isAuthPerson = false;
-            Log.e(TAG, "Authenticated user is not a person");
+            Log.e(getClass().getSimpleName(), "Authenticated user is not a person");
         }
     }
 
@@ -78,7 +77,7 @@ public class MuzimaJobScheduler extends JobService {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "Service destroyed");
+        Log.i(getClass().getSimpleName(), "Service destroyed");
     }
 
     @Override

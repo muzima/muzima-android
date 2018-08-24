@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 abstract class ObservationsAdapter extends ListAdapter<Observation> {
-    private static final String TAG = "ObservationsAdapter";
     final ObservationController observationController;
 
     ObservationsAdapter(Context context, int textViewResourceId, ObservationController observationController){

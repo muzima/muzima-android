@@ -22,7 +22,6 @@ import com.muzima.view.custom.PagerSlidingTabStrip;
 
 public abstract class NotificationActivityBase extends BroadcastListenerActivity {
 
-    private static final String TAG = "NotificationActivityBase";
     private static final int NOTIFICATION_VIEW_ACTIVITY_RESULT = 1;
 
     private ViewPager notificationPager;

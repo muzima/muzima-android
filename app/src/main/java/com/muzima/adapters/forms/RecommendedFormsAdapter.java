@@ -22,7 +22,6 @@ import java.util.List;
  * Responsible to list down all the recommended forms.
  */
 public class RecommendedFormsAdapter extends FormsAdapter<AvailableForm> {
-    private static final String TAG = "RecommendedFormsAdapter";
 
     public RecommendedFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);

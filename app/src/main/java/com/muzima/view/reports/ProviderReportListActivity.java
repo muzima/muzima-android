@@ -91,12 +91,12 @@ public class ProviderReportListActivity extends BroadcastListenerActivity implem
 
     @Override
     public void onQueryTaskCancelled() {
-        Log.e("TAG", "Cancelled...");
+        Log.e(getClass().getSimpleName(), "Cancelled...");
     }
 
     @Override
     public void onQueryTaskCancelled(Object errorDefinition) {
-        Log.e("TAG", "Cancelled...");
+        Log.e(getClass().getSimpleName(), "Cancelled...");
 
     }
 }

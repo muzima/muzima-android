@@ -17,7 +17,6 @@ import com.muzima.api.context.Context;
 import java.io.IOException;
 
 public class LocalePreferenceService {
-    private final String TAG = "LocalePreferenceService";
 
     private final MuzimaApplication muzimaApplication;
     public LocalePreferenceService(MuzimaApplication muzimaApplication){

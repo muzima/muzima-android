@@ -38,7 +38,6 @@ import java.util.List;
 
 public class NotificationActivity extends BaseActivity {
 
-    private static final String TAG = "NotificationActivity";
     public static final String NOTIFICATION = "Notification";
     public static final String PATIENT = "patient";
     private Notification notification;

@@ -35,7 +35,6 @@ import java.util.List;
 import static com.muzima.utils.DateUtils.parse;
 
 public class HTMLPatientJSONMapper {
-    private static final String TAG = HTMLPatientJSONMapper.class.getSimpleName();
 
     private JSONObject patientJSON;
     private JSONObject observationJSON;

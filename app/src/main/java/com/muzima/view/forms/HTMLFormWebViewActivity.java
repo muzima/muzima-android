@@ -72,7 +72,6 @@ import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 import static java.text.MessageFormat.format;
 
 public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
-    private static final String TAG = "HTMLFormWebViewActivity";
     public static final String PATIENT = "patient";
     private static final String FORM_INSTANCE = "formInstance";
     private static final String HTML_DATA_STORE = "htmlDataStore";

@@ -35,7 +35,6 @@ import java.util.List;
  * @param <T> T is of type AvailableForm, FormWithData.
  */
 public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
-    private static final String TAG = "FormsAdapter";
     final FormController formController;
     protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
 

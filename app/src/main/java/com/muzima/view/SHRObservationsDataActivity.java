@@ -122,7 +122,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
             builder.setCancelable(true)
                     .setMessage(getString(R.string.failure_obtain_smartcard_record) + e.getMessage())
                     .show();
-            Log.e("TAG", "Could not obtain smartcard record for writing to card", e);
+            Log.e(getClass().getSimpleName(), "Could not obtain smartcard record for writing to card", e);
         }
         if (smartCardRecord != null) {
             SmartCardIntentIntegrator SHRIntegrator = new SmartCardIntentIntegrator(this);
@@ -155,7 +155,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
                                 .show();
                     }
                 } catch (Exception e) {
-                    Log.e("TAG", "Could not get result", e);
+                    Log.e(getClass().getSimpleName(), "Could not get result", e);
                 }
                 break;
 

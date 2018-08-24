@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 abstract class EncountersAdapter extends ListAdapter<Encounter> {
-    private static final String TAG = "EncountersAdapter";
     final EncounterController encounterController;
 
     EncountersAdapter(Context context, int textViewResourceId, EncounterController encounterController) {

@@ -25,7 +25,6 @@ import com.muzima.utils.StringUtils;
 import java.util.List;
 
 public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
-    private static final String TAG = "PatientsLocalSearchAdapter";
     private static final String SEARCH = "search";
     private final PatientAdapterHelper patientAdapterHelper;
     private final PatientController patientController;

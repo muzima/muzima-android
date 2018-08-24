@@ -27,7 +27,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class ConceptController {
-    public static final String TAG = "ConceptController";
     private List<Concept> newConcepts = new ArrayList<>();
     private final ConceptService conceptService;
     private final ObservationService observationService;

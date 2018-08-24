@@ -30,7 +30,6 @@ import java.util.List;
  * Responsible to display Concepts in the Settings page.
  */
 public class SelectedConceptAdapter extends ListAdapter<Concept> {
-    private final String TAG = SelectedConceptAdapter.class.getSimpleName();
     private final ConceptController conceptController;
 
     public SelectedConceptAdapter(ConceptPreferenceActivity context, int textViewResourceId, ConceptController conceptController) {

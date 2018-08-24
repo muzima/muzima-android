@@ -45,7 +45,6 @@ import static com.muzima.util.Constants.CONCEPT_CREATED_ON_PHONE;
 import static com.muzima.util.Constants.OBSERVATION_CREATED_ON_PHONE;
 
 class ObservationParserUtility {
-    private static final String TAG = ObservationParserUtility.class.getSimpleName();
 
     private final ConceptController conceptController;
     private final LocationController locationController;

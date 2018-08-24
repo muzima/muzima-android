@@ -33,7 +33,6 @@ import java.util.List;
 import static com.muzima.adapters.ListAdapter.BackgroundListQueryTaskListener;
 
 public abstract class FormsListFragment extends MuzimaListFragment implements BackgroundListQueryTaskListener{
-    private static final String TAG = "FormsListFragment";
 
     FormController formController;
     private FrameLayout progressBarContainer;

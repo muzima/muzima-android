@@ -41,7 +41,6 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 
 
 public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
-    private static final String TAG = "CustomConceptWizardActivity";
     private MuzimaProgressDialog muzimaProgressDialog;
     private Credentials credentials;
     private boolean isProcessDialogOn = false;

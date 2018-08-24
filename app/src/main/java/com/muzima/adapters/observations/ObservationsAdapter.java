@@ -30,7 +30,6 @@ import java.util.List;
 
 public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
 
-    private static final String TAG = "ObservationsAdapter";
     final String patientUuid;
     final ConceptController conceptController;
     final EncounterController encounterController;
@@ -87,7 +86,7 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
                 setObservation(layout, observation);
             }
 
-            SHRink(observations.size()); //mover to next row
+            shrink(observations.size()); //mover to next row
         }
 
         LinearLayout getLinearLayoutForObservation(int i) {
@@ -109,7 +108,7 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
 
         protected abstract int getObservationLayout();
 
-        private void SHRink(int startIndex) {
+        private void shrink(int startIndex) {
             List<LinearLayout> holdersToRemove = new ArrayList<>();
             for (int i = startIndex; i < observationViewHolders.size(); i++) {
                 holdersToRemove.add(observationViewHolders.get(i));

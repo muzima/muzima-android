@@ -55,7 +55,6 @@ import java.util.List;
 
 public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWithObservations> {
 
-    private static final String TAG = "ObservationsByConceptAdapter";
     private LayoutInflater layoutInflater;
     private View addNewObservationValuesDialog;
     private View obsDetailsDialog;

@@ -29,7 +29,6 @@ import java.security.spec.KeySpec;
 
 public class EnDeCrypt {
 	
-	private static final String TAG = "EnDeCrypt";
 
     private static final String CIPHER_ALGORITHM = "AES/CBC/PKCS5Padding";
 

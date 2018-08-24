@@ -21,12 +21,10 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
-        classpath 'io.fabric.tools:gradle:1.+'
     }
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
 apply from: "../artifacts.gradle"
 //apply plugin: 'com.google.gms.google-services'
 
@@ -79,7 +77,6 @@ repositories {
     maven { url "https://raw.github.com/muzima/muzima-maven/search-api" }
     maven { url "https://raw.github.com/muzima/muzima-maven/muzima-api" }
     maven { url 'https://jitpack.io' }
-    maven { url 'https://maven.fabric.io/public' }
 }
 
 dependencies {
@@ -116,9 +113,7 @@ dependencies {
         exclude(module: 'guice')
     }
     compile 'com.android.support:support-v13:27.1.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
-        transitive = true;
-    }
+
 
 
 }

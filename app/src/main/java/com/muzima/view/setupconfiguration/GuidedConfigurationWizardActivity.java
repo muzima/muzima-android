@@ -43,7 +43,6 @@ import com.muzima.utils.Constants.SetupLogConstants;
 
 public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
     public static final String SETUP_CONFIG_UUID_INTENT_KEY = "SETUP_CONFIG_UUID";
-    private static final String TAG = "GuidedConfigWizard";
     private SetupConfigurationTemplate setupConfigurationTemplate;
     private String progressUpdateMessage;
     private int wizardLevel =0;

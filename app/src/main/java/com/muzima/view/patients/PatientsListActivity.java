@@ -117,7 +117,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private ProgressDialog serverSearchProgressDialog;
     private ProgressDialog patientRegistrationProgressDialog;
 
-    private final String TAG = this.getClass().getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -488,12 +487,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     @Override
     public void onQueryTaskCancelled() {
-        Log.e("TAG", "Cancelled...");
+        Log.e(getClass().getSimpleName(), "Cancelled...");
     }
 
     @Override
     public void onQueryTaskCancelled(Object errorDefinition) {
-        Log.e("TAG", "Cancelled...");
+        Log.e(getClass().getSimpleName(), "Cancelled...");
 
     }
 

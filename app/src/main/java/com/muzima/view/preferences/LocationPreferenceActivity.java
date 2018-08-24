@@ -39,7 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LocationPreferenceActivity extends BroadcastListenerActivity {
-    private static final String TAG = LocationPreferenceActivity.class.getSimpleName();
     private SelectedLocationAdapter selectedLocationAdapter;
     private ListView selectedLocationListView;
     private AutoCompleteTextView autoCompleteLocationsTextView;

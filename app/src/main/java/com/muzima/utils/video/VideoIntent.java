@@ -34,7 +34,6 @@ import java.io.File;
 import static com.muzima.utils.Constants.APP_VIDEO_DIR;
 
 public class VideoIntent extends Activity {
-	private final static String TAG = "VideoIntent";
 
 	public static final String KEY_VIDEO_PATH = "videoPath";
     public static final String KEY_VIDEO_CAPTION = "videoCaption";

@@ -28,7 +28,6 @@ import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS;
 import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS_DATA;
 
 public class CohortController {
-    private static final String TAG = "CohortController";
     private final CohortService cohortService;
     private final LastSyncTimeService lastSyncTimeService;
     private final SntpService sntpService;

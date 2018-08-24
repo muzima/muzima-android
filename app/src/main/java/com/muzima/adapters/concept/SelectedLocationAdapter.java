@@ -31,7 +31,6 @@ import java.util.List;
  * Responsible to display Locations in the Settings page.
  */
 public class SelectedLocationAdapter extends ListAdapter<Location> {
-    private final String TAG = SelectedLocationAdapter.class.getSimpleName();
     private final LocationController locationController;
 
     public SelectedLocationAdapter(LocationPreferenceActivity context, int textViewResourceId, LocationController locationController) {

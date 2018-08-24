@@ -23,7 +23,6 @@ import java.util.List;
  */
 
 public class AutoCompleteConceptAdapter extends AutoCompleteBaseAdapter<Concept> {
-    private static final String TAG = AutoCompleteConceptAdapter.class.getSimpleName();
 
     public AutoCompleteConceptAdapter(Context context, int textViewResourceId, AutoCompleteTextView autoCompleteConceptTextView) {
         super(context, textViewResourceId, autoCompleteConceptTextView);

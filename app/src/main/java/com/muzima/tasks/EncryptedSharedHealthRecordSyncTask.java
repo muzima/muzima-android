@@ -14,7 +14,7 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UPLOAD_ERROR;
 
 public class EncryptedSharedHealthRecordSyncTask {
-    private static final String TAG = EncryptedSharedHealthRecordSyncTask.class.getSimpleName();
+
     private static boolean syncInProgress;
     private static Context context;
 

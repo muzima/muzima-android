@@ -21,7 +21,6 @@ import com.muzima.view.custom.PagerSlidingTabStrip;
 
 
 public abstract class FormsActivityBase extends BroadcastListenerActivity {
-    private static final String TAG = "FormsActivityBase";
 
     public static final int FORM_VIEW_ACTIVITY_RESULT = 1;
     public static final String KEY_FORMS_TAB_TO_OPEN = "formsTabToOpen";

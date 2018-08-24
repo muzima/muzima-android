@@ -29,7 +29,6 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 public class CohortActivity extends BroadcastListenerActivity {
-    private static final String TAG = "CohortActivity";
     private ViewPager viewPager;
     private CohortPagerAdapter cohortPagerAdapter;
     private MenuItem menubarLoadButton;

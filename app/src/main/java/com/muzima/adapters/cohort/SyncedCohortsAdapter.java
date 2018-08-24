@@ -23,7 +23,6 @@ import java.util.List;
  * Responsible to populate synced cohorts fetched from DB in the SyncedCohortsListFragment page.
  */
 public class SyncedCohortsAdapter extends CohortsAdapter{
-    private static final String TAG = "SyncedCohortsAdapter";
 
     public SyncedCohortsAdapter(Context context, int textViewResourceId, CohortController cohortController) {
         super(context, textViewResourceId, cohortController);

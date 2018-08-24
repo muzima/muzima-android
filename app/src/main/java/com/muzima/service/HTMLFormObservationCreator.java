@@ -48,7 +48,6 @@ public class HTMLFormObservationCreator {
     private Patient patient;
     private Encounter encounter;
     private List<Observation> observations;
-    private final String TAG = HTMLFormObservationCreator.class.getSimpleName();
 
     public HTMLFormObservationCreator(MuzimaApplication muzimaApplication) {
         this.patientController = muzimaApplication.getPatientController();

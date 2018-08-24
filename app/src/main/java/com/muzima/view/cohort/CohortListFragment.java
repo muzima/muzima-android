@@ -25,7 +25,6 @@ import com.muzima.controller.CohortController;
 import com.muzima.view.MuzimaListFragment;
 
 public abstract class CohortListFragment extends MuzimaListFragment implements ListAdapter.BackgroundListQueryTaskListener{
-    private static final String TAG = "CohortListFragment";
 
     CohortController cohortController;
     private FrameLayout progressBarContainer;

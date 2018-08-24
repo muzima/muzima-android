@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SetupConfigurationAdapter extends ListAdapter<SetupConfiguration> {
-    private static final String TAG = SetupConfigurationAdapter.class.getSimpleName();
     private final SetupConfigurationController setupConfigurationController;
     private final MuzimaSyncService muzimaSyncService;
     private String selectedConfigurationUuid;

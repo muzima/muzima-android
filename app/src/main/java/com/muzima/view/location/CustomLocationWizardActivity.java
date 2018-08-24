@@ -29,7 +29,6 @@ import com.muzima.view.preferences.LocationPreferenceActivity;
 
 public class CustomLocationWizardActivity extends LocationPreferenceActivity {
 
-    private static final String TAG = "CustomLocationWizardActivity";
     private MuzimaProgressDialog muzimaProgressDialog;
     private boolean isProcessDialogOn = false;
     private PowerManager.WakeLock wakeLock = null;

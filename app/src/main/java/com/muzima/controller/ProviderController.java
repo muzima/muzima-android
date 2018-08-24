@@ -25,7 +25,6 @@ import java.util.List;
 public class ProviderController {
 
 
-    private static final String TAG = "ProviderController";
     private final ProviderService providerService;
     private List<Provider> newProviders = new ArrayList<>();
 

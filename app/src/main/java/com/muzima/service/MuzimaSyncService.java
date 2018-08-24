@@ -60,7 +60,6 @@ import static com.muzima.utils.Constants.LOCAL_PATIENT;
 import static java.util.Collections.singleton;
 
 public class MuzimaSyncService {
-    private static final String TAG = "MuzimaSyncService";
 
     private final MuzimaApplication muzimaApplication;
     private final FormController formController;

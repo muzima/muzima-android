@@ -23,7 +23,6 @@ import com.muzima.view.notifications.PatientsNotificationsListFragment;
  * Responsible to hold all the notification fragments as multiple pages/tabs.
  */
 public class NotificationsPagerAdapter extends MuzimaPagerAdapter {
-    private static final String TAG = "NotificationPagerAdapter";
 
     private static final int TAB_PATIENT = 1;
     private static final int TAB_GENERAL = 0;

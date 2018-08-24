@@ -30,7 +30,6 @@ import java.util.List;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 public class PatientsRemoteSearchAdapter extends ListAdapter<Patient> {
-    private static final String TAG = "PatientsRemoteSearchAdapter";
     private final PatientAdapterHelper patientAdapterHelper;
     private final PatientController patientController;
     private final String searchString;

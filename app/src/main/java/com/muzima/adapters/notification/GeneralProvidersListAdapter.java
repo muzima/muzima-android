@@ -32,7 +32,6 @@ import java.util.List;
  * Responsible to populate all notification fetched from DB in the PatientNotificationsListFragment page.
  */
 public class GeneralProvidersListAdapter extends ProvidersAdapter {
-    private static final String TAG = "GeneralAdapter";
     private final MuzimaApplication muzimaApplication;
     private final ProviderController providerController;
 

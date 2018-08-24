@@ -28,7 +28,6 @@ import java.util.UUID;
 
 public class RegistrationFormsActivity extends BaseActivity {
     private RegistrationFormsAdapter registrationFormsAdapter;
-    private final String TAG = "RegistrationFormsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

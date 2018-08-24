@@ -18,9 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SmartCardIntentIntegrator {
-    private static final String TAG = "CardIntentIntegrator";
-    private static final String ACTION_READ_DATA = "org.kenyahmis.psmart.ACTION_READ_DATA";
 
+    private static final String ACTION_READ_DATA = "org.kenyahmis.psmart.ACTION_READ_DATA";
     private static final String ACTION_WRITE_DATA = "org.kenyahmis.psmart.ACTION_WRITE_DATA";
     private static final String EXTRA_AUTH_TOKEN = "AUTH_TOKEN";
     private static final String AUTH_TOKEN_VALUE = "123";

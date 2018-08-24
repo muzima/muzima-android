@@ -28,7 +28,6 @@ import java.util.List;
 
 public class LocationController {
 
-    private static final String TAG = "LocationController";
     private final LocationService locationService;
     private List<Location> newLocations = new ArrayList<>();
 

@@ -62,7 +62,6 @@ import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATIO
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
 
 public class KenyaEmrShrMapper {
-    private static final String TAG = KenyaEmrShrMapper.class.getSimpleName();
 
     /**
      * Converts an SHR model from JSON representation to KenyaEmrSHRModel

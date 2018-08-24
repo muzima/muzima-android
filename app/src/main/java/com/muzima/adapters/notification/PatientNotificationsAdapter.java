@@ -30,7 +30,6 @@ import java.util.List;
  * Responsible to populate all notification fetched from DB in the PatientNotificationsListFragment page.
  */
 public class PatientNotificationsAdapter extends NotificationAdapter {
-    private static final String TAG = "PatientNotificationsAdapter";
     private final Patient patient;
 
     public PatientNotificationsAdapter(Context context, int textViewResourceId, NotificationController notificationController, Patient patient) {
