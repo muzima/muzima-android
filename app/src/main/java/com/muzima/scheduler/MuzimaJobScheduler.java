@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
@@ -12,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.muzima.MuzimaApplication;
+import com.muzima.api.model.Person;
 import com.muzima.api.model.User;
 import com.muzima.controller.NotificationController;
 import com.muzima.service.DataSyncService;
@@ -29,6 +31,8 @@ public class MuzimaJobScheduler extends JobService {
     private MuzimaSyncService muzimaSynService;
     private String authenticatedUserUuid;
     private User authenticatedUser;
+    private Person person;
+    private boolean isAuthPerson = false;
 
     @Override
     public void onCreate() {
@@ -37,16 +41,28 @@ public class MuzimaJobScheduler extends JobService {
         notificationController = muzimaApplication.getNotificationController();
         muzimaSynService = muzimaApplication.getMuzimaSyncService();
         authenticatedUser = muzimaApplication.getAuthenticatedUser();
-        Log.e(TAG, "=========================== Downloading messages in Job==================");
+        if (authenticatedUser != null){
+            person = authenticatedUser.getPerson();
+
+            if (person != null){
+                authenticatedUserUuid = person.getUuid();
+                isAuthPerson = true;
+            }else{
+                isAuthPerson = false;
+            }
+
+        }else {
+            isAuthPerson = false;
+            Log.e(TAG, "Authenticated user is not a person");
+        }
     }
 
     @Override
     public boolean onStartJob(final JobParameters params) {
-        Log.e("===","=========================== Downloading messages in Job==================");
 
-        if (authenticatedUser == null){
+        if (authenticatedUser == null || !isAuthPerson) {
             onStopJob(params);
-        }else{
+        } else {
             //execute job
             handleBackgroundWork(params);
         }
@@ -55,7 +71,7 @@ public class MuzimaJobScheduler extends JobService {
 
     @Override
     public boolean onStopJob(JobParameters params) {
-        Log.e(getClass().getSimpleName(),"mUzima Job Service stopped" + params.getJobId());
+        Log.e(getClass().getSimpleName(), "mUzima Job Service stopped" + params.getJobId());
         return false;
     }
 
@@ -67,13 +83,37 @@ public class MuzimaJobScheduler extends JobService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e("===","=========================== Downloading messages in Job==================");
+        Log.e(getClass().getSimpleName(), "Downloading messages in Job");
         return START_NOT_STICKY;
     }
 
-    private void handleBackgroundWork(JobParameters parameters){
-        muzimaSynService.downloadNotifications(authenticatedUserUuid);
-        //todo execute task here
+    private void handleBackgroundWork(JobParameters parameters) {
+
+        if (parameters == null) {
+            Log.e(getClass().getSimpleName(), "Parameters for job is null");
+        } else {
+            new NotificationDownloadBackgroundTask().execute();
+        }
+    }
+
+    private class  NotificationDownloadBackgroundTask extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            muzimaSynService.downloadNotifications(authenticatedUserUuid);
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            Log.e(getClass().getSimpleName(), "Downloading messages in Job");
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
     }
 
 }
