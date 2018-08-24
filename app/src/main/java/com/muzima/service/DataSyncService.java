@@ -38,7 +38,6 @@ import static java.util.Arrays.asList;
 public class DataSyncService extends IntentService {
 
     private static final int MUZIMA_NOTIFICATION = 0;
-    private static final String TAG = "DataSyncService";
     private String notificationServiceRunning;
     private String notificationServiceFinished;
     private String notificationMsg;

@@ -21,7 +21,6 @@ import java.util.List;
 
 
 public class AutoCompleteProviderAdapter extends AutoCompleteBaseAdapter<Provider> {
-    private static final String TAG = AutoCompleteProviderAdapter.class.getSimpleName();
 
     public AutoCompleteProviderAdapter(Context context, int textViewResourceId, AutoCompleteTextView autoCompleteProviderTextView) {
         super(context, textViewResourceId, autoCompleteProviderTextView);

@@ -29,7 +29,6 @@ import java.util.List;
  * Responsible to populate all cohorts fetched from DB in the AllCohortsListFragment page.
  */
 public class AllCohortsAdapter extends CohortsAdapter {
-    private static final String TAG = "AllCohortsAdapter";
     private final MuzimaSyncService muzimaSyncService;
     private final List<String> selectedCohortsUuid;
     private List<Cohort> cohorts;

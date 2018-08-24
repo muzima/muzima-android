@@ -16,7 +16,6 @@ import com.muzima.api.model.Form;
 import com.muzima.api.model.FormTemplate;
 
 class FormInstance {
-    private static final String TAG = "FormInstance";
     private final Form form;
     private final FormTemplate formTemplate;
 

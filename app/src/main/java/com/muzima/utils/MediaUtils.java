@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MediaUtils {
-	private final static String TAG = "MediaUtils";
 
 	public static boolean folderExists(String path) {
 		boolean made = true;

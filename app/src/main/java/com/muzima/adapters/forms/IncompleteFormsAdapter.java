@@ -22,7 +22,6 @@ import java.util.List;
  * Responsible to display all the incomplete forms.
  */
 public class IncompleteFormsAdapter extends SectionedFormsAdapter<IncompleteFormWithPatientData> {
-    private static final String TAG = "IncompleteFormsAdapter";
 
     public IncompleteFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);

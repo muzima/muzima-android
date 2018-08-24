@@ -33,7 +33,6 @@ import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_REGISTRATION;
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
 
 class FormDataStore {
-    private static final String TAG = "FormDataStore";
 
     private final FormWebViewActivity formWebViewActivity;
     private final FormController formController;

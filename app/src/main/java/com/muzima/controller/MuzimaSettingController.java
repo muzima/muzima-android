@@ -12,7 +12,6 @@ import java.util.List;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
 
 public class MuzimaSettingController {
-    private static final String TAG = "MuzimaSettingController";
     private final MuzimaSettingService settingService;
 
     public MuzimaSettingController(MuzimaSettingService settingService){

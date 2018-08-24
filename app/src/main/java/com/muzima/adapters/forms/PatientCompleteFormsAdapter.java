@@ -22,7 +22,6 @@ import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
  * Responsible to display all the completed forms for a specific patient.
  */
 public class PatientCompleteFormsAdapter extends FormsWithDataAdapter<CompleteFormWithPatientData> {
-    private static final String TAG = "PatientCompleteFormsAdapter";
     private final String patientId;
 
     public PatientCompleteFormsAdapter(Context context, int textViewResourceId, FormController formController, String patientId) {

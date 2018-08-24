@@ -58,7 +58,6 @@ import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 import static java.text.MessageFormat.format;
 
 public class FormWebViewActivity extends BroadcastListenerActivity {
-    private static final String TAG = "FormWebViewActivity";
     private static final String PATIENT = "patient";
     private static final String FORM_INSTANCE = "formInstance";
     private static final String REPOSITORY = "formDataRepositoryContext";

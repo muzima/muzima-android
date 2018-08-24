@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FormDataJavascriptInterface {
-    private final static String TAG = FormDataJavascriptInterface.class.getSimpleName();
     private final MuzimaApplication muzimaApplication;
     public FormDataJavascriptInterface(MuzimaApplication muzimaApplication){
         this.muzimaApplication = muzimaApplication;

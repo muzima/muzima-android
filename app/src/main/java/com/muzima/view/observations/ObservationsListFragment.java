@@ -27,7 +27,6 @@ import com.muzima.controller.ObservationController;
 import com.muzima.view.MuzimaListFragment;
 
 public abstract class ObservationsListFragment extends MuzimaListFragment implements ListAdapter.BackgroundListQueryTaskListener{
-    private static final String TAG = "ObservationsListFragment";
 
     ConceptController conceptController;
     ObservationController observationController;

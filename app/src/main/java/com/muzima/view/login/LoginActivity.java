@@ -49,7 +49,6 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 
 //This class shouldn't extend BaseActivity. Since it is independent of the application's context
 public class LoginActivity extends Activity {
-    private static final String TAG = "LoginActivity";
     public static final String isFirstLaunch = "isFirstLaunch";
     public static final String sessionTimeOut = "SessionTimeOut";
     private EditText serverUrlText;

@@ -39,7 +39,6 @@ import java.util.Map;
 public class BarCodeScannerIntentIntegrator {
 
     public static final int BARCODE_SCAN_REQUEST_CODE = 0x0000c0db; // Only use bottom 16 bits
-    private static final String TAG = BarCodeScannerIntentIntegrator.class.getSimpleName();
 
     private static final String DEFAULT_TITLE = "Install Barcode Scanner?";
     private static final String DEFAULT_MESSAGE =

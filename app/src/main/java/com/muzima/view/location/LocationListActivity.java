@@ -25,7 +25,6 @@ import com.muzima.view.preferences.LocationPreferenceActivity;
 
 
 public class LocationListActivity extends LocationPreferenceActivity {
-    private static final String TAG = "LocationListActivity";
     private MuzimaProgressDialog muzimaProgressDialog;
     private boolean isProcessDialogOn = false;
     private PowerManager powerManager = null;

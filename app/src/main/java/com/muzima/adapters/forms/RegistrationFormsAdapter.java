@@ -19,7 +19,6 @@ import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
  * Responsible to list down all the registration forms. Will be in use only if there are more than 1 form.
  */
 public class RegistrationFormsAdapter extends FormsAdapter<AvailableForm> {
-    private static final String TAG = "RegistrationFormsAdapter";
     private final AvailableForms availableForms;
 
 

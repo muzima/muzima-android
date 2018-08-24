@@ -26,7 +26,6 @@ import java.util.List;
  * Responsible to list all the downloaded forms.
  */
 public class DownloadedFormsAdapter extends FormsAdapter<DownloadedForm> {
-    private static final String TAG = "DownloadedFormsAdapter";
 
     public DownloadedFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);

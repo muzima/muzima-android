@@ -39,8 +39,7 @@ import static com.muzima.utils.Constants.APP_IMAGE_DIR;
 import static com.muzima.utils.Constants.TMP_FILE_PATH;
 
 public class ImagingIntent extends BaseActivity {
-	private final static String TAG = "ImagingIntent";
-    
+
     private static final int IMAGE_CAPTURE = 1;
     private static final int IMAGE_CHOOSE = 2;
     

@@ -10,7 +10,7 @@ import com.muzima.R;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING_DEFAULT_VALUE;
 
 public class RequireMedicalRecordNumberPreferenceService extends PreferenceService{
-    public static final String TAG = ("ReqMedicalRecNumPrefSvc");
+
     private final SharedPreferences settings;
     private final MuzimaApplication application;
     public RequireMedicalRecordNumberPreferenceService(MuzimaApplication application) {

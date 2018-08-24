@@ -53,7 +53,6 @@ import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
 
 
 class HTMLFormDataStore {
-    private static final String TAG = "FormDataStore";
 
     private final HTMLFormWebViewActivity formWebViewActivity;
     private final FormController formController;

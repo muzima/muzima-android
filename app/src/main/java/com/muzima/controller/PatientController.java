@@ -25,7 +25,6 @@ import static com.muzima.utils.Constants.LOCAL_PATIENT;
 
 public class PatientController {
 
-    private static final String TAG = "PatientController";
     private final PatientService patientService;
     private final CohortService cohortService;
 

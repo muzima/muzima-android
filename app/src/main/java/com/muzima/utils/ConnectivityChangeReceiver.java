@@ -23,7 +23,6 @@ import com.muzima.scheduler.RealTimeFormUploader;
  */
 public class ConnectivityChangeReceiver extends BroadcastReceiver {
 
-    private static final String TAG = "ConnectivityChangeReceiver";
 
     public ConnectivityChangeReceiver(){
     }

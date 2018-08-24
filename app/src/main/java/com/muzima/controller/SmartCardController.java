@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SmartCardController {
-    public static final String TAG ="SmartCardController";
 
     private final SmartCardRecordService smartCardRecordService;
 

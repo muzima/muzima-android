@@ -24,7 +24,6 @@ import com.muzima.controller.FormController;
 import com.muzima.model.CompleteForm;
 
 public class CompletePatientsFormsListFragment extends FormsListFragment implements FormsAdapter.MuzimaClickListener{
-    private static final String TAG = "CompletePatientsFormsListFragment";
 
     private Patient patient;
 

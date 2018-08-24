@@ -23,7 +23,6 @@ import com.muzima.view.patients.PatientSummaryActivity;
 
 
 public class PatientFormsActivity extends FormsActivityBase {
-    private static final String TAG = "FormsActivity";
     private Patient patient;
 
     @Override

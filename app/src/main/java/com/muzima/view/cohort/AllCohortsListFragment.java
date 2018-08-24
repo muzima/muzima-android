@@ -36,7 +36,6 @@ import java.io.IOException;
 import java.util.Date;
 
 public class AllCohortsListFragment extends CohortListFragment {
-    private static final String TAG = "AllCohortsListFragment";
     private ActionMode actionMode;
     private boolean actionModeActive = false;
     private OnCohortDataDownloadListener cohortDataDownloadListener;

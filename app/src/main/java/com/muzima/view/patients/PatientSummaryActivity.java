@@ -210,11 +210,11 @@ public class PatientSummaryActivity extends BaseActivity {
             case R.id.SHR_client_summary:
                 //todo write card workspace.
                 if (isRegisteredOnSHR) {
-                    Log.e("TAG", "is Patient SHR");
+                    Log.e(getClass().getSimpleName(), "is Patient SHR");
                     prepareWriteToCardOptionDialog(getApplicationContext());
                     writeSHRDataOptionDialog.show();
                 } else {
-                    Log.e("TAG", "is Patient not SHR");
+                    Log.e(getClass().getSimpleName(), "is Patient not SHR");
                     prepareNonSHRWriteToCardOptionDialog(getApplicationContext());
                     writeSHRDataOptionDialog.show();
                 }

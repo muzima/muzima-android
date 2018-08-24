@@ -33,8 +33,7 @@ import java.io.File;
 import static com.muzima.utils.Constants.APP_AUDIO_DIR;
 
 public class AudioIntent extends Activity {
-	private final static String TAG = "AudioIntent";
-	
+
 	public static final String KEY_AUDIO_PATH = "audioPath";
     public static final String KEY_AUDIO_CAPTION = "audioCaption";
     public static final String KEY_SECTION_NAME = "sectionName";

@@ -33,7 +33,6 @@ import static java.text.MessageFormat.format;
 
 
 public class ProviderReportViewActivity extends BroadcastListenerActivity {
-    private static final String TAG = ProviderReportViewActivity.class.getSimpleName();
     public static final String REPORT = "SelectedReport";
     public Provider provider;
     private MuzimaProgressDialog progressDialog;

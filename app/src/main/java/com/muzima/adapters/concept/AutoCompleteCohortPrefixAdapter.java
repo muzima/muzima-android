@@ -23,7 +23,6 @@ import java.util.List;
  */
 public class AutoCompleteCohortPrefixAdapter extends AutoCompleteBaseAdapter<Cohort> {
 
-    private static final String TAG = AutoCompleteCohortPrefixAdapter.class.getSimpleName();
 
     public AutoCompleteCohortPrefixAdapter(Context context, int textViewResourceId, AutoCompleteTextView cohortPrefix) {
         super(context, textViewResourceId, cohortPrefix);

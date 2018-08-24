@@ -37,7 +37,6 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 
 
 public class ConceptListActivity extends ConceptPreferenceActivity {
-    private static final String TAG = "ConceptListActivity";
     private MuzimaProgressDialog muzimaProgressDialog;
     private Credentials credentials;
     private boolean isProcessDialogOn = false;

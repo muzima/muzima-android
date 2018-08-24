@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationsListActivity extends NotificationActivityBase {
-    private static final String TAG = "NotificationsListActivity";
     private static final String NOTIFICATIONS = "Notifications";
     private MenuItem menubarSyncButton;
     private boolean notificationsSyncInProgress;

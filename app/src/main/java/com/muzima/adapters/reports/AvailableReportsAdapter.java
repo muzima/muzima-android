@@ -11,7 +11,6 @@ import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
 import java.util.List;
 
 public class AvailableReportsAdapter extends FormsAdapter<AvailableForm> {
-    private static final String TAG = AvailableReportsAdapter.class.getSimpleName();
 
     public AvailableReportsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);

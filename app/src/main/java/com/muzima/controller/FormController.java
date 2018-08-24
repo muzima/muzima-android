@@ -76,7 +76,6 @@ import static com.muzima.utils.Constants.STATUS_UPLOADED;
 
 public class FormController {
 
-    private static final String TAG = "FormController";
     private final FormService formService;
     private final PatientService patientService;
     private final LastSyncTimeService lastSyncTimeService;
@@ -731,7 +730,7 @@ public class FormController {
                 JsonUtils.replaceAsString(obj, base, "consultation.sourceUuid", formData.getUuid());
                 formData.setJsonPayload(obj.toJSONString());
             } catch (ParseException e) {
-                Log.e("", e.getMessage(), e);
+                Log.e(FormController.class.getSimpleName(), e.getMessage(), e);
             }
         }
         return formData;

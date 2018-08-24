@@ -42,7 +42,6 @@ import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
  * @param <T> T is of the type FormsWithData.
  */
 public abstract class SectionedFormsAdapter<T extends FormWithData> extends FormsAdapter<T> implements StickyListHeadersAdapter, SectionIndexer {
-    private static final String TAG = "SectionedFormsAdapter";
 
     private List<Patient> patients;
     private ListView listView;

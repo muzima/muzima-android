@@ -32,7 +32,6 @@ import java.util.List;
  */
 public class SelectedProviderAdapter extends ListAdapter<Provider> {
 
-    private final String TAG = SelectedProviderAdapter.class.getSimpleName();
     private final ProviderController providerController;
 
     public SelectedProviderAdapter(ProviderPreferenceActivity context, int textViewResourceId, ProviderController providerController) {

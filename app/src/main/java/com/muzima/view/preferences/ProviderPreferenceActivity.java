@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProviderPreferenceActivity extends BroadcastListenerActivity {
-    private static final String TAG = ProviderPreferenceActivity.class.getSimpleName();
     private SelectedProviderAdapter selectedProviderAdapter;
     private ListView selectedProviderListView;
     private AutoCompleteTextView autoCompleteProvidersTextView;

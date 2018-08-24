@@ -41,7 +41,6 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 public class ConceptPreferenceActivity extends BroadcastListenerActivity {
-    private static final String TAG = ConceptPreferenceActivity.class.getSimpleName();
     private SelectedConceptAdapter selectedConceptAdapter;
     private ListView selectedConceptListView;
     private AutoCompleteTextView autoCompleteConceptTextView;

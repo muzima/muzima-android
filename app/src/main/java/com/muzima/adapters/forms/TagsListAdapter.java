@@ -35,7 +35,6 @@ import java.util.List;
  */
 public class TagsListAdapter extends ListAdapter<Tag> implements AdapterView.OnItemClickListener {
 
-    private static final String TAG = "TagsListAdapter";
     private final FormController formController;
     private TagsChangedListener tagsChangedListener;
 

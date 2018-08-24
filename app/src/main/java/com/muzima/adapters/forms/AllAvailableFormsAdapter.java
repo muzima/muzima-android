@@ -34,7 +34,6 @@ import java.util.List;
  * Responsible to list down all the available forms in the server including Tags and img to indicate whether downloaded or not.
  */
 public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implements TagsListAdapter.TagsChangedListener {
-    private static final String TAG = "AllAvailableFormsAdapter";
     private final MuzimaSyncService muzimaSyncService;
 
 

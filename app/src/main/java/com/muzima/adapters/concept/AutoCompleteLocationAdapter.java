@@ -25,7 +25,6 @@ import java.util.List;
 
 public class AutoCompleteLocationAdapter extends AutoCompleteBaseAdapter<Location> {
 
-    private static final String TAG = AutoCompleteLocationAdapter.class.getSimpleName();
 
     public AutoCompleteLocationAdapter(Context context, int textViewResourceId, AutoCompleteTextView autoCompleteLocationTextView) {
         super(context, textViewResourceId, autoCompleteLocationTextView);

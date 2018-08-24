@@ -41,7 +41,6 @@ import java.util.List;
 import static com.muzima.utils.DateUtils.parse;
 
 public class GenericRegistrationPatientJSONMapper {
-    private static final String TAG = GenericRegistrationPatientJSONMapper.class.getSimpleName();
 
     private JSONObject patientJSON;
     private Patient patient;

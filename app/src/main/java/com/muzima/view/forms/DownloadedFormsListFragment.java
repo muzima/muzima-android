@@ -31,7 +31,6 @@ import java.util.List;
 
 public class DownloadedFormsListFragment extends FormsListFragment implements AllAvailableFormsListFragment.OnTemplateDownloadComplete {
 
-    private static final String TAG = "DownloadedFormsListFragment";
     private boolean actionModeActive = false;
     private ActionMode actionMode;
     private AllAvailableFormsListFragment allAvailableFormsCompleteListener;

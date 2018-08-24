@@ -20,7 +20,6 @@ import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 
 public class RecommendedFormsListFragment extends FormsListFragment implements AllAvailableFormsListFragment.OnTemplateDownloadComplete {
-    private static String TAG = "RecommendedFormsListFragment";
     private Patient patient;
 
     public static RecommendedFormsListFragment newInstance(FormController formController, Patient patient) {

@@ -53,7 +53,6 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
 
     private MuzimaProgressDialog progressDialog;
     private boolean isProcessDialogOn = false;
-    private final String TAG = "CohortWizardActivity" ;
     private PowerManager.WakeLock wakeLock = null ;
 
     public void onCreate(Bundle savedInstanceState) {

@@ -24,7 +24,6 @@ import com.muzima.view.preferences.ProviderPreferenceActivity;
 
 
 public class ProviderListActivity extends ProviderPreferenceActivity{
-    private static final String TAG = "ProviderListActivity";
     private MuzimaProgressDialog muzimaProgressDialog;
     private boolean isProcessDialogOn = false;
     private PowerManager powerManager = null;
