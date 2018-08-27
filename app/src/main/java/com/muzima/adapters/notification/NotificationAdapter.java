@@ -11,10 +11,10 @@
 package com.muzima.adapters.notification;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.muzima.R;
@@ -32,16 +32,17 @@ import java.util.Date;
  * Responsible for displaying Notifications as list.
  */
 public abstract class NotificationAdapter extends ListAdapter<Notification> {
-    protected NotificationController notificationController;
-    protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
+    final NotificationController notificationController;
+    BackgroundListQueryTaskListener backgroundListQueryTaskListener;
 
-    public NotificationAdapter(Context context, int textViewResourceId, NotificationController notificationController) {
+    NotificationAdapter(Context context, int textViewResourceId, NotificationController notificationController) {
         super(context, textViewResourceId);
         this.notificationController = notificationController;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
@@ -62,31 +63,31 @@ public abstract class NotificationAdapter extends ListAdapter<Notification> {
         this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
     }
 
-    public class ViewHolder {
-        private TextView subject;
-        private TextView notificationDate;
+    class ViewHolder {
+        private final TextView subject;
+        private final TextView notificationDate;
         private String status;
-        private ImageView newNotificationImg;
+        private final ImageView newNotificationImg;
 
-        public ViewHolder(View convertView) {
-            this.subject = (TextView) convertView.findViewById(R.id.subject);
-            this.notificationDate = (TextView) convertView.findViewById(R.id.notificationDate);
-            this.newNotificationImg = (ImageView) convertView.findViewById(R.id.newNotificationImg);
+        ViewHolder(View convertView) {
+            this.subject = convertView.findViewById(R.id.subject);
+            this.notificationDate = convertView.findViewById(R.id.notificationDate);
+            this.newNotificationImg = convertView.findViewById(R.id.newNotificationImg);
         }
 
-        public void setSubject(String text) {
+        void setSubject(String text) {
             subject.setText(text);
         }
 
-        public void setNotificationDate(Date date) {
+        void setNotificationDate(Date date) {
             notificationDate.setText(DateUtils.getMonthNameFormattedDate(date));
         }
 
-        public void setStatus(String status) {
+        void setStatus(String status) {
             this.status = status;
         }
 
-        public void markUnreadNotification() {
+        void markUnreadNotification() {
             if (StringUtils.equals(Constants.NotificationStatusConstants.NOTIFICATION_READ, status)){
                 subject.setTypeface(Fonts.roboto_light(getContext()));
                 notificationDate.setTypeface(Fonts.roboto_light(getContext()));

@@ -25,18 +25,16 @@ import com.muzima.view.preferences.LocationPreferenceActivity;
 
 
 public class LocationListActivity extends LocationPreferenceActivity {
-    private static final String TAG = "LocationListActivity";
     private MuzimaProgressDialog muzimaProgressDialog;
-    protected Credentials credentials;
     private boolean isProcessDialogOn = false;
     private PowerManager powerManager = null;
     private PowerManager.WakeLock wakeLock = null ;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        credentials = new Credentials(this);
+        Credentials credentials = new Credentials(this);
 
-        Button nextButton = (Button) findViewById(R.id.next);
+        Button nextButton = findViewById(R.id.next);
         muzimaProgressDialog = new MuzimaProgressDialog(this);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override

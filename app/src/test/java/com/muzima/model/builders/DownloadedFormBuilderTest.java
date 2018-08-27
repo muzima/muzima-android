@@ -21,7 +21,7 @@ import static org.junit.Assert.assertThat;
 public class DownloadedFormBuilderTest {
 
     @Test
-    public void withDownloadedForm_shouldSetGivenValues() throws Exception {
+    public void withDownloadedForm_shouldSetGivenValues() {
         Form form = new Form();
         form.setName("name");
         form.setName("description");

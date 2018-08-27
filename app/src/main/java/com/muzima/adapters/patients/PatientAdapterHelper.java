@@ -39,16 +39,16 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
             LayoutInflater layoutInflater = LayoutInflater.from(context);
             convertView = layoutInflater.inflate(R.layout.item_patients_list_multi_checkable, parent, false);
             holder = new ViewHolder();
-            holder.genderImg = (ImageView) convertView.findViewById(R.id.genderImg);
-            holder.name = (TextView) convertView.findViewById(R.id.name);
-            holder.dateOfBirth = (TextView) convertView.findViewById(R.id.dateOfBirth);
-            holder.identifier = (TextView) convertView.findViewById(R.id.identifier);
+            holder.genderImg = convertView.findViewById(R.id.genderImg);
+            holder.name = convertView.findViewById(R.id.name);
+            holder.dateOfBirth = convertView.findViewById(R.id.dateOfBirth);
+            holder.identifier = convertView.findViewById(R.id.identifier);
             convertView.setTag(holder);
         }
 
         holder = (ViewHolder) convertView.getTag();
 
-        holder.dateOfBirth.setText("DOB: " + getFormattedDate(patient.getBirthdate()));
+        holder.dateOfBirth.setText(String.format("DOB: %s", getFormattedDate(patient.getBirthdate())));
         holder.identifier.setText(patient.getIdentifier());
         holder.name.setText(getPatientFullName(patient));
         holder.genderImg.setImageResource(getGenderImage(patient.getGender()));
@@ -100,7 +100,7 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
     }
 
     public static String getPatientFormattedName(Patient patient) {
-        StringBuffer patientFormattedName = new StringBuffer();
+        StringBuilder patientFormattedName = new StringBuilder();
         if (!StringUtils.isEmpty(patient.getFamilyName())) {
             patientFormattedName.append(patient.getFamilyName());
             patientFormattedName.append(", ");
@@ -116,7 +116,7 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
     }
 
     private String getPatientFullName(Patient patient) {
-        StringBuffer patientFullName = new StringBuffer();
+        StringBuilder patientFullName = new StringBuilder();
         if (!StringUtils.isEmpty(patient.getFamilyName())) {
             patientFullName.append(patient.getFamilyName());
             patientFullName.append(", ");

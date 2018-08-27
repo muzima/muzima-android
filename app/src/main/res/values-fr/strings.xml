@@ -169,7 +169,7 @@
     <string formatted="false" name="hint_client_summary_notifications">%d nouvelles notifications, %d Notifications totale</string>
     <string formatted="false" name="hint_client_summary_observations">%d Observations</string>
     <string name="hint_cohort_download">Sélectionnez une ou plusieurs cohortes dans la liste et cliquez sur \"Suivant\" pour télécharger</string>
-    <string name="hint_cohort_filter">Commencez à taper pour filtrer les cohortes ...</string>
+    <string name="hint_cohort_filter">Commencez à taper pour filtrer les cohortes …</string>
     <string name="hint_cohort_list_download">S\'il vous plaît appuyez sur charger pour récupérer la liste des cohortes disponibles à partir du serveur</string>
     <string name="hint_cohort_prefix_help">Une cohorte est un groupe prédéfini de clients pour lequel vous pouvez remplir des formulaires et
                  Télécharger les observations. Les préfixes définis ici seront utilisés pour télécharger les cohortes par la suite</string>
@@ -182,7 +182,7 @@
     <string name="hint_consultation_consultant_validation_failure">Fournissaient s\'il vous plait un consultant de la liste des consultants potentiels</string>
     <string name="hint_crash_dialog">Une erreur inattendue s\'est produite forçant mUzima à s\'arrêter. S\'il vous plaît aidez-nous à corriger celle-ci en nous envoyant des données d\'erreur, tout ce que vous avez à faire est de cliquer sur OK.</string>
     <string name="hint_crash_dialog_comment_prompt">S\'il vous plaît ajouter vos commentaires sur le problème ci-dessous.</string>
-    <string name="hint_create_new_shr">Le client n\'a pas de SHR. Voulez-vous créer un nouveau SHR et écrire sur la carte?
+    <string name="hint_create_new_SHR">Le client n\'a pas de SHR. Voulez-vous créer un nouveau SHR et écrire sur la carte?
     </string>
     <string name="hint_current_or_past_date_validation_failure">S\'il vous plait entrez une date inferieur ou égal à aujaud\'hui</string>
     <string name="hint_custom_concept_help">Ici vous définissez les concepts dont les données seront incluses dans le téléchargement ultérieur.</string>
@@ -239,7 +239,7 @@
     <string name="hint_server_url">URL du serveur</string>
     <string name="hint_server_url_prompt">Entrez l\'URL du serveur</string>
     <string name="hint_session_timeout">Si inactif pendant ce temps, mUzima se déconnectera automatiquement</string>
-    <string name="hint_set_default_encounter_location_for_shr">Veuillez définir l\'emplacement de rencontre par défaut afin
+    <string name="hint_set_default_encounter_location_for_SHR">Veuillez définir l\'emplacement de rencontre par défaut afin
         d\'activer l\'écriture d\'une nouvelle carte.
     </string>
     <string name="hint_setting_refresh">Voulez-vous télécharger de nouveau cette configuration de votre serveur?</string>
@@ -247,17 +247,17 @@
     <string name="hint_video_caption_prompt">S\'il vous plaît entrer une légende pour la vidéo</string>
     <string name="hint_video_record">Enregistrer ou choisir une vidéo</string>
     <string name="hint_wizard_form_download">Sélectionnez un ou plusieurs modèles de formulaire dans la liste et cliquez sur \"Suivant\" pour télécharger</string>
-    <string name="hint_write_shr_to_card">Voulez-vous écrire Shared Health Record sur la carte?</string>
+    <string name="hint_write_SHR_to_card">Voulez-vous écrire Shared Health Record sur la carte?</string>
 
-    <string name="info_authentication_in_progress">Authentification en cours ...</string>
-    <string name="info_client_demographics_download">téléchargement des données démographiques des clients...</string>
+    <string name="info_authentication_in_progress">Authentification en cours …</string>
+    <string name="info_client_demographics_download">téléchargement des données démographiques des clients…</string>
     <string name="info_client_identifier_change">Identificateur du client modifié sur le serveur. Le nouveau identifiant sera utilisé à l\'avenir.</string>
     <string name="info_client_local_search_not_found">Aucun client ne correspond à votre recherche dans l\'appareil. Entrez au moins 3 caractères pour la recherche à distance.</string>
     <string name="info_client_remote_search_not_found">Aucun client ne correspond à votre recherche sur le serveur</string>
     <string name="info_cohort_download">Téléchargement des cohortes</string>
     <string name="info_cohort_downloaded">1 (une) cohorte Téléchargée </string>
     <string name="info_cohort_fetch_in_progress">Récupération des cohortes déjà en cours, demande ignorée</string>
-    <string name="info_cohort_load">Chargement des cohortes ...</string>
+    <string name="info_cohort_load">Chargement des cohortes …</string>
     <string formatted="false" name="info_cohort_new_patient_download">%d nouveaux clients téléchargés pour %d cohortes.</string>
     <string name="info_cohort_not_downloaded">Aucune cohorte téléchargée</string>
     <string name="info_cohort_patient_download"> 1 (une)client Téléchargé pour 1(une) cohorte</string>
@@ -352,7 +352,7 @@
     <string name="info_encounter_download">téléchargement des rencontres en cours</string>
     <string formatted="false" name="info_encounter_download_progress">Téléchargement en cours des rencontres pour le client%d de %d.</string>
     <string formatted="false" name="info_encounter_not_downloaded_progress">Rencontres pour le client %d %d n\'ont pas été téléchargés.</string>
-    <string name="info_encounter_observation_download">Téléchargement des observations et de rencontres ...</string>
+    <string name="info_encounter_observation_download">Téléchargement des observations et de rencontres …</string>
     <string name="info_encounter_patient_downloaded">1 (une) rencontre téléchargée pour 1(un) client</string>
     <string name="info_encounter_patient_not_downloaded">N\'a pas téléchargé aucune rencontres</string>
     <string formatted="false" name="info_encounter_patients_downloaded">1(une) rencontre a été Téléchargé pour %d patients</string>
@@ -369,7 +369,7 @@
     <string formatted="false" name="info_form_download_delete">%d formulaires Téléchargé et %d formulaires retiré</string>
     <string name="info_form_downloaded"> 1 (un) formuliare Téléchargé</string>
     <string name="info_form_fetch_in_progress">Extraction des formulaires déjà en cours,demande ignorée</string>
-    <string name="info_form_load">Chargement des formulaires ...</string>
+    <string name="info_form_load">Chargement des formulaires …</string>
     <string name="info_form_metadata_download">Téléchargement en cours des métadonnées des formulaires</string>
     <string name="info_form_not_downloaded">aucun formulaires téléchargés</string>
     <string formatted="false" name="info_form_template_concept_download">%d modèles de formulaire Téléchargé et %d concepts</string>
@@ -396,15 +396,15 @@
     <string name="info_muzima_sync_service_finish">synchronisation du service mUzima terminée</string>
     <string name="info_muzima_sync_service_in_progress">synchronisation du service MUzima en cours d\'exécution</string>
     <string formatted="false" name="info_new_cohort_download">%d nouvelles cohortes Téléchargée</string>
-    <string formatted="false" name="info_new_cohort_download_delete">%d nouvelles cohortes Téléchargé et  %d cohortes retirées</string>
-    <string formatted="false" name="info_new_encounter_download">%d nouvelles observations Téléchargées</string>
-    <string formatted="false" name="info_new_encounter_download_delete">%d nouvelles rencontres Téléchargées et  %d rencontres retirées</string>
+    <string formatted="false" name="info_new_cohort_download_delete">%d nouvelles cohortes Téléchargé et  %%d cohortes retirées</string>
+    <string formatted="false" name="info_new_encounter_download">%%d nouvelles observations Téléchargées</string>
+    <string formatted="false" name="info_new_encounter_download_delete">%%d nouvelles rencontres Téléchargées et  %%d rencontres retirées</string>
     <string name="info_new_notification">Nouvelle notification</string>
-    <string formatted="false" name="info_new_observation_download">%d nouvelles observations téléchargé</string>
-    <string formatted="false" name="info_new_observation_download_delete">%d nouvelles observations Téléchargées et  %d observations retirées</string>
-    <string formatted="false" name="info_new_patient_download">%d nouveaux patients Téléchargés</string>
+    <string formatted="false" name="info_new_observation_download">%%d nouvelles observations téléchargé</string>
+    <string formatted="false" name="info_new_observation_download_delete">%%d nouvelles observations Téléchargées et  %%d observations retirées</string>
+    <string formatted="false" name="info_new_patient_download">%%d nouveaux patients Téléchargés</string>
     <string name="info_no_cohort_download">Aucune cohorte n \'a été synchronisé</string>
-    <string formatted="false" name="info_notification_download">%d notifications Téléchargées</string>
+    <string formatted="false" name="info_notification_download">%%d notifications Téléchargées</string>
     <string name="info_notification_download_in_progress">Notifications en cours de téléchargement  </string>
     <string name="info_notification_unavailable">Aucune notification disponible</string>
     <string name="info_observation_download">observations en cours de Téléchargement</string>
@@ -412,25 +412,25 @@
     <string name="info_observation_load">Les observations sont en cours de chargement</string>
     <string name="info_observation_patient_downloaded">Téléchargé 1 (une)observation pour 1(une) patient.</string>
     <string name="info_observation_patient_not_downloaded">N\'a pas téléchargé aucune observation</string>
-    <string formatted="false" name="info_observation_patients_downloaded">%d observations Téléchargées pour 1(un) patient</string>
+    <string formatted="false" name="info_observation_patients_downloaded">%%d observations Téléchargées pour 1(un) patient</string>
     <string name="info_observation_search">recherche des observations</string>
     <string name="info_observation_unavailable">Aucune observation disponible</string>
     <string formatted="false" name="info_observations_download_pogress">
-Téléchargement en cours des observations pour le client %d of %d.</string>
+Téléchargement en cours des observations pour le client %%d of %%d.</string>
     <string name="info_observations_load_in_progress">Les observations sont encore en cours de chargement</string>
-    <string formatted="false" name="info_observations_not_downloaded_progress">Observations pour le client %d de %d ne sont pas téléchargés.</string>
-    <string formatted="false" name="info_observations_patient_downloaded">1 (une) observation Téléchargée pour %d patients</string>
-    <string formatted="false" name="info_observations_patients_downloaded">Téléchargé observations %d pour %d patients</string>
+    <string formatted="false" name="info_observations_not_downloaded_progress">Observations pour le client %%d de %%d ne sont pas téléchargés.</string>
+    <string formatted="false" name="info_observations_patient_downloaded">1 (une) observation Téléchargée pour %%d patients</string>
+    <string formatted="false" name="info_observations_patients_downloaded">Téléchargé observations %%d pour %%d patients</string>
     <string name="info_patient_data_download">Téléchargement en cours les données des patients</string>
     <string name="info_patient_download">Téléchargement en cours des patients</string>
-    <string formatted="false" name="info_provider_delete_success">%d fournisseurs supprimés avec succés</string>
+    <string formatted="false" name="info_provider_delete_success">%%d fournisseurs supprimés avec succés</string>
     <string name="info_provider_download">Téléchargement en cours des fournisseurs</string>
     <string name="info_provider_downloaded">1(une) fournisseur Téléchargé</string>
-    <string name="info_provider_load">Chargement des fournisseurs ...</string>
+    <string name="info_provider_load">Chargement des fournisseurs …</string>
     <string name="info_provider_not_downloaded">N\'a pas téléchargé aucun fournisseurs</string>
     <string name="info_provider_unavailable">
 Aucun fournisseur n\'a encore été ajouté</string>
-    <string formatted="false" name="info_providers_downloaded">%d fournisseurs téléchargés</string>
+    <string formatted="false" name="info_providers_downloaded">%%d fournisseurs téléchargés</string>
     <string name="info_real_time_upload">Muzima est entrain de télécharger vos données</string>
     <string name="info_real_time_upload_success">MUzima a téléchargé vos données avec succès</string>
     <string name="info_scanner_exists">Le scanner de code à barres est déjà installé.</string>
@@ -448,7 +448,7 @@ Aucun fournisseur n\'a encore été ajouté</string>
 
     <string name="menu_form_back_to_draft">Retour au brouillon </string>
     <string name="menu_form_data_sync">Synchronisation des données des formulaires </string>
-    <string formatted="false" name="menu_shr_data_sync">Synchroniser les données SHR (%d)</string>
+    <string formatted="false" name="menu_SHR_data_sync">Synchroniser les données SHR (%%d)</string>
 
     <string name="message_missing_form_encounter_details_error">doit être fourni</string>
 
@@ -458,10 +458,10 @@ Aucun fournisseur n\'a encore été ajouté</string>
     <string name="null_encounter_location_error">Une erreur est survenue lors de l\'enregistrement du formulaire. L\'emplacement de la rencontre doit être fourni</string>
     <string name="null_encounter_provider_error">Une erreur est survenue lors de l\'enregistrement du formulaire. Le fournisseur de rencontres doit être fourni</string>
 
-    <string name="patient_shr_search_dialog_title">Client SHR Search</string>
-    <string name="patient_shr_search_title_text">Client SHR Search</string>
+    <string name="patient_SHR_search_dialog_title">Client SHR Search</string>
+    <string name="patient_SHR_search_title_text">Client SHR Search</string>
 
-    <string name="registering_patient_message_title_text">Enregistrement du client dans mUzima ...</string>
+    <string name="registering_patient_message_title_text">Enregistrement du client dans mUzima …</string>
 
     <string name="scan_card_id_title">ID de carte de numérisation</string>
 
@@ -469,9 +469,9 @@ Aucun fournisseur n\'a encore été ajouté</string>
         effectuer une recherche sur le serveur?
     </string>
 
-    <string name="shr_card_text">Carte SHR</string>
-    <string name="shr_data_title_text">SHR Data</string>
-    <string name="shr_extracted_data_text">SHR extrait des données</string>
+    <string name="SHR_card_text">Carte SHR</string>
+    <string name="SHR_data_title_text">SHR Data</string>
+    <string name="SHR_extracted_data_text">SHR extrait des données</string>
 
     <string name="success_writing_smartcard">Les données de la carte à puce ont été écrites avec succès.</string>
 
@@ -502,7 +502,7 @@ Aucun fournisseur n\'a encore été ajouté</string>
     <string name="title_concept_download">Étape 5: Ajouter Concepts</string>
     <string name="title_concept_download_help_video">Téléchargement de concepts (sur demande)</string>
     <string name="title_concept_help">Aide Concepts </string>
-    <string name="title_crash_dialog">mUzima s\'est écrasé ...</string>
+    <string name="title_crash_dialog">mUzima s\'est écrasé …</string>
     <string name="title_data_reset">Étape 3: Réinitialisation des données</string>
     <string name="title_data_synchronize">Synchronisation des données locales</string>
     <string name="title_default_encounter_location">Emplacement de rencontre par défaut</string>
@@ -549,7 +549,7 @@ Aucun fournisseur n\'a encore été ajouté</string>
     <string name="title_provider_help">Aide fournisseur</string>
     <string name="title_provider_not_set">Impossible de définir en tant que fournisseur</string>
     <string name="title_real_time_sync">Synchronisation en temps réel</string>
-    <string name="title_require_medical_record_number"/>
+    <string name="title_require_medical_record_number">" Exiger un numéro de dossier médical"</string>
     <string name="title_search_server">Recherche sur le serveur</string>
     <string name="title_server_client_search_help_video">Recherche de client (contre le serveur)</string>
     <string name="title_server_side_setup">Configuration côté serveur</string>
@@ -564,16 +564,58 @@ Aucun fournisseur n\'a encore été ajouté</string>
     <string name="warning_empty_cohort_prefix">Vous ne pouvez pas ajouter un préfixe de cohortes vide</string>
     <string name="warning_form_close">Formulaire de clôture: Ceci annulera toutes vos modifications. Etes-vous sûr de vouloir faire ca?</string>
     <string name="warning_form_data_already_exists">Ce formulaire de données existe déjà pour ce client avec la même date de rencontre.</string>
-    <string formatted="false" name="warning_forms_complete_and_sync">%s contient des formulaires qui lui sont associés. S\'il vous plaît compléter et synchronisez
+    <string formatted="false" name="warning_forms_complete_and_sync">%%s contient des formulaires qui lui sont associés. S\'il vous plaît compléter et synchronisez
 Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="warning_logout_confirm">Etes-vous sûr de vouloir vous déconnectez et quitter Muzima app?</string>
     <string name="warning_registration_form_data_delete">Vous êtes sur le point de supprimer les données d\'enregistrement. Cela effacera également les données du client sur l\'appareil. Etes-vous sur?</string>
     <string name="warning_setting_download_failure">Echec du téléchargement ou de la mise à jour des configurations</string>
     <string name="warning_switch_server">Changement de serveur: Cela effacera toutes les données mUzima sur votre appareil, y compris les formulaires incomplets. Etes-vous sûr de vouloir modifier ce paramètre?</string>
 
-    <string name="write_shr_to_card_text">Ecrire SHR à la carte</string>
-    <string name="shr_registration">Enregistrement SHR</string>
-    <string name="shr_registration_description">SHR Données d\'enregistrement</string>
-    <string name="individual_obs">Obs. Individuel</string>
-    <string name="individual_obs_description">Obs. Individuel</string>
+    <string name="write_SHR_to_card_text">Ecrire SHR à la carte</string>
+    <string name="to_text">À</string>
+    <string name="date_temp">8 juin</string>
+    <string name="provider_reports_general">Rapports de fournisseur</string>
+    <string name="hello_general">Bonjour</string>
+    <string name="date_general">Rendez-vous amoureux</string>
+    <string name="done_general">TERMINÉ</string>
+    <string name="send_general_text">Envoyer</string>
+    <string name="provider_name_general">Nom du fournisseur</string>
+    <string name="new_messages_number_text"># nouveaux messages</string>
+    <string name="write_shr_to_card_general">Ecrire SHR sur la carte</string>
+    <string name="help_general">Aidez-moi!</string>
+    <string name="how_to_general">Comment:</string>
+    <string name="initial_setup_for_muzima_general">Configuration initiale pour mUzima</string>
+    <string name="server_side_setup_general">Configuration côté serveur</string>
+    <string name="muzima_training_manual_general">Manuel de formation mUzima</string>
+    <string name="fill_out_forms_for_a_patient_general">Remplir des formulaires pour un patient</string>
+    <string name="video_links_general_text">Liens vidéo:</string>
+    <string name="introduction_to_muzima_general_text">Introduction à mUzima</string>
+    <string name="setting_up_muzima_general_text">Mise en place de mUzima</string>
+    <string name="tagging_forms">Marquage des formulaires</string>
+    <string name="downloading_cohorts_text">Téléchargement de cohortes</string>
+    <string name="change_settings">Modifier les paramètres</string>
+    <string name="downloading_forms">Téléchargement de formulaires</string>
+    <string name="general_skip">Sauter</string>
+    <string name="complex_obs">Complexe obs</string>
+    <string name="encounter_details">Détails de la rencontre</string>
+    <string name="encounter_date">Date de rencontre:</string>
+    <string name="general_loading_encounters">Les rencontres se chargent toujours</string>
+    <string name="client_registration_question_text">Voulez-vous enregistrer un client dans mUzima?</string>
+    <string name="error_smartcard_client_not_in_server">Client de carte à puce non sur le serveur. Enregistrez le client dans mUzima maintenant?</string>
+    <string name="general_finish_text">terminer</string>
+    <string name="sample_date_rep">21 mars 2018</string>
+    <string name="encounter_date_dialog_label">Date de rencontre</string>
+    <string name="observation_text_dialog">Observation:</string>
+    <string name="enter_provider_name_hint">Entrez le nom du fournisseur ...</string>
+    <string name="select_a_registration_form_text">Sélectionnez un formulaire d\'inscription</string>
+    <string name="card_sync_status_content_description">État de la synchronisation des cartes</string>
+    <string name="general_data_syc_required">Données syc requises</string>
+    <string name="gender_image_content_description">Gender Image</string>
+    <string name="inbox_outbox_label_text">## Boîte de réception, ## Boîte d\'envoi</string>
+    <string name="incomplete_outbox_text">## incomplet, ## boîte d\'envoi</string>
+    <string name="synced_label_text">## Synced</string>
+    <string name="synced_total_label_text">## Synced, ## Total</string>
+    <string name="enter_concept_name_text">Entrez le nom du concept ...</string>
+    <string name="number_hashtag_representation">##</string>
+
 </resources>

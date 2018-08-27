@@ -51,7 +51,7 @@ public class IncompletePatientsFormsListFragment extends FormsListFragment imple
     }
 
     @Override
-    public boolean onItemLongClick() {
+    public void onItemLongClick() {
         if (!actionModeActive) {
             actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
             actionModeActive = true;
@@ -61,7 +61,6 @@ public class IncompletePatientsFormsListFragment extends FormsListFragment imple
             actionMode.finish();
         }
         actionMode.setTitle(String.valueOf(numOfSelectedForms));
-        return false;
     }
 
     @Override

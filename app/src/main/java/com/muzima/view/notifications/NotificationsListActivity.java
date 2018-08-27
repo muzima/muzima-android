@@ -31,9 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationsListActivity extends NotificationActivityBase {
-    private static final String TAG = "NotificationsListActivity";
-    public static final String NOTIFICATIONS = "Notifications";
-    private FrameLayout progressBarContainer;
+    private static final String NOTIFICATIONS = "Notifications";
     private MenuItem menubarSyncButton;
     private boolean notificationsSyncInProgress;
 
@@ -45,7 +43,7 @@ public class NotificationsListActivity extends NotificationActivityBase {
         initPagerIndicator();
         setTitle(NOTIFICATIONS);
 
-        progressBarContainer = (FrameLayout) findViewById(R.id.progressbarContainer);
+        FrameLayout progressBarContainer = findViewById(R.id.progressbarContainer);
     }
 
     @Override
@@ -94,7 +92,7 @@ public class NotificationsListActivity extends NotificationActivityBase {
             CohortController cohortController = ((MuzimaApplication) getApplicationContext()).getCohortController();
             try {
                 downloadedCohorts = cohortController.getSyncedCohorts();
-                downloadedCohortsUuid = new ArrayList<String>();
+                downloadedCohortsUuid = new ArrayList<>();
                 for (Cohort cohort : downloadedCohorts) {
                     downloadedCohortsUuid.add(cohort.getUuid());
                 }
@@ -123,20 +121,20 @@ public class NotificationsListActivity extends NotificationActivityBase {
         return CohortUuids.toArray(new String[CohortUuids.size()]);
     }
 
-    public void hideProgressbar() {
+    private void hideProgressbar() {
         menubarSyncButton.setActionView(null);
     }
 
-    public void showProgressBar() {
+    private void showProgressBar() {
         menubarSyncButton.setActionView(R.layout.refresh_menuitem);
     }
 
-    public void onNotificationDownloadFinish() {
+    private void onNotificationDownloadFinish() {
         notificationsSyncInProgress = false;
         notificationPagerAdapter.reloadData();
     }
 
-    public void onNotificationDownloadStart() {
+    private void onNotificationDownloadStart() {
         notificationsSyncInProgress = true;
     }
 

@@ -19,22 +19,21 @@ import com.muzima.controller.ObservationController;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ObservationsAdapter extends ListAdapter<Observation> {
-    private static final String TAG = "ObservationsAdapter";
-    protected ObservationController observationController;
+abstract class ObservationsAdapter extends ListAdapter<Observation> {
+    final ObservationController observationController;
 
-    public ObservationsAdapter(Context context, int textViewResourceId,ObservationController observationController){
+    ObservationsAdapter(Context context, int textViewResourceId, ObservationController observationController){
         super(context, textViewResourceId);
         this.observationController = observationController;
     }
 
-    protected abstract class ViewHolder {
+    abstract class ViewHolder {
 
-        protected LayoutInflater inflater;
-        List<LinearLayout> observationViewHolders;
+        final LayoutInflater inflater;
+        final List<LinearLayout> observationViewHolders;
 
-        protected ViewHolder() {
-            observationViewHolders = new ArrayList<LinearLayout>();
+        ViewHolder() {
+            observationViewHolders = new ArrayList<>();
             inflater = LayoutInflater.from(getContext());
         }
     }

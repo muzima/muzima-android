@@ -23,7 +23,6 @@ import com.muzima.scheduler.RealTimeFormUploader;
  */
 public class ConnectivityChangeReceiver extends BroadcastReceiver {
 
-    private static final String TAG = "ConnectivityChangeReceiver";
 
     public ConnectivityChangeReceiver(){
     }
@@ -31,12 +30,12 @@ public class ConnectivityChangeReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, Intent intent) {
 
-        Log.i(TAG,"Connectivity change receiver triggered.");
+        Log.i(getClass().getSimpleName(),"Connectivity change receiver triggered.");
         if (intent.getExtras() != null) {
 
             User authenticatedUser = ((MuzimaApplication) context.getApplicationContext()).getAuthenticatedUser();
             if (authenticatedUser != null) {
-                Log.i(TAG,"Device got connected to network. Trying to start Muzima Real time Sync of completed forms.");
+                Log.i(getClass().getSimpleName(),"Device got connected to network. Trying to start Muzima Real time Sync of completed forms.");
                 RealTimeFormUploader.getInstance().uploadAllCompletedForms(context.getApplicationContext());
             }
         }

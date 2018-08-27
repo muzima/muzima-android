@@ -19,23 +19,22 @@ import com.muzima.controller.EncounterController;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class EncountersAdapter extends ListAdapter<Encounter> {
-    private static final String TAG = "EncountersAdapter";
-    protected EncounterController encounterController;
+abstract class EncountersAdapter extends ListAdapter<Encounter> {
+    final EncounterController encounterController;
 
-    public EncountersAdapter(Context context, int textViewResourceId, EncounterController encounterController) {
+    EncountersAdapter(Context context, int textViewResourceId, EncounterController encounterController) {
         super(context, textViewResourceId);
         this.encounterController = encounterController;
 
     }
 
-    protected abstract class ViewHolder {
+    abstract class ViewHolder {
 
-        protected LayoutInflater inflater;
-        List<LinearLayout> encounterViewHolders;
+        final LayoutInflater inflater;
+        final List<LinearLayout> encounterViewHolders;
 
-        protected ViewHolder() {
-            encounterViewHolders = new ArrayList<LinearLayout>();
+        ViewHolder() {
+            encounterViewHolders = new ArrayList<>();
             inflater = LayoutInflater.from(getContext());
         }
     }

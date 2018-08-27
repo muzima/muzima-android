@@ -35,32 +35,30 @@ import com.muzima.api.service.LocationService;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import static com.muzima.util.Constants.CONCEPT_CREATED_ON_PHONE;
 import static com.muzima.util.Constants.OBSERVATION_CREATED_ON_PHONE;
-import static java.util.Arrays.asList;
 
-public class ObservationParserUtility {
-    private static final String TAG = ObservationParserUtility.class.getSimpleName();
+class ObservationParserUtility {
 
-    private ConceptController conceptController;
-    public LocationController locationController;
-    public FormController formController;
+    private final ConceptController conceptController;
+    private final LocationController locationController;
+    private final FormController formController;
     private LocationService locationService;
-    public ProviderController providerController;
-    private List<Concept> newConceptList;
+    private final ProviderController providerController;
+    private final List<Concept> newConceptList;
 
     public ObservationParserUtility(MuzimaApplication muzimaApplication) {
         this.conceptController = muzimaApplication.getConceptController();
         this.locationController = muzimaApplication.getLocationController();
         this.providerController = muzimaApplication.getProviderController();
         this.formController = muzimaApplication.getFormController();
-        this.newConceptList = new ArrayList<Concept>();
+        this.newConceptList = new ArrayList<>();
     }
 
     public Encounter getEncounterEntity(Date encounterDateTime,String  formUuid,String providerId, int locationId, String userSystemId, Patient patient, String formDataUuid) {
@@ -156,10 +154,8 @@ public class ObservationParserUtility {
                 encounterTypeName = form.getEncounterType().getName();
                 encountertypeUuid = form.getEncounterType().getUuid();
             }
-        } catch (FormController.FormFetchException e) {
-            Log.e(TAG,"Could not retrieve list of forms",e);
-        } catch (NullPointerException e){
-            Log.e(TAG,"Could not retrieve list of forms",e);
+        } catch (FormController.FormFetchException | NullPointerException e) {
+            Log.e(getClass().getSimpleName(),"Could not retrieve list of forms",e);
         }
         EncounterType encounterType = new EncounterType();
         encounterType.setUuid(encountertypeUuid);
@@ -168,13 +164,13 @@ public class ObservationParserUtility {
     }
 
     private Location getDummyLocation(int locationId) {
-        List<Location> allLocations = new ArrayList<Location>();
+        List<Location> allLocations = new ArrayList<>();
         try {
             allLocations = locationController.getAllLocations();
         } catch (LocationController.LocationLoadException e) {
-            Log.e(TAG,"Error retrieving locations ",e);
+            Log.e(getClass().getSimpleName(),"Error retrieving locations ",e);
         } catch (NullPointerException e){
-            Log.e(TAG,"Could not retrieve list of locations",e);
+            Log.e(getClass().getSimpleName(),"Could not retrieve list of locations",e);
         }
         String locationName = "";
         String locationUuid = "";
@@ -191,13 +187,11 @@ public class ObservationParserUtility {
     }
 
     private Person getDummyProvider(String providerId) {
-        List<Provider> allProviders = new ArrayList<Provider>();
+        List<Provider> allProviders = new ArrayList<>();
         try {
             allProviders = providerController.getAllProviders();
-        } catch (ProviderController.ProviderLoadException e) {
-            Log.e(TAG,"Could not retrieve list of providers",e);
-        } catch (NullPointerException e){
-            Log.e(TAG,"Could not retrieve list of providers",e);
+        } catch (ProviderController.ProviderLoadException | NullPointerException e) {
+            Log.e(getClass().getSimpleName(),"Could not retrieve list of providers",e);
         }
         String providerName = "";
         String providerUuid = "";
@@ -225,7 +219,7 @@ public class ObservationParserUtility {
         personName.setGivenName(" ");
         personName.setMiddleName(providerIdentifier);
         personName.setPreferred(true);
-        ArrayList<PersonName> names = new ArrayList<PersonName>();
+        ArrayList<PersonName> names = new ArrayList<>();
         names.add(personName);
         provider.setNames(names);
         return provider;
@@ -241,7 +235,7 @@ public class ObservationParserUtility {
         ConceptName dummyConceptName = new ConceptName();
         dummyConceptName.setName(conceptName);
         dummyConceptName.setPreferred(true);
-        concept.setConceptNames(asList(dummyConceptName));
+        concept.setConceptNames(Collections.singletonList(dummyConceptName));
         ConceptType conceptType = new ConceptType();
         if(isCoded) {
             conceptType.setName("Coded");

@@ -5,17 +5,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class WriteResponse {
 
     @JsonProperty("SHR")
-    private String shr;
+    private String SHR;
 
     @JsonProperty("addendum")
     private Addendum addendum;
 
-    public void setShr(String shr){
-        this.shr = shr;
+    public void setSHR(String SHR){
+        this.SHR = SHR;
     }
 
-    public String getShr(){
-        return this.shr;
+    public String getSHR(){
+        return this.SHR;
     }
 
     public void setAddendum(Addendum addendum){

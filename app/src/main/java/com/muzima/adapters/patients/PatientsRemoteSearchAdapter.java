@@ -12,6 +12,7 @@ package com.muzima.adapters.patients;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +30,10 @@ import java.util.List;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 public class PatientsRemoteSearchAdapter extends ListAdapter<Patient> {
-    private static final String TAG = "PatientsRemoteSearchAdapter";
-    private PatientAdapterHelper patientAdapterHelper;
-    private PatientController patientController;
-    private String searchString;
-    protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
+    private final PatientAdapterHelper patientAdapterHelper;
+    private final PatientController patientController;
+    private final String searchString;
+    private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
 
     public PatientsRemoteSearchAdapter(Context context, int textViewResourceId, PatientController patientController,
                                        String searchString) {
@@ -43,8 +43,9 @@ public class PatientsRemoteSearchAdapter extends ListAdapter<Patient> {
         this.patientAdapterHelper = new PatientAdapterHelper(context, textViewResourceId);
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         return patientAdapterHelper.createPatientRow(getItem(position), convertView, parent, getContext());
     }
 
@@ -101,11 +102,11 @@ public class PatientsRemoteSearchAdapter extends ListAdapter<Patient> {
                 }
 
             } catch (Throwable t) {
-                Log.e(TAG, "Error while searching for patient in the server.", t);
+                Log.e(getClass().getSimpleName(), "Error while searching for patient in the server.", t);
             } finally {
                 applicationContext.getMuzimaContext().closeSession();
             }
-            Log.e(TAG, "Authentication failure !! Returning empty patient list");
+            Log.e(getClass().getSimpleName(), "Authentication failure !! Returning empty patient list");
             return new ArrayList<Patient>();
         }
     }

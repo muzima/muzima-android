@@ -21,7 +21,7 @@
                 android:textColor="@color/primary_blue"
                 android:textColorHint="@color/hint_text_grey"
                 android:textCursorDrawable="@null"
-                android:hint="Type Cohort name ...">
+                android:hint="@string/type_cohort_name_hint">
             <requestFocus/>
         </AutoCompleteTextView>
 
@@ -32,7 +32,7 @@
                 android:paddingBottom="6dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:text="Add"
+                android:text="@string/general_add"
                 android:background="@color/primary_blue"
                 android:gravity="center"
                 android:onClick="addPrefix">

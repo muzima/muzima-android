@@ -22,7 +22,6 @@ import java.util.List;
  * Responsible to display all the incomplete forms.
  */
 public class IncompleteFormsAdapter extends SectionedFormsAdapter<IncompleteFormWithPatientData> {
-    private static final String TAG = "IncompleteFormsAdapter";
 
     public IncompleteFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
@@ -36,9 +35,9 @@ public class IncompleteFormsAdapter extends SectionedFormsAdapter<IncompleteForm
     /**
      * Responsible to fetch all the incomplete forms from the DB.
      */
-    public static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<IncompleteFormWithPatientData> {
+    protected static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<IncompleteFormWithPatientData> {
 
-        public BackgroundQueryTask(FormsAdapter formsAdapter) {
+        BackgroundQueryTask(FormsAdapter formsAdapter) {
             super(formsAdapter);
         }
 
@@ -50,9 +49,9 @@ public class IncompleteFormsAdapter extends SectionedFormsAdapter<IncompleteForm
                 try {
                     FormsAdapter formsAdapter = adapterWeakReference.get();
                     incompleteForms = formsAdapter.getFormController().getAllIncompleteFormsWithPatientData();
-                    Log.i(TAG, "#Incomplete forms: " + incompleteForms.size());
+                    Log.i(getClass().getSimpleName(), "#Incomplete forms: " + incompleteForms.size());
                 } catch (FormController.FormFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local forms ", e);
+                    Log.w(getClass().getSimpleName(), "Exception occurred while fetching local forms ", e);
                 }
             }
             return incompleteForms;

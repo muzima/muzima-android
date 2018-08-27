@@ -27,7 +27,7 @@ public class KenyaEmrSHRModel {
     @JsonProperty("CARD_DETAILS")
     private CardDetails cardDetails;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<>();
 
     public static final String newShrModelTemplate =
             "{  \"CARD_DETAILS\": {}," +
@@ -132,7 +132,7 @@ public class KenyaEmrSHRModel {
     }
 
     @JsonIgnore
-    public boolean isNewShrModel(){
+    public boolean isNewSHRModel(){
         try {
             return StringUtils.isEmpty(getPatientIdentification().getExternalPatientId().getID());
         } catch (NullPointerException e){

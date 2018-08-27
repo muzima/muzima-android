@@ -28,10 +28,9 @@ import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS;
 import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS_DATA;
 
 public class CohortController {
-    private static final String TAG = "CohortController";
-    private CohortService cohortService;
-    private LastSyncTimeService lastSyncTimeService;
-    private SntpService sntpService;
+    private final CohortService cohortService;
+    private final LastSyncTimeService lastSyncTimeService;
+    private final SntpService sntpService;
 
     public CohortController(CohortService cohortService, LastSyncTimeService lastSyncTimeService, SntpService sntpService) {
         this.cohortService = cohortService;
@@ -69,7 +68,7 @@ public class CohortController {
     }
 
     public List<CohortData> downloadCohortData(String[] cohortUuids) throws CohortDownloadException {
-        ArrayList<CohortData> allCohortData = new ArrayList<CohortData>();
+        ArrayList<CohortData> allCohortData = new ArrayList<>();
         for (String cohortUuid : cohortUuids) {
             allCohortData.add(downloadCohortDataByUuid(cohortUuid));
         }
@@ -89,7 +88,7 @@ public class CohortController {
     }
 
     public List<Cohort> downloadCohortsByPrefix(List<String> cohortPrefixes) throws CohortDownloadException {
-        List<Cohort> filteredCohorts = new ArrayList<Cohort>();
+        List<Cohort> filteredCohorts = new ArrayList<>();
         try {
             Date lastSyncDateOfCohort;
             LastSyncTime lastSyncTime;
@@ -123,7 +122,7 @@ public class CohortController {
     }
 
     private List<Cohort> filterCohortsByPrefix(List<Cohort> cohorts, String cohortPrefix) {
-        ArrayList<Cohort> filteredCohortList = new ArrayList<Cohort>();
+        ArrayList<Cohort> filteredCohortList = new ArrayList<>();
         for (Cohort cohort : cohorts) {
             String lowerCaseCohortName = cohort.getName().toLowerCase();
             String lowerCasePrefix = cohortPrefix.toLowerCase();
@@ -163,7 +162,7 @@ public class CohortController {
         try {
 
             List<Cohort> cohorts = cohortService.getAllCohorts();
-            List<Cohort> syncedCohorts = new ArrayList<Cohort>();
+            List<Cohort> syncedCohorts = new ArrayList<>();
             for (Cohort cohort : cohorts) {
                 //TODO: Have a has members method to make this more explicit
                 if (isDownloaded(cohort)) {
@@ -188,7 +187,7 @@ public class CohortController {
         return getSyncedCohorts().size();
     }
 
-    public void deleteCohortMembers(String cohortUuid) throws CohortReplaceException {
+    private void deleteCohortMembers(String cohortUuid) throws CohortReplaceException {
         try {
             cohortService.deleteCohortMembers(cohortUuid);
         } catch (IOException e) {

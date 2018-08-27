@@ -29,7 +29,7 @@ public class WebViewActivity extends BaseActivity {
     }
 
     private void setHelpContent() {
-        WebView webView = (WebView) findViewById(R.id.webViewHelpDisplay);
+        WebView webView = findViewById(R.id.webViewHelpDisplay);
         webView.getSettings().setJavaScriptEnabled(true);
         setTitle(getIntent().getStringExtra(HELP_TITLE));
         webView.loadUrl(getIntent().getStringExtra(HELP_FILE_PATH_PARAM));

@@ -21,7 +21,6 @@ import com.muzima.controller.CohortController;
 import com.muzima.view.patients.PatientsListActivity;
 
 public class SyncedCohortsListFragment extends CohortListFragment implements AllCohortsListFragment.OnCohortDataDownloadListener {
-    private static final String TAG = "SyncedCohortsListFragment";
 
     public static SyncedCohortsListFragment newInstance(CohortController cohortController) {
         SyncedCohortsListFragment f = new SyncedCohortsListFragment();

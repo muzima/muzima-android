@@ -40,10 +40,8 @@ public final class VideoResult {
 
     @Override
     public String toString() {
-        StringBuilder dialogText = new StringBuilder(255);
-        dialogText.append("SectionName: ").append(sectionName).append('\n');
-        dialogText.append("VideoUri: ").append(videoUri).append('\n');
-        dialogText.append("VideoCaption: ").append(videoCaption).append('\n');
-        return dialogText.toString();
+        return "SectionName: " + sectionName + '\n' +
+                "VideoUri: " + videoUri + '\n' +
+                "VideoCaption: " + videoCaption + '\n';
     }
 }

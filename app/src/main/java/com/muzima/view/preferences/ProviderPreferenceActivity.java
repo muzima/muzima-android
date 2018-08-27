@@ -38,11 +38,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProviderPreferenceActivity extends BroadcastListenerActivity {
-    private static final String TAG = ProviderPreferenceActivity.class.getSimpleName();
     private SelectedProviderAdapter selectedProviderAdapter;
     private ListView selectedProviderListView;
     private AutoCompleteTextView autoCompleteProvidersTextView;
-    private AutoCompleteProviderAdapter autoCompleteProviderAdapter;
     private boolean actionModeActive = false;
     private ActionMode actionMode;
 
@@ -51,7 +49,7 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
 
-        selectedProviderListView = (ListView) findViewById(R.id.provider_preference_list);
+        selectedProviderListView = findViewById(R.id.provider_preference_list);
         final MuzimaApplication applicationContext = (MuzimaApplication) getApplicationContext();
         selectedProviderAdapter = new SelectedProviderAdapter(this, R.layout.item_provider_list,
                 (applicationContext).getProviderController());
@@ -61,8 +59,8 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
         selectedProviderListView.setClickable(true);
         selectedProviderListView.setEmptyView(findViewById(R.id.no_provider_added));
         selectedProviderListView.setOnItemClickListener(selectedProviderOnClickListener());
-        autoCompleteProvidersTextView = (AutoCompleteTextView) findViewById(R.id.add_provider);
-        autoCompleteProviderAdapter = new AutoCompleteProviderAdapter(applicationContext, R.layout.item_option_autocomplete, autoCompleteProvidersTextView);
+        autoCompleteProvidersTextView = findViewById(R.id.add_provider);
+        AutoCompleteProviderAdapter autoCompleteProviderAdapter = new AutoCompleteProviderAdapter(applicationContext, R.layout.item_option_autocomplete, autoCompleteProvidersTextView);
         autoCompleteProvidersTextView.setAdapter(autoCompleteProviderAdapter);
         autoCompleteProvidersTextView.setOnItemClickListener(autoCompleteOnClickListener());
 
@@ -96,7 +94,7 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
             public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
                 Provider selectedProvider = (Provider) parent.getItemAtPosition(position);
                 if (selectedProviderAdapter.doesProviderAlreadyExist(selectedProvider)) {
-                    Log.e(TAG, "Providers Already exists");
+                    Log.e(getClass().getSimpleName(), "Providers Already exists");
                     Toast.makeText(ProviderPreferenceActivity.this, "Provider " + selectedProvider.getName() + " already exists", Toast.LENGTH_SHORT).show();
                 } else {
                     selectedProviderAdapter.addProvider(selectedProvider);
@@ -148,7 +146,7 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
         return inflater.inflate(R.layout.layout_list, container, false);
     }
 
-    public final class DeleteProvidersActionModeCallback implements ActionMode.Callback {
+    final class DeleteProvidersActionModeCallback implements ActionMode.Callback {
 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
@@ -186,14 +184,14 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
         }
     }
 
-    public void endActionMode() {
+    private void endActionMode() {
         if (actionMode != null) {
             actionMode.finish();
         }
     }
 
     private List<Provider> getSelectedProviders() {
-        List<Provider> providers = new ArrayList<Provider>();
+        List<Provider> providers = new ArrayList<>();
         SparseBooleanArray checkedItemPositions = selectedProviderListView.getCheckedItemPositions();
         for (int i = 0; i < checkedItemPositions.size(); i++) {
             if (checkedItemPositions.valueAt(i)) {

@@ -18,7 +18,7 @@ public class PatientAddress {
     @JsonProperty("POSTAL_ADDRESS")
     private String postalAddress;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<>();
 
     /**
      * No args constructor for use in serialization

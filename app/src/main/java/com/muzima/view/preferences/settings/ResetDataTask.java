@@ -20,9 +20,9 @@ import com.muzima.service.CredentialsPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.view.preferences.SettingsActivity;
 
-public class ResetDataTask extends AsyncTask<String, Void, Void> {
-    private SettingsActivity settingsActivity;
-    private String newUrl;
+class ResetDataTask extends AsyncTask<String, Void, Void> {
+    private final SettingsActivity settingsActivity;
+    private final String newUrl;
     private ProgressDialog progressDialog;
 
     public ResetDataTask(SettingsActivity settingsActivity, String newUrl) {

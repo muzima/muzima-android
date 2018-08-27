@@ -11,12 +11,12 @@
 <LinearLayout xmlns:tools="http://schemas.android.com/tools"
               xmlns:android="http://schemas.android.com/apk/res/android"
               style="@style/DashboardWrapper"
-              tools:context=".MainActivity">
+              tools:context="com.muzima.view.MainActivity">
 
     <TextView
             android:id="@+id/helpContent"
             style="@style/HelpContent"
-            android:text="Help!"/>
+            android:text="@string/help_general"/>
 
     <ScrollView
             android:id="@+id/helpInfoMenu"
@@ -29,20 +29,23 @@
             <TextView
                     android:id="@+id/howToLabel"
                     style="@style/HelpContent"
-                    android:text="How To: "
+                    android:text="@string/how_to_general"
                     android:textSize="20sp"/>
             <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1.5dp"
+                    android:contentDescription="@string/general_help"
                     android:src="#555555"/>
             <TextView
                     android:id="@+id/muzimaSetupGuideLabel"
                     android:onClick="viewMuzimaInitialSetupGuide"
                     style="@style/HelpContent"
-                    android:text="Initial setup for mUzima"
+                    android:text="@string/initial_setup_for_muzima_general"
                     android:clickable="true"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                android:focusable="true" />
             <ImageView
+                android:contentDescription="@string/general_help"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:src="#555555"/>
@@ -50,109 +53,128 @@
                     android:id="@+id/muzimaUserGuideLabel"
                     android:onClick="viewMuzimaUserGuide"
                     style="@style/HelpContent"
-                    android:text="Server side Setup"
+                    android:text="@string/server_side_setup_general"
                     android:clickable="true"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                android:focusable="true" />
             <ImageView
-                    android:layout_width="match_parent"
+                android:contentDescription="@string/general_help"
+                android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:src="#555555"/>
             <TextView
                     android:id="@+id/muzimaTrainingManualLabel"
                     android:onClick="viewMuzimaTrainingManual"
                     style="@style/HelpContent"
-                    android:text="mUzima Training Manual"
+                    android:text="@string/muzima_training_manual_general"
                     android:clickable="true"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                android:focusable="true" />
             <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:src="#555555"/>
+                android:contentDescription="@string/general_help"
+                android:src="#555555"/>
             <TextView
                     android:id="@+id/fillingPatientFormLabel"
                     android:onClick="viewPatientFormFillingHelpContent"
                     style="@style/HelpContent"
-                    android:text="Fill out forms for a patient"
+                    android:text="@string/fill_out_forms_for_a_patient_general"
                     android:clickable="true"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                android:focusable="true" />
             <ImageView
-                    android:layout_width="match_parent"
+                android:contentDescription="@string/general_help"
+                android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:src="#555555"/>
             <TextView
                     android:id="@+id/videoLinksLabel"
                     android:onClick="viewPatientFormFillingHelpContent"
                     style="@style/HelpContent"
-                    android:text="Video Links: "
+                    android:text="@string/video_links_general_text"
                     android:textSize="20sp"/>
             <ImageView
-                    android:layout_width="match_parent"
+                android:contentDescription="@string/general_help"
+                android:layout_width="match_parent"
                     android:layout_height="1.5dp"
                     android:src="#555555"/>
             <TextView
                     android:id="@+id/introductionVideoLabel"
                     android:onClick="viewIntroductionVideo"
                     style="@style/HelpContent"
-                    android:text="Introduction to mUzima"
+                    android:text="@string/introduction_to_muzima_general_text"
                     android:clickable="true"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                android:focusable="true" />
             <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:src="#555555"/>
+                android:contentDescription="@string/general_help"
+                android:src="#555555"/>
             <TextView
                     android:id="@+id/settingUpMuzimaVideoLabel"
                     android:onClick="viewSettingUpMuzimaVideo"
                     style="@style/HelpContent"
-                    android:text="Setting Up mUzima"
+                    android:text="@string/setting_up_muzima_general_text"
                     android:clickable="true"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                android:focusable="true" />
             <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:src="#555555"/>
+                android:contentDescription="@string/general_help"
+                android:src="#555555"/>
             <TextView
                     android:id="@+id/taggingFormsVideoLabel"
                     android:onClick="viewTaggingFormsVideo"
                     style="@style/HelpContent"
-                    android:text="Tagging Forms"
+                    android:text="@string/tagging_forms"
                     android:clickable="true"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                android:focusable="true" />
             <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:src="#555555"/>
+                android:contentDescription="@string/general_help"
+                android:src="#555555"/>
             <TextView
                     android:id="@+id/downloadingCohortsVideoLabel"
                     android:onClick="viewDownloadingCohortsVideo"
                     style="@style/HelpContent"
-                    android:text="Downloading Cohorts"
+                    android:text="@string/downloading_cohorts_text"
                     android:clickable="true"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                android:focusable="true" />
             <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:src="#555555"/>
+                android:contentDescription="@string/general_help"
+                android:src="#555555"/>
             <TextView
                     android:id="@+id/changeSettingsVideoLabel"
                     android:onClick="viewChangeSettingsVideo"
                     style="@style/HelpContent"
-                    android:text="Change Settings"
+                    android:text="@string/change_settings"
                     android:clickable="true"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                android:focusable="true" />
             <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:src="#555555"/>
+                android:contentDescription="@string/general_help"
+                android:src="#555555"/>
             <TextView
                     android:id="@+id/downloadingFormsVideoLabel"
                     android:onClick="viewDownloadingFormsVideo"
                     style="@style/HelpContent"
-                    android:text="Downloading Forms"
+                    android:text="@string/downloading_forms"
                     android:clickable="true"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                android:focusable="true" />
             <ImageView
-                    android:layout_width="match_parent"
+                android:contentDescription="@string/general_help"
+                android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:src="#555555"/>
         </LinearLayout>

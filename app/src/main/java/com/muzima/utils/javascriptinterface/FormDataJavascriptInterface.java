@@ -12,8 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FormDataJavascriptInterface {
-    private final static String TAG = FormDataJavascriptInterface.class.getSimpleName();
-    private MuzimaApplication muzimaApplication;
+    private final MuzimaApplication muzimaApplication;
     public FormDataJavascriptInterface(MuzimaApplication muzimaApplication){
         this.muzimaApplication = muzimaApplication;
     }
@@ -24,7 +23,7 @@ public class FormDataJavascriptInterface {
         try {
             completeFormData = muzimaApplication.getFormController().getAllFormData(Constants.STATUS_COMPLETE);
         } catch (FormController.FormDataFetchException e) {
-            Log.e(TAG,"Error while fetching form data",e);
+            Log.e(getClass().getSimpleName(),"Error while fetching form data",e);
         }
         return JSONValue.toJSONString(completeFormData);
     }

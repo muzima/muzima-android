@@ -11,6 +11,7 @@
 package com.muzima.adapters.concept;
 
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,8 +31,7 @@ import java.util.List;
  * Responsible to display Locations in the Settings page.
  */
 public class SelectedLocationAdapter extends ListAdapter<Location> {
-    private final String TAG = SelectedLocationAdapter.class.getSimpleName();
-    protected LocationController locationController;
+    private final LocationController locationController;
 
     public SelectedLocationAdapter(LocationPreferenceActivity context, int textViewResourceId, LocationController locationController) {
         super(context, textViewResourceId);
@@ -42,21 +42,22 @@ public class SelectedLocationAdapter extends ListAdapter<Location> {
         try {
             return locationController.getAllLocations().contains(selectedLocation);
         } catch (LocationController.LocationLoadException e) {
-            Log.e(TAG, "Error while loading locations", e);
+            Log.e(getClass().getSimpleName(), "Error while loading locations", e);
         }
         return false;
     }
 
     private class ViewHolder {
-        private CheckedTextView name;
+        private final CheckedTextView name;
 
         private ViewHolder(View locationView) {
-            name = (CheckedTextView) locationView.findViewById(R.id.location_name);
+            name = locationView.findViewById(R.id.location_name);
         }
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
@@ -78,7 +79,7 @@ public class SelectedLocationAdapter extends ListAdapter<Location> {
         try {
             locationController.deleteLocation(location);
         } catch (LocationController.LocationDeleteException e) {
-            Log.e(TAG, "Error while deleting the location", e);
+            Log.e(getClass().getSimpleName(), "Error while deleting the location", e);
         }
     }
 
@@ -90,12 +91,12 @@ public class SelectedLocationAdapter extends ListAdapter<Location> {
             try {
                 locationController.deleteLocations(locationsToDelete);
             } catch (LocationController.LocationDeleteException e) {
-                Log.e(TAG, "Error while deleting the locations", e);
+                Log.e(getClass().getSimpleName(), "Error while deleting the locations", e);
             }
             this.clear();
             this.addAll(allLocations);
         } catch (LocationController.LocationLoadException e) {
-            Log.e(TAG, "Error while fetching the locations", e);
+            Log.e(getClass().getSimpleName(), "Error while fetching the locations", e);
         }
     }
 
@@ -107,7 +108,7 @@ public class SelectedLocationAdapter extends ListAdapter<Location> {
     /**
      * Responsible to save the locations into DB on selection from AutoComplete. And also fetches to Locations from DB to display in the page.
      */
-    public class BackgroundSaveAndQueryTask extends AsyncTask<Location, Void, List<Location>> {
+    class BackgroundSaveAndQueryTask extends AsyncTask<Location, Void, List<Location>> {
 
         @Override
         protected List<Location> doInBackground(Location... locations) {
@@ -125,10 +126,10 @@ public class SelectedLocationAdapter extends ListAdapter<Location> {
                 try {
                     selectedLocations = locationController.getAllLocations();
                 } catch (LocationController.LocationLoadException e) {
-                    Log.w(TAG, "Exception occurred while fetching locations from local data repository!", e);
+                    Log.w(getClass().getSimpleName(), "Exception occurred while fetching locations from local data repository!", e);
                 }
             } catch (LocationController.LocationSaveException e) {
-                Log.w(TAG, "Exception occurred while saving location to local data repository!", e);
+                Log.w(getClass().getSimpleName(), "Exception occurred while saving location to local data repository!", e);
             }
             return selectedLocations;
         }

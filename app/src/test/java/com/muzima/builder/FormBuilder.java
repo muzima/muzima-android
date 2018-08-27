@@ -14,7 +14,7 @@ import com.muzima.api.model.Form;
 import com.muzima.api.model.Tag;
 
 public class FormBuilder {
-    public String name;
+    private String name;
     private String uuid;
     private String description;
     private String version;
@@ -44,7 +44,7 @@ public class FormBuilder {
         return this;
     }
 
-    public FormBuilder withTags(Tag[] tags) {
+    public FormBuilder withTags(Tag [] tags) {
         this.tags = tags;
         return this;
     }

@@ -11,12 +11,13 @@
 package com.muzima.view.observations;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ListView;
+
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.observations.ObservationsAdapter;
@@ -26,21 +27,18 @@ import com.muzima.controller.ObservationController;
 import com.muzima.view.MuzimaListFragment;
 
 public abstract class ObservationsListFragment extends MuzimaListFragment implements ListAdapter.BackgroundListQueryTaskListener{
-    private static final String TAG = "ObservationsListFragment";
 
-    protected ConceptController conceptController;
-    protected ObservationController observationController;
-    protected EncounterController encounterController;
-    protected FrameLayout progressBarContainer;
-    protected LinearLayout noDataView;
-    protected View observationsLayout;
+    ConceptController conceptController;
+    ObservationController observationController;
+    EncounterController encounterController;
+    private View observationsLayout;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         observationsLayout = setupMainView(inflater,container);
-        list = (ListView) observationsLayout.findViewById(R.id.list);
-        progressBarContainer = (FrameLayout) observationsLayout.findViewById(R.id.progressbarContainer);
-        noDataView = (LinearLayout) observationsLayout.findViewById(R.id.no_data_layout);
+        list = observationsLayout.findViewById(R.id.list);
+        FrameLayout progressBarContainer = observationsLayout.findViewById(R.id.progressbarContainer);
+        LinearLayout noDataView = observationsLayout.findViewById(R.id.no_data_layout);
 
         setupNoDataView(observationsLayout);
 
@@ -55,7 +53,7 @@ public abstract class ObservationsListFragment extends MuzimaListFragment implem
         return observationsLayout;
     }
 
-    protected View setupMainView(LayoutInflater inflater, ViewGroup container){
+    View setupMainView(LayoutInflater inflater, ViewGroup container){
         return inflater.inflate(R.layout.layout_list, container, false);
     }
 

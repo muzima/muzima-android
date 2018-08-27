@@ -16,7 +16,7 @@ import com.muzima.model.observation.Concepts;
 
 import java.util.List;
 
-public abstract class ConceptAction {
+abstract class ConceptAction {
     abstract Concepts get() throws ObservationController.LoadObservationException;
     abstract Concepts get(Concept concept) throws ObservationController.LoadObservationException;
     abstract List<Concept> getConcepts() throws ObservationController.LoadObservationException;

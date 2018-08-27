@@ -23,11 +23,10 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
-    private static final String TAG = BroadcastListenerActivity.class.getSimpleName();
     public static final String MESSAGE_SENT_ACTION = "com.muzima.MESSAGE_RECEIVED_ACTION";
     public static final String PROGRESS_UPDATE_ACTION = "com.muzima.PROGRESS_UPDATE_ACTION";
 
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             BroadcastListenerActivity.this.onReceive(context, intent);
@@ -64,57 +63,81 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
                 SyncStatusConstants.UNKNOWN_ERROR);
 
         String msg = getString(R.string.info_download_complete, syncStatus);
-        Log.i(TAG, msg);
+        Log.i(getClass().getSimpleName(), msg);
 
-        if (syncStatus == SyncStatusConstants.DOWNLOAD_ERROR) {
-            msg = getString(R.string.error_data_download);
-        } else if (syncStatus == SyncStatusConstants.AUTHENTICATION_ERROR) {
-            msg = getString(R.string.error_authentication_occur);
-        } else if (syncStatus == SyncStatusConstants.DELETE_ERROR) {
-            msg = getString(R.string.error_local_repo_data_delete);
-        } else if (syncStatus == SyncStatusConstants.SAVE_ERROR) {
-            msg = getString(R.string.error_data_save);
-        } else if (syncStatus == SyncStatusConstants.LOCAL_CONNECTION_ERROR) {
-            msg = getString(R.string.error_local_connection_unavailable);
-        } else if (syncStatus == SyncStatusConstants.SERVER_CONNECTION_ERROR) {
-            msg = getString(R.string.error_server_connection_unavailable);
-        } else if (syncStatus == SyncStatusConstants.PARSING_ERROR) {
-            msg = getString(R.string.error_parse_exception_data_fetch);
-        } else if (syncStatus == SyncStatusConstants.LOAD_ERROR) {
-            msg = getString(R.string.error_exception_data_load);
-        } else if (syncStatus == SyncStatusConstants.UPLOAD_ERROR) {
-            msg = getString(R.string.error_exception_data_upload);
-        } else if(syncStatus == SyncStatusConstants.SUCCESS){
-            int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
-            int downloadCount = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, 0);
+        switch (syncStatus) {
+            case SyncStatusConstants.DOWNLOAD_ERROR:
+                msg = getString(R.string.error_data_download);
+                break;
+            case SyncStatusConstants.AUTHENTICATION_ERROR:
+                msg = getString(R.string.error_authentication_occur);
+                break;
+            case SyncStatusConstants.DELETE_ERROR:
+                msg = getString(R.string.error_local_repo_data_delete);
+                break;
+            case SyncStatusConstants.SAVE_ERROR:
+                msg = getString(R.string.error_data_save);
+                break;
+            case SyncStatusConstants.LOCAL_CONNECTION_ERROR:
+                msg = getString(R.string.error_local_connection_unavailable);
+                break;
+            case SyncStatusConstants.SERVER_CONNECTION_ERROR:
+                msg = getString(R.string.error_server_connection_unavailable);
+                break;
+            case SyncStatusConstants.PARSING_ERROR:
+                msg = getString(R.string.error_parse_exception_data_fetch);
+                break;
+            case SyncStatusConstants.LOAD_ERROR:
+                msg = getString(R.string.error_exception_data_load);
+                break;
+            case SyncStatusConstants.UPLOAD_ERROR:
+                msg = getString(R.string.error_exception_data_upload);
+                break;
+            case SyncStatusConstants.SUCCESS:
+                int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
+                int downloadCount = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, 0);
 
-            if(syncType == DataSyncServiceConstants.SYNC_FORMS){
-                int deletedFormCount = intent.getIntExtra(DataSyncServiceConstants.DELETED_COUNT_PRIMARY,0);
-                msg = getString(R.string.info_form_downloaded, downloadCount);
-                if(deletedFormCount > 0){
-                    msg = getString(R.string.info_form_download_delete, downloadCount, deletedFormCount);
+                switch (syncType) {
+                    case DataSyncServiceConstants.SYNC_FORMS:
+                        int deletedFormCount = intent.getIntExtra(DataSyncServiceConstants.DELETED_COUNT_PRIMARY, 0);
+                        msg = getString(R.string.info_form_downloaded, downloadCount);
+                        if (deletedFormCount > 0) {
+                            msg = getString(R.string.info_form_download_delete, downloadCount, deletedFormCount);
+                        }
+                        break;
+                    case DataSyncServiceConstants.SYNC_TEMPLATES:
+                        msg = getString(R.string.info_form_template_concept_download, downloadCount, intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0));
+                        break;
+                    case DataSyncServiceConstants.SYNC_COHORTS:
+                        msg = getString(R.string.info_new_cohort_download, downloadCount);
+                        break;
+                    case DataSyncServiceConstants.SYNC_PATIENTS_FULL_DATA: {
+                        int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
+                        msg = getString(R.string.info_cohort_new_patient_download, downloadCount, downloadCountSec) + getString(R.string.info_patient_data_download);
+                        break;
+                    }
+                    case DataSyncServiceConstants.SYNC_PATIENTS_ONLY: {
+                        int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
+                        msg = getString(R.string.info_cohorts_patients_download, downloadCount, downloadCountSec);
+                        break;
+                    }
+                    case DataSyncServiceConstants.SYNC_OBSERVATIONS:
+                        msg = getString(R.string.info_new_observation_download, downloadCount);
+                        break;
+                    case DataSyncServiceConstants.SYNC_ENCOUNTERS:
+                        msg = getString(R.string.info_new_encounter_download, downloadCount);
+                        break;
+                    case DataSyncServiceConstants.SYNC_UPLOAD_FORMS:
+                        msg = getString(R.string.info_form_data_upload_sucess);
+                        break;
+                    case DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS:
+                        msg = getString(R.string.info_real_time_upload_success);
+                        break;
+                    case DataSyncServiceConstants.SYNC_NOTIFICATIONS:
+                        msg = getString(R.string.info_notification_download, downloadCount);
+                        break;
                 }
-            } else if(syncType == DataSyncServiceConstants.SYNC_TEMPLATES){
-                msg = getString(R.string.info_form_template_concept_download, downloadCount , intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0));
-            } else if(syncType == DataSyncServiceConstants.SYNC_COHORTS){
-                msg = getString(R.string.info_new_cohort_download, downloadCount);
-            } else if(syncType == DataSyncServiceConstants.SYNC_PATIENTS_FULL_DATA){
-                int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
-                msg =getString(R.string.info_cohort_new_patient_download, downloadCount, downloadCountSec)+ getString(R.string.info_patient_data_download);
-            } else if(syncType == DataSyncServiceConstants.SYNC_PATIENTS_ONLY){
-                int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
-                msg =getString(R.string.info_cohorts_patients_download, downloadCount ,downloadCountSec);
-            } else if(syncType == DataSyncServiceConstants.SYNC_OBSERVATIONS){
-                msg = getString(R.string.info_new_observation_download, downloadCount);
-            } else if(syncType == DataSyncServiceConstants.SYNC_ENCOUNTERS){
-                msg= getString(R.string.info_new_encounter_download, downloadCount);
-            } else if(syncType == DataSyncServiceConstants.SYNC_UPLOAD_FORMS){
-                msg = getString(R.string.info_form_data_upload_sucess);
-            } else if(syncType == DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS){
-                msg = getString(R.string.info_real_time_upload_success);
-            } else if(syncType == DataSyncServiceConstants.SYNC_NOTIFICATIONS){
-                msg = getString(R.string.info_notification_download, downloadCount);
-            }
+                break;
         }
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
