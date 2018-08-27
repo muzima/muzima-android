@@ -10,6 +10,7 @@
 
 package com.muzima.view.forms;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,7 +37,7 @@ public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAda
     public void onResume() {
         super.onResume();
         // Store our shared preference
-        SharedPreferences sp = getActivity().getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", getActivity().getApplicationContext().MODE_PRIVATE);
+        SharedPreferences sp = getActivity().getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", Context.MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
         ed.putBoolean("active", true);
         ed.commit();
@@ -46,7 +47,7 @@ public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAda
     @Override
     public void onPause() {
         super.onPause();
-        SharedPreferences sp = getActivity().getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", getActivity().getApplicationContext().MODE_PRIVATE);
+        SharedPreferences sp = getActivity().getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", Context.MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
         ed.putBoolean("active", false);
         ed.commit();
@@ -81,7 +82,7 @@ public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAda
     }
 
     @Override
-    public boolean onItemLongClick() {
+    public void onItemLongClick() {
         if (!actionModeActive) {
             actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
             actionModeActive = true;
@@ -91,7 +92,6 @@ public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAda
             actionMode.finish();
         }
         actionMode.setTitle(String.valueOf(numOfSelectedForms));
-        return false;
     }
 
     @Override

@@ -19,7 +19,7 @@ import static org.mockito.Mockito.verify;
 
 public class ConceptsBySearchTest {
     @Test
-    public void shouldSearchObservationsByUuidAndTerm() throws Exception, ObservationController.LoadObservationException {
+    public void shouldSearchObservationsByUuidAndTerm() throws ObservationController.LoadObservationException {
         ObservationController controller = mock(ObservationController.class);
         ConceptController conceptController = mock(ConceptController.class);
         ConceptsBySearch conceptsBySearch = new ConceptsBySearch(conceptController,controller, "uuid", "term");

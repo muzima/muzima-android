@@ -11,12 +11,13 @@
 package com.muzima.view.forms;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -32,20 +33,19 @@ import java.util.List;
 import static com.muzima.adapters.ListAdapter.BackgroundListQueryTaskListener;
 
 public abstract class FormsListFragment extends MuzimaListFragment implements BackgroundListQueryTaskListener{
-    private static final String TAG = "FormsListFragment";
 
-    protected FormController formController;
-    protected FrameLayout progressBarContainer;
-    protected LinearLayout noDataView;
-    protected ActionMode actionMode;
-    protected boolean actionModeActive;
+    FormController formController;
+    private FrameLayout progressBarContainer;
+    private LinearLayout noDataView;
+    ActionMode actionMode;
+    boolean actionModeActive;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View formsLayout = setupMainView(inflater, container);
-        list = (ListView) formsLayout.findViewById(R.id.list);
-        progressBarContainer = (FrameLayout) formsLayout.findViewById(R.id.progressbarContainer);
-        noDataView = (LinearLayout) formsLayout.findViewById(R.id.no_data_layout);
+        list = formsLayout.findViewById(R.id.list);
+        progressBarContainer = formsLayout.findViewById(R.id.progressbarContainer);
+        noDataView = formsLayout.findViewById(R.id.no_data_layout);
 
         setupNoDataView(formsLayout);
 
@@ -60,7 +60,7 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
         return formsLayout;
     }
 
-    protected View setupMainView(LayoutInflater inflater, ViewGroup container){
+    View setupMainView(LayoutInflater inflater, ViewGroup container){
         return inflater.inflate(R.layout.layout_list, container, false);
     }
 
@@ -87,7 +87,7 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
     @Override
     public void onQueryTaskCancelled(Object errorDefinition){}
 
-    public final class DeleteFormsActionModeCallback implements ActionMode.Callback {
+    final class DeleteFormsActionModeCallback implements ActionMode.Callback {
 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
@@ -110,6 +110,7 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
                         onCompleteOfFormDelete();
                         ((FormsWithDataAdapter) listAdapter).clearSelectedFormsUuid();
                     } catch (FormController.FormDeleteException e) {
+                        Log.e(getClass().getSimpleName(),""+e.getMessage());
                     }
             }
             return false;

@@ -20,7 +20,7 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.CREDENTIALS;
 public class SyncIntent extends Intent {
     private final Context context;
 
-    public SyncIntent(Context context) {
+    protected SyncIntent(Context context) {
         super(context, DataSyncService.class);
         this.context = context;
         putExtra(CREDENTIALS, new Credentials(context).getCredentialsArray());

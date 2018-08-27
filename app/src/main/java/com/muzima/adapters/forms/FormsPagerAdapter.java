@@ -26,8 +26,8 @@ import com.muzima.view.forms.IncompleteFormsListFragment;
  */
 public class FormsPagerAdapter extends MuzimaPagerAdapter implements TagsListAdapter.TagsChangedListener {
     public static final int TAB_All = 0;
-    public static final int TAB_DOWNLOADED = 1;
-    public static final int TAB_INCOMPLETE = 2;
+    private static final int TAB_DOWNLOADED = 1;
+    private static final int TAB_INCOMPLETE = 2;
     public static final int TAB_COMPLETE = 3;
 
     public FormsPagerAdapter(Context context, FragmentManager fm) {

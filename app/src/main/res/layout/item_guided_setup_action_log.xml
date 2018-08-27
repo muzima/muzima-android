@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/primary_blue"
                 style="@style/SetUpLogList"
-                android:layout_marginLeft="2dp"/>
+                android:layout_marginStart="2dp"/>
     </LinearLayout>
 
 </LinearLayout>

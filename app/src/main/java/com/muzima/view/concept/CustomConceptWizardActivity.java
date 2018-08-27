@@ -41,18 +41,16 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 
 
 public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
-    private static final String TAG = "CustomConceptWizardActivity";
     private MuzimaProgressDialog muzimaProgressDialog;
-    protected Credentials credentials;
+    private Credentials credentials;
     private boolean isProcessDialogOn = false;
-    private PowerManager powerManager = null;
     private PowerManager.WakeLock wakeLock = null ;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         credentials = new Credentials(this);
 
-        Button nextButton = (Button) findViewById(R.id.next);
+        Button nextButton = findViewById(R.id.next);
         muzimaProgressDialog = new MuzimaProgressDialog(this);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,9 +60,9 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
 
                     @Override
                     protected void onPreExecute() {
-                        Log.i(TAG, "Canceling timeout timer!") ;
+                        Log.i(getClass().getSimpleName(), "Canceling timeout timer!") ;
                         ((MuzimaApplication) getApplication()).cancelTimer();
-                        keepPhoneAwake(true) ;
+                        keepPhoneAwake() ;
                     }
 
                     @Override
@@ -92,7 +90,7 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
             }
         });
 
-        Button previousButton = (Button) findViewById(R.id.previous);
+        Button previousButton = findViewById(R.id.previous);
         previousButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,10 +135,10 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
         try {
             allCohorts = cohortController.getAllCohorts();
         } catch (CohortController.CohortFetchException e) {
-            Log.w(TAG, "Exception occurred while fetching local cohorts ", e);
+            Log.w(getClass().getSimpleName(), "Exception occurred while fetching local cohorts ", e);
             return null;
         }
-        ArrayList<String> cohortsUuid = new ArrayList<String>();
+        ArrayList<String> cohortsUuid = new ArrayList<>();
         for (Cohort cohort : allCohorts){
             cohortsUuid.add(cohort.getUuid());
         }
@@ -155,10 +153,10 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
         }
     }
 
-    private void keepPhoneAwake(boolean awakeState) {
-        Log.d(TAG, "Launching wake state: " + awakeState) ;
-        if (awakeState) {
-            powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+    private void keepPhoneAwake() {
+        Log.d(getClass().getSimpleName(), "Launching wake state: " + true) ;
+        if (true) {
+            PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
             wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
             wakeLock.acquire();
         } else {

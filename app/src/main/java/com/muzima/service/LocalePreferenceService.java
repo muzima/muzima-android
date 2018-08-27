@@ -17,9 +17,8 @@ import com.muzima.api.context.Context;
 import java.io.IOException;
 
 public class LocalePreferenceService {
-    private final String TAG = "LocalePreferenceService";
 
-    private MuzimaApplication muzimaApplication;
+    private final MuzimaApplication muzimaApplication;
     public LocalePreferenceService(MuzimaApplication muzimaApplication){
         this.muzimaApplication = muzimaApplication;
     }
@@ -28,7 +27,7 @@ public class LocalePreferenceService {
         try {
             muzimaContext.setPreferredLocale(preferredLocale);
         } catch(IOException e){
-            Log.e(TAG, "Exception thrown while setting preferred Locale", e);
+            Log.e(getClass().getSimpleName(), "Exception thrown while setting preferred Locale", e);
         }
     }
 }

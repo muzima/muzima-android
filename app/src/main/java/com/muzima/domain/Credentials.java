@@ -17,15 +17,15 @@ import com.muzima.utils.StringUtils;
 
 public class Credentials {
 
-    private String serverUrl;
-    private String userName;
-    private String password;
+    private final String serverUrl;
+    private final String userName;
+    private final String password;
 
     public Credentials(Context context) {
         this(PreferenceManager.getDefaultSharedPreferences(context));
     }
 
-    public Credentials(SharedPreferences preferences) {
+    private Credentials(SharedPreferences preferences) {
         this(preferences.getString("serverPreference", StringUtils.EMPTY),
                 preferences.getString("usernamePreference", StringUtils.EMPTY),
                 preferences.getString("passwordPreference", StringUtils.EMPTY));

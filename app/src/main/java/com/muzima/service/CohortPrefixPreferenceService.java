@@ -34,7 +34,7 @@ public class CohortPrefixPreferenceService extends PreferenceService {
     }
 
     public boolean addCohortPrefix(String newPrefix) {
-        List<String> copiedPrefixesSet = new ArrayList<String>(getCohortPrefixes(cohortSharedPref));
+        List<String> copiedPrefixesSet = new ArrayList<>(getCohortPrefixes(cohortSharedPref));
 
         if (!copiedPrefixesSet.contains(newPrefix)) {
             copiedPrefixesSet.add(newPrefix);

@@ -7,7 +7,6 @@ import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.SmartCardRecord;
 import com.muzima.controller.SmartCardController;
-import com.muzima.utils.StringUtils;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UPLOAD_ERROR;
 
 public class EncryptedSharedHealthRecordSyncTask {
-    private static String TAG = EncryptedSharedHealthRecordSyncTask.class.getSimpleName();
+
     private static boolean syncInProgress;
     private static Context context;
 
@@ -59,7 +58,7 @@ public class EncryptedSharedHealthRecordSyncTask {
                         try {
                             smartCardController.updateSmartCardRecord(smartCardRecord);
                         } catch (SmartCardController.SmartCardRecordSaveException e) {
-                            Log.e(TAG, "Exception thrown while updating smartcard record.", e);
+                            Log.e(getClass().getSimpleName(), "Exception thrown while updating smartcard record.", e);
                         }
                         result[1]++;
                     } else {
@@ -73,7 +72,7 @@ public class EncryptedSharedHealthRecordSyncTask {
                 }
                 return result;
             } catch (SmartCardController.SmartCardRecordFetchException e) {
-                Log.e(TAG, "Exception thrown while uploading smartcard record.", e);
+                Log.e(getClass().getSimpleName(), "Exception thrown while uploading smartcard record.", e);
                 result[0] = UPLOAD_ERROR;
             }
             return result;

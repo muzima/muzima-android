@@ -21,8 +21,7 @@ import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
  * Responsible to list down all the incomplete forms for a specific patient.
  */
 public class PatientIncompleteFormsAdapter extends FormsWithDataAdapter<IncompleteForm> {
-    private static final String TAG = "PatientIncompleteFormsAdapter";
-    private String patientId;
+    private final String patientId;
 
     public PatientIncompleteFormsAdapter(Context context, int textViewResourceId, FormController formController, String patientId) {
         super(context, textViewResourceId, formController);
@@ -34,7 +33,7 @@ public class PatientIncompleteFormsAdapter extends FormsWithDataAdapter<Incomple
         new BackgroundQueryTask(this).execute();
     }
 
-    public String getPatientId() {
+    private String getPatientId() {
         return patientId;
     }
 
@@ -47,9 +46,9 @@ public class PatientIncompleteFormsAdapter extends FormsWithDataAdapter<Incomple
     /**
      * Responsible to fetch all the incomplete forms for a specific patient.
      */
-    public static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<IncompleteForm> {
+    static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<IncompleteForm> {
 
-        public BackgroundQueryTask(FormsAdapter formsAdapter) {
+        BackgroundQueryTask(FormsAdapter formsAdapter) {
             super(formsAdapter);
         }
 
@@ -63,9 +62,9 @@ public class PatientIncompleteFormsAdapter extends FormsWithDataAdapter<Incomple
                     incompleteForms = formsAdapter.getFormController()
                             .getAllIncompleteFormsForPatientUuid(((PatientIncompleteFormsAdapter) formsAdapter).getPatientId());
 
-                    Log.i(TAG, "#Incomplete forms: " + incompleteForms.size());
+                    Log.i(getClass().getSimpleName(), "#Incomplete forms: " + incompleteForms.size());
                 } catch (FormController.FormFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local forms ", e);
+                    Log.w(getClass().getSimpleName(), "Exception occurred while fetching local forms ", e);
                 }
             }
 

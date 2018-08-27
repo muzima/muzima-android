@@ -22,7 +22,6 @@ import com.muzima.api.model.User;
 import com.muzima.controller.LocationController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
-import com.muzima.utils.LocationUtils;
 import com.muzima.utils.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,7 +35,6 @@ import java.util.List;
 import static com.muzima.utils.DateUtils.parse;
 
 public class HTMLPatientJSONMapper {
-    public static String TAG = HTMLPatientJSONMapper.class.getSimpleName();
 
     private JSONObject patientJSON;
     private JSONObject observationJSON;
@@ -85,7 +83,7 @@ public class HTMLPatientJSONMapper {
             prepopulateJSON.put("patient", patientDetails);
             prepopulateJSON.put("encounter", encounterDetails);
         } catch (JSONException e) {
-            Log.e(TAG, "Could not populate patient registration data to JSON", e);
+            Log.e(getClass().getSimpleName(), "Could not populate patient registration data to JSON", e);
         }
         return prepopulateJSON.toString();
     }
@@ -125,7 +123,7 @@ public class HTMLPatientJSONMapper {
     }
 
     private void setPatientNames() throws JSONException {
-        List<PersonName> names = new ArrayList<PersonName>();
+        List<PersonName> names = new ArrayList<>();
         names.add(getPersonName());
         patient.setNames(names);
     }
@@ -142,7 +140,7 @@ public class HTMLPatientJSONMapper {
 
     private List<PatientIdentifier> getPatientIdentifiers() throws JSONException {
         Location location = getEncounterLocation();
-        List<PatientIdentifier> patientIdentifiers = new ArrayList<PatientIdentifier>();
+        List<PatientIdentifier> patientIdentifiers = new ArrayList<>();
 
         patientIdentifiers.add(getPreferredPatientIdentifier(location));
         patientIdentifiers.add(getPatientUuidAsIdentifier(location));
@@ -179,7 +177,7 @@ public class HTMLPatientJSONMapper {
     }
 
     private List<PatientIdentifier> getOtherPatientIdentifiers(Location location) throws JSONException {
-        List<PatientIdentifier> otherIdentifiers = new ArrayList<PatientIdentifier>();
+        List<PatientIdentifier> otherIdentifiers = new ArrayList<>();
         if (observationJSON != null && observationJSON.has("other_identifier_type") && observationJSON.has("other_identifier_value")) {
             Object identifierTypeNameObject = observationJSON.get("other_identifier_type");
             Object identifierValueObject = observationJSON.get("other_identifier_value");
@@ -225,7 +223,7 @@ public class HTMLPatientJSONMapper {
             if (birthDateAsString != null)
                 birthDate = parse(birthDateAsString);
         } catch (ParseException e) {
-            Log.e(TAG, "Could not parse birth_date", e);
+            Log.e(getClass().getSimpleName(), "Could not parse birth_date", e);
         }
         return birthDate;
     }

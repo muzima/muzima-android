@@ -22,6 +22,7 @@ import org.robolectric.annotation.Config;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.containsString;
@@ -31,10 +32,10 @@ import static org.junit.matchers.JUnitMatchers.containsString;
 public class HTMLPatientJSONMapperTest {
 
     @Test
-    public void shouldAddPatientDetailsOnJSONFromPatient() throws Exception {
+    public void shouldAddPatientDetailsOnJSONFromPatient() {
         Date birthdate = new Date();
-        SimpleDateFormat formattedDate = new SimpleDateFormat("dd-MM-yyyy");
-        Patient patient = patient("givenname", "middlename", "familyname", "Female", new Date(), "uuid");
+        SimpleDateFormat formattedDate = new SimpleDateFormat(STANDARD_DATE_FORMAT);
+        Patient patient = patient(new Date());
         HTMLPatientJSONMapper mapper = new HTMLPatientJSONMapper();
         FormData formData = new FormData();
         User user = new User();
@@ -52,22 +53,22 @@ public class HTMLPatientJSONMapperTest {
     }
 
     @Test
-    public void shouldNotFailIFBirthDateIsNull() throws Exception {
-        Patient patient = patient("givenname", "middlename", "familyname", "Female", null, "uuid");
+    public void shouldNotFailIFBirthDateIsNull() {
+        Patient patient = patient(null);
         HTMLPatientJSONMapper htmlPatientJSONMapper = new HTMLPatientJSONMapper();
         User user = new User();
         String json = htmlPatientJSONMapper.map(patient, new FormData(), user, false);
         assertThat(json,not(containsString("\"patient.birth_date\"")));
     }
 
-    private Patient patient(String givenName, String middleName, String familyName, String sex, Date birthdate, String uuid) {
+    private Patient patient(Date birthdate) {
         return new PatientBuilder()
-                .withFamilyName(familyName)
-                .withMiddleName(middleName)
-                .withGivenName(givenName)
-                .withSex(sex)
+                .withFamilyName("familyname")
+                .withMiddleName("middlename")
+                .withGivenName("givenname")
+                .withSex("Female")
                 .withBirthdate(birthdate)
-                .withUuid(uuid)
+                .withUuid("uuid")
                 .instance();
     }
 }

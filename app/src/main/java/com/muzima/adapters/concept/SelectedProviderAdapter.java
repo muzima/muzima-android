@@ -11,6 +11,7 @@
 package com.muzima.adapters.concept;
 
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +32,7 @@ import java.util.List;
  */
 public class SelectedProviderAdapter extends ListAdapter<Provider> {
 
-    private final String TAG = SelectedProviderAdapter.class.getSimpleName();
-    protected ProviderController providerController;
+    private final ProviderController providerController;
 
     public SelectedProviderAdapter(ProviderPreferenceActivity context, int textViewResourceId, ProviderController providerController) {
         super(context, textViewResourceId);
@@ -43,21 +43,22 @@ public class SelectedProviderAdapter extends ListAdapter<Provider> {
         try {
             return providerController.getAllProviders().contains(selectedProvider);
         } catch (ProviderController.ProviderLoadException e) {
-            Log.e(TAG, "Error while loading providers", e);
+            Log.e(getClass().getSimpleName(), "Error while loading providers", e);
         }
         return false;
     }
 
     private class ViewHolder {
-        private CheckedTextView name;
+        private final CheckedTextView name;
 
         private ViewHolder(View providerView) {
-            name = (CheckedTextView) providerView.findViewById(R.id.provider_name);
+            name = providerView.findViewById(R.id.provider_name);
         }
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
@@ -79,7 +80,7 @@ public class SelectedProviderAdapter extends ListAdapter<Provider> {
         try {
             providerController.deleteProvider(provider);
         } catch (ProviderController.ProviderDeleteException e) {
-            Log.e(TAG, "Error while deleting the provider", e);
+            Log.e(getClass().getSimpleName(), "Error while deleting the provider", e);
         }
     }
 
@@ -91,12 +92,12 @@ public class SelectedProviderAdapter extends ListAdapter<Provider> {
             try {
                 providerController.deleteProviders(providersToDelete);
             } catch (ProviderController.ProviderDeleteException e) {
-                Log.e(TAG, "Error while deleting the providers", e);
+                Log.e(getClass().getSimpleName(), "Error while deleting the providers", e);
             }
             this.clear();
             this.addAll(allProviders);
         } catch (ProviderController.ProviderLoadException e) {
-            Log.e(TAG, "Error while fetching the providers", e);
+            Log.e(getClass().getSimpleName(), "Error while fetching the providers", e);
         }
     }
 
@@ -108,7 +109,7 @@ public class SelectedProviderAdapter extends ListAdapter<Provider> {
     /**
      * Responsible to save the providers into DB on selection from AutoComplete. And also fetches to Providers from DB to display in the page.
      */
-    public class BackgroundSaveAndQueryTask extends AsyncTask<Provider, Void, List<Provider>> {
+    class BackgroundSaveAndQueryTask extends AsyncTask<Provider, Void, List<Provider>> {
 
         @Override
         protected List<Provider> doInBackground(Provider... providers) {
@@ -126,10 +127,10 @@ public class SelectedProviderAdapter extends ListAdapter<Provider> {
                 try {
                     selectedProviders = providerController.getAllProviders();
                 } catch (ProviderController.ProviderLoadException e) {
-                    Log.w(TAG, "Exception occurred while fetching providers from local data repository!", e);
+                    Log.w(getClass().getSimpleName(), "Exception occurred while fetching providers from local data repository!", e);
                 }
             } catch (ProviderController.ProviderSaveException e) {
-                Log.w(TAG, "Exception occurred while saving provider to local data repository!", e);
+                Log.w(getClass().getSimpleName(), "Exception occurred while saving provider to local data repository!", e);
             }
             return selectedProviders;
         }

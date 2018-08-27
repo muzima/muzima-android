@@ -18,7 +18,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.view.ViewPager;
@@ -45,23 +44,22 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
     };
     // @formatter:on
 
-    private LinearLayout.LayoutParams defaultTabLayoutParams;
-    private LinearLayout.LayoutParams expandedTabLayoutParams;
+    private final LinearLayout.LayoutParams defaultTabLayoutParams;
+    private final LinearLayout.LayoutParams expandedTabLayoutParams;
 
     private final PageListener pageListener = new PageListener();
-    public OnPageChangeListener delegatePageListener;
+    private OnPageChangeListener delegatePageListener;
 
-    private LinearLayout tabsContainer;
+    private final LinearLayout tabsContainer;
     private ViewPager pager;
-    private ImageButton addObsButton;
 
     private int tabCount;
 
     private int currentPosition = 0;
     private float currentPositionOffset = 0f;
 
-    private Paint rectPaint;
-    private Paint dividerPaint;
+    private final Paint rectPaint;
+    private final Paint dividerPaint;
 
     private boolean checkedTabWidths = false;
 
@@ -102,7 +100,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
         setFillViewport(true);
         setWillNotDraw(false);
 
-        addObsButton = new ImageButton(context);
+        ImageButton addObsButton = new ImageButton(context);
         tabsContainer = new LinearLayout(context);
         tabsContainer.setOrientation(LinearLayout.HORIZONTAL);
         tabsContainer.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -176,7 +174,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
         this.delegatePageListener = listener;
     }
 
-    public void notifyDataSetChanged() {
+    private void notifyDataSetChanged() {
 
         tabsContainer.removeAllViews();
 
@@ -537,7 +535,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
     static class SavedState extends BaseSavedState {
         int currentPosition;
 
-        public SavedState(Parcelable superState) {
+        SavedState(Parcelable superState) {
             super(superState);
         }
 

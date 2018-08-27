@@ -40,10 +40,8 @@ public final class ImageResult {
 
     @Override
     public String toString() {
-        StringBuilder dialogText = new StringBuilder(255);
-        dialogText.append("SectionName: ").append(sectionName).append('\n');
-        dialogText.append("ImageUri: ").append(imageUri).append('\n');
-        dialogText.append("ImageCaption: ").append(imageCaption).append('\n');
-        return dialogText.toString();
+        return "SectionName: " + sectionName + '\n' +
+                "ImageUri: " + imageUri + '\n' +
+                "ImageCaption: " + imageCaption + '\n';
     }
 }

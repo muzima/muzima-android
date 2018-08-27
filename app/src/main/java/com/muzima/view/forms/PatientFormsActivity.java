@@ -17,14 +17,12 @@ import android.os.Bundle;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.adapters.forms.PatientFormsPagerAdapter;
-import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.Constants;
 import com.muzima.view.patients.PatientSummaryActivity;
 
 
 public class PatientFormsActivity extends FormsActivityBase {
-    private static final String TAG = "FormsActivity";
     private Patient patient;
 
     @Override
@@ -55,7 +53,7 @@ public class PatientFormsActivity extends FormsActivityBase {
 
         if(syncType == Constants.DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS) {
             SharedPreferences sp = getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", MODE_PRIVATE);
-            if (sp.getBoolean("active", false) == true) {
+            if (sp.getBoolean("active", false)) {
                 if (syncStatus == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
                     ((PatientFormsPagerAdapter) formsPagerAdapter).onFormUploadFinish();
                 }

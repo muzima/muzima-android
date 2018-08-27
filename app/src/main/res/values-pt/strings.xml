@@ -51,7 +51,7 @@
     </string>
     <string name="error_image_view_activity_unavailable">Erro: Aplicação para vizualizar uma imagem não encontrado
     </string>
-    <string name="error_local_connection_unavailable">Conexão de rede não disponivel</string>
+    <string name="error_local_connection_unavailable">Conexão de rede não disponível</string>
     <string name="error_local_repo_data_delete">Um erro ocorreu enquanto apagava dados do repositório local</string>
     <string name="error_location_download">Não poderá baixar locais</string>
     <string name="error_location_fetch">Algo de errado aconteceu enquanto buscava locais do repositório local</string>
@@ -156,7 +156,7 @@
     <string name="general_upload">Carregar</string>
     <string name="general_username">Nome do utilizador</string>
     <string name="general_view_encounter">Ver visita</string>
-    <string name="general_welcome">Bem vindo</string>
+    <string name="general_welcome">Bem-vindo</string>
     <string name="general_yes">Sim</string>
 
     <string name="header_cohort_category">Configurações de coorte</string>
@@ -167,7 +167,7 @@
     <string name="hint_advanced_setup">Use os passos do wizard para escolher o que quer</string>
     <string name="hint_audio_caption">Por favor introduza uma legenda para o áudio</string>
     <string name="hint_audio_record">Gravar ou escolher áudio</string>
-    <string name="hint_authentication_progress">Autenticando...</string>
+    <string name="hint_authentication_progress">Autenticando…</string>
     <string name="hint_barcode_scanner_setup">Precisa de aplicativo de scanner de código de barra para registar os
         clientes a partir do telefone. Por favor verifique se isto está instalado no dispositivo ou não.
     </string>
@@ -210,13 +210,13 @@
     </string>
     <string name="hint_concept_pref_add">Adiciona os conceitos que quer observações para ser baixados</string>
     <string name="hint_configuration_search">Pesquisar uma configuração</string>
-    <string name="hint_consultation_consultant_validation_failure">Por favor forneça um consultor a partir da lista de possiveis consultores</string>
+    <string name="hint_consultation_consultant_validation_failure">Por favor forneça um consultor a partir da lista de possíveis consultores</string>
     <string name="hint_crash_dialog">Ocorreu um erro inesperado, forçando mUzima a parar. Por favor ajude-nos a reparar
         isto, enviando para nós dados do erro,para isso clique no OK
     </string>
     <string name="hint_crash_dialog_comment_prompt">Por favor adicione os seus comentários sobre o problema abaixo
     </string>
-    <string name="hint_create_new_shr">O cliente não possui um SHR. Você quer criar novos SHR e gravar no cartão?
+    <string name="hint_create_new_SHR">O cliente não possui um SHR. Você quer criar novos SHR e gravar no cartão?
     </string>
     <string name="hint_current_or_past_date_validation_failure">Por favor introduza uma data anterior ou igual a hoje</string>
     <string name="hint_custom_concept_help">Aqui se define conceitos em que os dados serão incluídos no descarregamento
@@ -237,8 +237,8 @@
     <string name="hint_duplicate_form_data_warning">Avisar o utilizador quando o formulário de dados para o mesmo
         cliente com a mesma data de visita está sendo guardado.
     </string>
-    <string name="hint_encounter_location_validation_failure">Por favor forneça um local a partir da lista dos possiveis locais</string>
-    <string name="hint_encounter_provider_validation_failure">Por favor forneça um provedor a partir da lista dos possiveis provedores</string>
+    <string name="hint_encounter_location_validation_failure">Por favor forneça um local a partir da lista dos possíveis locais</string>
+    <string name="hint_encounter_provider_validation_failure">Por favor forneça um provedor a partir da lista dos possíveis provedores</string>
     <string name="hint_form_auto_save_interval">O valor no qual o formulário será automaticamente gravado</string>
     <string name="hint_form_download">Por favor seleccione formulários a partir da lista de todos os formulários e
         clique em baixar
@@ -255,7 +255,7 @@
     </string>
     <string name="hint_install_psmart">Gostaria de instalar o aplicativo P-Smart?</string>
     <string name="hint_last_synced">Última sincronização em: %s</string>
-    <string name="hint_loading_progress">Carregando...</string>
+    <string name="hint_loading_progress">Carregando…</string>
     <string name="hint_local_connection_unavailable">Por favor conecte o dispositivo e tente de novo</string>
     <string name="hint_location_pref_add">Adicione o local que quer baixar</string>
     <string name="hint_manage_concept">Obtenha mais conceitos a partir do servidor ou remova os conceitos a partir deste
@@ -276,7 +276,7 @@
     <string name="hint_password_change">Alterou a sua senha recentemente?</string>
     <string name="hint_password_prompt">Por favor Introduza a Senha</string>
     <string name="hint_phone_number_validation_failure">Número de telefone inválido. Por favor verifique e re-introduza</string>
-    <string name="hint_provider_not_set">Não tem previlegio de provedor ou o seus dados de provedor não foram baixados,
+    <string name="hint_provider_not_set">Não tem privilégio de provedor ou o seus dados de provedor não foram baixados,
         por favor use a opção de adicionar provedor
     </string>
     <string name="hint_provider_pref_add">Adicione os provedores que quer baixar</string>
@@ -296,7 +296,7 @@
     <string name="hint_server_url">URL do Servidor</string>
     <string name="hint_server_url_prompt">Por favor introduza a URL do servidor</string>
     <string name="hint_session_timeout">Se inactivo para este tempo, mUzima irá automaticamente sair</string>
-    <string name="hint_set_default_encounter_location_for_shr">Por favor, defina localização encontro padrão, de modo a permitir a escrita de novo cartão
+    <string name="hint_set_default_encounter_location_for_SHR">Por favor, defina localização encontro padrão, de modo a permitir a escrita de novo cartão
     </string>
     <string name="hint_setting_refresh">Deseja voltar a baixar essa configuração do servidor?</string>
     <string name="hint_username_prompt">Por favor introduza o nome do utilizador</string>
@@ -305,7 +305,7 @@
     <string name="hint_wizard_form_download">Seleccione um ou mais modelos a partir da lista e clique no \'Próximo\'
         para baixar
     </string>
-    <string name="hint_write_shr_to_card">Você quer escrever o Registro de Saúde Compartilhado no cartão?</string>
+    <string name="hint_write_SHR_to_card">Você quer escrever o Registro de Saúde Compartilhado no cartão?</string>
 
     <string name="info_authentication_in_progress">Autenticação em progresso…</string>
     <string name="info_client_demographics_download">Baixando demográfico de clientes…</string>
@@ -502,7 +502,7 @@
 
     <string name="menu_form_back_to_draft">Voltar ao Rascunho</string>
     <string name="menu_form_data_sync">Sincronizar dados do formulário</string>
-    <string formatted="false" name="menu_shr_data_sync">Sincronizar dados SHR (%d)</string>
+    <string formatted="false" name="menu_SHR_data_sync">Sincronizar dados SHR (%d)</string>
 
     <string name="message_missing_form_encounter_details_error">deve ser providenciado</string>
 
@@ -512,19 +512,19 @@
     <string name="null_encounter_location_error">Ocorreu um erro ao salvar o formulário. A localização do encontro deve ser fornecida</string>
     <string name="null_encounter_provider_error">Ocorreu um erro ao salvar o formulário. Provedor de encontro deve ser fornecido</string>
 
-    <string name="patient_shr_search_dialog_title">Pesquisa SHR Paciente</string>
-    <string name="patient_shr_search_title_text">Pesquisa SHR Paciente</string>
+    <string name="patient_SHR_search_dialog_title">Pesquisa SHR Paciente</string>
+    <string name="patient_SHR_search_title_text">Pesquisa SHR Paciente</string>
 
-    <string name="registering_patient_message_title_text">Registrando cliente em mUzima ...</string>
+    <string name="registering_patient_message_title_text">Registrando cliente em mUzima …</string>
 
     <string name="scan_card_id_title">ID do cartão de digitalização</string>
 
     <string name="search_patient_on_server_option_title_text">Cliente não está disponível localmente, gostaria de
         pesquisar no servidor?</string>
 
-    <string name="shr_card_text">Carta SHR</string>
-    <string name="shr_data_title_text">Dados SHR</string>
-    <string name="shr_extracted_data_text">Dados extraídos de SHR</string>
+    <string name="SHR_card_text">Carta SHR</string>
+    <string name="SHR_data_title_text">Dados SHR</string>
+    <string name="SHR_extracted_data_text">Dados extraídos de SHR</string>
 
     <string name="success_writing_smartcard">Os dados do cartão inteligente foram escritos com sucesso.</string>
 
@@ -634,9 +634,7 @@
         incluindo formulários imcompletos. Tem certeza que quer mudar as configurações?
     </string>
 
-    <string name="write_shr_to_card_text">Escrever shr para cartão</string>
-    <string name="shr_registration">Registro de SHR</string>
-    <string name="shr_registration_description">Dados de registro de SHR</string>
-    <string name="individual_obs">Obs Individual</string>
-    <string name="individual_obs_description">Obs Individual</string>
+    <string name="write_SHR_to_card_text">Escrever SHR para cartão</string>
+    <string name="number_hashtag_representation">##</string>
+
 </resources>

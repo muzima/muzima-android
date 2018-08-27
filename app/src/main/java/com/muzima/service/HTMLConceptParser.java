@@ -21,18 +21,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class HTMLConceptParser {
-    public static final String DATA_CONCEPT_TAG = "data-concept";
+class HTMLConceptParser {
+    private static final String DATA_CONCEPT_TAG = "data-concept";
 
     public List<String> parse(String html) {
-        Set<String> concepts = new HashSet<String>();
+        Set<String> concepts = new HashSet<>();
         Document htmlDoc = Jsoup.parse(html);
         //Select all elements containing data-concept attr and is not a div.
         Elements elements = htmlDoc.select("*:not(div)[" + DATA_CONCEPT_TAG + "]");
         for (Element element : elements) {
             concepts.add(getConceptName(element.attr(DATA_CONCEPT_TAG)));
         }
-        return new ArrayList<String>(concepts);
+        return new ArrayList<>(concepts);
     }
 
     private static String getConceptName(String conceptName) {

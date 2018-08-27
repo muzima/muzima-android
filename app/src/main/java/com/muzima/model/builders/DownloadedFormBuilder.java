@@ -14,7 +14,7 @@ import com.muzima.api.model.Form;
 import com.muzima.model.DownloadedForm;
 
 public class DownloadedFormBuilder {
-    private DownloadedForm downloadedForm;
+    private final DownloadedForm downloadedForm;
 
     public DownloadedFormBuilder() {
         downloadedForm = new DownloadedForm();

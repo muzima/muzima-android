@@ -15,14 +15,13 @@ import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.Encounters;
 
-import java.io.IOException;
 import java.util.List;
 
-public class EncountersBySearch extends EncounterAction {
-    private String patientUuid;
-    private String term;
-    private ObservationController controller;
-    private EncounterController encounterController;
+class EncountersBySearch extends EncounterAction {
+    private final String patientUuid;
+    private final String term;
+    private final ObservationController controller;
+    private final EncounterController encounterController;
 
     public EncountersBySearch(EncounterController encounterController, ObservationController controller, String patientUuid, String term) {
         this.controller = controller;

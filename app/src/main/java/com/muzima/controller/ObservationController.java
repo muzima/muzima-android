@@ -37,18 +37,16 @@ import java.util.List;
 import java.util.Map;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_OBSERVATIONS;
-import static com.muzima.util.Constants.UUID_SEPARATOR;
 import static com.muzima.util.Constants.UUID_TYPE_SEPARATOR;
-import static java.util.Arrays.asList;
 
 public class ObservationController {
 
-    private ObservationService observationService;
-    private ConceptService conceptService;
-    private EncounterService encounterService;
-    private LastSyncTimeService lastSyncTimeService;
-    private SntpService sntpService;
-    private Map<String, Integer> conceptColors;
+    private final ObservationService observationService;
+    private final ConceptService conceptService;
+    private final EncounterService encounterService;
+    private final LastSyncTimeService lastSyncTimeService;
+    private final SntpService sntpService;
+    private final Map<String, Integer> conceptColors;
 
     public ObservationController(ObservationService observationService, ConceptService conceptService,
                                  EncounterService encounterService, LastSyncTimeService lastSyncTimeService,
@@ -58,7 +56,7 @@ public class ObservationController {
         this.encounterService = encounterService;
         this.lastSyncTimeService = lastSyncTimeService;
         this.sntpService = sntpService;
-        conceptColors = new HashMap<String, Integer>();
+        conceptColors = new HashMap<>();
     }
 
     public Concepts getConceptWithObservations(String patientUuid) throws LoadObservationException {
@@ -78,8 +76,7 @@ public class ObservationController {
 
     public List<Observation> getObservationsByPatientuuidAndConceptId(String patientUuid,int conceptid)  throws LoadObservationException{
         try {
-            List<Observation> observations = observationService.getObservationsByPatientAndConcept(patientUuid,conceptid);
-            return observations;
+            return observationService.getObservationsByPatientAndConcept(patientUuid,conceptid);
         } catch (IOException e) {
             throw new LoadObservationException(e);
         }
@@ -87,8 +84,7 @@ public class ObservationController {
 
     public List<Observation> getObservationsByEncounterId(int encounterId) throws LoadObservationException {
         try {
-            List<Observation> observations = observationService.getObservationsByEncounter(encounterId);
-            return observations;
+            return observationService.getObservationsByEncounter(encounterId);
         } catch (IOException e) {
             throw new LoadObservationException(e);
         }
@@ -96,8 +92,7 @@ public class ObservationController {
 
     public List<Observation> getObservationsByEncounterType(int encounterTypeId,String patientUuid) throws LoadObservationException {
         try{
-            List<Observation> observations =observationService.getObservationsByEncounterType(encounterTypeId,patientUuid);
-            return  observations;
+            return observationService.getObservationsByEncounterType(encounterTypeId,patientUuid);
         } catch (IOException e){
             throw new LoadObservationException(e);
         }
@@ -108,7 +103,7 @@ public class ObservationController {
     }
 
     private void inflateConcepts(List<Observation> observationsByPatient) throws IOException {
-        Map<String, Concept> conceptCache = new HashMap<String, Concept>();
+        Map<String, Concept> conceptCache = new HashMap<>();
 
         for (Observation observation : observationsByPatient) {
             Concept concept = observation.getConcept();
@@ -122,7 +117,7 @@ public class ObservationController {
     }
 
     private void inflateEncounters(List<Observation> observationsByPatient) throws IOException {
-        Map<String, Encounter> encounterCache = new HashMap<String, Encounter>();
+        Map<String, Encounter> encounterCache = new HashMap<>();
         encounterCache.put(null, getEncounterForNullEncounterUuid());
 
         for (Observation observation : observationsByPatient) {
@@ -217,11 +212,9 @@ public class ObservationController {
 
     public List<Observation> downloadObservationsByPatientUuidsAndConceptUuids(List<String> patientUuids, List<String> conceptUuids) throws DownloadObservationException {
         try {
-            List<String> allConceptsUuids = conceptUuids;
-            List<String> allPatientsUuids = patientUuids;
-            String paramSignature = buildParamSignature(allPatientsUuids, allConceptsUuids);
+            String paramSignature = buildParamSignature(patientUuids, conceptUuids);
             Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_OBSERVATIONS, paramSignature);
-            List<Observation> observations = new ArrayList<Observation>();
+            List<Observation> observations = new ArrayList<>();
             if (hasExactCallBeenMadeBefore(lastSyncTime)) {
                 observations.addAll(observationService.downloadObservations(patientUuids, conceptUuids, lastSyncTime));
             } else {
@@ -259,16 +252,15 @@ public class ObservationController {
     }
 
     private ArrayList<String> getAllUuids(List<String> knownUuids, List<String> newUuids) {
-        HashSet<String> allUuids = new HashSet<String>(knownUuids);
+        HashSet<String> allUuids = new HashSet<>(knownUuids);
         allUuids.addAll(newUuids);
-        ArrayList<String> sortedUuids = new ArrayList<String>(allUuids);
+        ArrayList<String> sortedUuids = new ArrayList<>(allUuids);
         Collections.sort(sortedUuids);
         return sortedUuids;
     }
 
     private List<String> getNewUuids(List<String> patientUuids, List<String> knownPatientsUuid) {
-        List<String> newPatientsUuids = new ArrayList<String>();
-        newPatientsUuids.addAll(patientUuids);
+        List<String> newPatientsUuids = new ArrayList<>(patientUuids);
         newPatientsUuids.removeAll(knownPatientsUuid);
         return newPatientsUuids;
     }
@@ -313,8 +305,8 @@ public class ObservationController {
 
     }
 
-    public List<Observation> getObservations(List<Concept> concepts) throws IOException {
-        ArrayList<Observation> observations = new ArrayList<Observation>();
+    private List<Observation> getObservations(List<Concept> concepts) throws IOException {
+        ArrayList<Observation> observations = new ArrayList<>();
         for (Concept concept : concepts) {
             observations.addAll(observationService.getObservations(concept));
         }
@@ -340,13 +332,13 @@ public class ObservationController {
     }
 
     public static class SaveObservationException extends Throwable {
-        public SaveObservationException(Throwable e) {
+        SaveObservationException(Throwable e) {
             super(e);
         }
     }
 
     public static class DeleteObservationException extends Throwable {
-        public DeleteObservationException(Throwable e) {
+        DeleteObservationException(Throwable e) {
             super(e);
         }
     }

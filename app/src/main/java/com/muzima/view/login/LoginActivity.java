@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.muzima.R;
 import com.muzima.api.context.Context;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.domain.Credentials;
+import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.service.CredentialsPreferenceService;
 import com.muzima.service.LandingPagePreferenceService;
 import com.muzima.service.LocalePreferenceService;
@@ -39,7 +41,6 @@ import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.util.MuzimaLogger;
 import com.muzima.utils.StringUtils;
-import com.muzima.view.MainActivity;
 import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
 
 import java.util.Locale;
@@ -48,7 +49,6 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 
 //This class shouldn't extend BaseActivity. Since it is independent of the application's context
 public class LoginActivity extends Activity {
-    private static final String TAG = "LoginActivity";
     public static final String isFirstLaunch = "isFirstLaunch";
     public static final String sessionTimeOut = "SessionTimeOut";
     private EditText serverUrlText;
@@ -60,11 +60,8 @@ public class LoginActivity extends Activity {
     private BackgroundAuthenticationTask backgroundAuthenticationTask;
     private TextView authenticatingText;
 
-    private ValueAnimator flipFromNoConnToLoginAnimator;
-    private ValueAnimator flipFromLoginToNoConnAnimator;
     private ValueAnimator flipFromLoginToAuthAnimator;
     private ValueAnimator flipFromAuthToLoginAnimator;
-    private ValueAnimator flipFromAuthToNoConnAnimator;
     private boolean isUpdatePasswordChecked;
 
     @Override
@@ -128,9 +125,9 @@ public class LoginActivity extends Activity {
         String versionCode = "";
         try {
             versionCode = String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
-            versionText = getResources().getString(R.string.general_application_version, versionCode);
+            versionText = LoginActivity.this.getApplication().getResources().getString(R.string.general_application_version, versionCode);
         } catch (PackageManager.NameNotFoundException e) {
-            Log.e(TAG, "Unable to read application version.", e);
+            Log.e(getClass().getSimpleName(), "Unable to read application version.", e);
         }
         return versionText;
     }
@@ -216,13 +213,13 @@ public class LoginActivity extends Activity {
     }
 
     private void initViews() {
-        serverUrlText = (EditText) findViewById(R.id.serverUrl);
-        usernameText = (EditText) findViewById(R.id.username);
-        passwordText = (EditText) findViewById(R.id.password);
-        updatePassword = (CheckBox) findViewById(R.id.update_password);
-        loginButton = (Button) findViewById(R.id.login);
-        authenticatingText = (TextView) findViewById(R.id.authenticatingText);
-        versionText = (TextView) findViewById(R.id.version);
+        serverUrlText = findViewById(R.id.serverUrl);
+        usernameText = findViewById(R.id.username);
+        passwordText = findViewById(R.id.password);
+        updatePassword = findViewById(R.id.update_password);
+        loginButton = findViewById(R.id.login);
+        authenticatingText = findViewById(R.id.authenticatingText);
+        versionText = findViewById(R.id.version);
 
     }
 
@@ -230,7 +227,7 @@ public class LoginActivity extends Activity {
         isUpdatePasswordChecked = ((CheckBox) view).isChecked();
     }
 
-    public void removeRemnantDataFromPreviousRunOfWizard() {
+    private void removeRemnantDataFromPreviousRunOfWizard() {
         if (!new WizardFinishPreferenceService(this).isWizardFinished()) {
             try {
                 MuzimaApplication application = ((MuzimaApplication) getApplicationContext());
@@ -253,7 +250,7 @@ public class LoginActivity extends Activity {
                 context.getObservationService().deleteAll();
                 context.getEncounterService().deleteAll();
             } catch (Throwable e) {
-                Log.e(TAG, "Unable to delete previous wizard run data. Error: " + e);
+                Log.e(getClass().getSimpleName(), "Unable to delete previous wizard run data. Error: " + e);
             }
         }
     }
@@ -288,6 +285,11 @@ public class LoginActivity extends Activity {
 
                 //init a background service to download missing settings
                 downloadMissingServerSettings();
+                MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getApplicationContext());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob();
+                }
+
                 startNextActivity();
             } else {
                 MuzimaLogger.log(((MuzimaApplication)getApplicationContext()).getMuzimaContext(),"LOGIN_FAILURE",
@@ -317,10 +319,16 @@ public class LoginActivity extends Activity {
             }
         }
 
+
+
         private void startNextActivity() {
             Intent intent;
             if (new WizardFinishPreferenceService(LoginActivity.this).isWizardFinished()) {
                 intent = new LandingPagePreferenceService(getApplicationContext()).getLandingPageActivityLauchIntent();
+//                MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getApplicationContext());
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob();
+//                }
             } else {
                 removeRemnantDataFromPreviousRunOfWizard();
                 intent = new Intent(getApplicationContext(), SetupMethodPreferenceWizardActivity.class);
@@ -337,13 +345,13 @@ public class LoginActivity extends Activity {
                     new MissingSettingsDownloadBackgroundTask().execute();
                 }
             } catch (MuzimaSettingController.MuzimaSettingFetchException e){
-
+                Log.e(getClass().getSimpleName(),""+e.getMessage());
             }
         }
 
         protected class Result {
-            Credentials credentials;
-            int status;
+            final Credentials credentials;
+            final int status;
 
             private Result(Credentials credentials, int status) {
                 this.credentials = credentials;
@@ -367,17 +375,17 @@ public class LoginActivity extends Activity {
     }
 
     private void initAnimators() {
-        flipFromLoginToNoConnAnimator = ValueAnimator.ofFloat(0, 1);
-        flipFromNoConnToLoginAnimator = ValueAnimator.ofFloat(0, 1);
+        ValueAnimator flipFromLoginToNoConnAnimator = ValueAnimator.ofFloat(0, 1);
+        ValueAnimator flipFromNoConnToLoginAnimator = ValueAnimator.ofFloat(0, 1);
         flipFromLoginToAuthAnimator = ValueAnimator.ofFloat(0, 1);
         flipFromAuthToLoginAnimator = ValueAnimator.ofFloat(0, 1);
-        flipFromAuthToNoConnAnimator = ValueAnimator.ofFloat(0, 1);
+        ValueAnimator flipFromAuthToNoConnAnimator = ValueAnimator.ofFloat(0, 1);
 
         initFlipAnimation(flipFromLoginToAuthAnimator, loginButton, authenticatingText);
         initFlipAnimation(flipFromAuthToLoginAnimator, authenticatingText, loginButton);
     }
 
-    public void initFlipAnimation(ValueAnimator valueAnimator, final View from, final View to) {
+    private void initFlipAnimation(ValueAnimator valueAnimator, final View from, final View to) {
         valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
         valueAnimator.setDuration(300);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

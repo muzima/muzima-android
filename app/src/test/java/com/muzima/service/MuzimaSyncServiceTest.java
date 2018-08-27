@@ -82,7 +82,7 @@ public class MuzimaSyncServiceTest {
     private CohortPrefixPreferenceService prefixesPreferenceService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         muzimaApplication = mock(MuzimaApplication.class);
         muzimaContext = mock(Context.class);
         formController = mock(FormController.class);
@@ -113,7 +113,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void authenticate_shouldReturnSuccessStatusIfAuthenticated() throws Exception {
+    public void authenticate_shouldReturnSuccessStatusIfAuthenticated() {
         String[] credentials = new String[]{"username", "password", "url"};
 
         assertThat(muzimaSyncService.authenticate(credentials), is(SyncStatusConstants.AUTHENTICATION_SUCCESS));
@@ -131,7 +131,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void authenticate_shouldCallCloseSessionIfAuthenticationSucceed() throws Exception {
+    public void authenticate_shouldCallCloseSessionIfAuthenticationSucceed() {
         String[] credentials = new String[]{"username", "password", "url"};
 
         muzimaSyncService.authenticate(credentials);
@@ -177,7 +177,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadForms_shouldReplaceOldForms() throws Exception, FormController.FormFetchException, FormController.FormDeleteException, FormController.FormSaveException {
+    public void downloadForms_shouldReplaceOldForms() throws FormController.FormFetchException, FormController.FormSaveException {
         List<Form> forms = new ArrayList<>();
         when(formController.downloadAllForms()).thenReturn(forms);
 
@@ -188,7 +188,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadForms_shouldReturnSuccessStatusAndDownloadCountIfSuccessful() throws Exception, FormController.FormFetchException {
+    public void downloadForms_shouldReturnSuccessStatusAndDownloadCountIfSuccessful() throws FormController.FormFetchException {
         int[] result = new int[]{SyncStatusConstants.SUCCESS, 2, 0};
 
         List<Form> forms = new ArrayList<Form>() {{
@@ -225,13 +225,13 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadForms_shouldReturnDownloadErrorIfDownloadExceptionOccur() throws Exception, FormController.FormFetchException {
+    public void downloadForms_shouldReturnDownloadErrorIfDownloadExceptionOccur() throws FormController.FormFetchException {
         doThrow(new FormController.FormFetchException(null)).when(formController).downloadAllForms();
         assertThat(muzimaSyncService.downloadForms()[0], is(SyncStatusConstants.DOWNLOAD_ERROR));
     }
 
     @Test
-    public void downloadForms_shouldReturnSaveErrorIfSaveExceptionOccur() throws Exception, FormController.FormSaveException {
+    public void downloadForms_shouldReturnSaveErrorIfSaveExceptionOccur() throws FormController.FormSaveException {
         doThrow(new FormController.FormSaveException(null)).when(formController).updateAllForms(anyList());
         assertThat(muzimaSyncService.downloadForms()[0], is(SyncStatusConstants.SAVE_ERROR));
     }
@@ -277,7 +277,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadFormTemplates_shouldReturnSaveErrorIfSaveExceptionOccur() throws FormController.FormSaveException, FormController.FormFetchException {
+    public void downloadFormTemplates_shouldReturnSaveErrorIfSaveExceptionOccur() throws FormController.FormSaveException {
         String[] formUuids = {};
         doThrow(new FormController.FormSaveException(null)).when(formController).replaceFormTemplates(anyList());
         assertThat(muzimaSyncService.downloadFormTemplates(formUuids,true)[0], is(SyncStatusConstants.SAVE_ERROR));
@@ -285,7 +285,7 @@ public class MuzimaSyncServiceTest {
 
 
     @Test
-    public void downloadCohort_shouldDownloadAllCohortsWhenNoPrefixesAreAvailableAndReplaceOldCohorts() throws Exception, CohortController.CohortDownloadException, CohortController.CohortDeleteException, CohortController.CohortSaveException {
+    public void downloadCohort_shouldDownloadAllCohortsWhenNoPrefixesAreAvailableAndReplaceOldCohorts() throws CohortController.CohortDownloadException, CohortController.CohortDeleteException, CohortController.CohortSaveException {
         List<Cohort> cohorts = new ArrayList<>();
 
         when(cohortController.downloadAllCohorts()).thenReturn(cohorts);
@@ -320,7 +320,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadCohort_shouldDownloadOnlyPrefixedCohortsWhenPrefixesAreAvailableAndReplaceOldCohorts() throws Exception, CohortController.CohortDownloadException, CohortController.CohortDeleteException, CohortController.CohortSaveException {
+    public void downloadCohort_shouldDownloadOnlyPrefixedCohortsWhenPrefixesAreAvailableAndReplaceOldCohorts() throws CohortController.CohortDownloadException, CohortController.CohortDeleteException, CohortController.CohortSaveException {
         List<Cohort> cohorts = new ArrayList<>();
         List<String> cohortPrefixes = new ArrayList<String>() {{
             add("Pref1");
@@ -340,7 +340,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadCohort_shouldReturnSuccessStatusAndDownloadCountIfSuccessful() throws Exception, CohortController.CohortDownloadException {
+    public void downloadCohort_shouldReturnSuccessStatusAndDownloadCountIfSuccessful() throws CohortController.CohortDownloadException {
         List<Cohort> cohorts = new ArrayList<Cohort>() {{
             add(new Cohort());
             add(new Cohort());
@@ -355,7 +355,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadCohort_shouldReturnDownloadErrorIfDownloadExceptionOccurs() throws Exception, CohortController.CohortDownloadException {
+    public void downloadCohort_shouldReturnDownloadErrorIfDownloadExceptionOccurs() throws CohortController.CohortDownloadException {
         when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
         when(sharedPref.getStringSet(Constants.COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
         doThrow(new CohortController.CohortDownloadException(null)).when(cohortController).downloadAllCohorts();
@@ -364,7 +364,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadCohort_shouldReturnSaveErrorIfSaveExceptionOccurs() throws Exception, CohortController.CohortSaveException {
+    public void downloadCohort_shouldReturnSaveErrorIfSaveExceptionOccurs() throws CohortController.CohortSaveException {
         when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
         when(sharedPref.getStringSet(Constants.COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
         doThrow(new CohortController.CohortSaveException(null)).when(cohortController).saveAllCohorts(new ArrayList<Cohort>());
@@ -373,7 +373,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadPatientsForCohorts_shouldDownloadAndReplaceCohortMembersAndPatients() throws Exception, CohortController.CohortDownloadException, CohortController.CohortReplaceException, PatientController.PatientSaveException {
+    public void downloadPatientsForCohorts_shouldDownloadAndReplaceCohortMembersAndPatients() throws CohortController.CohortDownloadException, CohortController.CohortReplaceException, PatientController.PatientSaveException {
         String[] cohortUuids = new String[]{"uuid1", "uuid2"};
         List<CohortData> cohortDataList = new ArrayList<CohortData>() {{
             add(new CohortData() {{
@@ -399,7 +399,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void shouldDeleteVoidedPatientsDuringPatientDownload() throws Exception, CohortController.CohortDownloadException, PatientController.PatientDeleteException {
+    public void shouldDeleteVoidedPatientsDuringPatientDownload() throws CohortController.CohortDownloadException, PatientController.PatientDeleteException {
         String[] cohortUuids = new String[]{"uuid1", "uuid2"};
         final Patient voidedPatient = mock(Patient.class);
         when(voidedPatient.isVoided()).thenReturn(true);
@@ -423,7 +423,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadPatientsForCohorts_shouldReturnSuccessStatusAndCohortAndPatinetCountIfDownloadIsSuccessful() throws Exception, CohortController.CohortDownloadException {
+    public void downloadPatientsForCohorts_shouldReturnSuccessStatusAndCohortAndPatinetCountIfDownloadIsSuccessful() throws CohortController.CohortDownloadException {
         String[] cohortUuids = new String[]{"uuid1", "uuid2"};
         List<CohortData> cohortDataList = new ArrayList<CohortData>() {{
             add(new CohortData() {{
@@ -497,7 +497,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadObservationsForPatients_shouldDownloadObservationsForGiveCohortIdsAndSavedConcepts() throws Exception, PatientController.PatientLoadException, ObservationController.DownloadObservationException, ObservationController.ReplaceObservationException, ConceptController.ConceptFetchException, ObservationController.DeleteObservationException {
+    public void downloadObservationsForPatients_shouldDownloadObservationsForGiveCohortIdsAndSavedConcepts() throws PatientController.PatientLoadException, ObservationController.DownloadObservationException, ObservationController.ReplaceObservationException, ConceptController.ConceptFetchException, ObservationController.DeleteObservationException {
         String[] cohortUuids = new String[]{"uuid1", "uuid2"};
         List<Patient> patients = new ArrayList<Patient>() {{
             add(new Patient() {{
@@ -531,7 +531,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadObservationsForPatients_shouldReturnSuccessAndCountWhenDownloadingObservationsForPatient() throws Exception, PatientController.PatientLoadException, ObservationController.DownloadObservationException, ConceptController.ConceptFetchException {
+    public void downloadObservationsForPatients_shouldReturnSuccessAndCountWhenDownloadingObservationsForPatient() throws PatientController.PatientLoadException, ObservationController.DownloadObservationException, ConceptController.ConceptFetchException {
         String[] cohortUuids = new String[]{"uuid1"};
         List<Patient> patients = new ArrayList<Patient>() {{
             add(new Patient() {{
@@ -559,7 +559,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadObservationsForPatients_shouldReturnLoadErrorWhenLoadExceptionIsThrownForObservations() throws Exception, PatientController.PatientLoadException {
+    public void downloadObservationsForPatients_shouldReturnLoadErrorWhenLoadExceptionIsThrownForObservations() throws PatientController.PatientLoadException {
         String[] cohortUuids = new String[]{};
 
         doThrow(new PatientController.PatientLoadException("")).when(patientController).getPatientsForCohorts(cohortUuids);
@@ -569,7 +569,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadObservationsForPatients_shouldReturnDownloadErrorWhenDownloadExceptionIsThrownForObservations() throws Exception, ObservationController.DownloadObservationException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
+    public void downloadObservationsForPatients_shouldReturnDownloadErrorWhenDownloadExceptionIsThrownForObservations() throws ObservationController.DownloadObservationException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         String[] cohortUuids = new String[]{"uuid1"};
         List<Patient> patients = new ArrayList<Patient>() {{
             add(new Patient() {{
@@ -597,7 +597,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadObservationsForPatients_shouldReturnReplaceErrorWhenReplaceExceptionIsThrownForObservations() throws Exception, ReplaceObservationException, ObservationController.DownloadObservationException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
+    public void downloadObservationsForPatients_shouldReturnReplaceErrorWhenReplaceExceptionIsThrownForObservations() throws ReplaceObservationException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
         String[] cohortUuids = new String[]{};
         List<Patient> patients = new ArrayList<Patient>() {{
             add(new Patient() {{
@@ -620,7 +620,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadEncountersForPatients_shouldDownloadInBatch() throws Exception, ObservationController.DownloadObservationException, PatientController.PatientLoadException, EncounterController.ReplaceEncounterException, EncounterController.DownloadEncounterException {
+    public void downloadEncountersForPatients_shouldDownloadInBatch() throws PatientController.PatientLoadException, EncounterController.ReplaceEncounterException, EncounterController.DownloadEncounterException {
         String[] cohortUuids = new String[]{"uuid1"};
         List<Patient> patients = new ArrayList<Patient>() {{
             add(new Patient() {{
@@ -657,7 +657,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void consolidatePatients_shouldGetAllPatientsConsolidateSavePatientFromServerAndDeleteLocalPatient() throws Exception, PatientController.PatientSaveException {
+    public void consolidatePatients_shouldGetAllPatientsConsolidateSavePatientFromServerAndDeleteLocalPatient() throws PatientController.PatientSaveException {
         Patient localPatient = mock(Patient.class);
         Patient remotePatient = mock(Patient.class);
 
@@ -673,7 +673,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void shouldUpdatePatientsThatAreNotInCohorts() throws Exception, PatientController.PatientSaveException, PatientController.PatientDownloadException {
+    public void shouldUpdatePatientsThatAreNotInCohorts() throws PatientController.PatientSaveException, PatientController.PatientDownloadException {
         Patient localPatient1 = patient("patientUUID1");
         Patient localPatient2 = patient("patientUUID2");
         Patient serverPatient1 = patient("patientUUID3");
@@ -689,7 +689,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void shouldDownloadAndSavePatientsGivenByUUID() throws Exception, PatientController.PatientDownloadException, PatientController.PatientSaveException {
+    public void shouldDownloadAndSavePatientsGivenByUUID() throws PatientController.PatientDownloadException, PatientController.PatientSaveException {
         Patient patient1 = patient("patientUUID1");
         Patient patient2 = patient("patientUUID2");
 
@@ -707,7 +707,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void shouldReturnFailureIfDownloadFails() throws Exception, PatientController.PatientDownloadException, PatientController.PatientSaveException {
+    public void shouldReturnFailureIfDownloadFails() throws PatientController.PatientDownloadException, PatientController.PatientSaveException {
         Patient patient1 = patient("patientUUID1");
 
         String[] patientUUIDs = new String[]{"patientUUID1"};
@@ -726,7 +726,7 @@ public class MuzimaSyncServiceTest {
     @Test
     public void shouldDeleteVoidedObservationsWhenDownloadingObservations() throws ObservationController.DeleteObservationException, ObservationController.DownloadObservationException, ReplaceObservationException, ConceptController.ConceptFetchException {
         List<String> patientUuids = Collections.singletonList("patientUuid");
-        List<Observation> observations = new ArrayList<Observation>();
+        List<Observation> observations = new ArrayList<>();
         Observation anObservation = mock(Observation.class);
         when(anObservation.isVoided()).thenReturn(false);
         observations.add(anObservation);

@@ -49,8 +49,6 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
     private ListView configsListView;
     private MuzimaProgressDialog progressDialog;
     private boolean isProcessDialogOn = false;
-    private final String TAG = "CohortWizardActivity" ;
-    private PowerManager powerManager = null;
     private PowerManager.WakeLock wakeLock = null ;
     private KeyboardWatcher keyboardWatcher;
 
@@ -61,9 +59,9 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
 
         setContentView(R.layout.activity_setup_method_wizard);
 
-        inactiveNextButton = (Button) findViewById(R.id.inactive_next);
+        inactiveNextButton = findViewById(R.id.inactive_next);
 
-        advancedSetupLayout = (CheckedLinearLayout)findViewById(R.id.advanced_setup_layout);
+        advancedSetupLayout = findViewById(R.id.advanced_setup_layout);
         advancedSetupLayout.setOnClickListener(advancedSetupClickListener());
 
         final SetupConfigurationAdapter setupConfigurationAdapter = new SetupConfigurationAdapter(
@@ -71,20 +69,20 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
                 ((MuzimaApplication) getApplicationContext()).getSetupConfigurationController());
         setupConfigurationAdapter.setBackgroundListQueryTaskListener(this);
 
-        final EditText configSetupFilter = (EditText) findViewById(R.id.filter_configs_txt);
+        final EditText configSetupFilter = findViewById(R.id.filter_configs_txt);
         configSetupFilter.addTextChangedListener(textWatcherForFilterText(setupConfigurationAdapter));
 
         setupConfigurationAdapter.reloadData();
 
         //set clearing ability for the imageButton under Guided setup
-        ImageButton imageButton = (ImageButton) findViewById(R.id.cancel_filter_txt);
+        ImageButton imageButton = findViewById(R.id.cancel_filter_txt);
         imageButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 configSetupFilter.setText("");
             }
         });
 
-        activeNextButton = (Button) findViewById(R.id.next);
+        activeNextButton = findViewById(R.id.next);
         activeNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,12 +94,12 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
             }
         });
 
-        nextButtonLayout = (LinearLayout)findViewById(R.id.next_button_layout);
+        nextButtonLayout = findViewById(R.id.next_button_layout);
 
         keyboardWatcher = new KeyboardWatcher(this);
         keyboardWatcher.setListener(this);
 
-        configsListView = (ListView)findViewById(R.id.configs_wizard_list);
+        configsListView = findViewById(R.id.configs_wizard_list);
         configsListView.setOnItemClickListener(configsListViewSelectedListener(setupConfigurationAdapter));
         configsListView.setAdapter(setupConfigurationAdapter);
     }
@@ -209,7 +207,7 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
             @Override
             protected void onPostExecute(int[] result) {
                 dismissProgressDialog();
-                Log.i(TAG, "Restarting timeout timer!");
+                Log.i(getClass().getSimpleName(), "Restarting timeout timer!");
                 ((MuzimaApplication) getApplication()).restartTimer();
                 if (result[0] != SUCCESS) {
                     Toast.makeText(SetupMethodPreferenceWizardActivity.this,
@@ -222,7 +220,7 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
                         LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_SETUP_CONFIGURATIONS, sntpService.getLocalTime());
                         lastSyncTimeService.saveLastSyncTime(lastSyncTime);
                     } catch (IOException e) {
-                        Log.i(TAG, "Error setting Setup Configuration sync time.");
+                        Log.i(getClass().getSimpleName(), "Error setting Setup Configuration sync time.");
                     }
                     keepPhoneAwake(false);
                     Intent intent = new Intent(getApplicationContext(), GuidedConfigurationWizardActivity.class);
@@ -241,9 +239,9 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
         return muzimaSyncService.downloadSetupConfigurationTemplate(selectedConfigUuid);
     }
     private void keepPhoneAwake(boolean awakeState) {
-        Log.d(TAG, "Launching wake state: " + awakeState) ;
+        Log.d(getClass().getSimpleName(), "Launching wake state: " + awakeState) ;
         if (awakeState) {
-            powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
             wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
             wakeLock.acquire();
         } else {

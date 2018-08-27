@@ -20,7 +20,7 @@ import com.muzima.view.login.LoginActivity;
 
 public class MuzimaTimer extends CountDownTimer {
 
-    private MuzimaApplication muzimaApplication;
+    private final MuzimaApplication muzimaApplication;
     private static MuzimaTimer muzimaTimer;
 
     private MuzimaTimer(long millisInFuture, long countDownInterval, MuzimaApplication muzimaApplication) {

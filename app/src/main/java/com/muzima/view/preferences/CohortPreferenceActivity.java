@@ -27,8 +27,7 @@ import com.muzima.view.BaseFragmentActivity;
 import com.muzima.view.HelpActivity;
 
 public class CohortPreferenceActivity extends BaseFragmentActivity {
-    protected CohortPrefixPrefAdapter prefAdapter;
-    private AutoCompleteCohortPrefixAdapter autoCompleteCohortPrefixAdapter;
+    private CohortPrefixPrefAdapter prefAdapter;
     private AutoCompleteTextView cohortPrefix;
     private CohortPrefixPreferenceService preferenceService;
 
@@ -39,14 +38,14 @@ public class CohortPreferenceActivity extends BaseFragmentActivity {
 
         preferenceService = new CohortPrefixPreferenceService(this);
 
-        ListView cohortPrefList = (ListView) findViewById(R.id.cohort_pref_list);
+        ListView cohortPrefList = findViewById(R.id.cohort_pref_list);
         prefAdapter = new CohortPrefixPrefAdapter(this, R.layout.item_preference, this);
         cohortPrefList.setEmptyView(findViewById(R.id.no_data_msg));
         cohortPrefList.setAdapter(prefAdapter);
 
 
-        cohortPrefix = (AutoCompleteTextView) findViewById(R.id.prefix_add_prefix);
-        autoCompleteCohortPrefixAdapter = new AutoCompleteCohortPrefixAdapter(getApplicationContext(), R.layout.item_option_autocomplete, cohortPrefix);
+        cohortPrefix = findViewById(R.id.prefix_add_prefix);
+        AutoCompleteCohortPrefixAdapter autoCompleteCohortPrefixAdapter = new AutoCompleteCohortPrefixAdapter(getApplicationContext(), R.layout.item_option_autocomplete, cohortPrefix);
         cohortPrefix.setAdapter(autoCompleteCohortPrefixAdapter);
 
         cohortPrefix.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -58,7 +57,7 @@ public class CohortPreferenceActivity extends BaseFragmentActivity {
         });
     }
 
-    protected int getContentView() {
+    private int getContentView() {
         return R.layout.activity_cohort_pref;
     }
 

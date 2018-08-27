@@ -8,6 +8,7 @@
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
 
+<!--suppress ALL -->
 <form>
     <patient>
         <patient_identifier.identifier_type_id>1</patient_identifier.identifier_type_id>
@@ -33,11 +34,10 @@
             <value>testing</value>
         </freetext_general>
         <review_of_systems_general concept="1069^REVIEW OF SYSTEMS, GENERAL^99DCT" multipleSelect="true">
-            <shortness_of_breath_with_exertion
-                    concept="5963^SHORTNESS OF BREATH WITH EXERTION^99DCT"></shortness_of_breath_with_exertion>
-            <dizziness concept="877^DIZZINESS^99DCT"></dizziness>
-            <nausea concept="5978^NAUSEA^99DCT"></nausea>
-            <chronic_cough concept="1470^CHRONIC COUGH^99DCT"></chronic_cough>
+            <shortness_of_breath_with_exertion concept="5963^SHORTNESS OF BREATH WITH EXERTION^99DCT" />
+            <dizziness concept="877^DIZZINESS^99DCT" />
+            <nausea concept="5978^NAUSEA^99DCT" />
+            <chronic_cough concept="1470^CHRONIC COUGH^99DCT" />
         </review_of_systems_general>
         <return_visit_date concept="5096^RETURN VISIT DATE^99DCT">
             <value>2014-03-01</value>
