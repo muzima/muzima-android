@@ -38,6 +38,7 @@ import com.muzima.service.LandingPagePreferenceService;
 import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
+import com.muzima.service.SHRStatusPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.util.MuzimaLogger;
 import com.muzima.utils.StringUtils;
@@ -371,6 +372,8 @@ public class LoginActivity extends Activity {
         protected void onPostExecute(int[] result) {
             new RequireMedicalRecordNumberPreferenceService((MuzimaApplication) getApplicationContext())
                     .saveRequireMedicalRecordNumberPreference();
+
+            new SHRStatusPreferenceService((MuzimaApplication) getApplicationContext()).saveSHRStatusPreference();
         }
     }
 
