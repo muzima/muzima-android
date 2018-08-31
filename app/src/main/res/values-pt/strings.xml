@@ -636,5 +636,12 @@
 
     <string name="write_SHR_to_card_text">Escrever SHR para cartão</string>
     <string name="number_hashtag_representation">##</string>
-
+    <string name="error_empty_message_text">Não é possível enviar uma mensagem vazia.</string>
+    <string name="write_shr_to_card_text">Escrever SHR ao cartão</string>
+    <string name="shr_registration">Registro de SHR</string>
+    <string name="shr_registration_description">Dados de registro de SHR</string>
+    <string name="individual_obs">Obs Individual</string>
+    <string name="individual_obs_description">Obs Individual</string>
+    <string name="hint_enable_shr">Ativar recurso de cartão inteligente</string>
+    <string name="title_enable_shr">Ativar SHR</string>
 </resources>
