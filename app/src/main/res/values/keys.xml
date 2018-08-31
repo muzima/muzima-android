@@ -25,4 +25,5 @@
     <string translatable="false" name="preference_require_medical_record_number">requireMedicalRecordNumber</string>
     <string translatable="false" name="preference_landing_page">landingPage</string>
     <string translatable="false" name="preference_default_encounter_location">defaultEncounterLocation</string>
+    <string translatable="false" name="preference_enable_shr_key">Enable SHR</string>
 </resources>

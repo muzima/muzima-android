@@ -14,9 +14,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -72,6 +74,7 @@ import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_WRI
 public class PatientSummaryActivity extends BaseActivity {
     private static final String TAG = "PatientSummaryActivity";
     public static final String PATIENT = "patient";
+    public static final boolean DEFAULT_SHR_STATUS = false;
 
     private AlertDialog writeSHRDataOptionDialog;
 
@@ -192,13 +195,17 @@ public class PatientSummaryActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.client_summary, menu);
-        MenuItem SHRCardMenuItem = menu.getItem(0);
-        if (isRegisteredOnSHR) {
-            SHRCardMenuItem.setIcon(R.drawable.ic_action_shr_card);
-        } else {
-            SHRCardMenuItem.setVisible(true);
-            SHRCardMenuItem.setIcon(R.drawable.ic_action_shr_card);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
+        boolean isSHREnabled = preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_shr_key),PatientSummaryActivity.DEFAULT_SHR_STATUS);
+        if(isSHREnabled) {
+            getMenuInflater().inflate(R.menu.client_summary, menu);
+            MenuItem SHRCardMenuItem = menu.getItem(0);
+            if (isRegisteredOnSHR) {
+                SHRCardMenuItem.setIcon(R.drawable.ic_action_shr_card);
+            } else {
+                SHRCardMenuItem.setVisible(true);
+                SHRCardMenuItem.setIcon(R.drawable.ic_action_shr_card);
+            }
         }
         super.onCreateOptionsMenu(menu);
         return true;
