@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:contentDescription="Gender Image"
+                android:contentDescription="@string/gender_image_content_description"
                 android:paddingTop="20dp"/>
     </RelativeLayout>
 
@@ -83,13 +83,13 @@
                         style="@style/DashboardListItemMediumHeadingText"
                         android:layout_height="wrap_content"
                         android:gravity="left"
-                        android:text="@string/general_observations"></TextView>
+                        android:text="@string/general_observations" />
 
                     <TextView
                         android:id="@+id/observationDescription"
                         style="@style/DashboardItemDescription"
                         android:layout_alignParentBottom="true"
-                        android:text="##"></TextView>
+                        android:text="@string/number_hashtag_representation" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -115,13 +115,13 @@
                         style="@style/DashboardListItemMediumHeadingText"
                         android:layout_height="wrap_content"
                         android:gravity="left"
-                        android:text="@string/general_encounters"></TextView>
+                        android:text="@string/general_encounters" />
 
                     <TextView
                         android:id="@+id/encounterDescription"
                         style="@style/DashboardItemDescription"
                         android:layout_alignParentBottom="true"
-                        android:text="##"></TextView>
+                        android:text="@string/number_hashtag_representation" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -149,13 +149,13 @@
                         android:layout_height="wrap_content"
                         android:gravity="left"
                         android:text="@string/general_forms"
-                        android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
 
                     <TextView
                         android:id="@+id/formDescription"
                         style="@style/DashboardItemDescription"
                         android:layout_alignParentBottom="true"
-                        android:text="##"></TextView>
+                        android:text="##" />
 
                 </RelativeLayout>
             </LinearLayout>
@@ -191,7 +191,7 @@
                         android:id="@+id/notificationDescription"
                         style="@style/DashboardItemDescription"
                         android:layout_alignParentBottom="true"
-                        android:text="##"/>
+                        android:text="@string/number_hashtag_representation"/>
 
                 </RelativeLayout>
             </LinearLayout>
@@ -220,14 +220,14 @@
                         style="@style/DashboardListItemMediumHeadingText"
                         android:layout_height="wrap_content"
                         android:gravity="left"
-                        android:text="@string/shr_data_title_text"
+                        android:text="@string/SHR_data_title_text"
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                     <TextView
-                        android:id="@+id/shr_card_Description"
+                        android:id="@+id/SHR_card_Description"
                         style="@style/DashboardItemDescription"
                         android:layout_alignParentBottom="true"
-                        android:text="Data syc required"/>
+                        android:text="@string/general_data_syc_required"/>
 
                     <ImageView
                         android:id="@+id/sync_status_imageview"
@@ -235,7 +235,7 @@
                         android:layout_alignParentBottom="true"
                         android:onClick="switchSyncStatus"
                         android:visibility="gone"
-                        android:contentDescription="card_sync_status"
+                        android:contentDescription="@string/card_sync_status_content_description"
                         android:src="@drawable/ic_action_shr_sync_needed"
                         android:background="@drawable/grid_buttons"
                         android:layout_width="wrap_content"

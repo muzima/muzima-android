@@ -16,9 +16,12 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.muzima.utils.Constants.*;
+import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
+
 public class DateUtils {
     public static String getFormattedDate(Date date){
-        SimpleDateFormat formattedDate = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat formattedDate = new SimpleDateFormat(STANDARD_DATE_FORMAT);
         return formattedDate.format(date);
     }
 
@@ -28,16 +31,16 @@ public class DateUtils {
         Pattern pattern = Pattern.compile(datePattern);
         Matcher matcher = pattern.matcher(dateAsString);
         if (matcher.matches()) {
-            SimpleDateFormat formattedDate = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat formattedDate = new SimpleDateFormat(STANDARD_DATE_FORMAT);
             return formattedDate.parse(dateAsString);
         } else {
-            SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat formattedDate = new SimpleDateFormat(STANDARD_DATE_FORMAT);
             return formattedDate.parse(dateAsString);
         }
     }
 
     public static String getFormattedDateTime(Date date){
-        SimpleDateFormat formattedDate = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+        SimpleDateFormat formattedDate = new SimpleDateFormat(STANDARD_DATE_LOCALE_FORMAT);
         return formattedDate.format(date);
     }
 

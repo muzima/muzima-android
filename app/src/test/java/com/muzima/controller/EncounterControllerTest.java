@@ -45,7 +45,7 @@ public class EncounterControllerTest {
     private SntpService sntpService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         encounterService = mock(EncounterService.class);
         lastSyncTimeService = mock(LastSyncTimeService.class);
         sntpService = mock(SntpService.class);
@@ -54,7 +54,7 @@ public class EncounterControllerTest {
 
     @Test
     public void shouldGetLastSyncTimeOfEncounter() throws Exception, EncounterController.DownloadEncounterException {
-        List<String> patientUuids = asList(new String[]{"patientUuid1", "patientUuid2"});
+        List<String> patientUuids = asList("patientUuid1", "patientUuid2");
         Date aDate = mock(Date.class);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS,"patientUuid1,patientUuid2")).thenReturn(aDate);
         encounterController.downloadEncountersByPatientUuids(patientUuids);
@@ -68,7 +68,7 @@ public class EncounterControllerTest {
         Date lastSyncDate = mock(Date.class);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS,"patientUuid1,patientUuid2")).thenReturn(lastSyncDate);
 
-        List<String> patientUuids = asList(new String[]{"patientUuid1", "patientUuid2"});
+        List<String> patientUuids = asList("patientUuid1", "patientUuid2");
         encounterController.downloadEncountersByPatientUuids(patientUuids);
         verify(encounterService, never()).downloadEncountersByPatientUuids(anyList());
         verify(encounterService).downloadEncountersByPatientUuidsAndSyncDate(patientUuids, lastSyncDate);
@@ -76,7 +76,7 @@ public class EncounterControllerTest {
 
     @Test
     public void shouldSaveTheUpdatedLastSyncTime() throws Exception, EncounterController.DownloadEncounterException {
-        List<String> patientUuids = asList(new String[]{"patientUuid1", "patientUuid2"});
+        List<String> patientUuids = asList("patientUuid1", "patientUuid2");
         Date updatedDate = mock(Date.class);
         when(sntpService.getLocalTime()).thenReturn(updatedDate);
         Date lastSyncDate = mock(Date.class);
@@ -94,9 +94,9 @@ public class EncounterControllerTest {
     //ToDo: Revise Delta sync logic
     //@Test
     public void shouldUpdateLastSyncTimeParamSignatureWhenThereIsAChangeInKnownPatient() throws EncounterController.DownloadEncounterException, IOException {
-        List<String> patientUuids = new ArrayList<String>(asList(new String[]{"patientUuid1", "patientUuid2"}));
-        List<String> previouslySynchedPatient = asList(new String[]{"patientUuid1", "patientUuid3"});
-        List<String> newPatients = asList(new String[]{"patientUuid2"});
+        List<String> patientUuids = new ArrayList<>(asList("patientUuid1", "patientUuid2"));
+        List<String> previouslySynchedPatient = asList("patientUuid1", "patientUuid3");
+        List<String> newPatients = asList("patientUuid2");
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS,"patientUuid1,patientUuid2")).thenReturn(null);
         LastSyncTime fullLastSyncTime = mock(LastSyncTime.class);
         when(fullLastSyncTime.getParamSignature()).thenReturn("patientUuid1,patientUuid3");
@@ -105,9 +105,9 @@ public class EncounterControllerTest {
         when(lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_ENCOUNTERS)).thenReturn(fullLastSyncTime);
         Encounter anEncounter = mock(Encounter.class);
         Encounter anotherEncounter = mock(Encounter.class);
-        ArrayList<Encounter> someEncounters = new ArrayList<Encounter>();
+        ArrayList<Encounter> someEncounters = new ArrayList<>();
         someEncounters.add(anEncounter);
-        ArrayList<Encounter> someOtherEncounters = new ArrayList<Encounter>();
+        ArrayList<Encounter> someOtherEncounters = new ArrayList<>();
         someOtherEncounters.add(anotherEncounter);
         when(encounterService.downloadEncountersByPatientUuidsAndSyncDate(previouslySynchedPatient, lastSyncTime)).thenReturn(someEncounters);
         when(encounterService.downloadEncountersByPatientUuidsAndSyncDate(newPatients, null)).thenReturn(someOtherEncounters);
@@ -127,9 +127,9 @@ public class EncounterControllerTest {
     //ToDo: Revise Delta sync logic
     //@Test
     public void shouldReturnEncountersDownloadedForOldPatientAndNewOnes() throws IOException, EncounterController.DownloadEncounterException {
-        List<String> patientUuids = new ArrayList<String>(asList(new String[]{"patientUuid1", "patientUuid2"}));
-        List<String> previouslySynchedPatient = asList(new String[]{"patientUuid1", "patientUuid3"});
-        List<String> newPatients = asList(new String[]{"patientUuid2"});
+        List<String> patientUuids = new ArrayList<>(asList("patientUuid1", "patientUuid2"));
+        List<String> previouslySynchedPatient = asList("patientUuid1", "patientUuid3");
+        List<String> newPatients = asList("patientUuid2");
         LastSyncTime fullLastSyncTime = mock(LastSyncTime.class);
         Date lastSyncTime = mock(Date.class);
         when(lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_ENCOUNTERS)).thenReturn(fullLastSyncTime);
@@ -137,9 +137,9 @@ public class EncounterControllerTest {
         when(fullLastSyncTime.getLastSyncDate()).thenReturn(lastSyncTime);
         Encounter anotherEncounter = mock(Encounter.class);
         Encounter anEncounter = mock(Encounter.class);
-        ArrayList<Encounter> someEncounters = new ArrayList<Encounter>();
+        ArrayList<Encounter> someEncounters = new ArrayList<>();
         someEncounters.add(anEncounter);
-        ArrayList<Encounter> someOtherEncounters = new ArrayList<Encounter>();
+        ArrayList<Encounter> someOtherEncounters = new ArrayList<>();
         someOtherEncounters.add(anotherEncounter);
         when(encounterService.downloadEncountersByPatientUuidsAndSyncDate(previouslySynchedPatient, lastSyncTime)).thenReturn(someEncounters);
         when(encounterService.downloadEncountersByPatientUuidsAndSyncDate(newPatients, null)).thenReturn(someOtherEncounters);
@@ -153,9 +153,9 @@ public class EncounterControllerTest {
     //ToDo: Revise Delta sync logic
     //@Test
     public void shouldMakeTwoSeparateDownloadCallsForAChangeInKnownPatient() throws EncounterController.DownloadEncounterException, IOException {
-        List<String> patientUuids = new ArrayList<String>(asList(new String[]{"patientUuid1", "patientUuid2"}));
-        List<String> previouslySynchedPatient = asList(new String[]{"patientUuid1", "patientUuid3"});
-        List<String> newPatients = asList(new String[]{"patientUuid2"});
+        List<String> patientUuids = new ArrayList<>(asList("patientUuid1", "patientUuid2"));
+        List<String> previouslySynchedPatient = asList("patientUuid1", "patientUuid3");
+        List<String> newPatients = asList("patientUuid2");
         LastSyncTime fullLastSyncTime = mock(LastSyncTime.class);
         Date lastSyncTime = mock(Date.class);
         when(lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_ENCOUNTERS)).thenReturn(fullLastSyncTime);
@@ -171,7 +171,7 @@ public class EncounterControllerTest {
     //ToDo: Revise Delta sync logic
     //@Test
     public void shouldGetLastRecordedEntryForEncounterLastSyncTimeWhenCurrentPatientListDoesntHaveLastSyncTime() throws EncounterController.DownloadEncounterException, IOException {
-        List<String> patientUuids = new ArrayList<String>(asList(new String[]{"patientUuid1", "patientUuid2"}));
+        List<String> patientUuids = new ArrayList<>(asList("patientUuid1", "patientUuid2"));
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS,"patientUuid1,patientUuid2")).thenReturn(null);
 
         encounterController.downloadEncountersByPatientUuids(patientUuids);
@@ -181,13 +181,14 @@ public class EncounterControllerTest {
 
     @Test
     public void shouldRecognisedAnInitiallyNonInitialisedLastSyncTime() throws EncounterController.DownloadEncounterException, IOException {
-        List<String> newPatients = asList(new String[]{"patientUuid2"});
+        List<String> newPatients = asList("patientUuid2");
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS,"patientUuid1,patientUuid2")).thenReturn(null);
         when(lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_ENCOUNTERS)).thenReturn(null);
 
-        List<String> patientUuids = asList(new String[]{"patientUuid1", "patientUuid2"});
-        encounterController.downloadEncountersByPatientUuids(patientUuids);
+        List<String> mPatientUuids = asList("patientUuid1", "patientUuid2");
+        encounterController.downloadEncountersByPatientUuids(mPatientUuids);
 
         verify(encounterService, never()).downloadEncountersByPatientUuidsAndSyncDate(newPatients, null);
     }
 }
+

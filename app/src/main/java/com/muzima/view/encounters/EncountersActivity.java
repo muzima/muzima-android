@@ -42,35 +42,30 @@ public class EncountersActivity extends BroadcastListenerActivity implements Ada
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_encounters);
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
-        try {
-            setupPatientMetadata();
-            setupStillLoadingView();
-            setupPatientEncounters();
-        } catch (PatientController.PatientLoadException e) {
-            Toast.makeText(this, getString(R.string.error_patient_fetch), Toast.LENGTH_SHORT).show();
-            finish();
-        }
+        setupPatientMetadata();
+        setupStillLoadingView();
+        setupPatientEncounters();
     }
 
-    private void setupPatientMetadata() throws PatientController.PatientLoadException {
+    private void setupPatientMetadata() {
 
-        TextView patientName = (TextView) findViewById(R.id.patientName);
+        TextView patientName = findViewById(R.id.patientName);
 
         patientName.setText(PatientAdapterHelper.getPatientFormattedName(patient));
 
-        ImageView genderIcon = (ImageView) findViewById(R.id.genderImg);
+        ImageView genderIcon = findViewById(R.id.genderImg);
         int genderDrawable = patient.getGender().equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
         genderIcon.setImageDrawable(getResources().getDrawable(genderDrawable));
 
-        TextView dob = (TextView) findViewById(R.id.dob);
-        dob.setText("DOB: " + getFormattedDate(patient.getBirthdate()));
+        TextView dob = findViewById(R.id.dob);
+        dob.setText(String.format("DOB: %s", getFormattedDate(patient.getBirthdate())));
 
-        TextView patientIdentifier = (TextView) findViewById(R.id.patientIdentifier);
+        TextView patientIdentifier = findViewById(R.id.patientIdentifier);
         patientIdentifier.setText(patient.getIdentifier());
     }
 
     private void setupPatientEncounters(){
-        ListView  encountersLayout = (ListView)findViewById(R.id.encounter_list);
+        ListView  encountersLayout = findViewById(R.id.encounter_list);
         encountersByPatientAdapter = new EncountersByPatientAdapter(EncountersActivity.this,
                 R.layout.item_encounter,
                 ((MuzimaApplication) getApplicationContext()).getEncounterController(),patient);
@@ -85,7 +80,7 @@ public class EncountersActivity extends BroadcastListenerActivity implements Ada
     private void setupNoDataView() {
 
         noDataView = findViewById(R.id.no_data_layout);
-        TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
+        TextView noDataMsgTextView = findViewById(R.id.no_data_msg);
         noDataMsgTextView.setText(getResources().getText(R.string.info_encounter_unavailable));
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
     }
@@ -93,8 +88,8 @@ public class EncountersActivity extends BroadcastListenerActivity implements Ada
     private void setupStillLoadingView() {
 
         noDataView = findViewById(R.id.no_data_layout);
-        TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
-        noDataMsgTextView.setText("Encounters are still loading");
+        TextView noDataMsgTextView = findViewById(R.id.no_data_msg);
+        noDataMsgTextView.setText(R.string.general_loading_encounters);
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
     }
 

@@ -11,6 +11,8 @@
 package com.muzima.service;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.muzima.utils.StringUtils;
 import org.json.JSONArray;
 
@@ -20,13 +22,13 @@ import java.util.List;
 import java.util.Set;
 
 abstract class PreferenceService {
-    protected Context context;
+    final Context context;
 
-    public PreferenceService(Context context) {
+    PreferenceService(Context context) {
         this.context = context;
     }
 
-    protected String serialize(Collection<String> values) {
+    String serialize(Collection<String> values) {
         if(values == null){
             return null;
         }
@@ -37,11 +39,11 @@ abstract class PreferenceService {
         return jsonArray.toString();
     }
 
-    protected List<String> deserialize(String json) {
+    List<String> deserialize(String json) {
         if (StringUtils.isEmpty(json))
-            return new ArrayList<String>();
+            return new ArrayList<>();
 
-        List<String> cohortsList = new ArrayList<String>();
+        List<String> cohortsList = new ArrayList<>();
         try {
             JSONArray jsonArray = new JSONArray(json);
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -53,8 +55,8 @@ abstract class PreferenceService {
         return cohortsList;
     }
 
-    protected void putStringSet(String key, Set<String> values, android.content.SharedPreferences.Editor editor) {
-        editor.putString(key, serialize(values));
+    void putStringSet(Set<String> values, SharedPreferences.Editor editor) {
+        editor.putString(com.muzima.utils.Constants.FORM_TAG_PREF_KEY, serialize(values));
         editor.commit();
     }
 }

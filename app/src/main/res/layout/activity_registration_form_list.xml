@@ -16,7 +16,7 @@
              android:layout_height="match_parent">
     <TextView android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:text="Select a registration form"
+              android:text="@string/select_a_registration_form_text"
               style="@style/SummaryHeader"/>
     <ListView
             android:id="@+id/list"

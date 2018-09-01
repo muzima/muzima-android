@@ -3,7 +3,7 @@
               xmlns:android="http://schemas.android.com/apk/res/android"
               style="@style/DashboardWrapper"
               android:id="@+id/rl"
-              tools:context=".MainActivity">
+              tools:context="com.muzima.view.MainActivity">
 
     <ExpandableListView
             android:id="@+id/lvExp"

@@ -22,7 +22,6 @@ import java.util.List;
  * Responsible to list down all the recommended forms.
  */
 public class RecommendedFormsAdapter extends FormsAdapter<AvailableForm> {
-    private static final String TAG = "RecommendedFormsAdapter";
 
     public RecommendedFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
@@ -36,9 +35,9 @@ public class RecommendedFormsAdapter extends FormsAdapter<AvailableForm> {
     /**
      * Responsible to fetch all the available forms from DB.
      */
-    public class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<AvailableForm> {
+    class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<AvailableForm> {
 
-        public BackgroundQueryTask(FormsAdapter formsAdapter) {
+        BackgroundQueryTask(FormsAdapter formsAdapter) {
             super(formsAdapter);
         }
 
@@ -49,9 +48,9 @@ public class RecommendedFormsAdapter extends FormsAdapter<AvailableForm> {
                 try {
                     FormsAdapter formsAdapter = adapterWeakReference.get();
                     recommendedForms = formsAdapter.getFormController().getRecommendedForms();
-                    Log.i(TAG, "#Forms with templates: " + recommendedForms.size());
+                    Log.i(getClass().getSimpleName(), "#Forms with templates: " + recommendedForms.size());
                 } catch (FormController.FormFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local forms ", e);
+                    Log.w(getClass().getSimpleName(), "Exception occurred while fetching local forms ", e);
                 }
             }
             return recommendedForms;

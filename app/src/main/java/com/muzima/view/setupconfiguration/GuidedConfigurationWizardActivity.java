@@ -33,7 +33,7 @@ import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.util.JsonUtils;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.MainActivity;
+
 import net.minidev.json.JSONObject;
 
 import java.util.ArrayList;
@@ -43,18 +43,16 @@ import com.muzima.utils.Constants.SetupLogConstants;
 
 public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
     public static final String SETUP_CONFIG_UUID_INTENT_KEY = "SETUP_CONFIG_UUID";
-    private static final String TAG = "GuidedConfigWizard";
     private SetupConfigurationTemplate setupConfigurationTemplate;
     private String progressUpdateMessage;
-    private final int TOTAL_WIZARD_STEPS = 9;
     private int wizardLevel =0;
     private boolean wizardcompletedSuccessfully = true;
-    GuidedSetupActionLogAdapter setupActionLogAdapter;
+    private GuidedSetupActionLogAdapter setupActionLogAdapter;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guided_setup_wizard);
-        Button finishSetupButton = (Button) findViewById(R.id.finish);
+        Button finishSetupButton = findViewById(R.id.finish);
 
         finishSetupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +64,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
         });
         setupActionLogAdapter = new GuidedSetupActionLogAdapter(getApplicationContext(),R.id.setup_logs_list);
-        ListView setupLogsListView = (ListView)findViewById(R.id.setup_logs_list);
+        ListView setupLogsListView = findViewById(R.id.setup_logs_list);
         setupLogsListView.setAdapter(setupActionLogAdapter);
 
         initiateSetupConfiguration();
@@ -91,7 +89,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     ((MuzimaApplication)getApplicationContext()).getSetupConfigurationController();
             setupConfigurationTemplate = setupConfigurationController.getSetupConfigurationTemplate(setupConfigTemplateUuid);
         }catch (SetupConfigurationController.SetupConfigurationFetchException e){
-            Log.e(TAG, "Could not get setup configuration template", e);
+            Log.e(getClass().getSimpleName(), "Could not get setup configuration template", e);
         }
     }
 
@@ -583,17 +581,18 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     }
 
     private synchronized void evaluateFinishStatus(){
+        int TOTAL_WIZARD_STEPS = 9;
         if(wizardLevel == (TOTAL_WIZARD_STEPS)) {
-            TextView finalResult = (TextView) findViewById(R.id.setup_actions_final_result);
+            TextView finalResult = findViewById(R.id.setup_actions_final_result);
             if(wizardcompletedSuccessfully){
                 finalResult.setText(getString(R.string.info_setup_complete_success));
             } else{
                 finalResult.setText(getString(R.string.info_setup_complete_fail));
                 finalResult.setTextColor(Color.RED);
             }
-            LinearLayout progressBarLayout = (LinearLayout) findViewById(R.id.progress_bar_container);
+            LinearLayout progressBarLayout = findViewById(R.id.progress_bar_container);
             progressBarLayout.setVisibility(View.GONE);
-            LinearLayout nextButtonLayout = (LinearLayout) findViewById(R.id.next_button_layout);
+            LinearLayout nextButtonLayout = findViewById(R.id.next_button_layout);
             nextButtonLayout.setVisibility(View.VISIBLE);
         }
     }

@@ -1,6 +1,5 @@
 package com.muzima.controller;
 
-import android.util.Log;
 import com.muzima.api.model.SmartCardRecord;
 import com.muzima.api.service.SmartCardRecordService;
 import com.muzima.utils.StringUtils;
@@ -9,12 +8,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UPLOAD_ERROR;
-
 public class SmartCardController {
-    public static final String TAG ="SmartCardController";
 
-    SmartCardRecordService smartCardRecordService;
+    private final SmartCardRecordService smartCardRecordService;
 
     public SmartCardController(SmartCardRecordService smartCardRecordService){
         this.smartCardRecordService = smartCardRecordService;
@@ -52,7 +48,7 @@ public class SmartCardController {
         }
     }
 
-    public List<SmartCardRecord> getAllSmartCardRecords() throws SmartCardRecordFetchException {
+    private List<SmartCardRecord> getAllSmartCardRecords() throws SmartCardRecordFetchException {
         boolean isSuccess = false;
         try {
             return smartCardRecordService.getAllSmartCardRecords();
@@ -63,7 +59,7 @@ public class SmartCardController {
 
     public List<SmartCardRecord> getSmartCardRecordWithNonUploadedData() throws SmartCardRecordFetchException {
         List<SmartCardRecord> smartCardRecords = getAllSmartCardRecords();
-        List<SmartCardRecord> smartCardRecordWithNonUploadedData = new ArrayList<SmartCardRecord>();
+        List<SmartCardRecord> smartCardRecordWithNonUploadedData = new ArrayList<>();
         for(SmartCardRecord smartCardRecord : smartCardRecords){
             if(!StringUtils.isEmpty(smartCardRecord.getEncryptedPayload())) {
                 smartCardRecordWithNonUploadedData.add(smartCardRecord);
@@ -82,13 +78,13 @@ public class SmartCardController {
 
 
     public static class SmartCardRecordSaveException extends Throwable {
-        public SmartCardRecordSaveException(Throwable throwable) {
+        SmartCardRecordSaveException(Throwable throwable) {
             super(throwable);
         }
     }
 
     public static class SmartCardRecordFetchException extends Throwable {
-        public SmartCardRecordFetchException(Throwable throwable) {
+        SmartCardRecordFetchException(Throwable throwable) {
             super(throwable);
         }
     }

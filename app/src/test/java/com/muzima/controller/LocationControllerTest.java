@@ -59,7 +59,7 @@ public class LocationControllerTest {
     }
 
     @Test
-    public void getAllLocations_shouldReturnAllAvailableLocations() throws IOException, ParseException, LocationController.LocationLoadException {
+    public void getAllLocations_shouldReturnAllAvailableLocations() throws IOException, LocationController.LocationLoadException {
         List<Location> locations = new ArrayList<>();
         when(locationService.getAllLocations()).thenReturn(locations);
 
@@ -67,7 +67,7 @@ public class LocationControllerTest {
     }
 
     @Test(expected = LocationController.LocationLoadException.class)
-    public void getAllLocations_shouldThrowLoLocationFetchExceptionIfExceptionThrownByLocationService() throws IOException, ParseException, LocationController.LocationLoadException {
+    public void getAllLocations_shouldThrowLoLocationFetchExceptionIfExceptionThrownByLocationService() throws IOException, LocationController.LocationLoadException {
         doThrow(new IOException()).when(locationService).getAllLocations();
         locationController.getAllLocations();
     }

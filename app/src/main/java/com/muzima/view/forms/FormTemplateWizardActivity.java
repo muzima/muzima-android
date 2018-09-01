@@ -37,7 +37,6 @@ import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
-import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
@@ -56,16 +55,12 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
     private MenuItem tagsButton;
     private DrawerLayout mainLayout;
 
-    private ListView tagsDrawerList;
-    private TextView tagsNoDataMsg;
-    private ActionBarDrawerToggle actionbarDrawerToggle;
     private TagsListAdapter tagsListAdapter;
     private FormController formController;
     private AllAvailableFormsAdapter allAvailableFormsAdapter;
     private MuzimaProgressDialog progressDialog;
     private ListView listView;
     private boolean isProcessDialogOn = false;
-    private static final String TAG = "FormTemplateWizardActivity";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +71,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
         progressDialog = new MuzimaProgressDialog(this);
         allAvailableFormsAdapter = createAllFormsAdapter();
         allAvailableFormsAdapter.setBackgroundListQueryTaskListener(this);
-        ImageButton tags = (ImageButton) findViewById(R.id.form_tags);
+        ImageButton tags = findViewById(R.id.form_tags);
         tags.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,10 +85,10 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
         allAvailableFormsAdapter.downloadFormTemplatesAndReload();
         listView.setAdapter(allAvailableFormsAdapter);
 
-        Button nextButton = (Button) findViewById(R.id.next);
+        Button nextButton = findViewById(R.id.next);
         nextButton.setOnClickListener(nextButtonListener());
 
-        Button previousButton = (Button) findViewById(R.id.previous);
+        Button previousButton = findViewById(R.id.previous);
         previousButton.setOnClickListener(previousButtonListener());
 
         initDrawer();
@@ -118,7 +113,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
                 }
                 turnOnProgressDialog(getString(R.string.info_form_template_with_count_download,getSelectedForms().size()));
 
-                new AsyncTask<Void, Void, int[]>() {
+                 AsyncTask<Void, Void, int[]> lastSycTimeAsynTask = new AsyncTask<Void, Void, int[]>() {
 
                     @Override
                     protected int[] doInBackground(Void... voids) {
@@ -132,16 +127,18 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
                             Toast.makeText(FormTemplateWizardActivity.this, getString(R.string.error_form_templates_download), Toast.LENGTH_SHORT).show();
                         }
                         try {
-                            LastSyncTimeService lastSyncTimeService = ((MuzimaApplication)getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
-                            SntpService sntpService = ((MuzimaApplication)getApplicationContext()).getSntpService();
-                            LastSyncTime lastSyncTime = new LastSyncTime(APIName.DOWNLOAD_FORMS,sntpService.getLocalTime());
+                            LastSyncTimeService lastSyncTimeService = ((MuzimaApplication) getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
+                            SntpService sntpService = ((MuzimaApplication) getApplicationContext()).getSntpService();
+                            LastSyncTime lastSyncTime = new LastSyncTime(APIName.DOWNLOAD_FORMS, sntpService.getLocalTime());
                             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
                         } catch (IOException e) {
-                            Log.i(TAG, "Error getting forms last sync time");
+                            Log.i(getClass().getSimpleName(), "Error getting forms last sync time");
                         }
                         navigateToNextActivity();
                     }
-                }.execute();
+                };
+
+                lastSycTimeAsynTask.execute();
             }
         };
     }
@@ -206,13 +203,13 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
     }
 
     private void initDrawer() {
-        tagsDrawerList = (ListView) findViewById(R.id.tags_list);
+        ListView tagsDrawerList = findViewById(R.id.tags_list);
         tagsDrawerList.setEmptyView(findViewById(R.id.tags_no_data_msg));
         tagsListAdapter = new TagsListAdapter(this, R.layout.item_tags_list, formController);
         tagsDrawerList.setAdapter(tagsListAdapter);
         tagsDrawerList.setOnItemClickListener(tagsListAdapter);
         tagsListAdapter.setTagsChangedListener(allAvailableFormsAdapter);
-        actionbarDrawerToggle = new ActionBarDrawerToggle(this, mainLayout,
+        ActionBarDrawerToggle actionbarDrawerToggle = new ActionBarDrawerToggle(this, mainLayout,
                 R.drawable.ic_labels, R.string.hint_drawer_open, R.string.hint_drawer_close) {
 
             /**
@@ -234,12 +231,12 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
         mainLayout.setDrawerListener(actionbarDrawerToggle);
         mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
-        tagsNoDataMsg = (TextView) findViewById(R.id.tags_no_data_msg);
+        TextView tagsNoDataMsg = findViewById(R.id.tags_no_data_msg);
         tagsNoDataMsg.setTypeface(Fonts.roboto_bold_condensed(this));
     }
 
     private List<String> getSelectedForms() {
-        List<String> formUUIDs = new ArrayList<String>();
+        List<String> formUUIDs = new ArrayList<>();
         SparseBooleanArray checkedItemPositions = listView.getCheckedItemPositions();
         for (int i = 0; i < checkedItemPositions.size(); i++) {
             if (checkedItemPositions.valueAt(i)) {

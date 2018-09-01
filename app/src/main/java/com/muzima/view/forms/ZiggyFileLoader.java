@@ -19,10 +19,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 
-public class ZiggyFileLoader {
-    private String ziggyDirectoryPath;
-    private AssetManager assetManager;
-    private String formModelJson;
+class ZiggyFileLoader {
+    private final String ziggyDirectoryPath;
+    private final AssetManager assetManager;
+    private final String formModelJson;
 
     public ZiggyFileLoader(String ziggyDirectoryPath, AssetManager assetManager, String modelJson) {
         this.ziggyDirectoryPath = ziggyDirectoryPath;
@@ -31,7 +31,7 @@ public class ZiggyFileLoader {
     }
 
     @JavascriptInterface
-    public String getJSFiles() throws IOException, URISyntaxException {
+    public String getJSFiles() throws IOException {
         StringBuilder builder = new StringBuilder();
         String[] fileNames = assetManager.list(ziggyDirectoryPath);
         for (String fileName : fileNames) {
@@ -56,9 +56,9 @@ public class ZiggyFileLoader {
     private String readContentFromBufferedStream(BufferedReader input) throws IOException {
         String line;
         String eol = System.getProperty("line.separator");
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         while ((line = input.readLine()) != null) {
-            buffer.append(line + eol);
+            buffer.append(line).append(eol);
         }
         return buffer.toString();
     }

@@ -18,7 +18,6 @@ import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
-import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
@@ -33,15 +32,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
-import org.json.JSONException;
 
-import static android.util.Xml.newPullParser;
 import static com.muzima.utils.DateUtils.parse;
 
 public class FormParser {
 
-    private final LocationController locationController;
-    private final ProviderController providerController;
     private final ConceptController conceptController;
     private final EncounterController encounterController;
     private final ObservationController observationController;
@@ -56,8 +51,8 @@ public class FormParser {
 
     public FormParser(MuzimaApplication muzimaApplication) {
 
-        this.locationController = muzimaApplication.getLocationController();
-        this.providerController = muzimaApplication.getProviderController();
+        LocationController locationController = muzimaApplication.getLocationController();
+        ProviderController providerController = muzimaApplication.getProviderController();
         this.conceptController = muzimaApplication.getConceptController();
         this.encounterController = muzimaApplication.getEncounterController();
         this.observationController = muzimaApplication.getObservationController();
@@ -73,7 +68,7 @@ public class FormParser {
         this.observationParserUtility = new ObservationParserUtility(muzimaApplication);
     }
 
-    public List<Observation> parseAndSaveObservations(String xml, String formDataUuid)
+    public void parseAndSaveObservations(String xml, String formDataUuid)
             throws XmlPullParserException, IOException, ParseException, PatientController.PatientLoadException,
             ConceptController.ConceptFetchException, ConceptController.ConceptSaveException,
             ConceptController.ConceptParseException, ObservationController.ParseObservationException {
@@ -92,7 +87,6 @@ public class FormParser {
             parser.next();
         }
         associatePatientsWithEncountersAndObservations();
-        return observations;
     }
 
     private void associatePatientsWithEncountersAndObservations() {
@@ -109,11 +103,7 @@ public class FormParser {
             encounterController.saveEncounter(encounter);
             conceptController.saveConcepts(observationParserUtility.getNewConceptList());
             observationController.saveObservations(observations);
-        } catch (EncounterController.SaveEncounterException e) {
-            Log.e(this.getClass().getSimpleName(), "Saving encounter throwing exception!", e);
-        } catch (ObservationController.SaveObservationException e) {
-            Log.e(this.getClass().getSimpleName(), "Saving encounter throwing exception!", e);
-        } catch (ConceptController.ConceptSaveException e) {
+        } catch (EncounterController.SaveEncounterException | ConceptController.ConceptSaveException | ObservationController.SaveObservationException e) {
             Log.e(this.getClass().getSimpleName(), "Saving encounter throwing exception!", e);
         }
     }
@@ -165,10 +155,10 @@ public class FormParser {
     }
 
     private List<Observation> createObservations(XmlPullParser parser) throws XmlPullParserException,
-            IOException, ConceptController.ConceptFetchException, ParseException, ConceptController.ConceptSaveException,
+            IOException, ConceptController.ConceptFetchException,
             ConceptController.ConceptParseException, ObservationController.ParseObservationException{
-        List<Observation> observationList = new ArrayList<Observation>();
-        Stack<String> conceptNames = new Stack<String>();
+        List<Observation> observationList = new ArrayList<>();
+        Stack<String> conceptNames = new Stack<>();
         while (!isEndOf("obs")) {
             if (parser.getEventType() == XmlPullParser.START_TAG) {
                 String conceptName = parser.getAttributeValue("", "concept");
@@ -213,8 +203,8 @@ public class FormParser {
         return observationParserUtility.getObservationEntity(conceptEntity, codedObservationName);
     }
 
-    public class ParseFormException extends RuntimeException {
-        public ParseFormException(Exception e) {
+    class ParseFormException extends RuntimeException {
+        ParseFormException(Exception e) {
             super(e);
         }
     }

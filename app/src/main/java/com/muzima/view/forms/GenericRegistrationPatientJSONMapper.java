@@ -41,7 +41,6 @@ import java.util.List;
 import static com.muzima.utils.DateUtils.parse;
 
 public class GenericRegistrationPatientJSONMapper {
-    public static String TAG = GenericRegistrationPatientJSONMapper.class.getSimpleName();
 
     private JSONObject patientJSON;
     private Patient patient;
@@ -140,7 +139,7 @@ public class GenericRegistrationPatientJSONMapper {
             prepopulateJSON.put("patient", patientDetails);
             prepopulateJSON.put("encounter", encounterDetails);
         } catch (JSONException e) {
-            Log.e(TAG, "Could not populate patient registration data to JSON", e);
+            Log.e(getClass().getSimpleName(), "Could not populate patient registration data to JSON", e);
         }
         return prepopulateJSON.toString();
     }
@@ -153,11 +152,11 @@ public class GenericRegistrationPatientJSONMapper {
         return patient;
     }
 
-    public void setPatientController(PatientController patientController){
+    private void setPatientController(PatientController patientController){
         this.patientController = patientController;
     }
 
-    public void setSettingController(MuzimaSettingController settingController){
+    private void setSettingController(MuzimaSettingController settingController){
         this.settingController = settingController;
     }
 
@@ -187,7 +186,7 @@ public class GenericRegistrationPatientJSONMapper {
     }
 
     private void setPatientNames() throws JSONException {
-        List<PersonName> names = new ArrayList<PersonName>();
+        List<PersonName> names = new ArrayList<>();
         names.add(getPersonName());
         patient.setNames(names);
     }
@@ -203,7 +202,7 @@ public class GenericRegistrationPatientJSONMapper {
     }
 
     private List<PatientIdentifier> getPatientIdentifiers() throws JSONException {
-        List<PatientIdentifier> patientIdentifiers = new ArrayList<PatientIdentifier>();
+        List<PatientIdentifier> patientIdentifiers = new ArrayList<>();
 
         patientIdentifiers.add(getPatientUuidAsIdentifier());
         boolean requireMedicalRecordNumber = settingController.isMedicalRecordNumberRequiredDuringRegistration();
@@ -241,7 +240,7 @@ public class GenericRegistrationPatientJSONMapper {
     }
 
     private List<PatientIdentifier> getOtherPatientIdentifiers() throws JSONException {
-        List<PatientIdentifier> otherIdentifiers = new ArrayList<PatientIdentifier>();
+        List<PatientIdentifier> otherIdentifiers = new ArrayList<>();
         if (patientJSON != null && patientJSON.has("patient.otheridentifier")) {
             Object otherIdentifierObject = patientJSON.get("patient.otheridentifier");
 
@@ -254,7 +253,7 @@ public class GenericRegistrationPatientJSONMapper {
                             otherIdentifiers.add(identifier);
                         }
                     }catch (InvalidPatientIdentifierException e){
-                        Log.e(TAG, "Error while creating identifier.", e);
+                        Log.e(getClass().getSimpleName(), "Error while creating identifier.", e);
                     }
                 }
             } else if (otherIdentifierObject instanceof JSONObject) {
@@ -264,7 +263,7 @@ public class GenericRegistrationPatientJSONMapper {
                         otherIdentifiers.add(identifier);
                     }
                 } catch (InvalidPatientIdentifierException e){
-                    Log.e(TAG, "Error while creating identifier.", e);
+                    Log.e(getClass().getSimpleName(), "Error while creating identifier.", e);
                 }
             }
         }
@@ -276,7 +275,7 @@ public class GenericRegistrationPatientJSONMapper {
                 try {
                     otherIdentifiers.add(createPatientIdentifier(patientJSON.getJSONObject(key)));
                 } catch (InvalidPatientIdentifierException e){
-                    Log.e(TAG, "Error while creating identifier.", e);
+                    Log.e(getClass().getSimpleName(), "Error while creating identifier.", e);
                 }
             }
         }
@@ -345,7 +344,7 @@ public class GenericRegistrationPatientJSONMapper {
             if (birthDateAsString != null)
                 birthDate = parse(birthDateAsString);
         } catch (ParseException e) {
-            Log.e(TAG, "Could not parse birth_date", e);
+            Log.e(getClass().getSimpleName(), "Could not parse birth_date", e);
         }
         return birthDate;
     }
@@ -372,7 +371,7 @@ public class GenericRegistrationPatientJSONMapper {
                 try {
                     addresses.add(createPersonAddress((JSONObject) personAddress));
                 } catch (InvalidPersonAddressException e){
-                    Log.e(TAG,"Error while creating person address.",e);
+                    Log.e(getClass().getSimpleName(),"Error while creating person address.",e);
                 }
             } else if(personAddress instanceof JSONArray){
                 JSONArray address = (JSONArray)personAddress;
@@ -380,7 +379,7 @@ public class GenericRegistrationPatientJSONMapper {
                     try {
                         addresses.add(createPersonAddress(address.getJSONObject(i)));
                     } catch (InvalidPersonAddressException e){
-                        Log.e(TAG,"Error while creating person address.",e);
+                        Log.e(getClass().getSimpleName(),"Error while creating person address.",e);
                     }
                 }
             }
@@ -393,7 +392,7 @@ public class GenericRegistrationPatientJSONMapper {
                 try {
                     addresses.add(createPersonAddress(patientJSON.getJSONObject(key)));
                 } catch (InvalidPersonAddressException e){
-                    Log.e(TAG,"Error while creating person address.",e);
+                    Log.e(getClass().getSimpleName(),"Error while creating person address.",e);
                 }
             }
         }
@@ -424,7 +423,7 @@ public class GenericRegistrationPatientJSONMapper {
                 Date startDate = parse(addressObject.getString("startDate"));
                 personAddress.setStartDate(startDate);
             } catch (ParseException e) {
-                Log.e(TAG, "Could not parse personaddress.startDate", e);
+                Log.e(getClass().getSimpleName(), "Could not parse personaddress.startDate", e);
             }
         }
         if(addressObject.has("endDate")) {
@@ -432,7 +431,7 @@ public class GenericRegistrationPatientJSONMapper {
                 Date endDate = parse(addressObject.getString("endDate"));
                 personAddress.setEndDate(endDate);
             } catch (ParseException e) {
-                Log.e(TAG, "Could not parse personaddress.endDate", e);
+                Log.e(getClass().getSimpleName(), "Could not parse personaddress.endDate", e);
             }
         }
         if(personAddress.isBlank()) {
@@ -450,7 +449,7 @@ public class GenericRegistrationPatientJSONMapper {
                 try{
                     attributes.add(createPersonAttribute((JSONObject)personAttribute));
                 } catch (InvalidPersonAttributeException e){
-                    Log.e(TAG,"Error while creating attribute.",e);
+                    Log.e(getClass().getSimpleName(),"Error while creating attribute.",e);
                 }
             } else if(personAttribute instanceof JSONArray){
                 JSONArray att = (JSONArray)personAttribute;
@@ -458,7 +457,7 @@ public class GenericRegistrationPatientJSONMapper {
                     try{
                         attributes.add(createPersonAttribute(att.getJSONObject(i)));
                     } catch (InvalidPersonAttributeException e){
-                        Log.e(TAG,"Error while creating attribute.",e);
+                        Log.e(getClass().getSimpleName(),"Error while creating attribute.",e);
                     }
                 }
             }
@@ -470,7 +469,7 @@ public class GenericRegistrationPatientJSONMapper {
                 try {
                     attributes.add(createPersonAttribute(patientJSON.getJSONObject(key)));
                 } catch (InvalidPersonAttributeException e){
-                    Log.e(TAG,"Error while creating attribute.",e);
+                    Log.e(getClass().getSimpleName(),"Error while creating attribute.",e);
                 }
             }
         }

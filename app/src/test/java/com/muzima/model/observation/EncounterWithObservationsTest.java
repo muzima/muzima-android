@@ -24,14 +24,14 @@ import static org.junit.Assert.assertThat;
 
 public class EncounterWithObservationsTest {
     @Test
-    public void shouldOrderTheObservationsByConceptName() throws Exception {
+    public void shouldOrderTheObservationsByConceptName() {
         EncounterWithObservations encounterWithObservations = new EncounterWithObservations();
         Observation observation1 = getObservation("o1", "c1", "Weight");
         Observation observation2 = getObservation("o2", "c2", "Blood Type");
         encounterWithObservations.addObservation(observation1);
         encounterWithObservations.addObservation(observation2);
 
-        List<Observation> expected = new ArrayList<Observation>();
+        List<Observation> expected = new ArrayList<>();
         expected.add(observation2);
         expected.add(observation1);
         assertThat(encounterWithObservations.getObservations(), is(expected));
@@ -47,7 +47,7 @@ public class EncounterWithObservationsTest {
         encounterWithObservations.addObservation(observation2);
         encounterWithObservations.addObservation(observation3);
 
-        List<Observation> expected = new ArrayList<Observation>();
+        List<Observation> expected = new ArrayList<>();
         expected.add(observation2);
         expected.add(observation3);
         expected.add(observation1);

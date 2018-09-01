@@ -10,8 +10,6 @@
 
 package com.muzima.controller;
 
-import android.util.Log;
-
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.EncounterService;
@@ -34,9 +32,9 @@ import static java.util.Arrays.asList;
 
 public class EncounterController {
 
-    private EncounterService encounterService;
-    private LastSyncTimeService lastSyncTimeService;
-    private SntpService sntpService;
+    private final EncounterService encounterService;
+    private final LastSyncTimeService lastSyncTimeService;
+    private final SntpService sntpService;
 
     public EncounterController(EncounterService encounterService, LastSyncTimeService lastSyncTimeService, SntpService sntpService) {
         this.encounterService = encounterService;
@@ -67,8 +65,8 @@ public class EncounterController {
         try {
             String paramSignature = StringUtils.getCommaSeparatedStringFromList(patientUuids);
             Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS, paramSignature);
-            List<Encounter> encounters = new ArrayList<Encounter>();
-            List<String> previousPatientsUuid = new ArrayList<String>();
+            List<Encounter> encounters = new ArrayList<>();
+            List<String> previousPatientsUuid = new ArrayList<>();
             if (hasThisCallHappenedBefore(lastSyncTime)) {
                 encounters.addAll(downloadEncounters(patientUuids, lastSyncTime));
             } else {
@@ -108,10 +106,10 @@ public class EncounterController {
     }
 
     private String getUpdatedParam(List<String> patientUuids, List<String> previousPatientsUuid) {
-        Set<String> allPatientUUIDs = new HashSet<String>();
+        Set<String> allPatientUUIDs = new HashSet<>();
         allPatientUUIDs.addAll(patientUuids);
         allPatientUUIDs.addAll(previousPatientsUuid);
-        List<String> allPatientUUIDList = new ArrayList<String>(allPatientUUIDs);
+        List<String> allPatientUUIDList = new ArrayList<>(allPatientUUIDs);
         Collections.sort(allPatientUUIDList);
         return StringUtils.getCommaSeparatedStringFromList(allPatientUUIDList);
     }
@@ -166,31 +164,31 @@ public class EncounterController {
     }
 
     public void saveEncounter(Encounter encounter) throws SaveEncounterException {
-        ArrayList<Encounter> encounters = new ArrayList<Encounter>();
+        ArrayList<Encounter> encounters = new ArrayList<>();
         encounters.add(encounter);
         saveEncounters(encounters);
     }
 
     public class DownloadEncounterException extends Throwable {
-        public DownloadEncounterException(IOException e) {
+        DownloadEncounterException(IOException e) {
             super(e);
         }
     }
 
     public class ReplaceEncounterException extends Throwable {
-        public ReplaceEncounterException(IOException e) {
+        ReplaceEncounterException(IOException e) {
             super(e);
         }
     }
 
     public class SaveEncounterException extends Throwable {
-        public SaveEncounterException(IOException e) {
+        SaveEncounterException(IOException e) {
             super(e);
         }
     }
 
     public class DeleteEncounterException extends Throwable {
-        public DeleteEncounterException(IOException e) {
+        DeleteEncounterException(IOException e) {
             super(e);
         }
     }

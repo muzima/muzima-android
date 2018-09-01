@@ -3,19 +3,16 @@ package com.muzima.service;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
-import android.util.Log;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.api.model.MuzimaSetting;
-import com.muzima.controller.MuzimaSettingController;
 
-import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING_DEFAULT_VALUE;
 
 public class RequireMedicalRecordNumberPreferenceService extends PreferenceService{
-    public static final String TAG = ("ReqMedicalRecNumPrefSvc");
-    private SharedPreferences settings;
-    private MuzimaApplication application;
+
+    private final SharedPreferences settings;
+    private final MuzimaApplication application;
     public RequireMedicalRecordNumberPreferenceService(MuzimaApplication application) {
         super(application.getApplicationContext());
         settings = PreferenceManager.getDefaultSharedPreferences(context);

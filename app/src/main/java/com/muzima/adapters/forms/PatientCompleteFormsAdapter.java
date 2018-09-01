@@ -22,8 +22,7 @@ import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
  * Responsible to display all the completed forms for a specific patient.
  */
 public class PatientCompleteFormsAdapter extends FormsWithDataAdapter<CompleteFormWithPatientData> {
-    private static final String TAG = "PatientCompleteFormsAdapter";
-    private String patientId;
+    private final String patientId;
 
     public PatientCompleteFormsAdapter(Context context, int textViewResourceId, FormController formController, String patientId) {
         super(context, textViewResourceId, formController);
@@ -35,7 +34,7 @@ public class PatientCompleteFormsAdapter extends FormsWithDataAdapter<CompleteFo
         new BackgroundQueryTask(this).execute();
     }
 
-    public String getPatientId() {
+    private String getPatientId() {
         return patientId;
     }
 
@@ -47,9 +46,9 @@ public class PatientCompleteFormsAdapter extends FormsWithDataAdapter<CompleteFo
     /**
      * Responsible to fetch all the incomplete forms for a specific patient.
      */
-    public static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<CompleteForm> {
+    static class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<CompleteForm> {
 
-        public BackgroundQueryTask(FormsAdapter formsAdapter) {
+        BackgroundQueryTask(FormsAdapter formsAdapter) {
             super(formsAdapter);
         }
 
@@ -63,9 +62,9 @@ public class PatientCompleteFormsAdapter extends FormsWithDataAdapter<CompleteFo
                     completePatientForms = formsAdapter.getFormController()
                             .getAllCompleteFormsForPatientUuid(((PatientCompleteFormsAdapter) formsAdapter).getPatientId());
 
-                    Log.i(TAG, "#Complete forms: " + completePatientForms.size());
+                    Log.i(getClass().getSimpleName(), "#Complete forms: " + completePatientForms.size());
                 } catch (FormController.FormFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local forms ", e);
+                    Log.w(getClass().getSimpleName(), "Exception occurred while fetching local forms ", e);
                 }
             }
 

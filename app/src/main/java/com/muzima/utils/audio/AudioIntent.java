@@ -15,7 +15,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -34,14 +33,12 @@ import java.io.File;
 import static com.muzima.utils.Constants.APP_AUDIO_DIR;
 
 public class AudioIntent extends Activity {
-	private final static String TAG = "AudioIntent";
-	
+
 	public static final String KEY_AUDIO_PATH = "audioPath";
     public static final String KEY_AUDIO_CAPTION = "audioCaption";
     public static final String KEY_SECTION_NAME = "sectionName";
 
-	private final int AUDIO_CAPTURE = 1;
-	private final int AUDIO_CHOOSE = 2;
+    private final int AUDIO_CHOOSE = 2;
 	
     private String AUDIO_FOLDER;
     private boolean isNewAudio;
@@ -100,12 +97,12 @@ public class AudioIntent extends Activity {
             }
         }
         
-        mNoAudioMessage = (TextView) findViewById(R.id.noAudioMessage);
-        mAudioPreview = (View) findViewById(R.id.audioPreview);
-        mAudioCaption = (EditText) findViewById(R.id.audioCaption);
-        mAudioThumbnail = (ImageView) findViewById(R.id.audioThumbnail);
-        mAudioAcceptContainer = (View) findViewById(R.id.audioAcceptContainer);
-        mAudioRecordContainer = (View) findViewById(R.id.audioRecordContainer);
+        mNoAudioMessage = findViewById(R.id.noAudioMessage);
+        mAudioPreview = findViewById(R.id.audioPreview);
+        mAudioCaption = findViewById(R.id.audioCaption);
+        mAudioThumbnail = findViewById(R.id.audioThumbnail);
+        mAudioAcceptContainer = findViewById(R.id.audioAcceptContainer);
+        mAudioRecordContainer = findViewById(R.id.audioRecordContainer);
         
         refreshAudioView();
 	}
@@ -145,7 +142,8 @@ public class AudioIntent extends Activity {
 		i.putExtra(MediaStore.EXTRA_OUTPUT,
 				Audio.Media.EXTERNAL_CONTENT_URI.toString());
 		try {
-			startActivityForResult(i, AUDIO_CAPTURE);
+            int AUDIO_CAPTURE = 1;
+            startActivityForResult(i, AUDIO_CAPTURE);
 		} catch (ActivityNotFoundException e) {
 			Toast.makeText(this,getString(R.string.error_audio_record_activity_find), Toast.LENGTH_SHORT).show();
 		}		
@@ -161,7 +159,7 @@ public class AudioIntent extends Activity {
             i.setType("audio/*");
             startActivityForResult(i,AUDIO_CHOOSE);
         } catch (ActivityNotFoundException e) {
-            Log.d(TAG,e.getMessage(), e);
+            Log.d(getClass().getSimpleName(),e.getMessage(), e);
 			Toast.makeText(this,getString(R.string.error_audio_chose_activity_find), Toast.LENGTH_SHORT).show();
 		}
 	}
@@ -219,10 +217,10 @@ public class AudioIntent extends Activity {
     private void deleteMedia() {
     	//delete from media provider
         int del = MediaUtils.deleteAudioFileFromMediaProvider(this, AUDIO_FOLDER + File.separator + mBinaryName);
-    	Log.i(TAG, "Deleted " + del + " rows from media content provider");
+    	Log.i(getClass().getSimpleName(), "Deleted " + del + " rows from media content provider");
     }
 
-	public void saveAudio(String audioPath) {
+	private void saveAudio(String audioPath) {
 		if (mBinaryName != null)
 			deleteMedia();
 
@@ -237,7 +235,7 @@ public class AudioIntent extends Activity {
 		if (newAudio.exists())
 		    mBinaryName = newAudio.getName();
 		else
-			Log.e(TAG, "Inserting Audio file FAILED");
+			Log.e(getClass().getSimpleName(), "Inserting Audio file FAILED");
 
 	}
 
@@ -250,7 +248,7 @@ public class AudioIntent extends Activity {
                 openDocument = true;
 
             // get the file path and create a copy in the instance folder
-            String audioPath = getPathFromUri((Uri) intent.getData(), openDocument);
+            String audioPath = getPathFromUri(intent.getData(), openDocument);
             saveAudio(audioPath);
             refreshAudioView();
         }

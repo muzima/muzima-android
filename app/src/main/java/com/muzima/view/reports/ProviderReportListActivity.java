@@ -30,7 +30,7 @@ public class ProviderReportListActivity extends BroadcastListenerActivity implem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_list);
-        progressBarContainer = (FrameLayout) findViewById(R.id.progressbarContainer);
+        progressBarContainer = findViewById(R.id.progressbarContainer);
 
         setupListView();
         setupNoDataView();
@@ -40,7 +40,7 @@ public class ProviderReportListActivity extends BroadcastListenerActivity implem
         reportsAdapter = new AvailableReportsAdapter(this, R.layout.item_forms_list,
                 ((MuzimaApplication)getApplicationContext()).getFormController());
         reportsAdapter.setBackgroundListQueryTaskListener(this);
-        listView = (ListView) findViewById(R.id.list);
+        listView = findViewById(R.id.list);
         listView.setAdapter(reportsAdapter);
         listView.setOnItemClickListener(this);
     }
@@ -48,10 +48,10 @@ public class ProviderReportListActivity extends BroadcastListenerActivity implem
 
         noDataView = findViewById(R.id.no_data_layout);
 
-        TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
+        TextView noDataMsgTextView = findViewById(R.id.no_data_msg);
         noDataMsgTextView.setText(getResources().getText(R.string.info_downloaded_reports_unavailable));
 
-        TextView noDataTipTextView = (TextView) findViewById(R.id.no_data_tip);
+        TextView noDataTipTextView = findViewById(R.id.no_data_tip);
         noDataTipTextView.setText(R.string.hint_reports_unavailable);
 
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
@@ -91,12 +91,12 @@ public class ProviderReportListActivity extends BroadcastListenerActivity implem
 
     @Override
     public void onQueryTaskCancelled() {
-        Log.e("TAG", "Cancelled...");
+        Log.e(getClass().getSimpleName(), "Cancelled...");
     }
 
     @Override
     public void onQueryTaskCancelled(Object errorDefinition) {
-        Log.e("TAG", "Cancelled...");
+        Log.e(getClass().getSimpleName(), "Cancelled...");
 
     }
 }

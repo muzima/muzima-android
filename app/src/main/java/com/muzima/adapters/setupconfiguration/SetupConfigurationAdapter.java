@@ -12,6 +12,7 @@ package com.muzima.adapters.setupconfiguration;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,11 +31,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SetupConfigurationAdapter extends ListAdapter<SetupConfiguration> {
-    private static final String TAG = SetupConfigurationAdapter.class.getSimpleName();
-    private SetupConfigurationController setupConfigurationController;
+    private final SetupConfigurationController setupConfigurationController;
     private final MuzimaSyncService muzimaSyncService;
     private String selectedConfigurationUuid;
-    protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
+    private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
     private List<SetupConfiguration> allSetupConfigurations;
 
     public SetupConfigurationAdapter(Context context, int textViewResourceId, SetupConfigurationController setupConfigurationController){
@@ -62,8 +62,9 @@ public class SetupConfigurationAdapter extends ListAdapter<SetupConfiguration> {
         notifyDataSetChanged();
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
@@ -78,23 +79,23 @@ public class SetupConfigurationAdapter extends ListAdapter<SetupConfiguration> {
         holder.setTextToDescription(getItem(position).getDescription());
         return convertView;
     }
-    public class ViewHolder {
-        private CheckedTextView name;
-        private CheckedTextView description;
+    class ViewHolder {
+        private final CheckedTextView name;
+        private final CheckedTextView description;
 
-        public ViewHolder(View convertView) {
-            this.name = (CheckedTextView) convertView
+        ViewHolder(View convertView) {
+            this.name = convertView
                     .findViewById(R.id.config_name);
-            this.description = (CheckedTextView) convertView
+            this.description = convertView
                     .findViewById(R.id.config_description);
         }
 
-        public void setTextToName(String text) {
+        void setTextToName(String text) {
             name.setText(text);
             name.setTypeface(Fonts.roboto_medium(getContext()));
         }
 
-        public void setTextToDescription(String description) {
+        void setTextToDescription(String description) {
             this.description.setText(description);
             this.description.setTypeface(Fonts.roboto_medium(getContext()));
         }
@@ -113,7 +114,7 @@ public class SetupConfigurationAdapter extends ListAdapter<SetupConfiguration> {
         notifyDataSetChanged();
     }
 
-    public class DownloadSetupConfigurationsBackgroundQueryTask extends AsyncTask<Void, Void, List<SetupConfiguration>> {
+    class DownloadSetupConfigurationsBackgroundQueryTask extends AsyncTask<Void, Void, List<SetupConfiguration>> {
         @Override
         protected void onPreExecute() {
             if (backgroundListQueryTaskListener != null) {
@@ -127,9 +128,9 @@ public class SetupConfigurationAdapter extends ListAdapter<SetupConfiguration> {
             try {
                 muzimaSyncService.downloadSetupConfigurations();
                 setupConfigurations = setupConfigurationController.getAllSetupConfigurations();
-                Log.i(TAG, "#SetupConfigurations: " + setupConfigurations.size());
+                Log.i(getClass().getSimpleName(), "#SetupConfigurations: " + setupConfigurations.size());
             } catch (SetupConfigurationController.SetupConfigurationDownloadException e) {
-                Log.w(TAG, "Exception occurred while fetching the downloaded Setup Configurations", e);
+                Log.w(getClass().getSimpleName(), "Exception occurred while fetching the downloaded Setup Configurations", e);
             }
             return setupConfigurations;
         }

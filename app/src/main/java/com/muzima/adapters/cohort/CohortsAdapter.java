@@ -10,6 +10,7 @@
 package com.muzima.adapters.cohort;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,16 +26,17 @@ import com.muzima.utils.Fonts;
  * Responsible for displaying Cohorts as list.
  */
 public abstract class CohortsAdapter extends ListAdapter<Cohort> {
-    protected CohortController cohortController;
-    protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
+    final CohortController cohortController;
+    BackgroundListQueryTaskListener backgroundListQueryTaskListener;
 
-    public CohortsAdapter(Context context, int textViewResourceId, CohortController cohortController) {
+    CohortsAdapter(Context context, int textViewResourceId, CohortController cohortController) {
         super(context, textViewResourceId);
         this.cohortController = cohortController;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
@@ -53,25 +55,25 @@ public abstract class CohortsAdapter extends ListAdapter<Cohort> {
         this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
     }
 
-    public class ViewHolder {
-        private CheckedTextView name;
-        private ImageView downloadedImage;
+    class ViewHolder {
+        private final CheckedTextView name;
+        private final ImageView downloadedImage;
 
-        public ViewHolder(View convertView) {
-            this.downloadedImage = (ImageView) convertView.findViewById(R.id.downloadImg);
-            this.name = (CheckedTextView) convertView
+        ViewHolder(View convertView) {
+            this.downloadedImage = convertView.findViewById(R.id.downloadImg);
+            this.name = convertView
                     .findViewById(R.id.cohort_name);
         }
 
-        public void displayDownloadImage() {
+        void displayDownloadImage() {
             downloadedImage.setVisibility(View.VISIBLE);
         }
 
-        public void hideDownloadImage() {
+        void hideDownloadImage() {
             downloadedImage.setVisibility(View.GONE);
         }
 
-        public void setTextToName(String text) {
+        void setTextToName(String text) {
             name.setText(text);
             name.setTypeface(Fonts.roboto_medium(getContext()));
         }

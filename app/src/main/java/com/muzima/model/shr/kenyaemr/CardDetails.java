@@ -23,7 +23,7 @@ public class CardDetails {
     @JsonProperty("LAST_UPDATED_FACILITY")
     private String lastUpdatedFacility;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<>();
 
     /**
      * No args constructor for use in serialization

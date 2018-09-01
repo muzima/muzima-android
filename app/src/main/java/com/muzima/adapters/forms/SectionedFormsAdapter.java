@@ -10,6 +10,7 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,24 +35,25 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
+
 /**
  * Responsible to list down the forms in the order of the Patient details. Here you can identify forms by the patient name.
  * @param <T> T is of the type FormsWithData.
  */
 public abstract class SectionedFormsAdapter<T extends FormWithData> extends FormsAdapter<T> implements StickyListHeadersAdapter, SectionIndexer {
-    private static final String TAG = "SectionedFormsAdapter";
 
     private List<Patient> patients;
     private ListView listView;
-    private PatientComparator patientComparator;
-    private List<String> selectedFormsUuid;
+    private final PatientComparator patientComparator;
+    private final List<String> selectedFormsUuid;
     private MuzimaClickListener muzimaClickListener;
 
-    public SectionedFormsAdapter(Context context, int textViewResourceId, FormController formController) {
+    SectionedFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
-        patients = new ArrayList<Patient>();
+        patients = new ArrayList<>();
         patientComparator = new PatientComparator();
-        selectedFormsUuid = new ArrayList<String>();
+        selectedFormsUuid = new ArrayList<>();
     }
 
     @Override
@@ -67,8 +69,8 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
                 holder = new HeaderViewHolder();
                 LayoutInflater layoutInflater = LayoutInflater.from(getContext());
                 convertView = layoutInflater.inflate(R.layout.layout_forms_list_section_header, parent, false);
-                holder.patientName = (TextView) convertView.findViewById(R.id.patientName);
-                holder.patientIdentifier = (TextView) convertView.findViewById(R.id.patientId);
+                holder.patientName = convertView.findViewById(R.id.patientName);
+                holder.patientIdentifier = convertView.findViewById(R.id.patientId);
                 setClickListenersOnView(position, convertView);
                 convertView.setTag(holder);
             } else {
@@ -147,7 +149,7 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
         return section;
     }
 
-    public void sortFormsByPatientName(List<T> forms) {
+    void sortFormsByPatientName(List<T> forms) {
         Collections.sort(patients, patientComparator);
         Collections.sort(forms, alphabaticalComparator);
         setNotifyOnChange(false);
@@ -162,10 +164,11 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
         return patients;
     }
 
-    public void setPatients(List<Patient> patients) {
+    void setPatients(List<Patient> patients) {
         this.patients = patients;
     }
 
+    @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = super.getView(position, convertView, parent);
@@ -175,7 +178,7 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
 
             String formSaveTime = null;
             if (form.getLastModifiedDate() != null) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                SimpleDateFormat dateFormat = new SimpleDateFormat(STANDARD_DATE_FORMAT.concat(" HH:mm:ss"));
                 formSaveTime = dateFormat.format(form.getLastModifiedDate());
             }
 
@@ -243,15 +246,15 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
         TextView patientIdentifier;
     }
 
-    private Comparator<FormWithData> alphabaticalComparator = new Comparator<FormWithData>() {
+    private final Comparator<FormWithData> alphabaticalComparator = new Comparator<FormWithData>() {
         @Override
         public int compare(FormWithData lhs, FormWithData rhs) {
             return patientComparator.compare(lhs.getPatient(), rhs.getPatient());
         }
     };
 
-    protected List<Patient> buildPatientsList(List<T> forms) {
-        List<Patient> result = new ArrayList<Patient>();
+    List<Patient> buildPatientsList(List<T> forms) {
+        List<Patient> result = new ArrayList<>();
         for (FormWithData form : forms) {
             Patient patient = form.getPatient();
             if (patient != null && !result.contains(patient)) {

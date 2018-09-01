@@ -10,6 +10,7 @@
 
 package com.muzima.view.forms;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -23,7 +24,6 @@ import com.muzima.controller.FormController;
 import com.muzima.model.CompleteForm;
 
 public class CompletePatientsFormsListFragment extends FormsListFragment implements FormsAdapter.MuzimaClickListener{
-    private static final String TAG = "CompletePatientsFormsListFragment";
 
     private Patient patient;
 
@@ -54,7 +54,7 @@ public class CompletePatientsFormsListFragment extends FormsListFragment impleme
     public void onResume() {
         super.onResume();
         // Store our shared preference
-        SharedPreferences sp = getActivity().getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", getActivity().getApplicationContext().MODE_PRIVATE);
+        SharedPreferences sp = getActivity().getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", Context.MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
         ed.putBoolean("active", true);
         ed.commit();
@@ -64,7 +64,7 @@ public class CompletePatientsFormsListFragment extends FormsListFragment impleme
     @Override
     public void onPause() {
         super.onPause();
-        SharedPreferences sp = getActivity().getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", getActivity().getApplicationContext().MODE_PRIVATE);
+        SharedPreferences sp = getActivity().getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", Context.MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
         ed.putBoolean("active", false);
         ed.commit();
@@ -75,7 +75,7 @@ public class CompletePatientsFormsListFragment extends FormsListFragment impleme
     }
 
     @Override
-    public boolean onItemLongClick() {
+    public void onItemLongClick() {
         if (!actionModeActive) {
             actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
             actionModeActive = true;
@@ -85,7 +85,6 @@ public class CompletePatientsFormsListFragment extends FormsListFragment impleme
             actionMode.finish();
         }
         actionMode.setTitle(String.valueOf(numOfSelectedForms));
-        return false;
     }
 
     @Override

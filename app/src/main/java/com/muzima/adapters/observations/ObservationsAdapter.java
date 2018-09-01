@@ -12,7 +12,6 @@ package com.muzima.adapters.observations;
 
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -31,21 +30,20 @@ import java.util.List;
 
 public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
 
-    private static final String TAG = "ObservationsAdapter";
-    protected final String patientUuid;
-    protected ConceptController conceptController;
-    protected EncounterController encounterController;
-    protected ObservationController observationController;
-    protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
+    final String patientUuid;
+    final ConceptController conceptController;
+    final EncounterController encounterController;
+    final ObservationController observationController;
+    private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
     private AsyncTask<?, ?, ?> backgroundQueryTask;
 
     public BackgroundListQueryTaskListener getBackgroundListQueryTaskListener() {
         return backgroundListQueryTaskListener;
     }
 
-    public ObservationsAdapter(FragmentActivity fragmentActivity, int textViewResourceId,
-                               EncounterController encounterController,
-                               ConceptController conceptController, ObservationController observationController) {
+    ObservationsAdapter(FragmentActivity fragmentActivity, int textViewResourceId,
+                        EncounterController encounterController,
+                        ConceptController conceptController, ObservationController observationController) {
         super(fragmentActivity, textViewResourceId);
 
         this.encounterController = encounterController;
@@ -65,22 +63,22 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
         }
     }
 
-    protected void setRunningBackgroundQueryTask(AsyncTask<?, ?, ?> backgroundQueryTask) {
+    void setRunningBackgroundQueryTask(AsyncTask<?, ?, ?> backgroundQueryTask) {
         this.backgroundQueryTask = backgroundQueryTask;
     }
 
-    protected abstract class ViewHolder {
+    abstract class ViewHolder {
 
-        protected LayoutInflater inflater;
-        protected LinearLayout observationLayout;
-        List<LinearLayout> observationViewHolders;
+        final LayoutInflater inflater;
+        LinearLayout observationLayout;
+        final List<LinearLayout> observationViewHolders;
 
-        protected ViewHolder() {
+        ViewHolder() {
             observationViewHolders = new ArrayList<>();
             inflater = LayoutInflater.from(getContext());
         }
 
-        protected void addEncounterObservations(List<Observation> observations) {
+        void addEncounterObservations(List<Observation> observations) {
             //draws each concept row
             for (int i = 0; i < observations.size(); i++) { //populate this concept's rows.
                 LinearLayout layout = getLinearLayoutForObservation(i);
@@ -91,7 +89,7 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
             shrink(observations.size()); //mover to next row
         }
 
-        protected LinearLayout getLinearLayoutForObservation(int i) {
+        LinearLayout getLinearLayoutForObservation(int i) {
             LinearLayout layout;
             if (observationViewHolders.size() <= i) {
                 layout = (LinearLayout) inflater.inflate(getObservationLayout(), null);
@@ -111,7 +109,7 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
         protected abstract int getObservationLayout();
 
         private void shrink(int startIndex) {
-            List<LinearLayout> holdersToRemove = new ArrayList<LinearLayout>();
+            List<LinearLayout> holdersToRemove = new ArrayList<>();
             for (int i = startIndex; i < observationViewHolders.size(); i++) {
                 holdersToRemove.add(observationViewHolders.get(i));
             }
@@ -135,7 +133,7 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
             }
         }
 
-        protected String getConceptDisplay(Concept concept) {
+        String getConceptDisplay(Concept concept) {
             String text = concept.getName();
             if (concept.getConceptType().getName().equals(Concept.NUMERIC_TYPE)) {
                 text += " (" + concept.getUnit() + ")";

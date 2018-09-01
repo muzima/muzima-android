@@ -33,13 +33,12 @@ import static org.mockito.Mockito.when;
 public class PreferenceServiceTest {
 
     private CohortPrefixPreferenceService preferenceService;
-    private MuzimaApplication muzimaApplication;
     private SharedPreferences sharedPref;
 
 
     @Before
-    public void setUp() throws Exception {
-        muzimaApplication = mock(MuzimaApplication.class);
+    public void setUp() {
+        MuzimaApplication muzimaApplication = mock(MuzimaApplication.class);
         sharedPref = mock(SharedPreferences.class);
         when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, MODE_PRIVATE)).thenReturn(sharedPref);
         when(muzimaApplication.getSharedPreferences(anyString(), anyInt())).thenReturn(sharedPref);
@@ -47,12 +46,12 @@ public class PreferenceServiceTest {
     }
 
     @Test
-    public void getCohorts_shouldReturnEmptyListWhenNoCohortsInPreferences() throws Exception {
+    public void getCohorts_shouldReturnEmptyListWhenNoCohortsInPreferences() {
         assertThat(preferenceService.getCohortPrefixes().isEmpty(), is(true));
     }
 
     @Test
-    public void getCohorts_shouldReturnCohortPrefixesInListWhenCohortsPrefixesDefinedInPreferences() throws Exception {
+    public void getCohorts_shouldReturnCohortPrefixesInListWhenCohortsPrefixesDefinedInPreferences() {
         when(sharedPref.getString(COHORT_PREFIX_PREF_KEY, "")).thenReturn("[\"Prefix1\",\"Prefix2\",\"Prefix3\"]");
 
         assertThat(preferenceService.getCohortPrefixes().size(), is(3));

@@ -40,6 +40,7 @@ import org.mockito.InOrder;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -66,12 +67,7 @@ public class FormControllerTest {
     private FormService formService;
     private PatientService patientService;
     private LastSyncTimeService lastSyncTimeService;
-    private PatientController patientController;
-    private ObservationService observationService;
-    private EncounterService encounterService;
     private SntpService sntpService;
-    private LastSyncTime lastSyncTime;
-    private MuzimaSettingController muzimaSettingsController;
     private Date mockDate;
 
     @Before
@@ -80,24 +76,24 @@ public class FormControllerTest {
         patientService = mock(PatientService.class);
         lastSyncTimeService = mock(LastSyncTimeService.class);
         sntpService = mock(SntpService.class);
-        observationService = mock(ObservationService.class);
-        encounterService = mock(EncounterService.class);
-        patientController = mock(PatientController.class);
-        muzimaSettingsController = mock(MuzimaSettingController.class);
-        formController = new FormController(formService, patientService, lastSyncTimeService, sntpService,observationService, encounterService,patientController,muzimaSettingsController);
-        lastSyncTime = mock(LastSyncTime.class);
+        ObservationService observationService = mock(ObservationService.class);
+        EncounterService encounterService = mock(EncounterService.class);
+        PatientController patientController = mock(PatientController.class);
+        MuzimaSettingController muzimaSettingsController = mock(MuzimaSettingController.class);
+        formController = new FormController(formService, patientService, lastSyncTimeService, sntpService, observationService, encounterService, patientController, muzimaSettingsController);
+        LastSyncTime lastSyncTime = mock(LastSyncTime.class);
         mockDate = mock(Date.class);
     }
 
     @Test
-    public void getTotalFormCount_shouldReturnTotalAvailableForms() throws IOException, ParseException, FormController.FormFetchException {
+    public void getTotalFormCount_shouldReturnTotalAvailableForms() throws IOException, FormController.FormFetchException {
         when(formService.countAllForms()).thenReturn(2);
 
         assertThat(formController.getTotalFormCount(), is(2));
     }
 
     @Test
-    public void getAllFormByTags_shouldFetchAllFormsWithGivenTags() throws IOException, ParseException, FormController.FormFetchException {
+    public void getAllFormByTags_shouldFetchAllFormsWithGivenTags() throws IOException, FormController.FormFetchException {
         List<Form> forms = buildForms();
         when(formService.getAllForms()).thenReturn(forms);
 
@@ -105,19 +101,19 @@ public class FormControllerTest {
         when(formService.isFormTemplateDownloaded(forms.get(1).getUuid())).thenReturn(true);
         when(formService.isFormTemplateDownloaded(forms.get(2).getUuid())).thenReturn(false);
 
-        AvailableForms availableForms = formController.getAvailableFormByTags(asList("tag2"));
+        AvailableForms availableForms = formController.getAvailableFormByTags(Collections.singletonList("tag2"));
         assertThat(availableForms.size(), is(2));
         assertTrue(containsFormWithUuid(availableForms, forms.get(0).getUuid()));
         assertTrue(containsFormWithUuid(availableForms, forms.get(2).getUuid()));
 
-        availableForms = formController.getAvailableFormByTags(asList("tag1"));
+        availableForms = formController.getAvailableFormByTags(Collections.singletonList("tag1"));
         assertThat(availableForms.size(), is(2));
         assertTrue(containsFormWithUuid(availableForms, forms.get(0).getUuid()));
         assertTrue(containsFormWithUuid(availableForms, forms.get(1).getUuid()));
     }
 
     @Test
-    public void getAllFormByTags_shouldAssignDownloadStatusToForms() throws IOException, ParseException, FormController.FormFetchException {
+    public void getAllFormByTags_shouldAssignDownloadStatusToForms() throws IOException, FormController.FormFetchException {
         List<Form> forms = buildForms();
         when(formService.getAllForms()).thenReturn(forms);
 
@@ -125,11 +121,11 @@ public class FormControllerTest {
         when(formService.isFormTemplateDownloaded(forms.get(1).getUuid())).thenReturn(true);
         when(formService.isFormTemplateDownloaded(forms.get(2).getUuid())).thenReturn(false);
 
-        AvailableForms availableForms = formController.getAvailableFormByTags(asList("tag2"));
+        AvailableForms availableForms = formController.getAvailableFormByTags(Collections.singletonList("tag2"));
         assertThat(getAvailableFormWithUuid(availableForms, forms.get(0).getUuid()).isDownloaded(), is(false));
         assertThat(getAvailableFormWithUuid(availableForms, forms.get(2).getUuid()).isDownloaded(), is(false));
 
-        availableForms = formController.getAvailableFormByTags(asList("tag1"));
+        availableForms = formController.getAvailableFormByTags(Collections.singletonList("tag1"));
         assertThat(getAvailableFormWithUuid(availableForms, forms.get(0).getUuid()).isDownloaded(), is(false));
         assertThat(getAvailableFormWithUuid(availableForms, forms.get(1).getUuid()).isDownloaded(), is(true));
     }
@@ -144,7 +140,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void getAllFormByTags_shouldFetchAllFormsIfNoTagsAreProvided() throws IOException, ParseException, FormController.FormFetchException {
+    public void getAllFormByTags_shouldFetchAllFormsIfNoTagsAreProvided() throws IOException, FormController.FormFetchException {
         List<Form> forms = buildForms();
         when(formService.getAllForms()).thenReturn(forms);
 
@@ -153,8 +149,8 @@ public class FormControllerTest {
     }
 
     @Test
-    public void downloadAllForms_shouldDownloadAllForms() throws IOException, ParseException, FormController.FormFetchException {
-        List<Form> forms = new ArrayList<Form>();
+    public void downloadAllForms_shouldDownloadAllForms() throws IOException, FormController.FormFetchException {
+        List<Form> forms = new ArrayList<>();
         when(formService.downloadFormsByName(StringUtils.EMPTY)).thenReturn(forms);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_FORMS)).thenReturn(mockDate);
 
@@ -190,7 +186,7 @@ public class FormControllerTest {
     }
 
     @Test(expected = FormController.FormFetchException.class)
-    public void downloadAllForms_shouldThrowExceptionThrownByFormService() throws IOException, ParseException, FormController.FormFetchException {
+    public void downloadAllForms_shouldThrowExceptionThrownByFormService() throws IOException, FormController.FormFetchException {
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_FORMS)).thenReturn(mockDate);
         doThrow(new IOException()).when(formService).downloadFormsByName(StringUtils.EMPTY, mockDate);
         formController.downloadAllForms();
@@ -245,7 +241,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void getAllTags_shouldFetchAllUsedTags() throws FormController.FormFetchException, IOException, ParseException {
+    public void getAllTags_shouldFetchAllUsedTags() throws FormController.FormFetchException, IOException {
         when(formService.getAllForms()).thenReturn(buildForms());
 
         List<Tag> allTags = formController.getAllTags();
@@ -259,7 +255,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void deleteAllForms_shouldDeleteAllForms() throws FormController.FormDeleteException, IOException, ParseException, FormController.FormFetchException {
+    public void deleteAllForms_shouldDeleteAllForms() throws FormController.FormDeleteException, IOException {
         List<Form> forms = buildForms();
         when(formService.getAllForms()).thenReturn(forms);
 
@@ -271,7 +267,7 @@ public class FormControllerTest {
     }
 
     @Test(expected = FormController.FormDeleteException.class)
-    public void deleteAllForms_shouldThrowFormSaveExceptionIfExceptionThrownByFormService() throws IOException, FormController.FormDeleteException, ParseException {
+    public void deleteAllForms_shouldThrowFormSaveExceptionIfExceptionThrownByFormService() throws IOException, FormController.FormDeleteException {
         List<Form> forms = buildForms();
         when(formService.getAllForms()).thenReturn(forms);
         doThrow(new IOException()).when(formService).deleteForms(forms);
@@ -280,7 +276,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void replaceFormTemplates_shouldReplaceAnyExistingFormTemplateWithSameId() throws IOException, FormController.FormFetchException, FormController.FormSaveException {
+    public void replaceFormTemplates_shouldReplaceAnyExistingFormTemplateWithSameId() throws IOException, FormController.FormSaveException {
         List<FormTemplate> newFormTemplates = buildFormTemplates();
 
         FormTemplate existingFormTemplate1 = FormTemplateBuilder.formTemplate().withUuid("uuid1").build();
@@ -301,7 +297,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void getAllDownloadedForms_shouldReturnOnlyDownloadedForms() throws IOException, ParseException, FormController.FormFetchException {
+    public void getAllDownloadedForms_shouldReturnOnlyDownloadedForms() throws IOException, FormController.FormFetchException {
         List<Form> forms = buildForms();
 
         when(formService.getAllForms()).thenReturn(forms);
@@ -313,7 +309,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void getAllDownloadedForms_shouldReturnNoFormsIfNoTemplateIsDownloaded() throws IOException, ParseException, FormController.FormFetchException {
+    public void getAllDownloadedForms_shouldReturnNoFormsIfNoTemplateIsDownloaded() throws IOException, FormController.FormFetchException {
         List<Form> forms = buildForms();
 
         when(formService.getAllForms()).thenReturn(forms);
@@ -325,7 +321,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void isFormDownloaded_shouldReturnTrueIfFromIsDownloaded() throws IOException, ParseException, FormController.FormFetchException {
+    public void isFormDownloaded_shouldReturnTrueIfFromIsDownloaded() throws IOException, FormController.FormFetchException {
         List<Form> forms = buildForms();
         List<FormTemplate> formTemplates = buildFormTemplates();
 
@@ -335,7 +331,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void isFormDownloaded_shouldReturnFalseIfFromIsNotDownloaded() throws IOException, ParseException, FormController.FormFetchException {
+    public void isFormDownloaded_shouldReturnFalseIfFromIsNotDownloaded() throws IOException, FormController.FormFetchException {
         List<Form> forms = buildForms();
         List<FormTemplate> formTemplates = buildFormTemplates();
 
@@ -402,7 +398,7 @@ public class FormControllerTest {
         FormData formData = new FormData();
         String status = "draft";
 
-        when(formService.getAllFormData(status)).thenReturn(asList(formData));
+        when(formService.getAllFormData(status)).thenReturn(Collections.singletonList(formData));
 
         assertThat(formController.getAllFormData(status).size(), is(1));
         assertThat(formController.getAllFormData(status), hasItem(formData));
@@ -410,7 +406,7 @@ public class FormControllerTest {
 
     @Test
     public void getAllFormDataByPatientUuid_shouldReturnAllFormDataForPatientAndGivenStatus() throws Exception, FormController.FormDataFetchException {
-        List<FormData> formDataList = new ArrayList<FormData>();
+        List<FormData> formDataList = new ArrayList<>();
         String patientUuid = "patientUuid";
         String status = "status";
 
@@ -432,10 +428,6 @@ public class FormControllerTest {
         }};
         final Form form2 = new Form(){{
             setUuid("form2");
-        }};
-        List<Form> forms = new ArrayList<Form>(){{
-            add(form1);
-            add(form2);
         }};
 
         final FormData formData1 = new FormData();
@@ -474,10 +466,6 @@ public class FormControllerTest {
         }};
         final Form form2 = new Form(){{
             setUuid("form2");
-        }};
-        List<Form> forms = new ArrayList<Form>(){{
-            add(form1);
-            add(form2);
         }};
 
         final FormData formData1 = new FormData();
@@ -566,14 +554,14 @@ public class FormControllerTest {
         when(formService.getAllFormData(Constants.STATUS_COMPLETE)).thenReturn(asList(registrationFormData,encounterFormData));
 
         FormController spyController = spy(formController);
-        when(spyController.uploadFormDataToServer(asList(registrationFormData),true)).thenReturn(true);
+        when(spyController.uploadFormDataToServer(Collections.singletonList(registrationFormData),true)).thenReturn(true);
 
         InOrder inOrder = inOrder(spyController.uploadAllCompletedForms());
 
         spyController.uploadAllCompletedForms();
 
-        inOrder.verify(spyController).uploadFormDataToServer(asList(registrationFormData), true);
-        inOrder.verify(spyController).uploadFormDataToServer(asList(encounterFormData),true);
+        inOrder.verify(spyController).uploadFormDataToServer(Collections.singletonList(registrationFormData), true);
+        inOrder.verify(spyController).uploadFormDataToServer(Collections.singletonList(encounterFormData),true);
     }
 
     private FormData formDataWithStatusAndDiscriminator(String status, String formDiscriminatorEncounter) {
@@ -589,9 +577,9 @@ public class FormControllerTest {
         String uuid = "uuid";
         incompleteFormToDelete.setUuid(uuid);
         incompleteFormToDelete.setStatus(Constants.STATUS_INCOMPLETE);
-        when(formController.getFormDataByUuids(asList(anyString()))).thenReturn(asList(incompleteFormToDelete));
+        when(formController.getFormDataByUuids(Collections.singletonList(anyString()))).thenReturn(Collections.singletonList(incompleteFormToDelete));
 
-        formController.deleteCompleteAndIncompleteEncounterFormData(asList(uuid));
+        formController.deleteCompleteAndIncompleteEncounterFormData(Collections.singletonList(uuid));
         verify(formService).deleteFormData(incompleteFormToDelete);
     }
 
@@ -601,15 +589,15 @@ public class FormControllerTest {
         String uuid = "uuid";
         completeFormToDelete.setUuid(uuid);
         completeFormToDelete.setStatus(Constants.STATUS_COMPLETE);
-        when(formController.getFormDataByUuids(asList(anyString()))).thenReturn(asList(completeFormToDelete));
+        when(formController.getFormDataByUuids(Collections.singletonList(anyString()))).thenReturn(Collections.singletonList(completeFormToDelete));
 
-        formController.deleteCompleteAndIncompleteEncounterFormData(asList(uuid));
+        formController.deleteCompleteAndIncompleteEncounterFormData(Collections.singletonList(uuid));
         verify(formService).deleteFormData(completeFormToDelete);
 
     }
 
     private List<Form> buildForms() {
-        List<Form> forms = new ArrayList<Form>();
+        List<Form> forms = new ArrayList<>();
         Tag tag1 = TagBuilder.tag().withName("Patient").withUuid("tag1").build();
         Tag tag2 = TagBuilder.tag().withName("PMTCT").withUuid("tag2").build();
         Tag tag3 = TagBuilder.tag().withName("Observation").withUuid("tag3").build();
@@ -638,7 +626,7 @@ public class FormControllerTest {
     }
 
     private List<FormTemplate> buildFormTemplates() {
-        List<FormTemplate> formTemplates = new ArrayList<FormTemplate>();
+        List<FormTemplate> formTemplates = new ArrayList<>();
 
         FormTemplate formTemplate1 = FormTemplateBuilder.formTemplate().withUuid("uuid1").withHtml("html1").withModel("{model1}").withModelJson("{modelJson1}").build();
         FormTemplate formTemplate2 = FormTemplateBuilder.formTemplate().withUuid("uuid2").withHtml("html2").withModel("{model2}").withModelJson("{modelJson2}").build();

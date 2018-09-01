@@ -79,6 +79,7 @@ import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 
 
 public class MuzimaApplication extends Application {
+
     private Context muzimaContext;
     private Activity currentActivity;
     private FormController formController;
@@ -98,12 +99,14 @@ public class MuzimaApplication extends Application {
     private SmartCardController smartCardController;
     private MuzimaGeneratedReportController muzimaGeneratedReportController;
     private MuzimaTimer muzimaTimer;
-    public static final String APP_DIR = "/data/data/com.muzima";
+    private static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
     private User authenticatedUser;
 
     static {
         // see http://rtyley.github.io/spongycastle/
+        //TODO There is need to start using Google provided security provider (AndroidOpenSSL)
+        //TODO Shipping with both spongycastler  and the default AndroidOpenSSL significantly increases the apk size.
         Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
     }
 
@@ -148,11 +151,10 @@ public class MuzimaApplication extends Application {
         try {
             ContextFactory.setProperty(Constants.LUCENE_DIRECTORY_PATH, APP_DIR);
             muzimaContext = ContextFactory.createContext();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
     }
 
     public Context getMuzimaContext() {
@@ -284,7 +286,7 @@ public class MuzimaApplication extends Application {
         if (notificationController == null) {
             try {
                 notificationController = new NotificationController(muzimaContext.getService(NotificationService.class),
-                        muzimaContext.getFormService());
+                        muzimaContext.getFormService(),this,getSntpService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -410,6 +412,7 @@ public class MuzimaApplication extends Application {
 
     public boolean isRunningInBackground() {
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        assert manager != null;
         List<ActivityManager.RunningTaskInfo> tasks = manager.getRunningTasks(1);
         return tasks.get(0).topActivity.getClassName().contains("Launcher");
     }

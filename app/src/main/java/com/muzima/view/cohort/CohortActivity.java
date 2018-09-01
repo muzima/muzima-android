@@ -29,10 +29,8 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 public class CohortActivity extends BroadcastListenerActivity {
-    private static final String TAG = "CohortActivity";
     private ViewPager viewPager;
     private CohortPagerAdapter cohortPagerAdapter;
-    private PagerSlidingTabStrip pagerTabsLayout;
     private MenuItem menubarLoadButton;
     private boolean syncInProgress;
 
@@ -80,22 +78,26 @@ public class CohortActivity extends BroadcastListenerActivity {
         int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS, SyncStatusConstants.UNKNOWN_ERROR);
         int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
 
-        if (syncType == DataSyncServiceConstants.SYNC_COHORTS) {
-            hideProgressbar();
-            syncInProgress = false;
-            if (syncStatus == SyncStatusConstants.SUCCESS) {
-                cohortPagerAdapter.onCohortDownloadFinish();
-            }
-        } else if (syncType == DataSyncServiceConstants.SYNC_PATIENTS_FULL_DATA) {
-            if (syncStatus == SyncStatusConstants.SUCCESS) {
-                cohortPagerAdapter.onPatientsDownloadFinish();
-            }
-        } else if (syncType == DataSyncServiceConstants.SYNC_ENCOUNTERS) {
-            hideProgressbar();
+        switch (syncType) {
+            case DataSyncServiceConstants.SYNC_COHORTS:
+                hideProgressbar();
+                syncInProgress = false;
+                if (syncStatus == SyncStatusConstants.SUCCESS) {
+                    cohortPagerAdapter.onCohortDownloadFinish();
+                }
+                break;
+            case DataSyncServiceConstants.SYNC_PATIENTS_FULL_DATA:
+                if (syncStatus == SyncStatusConstants.SUCCESS) {
+                    cohortPagerAdapter.onPatientsDownloadFinish();
+                }
+                break;
+            case DataSyncServiceConstants.SYNC_ENCOUNTERS:
+                hideProgressbar();
+                break;
         }
     }
 
-    public void hideProgressbar() {
+    private void hideProgressbar() {
         menubarLoadButton.setActionView(null);
     }
 
@@ -104,14 +106,14 @@ public class CohortActivity extends BroadcastListenerActivity {
     }
 
     private void initPager() {
-        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager = findViewById(R.id.pager);
         cohortPagerAdapter = new CohortPagerAdapter(getApplicationContext(), getSupportFragmentManager());
         cohortPagerAdapter.initPagerViews();
         viewPager.setAdapter(cohortPagerAdapter);
     }
 
     private void initPagerIndicator() {
-        pagerTabsLayout = (PagerSlidingTabStrip) findViewById(R.id.pager_indicator);
+        PagerSlidingTabStrip pagerTabsLayout = findViewById(R.id.pager_indicator);
         pagerTabsLayout.setTextColor(Color.WHITE);
         pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));
         pagerTabsLayout.setSelectedTextColor(getResources().getColor(R.color.tab_indicator));

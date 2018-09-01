@@ -12,7 +12,6 @@ package com.muzima.view.notifications;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
@@ -23,12 +22,10 @@ import com.muzima.view.custom.PagerSlidingTabStrip;
 
 public abstract class NotificationActivityBase extends BroadcastListenerActivity {
 
-    private static final String TAG = "NotificationActivityBase";
-    public static int NOTIFICATION_VIEW_ACTIVITY_RESULT = 1;
+    private static final int NOTIFICATION_VIEW_ACTIVITY_RESULT = 1;
 
-    protected ViewPager notificationPager;
-    protected PagerSlidingTabStrip pagerTabsLayout;
-    protected MuzimaPagerAdapter notificationPagerAdapter;
+    private ViewPager notificationPager;
+    MuzimaPagerAdapter notificationPagerAdapter;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -37,8 +34,8 @@ public abstract class NotificationActivityBase extends BroadcastListenerActivity
         }
     }
 
-    protected void initPager() {
-        notificationPager = (ViewPager) findViewById(R.id.pager);
+    void initPager() {
+        notificationPager = findViewById(R.id.pager);
         notificationPagerAdapter = createNotificationsPagerAdapter();
         notificationPagerAdapter.initPagerViews();
         notificationPager.setAdapter(notificationPagerAdapter);
@@ -47,8 +44,8 @@ public abstract class NotificationActivityBase extends BroadcastListenerActivity
     protected abstract MuzimaPagerAdapter createNotificationsPagerAdapter();
 
 
-    protected void initPagerIndicator() {
-        pagerTabsLayout = (PagerSlidingTabStrip) findViewById(R.id.pager_indicator);
+    void initPagerIndicator() {
+        PagerSlidingTabStrip pagerTabsLayout = findViewById(R.id.pager_indicator);
         pagerTabsLayout.setTextColor(Color.WHITE);
         pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));
         pagerTabsLayout.setSelectedTextColor(getResources().getColor(R.color.tab_indicator));
@@ -64,6 +61,6 @@ public abstract class NotificationActivityBase extends BroadcastListenerActivity
         });
     }
 
-    protected void onPageChange(int position){
+    private void onPageChange(int position){
     }
 }

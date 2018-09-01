@@ -25,7 +25,6 @@ import java.util.List;
 
 public class AutoCompleteLocationAdapter extends AutoCompleteBaseAdapter<Location> {
 
-    private static final String TAG = AutoCompleteLocationAdapter.class.getSimpleName();
 
     public AutoCompleteLocationAdapter(Context context, int textViewResourceId, AutoCompleteTextView autoCompleteLocationTextView) {
         super(context, textViewResourceId, autoCompleteLocationTextView);
@@ -37,9 +36,9 @@ public class AutoCompleteLocationAdapter extends AutoCompleteBaseAdapter<Locatio
         try {
             return locationController.downloadLocationFromServerByName(constraint.toString());
         } catch (LocationController.LocationDownloadException e) {
-            Log.e(TAG, "Unable to download locations!", e);
+            Log.e(getClass().getSimpleName(), "Unable to download locations!", e);
         }
-        return new ArrayList<Location>();
+        return new ArrayList<>();
     }
 
     @Override

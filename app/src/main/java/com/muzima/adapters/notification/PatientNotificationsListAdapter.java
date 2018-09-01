@@ -12,6 +12,7 @@ package com.muzima.adapters.notification;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,6 @@ import java.util.List;
  * Responsible to populate all notification fetched from DB in the PatientNotificationsListFragment page.
  */
 public class PatientNotificationsListAdapter extends NotificationAdapter {
-    private static final String TAG = "PatientNotificationsListAdapter";
 
     public PatientNotificationsListAdapter(Context context, int textViewResourceId, NotificationController notificationController) {
         super(context, textViewResourceId, notificationController);
@@ -43,16 +43,16 @@ public class PatientNotificationsListAdapter extends NotificationAdapter {
         new LoadBackgroundQueryTask().execute();
     }
 
+    @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = super.getView(position, convertView, parent);
-        return view;
+        return super.getView(position, convertView, parent);
     }
 
     /**
      * Responsible to define contract to PatientNotificationsBackgroundQueryTask.
      */
-    public abstract class NotificationsListBackgroundQueryTask extends AsyncTask<Void, Void, List<Notification>> {
+    abstract class NotificationsListBackgroundQueryTask extends AsyncTask<Void, Void, List<Notification>> {
         @Override
         protected void onPreExecute() {
             if (backgroundListQueryTaskListener != null) {
@@ -84,14 +84,14 @@ public class PatientNotificationsListAdapter extends NotificationAdapter {
     /**
      * Responsible to load notifications from database. Runs in Background.
      */
-    public class LoadBackgroundQueryTask extends NotificationsListBackgroundQueryTask {
+    protected class LoadBackgroundQueryTask extends NotificationsListBackgroundQueryTask {
 
         @Override
         protected List<Notification> doInBackground(Void... voids) {
             List<Notification> allNotifications = null;
-            List<Notification> filteredNotifications = new ArrayList<Notification>();
+            List<Notification> filteredNotifications = new ArrayList<>();
             try {
-                Log.i(TAG, "Fetching patient notifications from Database...");
+                Log.i(getClass().getSimpleName(), "Fetching patient notifications from Database...");
                 User authenticatedUser = ((MuzimaApplication) getContext().getApplicationContext()).getAuthenticatedUser();
                 if (authenticatedUser != null) {
                     allNotifications = notificationController.getAllNotificationsByReceiver(authenticatedUser.getPerson().getUuid(), null);
@@ -106,14 +106,10 @@ public class PatientNotificationsListAdapter extends NotificationAdapter {
                         }
                     }
                 }
-                Log.d(TAG, "#Retrieved " + (allNotifications != null ? allNotifications.size():0) + " notifications from Database." +
+                Log.d(getClass().getSimpleName(), "#Retrieved " + (allNotifications != null ? allNotifications.size():0) + " notifications from Database." +
                         " And filtered " + (filteredNotifications != null ? filteredNotifications.size():0) + " client notifications");
-            } catch (NotificationController.NotificationFetchException e) {
-                Log.e(TAG, "Exception occurred while fetching the notifications", e);
-            } catch (ParseException e) {
-                Log.e(TAG, "Exception occurred while fetching the notifications", e);
-            } catch (PatientController.PatientLoadException e) {
-                Log.e(TAG, "Exception occurred while fetching the notifications", e);
+            } catch (NotificationController.NotificationFetchException | PatientController.PatientLoadException e) {
+                Log.e(getClass().getSimpleName(), "Exception occurred while fetching the notifications", e);
             }
             return filteredNotifications;
         }

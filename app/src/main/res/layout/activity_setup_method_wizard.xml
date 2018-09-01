@@ -38,7 +38,8 @@
                       android:hint="@string/hint_configuration_search"
                       android:id="@+id/filter_configs_txt"/>
             <ImageButton android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
+                android:contentDescription="@string/info_setup_complete_success"
+                android:layout_height="wrap_content"
                          android:id="@+id/cancel_filter_txt"
                          android:src="@drawable/ic_cancel"
                          android:background="@android:color/transparent"

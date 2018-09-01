@@ -9,15 +9,13 @@ import com.muzima.api.model.LocationAttribute;
 import com.muzima.api.model.LocationAttributeType;
 import com.muzima.controller.LocationController;
 import com.muzima.utils.Constants.Shr.KenyaEmr;
-import net.minidev.json.JSONValue;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class LocationUtils {
-    private static final String TAG = LocationUtils.class.getSimpleName();
-    public static String getLocationAttributeValue(Location location, String locationAttributeType){
+    private static String getLocationAttributeValue(Location location, String locationAttributeType){
         if(location != null){
             LocationAttribute locationAttribute = location.getAttribute(locationAttributeType);
             if(locationAttribute != null){
@@ -64,7 +62,7 @@ public class LocationUtils {
                 }
             }
         } catch (LocationController.LocationLoadException e){
-            Log.e(TAG, "Failed to get location",e);
+            Log.e("Location Utils", "Failed to get location",e);
         }
 
         if(location == null){
@@ -103,7 +101,7 @@ public class LocationUtils {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication);
 
             String defaultLocationName = preferences.getString("defaultEncounterLocation", null);
-            List<Location> defaultLocation = new ArrayList<Location>();
+            List<Location> defaultLocation = new ArrayList<>();
             List<Location> locations = muzimaApplication.getLocationController().getAllLocations();
             if (defaultLocationName != null && locations != null) {
                 for (Location loc : locations) {
