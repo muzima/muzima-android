@@ -13,9 +13,7 @@ package com.muzima.view.reports;
 import android.app.Activity;
 import com.muzima.view.SyncIntent;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.COHORT_IDS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_MUZIMA_GENERATED_REPORTS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_NOTIFICATIONS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
 import static com.muzima.utils.Constants.NotificationStatusConstants.RECEIVER_UUID;
 

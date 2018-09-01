@@ -16,6 +16,7 @@
             android:orderInCategory="10"
             custom:showAsAction="always"
             android:icon="@drawable/ic_refresh"/>
+
     <item
             android:id="@+id/action_settings"
             android:orderInCategory="1"

@@ -12,91 +12,106 @@ package com.muzima.controller;
 
 import com.muzima.api.model.MuzimaGeneratedReport;
 import com.muzima.api.service.MuzimaGeneratedReportService;
-import com.muzima.api.service.LastSyncTimeService;
-import com.muzima.service.SntpService;
 
 import java.io.IOException;
 import java.util.List;
 
-
-
 public class MuzimaGeneratedReportController {
+    
     private static final String TAG = "MuzimaGeneratedReportController";
+    
     private MuzimaGeneratedReportService muzimaGeneratedReportService;
-    private LastSyncTimeService lastSyncTimeService;
-    private SntpService sntpService;
-
+    
     public MuzimaGeneratedReportController(MuzimaGeneratedReportService muzimaGeneratedReportService) {
         this.muzimaGeneratedReportService = muzimaGeneratedReportService;
-        this.lastSyncTimeService = lastSyncTimeService;
-        this.sntpService = sntpService;
     }
-
-    public List<MuzimaGeneratedReport> getAllMuzimaGeneratedReportsByPatientUuid(String uuid) throws MuzimaGeneratedReportException {
+    
+    public List<MuzimaGeneratedReport> getAllMuzimaGeneratedReportsByPatientUuid(String uuid)
+            throws MuzimaGeneratedReportException {
         try {
             return muzimaGeneratedReportService.getMuzimaGeneratedReportByPatientUuid(uuid);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new MuzimaGeneratedReportException(e);
         }
     }
-
-    public MuzimaGeneratedReport getLastPriorityMuzimaGeneratedReport (String uuid) throws MuzimaGeneratedReportFetchException {
+    
+    public MuzimaGeneratedReport getLastPriorityMuzimaGeneratedReport(String uuid)
+            throws MuzimaGeneratedReportFetchException {
         try {
             return muzimaGeneratedReportService.getMuzimaGeneratedReportByUuid(uuid);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new MuzimaGeneratedReportFetchException(e);
         }
     }
     
-    public List<MuzimaGeneratedReport> downloadLastPriorityMuzimaGeneratedReportByPatientUuid(String patientUuid) throws MuzimaGeneratedReportDownloadException {
+    public List<MuzimaGeneratedReport> downloadLastPriorityMuzimaGeneratedReportByPatientUuid(String patientUuid)
+            throws MuzimaGeneratedReportDownloadException {
         try {
-            return muzimaGeneratedReportService.downloadMuzimaGeneratedReportByPatientUuid(patientUuid);
-        } catch (IOException e) {
+            List<MuzimaGeneratedReport> muzimaGeneratedReports = muzimaGeneratedReportService
+                    .downloadMuzimaGeneratedReportByPatientUuid(patientUuid);
+            return muzimaGeneratedReports;
+        }
+        catch (IOException e) {
             throw new MuzimaGeneratedReportDownloadException(e);
         }
     }
     
-    public void saveAllMuzimaGeneratedReports(List<MuzimaGeneratedReport> muzimaGeneratedReports) throws MuzimaGeneratedReportSaveException {
+    public void saveAllMuzimaGeneratedReports(List<MuzimaGeneratedReport> muzimaGeneratedReports)
+            throws MuzimaGeneratedReportSaveException {
         try {
-            for (MuzimaGeneratedReport muzimaGeneratedReport : muzimaGeneratedReports)
-            muzimaGeneratedReportService.saveMuzimaGeneratedReport(muzimaGeneratedReport);
-        } catch (IOException e) {
+            for (MuzimaGeneratedReport muzimaGeneratedReport : muzimaGeneratedReports) {
+                muzimaGeneratedReportService.saveMuzimaGeneratedReport(muzimaGeneratedReport);
+            }
+            
+        }
+        catch (IOException e) {
             throw new MuzimaGeneratedReportSaveException(e);
         }
     }
     
-    public void deleteMuzimaGeneratedReport(MuzimaGeneratedReport muzimaGeneratedReport) throws MuzimaGeneratedReportDeleteException {
+    public void deleteMuzimaGeneratedReport(MuzimaGeneratedReport muzimaGeneratedReport)
+            throws MuzimaGeneratedReportDeleteException {
         try {
             
-                muzimaGeneratedReportService.deleteMuzimaGeneratedReport(muzimaGeneratedReport);
-        } catch (IOException e) {
+            muzimaGeneratedReportService.deleteMuzimaGeneratedReport(muzimaGeneratedReport);
+        }
+        catch (IOException e) {
             throw new MuzimaGeneratedReportDeleteException(e);
         }
     }
-
+    
     public static class MuzimaGeneratedReportFetchException extends Throwable {
+        
         public MuzimaGeneratedReportFetchException(Throwable throwable) {
             super(throwable);
         }
     }
     
     public static class MuzimaGeneratedReportException extends Throwable {
+        
         public MuzimaGeneratedReportException(Throwable throwable) {
             super(throwable);
         }
     }
+    
     public static class MuzimaGeneratedReportDownloadException extends Throwable {
+        
         public MuzimaGeneratedReportDownloadException(Throwable throwable) {
             super(throwable);
         }
     }
+    
     public static class MuzimaGeneratedReportSaveException extends Throwable {
+        
         public MuzimaGeneratedReportSaveException(Throwable throwable) {
             super(throwable);
         }
     }
     
     public static class MuzimaGeneratedReportDeleteException extends Throwable {
+        
         public MuzimaGeneratedReportDeleteException(Throwable throwable) {
             super(throwable);
         }

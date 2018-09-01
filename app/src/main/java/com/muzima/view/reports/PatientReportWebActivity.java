@@ -11,41 +11,50 @@
 package com.muzima.view.reports;
 
 import android.os.Bundle;
-import android.view.View;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.model.MuzimaGeneratedReport;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.MuzimaGeneratedReportController;
 import com.muzima.view.BaseActivity;
+
+import java.util.List;
 
 import static com.muzima.view.patients.PatientSummaryActivity.PATIENT;
 
 public class PatientReportWebActivity extends BaseActivity {
     
     private static final String TAG = "PatientReportWebActivity";
+    
     private Patient patient;
+    
     private WebView myWebView;
-
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient_report_webview);
+        setContentView(R.layout.activity_patient_report);
         patient = (Patient) getIntent().getSerializableExtra(PATIENT);
-    }
-    public void showReport(View v) {
-    
-        String url = getIntent().getStringExtra("url");
+        
         myWebView = (WebView) findViewById(R.id.activity_main_webview);
         myWebView.setWebViewClient(new WebViewClient());
-        WebSettings webSettings = myWebView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-    
-        MuzimaGeneratedReportController muzimaGeneratedReportController = ((MuzimaApplication) getApplicationContext()).getMuzimaGeneratedReportController();
+        MuzimaGeneratedReportController muzimaGeneratedReportController = ((MuzimaApplication) getApplicationContext())
+                .getMuzimaGeneratedReportController();
         
-       }
+        try {
+            List<MuzimaGeneratedReport> muzimaGeneratedReportList = muzimaGeneratedReportController
+                    .getAllMuzimaGeneratedReportsByPatientUuid(patient.getUuid());
+            
+            myWebView.loadDataWithBaseURL(null, muzimaGeneratedReportList.get(0).getReportJson(), "text/html; charset=utf-8",
+                    "UTF-8", null);
+        }
+        catch (MuzimaGeneratedReportController.MuzimaGeneratedReportException e) {
+            e.printStackTrace();
+        }
+        
+    }
 }
 
 

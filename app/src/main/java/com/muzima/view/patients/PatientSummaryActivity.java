@@ -33,7 +33,6 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.api.model.Location;
-import com.muzima.api.model.MuzimaGeneratedReport;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.SmartCardRecord;
 import com.muzima.api.model.User;
@@ -61,7 +60,7 @@ import com.muzima.view.encounters.EncountersActivity;
 import com.muzima.view.forms.PatientFormsActivity;
 import com.muzima.view.notifications.PatientNotificationActivity;
 import com.muzima.view.observations.ObservationsActivity;
-import com.muzima.view.reports.PatientReportButtonActivity;
+import com.muzima.view.reports.PatientReportDownloadActivity;
 
 import java.io.IOException;
 import java.util.List;
@@ -373,7 +372,7 @@ public class PatientSummaryActivity extends BaseActivity {
     }
     
     public void showReports(View v){
-        Intent intent = new Intent(this, PatientReportButtonActivity.class);
+        Intent intent = new Intent(this, PatientReportDownloadActivity.class);
         intent.putExtra(PATIENT, patient);
         startActivity(intent);
     }

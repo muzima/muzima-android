@@ -30,7 +30,6 @@ import com.muzima.R;
 import com.muzima.adapters.concept.AutoCompleteConceptAdapter;
 import com.muzima.adapters.concept.SelectedConceptAdapter;
 import com.muzima.api.model.Concept;
-import com.muzima.controller.MuzimaGeneratedReportController;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
@@ -133,8 +132,8 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
     }
 
     @Override
-    protected void onReceive(Context context, Intent intent){
-           super.onReceive(context, intent);
+    protected void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
 
         int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS, SyncStatusConstants.UNKNOWN_ERROR);
         int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
