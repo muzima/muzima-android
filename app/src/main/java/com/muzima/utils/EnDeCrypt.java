@@ -10,7 +10,6 @@
 
 package com.muzima.utils;
 
-import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
@@ -30,7 +29,6 @@ import java.security.spec.KeySpec;
 
 public class EnDeCrypt {
 	
-	private static String TAG = "EnDeCrypt";
 
     private static final String CIPHER_ALGORITHM = "AES/CBC/PKCS5Padding";
 
@@ -45,9 +43,9 @@ public class EnDeCrypt {
 
     private static final int SALT_LENGTH = 8;
 
-    private static SecureRandom random = new SecureRandom();
+    private static final SecureRandom random = new SecureRandom();
 
-    private static String DELIMITER = "]";
+    private static final String DELIMITER = "]";
 
 
     public static void encrypt(File plainFile, String password) {
@@ -90,10 +88,10 @@ public class EnDeCrypt {
 
             // remove the temporary file by transferring the file as appropriate
             tempFile.renameTo(new File(plainFile.getAbsolutePath()));
-            Log.i(TAG, "Encrypted " + plainFile.getAbsolutePath());
+            Log.i("En DeCrypt", "Encrypted " + plainFile.getAbsolutePath());
 
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
+            Log.e("En DeCrypt", e.getMessage(), e);
         }
     }
 
@@ -137,9 +135,9 @@ public class EnDeCrypt {
             fos.close();
 
             tempFile.renameTo(encryptedFile);
-            Log.i(TAG, "Decrypted " + encryptedFile.getAbsolutePath());
+            Log.i("En DeCrypt", "Decrypted " + encryptedFile.getAbsolutePath());
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
+            Log.e("En DeCrypt", e.getMessage(), e);
         }
 
     }

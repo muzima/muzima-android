@@ -25,9 +25,8 @@ import java.util.List;
 public class ProviderController {
 
 
-    public static final String TAG = "ProviderController";
-    private ProviderService providerService;
-    public List<Provider> newProviders = new ArrayList<Provider>();
+    private final ProviderService providerService;
+    private List<Provider> newProviders = new ArrayList<>();
 
     public ProviderController(ProviderService providerService){
         this.providerService = providerService;
@@ -37,25 +36,25 @@ public class ProviderController {
         try {
             return providerService.downloadProvidersByName(name);
         } catch (IOException e) {
-            Log.e(TAG, "Error while searching for patients in the server", e);
+            Log.e(getClass().getSimpleName(), "Error while searching for patients in the server", e);
             throw new ProviderDownloadException(e);
         }
     }
 
-    public List<Provider> downloadProvidersFromServerByName(List<String> names) throws ProviderDownloadException {
-        HashSet<Provider> result = new HashSet<Provider>();
+    private List<Provider> downloadProvidersFromServerByName(List<String> names) throws ProviderDownloadException {
+        HashSet<Provider> result = new HashSet<>();
         for (String name : names) {
             List<Provider> providers = downloadProviderFromServerByName(name);
             result.addAll(providers);
         }
-        return new ArrayList<Provider>(result);
+        return new ArrayList<>(result);
     }
 
     public Provider downloadProviderFromServerByUuid(String uuid) throws ProviderDownloadException {
         try {
             return providerService.downloadProviderByUuid(uuid);
         } catch (IOException e) {
-            Log.e(TAG, "Error while downloading provider from the server", e);
+            Log.e(getClass().getSimpleName(), "Error while downloading provider from the server", e);
             throw new ProviderDownloadException(e);
         }
     }
@@ -68,7 +67,7 @@ public class ProviderController {
                 if(provider != null) result.add(provider);
             }
         } catch (IOException e) {
-            Log.e(TAG, "Error while downloading providers from the server", e);
+            Log.e(getClass().getSimpleName(), "Error while downloading providers from the server", e);
             throw new ProviderDownloadException(e);
         }
         return new ArrayList<>(result);
@@ -86,7 +85,7 @@ public class ProviderController {
         try {
             providerService.saveProvider(provider);
         } catch (IOException e) {
-            Log.e(TAG, "Error while saving the provider : " + provider.getUuid(), e);
+            Log.e(getClass().getSimpleName(), "Error while saving the provider : " + provider.getUuid(), e);
             throw new ProviderSaveException(e);
         }
     }
@@ -115,10 +114,7 @@ public class ProviderController {
                     return provider;
                 }
             }
-        } catch (IOException e) {
-            throw new ProviderLoadException(e);
-        }
-        catch (org.apache.lucene.queryParser.ParseException e) {
+        } catch (IOException | org.apache.lucene.queryParser.ParseException e) {
             throw new ProviderLoadException(e);
         }
         return null;
@@ -141,7 +137,7 @@ public class ProviderController {
 
     }
 
-    public Provider downloadProviderBySystemId(String systemId) throws ProviderLoadException {
+    private Provider downloadProviderBySystemId(String systemId) throws ProviderLoadException {
         try {
             return providerService.downloadProvidersBySystemId(systemId);
         } catch (IOException e) {
@@ -153,15 +149,15 @@ public class ProviderController {
         try {
             return providerService.getProviderBySystemId(systemId);
         } catch (IOException e) {
-            Log.e(TAG,"Cannot obtain provider by system ID : "+systemId, e);
+            Log.e(getClass().getSimpleName(),"Cannot obtain provider by system ID : "+systemId, e);
             throw new RuntimeException(e);
         }
     }
     public List<Provider> getRelatedProviders(List<FormTemplate> formTemplates, String systemId) throws ProviderDownloadException, ProviderLoadException {
-        HashSet<Provider> providers = new HashSet<Provider>();
+        HashSet<Provider> providers = new HashSet<>();
         HTMLProviderParser htmlParserUtils = new HTMLProviderParser();
         for (FormTemplate formTemplate : formTemplates) {
-            List<String> names = new ArrayList<String>();
+            List<String> names = new ArrayList<>();
             if (formTemplate.isHTMLForm()) {
                 names = htmlParserUtils.parse(formTemplate.getHtml());
             } else {
@@ -175,7 +171,7 @@ public class ProviderController {
         if(loggedInProvider != null){
             providers.add(downloadProviderBySystemId(systemId));
         }
-        return new ArrayList<Provider>(providers);
+        return new ArrayList<>(providers);
     }
 
     public Provider getLoggedInProvider(String systemId) throws ProviderLoadException{
@@ -199,25 +195,25 @@ public class ProviderController {
     }
 
     public static class ProviderSaveException extends Throwable {
-        public ProviderSaveException(Throwable throwable) {
+        ProviderSaveException(Throwable throwable) {
             super(throwable);
         }
     }
 
     public static class ProviderDownloadException extends Throwable {
-        public ProviderDownloadException(Throwable throwable) {
+        ProviderDownloadException(Throwable throwable) {
             super(throwable);
         }
     }
 
     public static class ProviderLoadException extends Throwable {
-        public ProviderLoadException(Throwable e) {
+        ProviderLoadException(Throwable e) {
             super(e);
         }
     }
 
     public static class ProviderDeleteException extends Throwable {
-        public ProviderDeleteException(Throwable e) {
+        ProviderDeleteException(Throwable e) {
             super(e);
         }
     }

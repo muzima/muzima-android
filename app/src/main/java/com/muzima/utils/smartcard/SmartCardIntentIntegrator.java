@@ -18,17 +18,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SmartCardIntentIntegrator {
-    private static String TAG = "CardIntentIntegrator";
-    public static String ACTION_READ_DATA = "org.kenyahmis.psmart.ACTION_READ_DATA";
 
-    public static String ACTION_WRITE_DATA = "org.kenyahmis.psmart.ACTION_WRITE_DATA";
-    public static String EXTRA_AUTH_TOKEN = "AUTH_TOKEN";
-    public static String AUTH_TOKEN_VALUE = "123";
-    public static String EXTRA_ERRORS = "errors";
-    public static String EXTRA_MESSAGE = "message";
+    private static final String ACTION_READ_DATA = "org.kenyahmis.psmart.ACTION_READ_DATA";
+    private static final String ACTION_WRITE_DATA = "org.kenyahmis.psmart.ACTION_WRITE_DATA";
+    private static final String EXTRA_AUTH_TOKEN = "AUTH_TOKEN";
+    private static final String AUTH_TOKEN_VALUE = "123";
+    private static final String EXTRA_ERRORS = "errors";
+    private static final String EXTRA_MESSAGE = "message";
     public static final int SMARTCARD_READ_REQUEST_CODE = 98;
     public static final int SMARTCARD_WRITE_REQUEST_CODE = 99;
-    Activity activity;
+    private final Activity activity;
     public SmartCardIntentIntegrator(Activity activity){
         this.activity = activity;
     }
@@ -49,13 +48,13 @@ public class SmartCardIntentIntegrator {
         startIntentActivityForResult(intent,SMARTCARD_READ_REQUEST_CODE);
 
     }
-    public void initiateCardWrite(String shrModel) throws IOException {
+    public void initiateCardWrite(String SHRModel) {
         Intent intent = new Intent();
         intent.setAction(ACTION_WRITE_DATA);
         intent.putExtra(EXTRA_AUTH_TOKEN,AUTH_TOKEN_VALUE);
         intent.setType("text/plain");
         intent.putExtra("ACTION","WRITE");
-        intent.putExtra("WRITE_DATA",shrModel);
+        intent.putExtra("WRITE_DATA",SHRModel);
         startIntentActivityForResult(intent,SMARTCARD_WRITE_REQUEST_CODE);
     }
     public static SmartCardIntentResult parseActivityResult(int requestCode, int resultCode, Intent intent) throws Exception{
@@ -103,7 +102,7 @@ public class SmartCardIntentIntegrator {
         }
     }
 
-    private AlertDialog showInstallPsmartAppDownloadDialog() {
+    private void showInstallPsmartAppDownloadDialog() {
         AlertDialog.Builder downloadDialog = new AlertDialog.Builder(activity);
         downloadDialog.setTitle(activity.getString(R.string.title_install_psmart));
         downloadDialog.setMessage(activity.getString(R.string.hint_install_psmart));
@@ -116,7 +115,7 @@ public class SmartCardIntentIntegrator {
                 try {
                     activity.startActivity(intent);
                 } catch (ActivityNotFoundException e) {
-                    Log.w(TAG, "Google Play is not installed; cannot install " + packageName, e);
+                    Log.w(getClass().getSimpleName(), "Google Play is not installed; cannot install " + packageName, e);
                 }
             }
         });
@@ -125,6 +124,6 @@ public class SmartCardIntentIntegrator {
             public void onClick(DialogInterface dialogInterface, int i) {
             }
         });
-        return downloadDialog.show();
+        downloadDialog.show();
     }
 }

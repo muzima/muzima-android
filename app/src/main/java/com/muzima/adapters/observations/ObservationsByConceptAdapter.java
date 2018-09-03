@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -30,6 +31,7 @@ import com.muzima.R;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
+import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonAttribute;
 import com.muzima.api.model.Provider;
@@ -42,6 +44,8 @@ import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.StringUtils;
+import com.muzima.view.MainActivity;
+import com.muzima.view.custom.CustomObsEntryDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,7 +55,6 @@ import java.util.List;
 
 public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWithObservations> {
 
-    private static final String TAG = "ObservationsByConceptAdapter";
     private LayoutInflater layoutInflater;
     private View addNewObservationValuesDialog;
     private View obsDetailsDialog;
@@ -64,17 +67,19 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
     private Boolean isShrData;
     private List<Integer> shrConcepts;
     private MuzimaApplication muzimaApplication;
+    private CustomObsEntryDialog customObsEntryDialog;
     private ProviderController providerController;
+    private Patient patient;
 
     public ObservationsByConceptAdapter(FragmentActivity activity, int itemCohortsList,
                                         ConceptController conceptController,
-                                        ObservationController observationController, Boolean isShrData) {
+                                        ObservationController observationController, Boolean isShrData, Patient patient) {
         super(activity, itemCohortsList, null, conceptController, observationController);
         this.isShrData = isShrData;
         loadComposedShrConceptId();
         this.muzimaApplication = (MuzimaApplication) getContext().getApplicationContext();
         this.providerController = muzimaApplication.getProviderController();
-
+        this.patient = patient;
     }
 
     @Override
@@ -95,15 +100,9 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
 
         addIndividualObsDialog = addIndividualObservationsDialogBuilder.create();
 
-        obsDialogEditText = (EditText) addNewObservationValuesDialog.findViewById(R.id.obs_new_value_edittext);
         obsDialogAddButton = (Button) addNewObservationValuesDialog.findViewById(R.id.add_new_obs_button);
 
-        obsDialogAddButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addIndividualObsDialog.cancel();
-            }
-        });
+        customObsEntryDialog = new CustomObsEntryDialog(parent.getContext(),muzimaApplication,patient);
 
         ObservationsByConceptViewHolder holder;
         if (convertView == null) {
@@ -112,18 +111,17 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
             holder = new ObservationsByConceptViewHolder();
             holder.headerText = (TextView) convertView.findViewById(R.id.observation_header);
             holder.addObsButton = (ImageButton) convertView.findViewById(R.id.add_individual_obs_imagebutton);
-            //Disabling Add Obs Button until MUZIMA-615 is fixed
-            //ToDo: Fix MUZIMA-615
-            holder.addObsButton.setVisibility(View.GONE);
+            holder.addObsButton.setVisibility(View.VISIBLE);
             holder.headerLayout = (RelativeLayout) convertView.findViewById(R.id.observation_header_layout);
             holder.observationLayout = (LinearLayout) convertView
                     .findViewById(R.id.observation_layout);
             convertView.setTag(holder);
 
+
             holder.addObsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addObservation();
+
                 }
             });
 
@@ -137,6 +135,14 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
          */
         Concept conceptAtThisPosition = getItem(position).getConcept();
         rederedConceptsVisualizationMap.put(position, conceptAtThisPosition);
+
+        addNewObservationValuesDialog.findViewById(R.id.add_new_obs_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e(this.getClass().getSimpleName(),"on layout click..");
+            }
+        });
+
         return convertView;
     }
 
@@ -187,6 +193,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
             int conceptColor = observationController.getConceptColor(observation.getConcept().getUuid());
 
             String observationConceptType = observation.getConcept().getConceptType().getName();
+            boolean isConceptCoded = observation.getConcept().isCoded();
 
             TextView observationValue = (TextView) layout.findViewById(R.id.observation_value);
             ImageView shrEnabledImage = (ImageView) layout.findViewById(R.id.shr_card_obs_image_view);
@@ -213,6 +220,16 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
                 observationValue.setTextColor(conceptColor);
             }
 
+            //Disabling Individual obs for coded concepts until MUZIMA-620 is worked on
+            //ToDo: Fix MUZIMA-620
+            if(isConceptCoded){
+                addObsButton.setVisibility(View.GONE);
+            }else if(StringUtils.equals(observationConceptType, "Complex")){
+                addObsButton.setVisibility(View.GONE);
+            }else{
+                addObsButton.setVisibility(View.VISIBLE);
+            }
+
             View divider = layout.findViewById(R.id.divider);
             divider.setBackgroundColor(conceptColor);
             divider.setFocusable(true);
@@ -230,6 +247,16 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
                 }
             });
 
+            addObsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Concept concept = observation.getConcept();
+                    customObsEntryDialog.setConcept(concept);
+                    customObsEntryDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+                    customObsEntryDialog.setCancelable(false);
+                    customObsEntryDialog.show();
+                }
+            });
         }
 
         @Override
@@ -336,7 +363,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
 
         Encounter encounter = observation.getEncounter();
         try {
-           //ToDo: Get Encounter provider instead of first provider from local repo
+            //ToDo: Get Encounter provider instead of first provider from local repo
             //ToDo: Delink Provider from Person, since Provider is not necessarily a Person OpenMRS
 
             Provider provider = providerController.getAllProviders().get(0);

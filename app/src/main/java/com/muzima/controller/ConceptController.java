@@ -17,7 +17,6 @@ import com.muzima.api.service.ObservationService;
 import com.muzima.util.JsonUtils;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
-import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,13 +25,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
 
 public class ConceptController {
-    public static final String TAG = "ConceptController";
-    public List<Concept> newConcepts = new ArrayList<Concept>();
-    private ConceptService conceptService;
-    private ObservationService observationService;
+    private List<Concept> newConcepts = new ArrayList<>();
+    private final ConceptService conceptService;
+    private final ObservationService observationService;
 
     public ConceptController(ConceptService conceptService, ObservationService observationService) {
         this.observationService = observationService;
@@ -47,7 +44,7 @@ public class ConceptController {
         }
     }
 
-    public Concept downloadConceptByUuid(String uuid) throws ConceptDownloadException {
+    private Concept downloadConceptByUuid(String uuid) throws ConceptDownloadException {
         try {
             return conceptService.downloadConceptByUuid(uuid);
         } catch (IOException e) {
@@ -100,7 +97,7 @@ public class ConceptController {
     }
 
     public List<Concept> downloadConceptsByNames(List<String> names) throws ConceptDownloadException {
-        HashSet<Concept> result = new HashSet<Concept>();
+        HashSet<Concept> result = new HashSet<>();
         for (String name : names) {
             List<Concept> concepts = downloadConceptsByNamePrefix(name);
             Iterator<Concept> iterator = concepts.iterator();
@@ -112,16 +109,16 @@ public class ConceptController {
             }
             result.addAll(concepts);
         }
-        return new ArrayList<Concept>(result);
+        return new ArrayList<>(result);
     }
 
     public List<Concept> downloadConceptsByUuid(String[] uuids) throws ConceptDownloadException {
-        HashSet<Concept> result = new HashSet<Concept>();
+        HashSet<Concept> result = new HashSet<>();
         for (String uuid : uuids) {
             Concept concept = downloadConceptByUuid(uuid);
             if(concept != null) result.add(concept);
         }
-        return new ArrayList<Concept>(result);
+        return new ArrayList<>(result);
     }
 
     public List<Concept> getConcepts() throws ConceptFetchException {
@@ -171,25 +168,25 @@ public class ConceptController {
     }
 
     public static class ConceptDownloadException extends Throwable {
-        public ConceptDownloadException(Throwable throwable) {
+        ConceptDownloadException(Throwable throwable) {
             super(throwable);
         }
     }
 
     public static class ConceptFetchException extends Throwable {
-        public ConceptFetchException(Throwable throwable) {
+        ConceptFetchException(Throwable throwable) {
             super(throwable);
         }
     }
 
     public static class ConceptSaveException extends Throwable {
-        public ConceptSaveException(Throwable throwable) {
+        ConceptSaveException(Throwable throwable) {
             super(throwable);
         }
     }
 
     public static class ConceptDeleteException extends Throwable {
-        public ConceptDeleteException(Throwable throwable) {
+        ConceptDeleteException(Throwable throwable) {
             super(throwable);
         }
     }

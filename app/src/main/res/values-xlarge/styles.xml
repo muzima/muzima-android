@@ -89,7 +89,7 @@
     <style name="setupMethodConfigurationsList">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_marginLeft">25dp</item>
+        <item name="android:layout_marginStart">25dp</item>
         <item name="android:orientation">vertical</item>
         <item name="android:background">@color/primary_black</item>
     </style>
@@ -122,7 +122,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/primary_black</item>
-        <item name="android:textSize">30dp</item>
+        <item name="android:textSize">30sp</item>
     </style>
 
     <style name="DashboardTitleText" parent="DashboardBaseText">
@@ -133,7 +133,7 @@
         <item name="android:paddingLeft">15dp</item>
         <item name="android:capitalize">words</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">40dp</item>
+        <item name="android:textSize">40sp</item>
     </style>
 
     <style name="DashboardMediumTitleText" parent="DashboardTitleText">
@@ -149,7 +149,7 @@
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
         <item name="android:textStyle">bold</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:textSize">40dp</item>
+        <item name="android:textSize">40sp</item>
     </style>
 
     <style name="DashboardListItemMediumHeadingText" parent="DashboardListItemPrimaryText">
@@ -157,7 +157,7 @@
     </style>
 
     <style name="RegisterText" parent="DashboardBaseText">
-        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginStart">8dp</item>
         <item name="android:textColor">#DDDDDD</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>
@@ -178,8 +178,8 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:background">@drawable/grid_buttons</item>
         <item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_marginLeft">7.5dp</item>
-        <item name="android:layout_marginRight">7.5dp</item>
+        <item name="android:layout_marginStart">7.5dp</item>
+        <item name="android:layout_marginEnd">7.5dp</item>
         <item name="android:paddingLeft">7.5dp</item>
         <item name="android:paddingRight">7.5dp</item>
         <item name="android:paddingTop">6dp</item>
@@ -272,7 +272,7 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:background">@color/primary_black</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-        <item name="android:textSize">30dp</item>
+        <item name="android:textSize">30sp</item>
     </style>
 
     <style name="ListDescription">
@@ -283,7 +283,7 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:background">@color/primary_black</item>
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
-        <item name="android:textSize">20dp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="ListSelectableDescription">
@@ -454,7 +454,7 @@
     </style>
 
     <style name="EncounterFormName">
-        <item name="android:textSize">30dp</item>
+        <item name="android:textSize">30sp</item>
     </style>
 
     <!--Login Screen-->

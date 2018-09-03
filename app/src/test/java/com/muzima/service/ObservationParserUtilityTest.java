@@ -48,6 +48,7 @@ public class ObservationParserUtilityTest {
     private ObservationParserUtility observationParserUtility;
 
     @Mock
+    private
     MuzimaApplication muzimaApplication;
 
     @Mock
@@ -77,7 +78,7 @@ public class ObservationParserUtilityTest {
     }
 
     @Test
-    public void shouldCreateEncounterEntityWithAppropriateValues() throws Exception, ProviderController.ProviderLoadException, FormController.FormFetchException {
+    public void shouldCreateEncounterEntityWithAppropriateValues() throws ProviderController.ProviderLoadException, FormController.FormFetchException {
         Date encounterDateTime = new Date();
         final String formUuid = "formUuid";
         String providerId = "providerId";
@@ -109,7 +110,7 @@ public class ObservationParserUtilityTest {
     }
 
     @Test
-    public void shouldCreateNewConceptEntityAndAddItToListIfNotInDB() throws Exception,
+    public void shouldCreateNewConceptEntityAndAddItToListIfNotInDB() throws
             ConceptController.ConceptFetchException, ConceptController.ConceptParseException {
         observationParserUtility = new ObservationParserUtility(muzimaApplication);
         when(conceptController.getConceptByName("ConceptName")).thenReturn(null);
@@ -121,14 +122,13 @@ public class ObservationParserUtilityTest {
     }
 
     @Test
-    public void shouldNotCreateNewConceptOrObservationForInvalidConceptName() throws Exception,
-            ConceptController.ConceptFetchException {
+    public void shouldNotCreateNewConceptOrObservationForInvalidConceptName() {
         observationParserUtility = new ObservationParserUtility(muzimaApplication);
         assertThat(observationParserUtility.getNewConceptList().size(), is(0));
     }
 
     @Test
-    public void shouldNotCreateConceptIfAlreadyExistsInDB() throws Exception, ConceptController.ConceptFetchException,
+    public void shouldNotCreateConceptIfAlreadyExistsInDB() throws ConceptController.ConceptFetchException,
             ConceptController.ConceptParseException{
         observationParserUtility = new ObservationParserUtility(muzimaApplication);
         Concept mockConcept = mock(Concept.class);
@@ -142,7 +142,7 @@ public class ObservationParserUtilityTest {
     }
 
     @Test
-    public void shouldCreateOnlyOneConceptForRepeatedConceptNames() throws Exception, ConceptController.ConceptFetchException,
+    public void shouldCreateOnlyOneConceptForRepeatedConceptNames() throws ConceptController.ConceptFetchException,
             ConceptController.ConceptParseException{
         observationParserUtility = new ObservationParserUtility(muzimaApplication);
         when(conceptController.getConceptByName("ConceptName")).thenReturn(null);
@@ -157,7 +157,7 @@ public class ObservationParserUtilityTest {
     }
 
     @Test
-    public void shouldCreateNumericObservation() throws Exception,
+    public void shouldCreateNumericObservation() throws
             ConceptController.ConceptFetchException, ConceptController.ConceptParseException,
             ObservationController.ParseObservationException{
         Concept concept = mock(Concept.class);
@@ -169,7 +169,7 @@ public class ObservationParserUtilityTest {
     }
 
     @Test
-    public void shouldCreateValueCodedObsAndShouldAddItToNewConceptList() throws Exception,
+    public void shouldCreateValueCodedObsAndShouldAddItToNewConceptList() throws
             ConceptController.ConceptFetchException, ConceptController.ConceptParseException,
             ObservationController.ParseObservationException{
         observationParserUtility = new ObservationParserUtility(muzimaApplication);
@@ -183,7 +183,7 @@ public class ObservationParserUtilityTest {
     }
 
     @Test
-    public void shouldCreateObsWithStringForNonNumericNonCodedConcept() throws Exception,
+    public void shouldCreateObsWithStringForNonNumericNonCodedConcept() throws
             ConceptController.ConceptFetchException, ConceptController.ConceptParseException,
             ObservationController.ParseObservationException{
         observationParserUtility = new ObservationParserUtility(muzimaApplication);

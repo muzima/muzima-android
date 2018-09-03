@@ -22,7 +22,6 @@ import com.muzima.view.cohort.SyncedCohortsListFragment;
  * Responsible to hold all the cohort fragments as multiple pages/tabs.
  */
 public class CohortPagerAdapter extends MuzimaPagerAdapter {
-    private static final String TAG = "CohortPagerAdapter";
 
     public static final int TAB_SYNCED = 0;
     public static final int TAB_All = 1;

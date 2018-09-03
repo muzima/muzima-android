@@ -29,7 +29,7 @@ public class InstallBarCodeWizardActivity extends BaseActivity {
         setContentView(R.layout.activity_install_barcode_wizard);
         attachCheckScannerAction();
         attachNextActivityListener();
-        Button previousButton = (Button) findViewById(R.id.previous);
+        Button previousButton = findViewById(R.id.previous);
         previousButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,7 +52,7 @@ public class InstallBarCodeWizardActivity extends BaseActivity {
     }
 
     private void attachCheckScannerAction() {
-        Button installBarCodeBtn = (Button) findViewById(R.id.install_barcode_btn);
+        Button installBarCodeBtn = findViewById(R.id.install_barcode_btn);
         installBarCodeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,15 +60,15 @@ public class InstallBarCodeWizardActivity extends BaseActivity {
                 AlertDialog alertDialog = barCodeScannerIntentIntegrator.checkForScannerAppInstallation();
                 if (alertDialog == null) {
                     findViewById(R.id.scanner_already_exists).setVisibility(View.VISIBLE);
-                    Button skip = (Button)findViewById(R.id.skip);
-                    skip.setText("Finish");
+                    Button skip = findViewById(R.id.skip);
+                    skip.setText(R.string.general_finish_text);
                 }
             }
         });
     }
 
     private void attachNextActivityListener() {
-        Button skipInstallationButton = (Button) findViewById(R.id.skip);
+        Button skipInstallationButton = findViewById(R.id.skip);
         skipInstallationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

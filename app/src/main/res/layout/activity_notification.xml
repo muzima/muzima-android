@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
+  ~ Copyright (c) 2014 - 2017. The Trustees of Indiana University, Moi University
   ~ and Vanderbilt University Medical Center.
   ~
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
@@ -9,64 +9,79 @@
   -->
 
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        style="@style/LoginActivityLayout">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LoginActivityLayout">
 
 
     <com.muzima.view.CheckedLinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
-            android:layout_marginTop="3dp"
-            android:orientation="vertical">
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="3dp"
+        android:orientation="vertical">
 
         <CheckedTextView
-                android:id="@+id/subject"
-                style="@style/ListHeader"/>
+            android:id="@+id/subject"
+            style="@style/ListHeader"/>
 
         <com.muzima.view.CheckedLinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp"
-                android:layout_marginRight="7dp"
-                android:orientation="horizontal">
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginEnd="7dp"
+            android:orientation="horizontal">
 
             <CheckedTextView
-                    android:id="@+id/dateSent"
-                    style="@style/ListDescription"
-                    android:layout_width="0dp"
-                    android:layout_weight=".7"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/secondary_text"/>
+                android:id="@+id/dateSent"
+                style="@style/ListDescription"
+                android:layout_width="0dp"
+                android:layout_weight=".7"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/secondary_text"/>
 
             <CheckedTextView
-                    android:id="@+id/sentBy"
-                    style="@style/ListDescription"
-                    android:layout_width="0dp"
-                    android:layout_weight=".3"
-                    android:gravity="right"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/secondary_text"/>
+                android:id="@+id/sentBy"
+                style="@style/ListDescription"
+                android:layout_width="0dp"
+                android:layout_weight=".3"
+                android:gravity="right"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/secondary_text"/>
         </com.muzima.view.CheckedLinearLayout>
     </com.muzima.view.CheckedLinearLayout>
 
     <View style="@style/LoginActivityDivider.Style"/>
 
-   <TextView
-           android:id="@+id/notificationDetail"
-           style="@style/ListHeader"
-           android:layout_height="wrap_content"
-           android:background="@drawable/list_multi_selector_blue"/>
+    <TextView
+        android:id="@+id/notificationDetail"
+        style="@style/ListHeader"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_multi_selector_blue"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/reply_notification_image_icon"
+            android:layout_margin="12dp"
+            android:contentDescription="@string/send_general_text"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/reply_notification_image_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
 
     <FrameLayout
-            style="@style/LoginButtonLayout">
+        style="@style/LoginButtonLayout">
 
         <Button
-                android:id="@+id/viewEncounter"
-                android:text="@string/general_view_encounter"
-                style="@style/LoginButton"
-                android:onClick="encounterView"/>
+            android:id="@+id/viewEncounter"
+            android:text="@string/general_view_encounter"
+            style="@style/LoginButton"
+            android:onClick="encounterView"/>
     </FrameLayout>
 
 </LinearLayout>

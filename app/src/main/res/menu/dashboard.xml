@@ -11,10 +11,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <item
-            android:id="@+id/menu_shr_data_sync"
+            android:id="@+id/menu_SHR_data_sync"
             custom:showAsAction="never"
             android:visible="false"
-            android:title="@string/menu_shr_data_sync"/>
+            android:title="@string/menu_SHR_data_sync"/>
      <item
         android:id="@+id/action_settings"
         android:orderInCategory="1"
@@ -24,7 +24,7 @@
         android:id="@+id/action_provider_reports"
         android:orderInCategory="3"
         custom:showAsAction="never"
-        android:title="Provider Reports"/>
+        android:title="@string/provider_reports_general"/>
     <item
         android:id="@+id/action_help"
         android:orderInCategory="2"

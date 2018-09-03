@@ -13,7 +13,6 @@ package com.muzima.testSupport;
 import android.os.Build;
 
 
-import com.muzima.BuildConfig;
 import org.junit.runners.model.InitializationError;
 import org.robolectric.RobolectricTestRunner;
 

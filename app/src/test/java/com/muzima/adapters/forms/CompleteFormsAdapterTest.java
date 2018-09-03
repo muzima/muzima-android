@@ -11,6 +11,8 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
@@ -28,6 +30,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLooper;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import static com.muzima.adapters.forms.CompleteFormsAdapter.BackgroundQueryTask;
@@ -43,14 +46,15 @@ import static org.mockito.Mockito.when;
 public class CompleteFormsAdapterTest {
     private CompleteFormsAdapter formsAdapter;
     private FormController formController;
+    private Context context;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         formController = mock(FormController.class);
-        Context context = mock(Context.class);
+        context = mock(Context.class);
         formsAdapter = new CompleteFormsAdapter(context, 0, formController){
             @Override
-            public void addAll(Collection<? extends CompleteFormWithPatientData> collection) {
+            public void addAll(@NonNull Collection<? extends CompleteFormWithPatientData> collection) {
 
             }
         };
@@ -65,7 +69,7 @@ public class CompleteFormsAdapterTest {
         CompleteFormsWithPatientData completeFormsWithPatientData = new CompleteFormsWithPatientData();
         completeFormsWithPatientData.add(new CompleteFormWithPatientData());
 
-        when(formController.getAllCompleteFormsWithPatientData()).thenReturn(completeFormsWithPatientData);
+        when(formController.getAllCompleteFormsWithPatientData(context)).thenReturn(completeFormsWithPatientData);
 
         queryTask.execute();
         Robolectric.flushBackgroundThreadScheduler();
@@ -73,16 +77,17 @@ public class CompleteFormsAdapterTest {
     }
 
     @Test
-    public void shouldGroupPatients() throws Exception, FormController.FormFetchException {
+    public void shouldGroupPatients() throws FormController.FormFetchException {
         BackgroundQueryTask queryTask = new BackgroundQueryTask(formsAdapter);
-        final Patient patient1 = patient("familyName", "middleName", "givenName", "identifier1");
-        final Patient patient2 = patient("familyName", "middleName", "givenName", "identifier2");
+        final Patient patient1 = patient("identifier1");
+        final Patient patient2 = patient("identifier2");
         CompleteFormsWithPatientData completeFormsWithPatientData = new CompleteFormsWithPatientData() {{
             add(completeFormWithPatientData(patient1));
             add(completeFormWithPatientData(patient2));
             add(completeFormWithPatientData(patient1));
         }};
-        when(formController.getAllCompleteFormsWithPatientData()).thenReturn(completeFormsWithPatientData);
+
+        when(formController.getAllCompleteFormsWithPatientData(context)).thenReturn(completeFormsWithPatientData);
         StickyListHeadersListView listView = new StickyListHeadersListView(RuntimeEnvironment.application);
         listView.setAdapter(formsAdapter);
         formsAdapter.setListView(listView);
@@ -99,16 +104,16 @@ public class CompleteFormsAdapterTest {
         }};
     }
 
-    private Patient patient(String familyName, String middleName, String givenName, String identifier) {
+    private Patient patient(String identifier) {
         Patient patient = new Patient();
         PersonName personName = new PersonName();
-        personName.setFamilyName(familyName);
-        personName.setMiddleName(middleName);
-        personName.setGivenName(givenName);
-        patient.setNames(asList(personName));
+        personName.setFamilyName("familyName");
+        personName.setMiddleName("middleName");
+        personName.setGivenName("givenName");
+        patient.setNames(Collections.singletonList(personName));
         PatientIdentifier personId = new PatientIdentifier();
         personId.setIdentifier(identifier);
-        patient.setIdentifiers(asList(personId));
+        patient.setIdentifiers(Collections.singletonList(personId));
         return patient;
     }
 }

@@ -23,10 +23,10 @@ import static com.muzima.adapters.ListAdapter.BackgroundListQueryTaskListener;
 
 public abstract class FormsAdapterBackgroundQueryTask<T extends BaseForm> extends AsyncTask<Void, Void, List<T>> {
 
-    protected WeakReference<FormsAdapter> adapterWeakReference;
+    protected final WeakReference<FormsAdapter> adapterWeakReference;
 
-    public FormsAdapterBackgroundQueryTask(FormsAdapter adapter) {
-        adapterWeakReference = new WeakReference<FormsAdapter>(adapter);
+    protected FormsAdapterBackgroundQueryTask(FormsAdapter adapter) {
+        adapterWeakReference = new WeakReference<>(adapter);
     }
 
 
@@ -61,7 +61,7 @@ public abstract class FormsAdapterBackgroundQueryTask<T extends BaseForm> extend
         }
     }
 
-    protected void changeDataSet(List<T> forms) {
+    private void changeDataSet(List<T> forms) {
         if (adapterWeakReference.get() != null) {
             FormsAdapter formsAdapter = adapterWeakReference.get();
             if (forms == null) {

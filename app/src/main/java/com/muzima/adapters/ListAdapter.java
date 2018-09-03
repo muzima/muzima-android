@@ -15,16 +15,16 @@ import android.widget.ArrayAdapter;
 
 public abstract class ListAdapter<T> extends ArrayAdapter<T>{
 
-    public ListAdapter(Context context, int textViewResourceId) {
+    protected ListAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
     }
 
     public abstract void reloadData();
 
     public interface BackgroundListQueryTaskListener{
-        public void onQueryTaskStarted();
-        public void onQueryTaskFinish();
-        public void onQueryTaskCancelled();
-        public void onQueryTaskCancelled(Object errorDefinition);
+        void onQueryTaskStarted();
+        void onQueryTaskFinish();
+        void onQueryTaskCancelled();
+        void onQueryTaskCancelled(Object errorDefinition);
     }
 }

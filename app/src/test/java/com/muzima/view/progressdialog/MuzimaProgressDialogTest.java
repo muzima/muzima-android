@@ -17,7 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -28,7 +27,7 @@ public class MuzimaProgressDialogTest {
     private MuzimaProgressDialog dialog;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         progressDialog = mock(ProgressDialog.class);
         dialog = new MuzimaProgressDialog(progressDialog);
         Context context = mock(Context.class);
@@ -39,7 +38,7 @@ public class MuzimaProgressDialogTest {
     }
 
     @Test
-    public void shouldShowProgressDialogWithGivenText() throws Exception {
+    public void shouldShowProgressDialogWithGivenText() {
         dialog.show("title");
 
         Mockito.verify(progressDialog).setCancelable(false);
@@ -49,7 +48,7 @@ public class MuzimaProgressDialogTest {
     }
 
     @Test
-    public void shouldDismissADialogOnlyWhenVisible() throws Exception {
+    public void shouldDismissADialogOnlyWhenVisible() {
         when(progressDialog.isShowing()).thenReturn(true);
         dialog.dismiss();
 
@@ -57,7 +56,7 @@ public class MuzimaProgressDialogTest {
     }
 
     @Test
-    public void shouldNotCallDismissIfProgressBarISNotVisible() throws Exception {
+    public void shouldNotCallDismissIfProgressBarISNotVisible() {
         when(progressDialog.isShowing()).thenReturn(false);
 
         dialog.dismiss();

@@ -25,9 +25,8 @@ import static com.muzima.utils.Constants.LOCAL_PATIENT;
 
 public class PatientController {
 
-    public static final String TAG = "PatientController";
-    private PatientService patientService;
-    private CohortService cohortService;
+    private final PatientService patientService;
+    private final CohortService cohortService;
 
     public PatientController(PatientService patientService, CohortService cohortService) {
         this.patientService = patientService;
@@ -104,9 +103,7 @@ public class PatientController {
             return StringUtils.isEmpty(cohortUuid)
                     ? patientService.searchPatients(term)
                     : patientService.searchPatients(term, cohortUuid);
-        } catch (IOException e) {
-            throw new PatientLoadException(e);
-        } catch (ParseException e) {
+        } catch (IOException | ParseException e) {
             throw new PatientLoadException(e);
         }
     }
@@ -115,16 +112,14 @@ public class PatientController {
             throws PatientLoadException {
         try {
             return patientService.searchPatients(term,page,pageSize);
-        } catch (IOException e) {
-            throw new PatientLoadException(e);
-        } catch (ParseException e) {
+        } catch (IOException | ParseException e) {
             throw new PatientLoadException(e);
         }
     }
 
 
     public List<Patient> getPatientsForCohorts(String[] cohortUuids) throws PatientLoadException {
-        List<Patient> allPatients = new ArrayList<Patient>();
+        List<Patient> allPatients = new ArrayList<>();
         for (String cohortUuid : cohortUuids) {
             try {
                 List<Patient> patients = getPatients(cohortUuid);
@@ -140,15 +135,15 @@ public class PatientController {
         try {
             return patientService.downloadPatientsByName(name);
         } catch (IOException e) {
-            Log.e(TAG, "Error while searching for patients in the server", e);
+            Log.e(getClass().getSimpleName(), "Error while searching for patients in the server", e);
         }
-        return new ArrayList<Patient>();
+        return new ArrayList<>();
     }
 
     public List<Patient> getAllPatientsCreatedLocallyAndNotSynced() {
         //TODO: Try to replace this google guava
         try {
-            List<Patient> localPatients = new ArrayList<Patient>();
+            List<Patient> localPatients = new ArrayList<>();
             List<Patient> allPatients = getAllPatients();
             for (Patient patient : allPatients) {
                 PatientIdentifier localPatientIdentifier = patient.getIdentifier(LOCAL_PATIENT);
@@ -158,16 +153,16 @@ public class PatientController {
             }
             return localPatients;
         } catch (PatientLoadException e) {
-            Log.e(TAG, "Error while loading local patients", e);
+            Log.e(getClass().getSimpleName(), "Error while loading local patients", e);
         }
-        return new ArrayList<Patient>();
+        return new ArrayList<>();
     }
 
     public Patient consolidateTemporaryPatient(Patient patient) {
         try {
             return patientService.consolidateTemporaryPatient(patient);
         } catch (IOException e) {
-            Log.e(TAG, "Error while consolidating the temporary patient.", e);
+            Log.e(getClass().getSimpleName(), "Error while consolidating the temporary patient.", e);
         }
         return null;
     }
@@ -176,7 +171,7 @@ public class PatientController {
         try {
             patientService.savePatient(patient);
         } catch (IOException e) {
-            Log.e(TAG, "Error while saving the patient : " + patient.getUuid(), e);
+            Log.e(getClass().getSimpleName(), "Error while saving the patient : " + patient.getUuid(), e);
             throw new PatientSaveException(e);
         }
     }
@@ -185,7 +180,7 @@ public class PatientController {
         try {
             patientService.updatePatient(patient);
         } catch (IOException e) {
-            Log.e(TAG, "Error while updating the patient : " + patient.getUuid(), e);
+            Log.e(getClass().getSimpleName(), "Error while updating the patient : " + patient.getUuid(), e);
             throw new PatientSaveException(e);
         }
     }
@@ -194,7 +189,7 @@ public class PatientController {
         try {
             patientService.savePatients(patients);
         } catch (IOException e) {
-            Log.e(TAG, "Error while saving the patient list", e);
+            Log.e(getClass().getSimpleName(), "Error while saving the patient list", e);
             throw new PatientSaveException(e);
         }
     }
@@ -203,7 +198,7 @@ public class PatientController {
         try {
             patientService.deletePatient(localPatient);
         } catch (IOException e) {
-            Log.e(TAG, "Error while deleting local patient : " + localPatient.getUuid(), e);
+            Log.e(getClass().getSimpleName(), "Error while deleting local patient : " + localPatient.getUuid(), e);
         }
     }
 
@@ -211,7 +206,7 @@ public class PatientController {
         try {
             patientService.deletePatients(localPatients);
         } catch (IOException e) {
-            Log.e(TAG, "Error while deleting local patients ", e);
+            Log.e(getClass().getSimpleName(), "Error while deleting local patients ", e);
             throw new PatientDeleteException(e);
         }
     }
@@ -220,21 +215,21 @@ public class PatientController {
         try {
             return patientService.getPatientsNotInCohorts();
         } catch (IOException e) {
-            Log.e(TAG, "Error while getting patients that are not in Cohorts", e);
+            Log.e(getClass().getSimpleName(), "Error while getting patients that are not in Cohorts", e);
         }
-        return new ArrayList<Patient>();
+        return new ArrayList<>();
     }
 
     public Patient downloadPatientByUUID(String uuid) throws PatientDownloadException {
         try {
             return patientService.downloadPatientByUuid(uuid);
         } catch (IOException e) {
-            Log.e(TAG, "Error while downloading patient with UUID : " + uuid + " from server", e);
+            Log.e(getClass().getSimpleName(), "Error while downloading patient with UUID : " + uuid + " from server", e);
             throw new PatientDownloadException(e);
         }
     }
 
-    public void deleteAllPatients() throws PatientDeleteException,IOException {
+    public void deleteAllPatients() throws IOException {
         List<Patient> allPatients = patientService.getAllPatients();
         patientService.deletePatients(allPatients);
     }
@@ -243,7 +238,7 @@ public class PatientController {
         try {
             return patientService.getPatientIdentifierTypeByUuid(uuid);
         } catch (IOException e){
-            Log.e(TAG, "Error retrieving patient identifier type by uuid : " + uuid, e);
+            Log.e(getClass().getSimpleName(), "Error retrieving patient identifier type by uuid : " + uuid, e);
         }
         return null;
     }
@@ -252,7 +247,7 @@ public class PatientController {
         try {
             return patientService.getPatientIdentifierTypeByName(name);
         } catch (IOException e){
-            Log.e(TAG, "Error retrieving patient identifier type by name : " + name, e);
+            Log.e(getClass().getSimpleName(), "Error retrieving patient identifier type by name : " + name, e);
         }
         return null;
     }
@@ -261,7 +256,7 @@ public class PatientController {
         try {
             return patientService.getPersonAttributeTypeByUuid(uuid);
         } catch (IOException e){
-            Log.e(TAG, "Error retrieving person attribute type by uuid : " + uuid, e);
+            Log.e(getClass().getSimpleName(), "Error retrieving person attribute type by uuid : " + uuid, e);
         }
         return null;
     }
@@ -270,7 +265,7 @@ public class PatientController {
         try {
             return patientService.getPersonAttributeTypeByName(name);
         } catch (IOException e){
-            Log.e(TAG, "Error retrieving person attribute type by name : " + name, e);
+            Log.e(getClass().getSimpleName(), "Error retrieving person attribute type by name : " + name, e);
         }
         return null;
     }
@@ -283,7 +278,7 @@ public class PatientController {
     }
 
     public static class PatientDownloadException extends Throwable {
-        public PatientDownloadException(Throwable throwable) {
+        PatientDownloadException(Throwable throwable) {
             super(throwable);
         }
     }
@@ -298,7 +293,7 @@ public class PatientController {
     }
 
     public static class PatientDeleteException extends Throwable {
-        public PatientDeleteException(Throwable e) {
+        PatientDeleteException(Throwable e) {
             super(e);
         }
     }

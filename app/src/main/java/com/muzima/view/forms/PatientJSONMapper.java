@@ -22,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,9 +64,9 @@ public class PatientJSONMapper {
         Patient patient = new Patient();
         patient.setUuid(paramsMap.get("patient.uuid"));
         patient.setIdentifiers(asList(patientIdentifier(patient.getUuid()), preferredIdentifier(paramsMap)));
-        patient.setNames(asList(personName(paramsMap)));
+        patient.setNames(Collections.singletonList(personName(paramsMap)));
         patient.setGender(paramsMap.get("patient.sex"));
-        patient.setBirthdate(getDate(paramsMap, "patient.birthdate"));
+        patient.setBirthdate(getDate(paramsMap));
         return patient;
     }
 
@@ -84,8 +85,8 @@ public class PatientJSONMapper {
         return patientIdentifier;
     }
 
-    private Date getDate(Map<String, String> paramsMap, String property) {
-        String dateAsString = paramsMap.get(property);
+    private Date getDate(Map<String, String> paramsMap) {
+        String dateAsString = paramsMap.get("patient.birthdate");
         try {
             return dateAsString == null ? null : parse(dateAsString);
         } catch (ParseException e) {
@@ -102,7 +103,7 @@ public class PatientJSONMapper {
     }
 
     private Map<String, String> convertJSONToPatientAttr(JSONArray fields) throws JSONException {
-        Map<String, String> patientParamsMap = new HashMap<String, String>();
+        Map<String, String> patientParamsMap = new HashMap<>();
         for (int i = 0; i < fields.length(); i++) {
             JSONObject field = fields.getJSONObject(i);
             try {
@@ -115,7 +116,7 @@ public class PatientJSONMapper {
     }
 
     private Map<String, String> convert(Patient patient, FormData formData) {
-        Map<String, String> patientValueMap = new HashMap<String, String>();
+        Map<String, String> patientValueMap = new HashMap<>();
         patientValueMap.put("patient.medical_record_number", StringUtils.defaultString(patient.getIdentifier()));
         patientValueMap.put("patient.family_name", StringUtils.defaultString(patient.getFamilyName()));
         patientValueMap.put("patient.given_name", StringUtils.defaultString(patient.getGivenName()));

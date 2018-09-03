@@ -13,10 +13,10 @@ package com.muzima.model;
 import java.io.Serializable;
 
 public abstract class BaseForm implements Serializable {
-    protected String name;
-    protected String description;
-    protected String discriminator;
-    protected String formUuid;
+    private String name;
+    private String description;
+    private String discriminator;
+    private String formUuid;
 
     public String getName() {
         return name;
@@ -34,7 +34,7 @@ public abstract class BaseForm implements Serializable {
         this.description = description;
     }
 
-    public String getDiscriminator() {
+    String getDiscriminator() {
         return discriminator;
     }
 

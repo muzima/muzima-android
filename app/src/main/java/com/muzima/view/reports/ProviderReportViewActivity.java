@@ -33,10 +33,8 @@ import static java.text.MessageFormat.format;
 
 
 public class ProviderReportViewActivity extends BroadcastListenerActivity {
-    public static final String TAG = ProviderReportViewActivity.class.getSimpleName();
     public static final String REPORT = "SelectedReport";
     public Provider provider;
-    public FormController formController;
     private MuzimaProgressDialog progressDialog;
     private FormTemplate reportTemplate;
 
@@ -45,19 +43,19 @@ public class ProviderReportViewActivity extends BroadcastListenerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_webview);
         progressDialog = new MuzimaProgressDialog(this);
-        formController = ((MuzimaApplication)getApplicationContext()).getFormController();
+        FormController formController = ((MuzimaApplication) getApplicationContext()).getFormController();
         try {
             AvailableForm availableForm = (AvailableForm)getIntent().getSerializableExtra(REPORT);
             reportTemplate = formController.getFormTemplateByUuid(availableForm.getFormUuid());
         } catch (FormController.FormFetchException e) {
-            Log.e(TAG,"Could not obtain report template");
+            Log.e(getClass().getSimpleName(),"Could not obtain report template");
         }
         setupWebView();
     }
 
     private void setupWebView() {
         WebView webView;
-        webView = (WebView) findViewById(R.id.webView);
+        webView = findViewById(R.id.webView);
         webView.setWebChromeClient(createWebChromeClient( ));
 
         webView.getSettings( ).setRenderPriority(WebSettings.RenderPriority.HIGH);
@@ -97,9 +95,9 @@ public class ProviderReportViewActivity extends BroadcastListenerActivity {
                 String message = format("Javascript Log. Message: {0}, lineNumber: {1}, sourceId, {2}", consoleMessage.message( ),
                         consoleMessage.lineNumber( ), consoleMessage.sourceId( ));
                 if (consoleMessage.messageLevel( ) == ERROR) {
-                    Log.e(TAG, message);
+                    Log.e(getClass().getSimpleName(), message);
                 } else {
-                    Log.d(TAG, message);
+                    Log.d(getClass().getSimpleName(), message);
                 }
                 return true;
             }

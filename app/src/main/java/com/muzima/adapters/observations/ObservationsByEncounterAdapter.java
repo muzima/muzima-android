@@ -11,7 +11,7 @@
 package com.muzima.adapters.observations;
 
 import android.os.AsyncTask;
-import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,29 +33,30 @@ import com.muzima.utils.StringUtils;
 
 public class ObservationsByEncounterAdapter extends ObservationsAdapter<EncounterWithObservations> {
 
-    private Boolean isShrData = false;
+    private Boolean isSHRData = false;
 
     public ObservationsByEncounterAdapter(FragmentActivity activity, int item_observation_list,
                                           EncounterController encounterController, ConceptController conceptController,
-                                          ObservationController observationController,Boolean isShrData) {
+                                          ObservationController observationController,Boolean isSHRData) {
         super(activity,item_observation_list,encounterController, conceptController,observationController);
-        this.isShrData = isShrData;
+        this.isSHRData = isSHRData;
     }
 
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         ObservationsByEncounterViewHolder holder;
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             convertView = layoutInflater.inflate(R.layout.item_observation_by_encounter_list, parent, false);
             holder = new ObservationsByEncounterViewHolder();
-            holder.observationLayout = (LinearLayout) convertView
+            holder.observationLayout = convertView
                     .findViewById(R.id.observation_layout);
-            holder.headerLayout = (LinearLayout) convertView.findViewById(R.id.observation_header);
-            holder.encounterProvider = (TextView) convertView.findViewById(R.id.encounter_provider);
-            holder.encounterDate = (TextView) convertView.findViewById(R.id.encounter_date);
-            holder.encounterLocation = (TextView) convertView.findViewById(R.id.encounter_location);
+            holder.headerLayout = convertView.findViewById(R.id.observation_header);
+            holder.encounterProvider = convertView.findViewById(R.id.encounter_provider);
+            holder.encounterDate = convertView.findViewById(R.id.encounter_date);
+            holder.encounterLocation = convertView.findViewById(R.id.encounter_location);
             convertView.setTag(holder);
         } else {
             holder = (ObservationsByEncounterViewHolder) convertView.getTag();
@@ -70,7 +71,7 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
     public void reloadData() {
         cancelBackgroundQueryTask();
         AsyncTask<Void,?,?> backgroundQueryTask = new ObservationsByEncounterBackgroundTask(this,
-                new EncountersByPatient(encounterController,observationController, patientUuid),isShrData);
+                new EncountersByPatient(encounterController,observationController, patientUuid),isSHRData);
         BackgroundTaskHelper.executeInParallel(backgroundQueryTask);
         setRunningBackgroundQueryTask(backgroundQueryTask);
     }
@@ -78,18 +79,18 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
     public void search(String query) {
         cancelBackgroundQueryTask();
         AsyncTask<Void,?,?> backgroundQueryTask = new ObservationsByEncounterBackgroundTask(this,
-                new EncountersBySearch(encounterController,observationController, patientUuid, query),isShrData);
+                new EncountersBySearch(encounterController,observationController, patientUuid, query),isSHRData);
         BackgroundTaskHelper.executeInParallel(backgroundQueryTask);
         setRunningBackgroundQueryTask(backgroundQueryTask);
     }
 
     protected class ObservationsByEncounterViewHolder extends ViewHolder {
-        public TextView encounterProvider;
-        public TextView encounterDate;
-        public TextView encounterLocation;
-        public LinearLayout headerLayout ;
+        TextView encounterProvider;
+        TextView encounterDate;
+        TextView encounterLocation;
+        LinearLayout headerLayout ;
 
-        public ObservationsByEncounterViewHolder() {
+        ObservationsByEncounterViewHolder() {
             super();
         }
 
@@ -102,7 +103,7 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
 
         @Override
         protected void setObservation(LinearLayout layout, Observation observation) {
-            TextView conceptInfo = (TextView) layout.findViewById(R.id.concept_info);
+            TextView conceptInfo = layout.findViewById(R.id.concept_info);
             conceptInfo.setText(getConceptDisplay(observation.getConcept()));
             conceptInfo.setTypeface(Fonts.roboto_medium(getContext()));
             int conceptColor = observationController.getConceptColor(observation.getConcept().getUuid());
@@ -113,8 +114,8 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
 
             String observationConceptType = observation.getConcept().getConceptType().getName();
 
-            TextView observationValue = (TextView) layout.findViewById(R.id.observation_value);
-            ImageView observationComplexHolder = (ImageView) layout.findViewById(R.id.observation_complex);
+            TextView observationValue = layout.findViewById(R.id.observation_value);
+            ImageView observationComplexHolder = layout.findViewById(R.id.observation_complex);
             if (StringUtils.equals(observationConceptType, "Complex")){
                 observationValue.setVisibility(View.GONE);
                 observationComplexHolder.setVisibility(View.VISIBLE);
@@ -129,13 +130,13 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
             View divider2 = layout.findViewById(R.id.divider2);
             divider2.setBackgroundColor(conceptColor);
 
-            TextView observationDateView = (TextView) layout.findViewById(R.id.observation_date);
+            TextView observationDateView = layout.findViewById(R.id.observation_date);
             observationDateView.setText(DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime()));
             observationDateView.setTypeface(Fonts.roboto_light(getContext()));
             observationDateView.setTextColor(conceptColor);
         }
 
-        public void setEncounter(Encounter encounter) {
+        void setEncounter(Encounter encounter) {
             encounterProvider.setText(encounter.getProvider().getDisplayName());
             String date = "";
             boolean isEncounterForObservationWithNonNullEncounterUuid =

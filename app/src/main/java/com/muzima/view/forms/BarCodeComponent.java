@@ -14,7 +14,7 @@ import android.app.Activity;
 import android.webkit.JavascriptInterface;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 
-public class BarCodeComponent {
+class BarCodeComponent {
 
 
     private final Activity activity;

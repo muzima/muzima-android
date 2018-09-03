@@ -27,24 +27,24 @@ public class ConceptParserTest {
     private ConceptParser utils;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         utils = new ConceptParser(new MXParser());
     }
 
     @Test
-    public void shouldParseConcept() throws Exception {
+    public void shouldParseConcept() {
         List<String> conceptNames = utils.parse(getModel("concept.xml"));
         assertThat(conceptNames, hasItem("PULSE"));
     }
 
     @Test
-    public void shouldParseConceptInObs() throws Exception {
+    public void shouldParseConceptInObs() {
         List<String> conceptNames = utils.parse(getModel("concept_in_obs.xml"));
         assertThat(conceptNames, hasItem("WEIGHT (KG)"));
     }
 
     @Test
-    public void shouldNotAddItToConceptUnLessBothDateAndTimeArePresentInChildren() throws Exception {
+    public void shouldNotAddItToConceptUnLessBothDateAndTimeArePresentInChildren() {
         List<String> conceptNames = utils.parse(getModel("concepts_in_concept.xml"));
         assertThat(conceptNames.size(), is(2));
         assertThat(conceptNames, hasItem("PROBLEM ADDED"));
@@ -52,19 +52,19 @@ public class ConceptParserTest {
     }
 
     @Test
-    public void shouldNotConsiderOptionsAsConcepts() throws Exception {
+    public void shouldNotConsiderOptionsAsConcepts() {
         List<String> conceptNames = utils.parse(getModel("concepts_with_options.xml"));
         assertThat(conceptNames.size(), is(1));
         assertThat(conceptNames, hasItem("MOST RECENT PAPANICOLAOU SMEAR RESULT"));
     }
 
     @Test(expected = ConceptParser.ParseConceptException.class)
-    public void shouldThrowParseConceptExceptionWhenTheModelHasNoEndTag() throws Exception {
+    public void shouldThrowParseConceptExceptionWhenTheModelHasNoEndTag() {
         utils.parse(getModel("concept_no_end_tag.xml"));
     }
 
     @Test
-    public void shouldParseConceptTM() throws Exception {
+    public void shouldParseConceptTM() {
         List<String> conceptNames = utils.parse(getModel("dispensary_concept_in_obs.xml"));
         assertThat(conceptNames, hasItem("START TIME"));
         assertThat(conceptNames, hasItem("END TIME"));

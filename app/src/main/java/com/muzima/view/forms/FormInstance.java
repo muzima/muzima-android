@@ -15,8 +15,7 @@ import android.webkit.JavascriptInterface;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormTemplate;
 
-public class FormInstance {
-    private static final String TAG = "FormInstance";
+class FormInstance {
     private final Form form;
     private final FormTemplate formTemplate;
 
@@ -46,7 +45,7 @@ public class FormInstance {
     }
 
     public void log(String message) {
-        Log.d(TAG, message);
+        Log.d(getClass().getSimpleName(), message);
     }
 
 

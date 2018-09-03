@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
 		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_margin="22dp"
 		android:background="@color/primary_black"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
@@ -15,21 +14,37 @@
 		
 		<TextView
 				android:id="@+id/observation_name_textview"
-				android:text="Observation:"
+				android:text="@string/observation_text_dialog"
 				android:textColor="@android:color/white"
 				android:padding="8dp"
-				android:textSize="18sp"
-				android:layout_width="wrap_content"
+				android:textSize="16sp"
+			    android:layout_weight="1"
+			    android:layout_width="match_parent"
 				android:layout_height="wrap_content"/>
 		
 		<EditText
 				android:id="@+id/obs_new_value_edittext"
-				android:hint=""
 				android:textColor="@android:color/white"
-				android:ems="100"
-				android:layout_width="wrap_content"
+			    android:layout_weight="1"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"/>
-	
+
+		<Spinner
+			android:id="@+id/obs_new_value_spinner"
+			android:visibility="gone"
+			android:layout_weight="1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+
+		<TextView
+			android:id="@+id/obs_new_value_date"
+			android:textColor="@android:color/white"
+			android:layout_weight="1"
+			android:onClick="showDatePicketDialog"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+
+
 	</LinearLayout>
 	
 	
@@ -38,7 +53,8 @@
 			android:id="@+id/dataSelect_layout"
 			android:layout_marginTop="13dp"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content" android:layout_below="@+id/obs_concept_name_linear_layout"
+			android:layout_height="wrap_content"
+		    android:layout_below="@+id/obs_concept_name_linear_layout"
 			android:layout_alignParentStart="true">
 		
 		
@@ -55,16 +71,16 @@
 					android:padding="8dp"
 					android:textSize="16sp"
 					android:textColor="@android:color/white"
-					android:text="Encounter Date"
+					android:text="@string/encounter_date_dialog_label"
 					android:layout_alignParentTop="true"
 					android:layout_alignParentStart="true"
 					android:id="@+id/encounter_data_chooser"/>
 			
 			<TextView
 					android:id="@+id/date_value_textview"
-					android:text="21 March 2018"
+					android:text="@string/sample_date_rep"
 					android:textColor="@android:color/white"
-					android:onClick="showDatePicketDialog"
+				    android:onClick="showDatePicketDialog"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"/>
 		
@@ -72,10 +88,16 @@
 	
 	
 	</LinearLayout>
-	
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_marginTop="13dp"
+		android:gravity="center"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/dataSelect_layout"
+		android:layout_alignParentStart="true">
 	
 	<Button
-			android:layout_below="@+id/dataSelect_layout"
 			android:id="@+id/add_new_obs_button"
 			android:text="@string/general_ok"
 			android:textSize="16sp"
@@ -85,5 +107,15 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"/>
 
+	<Button
+		android:id="@+id/cancel_dialog_button"
+		android:text="@string/general_cancel"
+		android:textSize="16sp"
+		android:layout_centerHorizontal="true"
+		android:textColor="@color/primary_blue"
+		android:background="@android:color/black"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"/>
+	</LinearLayout>
 
 </RelativeLayout>

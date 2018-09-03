@@ -12,6 +12,7 @@ package com.muzima.adapters.patients;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,26 +25,25 @@ import com.muzima.utils.StringUtils;
 import java.util.List;
 
 public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
-    private static final String TAG = "PatientsLocalSearchAdapter";
-    public static final String SEARCH = "search";
+    private static final String SEARCH = "search";
     private final PatientAdapterHelper patientAdapterHelper;
-    private PatientController patientController;
+    private final PatientController patientController;
     private final String cohortId;
-    private Context context;
     private AsyncTask<String, List<Patient>, List<Patient>> backgroundQueryTask;
-    protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
+    private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
 
     public PatientsLocalSearchAdapter(Context context, int textViewResourceId,
                                       PatientController patientController, String cohortId) {
         super(context, textViewResourceId);
-        this.context = context;
+        Context context1 = context;
         this.patientController = patientController;
         this.cohortId = cohortId;
         this.patientAdapterHelper = new PatientAdapterHelper(context, textViewResourceId);
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         return patientAdapterHelper.createPatientRow(getItem(position), convertView, parent, getContext());
     }
 
@@ -89,7 +89,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
                 try {
                     return patientController.searchPatientLocally(params[0], cohortId);
                 } catch (PatientController.PatientLoadException e) {
-                    Log.w(TAG, String.format("Exception occurred while searching patients for %s search string." , params[0]), e);
+                    Log.w(getClass().getSimpleName(), String.format("Exception occurred while searching patients for %s search string." , params[0]), e);
                 }
             }
 
@@ -149,7 +149,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
                     }
                 }
             } catch (PatientController.PatientLoadException e) {
-                Log.w(TAG, "Exception occurred while fetching patients", e);
+                Log.w(getClass().getSimpleName(), "Exception occurred while fetching patients", e);
             }
             return patients;
         }
@@ -162,8 +162,9 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
         protected void onPostExecute(List<Patient> patients) {
             patientAdapterHelper.onPostExecute(patients, PatientsLocalSearchAdapter.this, backgroundListQueryTaskListener);
         }
+        @SafeVarargs
         @Override
-        protected void onProgressUpdate(List<Patient>... patients) {
+        protected final void onProgressUpdate(List<Patient>... patients) {
             for (List<Patient> patientList : patients) {
                 patientAdapterHelper.onProgressUpdate(patientList, PatientsLocalSearchAdapter.this, backgroundListQueryTaskListener);
             }

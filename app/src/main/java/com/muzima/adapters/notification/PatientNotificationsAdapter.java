@@ -12,6 +12,7 @@ package com.muzima.adapters.notification;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +30,7 @@ import java.util.List;
  * Responsible to populate all notification fetched from DB in the PatientNotificationsListFragment page.
  */
 public class PatientNotificationsAdapter extends NotificationAdapter {
-    private static final String TAG = "PatientNotificationsAdapter";
-    private Patient patient;
+    private final Patient patient;
 
     public PatientNotificationsAdapter(Context context, int textViewResourceId, NotificationController notificationController, Patient patient) {
         super(context, textViewResourceId, notificationController);
@@ -42,16 +42,16 @@ public class PatientNotificationsAdapter extends NotificationAdapter {
         new LoadBackgroundQueryTask().execute();
     }
 
+    @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = super.getView(position, convertView, parent);
-        return view;
+        return super.getView(position, convertView, parent);
     }
 
     /**
      * Responsible to define contract to PatientNotificationsBackgroundQueryTask.
      */
-    public abstract class PatientNotificationsBackgroundQueryTask extends AsyncTask<Void, Void, List<Notification>> {
+    abstract class PatientNotificationsBackgroundQueryTask extends AsyncTask<Void, Void, List<Notification>> {
         @Override
         protected void onPreExecute() {
             if (backgroundListQueryTaskListener != null) {
@@ -83,19 +83,19 @@ public class PatientNotificationsAdapter extends NotificationAdapter {
     /**
      * Responsible to load notifications from database. Runs in Background.
      */
-    public class LoadBackgroundQueryTask extends PatientNotificationsBackgroundQueryTask {
+    protected class LoadBackgroundQueryTask extends PatientNotificationsBackgroundQueryTask {
 
         @Override
         protected List<Notification> doInBackground(Void... voids) {
             List<Notification> patientNotifications = null;
             try {
-                Log.i(TAG, "Fetching notifications from Database...");
+                Log.i(getClass().getSimpleName(), "Fetching notifications from Database...");
                 User authenticatedUser = ((MuzimaApplication) getContext().getApplicationContext()).getAuthenticatedUser();
                 if (authenticatedUser != null)
                     patientNotifications = notificationController.getNotificationsForPatient(patient.getUuid(), authenticatedUser.getPerson().getUuid(), null);
-                Log.d(TAG, "#Retrieved " + patientNotifications.size() + " notifications from Database.");
+                Log.d(getClass().getSimpleName(), "#Retrieved " + patientNotifications.size() + " notifications from Database.");
             } catch (NotificationController.NotificationFetchException e) {
-                Log.w(TAG, "Exception occurred while fetching the notifications", e);
+                Log.w(getClass().getSimpleName(), "Exception occurred while fetching the notifications", e);
             }
             return patientNotifications;
         }

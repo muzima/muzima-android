@@ -20,7 +20,7 @@ public class MotherDetails {
     @JsonProperty("MOTHER_IDENTIFIER")
     private List<MotherIdentifier> motherIdentifiers = null;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<>();
 
     /**
      * No args constructor for use in serialization

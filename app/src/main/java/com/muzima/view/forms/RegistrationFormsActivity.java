@@ -27,9 +27,7 @@ import com.muzima.view.BaseActivity;
 import java.util.UUID;
 
 public class RegistrationFormsActivity extends BaseActivity {
-    private ListView list;
     private RegistrationFormsAdapter registrationFormsAdapter;
-    private String TAG = "RegistrationFormsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +46,7 @@ public class RegistrationFormsActivity extends BaseActivity {
     private void prepareRegistrationAdapter(FormController formController, AvailableForms availableForms) {
         registrationFormsAdapter = new RegistrationFormsAdapter(getApplicationContext(), R.layout.item_forms_list,
                 formController, availableForms);
-        list = (ListView) findViewById(R.id.list);
+        ListView list = findViewById(R.id.list);
         list.setOnItemClickListener(startRegistrationOnClick());
         list.setAdapter(registrationFormsAdapter);
         registrationFormsAdapter.reloadData();
@@ -80,7 +78,7 @@ public class RegistrationFormsActivity extends BaseActivity {
         try {
             availableForms = formController.getDownloadedRegistrationForms();
         } catch (FormController.FormFetchException e) {
-            Log.e(TAG, "Error while retrieving registration forms from Lucene");
+            Log.e(getClass().getSimpleName(), "Error while retrieving registration forms from Lucene");
         }
         return availableForms;
     }

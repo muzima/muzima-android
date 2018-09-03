@@ -78,15 +78,15 @@ public class BaseFragmentActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu){
-        MenuItem syncShrMenuItem = menu.findItem(R.id.menu_shr_data_sync);
-        if(syncShrMenuItem != null) {
+        MenuItem syncSHRMenuItem = menu.findItem(R.id.menu_SHR_data_sync);
+        if(syncSHRMenuItem != null) {
             try {
                 int count = ((MuzimaApplication)getApplicationContext()).getSmartCardController().getSmartCardRecordWithNonUploadedData().size();
                  if(count > 0){
-                     syncShrMenuItem.setVisible(true);
-                     syncShrMenuItem.setTitle(getString(R.string.menu_shr_data_sync, count));
+                     syncSHRMenuItem.setVisible(true);
+                     syncSHRMenuItem.setTitle(getString(R.string.menu_SHR_data_sync, count));
                  } else {
-                     syncShrMenuItem.setVisible(false);
+                     syncSHRMenuItem.setVisible(false);
                  }
             } catch (SmartCardController.SmartCardRecordFetchException e) {
                 Log.e(BaseFragmentActivity.class.getSimpleName(), "Error fetching smartcard records");

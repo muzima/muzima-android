@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,8 +34,8 @@ import java.util.List;
  * Responsible to list down the tags in the TagDrawer.
  */
 public class TagsListAdapter extends ListAdapter<Tag> implements AdapterView.OnItemClickListener {
-    private static final String TAG = "TagsListAdapter";
-    private FormController formController;
+
+    private final FormController formController;
     private TagsChangedListener tagsChangedListener;
 
     public TagsListAdapter(Context context, int textViewResourceId, FormController formController) {
@@ -43,15 +44,16 @@ public class TagsListAdapter extends ListAdapter<Tag> implements AdapterView.OnI
     }
 
     public interface TagsChangedListener {
-        public void onTagsChanged();
+        void onTagsChanged();
     }
 
     public void setTagsChangedListener(TagsChangedListener tagsChangedListener) {
         this.tagsChangedListener = tagsChangedListener;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
@@ -59,11 +61,11 @@ public class TagsListAdapter extends ListAdapter<Tag> implements AdapterView.OnI
                     R.layout.item_tags_list, parent, false);
             holder = new ViewHolder();
             holder.indicator = convertView.findViewById(R.id.tag_indicator);
-            holder.name = (TextView) convertView
+            holder.name = convertView
                     .findViewById(R.id.tag_name);
-            holder.tagColorIndicator = (FrameLayout) convertView
+            holder.tagColorIndicator = convertView
                     .findViewById(R.id.tag_color_indicator);
-            holder.icon = (ImageView) convertView.findViewById(R.id.tag_icon);
+            holder.icon = convertView.findViewById(R.id.tag_icon);
             convertView.setTag(holder);
         }
 
@@ -146,9 +148,9 @@ public class TagsListAdapter extends ListAdapter<Tag> implements AdapterView.OnI
             List<Tag> allTags = null;
             try {
                 allTags = formController.getAllTagsExcludingRegistrationTag();
-                Log.i(TAG, "#Tags: " + allTags.size());
+                Log.i(getClass().getSimpleName(), "#Tags: " + allTags.size());
             } catch (FormController.FormFetchException e) {
-                Log.w(TAG, "Exception occurred while fetching tags", e);
+                Log.w(getClass().getSimpleName(), "Exception occurred while fetching tags", e);
             }
             return allTags;
         }
@@ -171,6 +173,7 @@ public class TagsListAdapter extends ListAdapter<Tag> implements AdapterView.OnI
             }
             notifyDataSetChanged();
         }
+
 
         private Tag getAllTagsElement() {
             Tag tag = new Tag();
