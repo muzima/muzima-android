@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.github.library.bubbleview.BubbleTextView
+        android:id="@+id/chat_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_below="@+id/date_set_text"
+        android:layout_marginTop="42dp"
+        android:maxWidth="300dp"
+        android:padding="10dp"
+        android:text="@string/hello_general"
+        android:textColor="@android:color/white"
+        app:angle="8dp"
+        android:textSize="21sp"
+        app:arrowCenter="true"
+        app:arrowHeight="8dp"
+        app:arrowLocation="left"
+        app:arrowPosition="14dp"
+        app:arrowWidth="8dp"
+        app:bubbleColor="@color/primary_blue" />
+
+    <TextView
+        android:id="@+id/date_send_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_alignBottom="@+id/chat_textview"
+        android:layout_toEndOf="@+id/chat_textview"
+        android:text="@string/date_temp"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/date_set_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:padding="10dp"
+        android:background="@color/drawer_background"
+        android:text="@string/date_general" />
+
+</RelativeLayout>

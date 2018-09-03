@@ -21,15 +21,15 @@ import java.util.List;
 import java.util.Set;
 
 public class HTMLProviderParser {
-    public static final String DATA_PROVIDER_TAG = "data-provider";
+    private static final String DATA_PROVIDER_TAG = "data-provider";
     public List<String> parse(String html) {
-        Set<String> providers = new HashSet<String>();
+        Set<String> providers = new HashSet<>();
         Document htmlDoc = Jsoup.parse(html);
         //Select all elements containing data-providers attr and is not a div.
         Elements elements = htmlDoc.select("*:not(div)[" + DATA_PROVIDER_TAG + "]");
         for (Element element : elements) {
             providers.add((element.attr(DATA_PROVIDER_TAG)));
         }
-        return new ArrayList<String>(providers);
+        return new ArrayList<>(providers);
     }
 }

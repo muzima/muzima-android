@@ -10,6 +10,7 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +34,6 @@ import java.util.List;
  * Responsible to list down all the available forms in the server including Tags and img to indicate whether downloaded or not.
  */
 public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implements TagsListAdapter.TagsChangedListener {
-    private static final String TAG = "AllAvailableFormsAdapter";
     private final MuzimaSyncService muzimaSyncService;
 
 
@@ -43,6 +43,7 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
 
     }
 
+    @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = super.getView(position, convertView, parent);
@@ -67,7 +68,7 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
         }
     }
 
-    protected void addTags(ViewHolder holder, AvailableForm form) {
+    private void addTags(ViewHolder holder, AvailableForm form) {
         Tag[] tags = form.getTags();
         if (tags.length > 0) {
             holder.tagsScroller.setVisibility(View.VISIBLE);
@@ -92,7 +93,7 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
 
             //remove existing extra tags which are present because of recycled list view
             if (tags.length < holder.tags.size()) {
-                List<TextView> tagsToRemove = new ArrayList<TextView>();
+                List<TextView> tagsToRemove = new ArrayList<>();
                 for (int i = tags.length; i < holder.tags.size(); i++) {
                     tagsToRemove.add(holder.tags.get(i));
                 }
@@ -132,9 +133,9 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
     /**
      * Responsible to download all the form names based on Tags from Server.
      */
-    public class DownloadBackgroundQueryTask extends FormsAdapterBackgroundQueryTask<AvailableForm> {
+    class DownloadBackgroundQueryTask extends FormsAdapterBackgroundQueryTask<AvailableForm> {
 
-        public DownloadBackgroundQueryTask(FormsAdapter adapter) {
+        DownloadBackgroundQueryTask(FormsAdapter adapter) {
             super(adapter);
         }
 
@@ -146,9 +147,9 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
                     FormsAdapter formsAdapter = adapterWeakReference.get();
                     muzimaSyncService.downloadForms();
                     allForms = formsAdapter.getFormController().getAvailableFormByTags(getSelectedTagUuids());
-                    Log.i(TAG, "#Forms: " + allForms.size());
+                    Log.i(getClass().getSimpleName(), "#Forms: " + allForms.size());
                 } catch (FormController.FormFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local forms ", e);
+                    Log.w(getClass().getSimpleName(), "Exception occurred while fetching local forms ", e);
                 }
             }
             return allForms;
@@ -158,9 +159,9 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
     /**
      * Responsible to fetch the forms from the local DB based on the selected tags.
      */
-    public class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<AvailableForm> {
+    class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<AvailableForm> {
 
-        public BackgroundQueryTask(FormsAdapter formsAdapter) {
+        BackgroundQueryTask(FormsAdapter formsAdapter) {
             super(formsAdapter);
         }
 
@@ -171,9 +172,9 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
                 try {
                     FormsAdapter formsAdapter = adapterWeakReference.get();
                     allForms = formsAdapter.getFormController().getAvailableFormByTags(getSelectedTagUuids(), true);
-                    Log.i(TAG, "#Forms: " + allForms.size());
+                    Log.i(getClass().getSimpleName(), "#Forms: " + allForms.size());
                 } catch (FormController.FormFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local forms.", e);
+                    Log.w(getClass().getSimpleName(), "Exception occurred while fetching local forms.", e);
                 }
             }
             return allForms;

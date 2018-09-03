@@ -19,29 +19,19 @@ import com.muzima.controller.LocationController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.ProviderController;
-import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.HTMLFormObservationCreator;
-import com.muzima.testSupport.CustomTestRunner;
 import com.muzima.utils.Constants;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.io.InputStream;
 import java.util.Scanner;
 
-import static org.hamcrest.CoreMatchers.any;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.isNotNull;
-import static org.mockito.Matchers.notNull;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -51,14 +41,10 @@ import static org.mockito.Mockito.when;
 @Config(manifest= Config.NONE)
 public class HTMLFormDataStoreTest {
 
-    private FormController formController;
-    private LocationController locationController;
     private HTMLFormWebViewActivity formWebViewActivity;
     private FormData formData;
     private HTMLFormObservationCreator htmlFormObservationCreator;
     private HTMLFormDataStore htmlFormDataStore;
-    private ProviderController providerController;
-    private MuzimaApplication muzimaApplication;
 
     @Mock
     private ConceptController conceptController;
@@ -70,14 +56,14 @@ public class HTMLFormDataStoreTest {
     private EncounterController encounterController;
 
     @Before
-    public void setUp() throws Exception {
-        formController = mock(FormController.class);
-        locationController = mock(LocationController.class);
-        providerController = mock(ProviderController.class);
+    public void setUp() {
+        FormController formController = mock(FormController.class);
+        LocationController locationController = mock(LocationController.class);
+        ProviderController providerController = mock(ProviderController.class);
         formWebViewActivity = mock(HTMLFormWebViewActivity.class);
         formData = mock(FormData.class);
         htmlFormObservationCreator = mock(HTMLFormObservationCreator.class);
-        muzimaApplication = mock(MuzimaApplication.class);
+        MuzimaApplication muzimaApplication = mock(MuzimaApplication.class);
 
         when(muzimaApplication.getFormController()).thenReturn(formController);
         when(muzimaApplication.getConceptController()).thenReturn(conceptController);

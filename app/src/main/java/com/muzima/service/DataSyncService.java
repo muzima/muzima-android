@@ -11,7 +11,6 @@
 package com.muzima.service;
 
 import android.app.IntentService;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -39,7 +38,6 @@ import static java.util.Arrays.asList;
 public class DataSyncService extends IntentService {
 
     private static final int MUZIMA_NOTIFICATION = 0;
-    private static final String TAG = "DataSyncService";
     private String notificationServiceRunning;
     private String notificationServiceFinished;
     private String notificationMsg;
@@ -173,7 +171,7 @@ public class DataSyncService extends IntentService {
         }
         int[] resultForPatients = muzimaSyncService.downloadPatients(patientUUIDs);
         broadCastMessageForPatients(broadcastIntent, resultForPatients, patientUUIDs);
-        List<String> patientUUIDList = new ArrayList<String>(asList(patientUUIDs));
+        List<String> patientUUIDList = new ArrayList<>(asList(patientUUIDs));
         if (isSuccess(resultForPatients)) {
             int[] resultForObs = muzimaSyncService.downloadObservationsForPatientsByPatientUUIDs(patientUUIDList, true);
             broadCastMessageForObservationDownload(broadcastIntent, resultForObs);
@@ -265,7 +263,7 @@ public class DataSyncService extends IntentService {
                 LastSyncTime lastSyncTime = new LastSyncTime(apiName, sntpService.getLocalTime());
                 lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             } catch (IOException e) {
-                Log.i(TAG, "Error setting last sync time.");
+                Log.i(getClass().getSimpleName(), "Error setting last sync time.");
             }
         }
     }

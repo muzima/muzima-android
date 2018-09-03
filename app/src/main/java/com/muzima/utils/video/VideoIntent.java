@@ -17,7 +17,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Video;
@@ -35,15 +34,11 @@ import java.io.File;
 import static com.muzima.utils.Constants.APP_VIDEO_DIR;
 
 public class VideoIntent extends Activity {
-	private final static String TAG = "VideoIntent";
 
 	public static final String KEY_VIDEO_PATH = "videoPath";
     public static final String KEY_VIDEO_CAPTION = "videoCaption";
     public static final String KEY_SECTION_NAME = "sectionName";
 
-	private final int VIDEO_RECORD = 1;
-	private final int VIDEO_CHOOSE = 2;
-	
     private String VIDEO_FOLDER;
     private boolean isNewVideo;
 
@@ -101,12 +96,12 @@ public class VideoIntent extends Activity {
             }
         }
         
-        mNoVideoMessage = (TextView) findViewById(R.id.noVideoMessage);
-        mVideoPreview = (View) findViewById(R.id.videoPreview);
-        mVideoCaption = (EditText) findViewById(R.id.videoCaption);
-        mVideoThumbnail = (ImageView) findViewById(R.id.videoThumbnail);
-        mVideoAcceptContainer = (View) findViewById(R.id.videoAcceptContainer);
-        mVideoRecordContainer = (View) findViewById(R.id.videoRecordContainer);
+        mNoVideoMessage = findViewById(R.id.noVideoMessage);
+        mVideoPreview = findViewById(R.id.videoPreview);
+        mVideoCaption = findViewById(R.id.videoCaption);
+        mVideoThumbnail = findViewById(R.id.videoThumbnail);
+        mVideoAcceptContainer = findViewById(R.id.videoAcceptContainer);
+        mVideoRecordContainer = findViewById(R.id.videoRecordContainer);
         
         refreshVideoView();
 	}
@@ -145,7 +140,8 @@ public class VideoIntent extends Activity {
 		Intent i = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 		i.putExtra(MediaStore.EXTRA_OUTPUT, Video.Media.EXTERNAL_CONTENT_URI.toString());
 		try {
-			startActivityForResult(i, VIDEO_RECORD);
+            int VIDEO_RECORD = 1;
+            startActivityForResult(i, VIDEO_RECORD);
 		} catch (ActivityNotFoundException e) {
 			Toast.makeText(this,getString(R.string.info_video_record_activity_unavailable), Toast.LENGTH_SHORT).show();
 		}		
@@ -158,7 +154,8 @@ public class VideoIntent extends Activity {
 
         try {
 		    i.setType("video/*");
-			startActivityForResult(i,VIDEO_CHOOSE);
+            int VIDEO_CHOOSE = 2;
+            startActivityForResult(i, VIDEO_CHOOSE);
 		} catch (ActivityNotFoundException e) {
 			Toast.makeText(this,getString(R.string.info_video_chose_activity_unavailable), Toast.LENGTH_SHORT).show();
 		}
@@ -221,7 +218,7 @@ public class VideoIntent extends Activity {
     private void deleteVideo() {
     	//delete from media provider
         int del = MediaUtils.deleteVideoFileFromMediaProvider(this, VIDEO_FOLDER + File.separator + mBinaryName);
-    	Log.i(TAG, "Deleted " + del + " rows from media content provider");
+    	Log.i(getClass().getSimpleName(), "Deleted " + del + " rows from media content provider");
     }
 
 	private String getPathFromUri(Uri uri) {
@@ -247,7 +244,7 @@ public class VideoIntent extends Activity {
 		}
 	}
 
-	public void saveVideo(Object videoUri) {
+	private void saveVideo(Object videoUri) {
 		// you are replacing an answer. remove the media.
 		if (mBinaryName != null)
 			deleteVideo();
@@ -265,7 +262,7 @@ public class VideoIntent extends Activity {
 		if (newVideo.exists())
 		    mBinaryName = newVideo.getName();
 		else
-			Log.e(TAG, "Inserting Video file FAILED");
+			Log.e(getClass().getSimpleName(), "Inserting Video file FAILED");
 
 	}
 

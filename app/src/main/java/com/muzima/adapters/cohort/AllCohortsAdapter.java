@@ -11,6 +11,7 @@ package com.muzima.adapters.cohort;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,14 +29,13 @@ import java.util.List;
  * Responsible to populate all cohorts fetched from DB in the AllCohortsListFragment page.
  */
 public class AllCohortsAdapter extends CohortsAdapter {
-    private static final String TAG = "AllCohortsAdapter";
     private final MuzimaSyncService muzimaSyncService;
-    private List<String> selectedCohortsUuid;
+    private final List<String> selectedCohortsUuid;
     private List<Cohort> cohorts;
 
     public AllCohortsAdapter(Context context, int textViewResourceId, CohortController cohortController) {
         super(context, textViewResourceId, cohortController);
-        selectedCohortsUuid = new ArrayList<String>();
+        selectedCohortsUuid = new ArrayList<>();
         muzimaSyncService = ((MuzimaApplication) (getContext().getApplicationContext())).getMuzimaSyncService();
     }
 
@@ -61,6 +61,7 @@ public class AllCohortsAdapter extends CohortsAdapter {
         notifyDataSetChanged();
     }
 
+    @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = super.getView(position, convertView, parent);
@@ -105,7 +106,7 @@ public class AllCohortsAdapter extends CohortsAdapter {
         //Removes the current items from the list.
         AllCohortsAdapter.this.clear();
         //Add filtered items to the list.
-        List <Cohort> cohortsFiltered = new ArrayList<Cohort>();
+        List <Cohort> cohortsFiltered = new ArrayList<>();
         for (Cohort cohort : cohorts) {
             if (cohort.getName().toLowerCase().contains(filterText.toLowerCase())) {
                 cohortsFiltered.add(cohort);
@@ -119,7 +120,7 @@ public class AllCohortsAdapter extends CohortsAdapter {
     /**
      * Responsible to define contract to CohortBackgroundQueryTasks.
      */
-    public abstract class CohortBackgroundQueryTask extends AsyncTask<Void, Void, List<Cohort>> {
+    abstract class CohortBackgroundQueryTask extends AsyncTask<Void, Void, List<Cohort>> {
         @Override
         protected void onPreExecute() {
             if (backgroundListQueryTaskListener != null) {
@@ -152,17 +153,17 @@ public class AllCohortsAdapter extends CohortsAdapter {
     /**
      * Responsible to load cohorts from database. Runs in Background.
      */
-    public class LoadBackgroundQueryTask extends CohortBackgroundQueryTask {
+    protected class LoadBackgroundQueryTask extends CohortBackgroundQueryTask {
 
         @Override
         protected List<Cohort> doInBackground(Void... voids) {
             List<Cohort> allCohorts = null;
             try {
-                Log.i(TAG, "Fetching Cohorts from Database...");
+                Log.i(getClass().getSimpleName(), "Fetching Cohorts from Database...");
                 allCohorts = cohortController.getAllCohorts();
-                Log.d(TAG, "#Retrieved " + allCohorts.size() + " Cohorts from Database.");
+                Log.d(getClass().getSimpleName(), "#Retrieved " + allCohorts.size() + " Cohorts from Database.");
             } catch (CohortController.CohortFetchException e) {
-                Log.w(TAG, "Exception occurred while fetching local cohorts ", e);
+                Log.w(getClass().getSimpleName(), "Exception occurred while fetching local cohorts ", e);
             }
             return allCohorts;
         }
@@ -171,16 +172,16 @@ public class AllCohortsAdapter extends CohortsAdapter {
     /**
      * Responsible to download Cohorts from server and to reload the contents from DB. Runs in BackGround.
      */
-    public class DownloadBackgroundQueryTask extends CohortBackgroundQueryTask {
+    protected class DownloadBackgroundQueryTask extends CohortBackgroundQueryTask {
         @Override
         protected List<Cohort> doInBackground(Void... voids) {
             List<Cohort> allCohorts = null;
             try {
                 muzimaSyncService.downloadCohorts();
                 allCohorts = cohortController.getAllCohorts();
-                Log.i(TAG, "#Cohorts: " + allCohorts.size());
+                Log.i(getClass().getSimpleName(), "#Cohorts: " + allCohorts.size());
             } catch (CohortController.CohortFetchException e) {
-                Log.w(TAG, "Exception occurred while fetching the downloaded cohorts", e);
+                Log.w(getClass().getSimpleName(), "Exception occurred while fetching the downloaded cohorts", e);
             }
             return allCohorts;
         }

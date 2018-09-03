@@ -36,7 +36,6 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
  */
 public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
 
-    private static final String TAG = AutoCompleteBaseAdapter.class.getSimpleName();
     protected WeakReference<MuzimaApplication> muzimaApplicationWeakReference;
     private final MuzimaSyncService muzimaSyncService;
     private String previousConstraint = null;
@@ -91,9 +90,9 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
                         Toast.makeText(getMuzimaApplicationContext(), muzimaApplicationContext.getString(R.string.error_authentication_fail), Toast.LENGTH_SHORT).show();
                     }
 
-                    Log.i(TAG, "Downloaded: " + options.size());
+                    Log.i(getClass().getSimpleName(), "Downloaded: " + options.size());
                 } catch (Throwable t) {
-                    Log.e(TAG, "Unable to download options!", t);
+                    Log.e(getClass().getSimpleName(), "Unable to download options!", t);
                 } finally {
                     muzimaApplicationContext.getMuzimaContext().closeSession();
                 }
@@ -147,7 +146,7 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             convertView = layoutInflater.inflate(R.layout.item_option_autocomplete, parent, false);
             holder = new ViewHolder();
-            holder.name = (TextView) convertView.findViewById(R.id.option_autocomplete_name);
+            holder.name = convertView.findViewById(R.id.option_autocomplete_name);
             convertView.setTag(holder);
         }
         holder = (ViewHolder) convertView.getTag();

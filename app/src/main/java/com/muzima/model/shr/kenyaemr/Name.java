@@ -20,13 +20,13 @@ public class Name {
     @JsonProperty("LAST_NAME")
     private String lastName;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<>();
 
     /**
      * No args constructor for use in serialization
      *
      */
-    public Name() {
+    Name() {
     }
 
     /**

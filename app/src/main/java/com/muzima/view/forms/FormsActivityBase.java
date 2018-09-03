@@ -12,7 +12,6 @@ package com.muzima.view.forms;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
@@ -22,15 +21,13 @@ import com.muzima.view.custom.PagerSlidingTabStrip;
 
 
 public abstract class FormsActivityBase extends BroadcastListenerActivity {
-    private static final String TAG = "FormsActivityBase";
 
-    public static int FORM_VIEW_ACTIVITY_RESULT = 1;
+    public static final int FORM_VIEW_ACTIVITY_RESULT = 1;
     public static final String KEY_FORMS_TAB_TO_OPEN = "formsTabToOpen";
 
 
-    protected ViewPager formsPager;
-    protected PagerSlidingTabStrip pagerTabsLayout;
-    protected MuzimaPagerAdapter formsPagerAdapter;
+    ViewPager formsPager;
+    MuzimaPagerAdapter formsPagerAdapter;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -39,8 +36,8 @@ public abstract class FormsActivityBase extends BroadcastListenerActivity {
         }
     }
 
-    protected void initPager() {
-        formsPager = (ViewPager) findViewById(R.id.pager);
+    void initPager() {
+        formsPager = findViewById(R.id.pager);
         formsPagerAdapter = createFormsPagerAdapter();
         formsPagerAdapter.initPagerViews();
         formsPager.setAdapter(formsPagerAdapter);
@@ -49,13 +46,13 @@ public abstract class FormsActivityBase extends BroadcastListenerActivity {
     protected abstract MuzimaPagerAdapter createFormsPagerAdapter();
 
 
-    protected void initPagerIndicator() {
+    void initPagerIndicator() {
         Intent intent = getIntent();
         int tabToOpen = intent.getIntExtra(KEY_FORMS_TAB_TO_OPEN, -1);
         if (tabToOpen == -1) {
             tabToOpen = 0;
         }
-        pagerTabsLayout = (PagerSlidingTabStrip) findViewById(R.id.pager_indicator);
+        PagerSlidingTabStrip pagerTabsLayout = findViewById(R.id.pager_indicator);
         pagerTabsLayout.setTextColor(Color.WHITE);
         pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));
         pagerTabsLayout.setSelectedTextColor(getResources().getColor(R.color.tab_indicator));
@@ -71,6 +68,6 @@ public abstract class FormsActivityBase extends BroadcastListenerActivity {
         });
     }
 
-    protected void onPageChange(int position){
+    void onPageChange(int position){
     }
 }

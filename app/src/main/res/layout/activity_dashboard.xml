@@ -52,7 +52,7 @@
                         style="@style/DashboardListItemPrimaryText"
                         android:layout_height="wrap_content"
                         android:gravity="left"
-                        android:text="@string/general_cohorts"></TextView>
+                        android:text="@string/general_cohorts"/>
 
                     <ImageView
                             android:id="@+id/pendingUpdateImg"
@@ -65,10 +65,10 @@
                             android:contentDescription="@string/info_downloaded_image"/>
 
                     <TextView
-                            android:id="@+id/cohortDescription"
-                            style="@style/DashboardItemDescription"
-                            android:layout_alignParentBottom="true"
-                            android:text="## Synced, ## Total"></TextView>
+                        android:id="@+id/cohortDescription"
+                        style="@style/DashboardItemDescription"
+                        android:layout_alignParentBottom="true"
+                        android:text="@string/synced_total_label_text"/>
 
                 </RelativeLayout>
 
@@ -81,13 +81,13 @@
                         style="@style/DashboardListItemPrimaryText"
                         android:layout_height="wrap_content"
                         android:gravity="left"
-                        android:text="@string/general_clients"></TextView>
+                        android:text="@string/general_clients"/>
 
                     <TextView
                         android:id="@+id/patientDescription"
                         style="@style/DashboardItemDescription"
                         android:layout_alignParentBottom="true"
-                        android:text="## Synced"></TextView>
+                        android:text="@string/synced_label_text"/>
 
                 </RelativeLayout>
 
@@ -101,7 +101,7 @@
                 <RelativeLayout
                         style="@style/ClickableGridItem"
                         android:layout_weight="50"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginEnd="10dp"
                         android:paddingRight="10dp"
                         android:onClick="formsList">
 
@@ -117,7 +117,7 @@
                             android:id="@+id/formDescription"
                             style="@style/DashboardItemDescription"
                             android:layout_alignParentBottom="true"
-                            android:text="## Incomplete, ## Outbox">
+                            android:text="@string/incomplete_outbox_text">
                     </TextView>
 
                 </RelativeLayout>
@@ -125,7 +125,7 @@
                 <RelativeLayout
                         style="@style/ClickableGridItem"
                         android:layout_weight="50"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginEnd="10dp"
                         android:paddingRight="10dp"
                         android:onClick="notificationsList">
 
@@ -141,7 +141,7 @@
                             android:id="@+id/notificationDescription"
                             style="@style/DashboardItemDescription"
                             android:layout_alignParentBottom="true"
-                            android:text="## Inbox, ## Outbox">
+                            android:text="@string/inbox_outbox_label_text">
                     </TextView>
 
                 </RelativeLayout>

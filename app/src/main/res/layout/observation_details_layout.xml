@@ -8,7 +8,7 @@
 	<TextView
 			android:padding="14dp"
 			android:textColor="@android:color/white"
-			android:text="Encounter Details"
+			android:text="@string/encounter_details"
 			android:textSize="16sp"
 			android:textStyle="bold"
 			android:layout_marginBottom="8dp"
@@ -23,7 +23,7 @@
 		
 		<TextView
 				android:id="@+id/encounter_date_textview"
-				android:text="Encounter Date:"
+				android:text="@string/encounter_date"
 				android:padding="8dp"
 				android:layout_alignParentTop="true"
 				android:textColor="@android:color/black"
@@ -33,7 +33,7 @@
 		<TextView
 				android:id="@+id/encounter_date_value_textview"
 				android:textColor="@android:color/black"
-				android:text="21/02/2018"
+				android:text="@string/sample_date_text"
 				android:padding="8dp"
 				android:layout_marginEnd="16dp"
 				android:layout_alignParentEnd="true"
@@ -42,7 +42,7 @@
 		
 		<TextView
 				android:id="@+id/encounter_type_textview"
-				android:text="Encounter Type:"
+				android:text="@string/encounter_type"
 				android:padding="8dp"
 				android:layout_below="@+id/encounter_date_textview"
 				android:textColor="@android:color/black"
@@ -51,7 +51,7 @@
 		
 		<TextView
 				android:id="@+id/encounter_type_value_textview"
-				android:text="Single Encounter"
+				android:text="@string/encounter_details"
 				android:padding="8dp"
 				android:layout_marginEnd="16dp"
 				android:layout_alignParentEnd="true"
@@ -62,7 +62,7 @@
 		
 		<TextView
 				android:id="@+id/encounter_location_textview"
-				android:text="Encounter Location:"
+				android:text="@string/encounter_location"
 				android:padding="8dp"
 				android:layout_below="@+id/encounter_type_textview"
 				android:textColor="@android:color/black"
@@ -87,7 +87,7 @@
 			android:id="@+id/obs_details_second_header"
 			android:padding="14dp"
 			android:textColor="@android:color/white"
-			android:text="Provider Details"
+			android:text="@string/provider_details"
 			android:textSize="16sp"
 			android:textStyle="bold"
 			android:background="@android:color/holo_green_light"
@@ -100,7 +100,7 @@
 		
 		<TextView
 				android:id="@+id/provider_name_textview"
-				android:text="Provider Name:"
+				android:text="@string/provider_name"
 				android:padding="8dp"
 				android:layout_alignParentTop="true"
 				android:textColor="@android:color/black"
@@ -119,7 +119,7 @@
 		
 		<TextView
 				android:id="@+id/provider_identify_type"
-				android:text="Provider Identifier:"
+				android:text="@string/provider_identifier"
 				android:padding="8dp"
 				android:layout_below="@+id/provider_name_textview"
 				android:textColor="@android:color/black"
@@ -128,7 +128,7 @@
 		
 		<TextView
 				android:id="@+id/provider_identify_type_value_textView"
-				android:text="Single Encounter"
+				android:text="@string/provider_identifier"
 				android:padding="8dp"
 				android:layout_marginEnd="16dp"
 				android:layout_alignParentEnd="true"
@@ -143,7 +143,7 @@
 			android:id="@+id/obs_details_third_header"
 			android:padding="14dp"
 			android:textColor="@android:color/white"
-			android:text="Concept Details"
+			android:text="@string/concept_details"
 			android:textSize="16sp"
 			android:textStyle="bold"
 			android:background="@android:color/holo_green_light"
@@ -156,7 +156,7 @@
 		
 		<TextView
 				android:id="@+id/concept_name_textview"
-				android:text="Concept Name:"
+				android:text="@string/concept_name"
 				android:padding="8dp"
 				android:layout_alignParentTop="true"
 				android:textColor="@android:color/black"
@@ -175,7 +175,7 @@
 		
 		<TextView
 				android:id="@+id/concept_description_textview"
-				android:text="Concept Descrition"
+				android:text="@string/concept_descrition"
 				android:padding="8dp"
 				android:layout_below="@+id/concept_name_textview"
 				android:textColor="@android:color/black"
@@ -184,7 +184,7 @@
 		
 		<TextView
 				android:id="@+id/concept_description_value_textview"
-				android:text="No description"
+				android:text="@string/no_description_general"
 				android:padding="8dp"
 				android:layout_marginEnd="16dp"
 				android:layout_alignParentEnd="true"
@@ -201,7 +201,7 @@
 			android:textColor="@android:color/white"
 			android:textSize="16sp"
 			android:textStyle="bold"
-			android:text="Observation Details"
+			android:text="@string/observation_details"
 			android:background="@android:color/holo_green_light"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"/>
@@ -212,7 +212,7 @@
 		
 		<TextView
 				android:id="@+id/observation_value_textview"
-				android:text="Observation Value:"
+				android:text="@string/observation_value"
 				android:padding="8dp"
 				android:layout_alignParentTop="true"
 				android:textColor="@android:color/black"
@@ -231,7 +231,7 @@
 		
 		<TextView
 				android:id="@+id/observation_description_textview"
-				android:text="Captured Date:"
+				android:text="@string/captured_date"
 				android:padding="8dp"
 				android:layout_below="@+id/observation_value_textview"
 				android:textColor="@android:color/black"
@@ -240,7 +240,7 @@
 		
 		<TextView
 				android:id="@+id/observation_description_value_textview"
-				android:text="No description"
+				android:text="@string/no_description_general"
 				android:padding="8dp"
 				android:layout_marginEnd="16dp"
 				android:layout_alignParentEnd="true"

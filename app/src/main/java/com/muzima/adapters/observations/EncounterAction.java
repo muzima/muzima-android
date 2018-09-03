@@ -16,7 +16,7 @@ import com.muzima.model.observation.Encounters;
 
 import java.util.List;
 
-public abstract class EncounterAction {
+abstract class EncounterAction {
     abstract Encounters get() throws ObservationController.LoadObservationException;
     abstract Encounters get(Encounter encounter) throws ObservationController.LoadObservationException;
     abstract List<Encounter> getEncounters() throws ObservationController.LoadObservationException;

@@ -8,6 +8,7 @@
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
 
+<!--suppress ALL -->
 <form>
     <patient>
         <patient_identifier.identifier_type_id>1</patient_identifier.identifier_type_id>
@@ -43,23 +44,23 @@
             <clock_face_cervical_biopsy_location concept="7481^CLOCK FACE CERVICAL BIOPSY LOCATION ^99DCT"/>
             <pathological_diagnosis_added_cervix>1115^NORMAL^99DCT</pathological_diagnosis_added_cervix>
             <body_part concept="8265^BODY PART^99DCT">
-                <date></date>
-                <time></time>
+                <date />
+                <time />
                 <value>8279^CERVIX^99DCT</value>
             </body_part>
             <procedures_done_this_visit concept="7479^PROCEDURES DONE THIS VISIT^99DCT">
-                <date></date>
-                <time></time>
+                <date />
+                <time />
                 <value>7147^LOOP ELECTROSURGICAL EXCISION PROCEDURE^99DCT</value>
             </procedures_done_this_visit>
             <anatomic_location_description concept="8268^ANATOMIC LOCATION DESCRIPTION^99DCT">
-                <date></date>
-                <time></time>
+                <date />
+                <time />
                 <value>8267^DEEP^99DCT</value>
             </anatomic_location_description>
             <pathological_diagnosis_added concept="8278^PATHOLOGICAL DIAGNOSIS ADDED^99DCT">
-                <date></date>
-                <time></time>
+                <date />
+                <time />
                 <value>1115^NORMAL^99DCT</value>
             </pathological_diagnosis_added>
         </procedures_done_this_visit_detailed>

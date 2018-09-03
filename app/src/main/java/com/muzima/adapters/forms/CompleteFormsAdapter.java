@@ -11,6 +11,8 @@ package com.muzima.adapters.forms;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.muzima.MuzimaApplication;
 import com.muzima.controller.FormController;
 import com.muzima.model.CompleteFormWithPatientData;
 import com.muzima.model.collections.CompleteFormsWithPatientData;
@@ -22,10 +24,11 @@ import java.util.List;
  * Responsible to list down all the completed forms in the Device.
  */
 public class CompleteFormsAdapter extends SectionedFormsAdapter<CompleteFormWithPatientData> {
-    private static final String TAG = "CompleteFormsAdapter";
+    public Context context;
 
     public CompleteFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
+        this.context = context;
     }
 
     @Override
@@ -49,10 +52,10 @@ public class CompleteFormsAdapter extends SectionedFormsAdapter<CompleteFormWith
             if (adapterWeakReference.get() != null) {
                 try {
                     FormsAdapter formsAdapter = adapterWeakReference.get();
-                    completeForms = formsAdapter.getFormController().getAllCompleteFormsWithPatientData();
-                    Log.i(TAG, "#Complete forms: " + completeForms.size());
+                    completeForms = formsAdapter.getFormController().getAllCompleteFormsWithPatientData(formsAdapter.getContext());
+                    Log.i(getClass().getSimpleName(), "#Complete forms: " + completeForms.size());
                 } catch (FormController.FormFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local forms ", e);
+                    Log.w(getClass().getSimpleName(), "Exception occurred while fetching local forms ", e);
                 }
             }
 

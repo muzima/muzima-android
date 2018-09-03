@@ -25,13 +25,13 @@ import static org.junit.matchers.JUnitMatchers.hasItems;
 public class EncountersTest {
 
     @Test
-    public void shouldAddSingleObservation() throws Exception {
+    public void shouldAddSingleObservation() {
         final Observation observation = createObservation(createEncounter("uuid1"), "o1");
         assertThat(new Encounters(observation), hasItem(encounterWithObservations(observation)));
     }
 
     @Test
-    public void shouldAddMultipleObservation() throws Exception {
+    public void shouldAddMultipleObservation() {
         final Encounter encounter = createEncounter("uuid1");
 
         final Observation observation = createObservation(encounter, "o1");
@@ -41,7 +41,7 @@ public class EncountersTest {
     }
 
     @Test
-    public void shouldGroupObservationsByEncounter() throws Exception {
+    public void shouldGroupObservationsByEncounter() {
 
         Observation observation1 = createObservation(createEncounter("c1"), "01");
         Observation observation2 = createObservation(createEncounter("c2"), "02");
@@ -51,7 +51,7 @@ public class EncountersTest {
     }
 
     @Test
-    public void shouldSortTheEncountersByDate() throws Exception {
+    public void shouldSortTheEncountersByDate() {
         final Observation observation1 = createObservation(createEncounter("c1", new Date(1)), "01");
         final Observation observation2 = createObservation(createEncounter("c2", new Date(3)), "02");
 
@@ -67,7 +67,7 @@ public class EncountersTest {
     }
 
     @Test
-    public void shouldPutEncounterWithNullDateAtTheTopWhenItsNotAtTheTop() throws Exception {
+    public void shouldPutEncounterWithNullDateAtTheTopWhenItsNotAtTheTop() {
         final Observation observation1 = createObservation(createEncounter("c1", new Date(1)), "01");
         final Observation observation2 = createObservation(createEncounter("c2", null), "02");
 
@@ -83,7 +83,7 @@ public class EncountersTest {
     }
 
     @Test
-    public void shouldPutEncounterWithNullDateAtTheTopWhenItsAtTheTop() throws Exception {
+    public void shouldPutEncounterWithNullDateAtTheTopWhenItsAtTheTop() {
         final Observation observation1 = createObservation(createEncounter("c1", null), "01");
         final Observation observation2 = createObservation(createEncounter("c2", new Date(1)), "02");
 

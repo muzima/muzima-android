@@ -46,12 +46,8 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 
 
 public class FormsActivity extends FormsActivityBase {
-    private static final String TAG = "FormsActivity";
 
-    private ListView tagsDrawerList;
-    private TextView tagsNoDataMsg;
     private DrawerLayout mainLayout;
-    private ActionBarDrawerToggle actionbarDrawerToggle;
     private TagsListAdapter tagsListAdapter;
     private MenuItem menubarLoadButton;
     private FormController formController;
@@ -103,7 +99,7 @@ public class FormsActivity extends FormsActivityBase {
     }
 
     private void storeSelectedTags() {
-        Set<String> newSelectedTags = new HashSet<String>();
+        Set<String> newSelectedTags = new HashSet<>();
         for (Tag selectedTag : formController.getSelectedTags()) {
             newSelectedTags.add(selectedTag.getName());
         }
@@ -117,32 +113,37 @@ public class FormsActivity extends FormsActivityBase {
         int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS, SyncStatusConstants.UNKNOWN_ERROR);
         int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
 
-        if (syncType == DataSyncServiceConstants.SYNC_FORMS) {
-            hideProgressbar();
-            syncInProgress = false;
-            if (syncStatus == SyncStatusConstants.SUCCESS) {
-                tagsListAdapter.reloadData();
-                ((FormsPagerAdapter) formsPagerAdapter).onFormMetadataDownloadFinish();
-            }
-        } else if (syncType == DataSyncServiceConstants.SYNC_UPLOAD_FORMS) {
-            menuUpload.setActionView(null);
-            syncInProgress = false;
-            if (syncStatus == SyncStatusConstants.SUCCESS) {
-                ((FormsPagerAdapter) formsPagerAdapter).onFormUploadFinish();
-            }
-
-        } else if (syncType == DataSyncServiceConstants.SYNC_TEMPLATES) {
-            hideProgressbar();
-            if (syncStatus == SyncStatusConstants.SUCCESS) {
-                ((FormsPagerAdapter) formsPagerAdapter).onFormTemplateDownloadFinish();
-            }
-        } else if (syncType == DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS) {
-            SharedPreferences sp = getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", MODE_PRIVATE);
-            if (sp.getBoolean("active", false) == true) {
+        switch (syncType) {
+            case DataSyncServiceConstants.SYNC_FORMS:
+                hideProgressbar();
+                syncInProgress = false;
+                if (syncStatus == SyncStatusConstants.SUCCESS) {
+                    tagsListAdapter.reloadData();
+                    ((FormsPagerAdapter) formsPagerAdapter).onFormMetadataDownloadFinish();
+                }
+                break;
+            case DataSyncServiceConstants.SYNC_UPLOAD_FORMS:
+                menuUpload.setActionView(null);
+                syncInProgress = false;
                 if (syncStatus == SyncStatusConstants.SUCCESS) {
                     ((FormsPagerAdapter) formsPagerAdapter).onFormUploadFinish();
                 }
-            }
+
+                break;
+            case DataSyncServiceConstants.SYNC_TEMPLATES:
+                hideProgressbar();
+                if (syncStatus == SyncStatusConstants.SUCCESS) {
+                    ((FormsPagerAdapter) formsPagerAdapter).onFormTemplateDownloadFinish();
+                }
+                break;
+            case DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS:
+                SharedPreferences sp = getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", MODE_PRIVATE);
+                if (sp.getBoolean("active", false)) {
+                    if (syncStatus == SyncStatusConstants.SUCCESS) {
+                        ((FormsPagerAdapter) formsPagerAdapter).onFormUploadFinish();
+                    }
+                }
+                break;
         }
     }
 
@@ -203,10 +204,12 @@ public class FormsActivity extends FormsActivityBase {
 
     private boolean hasFormsWithData() {
         try {
-            if (!(formController.getAllIncompleteFormsWithPatientData().isEmpty() && formController.getAllCompleteFormsWithPatientData().isEmpty())) {
+            if (!(formController.getAllIncompleteFormsWithPatientData().isEmpty() &&
+                    formController.getAllCompleteFormsWithPatientData(getApplicationContext()).isEmpty())) {
                 return true;
             }
         } catch (FormController.FormFetchException e) {
+            Log.e(getClass().getSimpleName(),"Unable to fetch forms"+e.getMessage());
         }
         return false;
     }
@@ -229,7 +232,7 @@ public class FormsActivity extends FormsActivityBase {
         return new FormsPagerAdapter(getApplicationContext(), getSupportFragmentManager());
     }
 
-    public void hideProgressbar() {
+    private void hideProgressbar() {
         menubarLoadButton.setActionView(null);
     }
 
@@ -239,13 +242,13 @@ public class FormsActivity extends FormsActivityBase {
 
     private void initDrawer() {
         initSelectedTags();
-        tagsDrawerList = (ListView) findViewById(R.id.tags_list);
+        ListView tagsDrawerList = findViewById(R.id.tags_list);
         tagsDrawerList.setEmptyView(findViewById(R.id.tags_no_data_msg));
         tagsListAdapter = new TagsListAdapter(this, R.layout.item_tags_list, formController);
         tagsDrawerList.setAdapter(tagsListAdapter);
         tagsDrawerList.setOnItemClickListener(tagsListAdapter);
         tagsListAdapter.setTagsChangedListener((FormsPagerAdapter) formsPagerAdapter);
-        actionbarDrawerToggle = new ActionBarDrawerToggle(this, mainLayout,
+        ActionBarDrawerToggle actionbarDrawerToggle = new ActionBarDrawerToggle(this, mainLayout,
                 R.drawable.ic_labels, R.string.hint_drawer_open, R.string.hint_drawer_close) {
 
             /**
@@ -271,7 +274,7 @@ public class FormsActivity extends FormsActivityBase {
         mainLayout.setDrawerListener(actionbarDrawerToggle);
         mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
-        tagsNoDataMsg = (TextView) findViewById(R.id.tags_no_data_msg);
+        TextView tagsNoDataMsg = findViewById(R.id.tags_no_data_msg);
         tagsNoDataMsg.setTypeface(Fonts.roboto_bold_condensed(this));
     }
 
@@ -281,9 +284,9 @@ public class FormsActivity extends FormsActivityBase {
         try {
             allTags = formController.getAllTags();
         } catch (FormController.FormFetchException e) {
-            Log.e(TAG, "Error occurred while get all tags from local repository", e);
+            Log.e(getClass().getSimpleName(), "Error occurred while get all tags from local repository", e);
         }
-        List<Tag> selectedTags = new ArrayList<Tag>();
+        List<Tag> selectedTags = new ArrayList<>();
 
         if (selectedTagsInPref != null) {
             for (Tag tag : allTags) {

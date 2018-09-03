@@ -10,6 +10,7 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,31 +35,31 @@ import java.util.List;
  * @param <T> T is of type AvailableForm, FormWithData.
  */
 public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
-    private static final String TAG = "FormsAdapter";
-    protected FormController formController;
+    final FormController formController;
     protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
 
-    public FormsAdapter(Context context, int textViewResourceId, FormController formController) {
+    protected FormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId);
         this.formController = formController;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             convertView = layoutInflater.inflate(
                     getFormItemLayout(), parent, false);
             holder = new ViewHolder();
-            holder.name = (CheckedTextView) convertView.findViewById(R.id.form_name);
-            holder.description = (TextView) convertView.findViewById(R.id.form_description);
-            holder.savedTime = (TextView) convertView.findViewById(R.id.form_save_time);
-            holder.encounterDate = (TextView) convertView.findViewById(R.id.form_encounter_date);
-            holder.tagsScroller = (RelativeLayout) convertView.findViewById(R.id.tags_scroller);
-            holder.tagsLayout = (LinearLayout) convertView.findViewById(R.id.menu_tags);
-            holder.tags = new ArrayList<TextView>();
-            holder.downloadedImg = (ImageView) convertView.findViewById(R.id.downloadImg);
+            holder.name = convertView.findViewById(R.id.form_name);
+            holder.description = convertView.findViewById(R.id.form_description);
+            holder.savedTime = convertView.findViewById(R.id.form_save_time);
+            holder.encounterDate = convertView.findViewById(R.id.form_encounter_date);
+            holder.tagsScroller = convertView.findViewById(R.id.tags_scroller);
+            holder.tagsLayout = convertView.findViewById(R.id.menu_tags);
+            holder.tags = new ArrayList<>();
+            holder.downloadedImg = convertView.findViewById(R.id.downloadImg);
 
             convertView.setTag(holder);
         } else {
@@ -82,7 +83,7 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
         return convertView;
     }
 
-    protected int getFormItemLayout() {
+    int getFormItemLayout() {
         return R.layout.item_forms_list;
     }
 
@@ -95,7 +96,8 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
         return tags;
     }
 
-    protected static class ViewHolder {
+
+    static class ViewHolder {
         CheckedTextView name;
         ImageView downloadedImg;
         TextView description;
@@ -110,11 +112,11 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
             tagsLayout.addView(tag);
         }
 
-        public void removeTags(List<TextView> tagsToRemove) {
-            for (TextView tag : tagsToRemove) {
-                tagsLayout.removeView(tag);
-            }
-            tags.removeAll(tagsToRemove);
+        void removeTags(List<TextView> tagsToRemove) {
+                for (TextView tag : tagsToRemove) {
+                    tagsLayout.removeView(tag);
+                }
+                tags.removeAll(tagsToRemove);
         }
     }
 
@@ -132,7 +134,7 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
 
     public interface MuzimaClickListener {
 
-        boolean onItemLongClick();
+        void onItemLongClick();
 
         void onItemClick(int position);
     }

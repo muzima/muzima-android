@@ -19,7 +19,6 @@ import com.muzima.api.model.Patient;
 import com.muzima.view.patients.PatientSummaryActivity;
 
 public class PatientNotificationActivity extends NotificationActivityBase {
-    private static final String TAG = "PatientNotificationActivity";
     private Patient patient;
 
     @Override

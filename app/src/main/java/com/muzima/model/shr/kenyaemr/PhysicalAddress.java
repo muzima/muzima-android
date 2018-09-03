@@ -24,7 +24,7 @@ public class PhysicalAddress {
     @JsonProperty("NEAREST_LANDMARK")
     private String nearestLandmark;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<>();
 
     /**
      * No args constructor for use in serialization

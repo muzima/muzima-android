@@ -12,7 +12,6 @@ package com.muzima.view.patients;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -50,7 +49,6 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
     private PatientsRemoteSearchAdapter patientAdapter;
     private ListView listView;
     private String searchString;
-    private String[] patientUUIDs;
     private FrameLayout progressBarContainer;
     private Button createPatientBtn;
 
@@ -68,7 +66,7 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         if (intentExtras != null) {
             searchString = intentExtras.getString(SEARCH_STRING_BUNDLE_KEY);
         }
-        progressBarContainer = (FrameLayout) findViewById(R.id.progressbarContainer);
+        progressBarContainer = findViewById(R.id.progressbarContainer);
 
         setUpListView(searchString);
         setupNoDataView();
@@ -76,7 +74,7 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
     }
 
     private void setUpListView(String searchString) {
-        listView = (ListView) findViewById(R.id.remote_search_list);
+        listView = findViewById(R.id.remote_search_list);
         listView.setEmptyView(findViewById(R.id.no_data_layout));
         patientAdapter = new PatientsRemoteSearchAdapter(getApplicationContext(),
                 R.layout.activity_patient_remote_search_list,
@@ -97,16 +95,16 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
 
         noDataView = findViewById(R.id.no_data_layout);
 
-        TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
+        TextView noDataMsgTextView = findViewById(R.id.no_data_msg);
         noDataMsgTextView.setText(getResources().getText(R.string.info_client_remote_search_not_found));
 
-        TextView noDataTipTextView = (TextView) findViewById(R.id.no_data_tip);
+        TextView noDataTipTextView = findViewById(R.id.no_data_tip);
         noDataTipTextView.setText(R.string.hint_client_remote_search);
 
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
         noDataTipTextView.setTypeface(Fonts.roboto_light(this));
 
-        createPatientBtn = (Button) findViewById(R.id.create_patient_btn);
+        createPatientBtn = findViewById(R.id.create_patient_btn);
         createPatientBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,7 +123,7 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
     @Override
     public void onQueryTaskCancelled(){
         noDataView = findViewById(R.id.no_data_layout);
-        TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
+        TextView noDataMsgTextView = findViewById(R.id.no_data_msg);
         noDataMsgTextView.setText(getResources().getText(R.string.error_patient_search));
         createPatientBtn.setVisibility(INVISIBLE);
         noDataView.setVisibility(VISIBLE);
@@ -135,8 +133,8 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
     @Override
     public void onQueryTaskCancelled(Object errorDefinition){
         noDataView = findViewById(R.id.no_data_layout);
-        TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
-        TextView noDataTipTextView = (TextView) findViewById(R.id.no_data_tip);
+        TextView noDataMsgTextView = findViewById(R.id.no_data_msg);
+        TextView noDataTipTextView = findViewById(R.id.no_data_tip);
         createPatientBtn.setVisibility(INVISIBLE);
 
         if (errorDefinition instanceof SERVER_CONNECTIVITY_STATUS){
@@ -198,7 +196,7 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
     }
 
     private void downloadPatients() {
-        patientUUIDs = getSelectedPatientsUuid();
+        String[] patientUUIDs = getSelectedPatientsUuid();
         new PatientDownloadIntent(this, patientUUIDs).start();
     }
 
@@ -235,7 +233,7 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
     }
 
     private String[] getSelectedPatientsUuid() {
-        List<String> patientUUIDs = new ArrayList<String>();
+        List<String> patientUUIDs = new ArrayList<>();
         SparseBooleanArray checkedItemPositions = listView.getCheckedItemPositions();
         for (int i = 0; i < checkedItemPositions.size(); i++) {
             if (checkedItemPositions.valueAt(i)) {

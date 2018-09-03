@@ -23,7 +23,6 @@ import java.util.List;
  */
 public class AutoCompleteCohortPrefixAdapter extends AutoCompleteBaseAdapter<Cohort> {
 
-    private static final String TAG = AutoCompleteCohortPrefixAdapter.class.getSimpleName();
 
     public AutoCompleteCohortPrefixAdapter(Context context, int textViewResourceId, AutoCompleteTextView cohortPrefix) {
         super(context, textViewResourceId, cohortPrefix);
@@ -35,9 +34,9 @@ public class AutoCompleteCohortPrefixAdapter extends AutoCompleteBaseAdapter<Coh
         try {
             return cohortController.downloadCohortByName(constraint.toString());
         } catch (CohortController.CohortDownloadException e) {
-            Log.e(TAG, "Unable to download cohorts!", e);
+            Log.e(getClass().getSimpleName(), "Unable to download cohorts!", e);
         }
-        return new ArrayList<Cohort>();
+        return new ArrayList<>();
     }
 
     @Override

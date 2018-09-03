@@ -10,6 +10,7 @@
 package com.muzima.adapters.concept;
 
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,8 +30,7 @@ import java.util.List;
  * Responsible to display Concepts in the Settings page.
  */
 public class SelectedConceptAdapter extends ListAdapter<Concept> {
-    private final String TAG = SelectedConceptAdapter.class.getSimpleName();
-    protected ConceptController conceptController;
+    private final ConceptController conceptController;
 
     public SelectedConceptAdapter(ConceptPreferenceActivity context, int textViewResourceId, ConceptController conceptController) {
         super(context, textViewResourceId);
@@ -41,23 +41,24 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
         try {
             return conceptController.getConcepts().contains(selectedConcept);
         } catch (ConceptController.ConceptFetchException e) {
-            Log.e(TAG, "Error while loading concepts", e);
+            Log.e(getClass().getSimpleName(), "Error while loading concepts", e);
         }
         return false;
     }
 
     private class ViewHolder {
-        private CheckedTextView name;
-        private CheckedTextView synonyms;
+        private final CheckedTextView name;
+        private final CheckedTextView synonyms;
 
         private ViewHolder(View conceptView) {
-            name = (CheckedTextView) conceptView.findViewById(R.id.concept_name);
-            synonyms = (CheckedTextView) conceptView.findViewById(R.id.concept_synonyms);
+            name = conceptView.findViewById(R.id.concept_name);
+            synonyms = conceptView.findViewById(R.id.concept_synonyms);
         }
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
@@ -80,7 +81,7 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
         try {
             conceptController.deleteConcept(concept);
         } catch (ConceptController.ConceptDeleteException e) {
-            Log.e(TAG, "Error while deleting the concept", e);
+            Log.e(getClass().getSimpleName(), "Error while deleting the concept", e);
         }
     }
 
@@ -91,12 +92,12 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
             try {
                 conceptController.deleteConcepts(conceptsToDelete);
             } catch (ConceptController.ConceptDeleteException e) {
-                Log.e(TAG, "Error while deleting the concept", e);
+                Log.e(getClass().getSimpleName(), "Error while deleting the concept", e);
             }
             this.clear();
             this.addAll(allConcepts);
         } catch (ConceptController.ConceptFetchException e) {
-            Log.e(TAG, "Error while fetching the concept", e);
+            Log.e(getClass().getSimpleName(), "Error while fetching the concept", e);
         }
     }
 
@@ -108,7 +109,7 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
     /**
      * Responsible to save the concept into DB on selection from AutoComplete. And also fetches to Concepts from DB to display in the page.
      */
-    public class BackgroundSaveAndQueryTask extends AsyncTask<Concept, Void, List<Concept>> {
+    class BackgroundSaveAndQueryTask extends AsyncTask<Concept, Void, List<Concept>> {
 
         @Override
         protected List<Concept> doInBackground(Concept... concepts) {
@@ -125,9 +126,9 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
                 }
                 selectedConcepts = conceptController.getConcepts();
             } catch (ConceptController.ConceptSaveException e) {
-                Log.w(TAG, "Exception occurred while saving concept to local data repository!", e);
+                Log.w(getClass().getSimpleName(), "Exception occurred while saving concept to local data repository!", e);
             } catch (ConceptController.ConceptFetchException e) {
-                Log.w(TAG, "Exception occurred while fetching concepts from local data repository!", e);
+                Log.w(getClass().getSimpleName(), "Exception occurred while fetching concepts from local data repository!", e);
             }
             return selectedConcepts;
         }

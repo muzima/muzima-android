@@ -28,7 +28,7 @@ public class HIVTest {
     @JsonProperty("PROVIDER_DETAILS")
     private ProviderDetails providerDetails;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<>();
 
     /**
      * No args constructor for use in serialization
@@ -147,11 +147,9 @@ public class HIVTest {
     }
 
     public String toString(){
-        StringBuilder builder = new StringBuilder();
-        builder.append("DATE: " +getDate());
-        builder.append(", RESULT: " +getResult());
-        builder.append(", STRATEGY: " +getStrategy());
-        builder.append(", FACILITY: " +getFacility());
-        return builder.toString();
+        return "DATE: " + getDate() +
+                ", RESULT: " + getResult() +
+                ", STRATEGY: " + getStrategy() +
+                ", FACILITY: " + getFacility();
     }
 }

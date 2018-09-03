@@ -11,28 +11,29 @@
 package com.muzima.view.observations;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Toast;
 
 import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsByConceptAdapter;
+import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 
 public class ObservationsByConceptFragment extends ObservationsListFragment {
 
     private Boolean isShrData;
+    private Patient patient;
 
-    public static ObservationsByConceptFragment newInstance(ConceptController conceptController, ObservationController observationController,Boolean isShrData) {
+
+    public static ObservationsByConceptFragment newInstance(ConceptController conceptController, ObservationController observationController, Boolean isShrData, Patient patient) {
         ObservationsByConceptFragment f = new ObservationsByConceptFragment();
         f.observationController = observationController;
         f.conceptController = conceptController;
         f.isShrData = isShrData;
+        f.patient = patient;
         return f;
     }
 
@@ -42,7 +43,7 @@ public class ObservationsByConceptFragment extends ObservationsListFragment {
     public void onCreate(Bundle savedInstanceState) {
         if(listAdapter == null){
             listAdapter = new ObservationsByConceptAdapter(
-                    getActivity(), R.layout.item_observation_by_concept_list, conceptController, observationController,isShrData);
+                    getActivity(), R.layout.item_observation_by_concept_list, conceptController, observationController, isShrData, patient);
         }
         noDataMsg = getActivity().getResources().getString(R.string.info_observation_in_progress);
         super.onCreate(savedInstanceState);
@@ -50,8 +51,7 @@ public class ObservationsByConceptFragment extends ObservationsListFragment {
 
     @Override
     protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
-        View view = inflater.inflate(R.layout.layout_synced_list, container, false);
-        return view;
+        return inflater.inflate(R.layout.layout_synced_list, container, false);
     }
 
     @Override

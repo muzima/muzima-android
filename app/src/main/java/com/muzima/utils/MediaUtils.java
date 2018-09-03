@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MediaUtils {
-	private final static String TAG = "MediaUtils";
 
 	public static boolean folderExists(String path) {
 		boolean made = true;
@@ -67,8 +66,7 @@ public class MediaUtils {
 		// get bitmap with scale ( < 1 is the same as 1)
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inSampleSize = scale;
-		Bitmap b = BitmapFactory.decodeFile(f.getAbsolutePath(), options);
-		return b;
+        return BitmapFactory.decodeFile(f.getAbsolutePath(), options);
 	}
 
 	/**
@@ -98,12 +96,11 @@ public class MediaUtils {
 	 */
 	public Bitmap getBitmapFromString(String jsonString) {
 		byte[] decodedString = Base64.decode(jsonString, Base64.DEFAULT);
-		Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0,
-				decodedString.length);
-		return decodedByte;
+        return BitmapFactory.decodeByteArray(decodedString, 0,
+                decodedString.length);
 	}
 
-    public static boolean copyFile(File sourceFile, File destFile) {
+    public static void copyFile(File sourceFile, File destFile) {
         if (sourceFile.exists()) {
             FileChannel src;
             try {
@@ -112,15 +109,13 @@ public class MediaUtils {
                 dst.transferFrom(src, 0, src.size());
                 src.close();
                 dst.close();
-                return true;
             } catch (FileNotFoundException e) {
-                Log.e(TAG, "FileNotFoundException while copying file", e);
+                Log.e("Media Utils", "FileNotFoundException while copying file", e);
             } catch (IOException e) {
-                Log.e(TAG, "IOException while copying file", e);
+                Log.e("Media Utils", "IOException while copying file", e);
             }
         } else
-            Log.e(TAG, "Source file does not exist: " + sourceFile.getAbsolutePath());
-        return false;
+            Log.e("Media Utils", "Source file does not exist: " + sourceFile.getAbsolutePath());
     }
 
     public static void deleteImage(Context context, String imageUri) {
@@ -136,14 +131,14 @@ public class MediaUtils {
             c.moveToFirst();
             String id = c.getString(c.getColumnIndex(MediaStore.Images.ImageColumns._ID));
 
-            Log.i(TAG,"attempting to delete: " + Uri.withAppendedPath(
+            Log.i("Media Utils","attempting to delete: " + Uri.withAppendedPath(
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id));
             del = context.getContentResolver().delete(Uri.withAppendedPath(
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id), null, null);
         }
         c.close();
 
-        Log.i(TAG, "Deleted " + del + " rows from media content provider");
+        Log.i("Media Utils", "Deleted " + del + " rows from media content provider");
     }
 
     public static int deleteVideoFileFromMediaProvider(Context context, String videoFile) {
@@ -160,7 +155,7 @@ public class MediaUtils {
                     projection, select, selectArgs, null);
             if (videoCursor.getCount() > 0) {
                 videoCursor.moveToFirst();
-                List<Uri> videoToDelete = new ArrayList<Uri>();
+                List<Uri> videoToDelete = new ArrayList<>();
                 do {
                     String id = videoCursor.getString(videoCursor
                             .getColumnIndex(MediaStore.Video.VideoColumns._ID));
@@ -170,12 +165,12 @@ public class MediaUtils {
                 } while ( videoCursor.moveToNext());
 
                 for ( Uri uri : videoToDelete ) {
-                    Log.i(TAG,"attempting to delete: " + uri );
+                    Log.i("Media Utils","attempting to delete: " + uri );
                     count += cr.delete(uri, null, null);
                 }
             }
         } catch ( Exception e ) {
-            Log.e(TAG, e.toString());
+            Log.e("Media Utils", e.toString());
         } finally {
             if ( videoCursor != null )
                 videoCursor.close();
@@ -202,7 +197,7 @@ public class MediaUtils {
                     projection, select, selectArgs, null);
             if (audioCursor.getCount() > 0) {
                 audioCursor.moveToFirst();
-                List<Uri> audioToDelete = new ArrayList<Uri>();
+                List<Uri> audioToDelete = new ArrayList<>();
                 do {
                     String id = audioCursor.getString(audioCursor.getColumnIndex(MediaStore.Audio.AudioColumns._ID));
 
@@ -211,12 +206,12 @@ public class MediaUtils {
                 } while ( audioCursor.moveToNext());
 
                 for ( Uri uri : audioToDelete ) {
-                    Log.i(TAG,"attempting to delete: " + uri );
+                    Log.i("Media Utils","attempting to delete: " + uri );
                     count += cr.delete(uri, null, null);
                 }
             }
         } catch ( Exception e ) {
-            Log.e(TAG, e.toString(), e);
+            Log.e("Media Utils", e.toString(), e);
         } finally {
             if ( audioCursor != null )
                 audioCursor.close();

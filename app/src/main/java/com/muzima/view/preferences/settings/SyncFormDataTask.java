@@ -20,9 +20,9 @@ import com.muzima.service.MuzimaSyncService;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
-public class SyncFormDataTask extends AsyncTask<String, Void, Boolean> {
-    private SettingsPreferenceFragment settingsPreferenceFragment;
-    private MuzimaSyncService muzimaSyncService;
+class SyncFormDataTask extends AsyncTask<String, Void, Boolean> {
+    private final SettingsPreferenceFragment settingsPreferenceFragment;
+    private final MuzimaSyncService muzimaSyncService;
     private ProgressDialog progressDialog;
 
     public SyncFormDataTask(SettingsPreferenceFragment settingsPreferenceFragment) {

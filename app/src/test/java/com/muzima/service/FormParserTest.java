@@ -10,40 +10,7 @@
 
 package com.muzima.service;
 
-import com.muzima.api.model.Concept;
-import com.muzima.api.model.Encounter;
-import com.muzima.api.model.EncounterType;
-import com.muzima.api.model.Location;
-import com.muzima.api.model.Observation;
-import com.muzima.api.model.Patient;
-import com.muzima.api.model.Person;
-import com.muzima.controller.ConceptController;
-import com.muzima.controller.EncounterController;
-import com.muzima.controller.ObservationController;
-import com.muzima.controller.PatientController;
-import com.muzima.utils.DateUtils;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.xmlpull.mxp1.MXParser;
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.ParseException;
-import java.util.List;
-import java.util.Scanner;
-
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.matchers.JUnitMatchers.containsString;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
-
-public class FormParserTest {
+class FormParserTest {
 //
 //    private FormParser formParser;
 //    private String formDataUuid;

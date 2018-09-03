@@ -32,13 +32,12 @@ import java.text.ParseException;
 import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_REGISTRATION;
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
 
-public class FormDataStore {
-    private static final String TAG = "FormDataStore";
+class FormDataStore {
 
-    private FormWebViewActivity formWebViewActivity;
-    private FormController formController;
-    private FormData formData;
-    private MuzimaApplication applicationContext;
+    private final FormWebViewActivity formWebViewActivity;
+    private final FormController formController;
+    private final FormData formData;
+    private final MuzimaApplication applicationContext;
 
     public FormDataStore(FormWebViewActivity formWebViewActivity, FormController formController, FormData formData) {
         this.formWebViewActivity = formWebViewActivity;
@@ -64,31 +63,31 @@ public class FormDataStore {
             formWebViewActivity.finish();
         } catch (FormController.FormDataSaveException e) {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_save), Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Exception occurred while saving form data", e);
+            Log.e(getClass().getSimpleName(), "Exception occurred while saving form data", e);
         } catch (ConceptController.ConceptSaveException e) {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observation_form_save), Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Exception occurred while saving a concept parsed from the form data", e);
+            Log.e(getClass().getSimpleName(), "Exception occurred while saving a concept parsed from the form data", e);
         } catch (ObservationController.ParseObservationException e) {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observation_form_save), Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Exception occurred while saving an observation parsed from the form data", e);
+            Log.e(getClass().getSimpleName(), "Exception occurred while saving an observation parsed from the form data", e);
         } catch (ConceptController.ConceptParseException e) {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_concept_parse), Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Exception occurred while parsing a concept parsed from the form data", e);
+            Log.e(getClass().getSimpleName(), "Exception occurred while parsing a concept parsed from the form data", e);
         } catch (ParseException e) {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observation_form_save), Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Exception occurred while parsing the xml payload", e);
+            Log.e(getClass().getSimpleName(), "Exception occurred while parsing the xml payload", e);
         } catch (XmlPullParserException e) {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observation_form_save), Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Exception occurred while exploring the xml payload", e);
+            Log.e(getClass().getSimpleName(), "Exception occurred while exploring the xml payload", e);
         } catch (PatientController.PatientLoadException e) {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observation_form_save), Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Exception occurred while loading a patient parsed from the form data", e);
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading a patient parsed from the form data", e);
         } catch (ConceptController.ConceptFetchException e) {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_observation_form_save), Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Exception occurred while fetching a concept parsed from the form data", e);
+            Log.e(getClass().getSimpleName(), "Exception occurred while fetching a concept parsed from the form data", e);
         } catch (IOException e) {
             Toast.makeText(formWebViewActivity,formWebViewActivity.getString(R.string.error_observation_form_save), Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "IOException occurred while saving observations parsed from the form data", e);
+            Log.e(getClass().getSimpleName(), "IOException occurred while saving observations parsed from the form data", e);
         }
     }
 
@@ -103,7 +102,7 @@ public class FormDataStore {
         formParser.parseAndSaveObservations(xmlData,formData.getUuid());
     }
 
-    public FormParser getFormParser() {
+    FormParser getFormParser() {
         return new FormParser(applicationContext);
     }
 
@@ -127,7 +126,7 @@ public class FormDataStore {
         formWebViewActivity.showProgressBar("Saving...");
     }
 
-    public boolean isRegistrationForm() {
+    private boolean isRegistrationForm() {
         return (formData.getDiscriminator() != null) && formData.getDiscriminator().equals(FORM_DISCRIMINATOR_REGISTRATION);
     }
 }

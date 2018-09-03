@@ -15,14 +15,13 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.Concepts;
 
-import java.io.IOException;
 import java.util.List;
 
-public class ConceptsBySearch extends ConceptAction {
-    private String patientUuid;
-    private String term;
-    private ObservationController controller;
-    private ConceptController conceptController;
+class ConceptsBySearch extends ConceptAction {
+    private final String patientUuid;
+    private final String term;
+    private final ObservationController controller;
+    private final ConceptController conceptController;
 
     public ConceptsBySearch(ConceptController conceptController, ObservationController controller, String patientUuid, String term) {
         this.controller = controller;
