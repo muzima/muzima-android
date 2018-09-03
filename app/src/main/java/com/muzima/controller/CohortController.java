@@ -26,6 +26,7 @@ import java.util.List;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS;
 import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS_DATA;
+import static com.muzima.api.model.APIName.DOWNLOAD_REMOVED_COHORTS_DATA;
 
 public class CohortController {
     private static final String TAG = "CohortController";
@@ -76,11 +77,31 @@ public class CohortController {
         return allCohortData;
     }
 
+    public List<CohortData> downloadRemovedCohortData(String[] cohortUuids) throws CohortDownloadException {
+        ArrayList<CohortData> allCohortData = new ArrayList<CohortData>();
+        for (String cohortUuid : cohortUuids) {
+            allCohortData.add(downloadCohortDataByUuid(cohortUuid));
+        }
+        return allCohortData;
+    }
+
     public CohortData downloadCohortDataByUuid(String uuid) throws CohortDownloadException {
         try {
             Date lastSyncDate = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS_DATA, uuid);
             CohortData cohortData = cohortService.downloadCohortDataAndSyncDate(uuid, false, lastSyncDate);
             LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS_DATA, sntpService.getLocalTime(), uuid);
+            lastSyncTimeService.saveLastSyncTime(lastSyncTime);
+            return cohortData;
+        } catch (IOException e) {
+            throw new CohortDownloadException(e);
+        }
+    }
+
+    public CohortData downloadRemovedCohortDataByUuid(String uuid) throws CohortDownloadException {
+        try {
+            Date lastSyncDate = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_REMOVED_COHORTS_DATA, uuid);
+            CohortData cohortData = cohortService.downloadRemovedStaticCohortMemberByCohortUuidAndSyncDate(uuid, lastSyncDate);
+            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_REMOVED_COHORTS_DATA, sntpService.getLocalTime(), uuid);
             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             return cohortData;
         } catch (IOException e) {
@@ -219,7 +240,7 @@ public class CohortController {
         return getSyncedCohorts().size();
     }
 
-    public void deleteCohortMembers(String cohortUuid) throws CohortReplaceException {
+    public void deleteAllCohortMembers(String cohortUuid) throws CohortReplaceException {
         try {
             cohortService.deleteCohortMembers(cohortUuid);
         } catch (IOException e) {
@@ -257,9 +278,17 @@ public class CohortController {
         }
     }
 
-    public void deleteCohortMembers(List<Cohort> allCohorts) throws CohortReplaceException {
+    public void deleteAllCohortMembers(List<Cohort> allCohorts) throws CohortReplaceException {
         for (Cohort cohort : allCohorts) {
-            deleteCohortMembers(cohort.getUuid());
+            deleteAllCohortMembers(cohort.getUuid());
+        }
+    }
+
+    public void deleteCohortMembers(List<CohortMember> cohortMembers) throws CohortDeleteException {
+        try {
+            cohortService.deleteCohortMembers(cohortMembers);
+        } catch (IOException e) {
+            throw new CohortDeleteException(e);
         }
     }
 

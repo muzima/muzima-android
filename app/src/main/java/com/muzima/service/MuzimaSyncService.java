@@ -437,6 +437,41 @@ public class MuzimaSyncService {
         return voidedCohorts;
     }
 
+    public int[] downloadRemovedCohortMembershipData(String[] cohortUuids){
+        int[] result = new int[4];
+
+        int patientCount = 0;
+        try {
+            long startDownloadCohortData = System.currentTimeMillis();
+
+            List<CohortData> cohortDataList = cohortController.downloadRemovedCohortData(cohortUuids);
+
+            long endDownloadCohortData = System.currentTimeMillis();
+            Log.i(TAG, "Cohort data download successful with " + cohortDataList.size() + " cohorts");
+
+            for (CohortData cohortData : cohortDataList) {
+                cohortController.deleteCohortMembers(cohortData.getCohortMembers());
+            }
+            long cohortMemberAndPatientReplaceTime = System.currentTimeMillis();
+
+            Log.i(TAG, "Cohort data replaced");
+            Log.i(TAG, "Patients downloaded " + patientCount);
+            Log.d(TAG, "In Downloading cohort data: " + (endDownloadCohortData - startDownloadCohortData) / 1000 + " sec\n" +
+                    "In Replacing cohort members and patients: " + (cohortMemberAndPatientReplaceTime - endDownloadCohortData) / 1000 + " sec");
+
+            result[0] = SUCCESS;
+            result[1] = patientCount;
+            result[2] = cohortDataList.size();
+        } catch (CohortController.CohortDownloadException e) {
+            Log.e(TAG, "Exception thrown while downloading cohort data.", e);
+            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+        } catch (CohortController.CohortDeleteException e) {
+            Log.e(TAG, "Exception thrown while replacing cohort data.", e);
+            result[0] = SyncStatusConstants.REPLACE_ERROR;
+        }
+        return result;
+    }
+
     public int[] downloadPatientsForCohorts(String[] cohortUuids) {
         int[] result = new int[4];
 
@@ -470,6 +505,9 @@ public class MuzimaSyncService {
             result[1] = patientCount;
             result[2] = cohortDataList.size();
             result[3] = voidedPatients.size();
+
+            //update memberships
+            downloadRemovedCohortMembershipData(cohortUuids);
 
             //download cohorts to obtain updated metadata
             downloadCohorts(cohortUuids);
