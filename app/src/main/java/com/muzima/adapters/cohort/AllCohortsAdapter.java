@@ -66,7 +66,7 @@ public class AllCohortsAdapter extends CohortsAdapter {
         View view = super.getView(position, convertView, parent);
         ViewHolder holder = (ViewHolder) view.getTag();
         Cohort cohort = getItem(position);
-        if(cohortController.isUpdateAvailable(cohort)){
+        if(cohortController.isDownloaded(cohort) && cohortController.isUpdateAvailable(cohort)){
             holder.displayPendingUpdateImage();
             holder.hideDownloadImage();
         } else if (cohortController.isDownloaded(cohort)) {

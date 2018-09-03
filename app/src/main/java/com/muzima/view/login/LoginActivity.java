@@ -39,7 +39,6 @@ import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.util.MuzimaLogger;
 import com.muzima.utils.StringUtils;
-import com.muzima.view.MainActivity;
 import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
 
 import java.util.Locale;
@@ -238,7 +237,7 @@ public class LoginActivity extends Activity {
 
                 //Cohort Wizard activity
                 application.getPatientController().deleteAllPatients();
-                application.getCohortController().deleteCohortMembers(application.getCohortController().getAllCohorts());
+                application.getCohortController().deleteAllCohortMembers(application.getCohortController().getAllCohorts());
                 application.getCohortController().deleteAllCohorts();
                 context.getLastSyncTimeService().deleteAll();
 
