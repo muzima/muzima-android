@@ -49,7 +49,7 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
 
         String formSaveTime = null;
         if(form.getLastModifiedDate() != null){
-            SimpleDateFormat dateFormat = new SimpleDateFormat("STANDARD_DATE_FORMAT HH:mm:ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat(STANDARD_DATE_FORMAT.concat(" HH:mm:ss"));
             formSaveTime = dateFormat.format(form.getLastModifiedDate());
         }
 

@@ -90,11 +90,10 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    private void saveHTML(String jsonPayload, String status, boolean keepFormOpen) {
+    public void saveHTML(String jsonPayload, String status, boolean keepFormOpen) {
         jsonPayload = injectUserSystemIdToEncounterPayload(jsonPayload);
         formData.setJsonPayload(jsonPayload);
         formData.setStatus(status);
-
         boolean encounterDetailsValidityStatus = true;
         try {
             if(status.equals("complete")) {
@@ -115,7 +114,6 @@ class HTMLFormDataStore {
                     formData.setEncounterDate(encounterDate);
                     formController.saveFormData(formData);
                     formWebViewActivity.setResult(FormsActivity.RESULT_OK);
-                    Log.i(getClass().getSimpleName(), "Saving form data ...");
                     if (!keepFormOpen) {
                         formWebViewActivity.finish();
                         if (status.equals("complete")) {
@@ -198,7 +196,7 @@ class HTMLFormDataStore {
         getFormParser().createAndPersistObservations(jsonPayload, formData.getUuid());
     }
 
-    private Date getEncounterDateFromForm(String jsonPayload){
+    public Date getEncounterDateFromForm(String jsonPayload){
         return getFormParser().getEncounterDateFromFormDate(jsonPayload);
     }
 
@@ -211,7 +209,7 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    private String getStringResource(String stringResourceName){
+    public String getStringResource(String stringResourceName){
         Context context = formWebViewActivity.getBaseContext();
         return context.getString(context.getResources().getIdentifier(stringResourceName, "string",context.getPackageName()));
     }
