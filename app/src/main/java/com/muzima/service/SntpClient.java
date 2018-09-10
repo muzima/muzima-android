@@ -41,7 +41,7 @@ class SntpClient
     private static final int NTP_MODE_CLIENT = 3;
     private static final int NTP_VERSION = 3;
 
-    private static int transmit_time_offset = 40;
+    private static final int TRANSMIT_TIME_OFFSET = 40;
 
     // Number of seconds between Jan 1, 1900 and Jan 1, 1970
     // 70 years plus 17 leap days
@@ -80,7 +80,7 @@ class SntpClient
             // get current time and write it to the request packet
             long requestTime = System.currentTimeMillis();
             long requestTicks = SystemClock.elapsedRealtime();
-            writeTimeStamp(buffer, requestTime);
+            writeTimeStamp(buffer, TRANSMIT_TIME_OFFSET, requestTime);
 
             socket.send(request);
 
@@ -93,7 +93,7 @@ class SntpClient
             // extract the results
             long originateTime = readTimeStamp(buffer, ORIGINATE_TIME_OFFSET);
             long receiveTime = readTimeStamp(buffer, RECEIVE_TIME_OFFSET);
-            long transmitTime = readTimeStamp(buffer, transmit_time_offset);
+            long transmitTime = readTimeStamp(buffer, TRANSMIT_TIME_OFFSET);
             long roundTripTime = responseTicks - requestTicks - (transmitTime - receiveTime);
             // receiveTime = originateTime + transit + skew
             // responseTime = transmitTime + transit - skew
@@ -184,26 +184,27 @@ class SntpClient
      * Writes system time (milliseconds since January 1, 1970) as an NTP time stamp 
      * at the given offset in the buffer.
      */    
-    private void writeTimeStamp(byte[] buffer, long time) {
+    private void writeTimeStamp(byte[] buffer, int offset, long time) {
 
         long seconds = time / 1000L;
         long milliseconds = time - seconds * 1000L;
         seconds += OFFSET_1900_TO_1970;
 
         // write seconds in big endian format
-        buffer[SntpClient.transmit_time_offset++] = (byte)(seconds >> 24);
-        buffer[SntpClient.transmit_time_offset++] = (byte)(seconds >> 16);
-        buffer[SntpClient.transmit_time_offset++] = (byte)(seconds >> 8);
-        buffer[SntpClient.transmit_time_offset++] = (byte)(seconds >> 0);
+        Log.e(getClass().getSimpleName(),"SntpClient.transmit_time_offset "+offset);
+        buffer[offset++] = (byte)(seconds >> 24);
+        buffer[offset++] = (byte)(seconds >> 16);
+        buffer[offset++] = (byte)(seconds >> 8);
+        buffer[offset++] = (byte)(seconds >> 0);
 
         long fraction = milliseconds * 0x100000000L / 1000L;
 
         // write fraction in big endian format
-        buffer[SntpClient.transmit_time_offset++] = (byte)(fraction >> 24);
-        buffer[SntpClient.transmit_time_offset++] = (byte)(fraction >> 16);
-        buffer[SntpClient.transmit_time_offset++] = (byte)(fraction >> 8);
+        buffer[offset++] = (byte)(fraction >> 24);
+        buffer[offset++] = (byte)(fraction >> 16);
+        buffer[offset++] = (byte)(fraction >> 8);
 
         // low order bits should be random data
-        buffer[SntpClient.transmit_time_offset++] = (byte)(Math.random() * 255.0);
+        buffer[offset++] = (byte)(Math.random() * 255.0);
     }
 }
