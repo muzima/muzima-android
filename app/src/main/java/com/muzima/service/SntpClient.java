@@ -191,7 +191,6 @@ class SntpClient
         seconds += OFFSET_1900_TO_1970;
 
         // write seconds in big endian format
-        Log.e(getClass().getSimpleName(),"SntpClient.transmit_time_offset "+offset);
         buffer[offset++] = (byte)(seconds >> 24);
         buffer[offset++] = (byte)(seconds >> 16);
         buffer[offset++] = (byte)(seconds >> 8);
