@@ -438,7 +438,6 @@ public class MuzimaSyncService {
             long startDownloadCohortData = System.currentTimeMillis();
 
             List<CohortData> cohortDataList = cohortController.downloadRemovedCohortData(cohortUuids);
-            System.out.println("In : downloadRemovedCohortMembershipData: Downloaded "+cohortDataList.size());
 
             long endDownloadCohortData = System.currentTimeMillis();
             Log.i(getClass().getSimpleName(), "Removed member cohort data download successful with " + cohortDataList.size() + " cohorts");
