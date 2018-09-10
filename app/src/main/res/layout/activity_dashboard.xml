@@ -61,7 +61,7 @@
                             android:layout_alignParentRight="true"
                             android:src="@drawable/pending_update"
                             android:tint="#990000"
-                            android:visibility="visible"
+                            android:visibility="gone"
                             android:contentDescription="@string/info_downloaded_image"/>
 
                     <TextView

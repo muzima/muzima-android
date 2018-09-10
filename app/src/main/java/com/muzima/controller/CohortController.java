@@ -77,9 +77,9 @@ public class CohortController {
     }
 
     public List<CohortData> downloadRemovedCohortData(String[] cohortUuids) throws CohortDownloadException {
-        ArrayList<CohortData> allCohortData = new ArrayList<CohortData>();
+        ArrayList<CohortData> allCohortData = new ArrayList();
         for (String cohortUuid : cohortUuids) {
-            allCohortData.add(downloadCohortDataByUuid(cohortUuid));
+            allCohortData.add(downloadRemovedCohortDataByUuid(cohortUuid));
         }
         return allCohortData;
     }
@@ -218,17 +218,9 @@ public class CohortController {
         }
     }
 
-    public boolean isUpdateAvailable(Cohort cohort) {
-        try {
-            return cohortService.countCohortMembers(cohort.getUuid()) !=  cohort.getSize();
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
     public boolean isUpdateAvailable() throws CohortFetchException {
             for(Cohort cohort: getAllCohorts()){
-                if(isUpdateAvailable(cohort)){
+                if(cohort.isUpdated()){
                     return true;
                 }
             }
@@ -249,12 +241,20 @@ public class CohortController {
     }
 
     public void addCohortMembers(List<CohortMember> cohortMembers) throws CohortReplaceException {
-        try {
+        try {for(CohortMember m: cohortMembers)
             cohortService.saveCohortMembers(cohortMembers);
         } catch (IOException e) {
             throw new CohortReplaceException(e);
         }
 
+    }
+
+    public int countCohortMembers(Cohort cohort) throws CohortFetchException {
+        try {
+            return cohortService.countCohortMembers(cohort);
+        } catch (IOException e) {
+            throw new CohortFetchException(e);
+        }
     }
 
     public List<Cohort> downloadCohortByName(String name) throws CohortDownloadException {
@@ -285,6 +285,8 @@ public class CohortController {
 
     public void deleteCohortMembers(List<CohortMember> cohortMembers) throws CohortDeleteException {
         try {
+            for(CohortMember m: cohortMembers)
+                System.out.println("Deleting cohort member: "+m.getPatientUuid());
             cohortService.deleteCohortMembers(cohortMembers);
         } catch (IOException e) {
             throw new CohortDeleteException(e);
