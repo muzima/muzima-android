@@ -424,7 +424,7 @@ public class MuzimaSyncService {
         Log.i(getClass().getSimpleName(), "Voided cohorts are deleted");
         List<Cohort> voidedCohorts = new ArrayList<>();
         for (Cohort cohort : cohorts) {
-            if (cohort.isVoided()) {
+            if (cohort != null && cohort.isVoided()) {
                 voidedCohorts.add(cohort);
             }
         }
@@ -434,29 +434,26 @@ public class MuzimaSyncService {
 
     public int[] downloadRemovedCohortMembershipData(String[] cohortUuids){
         int[] result = new int[4];
-
-        int patientCount = 0;
         try {
             long startDownloadCohortData = System.currentTimeMillis();
 
             List<CohortData> cohortDataList = cohortController.downloadRemovedCohortData(cohortUuids);
+            System.out.println("In : downloadRemovedCohortMembershipData: Downloaded "+cohortDataList.size());
 
             long endDownloadCohortData = System.currentTimeMillis();
-            Log.i(getClass().getSimpleName(), "Cohort data download successful with " + cohortDataList.size() + " cohorts");
+            Log.i(getClass().getSimpleName(), "Removed member cohort data download successful with " + cohortDataList.size() + " cohorts");
 
             for (CohortData cohortData : cohortDataList) {
                 cohortController.deleteCohortMembers(cohortData.getCohortMembers());
             }
             long cohortMemberAndPatientReplaceTime = System.currentTimeMillis();
 
-            Log.i(getClass().getSimpleName(), "Cohort data replaced");
-            Log.i(getClass().getSimpleName(), "Patients downloaded " + patientCount);
+            Log.i(getClass().getSimpleName(), "Cohort data deleted");
             Log.d(getClass().getSimpleName(), "In Downloading cohort data: " + (endDownloadCohortData - startDownloadCohortData) / 1000 + " sec\n" +
-                    "In Replacing cohort members and patients: " + (cohortMemberAndPatientReplaceTime - endDownloadCohortData) / 1000 + " sec");
+                    "In Deleting cohort members: " + (cohortMemberAndPatientReplaceTime - endDownloadCohortData) / 1000 + " sec");
 
             result[0] = SUCCESS;
-            result[1] = patientCount;
-            result[2] = cohortDataList.size();
+            result[1] = cohortDataList.size();
         } catch (CohortController.CohortDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while downloading cohort data.", e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
@@ -466,6 +463,10 @@ public class MuzimaSyncService {
         }
         return result;
     }
+/*
+    public void downloadCohortStatusForDownloadedCohorts(){
+        List<Cohort> syncedCohorts = cohortController.getSyncedCohorts();
+    }*/
 
     public int[] downloadPatientsForCohorts(String[] cohortUuids) {
         int[] result = new int[4];
@@ -929,6 +930,10 @@ public class MuzimaSyncService {
             return result;
         }*/
         return result;
+    }
+
+    public void downloadCohortUpdateStatus(){
+
     }
 
     public void downloadSetupConfigurations(){

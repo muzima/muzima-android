@@ -11,7 +11,11 @@ package com.muzima.adapters.cohort;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.api.model.Cohort;
@@ -26,6 +30,22 @@ public class SyncedCohortsAdapter extends CohortsAdapter{
 
     public SyncedCohortsAdapter(Context context, int textViewResourceId, CohortController cohortController) {
         super(context, textViewResourceId, cohortController);
+    }
+
+    @NonNull
+    @Override
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+        convertView = super.getView(position,convertView,parent);
+        ViewHolder holder = (ViewHolder) convertView.getTag();
+
+        int cohortSize = 0;
+        try {
+            cohortSize = cohortController.countCohortMembers(getItem(position));
+        } catch (CohortController.CohortFetchException e) {
+            Log.e(getClass().getSimpleName(), "Could not count cohort members",e);
+        }
+        holder.setTextToName(getItem(position).getName() + "("+cohortSize+ ")");
+        return convertView;
     }
 
     @Override
