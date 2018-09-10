@@ -286,7 +286,6 @@ public class CohortController {
     public void deleteCohortMembers(List<CohortMember> cohortMembers) throws CohortDeleteException {
         try {
             for(CohortMember m: cohortMembers)
-                System.out.println("Deleting cohort member: "+m.getPatientUuid());
             cohortService.deleteCohortMembers(cohortMembers);
         } catch (IOException e) {
             throw new CohortDeleteException(e);
