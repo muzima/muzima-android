@@ -514,5 +514,12 @@
 
     <string name="write_SHR_to_card_text">Andika SHR kwa Kadi</string>
     <string name="number_hashtag_representation">##</string>
-
+    <string name="error_empty_message_text">Hauwezi kutuma ujumbe usio wazi.</string>
+    <string name="write_shr_to_card_text">Andika SHR kwa Kadi</string>
+    <string name="shr_registration">Usajili wa SHR</string>
+    <string name="shr_registration_description">Data ya Usajili wa SHR</string>
+    <string name="individual_obs">Uchunguzi wa kibinafsi</string>
+    <string name="individual_obs_description">Uchunguzi wa kibinafsi</string>
+    <string name="hint_enable_shr">Wezesha kipengele cha kadi erevu</string>
+    <string name="title_enable_shr">Wezesha SHR</string>
 </resources>
