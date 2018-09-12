@@ -131,7 +131,7 @@ public class MuzimaSyncService {
             return SyncStatusConstants.INVALID_CREDENTIALS_ERROR;
         } catch (IllegalArgumentException e) {
             Log.e(getClass().getSimpleName(),"IllegalArgumentException Exception thrown while authenticating.",e);
-            return 0;
+            return SyncStatusConstants.UNKNOWN_ERROR;
         }finally {
             if (muzimaContext != null)
                 muzimaContext.closeSession();
