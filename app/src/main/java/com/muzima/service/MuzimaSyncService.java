@@ -129,7 +129,10 @@ public class MuzimaSyncService {
         } catch (AuthenticationException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while authentication.", e);
             return SyncStatusConstants.INVALID_CREDENTIALS_ERROR;
-        } finally {
+        } catch (IllegalArgumentException e) {
+            Log.e(getClass().getSimpleName(),"IllegalArgumentException Exception thrown while authenticating.",e);
+            return SyncStatusConstants.UNKNOWN_ERROR;
+        }finally {
             if (muzimaContext != null)
                 muzimaContext.closeSession();
         }
