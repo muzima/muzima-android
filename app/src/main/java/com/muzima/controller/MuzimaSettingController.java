@@ -118,7 +118,7 @@ public class MuzimaSettingController {
     }
 
     public Boolean isSHREnabled(){
-        boolean enableSHR = true;
+        boolean enableSHR = false;
         try {
             MuzimaSetting muzimaSHRStatus = getSettingByProperty(SHR_STATUS_SETTING);
             enableSHR = muzimaSHRStatus.getValueBoolean();
