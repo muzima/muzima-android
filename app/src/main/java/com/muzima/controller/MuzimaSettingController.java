@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
-import static com.muzima.util.Constants.ServerSettings.SHR_STATUS_SETTING;
+import static com.muzima.util.Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTING;
 
 public class MuzimaSettingController {
     private final MuzimaSettingService settingService;
@@ -120,7 +120,7 @@ public class MuzimaSettingController {
     public Boolean isSHREnabled(){
         boolean enableSHR = false;
         try {
-            MuzimaSetting muzimaSHRStatus = getSettingByProperty(SHR_STATUS_SETTING);
+            MuzimaSetting muzimaSHRStatus = getSettingByProperty(SHR_FEATURE_ENABLED_SETTING);
             enableSHR = muzimaSHRStatus.getValueBoolean();
         } catch (MuzimaSettingFetchException e){
             Log.e(getClass().getSimpleName(), "Could not fetch requireMedicalRecordNumber setting. ", e);
