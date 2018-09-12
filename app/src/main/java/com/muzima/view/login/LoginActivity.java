@@ -315,6 +315,8 @@ public class LoginActivity extends Activity {
                     return getString(R.string.error_local_connection_unavailable);
                 case SyncStatusConstants.SERVER_CONNECTION_ERROR:
                     return getString(R.string.error_server_connection_unavailable);
+                case SyncStatusConstants.UNKNOWN_ERROR:
+                    return getString(R.string.error_authentication_fail);
                 default:
                     return getString(R.string.error_authentication_fail);
             }
