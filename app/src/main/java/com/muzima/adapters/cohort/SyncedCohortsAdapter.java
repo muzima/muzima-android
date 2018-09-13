@@ -39,12 +39,19 @@ public class SyncedCohortsAdapter extends CohortsAdapter{
         ViewHolder holder = (ViewHolder) convertView.getTag();
 
         int cohortSize = 0;
+        Cohort cohort = getItem(position);
         try {
-            cohortSize = cohortController.countCohortMembers(getItem(position));
+            cohortSize = cohortController.countCohortMembers(cohort);
         } catch (CohortController.CohortFetchException e) {
             Log.e(getClass().getSimpleName(), "Could not count cohort members",e);
         }
-        holder.setTextToName(getItem(position).getName() + "("+cohortSize+ ")");
+        holder.setTextToName(cohort.getName() + "("+cohortSize+ ")");
+
+        if(cohort.isUpdateAvailable()){
+            holder.setPendingUpdateTextColor();
+        } else {
+            holder.setDefaultTextColor();
+        }
         return convertView;
     }
 

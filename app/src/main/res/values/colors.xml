@@ -12,6 +12,7 @@
 <resources>
     <color name="primary_color">#105b63</color>
     <color name="primary_blue">#12A5F4</color>
+    <color name="primary_white">#FFFFFF</color>
     <color name="hint_text_grey">#888888</color>
     <color name="primary_black">#000000</color>
     <color name="theme_color">#333333</color>
@@ -40,6 +41,7 @@
     <color name="login_noConnectivity_background">#962d3e</color>
     <color name="login_authenticating_background">#12A5F4</color>
     <color name="error_text_color">#ffaf6267</color>
+    <color name="pending_resource_update_color">#990000</color>
 
 
 </resources>

@@ -125,6 +125,8 @@ public class MuzimaJobScheduler extends JobService {
         protected Void doInBackground(Void... voids) {
             if (new WizardFinishPreferenceService(MuzimaJobScheduler.this).isWizardFinished()) {
                 muzimaSynService.downloadCohorts();
+                muzimaSynService.updateCohortsWithUpdatesAvailable();
+
             }
             return null;
         }
@@ -132,6 +134,27 @@ public class MuzimaJobScheduler extends JobService {
         @Override
         protected void onPreExecute() {
             Log.e(getClass().getSimpleName(), "Updating cohort metadata");
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    private class FormDataUploadBackgroundTask extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            if (new WizardFinishPreferenceService(MuzimaJobScheduler.this).isWizardFinished()) {
+                RealTimeFormUploader.getInstance().uploadAllCompletedForms(MuzimaJobScheduler.this);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            Log.e(getClass().getSimpleName(), "Uploading completed forms");
             super.onPreExecute();
         }
 

@@ -219,12 +219,22 @@ public class CohortController {
     }
 
     public boolean isUpdateAvailable() throws CohortFetchException {
-            for(Cohort cohort: getAllCohorts()){
-                if(cohort.isUpdated()){
-                    return true;
-                }
+        for(Cohort cohort: getAllCohorts()){
+            if(cohort.isUpdateAvailable()){
+                return true;
             }
+        }
         return false;
+    }
+
+    public List<Cohort> getCohortsWithPendingUpdates() throws CohortFetchException {
+        List<Cohort> cohortList = new ArrayList<>();
+        for(Cohort cohort: getAllCohorts()){
+            if(cohort.isUpdateAvailable()){
+                cohortList.add(cohort);
+            }
+        }
+        return cohortList;
     }
 
     public int countSyncedCohorts() throws CohortFetchException {
@@ -241,7 +251,7 @@ public class CohortController {
     }
 
     public void addCohortMembers(List<CohortMember> cohortMembers) throws CohortReplaceException {
-        try {for(CohortMember m: cohortMembers)
+        try {
             cohortService.saveCohortMembers(cohortMembers);
         } catch (IOException e) {
             throw new CohortReplaceException(e);
@@ -285,7 +295,6 @@ public class CohortController {
 
     public void deleteCohortMembers(List<CohortMember> cohortMembers) throws CohortDeleteException {
         try {
-            for(CohortMember m: cohortMembers)
             cohortService.deleteCohortMembers(cohortMembers);
         } catch (IOException e) {
             throw new CohortDeleteException(e);

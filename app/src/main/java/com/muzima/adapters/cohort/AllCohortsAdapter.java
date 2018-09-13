@@ -67,15 +67,19 @@ public class AllCohortsAdapter extends CohortsAdapter {
         View view = super.getView(position, convertView, parent);
         ViewHolder holder = (ViewHolder) view.getTag();
         Cohort cohort = getItem(position);
-        if(cohortController.isDownloaded(cohort) && cohort.isUpdated()){
+
+        if(cohortController.isDownloaded(cohort) && cohort.isUpdateAvailable()){
             holder.displayPendingUpdateImage();
             holder.hideDownloadImage();
+            holder.setPendingUpdateTextColor();
         } else if (cohortController.isDownloaded(cohort)) {
             holder.displayDownloadImage();
             holder.hidePendingUpdateImage();
+            holder.setDefaultTextColor();
         } else {
             holder.hideDownloadImage();
             holder.hidePendingUpdateImage();
+            holder.setDefaultTextColor();
         }
         highlightCohorts(cohort,view);
         return view;
