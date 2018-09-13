@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import com.muzima.MuzimaApplication;
+import com.muzima.R;
 import com.muzima.controller.FormController;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.forms.RealTimeUploadFormIntent;
@@ -32,7 +33,7 @@ public class RealTimeFormUploader {
 
     public  void uploadAllCompletedForms(android.content.Context applicationContext){
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
-        if(preferences.getBoolean("realTimeSyncPreference", false)){
+        if(preferences.getBoolean(applicationContext.getResources().getString(R.string.preference_real_time_sync), false)){
             uploadAllFormsInBackgroundService(applicationContext);
         }
     }

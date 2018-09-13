@@ -24,8 +24,6 @@ public abstract class MuzimaPagerAdapter extends FragmentPagerAdapter{
         super(fm);
         this.context = context;
         initPagerViews();
-
-
     }
 
 

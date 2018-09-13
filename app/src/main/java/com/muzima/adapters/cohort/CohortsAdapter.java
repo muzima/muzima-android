@@ -11,6 +11,7 @@ package com.muzima.adapters.cohort;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,5 +88,13 @@ public abstract class CohortsAdapter extends ListAdapter<Cohort> {
             name.setText(text);
             name.setTypeface(Fonts.roboto_medium(getContext()));
         }
+
+         void setPendingUpdateTextColor(){
+             name.setTextColor(ContextCompat.getColor(getContext(),R.color.pending_resource_update_color));
+         }
+
+         void setDefaultTextColor(){
+             name.setTextColor(ContextCompat.getColor(getContext(),R.color.primary_white));
+         }
     }
 }
