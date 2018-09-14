@@ -38,9 +38,6 @@ public class MuzimaJobScheduleBuilder {
                 public void run() {
                     if (!isJobAlreadyScheduled(context)) {
                         handleScheduledPeriodicDataSyncJob();
-                        Log.e(getClass().getSimpleName(), "============Background task is scheduled=============");
-                    } else {
-                        Log.e(getClass().getSimpleName(), "There is already a background service running.");
                     }
                 }
             };
@@ -69,7 +66,6 @@ public class MuzimaJobScheduleBuilder {
         ComponentName componentName = new ComponentName(context, MuzimaJobScheduler.class);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
 
-            int resultCode = JobScheduler.RESULT_FAILURE;
             JobInfo mUzimaJobInfo;
 
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
@@ -89,15 +85,8 @@ public class MuzimaJobScheduleBuilder {
 
             JobScheduler jobScheduler = (JobScheduler) context.getSystemService(JOB_SCHEDULER_SERVICE);
             if (jobScheduler != null) {
-                resultCode = jobScheduler.schedule(mUzimaJobInfo);
-                Log.e(getClass().getSimpleName(),"============Background task is scheduled level 2=============");
-
+                jobScheduler.schedule(mUzimaJobInfo);
             }
-
-            if (resultCode == JobScheduler.RESULT_SUCCESS)
-                Log.e(getClass().getSimpleName(),"============Background task is scheduled resultCode success=============");
-            else
-                Log.e(getClass().getSimpleName(),"============Background task is scheduled failed =============");
         }
 
     }
