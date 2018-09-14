@@ -363,7 +363,7 @@ class HTMLFormDataStore {
                     Date encounterDate = formData.getEncounterDate( );
                     String formDataUuid = formData.getTemplateUuid( );
 
-                    final String dateFormat = STANDARD_DATE_FORMAT;
+                    final String dateFormat = "dd-MM-yyyy";
 
                     SimpleDateFormat newDateFormat = new SimpleDateFormat("dd-MM-yy HH:mm:ss");
                     Date d = null;

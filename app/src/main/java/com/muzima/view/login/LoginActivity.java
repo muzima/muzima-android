@@ -38,6 +38,7 @@ import com.muzima.service.LandingPagePreferenceService;
 import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
+import com.muzima.service.SHRStatusPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.util.MuzimaLogger;
 import com.muzima.utils.StringUtils;
@@ -315,6 +316,8 @@ public class LoginActivity extends Activity {
                     return getString(R.string.error_local_connection_unavailable);
                 case SyncStatusConstants.SERVER_CONNECTION_ERROR:
                     return getString(R.string.error_server_connection_unavailable);
+                case SyncStatusConstants.UNKNOWN_ERROR:
+                    return getString(R.string.error_authentication_fail);
                 default:
                     return getString(R.string.error_authentication_fail);
             }
@@ -368,6 +371,8 @@ public class LoginActivity extends Activity {
         protected void onPostExecute(int[] result) {
             new RequireMedicalRecordNumberPreferenceService((MuzimaApplication) getApplicationContext())
                     .saveRequireMedicalRecordNumberPreference();
+
+            new SHRStatusPreferenceService((MuzimaApplication) getApplicationContext()).saveSHRStatusPreference();
         }
     }
 
