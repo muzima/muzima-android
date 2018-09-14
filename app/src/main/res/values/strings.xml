@@ -713,5 +713,6 @@
     <string name="individual_obs_description">Individual Obs</string>
     <string name="general_update">Update</string>
     <string name="info_cohort_update">Some cohorts have changed.</string>
-
+    <string name="hint_enable_shr">Enable smart card feature</string>
+    <string name="title_enable_shr">Enable SHR</string>
 </resources>
