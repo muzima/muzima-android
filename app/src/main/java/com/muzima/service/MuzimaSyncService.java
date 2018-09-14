@@ -429,9 +429,10 @@ public class MuzimaSyncService {
             List<Cohort> cohortList = cohortController.getCohortsWithPendingUpdates();
             if(cohortList.size() > 0) {
                 String[] cohortUuids = new String[cohortList.size()];
-                int i = 0;
+                int index = 0;
                 for(Cohort cohort:cohortList){
-                    cohortUuids[i] = cohort.getUuid();
+                    cohortUuids[index] = cohort.getUuid();
+                    index++;
                 }
                 return downloadPatientsForCohorts(cohortUuids);
             } else {
@@ -459,21 +460,11 @@ public class MuzimaSyncService {
     public int[] downloadRemovedCohortMembershipData(String[] cohortUuids){
         int[] result = new int[4];
         try {
-            long startDownloadCohortData = System.currentTimeMillis();
-
             List<CohortData> cohortDataList = cohortController.downloadRemovedCohortData(cohortUuids);
-
-            long endDownloadCohortData = System.currentTimeMillis();
-            Log.i(getClass().getSimpleName(), "Removed member cohort data download successful with " + cohortDataList.size() + " cohorts");
 
             for (CohortData cohortData : cohortDataList) {
                 cohortController.deleteCohortMembers(cohortData.getCohortMembers());
             }
-            long cohortMemberAndPatientReplaceTime = System.currentTimeMillis();
-
-            Log.i(getClass().getSimpleName(), "Cohort data deleted");
-            Log.d(getClass().getSimpleName(), "In Downloading cohort data: " + (endDownloadCohortData - startDownloadCohortData) / 1000 + " sec\n" +
-                    "In Deleting cohort members: " + (cohortMemberAndPatientReplaceTime - endDownloadCohortData) / 1000 + " sec");
 
             result[0] = SUCCESS;
             result[1] = cohortDataList.size();

@@ -56,7 +56,7 @@ public class MuzimaJobScheduler extends JobService {
 
         }else {
             isAuthPerson = false;
-            Log.e(getClass().getSimpleName(), "Authenticated user is not a person");
+            Log.i(getClass().getSimpleName(), "Authenticated user is not a person");
         }
     }
 
@@ -74,7 +74,7 @@ public class MuzimaJobScheduler extends JobService {
 
     @Override
     public boolean onStopJob(JobParameters params) {
-        Log.e(getClass().getSimpleName(), "mUzima Job Service stopped" + params.getJobId());
+        Log.i(getClass().getSimpleName(), "mUzima Job Service stopped" + params.getJobId());
         return false;
     }
 
@@ -97,6 +97,7 @@ public class MuzimaJobScheduler extends JobService {
         } else {
             new NotificationDownloadBackgroundTask().execute();
             new CohortUpdateBackgroundTask().execute();
+            new FormDataUploadBackgroundTask().execute();
         }
     }
 
@@ -106,12 +107,6 @@ public class MuzimaJobScheduler extends JobService {
         protected Void doInBackground(Void... voids) {
             muzimaSynService.downloadNotifications(authenticatedUserUuid);
             return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            Log.e(getClass().getSimpleName(), "Downloading messages in Job");
-            super.onPreExecute();
         }
 
         @Override
@@ -132,12 +127,6 @@ public class MuzimaJobScheduler extends JobService {
         }
 
         @Override
-        protected void onPreExecute() {
-            Log.e(getClass().getSimpleName(), "Updating cohort metadata");
-            super.onPreExecute();
-        }
-
-        @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
         }
@@ -150,12 +139,6 @@ public class MuzimaJobScheduler extends JobService {
                 RealTimeFormUploader.getInstance().uploadAllCompletedForms(MuzimaJobScheduler.this);
             }
             return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            Log.e(getClass().getSimpleName(), "Uploading completed forms");
-            super.onPreExecute();
         }
 
         @Override
