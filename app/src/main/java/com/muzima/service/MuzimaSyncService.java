@@ -374,8 +374,7 @@ public class MuzimaSyncService {
             List<Cohort> cohorts = downloadCohortsList();
             List<Cohort> voidedCohorts = deleteVoidedCohorts(cohorts);
             cohorts.removeAll(voidedCohorts);
-
-            cohortController.saveAllCohorts(cohorts);
+            cohortController.saveOrUpdateCohorts(cohorts);
             Log.i(getClass().getSimpleName(), "New cohorts are saved");
             result[0] = SUCCESS;
             result[1] = cohorts.size();
@@ -396,16 +395,87 @@ public class MuzimaSyncService {
         return result;
     }
 
+    public int[] downloadCohorts(String[] cohortUuids) {
+        int[] result = new int[3];
+        try {
+            List<Cohort> cohorts = cohortController.downloadCohortsByUuidList(cohortUuids);
+            List<Cohort> voidedCohorts = deleteVoidedCohorts(cohorts);
+            cohorts.removeAll(voidedCohorts);
+
+            cohortController.saveOrUpdateCohorts(cohorts);
+            Log.i(getClass().getSimpleName(), "New cohorts are saved");
+            result[0] = SUCCESS;
+            result[1] = cohorts.size();
+            result[2] = voidedCohorts.size();
+        } catch (CohortController.CohortDownloadException e) {
+            Log.e(getClass().getSimpleName(), "Exception when trying to download cohorts", e);
+            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            return result;
+        } catch (CohortController.CohortSaveException e) {
+            Log.e(getClass().getSimpleName(), "Exception when trying to save cohorts", e);
+            result[0] = SyncStatusConstants.SAVE_ERROR;
+            return result;
+        } catch (CohortController.CohortDeleteException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while deleting voided cohorts", e);
+            result[0] = SyncStatusConstants.DELETE_ERROR;
+            return result;
+        }
+        return result;
+    }
+
+    public int[] updateCohortsWithUpdatesAvailable(){
+        int[] result = new int[3];
+        try {
+            List<Cohort> cohortList = cohortController.getCohortsWithPendingUpdates();
+            if(cohortList.size() > 0) {
+                String[] cohortUuids = new String[cohortList.size()];
+                int index = 0;
+                for(Cohort cohort:cohortList){
+                    cohortUuids[index] = cohort.getUuid();
+                    index++;
+                }
+                return downloadPatientsForCohorts(cohortUuids);
+            } else {
+                result[0] = SyncStatusConstants.CANCELLED;
+            }
+        } catch (CohortController.CohortFetchException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while downloading cohort data.", e);
+            result[0] = SyncStatusConstants.LOAD_ERROR;
+        }
+        return result;
+    }
+
     private List<Cohort> deleteVoidedCohorts(List<Cohort> cohorts) throws CohortController.CohortDeleteException {
         Log.i(getClass().getSimpleName(), "Voided cohorts are deleted");
         List<Cohort> voidedCohorts = new ArrayList<>();
         for (Cohort cohort : cohorts) {
-            if (cohort.isVoided()) {
+            if (cohort != null && cohort.isVoided()) {
                 voidedCohorts.add(cohort);
             }
         }
         cohortController.deleteCohorts(voidedCohorts);
         return voidedCohorts;
+    }
+
+    public int[] downloadRemovedCohortMembershipData(String[] cohortUuids){
+        int[] result = new int[4];
+        try {
+            List<CohortData> cohortDataList = cohortController.downloadRemovedCohortData(cohortUuids);
+
+            for (CohortData cohortData : cohortDataList) {
+                cohortController.deleteCohortMembers(cohortData.getCohortMembers());
+            }
+
+            result[0] = SUCCESS;
+            result[1] = cohortDataList.size();
+        } catch (CohortController.CohortDownloadException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while downloading cohort data.", e);
+            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+        } catch (CohortController.CohortDeleteException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while replacing cohort data.", e);
+            result[0] = SyncStatusConstants.REPLACE_ERROR;
+        }
+        return result;
     }
 
     public int[] downloadPatientsForCohorts(String[] cohortUuids) {
@@ -441,6 +511,11 @@ public class MuzimaSyncService {
             result[1] = patientCount;
             result[2] = cohortDataList.size();
             result[3] = voidedPatients.size();
+
+            //update memberships
+            downloadRemovedCohortMembershipData(cohortUuids);
+
+            cohortController.markAsUpToDate(cohortUuids);
         } catch (CohortController.CohortDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while downloading cohort data.", e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
@@ -453,6 +528,9 @@ public class MuzimaSyncService {
         } catch (PatientController.PatientDeleteException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while deleting patients.", e);
             result[0] = SyncStatusConstants.DELETE_ERROR;
+        } catch (CohortController.CohortUpdateException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while marking cohorts as updated.", e);
+            result[0] = SyncStatusConstants.SAVE_ERROR;
         }
         return result;
     }
@@ -846,23 +924,11 @@ public class MuzimaSyncService {
             Log.e(getClass().getSimpleName(), "Exception when trying to download notifications", e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
-        } /*catch (NotificationController.NotificationDeleteException e) {
-            Log.e(getClass().getSimpleName(), "Exception occurred while deleting existing notifications", e);
-            result[0] = SyncStatusConstants.DELETE_ERROR;
-            return result;
-        } catch (NotificationController.NotificationFetchException e) {
-            Log.e(getClass().getSimpleName(), "Exception occurred while fetching existing notifications", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
-            return result;
-        }*/ catch (NotificationController.NotificationSaveException e) {
+        } catch (NotificationController.NotificationSaveException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to save notifications", e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
             return result;
-        } /*catch (ParseException e) {
-            Log.e(getClass().getSimpleName(), "Exception when trying to download notifications", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
-            return result;
-        }*/
+        }
         return result;
     }
 

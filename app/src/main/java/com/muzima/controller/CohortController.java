@@ -26,6 +26,7 @@ import java.util.List;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS;
 import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS_DATA;
+import static com.muzima.api.model.APIName.DOWNLOAD_REMOVED_COHORTS_DATA;
 
 public class CohortController {
     private final CohortService cohortService;
@@ -75,11 +76,31 @@ public class CohortController {
         return allCohortData;
     }
 
+    public List<CohortData> downloadRemovedCohortData(String[] cohortUuids) throws CohortDownloadException {
+        ArrayList<CohortData> allCohortData = new ArrayList();
+        for (String cohortUuid : cohortUuids) {
+            allCohortData.add(downloadRemovedCohortDataByUuid(cohortUuid));
+        }
+        return allCohortData;
+    }
+
     public CohortData downloadCohortDataByUuid(String uuid) throws CohortDownloadException {
         try {
             Date lastSyncDate = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS_DATA, uuid);
             CohortData cohortData = cohortService.downloadCohortDataAndSyncDate(uuid, false, lastSyncDate);
             LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS_DATA, sntpService.getLocalTime(), uuid);
+            lastSyncTimeService.saveLastSyncTime(lastSyncTime);
+            return cohortData;
+        } catch (IOException e) {
+            throw new CohortDownloadException(e);
+        }
+    }
+
+    public CohortData downloadRemovedCohortDataByUuid(String uuid) throws CohortDownloadException {
+        try {
+            Date lastSyncDate = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_REMOVED_COHORTS_DATA, uuid);
+            CohortData cohortData = cohortService.downloadRemovedStaticCohortMemberByCohortUuidAndSyncDate(uuid, lastSyncDate);
+            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_REMOVED_COHORTS_DATA, sntpService.getLocalTime(), uuid);
             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             return cohortData;
         } catch (IOException e) {
@@ -139,7 +160,20 @@ public class CohortController {
         } catch (IOException e) {
             throw new CohortSaveException(e);
         }
+    }
 
+    public void saveOrUpdateCohorts(List<Cohort> cohorts) throws CohortSaveException {
+        try {
+            for(Cohort cohort:cohorts){
+                if(StringUtils.isEmpty(cohort.getUuid())){
+                    cohortService.saveCohort(cohort);
+                } else {
+                    cohortService.updateCohort(cohort);
+                }
+            }
+        } catch (IOException e) {
+            throw new CohortSaveException(e);
+        }
     }
 
     public void deleteAllCohorts() throws CohortDeleteException {
@@ -183,11 +217,47 @@ public class CohortController {
         }
     }
 
+    public boolean isUpdateAvailable() throws CohortFetchException {
+        for(Cohort cohort: getAllCohorts()){
+            if(cohort.isUpdateAvailable()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<Cohort> getCohortsWithPendingUpdates() throws CohortFetchException {
+        List<Cohort> cohortList = new ArrayList<>();
+        for(Cohort cohort: getAllCohorts()){
+            if(cohort.isUpdateAvailable()){
+                cohortList.add(cohort);
+            }
+        }
+        return cohortList;
+    }
+
+
+    public void markAsUpToDate(String[] cohortUuids) throws CohortUpdateException {
+        ArrayList<CohortData> allCohortData = new ArrayList<>();
+
+        try {
+            for (String cohortUuid : cohortUuids) {
+                Cohort cohort = cohortService.getCohortByUuid(cohortUuid);
+                if (cohort != null) {
+                    cohort.setUpdateAvailable(false);
+                    cohortService.updateCohort(cohort);
+                }
+            }
+        } catch (IOException e){
+            throw new CohortUpdateException(e);
+        }
+    }
+
     public int countSyncedCohorts() throws CohortFetchException {
         return getSyncedCohorts().size();
     }
 
-    private void deleteCohortMembers(String cohortUuid) throws CohortReplaceException {
+    public void deleteAllCohortMembers(String cohortUuid) throws CohortReplaceException {
         try {
             cohortService.deleteCohortMembers(cohortUuid);
         } catch (IOException e) {
@@ -205,6 +275,14 @@ public class CohortController {
 
     }
 
+    public int countCohortMembers(Cohort cohort) throws CohortFetchException {
+        try {
+            return cohortService.countCohortMembers(cohort);
+        } catch (IOException e) {
+            throw new CohortFetchException(e);
+        }
+    }
+
     public List<Cohort> downloadCohortByName(String name) throws CohortDownloadException {
         try {
             return cohortService.downloadCohortsByName(name);
@@ -213,9 +291,29 @@ public class CohortController {
         }
     }
 
-    public void deleteCohortMembers(List<Cohort> allCohorts) throws CohortReplaceException {
+    public List<Cohort> downloadCohortsByUuidList(String[] uuidList) throws CohortDownloadException {
+        try {
+            List<Cohort> cohortList = new ArrayList<>();
+            for(String uuid:uuidList){
+                cohortList.add(cohortService.downloadCohortByUuid(uuid));
+            }
+            return cohortList;
+        } catch (IOException e) {
+            throw new CohortDownloadException(e);
+        }
+    }
+
+    public void deleteAllCohortMembers(List<Cohort> allCohorts) throws CohortReplaceException {
         for (Cohort cohort : allCohorts) {
-            deleteCohortMembers(cohort.getUuid());
+            deleteAllCohortMembers(cohort.getUuid());
+        }
+    }
+
+    public void deleteCohortMembers(List<CohortMember> cohortMembers) throws CohortDeleteException {
+        try {
+            cohortService.deleteCohortMembers(cohortMembers);
+        } catch (IOException e) {
+            throw new CohortDeleteException(e);
         }
     }
 
@@ -245,6 +343,12 @@ public class CohortController {
 
     public static class CohortReplaceException extends Throwable {
         public CohortReplaceException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+
+    public static class CohortUpdateException extends Throwable {
+        public CohortUpdateException(Throwable throwable) {
             super(throwable);
         }
     }
