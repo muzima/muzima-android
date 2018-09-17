@@ -135,8 +135,8 @@ public class MuzimaJobScheduler extends JobService {
     private class FormDataUploadBackgroundTask extends AsyncTask<Void,Void,Void> {
         @Override
         protected Void doInBackground(Void... voids) {
-            if (new WizardFinishPreferenceService(MuzimaJobScheduler.this).isWizardFinished()) {
-                RealTimeFormUploader.getInstance().uploadAllCompletedForms(MuzimaJobScheduler.this);
+            if (new WizardFinishPreferenceService(getApplicationContext()).isWizardFinished()) {
+                RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext());
             }
             return null;
         }

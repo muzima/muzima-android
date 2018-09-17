@@ -164,7 +164,13 @@ public class CohortController {
 
     public void saveOrUpdateCohorts(List<Cohort> cohorts) throws CohortSaveException {
         try {
-            cohortService.saveCohorts(cohorts);
+            for(Cohort cohort:cohorts){
+                if(StringUtils.isEmpty(cohort.getUuid())){
+                    cohortService.saveCohort(cohort);
+                } else {
+                    cohortService.updateCohort(cohort);
+                }
+            }
         } catch (IOException e) {
             throw new CohortSaveException(e);
         }
