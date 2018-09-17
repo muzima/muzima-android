@@ -54,6 +54,16 @@
                         android:gravity="left"
                         android:text="@string/general_cohorts"/>
 
+                    <ImageView
+                            android:id="@+id/pendingUpdateImg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:src="@drawable/pending_update"
+                            android:tint="#990000"
+                            android:visibility="gone"
+                            android:contentDescription="@string/info_downloaded_image"/>
+
                     <TextView
                         android:id="@+id/cohortDescription"
                         style="@style/DashboardItemDescription"

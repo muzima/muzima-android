@@ -4,12 +4,16 @@ import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.muzima.MuzimaApplication;
+import com.muzima.R;
 
 import static android.content.Context.JOB_SCHEDULER_SERVICE;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.MuzimaJobSchedularConstants.MESSAGE_SYNC_JOB_ID;
@@ -26,15 +30,19 @@ public class MuzimaJobScheduleBuilder {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void schedulePeriodicBackgroundJob(){
-        if (!isJobAlreadyScheduled(context)){
-            handleScheduledPeriodicDataSyncJob();
-            Log.e(getClass().getSimpleName(),"============Background task is scheduled=============");
-        }else{
-            cancelPeriodicBackgroundDataSyncJob();
-            schedulePeriodicBackgroundJob();
-            Log.e(getClass().getSimpleName(),"There is already a background service running.");
-
+    public void schedulePeriodicBackgroundJob(int delay){
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if(preferences.getBoolean(context.getResources().getString(R.string.preference_real_time_sync), false)) {
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (!isJobAlreadyScheduled(context)) {
+                        handleScheduledPeriodicDataSyncJob();
+                    }
+                }
+            };
+            Handler handler = new Handler();
+            handler.postDelayed(runnable, delay);
         }
     }
 
@@ -58,7 +66,6 @@ public class MuzimaJobScheduleBuilder {
         ComponentName componentName = new ComponentName(context, MuzimaJobScheduler.class);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
 
-            int resultCode = JobScheduler.RESULT_FAILURE;
             JobInfo mUzimaJobInfo;
 
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
@@ -78,15 +85,8 @@ public class MuzimaJobScheduleBuilder {
 
             JobScheduler jobScheduler = (JobScheduler) context.getSystemService(JOB_SCHEDULER_SERVICE);
             if (jobScheduler != null) {
-                resultCode = jobScheduler.schedule(mUzimaJobInfo);
-                Log.e(getClass().getSimpleName(),"============Background task is scheduled level 2=============");
-
+                jobScheduler.schedule(mUzimaJobInfo);
             }
-
-            if (resultCode == JobScheduler.RESULT_SUCCESS)
-                Log.e(getClass().getSimpleName(),"============Background task is scheduled resultCode success=============");
-            else
-                Log.e(getClass().getSimpleName(),"============Background task is scheduled failed =============");
         }
 
     }
