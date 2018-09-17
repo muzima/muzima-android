@@ -373,7 +373,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadPatientsForCohorts_shouldDownloadAndReplaceCohortMembersAndPatients() throws CohortController.CohortDownloadException, CohortController.CohortReplaceException, PatientController.PatientSaveException {
+    public void downloadPatientsForCohorts_shouldDownloadAndReplaceCohortMembersAndPatients() throws CohortController.CohortDownloadException, CohortController.CohortReplaceException, PatientController.PatientSaveException, CohortController.CohortUpdateException {
         String[] cohortUuids = new String[]{"uuid1", "uuid2"};
         List<CohortData> cohortDataList = new ArrayList<CohortData>() {{
             add(new CohortData() {{
@@ -395,6 +395,7 @@ public class MuzimaSyncServiceTest {
         verify(cohortController).addCohortMembers(cohortDataList.get(0).getCohortMembers());
         verify(cohortController).addCohortMembers(cohortDataList.get(1).getCohortMembers());
         verify(cohortController).downloadRemovedCohortData(cohortUuids);
+        verify(cohortController).markAsUpToDate(cohortUuids);
         verify(patientController).replacePatients(cohortDataList.get(0).getPatients());
         verify(patientController).replacePatients(cohortDataList.get(1).getPatients());
         verifyNoMoreInteractions(cohortController);

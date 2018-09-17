@@ -514,6 +514,8 @@ public class MuzimaSyncService {
 
             //update memberships
             downloadRemovedCohortMembershipData(cohortUuids);
+
+            cohortController.markAsUpToDate(cohortUuids);
         } catch (CohortController.CohortDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while downloading cohort data.", e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
@@ -526,6 +528,9 @@ public class MuzimaSyncService {
         } catch (PatientController.PatientDeleteException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while deleting patients.", e);
             result[0] = SyncStatusConstants.DELETE_ERROR;
+        } catch (CohortController.CohortUpdateException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while marking cohorts as updated.", e);
+            result[0] = SyncStatusConstants.SAVE_ERROR;
         }
         return result;
     }

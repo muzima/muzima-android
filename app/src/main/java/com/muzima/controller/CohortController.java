@@ -236,6 +236,23 @@ public class CohortController {
         return cohortList;
     }
 
+
+    public void markAsUpToDate(String[] cohortUuids) throws CohortUpdateException {
+        ArrayList<CohortData> allCohortData = new ArrayList<>();
+
+        try {
+            for (String cohortUuid : cohortUuids) {
+                Cohort cohort = cohortService.getCohortByUuid(cohortUuid);
+                if (cohort != null) {
+                    cohort.setUpdateAvailable(false);
+                    cohortService.updateCohort(cohort);
+                }
+            }
+        } catch (IOException e){
+            throw new CohortUpdateException(e);
+        }
+    }
+
     public int countSyncedCohorts() throws CohortFetchException {
         return getSyncedCohorts().size();
     }
@@ -326,6 +343,12 @@ public class CohortController {
 
     public static class CohortReplaceException extends Throwable {
         public CohortReplaceException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+
+    public static class CohortUpdateException extends Throwable {
+        public CohortUpdateException(Throwable throwable) {
             super(throwable);
         }
     }
