@@ -8,6 +8,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.widget.Toast;
 
 public class MuzimaLocationService {
 
@@ -26,10 +27,8 @@ public class MuzimaLocationService {
 
         if (ActivityCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        }else {
-
-        }
-
+        }else
+            Toast.makeText(this.context,"Unable to obtain gps location, permission denied",Toast.LENGTH_SHORT).show();
         return location;
     }
 
