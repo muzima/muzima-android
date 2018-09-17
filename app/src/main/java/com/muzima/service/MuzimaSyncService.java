@@ -514,9 +514,6 @@ public class MuzimaSyncService {
 
             //update memberships
             downloadRemovedCohortMembershipData(cohortUuids);
-
-            //download cohorts to obtain updated metadata
-            downloadCohorts(cohortUuids);
         } catch (CohortController.CohortDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while downloading cohort data.", e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;

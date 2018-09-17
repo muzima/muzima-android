@@ -295,7 +295,7 @@ public class MuzimaSyncServiceTest {
         muzimaSyncService.downloadCohorts();
 
         verify(cohortController).downloadAllCohorts();
-        verify(cohortController).saveAllCohorts(cohorts);
+        verify(cohortController).saveOrUpdateCohorts(cohorts);
         verify(cohortController).deleteCohorts(new ArrayList<Cohort>());
         verifyNoMoreInteractions(cohortController);
     }
@@ -316,7 +316,7 @@ public class MuzimaSyncServiceTest {
 
         muzimaSyncService.downloadCohorts();
         verify(cohortController).deleteCohorts(Collections.singletonList(voidedCohort));
-        verify(cohortController).saveAllCohorts(Collections.singletonList(aCohort));
+        verify(cohortController).saveOrUpdateCohorts(Collections.singletonList(aCohort));
     }
 
     @Test
@@ -334,7 +334,7 @@ public class MuzimaSyncServiceTest {
         muzimaSyncService.downloadCohorts();
 
         verify(cohortController).downloadCohortsByPrefix(cohortPrefixes);
-        verify(cohortController).saveAllCohorts(cohorts);
+        verify(cohortController).saveOrUpdateCohorts(cohorts);
         verify(cohortController).deleteCohorts(new ArrayList<Cohort>());
         verifyNoMoreInteractions(cohortController);
     }
@@ -367,7 +367,7 @@ public class MuzimaSyncServiceTest {
     public void downloadCohort_shouldReturnSaveErrorIfSaveExceptionOccurs() throws CohortController.CohortSaveException {
         when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
         when(sharedPref.getStringSet(Constants.COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
-        doThrow(new CohortController.CohortSaveException(null)).when(cohortController).saveAllCohorts(new ArrayList<Cohort>());
+        doThrow(new CohortController.CohortSaveException(null)).when(cohortController).saveOrUpdateCohorts(new ArrayList<Cohort>());
 
         assertThat(muzimaSyncService.downloadCohorts()[0], is(SyncStatusConstants.SAVE_ERROR));
     }
@@ -387,12 +387,14 @@ public class MuzimaSyncServiceTest {
         }};
 
         when(cohortController.downloadCohortData(cohortUuids)).thenReturn(cohortDataList);
+        when(cohortController.downloadRemovedCohortData(cohortUuids)).thenReturn(new ArrayList<CohortData>());
 
         muzimaSyncService.downloadPatientsForCohorts(cohortUuids);
 
         verify(cohortController).downloadCohortData(cohortUuids);
         verify(cohortController).addCohortMembers(cohortDataList.get(0).getCohortMembers());
         verify(cohortController).addCohortMembers(cohortDataList.get(1).getCohortMembers());
+        verify(cohortController).downloadRemovedCohortData(cohortUuids);
         verify(patientController).replacePatients(cohortDataList.get(0).getPatients());
         verify(patientController).replacePatients(cohortDataList.get(1).getPatients());
         verifyNoMoreInteractions(cohortController);
