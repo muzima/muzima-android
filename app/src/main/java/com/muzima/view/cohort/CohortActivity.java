@@ -150,4 +150,8 @@ public class CohortActivity extends BroadcastListenerActivity {
         showProgressBar();
         new SyncCohortsIntent(this).start();
     }
+
+    public void setCurrentView(int position){
+        viewPager.setCurrentItem(position);
+    }
 }
