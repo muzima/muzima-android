@@ -236,7 +236,7 @@ public class LoginActivity extends Activity {
 
                 //Cohort Wizard activity
                 application.getPatientController().deleteAllPatients();
-                application.getCohortController().deleteCohortMembers(application.getCohortController().getAllCohorts());
+                application.getCohortController().deleteAllCohortMembers(application.getCohortController().getAllCohorts());
                 application.getCohortController().deleteAllCohorts();
                 context.getLastSyncTimeService().deleteAll();
 
@@ -288,7 +288,8 @@ public class LoginActivity extends Activity {
                 downloadMissingServerSettings();
                 MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getApplicationContext());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob();
+                    //delay for 10 seconds to allow next UI activity to finish loading
+                    muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob(10000);
                 }
 
                 startNextActivity();

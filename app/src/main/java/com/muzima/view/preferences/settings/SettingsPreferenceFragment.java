@@ -15,6 +15,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
@@ -27,6 +28,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Location;
 import com.muzima.controller.LocationController;
+import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
@@ -120,7 +122,12 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 if (realTimeSyncPreference.isChecked()) {
-                    RealTimeFormUploader.getInstance().uploadAllCompletedForms(getActivity().getApplicationContext());
+                    MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getActivity().getApplicationContext());
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob(0);
+                    } else {
+                        RealTimeFormUploader.getInstance().uploadAllCompletedForms(getActivity().getApplicationContext());
+                    }
                 }
                 return false;
             }

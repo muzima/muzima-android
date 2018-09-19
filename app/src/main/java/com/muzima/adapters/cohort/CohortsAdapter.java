@@ -11,6 +11,7 @@ package com.muzima.adapters.cohort;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,7 @@ public abstract class CohortsAdapter extends ListAdapter<Cohort> {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.setTextToName(getItem(position).getName());
+        holder.setTextToName(getItem(position).getName() + "("+getItem(position).getSize()+ ")");
         return convertView;
     }
 
@@ -55,13 +56,15 @@ public abstract class CohortsAdapter extends ListAdapter<Cohort> {
         this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
     }
 
-    class ViewHolder {
-        private final CheckedTextView name;
-        private final ImageView downloadedImage;
+     class ViewHolder {
+        private CheckedTextView name;
+        private ImageView downloadedImage;
+        private ImageView pendingUpdateImage;
 
-        ViewHolder(View convertView) {
-            this.downloadedImage = convertView.findViewById(R.id.downloadImg);
-            this.name = convertView
+         ViewHolder(View convertView) {
+            this.downloadedImage = (ImageView) convertView.findViewById(R.id.downloadImg);
+            this.pendingUpdateImage = (ImageView) convertView.findViewById(R.id.pendingUpdateImg);
+            this.name = (CheckedTextView) convertView
                     .findViewById(R.id.cohort_name);
         }
 
@@ -73,9 +76,25 @@ public abstract class CohortsAdapter extends ListAdapter<Cohort> {
             downloadedImage.setVisibility(View.GONE);
         }
 
+        void displayPendingUpdateImage() {
+            pendingUpdateImage.setVisibility(View.VISIBLE);
+        }
+
+        void hidePendingUpdateImage() {
+            pendingUpdateImage.setVisibility(View.GONE);
+        }
+
         void setTextToName(String text) {
             name.setText(text);
             name.setTypeface(Fonts.roboto_medium(getContext()));
         }
+
+         void setPendingUpdateTextColor(){
+             name.setTextColor(ContextCompat.getColor(getContext(),R.color.pending_resource_update_color));
+         }
+
+         void setDefaultTextColor(){
+             name.setTextColor(ContextCompat.getColor(getContext(),R.color.primary_white));
+         }
     }
 }
