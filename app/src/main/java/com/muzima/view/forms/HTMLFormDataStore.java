@@ -33,6 +33,7 @@ import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.ProviderController;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.HTMLFormObservationCreator;
+import com.muzima.service.MuzimaLocationService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 import net.minidev.json.JSONValue;
@@ -343,6 +344,14 @@ class HTMLFormDataStore {
     public boolean isMedicalRecordNumberRequired(){
         return settingController.isMedicalRecordNumberRequiredDuringRegistration();
     }
+
+    @JavascriptInterface
+    public String getGPSLocationData(){
+        MuzimaLocationService muzimaLocationService = new MuzimaLocationService(application);
+        return muzimaLocationService.getHardGPSData();
+    }
+
+
 
     @JavascriptInterface
     public void checkForPossibleFormDuplicate(String formUuid, String encounterDateTime, String patientUuid,String encounterPayLoad) throws FormController.FormDataFetchException, JSONException {
