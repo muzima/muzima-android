@@ -1324,6 +1324,12 @@ $(document).ready(function () {
     });
     /* End - validConsultantOnly*/
 
+    /*Capture updated gps location data  */
+    $(window).load(function(){
+        var gpsLocation = htmlDataStore.getLastKnowGPSLocation();
+    });
+
+
     /*Start of Checking For Possibility Of Duplicate Form on encounter Date change*/
     $("#encounter\\.encounter_datetime" ).change(function() {
         var formUuid=$('#encounter\\.form_uuid').val();
