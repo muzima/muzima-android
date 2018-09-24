@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.Menu;
@@ -97,36 +98,42 @@ public class PatientSummaryActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_summary);
+        muzimaApplication = (MuzimaApplication) getApplicationContext( );
 
-        Bundle intentExtras = getIntent().getExtras();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
+        boolean isSHREnabled = preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_shr_key),PatientSummaryActivity.DEFAULT_SHR_STATUS);
+        if(!isSHREnabled) {
+            LinearLayout SHRLinearLayout=(LinearLayout)findViewById(R.id.SHR_linear_layout);
+            SHRLinearLayout.setVisibility(LinearLayout.GONE);
+        }
+        Bundle intentExtras = getIntent( ).getExtras( );
         if (intentExtras != null) {
             patient = (Patient) intentExtras.getSerializable(PATIENT);
             isRegisteredOnSHR = patient.getIdentifier(Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.name) == null;
 
-            SmartCardController smartCardController = ((MuzimaApplication) getApplicationContext()).getSmartCardController();
+            SmartCardController smartCardController = ((MuzimaApplication) getApplicationContext( )).getSmartCardController( );
             try {
-                isRegisteredOnSHR = smartCardController.getSmartCardRecordByPersonUuid(patient.getUuid()) != null;
+                isRegisteredOnSHR = smartCardController.getSmartCardRecordByPersonUuid(patient.getUuid( )) != null;
             } catch (SmartCardController.SmartCardRecordFetchException e) {
-                Log.e(getClass().getSimpleName(), "Error while retrieving smartcard record",e);
+                Log.e(getClass( ).getSimpleName( ), "Error while retrieving smartcard record", e);
             }
         }
 
-        setupPatientMetadata();
-        notifyOfIdChange();
-        muzimaApplication = (MuzimaApplication) getApplicationContext();
+        setupPatientMetadata( );
+        notifyOfIdChange( );
 
         try {
-            SmartCardRecordService smartCardRecordService = muzimaApplication.getMuzimaContext().getSmartCardRecordService();
+            SmartCardRecordService smartCardRecordService = muzimaApplication.getMuzimaContext( ).getSmartCardRecordService( );
             smartCardController = new SmartCardController(smartCardRecordService);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encountered IOException while trying to set smartcard controller",e);
         }
         imageView = findViewById(R.id.sync_status_imageview);
         if (isRegisteredOnSHR) {
-            prepareWriteToCardOptionDialog(getApplicationContext());
+            prepareWriteToCardOptionDialog(getApplicationContext( ));
         } else {
-            prepareNonSHRWriteToCardOptionDialog(getApplicationContext());
+            prepareNonSHRWriteToCardOptionDialog(getApplicationContext( ));
         }
     }
 
