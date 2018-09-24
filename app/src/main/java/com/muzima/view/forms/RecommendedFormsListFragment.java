@@ -70,8 +70,8 @@ public class RecommendedFormsListFragment extends FormsListFragment implements A
 
         FormViewIntent intent = new FormViewIntent(getActivity(), (AvailableForm) listAdapter.getItem(position), patient);
         MuzimaGPSLocationInterface muzimaGPSLocationInterface = new MuzimaGPSLocationInterface();
-        Location location = muzimaGPSLocationInterface.getLastKnowGPSLocation(getActivity());
-        Log.e(getClass().getSimpleName(), "Location Data " + location.toString());
+        String location = muzimaGPSLocationInterface.getLastKnowGPSLocation(getActivity());
+        Log.e(getClass().getSimpleName(), "Location Data " + location);
         getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 

@@ -11,10 +11,6 @@
  * * Fieldset element where the input must be selected at least one.
  * * Message to be displayed when none of the elements in the fieldset is selected.
  */
- var getLastKnowGPSLocation = function () {
-    var lastKnowGPSLocation;
-    lastKnowGPSLocation = $.muzimaGPSLocationInterface.getLastKnowGPSLocation();
- }
 
 var validateSelected = function (source) {
     var errors = {};
@@ -94,6 +90,13 @@ var toggleValidationMessages = function (errors) {
         validator.showErrors(errors);
     }
 };
+
+var getLastKnowGPSLocation = function () {
+    var lastKnowGPSLocation;
+    lastKnowGPSLocation = $.muzimaGPSLocationInterface.getLastKnowGPSLocation();
+    $("#gps\\.location_data").val(this.lastKnowGPSLocation);
+ }
+
 /* End - Show and hide validation error messages */
 
 $(document).ready(function () {
@@ -1324,10 +1327,11 @@ $(document).ready(function () {
     });
     /* End - validConsultantOnly*/
 
-    /*Capture updated gps location data  */
-    $(window).load(function(){
-        var gpsLocation = htmlDataStore.getLastKnowGPSLocation();
-    });
+//    /*Capture updated gps location data  */
+//    $(window).load(function(){
+//        var gpsLocation = htmlDataStore.getLastKnowGPSLocation();
+//
+//    });
 
 
     /*Start of Checking For Possibility Of Duplicate Form on encounter Date change*/
