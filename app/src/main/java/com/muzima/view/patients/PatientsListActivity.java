@@ -13,7 +13,6 @@ package com.muzima.view.patients;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -64,7 +63,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.widget.Toast;
 
 import static android.view.MenuItem.SHOW_AS_ACTION_ALWAYS;
-import static android.view.MenuItem.SHOW_AS_ACTION_NEVER;
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
