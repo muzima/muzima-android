@@ -13,6 +13,7 @@ package com.muzima.view.patients;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -62,6 +63,8 @@ import com.muzima.view.forms.RegistrationFormsActivity;
 import android.support.design.widget.FloatingActionButton;
 import android.widget.Toast;
 
+import static android.view.MenuItem.SHOW_AS_ACTION_ALWAYS;
+import static android.view.MenuItem.SHOW_AS_ACTION_NEVER;
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
@@ -215,7 +218,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
         boolean isSHREnabled = preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_shr_key),PatientsListActivity.DEFAULT_SHR_STATUS);
         if(isSHREnabled) {
-            shrCardItem.setShowAsAction(1);
+            shrCardItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS);
+        }else{
+            shrCardItem.setVisible(false);
         }
         searchMenuItem = menu.findItem(R.id.search);
         searchView = (SearchView) searchMenuItem.getActionView();
