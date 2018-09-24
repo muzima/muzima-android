@@ -6,20 +6,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.widget.Toast;
 
-import static com.muzima.utils.Constants.MuzimaGPSLocationConstants.LOCATION_ACCESS_PERMISSION_REQUEST_CODE;
+import java.util.List;
 
 public class MuzimaLocationService {
 
@@ -31,13 +27,13 @@ public class MuzimaLocationService {
 
 
     @SuppressLint("MissingPermission")
-    public MuzimaLocationService(final Context context, Activity activity) {
+    public MuzimaLocationService(Context context, Activity activity) {
         this.context = context;
         this.activity = activity;
 
-        ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION);
+        ActivityCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION);
 
-        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) this.context.getSystemService(Context.LOCATION_SERVICE);
 
         locationListener = new LocationListener() {
             @Override
@@ -45,7 +41,6 @@ public class MuzimaLocationService {
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
                 String msg = "New Latitude: " + latitude + "New Longitude: " + longitude;
-                Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -74,8 +69,26 @@ public class MuzimaLocationService {
     @SuppressWarnings("MissingPermission")
     public Location getLastKnownGPS() {
         Location location = null;
-        location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        location = getBestGPSLocation();
+        Log.e(getClass().getSimpleName(),"Location " +location.toString());
         return location;
+    }
+
+    @SuppressLint("MissingPermission")
+    private Location getBestGPSLocation() {
+        List<String> providers = locationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+             Location l = locationManager.getLastKnownLocation(provider);
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                bestLocation = l;
+            }
+        }
+        return bestLocation;
     }
 
     @SuppressLint("MissingPermission")
