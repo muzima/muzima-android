@@ -227,11 +227,7 @@ $(document).ready(function () {
            /*Start of populating data entry completion timestamp before serializing the form*/
             if($('.dataEntryCompletionTimeStamp').length){
                 var date = new Date();
-                var time = ('0'+date.getHours()).slice(-2) + ":" + ('0'+date.getMinutes()).slice(-2) + ":" + ('0'+date.getSeconds()).slice(-2);
-                var dateFormat = "dd-mm-yy";
-                var currentDate = $.datepicker.formatDate(dateFormat, new Date());
-
-                $('.dataEntryCompletionTimeStamp').val(currentDate+' '+time);
+                $('.dataEntryCompletionTimeStamp').val(date);
             }
             /*Start of populating data entry completion timestamp*/
         }
@@ -1374,11 +1370,7 @@ $(document).ready(function () {
     /*Start of populating initial form opening timestamp*/
     if($('.initialFormOpeningTimestamp').length && !$('.initialFormOpeningTimestamp').val().length){
         var date = new Date();
-        var time = ('0'+date.getHours()).slice(-2) + ":" + ('0'+date.getMinutes()).slice(-2) + ":" + ('0'+date.getSeconds()).slice(-2);
-        var dateFormat = "dd-mm-yy";
-        var currentDate = $.datepicker.formatDate(dateFormat, new Date());
-
-        $('.initialFormOpeningTimestamp').val(currentDate+' '+time);
+        $('.initialFormOpeningTimestamp').val(date);
     }
     /*end of populating initial form opening timestamp*/
 });
