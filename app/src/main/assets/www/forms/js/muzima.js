@@ -223,6 +223,14 @@ $(document).ready(function () {
     };
 
     var save = function (status, keepFormOpen) {
+        if(status=="complete"){
+           /*Start of populating data entry completion timestamp before serializing the form*/
+            if($('.dataEntryCompletionTimeStamp').length){
+                var date = new Date();
+                $('.dataEntryCompletionTimeStamp').val(date);
+            }
+            /*Start of populating data entry completion timestamp*/
+        }
         var jsonData = JSON.stringify($('form').serializeEncounterForm());
         htmlDataStore.saveHTML(jsonData, status, keepFormOpen);
     };
@@ -357,14 +365,22 @@ $(document).ready(function () {
 
     /*Start - Initialize jQuery DateTimePicker */
     if ($.fn.datetimepicker) {
-       $('.datetimepicker').datetimepicker({
+        $('.datetimepicker').datetimepicker({
            format:'dd-mm-yyyy hh:ii',
            changeMonth: true,
            changeYear: true,
            step : 5,
-           autoclose : true,
-           defaultDate:new Date()
+           autoclose : true
        });
+       var dt = new Date();
+       var time = dt.getHours() + ":" + dt.getMinutes();
+       var dateFormat = "dd-mm-yy";
+       var currentDate = $.datepicker.formatDate(dateFormat, new Date());
+
+       var encounterDatetime = $('#encounter\\.encounter_datetime');
+       if ($(encounterDatetime).val() == "") {
+           $(encounterDatetime).val(currentDate+' '+time);
+       }
     }
     /*End - Initialize jQuery DateTimePicker */
 
@@ -1351,4 +1367,10 @@ $(document).ready(function () {
         });
     }
     /*end of Setting Default encounter Location*/
+    /*Start of populating initial form opening timestamp*/
+    if($('.initialFormOpeningTimestamp').length && !$('.initialFormOpeningTimestamp').val().length){
+        var date = new Date();
+        $('.initialFormOpeningTimestamp').val(date);
+    }
+    /*end of populating initial form opening timestamp*/
 });
