@@ -121,7 +121,11 @@ public class MuzimaSettingController {
         boolean enableSHR = false;
         try {
             MuzimaSetting muzimaSHRStatus = getSettingByProperty(SHR_FEATURE_ENABLED_SETTING);
-            enableSHR = muzimaSHRStatus.getValueBoolean();
+            if (muzimaSHRStatus == null){
+                enableSHR = false;
+            }else {
+                enableSHR = muzimaSHRStatus.getValueBoolean();
+            }
         } catch (MuzimaSettingFetchException e){
             Log.e(getClass().getSimpleName(), "Could not fetch requireMedicalRecordNumber setting. ", e);
         }

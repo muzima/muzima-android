@@ -10,16 +10,23 @@
 
 package com.muzima.view.forms;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.adapters.forms.PatientFormsPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.Constants;
 import com.muzima.view.patients.PatientSummaryActivity;
+
+import static com.muzima.utils.Constants.MuzimaGPSLocationConstants.LOCATION_ACCESS_PERMISSION_REQUEST_CODE;
 
 
 public class PatientFormsActivity extends FormsActivityBase {
@@ -34,6 +41,9 @@ public class PatientFormsActivity extends FormsActivityBase {
         initPager();
         initPagerIndicator();
         getSupportActionBar().setTitle(patient.getSummary());
+
+        requestGPSLocationPermissions();
+
     }
 
 
@@ -58,6 +68,12 @@ public class PatientFormsActivity extends FormsActivityBase {
                     ((PatientFormsPagerAdapter) formsPagerAdapter).onFormUploadFinish();
                 }
             }
+        }
+    }
+
+    public void requestGPSLocationPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ActivityCompat.requestPermissions(PatientFormsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_ACCESS_PERMISSION_REQUEST_CODE);
         }
     }
 }
