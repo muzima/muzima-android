@@ -58,6 +58,10 @@ public class Constants {
     public static final String STANDARD_DATE_FORMAT = "yyyy-MM-dd";
     public static final String STANDARD_DATE_LOCALE_FORMAT = "yyyy-MM-dd hh:mm";
 
+    public static class MuzimaGPSLocationConstants {
+        public static final int LOCATION_ACCESS_PERMISSION_REQUEST_CODE = 9111;
+    }
+
     public static class DataSyncServiceConstants {
         public static final String SYNC_TYPE = "sync_type";
         public static final String CREDENTIALS = "credentials";

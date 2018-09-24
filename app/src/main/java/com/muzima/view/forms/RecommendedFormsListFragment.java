@@ -10,14 +10,31 @@
 
 package com.muzima.view.forms;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
+import android.webkit.PermissionRequest;
 import android.widget.AdapterView;
+import android.widget.Toast;
+
 import com.muzima.R;
 import com.muzima.adapters.forms.RecommendedFormsAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
+import com.muzima.model.BaseForm;
+import com.muzima.utils.javascriptinterface.MuzimaGPSLocationInterface;
+
+import java.security.Permission;
+
+import static com.muzima.utils.Constants.MuzimaGPSLocationConstants.LOCATION_ACCESS_PERMISSION_REQUEST_CODE;
 
 public class RecommendedFormsListFragment extends FormsListFragment implements AllAvailableFormsListFragment.OnTemplateDownloadComplete {
     private Patient patient;
@@ -39,7 +56,22 @@ public class RecommendedFormsListFragment extends FormsListFragment implements A
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        BaseForm baseForm = (BaseForm) listAdapter.getItem(position);
+        String formName = baseForm.getName();
+
+        if (formName.toLowerCase().contains("GPS".toLowerCase())){
+            int permissionGranted = ActivityCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_FINE_LOCATION);
+            if (permissionGranted == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(getContext(),"permission granted by user",Toast.LENGTH_LONG).show();
+            }else if(permissionGranted == PackageManager.PERMISSION_DENIED) {
+                Toast.makeText(getContext(),"permission denied by user",Toast.LENGTH_LONG).show();
+            }
+        }
+
         FormViewIntent intent = new FormViewIntent(getActivity(), (AvailableForm) listAdapter.getItem(position), patient);
+        MuzimaGPSLocationInterface muzimaGPSLocationInterface = new MuzimaGPSLocationInterface();
+        Location location = muzimaGPSLocationInterface.getLastKnowGPSLocation(getActivity());
+        Log.e(getClass().getSimpleName(), "Location Data " + location.toString());
         getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 
@@ -47,4 +79,7 @@ public class RecommendedFormsListFragment extends FormsListFragment implements A
     public void onTemplateDownloadComplete() {
         listAdapter.reloadData();
     }
+
+
+
 }

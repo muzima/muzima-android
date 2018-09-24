@@ -347,7 +347,7 @@ class HTMLFormDataStore {
 
     @JavascriptInterface
     public String getGPSLocationData(){
-        MuzimaLocationService muzimaLocationService = new MuzimaLocationService(application);
+        MuzimaLocationService muzimaLocationService = new MuzimaLocationService(application.getApplicationContext(),null);
         return muzimaLocationService.getHardGPSData();
     }
 
