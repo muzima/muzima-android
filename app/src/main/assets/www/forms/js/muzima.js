@@ -223,6 +223,18 @@ $(document).ready(function () {
     };
 
     var save = function (status, keepFormOpen) {
+        if(status=="complete"){
+           /*Start of populating data entry completion timestamp before serializing the form*/
+            if($('.dataEntryCompletionTimeStamp').length){
+                var date = new Date();
+                var time = ('0'+date.getHours()).slice(-2) + ":" + ('0'+date.getMinutes()).slice(-2) + ":" + ('0'+date.getSeconds()).slice(-2);
+                var dateFormat = "dd-mm-yy";
+                var currentDate = $.datepicker.formatDate(dateFormat, new Date());
+
+                $('.dataEntryCompletionTimeStamp').val(currentDate+' '+time);
+            }
+            /*Start of populating data entry completion timestamp*/
+        }
         var jsonData = JSON.stringify($('form').serializeEncounterForm());
         htmlDataStore.saveHTML(jsonData, status, keepFormOpen);
     };
@@ -357,14 +369,22 @@ $(document).ready(function () {
 
     /*Start - Initialize jQuery DateTimePicker */
     if ($.fn.datetimepicker) {
-       $('.datetimepicker').datetimepicker({
+        $('.datetimepicker').datetimepicker({
            format:'dd-mm-yyyy hh:ii',
            changeMonth: true,
            changeYear: true,
            step : 5,
-           autoclose : true,
-           defaultDate:new Date()
+           autoclose : true
        });
+       var dt = new Date();
+       var time = dt.getHours() + ":" + dt.getMinutes();
+       var dateFormat = "dd-mm-yy";
+       var currentDate = $.datepicker.formatDate(dateFormat, new Date());
+
+       var encounterDatetime = $('#encounter\\.encounter_datetime');
+       if ($(encounterDatetime).val() == "") {
+           $(encounterDatetime).val(currentDate+' '+time);
+       }
     }
     /*End - Initialize jQuery DateTimePicker */
 
@@ -1351,4 +1371,14 @@ $(document).ready(function () {
         });
     }
     /*end of Setting Default encounter Location*/
+    /*Start of populating initial form opening timestamp*/
+    if($('.initialFormOpeningTimestamp').length && !$('.initialFormOpeningTimestamp').val().length){
+        var date = new Date();
+        var time = ('0'+date.getHours()).slice(-2) + ":" + ('0'+date.getMinutes()).slice(-2) + ":" + ('0'+date.getSeconds()).slice(-2);
+        var dateFormat = "dd-mm-yy";
+        var currentDate = $.datepicker.formatDate(dateFormat, new Date());
+
+        $('.initialFormOpeningTimestamp').val(currentDate+' '+time);
+    }
+    /*end of populating initial form opening timestamp*/
 });
