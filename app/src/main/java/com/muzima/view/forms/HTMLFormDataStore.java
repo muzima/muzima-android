@@ -480,14 +480,18 @@ class HTMLFormDataStore {
 
     @JavascriptInterface
     public String getLastKnowGPSLocation() {
-        String muzimaGPSRepresentation = "";
-        MuzimaLocationService muzimaLocationService = new MuzimaLocationService(application);
-        android.location.Location location = muzimaLocationService.getLastKnownGPS();
+    String muzimaGPSRepresentation = "";
+    MuzimaLocationService muzimaLocationService = new MuzimaLocationService(application);
+    android.location.Location location = muzimaLocationService.getLastKnownGPS();
 
-        MuzimaGPSLocation muzimaGPSLocation = new MuzimaGPSLocation(location);
-        muzimaGPSRepresentation = muzimaGPSLocation.toString();
+    MuzimaGPSLocation muzimaGPSLocation = new MuzimaGPSLocation(location);
+        try {
+            muzimaGPSRepresentation = muzimaGPSLocation.toJsonObject().toString();
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(),"Unable to process json gps location data.");
+        }
         Log.e(getClass().getSimpleName(), "LocationData: " + muzimaGPSRepresentation);
 
-        return muzimaGPSRepresentation;
-    }
+    return muzimaGPSRepresentation;
+}
 }

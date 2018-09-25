@@ -1375,12 +1375,16 @@ $(document).ready(function () {
             $('[name="encounter\\.location_id"]').val(this.id);
         });
     }
+
     /*end of Setting Default encounter Location*/
+
+    /* Start populating gps location data */
     if($('.gps\\.location_data').length){
-       var lastKnowGPSLocation;
-            lastKnowGPSLocation = htmlDataStore.getLastKnowGPSLocation();
-       $(".gps\\.location_data").val(lastKnowGPSLocation);
+       var lastKnowGPSLocationJsonObj = htmlDataStore.getLastKnowGPSLocation();
+       var locationDataOnForm = $(".gps\\.location_data").val();
+       $(".gps\\.location_data").val(lastKnowGPSLocationJsonObj);
     }
+
     /*Start of populating initial form opening timestamp*/
     if($('.initialFormOpeningTimestamp').length && !$('.initialFormOpeningTimestamp').val().length){
         var date = new Date();
