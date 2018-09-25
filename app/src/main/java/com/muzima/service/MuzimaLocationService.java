@@ -21,15 +21,13 @@ public class MuzimaLocationService {
 
     private LocationManager locationManager;
     private LocationListener locationListener;
-    private Context context;
     private Boolean isFineGPSLocationAccessGranted = false;
-    private Activity activity;
+    private Context context;
 
 
     @SuppressLint("MissingPermission")
-    public MuzimaLocationService(Context context, Activity activity) {
+    public MuzimaLocationService(Context context) {
         this.context = context;
-        this.activity = activity;
 
         ActivityCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION);
 
@@ -108,7 +106,7 @@ public class MuzimaLocationService {
         Boolean isEnabled = false;
 
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this.context);
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
             alertDialog.setTitle("Enable Location");
             alertDialog.setMessage("Your locations setting is not enabled. Please enabled it in settings menu.");
             alertDialog.setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {

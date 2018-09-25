@@ -40,7 +40,6 @@ import com.muzima.utils.audio.AudioResult;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
 import com.muzima.utils.imaging.ImageResult;
-import com.muzima.utils.javascriptinterface.MuzimaGPSLocationInterface;
 import com.muzima.utils.video.VideoResult;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
@@ -298,10 +297,8 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         getSettings().setDomStorageEnabled(true);
 
         FormInstance formInstance = new FormInstance(form, formTemplate);
-        MuzimaGPSLocationInterface muzimaGPSLocationInterface = new MuzimaGPSLocationInterface();
-        muzimaGPSLocationInterface.getLastKnowGPSLocation(FormWebViewActivity.this);
+        //muzimaGPSLocationInterface.getLastKnowGPSLocation(FormWebViewActivity.this);
 
-        webView.addJavascriptInterface(muzimaGPSLocationInterface,MUZIMA_LOCATION_SERVICE);
         webView.addJavascriptInterface(formInstance, FORM_INSTANCE);
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
         webView.addJavascriptInterface(new FormDataStore(this, formController, formData), REPOSITORY);

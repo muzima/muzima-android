@@ -31,6 +31,7 @@ import com.muzima.controller.LocationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.ProviderController;
+import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.service.MuzimaLocationService;
@@ -346,14 +347,6 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public String getGPSLocationData(){
-        MuzimaLocationService muzimaLocationService = new MuzimaLocationService(application.getApplicationContext(),null);
-        return muzimaLocationService.getHardGPSData();
-    }
-
-
-
-    @JavascriptInterface
     public void checkForPossibleFormDuplicate(String formUuid, String encounterDateTime, String patientUuid,String encounterPayLoad) throws FormController.FormDataFetchException, JSONException {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(formWebViewActivity.getApplicationContext());
         boolean isDuplicateFormDataWarningPreferenceSet = preferences.getBoolean(formWebViewActivity.getResources().getString(R.string.preference_duplicate_form_data_key),HTMLFormWebViewActivity.IS_ALLOWED_FORM_DATA_DUPLICATION);
@@ -483,5 +476,18 @@ class HTMLFormDataStore {
             Log.e(getClass().getSimpleName(), "Error while parsing response JSON. Unparsable jsonPayLoad", e);
         }
         return null;
+    }
+
+    @JavascriptInterface
+    public String getLastKnowGPSLocation() {
+        String muzimaGPSRepresentation = "";
+        MuzimaLocationService muzimaLocationService = new MuzimaLocationService(application);
+        android.location.Location location = muzimaLocationService.getLastKnownGPS();
+
+        MuzimaGPSLocation muzimaGPSLocation = new MuzimaGPSLocation(location);
+        muzimaGPSRepresentation = muzimaGPSLocation.toString();
+        Log.e(getClass().getSimpleName(), "LocationData: " + muzimaGPSRepresentation);
+
+        return muzimaGPSRepresentation;
     }
 }

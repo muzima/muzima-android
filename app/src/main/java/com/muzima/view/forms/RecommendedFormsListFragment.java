@@ -11,16 +11,10 @@
 package com.muzima.view.forms;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.View;
-import android.webkit.PermissionRequest;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
@@ -30,11 +24,6 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.BaseForm;
-import com.muzima.utils.javascriptinterface.MuzimaGPSLocationInterface;
-
-import java.security.Permission;
-
-import static com.muzima.utils.Constants.MuzimaGPSLocationConstants.LOCATION_ACCESS_PERMISSION_REQUEST_CODE;
 
 public class RecommendedFormsListFragment extends FormsListFragment implements AllAvailableFormsListFragment.OnTemplateDownloadComplete {
     private Patient patient;
@@ -69,9 +58,9 @@ public class RecommendedFormsListFragment extends FormsListFragment implements A
         }
 
         FormViewIntent intent = new FormViewIntent(getActivity(), (AvailableForm) listAdapter.getItem(position), patient);
-        MuzimaGPSLocationInterface muzimaGPSLocationInterface = new MuzimaGPSLocationInterface();
-        String location = muzimaGPSLocationInterface.getLastKnowGPSLocation(getActivity());
-        Log.e(getClass().getSimpleName(), "Location Data " + location);
+        //MuzimaGPSLocationInterface muzimaGPSLocationInterface = new MuzimaGPSLocationInterface();
+        //muzimaGPSLocationInterface.getLastKnowGPSLocation(getActivity());
+        //Log.e(getClass().getSimpleName(), "Location Data " + location);
         getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 

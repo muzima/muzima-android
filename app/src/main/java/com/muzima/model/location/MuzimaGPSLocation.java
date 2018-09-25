@@ -57,13 +57,13 @@ public class MuzimaGPSLocation {
 
     @Override
     public String toString() {
-        return "Muzima Location Data : {\n" +
-                "\n[ Latitude : " + latitude +
-                "]\n Longitude : " + longitude +
-                "]\n[ Altitude : " + altitude +
-                "]\n[ Timestamp : " + timeStamp +
-                "]\n[ Speed : " + speed +
-                "]\n[ Bearing : " + bearing +
+        return "GPS: {" +
+                "[ Latitude : " + latitude +
+                "] Longitude : " + longitude +
+                "] [ Altitude : " + altitude +
+                "] [ Timestamp : " + timeStamp +
+                "] [ Speed : " + speed +
+                "] [ Bearing : " + bearing +
                 "] }";
     }
 }
