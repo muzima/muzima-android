@@ -91,12 +91,6 @@ var toggleValidationMessages = function (errors) {
     }
 };
 
-var getLastKnowGPSLocation = function () {
-    var lastKnowGPSLocation;
-    lastKnowGPSLocation = $.muzimaGPSLocationInterface.getLastKnowGPSLocation();
-    $("#gps\\.location_data").val(this.lastKnowGPSLocation);
- }
-
 /* End - Show and hide validation error messages */
 
 $(document).ready(function () {
@@ -1366,4 +1360,9 @@ $(document).ready(function () {
         });
     }
     /*end of Setting Default encounter Location*/
+    if($('.gps\\.location_data').length){
+       var lastKnowGPSLocation;
+            lastKnowGPSLocation = htmlDataStore.getLastKnowGPSLocation();
+       $(".gps\\.location_data").val(lastKnowGPSLocation);
+    }
 });
