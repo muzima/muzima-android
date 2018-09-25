@@ -127,7 +127,7 @@ public class MuzimaSettingController {
                 enableSHR = muzimaSHRStatus.getValueBoolean();
             }
         } catch (MuzimaSettingFetchException e){
-            Log.e(getClass().getSimpleName(), "Could not fetch requireMedicalRecordNumber setting. ", e);
+            Log.e(getClass().getSimpleName(), "Could not fetch SHR feature setting. ", e);
         }
         return enableSHR;
     }
