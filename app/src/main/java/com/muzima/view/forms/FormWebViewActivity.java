@@ -10,6 +10,8 @@
 
 package com.muzima.view.forms;
 
+import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.v7.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -35,6 +37,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
+import com.muzima.service.MuzimaLocationService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.audio.AudioResult;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
@@ -103,6 +106,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         setContentView(R.layout.activity_form_webview);
         progressDialog = new MuzimaProgressDialog(this);
         showProgressBar("Loading...");
+
         try {
             setupFormData();
             setupWebView();
@@ -110,6 +114,9 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             Log.e(getClass().getSimpleName(), e.getMessage(), e);
             finish();
         }
+
+
+
     }
 
     @Override
@@ -118,6 +125,31 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             progressDialog.dismiss();
         }
         super.onDestroy();
+    }
+
+
+
+    public void isLocationServicesAvailable(){
+        if (!MuzimaLocationService.isLocationServicesSwitchedOn){
+            android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(getApplicationContext());
+            alertDialog.setTitle("GPS Location");
+            alertDialog.setMessage("Location is switched off! Kindly turn on location in settings.");
+            alertDialog.setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                }
+            });
+
+            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            android.support.v7.app.AlertDialog alert = alertDialog.create();
+            alert.show();
+        }
+
     }
 
     @Override
@@ -134,6 +166,9 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
 
     @Override
     protected void onResume() {
+
+        isLocationServicesAvailable();
+
         if (scanResultMap != null && !scanResultMap.isEmpty()) {
             String jsonMap = new JSONObject(scanResultMap).toString();
             Log.d(getClass().getSimpleName(), jsonMap);

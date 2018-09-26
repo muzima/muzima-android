@@ -60,6 +60,7 @@ public class Constants {
 
     public static class MuzimaGPSLocationConstants {
         public static final int LOCATION_ACCESS_PERMISSION_REQUEST_CODE = 9111;
+        public static final int LOCATION_SERVICES_SWITCH_REQUEST_CODE = 9122;
     }
 
     public static class DataSyncServiceConstants {

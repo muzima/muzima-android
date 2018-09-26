@@ -48,15 +48,6 @@ public class RecommendedFormsListFragment extends FormsListFragment implements A
         BaseForm baseForm = (BaseForm) listAdapter.getItem(position);
         String formName = baseForm.getName();
 
-        if (formName.toLowerCase().contains("GPS".toLowerCase())){
-            int permissionGranted = ActivityCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_FINE_LOCATION);
-            if (permissionGranted == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(getContext(),"permission granted by user",Toast.LENGTH_LONG).show();
-            }else if(permissionGranted == PackageManager.PERMISSION_DENIED) {
-                Toast.makeText(getContext(),"permission denied by user",Toast.LENGTH_LONG).show();
-            }
-        }
-
         FormViewIntent intent = new FormViewIntent(getActivity(), (AvailableForm) listAdapter.getItem(position), patient);
         //MuzimaGPSLocationInterface muzimaGPSLocationInterface = new MuzimaGPSLocationInterface();
         //muzimaGPSLocationInterface.getLastKnowGPSLocation(getActivity());
