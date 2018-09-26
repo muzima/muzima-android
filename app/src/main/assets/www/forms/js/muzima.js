@@ -1381,7 +1381,6 @@ $(document).ready(function () {
     /* Start populating gps location data */
     if($('.gps\\.location_data').length){
        var lastKnowGPSLocationJsonObj = htmlDataStore.getLastKnowGPSLocation();
-       var locationDataOnForm = $(".gps\\.location_data").val();
        $(".gps\\.location_data").val(lastKnowGPSLocationJsonObj);
     }
 

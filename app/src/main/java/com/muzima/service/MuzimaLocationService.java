@@ -14,15 +14,26 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.muzima.model.location.MuzimaGPSLocation;
+
+import java.util.HashMap;
 import java.util.List;
 
+@SuppressWarnings("MissingPermission")
 public class MuzimaLocationService {
 
-    private LocationManager locationManager;
-    private LocationListener locationListener;
+    LocationManager locationManager;
+    LocationListener locationListener;
     private Boolean isFineGPSLocationAccessGranted = false;
     private Context context;
+
+    private Boolean isNetworkLocationProviderEnabled = false;
+    private Boolean isGPSLocationProviderEnabled = false;
+
+    public static Boolean isOverallLocationAccessPermissionsGranted = true;
+    public static Boolean isLocationServicesSwitchedOn = false;
 
 
     @SuppressLint("MissingPermission")
@@ -57,27 +68,83 @@ public class MuzimaLocationService {
             }
         };
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                2000,
-                10, locationListener);
-
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
     }
 
-    @SuppressWarnings("MissingPermission")
-    public Location getLastKnownGPS() {
+
+//        muzimaGPSRepresentation = muzimaGPSLocation.toString();
+
+    public HashMap<String, String> getLastKnownGPS() throws Exception {
+
+        HashMap<String, String> locationResultMap = new HashMap<>();
+
+        Log.e(getClass().getSimpleName(), "getLastKnownGPS()");
+        String gpsLocationString = "Location is unavailable - Unknown Error";
         Location location = null;
-        location = getBestGPSLocation();
-        Log.e(getClass().getSimpleName(),"Location " +location.toString());
-        return location;
+        if (isOverallLocationAccessPermissionsGranted) {
+
+            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+
+            Log.e(getClass().getSimpleName(), "getLastKnownGPS() == " + location);
+
+
+            if (location == null) {
+                locationResultMap.put("network_provider_status", "switched_off");
+                locationResultMap.put("gps_provider_status", "switched_off");
+                locationResultMap.put("gps_location_string", "User offline");
+
+                location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+                if (location == null) {
+                    locationResultMap.put("gps_provider_status", "switched_off");
+                    locationResultMap.put("network_provider_status", "switched_off");
+                    locationResultMap.put("gps_location_string", "Location switched off");
+
+                    isLocationServicesSwitchedOn = false;
+                } else {
+
+                    isLocationServicesSwitchedOn = true;
+
+                    locationResultMap.put("gps_provider_status", "switched_on");
+                    locationResultMap.put("network_provider_status", "switched_on");
+                    locationResultMap.put("gps_location_string", getGpsRepresentationString(location));
+                }
+
+                Log.e(getClass().getSimpleName(), "getLastKnownGPS() == " + location);
+                Toast.makeText(context, "Kindly switch on location in settings.", Toast.LENGTH_LONG).show();
+            } else {
+                isLocationServicesSwitchedOn = true;
+                locationResultMap.put("network_provider_status", "switched_on");
+                locationResultMap.put("gps_provider_status", "unchecked");
+                locationResultMap.put("gps_location_string", getGpsRepresentationString(location));
+            }
+
+
+            Log.e(getClass().getSimpleName(), "Location " + location);
+
+        } else {
+            gpsLocationString = "Permission denied by user";
+        }
+
+        Log.e(getClass().getSimpleName(), "getLastKnownGPS() == " + gpsLocationString);
+
+
+        return locationResultMap;
     }
 
-    @SuppressLint("MissingPermission")
+    public String getGpsRepresentationString(Location location) throws Exception {
+        MuzimaGPSLocation muzimaGPSLocation = new MuzimaGPSLocation(location);
+        return muzimaGPSLocation.toJsonObject().toString();
+    }
+
     private Location getBestGPSLocation() {
         List<String> providers = locationManager.getProviders(true);
         Location bestLocation = null;
         for (String provider : providers) {
-             Location l = locationManager.getLastKnownLocation(provider);
+            Location l = locationManager.getLastKnownLocation(provider);
             if (l == null) {
                 continue;
             }
@@ -89,8 +156,6 @@ public class MuzimaLocationService {
         return bestLocation;
     }
 
-    @SuppressLint("MissingPermission")
-    @SuppressWarnings("MissingPermission")
     public String getHardGPSData() {
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         return location.toString();
@@ -101,20 +166,21 @@ public class MuzimaLocationService {
 //        isLocationEnabled();
 //    }
 
-    private void isLocationEnabled() {
+    private void isLocationEnabled(String provider) {
 
         Boolean isEnabled = false;
 
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-            alertDialog.setTitle("Enable Location");
-            alertDialog.setMessage("Your locations setting is not enabled. Please enabled it in settings menu.");
+            alertDialog.setTitle("Enable Location and Internet connectivity.");
+            alertDialog.setMessage("You location is switched off! Kindly turn location on in settings.");
             alertDialog.setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     context.startActivity(intent);
                 }
             });
+
             alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
