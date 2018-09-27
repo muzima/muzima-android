@@ -118,6 +118,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         formController = ((MuzimaApplication) this.getApplicationContext()).getFormController();
         LocationController locationController = ((MuzimaApplication) this.getApplicationContext()).getLocationController();
         ConceptController conceptController = ((MuzimaApplication) this.getApplicationContext()).getConceptController();
@@ -128,11 +129,14 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
+
         scanResultMap = new HashMap<>();
         imageResultMap = new HashMap<>();
         audioResultMap = new HashMap<>();
         videoResultMap = new HashMap<>();
+
         setContentView(R.layout.activity_form_webview);
+
         progressDialog = new MuzimaProgressDialog(this);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
         autoSaveIntervalPreference = preferences.getString("autoSaveIntervalPreference", DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS);

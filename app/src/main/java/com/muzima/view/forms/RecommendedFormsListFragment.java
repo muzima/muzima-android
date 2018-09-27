@@ -45,13 +45,8 @@ public class RecommendedFormsListFragment extends FormsListFragment implements A
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        BaseForm baseForm = (BaseForm) listAdapter.getItem(position);
-        String formName = baseForm.getName();
-
         FormViewIntent intent = new FormViewIntent(getActivity(), (AvailableForm) listAdapter.getItem(position), patient);
-        //MuzimaGPSLocationInterface muzimaGPSLocationInterface = new MuzimaGPSLocationInterface();
-        //muzimaGPSLocationInterface.getLastKnowGPSLocation(getActivity());
-        //Log.e(getClass().getSimpleName(), "Location Data " + location);
+        intent.putExtra(FormViewIntent.FORM_COMPLETION_STATUS_INTENT,FormViewIntent.FORM_COMPLETION_STATUS_RECOMMENDED);
         getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 
