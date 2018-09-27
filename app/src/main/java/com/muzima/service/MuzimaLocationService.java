@@ -35,7 +35,6 @@ public class MuzimaLocationService {
     public static Boolean isOverallLocationAccessPermissionsGranted = true;
     public static Boolean isLocationServicesSwitchedOn = false;
 
-
     @SuppressLint("MissingPermission")
     public MuzimaLocationService(Context context) {
         this.context = context;
@@ -49,7 +48,7 @@ public class MuzimaLocationService {
             public void onLocationChanged(android.location.Location location) {
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
-                String msg = "New Latitude: " + latitude + "New Longitude: " + longitude;
+                Log.e(getClass().getSimpleName(),"New Latitude: " + latitude + "New Longitude: " + longitude);
             }
 
             @Override
@@ -76,7 +75,7 @@ public class MuzimaLocationService {
 
 //        muzimaGPSRepresentation = muzimaGPSLocation.toString();
 
-    public HashMap<String, String> getLastKnownGPS() throws Exception {
+    public HashMap<String, String> getLastKnownGPS(String jsonReturnType) throws Exception {
 
         HashMap<String, String> locationResultMap = new HashMap<>();
 
@@ -110,7 +109,7 @@ public class MuzimaLocationService {
 
                     locationResultMap.put("gps_provider_status", "switched_on");
                     locationResultMap.put("network_provider_status", "switched_on");
-                    locationResultMap.put("gps_location_string", getGpsRepresentationString(location));
+                    locationResultMap.put("gps_location_string", getGpsRepresentationString(location,jsonReturnType));
                 }
 
                 Log.e(getClass().getSimpleName(), "getLastKnownGPS() == " + location);
@@ -119,7 +118,7 @@ public class MuzimaLocationService {
                 isLocationServicesSwitchedOn = true;
                 locationResultMap.put("network_provider_status", "switched_on");
                 locationResultMap.put("gps_provider_status", "unchecked");
-                locationResultMap.put("gps_location_string", getGpsRepresentationString(location));
+                locationResultMap.put("gps_location_string", getGpsRepresentationString(location,jsonReturnType));
             }
 
 
@@ -135,9 +134,18 @@ public class MuzimaLocationService {
         return locationResultMap;
     }
 
-    public String getGpsRepresentationString(Location location) throws Exception {
-        MuzimaGPSLocation muzimaGPSLocation = new MuzimaGPSLocation(location);
-        return muzimaGPSLocation.toJsonObject().toString();
+    public String getGpsRepresentationString(Location location,String jsonReturnType) throws Exception {
+        if(jsonReturnType.contains("json-object")){
+            MuzimaGPSLocation muzimaGPSLocation = new MuzimaGPSLocation(location);
+            return muzimaGPSLocation.toJsonObject().toString();
+        }else if(jsonReturnType.contains("json-array")){
+            MuzimaGPSLocation muzimaGPSLocation = new MuzimaGPSLocation(location);
+            return muzimaGPSLocation.toJsonArray().toString();
+        }else {
+            MuzimaGPSLocation muzimaGPSLocation = new MuzimaGPSLocation(location);
+            return muzimaGPSLocation.toJsonArray().toString();
+        }
+
     }
 
     private Location getBestGPSLocation() {

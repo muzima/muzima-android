@@ -1380,8 +1380,17 @@ $(document).ready(function () {
 
     /* Start populating gps location data */
     if($('.gps\\.location_data').length){
-       var lastKnowGPSLocationJsonObj = htmlDataStore.getLastKnowGPSLocation();
-       $(".gps\\.location_data").val(lastKnowGPSLocationJsonObj);
+        if($('.gps\\.location_data').val().length){
+            var lastKnowGPSLocationJsonObj = htmlDataStore.getLastKnowGPSLocation("json-object");
+            var gpsLocationDataOnForm = $('.gps\\.location_data').val();
+            var locationObj = JSON.parse(gpsLocationDataOnForm);
+            locationObj.push(JSON.parse(lastKnowGPSLocationJsonObj));
+            var newLocationData = JSON.stringify(locationObj);
+            $(".gps\\.location_data").val(newLocationData);
+        }else {
+            var lastKnowGPSLocationJsonArray = htmlDataStore.getLastKnowGPSLocation("json-array");
+            $(".gps\\.location_data").val(lastKnowGPSLocationJsonArray);
+        }
     }
 
     /*Start of populating initial form opening timestamp*/

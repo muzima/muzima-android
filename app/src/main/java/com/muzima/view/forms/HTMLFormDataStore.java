@@ -482,24 +482,16 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public String getLastKnowGPSLocation() {
-        String muzimaGPSRepresentation = "";
-
-        String gps_provider_status;
-        String network_provider_status;
-        String gps_location_string = "Unknown Error occured!";
+    public String getLastKnowGPSLocation(String jsonReturnType) {
+        String gps_location_string = "Unknown Error Occured!";
 
         MuzimaLocationService muzimaLocationService = new MuzimaLocationService(application);
-        HashMap<String,String> locationDataHashMap = null;
+        HashMap<String,String> locationDataHashMap = new HashMap<>(); //empty hashmap prevent NullPointerException
         try {
-            locationDataHashMap = muzimaLocationService.getLastKnownGPS();
-
+            locationDataHashMap = muzimaLocationService.getLastKnownGPS(jsonReturnType);
             gps_location_string = locationDataHashMap.get("gps_location_string");
-            network_provider_status = locationDataHashMap.get("network_provider_status");
-            gps_provider_status = locationDataHashMap.get("gps_provider_status");
-
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Unable to process gps data, unknow Error Occurred" + e.getMessage());
         }
 
         return gps_location_string;
