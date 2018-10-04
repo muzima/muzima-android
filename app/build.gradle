@@ -20,7 +20,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath 'com.android.tools.build:gradle:3.2.0'
     }
 }
 
@@ -34,7 +34,7 @@ description = 'Muzima-Android'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27'
+//    buildToolsVersion '27.0.3'
 
     useLibrary 'org.apache.http.legacy'
 
@@ -43,6 +43,7 @@ android {
         targetSdkVersion 27
         versionCode 9
         versionName "2.2.0"
+        vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [versionCode: defaultConfig.versionCode, versionName: defaultConfig.versionName]
 
         //mUzima-android code base is beyond method ref limit - Enabled multidex - disabled jumbo dex option.

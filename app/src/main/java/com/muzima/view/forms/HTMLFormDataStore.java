@@ -34,6 +34,7 @@ import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.ProviderController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.scheduler.RealTimeFormUploader;
+import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.service.MuzimaLocationService;
 import com.muzima.utils.Constants;
@@ -484,17 +485,21 @@ class HTMLFormDataStore {
     @JavascriptInterface
     public String getLastKnowGPSLocation(String jsonReturnType) {
         String gps_location_string = "Unknown Error Occured!";
-
-        MuzimaLocationService muzimaLocationService = new MuzimaLocationService(application);
-        HashMap<String,String> locationDataHashMap = new HashMap<>(); //empty hashmap prevent NullPointerException
-        try {
-            locationDataHashMap = muzimaLocationService.getLastKnownGPS(jsonReturnType);
-            gps_location_string = locationDataHashMap.get("gps_location_string");
-        } catch (Exception e) {
-            Log.e(getClass().getSimpleName(),"Unable to process gps data, unknow Error Occurred" + e.getMessage());
+        Boolean isGpsEnabled = false;
+        isGpsEnabled = new GPSFeaturePreferenceService(application).getIsGPSDataCollectionEnabledSetting();
+        if (isGpsEnabled){
+            MuzimaLocationService muzimaLocationService = new MuzimaLocationService(application);
+            HashMap<String,String> locationDataHashMap = new HashMap<>(); //empty hashmap prevent NullPointerException
+            try {
+                locationDataHashMap = muzimaLocationService.getLastKnownGPS(jsonReturnType);
+                gps_location_string = locationDataHashMap.get("gps_location_string");
+                return gps_location_string;
+            } catch (Exception e) {
+                Log.e(getClass().getSimpleName(),"Unable to process gps data, unknow Error Occurred" + e.getMessage());
+                return gps_location_string;
+            }
+        }else {
+            return "GPS Feature is Disabled by User";
         }
-
-        return gps_location_string;
-
     }
 }
