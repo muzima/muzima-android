@@ -34,6 +34,7 @@ import com.muzima.controller.MuzimaSettingController;
 import com.muzima.domain.Credentials;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.service.CredentialsPreferenceService;
+import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.LandingPagePreferenceService;
 import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaSyncService;
@@ -373,6 +374,7 @@ public class LoginActivity extends Activity {
                     .saveRequireMedicalRecordNumberPreference();
 
             new SHRStatusPreferenceService((MuzimaApplication) getApplicationContext()).saveSHRStatusPreference();
+            new GPSFeaturePreferenceService((MuzimaApplication) getApplicationContext()).updateGPSDataPreferenceSettings();
         }
     }
 

@@ -8,8 +8,10 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 
 public class SHRStatusPreferenceService extends PreferenceService{
+
     private final SharedPreferences settings;
     private final MuzimaApplication application;
+
     public SHRStatusPreferenceService(MuzimaApplication application) {
         super(application.getApplicationContext());
         settings = PreferenceManager.getDefaultSharedPreferences(context);
