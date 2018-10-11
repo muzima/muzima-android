@@ -21,10 +21,12 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.adapters.forms.PatientFormsPagerAdapter;
 import com.muzima.api.model.Patient;
+import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.MuzimaLocationService;
 import com.muzima.utils.Constants;
 import com.muzima.view.patients.PatientSummaryActivity;
@@ -75,9 +77,13 @@ public class PatientFormsActivity extends FormsActivityBase {
     }
 
     public void requestGPSLocationPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            ActivityCompat.requestPermissions(PatientFormsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_ACCESS_PERMISSION_REQUEST_CODE);
+        GPSFeaturePreferenceService gpsFeaturePreferenceService = new GPSFeaturePreferenceService((MuzimaApplication) getApplication());
+        if(gpsFeaturePreferenceService.getIsGPSDataCollectionEnabledSetting()){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                ActivityCompat.requestPermissions(PatientFormsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_ACCESS_PERMISSION_REQUEST_CODE);
+            }
         }
+
     }
 
     @Override
