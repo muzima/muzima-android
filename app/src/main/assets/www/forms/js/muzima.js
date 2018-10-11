@@ -1379,17 +1379,17 @@ $(document).ready(function () {
     /*end of Setting Default encounter Location*/
 
     /* Start populating gps location data */
-    if($('.gps\\.location_data').length){
-        if($('.gps\\.location_data').val().length){
+    if($('.gps\\.cummulativeFormOpeningGPSData').length){
+        if($('.gps\\.cummulativeFormOpeningGPSData').val().length){
             var lastKnowGPSLocationJsonObj = htmlDataStore.getLastKnowGPSLocation("json-object");
-            var gpsLocationDataOnForm = $('.gps\\.location_data').val();
+            var gpsLocationDataOnForm = $('.gps\\.cummulativeFormOpeningGPSData').val();
             var locationObj = JSON.parse(gpsLocationDataOnForm);
             locationObj.push(JSON.parse(lastKnowGPSLocationJsonObj));
             var newLocationData = JSON.stringify(locationObj);
-            $(".gps\\.location_data").val(newLocationData);
+            $(".gps\\.cummulativeFormOpeningGPSData").val(newLocationData);
         }else {
             var lastKnowGPSLocationJsonArray = htmlDataStore.getLastKnowGPSLocation("json-array");
-            $(".gps\\.location_data").val(lastKnowGPSLocationJsonArray);
+            $(".gps\\.cummulativeFormOpeningGPSData").val(lastKnowGPSLocationJsonArray);
         }
     }
 

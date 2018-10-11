@@ -6,9 +6,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -32,7 +34,7 @@ public class MuzimaLocationService {
     private Boolean isNetworkLocationProviderEnabled = false;
     private Boolean isGPSLocationProviderEnabled = false;
 
-    public static Boolean isOverallLocationAccessPermissionsGranted = true;
+    public static Boolean isOverallLocationAccessPermissionsGranted = false;
     public static Boolean isLocationServicesSwitchedOn = false;
 
     @SuppressLint("MissingPermission")
@@ -48,7 +50,7 @@ public class MuzimaLocationService {
             public void onLocationChanged(android.location.Location location) {
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
-                Log.e(getClass().getSimpleName(),"New Latitude: " + latitude + "New Longitude: " + longitude);
+                Log.e(getClass().getSimpleName(), "New Latitude: " + latitude + "New Longitude: " + longitude);
             }
 
             @Override
@@ -109,7 +111,7 @@ public class MuzimaLocationService {
 
                     locationResultMap.put("gps_provider_status", "switched_on");
                     locationResultMap.put("network_provider_status", "switched_on");
-                    locationResultMap.put("gps_location_string", getGpsRepresentationString(location,jsonReturnType));
+                    locationResultMap.put("gps_location_string", getGpsRepresentationString(location, jsonReturnType));
                 }
 
                 Log.e(getClass().getSimpleName(), "getLastKnownGPS() == " + location);
@@ -118,14 +120,16 @@ public class MuzimaLocationService {
                 isLocationServicesSwitchedOn = true;
                 locationResultMap.put("network_provider_status", "switched_on");
                 locationResultMap.put("gps_provider_status", "unchecked");
-                locationResultMap.put("gps_location_string", getGpsRepresentationString(location,jsonReturnType));
+                locationResultMap.put("gps_location_string", getGpsRepresentationString(location, jsonReturnType));
             }
 
 
             Log.e(getClass().getSimpleName(), "Location " + location);
 
         } else {
-            gpsLocationString = "Permission denied by user";
+            locationResultMap.put("network_provider_status", "unchecked");
+            locationResultMap.put("gps_provider_status", "unchecked");
+            locationResultMap.put("gps_location_string", "Permission denied by User");
         }
 
         Log.e(getClass().getSimpleName(), "getLastKnownGPS() == " + gpsLocationString);
@@ -134,14 +138,14 @@ public class MuzimaLocationService {
         return locationResultMap;
     }
 
-    public String getGpsRepresentationString(Location location,String jsonReturnType) throws Exception {
-        if(jsonReturnType.contains("json-object")){
+    public String getGpsRepresentationString(Location location, String jsonReturnType) throws Exception {
+        if (jsonReturnType.contains("json-object")) {
             MuzimaGPSLocation muzimaGPSLocation = new MuzimaGPSLocation(location);
             return muzimaGPSLocation.toJsonObject().toString();
-        }else if(jsonReturnType.contains("json-array")){
+        } else if (jsonReturnType.contains("json-array")) {
             MuzimaGPSLocation muzimaGPSLocation = new MuzimaGPSLocation(location);
             return muzimaGPSLocation.toJsonArray().toString();
-        }else {
+        } else {
             MuzimaGPSLocation muzimaGPSLocation = new MuzimaGPSLocation(location);
             return muzimaGPSLocation.toJsonArray().toString();
         }
@@ -209,6 +213,5 @@ public class MuzimaLocationService {
             alert.show();
         }
     }
-
 
 }

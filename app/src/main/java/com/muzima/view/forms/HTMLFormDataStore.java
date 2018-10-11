@@ -10,9 +10,17 @@
 
 package com.muzima.view.forms;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
@@ -485,21 +493,74 @@ class HTMLFormDataStore {
     @JavascriptInterface
     public String getLastKnowGPSLocation(String jsonReturnType) {
         String gps_location_string = "Unknown Error Occured!";
-        Boolean isGpsEnabled = false;
-        isGpsEnabled = new GPSFeaturePreferenceService(application).getIsGPSDataCollectionEnabledSetting();
-        if (isGpsEnabled){
-            MuzimaLocationService muzimaLocationService = new MuzimaLocationService(application);
-            HashMap<String,String> locationDataHashMap = new HashMap<>(); //empty hashmap prevent NullPointerException
-            try {
-                locationDataHashMap = muzimaLocationService.getLastKnownGPS(jsonReturnType);
-                gps_location_string = locationDataHashMap.get("gps_location_string");
-                return gps_location_string;
-            } catch (Exception e) {
-                Log.e(getClass().getSimpleName(),"Unable to process gps data, unknow Error Occurred" + e.getMessage());
-                return gps_location_string;
+        Boolean isGpsFeatureEnabled = false;
+        isGpsFeatureEnabled = new GPSFeaturePreferenceService(application).getIsGPSDataCollectionEnabledSetting();
+        if (isGpsFeatureEnabled) {
+
+            if (isLocationPermissionsGranted()) {
+
+                if(isLocationServicesEnabled()){
+                    MuzimaLocationService muzimaLocationService = new MuzimaLocationService(application);
+                    HashMap<String, String> locationDataHashMap = new HashMap<>(); //empty hashmap prevent NullPointerException
+                    try {
+                        locationDataHashMap = muzimaLocationService.getLastKnownGPS(jsonReturnType);
+                        gps_location_string = locationDataHashMap.get("gps_location_string");
+                        return gps_location_string;
+                    } catch (Exception e) {
+                        Log.e(getClass().getSimpleName(), "Unable to process gps data, unknow Error Occurred" + e.getMessage());
+                        return gps_location_string;
+                    }
+                }else {
+                    showLocationDisabledDialog();
+                    return "Location service diabled by user";
+                }
+
+            } else {
+                return "Location Permissions Denied By User.";
             }
-        }else {
+        } else {
             return "GPS Feature is Disabled by User";
         }
+
     }
+
+    public boolean isLocationPermissionsGranted() {
+        int permissionStatus = ActivityCompat.checkSelfPermission(application, Manifest.permission.ACCESS_FINE_LOCATION);
+        if (permissionStatus == PackageManager.PERMISSION_GRANTED)
+            return true;
+        else if (permissionStatus == PackageManager.PERMISSION_DENIED)
+            return false;
+        else
+            return false;
+    }
+
+    public Boolean isLocationServicesEnabled(){
+        LocationManager locationManager = (LocationManager)application.getSystemService(Context.LOCATION_SERVICE);
+
+        boolean isGPSProviderEnabled = false;
+        boolean isNetworkEnabled = false;
+
+        if(locationManager != null){
+            isGPSProviderEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        }
+
+        return (isGPSProviderEnabled || isNetworkEnabled);
+    }
+
+    public void showLocationDisabledDialog(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(application);
+        alertDialog.setTitle("Enable Location and Internet connectivity.");
+        alertDialog.setMessage("You location is switched off! Kindly turn location on in settings.");
+        alertDialog.setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                application.startActivity(intent);
+            }
+        });
+
+        alertDialog.show();
+    }
+
+
 }
