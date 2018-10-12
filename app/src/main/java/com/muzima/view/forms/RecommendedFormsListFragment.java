@@ -10,14 +10,23 @@
 
 package com.muzima.view.forms;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
+
 import com.muzima.R;
 import com.muzima.adapters.forms.RecommendedFormsAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
+import com.muzima.model.BaseForm;
+import com.muzima.view.patients.PatientsListActivity;
 
 public class RecommendedFormsListFragment extends FormsListFragment implements AllAvailableFormsListFragment.OnTemplateDownloadComplete {
     private Patient patient;
@@ -40,11 +49,21 @@ public class RecommendedFormsListFragment extends FormsListFragment implements A
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         FormViewIntent intent = new FormViewIntent(getActivity(), (AvailableForm) listAdapter.getItem(position), patient);
+        intent.putExtra(FormViewIntent.FORM_COMPLETION_STATUS_INTENT,FormViewIntent.FORM_COMPLETION_STATUS_RECOMMENDED);
         getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 
     @Override
     public void onTemplateDownloadComplete() {
         listAdapter.reloadData();
+    }
+
+    @Override
+    public void onResume() {
+        Activity activity = getActivity();
+        if (activity == null) {
+            startActivity(new Intent(getActivity(),PatientsListActivity.class));
+        }
+        super.onResume();
     }
 }

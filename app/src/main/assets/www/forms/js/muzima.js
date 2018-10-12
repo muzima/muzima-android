@@ -11,6 +11,7 @@
  * * Fieldset element where the input must be selected at least one.
  * * Message to be displayed when none of the elements in the fieldset is selected.
  */
+
 var validateSelected = function (source) {
     var errors = {};
     var fieldSet = $(source).filter(':visible');
@@ -89,6 +90,7 @@ var toggleValidationMessages = function (errors) {
         validator.showErrors(errors);
     }
 };
+
 /* End - Show and hide validation error messages */
 
 $(document).ready(function () {
@@ -1335,6 +1337,13 @@ $(document).ready(function () {
     });
     /* End - validConsultantOnly*/
 
+//    /*Capture updated gps location data  */
+//    $(window).load(function(){
+//        var gpsLocation = htmlDataStore.getLastKnowGPSLocation();
+//
+//    });
+
+
     /*Start of Checking For Possibility Of Duplicate Form on encounter Date change*/
     $("#encounter\\.encounter_datetime" ).change(function() {
         var formUuid=$('#encounter\\.form_uuid').val();
@@ -1366,7 +1375,25 @@ $(document).ready(function () {
             $('[name="encounter\\.location_id"]').val(this.id);
         });
     }
+
     /*end of Setting Default encounter Location*/
+
+    /* Start populating gps location data */
+
+    if($('.gps\\.cummulativeFormOpeningGPSData').length){
+        if($('.gps\\.cummulativeFormOpeningGPSData').val().length){
+            var lastKnowGPSLocationJsonObj = htmlDataStore.getLastKnowGPSLocation("json-object");
+            var gpsLocationDataOnForm = $('.gps\\.cummulativeFormOpeningGPSData').val();
+            var locationObj = JSON.parse(gpsLocationDataOnForm);
+            locationObj.push(JSON.parse(lastKnowGPSLocationJsonObj));
+            var newLocationData = JSON.stringify(locationObj);
+            $(".gps\\.cummulativeFormOpeningGPSData").val(newLocationData);
+        }else {
+            var lastKnowGPSLocationJsonArray = htmlDataStore.getLastKnowGPSLocation("json-array");
+            $(".gps\\.cummulativeFormOpeningGPSData").val(lastKnowGPSLocationJsonArray);
+        }
+    }
+
     /*Start of populating initial form opening timestamp*/
     if($('.initialFormOpeningTimestamp').length && !$('.initialFormOpeningTimestamp').val().length){
         var date = new Date();

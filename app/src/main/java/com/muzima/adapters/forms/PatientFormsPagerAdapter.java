@@ -9,7 +9,11 @@
  */
 package com.muzima.adapters.forms;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -20,6 +24,8 @@ import com.muzima.view.forms.CompletePatientsFormsListFragment;
 import com.muzima.view.forms.IncompletePatientsFormsListFragment;
 import com.muzima.view.forms.RecommendedFormsListFragment;
 
+import static com.muzima.utils.Constants.MuzimaGPSLocationConstants.LOCATION_ACCESS_PERMISSION_REQUEST_CODE;
+
 /**
  * Responsible to hold all the form pages that are part of a specific patient.
  */
@@ -28,6 +34,7 @@ public class PatientFormsPagerAdapter extends MuzimaPagerAdapter {
     private static final int TAB_INCOMPLETE = 1;
     private static final int TAB_COMPLETE = 2;
     private final Patient patient;
+
 
     public PatientFormsPagerAdapter(Context context, FragmentManager fm, Patient patient) {
         super(context, fm);
@@ -51,4 +58,6 @@ public class PatientFormsPagerAdapter extends MuzimaPagerAdapter {
     public void onFormUploadFinish() {
         ((CompletePatientsFormsListFragment)pagers[TAB_COMPLETE].fragment).onFormUploadFinish();
     }
+
+
 }

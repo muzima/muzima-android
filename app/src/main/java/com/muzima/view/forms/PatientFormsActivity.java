@@ -10,16 +10,28 @@
 
 package com.muzima.view.forms;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.widget.Toast;
+
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.adapters.forms.PatientFormsPagerAdapter;
 import com.muzima.api.model.Patient;
+import com.muzima.service.GPSFeaturePreferenceService;
+import com.muzima.service.MuzimaLocationService;
 import com.muzima.utils.Constants;
 import com.muzima.view.patients.PatientSummaryActivity;
+
+import static com.muzima.utils.Constants.MuzimaGPSLocationConstants.LOCATION_ACCESS_PERMISSION_REQUEST_CODE;
 
 
 public class PatientFormsActivity extends FormsActivityBase {
@@ -34,6 +46,9 @@ public class PatientFormsActivity extends FormsActivityBase {
         initPager();
         initPagerIndicator();
         getSupportActionBar().setTitle(patient.getSummary());
+
+        requestGPSLocationPermissions();
+
     }
 
 
@@ -51,13 +66,38 @@ public class PatientFormsActivity extends FormsActivityBase {
         int syncType = intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, -1);
 
 
-        if(syncType == Constants.DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS) {
+        if (syncType == Constants.DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS) {
             SharedPreferences sp = getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", MODE_PRIVATE);
             if (sp.getBoolean("active", false)) {
                 if (syncStatus == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
                     ((PatientFormsPagerAdapter) formsPagerAdapter).onFormUploadFinish();
                 }
             }
+        }
+    }
+
+    public void requestGPSLocationPermissions() {
+        GPSFeaturePreferenceService gpsFeaturePreferenceService = new GPSFeaturePreferenceService((MuzimaApplication) getApplication());
+        if(gpsFeaturePreferenceService.getIsGPSDataCollectionEnabledSetting()){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                ActivityCompat.requestPermissions(PatientFormsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_ACCESS_PERMISSION_REQUEST_CODE);
+            }
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case LOCATION_ACCESS_PERMISSION_REQUEST_CODE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    MuzimaLocationService.isOverallLocationAccessPermissionsGranted = true;
+                }else {
+                    MuzimaLocationService.isOverallLocationAccessPermissionsGranted = false;
+                }
+                break;
+            default:
+                break;
         }
     }
 }
