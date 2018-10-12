@@ -114,9 +114,6 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             Log.e(getClass().getSimpleName(), e.getMessage(), e);
             finish();
         }
-
-
-
     }
 
     @Override
@@ -126,8 +123,6 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         }
         super.onDestroy();
     }
-
-
 
     public void isLocationServicesAvailable(){
         if (!MuzimaLocationService.isLocationServicesSwitchedOn){
@@ -332,7 +327,6 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         getSettings().setDomStorageEnabled(true);
 
         FormInstance formInstance = new FormInstance(form, formTemplate);
-        //muzimaGPSLocationInterface.getLastKnowGPSLocation(FormWebViewActivity.this);
 
         webView.addJavascriptInterface(formInstance, FORM_INSTANCE);
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();

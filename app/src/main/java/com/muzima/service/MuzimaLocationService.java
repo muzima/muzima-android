@@ -28,11 +28,7 @@ public class MuzimaLocationService {
 
     LocationManager locationManager;
     LocationListener locationListener;
-    private Boolean isFineGPSLocationAccessGranted = false;
     private Context context;
-
-    private Boolean isNetworkLocationProviderEnabled = false;
-    private Boolean isGPSLocationProviderEnabled = false;
 
     public static Boolean isOverallLocationAccessPermissionsGranted = false;
     public static Boolean isLocationServicesSwitchedOn = false;
@@ -73,9 +69,6 @@ public class MuzimaLocationService {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
     }
-
-
-//        muzimaGPSRepresentation = muzimaGPSLocation.toString();
 
     public HashMap<String, String> getLastKnownGPS(String jsonReturnType) throws Exception {
 
@@ -150,68 +143,6 @@ public class MuzimaLocationService {
             return muzimaGPSLocation.toJsonArray().toString();
         }
 
-    }
-
-    private Location getBestGPSLocation() {
-        List<String> providers = locationManager.getProviders(true);
-        Location bestLocation = null;
-        for (String provider : providers) {
-            Location l = locationManager.getLastKnownLocation(provider);
-            if (l == null) {
-                continue;
-            }
-            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
-                // Found best last known location: %s", l);
-                bestLocation = l;
-            }
-        }
-        return bestLocation;
-    }
-
-    public String getHardGPSData() {
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        return location.toString();
-    }
-
-//    protected void onResume(){ TODO apply on resume to calling activity
-//        super.onResume();
-//        isLocationEnabled();
-//    }
-
-    private void isLocationEnabled(String provider) {
-
-        Boolean isEnabled = false;
-
-        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-            alertDialog.setTitle("Enable Location and Internet connectivity.");
-            alertDialog.setMessage("You location is switched off! Kindly turn location on in settings.");
-            alertDialog.setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    context.startActivity(intent);
-                }
-            });
-
-            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-            AlertDialog alert = alertDialog.create();
-            alert.show();
-        } else {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-            alertDialog.setTitle("Confirm Location");
-            alertDialog.setMessage("Your Location is enabled, please enjoy");
-            alertDialog.setNegativeButton("Back to interface", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-            AlertDialog alert = alertDialog.create();
-            alert.show();
-        }
     }
 
 }
