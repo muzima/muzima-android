@@ -1379,6 +1379,7 @@ $(document).ready(function () {
     /*end of Setting Default encounter Location*/
 
     /* Start populating gps location data */
+
     if($('.gps\\.cummulativeFormOpeningGPSData').length){
         if($('.gps\\.cummulativeFormOpeningGPSData').val().length){
             var lastKnowGPSLocationJsonObj = htmlDataStore.getLastKnowGPSLocation("json-object");

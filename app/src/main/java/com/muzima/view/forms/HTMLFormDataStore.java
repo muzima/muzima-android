@@ -551,7 +551,7 @@ class HTMLFormDataStore {
     public void showLocationDisabledDialog(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(application);
         alertDialog.setTitle("Enable Location and Internet connectivity.");
-        alertDialog.setMessage("You location is switched off! Kindly turn location on in settings.");
+        alertDialog.setMessage("Location is switched off! Kindly turn location on in settings.");
         alertDialog.setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);

@@ -18,7 +18,7 @@ public class MuzimaGPSLocation {
     private String altitude;
     private String speed;
     private String bearing;
-    private String accuracy;//todo include accuracy
+    private String accuracy;
 
     private Location location;
 
