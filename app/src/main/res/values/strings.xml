@@ -18,7 +18,7 @@
 
     <string name="default_auto_save_interval" translatable="false">2</string>
     <string name="default_form_register">Registration Forms</string>
-    <string name="default_server" translatable="false">http://demo2.muzima.org/openmrs</string>
+    <string name="default_server" translatable="false">http://demo2.muzima.org</string>
 
     <string name="error_action_allow">Action not allowed while sync is in progress</string>
     <string name="error_audio_chose_activity_find">Error: Activity for choosing audio not found</string>
