@@ -439,7 +439,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         }};
         User user = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
 
-        if (isGenericRegistrationForm()) {
+        if (isGenericRegistrationForm() || isEncounterForm()) {
             formData.setJsonPayload(new GenericRegistrationPatientJSONMapper().map(patient, formData, user, encounterProviderPreference));
         } else {
             formData.setJsonPayload(new HTMLPatientJSONMapper().map(patient, formData, user, encounterProviderPreference));
