@@ -20,7 +20,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.1'
+        classpath 'com.android.tools.build:gradle:3.1.4'
     }
 }
 
@@ -34,7 +34,7 @@ description = 'Muzima-Android'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    buildToolsVersion '27'
 
     useLibrary 'org.apache.http.legacy'
 
