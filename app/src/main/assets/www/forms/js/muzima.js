@@ -1337,13 +1337,6 @@ $(document).ready(function () {
     });
     /* End - validConsultantOnly*/
 
-//    /*Capture updated gps location data  */
-//    $(window).load(function(){
-//        var gpsLocation = htmlDataStore.getLastKnowGPSLocation();
-//
-//    });
-
-
     /*Start of Checking For Possibility Of Duplicate Form on encounter Date change*/
     $("#encounter\\.encounter_datetime" ).change(function() {
         var formUuid=$('#encounter\\.form_uuid').val();
@@ -1380,17 +1373,17 @@ $(document).ready(function () {
 
     /* Start populating gps location data */
 
-    if($('.gps\\.cummulativeFormOpeningGPSData').length){
-        if($('.gps\\.cummulativeFormOpeningGPSData').val().length){
+    if($('.cummulativeFormOpeningGPSData').length){
+        if($('.cummulativeFormOpeningGPSData').val().length){
             var lastKnowGPSLocationJsonObj = htmlDataStore.getLastKnowGPSLocation("json-object");
-            var gpsLocationDataOnForm = $('.gps\\.cummulativeFormOpeningGPSData').val();
+            var gpsLocationDataOnForm = $('.cummulativeFormOpeningGPSData').val();
             var locationObj = JSON.parse(gpsLocationDataOnForm);
             locationObj.push(JSON.parse(lastKnowGPSLocationJsonObj));
             var newLocationData = JSON.stringify(locationObj);
-            $(".gps\\.cummulativeFormOpeningGPSData").val(newLocationData);
+            $(".cummulativeFormOpeningGPSData").val(newLocationData);
         }else {
             var lastKnowGPSLocationJsonArray = htmlDataStore.getLastKnowGPSLocation("json-array");
-            $(".gps\\.cummulativeFormOpeningGPSData").val(lastKnowGPSLocationJsonArray);
+            $(".cummulativeFormOpeningGPSData").val(lastKnowGPSLocationJsonArray);
         }
     }
 
