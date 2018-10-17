@@ -97,8 +97,20 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 Integer timeOutInMin = Integer.valueOf(o.toString());
-                ((MuzimaApplication) getActivity().getApplication()).resetTimer(timeOutInMin);
-                return true;
+                if (timeOutInMin > 0 && timeOutInMin < 500) {
+                    ((MuzimaApplication) getActivity().getApplication()).resetTimer(timeOutInMin);
+                    return true;
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder
+                            .setCancelable(true)
+                            .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                            .setTitle(getResources().getString(R.string.general_caution))
+                            .setMessage(getResources().getString(R.string.warning_session_timeout))
+                            .setPositiveButton(getResources().getText(R.string.general_ok), null).create().show();
+                }
+                return false;
+
             }
         });
 
