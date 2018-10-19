@@ -646,6 +646,9 @@
     <string name="warning_switch_server">Trocando o Servidor: Isto irá apagar todos dados de mUzima no seu dispositivo,
         incluindo formulários imcompletos. Tem certeza que quer mudar as configurações?
     </string>
+    <string name="warning_session_timeout">Sessão expirou: não foi possível definir o tempo limite da sessão.
+        O valor fornecido é inválido.
+    </string>
 
     <string name="write_SHR_to_card_text">Escrever SHR para cartão</string>
     <string name="write_shr_to_card_text">Escrever SHR ao cartão</string>
