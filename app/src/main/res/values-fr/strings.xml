@@ -34,7 +34,6 @@
     <string name="encounter_date_dialog_label">Date de rencontre</string>
     <string name="encounter_details">Détails de la rencontre</string>
 
-    <string name="enter_concept_name_text">Entrez le nom du concept ...</string>
     <string name="enter_provider_name_hint">Entrez le nom du fournisseur ...</string>
 
     <string name="error_action_allow">Opération interdite lorsque la synchronisation est en cours</string>
@@ -117,8 +116,6 @@
     <string name="form_encounter_location">Lieu de rencontre</string>
     <string name="form_encounter_provider">Fournisseur de rencontres</string>
 
-    <string name="gender_image_content_description">Gender Image</string>
-
     <string name="general_accept">accepter!</string>
     <string name="general_agree">Accordé</string>
     <string name="general_alert">Alerte!</string>
@@ -133,7 +130,6 @@
     <string name="general_cohorts">Cohortes</string>
     <string name="general_concepts">Concepts</string>
     <string name="general_dashboard">Tableau de bord</string>
-    <string name="general_data_syc_required">Données syc requises</string>
     <string name="general_delete">Supprimer</string>
     <string name="general_description_unavailable">Description non disponible</string>
     <string name="general_disagree">Desaccord</string>
@@ -552,8 +548,8 @@ Aucun fournisseur n\'a encore été ajouté</string>
 
     <string name="success_writing_smartcard">Les données de la carte à puce ont été écrites avec succès.</string>
 
-    <string name="synced_label_text">## Synced</string>
-    <string name="synced_total_label_text">## Synced, ## Total</string>
+    <string name="synced_label_text">## Synchronisé</string>
+    <string name="synced_total_label_text">## Synchronisé, ## Total</string>
 
     <string name="tagging_forms">Marquage des formulaires</string>
 
@@ -643,7 +639,6 @@ Aucun fournisseur n\'a encore été ajouté</string>
     <string name="title_video_choose">Choisissez Vidéo</string>
     <string name="title_video_record">Enregistrez vidéo</string>
 
-    <string name="to_text">À</string>
 
     <string name="video_links_general_text">Liens vidéo:</string>
 
@@ -659,6 +654,33 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="warning_switch_server">Changement de serveur: Cela effacera toutes les données mUzima sur votre appareil, y compris les formulaires incomplets. Etes-vous sûr de vouloir modifier ce paramètre?</string>
 
     <string name="write_SHR_to_card_text">Ecrire SHR à la carte</string>
-    <string name="write_shr_to_card_general">Ecrire SHR sur la carte</string>
+    <string name="write_shr_to_card_general">Ecrire des dossiers de santé partagés à la carte</string>
     <string name="write_shr_to_card_text">Ecrire SHR sur la carte</string>
+
+    <string name="to_text">À</string>
+    <string name="reply_hint_text">envoyer votre réponse</string>
+    <string name="sample_date_text">21/02/2018</string>
+    <string name="encounter_type">Type de rencontre:</string>
+    <string name="encounter_location">Lieu de rencontre:</string>
+    <string name="provider_details">Détails du fournisseur</string>
+    <string name="provider_name">Nom du fournisseur:</string>
+    <string name="provider_identifier">Identifiant du fournisseur:</string>
+    <string name="concept_details">Détails du concept</string>
+    <string name="concept_name">Nom du concept:</string>
+    <string name="concept_description">Description du concept</string>
+    <string name="observation_details">Détails d\'observation</string>
+    <string name="observation_value">Valeur d\'observation:</string>
+    <string name="captured_date">Date de capture:</string>
+    <string name="no_description_general">Pas de description</string>
+    <string name="enter_location_name">Entrez le nom de l\'emplacement ...</string>
+    <string name="type_a_message_hint">Tapez un message</string>
+    <string name="june_8_sample_date">8 juin</string>
+    <string name="general_date">Rendez-vous amoureux</string>
+    <string name="type_cohort_name_hint">Type Nom de cohorte …</string>
+    <string name="general_add">Ajouter</string>
+    <string name="enter_concept_name_text">Entrez le nom du concept ...</string>
+    <string name="gender_image_content_description">Image de genre</string>
+    <string name="general_data_syc_required">Données syc requises</string>
+    <string name="hint_enable_GPS">Activer la fonctionnalité de collecte de données GPS</string>
+    <string name="title_enable_gps">Activer le GPS</string>
 </resources>
