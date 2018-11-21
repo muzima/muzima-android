@@ -16,6 +16,7 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.muzima.api.context.Context;
@@ -81,7 +82,7 @@ import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 )
 
 
-public class MuzimaApplication extends Application {
+public class MuzimaApplication extends MultiDexApplication {
 
     private Context muzimaContext;
     private Activity currentActivity;
