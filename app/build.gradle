@@ -84,6 +84,7 @@ repositories {
 }
 
 dependencies {
+    compile 'com.android.support:multidex:1.0.3'
     compile 'de.hdodenhof:circleimageview:1.2.1'
     compile group: 'com.madgag', name: 'scprov-jdk15on', version: '1.47.0.2'
     compile fileTree('lib/stickylistheaders-1.0.0.jar')
