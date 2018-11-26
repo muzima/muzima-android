@@ -717,4 +717,9 @@
     <string name="hint_enable_GPS">Enable GPS Data collection feature</string>
     <string name="title_enable_gps">Enable GPS</string>
     <string name="title_enable_shr">Enable SHR</string>
+    <string name="location_toast_message">Kindly switch on location in settings.</string>
+    <string name="title_gps_location">GPS Location</string>
+    <string name="gps_location_off_message">Location is switched off! Kindly turn on location in settings.</string>
+    <string name="btn_location_setting">Location Settings</string>
+    <string name="title_enable_gps_location">Enable Location and Internet connectivity.</string>
 </resources>

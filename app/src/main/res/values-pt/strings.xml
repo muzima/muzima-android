@@ -649,4 +649,10 @@
 
     <string name="write_SHR_to_card_text">Escrever SHR para cartão</string>
     <string name="write_shr_to_card_text">Escrever SHR ao cartão</string>
+
+    <string name="location_toast_message">Por favor, ligue a localização nas configurações.</string>
+    <string name="title_gps_location">GPS Localização</string>
+    <string name="gps_location_off_message">Localização está desligado! Por favor, ligue a localização nas configurações.</string>
+    <string name="btn_location_setting">Configurações de localização</string>
+    <string name="title_enable_gps_location">Ativar conectividade de local e Internet.</string>
 </resources>

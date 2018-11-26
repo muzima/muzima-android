@@ -166,16 +166,16 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         boolean gps_enabled = false;
         if (!(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))) {
             android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(HTMLFormWebViewActivity.this);
-            alertDialog.setTitle("GPS Location");
-            alertDialog.setMessage("Location is switched off! Kindly turn on location in settings.");
-            alertDialog.setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
+            alertDialog.setTitle(getResources().getString(R.string.title_gps_location));
+            alertDialog.setMessage(getResources().getString(R.string.gps_location_off_message));
+            alertDialog.setPositiveButton(getResources().getString(R.string.btn_location_setting), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     startActivityForResult(intent,LOCATION_SERVICES_SWITCH_REQUEST_CODE);
                 }
             });
 
-            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            alertDialog.setNegativeButton(getResources().getString(R.string.general_cancel), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     Intent restartFormsIntent = new Intent(HTMLFormWebViewActivity.this, PatientFormsActivity.class);
                     restartFormsIntent.putExtra(PATIENT, patient);
@@ -385,7 +385,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             restartFormsIntent.putExtra(PATIENT, patient);
             startActivity(restartFormsIntent);
         }else {
-            Toast.makeText(getApplicationContext(),"Kindly switch location servies in settings",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.location_toast_message), Toast.LENGTH_LONG).show();
         }
     }
 

@@ -127,16 +127,16 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     public void isLocationServicesAvailable(){
         if (!MuzimaLocationService.isLocationServicesSwitchedOn){
             android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(getApplicationContext());
-            alertDialog.setTitle("GPS Location");
-            alertDialog.setMessage("Location is switched off! Kindly turn on location in settings.");
-            alertDialog.setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
+            alertDialog.setTitle(getResources().getString(R.string.title_gps_location));
+            alertDialog.setMessage(getResources().getString(R.string.gps_location_off_message));
+            alertDialog.setPositiveButton(getResources().getString(R.string.btn_location_setting), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     startActivity(intent);
                 }
             });
 
-            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            alertDialog.setNegativeButton(getResources().getString(R.string.general_cancel), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
                 }
