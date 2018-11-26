@@ -512,7 +512,7 @@ class HTMLFormDataStore {
                     }
                 }else {
                     showLocationDisabledDialog();
-                    return "Location service diabled by user";
+                    return "Location service disabled by user";
                 }
 
             } else {
@@ -550,9 +550,9 @@ class HTMLFormDataStore {
 
     public void showLocationDisabledDialog(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(application);
-        alertDialog.setTitle("Enable Location and Internet connectivity.");
-        alertDialog.setMessage("Location is switched off! Kindly turn location on in settings.");
-        alertDialog.setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
+        alertDialog.setTitle(formWebViewActivity.getString(R.string.title_enable_gps_location));
+        alertDialog.setMessage(formWebViewActivity.getString(R.string.gps_location_off_message));
+        alertDialog.setPositiveButton(formWebViewActivity.getString(R.string.btn_location_setting), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 application.startActivity(intent);

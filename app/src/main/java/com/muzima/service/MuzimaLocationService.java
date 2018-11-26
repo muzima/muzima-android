@@ -18,6 +18,7 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.muzima.R;
 import com.muzima.model.location.MuzimaGPSLocation;
 
 import java.util.HashMap;
@@ -108,7 +109,7 @@ public class MuzimaLocationService {
                 }
 
                 Log.e(getClass().getSimpleName(), "getLastKnownGPS() == " + location);
-                Toast.makeText(context, "Kindly switch on location in settings.", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, context.getResources().getString(R.string.location_toast_message), Toast.LENGTH_LONG).show();
             } else {
                 isLocationServicesSwitchedOn = true;
                 locationResultMap.put("network_provider_status", "switched_on");

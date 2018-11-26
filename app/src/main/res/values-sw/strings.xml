@@ -527,4 +527,10 @@
 
     <string name="write_SHR_to_card_text">Andika SHR kwa Kadi</string>
     <string name="write_shr_to_card_text">Andika SHR kwa Kadi</string>
+
+    <string name="location_toast_message">Tafadhali wezesha eneo katika mipangilio.</string>
+    <string name="title_gps_location">Eneo</string>
+    <string name="gps_location_off_message">Eneo limezimwa! Tafadhali wezesha eneo kwenye mipangilio.</string>
+    <string name="btn_location_setting">Mipangilio ya Eneo</string>
+    <string name="title_enable_gps_location">Wezesha uunganisho wa Eneo na Mtandao.</string>
 </resources>
