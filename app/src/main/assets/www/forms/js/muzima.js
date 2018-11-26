@@ -1068,7 +1068,14 @@ $(document).ready(function () {
         var shouldInclude = $(element).is(':visible');
         if (!shouldInclude) {
             var media = $(element).attr("name");
-            shouldInclude = media && media.indexOf("consultation") > -1;
+            var mediaValue = media && media.indexOf("consultation");
+            if(mediaValue > -1){
+                shouldInclude = true;
+            }
+
+            if($(element).attr('type') == 'hidden' && mediaValue==-1){
+                shouldInclude = true;
+            }
         }
         return shouldInclude;
     }
