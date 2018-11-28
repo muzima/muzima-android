@@ -60,6 +60,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -107,6 +108,7 @@ class HTMLFormDataStore {
     @JavascriptInterface
     public void saveHTML(String jsonPayload, String status, boolean keepFormOpen) {
         jsonPayload = injectUserSystemIdToEncounterPayload(jsonPayload);
+        jsonPayload = injectTimeZoneToEncounterPayload(jsonPayload);
         formData.setJsonPayload(jsonPayload);
         formData.setStatus(status);
         boolean encounterDetailsValidityStatus = true;
@@ -562,5 +564,22 @@ class HTMLFormDataStore {
         alertDialog.show();
     }
 
+    private String injectTimeZoneToEncounterPayload(String jsonPayload) {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonPayload);
+            JSONObject jsonObjectInner = jsonObject.getJSONObject("encounter");
+            if (!(jsonObjectInner.has("encounter.default_time_zone"))) {
+                String default_time_zone = TimeZone.getDefault().getID();
+                jsonObjectInner.put("encounter.default_time_zone", default_time_zone);
+                jsonObject.put("encounter", jsonObjectInner);
+                jsonPayload = jsonObject.toString();
+            }
+            return jsonPayload;
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(), "Error while parsing response JSON", e);
+        }
+
+        return jsonPayload;
+    }
 
 }

@@ -229,7 +229,7 @@ $(document).ready(function () {
            /*Start of populating data entry completion timestamp before serializing the form*/
             if($('.dataEntryCompletionTimeStamp').length){
                 var date = new Date();
-                $('.dataEntryCompletionTimeStamp').val(date);
+                $('.dataEntryCompletionTimeStamp').val(date.getTime());
             }
             /*Start of populating data entry completion timestamp*/
         }
@@ -1397,7 +1397,7 @@ $(document).ready(function () {
     /*Start of populating initial form opening timestamp*/
     if($('.initialFormOpeningTimestamp').length && !$('.initialFormOpeningTimestamp').val().length){
         var date = new Date();
-        $('.initialFormOpeningTimestamp').val(date);
+        $('.initialFormOpeningTimestamp').val(date.getTime());
     }
     /*end of populating initial form opening timestamp*/
 });
