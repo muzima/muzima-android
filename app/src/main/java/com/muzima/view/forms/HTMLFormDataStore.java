@@ -551,17 +551,20 @@ class HTMLFormDataStore {
     }
 
     public void showLocationDisabledDialog(){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(application);
-        alertDialog.setTitle(formWebViewActivity.getString(R.string.title_enable_gps_location));
-        alertDialog.setMessage(formWebViewActivity.getString(R.string.gps_location_off_message));
-        alertDialog.setPositiveButton(formWebViewActivity.getString(R.string.btn_location_setting), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                application.startActivity(intent);
-            }
-        });
+        Boolean isGPSDataCollectionEnabledSetting = new GPSFeaturePreferenceService(application).getIsGPSDataCollectionEnabledSetting();
+        if(isGPSDataCollectionEnabledSetting) {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(application);
+            alertDialog.setTitle(formWebViewActivity.getString(R.string.title_enable_gps_location));
+            alertDialog.setMessage(formWebViewActivity.getString(R.string.gps_location_off_message));
+            alertDialog.setPositiveButton(formWebViewActivity.getString(R.string.btn_location_setting), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    application.startActivity(intent);
+                }
+            });
 
-        alertDialog.show();
+            alertDialog.show();
+        }
     }
 
     private String injectTimeZoneToEncounterPayload(String jsonPayload) {
