@@ -50,6 +50,7 @@ import com.muzima.controller.ObservationController;
 import com.muzima.controller.ProviderController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
+import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.MuzimaLocationService;
 import com.muzima.utils.audio.AudioResult;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
@@ -164,26 +165,27 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         super.onStart();
         LocationManager locationManager = (LocationManager)getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         boolean gps_enabled = false;
-        if (!(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))) {
-            android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(HTMLFormWebViewActivity.this);
-            alertDialog.setTitle(getResources().getString(R.string.title_gps_location));
-            alertDialog.setMessage(getResources().getString(R.string.gps_location_off_message));
-            alertDialog.setPositiveButton(getResources().getString(R.string.btn_location_setting), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivityForResult(intent,LOCATION_SERVICES_SWITCH_REQUEST_CODE);
-                }
-            });
+        GPSFeaturePreferenceService gpsFeaturePreferenceService = new GPSFeaturePreferenceService((MuzimaApplication) getApplication());
+        if(gpsFeaturePreferenceService.getIsGPSDataCollectionEnabledSetting()) {
+            if (!(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))) {
+                android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(HTMLFormWebViewActivity.this);
+                alertDialog.setTitle(getResources().getString(R.string.title_gps_location));
+                alertDialog.setMessage(getResources().getString(R.string.gps_location_off_message));
+                alertDialog.setPositiveButton(getResources().getString(R.string.btn_location_setting), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivityForResult(intent, LOCATION_SERVICES_SWITCH_REQUEST_CODE);
+                    }
+                });
 
-            alertDialog.setNegativeButton(getResources().getString(R.string.general_cancel), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent restartFormsIntent = new Intent(HTMLFormWebViewActivity.this, PatientFormsActivity.class);
-                    restartFormsIntent.putExtra(PATIENT, patient);
-                    startActivity(restartFormsIntent);
-                }
-            });
-            android.support.v7.app.AlertDialog alert = alertDialog.create();
-            alert.show();
+                alertDialog.setNegativeButton(getResources().getString(R.string.general_cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        processBackButtonPressed();
+                    }
+                });
+                android.support.v7.app.AlertDialog alert = alertDialog.create();
+                alert.show();
+            }
         }
 
     }
