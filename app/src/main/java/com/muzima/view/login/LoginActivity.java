@@ -34,10 +34,12 @@ import com.muzima.controller.MuzimaSettingController;
 import com.muzima.domain.Credentials;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.service.CredentialsPreferenceService;
+import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.LandingPagePreferenceService;
 import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
+import com.muzima.service.SHRStatusPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.util.MuzimaLogger;
 import com.muzima.utils.StringUtils;
@@ -235,7 +237,7 @@ public class LoginActivity extends Activity {
 
                 //Cohort Wizard activity
                 application.getPatientController().deleteAllPatients();
-                application.getCohortController().deleteCohortMembers(application.getCohortController().getAllCohorts());
+                application.getCohortController().deleteAllCohortMembers(application.getCohortController().getAllCohorts());
                 application.getCohortController().deleteAllCohorts();
                 context.getLastSyncTimeService().deleteAll();
 
@@ -287,7 +289,8 @@ public class LoginActivity extends Activity {
                 downloadMissingServerSettings();
                 MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getApplicationContext());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob();
+                    //delay for 10 seconds to allow next UI activity to finish loading
+                    muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob(10000);
                 }
 
                 startNextActivity();
@@ -314,6 +317,8 @@ public class LoginActivity extends Activity {
                     return getString(R.string.error_local_connection_unavailable);
                 case SyncStatusConstants.SERVER_CONNECTION_ERROR:
                     return getString(R.string.error_server_connection_unavailable);
+                case SyncStatusConstants.UNKNOWN_ERROR:
+                    return getString(R.string.error_authentication_fail);
                 default:
                     return getString(R.string.error_authentication_fail);
             }
@@ -325,10 +330,6 @@ public class LoginActivity extends Activity {
             Intent intent;
             if (new WizardFinishPreferenceService(LoginActivity.this).isWizardFinished()) {
                 intent = new LandingPagePreferenceService(getApplicationContext()).getLandingPageActivityLauchIntent();
-//                MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getApplicationContext());
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                    muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob();
-//                }
             } else {
                 removeRemnantDataFromPreviousRunOfWizard();
                 intent = new Intent(getApplicationContext(), SetupMethodPreferenceWizardActivity.class);
@@ -371,6 +372,9 @@ public class LoginActivity extends Activity {
         protected void onPostExecute(int[] result) {
             new RequireMedicalRecordNumberPreferenceService((MuzimaApplication) getApplicationContext())
                     .saveRequireMedicalRecordNumberPreference();
+
+            new SHRStatusPreferenceService((MuzimaApplication) getApplicationContext()).saveSHRStatusPreference();
+            new GPSFeaturePreferenceService((MuzimaApplication) getApplicationContext()).updateGPSDataPreferenceSettings();
         }
     }
 

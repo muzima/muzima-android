@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
+    <string name="SHR_card_text">Kadi ya SHR</string>
+    <string name="SHR_data_title_text">SHR Data</string>
+    <string name="SHR_extracted_data_text">Data zilizochukuliwa kutoka SHR</string>
+
     <string name="add_individual_observation_text">Ongeza Uchunguzi wa daktari</string>
 
     <string name="app_name">mUzima</string>
@@ -27,6 +31,7 @@
     <string name="error_credential_invalid">jina la mtumiaji, neno la siri visivyo halali kimuungano na Seva </string>
     <string name="error_data_download">Tatizo limetokea wakati wa kupakua deta kutoka katika seva</string>
     <string name="error_data_save">Tatizo:limetokea wakati wa kuhifadhi data katika hifadhi ya kifaa</string>
+    <string name="error_empty_message_text">Hauwezi kutuma ujumbe usio wazi.</string>
     <string name="error_encounter_download">Inkaunta zimeshindikana kupakuliwa</string>
     <string name="error_encounter_load">Imeshindikana kupakia inkaunta</string>
     <string name="error_encounter_observation_download">Imeshindikana kupakua obzavesheni za mgonjwa</string>
@@ -141,6 +146,7 @@
     <string name="general_tags">Tagi</string>
     <string name="general_thank_you">Asante</string>
     <string name="general_unexpected_error_occurred">Hitilafu isiyotarajiwa</string>
+    <string name="general_update">Sasisha</string>
     <string name="general_upload">Pakia</string>
     <string name="general_username">jina la mtumiaji.</string>
     <string name="general_view_encounter">Tazama inkaunta</string>
@@ -196,6 +202,7 @@
     <string name="hint_drawer_close">droo ya tagi funga</string>
     <string name="hint_drawer_open">droo ya tagi fungua</string>
     <string name="hint_duplicate_form_data_warning">Mpe tahadhari mtumiaji wakati wa kuhifadhi data kama kuna marudio ya data za fomu kwa mteja yuleyule na tarehe ileile ya inkaunta</string>
+    <string name="hint_enable_shr">Wezesha kipengele cha kadi erevu</string>
     <string name="hint_encounter_location_validation_failure">Tafadhali weka sehemu kutoka kwenye orodha ya sehemu yamkini</string>
     <string name="hint_encounter_provider_validation_failure">Tafadhali weka mtoa huduma kutoka kwenye orodha ya watoa huduma yamkini.</string>
     <string name="hint_form_auto_save_interval">Kadiri ambayo fomu zako zitahifadhiwa otomatiki.</string>
@@ -243,6 +250,9 @@
     <string name="hint_wizard_form_download">Chagua kiolezo kimoja au zaidi kutoka katika orodha kisha bofya \'Ifuatayo\' ili kupakua</string>
     <string name="hint_write_SHR_to_card">Je, unataka kuandika Rekodi ya Afya ya Pamoja kwa kadi?</string>
 
+    <string name="individual_obs">Uchunguzi wa kibinafsi</string>
+    <string name="individual_obs_description">Uchunguzi wa kibinafsi</string>
+
     <string name="info_authentication_in_progress">Uthibitisho wa utambulisho unaendelea…</string>
     <string name="info_client_demographics_download">Upakuaji wa taarifa za kidemografia za wateja…</string>
     <string name="info_client_identifier_change">Utambulisho wa mteja umebadilika katika seva. Utambulisho mpya utatumika kuanzia sasa na kuendelea</string>
@@ -258,6 +268,7 @@
     <string name="info_cohort_patient_not_download">Hamna wagonjwa/wateja waliopakuliwa</string>
     <string formatted="false" name="info_cohort_patients_download">Wagonjwa/Wateja %d wamepakuliwa wa kikundi kimoja.</string>
     <string name="info_cohort_prefixes_unavailable">Hakuna vianzio vya majina ya vikundi vilivyoongezwa</string>
+    <string name="info_cohort_update">Vikundi vingine vya wateja vimebadilika.</string>
     <string formatted="false" name="info_cohorts_downloaded">Vikundi %d vimepakuliwa</string>
     <string formatted="false" name="info_cohorts_patient_download">Mteja/Mgonjwa mmoja amepakuliwa wa vikundi %d</string>
     <string formatted="false" name="info_cohorts_patients_download">Wagonjwa %d wamepakuliwa wa vikundi %d</string>
@@ -389,9 +400,9 @@
     <string name="info_video_play_activity_unavailable">Tatizo: mfumo wa kucheza video haupo</string>
     <string name="info_video_record_activity_unavailable">Tatizo: mfumo wa kurekodi video haupo</string>
 
+    <string formatted="false" name="menu_SHR_data_sync">Landanisha data za SHR (%d)</string>
     <string name="menu_form_back_to_draft">rudi katika drafti</string>
     <string name="menu_form_data_sync">Landanisha data za fomu</string>
-    <string formatted="false" name="menu_SHR_data_sync">Landanisha data za SHR (%d)</string>
 
     <string name="message_missing_form_encounter_details_error">lazima yatolewa</string>
 
@@ -400,6 +411,8 @@
     <string name="null_encounter_date_error">Hitilafu ilitokea wakati wa kuhifadhi fomu. Tarehe ya kukutana inapaswa kutolewa</string>
     <string name="null_encounter_location_error">Hitilafu ilitokea wakati wa kuhifadhi fomu. Kukutana na eneo lazima kutolewa</string>
     <string name="null_encounter_provider_error">Hitilafu ilitokea wakati wa kuhifadhi fomu. Mtoa mkutano lazima atoe</string>
+
+    <string name="number_hashtag_representation">##</string>
 
     <string name="patient_SHR_search_dialog_title">Utafutaji wa SHR</string>
     <string name="patient_SHR_search_title_text">Utafutaji wa SHR</string>
@@ -412,9 +425,8 @@
         Mteja hapatikani kwenye kifaa, ungependa kutafuta seva?
     </string>
 
-    <string name="SHR_card_text">Kadi ya SHR</string>
-    <string name="SHR_data_title_text">SHR Data</string>
-    <string name="SHR_extracted_data_text">Data zilizochukuliwa kutoka SHR</string>
+    <string name="shr_registration">Usajili wa SHR</string>
+    <string name="shr_registration_description">Data ya Usajili wa SHR</string>
 
     <string name="success_writing_smartcard">Data ya kadi ya Smart imeandikwa kwa mafanikio.</string>
 
@@ -452,6 +464,7 @@
     <string name="title_default_encounter_provider">Mtoa huduma wa inkaunta aliyechaguliwa</string>
     <string name="title_disclaimer">Utoaji wa leseni,kibadhi cha ilani yakujitoa hatiani na kizuizi cha dhima yenye kikomo</string>
     <string name="title_duplicate_form_data_warning">Onyo la fomu kujazwa zaidi ya mara moja na data zilezile</string>
+    <string name="title_enable_shr">Wezesha SHR</string>
     <string name="title_fill_patient_forms_help">Jaza fomu za mgonjwa</string>
     <string name="title_font_size">Ukubwa wa fonti</string>
     <string name="title_form_auto_save_interval">Muda wa kungoja kuhifadhi fomu kiotomatiki(dakika)</string>
@@ -515,6 +528,5 @@
     <string name="warning_switch_server">Ubadilishaji wa seva: Kitendo hiki kitafuta data zote za mUzima katika kifaa chako, ikiwa ni pamoja na fomu zozote ambazo hazijakamilika bado. Una hakika unataka kubadili mpangilio huu?</string>
 
     <string name="write_SHR_to_card_text">Andika SHR kwa Kadi</string>
-    <string name="number_hashtag_representation">##</string>
-
+    <string name="write_shr_to_card_text">Andika SHR kwa Kadi</string>
 </resources>

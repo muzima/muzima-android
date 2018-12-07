@@ -91,7 +91,17 @@
             android:defaultValue="@string/general_dashboard"
             android:entries="@array/landing_pages"
             android:entryValues="@array/landing_pages">
-    </ListPreference>
+        </ListPreference>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/preference_enable_shr_key"
+            android:summary="@string/hint_enable_shr"
+            android:title="@string/title_enable_shr" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/preference_enable_gps_key"
+            android:summary="@string/hint_enable_GPS"
+            android:title="@string/title_enable_gps" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/header_provider_location_category">

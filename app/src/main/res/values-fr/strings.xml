@@ -1,14 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
+    <string name="SHR_card_text">Carte SHR</string>
+    <string name="SHR_data_title_text">SHR Data</string>
+    <string name="SHR_extracted_data_text">SHR extrait des données</string>
+
     <string name="add_individual_observation_text">Ajouter une observation individuelle</string>
 
     <string name="app_name">mUzima</string>
     <string name="app_title">mUzima pour les fournisseurs de soins de santé</string>
 
+    <string name="card_sync_status_content_description">État de la synchronisation des cartes</string>
+
+    <string name="change_settings">Modifier les paramètres</string>
+
+    <string name="client_registration_question_text">Voulez-vous enregistrer un client dans mUzima?</string>
+
+    <string name="complex_obs">Complexe obs</string>
+
     <string name="confirm_duplicate_form_data_save">Enregistrer les données dupliquées du formulaire </string>
     <string name="confirm_patient_id_exists">Le client a-t-il un Identifiant (ID)?</string>
 
+    <string name="date_general">Rendez-vous amoureux</string>
+    <string name="date_temp">8 juin</string>
+
     <string name="default_form_register">Formulaires d\'inscription/enregistrement</string>
+
+    <string name="done_general">TERMINÉ</string>
+
+    <string name="downloading_cohorts_text">Téléchargement de cohortes</string>
+    <string name="downloading_forms">Téléchargement de formulaires</string>
+
+    <string name="encounter_date">Date de rencontre:</string>
+    <string name="encounter_date_dialog_label">Date de rencontre</string>
+    <string name="encounter_details">Détails de la rencontre</string>
+
+    <string name="enter_concept_name_text">Entrez le nom du concept ...</string>
+    <string name="enter_provider_name_hint">Entrez le nom du fournisseur ...</string>
 
     <string name="error_action_allow">Opération interdite lorsque la synchronisation est en cours</string>
     <string name="error_audio_chose_activity_find">Erreur: Opération de sélection de l\'audio non trouvée</string>
@@ -27,6 +54,7 @@
     <string name="error_credential_invalid">Nom d\'utilisateur, Mot de passe et Combinaison du serveur non valide.</string>
     <string name="error_data_download">Une erreur est survenue lors du téléchargement de données depuis le serveur</string>
     <string name="error_data_save">Une erreur est survenue lors de l\'enregistrement des données dans le repertoire local</string>
+    <string name="error_empty_message_text">Impossible d\'envoyer un message vide.</string>
     <string name="error_encounter_download">Echec du téléchargement des rencontres</string>
     <string name="error_encounter_load">Impossible de charger les rencontres</string>
     <string name="error_encounter_observation_download">Impossible de télécharger les observations pour les patients</string>
@@ -70,6 +98,7 @@
     <string name="error_server_url_invalid">adresse URL du serveur non valide.</string>
     <string name="error_setup_configuration_download">Impossible de charger les configurations d\'installation</string>
     <string name="error_setup_configuration_template_download">Impossible de télécharger le modèle de configuration d\'installation</string>
+    <string name="error_smartcard_client_not_in_server">Client de carte à puce non sur le serveur. Enregistrez le client dans mUzima maintenant?</string>
     <string name="error_sync_not_allowed">opération interdite lorsque la synchronisation est en cours</string>
     <string name="error_tag_fetch">Une erreur s\'est produite lors de la récupération des balises du repositoire local</string>
     <string name="error_target_application_find">Aucune application ciblée</string>
@@ -82,9 +111,13 @@
     <string name="failure_updating_smartcard_record_for_writing">Impossible de mettre à jour l\'enregistrement de la carte à puce avant d\'écrire sur la carte</string>
     <string name="failure_writing_smartcard">Échec de l\'écriture des données de la carte à puce.</string>
 
+    <string name="fill_out_forms_for_a_patient_general">Remplir des formulaires pour un patient</string>
+
     <string name="form_encounter_date">Date de rencontre</string>
     <string name="form_encounter_location">Lieu de rencontre</string>
     <string name="form_encounter_provider">Fournisseur de rencontres</string>
+
+    <string name="gender_image_content_description">Gender Image</string>
 
     <string name="general_accept">accepter!</string>
     <string name="general_agree">Accordé</string>
@@ -100,6 +133,7 @@
     <string name="general_cohorts">Cohortes</string>
     <string name="general_concepts">Concepts</string>
     <string name="general_dashboard">Tableau de bord</string>
+    <string name="general_data_syc_required">Données syc requises</string>
     <string name="general_delete">Supprimer</string>
     <string name="general_description_unavailable">Description non disponible</string>
     <string name="general_disagree">Desaccord</string>
@@ -108,11 +142,13 @@
     <string name="general_encounters">Rencontres</string>
     <string name="general_fail">Échouer</string>
     <string name="general_finish">Terminer</string>
+    <string name="general_finish_text">terminer</string>
     <string name="general_form">Formulaire</string>
     <string name="general_forms">Formulaires</string>
     <string name="general_help">Aide</string>
     <string name="general_large">Large</string>
     <string name="general_load">charger</string>
+    <string name="general_loading_encounters">Les rencontres se chargent toujours</string>
     <string name="general_locations">Emplacements</string>
     <string name="general_login">S\'identifier</string>
     <string name="general_logout">Se deconnecter</string>
@@ -136,11 +172,13 @@
     <string name="general_search">Rechercher</string>
     <string name="general_server">Serveur</string>
     <string name="general_settings">Paramètres</string>
+    <string name="general_skip">Sauter</string>
     <string name="general_small">Petit</string>
     <string name="general_synced">Synchronisé</string>
     <string name="general_tags">Étiquettes</string>
     <string name="general_thank_you">Merci!</string>
     <string name="general_unexpected_error_occurred">Une erreur inattendue s\'est produite</string>
+    <string name="general_update">Mettre à jour</string>
     <string name="general_upload">Télécharger</string>
     <string name="general_username">Nom d\'utilisateur</string>
     <string name="general_view_encounter">Voir la rencontre</string>
@@ -152,6 +190,10 @@
     <string name="header_muzima_category">Paramètres de mUzima</string>
     <string name="header_openmrs_category">Paramètres de OpenMRS</string>
     <string name="header_provider_location_category">Paramètres du fournisseur / emplacement</string>
+
+    <string name="hello_general">Bonjour</string>
+
+    <string name="help_general">Aidez-moi!</string>
 
     <string name="hint_advanced_setup">Utilisez un assistant étape par étape pour choisir ce que vous voulez</string>
     <string name="hint_audio_caption">S\'il vous plaît entrer une légende pour l\'audio</string>
@@ -200,6 +242,7 @@
     <string name="hint_drawer_close">Tiroir des mots clés fermer</string>
     <string name="hint_drawer_open">Tiroir des mots clés ouvert</string>
     <string name="hint_duplicate_form_data_warning">Avertir l\'utilisateur lorsque des données du formulaire dupliquées pour le même client avec la même date de rencontre est en cours d\'enregistrement</string>
+    <string name="hint_enable_shr">Activer la fonctionnalité de carte à puce</string>
     <string name="hint_encounter_location_validation_failure">S\'il vous plait fournissez un emplacement de la liste des potentiels emplacements</string>
     <string name="hint_encounter_provider_validation_failure">S\'il vous plait fournissez un fournisseur de la liste des fournisseurs potentiels</string>
     <string name="hint_form_auto_save_interval">La valeur dans laquelle vos formulaires seront enregistrés automatiquement</string>
@@ -250,6 +293,15 @@
     <string name="hint_wizard_form_download">Sélectionnez un ou plusieurs modèles de formulaire dans la liste et cliquez sur \"Suivant\" pour télécharger</string>
     <string name="hint_write_SHR_to_card">Voulez-vous écrire Shared Health Record sur la carte?</string>
 
+    <string name="how_to_general">Comment:</string>
+
+    <string name="inbox_outbox_label_text">## Boîte de réception, ## Boîte d\'envoi</string>
+
+    <string name="incomplete_outbox_text">## incomplet, ## boîte d\'envoi</string>
+
+    <string name="individual_obs">Obs individuel</string>
+    <string name="individual_obs_description">Obs individuel</string>
+
     <string name="info_authentication_in_progress">Authentification en cours …</string>
     <string name="info_client_demographics_download">téléchargement des données démographiques des clients…</string>
     <string name="info_client_identifier_change">Identificateur du client modifié sur le serveur. Le nouveau identifiant sera utilisé à l\'avenir.</string>
@@ -265,6 +317,7 @@
     <string name="info_cohort_patient_not_download">aucun patients n\'a été téléchargé</string>
     <string formatted="false" name="info_cohort_patients_download">%d patients Téléchargé pour 1(une) cohorte</string>
     <string name="info_cohort_prefixes_unavailable">aucun Prefixe de Cohorte Ajouté</string>
+    <string name="info_cohort_update">Certaines cohortes ont changé.</string>
     <string formatted="false" name="info_cohorts_downloaded">%d cohortes Téléchargé</string>
     <string formatted="false" name="info_cohorts_patient_download"> 1 client Téléchargé pour%d cohortes</string>
     <string formatted="false" name="info_cohorts_patients_download">%d patients Téléchargé pour%d cohortes</string>
@@ -447,11 +500,19 @@ Aucun fournisseur n\'a encore été ajouté</string>
     <string name="info_video_play_activity_unavailable">Erreur: Application pour la lecture vidéo non trouvé</string>
     <string name="info_video_record_activity_unavailable">Erreur: Application d\'enregistrement vidéo non trouvé</string>
 
+    <string name="initial_setup_for_muzima_general">Configuration initiale pour mUzima</string>
+
+    <string name="introduction_to_muzima_general_text">Introduction à mUzima</string>
+
+    <string formatted="false" name="menu_SHR_data_sync">Synchroniser les données SHR (%%d)</string>
     <string name="menu_form_back_to_draft">Retour au brouillon </string>
     <string name="menu_form_data_sync">Synchronisation des données des formulaires </string>
-    <string formatted="false" name="menu_SHR_data_sync">Synchroniser les données SHR (%%d)</string>
 
     <string name="message_missing_form_encounter_details_error">doit être fourni</string>
+
+    <string name="muzima_training_manual_general">Manuel de formation mUzima</string>
+
+    <string name="new_messages_number_text"># nouveaux messages</string>
 
     <string name="no_default_encounter_location">Aucun lieu de rencontre par défaut</string>
 
@@ -459,10 +520,19 @@ Aucun fournisseur n\'a encore été ajouté</string>
     <string name="null_encounter_location_error">Une erreur est survenue lors de l\'enregistrement du formulaire. L\'emplacement de la rencontre doit être fourni</string>
     <string name="null_encounter_provider_error">Une erreur est survenue lors de l\'enregistrement du formulaire. Le fournisseur de rencontres doit être fourni</string>
 
+    <string name="number_hashtag_representation">##</string>
+
+    <string name="observation_text_dialog">Observation:</string>
+
     <string name="patient_SHR_search_dialog_title">Client SHR Search</string>
     <string name="patient_SHR_search_title_text">Client SHR Search</string>
 
+    <string name="provider_name_general">Nom du fournisseur</string>
+    <string name="provider_reports_general">Rapports de fournisseur</string>
+
     <string name="registering_patient_message_title_text">Enregistrement du client dans mUzima …</string>
+
+    <string name="sample_date_rep">21 mars 2018</string>
 
     <string name="scan_card_id_title">ID de carte de numérisation</string>
 
@@ -470,11 +540,23 @@ Aucun fournisseur n\'a encore été ajouté</string>
         effectuer une recherche sur le serveur?
     </string>
 
-    <string name="SHR_card_text">Carte SHR</string>
-    <string name="SHR_data_title_text">SHR Data</string>
-    <string name="SHR_extracted_data_text">SHR extrait des données</string>
+    <string name="select_a_registration_form_text">Sélectionnez un formulaire d\'inscription</string>
+
+    <string name="send_general_text">Envoyer</string>
+
+    <string name="server_side_setup_general">Configuration côté serveur</string>
+
+    <string name="setting_up_muzima_general_text">Mise en place de mUzima</string>
+
+    <string name="shr_registration">Enregistrement SHR</string>
+    <string name="shr_registration_description">Données d\'enregistrement SHR</string>
 
     <string name="success_writing_smartcard">Les données de la carte à puce ont été écrites avec succès.</string>
+
+    <string name="synced_label_text">## Synced</string>
+    <string name="synced_total_label_text">## Synced, ## Total</string>
+
+    <string name="tagging_forms">Marquage des formulaires</string>
 
     <string name="title_about_dashboard_help_html">À propos du tableau de bord</string>
     <string name="title_activity_audio">Ajouter Audio</string>
@@ -510,6 +592,7 @@ Aucun fournisseur n\'a encore été ajouté</string>
     <string name="title_default_encounter_provider">fournisseur de rencontre par défaut</string>
     <string name="title_disclaimer">Licence, exclusion de garantie et limitation de responsabilité</string>
     <string name="title_duplicate_form_data_warning">Avertissement de données de formulaire dupliquer</string>
+    <string name="title_enable_shr">Activer SHR</string>
     <string name="title_fill_patient_forms_help">Remplissez les formulaires pour un patient</string>
     <string name="title_font_size">Taille de police</string>
     <string name="title_form_auto_save_interval">Intervalle de sauvegarde de formulaire automatique (minutes)</string>
@@ -562,6 +645,10 @@ Aucun fournisseur n\'a encore été ajouté</string>
     <string name="title_video_record">Enregistrez vidéo</string>
     <string name="title_activity_client_reports">Client Reports</string>
 
+    <string name="to_text">À</string>
+
+    <string name="video_links_general_text">Liens vidéo:</string>
+
     <string name="warning_cohort_prefix_exists">Le préfixe de cohortes existe</string>
     <string name="warning_empty_cohort_prefix">Vous ne pouvez pas ajouter un préfixe de cohortes vide</string>
     <string name="warning_form_close">Formulaire de clôture: Ceci annulera toutes vos modifications. Etes-vous sûr de vouloir faire ca?</string>
@@ -574,50 +661,6 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="warning_switch_server">Changement de serveur: Cela effacera toutes les données mUzima sur votre appareil, y compris les formulaires incomplets. Etes-vous sûr de vouloir modifier ce paramètre?</string>
 
     <string name="write_SHR_to_card_text">Ecrire SHR à la carte</string>
-    <string name="to_text">À</string>
-    <string name="date_temp">8 juin</string>
-    <string name="provider_reports_general">Rapports de fournisseur</string>
-    <string name="hello_general">Bonjour</string>
-    <string name="date_general">Rendez-vous amoureux</string>
-    <string name="done_general">TERMINÉ</string>
-    <string name="send_general_text">Envoyer</string>
-    <string name="provider_name_general">Nom du fournisseur</string>
-    <string name="new_messages_number_text"># nouveaux messages</string>
     <string name="write_shr_to_card_general">Ecrire SHR sur la carte</string>
-    <string name="help_general">Aidez-moi!</string>
-    <string name="how_to_general">Comment:</string>
-    <string name="initial_setup_for_muzima_general">Configuration initiale pour mUzima</string>
-    <string name="server_side_setup_general">Configuration côté serveur</string>
-    <string name="muzima_training_manual_general">Manuel de formation mUzima</string>
-    <string name="fill_out_forms_for_a_patient_general">Remplir des formulaires pour un patient</string>
-    <string name="video_links_general_text">Liens vidéo:</string>
-    <string name="introduction_to_muzima_general_text">Introduction à mUzima</string>
-    <string name="setting_up_muzima_general_text">Mise en place de mUzima</string>
-    <string name="tagging_forms">Marquage des formulaires</string>
-    <string name="downloading_cohorts_text">Téléchargement de cohortes</string>
-    <string name="change_settings">Modifier les paramètres</string>
-    <string name="downloading_forms">Téléchargement de formulaires</string>
-    <string name="general_skip">Sauter</string>
-    <string name="complex_obs">Complexe obs</string>
-    <string name="encounter_details">Détails de la rencontre</string>
-    <string name="encounter_date">Date de rencontre:</string>
-    <string name="general_loading_encounters">Les rencontres se chargent toujours</string>
-    <string name="client_registration_question_text">Voulez-vous enregistrer un client dans mUzima?</string>
-    <string name="error_smartcard_client_not_in_server">Client de carte à puce non sur le serveur. Enregistrez le client dans mUzima maintenant?</string>
-    <string name="general_finish_text">terminer</string>
-    <string name="sample_date_rep">21 mars 2018</string>
-    <string name="encounter_date_dialog_label">Date de rencontre</string>
-    <string name="observation_text_dialog">Observation:</string>
-    <string name="enter_provider_name_hint">Entrez le nom du fournisseur ...</string>
-    <string name="select_a_registration_form_text">Sélectionnez un formulaire d\'inscription</string>
-    <string name="card_sync_status_content_description">État de la synchronisation des cartes</string>
-    <string name="general_data_syc_required">Données syc requises</string>
-    <string name="gender_image_content_description">Gender Image</string>
-    <string name="inbox_outbox_label_text">## Boîte de réception, ## Boîte d\'envoi</string>
-    <string name="incomplete_outbox_text">## incomplet, ## boîte d\'envoi</string>
-    <string name="synced_label_text">## Synced</string>
-    <string name="synced_total_label_text">## Synced, ## Total</string>
-    <string name="enter_concept_name_text">Entrez le nom du concept ...</string>
-    <string name="number_hashtag_representation">##</string>
-
+    <string name="write_shr_to_card_text">Ecrire SHR sur la carte</string>
 </resources>

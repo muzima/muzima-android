@@ -35,6 +35,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
+import static com.muzima.utils.Constants.STANDARD_DATE_LOCALE_FORMAT;
 import static com.muzima.utils.DateUtils.parse;
 
 public class HTMLFormObservationCreator {
@@ -194,7 +196,7 @@ public class HTMLFormObservationCreator {
             JSONObject jsonObject = new JSONObject(jsonResponse);
             JSONObject jsonObjectInner = jsonObject.getJSONObject("encounter");
             //return parse(jsonObjectInner.getString("encounter.encounter_datetime"));
-            DateFormat dateTimeFormat = new SimpleDateFormat("STANDARD_DATE_FORMAT HH:mm");
+            DateFormat dateTimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
             String dateTime = jsonObjectInner.getString("encounter.encounter_datetime");
             if(dateTime.length()<=10){
                  dateTime = dateTime.concat(" 00:00");

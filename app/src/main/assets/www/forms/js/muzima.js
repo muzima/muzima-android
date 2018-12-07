@@ -11,6 +11,7 @@
  * * Fieldset element where the input must be selected at least one.
  * * Message to be displayed when none of the elements in the fieldset is selected.
  */
+
 var validateSelected = function (source) {
     var errors = {};
     var fieldSet = $(source).filter(':visible');
@@ -89,6 +90,7 @@ var toggleValidationMessages = function (errors) {
         validator.showErrors(errors);
     }
 };
+
 /* End - Show and hide validation error messages */
 
 $(document).ready(function () {
@@ -223,6 +225,14 @@ $(document).ready(function () {
     };
 
     var save = function (status, keepFormOpen) {
+        if(status=="complete"){
+           /*Start of populating data entry completion timestamp before serializing the form*/
+            if($('.dataEntryCompletionTimeStamp').length){
+                var date = new Date();
+                $('.dataEntryCompletionTimeStamp').val(date);
+            }
+            /*Start of populating data entry completion timestamp*/
+        }
         var jsonData = JSON.stringify($('form').serializeEncounterForm());
         htmlDataStore.saveHTML(jsonData, status, keepFormOpen);
     };
@@ -357,14 +367,22 @@ $(document).ready(function () {
 
     /*Start - Initialize jQuery DateTimePicker */
     if ($.fn.datetimepicker) {
-       $('.datetimepicker').datetimepicker({
+        $('.datetimepicker').datetimepicker({
            format:'dd-mm-yyyy hh:ii',
            changeMonth: true,
            changeYear: true,
            step : 5,
-           autoclose : true,
-           defaultDate:new Date()
+           autoclose : true
        });
+       var dt = new Date();
+       var time = dt.getHours() + ":" + dt.getMinutes();
+       var dateFormat = "dd-mm-yy";
+       var currentDate = $.datepicker.formatDate(dateFormat, new Date());
+
+       var encounterDatetime = $('#encounter\\.encounter_datetime');
+       if ($(encounterDatetime).val() == "") {
+           $(encounterDatetime).val(currentDate+' '+time);
+       }
     }
     /*End - Initialize jQuery DateTimePicker */
 
@@ -1350,5 +1368,29 @@ $(document).ready(function () {
             $('[name="encounter\\.location_id"]').val(this.id);
         });
     }
+
     /*end of Setting Default encounter Location*/
+
+    /* Start populating gps location data */
+
+    if($('.cummulativeFormOpeningGPSData').length){
+        if($('.cummulativeFormOpeningGPSData').val().length){
+            var lastKnowGPSLocationJsonObj = htmlDataStore.getLastKnowGPSLocation("json-object");
+            var gpsLocationDataOnForm = $('.cummulativeFormOpeningGPSData').val();
+            var locationObj = JSON.parse(gpsLocationDataOnForm);
+            locationObj.push(JSON.parse(lastKnowGPSLocationJsonObj));
+            var newLocationData = JSON.stringify(locationObj);
+            $(".cummulativeFormOpeningGPSData").val(newLocationData);
+        }else {
+            var lastKnowGPSLocationJsonArray = htmlDataStore.getLastKnowGPSLocation("json-array");
+            $(".cummulativeFormOpeningGPSData").val(lastKnowGPSLocationJsonArray);
+        }
+    }
+
+    /*Start of populating initial form opening timestamp*/
+    if($('.initialFormOpeningTimestamp').length && !$('.initialFormOpeningTimestamp').val().length){
+        var date = new Date();
+        $('.initialFormOpeningTimestamp').val(date);
+    }
+    /*end of populating initial form opening timestamp*/
 });

@@ -10,11 +10,6 @@
 
 package com.muzima.view;
 
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.ComponentName;
-import android.content.Context;
-import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.ActionBar;
 import android.app.AlertDialog;
@@ -27,6 +22,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.Menu;
@@ -38,7 +34,6 @@ import com.muzima.controller.FormController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
-import com.muzima.scheduler.MuzimaJobScheduler;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.view.cohort.CohortActivity;
@@ -49,8 +44,6 @@ import com.muzima.view.patients.PatientsListActivity;
 import com.muzima.view.reports.ReportActivity;
 import org.apache.lucene.queryParser.ParseException;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.MuzimaJobSchedularConstants.MESSAGE_SYNC_JOB_ID;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.MuzimaJobSchedularConstants.MUZIMA_JOB_PERIODIC;
 import static com.muzima.utils.Constants.NotificationStatusConstants.NOTIFICATION_UNREAD;
 
 public class MainActivity extends BroadcastListenerActivity {
@@ -200,6 +193,7 @@ public class MainActivity extends BroadcastListenerActivity {
             try {
                 homeActivityMetadata.totalCohorts = cohortController.countAllCohorts();
                 homeActivityMetadata.syncedCohorts = cohortController.countSyncedCohorts();
+                homeActivityMetadata.isCohortUpdateAvailable = cohortController.isUpdateAvailable();
                 homeActivityMetadata.syncedPatients = patientController.countAllPatients();
                 homeActivityMetadata.incompleteForms = formController.countAllIncompleteForms();
                 homeActivityMetadata.completeAndUnsyncedForms = formController.countAllCompleteForms();
@@ -235,6 +229,13 @@ public class MainActivity extends BroadcastListenerActivity {
             cohortsDescriptionView.setText(getString(R.string.hint_dashboard_cohorts_description,
                     homeActivityMetadata.syncedCohorts, homeActivityMetadata.totalCohorts));
 
+            ImageView cortUpdateAvailable = (ImageView) mMainView.findViewById(R.id.pendingUpdateImg);
+            if(homeActivityMetadata.isCohortUpdateAvailable){
+                cortUpdateAvailable.setVisibility(View.VISIBLE);
+            } else {
+                cortUpdateAvailable.setVisibility(View.GONE);
+            }
+
             TextView patientDescriptionView = mMainView.findViewById(R.id.patientDescription);
             patientDescriptionView.setText(getString(R.string.hint_dashboard_clients_description,
                     homeActivityMetadata.syncedPatients));
@@ -261,6 +262,7 @@ public class MainActivity extends BroadcastListenerActivity {
         int completeAndUnsyncedForms;
         int newNotifications;
         int totalNotifications;
+        boolean isCohortUpdateAvailable;
     }
 
     @Override

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
+    <string name="SHR_card_text">Carta SHR</string>
+    <string name="SHR_data_title_text">Dados SHR</string>
+    <string name="SHR_extracted_data_text">Dados extraídos de SHR</string>
+
     <string name="add_individual_observation_text">Adicionar observação individual</string>
 
     <string name="app_name">mUzima</string>
@@ -27,6 +31,7 @@
     <string name="error_credential_invalid">Combinação inválida de Nome de Utilizador, Senha, e Servidor.</string>
     <string name="error_data_download">Ocorreu um erro enquanto baixava os dados do servidor</string>
     <string name="error_data_save">Ocorreu um erro enquanto guardava os dados no repositório local</string>
+    <string name="error_empty_message_text">Não é possível enviar uma mensagem vazia.</string>
     <string name="error_encounter_download">Não poderá baixar visitas</string>
     <string name="error_encounter_load">Visitas não poderão ser carregados</string>
     <string name="error_encounter_observation_download">Não poderá baixar observações para os clientes</string>
@@ -153,6 +158,7 @@
     <string name="general_tags">Etiquetas</string>
     <string name="general_thank_you">Obrigado!</string>
     <string name="general_unexpected_error_occurred">Erro inesperado Ocorreu</string>
+    <string name="general_update">Atualizar</string>
     <string name="general_upload">Carregar</string>
     <string name="general_username">Nome do utilizador</string>
     <string name="general_view_encounter">Ver visita</string>
@@ -238,6 +244,7 @@
     <string name="hint_duplicate_form_data_warning">Avisar o utilizador quando o formulário de dados para o mesmo
         cliente com a mesma data de visita está sendo guardado.
     </string>
+    <string name="hint_enable_shr">Ativar recurso de cartão inteligente</string>
     <string name="hint_encounter_location_validation_failure">Por favor forneça um local a partir da lista dos possíveis locais</string>
     <string name="hint_encounter_provider_validation_failure">Por favor forneça um provedor a partir da lista dos possíveis provedores</string>
     <string name="hint_form_auto_save_interval">O valor no qual o formulário será automaticamente gravado</string>
@@ -308,6 +315,9 @@
     </string>
     <string name="hint_write_SHR_to_card">Você quer escrever o Registro de Saúde Compartilhado no cartão?</string>
 
+    <string name="individual_obs">Obs Individual</string>
+    <string name="individual_obs_description">Obs Individual</string>
+
     <string name="info_authentication_in_progress">Autenticação em progresso…</string>
     <string name="info_client_demographics_download">Baixando demográfico de clientes…</string>
     <string name="info_client_identifier_change">Identificador do cliente mudou no servidor. O novo identificador será
@@ -327,6 +337,7 @@
     <string name="info_cohort_patient_not_download">Nenhum cliente foi baixado</string>
     <string formatted="false" name="info_cohort_patients_download">Baixou %d clientes para 1 coorte</string>
     <string name="info_cohort_prefixes_unavailable">Nenhum Prefixo de Coorte Adicionado</string>
+    <string name="info_cohort_update">Algumas coortes mudaram.</string>
     <string formatted="false" name="info_cohorts_downloaded">Baixou %d provedores coortes</string>
     <string formatted="false" name="info_cohorts_patient_download">Baixou 1 cliente para %d coortes</string>
     <string formatted="false" name="info_cohorts_patients_download">Baixou %d clientes para %d coortes</string>
@@ -501,9 +512,9 @@
     <string name="info_video_play_activity_unavailable">Erro: Aplicação para projectar vídeo não encontrado</string>
     <string name="info_video_record_activity_unavailable">Erro: Aplicação para gravar vídeo não encontrado</string>
 
+    <string formatted="false" name="menu_SHR_data_sync">Sincronizar dados SHR (%d)</string>
     <string name="menu_form_back_to_draft">Voltar ao Rascunho</string>
     <string name="menu_form_data_sync">Sincronizar dados do formulário</string>
-    <string formatted="false" name="menu_SHR_data_sync">Sincronizar dados SHR (%d)</string>
 
     <string name="message_missing_form_encounter_details_error">deve ser providenciado</string>
 
@@ -512,6 +523,8 @@
     <string name="null_encounter_date_error">Hitilafu ilitokea wakati wa kuhifadhi fomu. Tarehe ya kukutana inapaswa kutolewa</string>
     <string name="null_encounter_location_error">Ocorreu um erro ao salvar o formulário. A localização do encontro deve ser fornecida</string>
     <string name="null_encounter_provider_error">Ocorreu um erro ao salvar o formulário. Provedor de encontro deve ser fornecido</string>
+
+    <string name="number_hashtag_representation">##</string>
 
     <string name="patient_SHR_search_dialog_title">Pesquisa SHR Paciente</string>
     <string name="patient_SHR_search_title_text">Pesquisa SHR Paciente</string>
@@ -523,9 +536,8 @@
     <string name="search_patient_on_server_option_title_text">Cliente não está disponível localmente, gostaria de
         pesquisar no servidor?</string>
 
-    <string name="SHR_card_text">Carta SHR</string>
-    <string name="SHR_data_title_text">Dados SHR</string>
-    <string name="SHR_extracted_data_text">Dados extraídos de SHR</string>
+    <string name="shr_registration">Registro de SHR</string>
+    <string name="shr_registration_description">Dados de registro de SHR</string>
 
     <string name="success_writing_smartcard">Os dados do cartão inteligente foram escritos com sucesso.</string>
 
@@ -563,6 +575,7 @@
     <string name="title_default_encounter_provider">Provedor de visita padrão</string>
     <string name="title_disclaimer">Licença, Aviso Legal de Garantia e Limitação de Responsabilidade</string>
     <string name="title_duplicate_form_data_warning">Aviso de dados duplicados</string>
+    <string name="title_enable_shr">Ativar SHR</string>
     <string name="title_fill_patient_forms_help">Preencher formulários para um cliente</string>
     <string name="title_font_size">Tamanho da fonte</string>
     <string name="title_form_auto_save_interval">Intervalo (mins) de gravação automática de formulário</string>
@@ -637,6 +650,5 @@
     </string>
 
     <string name="write_SHR_to_card_text">Escrever SHR para cartão</string>
-    <string name="number_hashtag_representation">##</string>
-
+    <string name="write_shr_to_card_text">Escrever SHR ao cartão</string>
 </resources>

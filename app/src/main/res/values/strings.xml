@@ -715,5 +715,10 @@
     <string name="shr_registration_description">SHR Registration Data</string>
     <string name="individual_obs">Individual Obs</string>
     <string name="individual_obs_description">Individual Obs</string>
-
+    <string name="general_update">Update</string>
+    <string name="info_cohort_update">Some cohorts have changed.</string>
+    <string name="hint_enable_shr">Enable smart card feature</string>
+    <string name="hint_enable_GPS">Enable GPS Data collection feature</string>
+    <string name="title_enable_gps">Enable GPS</string>
+    <string name="title_enable_shr">Enable SHR</string>
 </resources>

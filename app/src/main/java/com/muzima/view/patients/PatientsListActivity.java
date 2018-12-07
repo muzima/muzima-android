@@ -16,8 +16,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,7 +52,6 @@ import com.muzima.utils.Fonts;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
 import com.muzima.utils.smartcard.KenyaEmrShrMapper;
-import com.muzima.utils.smartcard.KenyaEmrShrMapper;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
 import com.muzima.view.BroadcastListenerActivity;
@@ -61,6 +62,7 @@ import com.muzima.view.forms.RegistrationFormsActivity;
 import android.support.design.widget.FloatingActionButton;
 import android.widget.Toast;
 
+import static android.view.MenuItem.SHOW_AS_ACTION_ALWAYS;
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
@@ -116,6 +118,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     private ProgressDialog serverSearchProgressDialog;
     private ProgressDialog patientRegistrationProgressDialog;
+
+    private MenuItem shrCardItem;
+    private static final boolean DEFAULT_SHR_STATUS = false;
 
 
     @Override
@@ -207,6 +212,14 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.client_list, menu);
+        shrCardItem = menu.findItem(R.id.scan_SHR_card);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
+        boolean isSHREnabled = preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_shr_key),PatientsListActivity.DEFAULT_SHR_STATUS);
+        if(isSHREnabled) {
+            shrCardItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS);
+        }else{
+            shrCardItem.setVisible(false);
+        }
         searchMenuItem = menu.findItem(R.id.search);
         searchView = (SearchView) searchMenuItem.getActionView();
 
