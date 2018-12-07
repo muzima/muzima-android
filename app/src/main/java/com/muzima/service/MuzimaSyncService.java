@@ -936,43 +936,42 @@ public class MuzimaSyncService {
         return result;
     }
 
-    public int[] downloadMuzimaGeneratedReports(String receiverUuid) {
+    public int[] downloadMuzimaGeneratedReports(String patientUuid) {
         int[] result = new int[2];
 
         try {
-            List<MuzimaGeneratedReport> muzimaGeneratedReports = muzimaGeneratedReportController.getAllMuzimaGeneratedReportsByPatientUuid(receiverUuid);
+            List<MuzimaGeneratedReport> muzimaGeneratedReports = muzimaGeneratedReportController.getAllMuzimaGeneratedReportsByPatientUuid(patientUuid);
 
             if(muzimaGeneratedReports.size()>0){
                 muzimaGeneratedReportController.deleteMuzimaGeneratedReport(muzimaGeneratedReports.get(0));
             }
 
-            Log.i(TAG, "Muzima Generated Report is deleted");
-            muzimaGeneratedReports= muzimaGeneratedReportController.downloadLastPriorityMuzimaGeneratedReportByPatientUuid(receiverUuid);
-            Log.i(TAG, "Muzima Generated Report download successful");
+            Log.i(getClass().getSimpleName(), "Muzima Generated Report is deleted");
+            muzimaGeneratedReports= muzimaGeneratedReportController.downloadLastPriorityMuzimaGeneratedReportByPatientUuid(patientUuid);
+            Log.i(getClass().getSimpleName(), "Muzima Generated Report download successful");
 
             muzimaGeneratedReportController.saveAllMuzimaGeneratedReports(muzimaGeneratedReports);
-            Log.i(TAG, "New notifications are saved");
+            Log.i(getClass().getSimpleName(), "New notifications are saved");
 
             result[0] = SUCCESS;
             result[1] = muzimaGeneratedReports.size();
 
         } catch (MuzimaGeneratedReportController.MuzimaGeneratedReportDownloadException e) {
-            Log.e(TAG, "Exception when trying to download notifications", e);
+            Log.e(getClass().getSimpleName(), "Exception when trying to download notifications", e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
-            return result;
         } catch (MuzimaGeneratedReportController.MuzimaGeneratedReportDeleteException e) {
-            Log.e(TAG, "Exception occurred while deleting existing notifications", e);
+            Log.e(getClass().getSimpleName(), "Exception occurred while deleting existing notifications", e);
             result[0] = SyncStatusConstants.DELETE_ERROR;
-            return result;
         }
         catch (MuzimaGeneratedReportController.MuzimaGeneratedReportSaveException e) {
-            Log.e(TAG, "Exception when trying to save notifications", e);
+            Log.e(getClass().getSimpleName(), "Exception when trying to save notifications", e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
-            return result;
         }
-        catch (MuzimaGeneratedReportController.MuzimaGeneratedReportException e) {
-            e.printStackTrace();
-        } return result;
+        catch (MuzimaGeneratedReportController.MuzimaGeneratedReportFetchException e) {
+            result[0] = SyncStatusConstants.UNKNOWN_ERROR;
+            Log.e(getClass().getSimpleName(),"Error occured while fetching reports",e);
+        }
+        return result;
     }
 
     public void downloadSetupConfigurations(){

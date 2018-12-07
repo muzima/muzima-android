@@ -465,6 +465,7 @@
     <string name="info_notification_download_in_progress">Downloading notifications</string>
     <string name="info_patient_generated_reports_download_in_progress">Downloading Patient Reports</string>
     <string name="info_patient_generated_reports_unavailable">No Patient Reports available</string>
+    <string name="info_patient_generated_reports_success">Downloaded report successfully</string>
     <string name="info_notification_unavailable">No notifications available</string>
     <string name="info_observation_download">Downloading Observations</string>
     <string name="info_observation_in_progress">Observations are still loading</string>

@@ -136,6 +136,9 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
                     case DataSyncServiceConstants.SYNC_NOTIFICATIONS:
                         msg = getString(R.string.info_notification_download, downloadCount);
                         break;
+                    case DataSyncServiceConstants.SYNC_MUZIMA_GENERATED_REPORTS:
+                        msg = getString(R.string.info_patient_generated_reports_success, downloadCount);
+                        break;
                 }
                 break;
         }

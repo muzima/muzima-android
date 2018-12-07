@@ -163,7 +163,6 @@
             <LinearLayout
                 style="@style/ClientSummaryGridItem"
                 android:layout_width="fill_parent"
-                android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
                 android:baselineAligned="false"
                 android:orientation="vertical">
@@ -273,7 +272,7 @@
                             android:id="@+id/reportDescription"
                             style="@style/DashboardItemDescription"
                             android:layout_alignParentBottom="true"
-                            android:text="##"/>
+                            android:text=""/>
 
                 </RelativeLayout>
             </LinearLayout>
