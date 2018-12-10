@@ -496,7 +496,7 @@ class HTMLFormDataStore {
     public String getLastKnowGPSLocation(String jsonReturnType) {
         String gps_location_string = "Unknown Error Occured!";
         Boolean isGpsFeatureEnabled = false;
-        isGpsFeatureEnabled = new GPSFeaturePreferenceService(application).getIsGPSDataCollectionEnabledSetting();
+        isGpsFeatureEnabled = new GPSFeaturePreferenceService(application).isGPSDataCollectionSettingEnabled();
         if (isGpsFeatureEnabled) {
 
             if (isLocationPermissionsGranted()) {
@@ -551,12 +551,12 @@ class HTMLFormDataStore {
     }
 
     public void showLocationDisabledDialog(){
-        Boolean isGPSDataCollectionEnabledSetting = new GPSFeaturePreferenceService(application).getIsGPSDataCollectionEnabledSetting();
-        if(isGPSDataCollectionEnabledSetting) {
+        Boolean isGPSDataCollectionSettingEnabled = new GPSFeaturePreferenceService(application).isGPSDataCollectionSettingEnabled();
+        if(isGPSDataCollectionSettingEnabled) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(application);
             alertDialog.setTitle(formWebViewActivity.getString(R.string.title_enable_gps_location));
-            alertDialog.setMessage(formWebViewActivity.getString(R.string.gps_location_off_message));
-            alertDialog.setPositiveButton(formWebViewActivity.getString(R.string.btn_location_setting), new DialogInterface.OnClickListener() {
+            alertDialog.setMessage(formWebViewActivity.getString(R.string.hint_gps_location_off));
+            alertDialog.setPositiveButton(formWebViewActivity.getString(R.string.general_location_setting), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     application.startActivity(intent);

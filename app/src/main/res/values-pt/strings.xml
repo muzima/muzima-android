@@ -1,19 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
     <string name="SHR_card_text">Carta SHR</string>
     <string name="SHR_data_title_text">Dados SHR</string>
     <string name="SHR_extracted_data_text">Dados extraídos de SHR</string>
-
     <string name="add_individual_observation_text">Adicionar observação individual</string>
-
     <string name="app_name">mUzima</string>
     <string name="app_title">mUzima para Provedores de Saúde</string>
-
     <string name="confirm_duplicate_form_data_save">Guardar Dados do Formulãrio Duplicado</string>
     <string name="confirm_patient_id_exists">O cliente já tem o Identificador?</string>
-
     <string name="default_form_register">Formulário de Registos</string>
-
     <string name="error_action_allow">Acção não permitida enquanto a sincronização está em progresso</string>
     <string name="error_audio_chose_activity_find">Erro: Actividade para escolha de áudio não encontrado</string>
     <string name="error_audio_play_activity_find">Erro: Actividade para tocar áudio não encontrado</string>
@@ -90,7 +84,6 @@
     </string>
     <string name="error_wizard_interrupted">Wizard foi interrompido, por favor de sair e executar o wizard de novo.
     </string>
-
     <string name="failure_obtain_smartcard_record">Não foi possível obter o registro de cartão inteligente para gravação no cartão.</string>
     <string name="failure_obtaining_card_serial_number">Não foi possível obter o número de série do cartão</string>
     <string name="failure_reading_card">Leitura de cartão falhada</string>
@@ -98,11 +91,9 @@
         antes de gravar no cartão
     </string>
     <string name="failure_writing_smartcard">Falha ao gravar dados do cartão inteligente.</string>
-
     <string name="form_encounter_date">Data de encontro</string>
     <string name="form_encounter_location">Localização do encontro</string>
     <string name="form_encounter_provider">Provedor de encontro</string>
-
     <string name="general_accept">Aceitar</string>
     <string name="general_agree">Concordo</string>
     <string name="general_alert">Alerta!</string>
@@ -130,6 +121,7 @@
     <string name="general_help">Ajuda</string>
     <string name="general_large">Ampla</string>
     <string name="general_load">Carregar</string>
+    <string name="general_location_setting">Configurações de localização</string>
     <string name="general_locations">Locais</string>
     <string name="general_login">Entrar</string>
     <string name="general_logout">Sair</string>
@@ -164,12 +156,10 @@
     <string name="general_view_encounter">Ver visita</string>
     <string name="general_welcome">Bem-vindo</string>
     <string name="general_yes">Sim</string>
-
     <string name="header_cohort_category">Configurações de coorte</string>
     <string name="header_muzima_category">Configurações de mUzima</string>
     <string name="header_openmrs_category">Configurações de OpenMRS</string>
     <string name="header_provider_location_category">Provedor/Configurações de Locais</string>
-
     <string name="hint_advanced_setup">Use os passos do wizard para escolher o que quer</string>
     <string name="hint_audio_caption">Por favor introduza uma legenda para o áudio</string>
     <string name="hint_audio_record">Gravar ou escolher áudio</string>
@@ -255,6 +245,7 @@
     </string>
     <string name="hint_form_validation_failure">Existe uma ou mais falhas de validação neste formulário. Por favor revise e reenvie o formulário</string>
     <string name="hint_future_date_validation_failure">Por favor introduza uma data futura</string>
+    <string name="hint_gps_location_off">Localização está desligado! Por favor, ligue a localização nas configurações.</string>
     <string name="hint_guided_setup">Seleccione a presente configuração e permita mUzima fazer o resto</string>
     <string name="hint_image_caption_prompt">Por favor introduza uma legenda para a imagem</string>
     <string name="hint_incomplete_form_unavailable">Formulários incompletos estão disponíveis somente se tiver guardado
@@ -306,6 +297,7 @@
     <string name="hint_set_default_encounter_location_for_SHR">Por favor, defina localização encontro padrão, de modo a permitir a escrita de novo cartão
     </string>
     <string name="hint_setting_refresh">Deseja voltar a baixar essa configuração do servidor?</string>
+    <string name="hint_switch_location_on">Por favor, ligue a localização nas configurações.</string>
     <string name="hint_username_prompt">Por favor introduza o nome do utilizador</string>
     <string name="hint_video_caption_prompt">Por favor introduza uma legenda para o vídeo</string>
     <string name="hint_video_record">Gravar ou escolher vídeo</string>
@@ -313,10 +305,8 @@
         para baixar
     </string>
     <string name="hint_write_SHR_to_card">Você quer escrever o Registro de Saúde Compartilhado no cartão?</string>
-
     <string name="individual_obs">Obs Individual</string>
     <string name="individual_obs_description">Obs Individual</string>
-
     <string name="info_authentication_in_progress">Autenticação em progresso…</string>
     <string name="info_client_demographics_download">Baixando demográfico de clientes…</string>
     <string name="info_client_identifier_change">Identificador do cliente mudou no servidor. O novo identificador será
@@ -510,36 +500,24 @@
     <string name="info_video_chose_activity_unavailable">Erro: Aplicação para escolha de vídeo não encontrado</string>
     <string name="info_video_play_activity_unavailable">Erro: Aplicação para projectar vídeo não encontrado</string>
     <string name="info_video_record_activity_unavailable">Erro: Aplicação para gravar vídeo não encontrado</string>
-
     <string formatted="false" name="menu_SHR_data_sync">Sincronizar dados SHR (%d)</string>
     <string name="menu_form_back_to_draft">Voltar ao Rascunho</string>
     <string name="menu_form_data_sync">Sincronizar dados do formulário</string>
-
     <string name="message_missing_form_encounter_details_error">deve ser providenciado</string>
-
     <string name="no_default_encounter_location">Nenhum local de encontro padrão</string>
-
     <string name="null_encounter_date_error">Hitilafu ilitokea wakati wa kuhifadhi fomu. Tarehe ya kukutana inapaswa kutolewa</string>
     <string name="null_encounter_location_error">Ocorreu um erro ao salvar o formulário. A localização do encontro deve ser fornecida</string>
     <string name="null_encounter_provider_error">Ocorreu um erro ao salvar o formulário. Provedor de encontro deve ser fornecido</string>
-
     <string name="number_hashtag_representation">##</string>
-
     <string name="patient_SHR_search_dialog_title">Pesquisa SHR Paciente</string>
     <string name="patient_SHR_search_title_text">Pesquisa SHR Paciente</string>
-
     <string name="registering_patient_message_title_text">Registrando cliente em mUzima …</string>
-
     <string name="scan_card_id_title">ID do cartão de digitalização</string>
-
     <string name="search_patient_on_server_option_title_text">Cliente não está disponível localmente, gostaria de
         pesquisar no servidor?</string>
-
     <string name="shr_registration">Registro de SHR</string>
     <string name="shr_registration_description">Dados de registro de SHR</string>
-
     <string name="success_writing_smartcard">Os dados do cartão inteligente foram escritos com sucesso.</string>
-
     <string name="title_about_dashboard_help_html">Sobre o Painel de Controle</string>
     <string name="title_activity_audio">Adicionar Audio</string>
     <string name="title_activity_client_encounters">Visitas do Cliente</string>
@@ -574,6 +552,7 @@
     <string name="title_default_encounter_provider">Provedor de visita padrão</string>
     <string name="title_disclaimer">Licença, Aviso Legal de Garantia e Limitação de Responsabilidade</string>
     <string name="title_duplicate_form_data_warning">Aviso de dados duplicados</string>
+    <string name="title_enable_gps_location">Ativar conectividade de local e Internet.</string>
     <string name="title_enable_shr">Ativar SHR</string>
     <string name="title_fill_patient_forms_help">Preencher formulários para um cliente</string>
     <string name="title_font_size">Tamanho da fonte</string>
@@ -585,6 +564,7 @@
     <string name="title_form_template_all">Todos Modelos do Formulário</string>
     <string name="title_form_template_downloaded">Baixou os Modelos do Formlário</string>
     <string name="title_general_notifications">Notificações Gerais</string>
+    <string name="title_gps_location">GPS Localização</string>
     <string name="title_guided_setup">Guia de instalação (Recomendado)</string>
     <string name="title_guided_setup_help_video">Configuração inicial guiada</string>
     <string name="title_guided_setup_progress">Progresso da Instalação</string>
@@ -625,7 +605,6 @@
     <string name="title_video_caption">Legenda do vídeo</string>
     <string name="title_video_choose">Escolha o Vídeo</string>
     <string name="title_video_record">Gravar o Vídeo</string>
-
     <string name="warning_cohort_prefix_exists">Prefixo de coorte existe</string>
     <string name="warning_empty_cohort_prefix">Não pode adicionar um prefixo para coorte vazia</string>
     <string name="warning_form_close">Formulário de fechamento: Isto irá descartar todas suas alterações. Tem certeza
@@ -646,13 +625,6 @@
     <string name="warning_switch_server">Trocando o Servidor: Isto irá apagar todos dados de mUzima no seu dispositivo,
         incluindo formulários imcompletos. Tem certeza que quer mudar as configurações?
     </string>
-
     <string name="write_SHR_to_card_text">Escrever SHR para cartão</string>
     <string name="write_shr_to_card_text">Escrever SHR ao cartão</string>
-
-    <string name="location_toast_message">Por favor, ligue a localização nas configurações.</string>
-    <string name="title_gps_location">GPS Localização</string>
-    <string name="gps_location_off_message">Localização está desligado! Por favor, ligue a localização nas configurações.</string>
-    <string name="btn_location_setting">Configurações de localização</string>
-    <string name="title_enable_gps_location">Ativar conectividade de local e Internet.</string>
 </resources>

@@ -29,7 +29,7 @@ public class GPSFeaturePreferenceService extends PreferenceService {
                 .apply();
     }
 
-    public Boolean getIsGPSDataCollectionEnabledSetting(){
+    public Boolean isGPSDataCollectionSettingEnabled(){
         Resources resources = context.getResources();
         String key = resources.getString(R.string.preference_enable_gps_key);
         return preferences.getBoolean(key,false);
