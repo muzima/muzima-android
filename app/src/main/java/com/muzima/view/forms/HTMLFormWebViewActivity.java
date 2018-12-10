@@ -166,12 +166,12 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         LocationManager locationManager = (LocationManager)getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         boolean gps_enabled = false;
         GPSFeaturePreferenceService gpsFeaturePreferenceService = new GPSFeaturePreferenceService((MuzimaApplication) getApplication());
-        if(gpsFeaturePreferenceService.getIsGPSDataCollectionEnabledSetting()) {
+        if(gpsFeaturePreferenceService.isGPSDataCollectionSettingEnabled()) {
             if (!(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))) {
                 android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(HTMLFormWebViewActivity.this);
                 alertDialog.setTitle(getResources().getString(R.string.title_gps_location));
-                alertDialog.setMessage(getResources().getString(R.string.gps_location_off_message));
-                alertDialog.setPositiveButton(getResources().getString(R.string.btn_location_setting), new DialogInterface.OnClickListener() {
+                alertDialog.setMessage(getResources().getString(R.string.hint_gps_location_off));
+                alertDialog.setPositiveButton(getResources().getString(R.string.general_location_setting), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                         startActivityForResult(intent, LOCATION_SERVICES_SWITCH_REQUEST_CODE);
@@ -387,7 +387,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             restartFormsIntent.putExtra(PATIENT, patient);
             startActivity(restartFormsIntent);
         }else {
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string.location_toast_message), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.hint_switch_location_on), Toast.LENGTH_LONG).show();
         }
     }
 

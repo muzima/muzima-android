@@ -109,7 +109,7 @@ public class MuzimaLocationService {
                 }
 
                 Log.e(getClass().getSimpleName(), "getLastKnownGPS() == " + location);
-                Toast.makeText(context, context.getResources().getString(R.string.location_toast_message), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, context.getResources().getString(R.string.hint_switch_location_on), Toast.LENGTH_LONG).show();
             } else {
                 isLocationServicesSwitchedOn = true;
                 locationResultMap.put("network_provider_status", "switched_on");

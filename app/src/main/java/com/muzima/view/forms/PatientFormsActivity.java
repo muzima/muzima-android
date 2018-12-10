@@ -78,7 +78,7 @@ public class PatientFormsActivity extends FormsActivityBase {
 
     public void requestGPSLocationPermissions() {
         GPSFeaturePreferenceService gpsFeaturePreferenceService = new GPSFeaturePreferenceService((MuzimaApplication) getApplication());
-        if(gpsFeaturePreferenceService.getIsGPSDataCollectionEnabledSetting()){
+        if(gpsFeaturePreferenceService.isGPSDataCollectionSettingEnabled()){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 ActivityCompat.requestPermissions(PatientFormsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_ACCESS_PERMISSION_REQUEST_CODE);
             }
