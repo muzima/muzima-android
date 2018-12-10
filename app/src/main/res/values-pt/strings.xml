@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
   ~ Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
   ~ and Vanderbilt University Medical Center.
@@ -7,8 +6,7 @@
   ~ with additional health care disclaimer.
   ~ If the user is an entity intending to commercialize any application that uses
   ~  this code in a for-profit venture,please contact the copyright holder.
--->
-<resources>
+--><resources>
     <string name="SHR_card_text">Carta SHR</string>
     <string name="SHR_data_title_text">Dados SHR</string>
     <string name="SHR_extracted_data_text">Dados extraídos de SHR</string>
@@ -630,6 +628,9 @@
     <string name="warning_logout_confirm">Tem certeza que quer sair e fechar o aplicativo mUzima?</string>
     <string name="warning_registration_form_data_delete">Está para apagar dados de registo. Isto irá apagar o registo do
         cliente no dispositivo. Tem certeza?
+    </string>
+    <string name="warning_session_timeout">Sessão expirou: não foi possível definir o tempo limite da sessão.
+        O valor fornecido é inválido.
     </string>
     <string name="warning_setting_download_failure">Não foi possível baixar ou atualizar a configuração</string>
     <string name="warning_switch_server">Trocando o Servidor: Isto irá apagar todos dados de mUzima no seu dispositivo,

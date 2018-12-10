@@ -513,6 +513,7 @@
     <string name="warning_registration_form_data_delete">Kitendo hichi kitapelekea kufutwa kwa data za usajili hivyo basi rekodi ya mgojwa pia itafutwa kutoka kwenye kifaa hichi. Je una uhakika wa kuendelea? </string>
     <string name="warning_setting_download_failure">Imeshindikana kupakua kisasisho cha utaratibu</string>
     <string name="warning_switch_server">Ubadilishaji wa seva: Kitendo hiki kitafuta data zote za mUzima katika kifaa chako, ikiwa ni pamoja na fomu zozote ambazo hazijakamilika bado. Una hakika unataka kubadili mpangilio huu?</string>
+    <string name="warning_session_timeout">Muda wa sesheni kuisha: Haikuweza kuweka muda wa kusitisha. Thamani iliyotolewa ni batili. </string>
     <string name="write_SHR_to_card_text">Andika SHR kwa Kadi</string>
     <string name="write_shr_to_card_text">Andika SHR kwa Kadi</string>
 </resources>
