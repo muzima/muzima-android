@@ -175,7 +175,7 @@
 		
 		<TextView
 				android:id="@+id/concept_description_textview"
-				android:text="@string/concept_descrition"
+				android:text="@string/concept_description"
 				android:padding="8dp"
 				android:layout_below="@+id/concept_name_textview"
 				android:textColor="@android:color/black"

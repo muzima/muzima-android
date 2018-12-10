@@ -653,7 +653,7 @@
     <string name="send_general_text">Send</string>
     <string name="provider_name_general">Provider Name</string>
     <string name="new_messages_number_text"># new messages</string>
-    <string name="write_shr_to_card_general">Write SHR to card</string>
+    <string name="write_shr_to_card_general">Write shared health records to card</string>
     <string name="help_general">Help!</string>
     <string name="how_to_general">How To:</string>
     <string name="initial_setup_for_muzima_general">Initial setup for mUzima</string>
@@ -679,7 +679,7 @@
     <string name="provider_identifier">Provider Identifier:</string>
     <string name="concept_details">Concept Details</string>
     <string name="concept_name">Concept Name:</string>
-    <string name="concept_descrition">Concept Descrition</string>
+    <string name="concept_description">Concept Description</string>
     <string name="observation_details">Observation Details</string>
     <string name="observation_value">Observation Value:</string>
     <string name="captured_date">Captured Date:</string>
