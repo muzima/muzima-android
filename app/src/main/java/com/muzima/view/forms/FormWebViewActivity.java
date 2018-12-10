@@ -37,6 +37,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
+import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.MuzimaLocationService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.audio.AudioResult;
@@ -125,24 +126,28 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     }
 
     public void isLocationServicesAvailable(){
-        if (!MuzimaLocationService.isLocationServicesSwitchedOn){
-            android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(getApplicationContext());
-            alertDialog.setTitle("GPS Location");
-            alertDialog.setMessage("Location is switched off! Kindly turn on location in settings.");
-            alertDialog.setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivity(intent);
-                }
-            });
+        GPSFeaturePreferenceService gpsFeaturePreferenceService = new GPSFeaturePreferenceService((MuzimaApplication) getApplication());
+        if(gpsFeaturePreferenceService.isGPSDataCollectionSettingEnabled()){
+            if (!MuzimaLocationService.isLocationServicesSwitchedOn) {
+                android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(getApplicationContext());
+                alertDialog.setTitle(getResources().getString(R.string.title_gps_location));
+                alertDialog.setMessage(getResources().getString(R.string.hint_gps_location_off));
+                alertDialog.setPositiveButton(getResources().getString(R.string.general_location_setting), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                    }
+                });
 
-            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-            android.support.v7.app.AlertDialog alert = alertDialog.create();
-            alert.show();
+                alertDialog.setNegativeButton(getResources().getString(R.string.general_cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        processBackButtonPressed();
+                        dialog.cancel();
+                    }
+                });
+                android.support.v7.app.AlertDialog alert = alertDialog.create();
+                alert.show();
+            }
         }
 
     }

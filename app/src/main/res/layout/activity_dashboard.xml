@@ -9,7 +9,10 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            style="@style/DashboardTableContainer" android:layout_width="fill_parent" android:layout_height="fill_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/DashboardTableContainer"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
     <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
@@ -59,7 +62,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:src="@drawable/pending_update"
+                            app:srcCompat="@drawable/pending_update"
                             android:tint="#990000"
                             android:visibility="gone"
                             android:contentDescription="@string/info_downloaded_image"/>

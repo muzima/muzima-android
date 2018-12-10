@@ -60,6 +60,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -107,6 +108,7 @@ class HTMLFormDataStore {
     @JavascriptInterface
     public void saveHTML(String jsonPayload, String status, boolean keepFormOpen) {
         jsonPayload = injectUserSystemIdToEncounterPayload(jsonPayload);
+        jsonPayload = injectTimeZoneToEncounterPayload(jsonPayload);
         formData.setJsonPayload(jsonPayload);
         formData.setStatus(status);
         boolean encounterDetailsValidityStatus = true;
@@ -494,7 +496,7 @@ class HTMLFormDataStore {
     public String getLastKnowGPSLocation(String jsonReturnType) {
         String gps_location_string = "Unknown Error Occured!";
         Boolean isGpsFeatureEnabled = false;
-        isGpsFeatureEnabled = new GPSFeaturePreferenceService(application).getIsGPSDataCollectionEnabledSetting();
+        isGpsFeatureEnabled = new GPSFeaturePreferenceService(application).isGPSDataCollectionSettingEnabled();
         if (isGpsFeatureEnabled) {
 
             if (isLocationPermissionsGranted()) {
@@ -512,7 +514,7 @@ class HTMLFormDataStore {
                     }
                 }else {
                     showLocationDisabledDialog();
-                    return "Location service diabled by user";
+                    return "Location service disabled by user";
                 }
 
             } else {
@@ -549,18 +551,38 @@ class HTMLFormDataStore {
     }
 
     public void showLocationDisabledDialog(){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(application);
-        alertDialog.setTitle("Enable Location and Internet connectivity.");
-        alertDialog.setMessage("Location is switched off! Kindly turn location on in settings.");
-        alertDialog.setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                application.startActivity(intent);
-            }
-        });
+        Boolean isGPSDataCollectionSettingEnabled = new GPSFeaturePreferenceService(application).isGPSDataCollectionSettingEnabled();
+        if(isGPSDataCollectionSettingEnabled) {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(application);
+            alertDialog.setTitle(formWebViewActivity.getString(R.string.title_enable_gps_location));
+            alertDialog.setMessage(formWebViewActivity.getString(R.string.hint_gps_location_off));
+            alertDialog.setPositiveButton(formWebViewActivity.getString(R.string.general_location_setting), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    application.startActivity(intent);
+                }
+            });
 
-        alertDialog.show();
+            alertDialog.show();
+        }
     }
 
+    private String injectTimeZoneToEncounterPayload(String jsonPayload) {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonPayload);
+            JSONObject jsonObjectInner = jsonObject.getJSONObject("encounter");
+            if (!(jsonObjectInner.has("encounter.default_time_zone"))) {
+                String default_time_zone = TimeZone.getDefault().getID();
+                jsonObjectInner.put("encounter.default_time_zone", default_time_zone);
+                jsonObject.put("encounter", jsonObjectInner);
+                jsonPayload = jsonObject.toString();
+            }
+            return jsonPayload;
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(), "Error while parsing response JSON", e);
+        }
+
+        return jsonPayload;
+    }
 
 }
