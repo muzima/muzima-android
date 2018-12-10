@@ -20,7 +20,7 @@
     <string name="change_settings">Change Settings</string>
     <string name="client_registration_question_text">Would you like to register client in mUzima ?</string>
     <string name="complex_obs">Complex Obs</string>
-    <string name="concept_descrition">Concept Descrition</string>
+    <string name="concept_description">Concept Descrition</string>
     <string name="concept_details">Concept Details</string>
     <string name="concept_name">Concept Name:</string>
     <string name="confirm_duplicate_form_data_save">Save Duplicate Form Data</string>
@@ -39,7 +39,7 @@
     <string name="encounter_location">Encounter Location:</string>
     <string name="encounter_type">Encounter Type:</string>
     <string name="enter_concept_name_text">Enter concept name …</string>
-    <string name="enter_location_name">Enter location name ...</string>
+    <string name="enter_location_name">Enter location name …</string>
     <string name="enter_provider_name_hint">Enter provider name …</string>
     <string name="error_action_allow">Action not allowed while sync is in progress</string>
     <string name="error_audio_chose_activity_find">Error: Activity for choosing audio not found</string>
@@ -698,7 +698,7 @@
     </string>
     <string name="warning_session_timeout">Session Timeout: Could not set session timeout. The
         given value is invalid.
-    </string> <string name="write_SHR_to_card_text">Write SHR to Card</string>
+    </string>
+    <string name="write_SHR_to_card_text">Write SHR to Card</string>
     <string name="write_shr_to_card_general">Write SHR to card</string>
-    <string name="write_shr_to_card_text">Write SHR to Card</string>
 </resources>

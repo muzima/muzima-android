@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
   ~ Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
   ~ and Vanderbilt University Medical Center.
@@ -13,9 +14,30 @@
     <string name="add_individual_observation_text">Adicionar observação individual</string>
     <string name="app_name">mUzima</string>
     <string name="app_title">mUzima para Provedores de Saúde</string>
+    <string name="captured_date">Data Capturada:</string>
+    <string name="card_sync_status_content_description">Status de sincronização do cartão</string>
+    <string name="change_settings">Mudar configurações</string>
+    <string name="client_registration_question_text">Você gostaria de registrar o cliente no mUzima?</string>
+    <string name="complex_obs">Complexo Obs</string>
+    <string name="concept_description">Conceito Descrição</string>
+    <string name="concept_details">Detalhes do conceito</string>
+    <string name="concept_name">Nome do conceito:</string>
     <string name="confirm_duplicate_form_data_save">Guardar Dados do Formulãrio Duplicado</string>
     <string name="confirm_patient_id_exists">O cliente já tem o Identificador?</string>
+    <string name="date_general">Encontro</string>
+    <string name="date_temp">8 de junho</string>
     <string name="default_form_register">Formulário de Registos</string>
+    <string name="done_general">Feito</string>
+    <string name="downloading_cohorts_text">Baixando Coortes</string>
+    <string name="downloading_forms">Download de formulários</string>
+    <string name="encounter_date">Encontro Data:</string>
+    <string name="encounter_date_dialog_label">Encontro Data</string>
+    <string name="encounter_details">Detalhes do Encontro</string>
+    <string name="encounter_location">Encontro Local:</string>
+    <string name="encounter_type">Tipo de Encontro:</string>
+    <string name="enter_concept_name_text">Digite o nome do conceito …</string>
+    <string name="enter_location_name">Insira o nome do local …</string>
+    <string name="enter_provider_name_hint">Digite o nome do provedor …</string>
     <string name="error_action_allow">Acção não permitida enquanto a sincronização está em progresso</string>
     <string name="error_audio_chose_activity_find">Erro: Actividade para escolha de áudio não encontrado</string>
     <string name="error_audio_play_activity_find">Erro: Actividade para tocar áudio não encontrado</string>
@@ -85,6 +107,7 @@
     <string name="error_server_url_invalid">URL Inválido do Servidor</string>
     <string name="error_setup_configuration_download">Configurações de instalação não puderam ser carregadas</string>
     <string name="error_setup_configuration_template_download">Não poderá baixar o modelo de configuração</string>
+    <string name="error_smartcard_client_not_in_server">Cliente de cartão inteligente não no servidor. Registre o cliente no mUzima agora?</string>
     <string name="error_sync_not_allowed">Acção não permitida enquanto a sincronização está em progresso</string>
     <string name="error_tag_fetch">Algo deu errado enquanto buscava etiquetas do repositório local</string>
     <string name="error_target_application_find">Nenhum aplicativo alvo</string>
@@ -99,10 +122,13 @@
         antes de gravar no cartão
     </string>
     <string name="failure_writing_smartcard">Falha ao gravar dados do cartão inteligente.</string>
+    <string name="fill_out_forms_for_a_patient_general">Preencha formulários para um paciente</string>
     <string name="form_encounter_date">Data de encontro</string>
     <string name="form_encounter_location">Localização do encontro</string>
     <string name="form_encounter_provider">Provedor de encontro</string>
+    <string name="gender_image_content_description">Imagem de gênero</string>
     <string name="general_accept">Aceitar</string>
+    <string name="general_add">Adicionar</string>
     <string name="general_agree">Concordo</string>
     <string name="general_alert">Alerta!</string>
     <string name="general_all">Todos</string>
@@ -116,6 +142,8 @@
     <string name="general_cohorts">Coortes</string>
     <string name="general_concepts">Conceitos</string>
     <string name="general_dashboard">Painel de controle</string>
+    <string name="general_data_syc_required">Solicitação de dados syc</string>
+    <string name="general_date">Encontro</string>
     <string name="general_delete">Apagar</string>
     <string name="general_description_unavailable">Sem descrição disponível</string>
     <string name="general_disagree">Discordo</string>
@@ -124,11 +152,13 @@
     <string name="general_encounters">Visitas</string>
     <string name="general_fail">Falha</string>
     <string name="general_finish">Terminar</string>
+    <string name="general_finish_text">Terminar</string>
     <string name="general_form">Formulário</string>
     <string name="general_forms">Formulários</string>
     <string name="general_help">Ajuda</string>
     <string name="general_large">Ampla</string>
     <string name="general_load">Carregar</string>
+    <string name="general_loading_encounters">Encontros ainda estão carregando</string>
     <string name="general_location_setting">Configurações de localização</string>
     <string name="general_locations">Locais</string>
     <string name="general_login">Entrar</string>
@@ -153,6 +183,7 @@
     <string name="general_search">Pesquisar</string>
     <string name="general_server">Servidor</string>
     <string name="general_settings">Configurações</string>
+    <string name="general_skip">Pular</string>
     <string name="general_small">Pequeno</string>
     <string name="general_synced">Sincronizada</string>
     <string name="general_tags">Etiquetas</string>
@@ -168,6 +199,8 @@
     <string name="header_muzima_category">Configurações de mUzima</string>
     <string name="header_openmrs_category">Configurações de OpenMRS</string>
     <string name="header_provider_location_category">Provedor/Configurações de Locais</string>
+    <string name="hello_general">Olá</string>
+    <string name="help_general">Socorro!</string>
     <string name="hint_advanced_setup">Use os passos do wizard para escolher o que quer</string>
     <string name="hint_audio_caption">Por favor introduza uma legenda para o áudio</string>
     <string name="hint_audio_record">Gravar ou escolher áudio</string>
@@ -241,6 +274,7 @@
     <string name="hint_duplicate_form_data_warning">Avisar o utilizador quando o formulário de dados para o mesmo
         cliente com a mesma data de visita está sendo guardado.
     </string>
+    <string name="hint_enable_GPS">Ativar o recurso de coleta de dados do GPS</string>
     <string name="hint_enable_shr">Ativar recurso de cartão inteligente</string>
     <string name="hint_encounter_location_validation_failure">Por favor forneça um local a partir da lista dos possíveis locais</string>
     <string name="hint_encounter_provider_validation_failure">Por favor forneça um provedor a partir da lista dos possíveis provedores</string>
@@ -313,6 +347,9 @@
         para baixar
     </string>
     <string name="hint_write_SHR_to_card">Você quer escrever o Registro de Saúde Compartilhado no cartão?</string>
+    <string name="how_to_general">Como:</string>
+    <string name="inbox_outbox_label_text">## Caixa de entrada, ## Caixa de fora</string>
+    <string name="incomplete_outbox_text">## Incompleto, ## Caixa de fora</string>
     <string name="individual_obs">Obs Individual</string>
     <string name="individual_obs_description">Obs Individual</string>
     <string name="info_authentication_in_progress">Autenticação em progresso…</string>
@@ -508,24 +545,48 @@
     <string name="info_video_chose_activity_unavailable">Erro: Aplicação para escolha de vídeo não encontrado</string>
     <string name="info_video_play_activity_unavailable">Erro: Aplicação para projectar vídeo não encontrado</string>
     <string name="info_video_record_activity_unavailable">Erro: Aplicação para gravar vídeo não encontrado</string>
+    <string name="initial_setup_for_muzima_general">Configuração inicial para o mUzima</string>
+    <string name="introduction_to_muzima_general_text">Introdução ao mUzima</string>
+    <string name="june_8_sample_date">8 de junho</string>
     <string formatted="false" name="menu_SHR_data_sync">Sincronizar dados SHR (%d)</string>
     <string name="menu_form_back_to_draft">Voltar ao Rascunho</string>
     <string name="menu_form_data_sync">Sincronizar dados do formulário</string>
     <string name="message_missing_form_encounter_details_error">deve ser providenciado</string>
+    <string name="muzima_training_manual_general">Manual de treinamento do mUzima</string>
+    <string name="new_messages_number_text"># novas mensagens</string>
     <string name="no_default_encounter_location">Nenhum local de encontro padrão</string>
+    <string name="no_description_general">Nenhuma descrição</string>
     <string name="null_encounter_date_error">Hitilafu ilitokea wakati wa kuhifadhi fomu. Tarehe ya kukutana inapaswa kutolewa</string>
     <string name="null_encounter_location_error">Ocorreu um erro ao salvar o formulário. A localização do encontro deve ser fornecida</string>
     <string name="null_encounter_provider_error">Ocorreu um erro ao salvar o formulário. Provedor de encontro deve ser fornecido</string>
     <string name="number_hashtag_representation">##</string>
+    <string name="observation_details">Detalhes de Observação</string>
+    <string name="observation_text_dialog">Observação:</string>
+    <string name="observation_value">Valor de Observação:</string>
     <string name="patient_SHR_search_dialog_title">Pesquisa SHR Paciente</string>
     <string name="patient_SHR_search_title_text">Pesquisa SHR Paciente</string>
+    <string name="provider_details">Detalhes do provedor</string>
+    <string name="provider_identifier">Identificador de Provedor:</string>
+    <string name="provider_name">Nome do provedor:</string>
+    <string name="provider_name_general">Nome do provedor</string>
+    <string name="provider_reports_general">Relatórios de fornecedores</string>
     <string name="registering_patient_message_title_text">Registrando cliente em mUzima …</string>
+    <string name="reply_hint_text">envie sua resposta</string>
+    <string name="sample_date_rep">21 de março de 2018</string>
+    <string name="sample_date_text">21/02/2018</string>
     <string name="scan_card_id_title">ID do cartão de digitalização</string>
     <string name="search_patient_on_server_option_title_text">Cliente não está disponível localmente, gostaria de
         pesquisar no servidor?</string>
+    <string name="select_a_registration_form_text">Selecione um formulário de inscrição</string>
+    <string name="send_general_text">Mandar</string>
+    <string name="server_side_setup_general">Configuração do lado do servidor</string>
+    <string name="setting_up_muzima_general_text">Configurando o mUzima</string>
     <string name="shr_registration">Registro de SHR</string>
     <string name="shr_registration_description">Dados de registro de SHR</string>
     <string name="success_writing_smartcard">Os dados do cartão inteligente foram escritos com sucesso.</string>
+    <string name="synced_label_text">## Sincronizado</string>
+    <string name="synced_total_label_text">## Sincronizado, ## Total</string>
+    <string name="tagging_forms">Formulários de marcação</string>
     <string name="title_about_dashboard_help_html">Sobre o Painel de Controle</string>
     <string name="title_activity_audio">Adicionar Audio</string>
     <string name="title_activity_client_encounters">Visitas do Cliente</string>
@@ -560,6 +621,7 @@
     <string name="title_default_encounter_provider">Provedor de visita padrão</string>
     <string name="title_disclaimer">Licença, Aviso Legal de Garantia e Limitação de Responsabilidade</string>
     <string name="title_duplicate_form_data_warning">Aviso de dados duplicados</string>
+    <string name="title_enable_gps">Ativar GPS</string>
     <string name="title_enable_gps_location">Ativar conectividade de local e Internet.</string>
     <string name="title_enable_shr">Ativar SHR</string>
     <string name="title_fill_patient_forms_help">Preencher formulários para um cliente</string>
@@ -613,6 +675,10 @@
     <string name="title_video_caption">Legenda do vídeo</string>
     <string name="title_video_choose">Escolha o Vídeo</string>
     <string name="title_video_record">Gravar o Vídeo</string>
+    <string name="to_text">Para</string>
+    <string name="type_a_message_hint">Digite uma mensagem</string>
+    <string name="type_cohort_name_hint">Digite o nome da coorte …</string>
+    <string name="video_links_general_text">Links de vídeo:</string>
     <string name="warning_cohort_prefix_exists">Prefixo de coorte existe</string>
     <string name="warning_empty_cohort_prefix">Não pode adicionar um prefixo para coorte vazia</string>
     <string name="warning_form_close">Formulário de fechamento: Isto irá descartar todas suas alterações. Tem certeza
@@ -637,5 +703,5 @@
         incluindo formulários imcompletos. Tem certeza que quer mudar as configurações?
     </string>
     <string name="write_SHR_to_card_text">Escrever SHR para cartão</string>
-    <string name="write_shr_to_card_text">Escrever SHR ao cartão</string>
+    <string name="write_shr_to_card_general">Gravar registros de saúde compartilhados no cartão</string>
 </resources>

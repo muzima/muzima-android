@@ -56,7 +56,7 @@ public class Constants {
     public static final int PATIENT_LOAD_PAGE_SIZE = 10;
 
     public static final String STANDARD_DATE_FORMAT = "dd-MM-yyyy";
-    public static final String STANDARD_DATE_LOCALE_FORMAT = "yyyy-MM-dd hh:mm";
+    public static final String STANDARD_DATE_LOCALE_FORMAT = "dd-MM-yyyy hh:mm";
 
     public static class MuzimaGPSLocationConstants {
         public static final int LOCATION_ACCESS_PERMISSION_REQUEST_CODE = 9111;
