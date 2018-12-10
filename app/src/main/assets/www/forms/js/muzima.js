@@ -1073,8 +1073,11 @@ $(document).ready(function () {
                 shouldInclude = true;
             }
 
-            if($(element).attr('type') == 'hidden' && mediaValue==-1){
-                shouldInclude = true;
+            var classes = $(element).attr('class');
+            if(typeof classes != "undefined"){
+                if(classes.indexOf("serializable") > -1){
+                    shouldInclude = true;
+                }
             }
         }
         return shouldInclude;
