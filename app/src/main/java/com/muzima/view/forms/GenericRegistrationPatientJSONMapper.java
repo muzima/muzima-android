@@ -106,7 +106,7 @@ public class GenericRegistrationPatientJSONMapper {
                     attributeJSONObject.put("attribute_value",attribute.getAttribute());
                     attributesJSONArray.put(attributeJSONObject);
                 }
-                prepopulateJSON.put("patient.personattribute",attributesJSONArray);
+                patientDetails.put("patient.personattribute",attributesJSONArray);
             }
 
             if(!patient.getAddresses().isEmpty()){
@@ -133,7 +133,7 @@ public class GenericRegistrationPatientJSONMapper {
                     addressJSONObject.put("uuid",address.getUuid());
                     addressesJSONArray.put(addressJSONObject);
                 }
-                prepopulateJSON.put("patient.personaddress",addressesJSONArray);
+                patientDetails.put("patient.personaddress",addressesJSONArray);
             }
 
             prepopulateJSON.put("patient", patientDetails);

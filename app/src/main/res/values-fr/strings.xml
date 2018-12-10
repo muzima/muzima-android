@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
   ~ Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
   ~ and Vanderbilt University Medical Center.
@@ -7,8 +6,7 @@
   ~ with additional health care disclaimer.
   ~ If the user is an entity intending to commercialize any application that uses
   ~  this code in a for-profit venture,please contact the copyright holder.
--->
-<resources>
+--><resources>
     <string name="SHR_card_text">Carte SHR</string>
     <string name="SHR_data_title_text">SHR Data</string>
     <string name="SHR_extracted_data_text">SHR extrait des données</string>
@@ -613,6 +611,7 @@ Aucun fournisseur n\'a encore été ajouté</string>
 Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="warning_logout_confirm">Etes-vous sûr de vouloir vous déconnectez et quitter Muzima app?</string>
     <string name="warning_registration_form_data_delete">Vous êtes sur le point de supprimer les données d\'enregistrement. Cela effacera également les données du client sur l\'appareil. Etes-vous sur?</string>
+    <string name="warning_session_timeout">Expiration de la session: Impossible de définir le délai d\'expiration de la session. La valeur donnée n\'est pas valide. </string>
     <string name="warning_setting_download_failure">Echec du téléchargement ou de la mise à jour des configurations</string>
     <string name="warning_switch_server">Changement de serveur: Cela effacera toutes les données mUzima sur votre appareil, y compris les formulaires incomplets. Etes-vous sûr de vouloir modifier ce paramètre?</string>
     <string name="write_SHR_to_card_text">Ecrire SHR à la carte</string>
