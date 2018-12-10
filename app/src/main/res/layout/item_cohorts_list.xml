@@ -9,10 +9,11 @@
   -->
 
 <com.muzima.view.CheckedLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:weightSum="100"
-              android:orientation="horizontal">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:weightSum="100"
+    android:orientation="horizontal">
 
     <CheckedTextView
             android:id="@+id/cohort_name"
@@ -36,7 +37,7 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_gravity="top|right"
-            android:src="@drawable/pending_update"
+            app:srcCompat="@drawable/pending_update"
             android:tint="#990000"
             android:visibility="gone"
             android:contentDescription="@string/info_downloaded_image"/>

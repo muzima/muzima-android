@@ -16,6 +16,9 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.multidex.MultiDexApplication;
+
+import com.crashlytics.android.Crashlytics;
 import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
 import com.muzima.api.model.User;
@@ -58,6 +61,8 @@ import java.io.IOException;
 import java.security.Security;
 import java.util.List;
 
+import io.fabric.sdk.android.Fabric;
+
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 
 @ReportsCrashes(
@@ -77,7 +82,7 @@ import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 )
 
 
-public class MuzimaApplication extends Application {
+public class MuzimaApplication extends MultiDexApplication {
 
     private Context muzimaContext;
     private Activity currentActivity;
@@ -138,7 +143,8 @@ public class MuzimaApplication extends Application {
 
     @Override
     public void onCreate() {
-        ACRA.init(this);
+        //ACRA.init(this);
+        Fabric.with(this, new Crashlytics());
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Security.removeProvider("AndroidOpenSSL");
         }
