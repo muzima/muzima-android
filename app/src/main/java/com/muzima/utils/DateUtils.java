@@ -34,7 +34,7 @@ public class DateUtils {
             SimpleDateFormat formattedDate = new SimpleDateFormat(STANDARD_DATE_FORMAT);
             return formattedDate.parse(dateAsString);
         } else {
-            SimpleDateFormat formattedDate = new SimpleDateFormat(STANDARD_DATE_FORMAT);
+            SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd");
             return formattedDate.parse(dateAsString);
         }
     }
