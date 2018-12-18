@@ -717,4 +717,12 @@
     <string name="hint_enable_GPS">Enable GPS Data collection feature</string>
     <string name="title_enable_gps">Enable GPS</string>
     <string name="title_enable_shr">Enable SHR</string>
+    <string name="feedback_header">"Please send us your comments and feedback"</string>
+    <string name="feedback_rating_question1">"How easy to use mUzima App?"</string>
+    <string name="feedback_hint">"What is in your mind?"</string>
+    <string name="general_feedback">Feedback</string>
+    <string name="hint_feedback_prompt">Please Enter Your Message</string>
+    <string name="message_feedback_sent">Thank you for your message. Your feedback is important for us.</string>
+    <string name="message_feedback_halt">"Maybe next time."</string>
+    <string name="no_email_client">"No email client installed in this device."</string>
 </resources>
