@@ -49,6 +49,9 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 
 public class SettingsPreferenceFragment extends PreferenceFragment  implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private static final Integer SESSION_TIMEOUT_MINIMUM = 0;
+    private static final Integer SESSION_TIMEOUT_MAXIMUM = 500;
+
     private EditTextPreference serverPreference;
     private CheckBoxPreference encounterProviderPreference;
     private CheckBoxPreference realTimeSyncPreference;
@@ -97,8 +100,20 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 Integer timeOutInMin = Integer.valueOf(o.toString());
-                ((MuzimaApplication) getActivity().getApplication()).resetTimer(timeOutInMin);
-                return true;
+                if (timeOutInMin > SESSION_TIMEOUT_MINIMUM && timeOutInMin < SESSION_TIMEOUT_MAXIMUM) {
+                    ((MuzimaApplication) getActivity().getApplication()).resetTimer(timeOutInMin);
+                    return true;
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder
+                            .setCancelable(true)
+                            .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                            .setTitle(getResources().getString(R.string.general_caution))
+                            .setMessage(getResources().getString(R.string.warning_session_timeout))
+                            .setPositiveButton(getResources().getText(R.string.general_ok), null).create().show();
+                }
+                return false;
+
             }
         });
 
