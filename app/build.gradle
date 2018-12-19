@@ -17,6 +17,7 @@ buildscript {
         }
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
+        mavenCentral()
     }
 
     dependencies {
@@ -115,8 +116,10 @@ dependencies {
     }
     compile 'com.android.support:support-v13:27.1.1'
 
-
-
+    //gmail API
+    compile group: 'javax.mail', name: 'javax.mail-api', version: '1.5.1'
+    compile group: 'com.google.apis', name: 'google-api-services-gmail', version: 'v1-rev98-1.25.0'
+    compile 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
 }
 task wrapper(type: Wrapper) {
     gradleVersion = '4.1'
