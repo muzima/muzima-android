@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="spinner_array">
+    <item>Other</item>
+    <item>Patient Registration</item>
+    <item>Cohorts</item>
+    <item>Filling Forms</item>
+    <item>Saving Forms</item>
+    <item>Settings</item>
+</string-array>
+</resources>
