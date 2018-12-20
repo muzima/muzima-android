@@ -158,8 +158,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
     }
 
-
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -179,9 +177,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                 });
 
                 alertDialog.setNegativeButton(getResources().getString(R.string.general_cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        processBackButtonPressed();
-                    }
+                    public void onClick(DialogInterface dialog, int which) {}
                 });
                 android.support.v7.app.AlertDialog alert = alertDialog.create();
                 alert.show();
@@ -380,14 +376,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             sectionName = videoResult.getSectionName();
             videoResultMap.put(videoComponent.getVideoPathField(), videoResult.getVideoUri());
             videoResultMap.put(videoComponent.getVideoCaptionField(), videoResult.getVideoCaption());
-        }
-
-        if (requestCode == LOCATION_SERVICES_SWITCH_REQUEST_CODE){
-            Intent restartFormsIntent = new Intent(this, PatientFormsActivity.class);
-            restartFormsIntent.putExtra(PATIENT, patient);
-            startActivity(restartFormsIntent);
-        }else {
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string.hint_switch_location_on), Toast.LENGTH_LONG).show();
         }
     }
 
