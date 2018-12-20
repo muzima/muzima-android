@@ -71,6 +71,12 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+
+    lintOptions {
+        checkReleaseBuilds false
+        //quiet true
+        abortOnError false
+    }
 }
 
 repositories {
