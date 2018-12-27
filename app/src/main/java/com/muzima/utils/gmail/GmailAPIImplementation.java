@@ -9,7 +9,10 @@ import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInsta
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.apache.ApacheHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -17,8 +20,8 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.GmailScopes;
 import com.google.api.services.gmail.model.Message;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.view.FeedbackActivity;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.mail.MessagingException;
@@ -42,8 +45,7 @@ public class GmailAPIImplementation {
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
 
     public static void sendGmail(String to, String from, String subject, String message) throws MessagingException, IOException, GeneralSecurityException {
-        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-
+        final HttpTransport HTTP_TRANSPORT = new ApacheHttpTransport();
         MimeMessage mimeMessage = createEmail(to, from, subject, message);
         Gmail service = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                 .setApplicationName(APPLICATION_NAME)
@@ -89,16 +91,15 @@ public class GmailAPIImplementation {
             throws MessagingException, IOException {
         Message message = createMessageWithEmail(emailContent);
         message = service.users().messages().send(userId, message).execute();
-
-        System.out.println("Message id: " + message.getId());
-        System.out.println(message.toPrettyString());
+        //System.out.println("Message id: " + message.getId());
+        //System.out.println(message.toPrettyString());
         return message;
     }
 
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         // Load client secrets.
-        InputStream in = FeedbackActivity.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
-        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
+        //InputStream in = GmailAPIImplementation.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+        //GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
         // Build flow and trigger user authorization request.
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
