@@ -17,7 +17,6 @@ buildscript {
         }
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
-        mavenCentral()
     }
 
     dependencies {
@@ -71,12 +70,6 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
-
-    lintOptions {
-        checkReleaseBuilds false
-        //quiet true
-        abortOnError false
-    }
 }
 
 repositories {
@@ -125,14 +118,19 @@ dependencies {
         exclude(module: 'guice')
     }
     compile 'com.android.support:support-v13:27.1.1'
-    
-    //gmail API
-    compile group: 'javax.mail', name: 'javax.mail-api', version: '1.5.1'
-    compile group: 'com.google.apis', name: 'google-api-services-gmail', version: 'v1-rev98-1.25.0'
-    compile 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
+
     compile('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
         transitive = true;
     }
+    //gmail API
+    //compile 'javax.mail:javax.mail-api:1.5.1'
+    compile 'com.google.apis:google-api-services-gmail:v1-rev20181202-1.27.0'
+    compile 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
+    //compile group: 'javax.mail', name: 'javax.mail-api', version: '1.6.2'
+    //compile group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
+    compile group: 'com.sun.mail', name: 'android-mail', version: '1.6.3'
+    //auth
+    compile 'com.google.android.gms:play-services-auth:15.0.1'
 }
 task wrapper(type: Wrapper) {
     gradleVersion = '4.1'
