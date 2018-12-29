@@ -10,16 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
-import com.google.api.services.gmail.GmailScopes;
-import com.muzima.api.context.Context;
 import com.muzima.domain.Credentials;
 import com.muzima.R;
 import com.muzima.utils.StringUtils;
-import com.muzima.utils.gmail.GmailAPIImplementation;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import javax.mail.MessagingException;
 
 
 public class FeedbackActivity extends BaseActivity {
@@ -46,8 +39,7 @@ public class FeedbackActivity extends BaseActivity {
             public void onClick(View v) {
                 String message = feedbackText.getText().toString();
                 if (!StringUtils.isEmpty(message)) {
-                    //sendEmail();
-                    sendGmail();
+                    sendEmail();
                 } else {
                     feedbackText.setHint(getString(R.string.hint_feedback_prompt));
                     feedbackText.setHintTextColor(getResources().getColor(R.color.error_text_color));
@@ -73,21 +65,6 @@ public class FeedbackActivity extends BaseActivity {
                     startActivityForResult(emailIntent, 1);
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.no_email_client, Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            private void sendGmail() {
-                try {
-                    GmailAPIImplementation.sendGmail(EMAIL_TO, EMAIL_FROM, SUBJECT, composeMessage());
-                } catch (IOException | GeneralSecurityException | MessagingException ex) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(FeedbackActivity.this);
-                    builder
-                            .setCancelable(true)
-                            .setTitle(FeedbackActivity.this.getUserName())
-                            .setMessage(ex.toString())
-                            .setPositiveButton(getResources().getText(R.string.general_ok), null)
-                            .create().show();
-                    ex.printStackTrace();
                 }
             }
         });
@@ -139,8 +116,7 @@ public class FeedbackActivity extends BaseActivity {
     }
 
     private String getUserName() {
-        Credentials credentials;
-        credentials = new Credentials(this);
+        Credentials credentials = new Credentials(this);
         return credentials.getUserName();
     }
 }
