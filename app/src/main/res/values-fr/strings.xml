@@ -655,7 +655,7 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="interactive_help_choose">Choisis une option:</string>
     <string name="interactive_help_hint">Tapez votre message</string>
     <string name="message_help_sent">Merci de tendre la main. \n
-        Notre équipe d'assistance étudiera votre demande. \n
+        Notre équipe d\'assistance étudiera votre demande. \n
         Nous reviendrons vers vous dès que possible.</string>
     <string name="hint_help_prompt">S\'il vous plaît entrer votre message</string>
     <string name="message_help_halt">Votre message ne sera pas envoyé.</string>
