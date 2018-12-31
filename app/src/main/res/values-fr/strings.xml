@@ -640,4 +640,24 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="warning_switch_server">Changement de serveur: Cela effacera toutes les données mUzima sur votre appareil, y compris les formulaires incomplets. Etes-vous sûr de vouloir modifier ce paramètre?</string>
     <string name="write_SHR_to_card_text">Ecrire SHR à la carte</string>
     <string name="write_shr_to_card_general">Ecrire des dossiers de santé partagés à la carte</string>
+    <string name="feedback_header">S\'il vous plaît envoyez-nous vos commentaires et réactions</string>
+    <string name="feedback_rating_question1">Comment facile à utiliser mUzima App?</string>
+    <string name="feedback_hint">Qu\'est-ce que tu as en tête?</string>
+    <string name="general_feedback">Retour d\'information</string>
+    <string name="hint_feedback_prompt">S\'il vous plaît entrer votre message</string>
+    <string name="message_feedback_sent">Merci pour votre message. \n Vos commentaires sont importants pour nous.
+    </string>
+    <string name="message_feedback_halt">Votre message ne sera pas envoyé.</string>
+    <string name="no_email_client">Aucun client de messagerie installé sur ce périphérique. \n
+        Veuillez en installer un, puis laissez vos commentaires.
+    </string>
+    <string name="interactive_help_header">Dites-nous comment nous pouvons vous aider</string>
+    <string name="interactive_help_choose">Choisis une option:</string>
+    <string name="interactive_help_hint">Tapez votre message</string>
+    <string name="message_help_sent">Merci de tendre la main. \n
+        Notre équipe d'assistance étudiera votre demande. \n
+        Nous reviendrons vers vous dès que possible.</string>
+    <string name="hint_help_prompt">S\'il vous plaît entrer votre message</string>
+    <string name="message_help_halt">Votre message ne sera pas envoyé.</string>
+    <string name="ask_help">Demander de l\'aide</string>
 </resources>
