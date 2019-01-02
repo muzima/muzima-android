@@ -513,7 +513,6 @@ class HTMLFormDataStore {
                         return gps_location_string;
                     }
                 }else {
-                    showLocationDisabledDialog();
                     return "Location service disabled by user";
                 }
 
