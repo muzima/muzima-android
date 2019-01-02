@@ -477,7 +477,7 @@ $(document).ready(function () {
             var today = new Date(reference.getFullYear(), reference.getMonth(), reference.getDate());
             futureDateValidationFailureMessage = htmlDataStore.getStringResource("hint_future_date_validation_failure");
             return enteredDate > today;
-        }, "Please enter a date in the future."
+        }, futureDateValidationFailureMessage
     );
 
     // attach 'checkFutureDate' class to perform validation.
@@ -1337,7 +1337,7 @@ $(document).ready(function () {
                 }
             }
             return false;
-        }, "Please provide a consultant from the list of possible consultants.");
+        }, consultationConsultantValidationFailureMessage);
 
     }
 
@@ -1387,11 +1387,18 @@ $(document).ready(function () {
         if($('.cummulativeFormOpeningGPSData').val().length){
             var lastKnowGPSLocationJsonObj = htmlDataStore.getLastKnowGPSLocation("json-object");
             var gpsLocationDataOnForm = $('.cummulativeFormOpeningGPSData').val();
-            var locationObj = JSON.parse(gpsLocationDataOnForm);
-            locationObj.push(JSON.parse(lastKnowGPSLocationJsonObj));
-            var newLocationData = JSON.stringify(locationObj);
-            $(".cummulativeFormOpeningGPSData").val(newLocationData);
-        }else {
+            gpsLocationDataOnForm = gpsLocationDataOnForm.trim();
+            lastKnowGPSLocationJsonObj = lastKnowGPSLocationJsonObj.trim();
+            if(gpsLocationDataOnForm.substring(0, 2) === "[{" && lastKnowGPSLocationJsonObj.substring(0, 1) === "{"){
+                var locationObj = JSON.parse(gpsLocationDataOnForm);
+                locationObj.push(JSON.parse(lastKnowGPSLocationJsonObj));
+                var newLocationData = JSON.stringify(locationObj);
+                $(".cummulativeFormOpeningGPSData").val(newLocationData);
+            }else{
+                var newLocationData = htmlDataStore.getLastKnowGPSLocation("json-array");
+                $(".cummulativeFormOpeningGPSData").val(newLocationData);
+            }
+        } else {
             var lastKnowGPSLocationJsonArray = htmlDataStore.getLastKnowGPSLocation("json-array");
             $(".cummulativeFormOpeningGPSData").val(lastKnowGPSLocationJsonArray);
         }
