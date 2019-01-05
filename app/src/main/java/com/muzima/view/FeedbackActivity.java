@@ -21,8 +21,7 @@ public class FeedbackActivity extends BaseActivity {
     private EditText feedbackText;
     private RatingBar feedbackRatingBar;
 
-    private static final String EMAIL_TO = "test.levelek@gmail.com";
-    private static final String EMAIL_FROM = "test.levelek@gmail.com";
+    private static final String EMAIL_TO = "help@muzima.org";
     private static final String SUBJECT = "Feedback";
 
     @Override
