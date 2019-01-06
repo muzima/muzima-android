@@ -15,6 +15,9 @@ import com.muzima.domain.Credentials;
 import com.muzima.utils.StringUtils;
 
 public class InteractiveHelpActivity extends BaseActivity {
+    private static final String EMAIL_TO = "help@muzima.org";
+    private static final String SUBJECT = "Asking help - ";
+
     private Button sendButton;
     private Button cancelButton;
     private EditText helpText;
@@ -50,8 +53,8 @@ public class InteractiveHelpActivity extends BaseActivity {
 
             private void sendEmail() {
                 Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"test.levelek@gmail.com"});
-                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, String.join("", "Asking help - ", options.getSelectedItem().toString()));
+                emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{EMAIL_TO});
+                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, String.join("", SUBJECT, options.getSelectedItem().toString()));
                 emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, composeMessage());
                 emailIntent.setData(Uri.parse("mailto:"));
                 emailIntent.setType("message/rfc822");
