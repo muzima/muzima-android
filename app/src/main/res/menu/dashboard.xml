@@ -35,7 +35,7 @@
             android:id="@+id/action_feedback"
             android:orderInCategory="2"
             custom:showAsAction="never"
-            android:title="Feedback">
+            android:title="@string/send_feedback">
     </item>
     <item
         android:id="@+id/action_logout"
