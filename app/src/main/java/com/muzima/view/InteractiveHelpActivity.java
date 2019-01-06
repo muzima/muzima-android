@@ -44,7 +44,7 @@ public class InteractiveHelpActivity extends BaseActivity {
                 }
             }
 
-            private String composeMessage(){
+            private String composeMessage() {
                 String sender = String.join(" ", "Sender:", getUserName());
                 String help_msg = String.join(" ", "Message:", helpText.getText().toString());
                 String message = String.join("\n", sender, help_msg);
@@ -66,7 +66,7 @@ public class InteractiveHelpActivity extends BaseActivity {
             }
         });
 
-        cancelButton.setOnClickListener(new View.OnClickListener(){
+        cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 InteractiveHelpActivity.this.onBackPressed();
@@ -77,31 +77,19 @@ public class InteractiveHelpActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(InteractiveHelpActivity.this);
-                builder
-                        .setCancelable(true)
-                        .setMessage(R.string.message_help_sent)
-                        .setPositiveButton(getResources().getText(R.string.general_ok), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                InteractiveHelpActivity.this.onBackPressed();
-                            }
-                        }).create().show();
-            } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(InteractiveHelpActivity.this);
-                builder
-                        .setCancelable(true)
-                        .setMessage(R.string.message_help_halt)
-                        .setPositiveButton(getResources().getText(R.string.general_ok), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                InteractiveHelpActivity.this.onBackPressed();
-                            }
-                        }).create().show();
-            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(InteractiveHelpActivity.this);
+            builder
+                    .setCancelable(true)
+                    .setMessage(R.string.message_help_sent)
+                    .setPositiveButton(getResources().getText(R.string.general_ok), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            InteractiveHelpActivity.this.onBackPressed();
+                        }
+                    }).create().show();
         }
     }
 
-    private void initViews(){
+    private void initViews() {
         sendButton = findViewById(R.id.send);
         cancelButton = findViewById(R.id.cancel);
         helpText = findViewById(R.id.help_message);
