@@ -644,6 +644,7 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="feedback_rating_question1">Comment facile à utiliser mUzima App?</string>
     <string name="feedback_hint">Qu\'est-ce que tu as en tête?</string>
     <string name="general_feedback">Retour d\'information</string>
+    <string name="send_feedback">Envoyer des commentaires</string>
     <string name="hint_feedback_prompt">S\'il vous plaît entrer votre message</string>
     <string name="message_feedback_sent">Merci pour votre message. \n Vos commentaires sont importants pour nous.
     </string>

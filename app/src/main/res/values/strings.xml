@@ -705,6 +705,7 @@
     <string name="feedback_rating_question1">How easy to use mUzima App?"</string>
     <string name="feedback_hint">What is in your mind?</string>
     <string name="general_feedback">Feedback</string>
+    <string name="send_feedback">Send feedback</string>
     <string name="hint_feedback_prompt">Please enter your message</string>
     <string name="message_feedback_sent">Thank you for your message. \n Your feedback is important for us.</string>
     <string name="message_feedback_halt">Your message will not be sent.</string>
