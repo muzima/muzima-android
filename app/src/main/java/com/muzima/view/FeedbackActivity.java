@@ -79,31 +79,15 @@ public class FeedbackActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                //When the feedback is sent
-                AlertDialog.Builder builder = new AlertDialog.Builder(FeedbackActivity.this);
-                builder
-                        .setCancelable(true)
-                        .setTitle(FeedbackActivity.this.getUserName())
-                        .setMessage(R.string.message_feedback_sent)
-                        .setPositiveButton(getResources().getText(R.string.general_ok), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                FeedbackActivity.this.onBackPressed();
-                            }
-                        }).create().show();
-            } else {
-                //When the message didn't sent (cancelled by the user)
-                AlertDialog.Builder builder = new AlertDialog.Builder(FeedbackActivity.this);
-                builder
-                        .setCancelable(true)
-                        .setTitle(FeedbackActivity.this.getUserName())
-                        .setMessage(R.string.message_feedback_halt)
-                        .setPositiveButton(getResources().getText(R.string.general_ok), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                FeedbackActivity.this.onBackPressed();
-                            }
-                        }).create().show();
-            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(FeedbackActivity.this);
+            builder
+                    .setCancelable(true)
+                    .setMessage(R.string.message_feedback_sent)
+                    .setPositiveButton(getResources().getText(R.string.general_ok), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            FeedbackActivity.this.onBackPressed();
+                        }
+                    }).create().show();
         }
     }
 
