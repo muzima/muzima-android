@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              style="@style/MessageActivityLayout">
 
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:orientation="vertical"
-                  android:paddingLeft="8pt"
-                  android:paddingRight="8pt"
-                  android:paddingTop="8pt">
+                  android:orientation="vertical">
         <TextView
                 android:text="@string/interactive_help_header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/header"
-                android:textSize="18sp"/>
+                style="@style/MessageActivityText"/>
         <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -23,10 +16,8 @@
                 android:layout_marginTop="25dp">
             <TextView
                     android:text="@string/interactive_help_choose"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:id="@+id/option_header"
-                    android:textSize="18dp"/>
+                    style="@style/MessageActivityText"/>
             <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -52,23 +43,14 @@
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="8pt"
-            android:paddingLeft="8pt"
-            android:paddingRight="8pt">
+            android:layout_height="match_parent">
         <Button
                 android:text="@string/general_cancel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/cancel"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"/>
+                style="@style/MessageActivityButton"/>
         <Button
                 android:text="@string/send_general_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/send"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"/>
+                style="@style/MessageActivityButton"/>
     </LinearLayout>
 </LinearLayout>
