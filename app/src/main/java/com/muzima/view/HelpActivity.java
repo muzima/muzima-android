@@ -13,8 +13,6 @@ package com.muzima.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -28,7 +26,7 @@ import java.util.List;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 
-public class HelpActivity extends BaseActivity {
+public class HelpActivity extends BaseHelpActivity {
 
     public static final String HELP_TYPE = "HELP_TYPE";
     public static final int COHORT_WIZARD_HELP = 1;
@@ -55,7 +53,6 @@ public class HelpActivity extends BaseActivity {
     private ExpandableListView expListView;
     private List<String> listDataHeader;
     private HashMap<String, List<String>> listDataChild;
-    //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,6 +155,7 @@ public class HelpActivity extends BaseActivity {
         Intent intent = new Intent(this, WebViewActivity.class);
         intent.putExtra(WebViewActivity.HELP_FILE_PATH_PARAM, filePath);
         intent.putExtra(WebViewActivity.HELP_TITLE, title);
+        intent.putExtra(WebViewActivity.USER_LOGGED_OUT, String.valueOf(isUserLoggedOut()));
         startActivity(intent);
     }
 
@@ -165,6 +163,7 @@ public class HelpActivity extends BaseActivity {
         Intent intent = new Intent(this, YouTubeVideoViewActivity.class);
         intent.putExtra(YouTubeVideoViewActivity.VIDEO_PATH, filePath);
         intent.putExtra(YouTubeVideoViewActivity.VIDEO_TITLE, title);
+        intent.putExtra(YouTubeVideoViewActivity.USER_LOGGED_OUT, String.valueOf(isUserLoggedOut()));
         startActivity(intent);
     }
 
@@ -172,17 +171,5 @@ public class HelpActivity extends BaseActivity {
         Intent playVideoIntent = new Intent(Intent.ACTION_VIEW);
         playVideoIntent.setData(Uri.parse(videoUrl));
         startActivity(playVideoIntent);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        boolean returnValue = super.onCreateOptionsMenu(menu);
-        removeHelpMenu(menu);
-        return returnValue;
-    }
-
-    private void removeHelpMenu(Menu menu) {
-        MenuItem menuHelp = menu.findItem(R.id.action_help);
-        if (menuHelp != null) menuHelp.setVisible(false);
     }
 }

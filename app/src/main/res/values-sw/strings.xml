@@ -581,4 +581,5 @@
     <string name="write_SHR_to_card_text">Andika SHR kwa Kadi</string>
     <string name="write_shr_to_card_general">Andika kumbukumbu za afya za pamoja kwenye kadi</string>
     <string name="youTube_player_error">Hitilafu ilitokea wakati wa kupakia video ya YouTube</string>
+    <string name="help_center">Kituo cha Msaada</string>
 </resources>
