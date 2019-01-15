@@ -87,47 +87,35 @@ public class HelpActivity extends BaseActivity {
         expListView.expandGroup(0);
 
         // Listview on child click listener
-        expListView.setOnChildClickListener(new OnChildClickListener()
-        {
+        expListView.setOnChildClickListener(new OnChildClickListener() {
             @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int group_position, int child_position, long id)
-            {
-                if(group_position==0 && child_position==0){
-                    startHelpContentDisplayActivity(MUZIMA_INITAL_SETUP_GUIDE,(String)listAdapter.getChild(group_position, child_position));
-                }
-                else if(group_position==0 && child_position==1){
-                    startHelpContentDisplayActivity(ABOUT_DASHBOARD_FORM,(String)listAdapter.getChild(group_position, child_position));
-                }
-                else if(group_position==0 && child_position==2){
-                    startHelpContentDisplayActivity(MUZIMA_SETTINGS,(String)listAdapter.getChild(group_position, child_position));
-                }
-                else if(group_position==0 && child_position==3){
-                    startHelpContentDisplayActivity(FILL_PATIENT_FORMS,(String)listAdapter.getChild(group_position, child_position));
+            public boolean onChildClick(ExpandableListView parent, View v, int group_position, int child_position, long id) {
+                if (group_position == 0 && child_position == 0) {
+                    startHelpContentDisplayActivity(MUZIMA_INITAL_SETUP_GUIDE, (String) listAdapter.getChild(group_position, child_position));
+                } else if (group_position == 0 && child_position == 1) {
+                    startHelpContentDisplayActivity(ABOUT_DASHBOARD_FORM, (String) listAdapter.getChild(group_position, child_position));
+                } else if (group_position == 0 && child_position == 2) {
+                    startHelpContentDisplayActivity(MUZIMA_SETTINGS, (String) listAdapter.getChild(group_position, child_position));
+                } else if (group_position == 0 && child_position == 3) {
+                    startHelpContentDisplayActivity(FILL_PATIENT_FORMS, (String) listAdapter.getChild(group_position, child_position));
                 }
                 //video links
-                else if(group_position==1 && child_position==0){
-                    viewVideo(GUIDED_SETUP);
-                }
-                else if(group_position==1 && child_position==1){
-                    viewVideo(ADVANCED_SETUP);
-                }
-                else if(group_position==1 && child_position==2){
-                    viewVideo(COHORTS_DOWNLOAD_ON_DEMAND);
-                }
-                else if(group_position==1 && child_position==3){
-                    viewVideo(CONCEPTS_DOWNLOAD_ON_DEMAND);
-                }
-                else if(group_position==1 && child_position==4){
-                    viewVideo(FORMS_DOWNLOAD_ON_DEMAND);
-                }
-                else if(group_position==1 && child_position==5){
-                    viewVideo(CLIENT_REGISTRATION);
-                }
-                else if(group_position==1 && child_position==6){
-                    viewVideo(LOCAL_CLIENT_SEARCH);
-                }
-                else if(group_position==1 && child_position==7){
-                    viewVideo(SERVER_CLIENT_SEARCH);
+                else if (group_position == 1 && child_position == 0) {
+                    startVideoContentDisplayActivity(GUIDED_SETUP, (String) listAdapter.getChild(group_position, child_position));
+                } else if (group_position == 1 && child_position == 1) {
+                    startVideoContentDisplayActivity(ADVANCED_SETUP, (String) listAdapter.getChild(group_position, child_position));
+                } else if (group_position == 1 && child_position == 2) {
+                    startVideoContentDisplayActivity(COHORTS_DOWNLOAD_ON_DEMAND, (String) listAdapter.getChild(group_position, child_position));
+                } else if (group_position == 1 && child_position == 3) {
+                    startVideoContentDisplayActivity(CONCEPTS_DOWNLOAD_ON_DEMAND, (String) listAdapter.getChild(group_position, child_position));
+                } else if (group_position == 1 && child_position == 4) {
+                    startVideoContentDisplayActivity(FORMS_DOWNLOAD_ON_DEMAND, (String) listAdapter.getChild(group_position, child_position));
+                } else if (group_position == 1 && child_position == 5) {
+                    startVideoContentDisplayActivity(CLIENT_REGISTRATION, (String) listAdapter.getChild(group_position, child_position));
+                } else if (group_position == 1 && child_position == 6) {
+                    startVideoContentDisplayActivity(LOCAL_CLIENT_SEARCH, (String) listAdapter.getChild(group_position, child_position));
+                } else if (group_position == 1 && child_position == 7) {
+                    startVideoContentDisplayActivity(SERVER_CLIENT_SEARCH, (String) listAdapter.getChild(group_position, child_position));
                 }
                 return false;
             }
@@ -169,11 +157,18 @@ public class HelpActivity extends BaseActivity {
     private void startHelpContentDisplayActivity(String filePath, String title) {
         Intent intent = new Intent(this, WebViewActivity.class);
         intent.putExtra(WebViewActivity.HELP_FILE_PATH_PARAM, filePath);
-        intent.putExtra(WebViewActivity.HELP_TITLE,title);
+        intent.putExtra(WebViewActivity.HELP_TITLE, title);
         startActivity(intent);
     }
 
-    private void viewVideo(String videoUrl){
+    private void startVideoContentDisplayActivity(String filePath, String title) {
+        Intent intent = new Intent(this, YouTubeVideoViewActivity.class);
+        intent.putExtra(YouTubeVideoViewActivity.VIDEO_PATH, filePath);
+        intent.putExtra(YouTubeVideoViewActivity.VIDEO_TITLE, title);
+        startActivity(intent);
+    }
+
+    private void viewVideo(String videoUrl) {
         Intent playVideoIntent = new Intent(Intent.ACTION_VIEW);
         playVideoIntent.setData(Uri.parse(videoUrl));
         startActivity(playVideoIntent);
