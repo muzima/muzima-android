@@ -88,6 +88,10 @@
                 android:layout_height="wrap_content"
                 style="@style/Versiontext"
                 android:layout_gravity="center"/>
+        <TextView
+                android:id="@+id/helpText"
+                android:text="@string/help_center"
+                style="@style/ClickableText"/>
     </LinearLayout>
 
 </ScrollView>

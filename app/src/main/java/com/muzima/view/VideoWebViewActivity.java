@@ -13,19 +13,15 @@ package com.muzima.view;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.FrameLayout;
-import android.widget.Toast;
 import com.muzima.R;
-import android.support.v7.app.ActionBar;
 
-public class VideoWebViewActivity extends BaseActivity {
+public class VideoWebViewActivity extends BaseHelpActivity {
 
     private WebView webView;
     private View mCustomView;
@@ -71,7 +67,9 @@ public class VideoWebViewActivity extends BaseActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 super.onBackPressed();
-                startActivity(new Intent(this, HelpActivity.class));
+                Intent intent = new Intent(this, HelpActivity.class);
+                intent.putExtra(HelpActivity.USER_LOGGED_OUT, String.valueOf(isUserLoggedOut()));
+                startActivity(intent);
                 finish();
                 break;
         }

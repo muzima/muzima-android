@@ -641,4 +641,5 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="write_SHR_to_card_text">Ecrire SHR à la carte</string>
     <string name="write_shr_to_card_general">Ecrire des dossiers de santé partagés à la carte</string>
     <string name="youTube_player_error">Une erreur s\'est produite lors du chargement de la vidéo YouTube</string>
+    <string name="help_center">Centre d\'aide</string>
 </resources>

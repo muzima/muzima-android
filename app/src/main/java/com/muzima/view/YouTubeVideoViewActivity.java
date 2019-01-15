@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.google.android.youtube.player.*;
 import com.muzima.R;
 
-public class YouTubeVideoViewActivity extends BaseActivity
+public class YouTubeVideoViewActivity extends BaseHelpActivity
         implements YouTubePlayer.OnInitializedListener {
 
     private static String YOUTUBE_API_KEY = "";
@@ -80,6 +80,7 @@ public class YouTubeVideoViewActivity extends BaseActivity
         Intent videoIntent = new Intent(this, VideoWebViewActivity.class);
         videoIntent.putExtra(VideoWebViewActivity.VIDEO_PATH, getIntent().getStringExtra(VIDEO_PATH));
         videoIntent.putExtra(VideoWebViewActivity.VIDEO_TITLE, getIntent().getStringExtra(VIDEO_TITLE));
+        videoIntent.putExtra(VideoWebViewActivity.USER_LOGGED_OUT, String.valueOf(isUserLoggedOut()));
         startActivity(videoIntent);
     }
 }

@@ -43,6 +43,7 @@ import com.muzima.service.SHRStatusPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.util.MuzimaLogger;
 import com.muzima.utils.StringUtils;
+import com.muzima.view.HelpActivity;
 import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
 
 import java.util.Locale;
@@ -61,6 +62,7 @@ public class LoginActivity extends Activity {
     private TextView versionText;
     private BackgroundAuthenticationTask backgroundAuthenticationTask;
     private TextView authenticatingText;
+    private TextView helpText;
 
     private ValueAnimator flipFromLoginToAuthAnimator;
     private ValueAnimator flipFromAuthToLoginAnimator;
@@ -206,6 +208,15 @@ public class LoginActivity extends Activity {
                 }
             }
         });
+
+        helpText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent helpIntent = new Intent(getApplicationContext(), HelpActivity.class);
+                helpIntent.putExtra(HelpActivity.USER_LOGGED_OUT, String.valueOf(true));
+                startActivity(helpIntent);
+            }
+        });
     }
 
     private boolean validInput() {
@@ -222,7 +233,7 @@ public class LoginActivity extends Activity {
         loginButton = findViewById(R.id.login);
         authenticatingText = findViewById(R.id.authenticatingText);
         versionText = findViewById(R.id.version);
-
+        helpText = findViewById(R.id.helpText);
     }
 
     public void onUpdatePasswordCheckboxClicked(View view) {
@@ -323,7 +334,6 @@ public class LoginActivity extends Activity {
                     return getString(R.string.error_authentication_fail);
             }
         }
-
 
 
         private void startNextActivity() {
