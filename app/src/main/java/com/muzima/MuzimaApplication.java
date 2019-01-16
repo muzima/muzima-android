@@ -221,7 +221,7 @@ public class MuzimaApplication extends MultiDexApplication {
             try {
                 formController = new FormController(muzimaContext.getFormService(), muzimaContext.getPatientService(),
                         muzimaContext.getLastSyncTimeService(), getSntpService(), muzimaContext.getObservationService(),
-                        muzimaContext.getEncounterService(),getPatientController(),getMuzimaSettingController());
+                        muzimaContext.getEncounterService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
