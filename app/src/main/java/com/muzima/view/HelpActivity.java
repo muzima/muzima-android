@@ -155,7 +155,6 @@ public class HelpActivity extends BaseHelpActivity {
         Intent intent = new Intent(this, WebViewActivity.class);
         intent.putExtra(WebViewActivity.HELP_FILE_PATH_PARAM, filePath);
         intent.putExtra(WebViewActivity.HELP_TITLE, title);
-        intent.putExtra(WebViewActivity.USER_LOGGED_OUT, String.valueOf(isUserLoggedOut()));
         startActivity(intent);
     }
 
@@ -163,7 +162,6 @@ public class HelpActivity extends BaseHelpActivity {
         Intent intent = new Intent(this, YouTubeVideoViewActivity.class);
         intent.putExtra(YouTubeVideoViewActivity.VIDEO_PATH, filePath);
         intent.putExtra(YouTubeVideoViewActivity.VIDEO_TITLE, title);
-        intent.putExtra(YouTubeVideoViewActivity.USER_LOGGED_OUT, String.valueOf(isUserLoggedOut()));
         startActivity(intent);
     }
 

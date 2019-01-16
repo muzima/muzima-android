@@ -80,7 +80,6 @@ public class YouTubeVideoViewActivity extends BaseHelpActivity
         Intent videoIntent = new Intent(this, VideoWebViewActivity.class);
         videoIntent.putExtra(VideoWebViewActivity.VIDEO_PATH, getIntent().getStringExtra(VIDEO_PATH));
         videoIntent.putExtra(VideoWebViewActivity.VIDEO_TITLE, getIntent().getStringExtra(VIDEO_TITLE));
-        videoIntent.putExtra(VideoWebViewActivity.USER_LOGGED_OUT, String.valueOf(isUserLoggedOut()));
         startActivity(videoIntent);
     }
 }
