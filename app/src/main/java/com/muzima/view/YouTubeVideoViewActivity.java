@@ -19,7 +19,7 @@ import com.muzima.R;
 public class YouTubeVideoViewActivity extends BaseHelpActivity
         implements YouTubePlayer.OnInitializedListener {
 
-    private static String YOUTUBE_API_KEY = "";
+    private static String YOUTUBE_API_KEY = "AIzaSyB95WSRhfe-Pa6ZxU8ZB3C__E51ZQbZdu8";
     private static final int RECOVERY_REQUEST = 1;
     public static final String VIDEO_PATH = "VIDEO_PATH";
     public static final String VIDEO_TITLE = "VIDEO_TITLE";
