@@ -44,7 +44,11 @@ public class BaseHelpActivity extends BaseActivity {
 
     private void setMenuInvisible(Menu menu) {
         if (isUserLoggedOut()) {
-            menu.clear();
+            for (int i = 0; i<menu.size(); i++) {
+                menu.getItem(i).setVisible(false);
+            }
+            MenuItem menuHelp = menu.findItem(R.id.action_login);
+            if (menuHelp != null) menuHelp.setVisible(true);
         }
     }
 

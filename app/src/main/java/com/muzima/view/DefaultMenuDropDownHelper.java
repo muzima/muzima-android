@@ -17,6 +17,7 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.muzima.R;
+import com.muzima.domain.Credentials;
 import com.muzima.tasks.EncryptedSharedHealthRecordSyncTask;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.login.LoginActivity;
@@ -70,6 +71,11 @@ public class DefaultMenuDropDownHelper {
                 return true;
             case R.id.menu_SHR_data_sync:
                 EncryptedSharedHealthRecordSyncTask.uploadEncryptedSharedHealthRecords(activity.getApplicationContext());
+                return true;
+            case R.id.action_login:
+                Credentials credentials = new Credentials(activity.getApplicationContext());
+                boolean isFistLaunch = credentials.getUserName().length() == 0;
+                launchLoginActivity(isFistLaunch);
                 return true;
             default:
                 return false;
