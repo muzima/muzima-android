@@ -6,24 +6,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.context.Context;
+import com.muzima.api.model.User;
+import com.muzima.domain.Credentials;
 import com.muzima.view.BaseActivity;
 
-public class BaseHelpActivity extends BaseActivity {
+import java.io.IOException;
 
-    public static final String USER_LOGGED_OUT = "USER_LOGGED_OUT";
-    private boolean isUserLoggedOut;
+public class BaseHelpActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setUserLoggedOut();
     }
 
     @Override
     public void onUserInteraction() {
         ((MuzimaApplication) getApplication()).restartTimer();
         super.onUserInteraction();
-        if (isUserLoggedOut) {
+        if (isUserLoggedOut()) {
             ((MuzimaApplication) getApplication()).cancelTimer();
         }
     }
@@ -42,20 +43,26 @@ public class BaseHelpActivity extends BaseActivity {
     }
 
     private void setMenuInvisible(Menu menu) {
-        if (isUserLoggedOut) {
+        if (isUserLoggedOut()) {
             menu.clear();
         }
     }
 
-    private void setUserLoggedOut() {
-        isUserLoggedOut = false;
-        if (getIntent().hasExtra(USER_LOGGED_OUT)) {
-            String logged_out = getIntent().getStringExtra(USER_LOGGED_OUT);
-            isUserLoggedOut = Boolean.parseBoolean(logged_out);
-        }
+    public String getUserName() {
+        Credentials credentials = new Credentials(this);
+        Log.i(null, "Username: " + credentials.getUserName());
+        return credentials.getUserName();
     }
 
     public boolean isUserLoggedOut() {
-        return isUserLoggedOut;
+        Credentials credentials = new Credentials(this);
+        return credentials.isEmpty();
     }
+
+/*
+    public boolean isUserLoggedOut() {
+        User user = ((MuzimaApplication) getApplication()).getAuthenticatedUser();
+        return (user == null);
+    }
+    */
 }

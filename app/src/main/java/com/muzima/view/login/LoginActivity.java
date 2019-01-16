@@ -213,7 +213,6 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent helpIntent = new Intent(getApplicationContext(), HelpActivity.class);
-                helpIntent.putExtra(HelpActivity.USER_LOGGED_OUT, String.valueOf(true));
                 startActivity(helpIntent);
             }
         });

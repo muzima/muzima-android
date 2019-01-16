@@ -68,7 +68,6 @@ public class VideoWebViewActivity extends BaseHelpActivity {
             case android.R.id.home:
                 super.onBackPressed();
                 Intent intent = new Intent(this, HelpActivity.class);
-                intent.putExtra(HelpActivity.USER_LOGGED_OUT, String.valueOf(isUserLoggedOut()));
                 startActivity(intent);
                 finish();
                 break;
