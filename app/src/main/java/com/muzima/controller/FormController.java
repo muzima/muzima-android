@@ -85,12 +85,9 @@ public class FormController {
     private final Map<String, Integer> tagColors;
     private List<Tag> selectedTags;
     private String jsonPayload;
-    private final MuzimaSettingController settingController;
-    private final PatientController patientController;
 
     public FormController(FormService formService, PatientService patientService, LastSyncTimeService lastSyncTimeService,
-                          SntpService sntpService, ObservationService observationService, EncounterService encounterService,
-                          PatientController patientController, MuzimaSettingController settingController) {
+                          SntpService sntpService, ObservationService observationService, EncounterService encounterService) {
         this.formService = formService;
         this.patientService = patientService;
         this.lastSyncTimeService = lastSyncTimeService;
@@ -99,8 +96,6 @@ public class FormController {
         this.encounterService = encounterService;
         tagColors = new HashMap<>();
         selectedTags = new ArrayList<>();
-        this.settingController = settingController;
-        this.patientController = patientController;
     }
 
     public int getTotalFormCount() throws FormFetchException {
@@ -562,7 +557,7 @@ public class FormController {
         try {
             Patient patient;
             if(isGenericRegistrationHTMLFormData(formData)){
-                patient = new GenericRegistrationPatientJSONMapper().getPatient(formData.getJsonPayload(),patientController,settingController);
+                patient = new GenericRegistrationPatientJSONMapper().getPatient(muzimaApplication,formData.getJsonPayload());
             } else if(isRegistrationHTMLFormData(formData)) {
                 patient = new HTMLPatientJSONMapper().getPatient(muzimaApplication,formData.getJsonPayload());
             } else if(isRegistrationXMLFormData(formData)){

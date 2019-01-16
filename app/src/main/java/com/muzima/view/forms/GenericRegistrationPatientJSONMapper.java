@@ -11,10 +11,12 @@
 package com.muzima.view.forms;
 
 import android.util.Log;
+import com.muzima.MuzimaApplication;
 import com.muzima.api.exception.InvalidPatientIdentifierException;
 import com.muzima.api.exception.InvalidPersonAddressException;
 import com.muzima.api.exception.InvalidPersonAttributeException;
 import com.muzima.api.model.FormData;
+import com.muzima.api.model.Location;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientIdentifierType;
@@ -23,6 +25,7 @@ import com.muzima.api.model.PersonAttribute;
 import com.muzima.api.model.PersonAttributeType;
 import com.muzima.api.model.PersonName;
 import com.muzima.api.model.User;
+import com.muzima.controller.LocationController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.Constants;
@@ -43,9 +46,9 @@ import static com.muzima.utils.DateUtils.parse;
 public class GenericRegistrationPatientJSONMapper {
 
     private JSONObject patientJSON;
+    private JSONObject encounterJSON;
     private Patient patient;
-    private MuzimaSettingController settingController;
-    private PatientController patientController;
+    private MuzimaApplication muzimaApplication;
 
     public String map(Patient patient, FormData formData, User loggedInUser, boolean isLoggedInUserIsDefaultProvider) {
         JSONObject prepopulateJSON = new JSONObject();
@@ -144,25 +147,17 @@ public class GenericRegistrationPatientJSONMapper {
         return prepopulateJSON.toString();
     }
 
-    public Patient getPatient(String jsonPayload, PatientController patientController, MuzimaSettingController settingController) throws JSONException {
-        setPatientController(patientController);
-        setSettingController(settingController);
+    public Patient getPatient(MuzimaApplication muzimaApplication, String jsonPayload) throws JSONException {
+        this.muzimaApplication = muzimaApplication;
         setJSONObjects(jsonPayload);
         createPatient();
         return patient;
     }
 
-    private void setPatientController(PatientController patientController){
-        this.patientController = patientController;
-    }
-
-    private void setSettingController(MuzimaSettingController settingController){
-        this.settingController = settingController;
-    }
-
     private void setJSONObjects(String jsonPayload) throws JSONException {
         JSONObject responseJSON = new JSONObject(jsonPayload);
         patientJSON = responseJSON.getJSONObject("patient");
+        encounterJSON = responseJSON.getJSONObject("encounter");
     }
 
     private void createPatient() throws JSONException {
@@ -182,6 +177,10 @@ public class GenericRegistrationPatientJSONMapper {
 
     private void setPatientIdentifiers() throws JSONException {
         List<PatientIdentifier> identifiers = getPatientIdentifiers();
+        Location location = getEncounterLocation();
+        for(PatientIdentifier identifier:identifiers){
+            identifier.setLocation(location);
+        }
         patient.setIdentifiers(identifiers);
     }
 
@@ -205,7 +204,8 @@ public class GenericRegistrationPatientJSONMapper {
         List<PatientIdentifier> patientIdentifiers = new ArrayList<>();
 
         patientIdentifiers.add(getPatientUuidAsIdentifier());
-        boolean requireMedicalRecordNumber = settingController.isMedicalRecordNumberRequiredDuringRegistration();
+        boolean requireMedicalRecordNumber = muzimaApplication.getMuzimaSettingController()
+                .isMedicalRecordNumberRequiredDuringRegistration();
         if(requireMedicalRecordNumber || patientJSON.has("patient.medical_record_number")) {
             PatientIdentifier medicalRecordIdentifier = getMedicalRecordNumberIdentifier();
 
@@ -221,6 +221,20 @@ public class GenericRegistrationPatientJSONMapper {
         if (!otherIdentifiers.isEmpty())
             patientIdentifiers.addAll(otherIdentifiers);
         return patientIdentifiers;
+    }
+
+    private Location getEncounterLocation() throws JSONException {
+        String locationId = encounterJSON.getString("encounter.location_id");
+        LocationController locationController = muzimaApplication.getLocationController();
+        try {
+            Location location = locationController.getLocationById(Integer.parseInt(locationId));
+            if(location == null){
+                throw new JSONException("Could not find location in local repo");
+            }
+            return location;
+        } catch (LocationController.LocationLoadException e) {
+            throw new JSONException("Could not find location in local repo");
+        }
     }
 
     private PatientIdentifier getMedicalRecordNumberIdentifier() throws JSONException {
@@ -315,9 +329,11 @@ public class GenericRegistrationPatientJSONMapper {
         PatientIdentifierType identifierType = null;
 
         if(!StringUtils.isEmpty(identifierTypeUuid)){
-            identifierType = patientController.getPatientIdentifierTypeByUuid(identifierTypeUuid);
+            identifierType = muzimaApplication.getPatientController()
+                    .getPatientIdentifierTypeByUuid(identifierTypeUuid);
         } else if(!StringUtils.isEmpty(identifierTypeName)){
-            List<PatientIdentifierType> tmpIdentifierTypes = patientController.getPatientIdentifierTypeByName(identifierTypeName);
+            List<PatientIdentifierType> tmpIdentifierTypes = muzimaApplication.getPatientController()
+                    .getPatientIdentifierTypeByName(identifierTypeName);
             if(tmpIdentifierTypes.size() == 1){
                 identifierType = tmpIdentifierTypes.get(0);
             }
@@ -488,6 +504,7 @@ public class GenericRegistrationPatientJSONMapper {
             attribute.setAttribute(attributeValue);
 
             PersonAttributeType attributeType = null;
+            PatientController patientController = muzimaApplication.getPatientController();
             if (jsonObject.has("attribute_type_uuid")) {
                 String personAttributeTypeUuid = jsonObject.getString("attribute_type_uuid");
                 attributeType = patientController.getPersonAttributeTypeByUuid(personAttributeTypeUuid);
