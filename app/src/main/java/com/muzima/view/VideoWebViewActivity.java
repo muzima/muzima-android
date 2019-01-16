@@ -12,6 +12,7 @@ package com.muzima.view;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -44,6 +45,7 @@ public class VideoWebViewActivity extends BaseHelpActivity {
         webView.setWebChromeClient(new myWebChromeClient());
 
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.setBackgroundColor(Color.TRANSPARENT);
 
         String html = makeHtml();
         webView.loadDataWithBaseURL("https://www.youtube.com", html, "text/html", "UTF-8", null);
@@ -52,7 +54,7 @@ public class VideoWebViewActivity extends BaseHelpActivity {
     private String makeHtml() {
         String videoId = getVideoId(getIntent().getStringExtra(VIDEO_PATH));
         String videoUrl = "https://www.youtube.com/embed/" + videoId;
-        String html = "<iframe width= '100%' src='" + videoUrl + "' frameborder='0' allowFullScreen></iframe>";
+        String html = "<iframe src='" + videoUrl + "' frameborder='0' allowFullScreen></iframe>";
         return html;
     }
 
