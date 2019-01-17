@@ -1,7 +1,6 @@
 package com.muzima.view;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.muzima.MuzimaApplication;
@@ -22,7 +21,6 @@ public class BaseHelpActivity extends BaseActivity {
 
     @Override
     public void onUserInteraction() {
-        ((MuzimaApplication) getApplication()).restartTimer();
         super.onUserInteraction();
         if (isUserLoggedOut()) {
             ((MuzimaApplication) getApplication()).cancelTimer();
@@ -54,7 +52,6 @@ public class BaseHelpActivity extends BaseActivity {
 
     public String getUserName() {
         Credentials credentials = new Credentials(this);
-        Log.i(null, "Username: " + credentials.getUserName());
         return credentials.getUserName();
     }
 
@@ -62,11 +59,4 @@ public class BaseHelpActivity extends BaseActivity {
         Credentials credentials = new Credentials(this);
         return credentials.isEmpty();
     }
-
-/*
-    public boolean isUserLoggedOut() {
-        User user = ((MuzimaApplication) getApplication()).getAuthenticatedUser();
-        return (user == null);
-    }
-    */
 }

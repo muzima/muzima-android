@@ -14,13 +14,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.webkit.*;
+import android.widget.Toast;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.service.TimeoutPreferenceService;
 
 public class VideoWebViewActivity extends BaseHelpActivity {
 
@@ -29,12 +31,29 @@ public class VideoWebViewActivity extends BaseHelpActivity {
     private WebChromeClient.CustomViewCallback customViewCallback;
     public static final String VIDEO_PATH = "VIDEO_PATH";
     public static final String VIDEO_TITLE = "VIDEO_TITLE";
+    private int muzimaTimeout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help_video_web_view);
+        setMuzimaTimout();
         setVideoHelpContent();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //set session timeout back to original
+        if (!isUserLoggedOut()) {
+            ((MuzimaApplication) getApplication()).resetTimer(muzimaTimeout);
+        }
+    }
+
+    private void setMuzimaTimout() {
+        MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
+        muzimaTimeout = new TimeoutPreferenceService(muzimaApplication).getTimeout();
     }
 
     private void setVideoHelpContent() {
@@ -42,7 +61,6 @@ public class VideoWebViewActivity extends BaseHelpActivity {
         webView = (WebView) findViewById(R.id.videoWebView);
 
         webView.setWebViewClient(new myWebViewClient());
-        webView.setWebChromeClient(new myWebChromeClient());
 
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setBackgroundColor(Color.TRANSPARENT);
@@ -64,6 +82,7 @@ public class VideoWebViewActivity extends BaseHelpActivity {
         return videoId;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -77,52 +96,30 @@ public class VideoWebViewActivity extends BaseHelpActivity {
         return true;
     }
 
-    class myWebChromeClient extends WebChromeClient {
-        private Bitmap mDefaultVideoPoster;
-        private View mVideoProgressView;
-
-        @Override
-        public void onShowCustomView(View view, CustomViewCallback callback) {
-
-            // if a view already exists then immediately terminate the new one
-            if (mCustomView != null) {
-                callback.onCustomViewHidden();
-                return;
-            }
-            mCustomView = view;
-            webView.setVisibility(View.GONE);
-            customViewCallback = callback;
-        }
-
-        @Override
-        public View getVideoLoadingProgressView() {
-
-            if (mVideoProgressView == null) {
-                LayoutInflater inflater = LayoutInflater.from(VideoWebViewActivity.this);
-                mVideoProgressView = inflater.inflate(R.layout.activity_help_video_web_view, null);
-            }
-            return mVideoProgressView;
-        }
-
-        @Override
-        public void onHideCustomView() {
-            super.onHideCustomView();
-            if (mCustomView == null)
-                return;
-
-            webView.setVisibility(View.VISIBLE);
-            // Hide the custom view.
-            mCustomView.setVisibility(View.GONE);
-            // Remove the custom view from its container.
-            customViewCallback.onCustomViewHidden();
-            //mCustomView = null;
-        }
-    }
-
     class myWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             return super.shouldOverrideUrlLoading(view, url);
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            webView.getHeight();
+            webView.getWidth();
+
+            super.onPageFinished(view, url);
+            if (!isUserLoggedOut()) {
+                setTimer();
+            }
+        }
+
+        private void setTimer() {
+            //set session timeout to 20 minutes
+            int duration = 20;
+            int timeout = muzimaTimeout;
+            if (timeout < duration) {
+                ((MuzimaApplication) getApplication()).resetTimer(duration);
+            }
         }
     }
 }

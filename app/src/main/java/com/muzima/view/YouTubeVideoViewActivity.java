@@ -14,21 +14,27 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 import com.google.android.youtube.player.*;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.service.TimeoutPreferenceService;
 
-public class YouTubeVideoViewActivity extends BaseHelpActivity
-        implements YouTubePlayer.OnInitializedListener {
+import java.util.concurrent.TimeUnit;
+
+public class YouTubeVideoViewActivity extends BaseHelpActivity implements YouTubePlayer.OnInitializedListener {
 
     private static String YOUTUBE_API_KEY = "AIzaSyB95WSRhfe-Pa6ZxU8ZB3C__E51ZQbZdu8";
     private static final int RECOVERY_REQUEST = 1;
     public static final String VIDEO_PATH = "VIDEO_PATH";
     public static final String VIDEO_TITLE = "VIDEO_TITLE";
     private String videoId;
+    private YouTubePlayer youTubePalyer;
+    private int muzimaTimeout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help_video_display);
+        setMuzimaTimout();
         setVideoContent();
     }
 
@@ -40,21 +46,26 @@ public class YouTubeVideoViewActivity extends BaseHelpActivity
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        //set session timeout back to original
+        if (!isUserLoggedOut()) {
+            ((MuzimaApplication) getApplication()).resetTimer(muzimaTimeout);
+        }
+    }
+
+    @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
         if (!wasRestored) {
-            player.cueVideo(videoId);
+            youTubePalyer = player;
+            youTubePalyer.setPlayerStateChangeListener(new MyPlayerStateChangeListener());
+            player.loadVideo(videoId);
         }
     }
 
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult errorReason) {
-        //eg. youtube is disabled - Determines whether this error is user-recoverable.
-        if (errorReason.isUserRecoverableError()) {
-            startVideoWebViewActivity();
-        } else {
-            String error = String.format(getString(R.string.youTube_player_error), errorReason.toString());
-            Toast.makeText(this, error, Toast.LENGTH_LONG).show();
-        }
+        startVideoWebViewActivity();
     }
 
     @Override
@@ -75,11 +86,59 @@ public class YouTubeVideoViewActivity extends BaseHelpActivity
         return videoId;
     }
 
+    private void setMuzimaTimout() {
+        MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
+        muzimaTimeout = new TimeoutPreferenceService(muzimaApplication).getTimeout();
+    }
+
     //WebView
     private void startVideoWebViewActivity() {
         Intent videoIntent = new Intent(this, VideoWebViewActivity.class);
         videoIntent.putExtra(VideoWebViewActivity.VIDEO_PATH, getIntent().getStringExtra(VIDEO_PATH));
         videoIntent.putExtra(VideoWebViewActivity.VIDEO_TITLE, getIntent().getStringExtra(VIDEO_TITLE));
         startActivity(videoIntent);
+    }
+
+    private final class MyPlayerStateChangeListener implements YouTubePlayer.PlayerStateChangeListener {
+
+        @Override
+        public void onLoaded(String s) {
+        }
+
+        @Override
+        public void onVideoEnded() {
+            //set sessiontimeout back
+            onBackPressed();
+        }
+
+        @Override
+        public void onVideoStarted() {
+            if (!isUserLoggedOut()) {
+                setTimer();
+            }
+        }
+
+        @Override
+        public void onLoading() {
+        }
+
+        @Override
+        public void onAdStarted() {
+        }
+
+        @Override
+        public void onError(YouTubePlayer.ErrorReason errorReason) {
+        }
+
+        private void setTimer() {
+            //set sessiontimeout according to the duration of the video
+            int duration = youTubePalyer.getDurationMillis();
+            int timeout = muzimaTimeout * 60 * 1000;
+            if (timeout < duration) {
+                //add 2 at the end to be sure that the timeout is longer than the duration in minutes
+                int new_timeout = duration / 60 / 1000 + 2;
+                ((MuzimaApplication) getApplication()).resetTimer(new_timeout);
+            }
+        }
     }
 }
