@@ -91,7 +91,7 @@
         <TextView
                 android:id="@+id/helpText"
                 android:text="@string/help_center"
-                style="@style/ClickableText"/>
+                style="@style/ClickableText"
+                android:paddingTop="16dp"/>
     </LinearLayout>
-
 </ScrollView>
