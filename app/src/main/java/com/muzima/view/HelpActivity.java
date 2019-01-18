@@ -28,6 +28,9 @@ import android.widget.ExpandableListView.OnGroupExpandListener;
 
 public class HelpActivity extends BaseHelpActivity {
 
+    public static final int YOUTUBE_API_RESULT = 1;
+    public static final String VIDEO_PATH = "VIDEO_PATH";
+    public static final String VIDEO_TITLE = "VIDEO_TITLE";
     public static final String HELP_TYPE = "HELP_TYPE";
     public static final int COHORT_WIZARD_HELP = 1;
     public static final int COHORT_PREFIX_HELP = 2;
@@ -162,12 +165,23 @@ public class HelpActivity extends BaseHelpActivity {
         Intent intent = new Intent(this, YouTubeVideoViewActivity.class);
         intent.putExtra(YouTubeVideoViewActivity.VIDEO_PATH, filePath);
         intent.putExtra(YouTubeVideoViewActivity.VIDEO_TITLE, title);
-        startActivity(intent);
+        startActivityForResult(intent, YOUTUBE_API_RESULT);
     }
 
-    private void viewVideo(String videoUrl) {
-        Intent playVideoIntent = new Intent(Intent.ACTION_VIEW);
-        playVideoIntent.setData(Uri.parse(videoUrl));
-        startActivity(playVideoIntent);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //if youtube doen't work, try webView
+        if (requestCode == YOUTUBE_API_RESULT) {
+            if (resultCode == RESULT_CANCELED) {
+                startVideoWebViewActivity(data.getStringExtra(VIDEO_PATH), data.getStringExtra(VIDEO_TITLE));
+            }
+        }
+    }
+
+    private void startVideoWebViewActivity(String filePath, String title) {
+        Intent intent = new Intent(this, VideoWebViewActivity.class);
+        intent.putExtra(VideoWebViewActivity.VIDEO_PATH, filePath);
+        intent.putExtra(VideoWebViewActivity.VIDEO_TITLE, title);
+        startActivity(intent);
     }
 }
