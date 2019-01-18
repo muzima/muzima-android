@@ -10,6 +10,7 @@
 
 package com.muzima.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -65,7 +66,11 @@ public class YouTubeVideoViewActivity extends BaseHelpActivity implements YouTub
 
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult errorReason) {
-        startVideoWebViewActivity();
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra(HelpActivity.VIDEO_PATH, getIntent().getStringExtra(VIDEO_PATH));
+        resultIntent.putExtra(HelpActivity.VIDEO_TITLE, getIntent().getStringExtra(VIDEO_TITLE));
+        setResult(Activity.RESULT_CANCELED, resultIntent);
+        finish();
     }
 
     @Override
@@ -89,14 +94,6 @@ public class YouTubeVideoViewActivity extends BaseHelpActivity implements YouTub
     private void setMuzimaTimout() {
         MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
         muzimaTimeout = new TimeoutPreferenceService(muzimaApplication).getTimeout();
-    }
-
-    //WebView
-    private void startVideoWebViewActivity() {
-        Intent videoIntent = new Intent(this, VideoWebViewActivity.class);
-        videoIntent.putExtra(VideoWebViewActivity.VIDEO_PATH, getIntent().getStringExtra(VIDEO_PATH));
-        videoIntent.putExtra(VideoWebViewActivity.VIDEO_TITLE, getIntent().getStringExtra(VIDEO_TITLE));
-        startActivity(videoIntent);
     }
 
     private final class MyPlayerStateChangeListener implements YouTubePlayer.PlayerStateChangeListener {
@@ -131,11 +128,10 @@ public class YouTubeVideoViewActivity extends BaseHelpActivity implements YouTub
         }
 
         private void setTimer() {
-            //set sessiontimeout according to the duration of the video
             int duration = youTubePalyer.getDurationMillis();
             int timeout = muzimaTimeout * 60 * 1000;
             if (timeout < duration) {
-                //add 2 at the end to be sure that the timeout is longer than the duration in minutes
+                //set the timeout 2 minutes longet than the video duration
                 int new_timeout = duration / 60 / 1000 + 2;
                 ((MuzimaApplication) getApplication()).resetTimer(new_timeout);
             }
