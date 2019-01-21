@@ -356,6 +356,7 @@ class HTMLFormDataStore {
         return arr.toString();
     }
 
+    @JavascriptInterface
     public boolean isMedicalRecordNumberRequired() {
         return settingController.isMedicalRecordNumberRequiredDuringRegistration();
     }
