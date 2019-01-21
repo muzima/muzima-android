@@ -67,6 +67,7 @@ public class YouTubeVideoViewActivity extends BaseHelpActivity implements YouTub
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult errorReason) {
         Intent resultIntent = new Intent();
+        resultIntent.putExtra(HelpActivity.YOUTUBE_API_CANCEL_CASE, HelpActivity.YOUTUBE_INITIALIZATION_FAILURE);
         resultIntent.putExtra(HelpActivity.VIDEO_PATH, getIntent().getStringExtra(VIDEO_PATH));
         resultIntent.putExtra(HelpActivity.VIDEO_TITLE, getIntent().getStringExtra(VIDEO_TITLE));
         setResult(Activity.RESULT_CANCELED, resultIntent);

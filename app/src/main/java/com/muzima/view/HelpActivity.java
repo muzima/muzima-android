@@ -28,7 +28,9 @@ import android.widget.ExpandableListView.OnGroupExpandListener;
 
 public class HelpActivity extends BaseHelpActivity {
 
-    public static final int YOUTUBE_API_RESULT = 1;
+    public static final int YOUTUBE_API_RESULT = 100;
+    public static final String YOUTUBE_API_CANCEL_CASE = "YOUTUBE_API_CANCEL_CASE";
+    public static final String YOUTUBE_INITIALIZATION_FAILURE= "INITIALIZATION_FAILURE";
     public static final String VIDEO_PATH = "VIDEO_PATH";
     public static final String VIDEO_TITLE = "VIDEO_TITLE";
     public static final String HELP_TYPE = "HELP_TYPE";
@@ -173,7 +175,12 @@ public class HelpActivity extends BaseHelpActivity {
         //if youtube doen't work, try webView
         if (requestCode == YOUTUBE_API_RESULT) {
             if (resultCode == RESULT_CANCELED) {
-                startVideoWebViewActivity(data.getStringExtra(VIDEO_PATH), data.getStringExtra(VIDEO_TITLE));
+                if (data == null) {
+                    return;
+                }
+                if (data.hasExtra(YOUTUBE_API_CANCEL_CASE) && data.getStringExtra(YOUTUBE_API_CANCEL_CASE).equals(YOUTUBE_INITIALIZATION_FAILURE)) {
+                    startVideoWebViewActivity(data.getStringExtra(VIDEO_PATH), data.getStringExtra(VIDEO_TITLE));
+                }
             }
         }
     }
