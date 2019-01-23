@@ -78,9 +78,7 @@ public class FormControllerTest {
         sntpService = mock(SntpService.class);
         ObservationService observationService = mock(ObservationService.class);
         EncounterService encounterService = mock(EncounterService.class);
-        PatientController patientController = mock(PatientController.class);
-        MuzimaSettingController muzimaSettingsController = mock(MuzimaSettingController.class);
-        formController = new FormController(formService, patientService, lastSyncTimeService, sntpService, observationService, encounterService, patientController, muzimaSettingsController);
+        formController = new FormController(formService, patientService, lastSyncTimeService, sntpService, observationService, encounterService);
         LastSyncTime lastSyncTime = mock(LastSyncTime.class);
         mockDate = mock(Date.class);
     }
