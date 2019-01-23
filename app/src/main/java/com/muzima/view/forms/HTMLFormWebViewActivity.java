@@ -53,16 +53,11 @@ import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.User;
-import com.muzima.controller.ConceptController;
-import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
-import com.muzima.controller.LocationController;
 import com.muzima.controller.ObservationController;
-import com.muzima.controller.ProviderController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
 import com.muzima.service.GPSFeaturePreferenceService;
-import com.muzima.service.MuzimaLocationService;
 import com.muzima.utils.audio.AudioResult;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
@@ -73,19 +68,16 @@ import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 
 import org.apache.commons.lang.time.DateUtils;
-import org.apache.lucene.queryParser.ParseException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
 import static com.muzima.controller.FormController.FormFetchException;
-import static com.muzima.utils.Constants.MuzimaGPSLocationConstants.LOCATION_SERVICES_SWITCH_REQUEST_CODE;
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 import static java.text.MessageFormat.format;
@@ -135,11 +127,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         super.onCreate(savedInstanceState);
 
         formController = ((MuzimaApplication) this.getApplicationContext()).getFormController();
-        LocationController locationController = ((MuzimaApplication) this.getApplicationContext()).getLocationController();
-        ConceptController conceptController = ((MuzimaApplication) this.getApplicationContext()).getConceptController();
-        ProviderController providerController = ((MuzimaApplication) this.getApplicationContext()).getProviderController();
-        EncounterController encounterController = ((MuzimaApplication) this.getApplicationContext()).getEncounterController();
-        ObservationController observationController = ((MuzimaApplication) this.getApplicationContext()).getObservationController();
+       ObservationController observationController = ((MuzimaApplication) this.getApplicationContext()).getObservationController();
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
@@ -156,7 +144,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
         autoSaveIntervalPreference = preferences.getString("autoSaveIntervalPreference", DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS);
         encounterProviderPreference = preferences.getBoolean("encounterProviderPreference", IS_LOGGED_IN_USER_DEFAULT_PROVIDER);
-        boolean duplicateFormDataPreference = preferences.getBoolean("duplicateFormDataPreference", IS_ALLOWED_FORM_DATA_DUPLICATION);
 
         showProgressBar(getString(R.string.hint_loading_progress));
         try {
@@ -176,54 +163,38 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     protected void onStart() {
         super.onStart();
         LocationManager locationManager = (LocationManager)getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-        boolean gps_enabled = false;
         GPSFeaturePreferenceService gpsFeaturePreferenceService = new GPSFeaturePreferenceService((MuzimaApplication) getApplication());
         if(gpsFeaturePreferenceService.isGPSDataCollectionSettingEnabled()) {
-            if (!(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))) {
-//                android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(HTMLFormWebViewActivity.this);
-//                alertDialog.setTitle(getResources().getString(R.string.title_gps_location));
-//                alertDialog.setMessage(getResources().getString(R.string.hint_gps_location_off));
-//                alertDialog.setPositiveButton(getResources().getString(R.string.general_location_setting), new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-//                        startActivityForResult(intent, LOCATION_SERVICES_SWITCH_REQUEST_CODE);
-//                    }
-//                });
-//
-//                alertDialog.setNegativeButton(getResources().getString(R.string.general_cancel), new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {}
-//                });
-//                android.support.v7.app.AlertDialog alert = alertDialog.create();
-//                alert.show();
+            if (!(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                    || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))) {
                 enableLocation();
             }
         }
-
     }
 
     private void enableLocation() {
 
         if (googleApiClient == null) {
             googleApiClient = new GoogleApiClient.Builder(this)
-                    .addApi(LocationServices.API)
-                    .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                        @Override
-                        public void onConnected(Bundle bundle) {
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(Bundle bundle) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onConnectionSuspended(int i) {
-                            googleApiClient.connect();
-                        }
-                    })
-                    .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
-                        @Override
-                        public void onConnectionFailed(ConnectionResult connectionResult) {
+                    @Override
+                    public void onConnectionSuspended(int i) {
+                        googleApiClient.connect();
+                    }
+                })
+                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(ConnectionResult connectionResult) {
 
-                            Log.d("Location error","Location error " + connectionResult.getErrorCode());
-                        }
-                    }).build();
+                        Log.d(getClass().getSimpleName(),"Location error " + connectionResult.getErrorCode());
+                    }
+                }).build();
             googleApiClient.connect();
 
             LocationRequest locationRequest = LocationRequest.create();
@@ -244,12 +215,9 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                     switch (status.getStatusCode()) {
                         case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                             try {
-                                // Show the dialog by calling startResolutionForResult(),
-                                // and check the result in onActivityResult().
                                 status.startResolutionForResult(HTMLFormWebViewActivity.this, REQUEST_LOCATION);
-                                //finish();
                             } catch (IntentSender.SendIntentException e) {
-                                // Ignore the error.
+                                Log.e(getClass().getSimpleName(),"Cannot load activity",e);
                             }
                             break;
                     }
