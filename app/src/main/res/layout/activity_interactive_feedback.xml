@@ -16,7 +16,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp">
             <TextView
-                    android:text="@string/feedback_rating_question1"
+                    android:text="@string/feedback_rating_question"
                     android:id="@+id/question"
                     style="@style/MessageActivityText"/>
             <RatingBar
