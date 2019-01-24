@@ -12,6 +12,7 @@ package com.muzima.view;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -179,7 +180,11 @@ public class HelpActivity extends BaseHelpActivity {
                     return;
                 }
                 if (data.hasExtra(YOUTUBE_API_CANCEL_CASE) && data.getStringExtra(YOUTUBE_API_CANCEL_CASE).equals(YOUTUBE_INITIALIZATION_FAILURE)) {
-                    startVideoWebViewActivity(data.getStringExtra(VIDEO_PATH), data.getStringExtra(VIDEO_TITLE));
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+                        startVideoWebViewActivity(data.getStringExtra(VIDEO_PATH), data.getStringExtra(VIDEO_TITLE));
+                    } else {
+                        viewVideo(data.getStringExtra(VIDEO_PATH));
+                    }
                 }
             }
         }
@@ -190,5 +195,11 @@ public class HelpActivity extends BaseHelpActivity {
         intent.putExtra(VideoWebViewActivity.VIDEO_PATH, filePath);
         intent.putExtra(VideoWebViewActivity.VIDEO_TITLE, title);
         startActivity(intent);
+    }
+
+    private void viewVideo(String videoUrl) {
+        Intent playVideoIntent = new Intent(Intent.ACTION_VIEW);
+        playVideoIntent.setData(Uri.parse(videoUrl));
+        startActivity(playVideoIntent);
     }
 }
