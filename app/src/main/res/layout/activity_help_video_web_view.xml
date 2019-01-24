@@ -8,15 +8,16 @@
   ~ If the user is an entity intending to commercialize any application that uses
   ~  this code in a for-profit venture,please contact the copyright holder.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:id="@+id/rll"
-              android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:id="@+id/rll"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical">
 
-    <WebView
-            android:id="@+id/videoWebView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+    <WebView xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/videoWebView"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"/>
 
-</LinearLayout>
+</FrameLayout>

@@ -391,7 +391,8 @@
                 android:name=".view.VideoWebViewActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/general_help"
-                android:parentActivityName=".view.HelpActivity">
+                android:parentActivityName=".view.HelpActivity"
+                android:hardwareAccelerated="true">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.HelpActivity"/>
