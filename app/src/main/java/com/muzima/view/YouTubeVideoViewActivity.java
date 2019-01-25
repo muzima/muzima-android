@@ -13,13 +13,12 @@ package com.muzima.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
-import com.google.android.youtube.player.*;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.service.TimeoutPreferenceService;
-
-import java.util.concurrent.TimeUnit;
 
 public class YouTubeVideoViewActivity extends BaseHelpActivity implements YouTubePlayer.OnInitializedListener {
 
@@ -28,7 +27,7 @@ public class YouTubeVideoViewActivity extends BaseHelpActivity implements YouTub
     public static final String VIDEO_PATH = "VIDEO_PATH";
     public static final String VIDEO_TITLE = "VIDEO_TITLE";
     private String videoId;
-    private YouTubePlayer youTubePalyer;
+    private YouTubePlayer youTubePlayer;
     private int muzimaTimeout;
 
     @Override
@@ -58,8 +57,8 @@ public class YouTubeVideoViewActivity extends BaseHelpActivity implements YouTub
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
         if (!wasRestored) {
-            youTubePalyer = player;
-            youTubePalyer.setPlayerStateChangeListener(new MyPlayerStateChangeListener());
+            youTubePlayer = player;
+            youTubePlayer.setPlayerStateChangeListener(new MyPlayerStateChangeListener());
             player.loadVideo(videoId);
         }
     }
@@ -129,7 +128,7 @@ public class YouTubeVideoViewActivity extends BaseHelpActivity implements YouTub
         }
 
         private void setTimer() {
-            int duration = youTubePalyer.getDurationMillis();
+            int duration = youTubePlayer.getDurationMillis();
             int timeout = muzimaTimeout * 60 * 1000;
             if (timeout < duration) {
                 //set the timeout 2 minutes longet than the video duration

@@ -12,7 +12,9 @@ package com.muzima.view;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.webkit.*;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.service.TimeoutPreferenceService;
