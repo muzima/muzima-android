@@ -130,6 +130,15 @@
                     android:value="com.muzima.view.MainActivity"/>
         </activity>
         <activity
+                android:name=".view.FeedbackActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/general_feedback"
+                android:parentActivityName=".view.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.MainActivity"/>
+        </activity>
+        <activity
                 android:name=".view.WebViewActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/general_help"
