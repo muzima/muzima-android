@@ -584,6 +584,7 @@
     <string name="feedback_rating_question">Ni rahisi kutumia mUzima App?</string>
     <string name="feedback_hint">Ni nini katika akili yako?</string>
     <string name="general_feedback">Maoni</string>
+    <string name="send_feedback">Tuma maoni</string>
     <string name="hint_feedback_prompt">Tafadhali ingiza ujumbe wako</string>
     <string name="message_feedback_sent">Asante kwa ujumbe wako. \n Maoni yako ni muhimu kwetu.</string>
     <string name="message_feedback_halt">Ujumbe wako haututumwa.</string>

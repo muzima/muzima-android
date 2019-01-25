@@ -38,6 +38,12 @@
             android:title="@string/ask_help">
     </item>
     <item
+            android:id="@+id/action_feedback"
+            android:orderInCategory="2"
+            custom:showAsAction="never"
+            android:title="@string/send_feedback">
+    </item>
+    <item
         android:id="@+id/action_logout"
         android:orderInCategory="3"
         custom:showAsAction="never"

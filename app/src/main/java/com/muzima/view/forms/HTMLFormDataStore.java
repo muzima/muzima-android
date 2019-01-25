@@ -356,6 +356,7 @@ class HTMLFormDataStore {
         return arr.toString();
     }
 
+    @JavascriptInterface
     public boolean isMedicalRecordNumberRequired() {
         return settingController.isMedicalRecordNumberRequiredDuringRegistration();
     }
@@ -513,7 +514,6 @@ class HTMLFormDataStore {
                         return gps_location_string;
                     }
                 }else {
-                    showLocationDisabledDialog();
                     return "Location service disabled by user";
                 }
 
@@ -571,9 +571,9 @@ class HTMLFormDataStore {
         try {
             JSONObject jsonObject = new JSONObject(jsonPayload);
             JSONObject jsonObjectInner = jsonObject.getJSONObject("encounter");
-            if (!(jsonObjectInner.has("encounter.default_time_zone"))) {
-                String default_time_zone = TimeZone.getDefault().getID();
-                jsonObjectInner.put("encounter.default_time_zone", default_time_zone);
+            if (!(jsonObjectInner.has("encounter.device_time_zone"))) {
+                String device_time_zone = TimeZone.getDefault().getID();
+                jsonObjectInner.put("encounter.device_time_zone", device_time_zone);
                 jsonObject.put("encounter", jsonObjectInner);
                 jsonPayload = jsonObject.toString();
             }
