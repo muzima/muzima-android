@@ -641,7 +641,7 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="write_SHR_to_card_text">Ecrire SHR à la carte</string>
     <string name="write_shr_to_card_general">Ecrire des dossiers de santé partagés à la carte</string>
     <string name="feedback_header">S\'il vous plaît envoyez-nous vos commentaires et réactions</string>
-    <string name="feedback_rating_question1">Comment facile à utiliser mUzima App?</string>
+    <string name="feedback_rating_question">Comment facile à utiliser mUzima App?</string>
     <string name="feedback_hint">Qu\'est-ce que tu as en tête?</string>
     <string name="general_feedback">Retour d\'information</string>
     <string name="hint_feedback_prompt">S\'il vous plaît entrer votre message</string>
