@@ -62,6 +62,10 @@ public class DefaultMenuDropDownHelper {
                 intent = new Intent(activity, InteractiveHelpActivity.class);
                 activity.startActivity(intent);
                 return true;
+            case R.id.action_feedback:
+                intent = new Intent(activity, FeedbackActivity.class);
+                activity.startActivity(intent);
+                return true;
             case R.id.action_logout:
                 SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
                 String passwordKey = activity.getResources().getString(R.string.preference_password);

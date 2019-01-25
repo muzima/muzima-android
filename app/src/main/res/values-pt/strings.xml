@@ -287,7 +287,7 @@
     </string>
     <string name="hint_form_validation_failure">Existe uma ou mais falhas de validação neste formulário. Por favor revise e reenvie o formulário</string>
     <string name="hint_future_date_validation_failure">Por favor introduza uma data futura</string>
-    <string name="hint_gps_location_off">Localização está desligado! Por favor, ligue a localização nas configurações.</string>
+    <string name="hint_gps_location_off">Localização está desligado! Por favor, ative a localização nas configurações.</string>
     <string name="hint_guided_setup">Seleccione a presente configuração e permita mUzima fazer o resto</string>
     <string name="hint_image_caption_prompt">Por favor introduza uma legenda para a imagem</string>
     <string name="hint_incomplete_form_unavailable">Formulários incompletos estão disponíveis somente se tiver guardado
@@ -339,7 +339,7 @@
     <string name="hint_set_default_encounter_location_for_SHR">Por favor, defina localização encontro padrão, de modo a permitir a escrita de novo cartão
     </string>
     <string name="hint_setting_refresh">Deseja voltar a baixar essa configuração do servidor?</string>
-    <string name="hint_switch_location_on">Por favor, ligue a localização nas configurações.</string>
+    <string name="hint_switch_location_on">Por favor, ative a localização nas configurações.</string>
     <string name="hint_username_prompt">Por favor introduza o nome do utilizador</string>
     <string name="hint_video_caption_prompt">Por favor introduza uma legenda para o vídeo</string>
     <string name="hint_video_record">Gravar ou escolher vídeo</string>
@@ -622,7 +622,7 @@
     <string name="title_disclaimer">Licença, Aviso Legal de Garantia e Limitação de Responsabilidade</string>
     <string name="title_duplicate_form_data_warning">Aviso de dados duplicados</string>
     <string name="title_enable_gps">Ativar GPS</string>
-    <string name="title_enable_gps_location">Ativar conectividade de local e Internet.</string>
+    <string name="title_enable_gps_location">Ativar localização e conectividade de Internet.</string>
     <string name="title_enable_shr">Ativar SHR</string>
     <string name="title_fill_patient_forms_help">Preencher formulários para um cliente</string>
     <string name="title_font_size">Tamanho da fonte</string>
@@ -634,7 +634,7 @@
     <string name="title_form_template_all">Todos Modelos do Formulário</string>
     <string name="title_form_template_downloaded">Baixou os Modelos do Formlário</string>
     <string name="title_general_notifications">Notificações Gerais</string>
-    <string name="title_gps_location">GPS Localização</string>
+    <string name="title_gps_location">Localização GPS</string>
     <string name="title_guided_setup">Guia de instalação (Recomendado)</string>
     <string name="title_guided_setup_help_video">Configuração inicial guiada</string>
     <string name="title_guided_setup_progress">Progresso da Instalação</string>
@@ -708,6 +708,7 @@
     <string name="feedback_rating_question">Como é fácil usar o aplicativo mUzima?</string>
     <string name="feedback_hint">O que você está pensando?</string>
     <string name="general_feedback">Comentários</string>
+    <string name="send_feedback">Enviar comentários</string>
     <string name="hint_feedback_prompt">Por favor insira a sua mensagem</string>
     <string name="message_feedback_sent">Obrigado pela sua mensagem. \n Seu feedback é importante para nós.</string>
     <string name="message_feedback_halt">Sua mensagem não será enviada.</string>
