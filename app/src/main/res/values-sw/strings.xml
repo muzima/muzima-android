@@ -581,7 +581,7 @@
     <string name="write_SHR_to_card_text">Andika SHR kwa Kadi</string>
     <string name="write_shr_to_card_general">Andika kumbukumbu za afya za pamoja kwenye kadi</string>
     <string name="feedback_header">Tafadhali tutumie maoni yako na maoni yako</string>
-    <string name="feedback_rating_question1">Ni rahisi kutumia mUzima App?</string>
+    <string name="feedback_rating_question">Ni rahisi kutumia mUzima App?</string>
     <string name="feedback_hint">Ni nini katika akili yako?</string>
     <string name="general_feedback">Maoni</string>
     <string name="hint_feedback_prompt">Tafadhali ingiza ujumbe wako</string>
