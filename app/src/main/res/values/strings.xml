@@ -711,4 +711,13 @@
     <string name="message_feedback_halt">Your message will not be sent.</string>
     <string name="no_email_client">No email client installed on this device. \n
         Please install one and then leave your feedback.</string>
+    <string name="interactive_help_header">Please tell us how we can help you</string>
+    <string name="interactive_help_choose">Choose an Option:</string>
+    <string name="interactive_help_hint">Type your message</string>
+    <string name="message_help_sent">Thanks for reaching out. \n
+        Our support team will investigate your request. \n
+        We will back to you as soon as possible.</string>
+    <string name="hint_help_prompt">Please enter your message</string>
+    <string name="message_help_halt">Maybe next time.</string>
+    <string name="ask_help">Asking help</string>
 </resources>
