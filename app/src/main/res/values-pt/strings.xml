@@ -704,6 +704,8 @@
     </string>
     <string name="write_SHR_to_card_text">Escrever SHR para cartão</string>
     <string name="write_shr_to_card_general">Gravar registros de saúde compartilhados no cartão</string>
+    <string name="youTube_player_error">Ocorreu um erro ao carregar o vídeo do YouTube</string>
+    <string name="help_center">Centro de Ajuda</string>
     <string name="feedback_header">Por favor envie-nos seus comentários e feedback</string>
     <string name="feedback_rating_question">Como é fácil usar o aplicativo mUzima?</string>
     <string name="feedback_hint">O que você está pensando?</string>
