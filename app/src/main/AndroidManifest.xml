@@ -130,6 +130,15 @@
                     android:value="com.muzima.view.MainActivity"/>
         </activity>
         <activity
+                android:name=".view.InteractiveHelpActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/ask_help"
+                android:parentActivityName=".view.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.MainActivity"/>
+        </activity>
+        <activity
                 android:name=".view.FeedbackActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/general_feedback"
@@ -384,8 +393,28 @@
             android:permission="android.permission.BIND_JOB_SERVICE"/>
 
         <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="70e802951d17c2d41d3591d642d1621cd703d32a" />
+                android:name="io.fabric.ApiKey"
+                android:value="70e802951d17c2d41d3591d642d1621cd703d32a"/>
+
+        <activity
+                android:name=".view.YouTubeVideoViewActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/general_help"
+                android:parentActivityName=".view.HelpActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.HelpActivity"/>
+        </activity>
+        <activity
+                android:name=".view.VideoWebViewActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/general_help"
+                android:parentActivityName=".view.HelpActivity"
+                android:hardwareAccelerated="true">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.HelpActivity"/>
+        </activity>
     </application>
 
 </manifest>

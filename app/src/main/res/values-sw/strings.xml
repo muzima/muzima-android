@@ -580,6 +580,8 @@
     <string name="warning_switch_server">Ubadilishaji wa seva: Kitendo hiki kitafuta data zote za mUzima katika kifaa chako, ikiwa ni pamoja na fomu zozote ambazo hazijakamilika bado. Una hakika unataka kubadili mpangilio huu?</string>
     <string name="write_SHR_to_card_text">Andika SHR kwa Kadi</string>
     <string name="write_shr_to_card_general">Andika kumbukumbu za afya za pamoja kwenye kadi</string>
+    <string name="youTube_player_error">Hitilafu ilitokea wakati wa kupakia video ya YouTube</string>
+    <string name="help_center">Kituo cha Msaada</string>
     <string name="feedback_header">Tafadhali tutumie maoni yako na maoni yako</string>
     <string name="feedback_rating_question">Ni rahisi kutumia mUzima App?</string>
     <string name="feedback_hint">Ni nini katika akili yako?</string>
@@ -590,4 +592,13 @@
     <string name="message_feedback_halt">Ujumbe wako haututumwa.</string>
     <string name="no_email_client">Hakuna mteja wa barua pepe aliyewekwa kwenye kifaa hiki. \n
         Tafadhali weka moja na kisha uacha maoni yako.</string>
+    <string name="interactive_help_header">Tafadhali tueleze jinsi tunavyoweza kukusaidia</string>
+    <string name="interactive_help_choose">Chagua Chaguo:</string>
+    <string name="interactive_help_hint">Andika ujumbe wako</string>
+    <string name="message_help_sent">Shukrani kwa kufikia nje. \n
+        Timu yetu ya usaidizi itachunguza ombi lako. \n
+        Tutakuja nyuma kwako haraka iwezekanavyo.</string>
+    <string name="hint_help_prompt">Tafadhali ingiza ujumbe wako</string>
+    <string name="message_help_halt">Ujumbe wako haututumwa.</string>
+    <string name="ask_help">Kuomba msaada</string>
 </resources>
