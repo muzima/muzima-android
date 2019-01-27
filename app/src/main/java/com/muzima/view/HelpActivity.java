@@ -12,9 +12,8 @@ package com.muzima.view;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -28,8 +27,13 @@ import java.util.List;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 
-public class HelpActivity extends BaseActivity {
+public class HelpActivity extends BaseHelpActivity {
 
+    public static final int YOUTUBE_API_RESULT = 100;
+    public static final String YOUTUBE_API_CANCEL_CASE = "YOUTUBE_API_CANCEL_CASE";
+    public static final String YOUTUBE_INITIALIZATION_FAILURE= "INITIALIZATION_FAILURE";
+    public static final String VIDEO_PATH = "VIDEO_PATH";
+    public static final String VIDEO_TITLE = "VIDEO_TITLE";
     public static final String HELP_TYPE = "HELP_TYPE";
     public static final int COHORT_WIZARD_HELP = 1;
     public static final int COHORT_PREFIX_HELP = 2;
@@ -55,7 +59,6 @@ public class HelpActivity extends BaseActivity {
     private ExpandableListView expListView;
     private List<String> listDataHeader;
     private HashMap<String, List<String>> listDataChild;
-    //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,47 +90,35 @@ public class HelpActivity extends BaseActivity {
         expListView.expandGroup(0);
 
         // Listview on child click listener
-        expListView.setOnChildClickListener(new OnChildClickListener()
-        {
+        expListView.setOnChildClickListener(new OnChildClickListener() {
             @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int group_position, int child_position, long id)
-            {
-                if(group_position==0 && child_position==0){
-                    startHelpContentDisplayActivity(MUZIMA_INITAL_SETUP_GUIDE,(String)listAdapter.getChild(group_position, child_position));
-                }
-                else if(group_position==0 && child_position==1){
-                    startHelpContentDisplayActivity(ABOUT_DASHBOARD_FORM,(String)listAdapter.getChild(group_position, child_position));
-                }
-                else if(group_position==0 && child_position==2){
-                    startHelpContentDisplayActivity(MUZIMA_SETTINGS,(String)listAdapter.getChild(group_position, child_position));
-                }
-                else if(group_position==0 && child_position==3){
-                    startHelpContentDisplayActivity(FILL_PATIENT_FORMS,(String)listAdapter.getChild(group_position, child_position));
+            public boolean onChildClick(ExpandableListView parent, View v, int group_position, int child_position, long id) {
+                if (group_position == 0 && child_position == 0) {
+                    startHelpContentDisplayActivity(MUZIMA_INITAL_SETUP_GUIDE, (String) listAdapter.getChild(group_position, child_position));
+                } else if (group_position == 0 && child_position == 1) {
+                    startHelpContentDisplayActivity(ABOUT_DASHBOARD_FORM, (String) listAdapter.getChild(group_position, child_position));
+                } else if (group_position == 0 && child_position == 2) {
+                    startHelpContentDisplayActivity(MUZIMA_SETTINGS, (String) listAdapter.getChild(group_position, child_position));
+                } else if (group_position == 0 && child_position == 3) {
+                    startHelpContentDisplayActivity(FILL_PATIENT_FORMS, (String) listAdapter.getChild(group_position, child_position));
                 }
                 //video links
-                else if(group_position==1 && child_position==0){
-                    viewVideo(GUIDED_SETUP);
-                }
-                else if(group_position==1 && child_position==1){
-                    viewVideo(ADVANCED_SETUP);
-                }
-                else if(group_position==1 && child_position==2){
-                    viewVideo(COHORTS_DOWNLOAD_ON_DEMAND);
-                }
-                else if(group_position==1 && child_position==3){
-                    viewVideo(CONCEPTS_DOWNLOAD_ON_DEMAND);
-                }
-                else if(group_position==1 && child_position==4){
-                    viewVideo(FORMS_DOWNLOAD_ON_DEMAND);
-                }
-                else if(group_position==1 && child_position==5){
-                    viewVideo(CLIENT_REGISTRATION);
-                }
-                else if(group_position==1 && child_position==6){
-                    viewVideo(LOCAL_CLIENT_SEARCH);
-                }
-                else if(group_position==1 && child_position==7){
-                    viewVideo(SERVER_CLIENT_SEARCH);
+                else if (group_position == 1 && child_position == 0) {
+                    startVideoContentDisplayActivity(GUIDED_SETUP, (String) listAdapter.getChild(group_position, child_position));
+                } else if (group_position == 1 && child_position == 1) {
+                    startVideoContentDisplayActivity(ADVANCED_SETUP, (String) listAdapter.getChild(group_position, child_position));
+                } else if (group_position == 1 && child_position == 2) {
+                    startVideoContentDisplayActivity(COHORTS_DOWNLOAD_ON_DEMAND, (String) listAdapter.getChild(group_position, child_position));
+                } else if (group_position == 1 && child_position == 3) {
+                    startVideoContentDisplayActivity(CONCEPTS_DOWNLOAD_ON_DEMAND, (String) listAdapter.getChild(group_position, child_position));
+                } else if (group_position == 1 && child_position == 4) {
+                    startVideoContentDisplayActivity(FORMS_DOWNLOAD_ON_DEMAND, (String) listAdapter.getChild(group_position, child_position));
+                } else if (group_position == 1 && child_position == 5) {
+                    startVideoContentDisplayActivity(CLIENT_REGISTRATION, (String) listAdapter.getChild(group_position, child_position));
+                } else if (group_position == 1 && child_position == 6) {
+                    startVideoContentDisplayActivity(LOCAL_CLIENT_SEARCH, (String) listAdapter.getChild(group_position, child_position));
+                } else if (group_position == 1 && child_position == 7) {
+                    startVideoContentDisplayActivity(SERVER_CLIENT_SEARCH, (String) listAdapter.getChild(group_position, child_position));
                 }
                 return false;
             }
@@ -169,25 +160,46 @@ public class HelpActivity extends BaseActivity {
     private void startHelpContentDisplayActivity(String filePath, String title) {
         Intent intent = new Intent(this, WebViewActivity.class);
         intent.putExtra(WebViewActivity.HELP_FILE_PATH_PARAM, filePath);
-        intent.putExtra(WebViewActivity.HELP_TITLE,title);
+        intent.putExtra(WebViewActivity.HELP_TITLE, title);
         startActivity(intent);
     }
 
-    private void viewVideo(String videoUrl){
-        Intent playVideoIntent = new Intent(Intent.ACTION_VIEW);
-        playVideoIntent.setData(Uri.parse(videoUrl));
-        startActivity(playVideoIntent);
+    private void startVideoContentDisplayActivity(String filePath, String title) {
+        Intent intent = new Intent(this, YouTubeVideoViewActivity.class);
+        intent.putExtra(YouTubeVideoViewActivity.VIDEO_PATH, filePath);
+        intent.putExtra(YouTubeVideoViewActivity.VIDEO_TITLE, title);
+        startActivityForResult(intent, YOUTUBE_API_RESULT);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        boolean returnValue = super.onCreateOptionsMenu(menu);
-        removeHelpMenu(menu);
-        return returnValue;
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //if youtube doen't work, try webView
+        if (requestCode == YOUTUBE_API_RESULT) {
+            if (resultCode == RESULT_CANCELED) {
+                if (data == null) {
+                    return;
+                }
+                if (data.hasExtra(YOUTUBE_API_CANCEL_CASE) && data.getStringExtra(YOUTUBE_API_CANCEL_CASE).equals(YOUTUBE_INITIALIZATION_FAILURE)) {
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+                        startVideoWebViewActivity(data.getStringExtra(VIDEO_PATH), data.getStringExtra(VIDEO_TITLE));
+                    } else {
+                        viewVideo(data.getStringExtra(VIDEO_PATH));
+                    }
+                }
+            }
+        }
     }
 
-    private void removeHelpMenu(Menu menu) {
-        MenuItem menuHelp = menu.findItem(R.id.action_help);
-        if (menuHelp != null) menuHelp.setVisible(false);
+    private void startVideoWebViewActivity(String filePath, String title) {
+        Intent intent = new Intent(this, VideoWebViewActivity.class);
+        intent.putExtra(VideoWebViewActivity.VIDEO_PATH, filePath);
+        intent.putExtra(VideoWebViewActivity.VIDEO_TITLE, title);
+        startActivity(intent);
+    }
+
+    private void viewVideo(String videoUrl) {
+        Intent playVideoIntent = new Intent(Intent.ACTION_VIEW);
+        playVideoIntent.setData(Uri.parse(videoUrl));
+        startActivity(playVideoIntent);
     }
 }

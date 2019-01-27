@@ -124,6 +124,7 @@ dependencies {
         transitive = true;
     }
 
+    compile files('lib/YouTubeAndroidPlayerApi.jar')
 
 
 }

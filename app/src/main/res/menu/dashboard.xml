@@ -32,6 +32,12 @@
         android:title="@string/general_help">
     </item>
     <item
+            android:id="@+id/action_interactive_help"
+            android:orderInCategory="2"
+            custom:showAsAction="never"
+            android:title="@string/ask_help">
+    </item>
+    <item
             android:id="@+id/action_feedback"
             android:orderInCategory="2"
             custom:showAsAction="never"
@@ -43,4 +49,12 @@
         custom:showAsAction="never"
         android:title="@string/general_logout">
     </item>
+    <item
+            android:id="@+id/action_login"
+            android:orderInCategory="4"
+            custom:showAsAction="never"
+            android:title="@string/general_login"
+            android:visible="false">
+    </item>
+
 </menu>
