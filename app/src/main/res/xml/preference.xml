@@ -93,6 +93,12 @@
             android:entryValues="@array/landing_pages">
         </ListPreference>
         <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="@string/preference_light_mode"
+                android:summary="@string/hint_light_mode"
+                android:title="@string/title_light_mode"/>
+
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="@string/preference_enable_shr_key"
             android:summary="@string/hint_enable_shr"

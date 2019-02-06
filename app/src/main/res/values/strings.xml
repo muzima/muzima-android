@@ -722,4 +722,6 @@
     <string name="hint_help_prompt">Please enter your message</string>
     <string name="message_help_halt">Maybe next time.</string>
     <string name="ask_help">Asking help</string>
+    <string name="title_light_mode">Enable Night Mode</string>
+    <string name="hint_light_mode">Enable Light Theme</string>
 </resources>

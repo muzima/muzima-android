@@ -12,7 +12,7 @@
       xmlns:custom="http://schemas.android.com/apk/res-auto">
     <item
             android:id="@+id/menu_download"
-            android:icon="@drawable/ic_download"
+            android:icon="?attr/icDownload"
             android:title="@string/general_download"
             custom:showAsAction="always|withText"/>
 

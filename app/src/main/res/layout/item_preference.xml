@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:clickable="true"
-                android:src="@drawable/ic_action_discard"
+                android:src="?attr/icDiscard"
                 android:contentDescription="@string/general_delete"/>
 
     </LinearLayout>

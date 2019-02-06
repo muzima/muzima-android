@@ -13,7 +13,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              android:background="@color/primary_black">
+              android:background="?attr/primaryBackgroundColor">
 
     <include layout="@layout/layout_list"
             android:layout_width="match_parent"
@@ -26,6 +26,6 @@
             android:layout_height="@dimen/sync_bar_height"
             android:padding="5dp"
             android:gravity="center"
-            android:textColor="@android:color/white"
-            android:background="#222222"/>
+            android:textColor="?attr/primaryTextColor"
+            android:background="?attr/syncTextBackgroundColor"/>
 </com.muzima.view.CheckedLinearLayout>
