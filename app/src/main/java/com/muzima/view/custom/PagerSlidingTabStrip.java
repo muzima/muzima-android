@@ -66,6 +66,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
     private int indicatorColor = 0xFF666666;
     private int underlineColor = 0x1A000000;
     private int dividerColor = 0x1A000000;
+    private int indicatorTextColor = 0xFFFFFF;
 
     private boolean shouldExpand = false;
 
@@ -134,6 +135,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
         a = context.obtainStyledAttributes(attrs, R.styleable.PagerSlidingTabStrip);
 
         indicatorColor = a.getColor(R.styleable.PagerSlidingTabStrip_indicatorColor, indicatorColor);
+        indicatorTextColor = a.getColor(R.styleable.PagerSlidingTabStrip_indicatorTextColor, indicatorTextColor);
         underlineColor = a.getColor(R.styleable.PagerSlidingTabStrip_underlineColor, underlineColor);
         dividerColor = a.getColor(R.styleable.PagerSlidingTabStrip_dividerColor, dividerColor);
         indicatorHeight = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStrip_indicatorHeight, indicatorHeight);
@@ -391,6 +393,15 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
     public int getIndicatorColor() {
         return this.indicatorColor;
+    }
+
+
+    public int getIndicatorTextColor() {
+        return indicatorTextColor;
+    }
+
+    public void setIndicatorTextColor(int indicatorTextColor) {
+        this.indicatorTextColor = indicatorTextColor;
     }
 
     public void setIndicatorHeight(int indicatorLineHeightPx) {

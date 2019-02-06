@@ -53,7 +53,7 @@ public abstract class FormsActivityBase extends BroadcastListenerActivity {
             tabToOpen = 0;
         }
         PagerSlidingTabStrip pagerTabsLayout = findViewById(R.id.pager_indicator);
-        pagerTabsLayout.setTextColor(Color.WHITE);
+        pagerTabsLayout.setTextColor(pagerTabsLayout.getIndicatorTextColor());
         pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));
         pagerTabsLayout.setSelectedTextColor(getResources().getColor(R.color.tab_indicator));
         pagerTabsLayout.setTypeface(Fonts.roboto_medium(this), -1);

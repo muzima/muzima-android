@@ -30,6 +30,7 @@ import com.muzima.controller.NotificationController;
 import com.muzima.controller.ProviderController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.custom.CustomNotificationReplyDialog;
 import com.muzima.view.observations.ObservationsActivity;
@@ -44,9 +45,11 @@ public class NotificationActivity extends BaseActivity {
     private Encounter notificationEncounter;
     private Patient notificationPatient;
     private Provider loggedInProvider;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
 
@@ -75,6 +78,12 @@ public class NotificationActivity extends BaseActivity {
                 new CustomNotificationReplyDialog(NotificationActivity.this,notificationPatient,((MuzimaApplication)getApplicationContext()).getAuthenticatedUser().getPerson(),notification.getSubject(),((MuzimaApplication)getApplicationContext()).getNotificationController()).show();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        themeUtils.onResume(this);
     }
 
     private void displayNotification()  {

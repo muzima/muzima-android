@@ -198,6 +198,10 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         landingPagePreference.setSummary(landingPagePreference.getValue());
         registerListPreferenceChangeHandler(landingPagePreferenceKey, landingPagePreference);
 
+        String lightModePreferenceKey = getResources().getString(R.string.preference_light_mode);
+        final CheckBoxPreference lightModePreference = (CheckBoxPreference) getPreferenceScreen().findPreference(lightModePreferenceKey);
+        lightModePreference.setSummary(lightModePreference.getSummary());
+
         String requireMedicalRecordNumberKey = getResources().getString(R.string.preference_require_medical_record_number);
         requireMedicalRecordNumberPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(requireMedicalRecordNumberKey);
         requireMedicalRecordNumberPreference.setSummary(requireMedicalRecordNumberPreference.getSummary());

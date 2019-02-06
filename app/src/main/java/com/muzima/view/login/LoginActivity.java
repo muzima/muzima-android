@@ -43,6 +43,7 @@ import com.muzima.service.SHRStatusPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.util.MuzimaLogger;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
 
@@ -67,9 +68,11 @@ public class LoginActivity extends Activity {
     private ValueAnimator flipFromLoginToAuthAnimator;
     private ValueAnimator flipFromAuthToLoginAnimator;
     private boolean isUpdatePasswordChecked;
+    private ThemeUtils themeUtils = new ThemeUtils(R.style.LoginTheme_Light, R.style.LoginTheme_Dark);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         ((MuzimaApplication) getApplication()).cancelTimer();
         setContentView(R.layout.activity_login);
@@ -145,6 +148,7 @@ public class LoginActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
+        themeUtils.onResume(this);
         setupStatusView();
     }
 

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="@style/Theme.AppCompat">
+        <item name="colorAccent">@color/primary_blue</item>
+        <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
+        <item name="colorPrimary">@color/primary_black</item>
+        <item name="primaryBackgroundColor">@color/primary_black</item>
+        <item name="dashBoardBaseTextColor">#eeeeee</item>
+        <item name="primaryTextColor">@color/primary_white</item>
+        <item name="secondaryTextColor">#888888</item>
+        <item name="oppositeTextColor">@color/primary_black</item>
+        <item name="tabBackgroundColor">#1a1a1a</item>
+        <item name="drawerBackgroundColor">#232323</item>
+        <item name="syncTextBackgroundColor">#222222</item>
+        <item name="loginDividerBackgroundColor">#0d484e</item>
+        <item name="loginInfoDividerBackgroundColor">#eeeeee</item>
+        <item name="list_multi_selector_blue">@drawable/list_multi_selector_blue</item>
+        <item name="loginLayoutBackground">@drawable/login_layout_background</item>
+        <item name="icLabels">@drawable/ic_labels</item>
+        <item name="icRefresh">@drawable/ic_refresh</item>
+        <item name="icActionUpload">@drawable/ic_action_upload</item>
+        <item name="dataTipColor">#e8e8e8</item>
+        <item name="icDiscard">@drawable/ic_action_discard</item>
+        <item name="icDownload">@drawable/ic_download</item>
+        <item name="icReplyNotification">@drawable/reply_notification_image_icon</item>
+    </style>
+
+
+    <style name="AppBaseTheme.Light" parent="@style/Theme.AppCompat.Light">
+        <item name="colorAccent">@color/primary_black</item>
+        <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
+        <item name="colorPrimary">@color/primary_white</item>
+        <item name="primaryBackgroundColor">@color/primary_white</item>
+        <item name="dashBoardBaseTextColor">#111111</item>
+        <item name="primaryTextColor">@color/primary_black</item>
+        <item name="secondaryTextColor">#777777</item>
+        <item name="oppositeTextColor">@color/primary_white</item>
+        <item name="tabBackgroundColor">#e8e8e8</item>
+        <item name="drawerBackgroundColor">#e5e5e5</item>
+        <item name="list_multi_selector_blue">@drawable/list_multi_selector_blue_light</item>
+        <item name="syncTextBackgroundColor">#dddddd</item>
+        <item name="loginDividerBackgroundColor">#cedadb</item>
+        <item name="loginInfoDividerBackgroundColor">#777777</item>
+        <item name="loginLayoutBackground">@drawable/login_layout_background_light</item>
+        <item name="icLabels">@drawable/ic_labels_light</item>
+        <item name="icRefresh">@drawable/ic_refresh_light</item>
+        <item name="icActionUpload">@drawable/ic_action_upload_light</item>
+        <item name="dataTipColor">@color/primary_black</item>
+        <item name="icDiscard">@drawable/ic_action_discard_light</item>
+        <item name="icDownload">@drawable/ic_download_light</item>
+        <item name="icReplyNotification">@drawable/reply_notification_image_icon_light</item>
+    </style>
+
+
+    <!-- Application theme. -->
+    <style name="AppThemeNoActionBar.Dark" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="colorAccent">@color/primary_blue</item>
+        <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
+        <item name="primaryBackgroundColor">@color/primary_black</item>
+        <item name="dashBoardBaseTextColor">#eeeeee</item>
+        <item name="primaryTextColor">@color/primary_white</item>
+        <item name="secondaryTextColor">#888888</item>
+        <item name="oppositeTextColor">@color/primary_black</item>
+        <item name="tabBackgroundColor">#1a1a1a</item>
+        <item name="drawerBackgroundColor">#232323</item>
+        <item name="list_multi_selector_blue">@drawable/list_multi_selector_blue</item>
+        <item name="syncTextBackgroundColor">#222222</item>
+        <item name="loginDividerBackgroundColor">#0d484e</item>
+        <item name="loginInfoDividerBackgroundColor">#eeeeee</item>
+        <item name="loginLayoutBackground">@drawable/login_layout_background</item>
+        <item name="icLabels">@drawable/ic_labels</item>
+        <item name="icRefresh">@drawable/ic_refresh</item>
+        <item name="icActionUpload">@drawable/ic_action_upload</item>
+        <item name="dataTipColor">#e8e8e8</item>
+        <item name="icDiscard">@drawable/ic_action_discard</item>
+        <item name="icDownload">@drawable/ic_download</item>
+        <item name="icReplyNotification">@drawable/reply_notification_image_icon</item>
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppThemeNoActionBar.Light" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="colorAccent">@color/primary_blue</item>
+        <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
+        <item name="primaryBackgroundColor">@color/primary_white</item>
+        <item name="dashBoardBaseTextColor">#111111</item>
+        <item name="primaryTextColor">@color/primary_black</item>
+        <item name="secondaryTextColor">#777777</item>
+        <item name="oppositeTextColor">@color/primary_white</item>
+        <item name="tabBackgroundColor">#e8e8e8</item>
+        <item name="drawerBackgroundColor">#e5e5e5</item>
+        <item name="list_multi_selector_blue">@drawable/list_multi_selector_blue_light</item>
+        <item name="syncTextBackgroundColor">#dddddd</item>
+        <item name="loginDividerBackgroundColor">#cedadb</item>
+        <item name="loginInfoDividerBackgroundColor">#777777</item>
+        <item name="loginLayoutBackground">@drawable/login_layout_background_light</item>
+        <item name="icLabels">@drawable/ic_labels_light</item>
+        <item name="icRefresh">@drawable/ic_refresh_light</item>
+        <item name="icActionUpload">@drawable/ic_action_upload_light</item>
+        <item name="dataTipColor">@color/primary_black</item>
+        <item name="icDiscard">@drawable/ic_action_discard_light</item>
+        <item name="icDownload">@drawable/ic_download_light</item>
+        <item name="icReplyNotification">@drawable/reply_notification_image_icon_light</item>
+    </style>
+</resources>

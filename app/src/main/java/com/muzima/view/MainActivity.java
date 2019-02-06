@@ -36,6 +36,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.WizardFinishPreferenceService;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.cohort.CohortActivity;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
@@ -51,8 +52,11 @@ public class MainActivity extends BroadcastListenerActivity {
     private BackgroundQueryTask mBackgroundQueryTask;
     private Credentials credentials;
 
+    private final ThemeUtils themeUtils = new ThemeUtils();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         credentials = new Credentials(this);
         mMainView = getLayoutInflater().inflate(R.layout.activity_dashboard, null);
@@ -64,6 +68,7 @@ public class MainActivity extends BroadcastListenerActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //themeUtils.onResume(this);
         showIncompleteWizardWarning();
         executeBackgroundTask();
     }
@@ -79,7 +84,6 @@ public class MainActivity extends BroadcastListenerActivity {
                 Toast.makeText(getApplicationContext(), getString(R.string.error_wizard_interrupted), Toast.LENGTH_LONG)
                         .show();
             }
-
         }
     }
 
