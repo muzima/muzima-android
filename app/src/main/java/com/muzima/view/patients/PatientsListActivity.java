@@ -49,6 +49,7 @@ import com.muzima.model.shr.kenyaemr.KenyaEmrSHRModel;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
 import com.muzima.utils.smartcard.KenyaEmrShrMapper;
@@ -121,10 +122,13 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     private MenuItem shrCardItem;
     private static final boolean DEFAULT_SHR_STATUS = false;
+    private final ThemeUtils themeUtils = new ThemeUtils();
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_list);
         Bundle intentExtras = getIntent().getExtras();
@@ -361,6 +365,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     protected void onResume() {
         super.onResume();
+        themeUtils.onResume(this);
         preparedServerSearchNegativeResultHandlerDialog(getApplicationContext());
         if (!intentBarcodeResults)
             patientAdapter.reloadData();
@@ -451,7 +456,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     private void setupListView(String cohortId) {
         listView = findViewById(R.id.list);
-        patientAdapter = new PatientsLocalSearchAdapter(getApplicationContext(),
+        patientAdapter = new PatientsLocalSearchAdapter(this,
                 R.layout.layout_list,
                 ((MuzimaApplication) getApplicationContext()).getPatientController(), cohortId);
         patientAdapter.setBackgroundListQueryTaskListener(this);

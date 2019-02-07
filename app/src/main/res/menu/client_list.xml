@@ -17,7 +17,7 @@
 
 	<item
 		android:id="@+id/menu_client_add_icon"
-		android:icon="@drawable/ic_action_add_client"
+		android:icon="?attr/icAddClient"
 		android:title="@string/hint_client_search"
 		custom:showAsAction="always" />
 
@@ -29,7 +29,7 @@
 	<item
 			android:id="@+id/search"
 			custom:actionViewClass="android.support.v7.widget.SearchView"
-			android:icon="@drawable/ic_search"
+			android:icon="?attr/icSearch"
 			android:visible="false"
 			custom:showAsAction="always"
 			android:title="@string/hint_client_search"/>

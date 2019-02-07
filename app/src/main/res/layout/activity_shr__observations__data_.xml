@@ -22,6 +22,7 @@
             android:id="@+id/pager_indicator"
             custom:indicatorColor="@color/tab_indicator"
             custom:indicatorHeight="5dp"
+            custom:indicatorTextColor = "?attr/primaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/pager_indicator_height"
             android:overScrollMode="ifContentScrolls"

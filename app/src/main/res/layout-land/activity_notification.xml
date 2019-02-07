@@ -31,9 +31,7 @@
                 android:id="@+id/sentBy"
                 style="@style/ListDescription"
                 android:layout_width="match_parent"
-                android:gravity="left"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/secondary_text"/>
+                android:gravity="left"/>
 
     </LinearLayout>
 
