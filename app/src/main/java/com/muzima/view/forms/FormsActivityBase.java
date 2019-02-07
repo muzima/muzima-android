@@ -11,7 +11,6 @@
 package com.muzima.view.forms;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
@@ -44,7 +43,6 @@ public abstract class FormsActivityBase extends BroadcastListenerActivity {
     }
 
     protected abstract MuzimaPagerAdapter createFormsPagerAdapter();
-
 
     void initPagerIndicator() {
         Intent intent = getIntent();
