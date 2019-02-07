@@ -65,7 +65,7 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
         advancedSetupLayout.setOnClickListener(advancedSetupClickListener());
 
         final SetupConfigurationAdapter setupConfigurationAdapter = new SetupConfigurationAdapter(
-                getApplicationContext(),R.layout.item_setup_configs_list,
+                this,R.layout.item_setup_configs_list,
                 ((MuzimaApplication) getApplicationContext()).getSetupConfigurationController());
         setupConfigurationAdapter.setBackgroundListQueryTaskListener(this);
 

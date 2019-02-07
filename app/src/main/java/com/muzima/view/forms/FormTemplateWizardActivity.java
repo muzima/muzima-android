@@ -195,7 +195,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
     }
 
     private AllAvailableFormsAdapter createAllFormsAdapter() {
-        return new AllAvailableFormsAdapter(getApplicationContext(), R.layout.item_forms_list_selectable, ((MuzimaApplication) getApplicationContext()).getFormController());
+        return new AllAvailableFormsAdapter(this, R.layout.item_forms_list_selectable, ((MuzimaApplication) getApplicationContext()).getFormController());
     }
 
     private ListView getListView() {

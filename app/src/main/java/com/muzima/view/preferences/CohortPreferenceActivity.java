@@ -45,7 +45,7 @@ public class CohortPreferenceActivity extends BaseFragmentActivity {
 
 
         cohortPrefix = findViewById(R.id.prefix_add_prefix);
-        AutoCompleteCohortPrefixAdapter autoCompleteCohortPrefixAdapter = new AutoCompleteCohortPrefixAdapter(getApplicationContext(), R.layout.item_option_autocomplete, cohortPrefix);
+        AutoCompleteCohortPrefixAdapter autoCompleteCohortPrefixAdapter = new AutoCompleteCohortPrefixAdapter(this, R.layout.item_option_autocomplete, cohortPrefix);
         cohortPrefix.setAdapter(autoCompleteCohortPrefixAdapter);
 
         cohortPrefix.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -76,7 +76,7 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
     private void setUpListView(String searchString) {
         listView = findViewById(R.id.remote_search_list);
         listView.setEmptyView(findViewById(R.id.no_data_layout));
-        patientAdapter = new PatientsRemoteSearchAdapter(getApplicationContext(),
+        patientAdapter = new PatientsRemoteSearchAdapter(this,
                 R.layout.activity_patient_remote_search_list,
                 ((MuzimaApplication) getApplicationContext()).getPatientController(), searchString);
         patientAdapter.setBackgroundListQueryTaskListener(this);
