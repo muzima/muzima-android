@@ -13,8 +13,7 @@
               style="@style/DashboardTableContainer">
 
     <RelativeLayout
-            style="@style/PatientDemographicsLayout"
-            android:background="@color/primary_black">
+            style="@style/PatientDemographicsLayout">
 
         <TextView
                 android:id="@+id/patientName"
@@ -32,7 +31,6 @@
 
     <LinearLayout
         style="@style/PatientDemographicsLayout"
-        android:background="@color/primary_black"
         android:paddingBottom="16dp"
         android:paddingTop="4dp">
 

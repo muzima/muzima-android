@@ -27,6 +27,8 @@
         <item name="icDiscard">@drawable/ic_action_discard</item>
         <item name="icDownload">@drawable/ic_download</item>
         <item name="icReplyNotification">@drawable/reply_notification_image_icon</item>
+        <item name="icAddClient">@drawable/ic_action_add_client</item>
+        <item name="icSearch">@drawable/ic_search</item>
     </style>
 
 
@@ -53,6 +55,8 @@
         <item name="icDiscard">@drawable/ic_action_discard_light</item>
         <item name="icDownload">@drawable/ic_download_light</item>
         <item name="icReplyNotification">@drawable/reply_notification_image_icon_light</item>
+        <item name="icAddClient">@drawable/ic_action_add_client_light</item>
+        <item name="icSearch">@drawable/ic_search_light</item>
     </style>
 
 
@@ -79,6 +83,8 @@
         <item name="icDiscard">@drawable/ic_action_discard</item>
         <item name="icDownload">@drawable/ic_download</item>
         <item name="icReplyNotification">@drawable/reply_notification_image_icon</item>
+        <item name="icAddClient">@drawable/ic_action_add_client</item>
+        <item name="icSearch">@drawable/ic_search</item>
     </style>
 
     <!-- Application theme. -->
@@ -104,5 +110,7 @@
         <item name="icDiscard">@drawable/ic_action_discard_light</item>
         <item name="icDownload">@drawable/ic_download_light</item>
         <item name="icReplyNotification">@drawable/reply_notification_image_icon_light</item>
+        <item name="icAddClient">@drawable/ic_action_add_client_light</item>
+        <item name="icSearch">@drawable/ic_search_light</item>
     </style>
 </resources>

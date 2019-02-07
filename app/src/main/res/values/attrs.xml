@@ -28,6 +28,8 @@
     <attr name="icDiscard" format="reference"/>
     <attr name="icDownload" format="reference"/>
     <attr name="icReplyNotification" format="reference"/>
+    <attr name="icAddClient" format="reference"/>
+    <attr name="icSearch" format="reference"/>
 
     <declare-styleable name="PagerSlidingTabStrip">
         <attr name="indicatorTextColor" format="color"/>
