@@ -233,7 +233,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
     }
 
     private AllCohortsAdapter createAllCohortsAdapter() {
-        return new AllCohortsAdapter(getApplicationContext(), R.layout.item_cohorts_list, ((MuzimaApplication) getApplicationContext()).getCohortController());
+        return new AllCohortsAdapter(this, R.layout.item_cohorts_list, ((MuzimaApplication) getApplicationContext()).getCohortController());
     }
 
     private ListView getListView() {

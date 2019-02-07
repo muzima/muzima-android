@@ -44,7 +44,7 @@ public class RegistrationFormsActivity extends BaseActivity {
     }
 
     private void prepareRegistrationAdapter(FormController formController, AvailableForms availableForms) {
-        registrationFormsAdapter = new RegistrationFormsAdapter(getApplicationContext(), R.layout.item_forms_list,
+        registrationFormsAdapter = new RegistrationFormsAdapter(this, R.layout.item_forms_list,
                 formController, availableForms);
         ListView list = findViewById(R.id.list);
         list.setOnItemClickListener(startRegistrationOnClick());

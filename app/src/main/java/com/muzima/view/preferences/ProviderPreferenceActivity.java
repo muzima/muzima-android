@@ -60,7 +60,7 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
         selectedProviderListView.setEmptyView(findViewById(R.id.no_provider_added));
         selectedProviderListView.setOnItemClickListener(selectedProviderOnClickListener());
         autoCompleteProvidersTextView = findViewById(R.id.add_provider);
-        AutoCompleteProviderAdapter autoCompleteProviderAdapter = new AutoCompleteProviderAdapter(applicationContext, R.layout.item_option_autocomplete, autoCompleteProvidersTextView);
+        AutoCompleteProviderAdapter autoCompleteProviderAdapter = new AutoCompleteProviderAdapter(this, R.layout.item_option_autocomplete, autoCompleteProvidersTextView);
         autoCompleteProvidersTextView.setAdapter(autoCompleteProviderAdapter);
         autoCompleteProvidersTextView.setOnItemClickListener(autoCompleteOnClickListener());
 

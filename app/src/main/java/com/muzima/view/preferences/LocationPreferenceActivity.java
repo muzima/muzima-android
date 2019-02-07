@@ -61,7 +61,7 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
         selectedLocationListView.setEmptyView(findViewById(R.id.no_location_added));
         selectedLocationListView.setOnItemClickListener(selectedLocationOnClickListener());
         autoCompleteLocationsTextView = findViewById(R.id.add_location);
-        AutoCompleteLocationAdapter autoCompleteLocationAdapter = new AutoCompleteLocationAdapter(applicationContext, R.layout.item_option_autocomplete, autoCompleteLocationsTextView);
+        AutoCompleteLocationAdapter autoCompleteLocationAdapter = new AutoCompleteLocationAdapter(this, R.layout.item_option_autocomplete, autoCompleteLocationsTextView);
         autoCompleteLocationsTextView.setAdapter(autoCompleteLocationAdapter);
         autoCompleteLocationsTextView.setOnItemClickListener(autoCompleteOnClickListener());
 

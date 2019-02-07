@@ -63,7 +63,7 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
         selectedConceptListView.setEmptyView(findViewById(R.id.no_concept_added));
         selectedConceptListView.setOnItemClickListener(selectedConceptOnClickListener());
         autoCompleteConceptTextView = findViewById(R.id.concept_add_concept);
-        AutoCompleteConceptAdapter autoCompleteConceptAdapter = new AutoCompleteConceptAdapter(applicationContext, R.layout.item_option_autocomplete, autoCompleteConceptTextView);
+        AutoCompleteConceptAdapter autoCompleteConceptAdapter = new AutoCompleteConceptAdapter(this, R.layout.item_option_autocomplete, autoCompleteConceptTextView);
         autoCompleteConceptTextView.setAdapter(autoCompleteConceptAdapter);
         autoCompleteConceptTextView.setOnItemClickListener(autoCompleteOnClickListener());
 
