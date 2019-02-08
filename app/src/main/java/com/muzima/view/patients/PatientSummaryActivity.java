@@ -54,6 +54,7 @@ import com.muzima.service.JSONInputOutputToDisk;
 import com.muzima.utils.Constants;
 import com.muzima.utils.LocationUtils;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.KenyaEmrShrMapper;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
@@ -94,8 +95,11 @@ public class PatientSummaryActivity extends BaseActivity {
     private MuzimaApplication muzimaApplication;
     private Location defaultLocation;
 
+    private final ThemeUtils themeUtils = new ThemeUtils();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_summary);
         muzimaApplication = (MuzimaApplication) getApplicationContext( );
@@ -173,6 +177,7 @@ public class PatientSummaryActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        themeUtils.onResume(this);
         executeBackgroundTask();
     }
 
