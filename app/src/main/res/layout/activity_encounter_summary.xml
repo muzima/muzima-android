@@ -13,11 +13,10 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="?attr/list_multi_selector_blue">
+              android:background="?attr/primaryBackgroundColor">
     <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/list_multi_selector_blue"
             android:layout_marginBottom="3dp"
             android:layout_marginTop="3dp"
             android:orientation="vertical">
@@ -32,7 +31,7 @@
             <TextView
                     android:id="@+id/encounterFormName"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@android:color/white"
+                    android:textColor="?attr/primaryTextColor"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
@@ -40,7 +39,7 @@
             <TextView
                     android:id="@+id/encounterDate"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@android:color/white"
+                    android:textColor="?attr/primaryTextColor"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
@@ -62,7 +61,7 @@
                     android:layout_weight="0.4"
                     android:gravity="left"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/secondary_text"/>
+                    android:textColor="?attr/secondaryTextColor"/>
             <TextView
                     android:id="@+id/encounterLocation"
                     android:layout_width="0dp"
@@ -70,7 +69,7 @@
                     android:layout_weight="0.4"
                     android:gravity="right"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/secondary_text"/>
+                    android:textColor="?attr/secondaryTextColor"/>
         </LinearLayout>
 
 
