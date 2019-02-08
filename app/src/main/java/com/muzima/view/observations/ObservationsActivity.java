@@ -28,6 +28,7 @@ import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.custom.CustomObsEntryDialog;
 import com.muzima.view.custom.PagerSlidingTabStrip;
@@ -45,9 +46,11 @@ public class ObservationsActivity extends BroadcastListenerActivity {
     private TextView encounterDateTextView;
     private final Boolean IS_SHR_DATA = false;
     private Patient patient;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_observations);
         // Show the Up button in the action bar.
@@ -55,6 +58,12 @@ public class ObservationsActivity extends BroadcastListenerActivity {
         initPager();
         initPagerIndicator();
         encounterDateTextView = (TextView) findViewById(R.id.date_value_textview);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        themeUtils.onResume(this);
     }
 
     private void initPagerIndicator() {
