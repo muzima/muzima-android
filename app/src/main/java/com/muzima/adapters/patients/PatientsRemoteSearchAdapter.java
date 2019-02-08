@@ -83,11 +83,11 @@ public class PatientsRemoteSearchAdapter extends ListAdapter<Patient> {
 
         @Override
         protected Object doInBackground(String... strings) {
-            MuzimaApplication applicationContext = (MuzimaApplication) getContext();
+            MuzimaApplication applicationContext = (MuzimaApplication) getContext().getApplicationContext();
 
-            Credentials credentials = new Credentials(getContext());
+            Credentials credentials = new Credentials(applicationContext);
             try {
-                SERVER_CONNECTIVITY_STATUS serverStatus = NetworkUtils.getServerStatus(getContext(), credentials.getServerUrl());
+                SERVER_CONNECTIVITY_STATUS serverStatus = NetworkUtils.getServerStatus(applicationContext, credentials.getServerUrl());
                 if(serverStatus == SERVER_CONNECTIVITY_STATUS.SERVER_ONLINE) {
                     int authenticateResult = applicationContext.getMuzimaSyncService().authenticate(credentials.getCredentialsArray());
                     if (authenticateResult == SyncStatusConstants.AUTHENTICATION_SUCCESS) {

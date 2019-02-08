@@ -31,6 +31,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.Constants.SERVER_CONNECTIVITY_STATUS;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 
@@ -56,10 +57,12 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
     private ActionMode actionMode;
 
     private boolean actionModeActive = false;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_remote_search_list);
         Bundle intentExtras = getIntent().getExtras();
@@ -71,6 +74,12 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         setUpListView(searchString);
         setupNoDataView();
         patientAdapter.reloadData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        themeUtils.onResume(this);
     }
 
     private void setUpListView(String searchString) {
