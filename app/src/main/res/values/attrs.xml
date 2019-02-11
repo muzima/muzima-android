@@ -9,9 +9,9 @@
   -->
 
 <resources>
-    <attr name="primaryBackgroundColor" format="color"/>
+    <attr name="primaryBackgroundColor" format="reference|color"/>
     <attr name="dashBoardBaseTextColor" format="color"/>
-    <attr name="primaryTextColor" format="color"/>
+    <attr name="primaryTextColor" format="reference|color"/>
     <attr name="secondaryTextColor" format="color"/>
     <attr name="oppositeTextColor" format="color"/>
     <attr name="tabBackgroundColor" format="color"/>
@@ -30,6 +30,7 @@
     <attr name="icReplyNotification" format="reference"/>
     <attr name="icAddClient" format="reference"/>
     <attr name="icSearch" format="reference"/>
+    <attr name="listSelectorBlue" format="reference"/>
 
     <declare-styleable name="PagerSlidingTabStrip">
         <attr name="indicatorTextColor" format="color"/>
