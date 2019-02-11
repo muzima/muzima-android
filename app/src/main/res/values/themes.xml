@@ -30,6 +30,7 @@
         <item name="icAddClient">@drawable/ic_action_add_client</item>
         <item name="icSearch">@drawable/ic_search</item>
         <item name="listSelectorBlue">@drawable/list_selector_blue</item>
+        <item name="icLauncherLogo">@drawable/ic_launcher_logo</item>
     </style>
 
 
@@ -59,6 +60,7 @@
         <item name="icAddClient">@drawable/ic_action_add_client_light</item>
         <item name="icSearch">@drawable/ic_search_light</item>
         <item name="listSelectorBlue">@drawable/list_selector_blue_light</item>
+        <item name="icLauncherLogo">@drawable/ic_launcher_logo_light</item>
     </style>
 
 
@@ -88,6 +90,7 @@
         <item name="icAddClient">@drawable/ic_action_add_client</item>
         <item name="icSearch">@drawable/ic_search</item>
         <item name="listSelectorBlue">@drawable/list_selector_blue</item>
+        <item name="icLauncherLogo">@drawable/ic_launcher_logo</item>
     </style>
 
     <!-- Application theme. -->
@@ -116,5 +119,6 @@
         <item name="icAddClient">@drawable/ic_action_add_client_light</item>
         <item name="icSearch">@drawable/ic_search_light</item>
         <item name="listSelectorBlue">@drawable/list_selector_blue_light</item>
+        <item name="icLauncherLogo">@drawable/ic_launcher_logo_light</item>
     </style>
 </resources>

@@ -31,6 +31,7 @@
     <attr name="icAddClient" format="reference"/>
     <attr name="icSearch" format="reference"/>
     <attr name="listSelectorBlue" format="reference"/>
+    <attr name="icLauncherLogo" format="reference"/>
 
     <declare-styleable name="PagerSlidingTabStrip">
         <attr name="indicatorTextColor" format="color"/>
