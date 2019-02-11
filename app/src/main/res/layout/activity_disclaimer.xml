@@ -20,7 +20,7 @@
         android:background="@color/primary_black">
             <TextView android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:drawableLeft="@drawable/ic_launcher_logo"
+                  android:drawableLeft="?attr/icLauncherLogo"
                   android:text="@string/title_muzima_disclaimer"
                   style="@style/DisclaimerHead"
                   android:gravity="center_vertical"
