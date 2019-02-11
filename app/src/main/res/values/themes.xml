@@ -29,6 +29,7 @@
         <item name="icReplyNotification">@drawable/reply_notification_image_icon</item>
         <item name="icAddClient">@drawable/ic_action_add_client</item>
         <item name="icSearch">@drawable/ic_search</item>
+        <item name="listSelectorBlue">@drawable/list_selector_blue</item>
     </style>
 
 
@@ -57,6 +58,7 @@
         <item name="icReplyNotification">@drawable/reply_notification_image_icon_light</item>
         <item name="icAddClient">@drawable/ic_action_add_client_light</item>
         <item name="icSearch">@drawable/ic_search_light</item>
+        <item name="listSelectorBlue">@drawable/list_selector_blue_light</item>
     </style>
 
 
@@ -85,6 +87,7 @@
         <item name="icReplyNotification">@drawable/reply_notification_image_icon</item>
         <item name="icAddClient">@drawable/ic_action_add_client</item>
         <item name="icSearch">@drawable/ic_search</item>
+        <item name="listSelectorBlue">@drawable/list_selector_blue</item>
     </style>
 
     <!-- Application theme. -->
@@ -112,5 +115,6 @@
         <item name="icReplyNotification">@drawable/reply_notification_image_icon_light</item>
         <item name="icAddClient">@drawable/ic_action_add_client_light</item>
         <item name="icSearch">@drawable/ic_search_light</item>
+        <item name="listSelectorBlue">@drawable/list_selector_blue_light</item>
     </style>
 </resources>
