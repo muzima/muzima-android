@@ -475,7 +475,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         noDataTipTextView.setText(R.string.hint_client_local_search);
 
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
-        noDataTipTextView.setTypeface(Fonts.roboto_light(this));
+        noDataTipTextView.setTypeface(Fonts.roboto_medium(this));
     }
 
     @Override
