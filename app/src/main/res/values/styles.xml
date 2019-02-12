@@ -758,18 +758,20 @@
     <!--Feedback and help dialog -->
     <style name="MessageActivityLayout">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:orientation">vertical</item>
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingTop">16dp</item>
         <item name="android:paddingRight">16dp</item>
+        <item name="android:background">?attr/primaryBackgroundColor</item>
+
     </style>
     <style name="MessageActivityText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">vertical</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">#eeeeee</item>
+        <item name="android:textColor">?attr/primaryTextColor</item>
     </style>
     <style name="MessageActivityButton">
         <item name="android:layout_width">wrap_content</item>
