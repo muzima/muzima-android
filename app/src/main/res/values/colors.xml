@@ -28,8 +28,8 @@
     <color name="listitem_state_pressed">#6633B5E5</color>
     <color name="listitem_state_focused">#6633B5E5</color>
 
-    <color name="drawer_background">#232323</color>
-    <color name="drawer_header_separator_background">#161616</color>
+     <color name="drawer_background">#232323</color>
+     <color name="drawer_background_light">#f7f7f7</color>
 
     <color name="list_section_header_background">#bb09A9E4</color>
 

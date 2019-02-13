@@ -69,8 +69,14 @@
 
     <style name="alertDialogTheme" parent="Theme.AppCompat.Dialog">
         <item name="android:windowTitleStyle">@style/alertTitleTextStyle</item>
-        <item name="colorAccent">@android:color/white</item>
-        <item name="android:background">@color/drawer_background</item>
+        <item name="colorAccent">@color/primary_white</item>
+        <item name="android:background">?attr/drawerBackgroundColor</item>
+    </style>
+
+    <style name="alertDialogThemeLight" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowTitleStyle">@style/alertTitleTextStyle</item>
+        <item name="colorAccent">@color/primary_black</item>
+        <item name="android:background">?attr/drawerBackgroundColor</item>
     </style>
 
     <style name="alertTitleTextStyle">
