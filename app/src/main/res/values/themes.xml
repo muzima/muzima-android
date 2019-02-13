@@ -14,7 +14,7 @@
         <item name="secondaryTextColor">#888888</item>
         <item name="oppositeTextColor">@color/primary_black</item>
         <item name="tabBackgroundColor">#1a1a1a</item>
-        <item name="drawerBackgroundColor">#232323</item>
+        <item name="drawerBackgroundColor">@color/drawer_background</item>
         <item name="syncTextBackgroundColor">#222222</item>
         <item name="loginDividerBackgroundColor">#0d484e</item>
         <item name="loginInfoDividerBackgroundColor">#eeeeee</item>
@@ -31,6 +31,7 @@
         <item name="icSearch">@drawable/ic_search</item>
         <item name="listSelectorBlue">@drawable/list_selector_blue</item>
         <item name="icLauncherLogo">@drawable/ic_launcher_logo</item>
+        <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
     </style>
 
 
@@ -44,7 +45,7 @@
         <item name="secondaryTextColor">#777777</item>
         <item name="oppositeTextColor">@color/primary_white</item>
         <item name="tabBackgroundColor">#e8e8e8</item>
-        <item name="drawerBackgroundColor">#e5e5e5</item>
+        <item name="drawerBackgroundColor">@color/drawer_background_light</item>
         <item name="list_multi_selector_blue">@drawable/list_multi_selector_blue_light</item>
         <item name="syncTextBackgroundColor">#dddddd</item>
         <item name="loginDividerBackgroundColor">#cedadb</item>
@@ -61,6 +62,7 @@
         <item name="icSearch">@drawable/ic_search_light</item>
         <item name="listSelectorBlue">@drawable/list_selector_blue_light</item>
         <item name="icLauncherLogo">@drawable/ic_launcher_logo_light</item>
+        <item name="android:alertDialogTheme">@style/alertDialogThemeLight</item>
     </style>
 
 
@@ -74,7 +76,7 @@
         <item name="secondaryTextColor">#888888</item>
         <item name="oppositeTextColor">@color/primary_black</item>
         <item name="tabBackgroundColor">#1a1a1a</item>
-        <item name="drawerBackgroundColor">#232323</item>
+        <item name="drawerBackgroundColor">@color/drawer_background</item>
         <item name="list_multi_selector_blue">@drawable/list_multi_selector_blue</item>
         <item name="syncTextBackgroundColor">#222222</item>
         <item name="loginDividerBackgroundColor">#0d484e</item>
@@ -91,6 +93,7 @@
         <item name="icSearch">@drawable/ic_search</item>
         <item name="listSelectorBlue">@drawable/list_selector_blue</item>
         <item name="icLauncherLogo">@drawable/ic_launcher_logo</item>
+        <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
     </style>
 
     <!-- Application theme. -->
@@ -103,7 +106,7 @@
         <item name="secondaryTextColor">#777777</item>
         <item name="oppositeTextColor">@color/primary_white</item>
         <item name="tabBackgroundColor">#e8e8e8</item>
-        <item name="drawerBackgroundColor">#e5e5e5</item>
+        <item name="drawerBackgroundColor">@color/drawer_background_light</item>
         <item name="list_multi_selector_blue">@drawable/list_multi_selector_blue_light</item>
         <item name="syncTextBackgroundColor">#dddddd</item>
         <item name="loginDividerBackgroundColor">#cedadb</item>
@@ -120,5 +123,6 @@
         <item name="icSearch">@drawable/ic_search_light</item>
         <item name="listSelectorBlue">@drawable/list_selector_blue_light</item>
         <item name="icLauncherLogo">@drawable/ic_launcher_logo_light</item>
+        <item name="android:alertDialogTheme">@style/alertDialogThemeLight</item>
     </style>
 </resources>
