@@ -68,7 +68,7 @@ public class MainActivity extends BroadcastListenerActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //themeUtils.onResume(this);
+        themeUtils.onResume(this);
         showIncompleteWizardWarning();
         executeBackgroundTask();
     }
@@ -103,7 +103,9 @@ public class MainActivity extends BroadcastListenerActivity {
 
     @Override
     protected void onDestroy() {
-        ((MuzimaApplication) getApplication()).logOut();
+        if (!themeUtils.isLightModeCahnged(this)) {
+            ((MuzimaApplication) getApplication()).logOut();
+        }
         super.onDestroy();
     }
 
