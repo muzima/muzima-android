@@ -31,6 +31,7 @@ import com.muzima.adapters.concept.AutoCompleteProviderAdapter;
 import com.muzima.adapters.concept.SelectedProviderAdapter;
 import com.muzima.api.model.Provider;
 import com.muzima.utils.Constants;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
 
@@ -43,9 +44,11 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
     private AutoCompleteTextView autoCompleteProvidersTextView;
     private boolean actionModeActive = false;
     private ActionMode actionMode;
+    private final ThemeUtils themeUtils = new ThemeUtils(R.style.PreferencesTheme_Light, R.style.PreferencesTheme_Dark);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
 
@@ -125,6 +128,7 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        themeUtils.onResume(this);
         selectedProviderAdapter.reloadData();
     }
 

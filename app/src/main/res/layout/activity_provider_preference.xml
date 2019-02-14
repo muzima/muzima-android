@@ -27,7 +27,7 @@
                 android:textColorHint="@color/hint_text_grey"
                 android:textCursorDrawable="@null"
                 android:hint="@string/enter_provider_name_hint"
-                android:background="@color/primary_black">
+                android:background="?attr/primaryBackgroundColor">
             <requestFocus/>
         </AutoCompleteTextView>
 
