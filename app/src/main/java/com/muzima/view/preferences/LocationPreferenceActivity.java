@@ -32,6 +32,7 @@ import com.muzima.adapters.concept.SelectedLocationAdapter;
 import com.muzima.api.model.Location;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
 
@@ -44,9 +45,11 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
     private AutoCompleteTextView autoCompleteLocationsTextView;
     private boolean actionModeActive = false;
     private ActionMode actionMode;
+    private final ThemeUtils themeUtils = new ThemeUtils(R.style.PreferencesTheme_Light, R.style.PreferencesTheme_Dark);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
 
@@ -126,6 +129,7 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        themeUtils.onResume(this);
         selectedLocationAdapter.reloadData();
     }
 

@@ -23,6 +23,7 @@ import com.muzima.adapters.cohort.CohortPrefixPrefAdapter;
 import com.muzima.adapters.concept.AutoCompleteCohortPrefixAdapter;
 import com.muzima.api.model.Cohort;
 import com.muzima.service.CohortPrefixPreferenceService;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BaseFragmentActivity;
 import com.muzima.view.HelpActivity;
 
@@ -30,9 +31,11 @@ public class CohortPreferenceActivity extends BaseFragmentActivity {
     private CohortPrefixPrefAdapter prefAdapter;
     private AutoCompleteTextView cohortPrefix;
     private CohortPrefixPreferenceService preferenceService;
+    private final ThemeUtils themeUtils = new ThemeUtils(R.style.PreferencesTheme_Light, R.style.PreferencesTheme_Dark);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
 
@@ -77,6 +80,7 @@ public class CohortPreferenceActivity extends BaseFragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        themeUtils.onResume(this);
         prefAdapter.reloadData();
     }
 

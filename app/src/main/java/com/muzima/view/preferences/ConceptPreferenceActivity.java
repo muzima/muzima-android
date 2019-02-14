@@ -31,6 +31,7 @@ import com.muzima.adapters.concept.AutoCompleteConceptAdapter;
 import com.muzima.adapters.concept.SelectedConceptAdapter;
 import com.muzima.api.model.Concept;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
 
@@ -46,9 +47,11 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
     private AutoCompleteTextView autoCompleteConceptTextView;
     private boolean actionModeActive = false;
     private ActionMode actionMode;
+    private final ThemeUtils themeUtils = new ThemeUtils(R.style.PreferencesTheme_Light, R.style.PreferencesTheme_Dark);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
 
@@ -128,6 +131,7 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        themeUtils.onResume(this);
         selectedConceptAdapter.reloadData();
     }
 

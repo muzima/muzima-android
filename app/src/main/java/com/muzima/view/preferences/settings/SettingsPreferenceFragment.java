@@ -14,6 +14,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -78,7 +79,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder
                             .setCancelable(true)
-                            .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                            .setIcon(getIconWarning())
                             .setTitle(getResources().getString(R.string.general_caution))
                             .setMessage(getResources().getString(R.string.warning_switch_server))
                             .setPositiveButton("Yes", positiveClickListener())
@@ -107,7 +108,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder
                             .setCancelable(true)
-                            .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                            .setIcon(getIconWarning())
                             .setTitle(getResources().getString(R.string.general_caution))
                             .setMessage(getResources().getString(R.string.warning_session_timeout))
                             .setPositiveButton(getResources().getText(R.string.general_ok), null).create().show();
@@ -169,7 +170,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder
                                 .setCancelable(true)
-                                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                                .setIcon(getIconWarning())
                                 .setTitle(getResources().getString(R.string.title_provider_not_set))
                                 .setMessage(getResources().getString(R.string.hint_provider_not_set))
                                 .setPositiveButton(getResources().getText(R.string.general_ok), null).create().show();
@@ -212,7 +213,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder
                     .setCancelable(true)
-                    .setIcon(getResources().getDrawable(R.drawable.ic_refresh))
+                    .setIcon(getIconRefresh())
                     .setTitle(getString(R.string.title_setting_refresh))
                     .setMessage(getString(R.string.hint_setting_refresh))
                     .setPositiveButton(getResources().getText(R.string.general_ok), new DialogInterface.OnClickListener() {
@@ -406,7 +407,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder
                     .setCancelable(true)
-                    .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                    .setIcon(getIconWarning())
                     .setTitle("Invalid")
                     .setMessage("The URL you have provided is invalid")
                     .setPositiveButton("Ok", null);
@@ -421,7 +422,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder
                     .setCancelable(true)
-                    .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                    .setIcon(getIconWarning())
                     .setTitle("Failure")
                     .setMessage(getString(R.string.info_form_data_upload_fail))
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -433,5 +434,25 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                     .setNegativeButton("No", null);
             builder.create().show();
         }
+    }
+
+    private Drawable getIcon(int iconIdForLightMode, int iconIdForNightMode) {
+        String lightModePreferenceKey = getResources().getString(R.string.preference_light_mode);
+        boolean lightMode = getPreferenceScreen().getSharedPreferences().getBoolean(lightModePreferenceKey, false);
+        if (lightMode) {
+            return getResources().getDrawable(iconIdForLightMode);
+        } else {
+            return getResources().getDrawable(iconIdForNightMode);
+        }
+    }
+
+    private Drawable getIconWarning(){
+        return getIcon(R.drawable.ic_warning_light, R.drawable.ic_warning);
+    }
+
+    private Drawable getIconRefresh(){
+
+        return getIcon(R.drawable.ic_refresh_light, R.drawable.ic_refresh);
+
     }
 }
