@@ -72,7 +72,6 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:scaleType="fitCenter"
-            android:backgroundTint="@color/primary_blue"
             android:src="?attr/icSearch" />
 
     <include layout="@layout/progress_bar"/>
