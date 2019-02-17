@@ -8,14 +8,19 @@ import com.muzima.R;
 import com.muzima.api.context.Context;
 import com.muzima.api.model.User;
 import com.muzima.domain.Credentials;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BaseActivity;
 
 import java.io.IOException;
 
 public class BaseHelpActivity extends BaseActivity {
 
+    private final ThemeUtils themeUtils = new ThemeUtils();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
     }
 
@@ -25,6 +30,12 @@ public class BaseHelpActivity extends BaseActivity {
         if (isUserLoggedOut()) {
             ((MuzimaApplication) getApplication()).cancelTimer();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        themeUtils.onResume(this);
+        super.onResume();
     }
 
     @Override

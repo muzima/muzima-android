@@ -19,6 +19,7 @@
         <item name="loginDividerBackgroundColor">#0d484e</item>
         <item name="loginInfoDividerBackgroundColor">#eeeeee</item>
         <item name="selectableHintText">@color/selectable_hint_text</item>
+        <item name="themeColor">@color/theme_color</item>
         <item name="list_multi_selector_blue">@drawable/list_multi_selector_blue</item>
         <item name="loginLayoutBackground">@drawable/login_layout_background</item>
         <item name="icLabels">@drawable/ic_labels</item>
@@ -47,6 +48,7 @@
         <item name="oppositeTextColor">@color/primary_white</item>
         <item name="tabBackgroundColor">#e8e8e8</item>
         <item name="drawerBackgroundColor">@color/drawer_background_light</item>
+        <item name="themeColor">@color/theme_color_light</item>
         <item name="list_multi_selector_blue">@drawable/list_multi_selector_blue_light</item>
         <item name="syncTextBackgroundColor">#dddddd</item>
         <item name="loginDividerBackgroundColor">#cedadb</item>
@@ -79,6 +81,7 @@
         <item name="oppositeTextColor">@color/primary_black</item>
         <item name="tabBackgroundColor">#1a1a1a</item>
         <item name="drawerBackgroundColor">@color/drawer_background</item>
+        <item name="themeColor">@color/theme_color</item>
         <item name="list_multi_selector_blue">@drawable/list_multi_selector_blue</item>
         <item name="syncTextBackgroundColor">#222222</item>
         <item name="loginDividerBackgroundColor">#0d484e</item>
@@ -110,6 +113,7 @@
         <item name="oppositeTextColor">@color/primary_white</item>
         <item name="tabBackgroundColor">#e8e8e8</item>
         <item name="drawerBackgroundColor">@color/drawer_background_light</item>
+        <item name="themeColor">@color/theme_color_light</item>
         <item name="list_multi_selector_blue">@drawable/list_multi_selector_blue_light</item>
         <item name="syncTextBackgroundColor">#dddddd</item>
         <item name="loginDividerBackgroundColor">#cedadb</item>
