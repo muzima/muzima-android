@@ -17,7 +17,7 @@
                   android:orientation="vertical"
                   android:layout_above="@+id/navigation">
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:background="@color/primary_black">
+        android:background="?attr/primaryBackgroundColor">
             <TextView android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:drawableLeft="?attr/icLauncherLogo"
@@ -36,12 +36,12 @@
                     android:text="@string/title_disclaimer"/>
             <com.muzima.view.custom.ScrollViewWithDetection
                     android:id="@+id/disclaimer_scroller"
-                    android:background="@color/primary_black"
+                    android:background="?attr/primaryBackgroundColor"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
                 <TextView
                         android:id="@+id/disclaimer_text_view"
-                        android:textColor="@android:color/white"
+                        android:textColor="?attr/primaryTextColor"
                         android:textAlignment="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
