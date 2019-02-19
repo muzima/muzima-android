@@ -35,6 +35,7 @@ import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.CheckedLinearLayout;
 import com.muzima.view.HelpActivity;
@@ -54,8 +55,10 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
     private MuzimaProgressDialog progressDialog;
     private boolean isProcessDialogOn = false;
     private PowerManager.WakeLock wakeLock = null ;
+    private final ThemeUtils themeUtils = new ThemeUtils(R.style.WizardTheme_Light, R.style.WizardTheme_Dark);
 
     public void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cohort_wizard);
         ListView listView = getListView();
