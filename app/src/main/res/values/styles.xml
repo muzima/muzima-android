@@ -67,19 +67,19 @@
         <item name="android:background">?attr/primaryBackgroundColor</item>
     </style>
 
-    <style name="alertDialogTheme" parent="Theme.AppCompat.Dialog">
+    <style name="alertDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:windowTitleStyle">@style/alertTitleTextStyle</item>
-        <item name="colorAccent">@color/primary_white</item>
         <item name="android:background">?attr/drawerBackgroundColor</item>
+        <item name="android:textColor">?attr/primaryTextColor</item>
+        <item name="colorAccent">@color/primary_blue</item>
     </style>
 
-    <style name="alertDialogThemeLight" parent="Theme.AppCompat.Light.Dialog">
+    <style name="alertDialogThemeLight" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowTitleStyle">@style/alertTitleTextStyle</item>
-        <item name="colorAccent">@color/primary_black</item>
         <item name="android:background">?attr/drawerBackgroundColor</item>
+        <item name="android:textColor">?attr/primaryTextColor</item>
+        <item name="colorAccent">@color/primary_blue</item>
     </style>
-
-
 
     <style name="alertTitleTextStyle">
         <item name="android:textColor">@color/primary_blue</item>
