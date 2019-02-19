@@ -47,7 +47,7 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
     private AutoCompleteTextView autoCompleteConceptTextView;
     private boolean actionModeActive = false;
     private ActionMode actionMode;
-    private final ThemeUtils themeUtils = new ThemeUtils(R.style.PreferencesTheme_Light, R.style.PreferencesTheme_Dark);
+    private ThemeUtils themeUtils = new ThemeUtils(R.style.PreferencesTheme_Light, R.style.PreferencesTheme_Dark);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,5 +206,9 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
             }
         }
         return concepts;
+    }
+
+    public void setThemeUtils(ThemeUtils themeUtils){
+        this.themeUtils = themeUtils;
     }
 }

@@ -45,7 +45,7 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
     private AutoCompleteTextView autoCompleteLocationsTextView;
     private boolean actionModeActive = false;
     private ActionMode actionMode;
-    private final ThemeUtils themeUtils = new ThemeUtils(R.style.PreferencesTheme_Light, R.style.PreferencesTheme_Dark);
+    private ThemeUtils themeUtils = new ThemeUtils(R.style.PreferencesTheme_Light, R.style.PreferencesTheme_Dark);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,6 +204,10 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
             }
         }
         return locations;
+    }
+
+    public void setThemeUtils(ThemeUtils themeUtils){
+        this.themeUtils = themeUtils;
     }
 }
 

@@ -12,7 +12,7 @@
         android:orientation="vertical"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:background="@color/primary_black">
+        android:background="?attr/primaryBackgroundColor">
     <LinearLayout
             android:id="@+id/guided_setup_header"
             style="@style/NotClickableSummaryItem"
@@ -57,7 +57,8 @@
                 android:text="@string/info_initial_setup_progress" />
     </LinearLayout>
 
-    <LinearLayout style="@style/ButtonRow" android:id="@+id/next_button_layout"
+    <LinearLayout style="@style/ButtonRow"
+                  android:id="@+id/next_button_layout"
                   android:visibility="gone"
     android:layout_alignParentBottom="true">
         <Button
