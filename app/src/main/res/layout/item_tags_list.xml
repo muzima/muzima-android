@@ -30,7 +30,7 @@
             android:singleLine="true"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
-            android:textColor="#ffffff"/>
+            android:textColor="?attr/primaryTextColor"/>
 
     <FrameLayout
             android:id="@+id/tag_color_indicator"
