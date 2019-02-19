@@ -366,15 +366,15 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     protected void onResume() {
         super.onResume();
         themeUtils.onResume(this);
-        preparedServerSearchNegativeResultHandlerDialog(getApplicationContext());
+        preparedServerSearchNegativeResultHandlerDialog();
         if (!intentBarcodeResults)
             patientAdapter.reloadData();
 
     }
 
-    private void prepareLocalSearchNotifyDialog(Context context, Patient patient) {
+    private void prepareLocalSearchNotifyDialog(Patient patient) {
 
-        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = layoutInflater.inflate(R.layout.patient_shr_card_search_dialog, null);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientsListActivity.this);
 
@@ -413,14 +413,14 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         });
     }
 
-    private void preparedServerSearchNegativeResultHandlerDialog(Context context) {
+    private void preparedServerSearchNegativeResultHandlerDialog() {
 
         patientRegistrationProgressDialog = new ProgressDialog(this);
         patientRegistrationProgressDialog.setCancelable(false);
         patientRegistrationProgressDialog.setIndeterminate(true);
         patientRegistrationProgressDialog.setTitle(getString(R.string.registering_patient_message_title_text));
 
-        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = layoutInflater.inflate(R.layout.patient_shr_card_search_dialog, null);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientsListActivity.this);
 
@@ -588,8 +588,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                                         .show();
                             } else {
                                 Toast.makeText(getApplicationContext(), "Searching Patient Locally", Toast.LENGTH_LONG).show();
-                                prepareRegisterLocallyDialog(getApplicationContext());
-                                prepareLocalSearchNotifyDialog(getApplicationContext(), SHRPatient);
+                                prepareRegisterLocallyDialog();
+                                prepareLocalSearchNotifyDialog(SHRPatient);
                                 executeLocalPatientSearchInBackgroundTask();
                             }
                         }
@@ -665,7 +665,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            preparedServerSearchNegativeResultHandlerDialog(getApplicationContext());
+            preparedServerSearchNegativeResultHandlerDialog();
             Toast.makeText(getApplicationContext(), "Searching server.", Toast.LENGTH_LONG).show();
         }
 
@@ -829,14 +829,14 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         }
     }
 
-    private void prepareRegisterLocallyDialog(Context context) {
+    private void prepareRegisterLocallyDialog() {
 
         patientRegistrationProgressDialog = new ProgressDialog(this);
         patientRegistrationProgressDialog.setCancelable(false);
         patientRegistrationProgressDialog.setIndeterminate(true);
         patientRegistrationProgressDialog.setTitle(getString(R.string.registering_patient_message_title_text));
 
-        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = layoutInflater.inflate(R.layout.patient_shr_card_search_dialog, null);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientsListActivity.this);
 
