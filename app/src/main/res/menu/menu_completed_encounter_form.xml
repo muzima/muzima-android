@@ -13,13 +13,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:custom="http://schemas.android.com/apk/res-auto">
     <item
             android:id="@+id/form_back_to_draft"
-            android:icon="@drawable/ic_action_undo"
+            android:icon="?attr/icUndo"
             android:text="@string/menu_form_back_to_draft"
             custom:showAsAction="ifRoom|withText"
             android:title="@string/menu_form_back_to_draft"/>
     <item
             android:id="@+id/form_close"
-            android:icon="@drawable/ic_cancel"
+            android:icon="?attr/icCancel"
             android:text="@string/general_close"
             custom:showAsAction="ifRoom|withText"
             android:title="@string/general_close"/>

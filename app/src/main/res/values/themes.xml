@@ -35,6 +35,7 @@
         <item name="icLauncherLogo">@drawable/ic_launcher_logo</item>
         <item name="icCancel">@drawable/ic_cancel</item>
         <item name="icSend">@drawable/ic_action_send</item>
+        <item name="icUndo">@drawable/ic_action_undo</item>
         <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
     </style>
 
@@ -70,6 +71,7 @@
         <item name="icLauncherLogo">@drawable/ic_launcher_logo_light</item>
         <item name="icCancel">@drawable/ic_cancel_light</item>
         <item name="icSend">@drawable/ic_action_send_light</item>
+        <item name="icUndo">@drawable/ic_action_undo_light</item>
         <item name="android:alertDialogTheme">@style/alertDialogThemeLight</item>
     </style>
 
@@ -105,6 +107,7 @@
         <item name="icLauncherLogo">@drawable/ic_launcher_logo</item>
         <item name="icCancel">@drawable/ic_cancel</item>
         <item name="icSend">@drawable/ic_action_send</item>
+        <item name="icUndo">@drawable/ic_action_undo</item>
         <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
     </style>
 
@@ -139,6 +142,7 @@
         <item name="icLauncherLogo">@drawable/ic_launcher_logo_light</item>
         <item name="icCancel">@drawable/ic_cancel_light</item>
         <item name="icSend">@drawable/ic_action_send_light</item>
+        <item name="icUndo">@drawable/ic_action_undo_light</item>
         <item name="android:alertDialogTheme">@style/alertDialogThemeLight</item>
     </style>
 </resources>
