@@ -34,7 +34,7 @@
         android:layout_alignBottom="@+id/chat_textview"
         android:layout_toEndOf="@+id/chat_textview"
         android:text="@string/date_temp"
-        android:textColor="@android:color/white" />
+        android:textColor="?attr/primaryTextColor" />
 
     <TextView
         android:id="@+id/date_set_text"
@@ -44,7 +44,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
         android:padding="10dp"
-        android:background="@color/drawer_background"
+        android:background="?attr/drawerBackgroundColor"
         android:text="@string/date_general" />
 
 </RelativeLayout>
