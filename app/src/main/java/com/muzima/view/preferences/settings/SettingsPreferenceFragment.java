@@ -10,8 +10,10 @@
 
 package com.muzima.view.preferences.settings;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -56,6 +58,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
     private CheckBoxPreference encounterProviderPreference;
     private CheckBoxPreference realTimeSyncPreference;
     private CheckBoxPreference requireMedicalRecordNumberPreference;
+    private Activity mActivity;
 
 
     private String newURL;
@@ -291,6 +294,15 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof Activity){
+            mActivity =(Activity) context;
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
@@ -339,7 +351,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             @Override
             public void handle(SharedPreferences sharedPreferences) {
                 if(NumberUtils.isNumber(sharedPreferences.getString(key, StringUtils.EMPTY))){
-                    LocationController locationController = ((MuzimaApplication) getActivity().getApplication()).getLocationController();
+                    LocationController locationController = ((MuzimaApplication) mActivity.getApplicationContext()).getLocationController();
                     List<Location> locations = new ArrayList<>();
                     try {
                         locations = locationController.getAllLocations();
