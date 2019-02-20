@@ -36,6 +36,7 @@
     <attr name="icLauncherLogo" format="reference"/>
     <attr name="icCancel" format="reference"/>
     <attr name="icSend" format="reference"/>
+    <attr name="icUndo" format="reference"/>
     <declare-styleable name="PagerSlidingTabStrip">
         <attr name="indicatorTextColor" format="color"/>
         <attr name="indicatorColor" format="color"/>

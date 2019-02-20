@@ -58,6 +58,7 @@ import com.muzima.controller.ObservationController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
 import com.muzima.service.GPSFeaturePreferenceService;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.audio.AudioResult;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
@@ -121,9 +122,11 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private String autoSaveIntervalPreference;
     private boolean encounterProviderPreference;
     private final Handler handler = new Handler();
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
 
         formController = ((MuzimaApplication) this.getApplicationContext()).getFormController();
@@ -298,6 +301,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             webView.loadUrl("javascript:document.populateVideo('" + sectionName + "', " + jsonMap + ")");
         }
         super.onResume();
+        themeUtils.onResume(this);
     }
 
     @Override

@@ -40,6 +40,7 @@ import com.muzima.model.FormWithData;
 import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.MuzimaLocationService;
 import com.muzima.utils.Constants;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.audio.AudioResult;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
@@ -91,9 +92,11 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     private Map<String, String> videoResultMap;
     private String sectionName;
     private FormController formController;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         formController = ((MuzimaApplication) this.getApplicationContext()).getFormController();
         ActionBar actionBar = getSupportActionBar();
@@ -194,6 +197,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         }
 
         super.onResume();
+        themeUtils.onResume(this);
     }
 
     @Override

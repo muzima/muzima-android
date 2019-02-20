@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.utils.MediaUtils;
+import com.muzima.utils.ThemeUtils;
 
 import java.io.File;
 
@@ -52,8 +53,10 @@ public class VideoIntent extends Activity {
     private String mSectionName;
     private String mBinaryName;
     private String mBinaryDescription;
+	private final ThemeUtils themeUtils = new ThemeUtils();
 
 	public void onCreate(Bundle savedInstanceState) {
+		themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
         
