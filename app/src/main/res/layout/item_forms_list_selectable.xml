@@ -43,6 +43,7 @@
             android:id="@+id/form_description"
             android:layout_below="@+id/form_name_layout"
             android:paddingTop="5dp"
+            android:textColor="?attr/secondaryTextColor"
             style="@style/ListViewSelectableText">
     </CheckedTextView>
 
