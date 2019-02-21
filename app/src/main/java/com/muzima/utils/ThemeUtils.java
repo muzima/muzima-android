@@ -24,7 +24,7 @@ public class ThemeUtils {
     }
 
     public void onCreate(Activity activity) {
-        lightMode = getPreferenceLightMode(activity);
+        setLightMode(activity);
         setThemeForActivity(activity);
     }
 
@@ -38,7 +38,11 @@ public class ThemeUtils {
         }
     }
 
-    public void setThemeForActivity(Activity activity) {
+    private void setLightMode(Activity activity){
+        lightMode = getPreferenceLightMode(activity);
+    }
+
+    private void setThemeForActivity(Activity activity) {
         if (lightMode) {
             activity.setTheme(lightThemeId);
         } else {
@@ -46,15 +50,14 @@ public class ThemeUtils {
         }
     }
 
-    public boolean getPreferenceLightMode(Context context) {
+    private boolean getPreferenceLightMode(Context context) {
         //check if night mode enabled or not
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String light_mode_key = context.getResources().getString(R.string.preference_light_mode);
         return preferences.getBoolean(light_mode_key, false);
     }
 
-    public boolean isLightModeCahnged(Context context){
+    public boolean isLightModeCahnged(Context context) {
         return (lightMode != getPreferenceLightMode(context));
     }
-
 }
