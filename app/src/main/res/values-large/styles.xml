@@ -506,7 +506,7 @@
     <style name="LoginActivityDivider.Style">
         <item name="android:layout_marginTop">16dp</item>
         <item name="android:layout_marginBottom">16dp</item>
-        <item name="android:background">#@color/login_divider_background</item>
+        <item name="android:background">@color/login_divider_background</item>
     </style>
 
     <style name="LoginActivityDivider">
