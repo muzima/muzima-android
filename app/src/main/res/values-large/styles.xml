@@ -71,11 +71,18 @@
         <item name="android:orientation">vertical</item>
         <item name="android:background">?attr/primaryBackgroundColor</item>
     </style>
-
-    <style name="alertDialogTheme"  parent="Theme.AppCompat.Dialog">
+    <style name="alertDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:windowTitleStyle">@style/alertTitleTextStyle</item>
-        <item name="colorAccent">@android:color/white</item>
-        <item name="android:background">@color/drawer_background</item>
+        <item name="android:background">?attr/drawerBackgroundColor</item>
+        <item name="android:textColor">?attr/primaryTextColor</item>
+        <item name="colorAccent">@color/primary_blue</item>
+    </style>
+
+    <style name="alertDialogThemeLight" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowTitleStyle">@style/alertTitleTextStyle</item>
+        <item name="android:background">?attr/drawerBackgroundColor</item>
+        <item name="android:textColor">?attr/primaryTextColor</item>
+        <item name="colorAccent">@color/primary_blue</item>
     </style>
 
     <style name="alertTitleTextStyle">
@@ -95,7 +102,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_marginStart">25dp</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:background">@color/primary_black</item>
+        <item name="android:background">?attr/primaryBackgroundColor</item>
     </style>
 
     <style name="SummaryHeader">
@@ -193,7 +200,7 @@
 
     <style name="NotClickableSummaryItem">
         <item name="android:layout_width">fill_parent</item>
-        <item name="android:background">?attr/oppositeTextColor</item>
+        <item name="android:background">?attr/primaryBackgroundColor</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">15dp</item>
         <item name="android:paddingRight">15dp</item>
@@ -349,13 +356,13 @@
     </style>
 
     <style name="ObservationGroupByConceptHeader">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:paddingTop">4dp</item>
         <item name="android:paddingBottom">4dp</item>
-        <item name="android:textColor">#ffffff</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">25sp</item>
     </style>
 
@@ -430,7 +437,7 @@
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_weight">.5</item>
         <item name="android:gravity">left</item>
-        <item name="android:textColor">#ffffff</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">18sp</item>
     </style>
     <style name="EncounterDate">
@@ -446,7 +453,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">.6</item>
         <item name="android:gravity">left</item>
-        <item name="android:textColor">#ffffff</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">20sp</item>
     </style>
 
@@ -499,7 +506,7 @@
     <style name="LoginActivityDivider.Style">
         <item name="android:layout_marginTop">16dp</item>
         <item name="android:layout_marginBottom">16dp</item>
-        <item name="android:background">#0d484e</item>
+        <item name="android:background">#@color/login_divider_background</item>
     </style>
 
     <style name="LoginActivityDivider">
@@ -507,7 +514,7 @@
         <item name="android:layout_height">1dp</item>
         <item name="android:layout_marginTop">16dp</item>
         <item name="android:layout_marginBottom">16dp</item>
-        <item name="android:background">#0d484e</item>
+        <item name="android:background">@color/login_divider_background</item>
     </style>
 
     <style name="LoginInfoLayout">
@@ -521,7 +528,7 @@
     <style name="LoginInfoLayoutDivider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">#eeeeee</item>
+        <item name="android:background">?attr/loginInfoDividerBackgroundColor</item>
     </style>
 
     <style name="LoginLandscapeLeftLayout">
@@ -695,7 +702,6 @@
         <item name="android:paddingRight">15dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:background">@drawable/list_selector_blue</item>
-        <item name="android:textColor">@android:color/white</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>
 

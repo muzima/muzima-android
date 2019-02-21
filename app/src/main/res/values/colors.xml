@@ -46,6 +46,5 @@
      <color name="login_authenticating_background">#12A5F4</color>
      <color name="error_text_color">#ffaf6267</color>
      <color name="pending_resource_update_color">#990000</color>
-
-
+    <color name="login_divider_background">#0d484e</color>
  </resources>
