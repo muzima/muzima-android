@@ -47,11 +47,14 @@
 
     <style name="PreferencesTheme.Dark" parent="AppBaseTheme">
         <item name="android:preferenceCategoryStyle">@style/preferenceCategoryStyle</item>
+        <item name="android:textColorPrimary">@color/preference_primary_color</item>
+        <item name="android:textColorSecondary">@color/preference_secondary_color</item>
     </style>
-
 
     <style name="PreferencesTheme.Light" parent="AppBaseTheme.Light">
         <item name="android:preferenceCategoryStyle">@style/preferenceCategoryStyle</item>
+        <item name="android:textColorPrimary">@color/preference_primary_color_light</item>
+        <item name="android:textColorSecondary">@color/preference_secondary_color_light</item>
     </style>
 
     <style name="preferenceCategoryStyle">
