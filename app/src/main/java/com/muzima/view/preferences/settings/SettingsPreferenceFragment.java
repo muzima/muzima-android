@@ -37,6 +37,7 @@ import com.muzima.tasks.ValidateURLTask;
 import com.muzima.util.Constants;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.preferences.SettingsActivity;
 
 import org.apache.commons.lang.math.NumberUtils;
@@ -436,23 +437,12 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         }
     }
 
-    private Drawable getIcon(int iconIdForLightMode, int iconIdForNightMode) {
-        String lightModePreferenceKey = getResources().getString(R.string.preference_light_mode);
-        boolean lightMode = getPreferenceScreen().getSharedPreferences().getBoolean(lightModePreferenceKey, false);
-        if (lightMode) {
-            return getResources().getDrawable(iconIdForLightMode);
-        } else {
-            return getResources().getDrawable(iconIdForNightMode);
-        }
-    }
-
     private Drawable getIconWarning(){
-        return getIcon(R.drawable.ic_warning_light, R.drawable.ic_warning);
+        return ThemeUtils.getIconWarning(getContext());
     }
 
     private Drawable getIconRefresh(){
-
-        return getIcon(R.drawable.ic_refresh_light, R.drawable.ic_refresh);
+        return ThemeUtils.getIconRefresh(getContext());
 
     }
 }

@@ -117,7 +117,7 @@ public class MainActivity extends BroadcastListenerActivity {
     private void showAlertDialog() {
         new AlertDialog.Builder(MainActivity.this)
                 .setCancelable(true)
-                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                .setIcon(themeUtils.getIconWarning(this))
                 .setTitle(getResources().getString(R.string.title_logout_confirm))
                 .setMessage(getResources().getString(R.string.warning_logout_confirm))
                 .setPositiveButton(getString(R.string.general_yes), dialogYesClickListener())

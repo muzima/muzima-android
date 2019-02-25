@@ -300,7 +300,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         AlertDialog.Builder builder = new AlertDialog.Builder(PatientsListActivity.this);
         builder
                 .setCancelable(true)
-                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                .setIcon(themeUtils.getIconWarning(this))
                 .setTitle(getResources().getString(R.string.title_logout_confirm))
                 .setMessage(getResources().getString(R.string.confirm_patient_id_exists))
                 .setPositiveButton("Yes", yesClickListener())
