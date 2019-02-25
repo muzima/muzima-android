@@ -75,16 +75,16 @@
         <item name="android:windowTitleStyle">@style/alertTitleTextStyle</item>
         <item name="android:background">?attr/drawerBackgroundColor</item>
         <item name="android:textColor">?attr/primaryTextColor</item>
-        <item name="android:textColorPrimary">?attr/primaryTextColor</item>
-        <item name="colorAccent">@color/primary_blue</item>
+        <item name="android:textColorSecondary">?attr/primaryTextColor</item>
+        <item name="android:colorAccent">@color/primary_blue</item>
     </style>
 
     <style name="alertDialogThemeLight" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowTitleStyle">@style/alertTitleTextStyle</item>
         <item name="android:background">?attr/drawerBackgroundColor</item>
         <item name="android:textColor">?attr/primaryTextColor</item>
-        <item name="android:textColorPrimary">?attr/primaryTextColor</item>
-        <item name="colorAccent">@color/primary_blue</item>
+        <item name="android:textColorSecondary">?attr/primaryTextColor</item>
+        <item name="android:colorAccent">@color/primary_blue</item>
     </style>
 
     <style name="alertTitleTextStyle">
