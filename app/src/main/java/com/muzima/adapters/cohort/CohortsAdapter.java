@@ -96,7 +96,6 @@ public abstract class CohortsAdapter extends ListAdapter<Cohort> {
          }
 
          void setDefaultTextColor(){
-
              TypedValue typedValue = new TypedValue();
              Resources.Theme theme = getContext().getTheme();
              theme.resolveAttribute(R.attr.primaryTextColor, typedValue, true);

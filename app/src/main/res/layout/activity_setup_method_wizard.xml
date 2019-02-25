@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?attr/primaryBackgroundColor">
+                android:layout_height="match_parent">
 
     <LinearLayout
 
@@ -32,7 +31,6 @@
                       android:layout_height="wrap_content"
                       android:layout_marginTop="10dp"
                       android:textColor="@color/primary_blue"
-                      android:background="?attr/primaryBackgroundColor"
                       android:cursorVisible="true"
                       android:layout_marginBottom="10dp"
                       android:hint="@string/hint_configuration_search"

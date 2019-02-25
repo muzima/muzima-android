@@ -32,7 +32,6 @@
             <EditText android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:layout_marginTop="10dp"
-                      android:background="?attr/primaryBackgroundColor"
                       android:textColor="@color/primary_blue"
                       android:cursorVisible="true"
                       android:layout_marginBottom="10dp"

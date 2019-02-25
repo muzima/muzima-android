@@ -13,7 +13,6 @@
               android:layout_height="wrap_content"
               android:layout_marginTop="7dp"
               android:layout_marginBottom="7dp"
-              android:background="?attr/primaryBackgroundColor"
               android:orientation="vertical">
 
     <CheckedTextView
