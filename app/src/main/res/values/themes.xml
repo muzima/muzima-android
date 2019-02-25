@@ -7,7 +7,6 @@
     <style name="AppBaseTheme" parent="@style/Theme.AppCompat">
         <item name="android:windowBackground">@color/primary_black</item>
         <item name="colorAccent">@color/primary_blue</item>
-        <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
         <item name="colorPrimary">@color/primary_black</item>
         <item name="primaryBackgroundColor">@color/primary_black</item>
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color</item>
@@ -44,7 +43,6 @@
     <style name="AppBaseTheme.Light" parent="@style/Theme.AppCompat.Light">
         <item name="android:windowBackground">@color/primary_white</item>
         <item name="colorAccent">@color/primary_blue</item>
-        <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
         <item name="colorPrimary">@color/primary_white</item>
         <item name="primaryBackgroundColor">@color/primary_white</item>
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color_light</item>
@@ -82,7 +80,6 @@
     <style name="AppThemeNoActionBar.Dark" parent="@style/Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@color/primary_black</item>
         <item name="colorAccent">@color/primary_blue</item>
-        <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
         <item name="primaryBackgroundColor">@color/primary_black</item>
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color</item>
         <item name="primaryTextColor">@color/primary_white</item>
@@ -118,7 +115,6 @@
     <style name="AppThemeNoActionBar.Light" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@color/primary_white</item>
         <item name="colorAccent">@color/primary_blue</item>
-        <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
         <item name="primaryBackgroundColor">@color/primary_white</item>
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color_light</item>
         <item name="primaryTextColor">@color/primary_black</item>
