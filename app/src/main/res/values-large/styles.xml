@@ -72,20 +72,22 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:background">?attr/primaryBackgroundColor</item>
     </style>
+
     <style name="alertDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:windowTitleStyle">@style/alertTitleTextStyle</item>
         <item name="android:background">?attr/drawerBackgroundColor</item>
         <item name="android:textColor">?attr/primaryTextColor</item>
-        <item name="colorAccent">@color/primary_blue</item>
+        <item name="android:textColorSecondary">?attr/primaryTextColor</item>
+        <item name="android:colorAccent">@color/primary_blue</item>
     </style>
 
     <style name="alertDialogThemeLight" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowTitleStyle">@style/alertTitleTextStyle</item>
         <item name="android:background">?attr/drawerBackgroundColor</item>
         <item name="android:textColor">?attr/primaryTextColor</item>
-        <item name="colorAccent">@color/primary_blue</item>
+        <item name="android:textColorSecondary">?attr/primaryTextColor</item>
+        <item name="android:colorAccent">@color/primary_blue</item>
     </style>
 
     <style name="alertTitleTextStyle">
@@ -97,7 +99,6 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:background">?attr/primaryBackgroundColor</item>
     </style>
 
     <style name="setupMethodConfigurationsList">
@@ -105,7 +106,6 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_marginStart">25dp</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:background">?attr/primaryBackgroundColor</item>
     </style>
 
     <style name="SummaryHeader">
@@ -203,7 +203,6 @@
 
     <style name="NotClickableSummaryItem">
         <item name="android:layout_width">fill_parent</item>
-        <item name="android:background">?attr/primaryBackgroundColor</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">15dp</item>
         <item name="android:paddingRight">15dp</item>
@@ -283,7 +282,6 @@
         <item name="android:layout_weight">1</item>
         <item name="android:padding">5dp</item>
         <item name="android:textColor">?attr/primaryTextColor</item>
-        <item name="android:background">?attr/primaryBackgroundColor</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:textSize">20sp</item>
     </style>
@@ -294,7 +292,6 @@
         <item name="android:paddingTop">2dp</item>
         <item name="android:paddingBottom">5dp</item>
         <item name="android:textColor">?attr/secondaryTextColor</item>
-        <item name="android:background">?attr/primaryBackgroundColor</item>
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:textSize">15sp</item>
     </style>
@@ -315,7 +312,6 @@
         <item name="android:orientation">horizontal</item>
         <item name="android:paddingLeft">15dp</item>
         <item name="android:paddingRight">15dp</item>
-        <item name="android:background">?attr/primaryBackgroundColor</item>
     </style>
 
     <style name="ListSectionHeader">
@@ -482,7 +478,6 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:background">?attr/primaryBackgroundColor</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">32dp</item>
     </style>
@@ -627,7 +622,6 @@
         <item name="android:textSize">20sp</item>
     </style>
     <style name="MuzimaListView" parent="@android:style/Widget.ListView">
-        <item name="android:background">?attr/primaryBackgroundColor</item>
         <item name="android:divider">@drawable/divider</item>
         <item name="android:dividerHeight">1dp</item>
         <item name="android:listSelector">@null</item>
@@ -640,7 +634,6 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textColor">@color/primary_blue</item>
-        <item name="android:background">?attr/primaryBackgroundColor</item>
         <item name="android:textSize">20sp</item>
         <item name="android:layout_marginTop">16dp</item>
         <item name="android:layout_marginBottom">16dp</item>
@@ -775,6 +768,7 @@
         <item name="android:textColor">@color/primary_blue</item>
         <item name="android:textSize">16sp</item>
     </style>
+
     <!--Feedback and help dialog -->
     <style name="MessageActivityLayout">
         <item name="android:layout_width">match_parent</item>
@@ -783,8 +777,8 @@
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingTop">16dp</item>
         <item name="android:paddingRight">16dp</item>
-        <item name="android:background">?attr/primaryBackgroundColor</item>
     </style>
+
     <style name="MessageActivityText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -792,6 +786,7 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">?attr/primaryTextColor</item>
     </style>
+
     <style name="MessageActivityButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
