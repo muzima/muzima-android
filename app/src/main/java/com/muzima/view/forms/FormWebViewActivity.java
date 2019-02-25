@@ -267,7 +267,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(FormWebViewActivity.this);
             builder
                     .setCancelable(true)
-                    .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                    .setIcon(themeUtils.getIconWarning(this))
                     .setTitle(getResources().getString(R.string.general_caution))
                     .setMessage(getResources().getString(R.string.warning_form_close))
                     .setPositiveButton("Yes", positiveClickListener())

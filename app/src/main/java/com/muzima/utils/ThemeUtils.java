@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import com.muzima.R;
 
@@ -50,7 +51,7 @@ public class ThemeUtils {
         }
     }
 
-    private boolean getPreferenceLightMode(Context context) {
+    private static boolean getPreferenceLightMode(Context context) {
         //check if night mode enabled or not
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String light_mode_key = context.getResources().getString(R.string.preference_light_mode);
@@ -59,5 +60,22 @@ public class ThemeUtils {
 
     public boolean isLightModeCahnged(Context context) {
         return (lightMode != getPreferenceLightMode(context));
+    }
+
+    private static Drawable getIcon(Context context, int iconIdForLightMode, int iconIdForNightMode) {
+        boolean lightMode = getPreferenceLightMode(context);
+        if (lightMode) {
+            return context.getResources().getDrawable(iconIdForLightMode);
+        } else {
+            return context.getResources().getDrawable(iconIdForNightMode);
+        }
+    }
+
+    public static Drawable getIconWarning(Context context){
+        return getIcon(context, R.drawable.ic_warning_light, R.drawable.ic_warning);
+    }
+
+    public static Drawable getIconRefresh(Context context){
+        return getIcon(context, R.drawable.ic_refresh_light, R.drawable.ic_refresh);
     }
 }

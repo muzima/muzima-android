@@ -105,7 +105,7 @@ public class LoginActivity extends Activity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder
                     .setCancelable(true)
-                    .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                    .setIcon(themeUtils.getIconWarning(this))
                     .setTitle(getResources().getString(R.string.general_alert))
                     .setMessage(getResources().getString(R.string.info_session_time_out))
                     .setPositiveButton(R.string.general_ok, null).show();

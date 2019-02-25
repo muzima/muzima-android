@@ -157,7 +157,7 @@ public class PatientSummaryActivity extends BaseActivity {
         if (list.contains(patientIdentifier)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(true)
-                    .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                    .setIcon(themeUtils.getIconWarning(this))
                     .setTitle(getString(R.string.general_notice))
                     .setMessage(getString(R.string.info_client_identifier_change))
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -734,6 +734,4 @@ public class PatientSummaryActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
-
-
 }
