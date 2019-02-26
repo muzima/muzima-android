@@ -37,7 +37,6 @@ public class NotificationsListActivity extends NotificationActivityBase {
     private boolean notificationsSyncInProgress;
     private final ThemeUtils themeUtils = new ThemeUtils();
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);

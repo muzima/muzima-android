@@ -22,7 +22,7 @@
     <attr name="dataTipColor" format="color"/>
     <attr name="selectableHintText" format="color"/>
     <attr name="themeColor" format="color"/>
-    <attr name="list_multi_selector_blue" format="reference"/>
+    <attr name="listMultiSelectorBlue" format="reference"/>
     <attr name="loginLayoutBackground" format="reference"/>
     <attr name="icRefresh" format="reference"/>
     <attr name="icActionUpload" format="reference"/>

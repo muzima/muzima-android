@@ -21,7 +21,7 @@
         <item name="loginInfoDividerBackgroundColor">@color/login_info_divider_background</item>
         <item name="selectableHintText">@color/selectable_hint_text</item>
         <item name="themeColor">@color/theme_color</item>
-        <item name="list_multi_selector_blue">@drawable/list_multi_selector_blue</item>
+        <item name="listMultiSelectorBlue">@drawable/list_multi_selector_blue</item>
         <item name="loginLayoutBackground">@drawable/login_layout_background</item>
         <item name="icLabels">@drawable/ic_labels</item>
         <item name="icRefresh">@drawable/ic_refresh</item>
@@ -54,7 +54,7 @@
         <item name="tabBackgroundColor">@color/tab_background_color_light</item>
         <item name="drawerBackgroundColor">@color/drawer_background_light</item>
         <item name="themeColor">@color/theme_color_light</item>
-        <item name="list_multi_selector_blue">@drawable/list_multi_selector_blue_light</item>
+        <item name="listMultiSelectorBlue">@drawable/list_multi_selector_blue_light</item>
         <item name="syncTextBackgroundColor">@color/sync_text_background_light</item>
         <item name="loginDividerBackgroundColor">@color/login_divider_background_light</item>
         <item name="loginInfoDividerBackgroundColor">@color/login_info_divider_background_light</item>
@@ -91,7 +91,7 @@
         <item name="tabBackgroundColor">@color/tab_background_color_dark</item>
         <item name="drawerBackgroundColor">@color/drawer_background</item>
         <item name="themeColor">@color/theme_color</item>
-        <item name="list_multi_selector_blue">@drawable/list_multi_selector_blue</item>
+        <item name="listMultiSelectorBlue">@drawable/list_multi_selector_blue</item>
         <item name="syncTextBackgroundColor">@color/sync_text_background</item>
         <item name="loginDividerBackgroundColor">@color/login_divider_background</item>
         <item name="loginInfoDividerBackgroundColor">@color/login_info_divider_background</item>
@@ -127,7 +127,7 @@
         <item name="tabBackgroundColor">@color/tab_background_color_light</item>
         <item name="drawerBackgroundColor">@color/drawer_background_light</item>
         <item name="themeColor">@color/theme_color_light</item>
-        <item name="list_multi_selector_blue">@drawable/list_multi_selector_blue_light</item>
+        <item name="listMultiSelectorBlue">@drawable/list_multi_selector_blue_light</item>
         <item name="syncTextBackgroundColor">@color/sync_text_background_light</item>
         <item name="loginDividerBackgroundColor">@color/login_divider_background_light</item>
         <item name="loginInfoDividerBackgroundColor">@color/login_info_divider_background_light</item>

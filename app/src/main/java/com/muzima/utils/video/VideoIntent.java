@@ -53,12 +53,12 @@ public class VideoIntent extends Activity {
     private String mSectionName;
     private String mBinaryName;
     private String mBinaryDescription;
-	private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
 	public void onCreate(Bundle savedInstanceState) {
-		themeUtils.onCreate(this);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video);
+	    themeUtils.onCreate(this);
+	    super.onCreate(savedInstanceState);
+	    setContentView(R.layout.activity_video);
         
         Intent i = getIntent();
         String videoPath = i.getStringExtra(KEY_VIDEO_PATH);

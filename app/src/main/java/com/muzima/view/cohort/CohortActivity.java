@@ -12,12 +12,11 @@ package com.muzima.view.cohort;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.widget.Toast;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortPagerAdapter;
 import com.muzima.utils.Fonts;
