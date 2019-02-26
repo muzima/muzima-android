@@ -30,7 +30,6 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
     private Encounter encounter;
     private EncounterObservationsAdapter encounterObservationsAdapter;
     private View noDataView;
-
     private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override

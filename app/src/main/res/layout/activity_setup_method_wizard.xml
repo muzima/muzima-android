@@ -47,7 +47,7 @@
         </RelativeLayout>
 
         <ScrollView style="@style/setupMethodConfigurationsList"
-                    android:background="?attr/list_multi_selector_blue"
+                    android:background="?attr/listMultiSelectorBlue"
                     android:layout_below="@+id/guided_setup_header"
                     android:layout_height="match_parent"
                     android:layout_width="match_parent"
@@ -66,7 +66,7 @@
             android:layout_marginTop="2dp"
             android:layout_marginBottom="20dp"
             android:id="@+id/advanced_setup_layout"
-            android:background="?attr/list_multi_selector_blue"
+            android:background="?attr/listMultiSelectorBlue"
             android:choiceMode="singleChoice"
             android:layout_above="@+id/next_button_layout">
         <TextView style="@style/DividerLine"/>

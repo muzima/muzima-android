@@ -395,7 +395,6 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
         return this.indicatorColor;
     }
 
-
     public int getIndicatorTextColor() {
         return indicatorTextColor;
     }

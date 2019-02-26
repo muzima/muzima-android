@@ -467,7 +467,7 @@ public class PatientSummaryActivity extends BaseActivity {
 
     private void prepareWriteToCardOptionDialog(Context context) {
 
-        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = layoutInflater.inflate(R.layout.write_to_card_option_dialog_layout, null);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientSummaryActivity.this);
 

@@ -53,7 +53,7 @@
         android:id="@+id/notificationDetail"
         style="@style/ListHeader"
         android:layout_height="wrap_content"
-        android:background="?attr/list_multi_selector_blue"/>
+        android:background="?attr/listMultiSelectorBlue"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

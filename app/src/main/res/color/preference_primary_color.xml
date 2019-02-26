@@ -9,6 +9,6 @@
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_enabled="false" android:color="#80ffffff"/>
-    <item android:color="#ffffffff"/>
+    <item android:state_enabled="false" android:color="#80FFFFFF"/>
+    <item android:color="#FFFFFFFF"/>
 </selector>

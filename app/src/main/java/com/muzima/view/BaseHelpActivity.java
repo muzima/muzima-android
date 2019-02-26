@@ -19,7 +19,6 @@ public class BaseHelpActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
     }
@@ -34,8 +33,8 @@ public class BaseHelpActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
-        themeUtils.onResume(this);
         super.onResume();
+        themeUtils.onResume(this);
     }
 
     @Override
