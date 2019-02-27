@@ -614,6 +614,7 @@
     </style>
 
     <style name="MuzimaListView" parent="@android:style/Widget.ListView">
+        <item name="android:background">?attr/primaryBackgroundColor</item>
         <item name="android:divider">@drawable/divider</item>
         <item name="android:dividerHeight">1dp</item>
         <item name="android:listSelector">@null</item>
