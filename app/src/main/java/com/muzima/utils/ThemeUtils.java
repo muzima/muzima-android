@@ -30,7 +30,7 @@ public class ThemeUtils {
     }
 
     public void onResume(Activity activity) {
-        if (isLightModeCahnged(activity)) {
+        if (isLightModeChanged(activity)) {
             Intent intent = activity.getIntent();
             activity.finish();
             activity.overridePendingTransition(0, 0);
@@ -58,7 +58,7 @@ public class ThemeUtils {
         return preferences.getBoolean(light_mode_key, false);
     }
 
-    public boolean isLightModeCahnged(Context context) {
+    public boolean isLightModeChanged(Context context) {
         return (lightMode != getPreferenceLightMode(context));
     }
 
