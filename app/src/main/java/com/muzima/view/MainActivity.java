@@ -103,7 +103,7 @@ public class MainActivity extends BroadcastListenerActivity {
 
     @Override
     protected void onDestroy() {
-        if (!themeUtils.isLightModeCahnged(this)) {
+        if (!themeUtils.isLightModeChanged(this)) {
             ((MuzimaApplication) getApplication()).logOut();
         }
         super.onDestroy();
