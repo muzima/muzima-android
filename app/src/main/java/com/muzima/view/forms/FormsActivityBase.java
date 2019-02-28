@@ -11,7 +11,6 @@
 package com.muzima.view.forms;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
@@ -45,7 +44,6 @@ public abstract class FormsActivityBase extends BroadcastListenerActivity {
 
     protected abstract MuzimaPagerAdapter createFormsPagerAdapter();
 
-
     void initPagerIndicator() {
         Intent intent = getIntent();
         int tabToOpen = intent.getIntExtra(KEY_FORMS_TAB_TO_OPEN, -1);
@@ -53,7 +51,7 @@ public abstract class FormsActivityBase extends BroadcastListenerActivity {
             tabToOpen = 0;
         }
         PagerSlidingTabStrip pagerTabsLayout = findViewById(R.id.pager_indicator);
-        pagerTabsLayout.setTextColor(Color.WHITE);
+        pagerTabsLayout.setTextColor(pagerTabsLayout.getIndicatorTextColor());
         pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));
         pagerTabsLayout.setSelectedTextColor(getResources().getColor(R.color.tab_indicator));
         pagerTabsLayout.setTypeface(Fonts.roboto_medium(this), -1);

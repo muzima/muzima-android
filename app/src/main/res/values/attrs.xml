@@ -9,17 +9,46 @@
   -->
 
 <resources>
+    <attr name="primaryBackgroundColor" format="reference|color"/>
+    <attr name="dashBoardBaseTextColor" format="color"/>
+    <attr name="primaryTextColor" format="reference|color"/>
+    <attr name="secondaryTextColor" format="color"/>
+    <attr name="oppositeTextColor" format="color"/>
+    <attr name="tabBackgroundColor" format="color"/>
+    <attr name="drawerBackgroundColor" format="color"/>
+    <attr name="syncTextBackgroundColor" format="color"/>
+    <attr name="loginDividerBackgroundColor" format="color"/>
+    <attr name="loginInfoDividerBackgroundColor" format="color"/>
+    <attr name="dataTipColor" format="color"/>
+    <attr name="selectableHintText" format="color"/>
+    <attr name="themeColor" format="color"/>
+    <attr name="listMultiSelectorBlue" format="reference"/>
+    <attr name="loginLayoutBackground" format="reference"/>
+    <attr name="icRefresh" format="reference"/>
+    <attr name="icActionUpload" format="reference"/>
+    <attr name="icLabels" format="reference"/>
+    <attr name="icDiscard" format="reference"/>
+    <attr name="icDownload" format="reference"/>
+    <attr name="icReplyNotification" format="reference"/>
+    <attr name="icAddClient" format="reference"/>
+    <attr name="icSearch" format="reference"/>
+    <attr name="listSelectorBlue" format="reference"/>
+    <attr name="icLauncherLogo" format="reference"/>
+    <attr name="icCancel" format="reference"/>
+    <attr name="icSend" format="reference"/>
+    <attr name="icUndo" format="reference"/>
     <declare-styleable name="PagerSlidingTabStrip">
-        <attr name="indicatorColor" format="color" />
-        <attr name="underlineColor" format="color" />
-        <attr name="dividerColor" format="reference" />
-        <attr name="indicatorHeight" format="dimension" />
-        <attr name="underlineHeight" format="dimension" />
-        <attr name="tabDividerPadding" format="dimension" />
-        <attr name="tabPaddingLeftRight" format="dimension" />
-        <attr name="scrollOffset" format="dimension" />
-        <attr name="tabCustomBackground" format="reference" />
-        <attr name="shouldExpand" format="boolean" />
+        <attr name="indicatorTextColor" format="color"/>
+        <attr name="indicatorColor" format="color"/>
+        <attr name="underlineColor" format="color"/>
+        <attr name="dividerColor" format="reference"/>
+        <attr name="indicatorHeight" format="dimension"/>
+        <attr name="underlineHeight" format="dimension"/>
+        <attr name="tabDividerPadding" format="dimension"/>
+        <attr name="tabPaddingLeftRight" format="dimension"/>
+        <attr name="scrollOffset" format="dimension"/>
+        <attr name="tabCustomBackground" format="reference"/>
+        <attr name="shouldExpand" format="boolean"/>
     </declare-styleable>
 
 </resources>

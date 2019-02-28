@@ -31,6 +31,7 @@ import com.muzima.adapters.concept.AutoCompleteProviderAdapter;
 import com.muzima.adapters.concept.SelectedProviderAdapter;
 import com.muzima.api.model.Provider;
 import com.muzima.utils.Constants;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
 
@@ -43,9 +44,11 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
     private AutoCompleteTextView autoCompleteProvidersTextView;
     private boolean actionModeActive = false;
     private ActionMode actionMode;
+    private ThemeUtils themeUtils = new ThemeUtils(R.style.PreferencesTheme_Light, R.style.PreferencesTheme_Dark);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
 
@@ -60,7 +63,7 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
         selectedProviderListView.setEmptyView(findViewById(R.id.no_provider_added));
         selectedProviderListView.setOnItemClickListener(selectedProviderOnClickListener());
         autoCompleteProvidersTextView = findViewById(R.id.add_provider);
-        AutoCompleteProviderAdapter autoCompleteProviderAdapter = new AutoCompleteProviderAdapter(applicationContext, R.layout.item_option_autocomplete, autoCompleteProvidersTextView);
+        AutoCompleteProviderAdapter autoCompleteProviderAdapter = new AutoCompleteProviderAdapter(this, R.layout.item_option_autocomplete, autoCompleteProvidersTextView);
         autoCompleteProvidersTextView.setAdapter(autoCompleteProviderAdapter);
         autoCompleteProvidersTextView.setOnItemClickListener(autoCompleteOnClickListener());
 
@@ -125,6 +128,7 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        themeUtils.onResume(this);
         selectedProviderAdapter.reloadData();
     }
 
@@ -199,5 +203,9 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
             }
         }
         return providers;
+    }
+
+    public void setThemeUtils(ThemeUtils themeUtils){
+        this.themeUtils = themeUtils;
     }
 }

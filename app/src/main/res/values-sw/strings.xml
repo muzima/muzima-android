@@ -601,4 +601,6 @@
     <string name="hint_help_prompt">Tafadhali ingiza ujumbe wako</string>
     <string name="message_help_halt">Ujumbe wako haututumwa.</string>
     <string name="ask_help">Kuomba msaada</string>
+    <string name="title_light_mode">Wezesha hali ya usiku</string>
+    <string name="hint_light_mode">Wezesha mwanga mandhari</string>
 </resources>

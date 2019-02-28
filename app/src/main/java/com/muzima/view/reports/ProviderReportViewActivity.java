@@ -24,6 +24,7 @@ import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Provider;
 import com.muzima.model.AvailableForm;
 import com.muzima.controller.FormController;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.javascriptinterface.FormDataJavascriptInterface;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
@@ -37,9 +38,11 @@ public class ProviderReportViewActivity extends BroadcastListenerActivity {
     public Provider provider;
     private MuzimaProgressDialog progressDialog;
     private FormTemplate reportTemplate;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_webview);
         progressDialog = new MuzimaProgressDialog(this);
@@ -51,6 +54,12 @@ public class ProviderReportViewActivity extends BroadcastListenerActivity {
             Log.e(getClass().getSimpleName(),"Could not obtain report template");
         }
         setupWebView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        themeUtils.onResume(this);
     }
 
     private void setupWebView() {

@@ -38,6 +38,7 @@ import com.muzima.model.AvailableForm;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.cohort.CohortWizardActivity;
@@ -61,8 +62,10 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
     private MuzimaProgressDialog progressDialog;
     private ListView listView;
     private boolean isProcessDialogOn = false;
+    private final ThemeUtils themeUtils = new ThemeUtils(R.style.WizardTheme_Light, R.style.WizardTheme_Dark);
 
     public void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_form_templates_wizard, null);
         setContentView(mainLayout);
@@ -195,7 +198,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
     }
 
     private AllAvailableFormsAdapter createAllFormsAdapter() {
-        return new AllAvailableFormsAdapter(getApplicationContext(), R.layout.item_forms_list_selectable, ((MuzimaApplication) getApplicationContext()).getFormController());
+        return new AllAvailableFormsAdapter(this, R.layout.item_forms_list_selectable, ((MuzimaApplication) getApplicationContext()).getFormController());
     }
 
     private ListView getListView() {

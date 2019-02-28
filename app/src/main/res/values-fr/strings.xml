@@ -663,4 +663,6 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="hint_help_prompt">S\'il vous plaît entrer votre message</string>
     <string name="message_help_halt">Votre message ne sera pas envoyé.</string>
     <string name="ask_help">Demander de l\'aide</string>
+    <string name="title_light_mode">Activer le mode nuit</string>
+    <string name="hint_light_mode">Activer le thème de la lumière</string>
 </resources>

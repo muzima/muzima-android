@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.ThemeUtils;
 
 public class InteractiveHelpActivity extends BaseActivity {
     private static final String EMAIL_TO = "help@muzima.org";
@@ -22,13 +23,21 @@ public class InteractiveHelpActivity extends BaseActivity {
     private Button cancelButton;
     private EditText helpText;
     private Spinner options;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interactive_help);
         initViews();
         setupListeners();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        themeUtils.onResume(this);
     }
 
     private void setupListeners() {

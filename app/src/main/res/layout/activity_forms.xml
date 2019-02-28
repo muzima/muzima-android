@@ -23,18 +23,17 @@
                 android:id="@+id/pager_indicator"
                 custom:indicatorColor="@color/tab_indicator"
                 custom:indicatorHeight="5dp"
+                custom:indicatorTextColor = "?attr/primaryTextColor"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/pager_indicator_height"
                 android:overScrollMode="ifContentScrolls"
                 android:layout_alignParentBottom="true"
-                android:background="@color/tab_background"/>
+                android:background="?attr/tabBackgroundColor"/>
 
         <android.support.v4.view.ViewPager
                 android:id="@+id/pager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-		android:background="@color/primary_black"
-                />
+                android:layout_height="match_parent"/>
 
     </LinearLayout>
     <!-- The navigation drawer -->
@@ -42,7 +41,7 @@
                  android:layout_gravity="right"
                  android:layout_width="240dp"
                  android:layout_height="match_parent"
-                 android:background="@color/drawer_background">
+                 android:background="?attr/drawerBackgroundColor">
 
         <ListView
                 android:id="@+id/tags_list"
@@ -58,7 +57,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textSize="20sp"
-                android:textColor="#ffffff"
+                android:textColor="?attr/primaryTextColor"
                 android:text="@string/info_tag_unavailable"
                 android:visibility="gone">
         </TextView>

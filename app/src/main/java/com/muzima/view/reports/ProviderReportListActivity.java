@@ -14,6 +14,7 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.reports.AvailableReportsAdapter;
 import com.muzima.model.AvailableForm;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 
 import static android.view.View.INVISIBLE;
@@ -25,9 +26,11 @@ public class ProviderReportListActivity extends BroadcastListenerActivity implem
     private View noDataView;
     private FrameLayout progressBarContainer;
     private AvailableReportsAdapter reportsAdapter;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_list);
         progressBarContainer = findViewById(R.id.progressbarContainer);
@@ -55,7 +58,7 @@ public class ProviderReportListActivity extends BroadcastListenerActivity implem
         noDataTipTextView.setText(R.string.hint_reports_unavailable);
 
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
-        noDataTipTextView.setTypeface(Fonts.roboto_light(this));
+        noDataTipTextView.setTypeface(Fonts.roboto_medium(this));
     }
 
     @Override
@@ -72,6 +75,7 @@ public class ProviderReportListActivity extends BroadcastListenerActivity implem
     protected void onResume() {
         super.onResume();
         reportsAdapter.reloadData();
+        themeUtils.onResume(this);
     }
 
     @Override

@@ -49,6 +49,7 @@ import com.muzima.model.shr.kenyaemr.KenyaEmrSHRModel;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
 import com.muzima.utils.smartcard.KenyaEmrShrMapper;
@@ -121,10 +122,13 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     private MenuItem shrCardItem;
     private static final boolean DEFAULT_SHR_STATUS = false;
+    private final ThemeUtils themeUtils = new ThemeUtils();
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_list);
         Bundle intentExtras = getIntent().getExtras();
@@ -296,7 +300,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         AlertDialog.Builder builder = new AlertDialog.Builder(PatientsListActivity.this);
         builder
                 .setCancelable(true)
-                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                .setIcon(ThemeUtils.getIconWarning(this))
                 .setTitle(getResources().getString(R.string.title_logout_confirm))
                 .setMessage(getResources().getString(R.string.confirm_patient_id_exists))
                 .setPositiveButton("Yes", yesClickListener())
@@ -361,15 +365,16 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     protected void onResume() {
         super.onResume();
-        preparedServerSearchNegativeResultHandlerDialog(getApplicationContext());
+        themeUtils.onResume(this);
+        preparedServerSearchNegativeResultHandlerDialog();
         if (!intentBarcodeResults)
             patientAdapter.reloadData();
 
     }
 
-    private void prepareLocalSearchNotifyDialog(Context context, Patient patient) {
+    private void prepareLocalSearchNotifyDialog(Patient patient) {
 
-        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = layoutInflater.inflate(R.layout.patient_shr_card_search_dialog, null);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientsListActivity.this);
 
@@ -408,14 +413,14 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         });
     }
 
-    private void preparedServerSearchNegativeResultHandlerDialog(Context context) {
+    private void preparedServerSearchNegativeResultHandlerDialog() {
 
         patientRegistrationProgressDialog = new ProgressDialog(this);
         patientRegistrationProgressDialog.setCancelable(false);
         patientRegistrationProgressDialog.setIndeterminate(true);
         patientRegistrationProgressDialog.setTitle(getString(R.string.registering_patient_message_title_text));
 
-        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = layoutInflater.inflate(R.layout.patient_shr_card_search_dialog, null);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientsListActivity.this);
 
@@ -451,7 +456,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     private void setupListView(String cohortId) {
         listView = findViewById(R.id.list);
-        patientAdapter = new PatientsLocalSearchAdapter(getApplicationContext(),
+        patientAdapter = new PatientsLocalSearchAdapter(this,
                 R.layout.layout_list,
                 ((MuzimaApplication) getApplicationContext()).getPatientController(), cohortId);
         patientAdapter.setBackgroundListQueryTaskListener(this);
@@ -470,7 +475,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         noDataTipTextView.setText(R.string.hint_client_local_search);
 
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
-        noDataTipTextView.setTypeface(Fonts.roboto_light(this));
+        noDataTipTextView.setTypeface(Fonts.roboto_medium(this));
     }
 
     @Override
@@ -583,8 +588,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                                         .show();
                             } else {
                                 Toast.makeText(getApplicationContext(), "Searching Patient Locally", Toast.LENGTH_LONG).show();
-                                prepareRegisterLocallyDialog(getApplicationContext());
-                                prepareLocalSearchNotifyDialog(getApplicationContext(), SHRPatient);
+                                prepareRegisterLocallyDialog();
+                                prepareLocalSearchNotifyDialog(SHRPatient);
                                 executeLocalPatientSearchInBackgroundTask();
                             }
                         }
@@ -660,7 +665,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            preparedServerSearchNegativeResultHandlerDialog(getApplicationContext());
+            preparedServerSearchNegativeResultHandlerDialog();
             Toast.makeText(getApplicationContext(), "Searching server.", Toast.LENGTH_LONG).show();
         }
 
@@ -824,14 +829,14 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         }
     }
 
-    private void prepareRegisterLocallyDialog(Context context) {
+    private void prepareRegisterLocallyDialog() {
 
         patientRegistrationProgressDialog = new ProgressDialog(this);
         patientRegistrationProgressDialog.setCancelable(false);
         patientRegistrationProgressDialog.setIndeterminate(true);
         patientRegistrationProgressDialog.setTitle(getString(R.string.registering_patient_message_title_text));
 
-        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = layoutInflater.inflate(R.layout.patient_shr_card_search_dialog, null);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientsListActivity.this);
 

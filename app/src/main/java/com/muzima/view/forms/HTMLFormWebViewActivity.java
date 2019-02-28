@@ -58,6 +58,7 @@ import com.muzima.controller.ObservationController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
 import com.muzima.service.GPSFeaturePreferenceService;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.audio.AudioResult;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
@@ -121,9 +122,11 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private String autoSaveIntervalPreference;
     private boolean encounterProviderPreference;
     private final Handler handler = new Handler();
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
 
         formController = ((MuzimaApplication) this.getApplicationContext()).getFormController();
@@ -298,6 +301,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             webView.loadUrl("javascript:document.populateVideo('" + sectionName + "', " + jsonMap + ")");
         }
         super.onResume();
+        themeUtils.onResume(this);
     }
 
     @Override
@@ -332,7 +336,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private void showAlertDialog() {
         new AlertDialog.Builder(HTMLFormWebViewActivity.this)
                 .setCancelable(true)
-                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                .setIcon(ThemeUtils.getIconWarning(this))
                 .setTitle(getResources().getString(R.string.general_caution))
                 .setMessage(getResources().getString(R.string.warning_form_close))
                 .setPositiveButton(getString(R.string.general_yes), positiveClickListener())
@@ -344,7 +348,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     public void showWarningDialog(String saveType) {
         new AlertDialog.Builder(HTMLFormWebViewActivity.this)
                 .setCancelable(true)
-                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                .setIcon(ThemeUtils.getIconWarning(this))
                 .setTitle(getResources().getString(R.string.title_duplicate_form_data_warning))
                 .setMessage(getResources().getString(R.string.warning_form_data_already_exists))
                 .setPositiveButton(getString(R.string.confirm_duplicate_form_data_save), duplicateFormDataClickListener(saveType))
@@ -356,7 +360,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     public void showWarningDialog() {
         new AlertDialog.Builder(HTMLFormWebViewActivity.this)
                 .setCancelable(true)
-                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                .setIcon(ThemeUtils.getIconWarning(this))
                 .setTitle(getResources().getString(R.string.title_duplicate_form_data_warning))
                 .setMessage(getResources().getString(R.string.warning_form_data_already_exists))
                 .setNegativeButton(getString(R.string.general_ok), null)
@@ -597,7 +601,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     public void showMissingEncounterDetailsDialog(String message) {
         new AlertDialog.Builder(HTMLFormWebViewActivity.this)
                 .setCancelable(true)
-                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                .setIcon(ThemeUtils.getIconWarning(this))
                 .setTitle(getResources().getString(R.string.title_missing_form_encounter_details_error))
                 .setMessage(message)
                 .setNegativeButton(getString(R.string.general_ok), null)

@@ -16,13 +16,16 @@ import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.adapters.notification.PatientNotificationPagerAdapter;
 import com.muzima.api.model.Patient;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.patients.PatientSummaryActivity;
 
 public class PatientNotificationActivity extends NotificationActivityBase {
     private Patient patient;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_with_pager);
         Intent intent = getIntent();
@@ -30,6 +33,12 @@ public class PatientNotificationActivity extends NotificationActivityBase {
         initPager();
         initPagerIndicator();
         getSupportActionBar().setTitle(patient.getSummary());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        themeUtils.onResume(this);
     }
 
     @Override

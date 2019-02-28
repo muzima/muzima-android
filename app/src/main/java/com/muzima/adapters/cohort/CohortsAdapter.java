@@ -10,8 +10,10 @@
 package com.muzima.adapters.cohort;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,7 +96,10 @@ public abstract class CohortsAdapter extends ListAdapter<Cohort> {
          }
 
          void setDefaultTextColor(){
-             name.setTextColor(ContextCompat.getColor(getContext(),R.color.primary_white));
+             TypedValue typedValue = new TypedValue();
+             Resources.Theme theme = getContext().getTheme();
+             theme.resolveAttribute(R.attr.primaryTextColor, typedValue, true);
+             name.setTextColor(typedValue.data);
          }
     }
 }
