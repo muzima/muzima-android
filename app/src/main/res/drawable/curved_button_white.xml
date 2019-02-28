@@ -4,7 +4,7 @@
     android:padding="10dp">
 
     <!-- you can use any color you want I used here gray color-->
-    <solid android:color="@android:color/white"/>
+    <solid android:color="#c3c3c3"/>
     <corners
         android:bottomRightRadius="10dp"
         android:bottomLeftRadius="10dp"

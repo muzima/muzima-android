@@ -725,4 +725,6 @@
     <string name="hint_help_prompt">Por favor insira a sua mensagem</string>
     <string name="message_help_halt">Sua mensagem não será enviada.</string>
     <string name="ask_help">Pedindo ajuda</string>
+    <string name="title_light_mode">Ativar modo noturno</string>
+    <string name="hint_light_mode">Ativar tema claro</string>
 </resources>

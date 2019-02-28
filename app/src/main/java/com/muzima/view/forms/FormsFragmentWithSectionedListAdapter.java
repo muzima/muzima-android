@@ -25,6 +25,7 @@ import com.muzima.R;
 import com.muzima.adapters.forms.SectionedFormsAdapter;
 import com.muzima.api.model.FormData;
 import com.muzima.controller.FormController;
+import com.muzima.utils.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -68,7 +69,7 @@ public abstract class FormsFragmentWithSectionedListAdapter extends FormsListFra
                             onPartialCompleteOfFormDelete(groupedFormDataWithRegistrationData.values());
                             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                             builder.setCancelable(true)
-                                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                                .setIcon(ThemeUtils.getIconWarning(getContext()))
                                 .setTitle(getResources().getString(R.string.general_alert))
                                 .setMessage(R.string.warning_registration_form_data_delete)
                                 .setPositiveButton(R.string.general_yes, new DialogInterface.OnClickListener() {

@@ -11,25 +11,19 @@
 package com.muzima.view.observations;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.Menu;
 import android.support.v7.widget.SearchView;
+import android.view.Menu;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.custom.CustomObsEntryDialog;
 import com.muzima.view.custom.PagerSlidingTabStrip;
 import com.muzima.view.patients.PatientSummaryActivity;
 
@@ -45,9 +39,11 @@ public class ObservationsActivity extends BroadcastListenerActivity {
     private TextView encounterDateTextView;
     private final Boolean IS_SHR_DATA = false;
     private Patient patient;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_observations);
         // Show the Up button in the action bar.
@@ -57,9 +53,15 @@ public class ObservationsActivity extends BroadcastListenerActivity {
         encounterDateTextView = (TextView) findViewById(R.id.date_value_textview);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        themeUtils.onResume(this);
+    }
+
     private void initPagerIndicator() {
         pagerTabsLayout = (PagerSlidingTabStrip) findViewById(R.id.pager_indicator);
-        pagerTabsLayout.setTextColor(Color.WHITE);
+        pagerTabsLayout.setTextColor(pagerTabsLayout.getIndicatorTextColor());
         pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));
         pagerTabsLayout.setSelectedTextColor(getResources().getColor(R.color.tab_indicator));
         pagerTabsLayout.setTypeface(Fonts.roboto_medium(this), -1);

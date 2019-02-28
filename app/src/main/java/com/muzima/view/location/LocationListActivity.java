@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.view.Menu;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.provider.ProviderListActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 import com.muzima.view.preferences.LocationPreferenceActivity;
@@ -29,8 +30,10 @@ public class LocationListActivity extends LocationPreferenceActivity {
     private boolean isProcessDialogOn = false;
     private PowerManager powerManager = null;
     private PowerManager.WakeLock wakeLock = null ;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     public void onCreate(Bundle savedInstanceState) {
+        super.setThemeUtils(themeUtils);
         super.onCreate(savedInstanceState);
         Credentials credentials = new Credentials(this);
 

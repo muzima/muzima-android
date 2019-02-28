@@ -11,14 +11,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:custom="http://schemas.android.com/apk/res-auto">
     <item
             android:id="@+id/menu_client_add_icon"
-            android:icon="@drawable/ic_action_add_client"
+            android:icon="?attr/icAddClient"
             android:orderInCategory="1"
             custom:showAsAction="never"
             android:title="@string/general_client_register"/>
 
     <item
             android:id="@+id/menu_tags"
-            android:icon="@drawable/ic_labels"
+            android:icon="?attr/icLabels"
             android:orderInCategory="2"
             custom:showAsAction="always"
             android:title="@string/general_tags"/>
@@ -28,13 +28,13 @@
             android:title="@string/general_load"
             android:orderInCategory="10"
             custom:showAsAction="always"
-            android:icon="@drawable/ic_refresh"/>
+            android:icon="?attr/icRefresh"/>
 
     <item
             android:id="@+id/menu_upload"
             android:title="@string/general_upload"
             android:orderInCategory="10"
             custom:showAsAction="always"
-            android:icon="@drawable/ic_action_upload"
+            android:icon="?attr/icActionUpload"
             android:visible="false"/>
 </menu>

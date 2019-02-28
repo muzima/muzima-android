@@ -31,6 +31,7 @@ import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.CheckedLinearLayout;
 import com.muzima.view.cohort.CohortWizardActivity;
@@ -51,8 +52,10 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
     private boolean isProcessDialogOn = false;
     private PowerManager.WakeLock wakeLock = null ;
     private KeyboardWatcher keyboardWatcher;
+    private final ThemeUtils themeUtils = new ThemeUtils(R.style.WizardTheme_Light, R.style.WizardTheme_Dark);
 
     public void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
 
         progressDialog = new MuzimaProgressDialog(this);
@@ -65,7 +68,7 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
         advancedSetupLayout.setOnClickListener(advancedSetupClickListener());
 
         final SetupConfigurationAdapter setupConfigurationAdapter = new SetupConfigurationAdapter(
-                getApplicationContext(),R.layout.item_setup_configs_list,
+                this,R.layout.item_setup_configs_list,
                 ((MuzimaApplication) getApplicationContext()).getSetupConfigurationController());
         setupConfigurationAdapter.setBackgroundListQueryTaskListener(this);
 

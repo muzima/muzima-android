@@ -3,16 +3,14 @@ package com.muzima.view;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -25,12 +23,12 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.SmartCardRecord;
 import com.muzima.controller.SmartCardController;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
 import com.muzima.view.custom.PagerSlidingTabStrip;
 import com.muzima.view.patients.PatientSummaryActivity;
 
-import java.io.IOException;
 import java.util.List;
 
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
@@ -43,9 +41,11 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
     private ObservationsPagerAdapter observationsPagerAdapter;
     private Patient patient;
     private AlertDialog writeSHRDataOptionDialog;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shr__observations__data_);
 
@@ -55,9 +55,15 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
         initPagerIndicator();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        themeUtils.onResume(this);
+    }
+
     private void initPagerIndicator() {
         PagerSlidingTabStrip pagerTabsLayout = findViewById(R.id.pager_indicator);
-        pagerTabsLayout.setTextColor(Color.WHITE);
+        pagerTabsLayout.setTextColor(pagerTabsLayout.getIndicatorTextColor());
         pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));
         pagerTabsLayout.setSelectedTextColor(getResources().getColor(R.color.tab_indicator));
         pagerTabsLayout.setTypeface(Fonts.roboto_medium(this), -1);
@@ -204,7 +210,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
 
     private void prepareWriteToCardOptionDialog(Context context) {
 
-        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = layoutInflater.inflate(R.layout.write_to_card_option_dialog_layout, null);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(SHRObservationsDataActivity.this);
 
