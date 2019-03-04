@@ -58,7 +58,8 @@
                 android:negativeButtonText="@android:string/cancel"
                 android:positiveButtonText="@android:string/ok"
                 android:title="@string/title_form_auto_save_interval"
-                android:inputType="number"/>
+                android:inputType="number"
+                android:selectAllOnFocus="true"/>
         <CheckBoxPreference
                 android:defaultValue="false"
                 android:summary="@string/hint_real_time_sync"
