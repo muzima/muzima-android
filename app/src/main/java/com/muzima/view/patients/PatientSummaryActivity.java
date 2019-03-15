@@ -94,18 +94,17 @@ public class PatientSummaryActivity extends BaseActivity {
     private MuzimaApplication muzimaApplication;
     private Location defaultLocation;
 
+    private boolean isSHREnabled;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_summary);
         muzimaApplication = (MuzimaApplication) getApplicationContext( );
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
-        boolean isSHREnabled = preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_shr_key),PatientSummaryActivity.DEFAULT_SHR_STATUS);
-        if(!isSHREnabled) {
-            LinearLayout SHRLinearLayout=(LinearLayout)findViewById(R.id.SHR_linear_layout);
-            SHRLinearLayout.setVisibility(LinearLayout.GONE);
-        }
+        setSHREnabled();
+        setSHRLayoutVisibility();
+
         Bundle intentExtras = getIntent( ).getExtras( );
         if (intentExtras != null) {
             patient = (Patient) intentExtras.getSerializable(PATIENT);
@@ -173,6 +172,7 @@ public class PatientSummaryActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        handleSHREnabledChanged();
         executeBackgroundTask();
     }
 
@@ -202,8 +202,6 @@ public class PatientSummaryActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
-        boolean isSHREnabled = preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_shr_key),PatientSummaryActivity.DEFAULT_SHR_STATUS);
         if(isSHREnabled) {
             getMenuInflater().inflate(R.menu.client_summary, menu);
             MenuItem SHRCardMenuItem = menu.getItem(0);
@@ -730,5 +728,27 @@ public class PatientSummaryActivity extends BaseActivity {
         }
     }
 
+    private void handleSHREnabledChanged(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
+        boolean isPreferenceSHREnabled = preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_shr_key),PatientSummaryActivity.DEFAULT_SHR_STATUS);
+        if (isSHREnabled != isPreferenceSHREnabled) {
+            isSHREnabled = isPreferenceSHREnabled;
+            invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            setSHRLayoutVisibility();
+        }
+    }
 
+    private void setSHREnabled(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
+        isSHREnabled = preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_shr_key),PatientSummaryActivity.DEFAULT_SHR_STATUS);
+    }
+
+    private void setSHRLayoutVisibility(){
+        LinearLayout SHRLinearLayout=(LinearLayout)findViewById(R.id.SHR_linear_layout);
+        if(isSHREnabled) {
+            SHRLinearLayout.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            SHRLinearLayout.setVisibility(LinearLayout.GONE);
+        }
+    }
 }
