@@ -121,6 +121,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     private MenuItem shrCardItem;
     private static final boolean DEFAULT_SHR_STATUS = false;
+    private boolean isSHREnabled;
 
 
     @Override
@@ -128,6 +129,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_list);
         Bundle intentExtras = getIntent().getExtras();
+
+        muzimaApplication = (MuzimaApplication) getApplicationContext();
+        setSHREnabled();
 
         if (intentExtras != null) {
             quickSearch = intentExtras.getBoolean(QUICK_SEARCH);
@@ -169,7 +173,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             }
         });
 
-        muzimaApplication = (MuzimaApplication) getApplicationContext();
         muzimaSyncService = muzimaApplication.getMuzimaSyncService();
         patientController = muzimaApplication.getPatientController();
         CohortController cohortController = muzimaApplication.getCohortController();
@@ -213,8 +216,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.client_list, menu);
         shrCardItem = menu.findItem(R.id.scan_SHR_card);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
-        boolean isSHREnabled = preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_shr_key),PatientsListActivity.DEFAULT_SHR_STATUS);
         if(isSHREnabled) {
             shrCardItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS);
         }else{
@@ -361,10 +362,10 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     protected void onResume() {
         super.onResume();
+        handleSHREnabledChanged();
         preparedServerSearchNegativeResultHandlerDialog(getApplicationContext());
         if (!intentBarcodeResults)
             patientAdapter.reloadData();
-
     }
 
     private void prepareLocalSearchNotifyDialog(Context context, Patient patient) {
@@ -883,5 +884,19 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private void executePatientRegistrationBackgroundTask(){
         RegisterPatientBackgroundTask patientRegistrationTask = new RegisterPatientBackgroundTask();
         patientRegistrationTask.execute();
+    }
+
+    private void setSHREnabled(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
+        isSHREnabled = preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_shr_key),PatientSummaryActivity.DEFAULT_SHR_STATUS);
+    }
+
+    private void handleSHREnabledChanged(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
+        boolean isPreferenceSHREnabled = preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_shr_key),PatientSummaryActivity.DEFAULT_SHR_STATUS);
+        if (isSHREnabled != isPreferenceSHREnabled) {
+            isSHREnabled = isPreferenceSHREnabled;
+            invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+        }
     }
 }
