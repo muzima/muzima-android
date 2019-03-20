@@ -53,6 +53,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
 
     private static final Integer SESSION_TIMEOUT_MINIMUM = 0;
     private static final Integer SESSION_TIMEOUT_MAXIMUM = 500;
+    private static final Integer SESSION_TIMEOUT_INVALID_VALUE = -1;
 
     private EditTextPreference serverPreference;
     private CheckBoxPreference encounterProviderPreference;
@@ -103,7 +104,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 Integer timeOutInMin = extractSessionTimoutValue(o);
-                if (timeOutInMin != null) {
+                if (timeOutInMin != SESSION_TIMEOUT_INVALID_VALUE) {
                     ((MuzimaApplication) getActivity().getApplication()).resetTimer(timeOutInMin);
                     return true;
                 } else {
@@ -125,7 +126,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                         return timeOutInMin;
                     }
                 }
-                return null;
+                return SESSION_TIMEOUT_INVALID_VALUE;
             }
         });
 
