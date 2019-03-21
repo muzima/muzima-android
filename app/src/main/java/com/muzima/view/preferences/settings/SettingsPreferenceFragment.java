@@ -53,6 +53,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
 
     private static final Integer SESSION_TIMEOUT_MINIMUM = 0;
     private static final Integer SESSION_TIMEOUT_MAXIMUM = 500;
+    private static final Integer SESSION_TIMEOUT_INVALID_VALUE = -1;
 
     private EditTextPreference serverPreference;
     private CheckBoxPreference encounterProviderPreference;
@@ -102,8 +103,8 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         timeoutPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
-                Integer timeOutInMin = Integer.valueOf(o.toString());
-                if (timeOutInMin > SESSION_TIMEOUT_MINIMUM && timeOutInMin < SESSION_TIMEOUT_MAXIMUM) {
+                Integer timeOutInMin = extractSessionTimoutValue(o);
+                if (timeOutInMin != SESSION_TIMEOUT_INVALID_VALUE) {
                     ((MuzimaApplication) getActivity().getApplication()).resetTimer(timeOutInMin);
                     return true;
                 } else {
@@ -116,9 +117,19 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                             .setPositiveButton(getResources().getText(R.string.general_ok), null).create().show();
                 }
                 return false;
+            }
 
+            private Integer extractSessionTimoutValue(Object o) {
+                if (o != null && !o.toString().isEmpty()) {
+                    Integer timeOutInMin = Integer.valueOf(o.toString());
+                    if (timeOutInMin > SESSION_TIMEOUT_MINIMUM && timeOutInMin < SESSION_TIMEOUT_MAXIMUM) {
+                        return timeOutInMin;
+                    }
+                }
+                return SESSION_TIMEOUT_INVALID_VALUE;
             }
         });
+
 
         String autoSavePreferenceKey = getResources().getString(R.string.preference_auto_save_interval);
         EditTextPreference autoSaveIntervalPreference = (EditTextPreference) getPreferenceScreen().findPreference(autoSavePreferenceKey);
