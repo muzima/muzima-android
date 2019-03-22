@@ -62,7 +62,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!isSHREnable()){
+        if (!isSHREnabled()){
             onBackPressed();
         }
     }
@@ -247,7 +247,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
         });
     }
 
-    private boolean isSHREnable(){
+    private boolean isSHREnabled(){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         return preferences.getBoolean(getResources().getString(R.string.preference_enable_shr_key), SHRObservationsDataActivity.DEFAULT_SHR_STATUS);
     }
