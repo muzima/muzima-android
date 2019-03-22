@@ -3,8 +3,10 @@ package com.muzima.view;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -38,6 +40,8 @@ import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_WRI
 
 public class SHRObservationsDataActivity extends BroadcastListenerActivity {
 
+    public static final boolean DEFAULT_SHR_STATUS = false;
+
     public boolean quickSearch = false;
     private ViewPager viewPager;
     private ObservationsPagerAdapter observationsPagerAdapter;
@@ -53,6 +57,14 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
         setupActionBar();
         initPager();
         initPagerIndicator();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!isSHREnabled()){
+            onBackPressed();
+        }
     }
 
     private void initPagerIndicator() {
@@ -235,4 +247,8 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
         });
     }
 
+    private boolean isSHREnabled(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        return preferences.getBoolean(getResources().getString(R.string.preference_enable_shr_key), SHRObservationsDataActivity.DEFAULT_SHR_STATUS);
+    }
 }
