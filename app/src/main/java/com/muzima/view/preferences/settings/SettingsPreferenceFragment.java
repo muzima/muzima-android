@@ -120,13 +120,15 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             }
 
             private Integer extractSessionTimoutValue(Object o) {
-                if (o != null && !o.toString().isEmpty()) {
+                try {
                     Integer timeOutInMin = Integer.valueOf(o.toString());
-                    if (timeOutInMin > SESSION_TIMEOUT_MINIMUM && timeOutInMin < SESSION_TIMEOUT_MAXIMUM) {
+                    if (timeOutInMin > SESSION_TIMEOUT_MINIMUM && timeOutInMin <= SESSION_TIMEOUT_MAXIMUM) {
                         return timeOutInMin;
                     }
+                    return SESSION_TIMEOUT_INVALID_VALUE;
+                } catch (NumberFormatException nfe) {
+                    return SESSION_TIMEOUT_INVALID_VALUE;
                 }
-                return SESSION_TIMEOUT_INVALID_VALUE;
             }
         });
 
