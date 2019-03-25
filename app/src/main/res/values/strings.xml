@@ -696,8 +696,8 @@
     <string name="warning_switch_server">Switching Server: This will clear all mUzima data on your
         device, including any incomplete forms. Are you sure you want to change this setting?
     </string>
-    <string name="warning_session_timeout">Session Timeout: Could not set session timeout. The
-        given value is invalid.
+    <string name="warning_session_timeout">Session Timeout: Could not set session timeout.
+        Please enter a value between 1 and 500.
     </string>
     <string name="write_SHR_to_card_text">Write SHR to Card</string>
     <string name="write_shr_to_card_general">Write SHR to card</string>
