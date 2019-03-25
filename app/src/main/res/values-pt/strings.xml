@@ -696,7 +696,7 @@
         cliente no dispositivo. Tem certeza?
     </string>
     <string name="warning_session_timeout">Sessão expirou: não foi possível definir o tempo limite da sessão.
-        O valor fornecido é inválido.
+       Por favor insira um valor entre 1 e 500.
     </string>
     <string name="warning_setting_download_failure">Não foi possível baixar ou atualizar a configuração</string>
     <string name="warning_switch_server">Trocando o Servidor: Isto irá apagar todos dados de mUzima no seu dispositivo,
