@@ -11,6 +11,7 @@
 package com.muzima.view.forms;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -80,6 +81,15 @@ public class FormsActivity extends FormsActivityBase {
             formController.resetTagColors();
         }
         super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(((FormsPagerAdapter) formsPagerAdapter).isFormDownloadBackgroundTaskRunning()) {
+            showWarningDialog();
+        }else{
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -196,6 +206,9 @@ public class FormsActivity extends FormsActivityBase {
                 } else {
                     mainLayout.openDrawer(GravityCompat.END);
                 }
+                return true;
+            case android.R.id.home:
+                onBackPressed();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -323,4 +336,29 @@ public class FormsActivity extends FormsActivityBase {
         menubarLoadButton.setVisible(menuLoadButton);
         menuUpload.setVisible(menuUploadButton);
     }
+
+    private void showWarningDialog(){
+        new AlertDialog.Builder(this)
+                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                .setTitle(R.string.general_caution)
+                .setMessage(R.string.warning_cancel_form_download)
+                .setPositiveButton(R.string.general_yes, dialogYesClickListener())
+                .setNegativeButton(R.string.general_no, null)
+                .show();
+    }
+
+    private Dialog.OnClickListener dialogYesClickListener() {
+        return new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                handleBackPressed();
+            }
+        };
+    }
+
+    public void handleBackPressed(){
+        super.onBackPressed();
+        ((FormsPagerAdapter) formsPagerAdapter).cancelBackgroundQueryTasks();
+    }
+
 }
