@@ -704,4 +704,5 @@
     </string>
     <string name="write_SHR_to_card_text">Escrever SHR para cartão</string>
     <string name="write_shr_to_card_general">Gravar registros de saúde compartilhados no cartão</string>
+    <string name="warning_cancel_form_download">Isso cancelará o download do formulário. Tem certeza de que deseja cancelar o download do formulário?</string>
 </resources>

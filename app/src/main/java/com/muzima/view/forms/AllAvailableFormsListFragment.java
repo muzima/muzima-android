@@ -244,7 +244,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
 
                     //syncAllFormTemplatesInBackgroundService();
 
-                    new AsyncTask<Void, Void, int[]>() {
+                    final AsyncTask<Void, Void, int[]> asynTask = new AsyncTask<Void, Void, int[]>() {
                         @Override
                         protected void onPreExecute() {
                             Log.i(getClass().getSimpleName(), "Canceling timeout timer!");
@@ -261,7 +261,9 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
                         protected void onPostExecute(int[] results) {
                             navigateToNextActivity();
                         }
-                    }.execute();
+                    };
+                    setRunningBackgroundQueryTask(asynTask);
+                    asynTask.execute();
 
                     endActionMode();
                     return true;

@@ -10,6 +10,7 @@
 
 package com.muzima.view.forms;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -82,10 +83,23 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
     }
 
     @Override
-    public void onQueryTaskCancelled(){}
+    public void onQueryTaskCancelled(){
+        FormsAdapter formsAdapter = ((FormsAdapter)listAdapter);
+        formsAdapter.cancelBackgroundQueryTask();
+    }
 
     @Override
     public void onQueryTaskCancelled(Object errorDefinition){}
+
+    public void setRunningBackgroundQueryTask(AsyncTask<?, ?, ?> backgroundQueryTask){
+        FormsAdapter formsAdapter = ((FormsAdapter)listAdapter);
+        formsAdapter.setRunningBackgroundQueryTask(backgroundQueryTask);
+    }
+
+    public boolean isFormDownloadBackgroundTaskRunning() {
+        FormsAdapter formsAdapter = ((FormsAdapter)listAdapter);
+        return formsAdapter.isFormDownloadBackgroundTaskRunning();
+    }
 
     final class DeleteFormsActionModeCallback implements ActionMode.Callback {
 

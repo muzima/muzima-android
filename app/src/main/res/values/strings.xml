@@ -701,4 +701,5 @@
     </string>
     <string name="write_SHR_to_card_text">Write SHR to Card</string>
     <string name="write_shr_to_card_general">Write SHR to card</string>
+    <string name="warning_cancel_form_download">This will cancel the form download. Are you sure you want to cancel form download?</string>
 </resources>
