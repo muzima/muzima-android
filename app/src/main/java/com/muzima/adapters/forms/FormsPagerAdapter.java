@@ -29,6 +29,7 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements TagsListAda
     private static final int TAB_DOWNLOADED = 1;
     private static final int TAB_INCOMPLETE = 2;
     public static final int TAB_COMPLETE = 3;
+    AllAvailableFormsListFragment allAvailableFormsListFragment;
 
     public FormsPagerAdapter(Context context, FragmentManager fm) {
         super(context, fm);
@@ -60,7 +61,7 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements TagsListAda
         pagers = new PagerView[4];
         FormController formController = ((MuzimaApplication) context.getApplicationContext()).getFormController();
 
-        AllAvailableFormsListFragment allAvailableFormsListFragment = AllAvailableFormsListFragment.newInstance(formController);
+        allAvailableFormsListFragment = AllAvailableFormsListFragment.newInstance(formController);
         DownloadedFormsListFragment downloadedFormsListFragment = DownloadedFormsListFragment.newInstance(formController);
         CompleteFormsListFragment completeFormsListFragment = CompleteFormsListFragment.newInstance(formController);
         IncompleteFormsListFragment incompleteFormsListFragment = IncompleteFormsListFragment.newInstance(formController);
@@ -82,4 +83,13 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements TagsListAda
     public void unselectList() {
         pagers[TAB_All].fragment.unselectAllItems();
     }
+
+    public void cancelBackgroundQueryTasks(){
+        allAvailableFormsListFragment.onQueryTaskCancelled();
+    }
+
+    public boolean isFormDownloadBackgroundTaskRunning(){
+        return allAvailableFormsListFragment.isFormDownloadBackgroundTaskRunning();
+    }
+
 }
