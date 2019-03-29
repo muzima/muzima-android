@@ -70,7 +70,7 @@ public class SyncedCohortsListFragment extends CohortListFragment implements All
         Intent intent = new Intent(getActivity(), PatientsListActivity.class);
         intent.putExtra(PatientsListActivity.COHORT_ID, cohort.getUuid());
         intent.putExtra(PatientsListActivity.COHORT_NAME, cohort.getName());
-        startActivity(intent);
+        startActivityForResult(intent,1);
     }
 
     @Override
