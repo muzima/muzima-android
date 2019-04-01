@@ -45,16 +45,20 @@ public class InteractiveHelpActivity extends BaseActivity {
             }
 
             private String composeMessage() {
-                String sender = String.join(" ", "Sender:", getUserName());
-                String help_msg = String.join(" ", "Message:", helpText.getText().toString());
-                String message = String.join("\n", sender, help_msg);
+                String sender = "Sender: " + getUserName();
+                String help_msg = "Message: " + helpText.getText().toString();
+                String message = sender + "\n" + help_msg;
                 return message;
+            }
+
+            private String composeSubject() {
+                return SUBJECT + options.getSelectedItem().toString();
             }
 
             private void sendEmail() {
                 Intent emailIntent = new Intent(Intent.ACTION_SEND);
                 emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{EMAIL_TO});
-                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, String.join("", SUBJECT, options.getSelectedItem().toString()));
+                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, composeSubject());
                 emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, composeMessage());
                 emailIntent.setData(Uri.parse("mailto:"));
                 emailIntent.setType("message/rfc822");
