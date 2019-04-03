@@ -14,7 +14,7 @@
     <item
         android:id="@+id/search"
         custom:actionViewClass="android.support.v7.widget.SearchView"
-        android:icon="@drawable/ic_search"
+        android:icon="?attr/icSearch"
         custom:showAsAction="always"
         android:title="@string/hint_client_search"/>
 </menu>

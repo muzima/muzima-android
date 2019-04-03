@@ -19,7 +19,7 @@
             <TextView style="@style/SummaryHeader"
                       android:text="@string/title_location_download"/>
             <TextView
-                    android:textColor="@android:color/white"
+                    android:textColor="?attr/primaryTextColor"
                     android:textAlignment="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

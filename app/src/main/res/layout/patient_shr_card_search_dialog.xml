@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/theme_color"
+    android:background="?attr/themeColor"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -18,7 +18,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:textColor="@android:color/white"
+            android:textColor="?attr/primaryTextColor"
             android:textSize="16sp"
             android:layout_marginTop="4dp"
             android:text="@string/patient_SHR_search_title_text"
@@ -36,7 +36,7 @@
 
     <TextView
         android:id="@+id/patent_dialog_message_textview"
-        android:textColor="@android:color/white"
+        android:textColor="?attr/primaryTextColor"
         android:layout_margin="4dp"
         android:padding="8dp"
         android:textAlignment="center"
@@ -61,7 +61,7 @@
                 android:id="@+id/yes_SHR_search_dialog"
                 android:background="@color/theme_color"
                 android:text="@string/general_yes"
-                android:textColor="@android:color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -69,7 +69,7 @@
                 android:id="@+id/no_SHR_search_dialog"
                 android:background="@color/theme_color"
                 android:text="@string/general_no"
-                android:textColor="@android:color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

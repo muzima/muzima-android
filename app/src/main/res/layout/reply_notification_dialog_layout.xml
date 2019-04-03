@@ -20,7 +20,7 @@
 
     <ImageView
         android:id="@+id/send1_notification_reply_image_button"
-        android:src="@drawable/ic_action_send"
+        android:src="?attr/icSend"
         android:padding="8dp"
         android:layout_gravity="end"
         android:onClick="sendNotification"

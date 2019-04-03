@@ -704,5 +704,28 @@
     </string>
     <string name="write_SHR_to_card_text">Escrever SHR para cartão</string>
     <string name="write_shr_to_card_general">Gravar registros de saúde compartilhados no cartão</string>
+    <string name="youTube_player_error">Ocorreu um erro ao carregar o vídeo do YouTube</string>
+    <string name="help_center">Centro de Ajuda</string>
+    <string name="feedback_header">Por favor envie-nos seus comentários e feedback</string>
+    <string name="feedback_rating_question">Como é fácil usar o aplicativo mUzima?</string>
+    <string name="feedback_hint">O que você está pensando?</string>
+    <string name="general_feedback">Comentários</string>
+    <string name="send_feedback">Enviar comentários</string>
+    <string name="hint_feedback_prompt">Por favor insira a sua mensagem</string>
+    <string name="message_feedback_sent">Obrigado pela sua mensagem. \n Seu feedback é importante para nós.</string>
+    <string name="message_feedback_halt">Sua mensagem não será enviada.</string>
+    <string name="no_email_client">Nenhum cliente de email instalado neste dispositivo. \n
+        Por favor, instale um e depois deixe seu feedback.</string>
+    <string name="interactive_help_header">Por favor, conte-nos como podemos ajudá-lo</string>
+    <string name="interactive_help_choose">Escolha uma opção:</string>
+    <string name="interactive_help_hint">Digite sua mensagem</string>
+    <string name="message_help_sent">Agradecemos seu contato. \n
+        Nossa equipe de suporte investigará sua solicitação. \n
+        Nós vamos voltar para você o mais breve possível.</string>
+    <string name="hint_help_prompt">Por favor insira a sua mensagem</string>
+    <string name="message_help_halt">Sua mensagem não será enviada.</string>
+    <string name="ask_help">Pedindo ajuda</string>
+    <string name="title_light_mode">Ativar o modo de dia</string>
+    <string name="hint_light_mode">Ativar tema claro</string>
     <string name="warning_cancel_form_download">Isso cancelará o download do formulário. Tem certeza de que deseja cancelar o download do formulário?</string>
 </resources>

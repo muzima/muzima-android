@@ -701,5 +701,28 @@
     </string>
     <string name="write_SHR_to_card_text">Write SHR to Card</string>
     <string name="write_shr_to_card_general">Write SHR to card</string>
+    <string name="youTube_player_error">An error occurred while loading YouTube video</string>
+    <string name="help_center">Help Center</string>
+    <string name="feedback_header">Please send us your comments and feedback</string>
+    <string name="feedback_rating_question">How easy to use mUzima App?</string>
+    <string name="feedback_hint">What is in your mind?</string>
+    <string name="general_feedback">Feedback</string>
+    <string name="send_feedback">Send feedback</string>
+    <string name="hint_feedback_prompt">Please enter your message</string>
+    <string name="message_feedback_sent">Thank you for your message. \n Your feedback is important for us.</string>
+    <string name="message_feedback_halt">Your message will not be sent.</string>
+    <string name="no_email_client">No email client installed on this device. \n
+        Please install one and then leave your feedback.</string>
+    <string name="interactive_help_header">Please tell us how we can help you</string>
+    <string name="interactive_help_choose">Choose an Option:</string>
+    <string name="interactive_help_hint">Type your message</string>
+    <string name="message_help_sent">Thanks for reaching out. \n
+        Our support team will investigate your request. \n
+        We will back to you as soon as possible.</string>
+    <string name="hint_help_prompt">Please enter your message</string>
+    <string name="message_help_halt">Maybe next time.</string>
+    <string name="ask_help">Asking help</string>
+    <string name="title_light_mode">Enable Day Mode</string>
+    <string name="hint_light_mode">Enable Light Theme</string>
     <string name="warning_cancel_form_download">This will cancel the form download. Are you sure you want to cancel form download?</string>
 </resources>

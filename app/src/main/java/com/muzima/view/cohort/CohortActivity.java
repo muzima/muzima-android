@@ -12,16 +12,16 @@ package com.muzima.view.cohort;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.widget.Toast;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortPagerAdapter;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.custom.PagerSlidingTabStrip;
 
@@ -33,13 +33,21 @@ public class CohortActivity extends BroadcastListenerActivity {
     private CohortPagerAdapter cohortPagerAdapter;
     private MenuItem menubarLoadButton;
     private boolean syncInProgress;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_with_pager);
         initPager();
         initPagerIndicator();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        themeUtils.onResume(this);
     }
 
     @Override
@@ -114,7 +122,7 @@ public class CohortActivity extends BroadcastListenerActivity {
 
     private void initPagerIndicator() {
         PagerSlidingTabStrip pagerTabsLayout = findViewById(R.id.pager_indicator);
-        pagerTabsLayout.setTextColor(Color.WHITE);
+        pagerTabsLayout.setTextColor(pagerTabsLayout.getIndicatorTextColor());
         pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));
         pagerTabsLayout.setSelectedTextColor(getResources().getColor(R.color.tab_indicator));
         pagerTabsLayout.setTypeface(Fonts.roboto_medium(this), -1);

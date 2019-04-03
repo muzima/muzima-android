@@ -22,17 +22,17 @@
             android:id="@+id/pager_indicator"
             custom:indicatorColor="@color/tab_indicator"
             custom:indicatorHeight="5dp"
+            custom:indicatorTextColor = "?attr/primaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/pager_indicator_height"
             android:overScrollMode="ifContentScrolls"
             android:layout_alignParentBottom="true"
-            android:background="@color/theme_color"/>
+            android:background="?attr/themeColor"/>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 </FrameLayout>

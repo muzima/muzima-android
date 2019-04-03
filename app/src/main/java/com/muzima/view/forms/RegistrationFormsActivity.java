@@ -22,15 +22,18 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BaseActivity;
 
 import java.util.UUID;
 
 public class RegistrationFormsActivity extends BaseActivity {
     private RegistrationFormsAdapter registrationFormsAdapter;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_form_list);
 
@@ -44,7 +47,7 @@ public class RegistrationFormsActivity extends BaseActivity {
     }
 
     private void prepareRegistrationAdapter(FormController formController, AvailableForms availableForms) {
-        registrationFormsAdapter = new RegistrationFormsAdapter(getApplicationContext(), R.layout.item_forms_list,
+        registrationFormsAdapter = new RegistrationFormsAdapter(this, R.layout.item_forms_list,
                 formController, availableForms);
         ListView list = findViewById(R.id.list);
         list.setOnItemClickListener(startRegistrationOnClick());

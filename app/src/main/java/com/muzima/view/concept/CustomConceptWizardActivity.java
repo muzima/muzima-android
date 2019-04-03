@@ -29,6 +29,7 @@ import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.InstallBarCodeWizardActivity;
 import com.muzima.view.provider.CustomProviderWizardActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
@@ -45,8 +46,10 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
     private Credentials credentials;
     private boolean isProcessDialogOn = false;
     private PowerManager.WakeLock wakeLock = null ;
+    private final ThemeUtils themeUtils = new ThemeUtils(R.style.WizardTheme_Light, R.style.WizardTheme_Dark);
 
     public void onCreate(Bundle savedInstanceState) {
+        super.setThemeUtils(themeUtils);
         super.onCreate(savedInstanceState);
         credentials = new Credentials(this);
 

@@ -54,6 +54,7 @@ import com.muzima.service.JSONInputOutputToDisk;
 import com.muzima.utils.Constants;
 import com.muzima.utils.LocationUtils;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.KenyaEmrShrMapper;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
@@ -93,11 +94,12 @@ public class PatientSummaryActivity extends BaseActivity {
     private SmartCardController smartCardController;
     private MuzimaApplication muzimaApplication;
     private Location defaultLocation;
-
+    private final ThemeUtils themeUtils = new ThemeUtils();
     private boolean isSHREnabled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_summary);
         muzimaApplication = (MuzimaApplication) getApplicationContext( );
@@ -152,7 +154,7 @@ public class PatientSummaryActivity extends BaseActivity {
         if (list.contains(patientIdentifier)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(true)
-                    .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                    .setIcon(themeUtils.getIconWarning(this))
                     .setTitle(getString(R.string.general_notice))
                     .setMessage(getString(R.string.info_client_identifier_change))
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -172,6 +174,7 @@ public class PatientSummaryActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        themeUtils.onResume(this);
         handleSHREnabledChanged();
         executeBackgroundTask();
     }
@@ -460,7 +463,7 @@ public class PatientSummaryActivity extends BaseActivity {
 
     private void prepareWriteToCardOptionDialog(Context context) {
 
-        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = layoutInflater.inflate(R.layout.write_to_card_option_dialog_layout, null);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientSummaryActivity.this);
 
@@ -492,7 +495,7 @@ public class PatientSummaryActivity extends BaseActivity {
 
     private void prepareNonSHRWriteToCardOptionDialog(Context context) {
 
-        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = layoutInflater.inflate(R.layout.write_to_card_option_dialog_layout, null);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PatientSummaryActivity.this);
 

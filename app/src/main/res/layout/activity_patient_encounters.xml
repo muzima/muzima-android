@@ -11,8 +11,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               style="@style/DashboardTableContainer">
     <RelativeLayout
-            style="@style/PatientDemographicsLayout"
-            android:background="@color/primary_black">
+            style="@style/PatientDemographicsLayout">
 
         <TextView
                 android:id="@+id/patientName"
@@ -30,8 +29,7 @@
     <LinearLayout
             style="@style/PatientDemographicsLayout"
             android:paddingTop="4dp"
-            android:paddingBottom="16dp"
-            android:background="@color/primary_black">
+            android:paddingBottom="16dp">
 
         <TextView
                 android:id="@+id/dob"

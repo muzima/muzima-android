@@ -22,6 +22,7 @@ import android.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.provider.CustomProviderWizardActivity;
 import com.muzima.view.forms.FormTemplateWizardActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
@@ -32,8 +33,10 @@ public class CustomLocationWizardActivity extends LocationPreferenceActivity {
     private MuzimaProgressDialog muzimaProgressDialog;
     private boolean isProcessDialogOn = false;
     private PowerManager.WakeLock wakeLock = null;
+    private final ThemeUtils themeUtils = new ThemeUtils(R.style.WizardTheme_Light, R.style.WizardTheme_Dark);
 
     public void onCreate(Bundle savedInstanceState) {
+        super.setThemeUtils(themeUtils);
         super.onCreate(savedInstanceState);
         Credentials credentials = new Credentials(this);
 

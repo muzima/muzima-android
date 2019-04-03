@@ -237,7 +237,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
 
             TextView observationDateView = (TextView) layout.findViewById(R.id.observation_date);
             observationDateView.setText(DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime()));
-            observationDateView.setTypeface(Fonts.roboto_light(getContext()));
+            observationDateView.setTypeface(Fonts.roboto_regular(getContext()));
             observationDateView.setTextColor(conceptColor);
 
             layout.setOnClickListener(new View.OnClickListener() {
