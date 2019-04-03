@@ -679,6 +679,9 @@
     <string name="type_a_message_hint">Digite uma mensagem</string>
     <string name="type_cohort_name_hint">Digite o nome da coorte …</string>
     <string name="video_links_general_text">Links de vídeo:</string>
+    <string name="warning_auto_save_interval">Intervalo de gravação automática de formulário:
+        Não foi possível definir o intervalo de salvamento automático. \nPor favor, insira um valor entre 1 e 120.
+    </string>
     <string name="warning_cohort_prefix_exists">Prefixo de coorte existe</string>
     <string name="warning_empty_cohort_prefix">Não pode adicionar um prefixo para coorte vazia</string>
     <string name="warning_form_close">Formulário de fechamento: Isto irá descartar todas suas alterações. Tem certeza
