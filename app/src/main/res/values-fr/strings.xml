@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
-  ~ Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
-  ~ and Vanderbilt University Medical Center.
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
   ~
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
   ~ with additional health care disclaimer.
@@ -635,11 +635,13 @@ Aucun fournisseur n\'a encore été ajouté</string>
 Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="warning_logout_confirm">Etes-vous sûr de vouloir vous déconnectez et quitter Muzima app?</string>
     <string name="warning_registration_form_data_delete">Vous êtes sur le point de supprimer les données d\'enregistrement. Cela effacera également les données du client sur l\'appareil. Etes-vous sur?</string>
-    <string name="warning_session_timeout">Expiration de la session: Impossible de définir le délai d\'expiration de la session. La valeur donnée n\'est pas valide. </string>
+    <string name="warning_session_timeout">Expiration de la session: Impossible de définir le délai d\'expiration de la session.
+       Veuillez entrer une valeur entre 1 et 500. </string>
     <string name="warning_setting_download_failure">Echec du téléchargement ou de la mise à jour des configurations</string>
     <string name="warning_switch_server">Changement de serveur: Cela effacera toutes les données mUzima sur votre appareil, y compris les formulaires incomplets. Etes-vous sûr de vouloir modifier ce paramètre?</string>
     <string name="write_SHR_to_card_text">Ecrire SHR à la carte</string>
     <string name="write_shr_to_card_general">Ecrire des dossiers de santé partagés à la carte</string>
+<<<<<<< HEAD
     <string name="youTube_player_error">Une erreur s\'est produite lors du chargement de la vidéo YouTube</string>
     <string name="help_center">Centre d\'aide</string>
     <string name="feedback_header">S\'il vous plaît envoyez-nous vos commentaires et réactions</string>
@@ -663,6 +665,7 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="hint_help_prompt">S\'il vous plaît entrer votre message</string>
     <string name="message_help_halt">Votre message ne sera pas envoyé.</string>
     <string name="ask_help">Demander de l\'aide</string>
-    <string name="title_light_mode">Activer le mode nuit</string>
+    <string name="title_light_mode">Activer le mode jour</string>
     <string name="hint_light_mode">Activer le thème de la lumière</string>
+    <string name="warning_cancel_form_download">Cela annulera le téléchargement du formulaire. Êtes-vous sûr de vouloir annuler le téléchargement du formulaire?</string>
 </resources>

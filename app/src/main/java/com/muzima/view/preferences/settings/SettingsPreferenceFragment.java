@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -10,8 +10,10 @@
 
 package com.muzima.view.preferences.settings;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -53,11 +55,13 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
 
     private static final Integer SESSION_TIMEOUT_MINIMUM = 0;
     private static final Integer SESSION_TIMEOUT_MAXIMUM = 500;
+    private static final Integer SESSION_TIMEOUT_INVALID_VALUE = -1;
 
     private EditTextPreference serverPreference;
     private CheckBoxPreference encounterProviderPreference;
     private CheckBoxPreference realTimeSyncPreference;
     private CheckBoxPreference requireMedicalRecordNumberPreference;
+    private Activity mActivity;
 
 
     private String newURL;
@@ -101,8 +105,8 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         timeoutPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
-                Integer timeOutInMin = Integer.valueOf(o.toString());
-                if (timeOutInMin > SESSION_TIMEOUT_MINIMUM && timeOutInMin < SESSION_TIMEOUT_MAXIMUM) {
+                Integer timeOutInMin = extractSessionTimoutValue(o);
+                if (timeOutInMin != SESSION_TIMEOUT_INVALID_VALUE) {
                     ((MuzimaApplication) getActivity().getApplication()).resetTimer(timeOutInMin);
                     return true;
                 } else {
@@ -115,9 +119,21 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                             .setPositiveButton(getResources().getText(R.string.general_ok), null).create().show();
                 }
                 return false;
+            }
 
+            private Integer extractSessionTimoutValue(Object o) {
+                try {
+                    Integer timeOutInMin = Integer.valueOf(o.toString());
+                    if (timeOutInMin > SESSION_TIMEOUT_MINIMUM && timeOutInMin <= SESSION_TIMEOUT_MAXIMUM) {
+                        return timeOutInMin;
+                    }
+                    return SESSION_TIMEOUT_INVALID_VALUE;
+                } catch (NumberFormatException nfe) {
+                    return SESSION_TIMEOUT_INVALID_VALUE;
+                }
             }
         });
+
 
         String autoSavePreferenceKey = getResources().getString(R.string.preference_auto_save_interval);
         EditTextPreference autoSaveIntervalPreference = (EditTextPreference) getPreferenceScreen().findPreference(autoSavePreferenceKey);
@@ -297,6 +313,15 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof Activity){
+            mActivity =(Activity) context;
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
@@ -345,7 +370,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             @Override
             public void handle(SharedPreferences sharedPreferences) {
                 if(NumberUtils.isNumber(sharedPreferences.getString(key, StringUtils.EMPTY))){
-                    LocationController locationController = ((MuzimaApplication) getActivity().getApplication()).getLocationController();
+                    LocationController locationController = ((MuzimaApplication) mActivity.getApplicationContext()).getLocationController();
                     List<Location> locations = new ArrayList<>();
                     try {
                         locations = locationController.getAllLocations();

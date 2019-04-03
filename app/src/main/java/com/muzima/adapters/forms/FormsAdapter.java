@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -10,6 +10,7 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,7 @@ import java.util.List;
 public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
     final FormController formController;
     protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
+    private AsyncTask<?, ?, ?> backgroundQueryTask;
 
     protected FormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId);
@@ -126,6 +128,20 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
 
     public BackgroundListQueryTaskListener getBackgroundListQueryTaskListener() {
         return backgroundListQueryTaskListener;
+    }
+
+    public void cancelBackgroundQueryTask() {
+        if (backgroundQueryTask != null) {
+            backgroundQueryTask.cancel(true);
+        }
+    }
+
+    public void setRunningBackgroundQueryTask(AsyncTask<?, ?, ?> backgroundQueryTask) {
+        this.backgroundQueryTask = backgroundQueryTask;
+    }
+
+    public boolean isFormDownloadBackgroundTaskRunning(){
+        return backgroundQueryTask != null;
     }
 
     public FormController getFormController() {

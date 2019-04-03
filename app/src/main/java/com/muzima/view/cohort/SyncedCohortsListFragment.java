@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -70,7 +70,7 @@ public class SyncedCohortsListFragment extends CohortListFragment implements All
         Intent intent = new Intent(getActivity(), PatientsListActivity.class);
         intent.putExtra(PatientsListActivity.COHORT_ID, cohort.getUuid());
         intent.putExtra(PatientsListActivity.COHORT_NAME, cohort.getName());
-        startActivity(intent);
+        startActivityForResult(intent,1);
     }
 
     @Override
