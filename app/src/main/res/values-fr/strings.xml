@@ -641,7 +641,6 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="warning_switch_server">Changement de serveur: Cela effacera toutes les données mUzima sur votre appareil, y compris les formulaires incomplets. Etes-vous sûr de vouloir modifier ce paramètre?</string>
     <string name="write_SHR_to_card_text">Ecrire SHR à la carte</string>
     <string name="write_shr_to_card_general">Ecrire des dossiers de santé partagés à la carte</string>
-<<<<<<< HEAD
     <string name="youTube_player_error">Une erreur s\'est produite lors du chargement de la vidéo YouTube</string>
     <string name="help_center">Centre d\'aide</string>
     <string name="feedback_header">S\'il vous plaît envoyez-nous vos commentaires et réactions</string>
