@@ -92,33 +92,33 @@ public class HelpActivity extends BaseHelpActivity {
         // Listview on child click listener
         expListView.setOnChildClickListener(new OnChildClickListener() {
             @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int group_position, int child_position, long id) {
-                if (group_position == 0 && child_position == 0) {
-                    startHelpContentDisplayActivity(MUZIMA_INITAL_SETUP_GUIDE, (String) listAdapter.getChild(group_position, child_position));
-                } else if (group_position == 0 && child_position == 1) {
-                    startHelpContentDisplayActivity(ABOUT_DASHBOARD_FORM, (String) listAdapter.getChild(group_position, child_position));
-                } else if (group_position == 0 && child_position == 2) {
-                    startHelpContentDisplayActivity(MUZIMA_SETTINGS, (String) listAdapter.getChild(group_position, child_position));
-                } else if (group_position == 0 && child_position == 3) {
-                    startHelpContentDisplayActivity(FILL_PATIENT_FORMS, (String) listAdapter.getChild(group_position, child_position));
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                if (groupPosition == 0 && childPosition == 0) {
+                    startHelpContentDisplayActivity(MUZIMA_INITAL_SETUP_GUIDE, (String) listAdapter.getChild(groupPosition, childPosition));
+                } else if (groupPosition == 0 && childPosition == 1) {
+                    startHelpContentDisplayActivity(ABOUT_DASHBOARD_FORM, (String) listAdapter.getChild(groupPosition, childPosition));
+                } else if (groupPosition == 0 && childPosition == 2) {
+                    startHelpContentDisplayActivity(MUZIMA_SETTINGS, (String) listAdapter.getChild(groupPosition, childPosition));
+                } else if (groupPosition == 0 && childPosition == 3) {
+                    startHelpContentDisplayActivity(FILL_PATIENT_FORMS, (String) listAdapter.getChild(groupPosition, childPosition));
                 }
                 //video links
-                else if (group_position == 1 && child_position == 0) {
-                    startVideoContentDisplayActivity(GUIDED_SETUP, (String) listAdapter.getChild(group_position, child_position));
-                } else if (group_position == 1 && child_position == 1) {
-                    startVideoContentDisplayActivity(ADVANCED_SETUP, (String) listAdapter.getChild(group_position, child_position));
-                } else if (group_position == 1 && child_position == 2) {
-                    startVideoContentDisplayActivity(COHORTS_DOWNLOAD_ON_DEMAND, (String) listAdapter.getChild(group_position, child_position));
-                } else if (group_position == 1 && child_position == 3) {
-                    startVideoContentDisplayActivity(CONCEPTS_DOWNLOAD_ON_DEMAND, (String) listAdapter.getChild(group_position, child_position));
-                } else if (group_position == 1 && child_position == 4) {
-                    startVideoContentDisplayActivity(FORMS_DOWNLOAD_ON_DEMAND, (String) listAdapter.getChild(group_position, child_position));
-                } else if (group_position == 1 && child_position == 5) {
-                    startVideoContentDisplayActivity(CLIENT_REGISTRATION, (String) listAdapter.getChild(group_position, child_position));
-                } else if (group_position == 1 && child_position == 6) {
-                    startVideoContentDisplayActivity(LOCAL_CLIENT_SEARCH, (String) listAdapter.getChild(group_position, child_position));
-                } else if (group_position == 1 && child_position == 7) {
-                    startVideoContentDisplayActivity(SERVER_CLIENT_SEARCH, (String) listAdapter.getChild(group_position, child_position));
+                else if (groupPosition == 1 && childPosition == 0) {
+                    startVideoContentDisplayActivity(GUIDED_SETUP, (String) listAdapter.getChild(groupPosition, childPosition));
+                } else if (groupPosition == 1 && childPosition == 1) {
+                    startVideoContentDisplayActivity(ADVANCED_SETUP, (String) listAdapter.getChild(groupPosition, childPosition));
+                } else if (groupPosition == 1 && childPosition == 2) {
+                    startVideoContentDisplayActivity(COHORTS_DOWNLOAD_ON_DEMAND, (String) listAdapter.getChild(groupPosition, childPosition));
+                } else if (groupPosition == 1 && childPosition == 3) {
+                    startVideoContentDisplayActivity(CONCEPTS_DOWNLOAD_ON_DEMAND, (String) listAdapter.getChild(groupPosition, childPosition));
+                } else if (groupPosition == 1 && childPosition == 4) {
+                    startVideoContentDisplayActivity(FORMS_DOWNLOAD_ON_DEMAND, (String) listAdapter.getChild(groupPosition, childPosition));
+                } else if (groupPosition == 1 && childPosition == 5) {
+                    startVideoContentDisplayActivity(CLIENT_REGISTRATION, (String) listAdapter.getChild(groupPosition, childPosition));
+                } else if (groupPosition == 1 && childPosition == 6) {
+                    startVideoContentDisplayActivity(LOCAL_CLIENT_SEARCH, (String) listAdapter.getChild(groupPosition, childPosition));
+                } else if (groupPosition == 1 && childPosition == 7) {
+                    startVideoContentDisplayActivity(SERVER_CLIENT_SEARCH, (String) listAdapter.getChild(groupPosition, childPosition));
                 }
                 return false;
             }
