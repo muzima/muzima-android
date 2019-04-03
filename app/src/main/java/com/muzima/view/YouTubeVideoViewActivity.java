@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
+ * Copyright (c) The Trustees of Indiana University, Moi University
  * and Vanderbilt University Medical Center.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
@@ -132,8 +132,8 @@ public class YouTubeVideoViewActivity extends BaseHelpActivity implements YouTub
             int timeout = muzimaTimeout * 60 * 1000;
             if (timeout < duration) {
                 //set the timeout 2 minutes longet than the video duration
-                int new_timeout = duration / 60 / 1000 + 2;
-                ((MuzimaApplication) getApplication()).resetTimer(new_timeout);
+                int newTimeout = duration / 60 / 1000 + 2;
+                ((MuzimaApplication) getApplication()).resetTimer(newTimeout);
             }
         }
     }

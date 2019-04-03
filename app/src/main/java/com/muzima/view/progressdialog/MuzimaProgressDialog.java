@@ -26,8 +26,8 @@ public class MuzimaProgressDialog {
 
     private static int getStyle(Activity activity) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
-        String light_mode_key = activity.getResources().getString(R.string.preference_light_mode);
-        boolean lightMode = preferences.getBoolean(light_mode_key, false);
+        String lightModeKey = activity.getResources().getString(R.string.preference_light_mode);
+        boolean lightMode = preferences.getBoolean(lightModeKey, false);
         if (lightMode) {
             return R.style.alertDialogThemeLight;
         } else {
