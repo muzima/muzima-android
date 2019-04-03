@@ -627,6 +627,10 @@ Aucun fournisseur n\'a encore été ajouté</string>
     <string name="type_a_message_hint">Tapez un message</string>
     <string name="type_cohort_name_hint">Type Nom de cohorte …</string>
     <string name="video_links_general_text">Liens vidéo:</string>
+    <string name="warning_auto_save_interval">Intervalle de sauvegarde de formulaire automatique:
+        Impossible de définir l\'intervalle d\'enregistrement automatique.
+        \nVeuillez entrer une valeur comprise entre 1 et 120.
+    </string>
     <string name="warning_cohort_prefix_exists">Le préfixe de cohortes existe</string>
     <string name="warning_empty_cohort_prefix">Vous ne pouvez pas ajouter un préfixe de cohortes vide</string>
     <string name="warning_form_close">Formulaire de clôture: Ceci annulera toutes vos modifications. Etes-vous sûr de vouloir faire ca?</string>

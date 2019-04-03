@@ -55,6 +55,10 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
     private static final Integer SESSION_TIMEOUT_MAXIMUM = 500;
     private static final Integer SESSION_TIMEOUT_INVALID_VALUE = -1;
 
+    private static final Integer AUTO_SAVE_INTERVAL_MINIMUM = 0;
+    private static final Integer AUTO_SAVE_INTERVAL_MAXIMUM = 120;
+    private static final Integer AUTO_SAVE_INTERVAL_INVALID_VALUE = -1;
+
     private EditTextPreference serverPreference;
     private CheckBoxPreference encounterProviderPreference;
     private CheckBoxPreference realTimeSyncPreference;
@@ -132,10 +136,40 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             }
         });
 
-
         String autoSavePreferenceKey = getResources().getString(R.string.preference_auto_save_interval);
         EditTextPreference autoSaveIntervalPreference = (EditTextPreference) getPreferenceScreen().findPreference(autoSavePreferenceKey);
         autoSaveIntervalPreference.setSummary(autoSaveIntervalPreference.getText());
+        autoSaveIntervalPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                Integer autoSaveInMin = extractAutoSaveIntervalValue(o);
+                if (autoSaveInMin != AUTO_SAVE_INTERVAL_INVALID_VALUE) {
+                    return true;
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder
+                            .setCancelable(true)
+                            .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                            .setTitle(getResources().getString(R.string.general_caution))
+                            .setMessage(getResources().getString(R.string.warning_auto_save_interval))
+                            .setPositiveButton(getResources().getText(R.string.general_ok), null).create().show();
+                }
+                return false;
+            }
+
+            private Integer extractAutoSaveIntervalValue(Object o) {
+                try {
+                    Integer saveIntervalInMin = Integer.valueOf(o.toString());
+                    if (saveIntervalInMin > AUTO_SAVE_INTERVAL_MINIMUM && saveIntervalInMin <= AUTO_SAVE_INTERVAL_MAXIMUM) {
+                        return saveIntervalInMin;
+                    }
+                    return AUTO_SAVE_INTERVAL_INVALID_VALUE;
+                } catch (NumberFormatException nfe) {
+                    return AUTO_SAVE_INTERVAL_INVALID_VALUE;
+                }
+            }
+        });
+
 
         String passwordPreferenceKey = getResources().getString(R.string.preference_password);
         EditTextPreference passwordPreference = (EditTextPreference) getPreferenceScreen().findPreference(passwordPreferenceKey);
