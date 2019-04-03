@@ -55,10 +55,10 @@ public class FeedbackActivity extends BaseActivity {
             }
 
             private String composeMessage() {
-                String sender = String.join(" ", "Sender:", getUserName());
-                String rating = String.join(" ", "Rating:", String.valueOf(feedbackRatingBar.getRating()));
-                String feedback = String.join(" ", "Message:", feedbackText.getText().toString());
-                String message = String.join("\n", sender, rating, feedback);
+                String sender = "Sender: " + getUserName();
+                String rating = "Rating: " +  String.valueOf(feedbackRatingBar.getRating());
+                String feedback = "Message: " + feedbackText.getText().toString();
+                String message = sender + "\n" + rating+ "\n" + feedback;
                 return message;
             }
 
