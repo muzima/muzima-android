@@ -43,6 +43,8 @@ import com.muzima.service.SHRStatusPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.util.MuzimaLogger;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.ThemeUtils;
+import com.muzima.view.HelpActivity;
 import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
 
 import java.util.Locale;
@@ -61,13 +63,16 @@ public class LoginActivity extends Activity {
     private TextView versionText;
     private BackgroundAuthenticationTask backgroundAuthenticationTask;
     private TextView authenticatingText;
+    private TextView helpText;
 
     private ValueAnimator flipFromLoginToAuthAnimator;
     private ValueAnimator flipFromAuthToLoginAnimator;
     private boolean isUpdatePasswordChecked;
+    private ThemeUtils themeUtils = new ThemeUtils(R.style.LoginTheme_Light, R.style.LoginTheme_Dark);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         ((MuzimaApplication) getApplication()).cancelTimer();
         setContentView(R.layout.activity_login);
@@ -100,7 +105,7 @@ public class LoginActivity extends Activity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder
                     .setCancelable(true)
-                    .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                    .setIcon(ThemeUtils.getIconWarning(this))
                     .setTitle(getResources().getString(R.string.general_alert))
                     .setMessage(getResources().getString(R.string.info_session_time_out))
                     .setPositiveButton(R.string.general_ok, null).show();
@@ -143,6 +148,7 @@ public class LoginActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
+        themeUtils.onResume(this);
         setupStatusView();
     }
 
@@ -206,6 +212,14 @@ public class LoginActivity extends Activity {
                 }
             }
         });
+
+        helpText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent helpIntent = new Intent(getApplicationContext(), HelpActivity.class);
+                startActivity(helpIntent);
+            }
+        });
     }
 
     private boolean validInput() {
@@ -222,7 +236,7 @@ public class LoginActivity extends Activity {
         loginButton = findViewById(R.id.login);
         authenticatingText = findViewById(R.id.authenticatingText);
         versionText = findViewById(R.id.version);
-
+        helpText = findViewById(R.id.helpText);
     }
 
     public void onUpdatePasswordCheckboxClicked(View view) {
@@ -323,7 +337,6 @@ public class LoginActivity extends Activity {
                     return getString(R.string.error_authentication_fail);
             }
         }
-
 
 
         private void startNextActivity() {

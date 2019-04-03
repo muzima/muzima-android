@@ -354,7 +354,7 @@
 </ P><p>
     3. Si l\'utilisateur de cette demande est une entité qui a l\'intention de commercialiser une application qui utilise cette
     Code dans une entreprise à but lucratif, l\'utilisateur est tenu de contacter le détenteur des droits d’auteur
-    (Copyright 2014, Les administrateurs de l\'Université d\'Indiana).
+    (Copyright Les administrateurs de l\'Université d\'Indiana).
 </ P>
 
             MUzima est distribué sous les termes de la Mozilla Public License, v. 2.0 (MPL 2.0).
@@ -388,7 +388,7 @@
             </ P><p>
             3. Si l\'utilisateur de cette demande est une entité qui a l\'intention de commercialiser une application qui utilise cette
             Code dans une entreprise à but lucratif, l\'utilisateur est tenu de contacter le détenteur du copyright
-            (Copyright 2014, Les administrateurs de l\'Université d\'Indiana).
+            (Copyright Les administrateurs de l\'Université d\'Indiana).
             </ P>
     ]]></string>
     <string formatted="false" name="info_download_complete">Téléchargement completé avec l\'état %d</string>
@@ -641,5 +641,30 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="warning_switch_server">Changement de serveur: Cela effacera toutes les données mUzima sur votre appareil, y compris les formulaires incomplets. Etes-vous sûr de vouloir modifier ce paramètre?</string>
     <string name="write_SHR_to_card_text">Ecrire SHR à la carte</string>
     <string name="write_shr_to_card_general">Ecrire des dossiers de santé partagés à la carte</string>
+    <string name="youTube_player_error">Une erreur s\'est produite lors du chargement de la vidéo YouTube</string>
+    <string name="help_center">Centre d\'aide</string>
+    <string name="feedback_header">S\'il vous plaît envoyez-nous vos commentaires et réactions</string>
+    <string name="feedback_rating_question">Comment facile à utiliser mUzima App?</string>
+    <string name="feedback_hint">Qu\'est-ce que tu as en tête?</string>
+    <string name="general_feedback">Retour d\'information</string>
+    <string name="send_feedback">Envoyer des commentaires</string>
+    <string name="hint_feedback_prompt">S\'il vous plaît entrer votre message</string>
+    <string name="message_feedback_sent">Merci pour votre message. \n Vos commentaires sont importants pour nous.
+    </string>
+    <string name="message_feedback_halt">Votre message ne sera pas envoyé.</string>
+    <string name="no_email_client">Aucun client de messagerie installé sur ce périphérique. \n
+        Veuillez en installer un, puis laissez vos commentaires.
+    </string>
+    <string name="interactive_help_header">Dites-nous comment nous pouvons vous aider</string>
+    <string name="interactive_help_choose">Choisis une option:</string>
+    <string name="interactive_help_hint">Tapez votre message</string>
+    <string name="message_help_sent">Merci de tendre la main. \n
+        Notre équipe d\'assistance étudiera votre demande. \n
+        Nous reviendrons vers vous dès que possible.</string>
+    <string name="hint_help_prompt">S\'il vous plaît entrer votre message</string>
+    <string name="message_help_halt">Votre message ne sera pas envoyé.</string>
+    <string name="ask_help">Demander de l\'aide</string>
+    <string name="title_light_mode">Activer le mode jour</string>
+    <string name="hint_light_mode">Activer le thème de la lumière</string>
     <string name="warning_cancel_form_download">Cela annulera le téléchargement du formulaire. Êtes-vous sûr de vouloir annuler le téléchargement du formulaire?</string>
 </resources>

@@ -10,9 +10,11 @@
 package com.muzima.adapters.cohort;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -81,16 +83,19 @@ public class AllCohortsAdapter extends CohortsAdapter {
             holder.hidePendingUpdateImage();
             holder.setDefaultTextColor();
         }
-        highlightCohorts(cohort,view);
+        highlightCohorts(cohort, view);
         return view;
     }
 
     private void highlightCohorts(Cohort cohort, View view) {
-       if(selectedCohortsUuid.contains(cohort.getUuid())){
-           view.setBackgroundResource(R.color.primary_blue);
-       }else{
-           view.setBackgroundResource(R.color.primary_black);
-       }
+        if (selectedCohortsUuid.contains(cohort.getUuid())) {
+            view.setBackgroundResource(R.color.primary_blue);
+        } else {
+            TypedValue typedValue = new TypedValue();
+            Resources.Theme theme = getContext().getTheme();
+            theme.resolveAttribute(R.attr.primaryBackgroundColor, typedValue, true);
+            view.setBackgroundResource(typedValue.resourceId);
+        }
     }
 
     public void onListItemClick(int position) {

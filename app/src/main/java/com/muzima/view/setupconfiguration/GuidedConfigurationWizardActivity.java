@@ -32,6 +32,7 @@ import com.muzima.service.LandingPagePreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.util.JsonUtils;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 
 import net.minidev.json.JSONObject;
@@ -48,8 +49,10 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private int wizardLevel =0;
     private boolean wizardcompletedSuccessfully = true;
     private GuidedSetupActionLogAdapter setupActionLogAdapter;
+    private final ThemeUtils themeUtils = new ThemeUtils(R.style.WizardTheme_Light, R.style.WizardTheme_Dark);
 
     public void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guided_setup_wizard);
         Button finishSetupButton = findViewById(R.id.finish);
@@ -63,7 +66,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 finish();
             }
         });
-        setupActionLogAdapter = new GuidedSetupActionLogAdapter(getApplicationContext(),R.id.setup_logs_list);
+        setupActionLogAdapter = new GuidedSetupActionLogAdapter(this,R.id.setup_logs_list);
         ListView setupLogsListView = findViewById(R.id.setup_logs_list);
         setupLogsListView.setAdapter(setupActionLogAdapter);
 

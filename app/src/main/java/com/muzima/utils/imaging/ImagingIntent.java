@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.utils.MediaUtils;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BaseActivity;
 
 import java.io.File;
@@ -57,9 +58,11 @@ public class ImagingIntent extends BaseActivity {
     private String mSectionName;
     private String mBinaryName;
     private String mBinaryDescription;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_imaging);
         Intent i = getIntent();

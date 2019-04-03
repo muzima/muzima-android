@@ -89,8 +89,8 @@ public abstract class NotificationAdapter extends ListAdapter<Notification> {
 
         void markUnreadNotification() {
             if (StringUtils.equals(Constants.NotificationStatusConstants.NOTIFICATION_READ, status)){
-                subject.setTypeface(Fonts.roboto_light(getContext()));
-                notificationDate.setTypeface(Fonts.roboto_light(getContext()));
+                subject.setTypeface(Fonts.roboto_medium(getContext()));
+                notificationDate.setTypeface(Fonts.roboto_medium(getContext()));
                 newNotificationImg.setVisibility(View.GONE);
             } else {
                 subject.setTypeface(Fonts.roboto_medium(getContext()));

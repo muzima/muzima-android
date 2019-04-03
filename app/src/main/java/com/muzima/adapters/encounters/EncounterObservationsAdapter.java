@@ -101,7 +101,7 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
             divider.setBackgroundColor(conceptColor);
 
             observationDate.setText(DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime()));
-            observationDate.setTypeface(Fonts.roboto_light(getContext()));
+            observationDate.setTypeface(Fonts.roboto_regular(getContext()));
             observationDate.setTextColor(conceptColor);
 
             conceptQuestion.setBackgroundColor(conceptColor);

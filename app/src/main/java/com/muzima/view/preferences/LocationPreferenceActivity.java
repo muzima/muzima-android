@@ -32,6 +32,7 @@ import com.muzima.adapters.concept.SelectedLocationAdapter;
 import com.muzima.api.model.Location;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
 
@@ -44,9 +45,11 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
     private AutoCompleteTextView autoCompleteLocationsTextView;
     private boolean actionModeActive = false;
     private ActionMode actionMode;
+    private ThemeUtils themeUtils = new ThemeUtils(R.style.PreferencesTheme_Light, R.style.PreferencesTheme_Dark);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
 
@@ -61,7 +64,7 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
         selectedLocationListView.setEmptyView(findViewById(R.id.no_location_added));
         selectedLocationListView.setOnItemClickListener(selectedLocationOnClickListener());
         autoCompleteLocationsTextView = findViewById(R.id.add_location);
-        AutoCompleteLocationAdapter autoCompleteLocationAdapter = new AutoCompleteLocationAdapter(applicationContext, R.layout.item_option_autocomplete, autoCompleteLocationsTextView);
+        AutoCompleteLocationAdapter autoCompleteLocationAdapter = new AutoCompleteLocationAdapter(this, R.layout.item_option_autocomplete, autoCompleteLocationsTextView);
         autoCompleteLocationsTextView.setAdapter(autoCompleteLocationAdapter);
         autoCompleteLocationsTextView.setOnItemClickListener(autoCompleteOnClickListener());
 
@@ -126,6 +129,7 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        themeUtils.onResume(this);
         selectedLocationAdapter.reloadData();
     }
 
@@ -200,6 +204,10 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
             }
         }
         return locations;
+    }
+
+    public void setThemeUtils(ThemeUtils themeUtils){
+        this.themeUtils = themeUtils;
     }
 }
 

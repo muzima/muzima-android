@@ -39,7 +39,7 @@ public abstract class MuzimaListFragment extends Fragment implements AdapterView
         TextView noDataTipTextView = formsLayout.findViewById(R.id.no_data_tip);
         noDataTipTextView.setText(noDataTip);
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(getActivity()));
-        noDataTipTextView.setTypeface(Fonts.roboto_light(getActivity()));
+        noDataTipTextView.setTypeface(Fonts.roboto_medium(getActivity()));
     }
 
     @Override

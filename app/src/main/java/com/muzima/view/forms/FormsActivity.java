@@ -36,6 +36,7 @@ import com.muzima.controller.FormController;
 import com.muzima.service.TagPreferenceService;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.utils.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -56,9 +57,11 @@ public class FormsActivity extends FormsActivityBase {
     private boolean syncInProgress;
     private MenuItem menuUpload;
     private TagPreferenceService tagPreferenceService;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_forms, null);
         setContentView(mainLayout);
@@ -72,6 +75,7 @@ public class FormsActivity extends FormsActivityBase {
     @Override
     protected void onResume() {
         super.onResume();
+        themeUtils.onResume(this);
         tagsListAdapter.reloadData();
     }
 

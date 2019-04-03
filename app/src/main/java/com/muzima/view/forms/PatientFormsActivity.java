@@ -29,6 +29,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.MuzimaLocationService;
 import com.muzima.utils.Constants;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.patients.PatientSummaryActivity;
 
 import static com.muzima.utils.Constants.MuzimaGPSLocationConstants.LOCATION_ACCESS_PERMISSION_REQUEST_CODE;
@@ -36,9 +37,11 @@ import static com.muzima.utils.Constants.MuzimaGPSLocationConstants.LOCATION_ACC
 
 public class PatientFormsActivity extends FormsActivityBase {
     private Patient patient;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_with_pager);
         Intent intent = getIntent();
@@ -46,9 +49,13 @@ public class PatientFormsActivity extends FormsActivityBase {
         initPager();
         initPagerIndicator();
         getSupportActionBar().setTitle(patient.getSummary());
-
         requestGPSLocationPermissions();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        themeUtils.onResume(this);
     }
 
 

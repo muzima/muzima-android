@@ -31,7 +31,7 @@
             android:icon="@drawable/ic_launcher_logo"
             android:label="@string/app_name"
             android:largeHeap="true"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.Dark">
         <meta-data
                 android:name="android.app.default_searchable"
                 android:value="com.muzima.view.SearchResultsActivity"/>
@@ -60,7 +60,7 @@
                 android:name=".view.login.LoginActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/app_name"
-                android:theme="@style/LoginTheme"/>
+                android:theme="@style/LoginTheme.Dark"/>
         <activity
                 android:name=".view.cohort.CohortActivity"
                 android:configChanges="orientation|screenSize"
@@ -75,13 +75,13 @@
                 android:configChanges="orientation|screenSize"
                 android:label="@string/general_settings"
                 android:parentActivityName=".view.MainActivity"
-                android:theme="@style/PreferencesTheme"/>
+                android:theme="@style/PreferencesTheme.Dark"/>
         <activity
                 android:name=".view.preferences.ProviderPreferenceActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/general_providers"
                 android:parentActivityName=".view.preferences.SettingsActivity"
-                android:theme="@style/PreferencesTheme">
+                android:theme="@style/PreferencesTheme.Dark">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.preferences.SettingsActivity"/>
@@ -95,7 +95,7 @@
                 android:configChanges="orientation|screenSize"
                 android:label="@string/title_activity_cohort_prefix"
                 android:parentActivityName=".view.preferences.SettingsActivity"
-                android:theme="@style/PreferencesTheme">
+                android:theme="@style/PreferencesTheme.Dark">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.preferences.SettingsActivity"/>
@@ -105,7 +105,7 @@
                 android:configChanges="orientation|screenSize"
                 android:label="@string/general_concepts"
                 android:parentActivityName=".view.preferences.SettingsActivity"
-                android:theme="@style/PreferencesTheme">
+                android:theme="@style/PreferencesTheme.Dark">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.preferences.SettingsActivity"/>
@@ -115,7 +115,7 @@
                 android:configChanges="orientation|screenSize"
                 android:label="@string/general_locations"
                 android:parentActivityName=".view.preferences.SettingsActivity"
-                android:theme="@style/PreferencesTheme">
+                android:theme="@style/PreferencesTheme.Dark">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.preferences.SettingsActivity"/>
@@ -124,6 +124,24 @@
                 android:name=".view.HelpActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/general_help"
+                android:parentActivityName=".view.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.MainActivity"/>
+        </activity>
+        <activity
+                android:name=".view.InteractiveHelpActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/ask_help"
+                android:parentActivityName=".view.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.MainActivity"/>
+        </activity>
+        <activity
+                android:name=".view.FeedbackActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/general_feedback"
                 android:parentActivityName=".view.MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -292,42 +310,42 @@
         <activity
                 android:name=".view.cohort.CohortWizardActivity"
                 android:configChanges="orientation|screenSize"
-                android:theme="@style/WizardTheme"/>
+                android:theme="@style/WizardTheme.Dark"/>
         <activity
                 android:name=".view.forms.FormTemplateWizardActivity"
                 android:configChanges="orientation|screenSize"
-                android:theme="@style/WizardTheme"/>
+                android:theme="@style/WizardTheme.Dark"/>
         <activity
                 android:name=".view.location.CustomLocationWizardActivity"
                 android:configChanges="orientation|screenSize"
-                android:theme="@style/WizardTheme"/>
+                android:theme="@style/WizardTheme.Dark"/>
         <activity
                 android:name=".view.provider.CustomProviderWizardActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="Define Custom Concept"
-                android:theme="@style/WizardTheme"/>
+                android:theme="@style/WizardTheme.Dark"/>
         <activity
                 android:name=".view.concept.CustomConceptWizardActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="Define Custom Concept"
-                android:theme="@style/WizardTheme"/>
+                android:theme="@style/WizardTheme.Dark"/>
         <activity
                 android:name=".view.InstallBarCodeWizardActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="Install Barcode Scanner"
-                android:theme="@style/WizardTheme"/>
+                android:theme="@style/WizardTheme.Dark"/>
         <activity
                 android:name=".view.setupconfiguration.SetupMethodPreferenceWizardActivity"
                 android:configChanges="orientation|screenSize|keyboardHidden"
                 android:label="Setup Method"
                 android:screenOrientation="portrait"
-                android:theme="@style/WizardTheme"
+                android:theme="@style/WizardTheme.Dark"
                 android:windowSoftInputMode="adjustNothing"/>
         <activity
                 android:name=".view.setupconfiguration.GuidedConfigurationWizardActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="Guided Setup Wizard"
-                android:theme="@style/WizardTheme"/>
+                android:theme="@style/WizardTheme.Dark"/>
         <!-- Wizard Activities End -->
 
         <activity
@@ -375,8 +393,28 @@
             android:permission="android.permission.BIND_JOB_SERVICE"/>
 
         <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="70e802951d17c2d41d3591d642d1621cd703d32a" />
+                android:name="io.fabric.ApiKey"
+                android:value="70e802951d17c2d41d3591d642d1621cd703d32a"/>
+
+        <activity
+                android:name=".view.YouTubeVideoViewActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/general_help"
+                android:parentActivityName=".view.HelpActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.HelpActivity"/>
+        </activity>
+        <activity
+                android:name=".view.VideoWebViewActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/general_help"
+                android:parentActivityName=".view.HelpActivity"
+                android:hardwareAccelerated="true">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.HelpActivity"/>
+        </activity>
     </application>
 
 </manifest>

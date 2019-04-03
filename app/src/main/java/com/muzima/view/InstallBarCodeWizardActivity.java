@@ -18,13 +18,16 @@ import android.widget.Button;
 import android.view.Menu;
 import com.muzima.R;
 import com.muzima.service.LandingPagePreferenceService;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.view.concept.CustomConceptWizardActivity;
 
 public class InstallBarCodeWizardActivity extends BaseActivity {
+    private final ThemeUtils themeUtils = new ThemeUtils(R.style.WizardTheme_Light, R.style.WizardTheme_Dark);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_install_barcode_wizard);
         attachCheckScannerAction();

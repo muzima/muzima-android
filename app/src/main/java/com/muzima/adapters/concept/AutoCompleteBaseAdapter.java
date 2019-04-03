@@ -45,7 +45,7 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
     public AutoCompleteBaseAdapter(Context context, int textViewResourceId, AutoCompleteTextView autoCompleteTextView) {
         super(context, textViewResourceId);
         this.autoCompleteTextView = autoCompleteTextView;
-        muzimaApplicationWeakReference = new WeakReference<MuzimaApplication>((MuzimaApplication) context);
+        muzimaApplicationWeakReference = new WeakReference<MuzimaApplication>((MuzimaApplication) context.getApplicationContext());
         muzimaSyncService = getMuzimaApplicationContext().getMuzimaSyncService();
     }
 

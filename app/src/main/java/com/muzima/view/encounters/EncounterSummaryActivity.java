@@ -21,6 +21,7 @@ import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 
@@ -29,9 +30,11 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
     private Encounter encounter;
     private EncounterObservationsAdapter encounterObservationsAdapter;
     private View noDataView;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_encounter_summary);
 
@@ -44,6 +47,12 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
         setupEncounterMetadata();
         setupStillLoadingView();
         setUpEncounterObservations();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        themeUtils.onResume(this);
     }
 
     private void setupActionBar() {

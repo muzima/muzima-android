@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.view.Menu;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.concept.ConceptListActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 import com.muzima.view.preferences.ProviderPreferenceActivity;
@@ -28,8 +29,10 @@ public class ProviderListActivity extends ProviderPreferenceActivity{
     private boolean isProcessDialogOn = false;
     private PowerManager powerManager = null;
     private PowerManager.WakeLock wakeLock = null ;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     public void onCreate(Bundle savedInstanceState) {
+        super.setThemeUtils(themeUtils);
         super.onCreate(savedInstanceState);
         Credentials credentials = new Credentials(this);
 
