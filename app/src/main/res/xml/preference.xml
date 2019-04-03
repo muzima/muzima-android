@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
-  ~ and Vanderbilt University Medical Center.
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
   ~
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
   ~ with additional health care disclaimer.
@@ -49,7 +49,8 @@
                 android:negativeButtonText="@android:string/cancel"
                 android:positiveButtonText="@android:string/ok"
                 android:title="@string/title_session_timeout"
-                android:inputType="number"/>
+                android:inputType="number"
+                android:selectAllOnFocus="true"/>
         <EditTextPreference
                 android:defaultValue="@string/default_auto_save_interval"
                 android:dialogMessage="@string/hint_form_auto_save_interval"
@@ -58,7 +59,8 @@
                 android:negativeButtonText="@android:string/cancel"
                 android:positiveButtonText="@android:string/ok"
                 android:title="@string/title_form_auto_save_interval"
-                android:inputType="number"/>
+                android:inputType="number"
+                android:selectAllOnFocus="true"/>
         <CheckBoxPreference
                 android:defaultValue="false"
                 android:summary="@string/hint_real_time_sync"
@@ -88,7 +90,7 @@
         <ListPreference
             android:title="@string/title_landing_page"
             android:key="@string/preference_landing_page"
-            android:defaultValue="@string/general_dashboard"
+            android:defaultValue="@string/general_client_list"
             android:entries="@array/landing_pages"
             android:entryValues="@array/landing_pages">
         </ListPreference>

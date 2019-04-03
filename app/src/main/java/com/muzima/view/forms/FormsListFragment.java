@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -10,6 +10,7 @@
 
 package com.muzima.view.forms;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -82,10 +83,23 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
     }
 
     @Override
-    public void onQueryTaskCancelled(){}
+    public void onQueryTaskCancelled(){
+        FormsAdapter formsAdapter = ((FormsAdapter)listAdapter);
+        formsAdapter.cancelBackgroundQueryTask();
+    }
 
     @Override
     public void onQueryTaskCancelled(Object errorDefinition){}
+
+    public void setRunningBackgroundQueryTask(AsyncTask<?, ?, ?> backgroundQueryTask){
+        FormsAdapter formsAdapter = ((FormsAdapter)listAdapter);
+        formsAdapter.setRunningBackgroundQueryTask(backgroundQueryTask);
+    }
+
+    public boolean isFormDownloadBackgroundTaskRunning() {
+        FormsAdapter formsAdapter = ((FormsAdapter)listAdapter);
+        return formsAdapter.isFormDownloadBackgroundTaskRunning();
+    }
 
     final class DeleteFormsActionModeCallback implements ActionMode.Callback {
 

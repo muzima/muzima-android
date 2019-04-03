@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -10,11 +10,14 @@
 
 package com.muzima.view.forms;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -53,6 +56,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     private OnTemplateDownloadComplete templateDownloadCompleteListener;
     private TextView syncText;
     private boolean newFormsSyncInProgress;
+    private Activity mActivity;
 
     public static AllAvailableFormsListFragment newInstance(FormController formController) {
         AllAvailableFormsListFragment f = new AllAvailableFormsListFragment();
@@ -63,18 +67,27 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if (listAdapter == null) {
-            listAdapter = new AllAvailableFormsAdapter(getActivity(), R.layout.item_forms_list_selectable, formController);
+            listAdapter = new AllAvailableFormsAdapter(mActivity, R.layout.item_forms_list_selectable, formController);
         }
-        noDataMsg = getActivity().getResources().getString(R.string.info_forms_unavailable);
-        noDataTip = getActivity().getResources().getString(R.string.hint_form_list_download);
+        noDataMsg = mActivity.getResources().getString(R.string.info_forms_unavailable);
+        noDataTip = mActivity.getResources().getString(R.string.hint_form_list_download);
 
         // this can happen on orientation change
         if (actionModeActive) {
-            actionMode = getActivity().startActionMode(new NewFormsActionModeCallback());
+            actionMode = mActivity.startActionMode(new NewFormsActionModeCallback());
             actionMode.setTitle(String.valueOf(getSelectedForms().size()));
         }
         super.onCreate(savedInstanceState);
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof Activity){
+            mActivity =(Activity) context;
+            }
+    }
+
 
     @Override
     protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
@@ -87,7 +100,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         if (!actionModeActive) {
-            actionMode = getActivity().startActionMode(new NewFormsActionModeCallback());
+            actionMode = mActivity.startActionMode(new NewFormsActionModeCallback());
             actionModeActive = true;
         }
         int numOfSelectedForms = getSelectedForms().size();
@@ -126,7 +139,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     private boolean patientDataExistsWithSelectedForms() {
         try {
             IncompleteFormsWithPatientData incompleteForms = formController.getAllIncompleteFormsWithPatientData();
-            CompleteFormsWithPatientData completeForms = formController.getAllCompleteFormsWithPatientData(getActivity().getApplicationContext());
+            CompleteFormsWithPatientData completeForms = formController.getAllCompleteFormsWithPatientData(mActivity.getApplicationContext());
             if (patientDataExistsWithSelectedForms(incompleteForms) || patientDataExistsWithSelectedForms(completeForms)) {
                 return true;
             }
@@ -160,9 +173,9 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
 
     private void updateSyncTime() {
         try {
-            LastSyncTimeService lastSyncTimeService = ((MuzimaApplication) this.getActivity().getApplicationContext()).getMuzimaContext().getLastSyncTimeService();//((MuzimaApplication)getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
+            LastSyncTimeService lastSyncTimeService = ((MuzimaApplication) this.mActivity.getApplicationContext()).getMuzimaContext().getLastSyncTimeService();//((MuzimaApplication)getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
             Date lastSyncedTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS);
-            String lastSyncedMsg = getActivity().getString(R.string.info_last_sync_unavailable);
+            String lastSyncedMsg = mActivity.getString(R.string.info_last_sync_unavailable);
             if (lastSyncedTime != null) {
                 lastSyncedMsg = getString(R.string.hint_last_synced, DateUtils.getFormattedDateTime(lastSyncedTime));
             }
@@ -191,7 +204,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            getActivity().getMenuInflater().inflate(R.menu.actionmode_menu_download, menu);
+            mActivity.getMenuInflater().inflate(R.menu.actionmode_menu_download, menu);
             return true;
         }
 
@@ -205,19 +218,19 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
             switch (menuItem.getItemId()) {
                 case R.id.menu_download:
                     if (newFormsSyncInProgress) {
-                        Toast.makeText(getActivity(), R.string.error_sync_not_allowed, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mActivity, R.string.error_sync_not_allowed, Toast.LENGTH_SHORT).show();
                         endActionMode();
                         break;
                     }
 
-                    if (!NetworkUtils.isConnectedToNetwork(getActivity())) {
-                        Toast.makeText(getActivity(), R.string.error_local_connection_unavailable, Toast.LENGTH_SHORT).show();
+                    if (!NetworkUtils.isConnectedToNetwork(mActivity)) {
+                        Toast.makeText(mActivity, R.string.error_local_connection_unavailable, Toast.LENGTH_SHORT).show();
                         return true;
                     }
 
                     if (patientDataExistsWithSelectedForms()) {
-                        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-                        alertDialog.setMessage((getActivity().getApplicationContext())
+                        AlertDialog alertDialog = new AlertDialog.Builder(mActivity).create();
+                        alertDialog.setMessage((mActivity.getApplicationContext())
                                         .getString(R.string.error_form_patient_data_exist)
                         );
                         alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
@@ -231,12 +244,12 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
 
                     //syncAllFormTemplatesInBackgroundService();
 
-                    new AsyncTask<Void, Void, int[]>() {
+                    final AsyncTask<Void, Void, int[]> asynTask = new AsyncTask<Void, Void, int[]>() {
                         @Override
                         protected void onPreExecute() {
                             Log.i(getClass().getSimpleName(), "Canceling timeout timer!");
-                            ((MuzimaApplication) getActivity().getApplicationContext()).cancelTimer();
-                            ((FormsActivity) getActivity()).showProgressBar();
+                            ((MuzimaApplication) mActivity.getApplicationContext()).cancelTimer();
+                            ((FormsActivity) mActivity).showProgressBar();
                         }
 
                         @Override
@@ -248,7 +261,9 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
                         protected void onPostExecute(int[] results) {
                             navigateToNextActivity();
                         }
-                    }.execute();
+                    };
+                    setRunningBackgroundQueryTask(asynTask);
+                    asynTask.execute();
 
                     endActionMode();
                     return true;
@@ -264,19 +279,21 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     }
 
     private void navigateToNextActivity() {
-        Intent intent = new Intent(getActivity().getApplicationContext(), LocationListActivity.class);
-        startActivity(intent);
-        getActivity().finish();
+        Intent intent = new Intent(mActivity.getApplicationContext(), LocationListActivity.class);
+        if(isAdded()) {
+            startActivity(intent);
+        }
+        mActivity.finish();
     }
     private int[] downloadFormTemplates() {
         List<String> selectedFormIdsArray = getSelectedForms();
-        MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getActivity().getApplicationContext()).getMuzimaSyncService();
+        MuzimaSyncService muzimaSyncService = ((MuzimaApplication) mActivity.getApplicationContext()).getMuzimaSyncService();
         return muzimaSyncService.downloadFormTemplatesAndRelatedMetadata(selectedFormIdsArray.toArray(new String[selectedFormIdsArray.size()]), true);
     }
 
     private void syncAllFormTemplatesInBackgroundService() {
-        ((FormsActivity) getActivity()).showProgressBar();
-        new SyncFormTemplateIntent(getActivity(), getSelectedFormsArray()).start();
+        ((FormsActivity) mActivity).showProgressBar();
+        new SyncFormTemplateIntent((FragmentActivity) mActivity, getSelectedFormsArray()).start();
     }
 
     public void setTemplateDownloadCompleteListener(OnTemplateDownloadComplete templateDownloadCompleteListener) {

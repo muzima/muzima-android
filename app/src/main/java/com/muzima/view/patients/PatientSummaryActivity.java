@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -94,8 +94,8 @@ public class PatientSummaryActivity extends BaseActivity {
     private SmartCardController smartCardController;
     private MuzimaApplication muzimaApplication;
     private Location defaultLocation;
-
     private final ThemeUtils themeUtils = new ThemeUtils();
+    private boolean isSHREnabled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,12 +104,9 @@ public class PatientSummaryActivity extends BaseActivity {
         setContentView(R.layout.activity_client_summary);
         muzimaApplication = (MuzimaApplication) getApplicationContext( );
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
-        boolean isSHREnabled = preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_shr_key),PatientSummaryActivity.DEFAULT_SHR_STATUS);
-        if(!isSHREnabled) {
-            LinearLayout SHRLinearLayout=(LinearLayout)findViewById(R.id.SHR_linear_layout);
-            SHRLinearLayout.setVisibility(LinearLayout.GONE);
-        }
+        setSHREnabled();
+        setSHRLayoutVisibility();
+
         Bundle intentExtras = getIntent( ).getExtras( );
         if (intentExtras != null) {
             patient = (Patient) intentExtras.getSerializable(PATIENT);
@@ -178,6 +175,7 @@ public class PatientSummaryActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         themeUtils.onResume(this);
+        handleSHREnabledChanged();
         executeBackgroundTask();
     }
 
@@ -207,8 +205,6 @@ public class PatientSummaryActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
-        boolean isSHREnabled = preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_shr_key),PatientSummaryActivity.DEFAULT_SHR_STATUS);
         if(isSHREnabled) {
             getMenuInflater().inflate(R.menu.client_summary, menu);
             MenuItem SHRCardMenuItem = menu.getItem(0);
@@ -732,6 +728,30 @@ public class PatientSummaryActivity extends BaseActivity {
                     .show();
         } catch (SmartCardController.SmartCardRecordSaveException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void handleSHREnabledChanged(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
+        boolean isPreferenceSHREnabled = preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_shr_key),PatientSummaryActivity.DEFAULT_SHR_STATUS);
+        if (isSHREnabled != isPreferenceSHREnabled) {
+            isSHREnabled = isPreferenceSHREnabled;
+            invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            setSHRLayoutVisibility();
+        }
+    }
+
+    private void setSHREnabled(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
+        isSHREnabled = preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_shr_key),PatientSummaryActivity.DEFAULT_SHR_STATUS);
+    }
+
+    private void setSHRLayoutVisibility(){
+        LinearLayout SHRLinearLayout=(LinearLayout)findViewById(R.id.SHR_linear_layout);
+        if(isSHREnabled) {
+            SHRLinearLayout.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            SHRLinearLayout.setVisibility(LinearLayout.GONE);
         }
     }
 }
