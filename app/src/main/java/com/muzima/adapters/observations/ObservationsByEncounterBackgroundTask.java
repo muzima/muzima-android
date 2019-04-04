@@ -123,9 +123,6 @@ class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Encounters, 
 
     @Override
     protected void onPostExecute(Encounters encountersWithObservations) {
-        if (encountersWithObservations == null) {
-            return;
-        }
         if (observationsByEncounterAdapter.getBackgroundListQueryTaskListener() != null) {
             observationsByEncounterAdapter.getBackgroundListQueryTaskListener().onQueryTaskFinish();
         }
