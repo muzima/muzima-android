@@ -677,6 +677,9 @@
     <string name="type_a_message_hint">Type a message</string>
     <string name="type_cohort_name_hint">Type Cohort name …</string>
     <string name="video_links_general_text">Video Links:</string>
+    <string name="warning_auto_save_interval">Auto Save Interval: Could not set auto save interval.
+        \nPlease enter a value between 1 and 120.
+    </string>
     <string name="warning_cohort_prefix_exists">Cohort prefix exists</string>
     <string name="warning_empty_cohort_prefix">You cannot add an empty cohort prefix</string>
     <string name="warning_form_close">Closing Form: This will discard all your changes. Are you sure you would like to

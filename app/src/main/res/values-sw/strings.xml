@@ -568,6 +568,9 @@
     <string name="type_a_message_hint">Andika ujumbe</string>
     <string name="type_cohort_name_hint">Weka jina la Cohort …</string>
     <string name="video_links_general_text">Viungo vya Video:</string>
+    <string name="warning_auto_save_interval">>Muda wa kungoja kuhifadhi fomu kiotomatiki:
+        Haikuweza kuweka muda wa kuokoa auto. \nTafadhali ingiza thamani kati ya 1 na 120.
+    </string>
     <string name="warning_cohort_prefix_exists">Kiambishi awali cha kikundi kinapatikanwa</string>
     <string name="warning_empty_cohort_prefix">Huwezi kuongeza kiambishi awali cha jina la kikundi kilicho tupu</string>
     <string name="warning_form_close">Ufungaji wa fomu: Kitendo hiki kitapoteza mabadiliko yeyote uliyofanya. Una uhakika ungependa kufanya hivyo?</string>
