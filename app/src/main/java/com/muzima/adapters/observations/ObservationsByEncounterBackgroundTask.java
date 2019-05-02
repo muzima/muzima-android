@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -12,30 +12,26 @@ package com.muzima.adapters.observations;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
-import com.muzima.R;
+
 import com.muzima.api.model.Encounter;
-import com.muzima.api.model.Observation;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.EncounterWithObservations;
 import com.muzima.model.observation.Encounters;
-
-import net.minidev.json.JSONValue;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Encounters, Encounters> {
+class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Encounters, Encounters> {
 
-    private EncounterAction encounterAction;
-    private ObservationsByEncounterAdapter observationsByEncounterAdapter;
-    private Boolean isShrEncounter = false;
+    private final EncounterAction encounterAction;
+    private final ObservationsByEncounterAdapter observationsByEncounterAdapter;
+    private Boolean isSHREncounter = false;
 
-    public ObservationsByEncounterBackgroundTask(ObservationsByEncounterAdapter observationsByEncounterAdapter, EncounterAction encounterAction,Boolean isShrEncounter) {
+    public ObservationsByEncounterBackgroundTask(ObservationsByEncounterAdapter observationsByEncounterAdapter, EncounterAction encounterAction,Boolean isSHREncounter) {
         this.observationsByEncounterAdapter = observationsByEncounterAdapter;
         this.encounterAction = encounterAction;
-        this.isShrEncounter = isShrEncounter;
+        this.isSHREncounter = isSHREncounter;
     }
 
     @Override
@@ -47,15 +43,15 @@ public class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Encou
     @Override
     protected Encounters doInBackground(Void... params) {
         Encounters encountersWithObservations = null;
-        if (isShrEncounter){
-            encountersWithObservations = getShrEncounterWithObservations();
+        if (isSHREncounter){
+            encountersWithObservations = getSHREncounterWithObservations();
         }else {
-            encountersWithObservations = getNonShrEncounterWithObservations();
+            encountersWithObservations = getNonSHREncounterWithObservations();
         }
         return encountersWithObservations;
     }
 
-    private Encounters getShrEncounterWithObservations() {
+    private Encounters getSHREncounterWithObservations() {
         Encounters encountersWithObservations = null;
         Encounters temp = null;
         try {
@@ -84,7 +80,7 @@ public class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Encou
         return encountersWithObservations;
     }
 
-    private Encounters getNonShrEncounterWithObservations() {
+    private Encounters getNonSHREncounterWithObservations() {
         Encounters encountersWithObservations = null;
         Encounters temp = null;
         try {
@@ -113,7 +109,7 @@ public class ObservationsByEncounterBackgroundTask extends AsyncTask<Void, Encou
         return encountersWithObservations;
     }
 
-    private Comparator<Encounter> encountersDateTimeComparator = new Comparator<Encounter>() {
+    private final Comparator<Encounter> encountersDateTimeComparator = new Comparator<Encounter>() {
         @Override
         public int compare(Encounter lhs, Encounter rhs) {
             if (lhs.getEncounterDatetime()==null)

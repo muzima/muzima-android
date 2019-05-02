@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -12,16 +12,16 @@ package com.muzima.view.cohort;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.widget.Toast;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortPagerAdapter;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.custom.PagerSlidingTabStrip;
 
@@ -29,19 +29,25 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 public class CohortActivity extends BroadcastListenerActivity {
-    private static final String TAG = "CohortActivity";
     private ViewPager viewPager;
     private CohortPagerAdapter cohortPagerAdapter;
-    private PagerSlidingTabStrip pagerTabsLayout;
     private MenuItem menubarLoadButton;
     private boolean syncInProgress;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_with_pager);
         initPager();
         initPagerIndicator();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        themeUtils.onResume(this);
     }
 
     @Override
@@ -80,22 +86,26 @@ public class CohortActivity extends BroadcastListenerActivity {
         int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS, SyncStatusConstants.UNKNOWN_ERROR);
         int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
 
-        if (syncType == DataSyncServiceConstants.SYNC_COHORTS) {
-            hideProgressbar();
-            syncInProgress = false;
-            if (syncStatus == SyncStatusConstants.SUCCESS) {
-                cohortPagerAdapter.onCohortDownloadFinish();
-            }
-        } else if (syncType == DataSyncServiceConstants.SYNC_PATIENTS_FULL_DATA) {
-            if (syncStatus == SyncStatusConstants.SUCCESS) {
-                cohortPagerAdapter.onPatientsDownloadFinish();
-            }
-        } else if (syncType == DataSyncServiceConstants.SYNC_ENCOUNTERS) {
-            hideProgressbar();
+        switch (syncType) {
+            case DataSyncServiceConstants.SYNC_COHORTS:
+                hideProgressbar();
+                syncInProgress = false;
+                if (syncStatus == SyncStatusConstants.SUCCESS) {
+                    cohortPagerAdapter.onCohortDownloadFinish();
+                }
+                break;
+            case DataSyncServiceConstants.SYNC_PATIENTS_FULL_DATA:
+                if (syncStatus == SyncStatusConstants.SUCCESS) {
+                    cohortPagerAdapter.onPatientsDownloadFinish();
+                }
+                break;
+            case DataSyncServiceConstants.SYNC_ENCOUNTERS:
+                hideProgressbar();
+                break;
         }
     }
 
-    public void hideProgressbar() {
+    private void hideProgressbar() {
         menubarLoadButton.setActionView(null);
     }
 
@@ -104,18 +114,19 @@ public class CohortActivity extends BroadcastListenerActivity {
     }
 
     private void initPager() {
-        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager = findViewById(R.id.pager);
         cohortPagerAdapter = new CohortPagerAdapter(getApplicationContext(), getSupportFragmentManager());
         cohortPagerAdapter.initPagerViews();
         viewPager.setAdapter(cohortPagerAdapter);
     }
 
     private void initPagerIndicator() {
-        pagerTabsLayout = (PagerSlidingTabStrip) findViewById(R.id.pager_indicator);
-        pagerTabsLayout.setTextColor(Color.WHITE);
+        PagerSlidingTabStrip pagerTabsLayout = findViewById(R.id.pager_indicator);
+        pagerTabsLayout.setTextColor(pagerTabsLayout.getIndicatorTextColor());
         pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));
         pagerTabsLayout.setSelectedTextColor(getResources().getColor(R.color.tab_indicator));
         pagerTabsLayout.setTypeface(Fonts.roboto_medium(this), -1);
+        pagerTabsLayout.setShouldExpand(true);
         pagerTabsLayout.setViewPager(viewPager);
         viewPager.setCurrentItem(0);
         pagerTabsLayout.markCurrentSelected(0);
@@ -147,5 +158,9 @@ public class CohortActivity extends BroadcastListenerActivity {
         cohortPagerAdapter.onCohortDownloadStart();
         showProgressBar();
         new SyncCohortsIntent(this).start();
+    }
+
+    public void setCurrentView(int position){
+        viewPager.setCurrentItem(position);
     }
 }

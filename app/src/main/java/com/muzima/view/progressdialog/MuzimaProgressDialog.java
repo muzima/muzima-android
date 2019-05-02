@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -12,14 +12,27 @@ package com.muzima.view.progressdialog;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.webkit.JavascriptInterface;
 import com.muzima.R;
 
 public class MuzimaProgressDialog {
-    private ProgressDialog dialog;
+    private final ProgressDialog dialog;
 
     public MuzimaProgressDialog(Activity activity) {
-        this(new ProgressDialog(activity, R.style.alertDialogTheme));
+        this(new ProgressDialog(activity, getStyle(activity)));
+    }
+
+    private static int getStyle(Activity activity) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+        String lightModeKey = activity.getResources().getString(R.string.preference_light_mode);
+        boolean lightMode = preferences.getBoolean(lightModeKey, false);
+        if (lightMode) {
+            return R.style.alertDialogThemeLight;
+        } else {
+            return R.style.alertDialogTheme;
+        }
     }
 
     MuzimaProgressDialog(ProgressDialog dialog) {

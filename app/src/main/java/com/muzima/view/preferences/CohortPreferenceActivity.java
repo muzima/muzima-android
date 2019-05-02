@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -23,30 +23,32 @@ import com.muzima.adapters.cohort.CohortPrefixPrefAdapter;
 import com.muzima.adapters.concept.AutoCompleteCohortPrefixAdapter;
 import com.muzima.api.model.Cohort;
 import com.muzima.service.CohortPrefixPreferenceService;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BaseFragmentActivity;
 import com.muzima.view.HelpActivity;
 
 public class CohortPreferenceActivity extends BaseFragmentActivity {
-    protected CohortPrefixPrefAdapter prefAdapter;
-    private AutoCompleteCohortPrefixAdapter autoCompleteCohortPrefixAdapter;
+    private CohortPrefixPrefAdapter prefAdapter;
     private AutoCompleteTextView cohortPrefix;
     private CohortPrefixPreferenceService preferenceService;
+    private final ThemeUtils themeUtils = new ThemeUtils(R.style.PreferencesTheme_Light, R.style.PreferencesTheme_Dark);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
 
         preferenceService = new CohortPrefixPreferenceService(this);
 
-        ListView cohortPrefList = (ListView) findViewById(R.id.cohort_pref_list);
+        ListView cohortPrefList = findViewById(R.id.cohort_pref_list);
         prefAdapter = new CohortPrefixPrefAdapter(this, R.layout.item_preference, this);
         cohortPrefList.setEmptyView(findViewById(R.id.no_data_msg));
         cohortPrefList.setAdapter(prefAdapter);
 
 
-        cohortPrefix = (AutoCompleteTextView) findViewById(R.id.prefix_add_prefix);
-        autoCompleteCohortPrefixAdapter = new AutoCompleteCohortPrefixAdapter(getApplicationContext(), R.layout.item_option_autocomplete, cohortPrefix);
+        cohortPrefix = findViewById(R.id.prefix_add_prefix);
+        AutoCompleteCohortPrefixAdapter autoCompleteCohortPrefixAdapter = new AutoCompleteCohortPrefixAdapter(this, R.layout.item_option_autocomplete, cohortPrefix);
         cohortPrefix.setAdapter(autoCompleteCohortPrefixAdapter);
 
         cohortPrefix.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -58,7 +60,7 @@ public class CohortPreferenceActivity extends BaseFragmentActivity {
         });
     }
 
-    protected int getContentView() {
+    private int getContentView() {
         return R.layout.activity_cohort_pref;
     }
 
@@ -78,6 +80,7 @@ public class CohortPreferenceActivity extends BaseFragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        themeUtils.onResume(this);
         prefAdapter.reloadData();
     }
 

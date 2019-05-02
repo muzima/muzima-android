@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -16,6 +16,9 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.multidex.MultiDexApplication;
+
+import com.crashlytics.android.Crashlytics;
 import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
 import com.muzima.api.model.User;
@@ -59,6 +62,8 @@ import java.io.IOException;
 import java.security.Security;
 import java.util.List;
 
+import io.fabric.sdk.android.Fabric;
+
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 
 @ReportsCrashes(
@@ -78,7 +83,8 @@ import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 )
 
 
-public class MuzimaApplication extends Application {
+public class MuzimaApplication extends MultiDexApplication {
+
     private Context muzimaContext;
     private Activity currentActivity;
     private FormController formController;
@@ -98,12 +104,14 @@ public class MuzimaApplication extends Application {
     private SmartCardController smartCardController;
     private MuzimaGeneratedReportController muzimaGeneratedReportController;
     private MuzimaTimer muzimaTimer;
-    public static final String APP_DIR = "/data/data/com.muzima";
+    private static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
     private User authenticatedUser;
 
     static {
         // see http://rtyley.github.io/spongycastle/
+        //TODO There is need to start using Google provided security provider (AndroidOpenSSL)
+        //TODO Shipping with both spongycastler  and the default AndroidOpenSSL significantly increases the apk size.
         Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
     }
 
@@ -137,7 +145,8 @@ public class MuzimaApplication extends Application {
 
     @Override
     public void onCreate() {
-        ACRA.init(this);
+        //ACRA.init(this);
+        Fabric.with(this, new Crashlytics());
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Security.removeProvider("AndroidOpenSSL");
         }
@@ -148,11 +157,10 @@ public class MuzimaApplication extends Application {
         try {
             ContextFactory.setProperty(Constants.LUCENE_DIRECTORY_PATH, APP_DIR);
             muzimaContext = ContextFactory.createContext();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
     }
 
     public Context getMuzimaContext() {
@@ -215,7 +223,7 @@ public class MuzimaApplication extends Application {
             try {
                 formController = new FormController(muzimaContext.getFormService(), muzimaContext.getPatientService(),
                         muzimaContext.getLastSyncTimeService(), getSntpService(), muzimaContext.getObservationService(),
-                        muzimaContext.getEncounterService(),getPatientController(),getMuzimaSettingController());
+                        muzimaContext.getEncounterService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -284,7 +292,7 @@ public class MuzimaApplication extends Application {
         if (notificationController == null) {
             try {
                 notificationController = new NotificationController(muzimaContext.getService(NotificationService.class),
-                        muzimaContext.getFormService());
+                        muzimaContext.getFormService(),this,getSntpService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -410,6 +418,7 @@ public class MuzimaApplication extends Application {
 
     public boolean isRunningInBackground() {
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        assert manager != null;
         List<ActivityManager.RunningTaskInfo> tasks = manager.getRunningTasks(1);
         return tasks.get(0).topActivity.getClassName().contains("Launcher");
     }

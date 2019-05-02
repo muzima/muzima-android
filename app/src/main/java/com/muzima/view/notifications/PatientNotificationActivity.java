@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -16,14 +16,16 @@ import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.adapters.notification.PatientNotificationPagerAdapter;
 import com.muzima.api.model.Patient;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.patients.PatientSummaryActivity;
 
 public class PatientNotificationActivity extends NotificationActivityBase {
-    private static final String TAG = "PatientNotificationActivity";
     private Patient patient;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_with_pager);
         Intent intent = getIntent();
@@ -31,6 +33,12 @@ public class PatientNotificationActivity extends NotificationActivityBase {
         initPager();
         initPagerIndicator();
         getSupportActionBar().setTitle(patient.getSummary());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        themeUtils.onResume(this);
     }
 
     @Override

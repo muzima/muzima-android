@@ -1,6 +1,6 @@
 <!--
-  ~ Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
-  ~ and Vanderbilt University Medical Center.
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
   ~
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
   ~ with additional health care disclaimer.
@@ -11,14 +11,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
 	  xmlns:custom="http://schemas.android.com/apk/res-auto">
 	<item
-		android:id="@+id/scan_shr_card"
+		android:id="@+id/scan_SHR_card"
 		android:icon="@drawable/ic_action_write_card"
-		custom:showAsAction="always"
 		android:title="@string/scan_card_id_title"/>
 
 	<item
 		android:id="@+id/menu_client_add_icon"
-		android:icon="@drawable/ic_action_add_client"
+		android:icon="?attr/icAddClient"
 		android:title="@string/hint_client_search"
 		custom:showAsAction="always" />
 
@@ -30,7 +29,7 @@
 	<item
 			android:id="@+id/search"
 			custom:actionViewClass="android.support.v7.widget.SearchView"
-			android:icon="@drawable/ic_search"
+			android:icon="?attr/icSearch"
 			android:visible="false"
 			custom:showAsAction="always"
 			android:title="@string/hint_client_search"/>

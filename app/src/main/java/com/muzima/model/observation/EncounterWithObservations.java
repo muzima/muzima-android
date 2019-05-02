@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -20,7 +20,7 @@ import java.util.List;
 
 public class EncounterWithObservations {
     private Encounter encounter;
-    private List<Observation> observations = new ArrayList<Observation>();
+    private List<Observation> observations = new ArrayList<>();
     public Encounter getEncounter() {
         return encounter;
     }
@@ -43,7 +43,7 @@ public class EncounterWithObservations {
         observations.add(observation);
     }
 
-    private Comparator<Observation> observationDateTimeComparator = new Comparator<Observation>() {
+    private final Comparator<Observation> observationDateTimeComparator = new Comparator<Observation>() {
         @Override
         public int compare(Observation lhs, Observation rhs) {
             int isConceptNameEqual = lhs.getConcept().getName().compareTo(rhs.getConcept().getName());
@@ -60,12 +60,9 @@ public class EncounterWithObservations {
         if (this == o) return true;
         if (!(o instanceof EncounterWithObservations)) return false;
 
-        EncounterWithObservations that = (EncounterWithObservations) o;
+        EncounterWithObservations encounterWithObservations = (EncounterWithObservations) o;
 
-        if (!encounter.equals(that.encounter)) return false;
-        if (!observations.equals(that.observations)) return false;
-
-        return true;
+        return encounter.equals(encounterWithObservations.encounter) && observations.equals(encounterWithObservations.observations);
     }
 
     @Override

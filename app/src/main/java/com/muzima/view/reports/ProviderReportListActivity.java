@@ -14,6 +14,7 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.reports.AvailableReportsAdapter;
 import com.muzima.model.AvailableForm;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 
 import static android.view.View.INVISIBLE;
@@ -25,12 +26,14 @@ public class ProviderReportListActivity extends BroadcastListenerActivity implem
     private View noDataView;
     private FrameLayout progressBarContainer;
     private AvailableReportsAdapter reportsAdapter;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_list);
-        progressBarContainer = (FrameLayout) findViewById(R.id.progressbarContainer);
+        progressBarContainer = findViewById(R.id.progressbarContainer);
 
         setupListView();
         setupNoDataView();
@@ -40,7 +43,7 @@ public class ProviderReportListActivity extends BroadcastListenerActivity implem
         reportsAdapter = new AvailableReportsAdapter(this, R.layout.item_forms_list,
                 ((MuzimaApplication)getApplicationContext()).getFormController());
         reportsAdapter.setBackgroundListQueryTaskListener(this);
-        listView = (ListView) findViewById(R.id.list);
+        listView = findViewById(R.id.list);
         listView.setAdapter(reportsAdapter);
         listView.setOnItemClickListener(this);
     }
@@ -48,14 +51,14 @@ public class ProviderReportListActivity extends BroadcastListenerActivity implem
 
         noDataView = findViewById(R.id.no_data_layout);
 
-        TextView noDataMsgTextView = (TextView) findViewById(R.id.no_data_msg);
+        TextView noDataMsgTextView = findViewById(R.id.no_data_msg);
         noDataMsgTextView.setText(getResources().getText(R.string.info_downloaded_reports_unavailable));
 
-        TextView noDataTipTextView = (TextView) findViewById(R.id.no_data_tip);
+        TextView noDataTipTextView = findViewById(R.id.no_data_tip);
         noDataTipTextView.setText(R.string.hint_reports_unavailable);
 
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
-        noDataTipTextView.setTypeface(Fonts.roboto_light(this));
+        noDataTipTextView.setTypeface(Fonts.roboto_medium(this));
     }
 
     @Override
@@ -72,6 +75,7 @@ public class ProviderReportListActivity extends BroadcastListenerActivity implem
     protected void onResume() {
         super.onResume();
         reportsAdapter.reloadData();
+        themeUtils.onResume(this);
     }
 
     @Override
@@ -91,12 +95,12 @@ public class ProviderReportListActivity extends BroadcastListenerActivity implem
 
     @Override
     public void onQueryTaskCancelled() {
-        Log.e("TAG", "Cancelled...");
+        Log.e(getClass().getSimpleName(), "Cancelled...");
     }
 
     @Override
     public void onQueryTaskCancelled(Object errorDefinition) {
-        Log.e("TAG", "Cancelled...");
+        Log.e(getClass().getSimpleName(), "Cancelled...");
 
     }
 }

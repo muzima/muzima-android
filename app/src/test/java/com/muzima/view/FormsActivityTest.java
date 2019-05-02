@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -28,14 +28,14 @@ public class FormsActivityTest {
     private ListView formsListView;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
 //        activity = new FormsActivity();
 //        activity.onCreate(null);
 //        formsListView = (ListView) activity.findViewById(R.id.forms_list);
     }
 
     @Test
-    public void onCreate_listviewShouldHaveAnAdapter() throws Exception {
+    public void onCreate_listviewShouldHaveAnAdapter() {
 //        assertNotNull(formsListView.getAdapter());
     }
 }

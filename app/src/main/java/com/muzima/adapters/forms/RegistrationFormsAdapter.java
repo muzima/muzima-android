@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -19,8 +19,7 @@ import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
  * Responsible to list down all the registration forms. Will be in use only if there are more than 1 form.
  */
 public class RegistrationFormsAdapter extends FormsAdapter<AvailableForm> {
-    private static final String TAG = "RegistrationFormsAdapter";
-    private AvailableForms availableForms;
+    private final AvailableForms availableForms;
 
 
     public RegistrationFormsAdapter(Context context, int textViewResourceId, FormController formController, AvailableForms availableForms) {
@@ -33,9 +32,9 @@ public class RegistrationFormsAdapter extends FormsAdapter<AvailableForm> {
         new BackgroundQueryTask(this).execute();
     }
 
-    public class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<AvailableForm> {
+    class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<AvailableForm> {
 
-        public BackgroundQueryTask(FormsAdapter formsAdapter) {
+        BackgroundQueryTask(FormsAdapter formsAdapter) {
             super(formsAdapter);
         }
 

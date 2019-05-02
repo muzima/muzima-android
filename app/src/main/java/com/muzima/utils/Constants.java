@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -12,9 +12,12 @@ package com.muzima.utils;
 
 import android.os.Environment;
 
+import com.muzima.BuildConfig;
+
 //TODO: This class should be burnt and flushed. Constants in an anti-pattern and and a sure sign that your abstractions are wrong: Zabil
 //TODO: Burnt?? Maybe or may not be - Prasanna
 public class Constants {
+
     public static final String SYNC_PREF = "SyncMetaData";
     public static final String COHORT_PREFIX_PREF = "CohortPrefixPref";
     public static final String COHORT_PREFIX_PREF_KEY = "CohortPrefixPrefKey";
@@ -36,20 +39,29 @@ public class Constants {
     public static final String FORM_JSON_DISCRIMINATOR_CONSULTATION = "json-consultation";
     public static final String FORM_DISCRIMINATOR_CONSULTATION = "consultation";
     public static final String FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE = "json-demographics-update";
-    public static final String FORM_JSON_DISCRIMINATOR_SHR_ENCOUNTER = "json-shr-encounter";
-    public static final String FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION = "json-shr-registration";
-    public static final String FORM_JSON_DISCRIMINATOR_SHR_DEMOGRAPHICS_UPDATE = "json-shr-demographics-update";
+    public static final String FORM_JSON_DISCRIMINATOR_SHR_ENCOUNTER = "json-SHR-encounter";
+    public static final String FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION = "json-SHR-registration";
+    public static final String FORM_JSON_DISCRIMINATOR_SHR_DEMOGRAPHICS_UPDATE = "json-SHR-demographics-update";
 
     public static final String FORM_DISCRIMINATOR_PROVIDER_REPORT = "provider-report";
+    public static final String FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS = "json-individual-obs";
 
     private static final String APP_EXTERNAL_DIR_ROOT =  Environment.getExternalStorageDirectory().getPath() + "/muzima";
-    public static final String APP_MEDIA_DIR = APP_EXTERNAL_DIR_ROOT + "/media";
+    private static final String APP_MEDIA_DIR = APP_EXTERNAL_DIR_ROOT + "/media";
     public static final String APP_IMAGE_DIR = APP_MEDIA_DIR + "/image";
     public static final String APP_AUDIO_DIR = APP_MEDIA_DIR + "/audio";
     public static final String APP_VIDEO_DIR = APP_MEDIA_DIR + "/video";
     public static final String TMP_FILE_PATH = APP_EXTERNAL_DIR_ROOT + "/.cache";
 
     public static final int PATIENT_LOAD_PAGE_SIZE = 10;
+
+    public static final String STANDARD_DATE_FORMAT = "dd-MM-yyyy";
+    public static final String STANDARD_DATE_LOCALE_FORMAT = "dd-MM-yyyy hh:mm";
+
+    public static class MuzimaGPSLocationConstants {
+        public static final int LOCATION_ACCESS_PERMISSION_REQUEST_CODE = 9111;
+        public static final int LOCATION_SERVICES_SWITCH_REQUEST_CODE = 9122;
+    }
 
     public static class DataSyncServiceConstants {
         public static final String SYNC_TYPE = "sync_type";
@@ -97,12 +109,25 @@ public class Constants {
             public static final int INVALID_CHARACTER_IN_USERNAME = 16;
             public static final String INVALID_CHARACTER_FOR_USERNAME = ",;.-/@#$%&*+='\"|~`<>";
         }
+
+        public static class MuzimaJobSchedularConstants {
+            public static final String MUZIMA_JOB_SCHEDULE_INTENT = BuildConfig.APPLICATION_ID+" muzima scheduled job";
+            public static final String WORK_DURATION_KEY = "work duration";
+            public static final int MESSAGE_SYNC_JOB_ID = 22;
+            public static final int MSG_INDICATOR_START = 18;
+            public static final int MSG_INDICATOR_STOP = 19;
+            public static final int MSG_COLOR_START = 20;
+            public static final int JOB_INDICATOR_STOP = 21;
+            public static final long MUZIMA_JOB_PERIODIC = 5000;
+        }
     }
 
     public static class NotificationStatusConstants {
         public static final String NOTIFICATION_READ = "read";
         public static final String NOTIFICATION_UNREAD = "unread";
         public static final String RECEIVER_UUID = "receiverUuid";
+        public static final String NOTIFICATION_UPLOADED = "uploaded";
+        public static final String NOTIFICATION_NOT_UPLOADED = "notUploaded";
     }
 
     public static class ProgressDialogConstants {
@@ -120,13 +145,13 @@ public class Constants {
     }
 
     //This is a hack. Better to use configuration file from server side to obtain SHR definition
-    public static class Shr{
+    public static class Shr {
 
         public static class KenyaEmr{
 
-            public static String SMART_CARD_RECORD_TYPE = "KenyaEmrShr";
+            public static final String SMART_CARD_RECORD_TYPE = "KenyaEmrSHR";
             public static class DEFAULT_SHR_USER{
-                public static final String id = "shr_user";
+                public static final String id = "SHR_user";
             }
             public static class DEFAULT_SHR_FACILITY {
                 public static final String MFL_CODE = "10829";
@@ -388,7 +413,7 @@ public class Constants {
                         public static final int concept_id = 1418;
                     }
 
-                    public static class ENCOUNTER {
+                    static class ENCOUNTER {
                         public static final String ENCOUNTER_TYPE_UUID = "9bc15e94-2794-11e8-b467-0ed5f89f718b";
                     }
 

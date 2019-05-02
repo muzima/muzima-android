@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-  ~ Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
-  ~ and Vanderbilt University Medical Center.
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
   ~
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
   ~ with additional health care disclaimer.
@@ -13,13 +13,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:custom="http://schemas.android.com/apk/res-auto">
     <item
             android:id="@+id/form_back_to_draft"
-            android:icon="@drawable/ic_action_undo"
+            android:icon="?attr/icUndo"
             android:text="@string/menu_form_back_to_draft"
             custom:showAsAction="ifRoom|withText"
             android:title="@string/menu_form_back_to_draft"/>
     <item
             android:id="@+id/form_close"
-            android:icon="@drawable/ic_cancel"
+            android:icon="?attr/icCancel"
             android:text="@string/general_close"
             custom:showAsAction="ifRoom|withText"
             android:title="@string/general_close"/>

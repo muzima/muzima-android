@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -29,19 +29,19 @@ import java.net.InetAddress;
  * }
  * </pre>
  */
-public class SntpClient
+class SntpClient
 {
-    private static final String TAG = "SntpClient";
 
     private static final int REFERENCE_TIME_OFFSET = 16;
     private static final int ORIGINATE_TIME_OFFSET = 24;
     private static final int RECEIVE_TIME_OFFSET = 32;
-    private static final int TRANSMIT_TIME_OFFSET = 40;
     private static final int NTP_PACKET_SIZE = 48;
 
     private static final int NTP_PORT = 123;
     private static final int NTP_MODE_CLIENT = 3;
     private static final int NTP_VERSION = 3;
+
+    private static final int TRANSMIT_TIME_OFFSET = 40;
 
     // Number of seconds between Jan 1, 1900 and Jan 1, 1970
     // 70 years plus 17 leap days
@@ -104,8 +104,8 @@ public class SntpClient
             //             = (transit + skew - transit + skew)/2
             //             = (2 * skew)/2 = skew
             long clockOffset = ((receiveTime - originateTime) + (transmitTime - responseTime))/2;
-            // if (false) Log.d(TAG, "round trip: " + roundTripTime + " ms");
-            // if (false) Log.d(TAG, "clock offset: " + clockOffset + " ms");
+            // if (false) Log.d(getClass().getSimpleName(), "round trip: " + roundTripTime + " ms");
+            // if (false) Log.d(getClass().getSimpleName(), "clock offset: " + clockOffset + " ms");
 
             // save our results - use the times on this side of the network latency
             // (response rather than request time)
@@ -113,7 +113,7 @@ public class SntpClient
             mNtpTimeReference = responseTicks;
             mRoundTripTime = roundTripTime;
         } catch (Exception e) {
-            Log.d(TAG, "request time failed: ", e);
+            Log.d(getClass().getSimpleName(), "request time failed: ", e);
             return false;
         } finally {
             if (socket != null) {
@@ -185,6 +185,7 @@ public class SntpClient
      * at the given offset in the buffer.
      */    
     private void writeTimeStamp(byte[] buffer, int offset, long time) {
+
         long seconds = time / 1000L;
         long milliseconds = time - seconds * 1000L;
         seconds += OFFSET_1900_TO_1970;
@@ -196,10 +197,12 @@ public class SntpClient
         buffer[offset++] = (byte)(seconds >> 0);
 
         long fraction = milliseconds * 0x100000000L / 1000L;
+
         // write fraction in big endian format
         buffer[offset++] = (byte)(fraction >> 24);
         buffer[offset++] = (byte)(fraction >> 16);
         buffer[offset++] = (byte)(fraction >> 8);
+
         // low order bits should be random data
         buffer[offset++] = (byte)(Math.random() * 255.0);
     }

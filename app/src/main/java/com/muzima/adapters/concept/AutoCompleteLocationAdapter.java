@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -25,7 +25,6 @@ import java.util.List;
 
 public class AutoCompleteLocationAdapter extends AutoCompleteBaseAdapter<Location> {
 
-    private static final String TAG = AutoCompleteLocationAdapter.class.getSimpleName();
 
     public AutoCompleteLocationAdapter(Context context, int textViewResourceId, AutoCompleteTextView autoCompleteLocationTextView) {
         super(context, textViewResourceId, autoCompleteLocationTextView);
@@ -37,9 +36,9 @@ public class AutoCompleteLocationAdapter extends AutoCompleteBaseAdapter<Locatio
         try {
             return locationController.downloadLocationFromServerByName(constraint.toString());
         } catch (LocationController.LocationDownloadException e) {
-            Log.e(TAG, "Unable to download locations!", e);
+            Log.e(getClass().getSimpleName(), "Unable to download locations!", e);
         }
-        return new ArrayList<Location>();
+        return new ArrayList<>();
     }
 
     @Override

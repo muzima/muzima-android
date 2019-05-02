@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -23,7 +23,6 @@ import com.muzima.scheduler.RealTimeFormUploader;
  */
 public class ConnectivityChangeReceiver extends BroadcastReceiver {
 
-    private static final String TAG = "ConnectivityChangeReceiver";
 
     public ConnectivityChangeReceiver(){
     }
@@ -31,12 +30,12 @@ public class ConnectivityChangeReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, Intent intent) {
 
-        Log.i(TAG,"Connectivity change receiver triggered.");
+        Log.i(getClass().getSimpleName(),"Connectivity change receiver triggered.");
         if (intent.getExtras() != null) {
 
             User authenticatedUser = ((MuzimaApplication) context.getApplicationContext()).getAuthenticatedUser();
             if (authenticatedUser != null) {
-                Log.i(TAG,"Device got connected to network. Trying to start Muzima Real time Sync of completed forms.");
+                Log.i(getClass().getSimpleName(),"Device got connected to network. Trying to start Muzima Real time Sync of completed forms.");
                 RealTimeFormUploader.getInstance().uploadAllCompletedForms(context.getApplicationContext());
             }
         }

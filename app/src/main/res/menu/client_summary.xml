@@ -1,6 +1,6 @@
 <!--
-  ~ Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
-  ~ and Vanderbilt University Medical Center.
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
   ~
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
   ~ with additional health care disclaimer.
@@ -12,7 +12,7 @@
       xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-            android:id="@+id/shr_client_summary"
+            android:id="@+id/SHR_client_summary"
             android:title=""
             app:showAsAction="always"
             android:icon="@drawable/ic_action_write_card"/>

@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -22,6 +22,7 @@ import android.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.concept.CustomConceptWizardActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 import com.muzima.view.location.CustomLocationWizardActivity;
@@ -29,18 +30,17 @@ import com.muzima.view.preferences.ProviderPreferenceActivity;
 
 
 public class CustomProviderWizardActivity extends ProviderPreferenceActivity {
-    private static final String TAG = "CustomProviderWizardActivity";
     private MuzimaProgressDialog muzimaProgressDialog;
-    protected Credentials credentials;
     private boolean isProcessDialogOn = false;
-    private PowerManager powerManager = null;
     private PowerManager.WakeLock wakeLock = null;
+    private final ThemeUtils themeUtils = new ThemeUtils(R.style.WizardTheme_Light, R.style.WizardTheme_Dark);
 
     public void onCreate(Bundle savedInstanceState) {
+        super.setThemeUtils(themeUtils);
         super.onCreate(savedInstanceState);
-        credentials = new Credentials(this);
+        Credentials credentials = new Credentials(this);
 
-        Button nextButton = (Button) findViewById(R.id.next);
+        Button nextButton = findViewById(R.id.next);
         muzimaProgressDialog = new MuzimaProgressDialog(this);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,9 +49,9 @@ public class CustomProviderWizardActivity extends ProviderPreferenceActivity {
 
                     @Override
                     protected void onPreExecute() {
-                        Log.i(TAG, "Canceling timeout timer!");
+                        Log.i(getClass().getSimpleName(), "Canceling timeout timer!");
                         ((MuzimaApplication) getApplication()).cancelTimer();
-                        keepPhoneAwake(true);
+                        keepPhoneAwake();
                     }
 
                     @Override
@@ -68,7 +68,7 @@ public class CustomProviderWizardActivity extends ProviderPreferenceActivity {
             }
         });
 
-        Button previousButton = (Button) findViewById(R.id.previous);
+        Button previousButton = findViewById(R.id.previous);
         previousButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,10 +92,10 @@ public class CustomProviderWizardActivity extends ProviderPreferenceActivity {
         }
     }
 
-    private void keepPhoneAwake(boolean awakeState) {
-        Log.d(TAG, "Launching wake state: " + awakeState);
-        if (awakeState) {
-            powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+    private void keepPhoneAwake() {
+        Log.d(getClass().getSimpleName(), "Launching wake state: " + true);
+        if (true) {
+            PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
             wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
             wakeLock.acquire();
         } else {

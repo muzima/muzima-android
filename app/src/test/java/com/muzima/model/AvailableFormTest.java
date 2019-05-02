@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -10,7 +10,6 @@
 
 package com.muzima.model;
 
-import com.muzima.api.model.Tag;
 import com.muzima.utils.Constants;
 import org.junit.Test;
 
@@ -18,18 +17,18 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class AvailableFormTest {
-    String[] registrationDiscriminators = {Constants.FORM_DISCRIMINATOR_REGISTRATION,
+    private final String[] registrationDiscriminators = {Constants.FORM_DISCRIMINATOR_REGISTRATION,
             Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION,
             Constants.FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION,
             Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION};
 
-    String[] nonRegistrationDiscriminators = {Constants.FORM_DISCRIMINATOR_CONSULTATION,
+    private final String[] nonRegistrationDiscriminators = {Constants.FORM_DISCRIMINATOR_CONSULTATION,
             Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION,
             Constants.FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE, Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER,
             Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER, Constants.FORM_JSON_DISCRIMINATOR_SHR_DEMOGRAPHICS_UPDATE,
             Constants.FORM_JSON_DISCRIMINATOR_SHR_ENCOUNTER};
     @Test
-    public void shouldReturnFalseIfHasNoRegistrationDiscriminator() throws Exception {
+    public void shouldReturnFalseIfHasNoRegistrationDiscriminator() {
         AvailableForm availableForm = new AvailableForm();
 
         assertFalse(availableForm.isRegistrationForm());
@@ -41,7 +40,7 @@ public class AvailableFormTest {
     }
 
     @Test
-    public void shouldReturnTrueIfHasRegistrationDiscriminator() throws Exception {
+    public void shouldReturnTrueIfHasRegistrationDiscriminator() {
         AvailableForm availableForm = new AvailableForm();
         for(String discriminator: registrationDiscriminators) {
             availableForm.setDiscriminator(discriminator);

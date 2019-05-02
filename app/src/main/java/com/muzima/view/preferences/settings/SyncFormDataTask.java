@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -20,9 +20,9 @@ import com.muzima.service.MuzimaSyncService;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
-public class SyncFormDataTask extends AsyncTask<String, Void, Boolean> {
-    private SettingsPreferenceFragment settingsPreferenceFragment;
-    private MuzimaSyncService muzimaSyncService;
+class SyncFormDataTask extends AsyncTask<String, Void, Boolean> {
+    private final SettingsPreferenceFragment settingsPreferenceFragment;
+    private final MuzimaSyncService muzimaSyncService;
     private ProgressDialog progressDialog;
 
     public SyncFormDataTask(SettingsPreferenceFragment settingsPreferenceFragment) {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
-  ~ and Vanderbilt University Medical Center.
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
   ~
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
   ~ with additional health care disclaimer.
@@ -25,4 +25,7 @@
     <string translatable="false" name="preference_require_medical_record_number">requireMedicalRecordNumber</string>
     <string translatable="false" name="preference_landing_page">landingPage</string>
     <string translatable="false" name="preference_default_encounter_location">defaultEncounterLocation</string>
+    <string translatable="false" name="preference_enable_shr_key">Enable SHR</string>
+    <string translatable="false" name="preference_enable_gps_key">Enable GPS</string>
+    <string translatable="false" name="preference_light_mode">lightMode</string>
 </resources>

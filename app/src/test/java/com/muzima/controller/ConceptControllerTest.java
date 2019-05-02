@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -19,6 +19,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -39,14 +40,14 @@ public class ConceptControllerTest {
     private ConceptController controller;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         initMocks(this);
         controller = new ConceptController(service,observationService);
     }
 
     @Test
     public void shouldDownloadConceptUsingNonPreferredName() throws Exception, ConceptController.ConceptDownloadException {
-        List<Concept> concepts = new ArrayList<Concept>();
+        List<Concept> concepts = new ArrayList<>();
         final String nonPreferredName = "NonPreferredName";
         Concept aConcept = new Concept() {{
             setConceptNames(new ArrayList<ConceptName>() {{
@@ -65,7 +66,7 @@ public class ConceptControllerTest {
         List<String> listOfName = new ArrayList<String>() {{
             add(nonPreferredName);
         }};
-        List<Concept> expectedResult = new ArrayList<Concept>();
+        List<Concept> expectedResult = new ArrayList<>();
         expectedResult.add(aConcept);
         assertThat(controller.downloadConceptsByNames(listOfName), is(expectedResult));
     }
@@ -95,7 +96,7 @@ public class ConceptControllerTest {
         ConceptName conceptName = new ConceptName();
         conceptName.setName(name);
         conceptName.setPreferred(true);
-        List<ConceptName> conceptNames = asList(conceptName);
+        List<ConceptName> conceptNames = Collections.singletonList(conceptName);
         concept.setConceptNames(conceptNames);
         return concept;
     }

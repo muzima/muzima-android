@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -44,14 +44,14 @@ public enum CustomColor {
     BLUSH("#E05D6F"),
     COOL_AID("#A40778");
 
-    private int color;
+    private final int color;
     private static final Random random = new Random();
 
     public int getColor() {
         return color;
     }
 
-    private CustomColor(String color){
+    CustomColor(String color){
         this.color = Color.parseColor(color);
     }
 

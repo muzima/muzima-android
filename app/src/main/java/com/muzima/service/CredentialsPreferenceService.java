@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -19,7 +19,7 @@ import com.muzima.domain.Credentials;
 
 public class CredentialsPreferenceService extends PreferenceService {
 
-    private SharedPreferences settings;
+    private final SharedPreferences settings;
 
     public CredentialsPreferenceService(Context context) {
         super(context);

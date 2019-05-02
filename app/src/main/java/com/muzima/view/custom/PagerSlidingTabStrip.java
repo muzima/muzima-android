@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -18,7 +18,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.view.ViewPager;
@@ -45,29 +44,29 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
     };
     // @formatter:on
 
-    private LinearLayout.LayoutParams defaultTabLayoutParams;
-    private LinearLayout.LayoutParams expandedTabLayoutParams;
+    private final LinearLayout.LayoutParams defaultTabLayoutParams;
+    private final LinearLayout.LayoutParams expandedTabLayoutParams;
 
     private final PageListener pageListener = new PageListener();
-    public OnPageChangeListener delegatePageListener;
+    private OnPageChangeListener delegatePageListener;
 
-    private LinearLayout tabsContainer;
+    private final LinearLayout tabsContainer;
     private ViewPager pager;
-    private ImageButton addObsButton;
 
     private int tabCount;
 
     private int currentPosition = 0;
     private float currentPositionOffset = 0f;
 
-    private Paint rectPaint;
-    private Paint dividerPaint;
+    private final Paint rectPaint;
+    private final Paint dividerPaint;
 
     private boolean checkedTabWidths = false;
 
     private int indicatorColor = 0xFF666666;
     private int underlineColor = 0x1A000000;
     private int dividerColor = 0x1A000000;
+    private int indicatorTextColor = 0xFFFFFFFF;
 
     private boolean shouldExpand = false;
 
@@ -102,7 +101,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
         setFillViewport(true);
         setWillNotDraw(false);
 
-        addObsButton = new ImageButton(context);
+        ImageButton addObsButton = new ImageButton(context);
         tabsContainer = new LinearLayout(context);
         tabsContainer.setOrientation(LinearLayout.HORIZONTAL);
         tabsContainer.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -136,6 +135,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
         a = context.obtainStyledAttributes(attrs, R.styleable.PagerSlidingTabStrip);
 
         indicatorColor = a.getColor(R.styleable.PagerSlidingTabStrip_indicatorColor, indicatorColor);
+        indicatorTextColor = a.getColor(R.styleable.PagerSlidingTabStrip_indicatorTextColor, indicatorTextColor);
         underlineColor = a.getColor(R.styleable.PagerSlidingTabStrip_underlineColor, underlineColor);
         dividerColor = a.getColor(R.styleable.PagerSlidingTabStrip_dividerColor, dividerColor);
         indicatorHeight = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStrip_indicatorHeight, indicatorHeight);
@@ -176,7 +176,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
         this.delegatePageListener = listener;
     }
 
-    public void notifyDataSetChanged() {
+    private void notifyDataSetChanged() {
 
         tabsContainer.removeAllViews();
 
@@ -395,6 +395,14 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
         return this.indicatorColor;
     }
 
+    public int getIndicatorTextColor() {
+        return indicatorTextColor;
+    }
+
+    public void setIndicatorTextColor(int indicatorTextColor) {
+        this.indicatorTextColor = indicatorTextColor;
+    }
+
     public void setIndicatorHeight(int indicatorLineHeightPx) {
         this.indicatorHeight = indicatorLineHeightPx;
         invalidate();
@@ -537,7 +545,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
     static class SavedState extends BaseSavedState {
         int currentPosition;
 
-        public SavedState(Parcelable superState) {
+        SavedState(Parcelable superState) {
             super(superState);
         }
 

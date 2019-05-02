@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -56,7 +56,7 @@ public class IncompleteFormsListFragment extends FormsFragmentWithSectionedListA
     }
 
     @Override
-    public boolean onItemLongClick() {
+    public void onItemLongClick() {
         if (!actionModeActive) {
             actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
             actionModeActive = true;
@@ -66,7 +66,6 @@ public class IncompleteFormsListFragment extends FormsFragmentWithSectionedListA
             actionMode.finish();
         }
         actionMode.setTitle(String.valueOf(numOfSelectedForms));
-        return false;
     }
 
     @Override

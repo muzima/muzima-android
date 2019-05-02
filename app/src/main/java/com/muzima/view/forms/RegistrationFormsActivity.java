@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -22,17 +22,18 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BaseActivity;
 
 import java.util.UUID;
 
 public class RegistrationFormsActivity extends BaseActivity {
-    private ListView list;
     private RegistrationFormsAdapter registrationFormsAdapter;
-    private String TAG = "RegistrationFormsActivity";
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_form_list);
 
@@ -46,9 +47,9 @@ public class RegistrationFormsActivity extends BaseActivity {
     }
 
     private void prepareRegistrationAdapter(FormController formController, AvailableForms availableForms) {
-        registrationFormsAdapter = new RegistrationFormsAdapter(getApplicationContext(), R.layout.item_forms_list,
+        registrationFormsAdapter = new RegistrationFormsAdapter(this, R.layout.item_forms_list,
                 formController, availableForms);
-        list = (ListView) findViewById(R.id.list);
+        ListView list = findViewById(R.id.list);
         list.setOnItemClickListener(startRegistrationOnClick());
         list.setAdapter(registrationFormsAdapter);
         registrationFormsAdapter.reloadData();
@@ -80,7 +81,7 @@ public class RegistrationFormsActivity extends BaseActivity {
         try {
             availableForms = formController.getDownloadedRegistrationForms();
         } catch (FormController.FormFetchException e) {
-            Log.e(TAG, "Error while retrieving registration forms from Lucene");
+            Log.e(getClass().getSimpleName(), "Error while retrieving registration forms from Lucene");
         }
         return availableForms;
     }

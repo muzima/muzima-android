@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -15,16 +15,16 @@ import android.widget.ArrayAdapter;
 
 public abstract class ListAdapter<T> extends ArrayAdapter<T>{
 
-    public ListAdapter(Context context, int textViewResourceId) {
+    protected ListAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
     }
 
     public abstract void reloadData();
 
     public interface BackgroundListQueryTaskListener{
-        public void onQueryTaskStarted();
-        public void onQueryTaskFinish();
-        public void onQueryTaskCancelled();
-        public void onQueryTaskCancelled(Object errorDefinition);
+        void onQueryTaskStarted();
+        void onQueryTaskFinish();
+        void onQueryTaskCancelled();
+        void onQueryTaskCancelled(Object errorDefinition);
     }
 }

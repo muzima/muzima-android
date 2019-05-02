@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -10,6 +10,7 @@
 
 package com.muzima.view;
 
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -21,6 +22,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.Menu;
@@ -34,6 +36,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.WizardFinishPreferenceService;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.cohort.CohortActivity;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
@@ -50,8 +53,11 @@ public class MainActivity extends BroadcastListenerActivity {
     private BackgroundQueryTask mBackgroundQueryTask;
     private Credentials credentials;
 
+    private final ThemeUtils themeUtils = new ThemeUtils();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         credentials = new Credentials(this);
         mMainView = getLayoutInflater().inflate(R.layout.activity_dashboard, null);
@@ -63,26 +69,29 @@ public class MainActivity extends BroadcastListenerActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        themeUtils.onResume(this);
         showIncompleteWizardWarning();
         executeBackgroundTask();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     private void showIncompleteWizardWarning() {
         if (!new WizardFinishPreferenceService(this).isWizardFinished()) {
             if (checkIfDisclaimerIsAccepted()) {
-                Toast
-                        .makeText(getApplicationContext(), getString(R.string.error_wizard_interrupted), Toast.LENGTH_LONG)
+                Toast.makeText(getApplicationContext(), getString(R.string.error_wizard_interrupted), Toast.LENGTH_LONG)
                         .show();
             }
-
         }
     }
 
     private boolean checkIfDisclaimerIsAccepted() {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String disclaimerKey = getResources().getString(R.string.preference_disclaimer);
-        boolean disclaimerAccepted = settings.getBoolean(disclaimerKey, false);
-        return disclaimerAccepted;
+        return settings.getBoolean(disclaimerKey, false);
     }
 
     @Override
@@ -95,7 +104,9 @@ public class MainActivity extends BroadcastListenerActivity {
 
     @Override
     protected void onDestroy() {
-        ((MuzimaApplication) getApplication()).logOut();
+        if (!themeUtils.isLightModeChanged(this)) {
+            ((MuzimaApplication) getApplication()).logOut();
+        }
         super.onDestroy();
     }
 
@@ -107,7 +118,7 @@ public class MainActivity extends BroadcastListenerActivity {
     private void showAlertDialog() {
         new AlertDialog.Builder(MainActivity.this)
                 .setCancelable(true)
-                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                .setIcon(themeUtils.getIconWarning(this))
                 .setTitle(getResources().getString(R.string.title_logout_confirm))
                 .setMessage(getResources().getString(R.string.warning_logout_confirm))
                 .setPositiveButton(getString(R.string.general_yes), dialogYesClickListener())
@@ -175,7 +186,7 @@ public class MainActivity extends BroadcastListenerActivity {
         startActivity(intent);
     }
 
-    public class BackgroundQueryTask extends AsyncTask<Void, Void, HomeActivityMetadata> {
+    class BackgroundQueryTask extends AsyncTask<Void, Void, HomeActivityMetadata> {
 
         @Override
         protected HomeActivityMetadata doInBackground(Void... voids) {
@@ -188,6 +199,7 @@ public class MainActivity extends BroadcastListenerActivity {
             try {
                 homeActivityMetadata.totalCohorts = cohortController.countAllCohorts();
                 homeActivityMetadata.syncedCohorts = cohortController.countSyncedCohorts();
+                homeActivityMetadata.isCohortUpdateAvailable = cohortController.isUpdateAvailable();
                 homeActivityMetadata.syncedPatients = patientController.countAllPatients();
                 homeActivityMetadata.incompleteForms = formController.countAllIncompleteForms();
                 homeActivityMetadata.completeAndUnsyncedForms = formController.countAllCompleteForms();
@@ -204,39 +216,47 @@ public class MainActivity extends BroadcastListenerActivity {
                     homeActivityMetadata.totalNotifications = 0;
                 }
             } catch (CohortController.CohortFetchException e) {
-                Log.w(TAG, "CohortFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
+                Log.w(getClass().getSimpleName(), "CohortFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
             } catch (PatientController.PatientLoadException e) {
-                Log.w(TAG, "PatientLoadException occurred while fetching metadata in MainActivityBackgroundTask", e);
+                Log.w(getClass().getSimpleName(), "PatientLoadException occurred while fetching metadata in MainActivityBackgroundTask", e);
             } catch (FormController.FormFetchException e) {
-                Log.w(TAG, "FormFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
+                Log.w(getClass().getSimpleName(), "FormFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
             } catch (NotificationController.NotificationFetchException e) {
-                Log.w(TAG, "NotificationFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
+                Log.w(getClass().getSimpleName(), "NotificationFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
             } catch (ParseException e) {
-                Log.w(TAG, "ParseException occurred while fetching metadata in MainActivityBackgroundTask", e);
+                Log.w(getClass().getSimpleName(), "ParseException occurred while fetching metadata in MainActivityBackgroundTask", e);
             }
             return homeActivityMetadata;
         }
 
         @Override
         protected void onPostExecute(HomeActivityMetadata homeActivityMetadata) {
-            TextView cohortsDescriptionView = (TextView) mMainView.findViewById(R.id.cohortDescription);
+            TextView cohortsDescriptionView = mMainView.findViewById(R.id.cohortDescription);
             cohortsDescriptionView.setText(getString(R.string.hint_dashboard_cohorts_description,
                     homeActivityMetadata.syncedCohorts, homeActivityMetadata.totalCohorts));
 
-            TextView patientDescriptionView = (TextView) mMainView.findViewById(R.id.patientDescription);
+            ImageView cortUpdateAvailable = (ImageView) mMainView.findViewById(R.id.pendingUpdateImg);
+            if(homeActivityMetadata.isCohortUpdateAvailable){
+                cortUpdateAvailable.setVisibility(View.VISIBLE);
+            } else {
+                cortUpdateAvailable.setVisibility(View.GONE);
+            }
+
+            TextView patientDescriptionView = mMainView.findViewById(R.id.patientDescription);
             patientDescriptionView.setText(getString(R.string.hint_dashboard_clients_description,
                     homeActivityMetadata.syncedPatients));
 
-            TextView formsDescription = (TextView) mMainView.findViewById(R.id.formDescription);
+            TextView formsDescription = mMainView.findViewById(R.id.formDescription);
             formsDescription.setText(getString(R.string.hint_dashboard_forms_description,
                     homeActivityMetadata.incompleteForms, homeActivityMetadata.completeAndUnsyncedForms));
 
-            TextView notificationsDescription = (TextView) mMainView.findViewById(R.id.notificationDescription);
+            TextView notificationsDescription = mMainView.findViewById(R.id.notificationDescription);
             notificationsDescription.setText(getString(R.string.hint_dashboard_notifications_description,
                     homeActivityMetadata.newNotifications, homeActivityMetadata.totalNotifications));
 
-            TextView currentUser = (TextView) findViewById(R.id.currentUser);
+            TextView currentUser = findViewById(R.id.currentUser);
             currentUser.setText(getResources().getString(R.string.general_welcome) + " " + credentials.getUserName());
+
         }
     }
 
@@ -248,6 +268,7 @@ public class MainActivity extends BroadcastListenerActivity {
         int completeAndUnsyncedForms;
         int newNotifications;
         int totalNotifications;
+        boolean isCohortUpdateAvailable;
     }
 
     @Override
@@ -258,6 +279,7 @@ public class MainActivity extends BroadcastListenerActivity {
 
     private void setupActionbar() {
         ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(false);

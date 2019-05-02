@@ -18,7 +18,7 @@ public class Immunization {
     @JsonProperty("DATE_ADMINISTERED")
     private String dateAdministered;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<>();
 
     /**
      * No args constructor for use in serialization

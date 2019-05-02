@@ -20,7 +20,7 @@
 				android:id="@+id/dismiss_dialog_button"
 				android:layout_width="wrap_content"
 				android:background="@drawable/rounded_corner_loginbutton"
-				android:text="DONE"
+				android:text="@string/done_general"
 				android:layout_alignParentEnd="true"
 				android:layout_margin="8dp"
 				android:textAlignment="center"

@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -10,7 +10,6 @@
 
 package com.muzima.view.cohort;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,7 +36,6 @@ import java.io.IOException;
 import java.util.Date;
 
 public class AllCohortsListFragment extends CohortListFragment {
-    private static final String TAG = "AllCohortsListFragment";
     private ActionMode actionMode;
     private boolean actionModeActive = false;
     private OnCohortDataDownloadListener cohortDataDownloadListener;
@@ -63,7 +61,7 @@ public class AllCohortsListFragment extends CohortListFragment {
     @Override
     protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
         View view = inflater.inflate(R.layout.layout_synced_list, container, false);
-        syncText = (CheckedTextView) view.findViewById(R.id.sync_text);
+        syncText = view.findViewById(R.id.sync_text);
         updateSyncText();
         return view;
     }
@@ -86,7 +84,7 @@ public class AllCohortsListFragment extends CohortListFragment {
         if (numOfSelectedCohorts == 0 && actionModeActive) {
             actionMode.finish();
         }
-        Log.d(TAG, "isnull:" + String.valueOf(actionMode==null));
+        Log.d(getClass().getSimpleName(), "isnull:" + String.valueOf(actionMode==null));
         actionMode.setTitle(String.valueOf(numOfSelectedCohorts));
 
     }
@@ -98,7 +96,11 @@ public class AllCohortsListFragment extends CohortListFragment {
     public void onCohortDownloadFinish() {
         cohortsSyncInProgress = false;
         listAdapter.reloadData();
+        listAdapter.notifyDataSetChanged();
         updateSyncText();
+        if (cohortDataDownloadListener != null) {
+            cohortDataDownloadListener.onCohortDataDownloadComplete();
+        }
     }
 
     public void onCohortDownloadStart() {
@@ -106,12 +108,14 @@ public class AllCohortsListFragment extends CohortListFragment {
     }
 
     public void onPatientDownloadFinish() {
+        listAdapter.reloadData();
+        listAdapter.notifyDataSetChanged();
         if (cohortDataDownloadListener != null) {
             cohortDataDownloadListener.onCohortDataDownloadComplete();
         }
     }
 
-    public final class AllCohortsActionModeCallback implements ActionMode.Callback {
+    final class AllCohortsActionModeCallback implements ActionMode.Callback {
 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
@@ -167,7 +171,7 @@ public class AllCohortsListFragment extends CohortListFragment {
     }
 
     public interface OnCohortDataDownloadListener {
-        public void onCohortDataDownloadComplete();
+         void onCohortDataDownloadComplete();
     }
 
     private void updateSyncText() {
@@ -180,7 +184,7 @@ public class AllCohortsListFragment extends CohortListFragment {
             }
             syncText.setText(lastSyncedMsg);
         } catch (IOException e) {
-            Log.i(TAG,"Error getting cohort last sync time");
+            Log.i(getClass().getSimpleName(),"Error getting cohort last sync time");
         }
 
     }

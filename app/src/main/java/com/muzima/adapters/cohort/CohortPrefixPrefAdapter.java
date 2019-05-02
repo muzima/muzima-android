@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -10,6 +10,7 @@
 package com.muzima.adapters.cohort;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,8 +53,9 @@ public class CohortPrefixPrefAdapter extends ListAdapter<String> {
         addAll(cohortPrefixes);
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
@@ -69,22 +71,22 @@ public class CohortPrefixPrefAdapter extends ListAdapter<String> {
         return convertView;
     }
 
-    protected class ViewHolder {
-        private TextView text;
-        private ImageButton deleteButton;
+    class ViewHolder {
+        private final TextView text;
+        private final ImageButton deleteButton;
 
-        public ViewHolder(View convertView, int position) {
-            text = (TextView) convertView.findViewById(R.id.prefix);
-            deleteButton = (ImageButton) convertView.findViewById(R.id.del_cohort_prefix_btn);
+        ViewHolder(View convertView, int position) {
+            text = convertView.findViewById(R.id.prefix);
+            deleteButton = convertView.findViewById(R.id.del_cohort_prefix_btn);
             deleteButton.setOnClickListener(new OnPrefDeleteListener(position));
         }
 
-        public void setTextForTextField(String textToBeDisplayed) {
+        void setTextForTextField(String textToBeDisplayed) {
             text.setText(textToBeDisplayed);
         }
     }
     private class OnPrefDeleteListener implements View.OnClickListener {
-        private int position;
+        private final int position;
 
         private OnPrefDeleteListener(int position) {
             this.position = position;

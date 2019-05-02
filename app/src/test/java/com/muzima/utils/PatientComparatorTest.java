@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -25,26 +25,26 @@ public class PatientComparatorTest {
     private PatientComparator patientComparator;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         patientComparator = new PatientComparator();
     }
 
     @Test
-    public void shouldSortByFamilyName() throws Exception {
+    public void shouldSortByFamilyName() {
         Patient obama = patient("Obama", "Barack", "Hussein", "id1");
         Patient bush = patient("Bush", "George", "W", "id2");
         assertTrue(patientComparator.compare(obama, bush) > 0);
     }
 
     @Test
-    public void shouldSortByGivenNameIfFamilyNameIsSame() throws Exception {
+    public void shouldSortByGivenNameIfFamilyNameIsSame() {
         Patient barack = patient("Obama", "Barack", "Hussein", "id1");
         Patient george = patient("Obama", "George", "W", "id2");
         assertTrue(patientComparator.compare(barack, george) < 0);
     }
 
     @Test
-    public void shouldSortByMiddleNameIfGivenNameAndFamilyNameAreSame() throws Exception {
+    public void shouldSortByMiddleNameIfGivenNameAndFamilyNameAreSame() {
         Patient hussein = patient("Obama", "Barack", "Hussein", "id1");
         Patient william = patient("Obama", "Barack", "William", "id2");
         assertTrue(patientComparator.compare(hussein, william) < 0);

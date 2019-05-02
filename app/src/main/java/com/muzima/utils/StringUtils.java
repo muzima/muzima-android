@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -10,10 +10,7 @@
 
 package com.muzima.utils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import static android.text.TextUtils.split;
@@ -27,9 +24,7 @@ public class StringUtils {
             return "";
         }
         StringBuilder builder = new StringBuilder();
-        Iterator<String> valuesIterator = values.iterator();
-        while (valuesIterator.hasNext()) {
-            String next = valuesIterator.next();
+        for (String next : values) {
             builder.append(next).append(",");
         }
         String commaSeparated = builder.toString();

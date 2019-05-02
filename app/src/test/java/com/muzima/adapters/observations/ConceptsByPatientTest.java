@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.verify;
 
 public class ConceptsByPatientTest {
     @Test
-    public void shouldGetObservationsByPatientUUID() throws Exception, ObservationController.LoadObservationException {
+    public void shouldGetObservationsByPatientUUID() throws ObservationController.LoadObservationException {
         ObservationController controller = mock(ObservationController.class);
         ConceptController conceptController = mock(ConceptController.class);
         ConceptsByPatient byPatient = new ConceptsByPatient(conceptController,controller, "uuid");

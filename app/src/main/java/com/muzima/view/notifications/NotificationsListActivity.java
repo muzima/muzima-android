@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -26,26 +26,32 @@ import com.muzima.api.model.User;
 import com.muzima.controller.CohortController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.utils.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationsListActivity extends NotificationActivityBase {
-    private static final String TAG = "NotificationsListActivity";
-    public static final String NOTIFICATIONS = "Notifications";
-    private FrameLayout progressBarContainer;
+    private static final String NOTIFICATIONS = "Notifications";
     private MenuItem menubarSyncButton;
     private boolean notificationsSyncInProgress;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_with_pager);
         initPager();
         initPagerIndicator();
         setTitle(NOTIFICATIONS);
+        FrameLayout progressBarContainer = findViewById(R.id.progressbarContainer);
+    }
 
-        progressBarContainer = (FrameLayout) findViewById(R.id.progressbarContainer);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        themeUtils.onResume(this);
     }
 
     @Override
@@ -94,7 +100,7 @@ public class NotificationsListActivity extends NotificationActivityBase {
             CohortController cohortController = ((MuzimaApplication) getApplicationContext()).getCohortController();
             try {
                 downloadedCohorts = cohortController.getSyncedCohorts();
-                downloadedCohortsUuid = new ArrayList<String>();
+                downloadedCohortsUuid = new ArrayList<>();
                 for (Cohort cohort : downloadedCohorts) {
                     downloadedCohortsUuid.add(cohort.getUuid());
                 }
@@ -123,20 +129,20 @@ public class NotificationsListActivity extends NotificationActivityBase {
         return CohortUuids.toArray(new String[CohortUuids.size()]);
     }
 
-    public void hideProgressbar() {
+    private void hideProgressbar() {
         menubarSyncButton.setActionView(null);
     }
 
-    public void showProgressBar() {
+    private void showProgressBar() {
         menubarSyncButton.setActionView(R.layout.refresh_menuitem);
     }
 
-    public void onNotificationDownloadFinish() {
+    private void onNotificationDownloadFinish() {
         notificationsSyncInProgress = false;
         notificationPagerAdapter.reloadData();
     }
 
-    public void onNotificationDownloadStart() {
+    private void onNotificationDownloadStart() {
         notificationsSyncInProgress = true;
     }
 

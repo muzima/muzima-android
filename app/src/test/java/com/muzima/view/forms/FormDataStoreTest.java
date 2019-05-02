@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -54,18 +54,17 @@ public class FormDataStoreTest {
     @Mock
     private FormParser formParser;
     private MuzimaApplication muzimaApplication;
-    private ObservationController obsController;
 
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         initMocks(this);
         controller = mock(FormController.class);
         activity = mock(FormWebViewActivity.class);
         formData = new FormData();
         formData.setPatientUuid("adasdssd");
         muzimaApplication = mock(MuzimaApplication.class);
-        obsController = mock(ObservationController.class);
+        ObservationController obsController = mock(ObservationController.class);
         when(muzimaApplication.getObservationController()).thenReturn(obsController);
         when(activity.getApplicationContext()).thenReturn(muzimaApplication);
         store = new FormDataStore(activity, controller, formData){
@@ -77,7 +76,7 @@ public class FormDataStoreTest {
     }
 
     @Test
-    public void save_shouldSaveFormDataWithStatus() throws Exception, FormController.FormDataSaveException {
+    public void save_shouldSaveFormDataWithStatus() throws FormController.FormDataSaveException {
         store.save("data", "xmldata", "status");
         verify(controller).saveFormData(formData);
         verify(activity).finish();
@@ -86,7 +85,7 @@ public class FormDataStoreTest {
     }
 
     @Test
-    public void save_shouldNotFinishTheActivityIfThereIsAnExceptionWhileSaving() throws Exception, FormController.FormDataSaveException {
+    public void save_shouldNotFinishTheActivityIfThereIsAnExceptionWhileSaving() throws FormController.FormDataSaveException {
         doThrow(new FormController.FormDataSaveException(null)).when(controller).saveFormData(formData);
         when(activity.getString(anyInt())).thenReturn("success");
         store.save("data", "xmldata", "status");
@@ -94,13 +93,13 @@ public class FormDataStoreTest {
     }
 
     @Test
-    public void getFormPayload_shouldGetTheFormDataPayload() throws Exception {
+    public void getFormPayload_shouldGetTheFormDataPayload() {
         formData.setJsonPayload("payload");
         assertThat(store.getFormPayload(), is("payload"));
     }
 
     @Test
-    public void shouldCreateANewPatientAndStoreHisUUIDAsPatientUUID() throws Exception {
+    public void shouldCreateANewPatientAndStoreHisUUIDAsPatientUUID() {
         String tempUUIDAssignedByDevice = "newUUID";
         formData.setPatientUuid(null);
         formData.setDiscriminator(FORM_DISCRIMINATOR_REGISTRATION);

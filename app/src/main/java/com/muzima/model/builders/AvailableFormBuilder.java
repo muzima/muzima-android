@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -14,7 +14,7 @@ import com.muzima.api.model.Form;
 import com.muzima.model.AvailableForm;
 
 public class AvailableFormBuilder{
-    private AvailableForm availableForm;
+    private final AvailableForm availableForm;
 
     public AvailableFormBuilder() {
         availableForm = new AvailableForm();

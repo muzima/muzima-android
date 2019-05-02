@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -13,7 +13,6 @@ package com.muzima.view.cohort;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.text.Editable;
@@ -36,6 +35,7 @@ import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.CheckedLinearLayout;
 import com.muzima.view.HelpActivity;
@@ -54,26 +54,26 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
 
     private MuzimaProgressDialog progressDialog;
     private boolean isProcessDialogOn = false;
-    private final String TAG = "CohortWizardActivity" ;
-    private PowerManager powerManager = null;
     private PowerManager.WakeLock wakeLock = null ;
+    private final ThemeUtils themeUtils = new ThemeUtils(R.style.WizardTheme_Light, R.style.WizardTheme_Dark);
 
     public void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cohort_wizard);
         ListView listView = getListView();
         final AllCohortsAdapter cohortsAdapter = createAllCohortsAdapter();
 
-        final EditText filterCohortText = (EditText) findViewById(R.id.filter_cohorts_txt);
+        final EditText filterCohortText = findViewById(R.id.filter_cohorts_txt);
         filterCohortText.addTextChangedListener(textWatcherForFilterText(cohortsAdapter));
 
-        ImageButton cancelFilterButton = (ImageButton) findViewById(R.id.cancel_filter_txt);
+        ImageButton cancelFilterButton = findViewById(R.id.cancel_filter_txt);
         cancelFilterButton.setOnClickListener(cancelFilterTextEventHandler(filterCohortText));
 
-        Button nextButton = (Button) findViewById(R.id.next);
+        Button nextButton = findViewById(R.id.next);
         nextButton.setOnClickListener(nextButtonClickListener(cohortsAdapter));
 
-        Button previousButton = (Button) findViewById(R.id.previous);
+        Button previousButton = findViewById(R.id.previous);
         previousButton.setOnClickListener(previousButtonListener());
 
         progressDialog = new MuzimaProgressDialog(this);
@@ -150,7 +150,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
 
                     @Override
                     protected void onPreExecute() {
-                        Log.i(TAG, "Canceling timer") ;
+                        Log.i(getClass().getSimpleName(), "Canceling timer") ;
                         ((MuzimaApplication) getApplication()).cancelTimer();
                         keepPhoneAwake(true) ;
                     }
@@ -166,7 +166,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
                         if (result[0] != SUCCESS) {
                             Toast.makeText(CohortWizardActivity.this, getString(R.string.error_client_download), Toast.LENGTH_SHORT).show();
                         }
-                        Log.i(TAG, "Restarting timeout timer!") ;
+                        Log.i(getClass().getSimpleName(), "Restarting timeout timer!") ;
                         ((MuzimaApplication) getApplication()).restartTimer();
                         try {
                             LastSyncTimeService lastSyncTimeService = ((MuzimaApplication)getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
@@ -174,7 +174,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
                             LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS, sntpService.getLocalTime());
                             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
                         } catch (IOException e) {
-                            Log.i(TAG,"Error setting cohort sync time.");
+                            Log.i(getClass().getSimpleName(),"Error setting cohort sync time.");
                         }
                         keepPhoneAwake(false) ;
                         navigateToNextActivity();
@@ -185,9 +185,9 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
     }
 
     private void keepPhoneAwake(boolean awakeState) {
-        Log.d(TAG, "Launching wake state: " + awakeState) ;
+        Log.d(getClass().getSimpleName(), "Launching wake state: " + awakeState) ;
         if (awakeState) {
-            powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
             wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
             wakeLock.acquire();
         } else {
@@ -236,7 +236,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
     }
 
     private AllCohortsAdapter createAllCohortsAdapter() {
-        return new AllCohortsAdapter(getApplicationContext(), R.layout.item_cohorts_list, ((MuzimaApplication) getApplicationContext()).getCohortController());
+        return new AllCohortsAdapter(this, R.layout.item_cohorts_list, ((MuzimaApplication) getApplicationContext()).getCohortController());
     }
 
     private ListView getListView() {

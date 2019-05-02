@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -33,6 +33,7 @@ import com.muzima.api.model.Location;
 import com.muzima.controller.MuzimaGeneratedReportController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
 
@@ -40,20 +41,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LocationPreferenceActivity extends BroadcastListenerActivity {
-    private static final String TAG = LocationPreferenceActivity.class.getSimpleName();
     private SelectedLocationAdapter selectedLocationAdapter;
     private ListView selectedLocationListView;
     private AutoCompleteTextView autoCompleteLocationsTextView;
-    private AutoCompleteLocationAdapter autoCompleteLocationAdapter;
     private boolean actionModeActive = false;
     private ActionMode actionMode;
+    private ThemeUtils themeUtils = new ThemeUtils(R.style.PreferencesTheme_Light, R.style.PreferencesTheme_Dark);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
 
-        selectedLocationListView = (ListView) findViewById(R.id.location_preference_list);
+        selectedLocationListView = findViewById(R.id.location_preference_list);
         final MuzimaApplication applicationContext = (MuzimaApplication) getApplicationContext();
         selectedLocationAdapter = new SelectedLocationAdapter(this, R.layout.item_location_list,
                 (applicationContext).getLocationController());
@@ -63,8 +64,8 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
         selectedLocationListView.setClickable(true);
         selectedLocationListView.setEmptyView(findViewById(R.id.no_location_added));
         selectedLocationListView.setOnItemClickListener(selectedLocationOnClickListener());
-        autoCompleteLocationsTextView = (AutoCompleteTextView) findViewById(R.id.add_location);
-        autoCompleteLocationAdapter = new AutoCompleteLocationAdapter(applicationContext, R.layout.item_option_autocomplete, autoCompleteLocationsTextView);
+        autoCompleteLocationsTextView = findViewById(R.id.add_location);
+        AutoCompleteLocationAdapter autoCompleteLocationAdapter = new AutoCompleteLocationAdapter(this, R.layout.item_option_autocomplete, autoCompleteLocationsTextView);
         autoCompleteLocationsTextView.setAdapter(autoCompleteLocationAdapter);
         autoCompleteLocationsTextView.setOnItemClickListener(autoCompleteOnClickListener());
 
@@ -98,7 +99,7 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
             public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
                 Location selectedLocation = (Location) parent.getItemAtPosition(position);
                 if (selectedLocationAdapter.doesLocationAlreadyExist(selectedLocation)) {
-                    Log.e(TAG, "Locations Already exists");
+                    Log.e(getClass().getSimpleName(), "Locations Already exists");
                     Toast.makeText(LocationPreferenceActivity.this, "Location " + selectedLocation.getName() + " already exists", Toast.LENGTH_SHORT).show();
                 } else {
                     selectedLocationAdapter.addLocation(selectedLocation);
@@ -129,6 +130,7 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        themeUtils.onResume(this);
         selectedLocationAdapter.reloadData();
     }
 
@@ -150,7 +152,7 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
         return inflater.inflate(R.layout.layout_list, container, false);
     }
 
-    public final class DeleteLocationsActionModeCallback implements ActionMode.Callback {
+    final class DeleteLocationsActionModeCallback implements ActionMode.Callback {
 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
@@ -188,14 +190,14 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
         }
     }
 
-    public void endActionMode() {
+    private void endActionMode() {
         if (actionMode != null) {
             actionMode.finish();
         }
     }
 
     private List<Location> getSelectedLocations() {
-        List<Location> locations = new ArrayList<Location>();
+        List<Location> locations = new ArrayList<>();
         SparseBooleanArray checkedItemPositions = selectedLocationListView.getCheckedItemPositions();
         for (int i = 0; i < checkedItemPositions.size(); i++) {
             if (checkedItemPositions.valueAt(i)) {
@@ -203,6 +205,10 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
             }
         }
         return locations;
+    }
+
+    public void setThemeUtils(ThemeUtils themeUtils){
+        this.themeUtils = themeUtils;
     }
 }
 

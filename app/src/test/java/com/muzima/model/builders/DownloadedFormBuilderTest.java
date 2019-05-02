@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -21,7 +21,7 @@ import static org.junit.Assert.assertThat;
 public class DownloadedFormBuilderTest {
 
     @Test
-    public void withDownloadedForm_shouldSetGivenValues() throws Exception {
+    public void withDownloadedForm_shouldSetGivenValues() {
         Form form = new Form();
         form.setName("name");
         form.setName("description");

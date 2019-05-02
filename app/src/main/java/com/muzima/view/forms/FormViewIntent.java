@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -20,6 +20,12 @@ import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
 
 public class FormViewIntent extends Intent {
+
+    public static final String FORM_COMPLETION_STATUS_INTENT = "form completion status";
+    public static final String FORM_COMPLETION_STATUS_RECOMMENDED = "recommended form";
+    public static final String FORM_COMPLETION_STATUS_INCOMPLETE = "incomplete form";
+    public static final String FORM_COMPLETION_STATUS_COMPLETE = "complete form";
+
     public FormViewIntent(Activity activity, FormWithData form) {
         this(activity, form, form.getPatient());
     }

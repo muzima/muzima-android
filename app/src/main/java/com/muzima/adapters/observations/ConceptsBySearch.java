@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -15,14 +15,13 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.Concepts;
 
-import java.io.IOException;
 import java.util.List;
 
-public class ConceptsBySearch extends ConceptAction {
-    private String patientUuid;
-    private String term;
-    private ObservationController controller;
-    private ConceptController conceptController;
+class ConceptsBySearch extends ConceptAction {
+    private final String patientUuid;
+    private final String term;
+    private final ObservationController controller;
+    private final ConceptController conceptController;
 
     public ConceptsBySearch(ConceptController conceptController, ObservationController controller, String patientUuid, String term) {
         this.controller = controller;

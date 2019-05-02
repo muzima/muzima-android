@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -12,17 +12,10 @@ package com.muzima.tasks;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.muzima.R;
-import com.muzima.view.preferences.SettingsActivity;
 
 import com.muzima.view.preferences.settings.SettingsPreferenceFragment;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import com.muzima.utils.NetworkUtils;
 
 
@@ -49,9 +42,8 @@ public class ValidateURLTask extends AsyncTask<String, Void, Boolean> {
         String url;
         try {
             url=strings[0]+ "/ws/rest/v1/session";
-            boolean urlStatus= com.muzima.util.NetworkUtils.isAddressReachable(url);
 
-            return urlStatus;
+            return com.muzima.util.NetworkUtils.isAddressReachable(url);
 
         } catch (Exception e) {
             return false;

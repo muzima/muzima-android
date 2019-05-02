@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -22,7 +22,6 @@ import com.muzima.view.cohort.SyncedCohortsListFragment;
  * Responsible to hold all the cohort fragments as multiple pages/tabs.
  */
 public class CohortPagerAdapter extends MuzimaPagerAdapter {
-    private static final String TAG = "CohortPagerAdapter";
 
     public static final int TAB_SYNCED = 0;
     public static final int TAB_All = 1;

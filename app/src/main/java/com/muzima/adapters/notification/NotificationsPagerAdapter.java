@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -23,10 +23,9 @@ import com.muzima.view.notifications.PatientsNotificationsListFragment;
  * Responsible to hold all the notification fragments as multiple pages/tabs.
  */
 public class NotificationsPagerAdapter extends MuzimaPagerAdapter {
-    private static final String TAG = "NotificationPagerAdapter";
 
-    public static final int TAB_PATIENT = 0;
-    public static final int TAB_GENERAL = 1;
+    private static final int TAB_PATIENT = 1;
+    private static final int TAB_GENERAL = 0;
 
     public NotificationsPagerAdapter(Context context, FragmentManager supportFragmentManager) {
         super(context, supportFragmentManager);
@@ -36,11 +35,14 @@ public class NotificationsPagerAdapter extends MuzimaPagerAdapter {
 
         pagers = new PagerView[2];
         NotificationController notificationController = ((MuzimaApplication) context.getApplicationContext()).getNotificationController();
+        MuzimaApplication muzimaApplication = ((MuzimaApplication)context.getApplicationContext());
 
         PatientsNotificationsListFragment patientsNotificationsListFragment = PatientsNotificationsListFragment.newInstance(notificationController);
-        GeneralNotificationsListFragment generalNotificationsListFragment = GeneralNotificationsListFragment.newInstance(notificationController);
+        GeneralNotificationsListFragment generalNotificationsListFragment = GeneralNotificationsListFragment.newInstance(muzimaApplication);
 
-        pagers[TAB_PATIENT] = new PagerView(context.getString(R.string.title_client_notifications), patientsNotificationsListFragment);
         pagers[TAB_GENERAL] = new PagerView(context.getString(R.string.title_general_notifications), generalNotificationsListFragment);
+        pagers[TAB_PATIENT] = new PagerView(context.getString(R.string.title_client_notifications), patientsNotificationsListFragment);
+
+
     }
 }

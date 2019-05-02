@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -19,10 +19,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 
-public class ZiggyFileLoader {
-    private String ziggyDirectoryPath;
-    private AssetManager assetManager;
-    private String formModelJson;
+class ZiggyFileLoader {
+    private final String ziggyDirectoryPath;
+    private final AssetManager assetManager;
+    private final String formModelJson;
 
     public ZiggyFileLoader(String ziggyDirectoryPath, AssetManager assetManager, String modelJson) {
         this.ziggyDirectoryPath = ziggyDirectoryPath;
@@ -31,7 +31,7 @@ public class ZiggyFileLoader {
     }
 
     @JavascriptInterface
-    public String getJSFiles() throws IOException, URISyntaxException {
+    public String getJSFiles() throws IOException {
         StringBuilder builder = new StringBuilder();
         String[] fileNames = assetManager.list(ziggyDirectoryPath);
         for (String fileName : fileNames) {
@@ -56,9 +56,9 @@ public class ZiggyFileLoader {
     private String readContentFromBufferedStream(BufferedReader input) throws IOException {
         String line;
         String eol = System.getProperty("line.separator");
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         while ((line = input.readLine()) != null) {
-            buffer.append(line + eol);
+            buffer.append(line).append(eol);
         }
         return buffer.toString();
     }

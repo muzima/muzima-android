@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -17,9 +17,8 @@ import com.muzima.api.context.Context;
 import java.io.IOException;
 
 public class LocalePreferenceService {
-    private final String TAG = "LocalePreferenceService";
 
-    private MuzimaApplication muzimaApplication;
+    private final MuzimaApplication muzimaApplication;
     public LocalePreferenceService(MuzimaApplication muzimaApplication){
         this.muzimaApplication = muzimaApplication;
     }
@@ -28,7 +27,7 @@ public class LocalePreferenceService {
         try {
             muzimaContext.setPreferredLocale(preferredLocale);
         } catch(IOException e){
-            Log.e(TAG, "Exception thrown while setting preferred Locale", e);
+            Log.e(getClass().getSimpleName(), "Exception thrown while setting preferred Locale", e);
         }
     }
 }
