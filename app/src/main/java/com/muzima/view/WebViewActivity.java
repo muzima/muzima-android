@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -12,11 +12,9 @@ package com.muzima.view;
 
 import android.os.Bundle;
 import android.webkit.WebView;
-import android.view.Menu;
-import android.view.MenuItem;
 import com.muzima.R;
 
-public class WebViewActivity extends BaseActivity {
+public class WebViewActivity extends BaseHelpActivity {
 
     public static final String HELP_FILE_PATH_PARAM = "HELP_FILE_PATH";
     public static final String HELP_TITLE = "HELP_TITLE";
@@ -29,22 +27,9 @@ public class WebViewActivity extends BaseActivity {
     }
 
     private void setHelpContent() {
-        WebView webView = (WebView) findViewById(R.id.webViewHelpDisplay);
+        WebView webView = findViewById(R.id.webViewHelpDisplay);
         webView.getSettings().setJavaScriptEnabled(true);
         setTitle(getIntent().getStringExtra(HELP_TITLE));
         webView.loadUrl(getIntent().getStringExtra(HELP_FILE_PATH_PARAM));
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.help, menu);
-        super.onCreateOptionsMenu(menu);
-        removeHelpMenu(menu);
-        return true;
-    }
-
-    private void removeHelpMenu(Menu menu) {
-        MenuItem menuSettings = menu.findItem(R.id.action_help);
-        menuSettings.setVisible(false);
     }
 }

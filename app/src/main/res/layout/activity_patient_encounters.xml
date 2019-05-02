@@ -1,6 +1,6 @@
 <!--
-  ~ Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
-  ~ and Vanderbilt University Medical Center.
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
   ~
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
   ~ with additional health care disclaimer.
@@ -11,8 +11,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               style="@style/DashboardTableContainer">
     <RelativeLayout
-            style="@style/PatientDemographicsLayout"
-            android:background="@color/primary_black">
+            style="@style/PatientDemographicsLayout">
 
         <TextView
                 android:id="@+id/patientName"
@@ -25,13 +24,12 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:paddingTop="20dp"
-                android:contentDescription="Gender Image"/>
+                android:contentDescription="@string/gender_image_content_description"/>
     </RelativeLayout>
     <LinearLayout
             style="@style/PatientDemographicsLayout"
             android:paddingTop="4dp"
-            android:paddingBottom="16dp"
-            android:background="@color/primary_black">
+            android:paddingBottom="16dp">
 
         <TextView
                 android:id="@+id/dob"

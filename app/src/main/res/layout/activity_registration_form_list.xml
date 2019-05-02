@@ -2,8 +2,8 @@
 
 
 <!--
-  ~ Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
-  ~ and Vanderbilt University Medical Center.
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
   ~
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
   ~ with additional health care disclaimer.
@@ -16,7 +16,7 @@
              android:layout_height="match_parent">
     <TextView android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:text="Select a registration form"
+              android:text="@string/select_a_registration_form_text"
               style="@style/SummaryHeader"/>
     <ListView
             android:id="@+id/list"

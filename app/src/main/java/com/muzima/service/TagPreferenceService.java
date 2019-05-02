@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -22,7 +22,7 @@ import static com.muzima.utils.Constants.FORM_TAG_PREF_KEY;
 
 public class TagPreferenceService extends PreferenceService {
 
-    private SharedPreferences tagSharedPreferences;
+    private final SharedPreferences tagSharedPreferences;
 
     public TagPreferenceService(Context context) {
         super(context);
@@ -31,7 +31,7 @@ public class TagPreferenceService extends PreferenceService {
 
     public void saveSelectedTags(Set<String> selectedTags) {
         SharedPreferences.Editor editor = tagSharedPreferences.edit();
-        putStringSet(FORM_TAG_PREF_KEY, selectedTags, editor);
+        putStringSet(selectedTags, editor);
     }
 
     public List<String> getSelectedTags(){

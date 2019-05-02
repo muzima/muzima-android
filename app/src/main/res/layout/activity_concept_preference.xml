@@ -1,6 +1,6 @@
 <!--
-  ~ Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
-  ~ and Vanderbilt University Medical Center.
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
   ~
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
   ~ with additional health care disclaimer.
@@ -14,7 +14,7 @@
 
     <LinearLayout style="@style/AutocompleteTextArea">
 
-    <AutoCompleteTextView
+        <AutoCompleteTextView
                 android:id="@+id/concept_add_concept"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -24,8 +24,9 @@
                 android:textColor="@color/primary_blue"
                 android:textColorHint="@color/hint_text_grey"
                 android:textCursorDrawable="@null"
-                android:hint="Enter concept name ..."
-                android:background="@color/primary_black">
+                android:hint="@string/enter_concept_name_text"
+                android:background="?attr/primaryBackgroundColor"
+                android:popupBackground="?attr/primaryBackgroundColor">
             <requestFocus/>
         </AutoCompleteTextView>
 

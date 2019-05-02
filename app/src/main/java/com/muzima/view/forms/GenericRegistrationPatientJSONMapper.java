@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -11,10 +11,12 @@
 package com.muzima.view.forms;
 
 import android.util.Log;
+import com.muzima.MuzimaApplication;
 import com.muzima.api.exception.InvalidPatientIdentifierException;
 import com.muzima.api.exception.InvalidPersonAddressException;
 import com.muzima.api.exception.InvalidPersonAttributeException;
 import com.muzima.api.model.FormData;
+import com.muzima.api.model.Location;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientIdentifierType;
@@ -23,6 +25,7 @@ import com.muzima.api.model.PersonAttribute;
 import com.muzima.api.model.PersonAttributeType;
 import com.muzima.api.model.PersonName;
 import com.muzima.api.model.User;
+import com.muzima.controller.LocationController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.Constants;
@@ -41,12 +44,11 @@ import java.util.List;
 import static com.muzima.utils.DateUtils.parse;
 
 public class GenericRegistrationPatientJSONMapper {
-    public static String TAG = GenericRegistrationPatientJSONMapper.class.getSimpleName();
 
     private JSONObject patientJSON;
+    private JSONObject encounterJSON;
     private Patient patient;
-    private MuzimaSettingController settingController;
-    private PatientController patientController;
+    private MuzimaApplication muzimaApplication;
 
     public String map(Patient patient, FormData formData, User loggedInUser, boolean isLoggedInUserIsDefaultProvider) {
         JSONObject prepopulateJSON = new JSONObject();
@@ -107,7 +109,7 @@ public class GenericRegistrationPatientJSONMapper {
                     attributeJSONObject.put("attribute_value",attribute.getAttribute());
                     attributesJSONArray.put(attributeJSONObject);
                 }
-                prepopulateJSON.put("patient.personattribute",attributesJSONArray);
+                patientDetails.put("patient.personattribute",attributesJSONArray);
             }
 
             if(!patient.getAddresses().isEmpty()){
@@ -134,36 +136,28 @@ public class GenericRegistrationPatientJSONMapper {
                     addressJSONObject.put("uuid",address.getUuid());
                     addressesJSONArray.put(addressJSONObject);
                 }
-                prepopulateJSON.put("patient.personaddress",addressesJSONArray);
+                patientDetails.put("patient.personaddress",addressesJSONArray);
             }
 
             prepopulateJSON.put("patient", patientDetails);
             prepopulateJSON.put("encounter", encounterDetails);
         } catch (JSONException e) {
-            Log.e(TAG, "Could not populate patient registration data to JSON", e);
+            Log.e(getClass().getSimpleName(), "Could not populate patient registration data to JSON", e);
         }
         return prepopulateJSON.toString();
     }
 
-    public Patient getPatient(String jsonPayload, PatientController patientController, MuzimaSettingController settingController) throws JSONException {
-        setPatientController(patientController);
-        setSettingController(settingController);
+    public Patient getPatient(MuzimaApplication muzimaApplication, String jsonPayload) throws JSONException {
+        this.muzimaApplication = muzimaApplication;
         setJSONObjects(jsonPayload);
         createPatient();
         return patient;
     }
 
-    public void setPatientController(PatientController patientController){
-        this.patientController = patientController;
-    }
-
-    public void setSettingController(MuzimaSettingController settingController){
-        this.settingController = settingController;
-    }
-
     private void setJSONObjects(String jsonPayload) throws JSONException {
         JSONObject responseJSON = new JSONObject(jsonPayload);
         patientJSON = responseJSON.getJSONObject("patient");
+        encounterJSON = responseJSON.getJSONObject("encounter");
     }
 
     private void createPatient() throws JSONException {
@@ -183,11 +177,15 @@ public class GenericRegistrationPatientJSONMapper {
 
     private void setPatientIdentifiers() throws JSONException {
         List<PatientIdentifier> identifiers = getPatientIdentifiers();
+        Location location = getEncounterLocation();
+        for(PatientIdentifier identifier:identifiers){
+            identifier.setLocation(location);
+        }
         patient.setIdentifiers(identifiers);
     }
 
     private void setPatientNames() throws JSONException {
-        List<PersonName> names = new ArrayList<PersonName>();
+        List<PersonName> names = new ArrayList<>();
         names.add(getPersonName());
         patient.setNames(names);
     }
@@ -203,10 +201,11 @@ public class GenericRegistrationPatientJSONMapper {
     }
 
     private List<PatientIdentifier> getPatientIdentifiers() throws JSONException {
-        List<PatientIdentifier> patientIdentifiers = new ArrayList<PatientIdentifier>();
+        List<PatientIdentifier> patientIdentifiers = new ArrayList<>();
 
         patientIdentifiers.add(getPatientUuidAsIdentifier());
-        boolean requireMedicalRecordNumber = settingController.isMedicalRecordNumberRequiredDuringRegistration();
+        boolean requireMedicalRecordNumber = muzimaApplication.getMuzimaSettingController()
+                .isMedicalRecordNumberRequiredDuringRegistration();
         if(requireMedicalRecordNumber || patientJSON.has("patient.medical_record_number")) {
             PatientIdentifier medicalRecordIdentifier = getMedicalRecordNumberIdentifier();
 
@@ -222,6 +221,20 @@ public class GenericRegistrationPatientJSONMapper {
         if (!otherIdentifiers.isEmpty())
             patientIdentifiers.addAll(otherIdentifiers);
         return patientIdentifiers;
+    }
+
+    private Location getEncounterLocation() throws JSONException {
+        String locationId = encounterJSON.getString("encounter.location_id");
+        LocationController locationController = muzimaApplication.getLocationController();
+        try {
+            Location location = locationController.getLocationById(Integer.parseInt(locationId));
+            if(location == null){
+                throw new JSONException("Could not find location in local repo");
+            }
+            return location;
+        } catch (LocationController.LocationLoadException e) {
+            throw new JSONException("Could not find location in local repo");
+        }
     }
 
     private PatientIdentifier getMedicalRecordNumberIdentifier() throws JSONException {
@@ -241,7 +254,7 @@ public class GenericRegistrationPatientJSONMapper {
     }
 
     private List<PatientIdentifier> getOtherPatientIdentifiers() throws JSONException {
-        List<PatientIdentifier> otherIdentifiers = new ArrayList<PatientIdentifier>();
+        List<PatientIdentifier> otherIdentifiers = new ArrayList<>();
         if (patientJSON != null && patientJSON.has("patient.otheridentifier")) {
             Object otherIdentifierObject = patientJSON.get("patient.otheridentifier");
 
@@ -254,7 +267,7 @@ public class GenericRegistrationPatientJSONMapper {
                             otherIdentifiers.add(identifier);
                         }
                     }catch (InvalidPatientIdentifierException e){
-                        Log.e(TAG, "Error while creating identifier.", e);
+                        Log.e(getClass().getSimpleName(), "Error while creating identifier.", e);
                     }
                 }
             } else if (otherIdentifierObject instanceof JSONObject) {
@@ -264,7 +277,7 @@ public class GenericRegistrationPatientJSONMapper {
                         otherIdentifiers.add(identifier);
                     }
                 } catch (InvalidPatientIdentifierException e){
-                    Log.e(TAG, "Error while creating identifier.", e);
+                    Log.e(getClass().getSimpleName(), "Error while creating identifier.", e);
                 }
             }
         }
@@ -276,7 +289,7 @@ public class GenericRegistrationPatientJSONMapper {
                 try {
                     otherIdentifiers.add(createPatientIdentifier(patientJSON.getJSONObject(key)));
                 } catch (InvalidPatientIdentifierException e){
-                    Log.e(TAG, "Error while creating identifier.", e);
+                    Log.e(getClass().getSimpleName(), "Error while creating identifier.", e);
                 }
             }
         }
@@ -316,9 +329,11 @@ public class GenericRegistrationPatientJSONMapper {
         PatientIdentifierType identifierType = null;
 
         if(!StringUtils.isEmpty(identifierTypeUuid)){
-            identifierType = patientController.getPatientIdentifierTypeByUuid(identifierTypeUuid);
+            identifierType = muzimaApplication.getPatientController()
+                    .getPatientIdentifierTypeByUuid(identifierTypeUuid);
         } else if(!StringUtils.isEmpty(identifierTypeName)){
-            List<PatientIdentifierType> tmpIdentifierTypes = patientController.getPatientIdentifierTypeByName(identifierTypeName);
+            List<PatientIdentifierType> tmpIdentifierTypes = muzimaApplication.getPatientController()
+                    .getPatientIdentifierTypeByName(identifierTypeName);
             if(tmpIdentifierTypes.size() == 1){
                 identifierType = tmpIdentifierTypes.get(0);
             }
@@ -345,7 +360,7 @@ public class GenericRegistrationPatientJSONMapper {
             if (birthDateAsString != null)
                 birthDate = parse(birthDateAsString);
         } catch (ParseException e) {
-            Log.e(TAG, "Could not parse birth_date", e);
+            Log.e(getClass().getSimpleName(), "Could not parse birth_date", e);
         }
         return birthDate;
     }
@@ -372,7 +387,7 @@ public class GenericRegistrationPatientJSONMapper {
                 try {
                     addresses.add(createPersonAddress((JSONObject) personAddress));
                 } catch (InvalidPersonAddressException e){
-                    Log.e(TAG,"Error while creating person address.",e);
+                    Log.e(getClass().getSimpleName(),"Error while creating person address.",e);
                 }
             } else if(personAddress instanceof JSONArray){
                 JSONArray address = (JSONArray)personAddress;
@@ -380,7 +395,7 @@ public class GenericRegistrationPatientJSONMapper {
                     try {
                         addresses.add(createPersonAddress(address.getJSONObject(i)));
                     } catch (InvalidPersonAddressException e){
-                        Log.e(TAG,"Error while creating person address.",e);
+                        Log.e(getClass().getSimpleName(),"Error while creating person address.",e);
                     }
                 }
             }
@@ -393,7 +408,7 @@ public class GenericRegistrationPatientJSONMapper {
                 try {
                     addresses.add(createPersonAddress(patientJSON.getJSONObject(key)));
                 } catch (InvalidPersonAddressException e){
-                    Log.e(TAG,"Error while creating person address.",e);
+                    Log.e(getClass().getSimpleName(),"Error while creating person address.",e);
                 }
             }
         }
@@ -424,7 +439,7 @@ public class GenericRegistrationPatientJSONMapper {
                 Date startDate = parse(addressObject.getString("startDate"));
                 personAddress.setStartDate(startDate);
             } catch (ParseException e) {
-                Log.e(TAG, "Could not parse personaddress.startDate", e);
+                Log.e(getClass().getSimpleName(), "Could not parse personaddress.startDate", e);
             }
         }
         if(addressObject.has("endDate")) {
@@ -432,7 +447,7 @@ public class GenericRegistrationPatientJSONMapper {
                 Date endDate = parse(addressObject.getString("endDate"));
                 personAddress.setEndDate(endDate);
             } catch (ParseException e) {
-                Log.e(TAG, "Could not parse personaddress.endDate", e);
+                Log.e(getClass().getSimpleName(), "Could not parse personaddress.endDate", e);
             }
         }
         if(personAddress.isBlank()) {
@@ -450,7 +465,7 @@ public class GenericRegistrationPatientJSONMapper {
                 try{
                     attributes.add(createPersonAttribute((JSONObject)personAttribute));
                 } catch (InvalidPersonAttributeException e){
-                    Log.e(TAG,"Error while creating attribute.",e);
+                    Log.e(getClass().getSimpleName(),"Error while creating attribute.",e);
                 }
             } else if(personAttribute instanceof JSONArray){
                 JSONArray att = (JSONArray)personAttribute;
@@ -458,7 +473,7 @@ public class GenericRegistrationPatientJSONMapper {
                     try{
                         attributes.add(createPersonAttribute(att.getJSONObject(i)));
                     } catch (InvalidPersonAttributeException e){
-                        Log.e(TAG,"Error while creating attribute.",e);
+                        Log.e(getClass().getSimpleName(),"Error while creating attribute.",e);
                     }
                 }
             }
@@ -470,7 +485,7 @@ public class GenericRegistrationPatientJSONMapper {
                 try {
                     attributes.add(createPersonAttribute(patientJSON.getJSONObject(key)));
                 } catch (InvalidPersonAttributeException e){
-                    Log.e(TAG,"Error while creating attribute.",e);
+                    Log.e(getClass().getSimpleName(),"Error while creating attribute.",e);
                 }
             }
         }
@@ -489,6 +504,7 @@ public class GenericRegistrationPatientJSONMapper {
             attribute.setAttribute(attributeValue);
 
             PersonAttributeType attributeType = null;
+            PatientController patientController = muzimaApplication.getPatientController();
             if (jsonObject.has("attribute_type_uuid")) {
                 String personAttributeTypeUuid = jsonObject.getString("attribute_type_uuid");
                 attributeType = patientController.getPersonAttributeTypeByUuid(personAttributeTypeUuid);

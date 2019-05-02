@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -10,6 +10,8 @@
 
 package com.muzima.view.forms;
 
+import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.v7.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -35,7 +37,10 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
+import com.muzima.service.GPSFeaturePreferenceService;
+import com.muzima.service.MuzimaLocationService;
 import com.muzima.utils.Constants;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.audio.AudioResult;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
@@ -58,17 +63,17 @@ import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 import static java.text.MessageFormat.format;
 
 public class FormWebViewActivity extends BroadcastListenerActivity {
-    private static final String TAG = "FormWebViewActivity";
-    public static final String PATIENT = "patient";
-    public static final String FORM_INSTANCE = "formInstance";
-    public static final String REPOSITORY = "formDataRepositoryContext";
-    public static final String BARCODE = "barCodeComponent";
-    public static final String IMAGE = "imagingComponent";
-    public static final String AUDIO = "audioComponent";
-    public static final String VIDEO = "videoComponent";
-    public static final String ZIGGY_FILE_LOADER = "ziggyFileLoader";
-    public static final String FORM = "form";
-    public static final String DISCRIMINATOR = "discriminator";
+    private static final String PATIENT = "patient";
+    private static final String FORM_INSTANCE = "formInstance";
+    private static final String REPOSITORY = "formDataRepositoryContext";
+    private static final String BARCODE = "barCodeComponent";
+    private static final String IMAGE = "imagingComponent";
+    private static final String AUDIO = "audioComponent";
+    private static final String VIDEO = "videoComponent";
+    private static final String ZIGGY_FILE_LOADER = "ziggyFileLoader";
+    private static final String FORM = "form";
+    private static final String DISCRIMINATOR = "discriminator";
+    private static final String MUZIMA_LOCATION_SERVICE = "muzimaGPSLocationInterface";
 
 
     private WebView webView;
@@ -87,33 +92,30 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     private Map<String, String> videoResultMap;
     private String sectionName;
     private FormController formController;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         formController = ((MuzimaApplication) this.getApplicationContext()).getFormController();
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        scanResultMap = new HashMap<String, String>();
-        imageResultMap = new HashMap<String, String>();
-        audioResultMap = new HashMap<String, String>();
-        videoResultMap = new HashMap<String, String>();
+        scanResultMap = new HashMap<>();
+        imageResultMap = new HashMap<>();
+        audioResultMap = new HashMap<>();
+        videoResultMap = new HashMap<>();
         setContentView(R.layout.activity_form_webview);
         progressDialog = new MuzimaProgressDialog(this);
         showProgressBar("Loading...");
+
         try {
             setupFormData();
             setupWebView();
-        } catch (FormFetchException e) {
-            Log.e(TAG, e.getMessage(), e);
-            finish();
-        } catch (FormController.FormDataFetchException e) {
-            Log.e(TAG, e.getMessage(), e);
-            finish();
-        } catch (FormController.FormDataSaveException e) {
-            Log.e(TAG, e.getMessage(), e);
+        } catch (FormFetchException | FormController.FormDataSaveException | FormController.FormDataFetchException e) {
+            Log.e(getClass().getSimpleName(), e.getMessage(), e);
             finish();
         }
     }
@@ -124,6 +126,33 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             progressDialog.dismiss();
         }
         super.onDestroy();
+    }
+
+    public void isLocationServicesAvailable(){
+        GPSFeaturePreferenceService gpsFeaturePreferenceService = new GPSFeaturePreferenceService((MuzimaApplication) getApplication());
+        if(gpsFeaturePreferenceService.isGPSDataCollectionSettingEnabled()){
+            if (!MuzimaLocationService.isLocationServicesSwitchedOn) {
+                android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(getApplicationContext());
+                alertDialog.setTitle(getResources().getString(R.string.title_gps_location));
+                alertDialog.setMessage(getResources().getString(R.string.hint_gps_location_off));
+                alertDialog.setPositiveButton(getResources().getString(R.string.general_location_setting), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                    }
+                });
+
+                alertDialog.setNegativeButton(getResources().getString(R.string.general_cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        processBackButtonPressed();
+                        dialog.cancel();
+                    }
+                });
+                android.support.v7.app.AlertDialog alert = alertDialog.create();
+                alert.show();
+            }
+        }
+
     }
 
     @Override
@@ -140,31 +169,35 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
 
     @Override
     protected void onResume() {
+
+        isLocationServicesAvailable();
+
         if (scanResultMap != null && !scanResultMap.isEmpty()) {
             String jsonMap = new JSONObject(scanResultMap).toString();
-            Log.d(TAG, jsonMap);
+            Log.d(getClass().getSimpleName(), jsonMap);
             webView.loadUrl("javascript:document.populateBarCode(" + jsonMap + ")");
         }
 
         if (imageResultMap != null && !imageResultMap.isEmpty()) {
             String jsonMap = new JSONObject(imageResultMap).toString();
-            Log.d(TAG, "Header:" + sectionName + "json:" + jsonMap);
+            Log.d(getClass().getSimpleName(), "Header:" + sectionName + "json:" + jsonMap);
             webView.loadUrl("javascript:document.populateImage('" + sectionName + "', " + jsonMap + ")");
         }
 
         if (audioResultMap != null && !audioResultMap.isEmpty()) {
             String jsonMap = new JSONObject(audioResultMap).toString();
-            Log.d(TAG, "Header:" + sectionName + "json:" + jsonMap);
+            Log.d(getClass().getSimpleName(), "Header:" + sectionName + "json:" + jsonMap);
             webView.loadUrl("javascript:document.populateAudio('" + sectionName + "', " + jsonMap + ")");
         }
 
         if (videoResultMap != null && !videoResultMap.isEmpty()) {
             String jsonMap = new JSONObject(videoResultMap).toString();
-            Log.d(TAG, "Header:" + sectionName + "json:" + jsonMap);
+            Log.d(getClass().getSimpleName(), "Header:" + sectionName + "json:" + jsonMap);
             webView.loadUrl("javascript:document.populateVideo('" + sectionName + "', " + jsonMap + ")");
         }
 
         super.onResume();
+        themeUtils.onResume(this);
     }
 
     @Override
@@ -184,7 +217,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
                     formData.setStatus(STATUS_INCOMPLETE);
                     formController.saveFormData(formData);
                 } catch (FormController.FormDataSaveException e) {
-                    Log.e(TAG, "Error while saving the form data", e);
+                    Log.e(getClass().getSimpleName(), "Error while saving the form data", e);
                 }
                 startIncompleteFormListActivity();
                 return true;
@@ -234,7 +267,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(FormWebViewActivity.this);
             builder
                     .setCancelable(true)
-                    .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                    .setIcon(themeUtils.getIconWarning(this))
                     .setTitle(getResources().getString(R.string.general_caution))
                     .setMessage(getResources().getString(R.string.warning_form_close))
                     .setPositiveButton("Yes", positiveClickListener())
@@ -250,7 +283,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         startActivity(intent);
     }
 
-    public void startIncompleteFormListActivity() {
+    private void startIncompleteFormListActivity() {
         startActivity(new Intent(this, FormsActivity.class));
     }
 
@@ -274,7 +307,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         }
     }
 
-    private FormData createNewFormData() throws FormController.FormDataSaveException {
+    private FormData createNewFormData() {
         FormData formData = new FormData() {{
             setUuid(UUID.randomUUID().toString());
             setPatientUuid(patient.getUuid());
@@ -287,14 +320,14 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             PatientJSONMapper mapper = new PatientJSONMapper(formTemplate.getModelJson());
             formData.setJsonPayload(mapper.map(patient, formData));
         } catch (JSONException e) {
-            Log.e(TAG, "Error while converting Model JSON", e);
+            Log.e(getClass().getSimpleName(), "Error while converting Model JSON", e);
         }
         return formData;
     }
 
 
     private void setupWebView() {
-        webView = (WebView) findViewById(R.id.webView);
+        webView = findViewById(R.id.webView);
         webView.setWebChromeClient(createWebChromeClient());
 
         getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
@@ -303,6 +336,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         getSettings().setDomStorageEnabled(true);
 
         FormInstance formInstance = new FormInstance(form, formTemplate);
+
         webView.addJavascriptInterface(formInstance, FORM_INSTANCE);
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
         webView.addJavascriptInterface(new FormDataStore(this, formController, formData), REPOSITORY);
@@ -337,9 +371,9 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
                 String message = format("Javascript Log. Message: {0}, lineNumber: {1}, sourceId, {2}", consoleMessage.message(),
                         consoleMessage.lineNumber(), consoleMessage.sourceId());
                 if (consoleMessage.messageLevel() == ERROR) {
-                    Log.e(TAG, message);
+                    Log.e(getClass().getSimpleName(), message);
                 } else {
-                    Log.d(TAG, message);
+                    Log.d(getClass().getSimpleName(), message);
                 }
                 return true;
             }

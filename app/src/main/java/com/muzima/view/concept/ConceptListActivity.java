@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -27,6 +27,7 @@ import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 import com.muzima.view.preferences.ConceptPreferenceActivity;
 
@@ -37,18 +38,18 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 
 
 public class ConceptListActivity extends ConceptPreferenceActivity {
-    private static final String TAG = "ConceptListActivity";
     private MuzimaProgressDialog muzimaProgressDialog;
-    protected Credentials credentials;
+    private Credentials credentials;
     private boolean isProcessDialogOn = false;
-    private PowerManager powerManager = null;
     private PowerManager.WakeLock wakeLock = null ;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     public void onCreate(Bundle savedInstanceState) {
+        super.setThemeUtils(themeUtils);
         super.onCreate(savedInstanceState);
         credentials = new Credentials(this);
 
-        Button nextButton = (Button) findViewById(R.id.next);
+        Button nextButton = findViewById(R.id.next);
         muzimaProgressDialog = new MuzimaProgressDialog(this);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,10 +58,10 @@ public class ConceptListActivity extends ConceptPreferenceActivity {
 
                     @Override
                     protected void onPreExecute() {
-                        Log.i(TAG, "Canceling timeout timer!") ;
+                        Log.i(getClass().getSimpleName(), "Canceling timeout timer!") ;
                         turnOnProgressDialog(getString(R.string.info_encounter_observation_download));
                         ((MuzimaApplication) getApplication()).cancelTimer();
-                        keepPhoneAwake(true) ;
+                        keepPhoneAwake() ;
                     }
 
                     @Override
@@ -113,10 +114,10 @@ public class ConceptListActivity extends ConceptPreferenceActivity {
         try {
             allCohorts = cohortController.getAllCohorts();
         } catch (CohortController.CohortFetchException e) {
-            Log.w(TAG, "Exception occurred while fetching local cohorts ", e);
+            Log.w(getClass().getSimpleName(), "Exception occurred while fetching local cohorts ", e);
             return null;
         }
-        ArrayList<String> cohortsUuid = new ArrayList<String>();
+        ArrayList<String> cohortsUuid = new ArrayList<>();
         for (Cohort cohort : allCohorts){
             cohortsUuid.add(cohort.getUuid());
         }
@@ -131,10 +132,10 @@ public class ConceptListActivity extends ConceptPreferenceActivity {
         }
     }
 
-    private void keepPhoneAwake(boolean awakeState) {
-        Log.d(TAG, "Launching wake state: " + awakeState) ;
-        if (awakeState) {
-            powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+    private void keepPhoneAwake() {
+        Log.d(getClass().getSimpleName(), "Launching wake state: " + true) ;
+        if (true) {
+            PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
             wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
             wakeLock.acquire();
         } else {

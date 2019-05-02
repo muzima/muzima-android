@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -21,15 +21,15 @@ import java.util.List;
 import java.util.Set;
 
 public class HTMLProviderParser {
-    public static final String DATA_PROVIDER_TAG = "data-provider";
+    private static final String DATA_PROVIDER_TAG = "data-provider";
     public List<String> parse(String html) {
-        Set<String> providers = new HashSet<String>();
+        Set<String> providers = new HashSet<>();
         Document htmlDoc = Jsoup.parse(html);
         //Select all elements containing data-providers attr and is not a div.
         Elements elements = htmlDoc.select("*:not(div)[" + DATA_PROVIDER_TAG + "]");
         for (Element element : elements) {
             providers.add((element.attr(DATA_PROVIDER_TAG)));
         }
-        return new ArrayList<String>(providers);
+        return new ArrayList<>(providers);
     }
 }

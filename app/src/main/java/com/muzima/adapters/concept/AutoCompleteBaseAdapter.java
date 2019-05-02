@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -36,7 +36,6 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
  */
 public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
 
-    private static final String TAG = AutoCompleteBaseAdapter.class.getSimpleName();
     protected WeakReference<MuzimaApplication> muzimaApplicationWeakReference;
     private final MuzimaSyncService muzimaSyncService;
     private String previousConstraint = null;
@@ -46,7 +45,7 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
     public AutoCompleteBaseAdapter(Context context, int textViewResourceId, AutoCompleteTextView autoCompleteTextView) {
         super(context, textViewResourceId);
         this.autoCompleteTextView = autoCompleteTextView;
-        muzimaApplicationWeakReference = new WeakReference<MuzimaApplication>((MuzimaApplication) context);
+        muzimaApplicationWeakReference = new WeakReference<MuzimaApplication>((MuzimaApplication) context.getApplicationContext());
         muzimaSyncService = getMuzimaApplicationContext().getMuzimaSyncService();
     }
 
@@ -91,9 +90,9 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
                         Toast.makeText(getMuzimaApplicationContext(), muzimaApplicationContext.getString(R.string.error_authentication_fail), Toast.LENGTH_SHORT).show();
                     }
 
-                    Log.i(TAG, "Downloaded: " + options.size());
+                    Log.i(getClass().getSimpleName(), "Downloaded: " + options.size());
                 } catch (Throwable t) {
-                    Log.e(TAG, "Unable to download options!", t);
+                    Log.e(getClass().getSimpleName(), "Unable to download options!", t);
                 } finally {
                     muzimaApplicationContext.getMuzimaContext().closeSession();
                 }
@@ -147,7 +146,7 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             convertView = layoutInflater.inflate(R.layout.item_option_autocomplete, parent, false);
             holder = new ViewHolder();
-            holder.name = (TextView) convertView.findViewById(R.id.option_autocomplete_name);
+            holder.name = convertView.findViewById(R.id.option_autocomplete_name);
             convertView.setTag(holder);
         }
         holder = (ViewHolder) convertView.getTag();

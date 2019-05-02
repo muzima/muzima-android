@@ -1,6 +1,6 @@
 <!--
-  ~ Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
-  ~ and Vanderbilt University Medical Center.
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
   ~
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
   ~ with additional health care disclaimer.
@@ -11,8 +11,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:id="@+id/patient_lists_layout"
              android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:background="@color/primary_black">
+             android:layout_height="match_parent">
 <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
     <ListView
             android:id="@+id/list"
@@ -61,7 +60,7 @@
                 android:id="@+id/search_server_btn"
                 android:layout_marginTop="20dp"
                 style="@style/Button.Next"
-                android:drawableLeft="@drawable/ic_search"
+                android:drawableLeft="?attr/icSearch"
                 android:text="@string/title_search_server"/>
     </LinearLayout>
 </LinearLayout>
@@ -72,7 +71,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_search" />
+            android:src="?attr/icSearch" />
 
     <include layout="@layout/progress_bar"/>
 

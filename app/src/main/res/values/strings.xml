@@ -1,25 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
-  ~ Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
-  ~ and Vanderbilt University Medical Center.
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
   ~
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
   ~ with additional health care disclaimer.
   ~ If the user is an entity intending to commercialize any application that uses
   ~  this code in a for-profit venture,please contact the copyright holder.
-  --><resources>
+-->
+<resources>
+    <string name="SHR_card_text">SHR Card</string>
+    <string name="SHR_data_title_text">SHR Data</string>
+    <string name="SHR_extracted_data_text">SHR extracted data</string>
     <string name="add_individual_observation_text">Add Individual Observation</string>
-
     <string name="app_name">mUzima</string>
     <string name="app_title">mUzima for Health Providers</string>
-
+    <string name="captured_date">Captured Date:</string>
+    <string name="card_sync_status_content_description">card_sync_status</string>
+    <string name="change_settings">Change Settings</string>
+    <string name="client_registration_question_text">Would you like to register client in mUzima ?</string>
+    <string name="complex_obs">Complex Obs</string>
+    <string name="concept_description">Concept Descrition</string>
+    <string name="concept_details">Concept Details</string>
+    <string name="concept_name">Concept Name:</string>
     <string name="confirm_duplicate_form_data_save">Save Duplicate Form Data</string>
     <string name="confirm_patient_id_exists">Does the client already have existing ID?</string>
-
+    <string name="date_general">Date</string>
+    <string name="date_temp">June 8</string>
     <string name="default_auto_save_interval" translatable="false">2</string>
     <string name="default_form_register">Registration Forms</string>
     <string name="default_server" translatable="false">http://demo2.muzima.org</string>
-
+    <string name="done_general">DONE</string>
+    <string name="downloading_cohorts_text">Downloading Cohorts</string>
+    <string name="downloading_forms">Downloading Forms</string>
+    <string name="encounter_date">Encounter Date:</string>
+    <string name="encounter_date_dialog_label">Encounter Date</string>
+    <string name="encounter_details">Encounter Details</string>
+    <string name="encounter_location">Encounter Location:</string>
+    <string name="encounter_type">Encounter Type:</string>
+    <string name="enter_concept_name_text">Enter concept name …</string>
+    <string name="enter_location_name">Enter location name …</string>
+    <string name="enter_provider_name_hint">Enter provider name …</string>
     <string name="error_action_allow">Action not allowed while sync is in progress</string>
     <string name="error_audio_chose_activity_find">Error: Activity for choosing audio not found</string>
     <string name="error_audio_play_activity_find">Error: Activity for playing audio not found</string>
@@ -39,6 +60,7 @@
     </string>
     <string name="error_data_download">An error occurred while downloading data form server</string>
     <string name="error_data_save">An error occurred while saving data to local repo</string>
+    <string name="error_empty_message_text">Cannot send empty message.</string>
     <string name="error_encounter_download">Could not download encounters</string>
     <string name="error_encounter_load">Encounters could not be loaded</string>
     <string name="error_encounter_observation_download">Could not download observations for clients</string>
@@ -85,13 +107,13 @@
     <string name="error_server_url_invalid">Invalid Server URL.</string>
     <string name="error_setup_configuration_download">Setup configurations could not be loaded</string>
     <string name="error_setup_configuration_template_download">Could not download Setup Configuration template</string>
+    <string name="error_smartcard_client_not_in_server">Smartcard client  not in server. Register client in mUzima now ?</string>
     <string name="error_sync_not_allowed">Action not allowed while sync is in progress</string>
     <string name="error_tag_fetch">Something went wrong while fetching tags from local repo</string>
     <string name="error_target_application_find">No target applications</string>
     <string name="error_username_invalid_format">Invalid Character in Username. These are not allowed: %s
     </string>
     <string name="error_wizard_interrupted">Wizard was interrupted, please logout and run the wizard again.</string>
-
     <string name="failure_obtain_smartcard_record">Could not obtain smartcard record for writing to card.</string>
     <string name="failure_obtaining_card_serial_number">Could not obtain card serial number</string>
     <string name="failure_reading_card">Card Read Failed</string>
@@ -99,12 +121,13 @@
         card
     </string>
     <string name="failure_writing_smartcard">Failed writing Smart card data.</string>
-
+    <string name="fill_out_forms_for_a_patient_general">Fill out forms for a patient</string>
     <string name="form_encounter_date">Encounter date</string>
     <string name="form_encounter_location">Encounter location</string>
     <string name="form_encounter_provider">Encounter provider</string>
-
+    <string name="gender_image_content_description">Gender Image</string>
     <string name="general_accept">Accept</string>
+    <string name="general_add">Add</string>
     <string name="general_agree">Agree</string>
     <string name="general_alert">Alert!</string>
     <string name="general_all">All</string>
@@ -118,6 +141,8 @@
     <string name="general_cohorts">Cohorts</string>
     <string name="general_concepts">Concepts</string>
     <string name="general_dashboard">Dashboard</string>
+    <string name="general_data_syc_required">Data syc required</string>
+    <string name="general_date">Date</string>
     <string name="general_delete">Delete</string>
     <string name="general_description_unavailable">No description available</string>
     <string name="general_disagree">Disagree</string>
@@ -126,11 +151,14 @@
     <string name="general_encounters">Encounters</string>
     <string name="general_fail">Fail</string>
     <string name="general_finish">Finish</string>
+    <string name="general_finish_text">Finish</string>
     <string name="general_form">Form</string>
     <string name="general_forms">Forms</string>
     <string name="general_help">Help</string>
     <string name="general_large">Large</string>
     <string name="general_load">Load</string>
+    <string name="general_loading_encounters">Encounters are still loading</string>
+    <string name="general_location_setting">Location Settings</string>
     <string name="general_locations">Locations</string>
     <string name="general_login">Login</string>
     <string name="general_logout">Logout</string>
@@ -143,7 +171,7 @@
     <string name="general_notification">Notification</string>
     <string name="general_notifications">Notifications</string>
     <string name="general_observations">Observations</string>
-    <string name="general_ok">Ok</string>
+    <string name="general_ok">OK</string>
     <string name="general_password">Password</string>
     <string name="general_previous">Previous</string>
     <string name="general_progress_message">This might take a while</string>
@@ -154,11 +182,13 @@
     <string name="general_search">Search</string>
     <string name="general_server">Server</string>
     <string name="general_settings">Settings</string>
+    <string name="general_skip">Skip</string>
     <string name="general_small">Small</string>
     <string name="general_synced">Synced</string>
     <string name="general_tags">Tags</string>
     <string name="general_thank_you">Thank you!</string>
-    <string name="general_unexpected_error_occurred">Unexpected Error Occured</string>
+    <string name="general_unexpected_error_occurred">Unexpected Error Occurred</string>
+    <string name="general_update">Update</string>
     <string name="general_upload">Upload</string>
     <string name="general_username">Username</string>
     <string name="general_view_encounter">View encounter</string>
@@ -170,11 +200,12 @@
     <string name="header_muzima_category">mUzima Settings</string>
     <string name="header_openmrs_category">OpenMRS Settings</string>
     <string name="header_provider_location_category">Provider/Location Settings</string>
-
+    <string name="hello_general">Hello</string>
+    <string name="help_general">Help!</string>
     <string name="hint_advanced_setup">Use a step by step wizard to choose what you want</string>
     <string name="hint_audio_caption">Please enter a caption for the audio</string>
     <string name="hint_audio_record">Record or choose audio</string>
-    <string name="hint_authentication_progress">Authenticating...</string>
+    <string name="hint_authentication_progress">Authenticating…</string>
     <string name="hint_barcode_scanner_setup">You need a barcode scanner application to register clients from
         mobile. Please check whether it\'s been installed in your device or not.
     </string>
@@ -195,7 +226,7 @@
     <string formatted="false" name="hint_client_summary_observations">%d Observations</string>
     <string name="hint_cohort_download">Select one or more cohorts from the list and click on \'Next\' to download
     </string>
-    <string name="hint_cohort_filter">Start typing to filter the cohorts...</string>
+    <string name="hint_cohort_filter">Start typing to filter the cohorts…</string>
     <string name="hint_cohort_list_download">Please press load to fetch available cohorts list from server</string>
     <string name="hint_cohort_prefix_help">A cohort is a predefined group of clients for which you can fill forms and
         download observations. The prefix(es) set here will be used to download cohorts afterwards.
@@ -221,7 +252,7 @@
         this by sending us error data, all you have to do is click OK.
     </string>
     <string name="hint_crash_dialog_comment_prompt">Please add your comments about the problem below.</string>
-    <string name="hint_create_new_shr">Client does not have an SHR. Do you want to create new SHR and write to card?
+    <string name="hint_create_new_SHR">Client does not have an SHR. Do you want to create new SHR and write to card?
     </string>
     <string name="hint_current_or_past_date_validation_failure">Please enter a date prior or equal to today</string>
     <string name="hint_custom_concept_help">Here you define concepts whose data will be included in later download.
@@ -242,6 +273,8 @@
     <string name="hint_duplicate_form_data_warning">Warn the user when duplicate form data for same client with same
         encounter date is being saved
     </string>
+    <string name="hint_enable_GPS">Enable GPS Data collection feature</string>
+    <string name="hint_enable_shr">Enable smart card feature</string>
     <string name="hint_encounter_location_validation_failure">Please provide a location from the list of possible
         locations
     </string>
@@ -255,6 +288,7 @@
         and resubmit the form
     </string>
     <string name="hint_future_date_validation_failure">Please enter a date in the future</string>
+    <string name="hint_gps_location_off">Location is switched off! Kindly turn on location in settings.</string>
     <string name="hint_guided_setup">Select a preset configuration and let mUzima do the rest for you</string>
     <string name="hint_image_caption_prompt">Please enter a caption for the image</string>
     <string name="hint_incomplete_form_unavailable">Incomplete forms are available only if you have saved a partially
@@ -263,7 +297,7 @@
     </string>
     <string name="hint_install_psmart">Would you like to install P-Smart app?</string>
     <string name="hint_last_synced">Last synced on: %s</string>
-    <string name="hint_loading_progress">Loading...</string>
+    <string name="hint_loading_progress">Loading…</string>
     <string name="hint_local_connection_unavailable">Please connect your device and try again</string>
     <string name="hint_location_pref_add">Add location(s) that you want to download.</string>
     <string name="hint_manage_concept">Get more concepts from the server or remove concepts from this device.
@@ -302,20 +336,25 @@
     <string name="hint_server_url">Server URL</string>
     <string name="hint_server_url_prompt">Please enter server URL</string>
     <string name="hint_session_timeout">If in-active for this time, mUzima will automatically logout</string>
-    <string name="hint_set_default_encounter_location_for_shr">Please set default encounter location so as to enable
+    <string name="hint_set_default_encounter_location_for_SHR">Please set default encounter location so as to enable
         writing new card
     </string>
     <string name="hint_setting_refresh">Do you want to re-download this setting from server?</string>
+    <string name="hint_switch_location_on">Kindly switch on location in settings.</string>
     <string name="hint_username_prompt">Please enter username</string>
     <string name="hint_video_caption_prompt">Please enter a caption for the video</string>
     <string name="hint_video_record">Record or choose video</string>
     <string name="hint_wizard_form_download">Select one or more form templates from the list and click on \'Next\' to
         download
     </string>
-    <string name="hint_write_shr_to_card">Do you want to write Shared Health Record to card ?</string>
-
-    <string name="info_authentication_in_progress">Authentication in progress...</string>
-    <string name="info_client_demographics_download">Downloading clients demographic...</string>
+    <string name="hint_write_SHR_to_card">Do you want to write Shared Health Record to card ?</string>
+    <string name="how_to_general">How To:</string>
+    <string name="inbox_outbox_label_text">## Inbox, ## Outbox</string>
+    <string name="incomplete_outbox_text">## Incomplete, ## Outbox</string>
+    <string name="individual_obs">Individual Obs</string>
+    <string name="individual_obs_description">Individual Obs</string>
+    <string name="info_authentication_in_progress">Authentication in progress…</string>
+    <string name="info_client_demographics_download">Downloading clients demographic…</string>
     <string name="info_client_identifier_change">Client Identifier changed on the server. The new identifier will be
         used
         going forward.
@@ -328,13 +367,14 @@
     <string name="info_cohort_download">Downloading Cohorts</string>
     <string name="info_cohort_downloaded">Downloaded 1 cohort</string>
     <string name="info_cohort_fetch_in_progress">Already fetching cohorts, ignored the request</string>
-    <string name="info_cohort_load">Loading Cohorts...</string>
+    <string name="info_cohort_load">Loading Cohorts…</string>
     <string formatted="false" name="info_cohort_new_patient_download">Downloaded %d new clients for %d cohorts.</string>
     <string name="info_cohort_not_downloaded">No cohorts downloaded</string>
     <string name="info_cohort_patient_download">Downloaded 1 client for 1 cohort</string>
     <string name="info_cohort_patient_not_download">No clients downloaded</string>
     <string formatted="false" name="info_cohort_patients_download">Downloaded %d clients for 1 cohort</string>
     <string name="info_cohort_prefixes_unavailable">No Cohort Prefixes Added</string>
+    <string name="info_cohort_update">Some cohorts have changed.</string>
     <string formatted="false" name="info_cohorts_downloaded">Downloaded %d cohorts</string>
     <string formatted="false" name="info_cohorts_patient_download">Downloaded 1 client for %d cohorts</string>
     <string formatted="false" name="info_cohorts_patients_download">Downloaded %d clients for %d cohorts</string>
@@ -378,7 +418,7 @@
         even if such party shall have been informed of the possibility of such damages.
         </p><p>
         3. mUzima is copyrighted to The Trustees of Indiana University, Moi University, and Vanderbilt University
-	Medical Center (2014-2018).
+	Medical Center.
         </p><p>
 	4.  If the user of this application is an entity intending to commercialize or make a profit out of any
 	application that uses this code in a for-profit venture, the user is required to contact the copyright holder
@@ -396,7 +436,7 @@
     <string formatted="false" name="info_encounter_not_downloaded_progress">Encounters for client %d of %d not
         downloaded.
     </string>
-    <string name="info_encounter_observation_download">Downloading observations and encounters...</string>
+    <string name="info_encounter_observation_download">Downloading observations and encounters…</string>
     <string name="info_encounter_patient_downloaded">Downloaded 1 encounter for 1 client</string>
     <string name="info_encounter_patient_not_downloaded">Did not download any encounters</string>
     <string formatted="false" name="info_encounter_patients_downloaded">Downloaded 1 encounter for %d clients</string>
@@ -418,7 +458,7 @@
     <string formatted="false" name="info_form_download_delete">Downloaded %d forms and retired %d forms</string>
     <string name="info_form_downloaded">Downloaded 1 form</string>
     <string name="info_form_fetch_in_progress">Already fetching forms, ignored the request</string>
-    <string name="info_form_load">Loading Forms...</string>
+    <string name="info_form_load">Loading Forms…</string>
     <string name="info_form_metadata_download">Downloading forms metadata</string>
     <string name="info_form_not_downloaded">No forms downloaded</string>
     <string formatted="false" name="info_form_template_concept_download">Downloaded %d form templates and %d concepts
@@ -488,7 +528,7 @@
     <string name="info_provider_delete_success">%d Providers deleted successfully</string>
     <string name="info_provider_download">Downloading Providers</string>
     <string name="info_provider_downloaded">Downloaded 1 provider</string>
-    <string name="info_provider_load">Loading Providers...</string>
+    <string name="info_provider_load">Loading Providers…</string>
     <string name="info_provider_not_downloaded">Did not download any providers</string>
     <string name="info_provider_unavailable">No providers have been added yet</string>
     <string formatted="false" name="info_providers_downloaded">Downloaded %d providers</string>
@@ -506,36 +546,49 @@
     <string name="info_video_chose_activity_unavailable">Error: Application for choosing video not found</string>
     <string name="info_video_play_activity_unavailable">Error: Application for playing video not found</string>
     <string name="info_video_record_activity_unavailable">Error: Application for recording video not found</string>
-
+    <string name="initial_setup_for_muzima_general">Initial setup for mUzima</string>
+    <string name="introduction_to_muzima_general_text">Introduction to mUzima</string>
+    <string name="june_8_sample_date">June 8</string>
+    <string formatted="false" name="menu_SHR_data_sync">Sync SHR data (%d)</string>
     <string name="menu_form_back_to_draft">Back To Draft</string>
     <string name="menu_form_data_sync">Sync form data</string>
-    <string formatted="false" name="menu_shr_data_sync">Sync SHR data (%d)</string>
-
     <string name="message_missing_form_encounter_details_error">must be provided</string>
-
+    <string name="muzima_training_manual_general">mUzima Training Manual</string>
+    <string name="new_messages_number_text"># new messages</string>
     <string name="no_default_encounter_location">No default encounter location</string>
-
+    <string name="no_description_general">No description</string>
     <string name="null_encounter_date_error">An error occurred while saving the form. Encounter date must be provided</string>
     <string name="null_encounter_location_error">An error occurred while saving the form. Encounter location must be provided</string>
     <string name="null_encounter_provider_error">An error occurred while saving the form. Encounter provider must be provided</string>
-
-    <string name="patient_shr_search_dialog_title">Client SHR Search</string>
-    <string name="patient_shr_search_title_text">Client SHR Search</string>
-
-    <string name="registering_patient_message_title_text">Registering client in mUzima...</string>
-
+    <string name="number_hashtag_representation">##</string>
+    <string name="observation_details">Observation Details</string>
+    <string name="observation_text_dialog">Observation:</string>
+    <string name="observation_value">Observation Value:</string>
+    <string name="patient_SHR_search_dialog_title">Client SHR Search</string>
+    <string name="patient_SHR_search_title_text">Client SHR Search</string>
+    <string name="provider_details">Provider Details</string>
+    <string name="provider_identifier">Provider Identifier:</string>
+    <string name="provider_name">Provider Name:</string>
+    <string name="provider_name_general">Provider Name</string>
+    <string name="provider_reports_general">Provider Reports</string>
+    <string name="registering_patient_message_title_text">Registering client in mUzima…</string>
+    <string name="reply_hint_text">send your reply</string>
+    <string name="sample_date_rep">21 March 2018</string>
+    <string name="sample_date_text">21/02/2018</string>
     <string name="scan_card_id_title">Scan card ID</string>
-
     <string name="search_patient_on_server_option_title_text">Patient is not avaible locally, would you like to search
         server?
     </string>
-
-    <string name="shr_card_text">SHR Card</string>
-    <string name="shr_data_title_text">SHR Data</string>
-    <string name="shr_extracted_data_text">SHR extracted data</string>
-
+    <string name="select_a_registration_form_text">Select a registration form</string>
+    <string name="send_general_text">Send</string>
+    <string name="server_side_setup_general">Server side Setup</string>
+    <string name="setting_up_muzima_general_text">Setting Up mUzima</string>
+    <string name="shr_registration">SHR Registration</string>
+    <string name="shr_registration_description">SHR Registration Data</string>
     <string name="success_writing_smartcard">Smart card data was written successfully.</string>
-
+    <string name="synced_label_text">## Synced</string>
+    <string name="synced_total_label_text">## Synced, ## Total</string>
+    <string name="tagging_forms">Tagging Forms</string>
     <string name="title_about_dashboard_help_html">About Dashboard</string>
     <string name="title_activity_audio">Add Audio</string>
     <string name="title_activity_client_encounters">Client Encounters</string>
@@ -563,13 +616,16 @@
     <string name="title_concept_download">Step 5: Add Concept(s)</string>
     <string name="title_concept_download_help_video">Concepts download (on demand)</string>
     <string name="title_concept_help">Concepts Help</string>
-    <string name="title_crash_dialog">mUzima has crashed...</string>
+    <string name="title_crash_dialog">mUzima has crashed…</string>
     <string name="title_data_reset">Step 3: Resetting Data</string>
     <string name="title_data_synchronize">Step 2: Synchronising Local Data</string>
     <string name="title_default_encounter_location">Default Encounter Location</string>
     <string name="title_default_encounter_provider">Default encounter provider</string>
     <string name="title_disclaimer">Licensing, Disclaimer of Warranty and Limitation of Liability</string>
     <string name="title_duplicate_form_data_warning">Duplicate form data warning</string>
+    <string name="title_enable_gps">Enable GPS</string>
+    <string name="title_enable_gps_location">Enable Location and Internet connectivity.</string>
+    <string name="title_enable_shr">Enable SHR</string>
     <string name="title_fill_patient_forms_help">Fill out forms for a client</string>
     <string name="title_font_size">Font size</string>
     <string name="title_form_auto_save_interval">Automatic form save interval (mins)</string>
@@ -580,6 +636,7 @@
     <string name="title_form_template_all">All Form Templates</string>
     <string name="title_form_template_downloaded">Downloaded Form Templates</string>
     <string name="title_general_notifications">General Notifications</string>
+    <string name="title_gps_location">GPS Location</string>
     <string name="title_guided_setup">Guided setup (Recommended)</string>
     <string name="title_guided_setup_help_video">Guided initial setup</string>
     <string name="title_guided_setup_progress">Setup Progress</string>
@@ -622,6 +679,13 @@
     <string name="title_video_record">Record Video</string>
     <string name="title_activity_client_reports">Client Reports</string>
 
+    <string name="to_text">To</string>
+    <string name="type_a_message_hint">Type a message</string>
+    <string name="type_cohort_name_hint">Type Cohort name …</string>
+    <string name="video_links_general_text">Video Links:</string>
+    <string name="warning_auto_save_interval">Auto Save Interval: Could not set auto save interval.
+        \nPlease enter a value between 1 and 120.
+    </string>
     <string name="warning_cohort_prefix_exists">Cohort prefix exists</string>
     <string name="warning_empty_cohort_prefix">You cannot add an empty cohort prefix</string>
     <string name="warning_form_close">Closing Form: This will discard all your changes. Are you sure you would like to
@@ -641,6 +705,33 @@
     <string name="warning_switch_server">Switching Server: This will clear all mUzima data on your
         device, including any incomplete forms. Are you sure you want to change this setting?
     </string>
-
-    <string name="write_shr_to_card_text">Write SHR to Card</string>
+    <string name="warning_session_timeout">Session Timeout: Could not set session timeout.
+        Please enter a value between 1 and 500.
+    </string>
+    <string name="write_SHR_to_card_text">Write SHR to Card</string>
+    <string name="write_shr_to_card_general">Write SHR to card</string>
+    <string name="youTube_player_error">An error occurred while loading YouTube video</string>
+    <string name="help_center">Help Center</string>
+    <string name="feedback_header">Please send us your comments and feedback</string>
+    <string name="feedback_rating_question">How easy to use mUzima App?</string>
+    <string name="feedback_hint">What is in your mind?</string>
+    <string name="general_feedback">Feedback</string>
+    <string name="send_feedback">Send feedback</string>
+    <string name="hint_feedback_prompt">Please enter your message</string>
+    <string name="message_feedback_sent">Thank you for your message. \n Your feedback is important for us.</string>
+    <string name="message_feedback_halt">Your message will not be sent.</string>
+    <string name="no_email_client">No email client installed on this device. \n
+        Please install one and then leave your feedback.</string>
+    <string name="interactive_help_header">Please tell us how we can help you</string>
+    <string name="interactive_help_choose">Choose an Option:</string>
+    <string name="interactive_help_hint">Type your message</string>
+    <string name="message_help_sent">Thanks for reaching out. \n
+        Our support team will investigate your request. \n
+        We will back to you as soon as possible.</string>
+    <string name="hint_help_prompt">Please enter your message</string>
+    <string name="message_help_halt">Maybe next time.</string>
+    <string name="ask_help">Asking help</string>
+    <string name="title_light_mode">Enable Day Mode</string>
+    <string name="hint_light_mode">Enable Light Theme</string>
+    <string name="warning_cancel_form_download">This will cancel the form download. Are you sure you want to cancel form download?</string>
 </resources>

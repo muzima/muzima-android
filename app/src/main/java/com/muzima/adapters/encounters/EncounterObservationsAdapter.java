@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -12,6 +12,7 @@ package com.muzima.adapters.encounters;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,9 +34,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EncounterObservationsAdapter  extends ObservationsAdapter  {
-    protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
-    protected String encounterUuid;
-    protected Encounter encounter;
+    private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
+    private final String encounterUuid;
+    private final Encounter encounter;
     public EncounterObservationsAdapter(Activity activity, int textViewResourceId, ObservationController observationController, Encounter encounter){
         super(activity, textViewResourceId, observationController);
         this.encounter = encounter;
@@ -46,8 +47,9 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
         new BackgroundQueryTask().execute(encounterUuid);
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(int position, View convertView, @NonNull ViewGroup parent){
         Observation observation =getItem(position);
         Context context = getContext();
         EncounterObservationsViewHolder holder;
@@ -55,10 +57,10 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
             LayoutInflater layoutInflater = LayoutInflater.from(context);
             convertView = layoutInflater.inflate(R.layout.item_encounter_observation,parent,false);
             holder=new EncounterObservationsViewHolder();
-            holder.conceptQuestion = (TextView)convertView.findViewById(R.id.observationHeader);
-            holder.observationValue = (TextView)convertView.findViewById(R.id.observationValue);
-            holder.observationDate = (TextView)convertView.findViewById(R.id.observationDate);
-            holder.observationComplex = (ImageView)convertView.findViewById(R.id.observationComplex);
+            holder.conceptQuestion = convertView.findViewById(R.id.observationHeader);
+            holder.observationValue = convertView.findViewById(R.id.observationValue);
+            holder.observationDate = convertView.findViewById(R.id.observationDate);
+            holder.observationComplex = convertView.findViewById(R.id.observationComplex);
             holder.divider = convertView.findViewById(R.id.divider);
             convertView.setTag(holder);
         }else{
@@ -74,12 +76,12 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
     }
 
     private class EncounterObservationsViewHolder extends ViewHolder {
-        public TextView conceptQuestion;
-        public TextView observationDate;
-        public TextView observationValue;
-        public ImageView observationComplex;
-        public View divider;
-        protected void setObservation(Observation observation) {
+        TextView conceptQuestion;
+        TextView observationDate;
+        TextView observationValue;
+        ImageView observationComplex;
+        View divider;
+        void setObservation(Observation observation) {
             int conceptColor = observationController.getConceptColor(observation.getConcept().getUuid());
 
             String observationConceptType = observation.getConcept().getConceptType().getName();
@@ -99,7 +101,7 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
             divider.setBackgroundColor(conceptColor);
 
             observationDate.setText(DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime()));
-            observationDate.setTypeface(Fonts.roboto_light(getContext()));
+            observationDate.setTypeface(Fonts.roboto_regular(getContext()));
             observationDate.setTextColor(conceptColor);
 
             conceptQuestion.setBackgroundColor(conceptColor);
@@ -120,7 +122,7 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
             List<Observation> observations = null;
 
              try {
-                 observations=new ArrayList<Observation>();
+                 observations= new ArrayList<>();
                  Encounters encounterWithObservations  = observationController.getObservationsByEncounterUuid(encounter.getUuid());
 
                  for(EncounterWithObservations encounterWithObs:encounterWithObservations){

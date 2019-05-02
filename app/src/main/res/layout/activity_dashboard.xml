@@ -1,6 +1,6 @@
 <!--
-  ~ Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
-  ~ and Vanderbilt University Medical Center.
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
   ~
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
   ~ with additional health care disclaimer.
@@ -9,11 +9,14 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            style="@style/DashboardTableContainer" android:layout_width="fill_parent" android:layout_height="fill_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/DashboardTableContainer"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
     <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:padding="20dp"
             style="@style/LoginActivityLayout">
 
@@ -52,13 +55,23 @@
                         style="@style/DashboardListItemPrimaryText"
                         android:layout_height="wrap_content"
                         android:gravity="left"
-                        android:text="@string/general_cohorts"></TextView>
+                        android:text="@string/general_cohorts"/>
+
+                    <ImageView
+                            android:id="@+id/pendingUpdateImg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            app:srcCompat="@drawable/pending_update"
+                            android:tint="#990000"
+                            android:visibility="gone"
+                            android:contentDescription="@string/info_downloaded_image"/>
 
                     <TextView
                         android:id="@+id/cohortDescription"
                         style="@style/DashboardItemDescription"
                         android:layout_alignParentBottom="true"
-                        android:text="## Synced, ## Total"></TextView>
+                        android:text="@string/synced_total_label_text"/>
 
                 </RelativeLayout>
 
@@ -71,13 +84,13 @@
                         style="@style/DashboardListItemPrimaryText"
                         android:layout_height="wrap_content"
                         android:gravity="left"
-                        android:text="@string/general_clients"></TextView>
+                        android:text="@string/general_clients"/>
 
                     <TextView
                         android:id="@+id/patientDescription"
                         style="@style/DashboardItemDescription"
                         android:layout_alignParentBottom="true"
-                        android:text="## Synced"></TextView>
+                        android:text="@string/synced_label_text"/>
 
                 </RelativeLayout>
 
@@ -91,7 +104,7 @@
                 <RelativeLayout
                         style="@style/ClickableGridItem"
                         android:layout_weight="50"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginEnd="10dp"
                         android:paddingRight="10dp"
                         android:onClick="formsList">
 
@@ -107,7 +120,7 @@
                             android:id="@+id/formDescription"
                             style="@style/DashboardItemDescription"
                             android:layout_alignParentBottom="true"
-                            android:text="## Incomplete, ## Outbox">
+                            android:text="@string/incomplete_outbox_text">
                     </TextView>
 
                 </RelativeLayout>
@@ -115,7 +128,7 @@
                 <RelativeLayout
                         style="@style/ClickableGridItem"
                         android:layout_weight="50"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginEnd="10dp"
                         android:paddingRight="10dp"
                         android:onClick="notificationsList">
 
@@ -131,7 +144,7 @@
                             android:id="@+id/notificationDescription"
                             style="@style/DashboardItemDescription"
                             android:layout_alignParentBottom="true"
-                            android:text="## Inbox, ## Outbox">
+                            android:text="@string/inbox_outbox_label_text">
                     </TextView>
 
                 </RelativeLayout>

@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -18,24 +18,25 @@ import android.widget.Button;
 import android.view.Menu;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.concept.ConceptListActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 import com.muzima.view.preferences.ProviderPreferenceActivity;
 
 
 public class ProviderListActivity extends ProviderPreferenceActivity{
-    private static final String TAG = "ProviderListActivity";
     private MuzimaProgressDialog muzimaProgressDialog;
-    protected Credentials credentials;
     private boolean isProcessDialogOn = false;
     private PowerManager powerManager = null;
     private PowerManager.WakeLock wakeLock = null ;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     public void onCreate(Bundle savedInstanceState) {
+        super.setThemeUtils(themeUtils);
         super.onCreate(savedInstanceState);
-        credentials = new Credentials(this);
+        Credentials credentials = new Credentials(this);
 
-        Button nextButton = (Button) findViewById(R.id.next);
+        Button nextButton = findViewById(R.id.next);
         muzimaProgressDialog = new MuzimaProgressDialog(this);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override

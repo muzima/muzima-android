@@ -1,7 +1,5 @@
 package com.muzima.utils.smartcard;
 
-import android.util.Log;
-
 import com.muzima.api.model.SmartCardRecord;
 
 import java.util.List;

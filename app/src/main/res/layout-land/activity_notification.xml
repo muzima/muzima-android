@@ -1,6 +1,6 @@
 <!--
-  ~ Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
-  ~ and Vanderbilt University Medical Center.
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
   ~
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
   ~ with additional health care disclaimer.
@@ -31,9 +31,7 @@
                 android:id="@+id/sentBy"
                 style="@style/ListDescription"
                 android:layout_width="match_parent"
-                android:gravity="left"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/secondary_text"/>
+                android:gravity="left"/>
 
     </LinearLayout>
 
@@ -46,7 +44,7 @@
                 android:id="@+id/notificationDetail"
                 style="@style/ListHeader"
                 android:layout_height="wrap_content"
-                android:background="@drawable/list_multi_selector_blue"/>
+                android:background="?attr/listMultiSelectorBlue"/>
 
         <FrameLayout
             style="@style/LoginButtonLayout">

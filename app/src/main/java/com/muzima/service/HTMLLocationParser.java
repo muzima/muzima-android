@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -23,15 +23,15 @@ import java.util.Set;
 
 public class HTMLLocationParser {
 
-    public static final String DATA_LOCATION_TAG = "data-location";
+    private static final String DATA_LOCATION_TAG = "data-location";
     public List<String> parse(String html) {
-        Set<String> locations = new HashSet<String>();
+        Set<String> locations = new HashSet<>();
         Document htmlDoc = Jsoup.parse(html);
         //Select all elements containing data-locations attr and is not a div.
         Elements elements = htmlDoc.select("*:not(div)[" + DATA_LOCATION_TAG + "]");
         for (Element element : elements) {
             locations.add((element.attr(DATA_LOCATION_TAG)));
         }
-        return new ArrayList<String>(locations);
+        return new ArrayList<>(locations);
     }
 }

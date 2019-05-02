@@ -1,6 +1,6 @@
 <!--
-  ~ Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
-  ~ and Vanderbilt University Medical Center.
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
   ~
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
   ~ with additional health care disclaimer.
@@ -11,7 +11,7 @@
 <com.muzima.view.CheckedRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_height="wrap_content"
                 android:checkable="true"
-                android:background="@drawable/list_multi_selector_blue"
+                android:background="?attr/listMultiSelectorBlue"
                 android:layout_width="match_parent">
     <com.muzima.view.CheckedLinearLayout
             android:layout_width="match_parent"
@@ -43,6 +43,7 @@
             android:id="@+id/form_description"
             android:layout_below="@+id/form_name_layout"
             android:paddingTop="5dp"
+            android:textColor="?attr/secondaryTextColor"
             style="@style/ListViewSelectableText">
     </CheckedTextView>
 

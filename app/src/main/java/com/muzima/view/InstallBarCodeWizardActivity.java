@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -18,18 +18,21 @@ import android.widget.Button;
 import android.view.Menu;
 import com.muzima.R;
 import com.muzima.service.LandingPagePreferenceService;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.view.concept.CustomConceptWizardActivity;
 
 public class InstallBarCodeWizardActivity extends BaseActivity {
+    private final ThemeUtils themeUtils = new ThemeUtils(R.style.WizardTheme_Light, R.style.WizardTheme_Dark);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_install_barcode_wizard);
         attachCheckScannerAction();
         attachNextActivityListener();
-        Button previousButton = (Button) findViewById(R.id.previous);
+        Button previousButton = findViewById(R.id.previous);
         previousButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,7 +55,7 @@ public class InstallBarCodeWizardActivity extends BaseActivity {
     }
 
     private void attachCheckScannerAction() {
-        Button installBarCodeBtn = (Button) findViewById(R.id.install_barcode_btn);
+        Button installBarCodeBtn = findViewById(R.id.install_barcode_btn);
         installBarCodeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,15 +63,15 @@ public class InstallBarCodeWizardActivity extends BaseActivity {
                 AlertDialog alertDialog = barCodeScannerIntentIntegrator.checkForScannerAppInstallation();
                 if (alertDialog == null) {
                     findViewById(R.id.scanner_already_exists).setVisibility(View.VISIBLE);
-                    Button skip = (Button)findViewById(R.id.skip);
-                    skip.setText("Finish");
+                    Button skip = findViewById(R.id.skip);
+                    skip.setText(R.string.general_finish_text);
                 }
             }
         });
     }
 
     private void attachNextActivityListener() {
-        Button skipInstallationButton = (Button) findViewById(R.id.skip);
+        Button skipInstallationButton = findViewById(R.id.skip);
         skipInstallationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

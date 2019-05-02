@@ -11,8 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-
-public class NextOfKin {
+class NextOfKin {
 
     @JsonProperty("NOK_NAME")
     private NokName nokName;
@@ -29,7 +28,7 @@ public class NextOfKin {
     @JsonProperty("CONTACT_ROLE")
     private String contactRole;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<>();
 
     /**
      * No args constructor for use in serialization

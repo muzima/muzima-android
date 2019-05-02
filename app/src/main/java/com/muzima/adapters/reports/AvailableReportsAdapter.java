@@ -7,12 +7,10 @@ import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
-import com.muzima.utils.Constants;
 
 import java.util.List;
 
 public class AvailableReportsAdapter extends FormsAdapter<AvailableForm> {
-    private static final String TAG = AvailableReportsAdapter.class.getSimpleName();
 
     public AvailableReportsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
@@ -23,9 +21,9 @@ public class AvailableReportsAdapter extends FormsAdapter<AvailableForm> {
         new AvailableReportsAdapter.BackgroundQueryTask(this).execute();
     }
 
-    public class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<AvailableForm> {
+    protected class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<AvailableForm> {
 
-        public BackgroundQueryTask(FormsAdapter formsAdapter) {
+        BackgroundQueryTask(FormsAdapter formsAdapter) {
             super(formsAdapter);
         }
         @Override
@@ -41,7 +39,7 @@ public class AvailableReportsAdapter extends FormsAdapter<AvailableForm> {
                     FormsAdapter formsAdapter = adapterWeakReference.get();
                     reportTemplates = formsAdapter.getFormController().getProviderReports();
                 } catch (FormController.FormFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local provider reports ", e);
+                    Log.w(getClass().getSimpleName(), "Exception occurred while fetching local provider reports ", e);
                 }
             }
             return reportTemplates;

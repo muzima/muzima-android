@@ -29,7 +29,7 @@ public class InternalPatientId {
     @JsonProperty("ASSIGNING_FACILITY")
     private String assigningFacility;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<>();
 
     /**
      * No args constructor for use in serialization

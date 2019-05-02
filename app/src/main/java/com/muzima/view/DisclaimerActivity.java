@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.custom.ScrollViewWithDetection;
 import com.muzima.view.login.LoginActivity;
 
@@ -30,17 +31,21 @@ import com.muzima.view.login.LoginActivity;
  * TODO: Write brief description about the class here.
  */
 public class DisclaimerActivity extends Activity {
+
+    private final ThemeUtils themeUtils = new ThemeUtils();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_disclaimer);
 
         String disclaimerText = getResources().getString(R.string.info_disclaimer);
-        final TextView disclaimerTextView = (TextView) findViewById(R.id.disclaimer_text_view);
+        final TextView disclaimerTextView = findViewById(R.id.disclaimer_text_view);
         disclaimerTextView.setText(Html.fromHtml(disclaimerText));
         Linkify.addLinks(disclaimerTextView, Linkify.ALL);
 
-        final Button nextButton = (Button) findViewById(R.id.next);
+        final Button nextButton = findViewById(R.id.next);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -48,7 +53,7 @@ public class DisclaimerActivity extends Activity {
             }
         });
 
-        Button prevButton = (Button) findViewById(R.id.previous);
+        Button prevButton = findViewById(R.id.previous);
         prevButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -56,7 +61,7 @@ public class DisclaimerActivity extends Activity {
             }
         });
 
-        final ScrollViewWithDetection scrollViewWithDetection = (ScrollViewWithDetection) findViewById(R.id.disclaimer_scroller);
+        final ScrollViewWithDetection scrollViewWithDetection = findViewById(R.id.disclaimer_scroller);
         scrollViewWithDetection.setOnBottomReachedListener(new ScrollViewWithDetection.OnBottomReachedListener() {
             @Override
             public void onBottomReached() {

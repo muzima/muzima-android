@@ -1,6 +1,6 @@
 <!--
-  ~ Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
-  ~ and Vanderbilt University Medical Center.
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
   ~
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
   ~ with additional health care disclaimer.
@@ -8,6 +8,7 @@
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
 
+<!--suppress ALL -->
 <form>
     <patient>
         <patient_identifier.identifier_type_id>1</patient_identifier.identifier_type_id>
@@ -31,8 +32,8 @@
     <obs concept="1238^MEDICAL RECORD OBSERVATIONS^99DCT">
         <procedures_done_this_visit_detailed concept="7480^PROCEDURES DONE THIS VISIT, DETAILED^99DCT">
             <body_part concept="8265^BODY PART^99DCT">
-                <date></date>
-                <time></time>
+                <date />
+                <time />
                 <value>8279^CERVIX^99DCT</value>
             </body_part>
         </procedures_done_this_visit_detailed>

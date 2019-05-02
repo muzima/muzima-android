@@ -779,9 +779,9 @@ enketo.FormDataController = function (entityRelationshipLoader, formDefinitionLo
         params = updateEntityAndParams(params, data);
         submissionRouter.route(params.instanceId);
     };
+
     self.deleteFormSubmission = function (params) {
         init(params);
-        //dataSource.remove(instanceId);
     };
 
     var updateEntityAndParams = function (params, data) {

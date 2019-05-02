@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -19,6 +19,7 @@ public abstract class FormWithData extends BaseForm {
     private Date lastModifiedDate;
     private Patient patient;
     private Date encounterDate;
+    private String discriminator;
 
     public Date getLastModifiedDate() {
         return lastModifiedDate;
@@ -50,5 +51,13 @@ public abstract class FormWithData extends BaseForm {
 
     public void setEncounterDate(Date encounterDate) {
         this.encounterDate = encounterDate;
+    }
+
+    public String getDiscriminator() {
+        return discriminator;
+    }
+
+    public void setDiscriminator(String discriminator) {
+        this.discriminator = discriminator;
     }
 }

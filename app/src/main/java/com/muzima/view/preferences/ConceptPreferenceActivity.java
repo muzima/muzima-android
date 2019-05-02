@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -32,6 +32,7 @@ import com.muzima.adapters.concept.SelectedConceptAdapter;
 import com.muzima.api.model.Concept;
 import com.muzima.controller.MuzimaGeneratedReportController;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
 
@@ -42,20 +43,20 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 public class ConceptPreferenceActivity extends BroadcastListenerActivity {
-    private static final String TAG = ConceptPreferenceActivity.class.getSimpleName();
     private SelectedConceptAdapter selectedConceptAdapter;
     private ListView selectedConceptListView;
     private AutoCompleteTextView autoCompleteConceptTextView;
-    private AutoCompleteConceptAdapter autoCompleteConceptAdapter;
     private boolean actionModeActive = false;
     private ActionMode actionMode;
+    private ThemeUtils themeUtils = new ThemeUtils(R.style.PreferencesTheme_Light, R.style.PreferencesTheme_Dark);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
 
-        selectedConceptListView = (ListView) findViewById(R.id.concept_preference_list);
+        selectedConceptListView = findViewById(R.id.concept_preference_list);
         final MuzimaApplication applicationContext = (MuzimaApplication) getApplicationContext();
         selectedConceptAdapter = new SelectedConceptAdapter(this, R.layout.item_concept_list,
                 (applicationContext).getConceptController());
@@ -65,8 +66,8 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
         selectedConceptListView.setClickable(true);
         selectedConceptListView.setEmptyView(findViewById(R.id.no_concept_added));
         selectedConceptListView.setOnItemClickListener(selectedConceptOnClickListener());
-        autoCompleteConceptTextView = (AutoCompleteTextView) findViewById(R.id.concept_add_concept);
-        autoCompleteConceptAdapter = new AutoCompleteConceptAdapter(applicationContext, R.layout.item_option_autocomplete, autoCompleteConceptTextView);
+        autoCompleteConceptTextView = findViewById(R.id.concept_add_concept);
+        AutoCompleteConceptAdapter autoCompleteConceptAdapter = new AutoCompleteConceptAdapter(this, R.layout.item_option_autocomplete, autoCompleteConceptTextView);
         autoCompleteConceptTextView.setAdapter(autoCompleteConceptAdapter);
         autoCompleteConceptTextView.setOnItemClickListener(autoCompleteOnClickListener());
 
@@ -100,7 +101,7 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
             public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
                 Concept selectedConcept = (Concept) parent.getItemAtPosition(position);
                 if (selectedConceptAdapter.doesConceptAlreadyExist(selectedConcept)) {
-                    Log.e(TAG, "Concept Already exists");
+                    Log.e(getClass().getSimpleName(), "Concept Already exists");
                     Toast.makeText(ConceptPreferenceActivity.this, "Concept " + selectedConcept.getName() + " already exists", Toast.LENGTH_SHORT).show();
                 } else {
                     selectedConceptAdapter.addConcept(selectedConcept);
@@ -131,6 +132,7 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        themeUtils.onResume(this);
         selectedConceptAdapter.reloadData();
     }
 
@@ -152,7 +154,7 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
         return inflater.inflate(R.layout.layout_list, container, false);
     }
 
-    public final class DeleteConceptsActionModeCallback implements ActionMode.Callback {
+    final class DeleteConceptsActionModeCallback implements ActionMode.Callback {
 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
@@ -190,14 +192,14 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
         }
     }
 
-    public void endActionMode() {
+    private void endActionMode() {
         if (actionMode != null) {
             actionMode.finish();
         }
     }
 
     private List<Concept> getSelectedConcepts() {
-        List<Concept> concepts = new ArrayList<Concept>();
+        List<Concept> concepts = new ArrayList<>();
         SparseBooleanArray checkedItemPositions = selectedConceptListView.getCheckedItemPositions();
         for (int i = 0; i < checkedItemPositions.size(); i++) {
             if (checkedItemPositions.valueAt(i)) {
@@ -205,5 +207,9 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
             }
         }
         return concepts;
+    }
+
+    public void setThemeUtils(ThemeUtils themeUtils){
+        this.themeUtils = themeUtils;
     }
 }

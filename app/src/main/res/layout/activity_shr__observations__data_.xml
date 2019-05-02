@@ -1,6 +1,6 @@
 <!--
-  ~ Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
-  ~ and Vanderbilt University Medical Center.
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
   ~
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
   ~ with additional health care disclaimer.
@@ -22,17 +22,17 @@
             android:id="@+id/pager_indicator"
             custom:indicatorColor="@color/tab_indicator"
             custom:indicatorHeight="5dp"
+            custom:indicatorTextColor = "?attr/primaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/pager_indicator_height"
             android:overScrollMode="ifContentScrolls"
             android:layout_alignParentBottom="true"
-            android:background="@color/theme_color"/>
+            android:background="?attr/themeColor"/>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 </FrameLayout>

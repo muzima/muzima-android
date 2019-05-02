@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -31,7 +31,6 @@ import java.util.List;
 
 public class DownloadedFormsListFragment extends FormsListFragment implements AllAvailableFormsListFragment.OnTemplateDownloadComplete {
 
-    private static final String TAG = "DownloadedFormsListFragment";
     private boolean actionModeActive = false;
     private ActionMode actionMode;
     private AllAvailableFormsListFragment allAvailableFormsCompleteListener;
@@ -85,7 +84,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
         this.allAvailableFormsCompleteListener = allAvailableFormsCompleteListener;
     }
 
-    public final class DeleteFormsActionModeCallback implements ActionMode.Callback {
+    final class DeleteFormsActionModeCallback implements ActionMode.Callback {
 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
@@ -116,7 +115,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
                                     Toast.LENGTH_SHORT).show();
                         }
                     } catch (FormController.FormDeleteException e) {
-                        Log.e(TAG, "Error while deleting forms", e);
+                        Log.e(getClass().getSimpleName(), "Error while deleting forms", e);
                     }
             }
             return false;
@@ -152,7 +151,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
     }
 
     private List<String> getFormUUIDs(List<DownloadedForm> selectedForms) {
-        List<String> formUUIDs = new ArrayList<String>();
+        List<String> formUUIDs = new ArrayList<>();
         for (DownloadedForm selectedForm : selectedForms) {
             formUUIDs.add(selectedForm.getFormUuid());
         }
@@ -160,21 +159,21 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
     }
 
     private List<String> formTemplatesWithAssociatedFormData(List<String> selectedFormsUUIDs) {
-        List<String> formsWithAssociatedData = new ArrayList<String>();
+        List<String> formsWithAssociatedData = new ArrayList<>();
         for (String selectedFormsUUID : selectedFormsUUIDs) {
             try {
                 if (!formController.getUnUploadedFormData(selectedFormsUUID).isEmpty()) {
                     formsWithAssociatedData.add(selectedFormsUUID);
                 }
             } catch (FormController.FormDataFetchException e) {
-                Log.e(TAG, "Error while fetching FormData", e);
+                Log.e(getClass().getSimpleName(), "Error while fetching FormData", e);
             }
         }
         return formsWithAssociatedData;
     }
 
     private List<DownloadedForm> getSelectedForms() {
-        List<DownloadedForm> formUUIDs = new ArrayList<DownloadedForm>();
+        List<DownloadedForm> formUUIDs = new ArrayList<>();
         SparseBooleanArray checkedItemPositions = list.getCheckedItemPositions();
         for (int i = 0; i < checkedItemPositions.size(); i++) {
             if (checkedItemPositions.valueAt(i)) {

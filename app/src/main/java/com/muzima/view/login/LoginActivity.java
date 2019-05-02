@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,15 +32,19 @@ import com.muzima.R;
 import com.muzima.api.context.Context;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.domain.Credentials;
+import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.service.CredentialsPreferenceService;
+import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.LandingPagePreferenceService;
 import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
+import com.muzima.service.SHRStatusPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.util.MuzimaLogger;
 import com.muzima.utils.StringUtils;
-import com.muzima.view.MainActivity;
+import com.muzima.utils.ThemeUtils;
+import com.muzima.view.HelpActivity;
 import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
 
 import java.util.Locale;
@@ -48,7 +53,6 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 
 //This class shouldn't extend BaseActivity. Since it is independent of the application's context
 public class LoginActivity extends Activity {
-    private static final String TAG = "LoginActivity";
     public static final String isFirstLaunch = "isFirstLaunch";
     public static final String sessionTimeOut = "SessionTimeOut";
     private EditText serverUrlText;
@@ -59,16 +63,16 @@ public class LoginActivity extends Activity {
     private TextView versionText;
     private BackgroundAuthenticationTask backgroundAuthenticationTask;
     private TextView authenticatingText;
+    private TextView helpText;
 
-    private ValueAnimator flipFromNoConnToLoginAnimator;
-    private ValueAnimator flipFromLoginToNoConnAnimator;
     private ValueAnimator flipFromLoginToAuthAnimator;
     private ValueAnimator flipFromAuthToLoginAnimator;
-    private ValueAnimator flipFromAuthToNoConnAnimator;
     private boolean isUpdatePasswordChecked;
+    private ThemeUtils themeUtils = new ThemeUtils(R.style.LoginTheme_Light, R.style.LoginTheme_Dark);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         ((MuzimaApplication) getApplication()).cancelTimer();
         setContentView(R.layout.activity_login);
@@ -101,7 +105,7 @@ public class LoginActivity extends Activity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder
                     .setCancelable(true)
-                    .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                    .setIcon(ThemeUtils.getIconWarning(this))
                     .setTitle(getResources().getString(R.string.general_alert))
                     .setMessage(getResources().getString(R.string.info_session_time_out))
                     .setPositiveButton(R.string.general_ok, null).show();
@@ -128,9 +132,9 @@ public class LoginActivity extends Activity {
         String versionCode = "";
         try {
             versionCode = String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
-            versionText = getResources().getString(R.string.general_application_version, versionCode);
+            versionText = LoginActivity.this.getApplication().getResources().getString(R.string.general_application_version, versionCode);
         } catch (PackageManager.NameNotFoundException e) {
-            Log.e(TAG, "Unable to read application version.", e);
+            Log.e(getClass().getSimpleName(), "Unable to read application version.", e);
         }
         return versionText;
     }
@@ -144,6 +148,7 @@ public class LoginActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
+        themeUtils.onResume(this);
         setupStatusView();
     }
 
@@ -207,6 +212,14 @@ public class LoginActivity extends Activity {
                 }
             }
         });
+
+        helpText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent helpIntent = new Intent(getApplicationContext(), HelpActivity.class);
+                startActivity(helpIntent);
+            }
+        });
     }
 
     private boolean validInput() {
@@ -216,21 +229,21 @@ public class LoginActivity extends Activity {
     }
 
     private void initViews() {
-        serverUrlText = (EditText) findViewById(R.id.serverUrl);
-        usernameText = (EditText) findViewById(R.id.username);
-        passwordText = (EditText) findViewById(R.id.password);
-        updatePassword = (CheckBox) findViewById(R.id.update_password);
-        loginButton = (Button) findViewById(R.id.login);
-        authenticatingText = (TextView) findViewById(R.id.authenticatingText);
-        versionText = (TextView) findViewById(R.id.version);
-
+        serverUrlText = findViewById(R.id.serverUrl);
+        usernameText = findViewById(R.id.username);
+        passwordText = findViewById(R.id.password);
+        updatePassword = findViewById(R.id.update_password);
+        loginButton = findViewById(R.id.login);
+        authenticatingText = findViewById(R.id.authenticatingText);
+        versionText = findViewById(R.id.version);
+        helpText = findViewById(R.id.helpText);
     }
 
     public void onUpdatePasswordCheckboxClicked(View view) {
         isUpdatePasswordChecked = ((CheckBox) view).isChecked();
     }
 
-    public void removeRemnantDataFromPreviousRunOfWizard() {
+    private void removeRemnantDataFromPreviousRunOfWizard() {
         if (!new WizardFinishPreferenceService(this).isWizardFinished()) {
             try {
                 MuzimaApplication application = ((MuzimaApplication) getApplicationContext());
@@ -238,7 +251,7 @@ public class LoginActivity extends Activity {
 
                 //Cohort Wizard activity
                 application.getPatientController().deleteAllPatients();
-                application.getCohortController().deleteCohortMembers(application.getCohortController().getAllCohorts());
+                application.getCohortController().deleteAllCohortMembers(application.getCohortController().getAllCohorts());
                 application.getCohortController().deleteAllCohorts();
                 context.getLastSyncTimeService().deleteAll();
 
@@ -253,7 +266,7 @@ public class LoginActivity extends Activity {
                 context.getObservationService().deleteAll();
                 context.getEncounterService().deleteAll();
             } catch (Throwable e) {
-                Log.e(TAG, "Unable to delete previous wizard run data. Error: " + e);
+                Log.e(getClass().getSimpleName(), "Unable to delete previous wizard run data. Error: " + e);
             }
         }
     }
@@ -288,6 +301,12 @@ public class LoginActivity extends Activity {
 
                 //init a background service to download missing settings
                 downloadMissingServerSettings();
+                MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getApplicationContext());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    //delay for 10 seconds to allow next UI activity to finish loading
+                    muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob(10000);
+                }
+
                 startNextActivity();
             } else {
                 MuzimaLogger.log(((MuzimaApplication)getApplicationContext()).getMuzimaContext(),"LOGIN_FAILURE",
@@ -312,10 +331,13 @@ public class LoginActivity extends Activity {
                     return getString(R.string.error_local_connection_unavailable);
                 case SyncStatusConstants.SERVER_CONNECTION_ERROR:
                     return getString(R.string.error_server_connection_unavailable);
+                case SyncStatusConstants.UNKNOWN_ERROR:
+                    return getString(R.string.error_authentication_fail);
                 default:
                     return getString(R.string.error_authentication_fail);
             }
         }
+
 
         private void startNextActivity() {
             Intent intent;
@@ -337,13 +359,13 @@ public class LoginActivity extends Activity {
                     new MissingSettingsDownloadBackgroundTask().execute();
                 }
             } catch (MuzimaSettingController.MuzimaSettingFetchException e){
-
+                Log.e(getClass().getSimpleName(),""+e.getMessage());
             }
         }
 
         protected class Result {
-            Credentials credentials;
-            int status;
+            final Credentials credentials;
+            final int status;
 
             private Result(Credentials credentials, int status) {
                 this.credentials = credentials;
@@ -363,21 +385,24 @@ public class LoginActivity extends Activity {
         protected void onPostExecute(int[] result) {
             new RequireMedicalRecordNumberPreferenceService((MuzimaApplication) getApplicationContext())
                     .saveRequireMedicalRecordNumberPreference();
+
+            new SHRStatusPreferenceService((MuzimaApplication) getApplicationContext()).saveSHRStatusPreference();
+            new GPSFeaturePreferenceService((MuzimaApplication) getApplicationContext()).updateGPSDataPreferenceSettings();
         }
     }
 
     private void initAnimators() {
-        flipFromLoginToNoConnAnimator = ValueAnimator.ofFloat(0, 1);
-        flipFromNoConnToLoginAnimator = ValueAnimator.ofFloat(0, 1);
+        ValueAnimator flipFromLoginToNoConnAnimator = ValueAnimator.ofFloat(0, 1);
+        ValueAnimator flipFromNoConnToLoginAnimator = ValueAnimator.ofFloat(0, 1);
         flipFromLoginToAuthAnimator = ValueAnimator.ofFloat(0, 1);
         flipFromAuthToLoginAnimator = ValueAnimator.ofFloat(0, 1);
-        flipFromAuthToNoConnAnimator = ValueAnimator.ofFloat(0, 1);
+        ValueAnimator flipFromAuthToNoConnAnimator = ValueAnimator.ofFloat(0, 1);
 
         initFlipAnimation(flipFromLoginToAuthAnimator, loginButton, authenticatingText);
         initFlipAnimation(flipFromAuthToLoginAnimator, authenticatingText, loginButton);
     }
 
-    public void initFlipAnimation(ValueAnimator valueAnimator, final View from, final View to) {
+    private void initFlipAnimation(ValueAnimator valueAnimator, final View from, final View to) {
         valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
         valueAnimator.setDuration(300);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

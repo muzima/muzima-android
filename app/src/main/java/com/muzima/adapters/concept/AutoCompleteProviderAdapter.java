@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -21,7 +21,6 @@ import java.util.List;
 
 
 public class AutoCompleteProviderAdapter extends AutoCompleteBaseAdapter<Provider> {
-    private static final String TAG = AutoCompleteProviderAdapter.class.getSimpleName();
 
     public AutoCompleteProviderAdapter(Context context, int textViewResourceId, AutoCompleteTextView autoCompleteProviderTextView) {
         super(context, textViewResourceId, autoCompleteProviderTextView);
@@ -33,9 +32,9 @@ public class AutoCompleteProviderAdapter extends AutoCompleteBaseAdapter<Provide
         try {
             return providerController.downloadProviderFromServerByName(constraint.toString());
         } catch (ProviderController.ProviderDownloadException e) {
-            Log.e(TAG, "Unable to download providers!", e);
+            Log.e(getClass().getSimpleName(), "Unable to download providers!", e);
         }
-        return new ArrayList<Provider>();
+        return new ArrayList<>();
     }
 
     @Override

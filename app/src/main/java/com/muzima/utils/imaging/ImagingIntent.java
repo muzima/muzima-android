@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -18,7 +18,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
@@ -32,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.utils.MediaUtils;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BaseActivity;
 
 import java.io.File;
@@ -40,10 +40,9 @@ import static com.muzima.utils.Constants.APP_IMAGE_DIR;
 import static com.muzima.utils.Constants.TMP_FILE_PATH;
 
 public class ImagingIntent extends BaseActivity {
-	private final static String TAG = "ImagingIntent";
-    
-    public static final int IMAGE_CAPTURE = 1;
-    public static final int IMAGE_CHOOSE = 2;
+
+    private static final int IMAGE_CAPTURE = 1;
+    private static final int IMAGE_CHOOSE = 2;
     
     public static final String KEY_IMAGE_PATH = "imagePath";
     public static final String KEY_IMAGE_CAPTION = "imageCaption";
@@ -59,9 +58,11 @@ public class ImagingIntent extends BaseActivity {
     private String mSectionName;
     private String mBinaryName;
     private String mBinaryDescription;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_imaging);
         Intent i = getIntent();
@@ -90,8 +91,8 @@ public class ImagingIntent extends BaseActivity {
             }
         }
 
-        mImagePreview = (ImageView) findViewById(R.id.imagePreview);
-        mImageCaption = (EditText) findViewById(R.id.imageCaption);
+        mImagePreview = findViewById(R.id.imagePreview);
+        mImageCaption = findViewById(R.id.imageCaption);
         mImageAcceptContainer =  findViewById(R.id.imageAcceptContainer);
         mImageCaptureContainer = findViewById(R.id.imageCaptureContainer);
 
@@ -119,8 +120,8 @@ public class ImagingIntent extends BaseActivity {
     public void rejectImage(View view) {
         mBinaryName=null;
         mImagePreview.setImageResource(R.drawable.user_pic);
-        mImagePreview.getLayoutParams().height = (int) (150);
-        mImagePreview.getLayoutParams().width = (int) (120);
+        mImagePreview.getLayoutParams().height = 150;
+        mImagePreview.getLayoutParams().width = 120;
         refreshImageView();
     }
 
@@ -190,7 +191,7 @@ public class ImagingIntent extends BaseActivity {
                         c.moveToFirst();
                         String id = c.getString(c.getColumnIndex("_id"));
 
-                        Log.i(TAG, "setting view path to: "  + Uri.withAppendedPath(
+                        Log.i(getClass().getSimpleName(), "setting view path to: "  + Uri.withAppendedPath(
                                         Images.Media.EXTERNAL_CONTENT_URI, id));
 
                         i.setDataAndType(Uri.withAppendedPath(
@@ -250,9 +251,9 @@ public class ImagingIntent extends BaseActivity {
 
                 if (MediaUtils.folderExists(IMAGE_FOLDER)) {
                     if (!tmpCapturedImage.renameTo(capturedImage))
-                        Log.e(TAG, "Failed to rename " + tmpCapturedImage.getAbsolutePath());
+                        Log.e(getClass().getSimpleName(), "Failed to rename " + tmpCapturedImage.getAbsolutePath());
                     else {
-                        Log.i(TAG, "renamed " + tmpCapturedImage.getAbsolutePath() + " to " + capturedImage.getAbsolutePath());
+                        Log.i(getClass().getSimpleName(), "renamed " + tmpCapturedImage.getAbsolutePath() + " to " + capturedImage.getAbsolutePath());
                         mBinaryName = capturedImage.getName();
                         refreshImageView();
                     }
@@ -283,7 +284,7 @@ public class ImagingIntent extends BaseActivity {
                 	mBinaryName = chosenImage.getName();
                     refreshImageView();
                 } else {
-                    Log.e(TAG, "NO IMAGE EXISTS at: " + source.getAbsolutePath());
+                    Log.e(getClass().getSimpleName(), "NO IMAGE EXISTS at: " + source.getAbsolutePath());
                 }
                 break;
         }

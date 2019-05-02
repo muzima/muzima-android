@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -40,10 +40,8 @@ public final class AudioResult {
 
     @Override
     public String toString() {
-        StringBuilder dialogText = new StringBuilder(255);
-        dialogText.append("SectionName: ").append(sectionName).append('\n');
-        dialogText.append("AudioUri: ").append(audioUri).append('\n');
-        dialogText.append("AudioCaption: ").append(audioCaption).append('\n');
-        return dialogText.toString();
+        return "SectionName: " + sectionName + '\n' +
+                "AudioUri: " + audioUri + '\n' +
+                "AudioCaption: " + audioCaption + '\n';
     }
 }

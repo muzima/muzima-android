@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -17,6 +17,7 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.muzima.R;
+import com.muzima.domain.Credentials;
 import com.muzima.tasks.EncryptedSharedHealthRecordSyncTask;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.login.LoginActivity;
@@ -24,8 +25,8 @@ import com.muzima.view.preferences.SettingsActivity;
 import com.muzima.view.reports.ProviderReportListActivity;
 
 public class DefaultMenuDropDownHelper {
-    public static int DEFAULT_MENU = R.menu.dashboard;
-    private Activity activity;
+    public static final int DEFAULT_MENU = R.menu.dashboard;
+    private final Activity activity;
 
     public DefaultMenuDropDownHelper(Activity activity){
         this.activity = activity;
@@ -58,6 +59,14 @@ public class DefaultMenuDropDownHelper {
                 intent = new Intent(activity, HelpActivity.class);
                 activity.startActivity(intent);
                 return true;
+            case R.id.action_interactive_help:
+                intent = new Intent(activity, InteractiveHelpActivity.class);
+                activity.startActivity(intent);
+                return true;
+            case R.id.action_feedback:
+                intent = new Intent(activity, FeedbackActivity.class);
+                activity.startActivity(intent);
+                return true;
             case R.id.action_logout:
                 SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
                 String passwordKey = activity.getResources().getString(R.string.preference_password);
@@ -68,8 +77,13 @@ public class DefaultMenuDropDownHelper {
                 launchLoginActivity(false);
                 activity.finish();
                 return true;
-            case R.id.menu_shr_data_sync:
+            case R.id.menu_SHR_data_sync:
                 EncryptedSharedHealthRecordSyncTask.uploadEncryptedSharedHealthRecords(activity.getApplicationContext());
+                return true;
+            case R.id.action_login:
+                Credentials credentials = new Credentials(activity.getApplicationContext());
+                boolean isFistLaunch = credentials.getUserName().length() == 0;
+                launchLoginActivity(isFistLaunch);
                 return true;
             default:
                 return false;

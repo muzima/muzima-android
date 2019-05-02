@@ -1,7 +1,7 @@
 
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -24,6 +24,7 @@ import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Provider;
 import com.muzima.model.AvailableForm;
 import com.muzima.controller.FormController;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.javascriptinterface.FormDataJavascriptInterface;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
@@ -33,31 +34,37 @@ import static java.text.MessageFormat.format;
 
 
 public class ProviderReportViewActivity extends BroadcastListenerActivity {
-    public static final String TAG = ProviderReportViewActivity.class.getSimpleName();
     public static final String REPORT = "SelectedReport";
     public Provider provider;
-    public FormController formController;
     private MuzimaProgressDialog progressDialog;
     private FormTemplate reportTemplate;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_webview);
         progressDialog = new MuzimaProgressDialog(this);
-        formController = ((MuzimaApplication)getApplicationContext()).getFormController();
+        FormController formController = ((MuzimaApplication) getApplicationContext()).getFormController();
         try {
             AvailableForm availableForm = (AvailableForm)getIntent().getSerializableExtra(REPORT);
             reportTemplate = formController.getFormTemplateByUuid(availableForm.getFormUuid());
         } catch (FormController.FormFetchException e) {
-            Log.e(TAG,"Could not obtain report template");
+            Log.e(getClass().getSimpleName(),"Could not obtain report template");
         }
         setupWebView();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        themeUtils.onResume(this);
+    }
+
     private void setupWebView() {
         WebView webView;
-        webView = (WebView) findViewById(R.id.webView);
+        webView = findViewById(R.id.webView);
         webView.setWebChromeClient(createWebChromeClient( ));
 
         webView.getSettings( ).setRenderPriority(WebSettings.RenderPriority.HIGH);
@@ -97,9 +104,9 @@ public class ProviderReportViewActivity extends BroadcastListenerActivity {
                 String message = format("Javascript Log. Message: {0}, lineNumber: {1}, sourceId, {2}", consoleMessage.message( ),
                         consoleMessage.lineNumber( ), consoleMessage.sourceId( ));
                 if (consoleMessage.messageLevel( ) == ERROR) {
-                    Log.e(TAG, message);
+                    Log.e(getClass().getSimpleName(), message);
                 } else {
-                    Log.d(TAG, message);
+                    Log.d(getClass().getSimpleName(), message);
                 }
                 return true;
             }

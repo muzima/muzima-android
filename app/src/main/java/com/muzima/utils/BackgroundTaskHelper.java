@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -11,13 +11,13 @@
 package com.muzima.utils;
 
 import android.os.AsyncTask;
-import android.os.Build;
 
 public class BackgroundTaskHelper {
     public static <P, T extends AsyncTask<P, ?, ?>> void executeInParallel(T task) {
         executeInParallel(task, (P[]) null);
     }
-    public static <P, T extends AsyncTask<P, ?, ?>> void executeInParallel(T task, P... params) {
+    @SafeVarargs
+    private static <P, T extends AsyncTask<P, ?, ?>> void executeInParallel(T task, P... params) {
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, params);
     }
 }

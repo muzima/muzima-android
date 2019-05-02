@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -23,7 +23,6 @@ import java.util.List;
  */
 
 public class AutoCompleteConceptAdapter extends AutoCompleteBaseAdapter<Concept> {
-    private static final String TAG = AutoCompleteConceptAdapter.class.getSimpleName();
 
     public AutoCompleteConceptAdapter(Context context, int textViewResourceId, AutoCompleteTextView autoCompleteConceptTextView) {
         super(context, textViewResourceId, autoCompleteConceptTextView);
@@ -35,9 +34,9 @@ public class AutoCompleteConceptAdapter extends AutoCompleteBaseAdapter<Concept>
         try {
             return conceptController.downloadConceptsByNamePrefix(constraint.toString());
         } catch (ConceptController.ConceptDownloadException e) {
-            Log.e(TAG, "Unable to download concepts!", e);
+            Log.e(getClass().getSimpleName(), "Unable to download concepts!", e);
         }
-        return new ArrayList<Concept>();
+        return new ArrayList<>();
     }
 
     @Override

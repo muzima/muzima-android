@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -25,6 +25,7 @@ import com.muzima.R;
 import com.muzima.adapters.forms.SectionedFormsAdapter;
 import com.muzima.api.model.FormData;
 import com.muzima.controller.FormController;
+import com.muzima.utils.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,9 +33,8 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class FormsFragmentWithSectionedListAdapter extends FormsListFragment{
-    private final String TAG = "FormsFragmentWithSectionedListAdapter";
-    protected ActionMode actionMode;
-    protected boolean actionModeActive;
+    ActionMode actionMode;
+    boolean actionModeActive;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public abstract class FormsFragmentWithSectionedListAdapter extends FormsListFra
         return view;
     }
 
-    public final class DeleteFormsActionModeCallback implements ActionMode.Callback {
+    final class DeleteFormsActionModeCallback implements ActionMode.Callback {
 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
@@ -69,7 +69,7 @@ public abstract class FormsFragmentWithSectionedListAdapter extends FormsListFra
                             onPartialCompleteOfFormDelete(groupedFormDataWithRegistrationData.values());
                             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                             builder.setCancelable(true)
-                                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
+                                .setIcon(ThemeUtils.getIconWarning(getContext()))
                                 .setTitle(getResources().getString(R.string.general_alert))
                                 .setMessage(R.string.warning_registration_form_data_delete)
                                 .setPositiveButton(R.string.general_yes, new DialogInterface.OnClickListener() {
@@ -84,11 +84,8 @@ public abstract class FormsFragmentWithSectionedListAdapter extends FormsListFra
                                                 onPartialCompleteOfFormDelete(groupedFormDataFailingDeletionValidation.values());
                                                 Toast.makeText(getActivity(), R.string.info_form_delete_integrity_failure, Toast.LENGTH_LONG).show();
                                             }
-                                        } catch (FormController.FormDeleteException e) {
-                                            Log.e(TAG,"Could not delete form data ",e);
-                                            Toast.makeText(getActivity(),R.string.error_form_data_delete,Toast.LENGTH_LONG).show();
-                                        } catch (FormController.FormDataFetchException e) {
-                                            Log.e(TAG,"Could not delete form data ",e);
+                                        } catch (FormController.FormDeleteException | FormController.FormDataFetchException e) {
+                                            Log.e(getClass().getSimpleName(),"Could not delete form data ",e);
                                             Toast.makeText(getActivity(),R.string.error_form_data_delete,Toast.LENGTH_LONG).show();
                                         }
                                     }
@@ -100,10 +97,10 @@ public abstract class FormsFragmentWithSectionedListAdapter extends FormsListFra
                             onCompleteOfFormDelete();
                         }
                     } catch (FormController.FormDeleteException e) {
-                        Log.e(TAG,"Could not delete form data ",e);
+                        Log.e(getClass().getSimpleName(),"Could not delete form data ",e);
                         Toast.makeText(getActivity(),R.string.error_form_data_delete,Toast.LENGTH_LONG).show();
                     } catch (FormController.FormDataFetchException e) {
-                        Log.e(TAG,"Could not validate form data deletion ",e);
+                        Log.e(getClass().getSimpleName(),"Could not validate form data deletion ",e);
                         Toast.makeText(getActivity(),R.string.error_form_data_delete,Toast.LENGTH_LONG).show();
                     }
             }

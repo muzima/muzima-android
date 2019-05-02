@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -12,12 +12,9 @@ package com.muzima.view.progressdialog;
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
+
 import com.muzima.utils.Constants;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.SyncIntent;
-
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
 
 public class ProgressDialogUpdateIntentService extends IntentService{
     public ProgressDialogUpdateIntentService(){
@@ -26,9 +23,8 @@ public class ProgressDialogUpdateIntentService extends IntentService{
 
     @Override
     public void onHandleIntent(Intent intent){
-        Intent progressUpdateIntent = intent;
-        progressUpdateIntent.setAction(BroadcastListenerActivity.PROGRESS_UPDATE_ACTION);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(progressUpdateIntent);
+        intent.setAction(BroadcastListenerActivity.PROGRESS_UPDATE_ACTION);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 
     }
 }

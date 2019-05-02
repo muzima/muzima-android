@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -20,7 +20,7 @@ import com.muzima.view.login.LoginActivity;
 
 public class MuzimaTimer extends CountDownTimer {
 
-    private MuzimaApplication muzimaApplication;
+    private final MuzimaApplication muzimaApplication;
     private static MuzimaTimer muzimaTimer;
 
     private MuzimaTimer(long millisInFuture, long countDownInterval, MuzimaApplication muzimaApplication) {

@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -17,10 +17,10 @@ import com.muzima.model.observation.Encounters;
 
 import java.util.List;
 
-public class EncountersByPatient extends EncounterAction {
-    private String patientUuid;
-    private ObservationController observationController;
-    private EncounterController encounterController;
+class EncountersByPatient extends EncounterAction {
+    private final String patientUuid;
+    private final ObservationController observationController;
+    private final EncounterController encounterController;
 
     public EncountersByPatient(EncounterController encounterController,ObservationController observationController, String patientUuid) {
         this.observationController = observationController;

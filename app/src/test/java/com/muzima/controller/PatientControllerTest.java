@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -50,7 +50,7 @@ public class PatientControllerTest {
     }
 
     @Test
-    public void getAllPatients_shouldReturnAllAvailablePatients() throws IOException, ParseException, PatientController.PatientLoadException {
+    public void getAllPatients_shouldReturnAllAvailablePatients() throws IOException, PatientController.PatientLoadException {
         List<Patient> patients = new ArrayList<>();
         when(patientService.getAllPatients()).thenReturn(patients);
 
@@ -58,13 +58,13 @@ public class PatientControllerTest {
     }
 
     @Test(expected = PatientController.PatientLoadException.class)
-    public void getAllForms_shouldThrowFormFetchExceptionIfExceptionThrownByFormService() throws IOException, ParseException, PatientController.PatientLoadException {
+    public void getAllForms_shouldThrowFormFetchExceptionIfExceptionThrownByFormService() throws IOException, PatientController.PatientLoadException {
         doThrow(new IOException()).when(patientService).getAllPatients();
         patientController.getAllPatients();
     }
 
     @Test
-    public void getTotalPatientsCount_shouldReturnPatientsCount() throws IOException, ParseException, PatientController.PatientLoadException {
+    public void getTotalPatientsCount_shouldReturnPatientsCount() throws IOException, PatientController.PatientLoadException {
         when(patientService.countAllPatients()).thenReturn(2);
 
         assertThat(patientController.countAllPatients(), is(2));
@@ -178,7 +178,7 @@ public class PatientControllerTest {
     }
 
     @Test
-    public void shouldGetAllLocalPatients() throws Exception, PatientController.PatientLoadException {
+    public void shouldGetAllLocalPatients() throws Exception {
         Patient patientRemote1 = patient("remoteUUID1",null);
         Patient patientRemote2 = patient("remoteUUID2",null);
         Patient patientLocal = patient("localUUID1",patientIdentifier("localUUID1"));

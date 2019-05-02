@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -10,6 +10,7 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +26,12 @@ import java.util.List;
  * Responsible to list all the downloaded forms.
  */
 public class DownloadedFormsAdapter extends FormsAdapter<DownloadedForm> {
-    private static final String TAG = "DownloadedFormsAdapter";
 
     public DownloadedFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
     }
 
+    @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = super.getView(position, convertView, parent);
@@ -60,9 +61,9 @@ public class DownloadedFormsAdapter extends FormsAdapter<DownloadedForm> {
     /**
      * Responsible to fetch all the
      */
-    public class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<DownloadedForm> {
+    class BackgroundQueryTask extends FormsAdapterBackgroundQueryTask<DownloadedForm> {
 
-        public BackgroundQueryTask(FormsAdapter formsAdapter) {
+        BackgroundQueryTask(FormsAdapter formsAdapter) {
             super(formsAdapter);
         }
 
@@ -73,9 +74,9 @@ public class DownloadedFormsAdapter extends FormsAdapter<DownloadedForm> {
                 try {
                     FormsAdapter formsAdapter = adapterWeakReference.get();
                     downloadedForms = formsAdapter.getFormController().getAllDownloadedForms();
-                    Log.i(TAG, "#Forms with templates: " + downloadedForms.size());
+                    Log.i(getClass().getSimpleName(), "#Forms with templates: " + downloadedForms.size());
                 } catch (FormController.FormFetchException e) {
-                    Log.w(TAG, "Exception occurred while fetching local forms ", e);
+                    Log.w(getClass().getSimpleName(), "Exception occurred while fetching local forms ", e);
                 }
             }
             return downloadedForms;

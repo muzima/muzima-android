@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -24,11 +24,10 @@ import java.util.List;
 public class ConceptWithObservations {
 
     private Concept concept;
-    private List<Observation> observations;
-    private List<Integer> metaDataObservations = new ArrayList<>();
+    private final List<Observation> observations;
 
     public ConceptWithObservations() {
-        observations = new ArrayList<Observation>();
+        observations = new ArrayList<>();
     }
 
     public Concept getConcept() {
@@ -71,7 +70,7 @@ public class ConceptWithObservations {
     }
 
     private void defineMetadataConceptsForFilters(){
-        metaDataObservations =  Arrays.asList(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.PROVIDER_DETAILS.NAME.concept_id,
+        List<Integer> metaDataObservations = Arrays.asList(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.PROVIDER_DETAILS.NAME.concept_id,
                 Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.PROVIDER_DETAILS.ID.concept_id,
                 Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_FACILITY.concept_id);
     }

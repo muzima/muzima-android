@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -76,14 +76,18 @@ public final class IntentResult {
 
     @Override
     public String toString() {
-        StringBuilder dialogText = new StringBuilder(100);
-        dialogText.append("Format: ").append(formatName).append('\n');
-        dialogText.append("Contents: ").append(contents).append('\n');
-        int rawBytesLength = rawBytes == null ? 0 : rawBytes.length;
-        dialogText.append("Raw bytes: (").append(rawBytesLength).append(" bytes)\n");
-        dialogText.append("Orientation: ").append(orientation).append('\n');
-        dialogText.append("EC level: ").append(errorCorrectionLevel).append('\n');
-        return dialogText.toString();
+        int rawBytesLength = 0;
+
+        if (rawBytes == null)
+            rawBytesLength = 0;
+        else
+            rawBytesLength = rawBytes.length;
+
+        return "Format: " + formatName + '\n' +
+                "Contents: " + contents + '\n' +
+                "Raw bytes: (" + rawBytesLength + " bytes)\n" +
+                "Orientation: " + orientation + '\n' +
+                "EC level: " + errorCorrectionLevel + '\n';
     }
 
 }
