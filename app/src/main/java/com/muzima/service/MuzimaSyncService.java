@@ -16,27 +16,13 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.context.Context;
 import com.muzima.api.exception.AuthenticationException;
-import com.muzima.api.model.Cohort;
-import com.muzima.api.model.CohortData;
-import com.muzima.api.model.Concept;
-import com.muzima.api.model.Encounter;
-import com.muzima.api.model.Form;
-import com.muzima.api.model.FormTemplate;
-import com.muzima.api.model.Location;
-import com.muzima.api.model.MuzimaGeneratedReport;
-import com.muzima.api.model.MuzimaSetting;
-import com.muzima.api.model.Notification;
-import com.muzima.api.model.Observation;
-import com.muzima.api.model.Patient;
-import com.muzima.api.model.Provider;
-import com.muzima.api.model.SetupConfiguration;
-import com.muzima.api.model.SetupConfigurationTemplate;
+import com.muzima.api.model.*;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
-import com.muzima.controller.MuzimaGeneratedReportController;
+import com.muzima.controller.PatientReportController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
@@ -78,7 +64,7 @@ public class MuzimaSyncService {
     private ProviderController providerController;
     private SetupConfigurationController setupConfigurationController;
     private MuzimaSettingController settingsController;
-    private MuzimaGeneratedReportController muzimaGeneratedReportController;
+    private PatientReportController patientReportController;
     private Logger logger;
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
@@ -95,7 +81,7 @@ public class MuzimaSyncService {
         providerController = muzimaApplication.getProviderController();
         setupConfigurationController = muzimaApplication.getSetupConfigurationController();
         settingsController = muzimaApplication.getMuzimaSettingController();
-        muzimaGeneratedReportController = muzimaApplication.getMuzimaGeneratedReportController();
+        patientReportController = muzimaApplication.getPatientReportController();
     }
 
     public int authenticate(String[] credentials){
@@ -908,7 +894,6 @@ public class MuzimaSyncService {
         return patientUuids;
     }
 
-
     public int[] downloadNotifications(String receiverUuid) {
         Log.e(getClass().getSimpleName(),"Downloading messages in MuzimaSyncService");
         int[] result = new int[2];
@@ -939,48 +924,55 @@ public class MuzimaSyncService {
         return result;
     }
 
-    public int[] downloadMuzimaGeneratedReports(String receiverUuid) {
+    public int[] downloadPatientReportHeaders(String patientUuid) {
         int[] result = new int[2];
 
         try {
-            List<MuzimaGeneratedReport> muzimaGeneratedReports = muzimaGeneratedReportController.getAllMuzimaGeneratedReportsByPatientUuid(receiverUuid);
-
-            if(muzimaGeneratedReports.size()>0){
-                muzimaGeneratedReportController.deleteMuzimaGeneratedReport(muzimaGeneratedReports.get(0));
-            }
-
-            Log.i(TAG, "Muzima Generated Report is deleted");
-            logger =Logger.getLogger(this.getClass().getName());
-            logger.warning("kkkkkkkkkkkkkkkkkk report deleted");
-
-            muzimaGeneratedReports= muzimaGeneratedReportController.downloadLastPriorityMuzimaGeneratedReportByPatientUuid(receiverUuid);
-            Log.i(TAG, "Muzima Generated Report download successful");
-            logger.warning("kkkkkkkkkkkkkkkkkk report download successful");
-            logger.warning("kkkkkkkkkkkkkkkkkk before saving"+muzimaGeneratedReports.size());
-            muzimaGeneratedReportController.saveAllMuzimaGeneratedReports(muzimaGeneratedReports);
-            logger.warning("after savingssssssssssssssssssssssss"+muzimaGeneratedReports.size());
-            Log.i(TAG, "New Generated Report is saved");
+            List<PatientReportHeader> patientReportHeaders;
+            System.out.println("Just about to download");
+            patientReportHeaders = patientReportController.downloadPatientReportHeadersByPatientUuid(patientUuid);
+            System.out.println("Finisehed download next save ni ngapi:: " + patientReportHeaders.size());
+            patientReportController.savePatientReportHeaders(patientReportHeaders);
+            System.out.println("Finished save erturningJust abo");
 
             result[0] = SUCCESS;
-            result[1] = muzimaGeneratedReports.size();
+            result[1] = patientReportHeaders.size();
 
-        } catch (MuzimaGeneratedReportController.MuzimaGeneratedReportDownloadException e) {
-            Log.e(TAG, "Exception when trying to download notifications", e);
+        } catch (PatientReportController.PatientReportDownloadException e) {
+            Log.e(TAG, "Exception when trying to download patient reports headers", e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
-        } catch (MuzimaGeneratedReportController.MuzimaGeneratedReportDeleteException e) {
-            Log.e(TAG, "Exception occurred while deleting existing notifications", e);
-            result[0] = SyncStatusConstants.DELETE_ERROR;
-            return result;
-        }
-        catch (MuzimaGeneratedReportController.MuzimaGeneratedReportSaveException e) {
-            Log.e(TAG, "Exception when trying to save notifications", e);
+        } catch (PatientReportController.PatientReportSaveException e) {
+            Log.e(TAG, "Exception when trying to save patient reports headers", e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
             return result;
         }
-        catch (MuzimaGeneratedReportController.MuzimaGeneratedReportException e) {
-            e.printStackTrace();
-        } return result;
+        return result;
+    }
+
+    public int[] downloadPatientReportsByUuid(String[] reportUuids){
+        int[] result = new int[2];
+        List<PatientReport> downloadedPatientReports = new ArrayList<>();
+
+        try {
+            for (String uuid : reportUuids) {
+                Log.i(getClass().getSimpleName(), "Downloading patient report with UUID: " + uuid);
+                downloadedPatientReports.add(patientReportController.downloadPatientReportByUuid(uuid));
+            }
+
+            patientReportController.saveOrUpdatePatientReports(downloadedPatientReports);
+            Log.e(getClass().getSimpleName(), "DOWNLOADED PATIENT REPORTS.");
+            result[0] = SUCCESS;
+            result[1] = downloadedPatientReports.size();
+
+        } catch (PatientReportController.PatientReportDownloadException e){
+            Log.e(getClass().getSimpleName(), "Exception when trying to download patient report");
+            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+        } catch (PatientReportController.PatientReportSaveException e){
+            Log.e(getClass().getSimpleName(), "Exception when trying to save patient reports");
+            result[0] = SyncStatusConstants.SAVE_ERROR;
+        }
+        return result;
     }
 
     public void downloadSetupConfigurations(){

@@ -30,7 +30,6 @@ import com.muzima.R;
 import com.muzima.adapters.concept.AutoCompleteConceptAdapter;
 import com.muzima.adapters.concept.SelectedConceptAdapter;
 import com.muzima.api.model.Concept;
-import com.muzima.controller.MuzimaGeneratedReportController;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;

@@ -61,7 +61,7 @@ public class NotificationsListActivity extends NotificationActivityBase {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.notification_list_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_refresh, menu);
         menubarSyncButton = menu.findItem(R.id.menu_load);
         super.onCreateOptionsMenu(menu);
         return true;

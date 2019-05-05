@@ -22,32 +22,20 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.view.Menu;
-
+import android.widget.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.api.model.Location;
-import com.muzima.api.model.MuzimaGeneratedReport;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.SmartCardRecord;
 import com.muzima.api.model.User;
 import com.muzima.api.service.SmartCardRecordService;
-import com.muzima.controller.EncounterController;
-import com.muzima.controller.FormController;
-import com.muzima.controller.MuzimaGeneratedReportController;
-import com.muzima.controller.NotificationController;
-import com.muzima.controller.ObservationController;
-import com.muzima.controller.PatientController;
-import com.muzima.controller.SmartCardController;
+import com.muzima.controller.*;
 import com.muzima.model.shr.kenyaemr.Addendum.Identifier;
 import com.muzima.model.shr.kenyaemr.Addendum.WriteResponse;
 import com.muzima.model.shr.kenyaemr.InternalPatientId;
@@ -66,8 +54,7 @@ import com.muzima.view.encounters.EncountersActivity;
 import com.muzima.view.forms.PatientFormsActivity;
 import com.muzima.view.notifications.PatientNotificationActivity;
 import com.muzima.view.observations.ObservationsActivity;
-import com.muzima.view.reports.PatientReportButtonActivity;
-import com.muzima.view.reports.PatientReportListViewActivity;
+import com.muzima.view.reports.PatientReportActivity;
 
 import java.io.IOException;
 import java.util.List;
@@ -390,7 +377,7 @@ public class PatientSummaryActivity extends BaseActivity {
     }
     
     public void showReports(View v){
-        Intent intent = new Intent(this, PatientReportButtonActivity.class);
+        Intent intent = new Intent(this, PatientReportActivity.class);
         intent.putExtra(PATIENT, patient);
         startActivity(intent);
     }
@@ -407,6 +394,7 @@ public class PatientSummaryActivity extends BaseActivity {
         int totalNotifications;
         int observations;
         int encounters;
+        int reports;
     }
 
     class BackgroundQueryTask extends AsyncTask<Void, Void, PatientSummaryActivityMetadata> {
@@ -419,6 +407,7 @@ public class PatientSummaryActivity extends BaseActivity {
             NotificationController notificationController = muzimaApplication.getNotificationController();
             ObservationController observationController = muzimaApplication.getObservationController();
             EncounterController encounterController = muzimaApplication.getEncounterController();
+            PatientReportController reportController = muzimaApplication.getPatientReportController();
 
             try {
                 patientSummaryActivityMetadata.recommendedForms = formController.getRecommendedFormsCount();
@@ -426,6 +415,7 @@ public class PatientSummaryActivity extends BaseActivity {
                 patientSummaryActivityMetadata.incompleteForms = formController.getIncompleteFormsCountForPatient(patient.getUuid());
                 patientSummaryActivityMetadata.observations = observationController.getObservationsCountByPatient(patient.getUuid());
                 patientSummaryActivityMetadata.encounters = encounterController.getEncountersCountByPatient(patient.getUuid());
+                patientSummaryActivityMetadata.reports = reportController.getPatientReportCountByPatient(patient.getUuid());
                 User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
                 if (authenticatedUser != null) {
                     patientSummaryActivityMetadata.newNotifications =
@@ -463,6 +453,9 @@ public class PatientSummaryActivity extends BaseActivity {
 
             TextView encounterDescription = (TextView) findViewById(R.id.encounterDescription);
             encounterDescription.setText(getString(R.string.hint_client_summary_encounters, patientSummaryActivityMetadata.encounters));
+
+            TextView reportDescription = (TextView) findViewById(R.id.reportDescription);
+            reportDescription.setText(getString(R.string.hint_client_summary_reports, patientSummaryActivityMetadata.reports));
         }
     }
 

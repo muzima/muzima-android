@@ -24,6 +24,7 @@ import com.muzima.api.model.APIName;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.Patient;
 import com.muzima.api.service.LastSyncTimeService;
+import com.muzima.utils.Constants;
 import com.muzima.view.BroadcastListenerActivity;
 
 import java.io.IOException;
@@ -143,12 +144,24 @@ public class DataSyncService extends IntentService {
                     downloadObservationsAndEncounters(broadcastIntent, downloadedCohortIds);
                 }
                 break;
-            case DataSyncServiceConstants.SYNC_MUZIMA_GENERATED_REPORTS:
-                String patientUUid = intent.getStringExtra(NotificationStatusConstants.RECEIVER_UUID);
-                updateNotificationMsg(getString(R.string.info_patient_generated_reports_download_in_progress));
+            case DataSyncServiceConstants.SYNC_PATIENT_REPORTS_HEADERS:
+                System.out.println("therememe");
+                String patientUUid = intent.getStringExtra(Constants.SyncPatientReportsConstants.PATIENT_UUID);
+                Log.i("There", "Getting headers for:" + patientUUid);
+                updateNotificationMsg(getString(R.string.info_patient_reports_download_in_progress));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
-                    int[] result = muzimaSyncService.downloadMuzimaGeneratedReports(patientUUid);
-                    String msg = getString(R.string.info_notification_download,result[1]);
+                    int[] result = muzimaSyncService.downloadPatientReportHeaders(patientUUid);
+                    String msg = getString(R.string.info_patient_reports_downloaded,result[1]);
+                    prepareBroadcastMsg(broadcastIntent, result, msg);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+                }
+                break;
+            case DataSyncServiceConstants.SYNC_PATIENT_REPORTS:
+                String[] reportUuids = intent.getStringArrayExtra(Constants.SyncPatientReportsConstants.REPORT_UUIDS);
+                updateNotificationMsg(getString(R.string.info_patient_reports_download_in_progress));
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    int[] result = muzimaSyncService.downloadPatientReportsByUuid(reportUuids);
+                    String msg = getString(R.string.info_patient_reports_downloaded,result[1]);
                     prepareBroadcastMsg(broadcastIntent, result, msg);
                     LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
                 }
