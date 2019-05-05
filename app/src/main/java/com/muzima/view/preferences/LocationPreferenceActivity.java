@@ -30,7 +30,6 @@ import com.muzima.R;
 import com.muzima.adapters.concept.AutoCompleteLocationAdapter;
 import com.muzima.adapters.concept.SelectedLocationAdapter;
 import com.muzima.api.model.Location;
-import com.muzima.controller.MuzimaGeneratedReportController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;

@@ -10,76 +10,86 @@
 
 package com.muzima.view.reports;
 
+import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
+import android.webkit.ConsoleMessage;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.api.model.MuzimaGeneratedReport;
-import com.muzima.api.model.Patient;
-import com.muzima.controller.MuzimaGeneratedReportController;
-import com.muzima.view.BaseActivity;
+import com.muzima.api.model.PatientReport;
+import com.muzima.controller.PatientReportController;
+import com.muzima.view.BroadcastListenerActivity;
 
-import java.util.List;
-import java.util.logging.Logger;
+import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
+import static java.text.MessageFormat.format;
 
-import static com.muzima.view.patients.PatientSummaryActivity.PATIENT;
+public class PatientReportWebActivity extends BroadcastListenerActivity {
+    static final String PATIENT_REPORT_UUID = "SelectedPatientReportUUID";
+    private PatientReport patientReport;
 
-public class PatientReportWebActivity extends BaseActivity {
-    
-    private static final String TAG = "PatientReportWebActivity";
-    private Patient patient;
-    private WebView myWebView;
-    Logger logger;
-    
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient_reports);
-        patient = (Patient) getIntent().getSerializableExtra(PATIENT);
-        logger = Logger.getLogger(this.getClass().getName());
-        logger.warning("888888888888888888888888888888"+patient.getUuid());
-        Toast.makeText(getApplicationContext(), "111111111rrrrrrrrrrrrrrrrrrrrr", Toast.LENGTH_LONG).show();
-    
-    
-    
-    
-    
+        setContentView(R.layout.activity_form_webview);
+        String patientReportUuid = getIntent().getStringExtra(PATIENT_REPORT_UUID);
+
+        PatientReportController patientReportController = ((MuzimaApplication) getApplicationContext()).getPatientReportController();
+
+        try {
+            patientReport = patientReportController.getPatientReportByUuid(patientReportUuid);
+            System.out.println(patientReport.getUuid());
+            System.out.println(patientReport.getName());
+            System.out.println(patientReport.getPatientUuid());
+            System.out.println(patientReport.getReportJson());
+
+            showReport();
+        } catch (PatientReportController.PatientReportFetchException e) {
+            Log.e(getClass().getSimpleName(), "Unable to load a previously available report", e);
+        }
     }
-    public void showReport(View v) {
-        Toast.makeText(getApplicationContext(), "22222222222222222rrrrrrrrrrrrrrrrrrrrr", Toast.LENGTH_LONG).show();
-    
-        logger.warning("222222222222222222222277777777777777777"+patient.getUuid());
-    
-        String url = getIntent().getStringExtra("url");
-        myWebView = (WebView) findViewById(R.id.activity_main_webview);
-        myWebView.setWebViewClient(new WebViewClient());
-        WebSettings webSettings = myWebView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        //myWebView.loadUrl(url);
-        MuzimaGeneratedReportController muzimaGeneratedReportController = ((MuzimaApplication) getApplicationContext()).getMuzimaGeneratedReportController();
-        
-      try {
-            List<MuzimaGeneratedReport> muzimaGeneratedReportList = muzimaGeneratedReportController.getAllMuzimaGeneratedReportsByPatientUuid(patient.getUuid());
-            
-            logger.warning("55555555"+muzimaGeneratedReportList.size());
-          
-            MuzimaGeneratedReport muzimaGeneratedReport = muzimaGeneratedReportController.getLastPriorityMuzimaGeneratedReport("3f36e28a-3cc2-4d31-b287-f4e323dc7278");
-            Toast.makeText(getApplicationContext(), "7777777777rrrrrrrrrrrrrrrrrrrr" + muzimaGeneratedReport.getReportJson(), Toast.LENGTH_LONG).show();
-            logger.warning("9999999999999999999999"+muzimaGeneratedReport.getPatientUuid());
-            logger.warning("qqqqqqqqqqqqqqqqqqqqqqq"+muzimaGeneratedReport.getReportJson());
-          
-           Toast.makeText(getApplicationContext(), "9999999999999rrrrrrrrrrrrrrrrrrrr" + muzimaGeneratedReport.getReportJson(), Toast.LENGTH_LONG).show();
-           myWebView.loadDataWithBaseURL(null,muzimaGeneratedReport.getReportJson(),"text/html; charset=utf-8", "UTF-8",null);
+
+    private void showReport() {
+        WebView webView = findViewById(R.id.webView);
+        webView.setWebChromeClient(createWebChromeClient());
+        webView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setDatabaseEnabled(true);
+        webView.getSettings().setDomStorageEnabled(true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            webView.setWebContentsDebuggingEnabled(true);
         }
-        catch (MuzimaGeneratedReportController.MuzimaGeneratedReportException | MuzimaGeneratedReportController.MuzimaGeneratedReportFetchException e) {
-            e.printStackTrace();
-        }
-    
+
+        webView.loadDataWithBaseURL(
+                "file:///android_asset/www/forms/",
+                patientReport.getReportJson(),
+                "text/html; charset=utf-8",
+                "UTF-8",
+                null);
+    }
+
+    private WebChromeClient createWebChromeClient() {
+        return new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int progress) {
+            }
+
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                String message = format("Javascript Log. Message: {0}, lineNumber: {1}, sourceId, {2}", consoleMessage.message(),
+                        consoleMessage.lineNumber(), consoleMessage.sourceId());
+                if (consoleMessage.messageLevel() == ERROR) {
+                    Log.e(getClass().getSimpleName(), message);
+                } else {
+                    Log.d(getClass().getSimpleName(), message);
+                }
+                return true;
+            }
+        };
     }
     
 }

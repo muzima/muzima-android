@@ -124,6 +124,42 @@
             </LinearLayout>
 
             <LinearLayout
+                    style="@style/ClientSummaryGridItem"
+                    android:layout_width="fill_parent"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:baselineAligned="false"
+                    android:orientation="vertical">
+
+
+                <RelativeLayout
+                        style="@style/ClickableGridItem"
+                        android:layout_width="fill_parent"
+                        android:layout_height="80dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="100"
+                        android:baselineAligned="false"
+                        android:onClick="showReports"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            style="@style/DashboardListItemMediumHeadingText"
+                            android:layout_height="wrap_content"
+                            android:gravity="left"
+                            android:text="@string/general_reports"
+                            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                    <TextView
+                            android:id="@+id/reportDescription"
+                            style="@style/DashboardItemDescription"
+                            android:layout_alignParentBottom="true"
+                            android:text="##"/>
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
                 style="@style/ClientSummaryGridItem"
                 android:layout_width="fill_parent"
                 android:layout_marginTop="10dp"
@@ -240,42 +276,6 @@
                         android:layout_height="wrap_content" />
                 </RelativeLayout>
             </LinearLayout>
-            <LinearLayout
-                    style="@style/ClientSummaryGridItem"
-                    android:layout_width="fill_parent"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    android:baselineAligned="false"
-                    android:orientation="vertical">
-
-
-                <RelativeLayout
-                        style="@style/ClickableGridItem"
-                        android:layout_width="fill_parent"
-                        android:layout_height="80dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="100"
-                        android:baselineAligned="false"
-                        android:onClick="showReports"
-                        android:orientation="horizontal">
-
-                    <TextView
-                            style="@style/DashboardListItemMediumHeadingText"
-                            android:layout_height="wrap_content"
-                            android:gravity="left"
-                            android:text="@string/general_reports"
-                            android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                    <TextView
-                            android:id="@+id/reportDescription"
-                            style="@style/DashboardItemDescription"
-                            android:layout_alignParentBottom="true"
-                            android:text="##"/>
-
-                </RelativeLayout>
-            </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 
