@@ -13,6 +13,7 @@ package com.muzima;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
+import android.arch.lifecycle.DefaultLifecycleObserver;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -41,6 +42,9 @@ import com.muzima.controller.ProviderController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
+import com.muzima.messaging.jobmanager.JobManager;
+import com.muzima.messaging.jobmanager.dependencies.DependencyInjector;
+import com.muzima.messaging.jobmanager.dependencies.InjectableType;
 import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaSyncService;
@@ -61,6 +65,7 @@ import java.io.IOException;
 import java.security.Security;
 import java.util.List;
 
+import dagger.ObjectGraph;
 import io.fabric.sdk.android.Fabric;
 
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
@@ -82,7 +87,7 @@ import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 )
 
 
-public class MuzimaApplication extends MultiDexApplication {
+public class MuzimaApplication extends MultiDexApplication implements DependencyInjector, DefaultLifecycleObserver {
 
     private Context muzimaContext;
     private Activity currentActivity;
@@ -105,6 +110,8 @@ public class MuzimaApplication extends MultiDexApplication {
     private static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
     private User authenticatedUser;
+    private JobManager jobManager;
+    private ObjectGraph objectGraph;
 
     static {
         // see http://rtyley.github.io/spongycastle/
@@ -144,7 +151,7 @@ public class MuzimaApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         //ACRA.init(this);
-        Fabric.with(this, new Crashlytics());
+        //Fabric.with(this, new Crashlytics());
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Security.removeProvider("AndroidOpenSSL");
         }
@@ -408,5 +415,20 @@ public class MuzimaApplication extends MultiDexApplication {
         assert manager != null;
         List<ActivityManager.RunningTaskInfo> tasks = manager.getRunningTasks(1);
         return tasks.get(0).topActivity.getClassName().contains("Launcher");
+    }
+
+    public static MuzimaApplication getInstance(android.content.Context context) {
+        return (MuzimaApplication) context.getApplicationContext();
+    }
+
+    public JobManager getJobManager() {
+        return jobManager;
+    }
+
+    @Override
+    public void injectDependencies(Object object) {
+        if (object instanceof InjectableType) {
+            objectGraph.inject(object);
+        }
     }
 }

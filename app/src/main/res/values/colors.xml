@@ -10,6 +10,7 @@
   -->
 
 <resources>
+    <color name="grey_300">#E0E0E0</color>
     <color name="primary_color">#105b63</color>
     <color name="primary_blue">#12A5F4</color>
     <color name="primary_white">#FFFFFF</color>

@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.messaging.twofactoraunthentication.RegistrationActivity;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.custom.ScrollViewWithDetection;
 import com.muzima.view.login.LoginActivity;
@@ -98,11 +99,16 @@ public class DisclaimerActivity extends Activity {
         String disclaimerKey = getResources().getString(R.string.preference_disclaimer);
         settings.edit().putBoolean(disclaimerKey, true).commit();
         // transition to the login activity
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.putExtra(LoginActivity.isFirstLaunch, true);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
+        boolean isSignalUserAccountVerified = settings.getBoolean(getString(R.string.signal_user_verified_preference),false);
+        if (isSignalUserAccountVerified){
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.putExtra(LoginActivity.isFirstLaunch, true);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }else {
+            startActivity(new Intent(DisclaimerActivity.this, RegistrationActivity.class));
+        }
     }
 }
