@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.arch.lifecycle.DefaultLifecycleObserver;
+import android.arch.lifecycle.ProcessLifecycleOwner;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -45,12 +46,14 @@ import com.muzima.domain.Credentials;
 import com.muzima.messaging.jobmanager.JobManager;
 import com.muzima.messaging.jobmanager.dependencies.DependencyInjector;
 import com.muzima.messaging.jobmanager.dependencies.InjectableType;
+import com.muzima.messaging.push.SignalServiceNetworkAccess;
 import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
 import com.muzima.util.Constants;
 import com.muzima.util.MuzimaLogger;
+import com.muzima.utils.PRNGFixes;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.forms.FormWebViewActivity;
 import com.muzima.view.forms.HTMLFormWebViewActivity;
@@ -65,6 +68,8 @@ import java.io.IOException;
 import java.security.Security;
 import java.util.List;
 
+import androidx.work.Configuration;
+import androidx.work.WorkManager;
 import dagger.ObjectGraph;
 import io.fabric.sdk.android.Fabric;
 
@@ -112,6 +117,7 @@ public class MuzimaApplication extends MultiDexApplication implements Dependency
     private User authenticatedUser;
     private JobManager jobManager;
     private ObjectGraph objectGraph;
+    private volatile boolean isAppVisible = true;
 
     static {
         // see http://rtyley.github.io/spongycastle/
@@ -165,6 +171,9 @@ public class MuzimaApplication extends MultiDexApplication implements Dependency
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+        initializeRandomNumberFix();
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
 
     }
 
@@ -431,4 +440,13 @@ public class MuzimaApplication extends MultiDexApplication implements Dependency
             objectGraph.inject(object);
         }
     }
+
+    public boolean isAppVisible() {
+        return isAppVisible;
+    }
+
+    private void initializeRandomNumberFix() {
+        PRNGFixes.apply();
+    }
+
 }
