@@ -10,6 +10,7 @@
 
 package com.muzima.view;
 
+import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -85,5 +86,11 @@ public class BaseActivity extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+    public static boolean isMenuWorkaroundRequired() {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT          &&
+                Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1 &&
+                ("LGE".equalsIgnoreCase(Build.MANUFACTURER) || "E6710".equalsIgnoreCase(Build.DEVICE));
     }
 }

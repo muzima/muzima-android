@@ -22,12 +22,14 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
         classpath 'io.fabric.tools:gradle:1.+'
+        classpath files('libs/gradle-witness.jar')
     }
 }
 
 apply plugin: 'com.android.application'
 apply from: "../artifacts.gradle"
 apply plugin: 'io.fabric'
+apply plugin: 'witness'
 //apply plugin: 'com.google.gms.google-services'
 
 
@@ -35,14 +37,14 @@ group = 'com.muzima'
 description = 'Muzima-Android'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
 
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 11
         versionName "2.4.2-SNAPSHOT"
         vectorDrawables.useSupportLibrary = true
@@ -52,11 +54,49 @@ android {
         //refer to TODO look at MUZIMA-621
         multiDexEnabled true
 
+        buildConfigField "long", "BUILD_TIMESTAMP", getLastCommitTimestamp() + "L"
+        buildConfigField "String", "SIGNAL_URL", "\"https://textsecure-service.whispersystems.org\""
+        buildConfigField "String", "SIGNAL_CDN_URL", "\"https://cdn.signal.org\""
+        buildConfigField "String", "SIGNAL_CONTACT_DISCOVERY_URL", "\"https://api.directory.signal.org\""
+        buildConfigField "String", "SIGNAL_SERVICE_STATUS_URL", "\"uptime.signal.org\""
+        buildConfigField "String", "CONTENT_PROXY_HOST", "\"contentproxy.signal.org\""
+        buildConfigField "int", "CONTENT_PROXY_PORT", "443"
+        buildConfigField "String", "GIPHY_PROXY_HOST", "\"giphy-proxy-production.whispersystems.org\""
+        buildConfigField "int", "GIPHY_PROXY_PORT", "80"
+        buildConfigField "String", "USER_AGENT", "\"OWA\""
+        buildConfigField "boolean", "DEV_BUILD", "false"
+        buildConfigField "String", "MRENCLAVE", "\"cd6cfc342937b23b1bdd3bbf9721aa5615ac9ff50a75c5527d441cd3276826c9\""
+        buildConfigField "String", "UNIDENTIFIED_SENDER_TRUST_ROOT", "\"BXu6QIKVz5MA8gstzfOgRQGqyLqOwNKHL6INkv3IHWMF\""
+        buildConfigField "boolean", "PLAY_STORE_DISABLED", "false"
+        buildConfigField "String", "NOPLAY_UPDATE_URL", "null"
+
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    sourceSets {
+        main {
+            // let gradle pack the shared library into apk
+            jniLibs.srcDirs = ['libs']
+        }
     }
 
     packagingOptions {
         pickFirst 'META-INF/LICENSE'
         pickFirst 'META-INF/DEPENDENCIES'
+        exclude 'LICENSE.txt'
+        exclude 'LICENSE'
+        exclude 'NOTICE'
+        exclude 'asm-license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+        exclude 'org/spongycastle/x509/CertPathReviewerMessages.properties'
     }
 
     buildTypes {
@@ -81,31 +121,68 @@ repositories {
     maven { url "https://raw.github.com/muzima/muzima-maven/muzima-api" }
     maven { url 'https://jitpack.io' }
     maven { url 'https://maven.fabric.io/public' }
+    maven { url "https://raw.github.com/signalapp/maven/master/sqlcipher/release/" }
 }
 
 dependencies {
     compile 'com.android.support:multidex:1.0.3'
     compile 'de.hdodenhof:circleimageview:1.2.1'
-    compile group: 'com.madgag', name: 'scprov-jdk15on', version: '1.47.0.2'
+    //compile group: 'com.madgag', name: 'scprov-jdk15on', version: '1.47.0.2'
     compile fileTree('lib/stickylistheaders-1.0.0.jar')
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.4.0'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.4.0'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.4.0'
     compile group: 'ch.acra', name: 'acra', version: '4.5.0'
-    compile 'com.android.support:design:27.1.1'
-    compile 'com.android.support:appcompat-v7:27.1.1'
-    compile 'com.android.support:support-v4:27.1.1'
+    compile 'com.android.support:design:28.0.0'
+    compile 'com.android.support:appcompat-v7:28.0.0'
+    compile 'com.android.support:support-v4:28.0.0'
     compile group: 'com.azimolabs.keyboardwatcher', name: 'keyboardwatcher', version: '0.1.3'
     compile group: 'lucene.transform', name: 'lucenetransform', version: '0.9.2.2'
     compile group: 'org.jsoup', name: 'jsoup', version: '1.7.3'
     compile 'com.github.lguipeng:BubbleView:1.0.1'
-    compile 'com.google.android.gms:play-services-location:11.0.2'
+    compile 'com.google.android.gms:play-services-location:16.0.0'
     //compile 'com.google.firebase:firebase-core:16.0.1'
 
-    compile(group: 'com.muzima', name: 'muzima-api', version: '1.2.0') {
+    compile(group: 'com.muzima', name: 'muzima-api', version: '1.3.1') {
         exclude(module: 'guice')
     }
     compile group: 'com.google.inject', name: 'guice', version: '3.0', classifier: 'no_aop'
+
+    compile ("com.google.android.gms:play-services-gcm:16.0.0") {
+        exclude group: 'org.spongycastle', module: 'spongycastle'
+    }
+    compile 'com.google.android.gms:play-services-maps:16.0.0'
+    compile 'com.google.android.gms:play-services-places:16.0.0'
+    compile ('org.whispersystems:signal-service-android:2.12.2'){
+       // exclude group: 'com.madgag.spongycastle'
+    }
+
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.android.support.constraint:constraint-layout:1.1.3'
+    compile 'com.android.support:recyclerview-v7:28.0.0'
+    compile 'com.android.support:cardview-v7:28.0.0'
+    compile 'com.github.dmytrodanylyk.circular-progress-button:library:1.1.3'
+    compile 'com.annimon:stream:1.1.8'
+    compile 'com.codewaves.stickyheadergrid:stickyheadergrid:0.9.4'
+
+    compile "com.android.support:preference-v7:28.0.0"
+    compile "com.android.support:preference-v14:28.0.0"
+    compile "com.android.support:gridlayout-v7:28.0.0"
+    compile "com.android.support:exifinterface:28.0.0"
+    compile 'android.arch.lifecycle:extensions:1.1.1'
+    compile 'android.arch.lifecycle:common-java8:1.1.1'
+    compile 'com.google.android.exoplayer:exoplayer-core:2.9.1'
+    compile 'com.google.android.exoplayer:exoplayer-ui:2.9.1'
+    compile 'org.whispersystems:webrtc-android:M74'
+    compile "me.leolin:ShortcutBadger:1.1.16"
+    compile 'org.apache.httpcomponents:httpclient-android:4.3.5'
+    compile "com.judemanutd:autostarter:1.0.0"
+    compile 'android.arch.work:work-runtime:1.0.0-alpha11'
+
+    compile 'com.squareup.dagger:dagger:1.2.2'
+    annotationProcessor 'com.squareup.dagger:dagger-compiler:1.2.2'
+    provided 'com.squareup.dagger:dagger-compiler:1.2.2'
+    compile 'org.signal:android-database-sqlcipher:3.5.9-S3'
 
     testCompile fileTree('lib/stickylistheaders-1.0.0.jar')
     testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'
@@ -115,10 +192,10 @@ dependencies {
     testCompile group: 'org.robolectric', name: 'robolectric', version: '3.1.1'
     testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
     testCompile group: 'xmlpull', name: 'xmlpull', version: '1.1.3.4d_b4_min'
-    testCompile(group: 'com.muzima', name: 'muzima-api', version: '1.2.0') {
+    testCompile(group: 'com.muzima', name: 'muzima-api', version: '1.3.1') {
         exclude(module: 'guice')
     }
-    compile 'com.android.support:support-v13:27.1.1'
+    compile 'com.android.support:support-v13:28.0.0'
 
     compile('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
         transitive = true;
@@ -135,5 +212,17 @@ task wrapper(type: Wrapper) {
 configurations {
     all {
         exclude group: 'org.json', module: 'json'
+    }
+}
+
+def getLastCommitTimestamp() {
+    new ByteArrayOutputStream().withStream { os ->
+        def result = exec {
+            executable = 'git'
+            args = ['log', '-1', '--pretty=format:%ct']
+            standardOutput = os
+        }
+
+        return os.toString() + "000"
     }
 }
