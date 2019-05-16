@@ -14,7 +14,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -25,9 +24,8 @@ import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import com.annimon.stream.Stream;
+import com.annimon.stream.function.Consumer;
 
 import com.muzima.R;
 import com.muzima.messaging.customcomponents.RationaleDialog;
@@ -203,7 +201,7 @@ public class Permissions {
     private static String[] filterNotGranted(@NonNull Context context, String... permissions) {
         return Stream.of(permissions)
                 .filter(permission -> ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED)
-                .collect(Collectors.toList())
+                .toList()
                 .toArray(new String[0]);
 
     }

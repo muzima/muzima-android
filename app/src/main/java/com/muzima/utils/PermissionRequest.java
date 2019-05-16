@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
+import com.annimon.stream.function.Consumer;
 
 public class PermissionRequest {
     private final Map<String, Boolean> PRE_REQUEST_MAPPING = new HashMap<>();
