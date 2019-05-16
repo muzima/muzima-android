@@ -26,12 +26,11 @@
     android.support.v14.preference
     pl.tajchert.waitingdots," />
 
-    <permission android:name="phr.muzima.org.phr.ACCESS_SECRETS"
+    <permission android:name="com.muzima.ACCESS_SECRETS"
         android:label="Access to TextSecure Secrets"
         android:protectionLevel="signature" />
 
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
-
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -61,7 +60,7 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="phr.muzima.org.phr.ACCESS_SECRETS"/>
+    <uses-permission android:name="com.muzima.ACCESS_SECRETS"/>
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
@@ -108,9 +107,9 @@
 
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.BROADCAST_STICKY" />
-    <permission android:name="phr.muzima.org.phr.permission.C2D_MESSAGE"
+    <permission android:name="com.muzima.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
-    <uses-permission android:name="phr.muzima.org.phr.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.muzima.permission.C2D_MESSAGE" />
     <uses-permission android:name="android.permission.READ_PROFILE"/>
     <uses-permission android:name="android.permission.WRITE_PROFILE"/>
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
@@ -519,6 +518,21 @@
             </intent-filter>
         </activity>
         <activity android:name=".messaging.twofactoraunthentication.CountrySelectionActivity" />
-        </application>
+        <activity android:name="com.muzima.messaging.CreateProfileActivity"
+            android:windowSoftInputMode="stateVisible"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
+
+        <provider android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.muzima.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths" />
+
+        </provider>
+    </application>
 
 </manifest>

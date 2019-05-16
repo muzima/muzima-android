@@ -18,8 +18,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
@@ -27,12 +29,16 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.muzima.R;
+import com.muzima.messaging.customcomponents.emoji.EmojiPageModel;
+
+import java.util.List;
 
 
 public class PagerSlidingTabStrip extends HorizontalScrollView {
@@ -48,7 +54,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
     private final LinearLayout.LayoutParams expandedTabLayoutParams;
 
     private final PageListener pageListener = new PageListener();
-    private OnPageChangeListener delegatePageListener;
+    private ViewPager.OnPageChangeListener delegatePageListener;
 
     private final LinearLayout tabsContainer;
     private ViewPager pager;
@@ -172,8 +178,53 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
         notifyDataSetChanged();
     }
 
+    public void setViewPager(ViewPager pager,List<EmojiPageModel> models) {
+        this.pager = pager;
+
+
+        if (pager.getAdapter() == null) {
+            throw new IllegalStateException("ViewPager does not have adapter instance.");
+        }
+
+        pager.setOnPageChangeListener(pageListener);
+
+        notifyDataSetChanged(models);
+    }
+
     public void setOnPageChangeListener(OnPageChangeListener listener) {
         this.delegatePageListener = listener;
+    }
+
+    @SuppressLint("NewApi")
+    public void notifyDataSetChanged(List<EmojiPageModel> models) {
+
+        tabsContainer.removeAllViews();
+
+        tabCount = pager.getAdapter().getCount();
+        for (int i = 0; i < tabCount; i++) {
+            if(pager.getAdapter().getPageTitle(i) != null) {
+                addTab(i, pager.getAdapter().getPageTitle(i).toString());
+            }else if(models.size()>0){
+                addIconTab(i, models.get(i).getIconAttr());
+            }
+        }
+
+        updateTabStyles();
+
+        checkedTabWidths = false;
+
+        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+            @SuppressWarnings("deprecation")
+            @SuppressLint("NewApi")
+            @Override
+            public void onGlobalLayout() {
+                getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                currentPosition = pager.getCurrentItem();
+                scrollToChild(currentPosition, 0);
+            }
+        });
+
     }
 
     private void notifyDataSetChanged() {
@@ -221,6 +272,33 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
         tabsContainer.addView(tab);
 
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void addIconTab(final int position, int resId) {
+
+        ImageButton tab = new ImageButton(getContext());
+
+        TypedValue typedValue = new TypedValue();
+        getContext().getTheme().resolveAttribute(resId, typedValue, true);
+        int drawableRes = typedValue.resourceId;
+
+        tab.setImageResource(drawableRes);
+
+        addTab(position, tab);
+    }
+
+    private void addTab(final int position, View tab) {
+        tab.setFocusable(true);
+        tab.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pager.setCurrentItem(position);
+            }
+        });
+
+        tab.setPadding(tabPadding, 0, tabPadding, 0);
+        tabsContainer.addView(tab, position, shouldExpand ? expandedTabLayoutParams : defaultTabLayoutParams);
     }
 
     private void updateTabStyles() {
