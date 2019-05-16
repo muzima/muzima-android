@@ -58,14 +58,14 @@ public class KeyCachingService extends Service {
 
     public static final int SERVICE_RUNNING_ID = 4141;
 
-    public  static final String KEY_PERMISSION           = "phr.muzima.org.phr.ACCESS_SECRETS";
-    public  static final String NEW_KEY_EVENT            = "phr.muzima.org.phr.service.action.NEW_KEY_EVENT";
-    public  static final String CLEAR_KEY_EVENT          = "phr.muzima.org.phr.service.action.CLEAR_KEY_EVENT";
-    public  static final String LOCK_TOGGLED_EVENT       = "phr.muzima.org.phr.service.action.LOCK_ENABLED_EVENT";
-    private static final String PASSPHRASE_EXPIRED_EVENT = "phr.muzima.org.phr.service.action.PASSPHRASE_EXPIRED_EVENT";
-    public  static final String CLEAR_KEY_ACTION         = "phr.muzima.org.phr.service.action.CLEAR_KEY";
-    public  static final String DISABLE_ACTION           = "phr.muzima.org.phr.service.action.DISABLE";
-    public  static final String LOCALE_CHANGE_EVENT      = "phr.muzima.org.phr.service.action.LOCALE_CHANGE_EVENT";
+    public  static final String KEY_PERMISSION           = "com.muzima.ACCESS_SECRETS";
+    public  static final String NEW_KEY_EVENT            = "com.muzima.service.action.NEW_KEY_EVENT";
+    public  static final String CLEAR_KEY_EVENT          = "com.muzima.service.action.CLEAR_KEY_EVENT";
+    public  static final String LOCK_TOGGLED_EVENT       = "com.muzima.service.action.LOCK_ENABLED_EVENT";
+    private static final String PASSPHRASE_EXPIRED_EVENT = "com.muzima.service.action.PASSPHRASE_EXPIRED_EVENT";
+    public  static final String CLEAR_KEY_ACTION         = "com.muzima.service.action.CLEAR_KEY";
+    public  static final String DISABLE_ACTION           = "com.muzima.service.action.DISABLE";
+    public  static final String LOCALE_CHANGE_EVENT      = "com.muzima.service.action.LOCALE_CHANGE_EVENT";
 
     private final IBinder binder  = new KeySetBinder();
 

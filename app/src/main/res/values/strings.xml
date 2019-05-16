@@ -772,6 +772,14 @@
     <string name="app_launch_preference_file">privacy policy prefernec file</string>
     <string name="RegistrationActivity_please_enter_the_verification_code_sent_to_s">Please enter the verification code sent to %s.</string>
     <string name="Job_working_in_the_background">Working in the background…</string>
+    <string name="conversation_activity_emoji_toggle_description">Toggle emoji keyboard</string>
+    <string name="profile_create_activity_finish">FINISH</string>
+    <string name="profile_create_activity_set_later">Set later</string>
+    <string name="profile_create_activity_your_name">Your name</string>
+    <string name="createProfileActivity_your_profile_info">Your profile info</string>
+    <string name="createProfileActivity_too_long">Too long</string>
+    <string name="createProfileActivity_profile_photo">Profile photo</string>
+    <string name="createProfileActivity_problem_setting_profile">Problem setting profile</string>
 
 
 </resources>

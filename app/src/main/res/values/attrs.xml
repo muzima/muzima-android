@@ -58,5 +58,23 @@
         <attr name="vcv_textSize" format="dimension"/>
         <attr name="vcv_textColor" format="color"/>
     </declare-styleable>
+    <attr name="conversation_emoji_toggle" format="reference"/>
+    <attr name="conversation_keyboard_toggle" format="reference"/>
+    <attr name="emoji_category_recent" format="reference"/>
+    <attr name="emoji_category_people" format="reference"/>
+    <attr name="emoji_category_nature" format="reference"/>
+
+    <attr name="emoji_category_foods"  format="reference"/>
+    <attr name="emoji_category_activity" format="reference"/>
+    <attr name="emoji_category_places" format="reference"/>
+    <attr name="emoji_category_objects" format="reference"/>
+    <attr name="emoji_category_symbol" format="reference"/>
+    <attr name="emoji_category_flags" format="reference"/>
+    <attr name="emoji_category_emoticons" format="reference"/>
+    <attr name="emoji_tab_strip_background" format="color" />
+    <attr name="emoji_tab_seperator" format="color" />
+    <attr name="emoji_text_color" format="color" />
+    <attr name="emoji_variation_selector_background" format="reference|color" />
+    <attr name="theme_type" format="string"/>
 
 </resources>

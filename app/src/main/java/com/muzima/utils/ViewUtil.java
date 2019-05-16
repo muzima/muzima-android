@@ -102,6 +102,11 @@ public class ViewUtil {
         return (T) parent.findViewById(resId);
     }
 
+    @SuppressWarnings("unchecked")
+    public static <T extends View> T findById(@NonNull AppCompatActivity parent, @IdRes int resId) {
+        return (T) parent.findViewById(resId);
+    }
+
     private static Animation getAlphaAnimation(float from, float to, int duration) {
         final Animation anim = new AlphaAnimation(from, to);
         anim.setInterpolator(new FastOutSlowInInterpolator());

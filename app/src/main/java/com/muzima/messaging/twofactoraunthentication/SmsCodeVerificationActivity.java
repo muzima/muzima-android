@@ -46,6 +46,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.messaging.CreateProfileActivity;
 import com.muzima.messaging.animations.AnimationCompleteListener;
 import com.muzima.messaging.TextSecurePreferences;
 import com.muzima.messaging.crypto.UnidentifiedAccessUtil;
@@ -72,7 +73,6 @@ public class SmsCodeVerificationActivity extends AppCompatActivity implements Ve
     TextView pinForgotButton;
     EditText pin;
 
-    int callCountdown = 64;
     String e164number = "error-invalid-164number";
     String password = "error-invalid-password";
     FloatingActionButton fab;
@@ -282,7 +282,7 @@ public class SmsCodeVerificationActivity extends AppCompatActivity implements Ve
         Intent nextIntent = getIntent().getParcelableExtra("next_intent");
 
         if (nextIntent == null) {
-            nextIntent = new Intent(SmsCodeVerificationActivity.this, LoginActivity.class);
+            nextIntent = new Intent(SmsCodeVerificationActivity.this, CreateProfileActivity.class);
         }
         startActivity(nextIntent);
         finish();
