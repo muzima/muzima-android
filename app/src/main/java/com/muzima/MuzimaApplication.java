@@ -48,6 +48,7 @@ import com.muzima.messaging.jobmanager.dependencies.DependencyInjector;
 import com.muzima.messaging.jobmanager.dependencies.InjectableType;
 import com.muzima.messaging.push.SignalServiceNetworkAccess;
 import com.muzima.service.CohortPrefixPreferenceService;
+import com.muzima.service.ExpiringMessageManager;
 import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
@@ -118,6 +119,7 @@ public class MuzimaApplication extends MultiDexApplication implements Dependency
     private JobManager jobManager;
     private ObjectGraph objectGraph;
     private volatile boolean isAppVisible = true;
+    private ExpiringMessageManager expiringMessageManager;
 
     static {
         // see http://rtyley.github.io/spongycastle/
@@ -173,6 +175,7 @@ public class MuzimaApplication extends MultiDexApplication implements Dependency
         }
 
         initializeRandomNumberFix();
+        initializeExpiringMessageManager();
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
 
     }
@@ -447,6 +450,14 @@ public class MuzimaApplication extends MultiDexApplication implements Dependency
 
     private void initializeRandomNumberFix() {
         PRNGFixes.apply();
+    }
+
+    public ExpiringMessageManager getExpiringMessageManager() {
+        return expiringMessageManager;
+    }
+
+    private void initializeExpiringMessageManager() {
+        this.expiringMessageManager = new ExpiringMessageManager(this);
     }
 
 }

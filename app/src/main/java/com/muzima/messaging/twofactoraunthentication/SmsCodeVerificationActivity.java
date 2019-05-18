@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -269,15 +270,9 @@ public class SmsCodeVerificationActivity extends AppCompatActivity implements Ve
          * to orchestrate Future App Launches.
          */
 
-        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.app_launch_preference_file), Context.MODE_PRIVATE);
-        if (sharedPreferences != null) {
-            sharedPreferences
-                    .edit()
-                    .putBoolean(getString(R.string.signal_user_verified_preference), true)
-                    .apply();
-        } else
-            Toast.makeText(getApplicationContext(), "An error Occured while saving your registration.", Toast.LENGTH_LONG).show();
-
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String signalRegistrationKey = getResources().getString(R.string.signal_user_verified_preference);
+        settings.edit().putBoolean(signalRegistrationKey, true).commit();
 
         Intent nextIntent = getIntent().getParcelableExtra("next_intent");
 

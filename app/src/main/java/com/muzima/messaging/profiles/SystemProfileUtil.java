@@ -14,11 +14,54 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.muzima.messaging.exceptions.BitmapDecodingException;
+import com.muzima.messaging.mms.MediaConstraints;
+import com.muzima.utils.BitmapUtil;
+
 import org.whispersystems.signalservice.internal.util.concurrent.ListenableFuture;
 import org.whispersystems.signalservice.internal.util.concurrent.SettableFuture;
 
 public class SystemProfileUtil {
     private static final String TAG = SystemProfileUtil.class.getSimpleName();
+
+    @SuppressLint("StaticFieldLeak")
+    public  static ListenableFuture<byte[]> getSystemProfileAvatar(final @NonNull Context context, MediaConstraints mediaConstraints) {
+        SettableFuture<byte[]> future = new SettableFuture<>();
+
+        new AsyncTask<Void, Void, byte[]>() {
+            @Override
+            protected @Nullable byte[] doInBackground(Void... params) {
+                if (Build.VERSION.SDK_INT >= 14) {
+                    try (Cursor cursor = context.getContentResolver().query(ContactsContract.Profile.CONTENT_URI, null, null, null, null)) {
+                        while (cursor != null && cursor.moveToNext()) {
+                            String photoUri = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Profile.PHOTO_URI));
+
+                            if (!TextUtils.isEmpty(photoUri)) {
+                                try {
+                                    BitmapUtil.ScaleResult result = BitmapUtil.createScaledBytes(context, Uri.parse(photoUri), mediaConstraints);
+                                    return result.getBitmap();
+                                } catch (BitmapDecodingException e) {
+                                    Log.w(TAG, e);
+                                }
+                            }
+                        }
+                    } catch (SecurityException se) {
+                        Log.w(TAG, se);
+                    }
+                }
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(@Nullable byte[] result) {
+                future.set(result);
+            }
+
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        return future;
+    }
 
     @SuppressLint("StaticFieldLeak")
     public static ListenableFuture<String> getSystemProfileName(final @NonNull Context context) {

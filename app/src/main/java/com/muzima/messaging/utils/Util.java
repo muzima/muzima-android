@@ -31,6 +31,10 @@ import com.google.i18n.phonenumbers.Phonenumber;
 import com.muzima.BuildConfig;
 
 import org.whispersystems.libsignal.util.guava.Optional;
+
+import com.muzima.messaging.LinkedBlockingLifoQueue;
+import com.muzima.messaging.TextSecurePreferences;
+import com.muzima.messaging.sqlite.database.SignalAddress;
 import com.muzima.utils.Base64;
 
 import java.io.ByteArrayOutputStream;
@@ -39,6 +43,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.text.DecimalFormat;
@@ -47,6 +52,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class Util {
@@ -89,24 +98,28 @@ public class Util {
         return sb.toString();
     }
 
-    //    public static ExecutorService newSingleThreadedLifoExecutor() {
-//        ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingLifoQueue<Runnable>());
-//
-//        executor.execute(() -> {
-////        Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-//            Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-//        });
-//
-//        return executor;
-//    }
+    public static ExecutorService newSingleThreadedLifoExecutor() {
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingLifoQueue<Runnable>());
 
-    //    public static boolean isEmpty(EncodedStringValue[] value) {
+        executor.execute(() -> {
+//        Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+            Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+        });
+
+        return executor;
+    }
+
+//    public static boolean isEmpty(EncodedStringValue[] value) {
 //        return value == null || value.length == 0;
 //    }
-
-    //    public static boolean isEmpty(ComposeText value) {
+//
+//    public static boolean isEmpty(ComposeText value) {
 //        return value == null || value.getText() == null || TextUtils.isEmpty(value.getTextTrimmed());
 //    }
+
+    public static <K, V> V getOrDefault(@NonNull Map<K, V> map, K key, V defaultValue) {
+        return map.containsKey(key) ? map.get(key) : defaultValue;
+    }
 
     public static CharSequence getBoldedString(String value) {
         SpannableString spanned = new SpannableString(value);
@@ -116,8 +129,8 @@ public class Util {
 
         return spanned;
     }
-
-    //    public static @NonNull String toIsoString(byte[] bytes) {
+//todo work on charactersets
+//    public static @NonNull String toIsoString(byte[] bytes) {
 //        try {
 //            return new String(bytes, CharacterSets.MIMENAME_ISO_8859_1);
 //        } catch (UnsupportedEncodingException e) {
@@ -125,7 +138,7 @@ public class Util {
 //        }
 //    }
 
-    //    public static byte[] toIsoBytes(String isoString) {
+//    public static byte[] toIsoBytes(String isoString) {
 //        try {
 //            return isoString.getBytes(CharacterSets.MIMENAME_ISO_8859_1);
 //        } catch (UnsupportedEncodingException e) {
@@ -133,7 +146,7 @@ public class Util {
 //        }
 //    }
 
-    //    public static byte[] toUtf8Bytes(String utf8String) {
+//    public static byte[] toUtf8Bytes(String utf8String) {
 //        try {
 //            return utf8String.getBytes(CharacterSets.MIMENAME_UTF_8);
 //        } catch (UnsupportedEncodingException e) {
@@ -170,12 +183,12 @@ public class Util {
         return totalSize;
     }
 
-    //    public static boolean isOwnNumber(Context context, Address address) {
-//        if (address.isGroup()) return false;
-//        if (address.isEmail()) return false;
-//
-//        return TextSecurePreferences.getLocalNumber(context).equals(address.toPhoneString());
-//    }
+    public static boolean isOwnNumber(Context context, SignalAddress address) {
+        if (address.isGroup()) return false;
+        if (address.isEmail()) return false;
+
+        return TextSecurePreferences.getLocalNumber(context).equals(address.toPhoneString());
+    }
 
     public static void readFully(InputStream in, byte[] buffer) throws IOException {
         readFully(in, buffer, buffer.length);
@@ -235,7 +248,7 @@ public class Util {
     @SuppressLint("MissingPermission")
     public static Optional<Phonenumber.PhoneNumber> getDeviceNumber(Context context) {
         try {
-            final String localNumber = ((TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE)).getLine1Number();
+            final String           localNumber = ((TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE)).getLine1Number();
             final Optional<String> countryIso  = getSimCountryIso(context);
 
             if (TextUtils.isEmpty(localNumber)) return Optional.absent();
@@ -340,7 +353,12 @@ public class Util {
         return new SecureRandom();
     }
 
-    //    @TargetApi(VERSION_CODES.LOLLIPOP)
+    public static int getDaysTillBuildExpiry() {
+        int age = (int)TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - BuildConfig.BUILD_TIMESTAMP);
+        return 90 - age;
+    }
+
+//    @TargetApi(VERSION_CODES.LOLLIPOP)
 //    public static boolean isMmsCapable(Context context) {
 //        return (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) || OutgoingLegacyMmsConnection.isConnectionPossible(context);
 //    }
@@ -355,6 +373,10 @@ public class Util {
         }
     }
 
+    public static void postToMain(final @NonNull Runnable runnable) {
+        handler.post(runnable);
+    }
+
     public static void runOnMain(final @NonNull Runnable runnable) {
         if (isMainThread()) runnable.run();
         else                handler.post(runnable);
@@ -364,25 +386,29 @@ public class Util {
         handler.postDelayed(runnable, delayMillis);
     }
 
-    //    public static void runOnMainSync(final @NonNull Runnable runnable) {
-//        if (isMainThread()) {
-//            runnable.run();
-//        } else {
-//            final CountDownLatch sync = new CountDownLatch(1);
-//            runOnMain(() -> {
-//                try {
-//                    runnable.run();
-//                } finally {
-//                    sync.countDown();
-//                }
-//            });
-//            try {
-//                sync.await();
-//            } catch (InterruptedException ie) {
-//                throw new AssertionError(ie);
-//            }
-//        }
-//    }
+    public static void cancelRunnableOnMain(@NonNull Runnable runnable) {
+        handler.removeCallbacks(runnable);
+    }
+
+    public static void runOnMainSync(final @NonNull Runnable runnable) {
+        if (isMainThread()) {
+            runnable.run();
+        } else {
+            final CountDownLatch sync = new CountDownLatch(1);
+            runOnMain(() -> {
+                try {
+                    runnable.run();
+                } finally {
+                    sync.countDown();
+                }
+            });
+            try {
+                sync.await();
+            } catch (InterruptedException ie) {
+                throw new AssertionError(ie);
+            }
+        }
+    }
 
     public static <T> T getRandomElement(T[] elements) {
         try {
@@ -400,8 +426,7 @@ public class Util {
         return Arrays.hashCode(objects);
     }
 
-    public static @Nullable
-    Uri uri(@Nullable String uri) {
+    public static @Nullable Uri uri(@Nullable String uri) {
         if (uri == null) return null;
         else             return Uri.parse(uri);
     }
@@ -422,8 +447,7 @@ public class Util {
         return Math.min(Math.max(value, min), max);
     }
 
-    public static @Nullable
-    String readTextFromClipboard(@NonNull Context context) {
+    public static @Nullable String readTextFromClipboard(@NonNull Context context) {
         {
             ClipboardManager clipboardManager = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
 
