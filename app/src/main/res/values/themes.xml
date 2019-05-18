@@ -60,7 +60,8 @@
         <item name="emoji_category_flags">@drawable/emoji_category_flags_dark</item>
         <item name="emoji_category_emoticons">@drawable/emoji_category_emoticons_dark</item>
         <item name="emoji_variation_selector_background">@drawable/emoji_variation_selector_background_dark</item>
-
+        <item name="conversation_icon_attach_audio">@drawable/ic_audio_dark</item>
+        <item name="conversation_icon_attach_video">@drawable/ic_video_dark</item>
     </style>
 
 
@@ -111,7 +112,8 @@
         <item name="emoji_category_flags">@drawable/emoji_category_flags_light</item>
         <item name="emoji_category_emoticons">@drawable/emoji_category_emoticons_light</item>
         <item name="emoji_variation_selector_background">@drawable/emoji_variation_selector_background_light</item>
-
+        <item name="conversation_icon_attach_audio">@drawable/ic_audio_light</item>
+        <item name="conversation_icon_attach_video">@drawable/ic_video_light</item>
     </style>
 
 

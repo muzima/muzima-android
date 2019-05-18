@@ -76,5 +76,7 @@
     <attr name="emoji_text_color" format="color" />
     <attr name="emoji_variation_selector_background" format="reference|color" />
     <attr name="theme_type" format="string"/>
+    <attr name="conversation_icon_attach_audio" format="reference"/>
+    <attr name="conversation_icon_attach_video" format="reference" />
 
 </resources>

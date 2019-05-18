@@ -35,6 +35,7 @@ import com.muzima.messaging.crypto.ProfileKeyUtil;
 import com.muzima.messaging.customcomponents.InputAwareLayout;
 import com.muzima.messaging.customcomponents.emoji.EmojiDrawer;
 import com.muzima.messaging.customcomponents.emoji.EmojiToggle;
+import com.muzima.messaging.mms.GlideApp;
 import com.muzima.messaging.profiles.SystemProfileUtil;
 import com.muzima.messaging.push.AccountManagerFactory;
 import com.muzima.messaging.sqlite.database.SignalAddress;
@@ -249,33 +250,33 @@ public class CreateProfileActivity extends BaseActionBarActivity {
 
                 @Override
                 protected void onPostExecute(byte[] result) {
-//                    if (result != null) {
-//                        avatarBytes = result;
-//                        GlideApp.with(CreateProfileActivity.this)
-//                                .load(result)
-//                                .circleCrop()
-//                                .into(avatar);
-//                    }
+                    if (result != null) {
+                        avatarBytes = result;
+                        GlideApp.with(CreateProfileActivity.this)
+                                .load(result)
+                                .circleCrop()
+                                .into(avatar);
+                    }
                 }
             }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } else if (!excludeSystem) {
-//            SystemProfileUtil.getSystemProfileAvatar(this, new ProfileMediaConstraints()).addListener(new ListenableFuture.Listener<byte[]>() {
-//                @Override
-//                public void onSuccess(byte[] result) {
-//                    if (result != null) {
-//                        avatarBytes = result;
-//                        GlideApp.with(CreateProfileActivity.this)
-//                                .load(result)
-//                                .circleCrop()
-//                                .into(avatar);
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(ExecutionException e) {
-//                    Log.w(TAG, e);
-//                }
-//            });
+            SystemProfileUtil.getSystemProfileAvatar(this, new ProfileMediaConstraints()).addListener(new ListenableFuture.Listener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] result) {
+                    if (result != null) {
+                        avatarBytes = result;
+                        GlideApp.with(CreateProfileActivity.this)
+                                .load(result)
+                                .circleCrop()
+                                .into(avatar);
+                    }
+                }
+
+                @Override
+                public void onFailure(ExecutionException e) {
+                    Log.w(TAG, e);
+                }
+            });
         }
     }
 

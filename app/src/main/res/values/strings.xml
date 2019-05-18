@@ -769,7 +769,6 @@
     <string name="RegistrationActivity_you_must_enter_your_registration_lock_PIN">You must enter your Registration Lock PIN</string>
     <string name="RegistrationActivity_this_phone_number_has_registration_lock_enabled_please_enter_the_registration_lock_pin">This phone number has Registration Lock enabled. Please enter the Registration Lock PIN.</string>
     <string name="RegistrationActivity_registration_lock_pin">Registration lock PIN</string>
-    <string name="app_launch_preference_file">privacy policy prefernec file</string>
     <string name="RegistrationActivity_please_enter_the_verification_code_sent_to_s">Please enter the verification code sent to %s.</string>
     <string name="Job_working_in_the_background">Working in the background…</string>
     <string name="conversation_activity_emoji_toggle_description">Toggle emoji keyboard</string>
@@ -780,6 +779,162 @@
     <string name="createProfileActivity_too_long">Too long</string>
     <string name="createProfileActivity_profile_photo">Profile photo</string>
     <string name="createProfileActivity_problem_setting_profile">Problem setting profile</string>
+    <string name="slide_image">Image</string>
+    <string name="slide_audio">Audio</string>
+    <string name="slide_video">Video</string>
+
+    <!-- ThreadRecord -->
+    <string name="thread_record_group_updated">Group updated</string>
+    <string name="thread_record_left_the_group">Left the group</string>
+    <string name="thread_record_secure_session_reset">Secure session reset.</string>
+    <string name="thread_record_draft">Draft:</string>
+    <string name="thread_record_called">You called</string>
+    <string name="thread_record_called_you">Called you</string>
+    <string name="thread_record_missed_call">Missed call</string>
+    <string name="thread_record_media_message">Media message</string>
+    <string name="thread_record_s_is_on_signal">%s is on mUzima!</string>
+    <string name="thread_record_disappearing_messages_disabled">Disappearing messages disabled</string>
+    <string name="thread_record_disappearing_message_time_updated_to_s">Disappearing message time set to %s</string>
+    <string name="thread_record_safety_number_changed">Safety number changed</string>
+    <string name="thread_record_your_safety_number_with_s_has_changed">Your safety number with %s has changed.</string>
+    <string name="thread_record_you_marked_verified">You marked verified</string>
+    <string name="thread_record_you_marked_unverified">You marked unverified</string>
+
+    <!-- ConversationListItem -->
+    <string name="conversation_list_item_key_exchange_message">Key exchange message</string>
+
+    <!-- MessageDisplayHelper -->
+    <string name="message_display_helper_bad_encrypted_message">Bad encrypted message</string>
+    <string name="message_display_helper_message_encrypted_for_non_existing_session">Message encrypted for non-existing session</string>
+    <string name="expiration_off">Off</string>
+
+    <plurals name="expiration_seconds">
+        <item quantity="one">%d second</item>
+        <item quantity="other">%d seconds</item>
+    </plurals>
+
+    <string name="expiration_seconds_abbreviated">%ds</string>
+
+    <plurals name="expiration_minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+
+    <string name="expiration_minutes_abbreviated">%dm</string>
+
+    <plurals name="expiration_hours">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+
+    <string name="expiration_hours_abbreviated">%dh</string>
+
+    <plurals name="expiration_days">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+
+    <string name="expiration_days_abbreviated">%dd</string>
+
+    <plurals name="expiration_weeks">
+        <item quantity="one">%d week</item>
+        <item quantity="other">%d weeks</item>
+    </plurals>
+
+    <string name="expiration_weeks_abbreviated">%dw</string>
+
+    <!-- MessageRecord -->
+    <string name="message_record_message_encrypted_with_a_legacy_protocol_version_that_is_no_longer_supported">Received a message encrypted using an old version of mUzima that is no longer supported. Please ask the sender to update to the most recent version and resend the message.</string>
+    <string name="message_record_left_group">You have left the group.</string>
+    <string name="message_record_you_updated_group">You updated the group.</string>
+    <string name="message_record_you_called">You called</string>
+    <string name="message_record_called_you">Contact called</string>
+    <string name="message_record_missed_call">Missed call</string>
+    <string name="message_record_s_updated_group">%s updated the group.</string>
+    <string name="message_record_s_called_you">%s called you</string>
+    <string name="message_record_called_s">Called %s</string>
+    <string name="message_record_missed_call_from">Missed call from %s</string>
+    <string name="message_record_s_joined_signal">%s is on mUzima!</string>
+    <string name="message_record_you_disabled_disappearing_messages">You disabled disappearing messages.</string>
+    <string name="message_record_s_disabled_disappearing_messages">%1$s disabled disappearing messages.</string>
+    <string name="message_record_you_set_disappearing_message_time_to_s">You set the disappearing message timer to %1$s.</string>
+    <string name="message_record_s_set_disappearing_message_time_to_s">%1$s set the disappearing message timer to %2$s.</string>
+    <string name="message_record_your_safety_number_with_s_has_changed">Your safety number with %s has changed.</string>
+    <string name="message_record_you_marked_your_safety_number_with_s_verified">You marked your safety number with %s verified</string>
+    <string name="message_record_you_marked_your_safety_number_with_s_verified_from_another_device">You marked your safety number with %s verified from another device</string>
+    <string name="message_record_you_marked_your_safety_number_with_s_unverified">You marked your safety number with %s unverified</string>
+    <string name="message_record_you_marked_your_safety_number_with_s_unverified_from_another_device">You marked your safety number with %s unverified from another device</string>
+
+    <string name="conversation_item_group_action_left">%1$s has left the group.</string>
 
 
+    <string name="sms_message_record_received_corrupted_key_exchange_message">Received corrupted key
+        exchange message!
+    </string>
+    <string name="sms_message_record_received_key_exchange_message_for_invalid_protocol_version">
+        Received key exchange message for invalid protocol version.
+    </string>
+    <string name="sms_message_record_received_message_with_new_safety_number_tap_to_process">Received message with new safety number. Tap to process and display.</string>
+    <string name="sms_message_record_secure_session_reset">You reset the secure session.</string>
+    <string name="sms_message_record_secure_session_reset_s">%s reset the secure session.</string>
+    <string name="conversation_item_received_key_exchange_message_tap_to_process">Received key exchange message, tap to process.</string>
+
+    <string name="mms_message_record_bad_encrypted_mms_message">Bad encrypted MMS message</string>
+    <string name="mms_message_record_mms_message_encrypted_for_non_existing_session">MMS message encrypted for non-existing session</string>
+    <string name="notification_mms_message_ecord_multimedia_message">Multimedia message</string>
+    <string name="notification_mms_message_ecord_downloading_mms_message">Downloading MMS message</string>
+    <string name="notification_mms_message_ecord_error_downloading_mms_message">Error downloading MMS message, tap to retry</string>
+    <string name="sms_message_record_duplicate_message">Duplicate message.</string>
+    <plurals name="group_util_joined_the_group">
+        <item quantity="one">%1$s joined the group.</item>
+        <item quantity="other">%1$s joined the group.</item>
+    </plurals>
+    <string name="group_util_group_name_is_now">Group name is now \'%1$s\'.</string>
+    <string name="recipient_provider_unnamed_group">Unnamed group</string>
+    <string name="message_notifier_contact_message">%1$s %2$s</string>
+    <string name="message_notifier_unknown_contact_message">Contact</string>
+    <string name="notification_channel_messages">Default</string>
+    <string name="notification_channel_calls">Calls</string>
+    <string name="notification_channel_failures">Failures</string>
+    <string name="notification_channel_backups">Backups</string>
+    <string name="notification_channel_locked_status">Lock status</string>
+    <string name="notification_channel_app_updates">App updates</string>
+    <string name="notification_channel_other">Other</string>
+    <string name="notification_channel_group_messages">Messages</string>
+    <string name="notification_channel_missing_display_name">Unknown</string>
+    <string name="draft_database_Draft_image_snippet">(image)</string>
+    <string name="draft_database_Draft_audio_snippet">(audio)</string>
+    <string name="draft_database_Draft_video_snippet">(video)</string>
+    <string name="draft_database_Draft_location_snippet">(location)</string>
+    <string name="draft_database_Draft_quote_snippet">(reply)</string>
+    <string name="contacts_database_message_s">Message %s</string>
+    <string name="contacts_database_signal_call_s">mUzima Call %s</string>
+    <string name="abstract_notification_builder_new_message">New message</string>
+    <string name="message_notifier_message_delivery_failed">Message delivery failed.</string>
+    <string name="message_notifier_failed_to_deliver_message">Failed to deliver message.</string>
+    <string name="message_notifier_error_delivering_message">Error delivering message.</string>
+    <string name="message_notifier_pending_messages">Pending mUzima messages</string>
+    <string name="message_notifier_you_have_pending_messages">You have pending mUzima messages, tap to open and retrieve</string>
+    <string name="send_job_sending_a_message">Sending a message...</string>
+    <string name="identity_util_unverified_banner_one">Your safety number with %s has changed and is no longer verified</string>
+    <string name="identity_util_unverified_banner_two">Your safety numbers with %1$s and %2$s are no longer verified</string>
+    <string name="identity_util_unverified_banner_many">Your safety numbers with %1$s, %2$s, and %3$s are no longer verified</string>
+
+    <string name="identity_util_unverified_dialog_one">Your safety number with %1$s has changed and is no longer verified. This could either mean that someone is trying to intercept your communication, or that %1$s simply reinstalled mUzima.</string>
+    <string name="identity_util_unverified_dialog_two">Your safety numbers with %1$s and %2$s are no longer verified. This could either mean that someone is trying to intercept your communication, or that they simply reinstalled mUzima.</string>
+    <string name="identity_util_unverified_dialog_many">Your safety numbers with %1$s, %2$s, and %3$s are no longer verified. This could either mean that someone is trying to intercept your communication, or that they simply reinstalled mUzima.</string>
+
+    <string name="identity_util_untrusted_dialog_one">Your safety number with %s just changed.</string>
+    <string name="identity_util_untrusted_dialog_two">Your safety numbers with %1$s and %2$s just changed.</string>
+    <string name="identity_util_untrusted_dialog_many">Your safety numbers with %1$s, %2$s, and %3$s just changed.</string>
+
+    <plurals name="identity_others">
+        <item quantity="one">%d other</item>
+        <item quantity="other">%d others</item>
+    </plurals>
+
+    <string name="message_retrieval_service_signal">mUzima</string>
+    <string name="message_retrieval_service_background_connection_enabled">Background connection enabled</string>
+
+    <string name="SQL_cipher_migration_helper_migrating_signal_database">Migrating mUzima messageRecipientController</string>
 </resources>

@@ -24,8 +24,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import com.muzima.messaging.TextSecurePreferences;
+import com.muzima.messaging.utils.GroupUtil;
 import com.muzima.messaging.utils.Util;
 import com.muzima.util.DelimiterUtil;
+import com.muzima.utils.NumberUtil;
 
 public class SignalAddress implements Parcelable, Comparable<SignalAddress> {
 
@@ -118,6 +120,37 @@ public class SignalAddress implements Parcelable, Comparable<SignalAddress> {
         if (this == other) return true;
         if (other == null || !(other instanceof SignalAddress)) return false;
         return address.equals(((SignalAddress) other).address);
+    }
+
+    public boolean isGroup() {
+        return GroupUtil.isEncodedGroup(address);
+    }
+
+    public boolean isMmsGroup() {
+        return GroupUtil.isMmsGroup(address);
+    }
+
+    public boolean isEmail() {
+        return NumberUtil.isValidEmail(address);
+    }
+
+    public boolean isPhone() {
+        return !isGroup() && !isEmail();
+    }
+
+    public @NonNull String toGroupString() {
+        if (!isGroup()) throw new AssertionError("Not group: " + address);
+        return address;
+    }
+
+    public @NonNull String toPhoneString() {
+        if (!isPhone()) throw new AssertionError("Not e164: " + address);
+        return address;
+    }
+
+    public @NonNull String toEmailString() {
+        if (!isEmail()) throw new AssertionError("Not email: " + address);
+        return address;
     }
 
     @Override
