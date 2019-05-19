@@ -3,6 +3,8 @@ package com.muzima.messaging.mms;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.android.mms.service_alt.MmsConfig;
+
 public class MmsMediaConstraints extends MediaConstraints {
     private static final int DEFAULT_MAX_IMAGE_DIMEN  = 1024;
     private static final int DEFAULT_MAX_MESSAGE_SIZE = 280 * 1024;
@@ -15,24 +17,24 @@ public class MmsMediaConstraints extends MediaConstraints {
 
     @Override
     public int getImageMaxWidth(Context context) {
-//        MmsConfig mmsConfig = MmsConfigManager.getMmsConfig(context, subscriptionId);
-//
-//        if (mmsConfig != null) {
-//            MmsConfig.Overridden overridden = new MmsConfig.Overridden(mmsConfig, new Bundle());
-//            return overridden.getMaxImageWidth();
-//        }
+        MmsConfig mmsConfig = MmsConfigManager.getMmsConfig(context, subscriptionId);
+
+        if (mmsConfig != null) {
+            MmsConfig.Overridden overridden = new MmsConfig.Overridden(mmsConfig, new Bundle());
+            return overridden.getMaxImageWidth();
+        }
 
         return DEFAULT_MAX_IMAGE_DIMEN;
     }
 
     @Override
     public int getImageMaxHeight(Context context) {
-//        MmsConfig mmsConfig = MmsConfigManager.getMmsConfig(context, subscriptionId);
-//
-//        if (mmsConfig != null) {
-//            MmsConfig.Overridden overridden = new MmsConfig.Overridden(mmsConfig, new Bundle());
-//            return overridden.getMaxImageHeight();
-//        }
+        MmsConfig mmsConfig = MmsConfigManager.getMmsConfig(context, subscriptionId);
+
+        if (mmsConfig != null) {
+            MmsConfig.Overridden overridden = new MmsConfig.Overridden(mmsConfig, new Bundle());
+            return overridden.getMaxImageHeight();
+        }
 
         return DEFAULT_MAX_IMAGE_DIMEN;
     }
@@ -63,12 +65,12 @@ public class MmsMediaConstraints extends MediaConstraints {
     }
 
     private int getMaxMessageSize(Context context) {
-//        MmsConfig mmsConfig = MmsConfigManager.getMmsConfig(context, subscriptionId);
-//
-//        if (mmsConfig != null) {
-//            MmsConfig.Overridden overridden = new MmsConfig.Overridden(mmsConfig, new Bundle());
-//            return overridden.getMaxMessageSize();
-//        }
+        MmsConfig mmsConfig = MmsConfigManager.getMmsConfig(context, subscriptionId);
+
+        if (mmsConfig != null) {
+            MmsConfig.Overridden overridden = new MmsConfig.Overridden(mmsConfig, new Bundle());
+            return overridden.getMaxMessageSize();
+        }
 
         return DEFAULT_MAX_MESSAGE_SIZE;
     }

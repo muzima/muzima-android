@@ -78,5 +78,25 @@
     <attr name="theme_type" format="string"/>
     <attr name="conversation_icon_attach_audio" format="reference"/>
     <attr name="conversation_icon_attach_video" format="reference" />
+    <declare-styleable name="EmojiTextView">
+        <attr name="scaleEmojis" format="boolean" />
+    </declare-styleable>
+    <attr name="attachment_document_icon_small" format="reference" />
+    <attr name="conversation_input_background" format="reference"/>
+    <attr name="conversation_item_sent_text_primary_color" format="reference|color"/>
+    <attr name="quick_camera_icon" format="reference"/>
+    <attr name="conversation_input_inline_attach_icon_tint" format="reference"/>
+    <attr name="conversation_transport_sms_indicator" format="reference"/>
+    <attr name="quick_mic_icon" format="reference"/>
+
+    <declare-styleable name="QuoteView">
+        <attr name="message_type" format="enum">
+            <enum name="preview" value="0" />
+            <enum name="outgoing" value="1" />
+            <enum name="incoming" value="2" />
+        </attr>
+        <attr name="quote_colorPrimary" format="color" />
+        <attr name="quote_colorSecondary" format="color" />
+    </declare-styleable>
 
 </resources>

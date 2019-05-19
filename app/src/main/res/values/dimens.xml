@@ -37,6 +37,13 @@
     <dimen name="emoji_drawer_indicator_height">1dp</dimen>
     <dimen name="conversation_item_body_text_size">16sp</dimen>
     <dimen name="contact_photo_target_size">64dp</dimen>
+    <dimen name="quote_corner_radius_bottom">4dp</dimen>
+    <dimen name="conversation_compose_height">40dp</dimen>
+    <dimen name="transport_selection_popup_width">200sp</dimen>
+    <dimen name="transport_selection_popup_xoff">2dp</dimen>
+    <dimen name="transport_selection_popup_yoff">2dp</dimen>
+    <dimen name="quote_corner_radius_large">10dp</dimen>
+    <dimen name="quote_corner_radius_preview">18dp</dimen>
 
 
 </resources>

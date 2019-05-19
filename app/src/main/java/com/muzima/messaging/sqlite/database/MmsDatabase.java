@@ -11,6 +11,8 @@ import android.util.Log;
 import android.util.Pair;
 
 import com.annimon.stream.Stream;
+import com.google.android.mms.pdu_alt.NotificationInd;
+import com.google.android.mms.pdu_alt.PduHeaders;
 import com.muzima.MuzimaApplication;
 import com.muzima.messaging.TextSecurePreferences;
 import com.muzima.messaging.attachments.Attachment;
@@ -271,13 +273,13 @@ public class MmsDatabase extends MessagingDatabase {
         }
     }
 
-//    private long getThreadIdFor(@NonNull NotificationInd notification) {
-//        String fromString = notification.getFrom() != null && notification.getFrom().getTextString() != null
-//                ? Util.toIsoString(notification.getFrom().getTextString())
-//                : "";
-//        SignalRecipient recipient = SignalRecipient.from(context, SignalAddress.fromExternal(context, fromString), false);
-//        return DatabaseFactory.getThreadDatabase(context).getThreadIdFor(recipient);
-//    }
+    private long getThreadIdFor(@NonNull NotificationInd notification) {
+        String fromString = notification.getFrom() != null && notification.getFrom().getTextString() != null
+                ? Util.toIsoString(notification.getFrom().getTextString())
+                : "";
+        SignalRecipient recipient = SignalRecipient.from(context, SignalAddress.fromExternal(context, fromString), false);
+        return DatabaseFactory.getThreadDatabase(context).getThreadIdFor(recipient);
+    }
 
     private Cursor rawQuery(@NonNull String where, @Nullable String[] arguments) {
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
@@ -724,7 +726,7 @@ public class MmsDatabase extends MessagingDatabase {
         contentValues.put(ADDRESS, retrieved.getFrom().serialize());
 
         contentValues.put(MESSAGE_BOX, mailbox);
-//        contentValues.put(MESSAGE_TYPE, PduHeaders.MESSAGE_TYPE_RETRIEVE_CONF);
+        contentValues.put(MESSAGE_TYPE, PduHeaders.MESSAGE_TYPE_RETRIEVE_CONF);
         contentValues.put(THREAD_ID, threadId);
         contentValues.put(CONTENT_LOCATION, contentLocation);
         contentValues.put(STATUS, Status.DOWNLOAD_INITIALIZED);
@@ -799,40 +801,40 @@ public class MmsDatabase extends MessagingDatabase {
         return insertMessageInbox(retrieved, "", threadId, type);
     }
 
-//    public Pair<Long, Long> insertMessageInbox(@NonNull NotificationInd notification, int subscriptionId) {
-//        SQLiteDatabase db = databaseHelper.getWritableDatabase();
-//        long threadId = getThreadIdFor(notification);
-//        ContentValues contentValues = new ContentValues();
-//        ContentValuesBuilder contentBuilder = new ContentValuesBuilder(contentValues);
-//
-//        Log.i(TAG, "Message received type: " + notification.getMessageType());
-//
-//
-//        contentBuilder.add(CONTENT_LOCATION, notification.getContentLocation());
-//        contentBuilder.add(DATE_SENT, System.currentTimeMillis());
-//        contentBuilder.add(EXPIRY, notification.getExpiry());
-//        contentBuilder.add(MESSAGE_SIZE, notification.getMessageSize());
-//        contentBuilder.add(TRANSACTION_ID, notification.getTransactionId());
-//        contentBuilder.add(MESSAGE_TYPE, notification.getMessageType());
-//
-//        if (notification.getFrom() != null) {
-//            contentValues.put(ADDRESS, SignalAddress.fromExternal(context, Util.toIsoString(notification.getFrom().getTextString())).serialize());
-//        }
-//
-//        contentValues.put(MESSAGE_BOX, Types.BASE_INBOX_TYPE);
-//        contentValues.put(THREAD_ID, threadId);
-//        contentValues.put(STATUS, Status.DOWNLOAD_INITIALIZED);
-//        contentValues.put(DATE_RECEIVED, generatePduCompatTimestamp());
-//        contentValues.put(READ, Util.isDefaultSmsProvider(context) ? 0 : 1);
-//        contentValues.put(SUBSCRIPTION_ID, subscriptionId);
-//
-//        if (!contentValues.containsKey(DATE_SENT))
-//            contentValues.put(DATE_SENT, contentValues.getAsLong(DATE_RECEIVED));
-//
-//        long messageId = db.insert(TABLE_NAME, null, contentValues);
-//
-//        return new Pair<>(messageId, threadId);
-//    }
+    public Pair<Long, Long> insertMessageInbox(@NonNull NotificationInd notification, int subscriptionId) {
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        long threadId = getThreadIdFor(notification);
+        ContentValues contentValues = new ContentValues();
+        ContentValuesBuilder contentBuilder = new ContentValuesBuilder(contentValues);
+
+        Log.i(TAG, "Message received type: " + notification.getMessageType());
+
+
+        contentBuilder.add(CONTENT_LOCATION, notification.getContentLocation());
+        contentBuilder.add(DATE_SENT, System.currentTimeMillis());
+        contentBuilder.add(EXPIRY, notification.getExpiry());
+        contentBuilder.add(MESSAGE_SIZE, notification.getMessageSize());
+        contentBuilder.add(TRANSACTION_ID, notification.getTransactionId());
+        contentBuilder.add(MESSAGE_TYPE, notification.getMessageType());
+
+        if (notification.getFrom() != null) {
+            contentValues.put(ADDRESS, SignalAddress.fromExternal(context, Util.toIsoString(notification.getFrom().getTextString())).serialize());
+        }
+
+        contentValues.put(MESSAGE_BOX, Types.BASE_INBOX_TYPE);
+        contentValues.put(THREAD_ID, threadId);
+        contentValues.put(STATUS, Status.DOWNLOAD_INITIALIZED);
+        contentValues.put(DATE_RECEIVED, generatePduCompatTimestamp());
+        contentValues.put(READ, Util.isDefaultSmsProvider(context) ? 0 : 1);
+        contentValues.put(SUBSCRIPTION_ID, subscriptionId);
+
+        if (!contentValues.containsKey(DATE_SENT))
+            contentValues.put(DATE_SENT, contentValues.getAsLong(DATE_RECEIVED));
+
+        long messageId = db.insert(TABLE_NAME, null, contentValues);
+
+        return new Pair<>(messageId, threadId);
+    }
 
     public void markIncomingNotificationReceived(long threadId) {
         notifyConversationListeners(threadId);
@@ -870,7 +872,7 @@ public class MmsDatabase extends MessagingDatabase {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(DATE_SENT, message.getSentTimeMillis());
-//        contentValues.put(MESSAGE_TYPE, PduHeaders.MESSAGE_TYPE_SEND_REQ);
+        contentValues.put(MESSAGE_TYPE, PduHeaders.MESSAGE_TYPE_SEND_REQ);
 
         contentValues.put(MESSAGE_BOX, type);
         contentValues.put(THREAD_ID, threadId);
@@ -1219,11 +1221,11 @@ public class MmsDatabase extends MessagingDatabase {
         public MessageRecord getCurrent() {
             long mmsType = cursor.getLong(cursor.getColumnIndexOrThrow(MmsDatabase.MESSAGE_TYPE));
 
-//            if (mmsType == PduHeaders.MESSAGE_TYPE_NOTIFICATION_IND) {
+            if (mmsType == PduHeaders.MESSAGE_TYPE_NOTIFICATION_IND) {
                 return getNotificationMmsMessageRecord(cursor);
-//            } else {
-//                return getMediaMmsMessageRecord(cursor);
-//            }
+            } else {
+                return getMediaMmsMessageRecord(cursor);
+            }
         }
 
         private NotificationMmsMessageRecord getNotificationMmsMessageRecord(Cursor cursor) {
@@ -1251,12 +1253,12 @@ public class MmsDatabase extends MessagingDatabase {
 
             byte[] contentLocationBytes = null;
             byte[] transactionIdBytes = null;
-            //todo enable Util.toIsoBytes
-            //if (!TextUtils.isEmpty(contentLocation))
-               // contentLocationBytes = Util.toIsoBytes(contentLocation);
 
-            //if (!TextUtils.isEmpty(transactionId))
-               // transactionIdBytes = Util.toIsoBytes(transactionId);
+            if (!TextUtils.isEmpty(contentLocation))
+                contentLocationBytes = Util.toIsoBytes(contentLocation);
+
+            if (!TextUtils.isEmpty(transactionId))
+                transactionIdBytes = Util.toIsoBytes(transactionId);
 
             SlideDeck slideDeck = new SlideDeck(context, new MmsNotificationAttachment(status, messageSize));
 

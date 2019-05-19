@@ -25,6 +25,8 @@ import android.text.TextUtils;
 import android.text.style.StyleSpan;
 import android.util.Log;
 
+import com.google.android.mms.pdu_alt.CharacterSets;
+import com.google.android.mms.pdu_alt.EncodedStringValue;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
@@ -34,6 +36,7 @@ import org.whispersystems.libsignal.util.guava.Optional;
 
 import com.muzima.messaging.LinkedBlockingLifoQueue;
 import com.muzima.messaging.TextSecurePreferences;
+import com.muzima.messaging.components.ComposeText;
 import com.muzima.messaging.sqlite.database.SignalAddress;
 import com.muzima.utils.Base64;
 
@@ -102,20 +105,19 @@ public class Util {
         ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingLifoQueue<Runnable>());
 
         executor.execute(() -> {
-//        Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
             Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
         });
 
         return executor;
     }
 
-//    public static boolean isEmpty(EncodedStringValue[] value) {
-//        return value == null || value.length == 0;
-//    }
-//
-//    public static boolean isEmpty(ComposeText value) {
-//        return value == null || value.getText() == null || TextUtils.isEmpty(value.getTextTrimmed());
-//    }
+    public static boolean isEmpty(EncodedStringValue[] value) {
+        return value == null || value.length == 0;
+    }
+
+    public static boolean isEmpty(ComposeText value) {
+        return value == null || value.getText() == null || TextUtils.isEmpty(value.getTextTrimmed());
+    }
 
     public static <K, V> V getOrDefault(@NonNull Map<K, V> map, K key, V defaultValue) {
         return map.containsKey(key) ? map.get(key) : defaultValue;
@@ -129,30 +131,30 @@ public class Util {
 
         return spanned;
     }
-//todo work on charactersets
-//    public static @NonNull String toIsoString(byte[] bytes) {
-//        try {
-//            return new String(bytes, CharacterSets.MIMENAME_ISO_8859_1);
-//        } catch (UnsupportedEncodingException e) {
-//            throw new AssertionError("ISO_8859_1 must be supported!");
-//        }
-//    }
 
-//    public static byte[] toIsoBytes(String isoString) {
-//        try {
-//            return isoString.getBytes(CharacterSets.MIMENAME_ISO_8859_1);
-//        } catch (UnsupportedEncodingException e) {
-//            throw new AssertionError("ISO_8859_1 must be supported!");
-//        }
-//    }
+    public static @NonNull String toIsoString(byte[] bytes) {
+        try {
+            return new String(bytes, CharacterSets.MIMENAME_ISO_8859_1);
+        } catch (UnsupportedEncodingException e) {
+            throw new AssertionError("ISO_8859_1 must be supported!");
+        }
+    }
 
-//    public static byte[] toUtf8Bytes(String utf8String) {
-//        try {
-//            return utf8String.getBytes(CharacterSets.MIMENAME_UTF_8);
-//        } catch (UnsupportedEncodingException e) {
-//            throw new AssertionError("UTF_8 must be supported!");
-//        }
-//    }
+    public static byte[] toIsoBytes(String isoString) {
+        try {
+            return isoString.getBytes(CharacterSets.MIMENAME_ISO_8859_1);
+        } catch (UnsupportedEncodingException e) {
+            throw new AssertionError("ISO_8859_1 must be supported!");
+        }
+    }
+
+    public static byte[] toUtf8Bytes(String utf8String) {
+        try {
+            return utf8String.getBytes(CharacterSets.MIMENAME_UTF_8);
+        } catch (UnsupportedEncodingException e) {
+            throw new AssertionError("UTF_8 must be supported!");
+        }
+    }
 
     public static void wait(Object lock, long timeout) {
         try {
