@@ -170,6 +170,12 @@ public class ViewUtil {
         return (T)(inflater.inflate(layoutResId, parent, false));
     }
 
+    public static void mirrorIfRtl(View view, Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            view.setScaleX(-1.0f);
+        }
+    }
+
     public static int dpToPx(Context context, int dp) {
         return (int)((dp * context.getResources().getDisplayMetrics().density) + 0.5);
     }

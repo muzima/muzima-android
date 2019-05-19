@@ -188,6 +188,10 @@ dependencies {
     annotationProcessor 'com.squareup.dagger:dagger-compiler:1.2.2'
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
     compile 'org.signal:android-database-sqlcipher:3.5.9-S3'
+    compile ('com.klinkerapps:android-smsmms:4.0.1') {
+        exclude group: 'com.squareup.okhttp', module: 'okhttp'
+        exclude group: 'com.squareup.okhttp', module: 'okhttp-urlconnection'
+    }
 
     testCompile fileTree('lib/stickylistheaders-1.0.0.jar')
     testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'

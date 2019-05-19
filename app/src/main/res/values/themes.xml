@@ -62,6 +62,12 @@
         <item name="emoji_variation_selector_background">@drawable/emoji_variation_selector_background_dark</item>
         <item name="conversation_icon_attach_audio">@drawable/ic_audio_dark</item>
         <item name="conversation_icon_attach_video">@drawable/ic_video_dark</item>
+        <item name="attachment_document_icon_small">@drawable/ic_document_small_dark</item>
+        <item name="conversation_input_background">@drawable/compose_background_dark</item>
+        <item name="conversation_item_sent_text_primary_color">@color/gray12</item>
+        <item name="quick_camera_icon">@drawable/quick_camera_dark</item>
+        <item name="conversation_input_inline_attach_icon_tint">@color/gray12</item>
+        <item name="quick_mic_icon">@drawable/ic_mic_white_24dp</item>
     </style>
 
 
@@ -114,6 +120,12 @@
         <item name="emoji_variation_selector_background">@drawable/emoji_variation_selector_background_light</item>
         <item name="conversation_icon_attach_audio">@drawable/ic_audio_light</item>
         <item name="conversation_icon_attach_video">@drawable/ic_video_light</item>
+        <item name="attachment_document_icon_small">@drawable/ic_document_small_light</item>
+        <item name="conversation_input_background">@drawable/compose_background_light</item>
+        <item name="conversation_item_sent_text_primary_color">@color/grey_300</item>
+        <item name="quick_camera_icon">@drawable/quick_camera_light</item>
+        <item name="conversation_input_inline_attach_icon_tint">@color/grey_300</item>
+        <item name="quick_mic_icon">@drawable/ic_mic_grey600_24dp</item>
     </style>
 
 
@@ -153,6 +165,7 @@
         <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
         <item name="emoji_tab_strip_background">@color/gray12</item>
         <item name="emoji_tab_seperator">@color/gray70</item>
+
     </style>
 
     <!-- Application theme. -->

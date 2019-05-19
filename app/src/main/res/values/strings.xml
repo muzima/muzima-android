@@ -937,4 +937,22 @@
     <string name="message_retrieval_service_background_connection_enabled">Background connection enabled</string>
 
     <string name="SQL_cipher_migration_helper_migrating_signal_database">Migrating mUzima messageRecipientController</string>
+    <string name="conversation_activity_from_sim_name">From %1$s</string>
+    <string name="conversation_activity_transport_insecure_sms">Insecure SMS</string>
+    <string name="conversation_activity_transport_insecure_mms">Insecure MMS</string>
+    <string name="conversation_activity_transport_signal">mUzima</string>
+    <string name="conversation_activity_type_message_push">mUzima PHR message</string>
+    <string name="conversation_activity_type_message_sms_insecure">Unsecured SMS</string>
+    <string name="conversation_activity_type_message_mms_insecure">Unsecured MMS</string>
+    <string name="transport_selection_list_item_transport_icon">Transport icon</string>
+    <string name="conversation_activity_add_attachment">Add attachment</string>
+    <string name="conversation_activity_quick_attachment_drawer_toggle_camera_description">Toggle quick camera attachment drawer</string>
+    <string name="conversation_activity_quick_attachment_drawer_record_and_send_audio_description">Record and send audio attachment</string>
+    <string name="conversation_input_panel_slide_to_cancel">SLIDE TO CANCEL</string>
+    <string name="conversation_activity_send">Send</string>
+    <string name="quote_view_audio">Audio</string>
+    <string name="quote_view_video">Video</string>
+    <string name="quote_view_photo">Photo</string>
+    <string name="quote_view_you">You</string>
+
 </resources>
