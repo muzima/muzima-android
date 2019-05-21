@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/sms_failed_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/conversation_item_sent_send_failed_indicator_description"
+        android:src="@drawable/ic_error"
+        android:tint="@color/cpb_red"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/pending_approval_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@string/conversation_item_sent_pending_approval_description"
+        android:src="@drawable/ic_error"
+        android:tint="@color/grey_300"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+</merge>

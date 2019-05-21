@@ -7,7 +7,7 @@
   ~ If the user is an entity intending to commercialize any application that uses
   ~  this code in a for-profit venture,please contact the copyright holder.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="SHR_card_text">SHR Card</string>
     <string name="SHR_data_title_text">SHR Data</string>
     <string name="SHR_extracted_data_text">SHR extracted data</string>
@@ -941,7 +941,7 @@
     <string name="conversation_activity_transport_insecure_sms">Insecure SMS</string>
     <string name="conversation_activity_transport_insecure_mms">Insecure MMS</string>
     <string name="conversation_activity_transport_signal">mUzima</string>
-    <string name="conversation_activity_type_message_push">mUzima PHR message</string>
+    <string name="conversation_activity_type_message_push">mUzima message</string>
     <string name="conversation_activity_type_message_sms_insecure">Unsecured SMS</string>
     <string name="conversation_activity_type_message_mms_insecure">Unsecured MMS</string>
     <string name="transport_selection_list_item_transport_icon">Transport icon</string>
@@ -954,5 +954,136 @@
     <string name="quote_view_video">Video</string>
     <string name="quote_view_photo">Photo</string>
     <string name="quote_view_you">You</string>
+    <string name="push_notification_receive_job_retrieving_a_message">Retrieving a message...</string>
+    <string name="passphrase_prompt_activity_watermark_content_description">mUzima icon</string>
+    <string name="prompt_passphrase_activity_signal_is_locked">mUzima Messaging is locked</string>
+    <string name="passphrase_prompt_activity_invalid_passphrase_exclamation">Invalid passphrase!</string>
+    <string name="passphrase_prompt_activity_enter_passphrase">Enter passphrase</string>
+    <string name="prompt_passphrase_activity_unlock">Unlock</string>
+    <string name="prompt_passphrase_activity_tap_to_unlock">TAP TO UNLOCK</string>
+    <string name="passphrase_prompt_activity_ok_button_content_description">Submit passphrase</string>
+    <string name="date_utils_just_now">Now</string>
+    <string name="date_utils_minutes_ago">%d min</string>
+    <plurals name="hours_ago">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+    <string name="conversation_list_fragment_empty">Give your inbox something to write home about. Get started by messaging a friend.</string>
+    <string name="conversation_item_sent_send_failed_indicator_description">Send Failed</string>
+    <string name="conversation_item_sent_pending_approval_description">Pending Approval</string>
+    <string name="conversation_list_item_view_archived">Archived</string>
+    <string name="search_toolbar_search">Search</string>
+    <string name="search_for_conversations_contacts_and_messages">Search for conversations, contacts, and messages</string>
+    <string name="app_needs_contacts_permission_in_order_to_search_your_contacts_but_it_has_been_permanently_denied">mUzima needs Contacts permission in order to search your contacts, but it has been permanently denied. Please continue to app settings, select \"Permissions\", and enable \"Contacts\".</string>
+    <string name="text_secure_normal__menu_new_group">New group</string>
+    <string name="text_secure_normal__menu_settings">Settings</string>
+    <string name="text_secure_normal__menu_clear_passphrase">Lock</string>
+    <string name="text_secure_normal__mark_all_as_read">Mark all read</string>
+    <string name="text_secure_normal__invite_friends">Invite friends</string>
+    <string name="text_secure_normal__help">Help</string>
+    <string name="audio_view_download_accessibility_description">Download</string>
+    <string name="conversation_item_sent__delivered_description">Delivered</string>
+    <string name="conversation_item_sent__message_read">Message read</string>
+    <string name="ConversationItem_error_not_delivered">Send failed, tap for details</string>
+    <string name="ConversationItem_received_key_exchange_message_tap_to_process">Received key exchange message, tap to process.</string>
+    <string name="ConversationItem_group_action_left">%1$s has left the group.</string>
+    <string name="ConversationItem_click_to_approve_unencrypted">Send failed, tap for unsecured fallback</string>
+    <string name="ConversationItem_click_to_approve_unencrypted_sms_dialog_title">Fallback to unencrypted SMS?</string>
+    <string name="ConversationItem_click_to_approve_unencrypted_mms_dialog_title">Fallback to unencrypted MMS?</string>
+    <string name="ConversationItem_click_to_approve_unencrypted_dialog_message">This message will <b>not</b> be encrypted because the recipient is no longer a mUzima user.\n\nSend unsecured message?</string>
+    <string name="ConversationItem_unable_to_open_media">Can\'t find an app able to open this media.</string>
+    <string name="ConversationItem_copied_text">Copied %s</string>
+    <string name="ConversationItem_from_s">from %s</string>
+    <string name="ConversationItem_to_s">to %s</string>
+    <string name="conversation_item__mms_image_description">Media message</string>
+    <plurals name="TransferControlView_n_items">
+        <item quantity="one">%d Item</item>
+        <item quantity="other">%d Items</item>
+    </plurals>
+    <string name="AudioSlidePlayer_error_playing_audio">Error playing audio!</string>
+    <string name="ConfirmIdentityDialog_your_safety_number_with_s_has_changed">Your safety number with %1$s has changed. This could either mean that someone is trying to intercept your communication, or that %2$s simply reinstalled mUzima.</string>
+    <string name="ConfirmIdentityDialog_you_may_wish_to_verify_your_safety_number_with_this_contact">You may wish to verify your safety number with this contact.</string>
+    <string name="ConfirmIdentityDialog_accept">Accept</string>
+    <string name="DateUtils_today">Today</string>
+    <string name="DateUtils_yesterday">Yesterday</string>
+    <plurals name="ConversationAdapter_n_unread_messages">
+        <item quantity="one">%d unread message</item>
+        <item quantity="other">%d unread messages</item>
+    </plurals>
+    <string name="InviteActivity_cancel">Cancel</string>
+    <string name="GroupShareProfileView_share_your_profile_name_and_photo_with_this_group">Share your profile name and photo with this group?</string>
+    <string name="GroupShareProfileView_do_you_want_to_make_your_profile_name_and_photo_visible_to_all_current_and_future_members_of_this_group">Do you want to make your profile name and photo visible to all current and future members of this group?</string>
+    <string name="GroupShareProfileView_make_visible">Make visible</string>
+    <string name="profile_group_share_view__make_your_profile_name_and_photo_visible_to_this_group">Make your profile name and photo visible to this group?</string>
+    <string name="conversation_activity__enable_signal_messages">ENABLE mUzima MESSAGES</string>
+    <string name="ConversationActivity_unblock">Unblock</string>
+    <string name="conversation_activity__enable_signal_for_sms">Enable app for SMS</string>
+    <string name="conversation_activity__attachment_thumbnail">Attachment Thumbnail</string>
+    <string name="conversation_item_received__contact_photo_description">Contact photo</string>
+    <string name="UnknownSenderView_block_s">Block %s?</string>
+    <string name="UnknownSenderView_blocked_contacts_will_no_longer_be_able_to_send_you_messages_or_call_you">Blocked contacts will no longer be able to send you messages or call you.</string>
+    <string name="UnknownSenderView_block">Block</string>
+    <string name="UnknownSenderView_share_profile_with_s">Share profile with %s?</string>
+    <string name="UnknownSenderView_the_easiest_way_to_share_your_profile_information_is_to_add_the_sender_to_your_contacts">The easiest way to share your profile information is to add the sender to your contacts. If you do not wish to, you can still share your profile information this way.</string>
+    <string name="UnknownSenderView_share_profile">Share profile</string>
+    <string name="unknown_sender_view__don_t_add_but_make_my_profile_visible">DON\'T ADD, BUT MAKE MY PROFILE VISIBLE</string>
+    <string name="unknown_sender_view__the_sender_is_not_in_your_contact_list">The sender is not in your contact list</string>
+    <string name="unknown_sender_view__block">BLOCK</string>
+    <string name="unknown_sender_view__add_to_contacts">ADD TO CONTACTS</string>
+    <string name="load_more_header__see_full_conversation">See full conversation</string>
+    <string name="load_more_header__loading">Loading</string>
+    <string name="conversation_context__menu_message_details">Message details</string>
+    <string name="conversation_context__menu_copy_text">Copy text</string>
+    <string name="conversation_context__menu_delete_message">Delete message</string>
+    <string name="conversation_context__menu_forward_message">Forward message</string>
+    <string name="conversation_context__menu_resend_message">Resend message</string>
+    <string name="conversation_context__menu_reply_to_message">Reply to message</string>
+    <string name="conversation_context_image__save_attachment">Save attachment</string>
+    <plurals name="ConversationFragment_delete_selected_messages">
+        <item quantity="one">Delete selected message?</item>
+        <item quantity="other">Delete selected messages?</item>
+    </plurals>
+    <plurals name="ConversationFragment_this_will_permanently_delete_all_n_selected_messages">
+        <item quantity="one">This will permanently delete the selected message.</item>
+        <item quantity="other">This will permanently delete all %1$d selected messages.</item>
+    </plurals>
+    <string name="delete">Delete</string>
+    <string name="ConversationFragment_deleting">Deleting</string>
+    <string name="ConversationFragment_deleting_messages"><![CDATA[>Deleting messages...]]></string>
+    <string name="ConversationFragment_quoted_message_not_found">Original message not found</string>
+    <string name="ConversationFragment_quoted_message_no_longer_available">Original message no longer available</string>
+    <string name="InviteActivity_lets_switch_to_signal">Let\\\'s switch to mUzima: %1$s</string>
+    <string name="ConversationActivity_to_call_s_signal_needs_access_to_your_microphone_and_camera">To call %s, mUzima needs access to your microphone and camera.</string>
+    <string name="ConversationActivity_signal_needs_the_microphone_and_camera_permissions_in_order_to_call_s">mUzima needs the Microphone and Camera permissions in order to call %s, but they have been permanently denied. Please continue to app settings, select \"Permissions\", and enable \"Microphone\" and \"Camera\".</string>
+    <string name="CommunicationActions_no_browser_found">No web browser found.</string>
+    <string name="ConversationActivity_there_is_no_app_available_to_handle_this_link_on_your_device">There is no app available to handle this link on your device.</string>
+    <string name="ConversationActivity_quoted_contact_message">%1$s %2$s</string>
+    <string name="DocumentView_unknown_file">Unknown file</string>
+    <string name="SharedContactView_message">mUzima Message</string>
+    <string name="SharedContactView_invite_to_signal">Invite to mUzima</string>
+    <string name="SharedContactView_add_to_contacts">Add to Contacts</string>
+    <string name="AlbumThumbnailView_plus">\\+%d</string>
+    <string name="ConversationActivity_compose_message">Compose message</string>
+    <string name="contact_selection_activity__enter_name_or_number">Enter name or number</string>
+    <string name="new_conversation_activity__refresh">Refresh</string>
+    <string name="contact_selection_list_fragment__signal_needs_access_to_your_contacts_in_order_to_display_them">mUzima needs access to your contacts in order to display them.</string>
+    <string name="contact_selection_list_fragment__show_contacts">Show Contacts</string>
+    <string name="contact_selection_group_activity__finding_contacts" tools:ignore="ExtraTranslation"><![CDATA[Loading contacts&#8230;]]></string>
+    <string name="ContactsCursorLoader_recent_chats">Recent chats</string>
+    <string name="ContactsCursorLoader_contacts">Contacts</string>
+    <string name="ContactsCursorLoader_groups">Groups</string>
+    <string name="contact_selection_list__unknown_contact">New message to…</string>
+    <string name="ContactSelectionListFragment_signal_requires_the_contacts_permission_in_order_to_display_your_contacts">mUzima requires the Contacts permission in order to display your contacts, but it has been permanently denied. Please continue to the app settings menu, select \"Permissions\", and enable \"Contacts\".</string>
+    <string name="ContactSelectionListFragment_error_retrieving_contacts_check_your_network_connection">Error retrieving contacts, check your network connection</string>
+    <string name="ConversationListFragment_loading">Loading…</string>
+    <string name="contact_selection_group_activity__no_contacts">No contacts.</string>
+    <string name="KeyCachingService_signal_passphrase_cached">Touch to open.</string>
+    <string name="KeyCachingService_signal_passphrase_cached_with_lock">Touch to open, or touch the lock to close.</string>
+    <string name="KeyCachingService_passphrase_cached">mUzima PHR is unlocked</string>
+    <string name="KeyCachingService_lock">Lock mUzima PHR</string>
+    <string name="PlayServicesProblemFragment_the_version_of_google_play_services_you_have_installed_is_not_functioning">The version of Google Play Services you have installed is not functioning correctly.  Please reinstall Google Play Services and try again.</string>
+    <string name="GcmRefreshJob_Permanent_Signal_communication_failure">Permanent mUzima PHR communication failure!</string>
+    <string name="GcmRefreshJob_Signal_was_unable_to_register_with_Google_Play_Services">mUzima PHR was unable to register with Google Play Services. mUzima PHR messages and calls have been disabled, please try re-registering in Settings &gt; Advanced.</string>
+
 
 </resources>

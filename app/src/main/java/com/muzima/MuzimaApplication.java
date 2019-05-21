@@ -10,17 +10,20 @@
 
 package com.muzima;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.Application;
 import android.arch.lifecycle.DefaultLifecycleObserver;
 import android.arch.lifecycle.ProcessLifecycleOwner;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDexApplication;
+import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.security.ProviderInstaller;
 import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
 import com.muzima.api.model.User;
@@ -43,10 +46,18 @@ import com.muzima.controller.ProviderController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
+import com.muzima.messaging.TextSecurePreferences;
+import com.muzima.messaging.dependencies.AxolotlStorageModule;
+import com.muzima.messaging.dependencies.SignalCommunicationModule;
 import com.muzima.messaging.jobmanager.JobManager;
 import com.muzima.messaging.jobmanager.dependencies.DependencyInjector;
 import com.muzima.messaging.jobmanager.dependencies.InjectableType;
+import com.muzima.messaging.jobs.CreateSignedPreKeyJob;
+import com.muzima.messaging.jobs.GcmRefreshJob;
+import com.muzima.messaging.jobs.MultiDeviceContactUpdateJob;
+import com.muzima.messaging.jobs.PushNotificationReceiveJob;
 import com.muzima.messaging.push.SignalServiceNetworkAccess;
+import com.muzima.notifications.NotificationChannels;
 import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.ExpiringMessageManager;
 import com.muzima.service.LocalePreferenceService;
@@ -63,11 +74,17 @@ import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpSender;
+import org.webrtc.PeerConnectionFactory;
+import org.webrtc.voiceengine.WebRtcAudioManager;
+import org.webrtc.voiceengine.WebRtcAudioUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.security.Security;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import androidx.work.Configuration;
 import androidx.work.WorkManager;
@@ -175,7 +192,16 @@ public class MuzimaApplication extends MultiDexApplication implements Dependency
         }
 
         initializeRandomNumberFix();
+        initializeDependencyInjection();
+        initializeJobManager();
         initializeExpiringMessageManager();
+        initializeGcmCheck();
+        initializeSignedPreKeyCheck();
+        initializeCircumvention();
+        initializeWebRtc();
+        executePendingContactSync();
+        initializePendingMessages();
+        NotificationChannels.create(this);
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
 
     }
@@ -444,6 +470,11 @@ public class MuzimaApplication extends MultiDexApplication implements Dependency
         }
     }
 
+    private void initializeDependencyInjection() {
+        this.objectGraph = ObjectGraph.create(new SignalCommunicationModule(this, new SignalServiceNetworkAccess(this)),
+                new AxolotlStorageModule(this));
+    }
+
     public boolean isAppVisible() {
         return isAppVisible;
     }
@@ -458,6 +489,97 @@ public class MuzimaApplication extends MultiDexApplication implements Dependency
 
     private void initializeExpiringMessageManager() {
         this.expiringMessageManager = new ExpiringMessageManager(this);
+    }
+
+    private void initializeJobManager() {
+        WorkManager.initialize(this, new Configuration.Builder()
+                .setMinimumLoggingLevel(android.util.Log.DEBUG)
+                .build());
+
+        this.jobManager = new JobManager(this, WorkManager.getInstance());
+    }
+
+    private void initializeGcmCheck() {
+        if (TextSecurePreferences.isPushRegistered(this)) {
+            long nextSetTime = TextSecurePreferences.getGcmRegistrationIdLastSetTime(this) + TimeUnit.HOURS.toMillis(6);
+
+            if (TextSecurePreferences.getGcmRegistrationId(this) == null || nextSetTime <= System.currentTimeMillis()) {
+                this.jobManager.add(new GcmRefreshJob(this));
+            }
+        }
+    }
+
+    private void initializeSignedPreKeyCheck() {
+        if (!TextSecurePreferences.isSignedPreKeyRegistered(this)) {
+            jobManager.add(new CreateSignedPreKeyJob(this));
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void initializeCircumvention() {
+        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                if (new SignalServiceNetworkAccess(MuzimaApplication.this).isCensored(MuzimaApplication.this)) {
+                    try {
+                        ProviderInstaller.installIfNeeded(MuzimaApplication.this);
+                    } catch (Throwable t) {
+                        Log.w(getClass().getSimpleName(), t);
+                    }
+                }
+                return null;
+            }
+        };
+
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void initializePendingMessages() {
+        if (TextSecurePreferences.getNeedsMessagePull(this)) {
+            MuzimaApplication.getInstance(this).getJobManager().add(new PushNotificationReceiveJob(this));
+            TextSecurePreferences.setNeedsMessagePull(this, false);
+        }
+    }
+
+    private void executePendingContactSync() {
+        if (TextSecurePreferences.needsFullContactSync(this)) {
+            MuzimaApplication.getInstance(this).getJobManager().add(new MultiDeviceContactUpdateJob(this, true));
+        }
+
+    }
+
+    private void initializeWebRtc() {
+        try {
+            Set<String> HARDWARE_AEC_BLACKLIST = new HashSet<String>() {{
+                add("Pixel");
+                add("Pixel XL");
+                add("Moto G5");
+                add("Moto G (5S) Plus");
+                add("Moto G4");
+                add("TA-1053");
+                add("Mi A1");
+                add("E5823"); // Sony z5 compact
+            }};
+
+            Set<String> OPEN_SL_ES_WHITELIST = new HashSet<String>() {{
+                add("Pixel");
+                add("Pixel XL");
+            }};
+
+            if (HARDWARE_AEC_BLACKLIST.contains(Build.MODEL)) {
+                WebRtcAudioUtils.setWebRtcBasedAcousticEchoCanceler(true);
+            }
+
+            if (!OPEN_SL_ES_WHITELIST.contains(Build.MODEL)) {
+                WebRtcAudioManager.setBlacklistDeviceForOpenSLESUsage(true);
+            }
+
+            PeerConnectionFactory.initialize(PeerConnectionFactory.InitializationOptions.builder(this)
+                    .createInitializationOptions());
+
+        } catch (UnsatisfiedLinkError e) {
+            throw new AssertionError(e);
+        }
     }
 
 }

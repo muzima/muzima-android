@@ -34,6 +34,8 @@ import com.muzima.controller.FormController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
+import com.muzima.messaging.ConversationActivity;
+import com.muzima.messaging.ConversationListActivity;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.utils.ThemeUtils;
@@ -165,7 +167,7 @@ public class MainActivity extends BroadcastListenerActivity {
      * Called when the user clicks the Notifications area
      */
     public void notificationsList(View view) {
-        Intent intent = new Intent(this, NotificationsListActivity.class);
+        Intent intent = new Intent(this, ConversationListActivity.class);
         startActivity(intent);
     }
 

@@ -1,5 +1,6 @@
 package com.muzima.messaging;
 
+import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -69,6 +70,13 @@ public class BaseActionBarActivity extends AppCompatActivity {
             Log.w(TAG, "Failed to force overflow menu.");
         } catch (NoSuchFieldException e) {
             Log.w(TAG, "Failed to force overflow menu.");
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    protected void setStatusBarColor(int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(color);
         }
     }
 }

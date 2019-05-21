@@ -192,6 +192,8 @@ dependencies {
         exclude group: 'com.squareup.okhttp', module: 'okhttp'
         exclude group: 'com.squareup.okhttp', module: 'okhttp-urlconnection'
     }
+    compile 'com.pnikosis:materialish-progress:1.5'
+    compile group: 'com.nineoldandroids', name: 'library', version: '2.4.0'
 
     testCompile fileTree('lib/stickylistheaders-1.0.0.jar')
     testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'

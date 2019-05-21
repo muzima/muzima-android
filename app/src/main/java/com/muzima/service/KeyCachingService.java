@@ -39,11 +39,13 @@ import android.support.annotation.Nullable;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.messaging.ConversationListActivity;
 import com.muzima.messaging.DummyActivity;
 import com.muzima.messaging.TextSecurePreferences;
 import com.muzima.messaging.crypto.InvalidPassphraseException;
 import com.muzima.messaging.crypto.MasterSecret;
 import com.muzima.messaging.crypto.MasterSecretUtil;
+import com.muzima.notifications.NotificationChannels;
 import com.muzima.utils.ServiceUtil;
 
 /**
@@ -245,46 +247,46 @@ public class KeyCachingService extends Service {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void foregroundServiceModern() {
         Log.i(TAG, "foregrounding KCS");
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationChannels.LOCKED_STATUS);
-//
-//        builder.setContentTitle(getString(R.string.KeyCachingService_passphrase_cached));
-//        builder.setContentText(getString(R.string.KeyCachingService_signal_passphrase_cached));
-//        builder.setSmallIcon(R.drawable.icon_cached);
-//        builder.setWhen(0);
-//        builder.setPriority(Notification.PRIORITY_MIN);
-//
-//        builder.addAction(R.drawable.ic_menu_lock_dark, getString(R.string.KeyCachingService_lock), buildLockIntent());
-//        builder.setContentIntent(buildLaunchIntent());
-//
-//        stopForeground(true);
-//        startForeground(SERVICE_RUNNING_ID, builder.build());
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationChannels.LOCKED_STATUS);
+
+        builder.setContentTitle(getString(R.string.KeyCachingService_passphrase_cached));
+        builder.setContentText(getString(R.string.KeyCachingService_signal_passphrase_cached));
+        builder.setSmallIcon(R.drawable.icon_cached);
+        builder.setWhen(0);
+        builder.setPriority(Notification.PRIORITY_MIN);
+
+        builder.addAction(R.drawable.ic_menu_lock_dark, getString(R.string.KeyCachingService_lock), buildLockIntent());
+        builder.setContentIntent(buildLaunchIntent());
+
+        stopForeground(true);
+        startForeground(SERVICE_RUNNING_ID, builder.build());
     }
 
     private void foregroundServiceICS() {
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationChannels.LOCKED_STATUS);
-//        RemoteViews remoteViews            = new RemoteViews(getPackageName(), R.layout.key_caching_notification);
-//
-//        remoteViews.setOnClickPendingIntent(R.id.lock_cache_icon, buildLockIntent());
-//
-//        builder.setSmallIcon(R.drawable.icon_cached);
-//        builder.setContent(remoteViews);
-//        builder.setContentIntent(buildLaunchIntent());
-//
-//        stopForeground(true);
-//        startForeground(SERVICE_RUNNING_ID, builder.build());
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationChannels.LOCKED_STATUS);
+        RemoteViews remoteViews            = new RemoteViews(getPackageName(), R.layout.key_caching_notification);
+
+        remoteViews.setOnClickPendingIntent(R.id.lock_cache_icon, buildLockIntent());
+
+        builder.setSmallIcon(R.drawable.icon_cached);
+        builder.setContent(remoteViews);
+        builder.setContentIntent(buildLaunchIntent());
+
+        stopForeground(true);
+        startForeground(SERVICE_RUNNING_ID, builder.build());
     }
 
     private void foregroundServiceLegacy() {
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationChannels.LOCKED_STATUS);
-//        builder.setSmallIcon(R.drawable.icon_cached);
-//        builder.setWhen(System.currentTimeMillis());
-//
-//        builder.setContentTitle(getString(R.string.KeyCachingService_passphrase_cached));
-//        builder.setContentText(getString(R.string.KeyCachingService_signal_passphrase_cached));
-//        builder.setContentIntent(buildLaunchIntent());
-//
-//        stopForeground(true);
-//        startForeground(SERVICE_RUNNING_ID, builder.build());
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationChannels.LOCKED_STATUS);
+        builder.setSmallIcon(R.drawable.icon_cached);
+        builder.setWhen(System.currentTimeMillis());
+
+        builder.setContentTitle(getString(R.string.KeyCachingService_passphrase_cached));
+        builder.setContentText(getString(R.string.KeyCachingService_signal_passphrase_cached));
+        builder.setContentIntent(buildLaunchIntent());
+
+        stopForeground(true);
+        startForeground(SERVICE_RUNNING_ID, builder.build());
     }
 
     private void foregroundService() {
@@ -317,12 +319,12 @@ public class KeyCachingService extends Service {
         return PendingIntent.getService(getApplicationContext(), 0, intent, 0);
     }
 
-   // private PendingIntent buildLaunchIntent() {
-        //Intent intent              = new Intent(this, ConversationListActivity.class);
-       // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-       // return PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
+    private PendingIntent buildLaunchIntent() {
+        Intent intent = new Intent(this, ConversationListActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
 
-  //  }
+    }
 
     private static PendingIntent buildExpirationPendingIntent(@NonNull Context context) {
         Intent expirationIntent = new Intent(PASSPHRASE_EXPIRED_EVENT, null, context, KeyCachingService.class);

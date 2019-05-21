@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
-import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -277,6 +276,7 @@ public class DirectoryHelper {
                                                                     @NonNull SignalServiceAccountManager accountManager,
                                                                     @NonNull RecipientDatabase recipientDatabase,
                                                                     @NonNull Set<String> eligibleContactNumbers) {
+        Log.w("DirectoryResult ","TRACE [ eligibleContactNumbers.size() is == "+eligibleContactNumbers.size());
         return SignalExecutors.IO.submit(() -> {
             List<ContactTokenDetails> activeTokens = accountManager.getContacts(eligibleContactNumbers);
 

@@ -1,0 +1,6 @@
+<account-authenticator xmlns:android="http://schemas.android.com/apk/res/android"
+                       android:accountType="com.muzima"
+                       android:icon="@drawable/ic_launcher_logo"
+                       android:smallIcon="@drawable/ic_launcher_logo"
+                       android:label="@string/app_name"/>
+
