@@ -50,15 +50,22 @@ import com.muzima.R;
 import com.muzima.messaging.CreateProfileActivity;
 import com.muzima.messaging.animations.AnimationCompleteListener;
 import com.muzima.messaging.TextSecurePreferences;
+import com.muzima.messaging.crypto.IdentityKeyUtil;
+import com.muzima.messaging.crypto.PreKeyUtil;
+import com.muzima.messaging.crypto.SessionUtil;
 import com.muzima.messaging.crypto.UnidentifiedAccessUtil;
 import com.muzima.messaging.customcomponents.VerificationCodeView;
 import com.muzima.messaging.customcomponents.VerificationPinKeyboard;
+import com.muzima.messaging.jobs.DirectoryRefreshJob;
+import com.muzima.messaging.jobs.RotateCertificateJob;
 import com.muzima.messaging.push.AccountManagerFactory;
+import com.muzima.messaging.sqlite.database.DatabaseFactory;
+import com.muzima.messaging.sqlite.database.IdentityDatabase;
+import com.muzima.messaging.sqlite.database.SignalAddress;
 import com.muzima.messaging.utils.Util;
 import com.muzima.utils.Permissions;
 import com.muzima.utils.concurrent.AssertedSuccessListener;
 import com.muzima.view.SplashActivity;
-import com.muzima.view.login.LoginActivity;
 
 public class SmsCodeVerificationActivity extends AppCompatActivity implements VerificationCodeView.OnCodeEnteredListener{
     private static final int SCENE_TRANSITION_DURATION = 250;
@@ -221,18 +228,18 @@ public class SmsCodeVerificationActivity extends AppCompatActivity implements Ve
         boolean universalUnidentifiedAccess = TextSecurePreferences.isUniversalUnidentifiedAccess(SmsCodeVerificationActivity.this);
 
         TextSecurePreferences.setLocalRegistrationId(SmsCodeVerificationActivity.this, registrationId);
-        //SessionUtil.archiveAllSessions(SmsCodeVerificationActivity.this);
+        SessionUtil.archiveAllSessions(SmsCodeVerificationActivity.this);
 
         String signalingKey = Util.getSecret(52);
 
         accountManager.verifyAccountWithCode(code, signalingKey, registrationId, !registrationState.getGcmToken().isPresent(), pin,
                 unidentifiedAccessKey, universalUnidentifiedAccess);
 
-        //IdentityKeyPair identityKey = IdentityKeyUtil.getIdentityKeyPair(SmsCodeVerificationActivity.this);
-        //List<PreKeyRecord> records = PreKeyUtil.generatePreKeys(SmsCodeVerificationActivity.this);
-       // SignedPreKeyRecord signedPreKey = PreKeyUtil.generateSignedPreKey(SmsCodeVerificationActivity.this, identityKey, true);
+        IdentityKeyPair identityKey = IdentityKeyUtil.getIdentityKeyPair(SmsCodeVerificationActivity.this);
+        List<PreKeyRecord> records = PreKeyUtil.generatePreKeys(SmsCodeVerificationActivity.this);
+        SignedPreKeyRecord signedPreKey = PreKeyUtil.generateSignedPreKey(SmsCodeVerificationActivity.this, identityKey, true);
 
-       // accountManager.setPreKeys(identityKey.getPublicKey(),signedPreKey,records);
+        accountManager.setPreKeys(identityKey.getPublicKey(),signedPreKey,records);
 
         if (registrationState.getGcmToken().isPresent()) {
             accountManager.setGcmId(registrationState.getGcmToken());
@@ -244,10 +251,10 @@ public class SmsCodeVerificationActivity extends AppCompatActivity implements Ve
         TextSecurePreferences.setGcmDisabled(SmsCodeVerificationActivity.this, !registrationState.getGcmToken().isPresent());
         TextSecurePreferences.setWebsocketRegistered(SmsCodeVerificationActivity.this, true);
 
-//        DatabaseFactory.getIdentityDatabase(SmsCodeVerificationActivity.this)
-//                .saveIdentity(SignalAddress.fromSerialized(registrationState.getE164number()),
-//                        identityKey.getPublicKey(), IdentityDatabase.VerifiedStatus.VERIFIED,
-//                        true, System.currentTimeMillis(), true);
+        DatabaseFactory.getIdentityDatabase(SmsCodeVerificationActivity.this)
+                .saveIdentity(SignalAddress.fromSerialized(registrationState.getE164number()),
+                        identityKey.getPublicKey(), IdentityDatabase.VerifiedStatus.VERIFIED,
+                        true, System.currentTimeMillis(), true);
 
         TextSecurePreferences.setVerifying(SmsCodeVerificationActivity.this, false);
         TextSecurePreferences.setPushRegistered(SmsCodeVerificationActivity.this, true);
@@ -261,8 +268,8 @@ public class SmsCodeVerificationActivity extends AppCompatActivity implements Ve
 
     private void handleSuccessfulRegistration() {
 
-//        MuzimaApplication.getInstance(SmsCodeVerificationActivity.this).getJobManager().add(new DirectoryRefreshJob(SmsCodeVerificationActivity.this, false));
-//        MuzimaApplication.getInstance(SmsCodeVerificationActivity.this).getJobManager().add(new RotateCertificateJob(SmsCodeVerificationActivity.this));
+        MuzimaApplication.getInstance(SmsCodeVerificationActivity.this).getJobManager().add(new DirectoryRefreshJob(SmsCodeVerificationActivity.this, false));
+        MuzimaApplication.getInstance(SmsCodeVerificationActivity.this).getJobManager().add(new RotateCertificateJob(SmsCodeVerificationActivity.this));
 
 
         /**
@@ -460,7 +467,7 @@ public class SmsCodeVerificationActivity extends AppCompatActivity implements Ve
                     TextSecurePreferences.setRegistrationLockPin(SmsCodeVerificationActivity.this, pin);
                     TextSecurePreferences.setRegistrationtLockEnabled(SmsCodeVerificationActivity.this, true);
                     TextSecurePreferences.setRegistrationLockLastReminderTime(SmsCodeVerificationActivity.this, System.currentTimeMillis());
-                    //TextSecurePreferences.setRegistrationLockNextReminderInterval(SmsCodeVerificationActivity.this, RegistrationLockReminders.INITIAL_INTERVAL);
+//                    TextSecurePreferences.setRegistrationLockNextReminderInterval(SmsCodeVerificationActivity.this, RegistrationLockReminders.INITIAL_INTERVAL);
 
                     handleSuccessfulRegistration();
                 } else if (result == 2) {

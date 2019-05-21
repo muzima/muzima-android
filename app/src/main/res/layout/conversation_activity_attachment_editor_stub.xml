@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/attachment_editor"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:visibility="gone">
+
+    <com.muzima.messaging.customcomponents.RemovableEditableMediaView
+        android:id="@+id/removable_media_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <com.muzima.messaging.customcomponents.SignalMapView
+            android:id="@+id/attachment_location"
+            android:layout_width="210dp"
+            android:layout_height="210dp"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"/>
+
+        <com.muzima.messaging.customcomponents.ThumbnailView
+            android:id="@+id/attachment_thumbnail"
+            android:layout_width="230dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"
+            android:contentDescription="@string/conversation_activity__attachment_thumbnail"
+            android:minWidth="100dp"
+            android:maxWidth="300dp"
+            android:minHeight="100dp"
+            android:maxHeight="300dp" />
+
+        <com.muzima.messaging.customcomponents.AudioView
+            android:id="@+id/attachment_audio"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"/>
+
+        <com.muzima.messaging.customcomponents.DocumentView
+            android:id="@+id/attachment_document"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="@dimen/message_bubble_horizontal_padding"
+            android:paddingRight="@dimen/message_bubble_horizontal_padding"
+            android:background="@drawable/message_bubble_background_sent_alone"/>
+
+    </com.muzima.messaging.customcomponents.RemovableEditableMediaView>
+
+</FrameLayout>
+

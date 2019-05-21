@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.muzima.messaging.customcomponents.DocumentView">
+
+    <LinearLayout
+        android:id="@+id/document_container"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:focusable="false"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.muzima.messaging.animations.AnimatingToggle
+            android:id="@+id/control_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:clickable="false"
+            android:focusable="false"
+            android:gravity="center">
+
+            <com.pnikosis.materialishprogress.ProgressWheel
+                android:id="@+id/download_progress"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:clickable="false"
+                android:visibility="gone"
+                app:matProg_barColor="@color/primary_white"
+                app:matProg_linearProgress="true"
+                app:matProg_spinSpeed="0.333"
+                tools:visibility="gone" />
+
+            <FrameLayout
+                android:id="@+id/icon_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="-4dp"
+                android:layout_marginLeft="-4dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:gravity="center"
+                android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/icon"
+                    android:layout_width="38dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_document_large_light" />
+
+                <TextView
+                    android:id="@+id/document"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:clickable="false"
+                    android:gravity="center"
+                    android:scaleType="centerInside"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textColor="@color/primary_black"
+                    android:textSize="10sp"
+                    android:visibility="visible"
+                    tools:text="PDF"
+                    tools:visibility="visible" />
+
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/download"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/circle_touch_highlight_background"
+                android:clickable="true"
+                android:contentDescription="@string/audio_view_download_accessibility_description"
+                android:src="@drawable/ic_download_circle_fill_white_48dp"
+                android:visibility="gone" />
+
+        </com.muzima.messaging.animations.AnimatingToggle>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginLeft="2dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/file_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:singleLine="true"/>
+
+            <TextView
+                android:id="@+id/file_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                tools:text="24kb" />
+        </LinearLayout>
+    </LinearLayout>
+</merge>

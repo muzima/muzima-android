@@ -68,6 +68,25 @@
         <item name="quick_camera_icon">@drawable/quick_camera_dark</item>
         <item name="conversation_input_inline_attach_icon_tint">@color/gray12</item>
         <item name="quick_mic_icon">@drawable/ic_mic_white_24dp</item>
+        <item name="ic_arrow_forward">@drawable/ic_arrow_forward_dark</item>
+        <item name="search_toolbar_background">@color/primary_black</item>
+        <item name="conversation_item_image_outline_color">@color/transparent_white_30</item>
+        <item name="conversation_item_received_text_secondary_color">@color/gray12</item>
+        <item name="conversation_item_received_text_primary_color">@color/gray12</item>
+        <item name="conversation_item_quote_text_color">@color/core_grey_05</item>
+        <item name="conversation_item_update_text_color">@color/core_grey_45</item>
+        <item name="conversation_list_item_delivery_icon_color">@color/core_grey_25</item>
+        <item name="conversation_item_sent_text_secondary_color">@color/core_grey_25</item>
+        <item name="conversation_item_sent_icon_color">@color/core_grey_25</item>
+        <item name="conversation_item_bubble_background">@color/core_grey_75</item>
+        <item name="conversation_item_last_seen_text_color">@color/core_grey_25</item>
+        <item name="conversation_item_last_seen_line_color">@color/core_grey_25</item>
+        <item name="dialog_info_icon">@drawable/ic_info_outline_dark</item>
+        <item name="dialog_alert_icon">@drawable/ic_warning_dark</item>
+        <item name="conversation_background">@color/core_grey_95</item>
+        <item name="conversation_item_sticky_date_background">@drawable/sticky_date_header_background_dark</item>
+        <item name="pref_icon_tint">@color/primary_white</item>
+        <item name="contact_list_divider">@drawable/contact_list_divider_dark</item>
     </style>
 
 
@@ -126,6 +145,25 @@
         <item name="quick_camera_icon">@drawable/quick_camera_light</item>
         <item name="conversation_input_inline_attach_icon_tint">@color/grey_300</item>
         <item name="quick_mic_icon">@drawable/ic_mic_grey600_24dp</item>
+        <item name="ic_arrow_forward">@drawable/ic_arrow_forward_light</item>
+        <item name="search_toolbar_background">@color/primary_white</item>
+        <item name="conversation_item_image_outline_color">@color/transparent_black_30</item>
+        <item name="conversation_item_received_text_secondary_color">@color/primary_white</item>
+        <item name="conversation_item_received_text_primary_color">@color/primary_white</item>
+        <item name="conversation_item_quote_text_color">@color/core_grey_05</item>
+        <item name="conversation_item_update_text_color">@color/core_grey_60</item>
+        <item name="conversation_list_item_delivery_icon_color">@color/core_grey_60</item>
+        <item name="conversation_item_sent_text_secondary_color">@color/core_grey_60</item>
+        <item name="conversation_item_sent_icon_color">@color/core_grey_60</item>
+        <item name="conversation_item_bubble_background">@color/core_grey_05</item>
+        <item name="conversation_item_last_seen_text_color">@color/core_grey_90</item>
+        <item name="conversation_item_last_seen_line_color">@color/core_grey_60</item>
+        <item name="dialog_info_icon">@drawable/ic_info_outline_light</item>
+        <item name="dialog_alert_icon">@drawable/ic_warning_light</item>
+        <item name="conversation_background">@color/primary_white</item>
+        <item name="conversation_item_sticky_date_background">@drawable/sticky_date_header_background_light</item>
+        <item name="pref_icon_tint">@color/primary_black</item>
+        <item name="contact_list_divider">@drawable/contact_list_divider_light</item>
     </style>
 
 
@@ -165,7 +203,8 @@
         <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
         <item name="emoji_tab_strip_background">@color/gray12</item>
         <item name="emoji_tab_seperator">@color/gray70</item>
-
+        <item name="contact_selection_push_user">#ffeeeeee</item>
+        <item name="contact_selection_lay_user">#afeeeeee</item>
     </style>
 
     <!-- Application theme. -->
@@ -204,5 +243,7 @@
         <item name="android:alertDialogTheme">@style/alertDialogThemeLight</item>
         <item name="emoji_tab_strip_background">@color/gray12</item>
         <item name="emoji_tab_seperator">@color/gray70</item>
+        <item name="contact_selection_push_user">#ff000000</item>
+        <item name="contact_selection_lay_user">#a0000000</item>
     </style>
 </resources>

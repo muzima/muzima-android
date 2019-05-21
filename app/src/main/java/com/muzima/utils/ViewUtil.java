@@ -37,6 +37,7 @@ import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.muzima.messaging.utils.Stub;
 import com.muzima.utils.concurrent.ListenableFuture;
 import com.muzima.utils.concurrent.SettableFuture;
 
@@ -107,6 +108,10 @@ public class ViewUtil {
         return (T) parent.findViewById(resId);
     }
 
+    public static <T extends View> Stub<T> findStubById(@NonNull AppCompatActivity parent, @IdRes int resId) {
+        return new Stub<T>((ViewStub)parent.findViewById(resId));
+    }
+
     private static Animation getAlphaAnimation(float from, float to, int duration) {
         final Animation anim = new AlphaAnimation(from, to);
         anim.setInterpolator(new FastOutSlowInInterpolator());
@@ -168,6 +173,13 @@ public class ViewUtil {
                                              @LayoutRes int            layoutResId)
     {
         return (T)(inflater.inflate(layoutResId, parent, false));
+    }
+
+    @SuppressLint("RtlHardcoded")
+    public static void setTextViewGravityStart(final @NonNull TextView textView, @NonNull Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                textView.setGravity(Gravity.RIGHT);
+        }
     }
 
     public static void mirrorIfRtl(View view, Context context) {
