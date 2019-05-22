@@ -19,6 +19,12 @@ import android.widget.TextView;
 
 import com.annimon.stream.Stream;
 import com.muzima.R;
+import com.muzima.messaging.customcomponents.AlertView;
+import com.muzima.messaging.customcomponents.AvatarImageView;
+import com.muzima.messaging.customcomponents.DeliveryStatusView;
+import com.muzima.messaging.customcomponents.FromTextView;
+import com.muzima.messaging.customcomponents.ThumbnailView;
+import com.muzima.messaging.customcomponents.TypingIndicatorView;
 import com.muzima.messaging.mms.GlideRequests;
 import com.muzima.messaging.sqlite.database.models.ThreadRecord;
 import com.muzima.messaging.utils.Util;
@@ -47,18 +53,18 @@ public class ConversationListItem extends RelativeLayout
     private GlideRequests glideRequests;
     private View subjectContainer;
     private TextView subjectView;
-    //private TypingIndicatorView typingView;
-   // private FromTextView fromView;
+    private TypingIndicatorView typingView;
+    private FromTextView fromView;
     private TextView dateView;
     private TextView archivedView;
-   // private DeliveryStatusView deliveryStatusIndicator;
-   // private AlertView alertView;
+    private DeliveryStatusView deliveryStatusIndicator;
+    private AlertView alertView;
     private TextView unreadIndicator;
     private long lastSeen;
 
     private int unreadCount;
-   // private AvatarImageView contactPhotoImage;
-   // private ThumbnailView thumbnailView;
+    private AvatarImageView contactPhotoImage;
+    private ThumbnailView thumbnailView;
 
     private int distributionType;
 
@@ -73,20 +79,20 @@ public class ConversationListItem extends RelativeLayout
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-//        this.subjectContainer = findViewById(R.id.subject_container);
-//        this.subjectView = findViewById(R.id.subject);
-//        this.typingView = findViewById(R.id.typing_indicator);
-//        this.fromView = findViewById(R.id.from);
-//        this.dateView = findViewById(R.id.date);
-//        this.deliveryStatusIndicator = findViewById(R.id.delivery_status);
-//        this.alertView = findViewById(R.id.indicators_parent);
-//        this.contactPhotoImage = findViewById(R.id.contact_photo_image);
-//        this.thumbnailView = findViewById(R.id.thumbnail);
-//        this.archivedView = findViewById(R.id.archived);
-//        this.unreadIndicator = findViewById(R.id.unread_indicator);
-//        thumbnailView.setClickable(false);
-//
-//        ViewUtil.setTextViewGravityStart(this.fromView, getContext());
+        this.subjectContainer = findViewById(R.id.subject_container);
+        this.subjectView = findViewById(R.id.subject);
+        this.typingView = findViewById(R.id.typing_indicator);
+        this.fromView = findViewById(R.id.from);
+        this.dateView = findViewById(R.id.date);
+        this.deliveryStatusIndicator = findViewById(R.id.delivery_status);
+        this.alertView = findViewById(R.id.indicators_parent);
+        this.contactPhotoImage = findViewById(R.id.contact_photo_image);
+        this.thumbnailView = findViewById(R.id.thumbnail);
+        this.archivedView = findViewById(R.id.archived);
+        this.unreadIndicator = findViewById(R.id.unread_indicator);
+        thumbnailView.setClickable(false);
+
+        ViewUtil.setTextViewGravityStart(this.fromView, getContext());
         ViewUtil.setTextViewGravityStart(this.subjectView, getContext());
     }
 
@@ -155,9 +161,9 @@ public class ConversationListItem extends RelativeLayout
         //setStatusIcons(thread);
         //setThumbnailSnippet(thread);
         setBatchState(batchMode);
-        setRippleColor(recipient);
+       // setRippleColor(recipient);
         setUnreadIndicator(thread);
-//        this.contactPhotoImage.setAvatar(glideRequests, recipient, true);
+        this.contactPhotoImage.setAvatar(glideRequests, recipient, true);
     }
 
     public void bind(@NonNull SignalRecipient contact,

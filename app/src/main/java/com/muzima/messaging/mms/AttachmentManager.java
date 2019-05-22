@@ -36,6 +36,7 @@ import com.muzima.messaging.customcomponents.SignalMapView;
 import com.muzima.messaging.customcomponents.ThumbnailView;
 import com.muzima.messaging.location.SignalPlace;
 import com.muzima.messaging.provider.PersistentBlobProvider;
+import com.muzima.messaging.scribbles.ScribbleActivity;
 import com.muzima.messaging.utils.Stub;
 import com.muzima.utils.BitmapUtil;
 import com.muzima.utils.MediaUtil;
@@ -182,9 +183,9 @@ public class AttachmentManager {
                 byte[] blob = BitmapUtil.toByteArray(result);
                 Uri uri = PersistentBlobProvider.getInstance(context)
                         .create(context, blob, MediaUtil.IMAGE_PNG, null);
-//                LocationSlide locationSlide = new LocationSlide(context, uri, blob.length, place);
-//
-//                setSlide(locationSlide);
+                LocationSlide locationSlide = new LocationSlide(context, uri, blob.length, place);
+
+                setSlide(locationSlide);
                 attachmentListener.onAttachmentChanged();
                 returnResult.set(true);
             }
@@ -235,14 +236,14 @@ public class AttachmentManager {
             protected void onPostExecute(@Nullable final Slide slide) {
                 if (slide == null) {
                     attachmentViewStub.get().setVisibility(View.GONE);
-//                    Toast.makeText(context,
-//                            R.string.ConversationActivity_sorry_there_was_an_error_setting_your_attachment,
-//                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context,
+                            R.string.ConversationActivity_sorry_there_was_an_error_setting_your_attachment,
+                            Toast.LENGTH_SHORT).show();
                     result.set(false);
                 } else if (!areConstraintsSatisfied(context, slide, constraints)) {
                     attachmentViewStub.get().setVisibility(View.GONE);
-//                    Toast.makeText(context,R.string.ConversationActivity_attachment_exceeds_size_limits,
-//                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context,R.string.ConversationActivity_attachment_exceeds_size_limits,
+                            Toast.LENGTH_SHORT).show();
                     result.set(false);
                 } else {
                     setSlide(slide);
@@ -341,59 +342,59 @@ public class AttachmentManager {
         return deck;
     }
 
-//    public static void selectDocument(Activity activity, int requestCode) {
-//        Permissions.with(activity)
-//                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                .ifNecessary()
-//                .withPermanentDenialDialog(activity.getString(R.string.AttachmentManager_signal_requires_the_external_storage_permission_in_order_to_attach_photos_videos_or_audio))
-//                .onAllGranted(() -> selectMediaType(activity, "*/*", null, requestCode))
-//                .execute();
-//    }
+    public static void selectDocument(Activity activity, int requestCode) {
+        Permissions.with(activity)
+                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .ifNecessary()
+                .withPermanentDenialDialog(activity.getString(R.string.AttachmentManager_signal_requires_the_external_storage_permission_in_order_to_attach_photos_videos_or_audio))
+                .onAllGranted(() -> selectMediaType(activity, "*/*", null, requestCode))
+                .execute();
+    }
 
-//    public static void selectGallery(Activity activity, int requestCode) {
-//        Permissions.with(activity)
-//                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                .ifNecessary()
-//                .withPermanentDenialDialog(activity.getString(R.string.AttachmentManager_signal_requires_the_external_storage_permission_in_order_to_attach_photos_videos_or_audio))
-//                .onAllGranted(() -> selectMediaType(activity, "image/*", new String[]{"image/*", "video/*"}, requestCode))
-//                .execute();
-//    }
+    public static void selectGallery(Activity activity, int requestCode) {
+        Permissions.with(activity)
+                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .ifNecessary()
+                .withPermanentDenialDialog(activity.getString(R.string.AttachmentManager_signal_requires_the_external_storage_permission_in_order_to_attach_photos_videos_or_audio))
+                .onAllGranted(() -> selectMediaType(activity, "image/*", new String[]{"image/*", "video/*"}, requestCode))
+                .execute();
+    }
 
-//    public static void selectAudio(Activity activity, int requestCode) {
-//        Permissions.with(activity)
-//                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                .ifNecessary()
-//                .withPermanentDenialDialog(activity.getString(R.string.AttachmentManager_signal_requires_the_external_storage_permission_in_order_to_attach_photos_videos_or_audio))
-//                .onAllGranted(() -> selectMediaType(activity, "audio/*", null, requestCode))
-//                .execute();
-//    }
+    public static void selectAudio(Activity activity, int requestCode) {
+        Permissions.with(activity)
+                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .ifNecessary()
+                .withPermanentDenialDialog(activity.getString(R.string.AttachmentManager_signal_requires_the_external_storage_permission_in_order_to_attach_photos_videos_or_audio))
+                .onAllGranted(() -> selectMediaType(activity, "audio/*", null, requestCode))
+                .execute();
+    }
 
-//    public static void selectContactInfo(Activity activity, int requestCode) {
-//        Permissions.with(activity)
-//                .request(Manifest.permission.WRITE_CONTACTS)
-//                .ifNecessary()
-//                .withPermanentDenialDialog(activity.getString(R.string.AttachmentManager_signal_requires_contacts_permission_in_order_to_attach_contact_information))
-//                .onAllGranted(() -> {
-//                    Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-//                    activity.startActivityForResult(intent, requestCode);
-//                })
-//                .execute();
-//    }
+    public static void selectContactInfo(Activity activity, int requestCode) {
+        Permissions.with(activity)
+                .request(Manifest.permission.WRITE_CONTACTS)
+                .ifNecessary()
+                .withPermanentDenialDialog(activity.getString(R.string.AttachmentManager_signal_requires_contacts_permission_in_order_to_attach_contact_information))
+                .onAllGranted(() -> {
+                    Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                    activity.startActivityForResult(intent, requestCode);
+                })
+                .execute();
+    }
 
-//    public static void selectLocation(Activity activity, int requestCode) {
-//        Permissions.with(activity)
-//                .request(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-//                .ifNecessary()
-//                .withPermanentDenialDialog(activity.getString(R.string.AttachmentManager_signal_requires_location_information_in_order_to_attach_a_location))
-//                .onAllGranted(() -> {
-//                    try {
-//                        activity.startActivityForResult(new PlacePicker.IntentBuilder().build(activity), requestCode);
-//                    } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-//                        Log.w(TAG, e);
-//                    }
-//                })
-//                .execute();
-//    }
+    public static void selectLocation(Activity activity, int requestCode) {
+        Permissions.with(activity)
+                .request(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+                .ifNecessary()
+                .withPermanentDenialDialog(activity.getString(R.string.AttachmentManager_signal_requires_location_information_in_order_to_attach_a_location))
+                .onAllGranted(() -> {
+                    try {
+                        activity.startActivityForResult(new PlacePicker.IntentBuilder().build(activity), requestCode);
+                    } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+                        Log.w(TAG, e);
+                    }
+                })
+                .execute();
+    }
 
     public static void selectGif(Activity activity, int requestCode, boolean isForMms) {
 //        ToDo +++++++ GiphyActivity
@@ -412,28 +413,28 @@ public class AttachmentManager {
         return captureUri;
     }
 
-//    public void capturePhoto(Activity activity, int requestCode) {
-//        Permissions.with(activity)
-//                .request(Manifest.permission.CAMERA)
-//                .ifNecessary()
-//                .withPermanentDenialDialog(activity.getString(R.string.AttachmentManager_signal_requires_the_camera_permission_in_order_to_take_photos_but_it_has_been_permanently_denied))
-//                .onAllGranted(() -> {
-//                    try {
-//                        Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                        if (captureIntent.resolveActivity(activity.getPackageManager()) != null) {
-//                            if (captureUri == null) {
-//                                captureUri = PersistentBlobProvider.getInstance(context).createForExternal(context, MediaUtil.IMAGE_JPEG);
-//                            }
-//                            Log.d(TAG, "captureUri path is " + captureUri.getPath());
-//                            captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, captureUri);
-//                            activity.startActivityForResult(captureIntent, requestCode);
-//                        }
-//                    } catch (IOException ioe) {
-//                        Log.w(TAG, ioe);
-//                    }
-//                })
-//                .execute();
-//    }
+    public void capturePhoto(Activity activity, int requestCode) {
+        Permissions.with(activity)
+                .request(Manifest.permission.CAMERA)
+                .ifNecessary()
+                .withPermanentDenialDialog(activity.getString(R.string.AttachmentManager_signal_requires_the_camera_permission_in_order_to_take_photos_but_it_has_been_permanently_denied))
+                .onAllGranted(() -> {
+                    try {
+                        Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        if (captureIntent.resolveActivity(activity.getPackageManager()) != null) {
+                            if (captureUri == null) {
+                                captureUri = PersistentBlobProvider.getInstance(context).createForExternal(context, MediaUtil.IMAGE_JPEG);
+                            }
+                            Log.d(TAG, "captureUri path is " + captureUri.getPath());
+                            captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, captureUri);
+                            activity.startActivityForResult(captureIntent, requestCode);
+                        }
+                    } catch (IOException ioe) {
+                        Log.w(TAG, ioe);
+                    }
+                })
+                .execute();
+    }
 
     private static void selectMediaType(Activity activity, @NonNull String type, @Nullable String[] extraMimeType, int requestCode) {
         final Intent intent = new Intent();
@@ -459,7 +460,7 @@ public class AttachmentManager {
             activity.startActivityForResult(intent, requestCode);
         } catch (ActivityNotFoundException anfe) {
             Log.w(TAG, "couldn't complete ACTION_GET_CONTENT intent, no activity found. falling back.");
-//            Toast.makeText(activity, R.string.AttachmentManager_cant_open_media_selection, Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, R.string.AttachmentManager_cant_open_media_selection, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -503,10 +504,9 @@ public class AttachmentManager {
     private class EditButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-//            TODO ++++++++ ScribbleActivity
-//            Intent intent = new Intent(context, ScribbleActivity.class);
-//            intent.setData(getSlideUri());
-//            ((Activity) context).startActivityForResult(intent, ScribbleActivity.SCRIBBLE_REQUEST_CODE);
+            Intent intent = new Intent(context, ScribbleActivity.class);
+            intent.setData(getSlideUri());
+            ((Activity) context).startActivityForResult(intent, ScribbleActivity.SCRIBBLE_REQUEST_CODE);
         }
     }
 

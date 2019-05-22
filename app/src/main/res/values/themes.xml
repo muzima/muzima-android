@@ -87,6 +87,7 @@
         <item name="conversation_item_sticky_date_background">@drawable/sticky_date_header_background_dark</item>
         <item name="pref_icon_tint">@color/primary_white</item>
         <item name="contact_list_divider">@drawable/contact_list_divider_dark</item>
+        <item name="conversation_attach_contact_info">@drawable/ic_account_box_dark</item>
     </style>
 
 
@@ -164,6 +165,7 @@
         <item name="conversation_item_sticky_date_background">@drawable/sticky_date_header_background_light</item>
         <item name="pref_icon_tint">@color/primary_black</item>
         <item name="contact_list_divider">@drawable/contact_list_divider_light</item>
+        <item name="conversation_attach_contact_info">@drawable/ic_account_box_light</item>
     </style>
 
 

@@ -1084,6 +1084,67 @@
     <string name="PlayServicesProblemFragment_the_version_of_google_play_services_you_have_installed_is_not_functioning">The version of Google Play Services you have installed is not functioning correctly.  Please reinstall Google Play Services and try again.</string>
     <string name="GcmRefreshJob_Permanent_Signal_communication_failure">Permanent mUzima PHR communication failure!</string>
     <string name="GcmRefreshJob_Signal_was_unable_to_register_with_Google_Play_Services">mUzima PHR was unable to register with Google Play Services. mUzima PHR messages and calls have been disabled, please try re-registering in Settings &gt; Advanced.</string>
+    <string name="conversation_list_item_inbox_zero__inbox_zeeerrro">Inbox zeeerrro</string>
+    <string name="conversation_list_item_inbox_zero__zip_zilch_zero_nada_nyou_re_all_caught_up">Zip. Zilch. Zero. Nada.\\nYou\\\'re all caught up!</string>
+    <string name="ConversationListItemAction_archived_conversations_d">Archived conversations (%d)</string>
+    <string name="attachment_type_selector__audio">Audio</string>
+    <string name="attachment_type_selector__audio_description">Audio</string>
+    <string name="attachment_type_selector__contact">Contact</string>
+    <string name="attachment_type_selector__contact_description">Contact</string>
+    <string name="attachment_type_selector__camera">Camera</string>
+    <string name="attachment_type_selector__camera_description">Camera</string>
+    <string name="attachment_type_selector__location">Location</string>
+    <string name="attachment_type_selector__location_description">Location</string>
+    <string name="attachment_type_selector__gif">GIF</string>
+    <string name="attachment_type_selector__gif_description">Gif</string>
+    <string name="attachment_type_selector__gallery_description">Image or video</string>
+    <string name="attachment_type_selector__file_description">File</string>
+    <string name="attachment_type_selector__gallery">Gallery</string>
+    <string name="attachment_type_selector__file">File</string>
+
+    <string name="attachment_type_selector__drawer_description">Toggle attachment drawer</string>
+    <string name="ConversationActivity_recipient_is_not_a_valid_sms_or_email_address_exclamation">Recipient is not a valid SMS or email address!</string>
+    <string name="ConversationActivity_message_is_empty_exclamation">Message is empty!</string>
+    <string name="ConversationActivity_signal_needs_sms_permission_in_order_to_send_an_sms">mUzima PHR needs SMS permission in order to send an SMS, but it has been permanently denied. Please continue to app settings, select \\\"Permissions\\\" and enable \\\"SMS\\\".</string>
+    <string name="ConversationActivity_to_send_audio_messages_allow_signal_access_to_your_microphone">To send audio messages, allow mUzima PHR access to your microphone.</string>
+    <string name="ConversationActivity_signal_requires_the_microphone_permission_in_order_to_send_audio_messages">mUzima PHR requires the Microphone permission in order to send audio messages, but it has been permanently denied. Please continue to app settings, select \\\"Permissions\\\", and enable \\\"Microphone\\\".</string>
+    <string name="ConversationActivity_unable_to_record_audio">Unable to record audio!</string>
+    <string name="ConversationActivity_to_capture_photos_and_video_allow_signal_access_to_the_camera">To capture photos and video, allow mUzima PHR access to the camera.</string>
+    <string name="ConversationActivity_signal_needs_camera_permissions_to_take_photos_or_video">mUzima PHR needs Camera permissions to take photos or video</string>
+    <string name="ConversationActivity_signal_needs_the_camera_permission_to_take_photos_or_video">mUzima PHR needs the Camera permission to take photos or video, but it has been permanently denied. Please continue to app settings, select \\\"Permissions\\\", and enable \\\"Camera\\\".</string>
+    <string name="ConversationActivity_quick_camera_unavailable">Camera unavailable</string>
+    <string name="CameraActivity_image_save_failure">Failed to save image.</string>
+    <string name="conversation_activity__compose_description">Message composition</string>
+    <string name="conversation_activity__emoji_toggle_description">Toggle emoji keyboard</string>
+    <string name="conversation_activity__send">Send</string>
+    <string name="ScribbleActivity_save_failure">Failed to save image changes</string>
+    <string name="CameraActivity_camera_unavailable">Camera unavailable.</string>
+    <string name="menu_conversation_expiring_on__messages_expiring">Messages expiring</string>
+    <string name="conversation_expiring_off__disappearing_messages">Disappearing messages</string>
+    <string name="conversation_callable_secure__menu_call">mUzima PHR call</string>
+    <string name="conversation_callable_insecure__menu_call">Call</string>
+    <string name="convesation_group_options__recipients_list">Recipients list</string>
+    <string name="conversation__menu_edit_group">Edit Group</string>
+    <string name="conversation__menu_leave_group">Leave Group</string>
+    <string name="conversation_group_options__delivery">Delivery</string>
+    <string name="conversation_group_options__conversation">Conversation</string>
+    <string name="conversation_group_options__broadcast">Broadcast</string>
+    <string name="conversation__menu_view_all_media">All media</string>
+    <string name="conversation__menu_conversation_settings">Conversation settings</string>
+    <string name="conversation__menu_add_shortcut">Add to home screen</string>
+    <string name="conversation_insecure__invite">Invite</string>
+    <string name="conversation_secure_verified__menu_reset_secure_session">Reset secure session</string>
+    <string name="conversation_muted__unmute">Unmuted</string>
+    <string name="conversation_unmuted__mute_notifications" tools:ignore="ExtraTranslation">Mute notifications</string>
+    <string name="conversation_add_to_contacts__menu_add_to_contacts">Add to contacts</string>
+    <string name="AttachmentManager_signal_requires_the_external_storage_permission_in_order_to_attach_photos_videos_or_audio">mUzima PHR requires the Storage permission in order to attach photos, videos, or audio, but it has been permanently denied. Please continue to the app settings menu, select \\\"Permissions\\\", and enable \\\"Storage\\\".</string>
+    <string name="AttachmentManager_signal_requires_contacts_permission_in_order_to_attach_contact_information">mUzima PHR requires Contacts permission in order to attach contact information, but it has been permanently denied. Please continue to the app settings menu, select \\\"Permissions\\\", and enable \\\"Contacts\\\".</string>
+    <string name="AttachmentManager_signal_requires_location_information_in_order_to_attach_a_location">mUzima PHR requires Location permission in order to attach a location, but it has been permanently denied. Please continue to the app settings menu, select \\\"Permissions\\\", and enable \\\"Location\\\".</string>
+    <string name="AttachmentManager_signal_requires_the_camera_permission_in_order_to_take_photos_but_it_has_been_permanently_denied">mUzima PHR requires the Camera permission in order to take photos, but it has been permanently denied. Please continue to the app settings menu, select \\\"Permissions\\\", and enable \\\"Camera\\\".</string>
+    <string name="ConversationActivity_sorry_there_was_an_error_setting_your_attachment">Sorry, there was an error setting your attachment.</string>
+    <string name="ConversationActivity_attachment_exceeds_size_limits">Attachment exceeds size limits for the type of message you\\\'re sending.</string>
+    <string name="AttachmentManager_cant_open_media_selection">Can\\\'t find an app to select media.</string>
+    <string name="ConversationActivity_select_contact_info">Select contact info</string>
 
 
 </resources>

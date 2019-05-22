@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.muzima.R;
+import com.muzima.messaging.customcomponents.actionmode.ConversationListItemAction;
+import com.muzima.messaging.customcomponents.actionmode.ConversationListItemInboxZero;
 import com.muzima.messaging.mms.GlideRequests;
 import com.muzima.messaging.sqlite.database.CursorRecyclerViewAdapter;
 import com.muzima.messaging.sqlite.database.DatabaseFactory;
@@ -90,19 +92,18 @@ public class ConversationListAdapter extends CursorRecyclerViewAdapter<Conversat
 
     @Override
     public ViewHolder onCreateItemViewHolder(ViewGroup parent, int viewType) {
-        //TODO  ++++
-//        if (viewType == MESSAGE_TYPE_SWITCH_ARCHIVE) {
-//            ConversationListItemAction action = (ConversationListItemAction) inflater.inflate(R.layout.conversation_list_item_action,
-//                    parent, false);
-//
-//            action.setOnClickListener(v -> {
-//                if (clickListener != null) clickListener.onSwitchToArchive();
-//            });
-//
-//            return new ViewHolder(action);
-//        } else if (viewType == MESSAGE_TYPE_INBOX_ZERO) {
-//            return new ViewHolder((ConversationListItemInboxZero) inflater.inflate(R.layout.conversation_list_item_inbox_zero, parent, false));
-//        } else {
+        if (viewType == MESSAGE_TYPE_SWITCH_ARCHIVE) {
+            ConversationListItemAction action = (ConversationListItemAction) inflater.inflate(R.layout.conversation_list_item_action,
+                    parent, false);
+
+            action.setOnClickListener(v -> {
+                if (clickListener != null) clickListener.onSwitchToArchive();
+            });
+
+            return new ViewHolder(action);
+        } else if (viewType == MESSAGE_TYPE_INBOX_ZERO) {
+            return new ViewHolder((ConversationListItemInboxZero) inflater.inflate(R.layout.conversation_list_item_inbox_zero, parent, false));
+        } else {
             final ConversationListItem item = (ConversationListItem) inflater.inflate(R.layout.conversation_list_item_view,
                     parent, false);
 
@@ -116,7 +117,7 @@ public class ConversationListAdapter extends CursorRecyclerViewAdapter<Conversat
             });
 
             return new ViewHolder(item);
-      //  }
+        }
     }
 
     @Override
