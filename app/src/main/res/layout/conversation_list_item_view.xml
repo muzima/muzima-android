@@ -103,7 +103,7 @@
 
         </FrameLayout>
 
-        <com.muzima.messing.customcomponents.ThumbnailView
+        <com.muzima.messaging.customcomponents.ThumbnailView
             android:id="@+id/thumbnail"
             android:layout_width="40dp"
             android:layout_height="40dp"
