@@ -175,4 +175,18 @@
         <attr name="maxHeight" format="dimension" />
         <attr name="thumbnail_radius" format="dimension" />
     </declare-styleable>
+    <declare-styleable name="ColorPickerPreference">
+        <attr name="currentColor" format="reference" />
+        <attr name="colors" format="reference" />
+        <attr name="sortColors" format="boolean|reference" />
+        <attr name="colorDescriptions" format="reference" />
+        <attr name="columns" format="integer|reference" />
+        <attr name="colorSize" format="enum|reference">
+            <enum name="large" value="1" />
+            <enum name="small" value="2" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="CustomDefaultPreference">
+        <attr name="custom_pref_toggle" format="string"/>
+    </declare-styleable>
 </resources>

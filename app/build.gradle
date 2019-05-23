@@ -194,6 +194,10 @@ dependencies {
     }
     compile 'com.pnikosis:materialish-progress:1.5'
     compile group: 'com.nineoldandroids', name: 'library', version: '2.4.0'
+    compile ('com.takisoft.fix:colorpicker:0.9.1') {
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.android.support', module: 'recyclerview-v7'
+    }
 
     testCompile fileTree('lib/stickylistheaders-1.0.0.jar')
     testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'

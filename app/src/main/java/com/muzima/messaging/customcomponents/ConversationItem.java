@@ -36,6 +36,7 @@ import com.muzima.messaging.components.QuoteView;
 import com.muzima.messaging.contactshare.Contact;
 import com.muzima.messaging.dialogs.ConfirmIdentityDialog;
 import com.muzima.messaging.imaging.LongClickCopySpan;
+import com.muzima.messaging.jobs.MmsSendJob;
 import com.muzima.messaging.jobs.SmsSendJob;
 import com.muzima.messaging.mms.GlideRequests;
 import com.muzima.messaging.mms.PartAuthority;
@@ -947,10 +948,9 @@ public class ConversationItem extends LinearLayout
                 database.markAsInsecure(messageRecord.getId());
                 database.markAsOutbox(messageRecord.getId());
                 database.markAsForcedSms(messageRecord.getId());
-//                TODO +++++++++++work on MmsSendJob
-//                MuzimaApplication.getInstance(context)
-//                        .getJobManager()
-//                        .add(new MmsSendJob(context, messageRecord.getId()));
+                MuzimaApplication.getInstance(context)
+                        .getJobManager()
+                        .add(new MmsSendJob(context, messageRecord.getId()));
             } else {
                 SmsDatabase database = DatabaseFactory.getSmsDatabase(context);
                 database.markAsInsecure(messageRecord.getId());

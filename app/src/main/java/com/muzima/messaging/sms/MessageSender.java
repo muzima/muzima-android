@@ -10,6 +10,7 @@ import com.muzima.messaging.TextSecurePreferences;
 import com.muzima.messaging.attachments.Attachment;
 import com.muzima.messaging.exceptions.MmsException;
 import com.muzima.messaging.jobmanager.JobManager;
+import com.muzima.messaging.jobs.MmsSendJob;
 import com.muzima.messaging.jobs.PushGroupSendJob;
 import com.muzima.messaging.jobs.PushMediaSendJob;
 import com.muzima.messaging.jobs.PushTextSendJob;
@@ -192,8 +193,7 @@ public class MessageSender {
 
     private static void sendMms(Context context, long messageId) {
         JobManager jobManager = MuzimaApplication.getInstance(context).getJobManager();
-       //Todo work on mmssend
-        // jobManager.add(new MmsSendJob(context, messageId));
+        jobManager.add(new MmsSendJob(context, messageId));
     }
 
     private static boolean isPushTextSend(Context context, SignalRecipient recipient, boolean keyExchange) {

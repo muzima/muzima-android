@@ -70,13 +70,9 @@
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
-    <uses-permission android:name="android.permission.WRITE_SMS" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
     <uses-permission android:name="android.permission.READ_CALL_STATE" />
 
     <!-- For sending/receiving events -->
@@ -105,14 +101,12 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.BROADCAST_STICKY" />
     <permission android:name="com.muzima.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
     <uses-permission android:name="com.muzima.permission.C2D_MESSAGE" />
     <uses-permission android:name="android.permission.READ_PROFILE"/>
     <uses-permission android:name="android.permission.WRITE_PROFILE"/>
-    <uses-permission android:name="android.permission.READ_CALL_LOG" />
 
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.BROADCAST_WAP_PUSH" tools:ignore="ProtectedPermissions" />
@@ -578,6 +572,20 @@
             android:authorities="${applicationId}.workmanager-init"
             android:exported="false"
             tools:node="remove" />
+
+        <provider android:name=".messaging.provider.MmsBodyProvider"
+            android:grantUriPermissions="true"
+            android:exported="false"
+            android:authorities="com.muzima.provider.securesms.mms" />
+
+        <provider android:name=".messaging.sqlite.database.DatabaseContentProviders$Attachment"
+            android:authorities="com.muzima.database.attachment"
+            android:exported="false" />
+
+        <provider android:name=".messaging.sqlite.database.DatabaseContentProviders$Conversation"
+            android:authorities="com.muzima.database.conversation"
+            android:exported="false" />
+
 
         <service android:name=".service.AccountAuthenticatorService"
             android:exported="true">
