@@ -929,11 +929,8 @@ public class MuzimaSyncService {
 
         try {
             List<PatientReportHeader> patientReportHeaders;
-            System.out.println("Just about to download");
             patientReportHeaders = patientReportController.downloadPatientReportHeadersByPatientUuid(patientUuid);
-            System.out.println("Finisehed download next save ni ngapi:: " + patientReportHeaders.size());
             patientReportController.savePatientReportHeaders(patientReportHeaders);
-            System.out.println("Finished save erturningJust abo");
 
             result[0] = SUCCESS;
             result[1] = patientReportHeaders.size();

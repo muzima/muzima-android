@@ -145,9 +145,7 @@ public class DataSyncService extends IntentService {
                 }
                 break;
             case DataSyncServiceConstants.SYNC_PATIENT_REPORTS_HEADERS:
-                System.out.println("therememe");
                 String patientUUid = intent.getStringExtra(Constants.SyncPatientReportsConstants.PATIENT_UUID);
-                Log.i("There", "Getting headers for:" + patientUUid);
                 updateNotificationMsg(getString(R.string.info_patient_reports_download_in_progress));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = muzimaSyncService.downloadPatientReportHeaders(patientUUid);

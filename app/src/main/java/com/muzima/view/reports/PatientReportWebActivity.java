@@ -41,10 +41,6 @@ public class PatientReportWebActivity extends BroadcastListenerActivity {
 
         try {
             patientReport = patientReportController.getPatientReportByUuid(patientReportUuid);
-            System.out.println(patientReport.getUuid());
-            System.out.println(patientReport.getName());
-            System.out.println(patientReport.getPatientUuid());
-            System.out.println(patientReport.getReportJson());
 
             showReport();
         } catch (PatientReportController.PatientReportFetchException e) {
