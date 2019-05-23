@@ -71,14 +71,6 @@ class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concepts, Conc
 
     @Override
     protected void onPostExecute(Concepts conceptsWithObservations) {
-        if (conceptsWithObservations == null) {
-            if (isSHRData) {
-                Toast.makeText(observationsByConceptAdapter.getContext(), "This patient does not have any SHR data.", Toast.LENGTH_SHORT).show();
-            } else
-                Toast.makeText(observationsByConceptAdapter.getContext(), observationsByConceptAdapter.getContext().getString(R.string.error_observation_fetch), Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         if (observationsByConceptAdapter.getBackgroundListQueryTaskListener() != null) {
             observationsByConceptAdapter.getBackgroundListQueryTaskListener().onQueryTaskFinish();
         }
