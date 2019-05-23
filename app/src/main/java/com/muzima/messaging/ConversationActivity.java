@@ -990,23 +990,23 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     }
 
     private void handleAddAttachment() {
-//        if (this.isMmsEnabled || isSecureText) {
-//            if (attachmentTypeSelector == null) {
-//                attachmentTypeSelector = new AttachmentTypeSelector(this, getSupportLoaderManager(), new AttachmentTypeListener());
-//            }
-//            attachmentTypeSelector.show(this, attachButton);
-//        } else {
-//            handleManualMmsRequired();
-//        }
+        if (this.isMmsEnabled || isSecureText) {
+            if (attachmentTypeSelector == null) {
+                attachmentTypeSelector = new AttachmentTypeSelector(this, getSupportLoaderManager(), new AttachmentTypeListener());
+            }
+            attachmentTypeSelector.show(this, attachButton);
+        } else {
+            handleManualMmsRequired();
+        }
     }
 
     private void handleManualMmsRequired() {
-//        Toast.makeText(this, R.string.MmsDownloader_error_reading_mms_settings, Toast.LENGTH_LONG).show();
-//
-//        Bundle extras = getIntent().getExtras();
-//        Intent intent = new Intent(this, PromptMmsActivity.class);
-//        if (extras != null) intent.putExtras(extras);
-//        startActivity(intent);
+        Toast.makeText(this, R.string.MmsDownloader_error_reading_mms_settings, Toast.LENGTH_LONG).show();
+
+        Bundle extras = getIntent().getExtras();
+        Intent intent = new Intent(this, PromptMmsActivity.class);
+        if (extras != null) intent.putExtras(extras);
+        startActivity(intent);
     }
 
     private void handleUnverifiedRecipients() {
@@ -1283,17 +1283,17 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     }
 
     private void initializeMmsEnabledCheck() {
-//        new AsyncTask<Void, Void, Boolean>() {
-//            @Override
-//            protected Boolean doInBackground(Void... params) {
-//                return Util.isMmsCapable(ConversationActivity.this);
-//            }
-//
-//            @Override
-//            protected void onPostExecute(Boolean isMmsEnabled) {
-//                ConversationActivity.this.isMmsEnabled = isMmsEnabled;
-//            }
-//        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        new AsyncTask<Void, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                return Util.isMmsCapable(ConversationActivity.this);
+            }
+
+            @Override
+            protected void onPostExecute(Boolean isMmsEnabled) {
+                ConversationActivity.this.isMmsEnabled = isMmsEnabled;
+            }
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private ListenableFuture<Boolean> initializeIdentityRecords() {

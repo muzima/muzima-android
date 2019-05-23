@@ -37,6 +37,7 @@ import org.whispersystems.libsignal.util.guava.Optional;
 import com.muzima.messaging.LinkedBlockingLifoQueue;
 import com.muzima.messaging.TextSecurePreferences;
 import com.muzima.messaging.components.ComposeText;
+import com.muzima.messaging.mms.OutgoingLegacyMmsConnection;
 import com.muzima.messaging.sqlite.database.SignalAddress;
 import com.muzima.utils.Base64;
 
@@ -491,5 +492,10 @@ public class Util {
         int      digitGroups = (int) (Math.log10(sizeBytes) / Math.log10(1024));
 
         return new DecimalFormat("#,##0.#").format(sizeBytes/Math.pow(1024, digitGroups)) + " " + units[digitGroups];
+    }
+
+    @TargetApi(VERSION_CODES.LOLLIPOP)
+    public static boolean isMmsCapable(Context context) {
+        return (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) || OutgoingLegacyMmsConnection.isConnectionPossible(context);
     }
 }
