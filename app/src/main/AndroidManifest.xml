@@ -544,6 +544,11 @@
             android:windowSoftInputMode="stateAlwaysVisible"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
+        <activity
+            android:name=".messaging.camera.CameraActivity"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"
+            android:windowSoftInputMode="stateHidden" />
+
         <provider android:name="android.support.v4.content.FileProvider"
             android:authorities="com.muzima.fileprovider"
             android:exported="false"
