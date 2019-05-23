@@ -20,6 +20,8 @@ import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.muzima.R;
+import com.muzima.glide.GlideBitmapListeningTarget;
+import com.muzima.messaging.components.GlideDrawableListeningTarget;
 import com.muzima.messaging.mms.DecryptableStreamUriLoader;
 import com.muzima.messaging.mms.GlideRequest;
 import com.muzima.messaging.mms.GlideRequests;
@@ -76,24 +78,24 @@ public class ThumbnailView extends FrameLayout {
     public ThumbnailView(final Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-//        inflate(context, R.layout.thumbnail_view, this);
-//
-//        this.image       = findViewById(R.id.thumbnail_image);
-//        this.playOverlay = findViewById(R.id.play_overlay);
-//        this.captionIcon = findViewById(R.id.thumbnail_caption_icon);
-//        super.setOnClickListener(new ThumbnailClickDispatcher());
-//
-//        if (attrs != null) {
-//            TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ThumbnailView, 0, 0);
-//            bounds[MIN_WIDTH]  = typedArray.getDimensionPixelSize(R.styleable.ThumbnailView_minWidth, 0);
-//            bounds[MAX_WIDTH]  = typedArray.getDimensionPixelSize(R.styleable.ThumbnailView_maxWidth, 0);
-//            bounds[MIN_HEIGHT] = typedArray.getDimensionPixelSize(R.styleable.ThumbnailView_minHeight, 0);
-//            bounds[MAX_HEIGHT] = typedArray.getDimensionPixelSize(R.styleable.ThumbnailView_maxHeight, 0);
-//            radius             = typedArray.getDimensionPixelSize(R.styleable.ThumbnailView_thumbnail_radius, getResources().getDimensionPixelSize(R.dimen.message_corner_collapse_radius));
-//            typedArray.recycle();
-//        } else {
-//            radius = getResources().getDimensionPixelSize(R.dimen.message_corner_collapse_radius);
-//        }
+        inflate(context, R.layout.thumbnail_view, this);
+
+        this.image       = findViewById(R.id.thumbnail_image);
+        this.playOverlay = findViewById(R.id.play_overlay);
+        this.captionIcon = findViewById(R.id.thumbnail_caption_icon);
+        super.setOnClickListener(new ThumbnailClickDispatcher());
+
+        if (attrs != null) {
+            TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ThumbnailView, 0, 0);
+            bounds[MIN_WIDTH]  = typedArray.getDimensionPixelSize(R.styleable.ThumbnailView_minWidth, 0);
+            bounds[MAX_WIDTH]  = typedArray.getDimensionPixelSize(R.styleable.ThumbnailView_maxWidth, 0);
+            bounds[MIN_HEIGHT] = typedArray.getDimensionPixelSize(R.styleable.ThumbnailView_minHeight, 0);
+            bounds[MAX_HEIGHT] = typedArray.getDimensionPixelSize(R.styleable.ThumbnailView_maxHeight, 0);
+            radius             = typedArray.getDimensionPixelSize(R.styleable.ThumbnailView_thumbnail_radius, getResources().getDimensionPixelSize(R.dimen.message_corner_collapse_radius));
+            typedArray.recycle();
+        } else {
+            radius = getResources().getDimensionPixelSize(R.dimen.message_corner_collapse_radius);
+        }
 
     }
 
@@ -211,7 +213,7 @@ public class ThumbnailView extends FrameLayout {
 
     private TransferControlView getTransferControls() {
         if (!transferControls.isPresent()) {
-//            transferControls = Optional.of(ViewUtil.inflateStub(this, R.id.transfer_controls_stub));
+            transferControls = Optional.of(ViewUtil.inflateStub(this, R.id.transfer_controls_stub));
         }
         return transferControls.get();
     }
@@ -279,14 +281,14 @@ public class ThumbnailView extends FrameLayout {
 
         SettableFuture<Boolean> result = new SettableFuture<>();
 
-//        if (slide.getThumbnailUri() != null) {
-//            buildThumbnailGlideRequest(glideRequests, slide).into(new GlideDrawableListeningTarget(image, result));
-//        } else if (slide.hasPlaceholder()) {
-//            buildPlaceholderGlideRequest(glideRequests, slide).into(new GlideBitmapListeningTarget(image, result));
-//        } else {
+        if (slide.getThumbnailUri() != null) {
+            buildThumbnailGlideRequest(glideRequests, slide).into(new GlideDrawableListeningTarget(image, result));
+        } else if (slide.hasPlaceholder()) {
+            buildPlaceholderGlideRequest(glideRequests, slide).into(new GlideBitmapListeningTarget(image, result));
+        } else {
             glideRequests.clear(image);
             result.set(false);
-//        }
+        }
 
         return result;
     }
@@ -295,11 +297,11 @@ public class ThumbnailView extends FrameLayout {
         SettableFuture<Boolean> future = new SettableFuture<>();
 
         if (transferControls.isPresent()) getTransferControls().setVisibility(View.GONE);
-//        glideRequests.load(new DecryptableStreamUriLoader.DecryptableUri(uri))
-//                .diskCacheStrategy(DiskCacheStrategy.NONE)
-//                .transforms(new CenterCrop(), new RoundedCorners(radius))
-//                .transition(withCrossFade())
-//                .into(new GlideDrawableListeningTarget(image, future));
+        glideRequests.load(new DecryptableStreamUriLoader.DecryptableUri(uri))
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .transforms(new CenterCrop(), new RoundedCorners(radius))
+                .transition(withCrossFade())
+                .into(new GlideDrawableListeningTarget(image, future));
 
         return future;
     }
@@ -331,10 +333,10 @@ public class ThumbnailView extends FrameLayout {
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .transition(withCrossFade()), new CenterCrop());
 
-//        if (slide.isInProgress())
+        if (slide.isInProgress())
             return request;
-//        else
-//            return request.apply(RequestOptions.errorOf(R.drawable.ic_missing_thumbnail_picture));
+        else
+            return request.apply(RequestOptions.errorOf(R.drawable.ic_missing_thumbnail_picture));
     }
 
     private RequestBuilder buildPlaceholderGlideRequest(@NonNull GlideRequests glideRequests, @NonNull Slide slide) {

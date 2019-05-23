@@ -49,7 +49,7 @@ public class ScribbleHud extends InputAwareLayout implements ViewTreeObserver.On
     private ViewGroup inputContainer;
     private ComposeText composeText;
     private SendButton sendButton;
-    private ViewGroup                sendButtonBkg;
+    private ViewGroup sendButtonBkg;
     private EmojiToggle emojiToggle;
     private Stub<EmojiDrawer> emojiDrawer;
     private TextView charactersLeft;

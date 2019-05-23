@@ -4,11 +4,11 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.widget.ImageButton;
+import android.support.v7.widget.AppCompatImageButton;
 
 import com.muzima.R;
 
-public class EmojiToggle extends ImageButton implements EmojiDrawer.EmojiDrawerListener{
+public class EmojiToggle extends AppCompatImageButton implements EmojiDrawer.EmojiDrawerListener{
     private Drawable emojiToggle;
     private Drawable imeToggle;
 
