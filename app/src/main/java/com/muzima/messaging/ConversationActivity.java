@@ -247,7 +247,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
 
         getWindow().getDecorView().setBackgroundColor(color);
 
-        fragment = initFragment(R.id.fragment_content, new ConversationFragment());
+        fragment = initFragment(R.id.fragment_content, new ConversationFragment(), getResources().getConfiguration().locale);
 
         initializeReceivers();
         initializeActionBar();

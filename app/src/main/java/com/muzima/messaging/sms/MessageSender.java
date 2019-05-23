@@ -13,6 +13,7 @@ import com.muzima.messaging.jobmanager.JobManager;
 import com.muzima.messaging.jobs.PushGroupSendJob;
 import com.muzima.messaging.jobs.PushMediaSendJob;
 import com.muzima.messaging.jobs.PushTextSendJob;
+import com.muzima.messaging.jobs.SmsSendJob;
 import com.muzima.messaging.mms.OutgoingMediaMessage;
 import com.muzima.messaging.push.AccountManagerFactory;
 import com.muzima.messaging.sqlite.database.AttachmentDatabase;
@@ -186,8 +187,7 @@ public class MessageSender {
 
     private static void sendSms(Context context, SignalRecipient recipient, long messageId) {
         JobManager jobManager = MuzimaApplication.getInstance(context).getJobManager();
-        //todo work on smssendjob
-        //jobManager.add(new SmsSendJob(context, messageId, recipient.getName()));
+        jobManager.add(new SmsSendJob(context, messageId, recipient.getName()));
     }
 
     private static void sendMms(Context context, long messageId) {
