@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import org.whispersystems.libsignal.util.guava.Optional;
 
@@ -132,6 +133,7 @@ public class TransportOptions {
                     context.getString(R.string.conversation_activity_type_message_sms_insecure),
                     new SmsCharacterCalculator()));
         }
+        Log.e("TransportOptions ","TRACE [ initializeAvailableTransports");
 
         results.add(new TransportOption(Type.TEXTSECURE, R.drawable.ic_send_push_white_24dp,
                 context.getResources().getColor(R.color.primary_blue),

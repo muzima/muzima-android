@@ -169,7 +169,7 @@
                 android:paddingLeft="11dp"
                 android:scaleType="fitCenter"
                 android:contentDescription="@string/conversation_activity__send"
-                android:src="?conversation_transport_sms_indicator"
+                android:src="@drawable/ic_send_sms_insecure"
                 android:background="@drawable/circle_touch_highlight_background" />
 
         </FrameLayout>

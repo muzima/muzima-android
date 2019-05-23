@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -57,6 +58,11 @@ public class CameraActivity extends PassphraseRequiredActionBarActivity implemen
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState, boolean ready) {
+        try
+        {
+            this.getSupportActionBar().hide();
+        }  catch (NullPointerException e){}
+
         setContentView(R.layout.camera_activity);
 
         snapshot = findViewById(R.id.camera_snapshot);

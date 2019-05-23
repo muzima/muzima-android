@@ -168,4 +168,11 @@
         <attr name="pickerColors" format="reference" />
     </declare-styleable>
     <attr name="conversation_attach_contact_info" format="reference"/>
+    <declare-styleable name="ThumbnailView">
+        <attr name="minWidth" format="dimension" />
+        <attr name="maxWidth" format="dimension" />
+        <attr name="minHeight" format="dimension" />
+        <attr name="maxHeight" format="dimension" />
+        <attr name="thumbnail_radius" format="dimension" />
+    </declare-styleable>
 </resources>
