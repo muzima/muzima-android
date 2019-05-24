@@ -202,4 +202,5 @@
         <attr name="shape" format="string"/>
         <attr name="radius" format="float"/>
     </declare-styleable>
+    <attr name="pref_divider" format="reference" />
 </resources>

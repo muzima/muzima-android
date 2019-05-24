@@ -72,6 +72,7 @@ import com.muzima.messaging.customcomponents.UnverifiedBannerView;
 import com.muzima.messaging.components.identity.UnverifiedSendDialog;
 import com.muzima.messaging.customcomponents.emoji.EmojiDrawer;
 import com.muzima.messaging.customcomponents.emoji.EmojiStrings;
+import com.muzima.messaging.dialogs.MuteDialog;
 import com.muzima.messaging.events.ReminderUpdateEvent;
 import com.muzima.messaging.exceptions.RecipientFormattingException;
 import com.muzima.messaging.fragments.ConversationFragment;
@@ -660,30 +661,28 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     }
 
     private void handleMuteNotifications() {
-//        TODO: +++++++
-//        MuteDialog.show(this, until -> {
-//            recipient.setMuted(until);
-//
-//            new AsyncTask<Void, Void, Void>() {
-//                @Override
-//                protected Void doInBackground(Void... params) {
-//                    DatabaseFactory.getRecipientDatabase(ConversationActivity.this)
-//                            .setMuted(recipient, until);
-//
-//                    return null;
-//                }
-//            }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-//        });
+        MuteDialog.show(this, until -> {
+            recipient.setMuted(until);
+
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... params) {
+                    DatabaseFactory.getRecipientDatabase(ConversationActivity.this)
+                            .setMuted(recipient, until);
+
+                    return null;
+                }
+            }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        });
     }
 
     private void handleConversationSettings() {
-//        TODO: ++++++++
-//        Intent intent = new Intent(ConversationActivity.this, RecipientPreferenceActivity.class);
-//        intent.putExtra(RecipientPreferenceActivity.ADDRESS_EXTRA, recipient.getAddress());
-//        intent.putExtra(RecipientPreferenceActivity.CAN_HAVE_SAFETY_NUMBER_EXTRA,
-//                isSecureText && !isSelfConversation());
-//
-//        startActivitySceneTransition(intent, titleView.findViewById(R.id.contact_photo_image), "avatar");
+        Intent intent = new Intent(ConversationActivity.this, RecipientPreferenceActivity.class);
+        intent.putExtra(RecipientPreferenceActivity.ADDRESS_EXTRA, recipient.getAddress());
+        intent.putExtra(RecipientPreferenceActivity.CAN_HAVE_SAFETY_NUMBER_EXTRA,
+                isSecureText && !isSelfConversation());
+
+        startActivitySceneTransition(intent, titleView.findViewById(R.id.contact_photo_image), "avatar");
     }
 
     private void handleUnmuteNotifications() {
@@ -1241,8 +1240,8 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     }
 
     protected void updateReminders(boolean seenInvite) {
-//        Log.i(TAG, "updateReminders(" + seenInvite + ")");
-//
+        Log.i(TAG, "updateReminders(" + seenInvite + ")");
+
 //        if (UnauthorizedReminder.isEligible(this)) {
 //            reminderView.get().showReminder(new UnauthorizedReminder(this));
 //        } else if (ExpiredBuildReminder.isEligible()) {
