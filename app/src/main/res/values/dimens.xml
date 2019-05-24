@@ -71,5 +71,5 @@
     <dimen name="message_bubble_corner_radius">2dp</dimen>
     <dimen name="contact_selection_actions_tap_area">10dp</dimen>
     <dimen name="scribble_stroke_size">2dp</dimen>
-
+    <dimen name="floating_action_button_margin">16dp</dimen>
 </resources>

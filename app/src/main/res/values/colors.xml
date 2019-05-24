@@ -153,4 +153,6 @@
     <color name="grey_800">#424242</color>
     <color name="signal_primary_dark">#ff1c7ac5</color>
     <color name="gray95">#ff111111</color>
+    <color name="grey_600">#757575</color>
+    <color name="grey_400">#BDBDBD</color>
 </resources>

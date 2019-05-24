@@ -61,6 +61,7 @@ import com.muzima.messaging.components.KeyboardAwareLinearLayout.OnKeyboardShown
 import com.muzima.messaging.contacts.ContactAccessor;
 import com.muzima.messaging.contacts.ContactAccessor.ContactData;
 import com.muzima.messaging.contactshare.Contact;
+import com.muzima.messaging.contactshare.ContactShareEditActivity;
 import com.muzima.messaging.contactshare.ContactUtil;
 import com.muzima.messaging.crypto.SecurityEvent;
 import com.muzima.messaging.customcomponents.AttachmentTypeSelector;
@@ -94,6 +95,7 @@ import com.muzima.messaging.mms.SlideDeck;
 import com.muzima.messaging.net.TransportOption;
 import com.muzima.messaging.net.TransportOption.Type;
 import com.muzima.messaging.provider.PersistentBlobProvider;
+import com.muzima.messaging.scribbles.ScribbleActivity;
 import com.muzima.messaging.sms.MessageSender;
 import com.muzima.messaging.sms.OutgoingEncryptedMessage;
 import com.muzima.messaging.sms.OutgoingEndSessionMessage;
@@ -414,7 +416,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
                 }
                 break;
             case GET_CONTACT_DETAILS:
-//                sendSharedContact(data.getParcelableArrayListExtra(ContactShareEditActivity.KEY_CONTACTS));
+                sendSharedContact(data.getParcelableArrayListExtra(ContactShareEditActivity.KEY_CONTACTS));
                 break;
             case GROUP_EDIT:
 //                recipient = SignalRecipient.from(this, data.getParcelableExtra(GroupCreateActivity.GROUP_ADDRESS_EXTRA), true);
@@ -444,9 +446,9 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
 //                        data.getIntExtra(GiphyActivity.EXTRA_WIDTH, 0),
 //                        data.getIntExtra(GiphyActivity.EXTRA_HEIGHT, 0));
                 break;
-//            case ScribbleActivity.SCRIBBLE_REQUEST_CODE:
-//                setMedia(data.getData(), MediaType.IMAGE);
-//                break;
+            case ScribbleActivity.SCRIBBLE_REQUEST_CODE:
+                setMedia(data.getData(), MediaType.IMAGE);
+                break;
             case SMS_DEFAULT:
                 initializeSecurity(isSecureText, isDefaultSms);
                 break;
@@ -1552,8 +1554,8 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     }
 
     private void openContactShareEditor(Uri contactUri) {
-//        Intent intent = ContactShareEditActivity.getIntent(this, Collections.singletonList(contactUri));
-//        startActivityForResult(intent, GET_CONTACT_DETAILS);
+        Intent intent = ContactShareEditActivity.getIntent(this, Collections.singletonList(contactUri));
+        startActivityForResult(intent, GET_CONTACT_DETAILS);
     }
 
     private void addAttachmentContactInfo(Uri contactUri) {

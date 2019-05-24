@@ -214,8 +214,7 @@ public class AttachmentManager {
             }
 
             @Override
-            protected @Nullable
-            Slide doInBackground(Void... params) {
+            protected @Nullable Slide doInBackground(Void... params) {
                 try {
                     if (PartAuthority.isLocalUri(uri)) {
                         return getManuallyCalculatedSlideInfo(uri, width, height);
@@ -267,10 +266,10 @@ public class AttachmentManager {
                 }
             }
 
-            private @Nullable
-            Slide getContentResolverSlideInfo(Uri uri, int width, int height) {
+            private @Nullable Slide getContentResolverSlideInfo(Uri uri, int width, int height) {
                 Cursor cursor = null;
                 long start = System.currentTimeMillis();
+                Log.w("AttachmentManager","AttachmentManager width = "+width+" height = "+height);
 
                 try {
                     cursor = context.getContentResolver().query(uri, null, null, null, null);

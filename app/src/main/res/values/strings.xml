@@ -1165,8 +1165,18 @@
     <string name="preferences__mms_proxy_host">MMS Proxy Host</string>
     <string name="preferences__mms_proxy_port">MMS Proxy Port</string>
     <string name="preferences__mmsc_url">MMSC URL</string>
-    <string name="prompt_mms_activity__signal_requires_mms_settings_to_deliver_media_and_group_messages">mUzima PHR requires MMS settings to deliver media and group messages through your wireless carrier. Your device does not make this information available, which is occasionally true for locked devices and other restrictive configurations.</string>
+    <string name="prompt_mms_activity__signal_requires_mms_settings_to_deliver_media_and_group_messages">mUzima requires MMS settings to deliver media and group messages through your wireless carrier. Your device does not make this information available, which is occasionally true for locked devices and other restrictive configurations.</string>
     <string name="prompt_mms_activity__to_send_media_and_group_messages_tap_ok">To send media and group messages, tap \'OK\' and complete the requested settings. The MMS settings for your carrier can generally be located by searching for \'your carrier APN\'. You will only need to do this once.</string>
     <string name="MmsDownloader_error_reading_mms_settings">Error reading wireless provider MMS settings</string>
+    <string name="ContactShareEditActivity_type_home" tools:ignore="ExtraTranslation">Home</string>
+    <string name="ContactShareEditActivity_type_mobile">Mobile</string>
+    <string name="ContactShareEditActivity_type_work">Work</string>
+    <string name="ContactShareEditActivity_type_missing">Other</string>
+    <string name="ContactShareEditActivity_invalid_contact">Selected contact was invalid</string>
+    <string name="ContactNameEditActivity_given_name">Given name</string>
+    <string name="ContactNameEditActivity_family_name">Family name</string>
+    <string name="ContactNameEditActivity_prefix">Prefix</string>
+    <string name="ContactNameEditActivity_suffix">Suffix</string>
+    <string name="ContactNameEditActivity_middle_name">Middle name</string>
 
 </resources>
