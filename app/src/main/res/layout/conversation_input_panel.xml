@@ -57,21 +57,21 @@
                     android:paddingStart="10dp"
                     android:paddingLeft="10dp">
 
-                    <com.muzima.messaging.customcomponents.emoji.EmojiToggle
-                        android:id="@+id/emoji_toggle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/conversation_compose_height"
-                        android:layout_gravity="bottom"
-                        android:background="?selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/conversation_activity_emoji_toggle_description"
-                        android:paddingStart="4dp"
-                        android:paddingLeft="4dp"
-                        android:paddingEnd="6dp"
-                        android:paddingRight="6dp" />
+                    <!--<com.muzima.messaging.customcomponents.emoji.EmojiToggle-->
+                        <!--android:id="@+id/emoji_toggle"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="@dimen/conversation_compose_height"-->
+                        <!--android:layout_gravity="bottom"-->
+                        <!--android:background="?selectableItemBackgroundBorderless"-->
+                        <!--android:contentDescription="@string/conversation_activity_emoji_toggle_description"-->
+                        <!--android:paddingStart="4dp"-->
+                        <!--android:paddingLeft="4dp"-->
+                        <!--android:paddingEnd="6dp"-->
+                        <!--android:paddingRight="6dp" />-->
 
-                    <Space
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/conversation_compose_height" />
+                    <!--<Space-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="@dimen/conversation_compose_height" />-->
 
                     <com.muzima.messaging.components.ComposeText
                         android:id="@+id/embedded_text_editor"

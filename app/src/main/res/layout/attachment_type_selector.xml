@@ -180,30 +180,6 @@
 
             </LinearLayout>
 
-
-            <LinearLayout android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <com.muzima.messaging.customcomponents.CircleColorImageView
-                    android:id="@+id/giphy_button"
-                    android:layout_width="53dp"
-                    android:layout_height="53dp"
-                    android:src="@drawable/ic_gif_white_24dp"
-                    android:scaleType="center"
-                    android:contentDescription="@string/attachment_type_selector__gif_description"
-                    app:circleColor="@color/cyan_400"/>
-
-                <TextView android:layout_marginTop="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/AttachmentTypeLabel"
-                    android:text="@string/attachment_type_selector__gif"/>
-
-            </LinearLayout>
-
             <LinearLayout android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

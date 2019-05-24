@@ -548,6 +548,7 @@
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
         <activity android:name=".messaging.contactshare.ContactNameEditActivity"
+            android:theme="@style/AppThemeNoActionBar.Dark"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
         <activity android:name=".messaging.contactshare.ContactShareEditActivity"
