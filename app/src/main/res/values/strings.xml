@@ -1178,5 +1178,60 @@
     <string name="ContactNameEditActivity_prefix">Prefix</string>
     <string name="ContactNameEditActivity_suffix">Suffix</string>
     <string name="ContactNameEditActivity_middle_name">Middle name</string>
+    <string name="MediaOverviewActivity_Media">Media</string>
+    <string name="MediaOverviewActivity_Documents">Documents</string>
+    <string name="BucketedThreadMedia_Today">Today</string>
+    <string name="BucketedThreadMedia_Yesterday">Yesterday</string>
+    <string name="BucketedThreadMedia_This_week">This week</string>
+    <string name="BucketedThreadMedia_This_month">This month</string>
+    <string name="media_preview_activity__media_content_description">Media preview</string>
+    <string name="media_overview_activity__no_media">No media</string>
+    <string name="ConversationFragment_save_to_sd_card">Save to storage?</string>
+    <plurals name="ConversationFragment_saving_n_media_to_storage_warning">
+        <item quantity="one">Saving this media to storage will allow any other apps on your device to access it.\n\nContinue?</item>
+        <item quantity="other">Saving all %1$d media to storage will allow any other apps on your device to access them.\n\nContinue?</item>
+    </plurals>
+    <plurals name="ConversationFragment_error_while_saving_attachments_to_sd_card">
+        <item quantity="one">Error while saving attachment to storage!</item>
+        <item quantity="other">Error while saving attachments to storage!</item>
+    </plurals>
+    <string name="SaveAttachmentTask_saved">Saved</string>
+    <string name="ConversationFragment_unable_to_write_to_sd_card_exclamation">Unable to write to storage!</string>
+    <string name="SaveAttachmentTask_saved_to">Saved to %s</string>
+    <plurals name="ConversationFragment_saving_n_attachments">
+        <item quantity="one">Saving attachment</item>
+        <item quantity="other">Saving %1$d attachments</item>
+    </plurals>
+    <plurals name="ConversationFragment_saving_n_attachments_to_sd_card">
+        <item quantity="one">Saving attachment to storage...</item>
+        <item quantity="other">Saving %1$d attachments to storage...</item>
+    </plurals>
+    <string name="VideoPlayer_error_playing_video">Error playing video</string>
+    <string name="MediaPreviewActivity_you">You</string>
+    <string name="MediaPreviewActivity_draft">Draft</string>
+    <string name="MediaPreviewActivity_unssuported_media_type">Unsupported media type</string>
+    <string name="MediaPreviewActivity_signal_needs_the_storage_permission_in_order_to_write_to_external_storage_but_it_has_been_permanently_denied">mUzima PHR needs the Storage permission in order to save to external storage, but it has been permanently denied. Please continue to app settings, select \"Permissions\", and enable \"Storage\".</string>
+    <string name="MediaPreviewActivity_unable_to_write_to_external_storage_without_permission">Unable to save to external storage without permissions</string>
+    <string name="MediaPreviewActivity_media_delete_confirmation_title">Delete message?</string>
+    <string name="MediaPreviewActivity_media_delete_confirmation_message">This will permanently delete this message.</string>
+    <string name="media_preview__save_title">Save</string>
+    <string name="media_preview__forward_title">Forward</string>
+    <string name="media_preview__all_media_title">All media</string>
+    <string name="hint_share_with">Share with...</string>
+    <string name="text_secure_normal__menu_new_message">New message.</string>
+    <string name="MediaOverviewActivity_collecting_attachments">Collecting attachments…</string>
+    <string name="please_wait">Please wait…</string>
+    <plurals name="MediaOverviewActivity_Media_delete_confirm_title">
+        <item quantity="one">Delete selected message?</item>
+        <item quantity="other">Delete selected messages?</item>
+    </plurals>
+    <plurals name="MediaOverviewActivity_Media_delete_confirm_message">
+        <item quantity="one">This will permanently delete the selected message.</item>
+        <item quantity="other">This will permanently delete all %1$d selected messages.</item>
+    </plurals>
+    <string name="MediaOverviewActivity_Media_delete_progress_title">Deleting</string>
+    <string name="MediaOverviewActivity_Media_delete_progress_message">Deleting messages…</string>
+    <string name="media_overview_documents_fragment__no_documents_found">No documents</string>
+    <string name="MediaOverviewActivity_Select_all">Select all</string>
 
 </resources>

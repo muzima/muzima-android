@@ -207,6 +207,11 @@
         <item name="emoji_tab_seperator">@color/gray70</item>
         <item name="contact_selection_push_user">#ffeeeeee</item>
         <item name="contact_selection_lay_user">#afeeeeee</item>
+        <item name="media_overview_toolbar_background">@color/primary_black</item>
+        <item name="media_overview_toolbar_foreground">@color/primary_white</item>
+        <item name="media_overview_header_foreground">@color/gray10</item>
+        <item name="media_overview_document_primary">@color/core_grey_05</item>
+        <item name="media_overview_document_secondary">@color/core_grey_25</item>
     </style>
 
     <!-- Application theme. -->
@@ -247,6 +252,11 @@
         <item name="emoji_tab_seperator">@color/gray70</item>
         <item name="contact_selection_push_user">#ff000000</item>
         <item name="contact_selection_lay_user">#a0000000</item>
+        <item name="media_overview_toolbar_background">@color/primary_white</item>
+        <item name="media_overview_toolbar_foreground">@color/gray70</item>
+        <item name="media_overview_header_foreground">@color/gray50</item>
+        <item name="media_overview_document_primary">@color/core_grey_90</item>
+        <item name="media_overview_document_secondary">@color/core_grey_60</item>
     </style>
     <style name="TextSecure.ScribbleTheme" parent="TextSecure.DarkNoActionBar">
     </style>
@@ -260,17 +270,5 @@
         <item name="colorPrimary">@color/gray95</item>
         <item name="colorAccent">@color/signal_primary_dark</item>
         <item name="android:colorControlActivated" tools:ignore="NewApi">@color/signal_primary_dark</item>
-
-        <!--<item name="recipient_preference_blocked">#d00000</item>-->
-        <!--<item name="contact_selection_label_text">#66eeeeee</item>-->
-        <!--<item name="contact_selection_push_user">#ffeeeeee</item>-->
-        <!--<item name="contact_selection_lay_user">#afeeeeee</item>-->
-        <!--<item name="contact_selection_header_text">#66eeeeee</item>-->
-
-        <!--<item name="media_overview_toolbar_background">@color/black</item>-->
-        <!--<item name="media_overview_toolbar_foreground">@color/white</item>-->
-        <!--<item name="media_overview_header_foreground">@color/gray10</item>-->
-        <!--<item name="media_overview_document_primary">@color/core_grey_05</item>-->
-        <!--<item name="media_overview_document_secondary">@color/core_grey_25</item>-->
     </style>
 </resources>

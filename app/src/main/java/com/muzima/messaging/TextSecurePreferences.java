@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.muzima.R;
 import com.muzima.messaging.jobs.requirements.SqlCipherMigrationRequirementProvider;
 
 import com.muzima.messaging.preference.widgets.NotificationPrivacyPreference;
@@ -965,17 +966,17 @@ public class TextSecurePreferences {
         return getBooleanPreference(context, SYSTEM_EMOJI_PREF, false);
     }
 
-   // public static @NonNull Set<String> getMobileMediaDownloadAllowed(Context context) {
-        //return getMediaDownloadAllowed(context, MEDIA_DOWNLOAD_MOBILE_PREF, R.array.pref_media_download_mobile_data_default);
-   // }
+    public static @NonNull Set<String> getMobileMediaDownloadAllowed(Context context) {
+        return getMediaDownloadAllowed(context, MEDIA_DOWNLOAD_MOBILE_PREF, R.array.pref_media_download_mobile_data_default);
+    }
 
-    //public static @NonNull Set<String> getWifiMediaDownloadAllowed(Context context) {
-    //    return getMediaDownloadAllowed(context, MEDIA_DOWNLOAD_WIFI_PREF, R.array.pref_media_download_wifi_default);
-    //}
+    public static @NonNull Set<String> getWifiMediaDownloadAllowed(Context context) {
+        return getMediaDownloadAllowed(context, MEDIA_DOWNLOAD_WIFI_PREF, R.array.pref_media_download_wifi_default);
+    }
 
-   // public static @NonNull Set<String> getRoamingMediaDownloadAllowed(Context context) {
-   //     return getMediaDownloadAllowed(context, MEDIA_DOWNLOAD_ROAMING_PREF, R.array.pref_media_download_roaming_default);
-  //  }
+    public static @NonNull Set<String> getRoamingMediaDownloadAllowed(Context context) {
+        return getMediaDownloadAllowed(context, MEDIA_DOWNLOAD_ROAMING_PREF, R.array.pref_media_download_roaming_default);
+    }
 
     private static @NonNull Set<String> getMediaDownloadAllowed(Context context, String key, @ArrayRes int defaultValuesRes) {
         return getStringSetPreference(context,
