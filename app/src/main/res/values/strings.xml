@@ -1134,7 +1134,7 @@
     <string name="conversation__menu_add_shortcut">Add to home screen</string>
     <string name="conversation_insecure__invite">Invite</string>
     <string name="conversation_secure_verified__menu_reset_secure_session">Reset secure session</string>
-    <string name="conversation_muted__unmute">Unmuted</string>
+    <string name="conversation_muted__unmute">Unmute</string>
     <string name="conversation_unmuted__mute_notifications" tools:ignore="ExtraTranslation">Mute notifications</string>
     <string name="conversation_add_to_contacts__menu_add_to_contacts">Add to contacts</string>
     <string name="AttachmentManager_signal_requires_the_external_storage_permission_in_order_to_attach_photos_videos_or_audio">mUzima requires the Storage permission in order to attach photos, videos, or audio, but it has been permanently denied. Please continue to the app settings menu, select \\\"Permissions\\\", and enable \\\"Storage\\\".</string>
@@ -1265,6 +1265,61 @@
     <string name="ConversationActivity_unblock_this_contact_question">Unblock this contact?</string>
     <string name="ConversationActivity_unblock_this_group_question">Unblock this group?</string>
     <string name="ConversationActivity_unblock_this_group_description">Existing members will be able to add you to the group again.</string>
-
+    <string name="RecipientPreferenceActivity_error_leaving_group">Error leaving group</string>
+    <string name="RecipientPreferenceActivity_block">Block</string>
+    <string name="RecipientPreferenceActivity_unblock_this_contact_question">Unblock this contact?</string>
+    <string name="RecipientPreferenceActivity_you_will_once_again_be_able_to_receive_messages_and_calls_from_this_contact">You will once again be able to receive messages and calls from this contact.</string>
+    <string name="RecipientPreferenceActivity_unblock_this_group_question">Unblock this group?</string>
+    <string name="RecipientPreferenceActivity_unblock_this_group_description">Existing members will be able to add you to the group again.</string>
+    <string name="RecipientPreferenceActivity_unblock">Unblock this contact?</string>
+    <string name="RecipientPreferenceActivity_block_this_contact_question">Block this contact?</string>
+    <string name="RecipientPreferenceActivity_you_will_no_longer_receive_messages_and_calls_from_this_contact">You will no longer receive messages and calls from this contact.</string>
+    <string name="RecipientPreferenceActivity_block_and_leave_group_description">You will no longer receive messages or updates from this group.</string>
+    <string name="RecipientPreferenceActivity_block_and_leave_group">Block and leave this group?</string>
+    <string name="RecipientPreferenceActivity_block_group">Block this group?</string>
+    <string name="recipient_preference_activity__shared_media">Shared media</string>
+    <string name="recipient_preferences__about">About</string>
+    <string name="recipient_preferences__chat_settings">Chat settings</string>
+    <string name="recipient_preferences__call_settings">Call settings</string>
+    <string name="recipient_preferences__privacy">Privacy</string>
+    <string name="recipient_preferences__view_safety_number">View safety number</string>
+    <string name="recipient_preferences__block">Block</string>
+    <string-array name="recipient_vibrate_entries">
+        <item>@string/arrays__settings_default</item>
+        <item>@string/arrays__enabled</item>
+        <item>@string/arrays__disabled</item>
+    </string-array>
+    <string-array name="recipient_vibrate_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string name="arrays__settings_default">Settings default</string>
+    <string name="arrays__enabled">Enabled</string>
+    <string name="arrays__disabled">Disabled</string>
+    <string name="RecipientPreferenceActivity_available_once_a_message_has_been_sent_or_received">Available once a message has been sent or received.</string>
+    <string name="RecipientPreferenceActivity_enabled">Enabled</string>
+    <string name="RecipientPreferenceActivity_disabled">Disabled</string>
+    <string name="preferences__default">Default</string>
+    <string name="preferences__silent">Silent</string>
+    <string name="MuteDialog_mute_notifications">Mute notifications</string>
+    <string-array name="mute_durations">
+        <item>@string/arrays__mute_for_one_hour</item>
+        <item>@string/arrays__mute_for_two_hours</item>
+        <item>@string/arrays__mute_for_one_day</item>
+        <item>@string/arrays__mute_for_seven_days</item>
+        <item>@string/arrays__mute_for_one_year</item>
+    </string-array>
+    <string name="arrays__mute_for_one_hour">Mute for 1 hour</string>
+    <string name="arrays__mute_for_two_hours">Mute for 2 hours</string>
+    <string name="arrays__mute_for_one_day">Mute for 1 day</string>
+    <string name="arrays__mute_for_seven_days">Mute for 7 days</string>
+    <string name="arrays__mute_for_one_year">Mute for 1 year</string>
+    <string name="recipient_preferences__vibrate">Vibrate</string>
+    <string name="recipient_preferences__ringtone">Ringtone</string>
+    <string name="recipient_preferences__color">Color</string>
+    <string name="recipient_preferences__notification_sound">Notification sound</string>
+    <string name="recipient_preferences__custom_notifications">Custom notifications</string>
+    <string name="recipient_preferences__mute_conversation">Mute conversation</string>
 
 </resources>

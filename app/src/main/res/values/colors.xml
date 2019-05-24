@@ -158,4 +158,5 @@
     <color name="MediaOverview_Media_selected_overlay">#88000000</color>
     <color name="gray10">#ffdddddd</color>
     <color name="green_500">#4CAF50</color>
+    <color name="amber_50">#FFF8E1</color>
 </resources>
