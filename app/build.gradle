@@ -202,6 +202,10 @@ dependencies {
         exclude group: 'com.fasterxml.jackson.core'
         exclude group: 'org.freemarker'
     }
+    compile 'com.github.chrisbanes:PhotoView:2.1.3'
+    compile ('com.davemorrissey.labs:subsampling-scale-image-view:3.6.0') {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
 
     testCompile fileTree('lib/stickylistheaders-1.0.0.jar')
     testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'

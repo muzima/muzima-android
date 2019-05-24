@@ -189,4 +189,13 @@
     <declare-styleable name="CustomDefaultPreference">
         <attr name="custom_pref_toggle" format="string"/>
     </declare-styleable>
+    <attr name="media_overview_toolbar_background" format="color"/>
+    <attr name="media_overview_toolbar_foreground" format="color"/>
+    <attr name="media_overview_header_foreground" format="color"/>
+    <declare-styleable name="MaxHeightScrollView">
+        <attr name="scrollView_maxHeight" format="dimension" />
+    </declare-styleable>
+    <attr name="media_overview_document_primary" format="color"/>
+    <attr name="media_overview_document_secondary" format="color"/>
+
 </resources>

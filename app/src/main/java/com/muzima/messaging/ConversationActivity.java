@@ -187,7 +187,6 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     private static final int TAKE_PHOTO = 7;
     private static final int ADD_CONTACT = 8;
     private static final int PICK_LOCATION = 9;
-    private static final int PICK_GIF = 10;
     private static final int SMS_DEFAULT = 11;
     private static final int PICK_CAMERA = 12;
     private static final int EDIT_IMAGE = 13;
@@ -439,12 +438,6 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
             case PICK_LOCATION:
                 SignalPlace place = new SignalPlace(PlacePicker.getPlace(data, this));
                 attachmentManager.setLocation(place, getCurrentMediaConstraints());
-                break;
-            case PICK_GIF:
-//                setMedia(data.getData(),
-//                        MediaType.GIF,
-//                        data.getIntExtra(GiphyActivity.EXTRA_WIDTH, 0),
-//                        data.getIntExtra(GiphyActivity.EXTRA_HEIGHT, 0));
                 break;
             case ScribbleActivity.SCRIBBLE_REQUEST_CODE:
                 setMedia(data.getData(), MediaType.IMAGE);
@@ -811,10 +804,9 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     }
 
     private void handleViewMedia() {
-//        TODO: ++++++ MediaOverviewActivity
-//        Intent intent = new Intent(this, MediaOverviewActivity.class);
-//        intent.putExtra(MediaOverviewActivity.ADDRESS_EXTRA, recipient.getAddress());
-//        startActivity(intent);
+        Intent intent = new Intent(this, MediaOverviewActivity.class);
+        intent.putExtra(MediaOverviewActivity.ADDRESS_EXTRA, recipient.getAddress());
+        startActivity(intent);
     }
 
     private void handleAddShortcut() {

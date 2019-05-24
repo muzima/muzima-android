@@ -500,7 +500,12 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.HelpActivity"/>
         </activity>
-        <activity android:name=".messaging.twofactoraunthentication.RegistrationActivity" />
+
+        <activity android:name=".messaging.twofactoraunthentication.RegistrationActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/AppThemeNoActionBar.Dark"
+            android:windowSoftInputMode="stateUnchanged"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
         <activity android:name=".messaging.twofactoraunthentication.SmsCodeVerificationActivity"/>
         <activity
@@ -547,6 +552,11 @@
             android:windowSoftInputMode="stateHidden"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
+        <activity android:name=".messaging.scribbles.StickerSelectActivity"
+            android:theme="@style/TextSecure.ScribbleTheme"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
+
+
         <activity android:name=".messaging.contactshare.ContactNameEditActivity"
             android:theme="@style/AppThemeNoActionBar.Dark"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
@@ -554,6 +564,73 @@
         <activity android:name=".messaging.contactshare.ContactShareEditActivity"
             android:theme="@style/AppBaseTheme"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
+
+        <activity
+            android:name=".messaging.MediaOverviewActivity"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"
+            android:launchMode="singleTask"
+            android:theme="@style/AppThemeNoActionBar.Dark"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name=".messaging.MediaPreviewActivity"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity android:name=".messaging.DummyActivity"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:enabled="true"
+            android:allowTaskReparenting="true"
+            android:noHistory="true"
+            android:excludeFromRecents="true"
+            android:alwaysRetainTaskState="false"
+            android:stateNotNeeded="true"
+            android:clearTaskOnLaunch="true"
+            android:finishOnTaskLaunch="true" />
+
+        <activity android:name=".messaging.PromptMmsActivity"
+            android:label="Configure MMS Settings"
+            android:windowSoftInputMode="stateUnchanged"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
+
+        <activity android:name=".messaging.preference.MmsPreferencesActivity"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
+
+        <activity android:name=".messaging.ShareActivity"
+            android:theme="@style/AppThemeNoActionBar.Dark"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:noHistory="true"
+            android:windowSoftInputMode="stateHidden"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="audio/*" />
+                <data android:mimeType="image/*" />
+                <data android:mimeType="text/plain" />
+                <data android:mimeType="video/*" />
+                <data android:mimeType="application/*"/>
+                <data android:mimeType="text/*"/>
+                <data android:mimeType="*/*"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.service.chooser.chooser_target_service"
+                android:value=".service.DirectShareService" />
+
+        </activity>
+
+        <activity android:name=".messaging.passphrases.PassphraseCreateActivity"
+            android:windowSoftInputMode="stateUnchanged"
+            android:theme="@style/AppThemeNoActionBar.Dark"
+            android:launchMode="singleTask"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
+
+
+
 
         <provider android:name="android.support.v4.content.FileProvider"
             android:authorities="com.muzima.fileprovider"

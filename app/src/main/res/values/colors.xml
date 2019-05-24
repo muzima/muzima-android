@@ -155,4 +155,6 @@
     <color name="gray95">#ff111111</color>
     <color name="grey_600">#757575</color>
     <color name="grey_400">#BDBDBD</color>
+    <color name="MediaOverview_Media_selected_overlay">#88000000</color>
+    <color name="gray10">#ffdddddd</color>
 </resources>
