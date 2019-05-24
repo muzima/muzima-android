@@ -848,4 +848,12 @@
         <item name="android:contentDescription">@string/conversation_activity__compose_description</item>
     </style>
 
+    <style name="IdentityKey">
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:clickable">false</item>
+        <item name="android:focusable">false</item>
+    </style>
+
 </resources>

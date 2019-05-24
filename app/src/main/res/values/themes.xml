@@ -88,6 +88,7 @@
         <item name="pref_icon_tint">@color/primary_white</item>
         <item name="contact_list_divider">@drawable/contact_list_divider_dark</item>
         <item name="conversation_attach_contact_info">@drawable/ic_account_box_dark</item>
+        <item name="verification_background">@color/core_grey_95</item>
     </style>
 
 
@@ -166,6 +167,7 @@
         <item name="pref_icon_tint">@color/primary_black</item>
         <item name="contact_list_divider">@drawable/contact_list_divider_light</item>
         <item name="conversation_attach_contact_info">@drawable/ic_account_box_light</item>
+        <item name="verification_background">@color/core_grey_05</item>
     </style>
 
 

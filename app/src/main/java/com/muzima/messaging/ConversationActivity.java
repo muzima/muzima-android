@@ -11,8 +11,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -58,23 +56,27 @@ import com.muzima.messaging.components.ComposeText;
 import com.muzima.messaging.components.HidingLinearLayout;
 import com.muzima.messaging.components.InputPanel;
 import com.muzima.messaging.components.KeyboardAwareLinearLayout.OnKeyboardShownListener;
+import com.muzima.messaging.components.identity.UntrustedSendDialog;
 import com.muzima.messaging.contacts.ContactAccessor;
 import com.muzima.messaging.contacts.ContactAccessor.ContactData;
 import com.muzima.messaging.contactshare.Contact;
 import com.muzima.messaging.contactshare.ContactShareEditActivity;
 import com.muzima.messaging.contactshare.ContactUtil;
+import com.muzima.messaging.crypto.IdentityKeyParcelable;
 import com.muzima.messaging.crypto.SecurityEvent;
 import com.muzima.messaging.customcomponents.AttachmentTypeSelector;
 import com.muzima.messaging.customcomponents.ConversationTitleView;
 import com.muzima.messaging.customcomponents.InputAwareLayout;
 import com.muzima.messaging.customcomponents.ReminderView;
 import com.muzima.messaging.customcomponents.UnverifiedBannerView;
+import com.muzima.messaging.components.identity.UnverifiedSendDialog;
 import com.muzima.messaging.customcomponents.emoji.EmojiDrawer;
 import com.muzima.messaging.customcomponents.emoji.EmojiStrings;
 import com.muzima.messaging.events.ReminderUpdateEvent;
 import com.muzima.messaging.exceptions.RecipientFormattingException;
 import com.muzima.messaging.fragments.ConversationFragment;
 import com.muzima.messaging.group.GroupShareProfileView;
+import com.muzima.messaging.jobs.MultiDeviceBlockedUpdateJob;
 import com.muzima.messaging.jobs.ServiceOutageDetectionJob;
 import com.muzima.messaging.location.SignalPlace;
 import com.muzima.messaging.mms.AttachmentManager;
@@ -84,8 +86,6 @@ import com.muzima.messaging.mms.GlideRequests;
 import com.muzima.messaging.mms.ImageSlide;
 import com.muzima.messaging.mms.LocationSlide;
 import com.muzima.messaging.mms.MediaConstraints;
-import com.muzima.messaging.mms.OutgoingExpirationUpdateMessage;
-import com.muzima.messaging.mms.OutgoingGroupMediaMessage;
 import com.muzima.messaging.mms.OutgoingMediaMessage;
 import com.muzima.messaging.mms.OutgoingSecureMediaMessage;
 import com.muzima.messaging.mms.QuoteId;
@@ -115,9 +115,9 @@ import com.muzima.messaging.sqlite.database.DraftDatabase.Drafts;
 import com.muzima.messaging.sqlite.database.models.MmsMessageRecord;
 import com.muzima.messaging.twofactoraunthentication.RegistrationActivity;
 import com.muzima.messaging.utils.CharacterCalculator;
+import com.muzima.messaging.utils.Dialogs;
 import com.muzima.messaging.utils.DirectoryHelper;
 import com.muzima.messaging.utils.ExpirationUtil;
-import com.muzima.messaging.utils.GroupUtil;
 import com.muzima.messaging.sqlite.database.IdentityDatabase.IdentityRecord;
 import com.muzima.messaging.utils.IdentityUtil;
 import com.muzima.messaging.utils.SimpleTextWatcher;
@@ -126,9 +126,7 @@ import com.muzima.messaging.utils.Util;
 import com.muzima.model.SignalRecipient;
 import com.muzima.notifications.MarkReadReceiver;
 import com.muzima.notifications.MessageNotifier;
-import com.muzima.notifications.NotificationChannels;
 import com.muzima.service.KeyCachingService;
-import com.muzima.utils.BitmapUtil;
 import com.muzima.utils.MaterialColor;
 import com.muzima.utils.MediaUtil;
 import com.muzima.utils.Permissions;
@@ -703,35 +701,34 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     }
 
     private void handleUnblock() {
-//        TODO: +++++++++++
-//        int titleRes = R.string.ConversationActivity_unblock_this_contact_question;
-//        int bodyRes = R.string.ConversationActivity_you_will_once_again_be_able_to_receive_messages_and_calls_from_this_contact;
-//
-//        if (recipient.isGroupRecipient()) {
-//            titleRes = R.string.ConversationActivity_unblock_this_group_question;
-//            bodyRes = R.string.ConversationActivity_unblock_this_group_description;
-//        }
-//
-//        //noinspection CodeBlock2Expr
-//        new AlertDialog.Builder(this)
-//                .setTitle(titleRes)
-//                .setMessage(bodyRes)
-//                .setNegativeButton(android.R.string.cancel, null)
-//                .setPositiveButton(R.string.ConversationActivity_unblock, (dialog, which) -> {
-//                    new AsyncTask<Void, Void, Void>() {
-//                        @Override
-//                        protected Void doInBackground(Void... params) {
-//                            DatabaseFactory.getRecipientDatabase(ConversationActivity.this)
-//                                    .setBlocked(recipient, false);
-//
-//                            MuzimaApplication.getInstance(ConversationActivity.this)
-//                                    .getJobManager()
-//                                    .add(new MultiDeviceBlockedUpdateJob(ConversationActivity.this));
-//
-//                            return null;
-//                        }
-//                    }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-//                }).show();
+        int titleRes = R.string.ConversationActivity_unblock_this_contact_question;
+        int bodyRes = R.string.ConversationActivity_you_will_once_again_be_able_to_receive_messages_and_calls_from_this_contact;
+
+        if (recipient.isGroupRecipient()) {
+            titleRes = R.string.ConversationActivity_unblock_this_group_question;
+            bodyRes = R.string.ConversationActivity_unblock_this_group_description;
+        }
+
+        //noinspection CodeBlock2Expr
+        new AlertDialog.Builder(this)
+                .setTitle(titleRes)
+                .setMessage(bodyRes)
+                .setNegativeButton(android.R.string.cancel, null)
+                .setPositiveButton(R.string.ConversationActivity_unblock, (dialog, which) -> {
+                    new AsyncTask<Void, Void, Void>() {
+                        @Override
+                        protected Void doInBackground(Void... params) {
+                            DatabaseFactory.getRecipientDatabase(ConversationActivity.this)
+                                    .setBlocked(recipient, false);
+
+                            MuzimaApplication.getInstance(ConversationActivity.this)
+                                    .getJobManager()
+                                    .add(new MultiDeviceBlockedUpdateJob(ConversationActivity.this));
+
+                            return null;
+                        }
+                    }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                }).show();
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -748,59 +745,57 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     }
 
     private void handleInviteLink() {
-//        Todo +++++ handleInviteLink
-//        try {
-//            String inviteText;
-//
-//            boolean a = SecureRandom.getInstance("SHA1PRNG").nextBoolean();
-//            if (a)
-//                inviteText = getString(R.string.ConversationActivity_lets_switch_to_signal, "https://sgnl.link/1LoIMUl");
-//            else
-//                inviteText = getString(R.string.ConversationActivity_lets_use_this_to_chat, "https://sgnl.link/1MF56H1");
-//
-//            if (isDefaultSms) {
-//                composeText.appendInvite(inviteText);
-//            } else {
-//                Intent intent = new Intent(Intent.ACTION_SENDTO);
-//                intent.setData(Uri.parse("smsto:" + recipient.getAddress().serialize()));
-//                intent.putExtra("sms_body", inviteText);
-//                intent.putExtra(Intent.EXTRA_TEXT, inviteText);
-//                startActivity(intent);
-//            }
-//        } catch (NoSuchAlgorithmException e) {
-//            throw new AssertionError(e);
-//        }
+        try {
+            String inviteText;
+
+            boolean a = SecureRandom.getInstance("SHA1PRNG").nextBoolean();
+            if (a)
+                inviteText = getString(R.string.ConversationActivity_lets_switch_to_muzima, "https://play.google.com/store/apps/details?id=com.muzima");
+            else
+                inviteText = getString(R.string.ConversationActivity_lets_use_this_to_chat, "https://play.google.com/store/apps/details?id=com.muzima");
+
+            if (isDefaultSms) {
+                composeText.appendInvite(inviteText);
+            } else {
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setData(Uri.parse("smsto:" + recipient.getAddress().serialize()));
+                intent.putExtra("sms_body", inviteText);
+                intent.putExtra(Intent.EXTRA_TEXT, inviteText);
+                startActivity(intent);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            throw new AssertionError(e);
+        }
     }
 
     private void handleResetSecureSession() {
-//        Todo: ++++++ handleResetSecureSession
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle(R.string.ConversationActivity_reset_secure_session_question);
-//        builder.setIconAttribute(R.attr.dialog_alert_icon);
-//        builder.setCancelable(true);
-//        builder.setMessage(R.string.ConversationActivity_this_may_help_if_youre_having_encryption_problems);
-//        builder.setPositiveButton(R.string.ConversationActivity_reset, (dialog, which) -> {
-//            if (isSingleConversation()) {
-//                final Context context = getMuzimaApplication();
-//
-//                OutgoingEndSessionMessage endSessionMessage =
-//                        new OutgoingEndSessionMessage(new OutgoingTextMessage(getRecipient(), "TERMINATE", 0, -1));
-//
-//                new AsyncTask<OutgoingEndSessionMessage, Void, Long>() {
-//                    @Override
-//                    protected Long doInBackground(OutgoingEndSessionMessage... messages) {
-//                        return MessageSender.send(context, messages[0], threadId, false, null);
-//                    }
-//
-//                    @Override
-//                    protected void onPostExecute(Long result) {
-//                        sendComplete(result);
-//                    }
-//                }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, endSessionMessage);
-//            }
-//        });
-//        builder.setNegativeButton(android.R.string.cancel, null);
-//        builder.show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.ConversationActivity_reset_secure_session_question);
+        builder.setIconAttribute(R.attr.dialog_alert_icon);
+        builder.setCancelable(true);
+        builder.setMessage(R.string.ConversationActivity_this_may_help_if_youre_having_encryption_problems);
+        builder.setPositiveButton(R.string.ConversationActivity_reset, (dialog, which) -> {
+            if (isSingleConversation()) {
+                final Context context = getApplicationContext();
+
+                OutgoingEndSessionMessage endSessionMessage =
+                        new OutgoingEndSessionMessage(new OutgoingTextMessage(getRecipient(), "TERMINATE", 0, -1));
+
+                new AsyncTask<OutgoingEndSessionMessage, Void, Long>() {
+                    @Override
+                    protected Long doInBackground(OutgoingEndSessionMessage... messages) {
+                        return MessageSender.send(context, messages[0], threadId, false, null);
+                    }
+
+                    @Override
+                    protected void onPostExecute(Long result) {
+                        sendComplete(result);
+                    }
+                }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, endSessionMessage);
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, null);
+        builder.show();
     }
 
     private void handleViewMedia() {
@@ -932,22 +927,22 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     }
 
     private void handleDial(final SignalRecipient recipient, boolean isSecure) {
-//        if (recipient == null) return;
-//
-//        if (isSecure) {
-//            CommunicationActions.startVoiceCall(this, recipient);
-//        } else {
-//            try {
-//                Intent dialIntent = new Intent(Intent.ACTION_DIAL,
-//                        Uri.parse("tel:" + recipient.getAddress().serialize()));
-//                startActivity(dialIntent);
-//            } catch (ActivityNotFoundException anfe) {
-//                Log.w(TAG, anfe);
-//                Dialogs.showAlertDialog(this,
-//                        getString(R.string.ConversationActivity_calls_not_supported),
-//                        getString(R.string.ConversationActivity_this_device_does_not_appear_to_support_dial_actions));
-//            }
-//        }
+        if (recipient == null) return;
+
+        if (isSecure) {
+            CommunicationActions.startVoiceCall(this, recipient);
+        } else {
+            try {
+                Intent dialIntent = new Intent(Intent.ACTION_DIAL,
+                        Uri.parse("tel:" + recipient.getAddress().serialize()));
+                startActivity(dialIntent);
+            } catch (ActivityNotFoundException anfe) {
+                Log.w(TAG, anfe);
+                Dialogs.showAlertDialog(this,
+                        getString(R.string.ConversationActivity_calls_not_supported),
+                        getString(R.string.ConversationActivity_this_device_does_not_appear_to_support_dial_actions));
+            }
+        }
     }
 
     private void handleDisplayGroupRecipients() {
@@ -1004,49 +999,49 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     }
 
     private void handleUnverifiedRecipients() {
-//        List<SignalRecipient> unverifiedRecipients = identityRecords.getUnverifiedRecipients(this);
-//        List<IdentityRecord> unverifiedRecords = identityRecords.getUnverifiedRecords();
-//        String message = IdentityUtil.getUnverifiedSendDialogDescription(this, unverifiedRecipients);
-//
-//        if (message == null) return;
-//
-//        //noinspection CodeBlock2Expr
-//        new UnverifiedSendDialog(this, message, unverifiedRecords, () -> {
-//            initializeIdentityRecords().addListener(new ListenableFuture.Listener<Boolean>() {
-//                @Override
-//                public void onSuccess(Boolean result) {
-//                    sendMessage();
-//                }
-//
-//                @Override
-//                public void onFailure(ExecutionException e) {
-//                    throw new AssertionError(e);
-//                }
-//            });
-//        }).show();
+        List<SignalRecipient> unverifiedRecipients = identityRecords.getUnverifiedRecipients(this);
+        List<IdentityRecord> unverifiedRecords = identityRecords.getUnverifiedRecords();
+        String message = IdentityUtil.getUnverifiedSendDialogDescription(this, unverifiedRecipients);
+
+        if (message == null) return;
+
+        //noinspection CodeBlock2Expr
+        new UnverifiedSendDialog(this, message, unverifiedRecords, () -> {
+            initializeIdentityRecords().addListener(new ListenableFuture.Listener<Boolean>() {
+                @Override
+                public void onSuccess(Boolean result) {
+                    sendMessage();
+                }
+
+                @Override
+                public void onFailure(ExecutionException e) {
+                    throw new AssertionError(e);
+                }
+            });
+        }).show();
     }
 
     private void handleUntrustedRecipients() {
-//        List<SignalRecipient> untrustedRecipients = identityRecords.getUntrustedRecipients(this);
-//        List<IdentityRecord> untrustedRecords = identityRecords.getUntrustedRecords();
-//        String untrustedMessage = IdentityUtil.getUntrustedSendDialogDescription(this, untrustedRecipients);
-//
-//        if (untrustedMessage == null) return;
-//
-//        //noinspection CodeBlock2Expr
-//        new UntrustedSendDialog(this, untrustedMessage, untrustedRecords, () -> {
-//            initializeIdentityRecords().addListener(new ListenableFuture.Listener<Boolean>() {
-//                @Override
-//                public void onSuccess(Boolean result) {
-//                    sendMessage();
-//                }
-//
-//                @Override
-//                public void onFailure(ExecutionException e) {
-//                    throw new AssertionError(e);
-//                }
-//            });
-//        }).show();
+        List<SignalRecipient> untrustedRecipients = identityRecords.getUntrustedRecipients(this);
+        List<IdentityRecord> untrustedRecords = identityRecords.getUntrustedRecords();
+        String untrustedMessage = IdentityUtil.getUntrustedSendDialogDescription(this, untrustedRecipients);
+
+        if (untrustedMessage == null) return;
+
+        //noinspection CodeBlock2Expr
+        new UntrustedSendDialog(this, untrustedMessage, untrustedRecords, () -> {
+            initializeIdentityRecords().addListener(new ListenableFuture.Listener<Boolean>() {
+                @Override
+                public void onSuccess(Boolean result) {
+                    sendMessage();
+                }
+
+                @Override
+                public void onFailure(ExecutionException e) {
+                    throw new AssertionError(e);
+                }
+            });
+        }).show();
     }
 
     private void handleSecurityChange(boolean isSecureText, boolean isDefaultSms) {
@@ -1246,8 +1241,8 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     }
 
     protected void updateReminders(boolean seenInvite) {
-        Log.i(TAG, "updateReminders(" + seenInvite + ")");
-
+//        Log.i(TAG, "updateReminders(" + seenInvite + ")");
+//
 //        if (UnauthorizedReminder.isEligible(this)) {
 //            reminderView.get().showReminder(new UnauthorizedReminder(this));
 //        } else if (ExpiredBuildReminder.isEligible()) {
@@ -2332,12 +2327,12 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
         public void onClicked(final List<IdentityRecord> unverifiedIdentities) {
             Log.i(TAG, "onClicked: " + unverifiedIdentities.size());
             if (unverifiedIdentities.size() == 1) {
-//                Intent intent = new Intent(ConversationActivity.this, VerifyIdentityActivity.class);
-//                intent.putExtra(VerifyIdentityActivity.ADDRESS_EXTRA, unverifiedIdentities.get(0).getAddress());
-//                intent.putExtra(VerifyIdentityActivity.IDENTITY_EXTRA, new IdentityKeyParcelable(unverifiedIdentities.get(0).getIdentityKey()));
-//                intent.putExtra(VerifyIdentityActivity.VERIFIED_EXTRA, false);
-//
-//                startActivity(intent);
+                Intent intent = new Intent(ConversationActivity.this, VerifyIdentityActivity.class);
+                intent.putExtra(VerifyIdentityActivity.ADDRESS_EXTRA, unverifiedIdentities.get(0).getAddress());
+                intent.putExtra(VerifyIdentityActivity.IDENTITY_EXTRA, new IdentityKeyParcelable(unverifiedIdentities.get(0).getIdentityKey()));
+                intent.putExtra(VerifyIdentityActivity.VERIFIED_EXTRA, false);
+
+                startActivity(intent);
             } else {
                 String[] unverifiedNames = new String[unverifiedIdentities.size()];
 
@@ -2345,18 +2340,18 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
                     unverifiedNames[i] = SignalRecipient.from(ConversationActivity.this, unverifiedIdentities.get(i).getAddress(), false).toShortString();
                 }
 
-//                AlertDialog.Builder builder = new AlertDialog.Builder(ConversationActivity.this);
-//                builder.setIconAttribute(R.attr.dialog_alert_icon);
-//                builder.setTitle("No longer verified");
-//                builder.setItems(unverifiedNames, (dialog, which) -> {
-//                    Intent intent = new Intent(ConversationActivity.this, VerifyIdentityActivity.class);
-//                    intent.putExtra(VerifyIdentityActivity.ADDRESS_EXTRA, unverifiedIdentities.get(which).getAddress());
-//                    intent.putExtra(VerifyIdentityActivity.IDENTITY_EXTRA, new IdentityKeyParcelable(unverifiedIdentities.get(which).getIdentityKey()));
-//                    intent.putExtra(VerifyIdentityActivity.VERIFIED_EXTRA, false);
-//
-//                    startActivity(intent);
-//                });
-//                builder.show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(ConversationActivity.this);
+                builder.setIconAttribute(R.attr.dialog_alert_icon);
+                builder.setTitle("No longer verified");
+                builder.setItems(unverifiedNames, (dialog, which) -> {
+                    Intent intent = new Intent(ConversationActivity.this, VerifyIdentityActivity.class);
+                    intent.putExtra(VerifyIdentityActivity.ADDRESS_EXTRA, unverifiedIdentities.get(which).getAddress());
+                    intent.putExtra(VerifyIdentityActivity.IDENTITY_EXTRA, new IdentityKeyParcelable(unverifiedIdentities.get(which).getIdentityKey()));
+                    intent.putExtra(VerifyIdentityActivity.VERIFIED_EXTRA, false);
+
+                    startActivity(intent);
+                });
+                builder.show();
             }
         }
     }
