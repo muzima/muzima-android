@@ -735,13 +735,95 @@
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="phr.muzima.org.phr" />
+                <category android:name="com.muzima" />
             </intent-filter>
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="phr.muzima.org.phr" />
+                <category android:name="com.muzima" />
             </intent-filter>
         </receiver>
+
+        <receiver android:name=".notifications.RemoteReplyReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.muzima.notifications.WEAR_REPLY"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".notifications.AndroidAutoHeardReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.muzima.notifications.ANDROID_AUTO_HEARD"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".notifications.AndroidAutoReplyReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.muzima.notifications.ANDROID_AUTO_REPLY"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".service.ExpirationListener" />
+
+        <receiver android:name=".service.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="com.muzima.RESTART"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".service.DirectoryRefreshListener">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".service.RotateSignedPreKeyListener">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".service.RotateSenderCertificateListener">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".service.LocalBackupListener">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".notifications.LocaleChangedReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.LOCALE_CHANGED"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".notifications.MessageNotifier$ReminderReceiver">
+            <intent-filter>
+                <action android:name="com.muzima.MessageNotifier.REMINDER_ACTION"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".notifications.DeleteNotificationReceiver">
+            <intent-filter>
+                <action android:name="com.muzima.DELETE_NOTIFICATION"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".service.PanicResponderListener"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="info.guardianproject.panic.action.TRIGGER" />
+            </intent-filter>
+        </receiver>
+
 
     </application>
 
