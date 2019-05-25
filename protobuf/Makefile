@@ -1,3 +1,3 @@
 
 all:
-	protoc --java_out=../src/ WebRtcData.proto Backups.proto
+	protoc --java_out=../app/src/main/java WebRtcData.proto Backups.proto
