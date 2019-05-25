@@ -30,9 +30,11 @@ import org.whispersystems.libsignal.ecc.ECKeyPair;
 import org.whispersystems.libsignal.ecc.ECPrivateKey;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 import android.support.annotation.NonNull;
-
+import com.muzima.messaging.backup.BackupProtos;
 import com.muzima.utils.Base64;
 
 /**
@@ -147,6 +149,23 @@ public class IdentityKeyUtil {
 
     private static void delete(Context context, String key) {
         context.getSharedPreferences(MasterSecretUtil.PREFERENCES_NAME, 0).edit().remove(key).commit();
+    }
+
+    public static List<BackupProtos.SharedPreference> getBackupRecord(@NonNull Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(MasterSecretUtil.PREFERENCES_NAME, 0);
+
+        return new LinkedList<BackupProtos.SharedPreference>() {{
+            add(BackupProtos.SharedPreference.newBuilder()
+                    .setFile(MasterSecretUtil.PREFERENCES_NAME)
+                    .setKey(IDENTITY_PUBLIC_KEY_PREF)
+                    .setValue(preferences.getString(IDENTITY_PUBLIC_KEY_PREF, null))
+                    .build());
+            add(BackupProtos.SharedPreference.newBuilder()
+                    .setFile(MasterSecretUtil.PREFERENCES_NAME)
+                    .setKey(IDENTITY_PRIVATE_KEY_PREF)
+                    .setValue(preferences.getString(IDENTITY_PRIVATE_KEY_PREF, null))
+                    .build());
+        }};
     }
 
 }

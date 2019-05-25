@@ -65,41 +65,40 @@ public class FullBackupExporter extends FullBackupBase {
                               @NonNull File output,
                               @NonNull String passphrase)
             throws IOException {
-//        BackupFrameOutputStream outputStream = new BackupFrameOutputStream(output, passphrase);
-//        outputStream.writeDatabaseVersion(input.getVersion());
-//
-//        List<String> tables = exportSchema(input, outputStream);
-//        int count = 0;
-//
-//        for (String table : tables) {
-//            if (table.equals(SmsDatabase.TABLE_NAME) || table.equals(MmsDatabase.TABLE_NAME)) {
-//                count = exportTable(table, input, outputStream, cursor -> cursor.getInt(cursor.getColumnIndexOrThrow(MmsSmsColumns.EXPIRES_IN)) <= 0, null, count);
-//            } else if (table.equals(GroupReceiptDatabase.TABLE_NAME)) {
-//                count = exportTable(table, input, outputStream, cursor -> isForNonExpiringMessage(input, cursor.getLong(cursor.getColumnIndexOrThrow(GroupReceiptDatabase.MMS_ID))), null, count);
-//            } else if (table.equals(AttachmentDatabase.TABLE_NAME)) {
-//                count = exportTable(table, input, outputStream, cursor -> isForNonExpiringMessage(input, cursor.getLong(cursor.getColumnIndexOrThrow(AttachmentDatabase.MMS_ID))), cursor -> exportAttachment(attachmentSecret, cursor, outputStream), count);
-//            } else if (!table.equals(SignedPreKeyDatabase.TABLE_NAME) &&
-//                    !table.equals(OneTimePreKeyDatabase.TABLE_NAME) &&
-//                    !table.equals(SessionDatabase.TABLE_NAME) &&
-//                    !table.startsWith(SearchDatabase.SMS_FTS_TABLE_NAME) &&
-//                    !table.startsWith(SearchDatabase.MMS_FTS_TABLE_NAME)) {
-//                count = exportTable(table, input, outputStream, null, null, count);
-//            }
-//        }
-//// TODO: +++++++++ Uncomment after BackupProtos Generation
-////        for (BackupProtos.SharedPreference preference : IdentityKeyUtil.getBackupRecord(context)) {
-////            EventBus.getDefault().post(new BackupEvent(BackupEvent.Type.PROGRESS, ++count));
-////            outputStream.write(preference);
-////        }
-//
-//        for (File avatar : AvatarHelper.getAvatarFiles(context)) {
-//            EventBus.getDefault().post(new BackupEvent(BackupEvent.Type.PROGRESS, ++count));
-//            outputStream.write(avatar.getName(), new FileInputStream(avatar), avatar.length());
-//        }
-//
-//        outputStream.writeEnd();
-//        outputStream.close();
-//        EventBus.getDefault().post(new BackupEvent(BackupEvent.Type.FINISHED, ++count));
+        BackupFrameOutputStream outputStream = new BackupFrameOutputStream(output, passphrase);
+        outputStream.writeDatabaseVersion(input.getVersion());
+
+        List<String> tables = exportSchema(input, outputStream);
+        int count = 0;
+
+        for (String table : tables) {
+            if (table.equals(SmsDatabase.TABLE_NAME) || table.equals(MmsDatabase.TABLE_NAME)) {
+                count = exportTable(table, input, outputStream, cursor -> cursor.getInt(cursor.getColumnIndexOrThrow(MmsSmsColumns.EXPIRES_IN)) <= 0, null, count);
+            } else if (table.equals(GroupReceiptDatabase.TABLE_NAME)) {
+                count = exportTable(table, input, outputStream, cursor -> isForNonExpiringMessage(input, cursor.getLong(cursor.getColumnIndexOrThrow(GroupReceiptDatabase.MMS_ID))), null, count);
+            } else if (table.equals(AttachmentDatabase.TABLE_NAME)) {
+                count = exportTable(table, input, outputStream, cursor -> isForNonExpiringMessage(input, cursor.getLong(cursor.getColumnIndexOrThrow(AttachmentDatabase.MMS_ID))), cursor -> exportAttachment(attachmentSecret, cursor, outputStream), count);
+            } else if (!table.equals(SignedPreKeyDatabase.TABLE_NAME) &&
+                    !table.equals(OneTimePreKeyDatabase.TABLE_NAME) &&
+                    !table.equals(SessionDatabase.TABLE_NAME) &&
+                    !table.startsWith(SearchDatabase.SMS_FTS_TABLE_NAME) &&
+                    !table.startsWith(SearchDatabase.MMS_FTS_TABLE_NAME)) {
+                count = exportTable(table, input, outputStream, null, null, count);
+            }
+        }
+        for (BackupProtos.SharedPreference preference : IdentityKeyUtil.getBackupRecord(context)) {
+            EventBus.getDefault().post(new BackupEvent(BackupEvent.Type.PROGRESS, ++count));
+            outputStream.write(preference);
+        }
+
+        for (File avatar : AvatarHelper.getAvatarFiles(context)) {
+            EventBus.getDefault().post(new BackupEvent(BackupEvent.Type.PROGRESS, ++count));
+            outputStream.write(avatar.getName(), new FileInputStream(avatar), avatar.length());
+        }
+
+        outputStream.writeEnd();
+        outputStream.close();
+        EventBus.getDefault().post(new BackupEvent(BackupEvent.Type.FINISHED, ++count));
     }
 
     private static List<String> exportSchema(@NonNull SQLiteDatabase input, @NonNull BackupFrameOutputStream outputStream)
@@ -121,8 +120,7 @@ public class FullBackupExporter extends FullBackupBase {
                         if ("table".equals(type)) {
                             tables.add(name);
                         }
-//TODO +++++++
-//                        outputStream.write(BackupProtos.SqlStatement.newBuilder().setStatement(cursor.getString(0)).build());
+                        outputStream.write(BackupProtos.SqlStatement.newBuilder().setStatement(cursor.getString(0)).build());
                     }
                 }
             }
@@ -139,77 +137,76 @@ public class FullBackupExporter extends FullBackupBase {
                                    int count)
             throws IOException {
         String template = "INSERT INTO " + table + " VALUES ";
-//TODO +++++++++
-//        try (Cursor cursor = input.rawQuery("SELECT * FROM " + table, null)) {
-//            while (cursor != null && cursor.moveToNext()) {
-//                EventBus.getDefault().post(new BackupEvent(BackupEvent.Type.PROGRESS, ++count));
-//
-//                if (predicate == null || predicate.test(cursor)) {
-//                    StringBuilder statement = new StringBuilder(template);
-//                    BackupProtos.SqlStatement.Builder statementBuilder = BackupProtos.SqlStatement.newBuilder();
-//
-//                    statement.append('(');
-//
-//                    for (int i = 0; i < cursor.getColumnCount(); i++) {
-//                        statement.append('?');
-//
-//                        if (cursor.getType(i) == Cursor.FIELD_TYPE_STRING) {
-//                            statementBuilder.addParameters(BackupProtos.SqlStatement.SqlParameter.newBuilder().setStringParamter(cursor.getString(i)));
-//                        } else if (cursor.getType(i) == Cursor.FIELD_TYPE_FLOAT) {
-//                            statementBuilder.addParameters(BackupProtos.SqlStatement.SqlParameter.newBuilder().setDoubleParameter(cursor.getDouble(i)));
-//                        } else if (cursor.getType(i) == Cursor.FIELD_TYPE_INTEGER) {
-//                            statementBuilder.addParameters(BackupProtos.SqlStatement.SqlParameter.newBuilder().setIntegerParameter(cursor.getLong(i)));
-//                        } else if (cursor.getType(i) == Cursor.FIELD_TYPE_BLOB) {
-//                            statementBuilder.addParameters(BackupProtos.SqlStatement.SqlParameter.newBuilder().setBlobParameter(ByteString.copyFrom(cursor.getBlob(i))));
-//                        } else if (cursor.getType(i) == Cursor.FIELD_TYPE_NULL) {
-//                            statementBuilder.addParameters(BackupProtos.SqlStatement.SqlParameter.newBuilder().setNullparameter(true));
-//                        } else {
-//                            throw new AssertionError("unknown type?" + cursor.getType(i));
-//                        }
-//
-//                        if (i < cursor.getColumnCount() - 1) {
-//                            statement.append(',');
-//                        }
-//                    }
-//
-//                    statement.append(')');
-//
-//                    outputStream.write(statementBuilder.setStatement(statement.toString()).build());
-//
-//                    if (postProcess != null) postProcess.accept(cursor);
-//                }
-//            }
-//        }
+        try (Cursor cursor = input.rawQuery("SELECT * FROM " + table, null)) {
+            while (cursor != null && cursor.moveToNext()) {
+                EventBus.getDefault().post(new BackupEvent(BackupEvent.Type.PROGRESS, ++count));
+
+                if (predicate == null || predicate.test(cursor)) {
+                    StringBuilder statement = new StringBuilder(template);
+                    BackupProtos.SqlStatement.Builder statementBuilder = BackupProtos.SqlStatement.newBuilder();
+
+                    statement.append('(');
+
+                    for (int i = 0; i < cursor.getColumnCount(); i++) {
+                        statement.append('?');
+
+                        if (cursor.getType(i) == Cursor.FIELD_TYPE_STRING) {
+                            statementBuilder.addParameters(BackupProtos.SqlStatement.SqlParameter.newBuilder().setStringParamter(cursor.getString(i)));
+                        } else if (cursor.getType(i) == Cursor.FIELD_TYPE_FLOAT) {
+                            statementBuilder.addParameters(BackupProtos.SqlStatement.SqlParameter.newBuilder().setDoubleParameter(cursor.getDouble(i)));
+                        } else if (cursor.getType(i) == Cursor.FIELD_TYPE_INTEGER) {
+                            statementBuilder.addParameters(BackupProtos.SqlStatement.SqlParameter.newBuilder().setIntegerParameter(cursor.getLong(i)));
+                        } else if (cursor.getType(i) == Cursor.FIELD_TYPE_BLOB) {
+                            statementBuilder.addParameters(BackupProtos.SqlStatement.SqlParameter.newBuilder().setBlobParameter(ByteString.copyFrom(cursor.getBlob(i))));
+                        } else if (cursor.getType(i) == Cursor.FIELD_TYPE_NULL) {
+                            statementBuilder.addParameters(BackupProtos.SqlStatement.SqlParameter.newBuilder().setNullparameter(true));
+                        } else {
+                            throw new AssertionError("unknown type?" + cursor.getType(i));
+                        }
+
+                        if (i < cursor.getColumnCount() - 1) {
+                            statement.append(',');
+                        }
+                    }
+
+                    statement.append(')');
+
+                    outputStream.write(statementBuilder.setStatement(statement.toString()).build());
+
+                    if (postProcess != null) postProcess.accept(cursor);
+                }
+            }
+        }
 
         return count;
     }
 
     private static void exportAttachment(@NonNull AttachmentSecret attachmentSecret, @NonNull Cursor cursor, @NonNull BackupFrameOutputStream outputStream) {
-//        try {
-//            long rowId = cursor.getLong(cursor.getColumnIndexOrThrow(AttachmentDatabase.ROW_ID));
-//            long uniqueId = cursor.getLong(cursor.getColumnIndexOrThrow(AttachmentDatabase.UNIQUE_ID));
-//            long size = cursor.getLong(cursor.getColumnIndexOrThrow(AttachmentDatabase.SIZE));
-//
-//            String data = cursor.getString(cursor.getColumnIndexOrThrow(AttachmentDatabase.DATA));
-//            byte[] random = cursor.getBlob(cursor.getColumnIndexOrThrow(AttachmentDatabase.DATA_RANDOM));
-//
-//            if (!TextUtils.isEmpty(data) && size <= 0) {
-//                size = calculateVeryOldStreamLength(attachmentSecret, random, data);
-//            }
-//
-//            if (!TextUtils.isEmpty(data) && size > 0) {
-//                InputStream inputStream;
-//
-//                if (random != null && random.length == 32)
-//                    inputStream = ModernDecryptingPartInputStream.createFor(attachmentSecret, random, new File(data), 0);
-//                else
-//                    inputStream = ClassicDecryptingPartInputStream.createFor(attachmentSecret, new File(data));
-//
-//                outputStream.write(new AttachmentId(rowId, uniqueId), inputStream, size);
-//            }
-//        } catch (IOException e) {
-//            Log.w(TAG, e);
-//        }
+        try {
+            long rowId = cursor.getLong(cursor.getColumnIndexOrThrow(AttachmentDatabase.ROW_ID));
+            long uniqueId = cursor.getLong(cursor.getColumnIndexOrThrow(AttachmentDatabase.UNIQUE_ID));
+            long size = cursor.getLong(cursor.getColumnIndexOrThrow(AttachmentDatabase.SIZE));
+
+            String data = cursor.getString(cursor.getColumnIndexOrThrow(AttachmentDatabase.DATA));
+            byte[] random = cursor.getBlob(cursor.getColumnIndexOrThrow(AttachmentDatabase.DATA_RANDOM));
+
+            if (!TextUtils.isEmpty(data) && size <= 0) {
+                size = calculateVeryOldStreamLength(attachmentSecret, random, data);
+            }
+
+            if (!TextUtils.isEmpty(data) && size > 0) {
+                InputStream inputStream;
+
+                if (random != null && random.length == 32)
+                    inputStream = ModernDecryptingPartInputStream.createFor(attachmentSecret, random, new File(data), 0);
+                else
+                    inputStream = ClassicDecryptingPartInputStream.createFor(attachmentSecret, new File(data));
+
+                outputStream.write(new AttachmentId(rowId, uniqueId), inputStream, size);
+            }
+        } catch (IOException e) {
+            Log.w(TAG, e);
+        }
     }
 
     private static long calculateVeryOldStreamLength(@NonNull AttachmentSecret attachmentSecret, @Nullable byte[] random, @NonNull String data) throws IOException {
@@ -247,137 +244,136 @@ public class FullBackupExporter extends FullBackupBase {
 
 
     private static class BackupFrameOutputStream extends BackupStream {
+        private final OutputStream outputStream;
+        private final Cipher cipher;
+        private final Mac mac;
 
-//        private final OutputStream outputStream;
-//        private final Cipher cipher;
-//        private final Mac mac;
-//
-//        private final byte[] cipherKey;
-//        private final byte[] macKey;
-//
-//        private byte[] iv;
-//        private int counter;
+        private final byte[] cipherKey;
+        private final byte[] macKey;
 
-//        private BackupFrameOutputStream(@NonNull File output, @NonNull String passphrase) throws IOException {
-//            try {
-//                byte[] salt = Util.getSecretBytes(32);
-//                byte[] key = getBackupKey(passphrase, salt);
-//                byte[] derived = new HKDFv3().deriveSecrets(key, "Backup Export".getBytes(), 64);
-//                byte[][] split = ByteUtil.split(derived, 32, 32);
-//
-//                this.cipherKey = split[0];
-//                this.macKey = split[1];
-//
-//                this.cipher = Cipher.getInstance("AES/CTR/NoPadding");
-//                this.mac = Mac.getInstance("HmacSHA256");
-//                this.outputStream = new FileOutputStream(output);
-//                this.iv = Util.getSecretBytes(16);
-//                this.counter = Conversions.byteArrayToInt(iv);
-//
-//                mac.init(new SecretKeySpec(macKey, "HmacSHA256"));
-//
-//                byte[] header = BackupProtos.BackupFrame.newBuilder().setHeader(BackupProtos.Header.newBuilder()
-//                        .setIv(ByteString.copyFrom(iv))
-//                        .setSalt(ByteString.copyFrom(salt)))
-//                        .build().toByteArray();
-//
-//                outputStream.write(Conversions.intToByteArray(header.length));
-//                outputStream.write(header);
-//            } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException e) {
-//                throw new AssertionError(e);
-//            }
-//        }
+        private byte[] iv;
+        private int counter;
 
-//        public void write(BackupProtos.SharedPreference preference) throws IOException {
-//            write(outputStream, BackupProtos.BackupFrame.newBuilder().setPreference(preference).build());
-//        }
-//
-//        public void write(BackupProtos.SqlStatement statement) throws IOException {
-//            write(outputStream, BackupProtos.BackupFrame.newBuilder().setStatement(statement).build());
-//        }
-//
-//        public void write(@NonNull String avatarName, @NonNull InputStream in, long size) throws IOException {
-//            write(outputStream, BackupProtos.BackupFrame.newBuilder()
-//                    .setAvatar(BackupProtos.Avatar.newBuilder()
-//                            .setName(avatarName)
-//                            .setLength(Util.toIntExact(size))
-//                            .build())
-//                    .build());
-//
-//            writeStream(in);
-//        }
-//
-//        public void write(@NonNull AttachmentId attachmentId, @NonNull InputStream in, long size) throws IOException {
-//            write(outputStream, BackupProtos.BackupFrame.newBuilder()
-//                    .setAttachment(BackupProtos.Attachment.newBuilder()
-//                            .setRowId(attachmentId.getRowId())
-//                            .setAttachmentId(attachmentId.getUniqueId())
-//                            .setLength(Util.toIntExact(size))
-//                            .build())
-//                    .build());
-//
-//            writeStream(in);
-//        }
-//
-//        void writeDatabaseVersion(int version) throws IOException {
-//            write(outputStream, BackupProtos.BackupFrame.newBuilder()
-//                    .setVersion(BackupProtos.DatabaseVersion.newBuilder().setVersion(version))
-//                    .build());
-//        }
-//
-//        void writeEnd() throws IOException {
-//            write(outputStream, BackupProtos.BackupFrame.newBuilder().setEnd(true).build());
-//        }
+        private BackupFrameOutputStream(@NonNull File output, @NonNull String passphrase) throws IOException {
+            try {
+                byte[] salt = Util.getSecretBytes(32);
+                byte[] key = getBackupKey(passphrase, salt);
+                byte[] derived = new HKDFv3().deriveSecrets(key, "Backup Export".getBytes(), 64);
+                byte[][] split = ByteUtil.split(derived, 32, 32);
 
-        private void writeStream(@NonNull InputStream inputStream) throws IOException {
-//            try {
-//                Conversions.intToByteArray(iv, 0, counter++);
-//                cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(cipherKey, "AES"), new IvParameterSpec(iv));
-//                mac.update(iv);
-//
-//                byte[] buffer = new byte[8192];
-//                int read;
-//
-//                while ((read = inputStream.read(buffer)) != -1) {
-//                    byte[] ciphertext = cipher.update(buffer, 0, read);
-//
-//                    if (ciphertext != null) {
-//                        outputStream.write(ciphertext);
-//                        mac.update(ciphertext);
-//                    }
-//                }
-//
-//                byte[] remainder = cipher.doFinal();
-//                outputStream.write(remainder);
-//                mac.update(remainder);
-//
-//                byte[] attachmentDigest = mac.doFinal();
-//                outputStream.write(attachmentDigest, 0, 10);
-//            } catch (InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
-//                throw new AssertionError(e);
-//            }
+                this.cipherKey = split[0];
+                this.macKey = split[1];
+
+                this.cipher = Cipher.getInstance("AES/CTR/NoPadding");
+                this.mac = Mac.getInstance("HmacSHA256");
+                this.outputStream = new FileOutputStream(output);
+                this.iv = Util.getSecretBytes(16);
+                this.counter = Conversions.byteArrayToInt(iv);
+
+                mac.init(new SecretKeySpec(macKey, "HmacSHA256"));
+
+                byte[] header = BackupProtos.BackupFrame.newBuilder().setHeader(BackupProtos.Header.newBuilder()
+                        .setIv(ByteString.copyFrom(iv))
+                        .setSalt(ByteString.copyFrom(salt)))
+                        .build().toByteArray();
+
+                outputStream.write(Conversions.intToByteArray(header.length));
+                outputStream.write(header);
+            } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException e) {
+                throw new AssertionError(e);
+            }
         }
 
-//        private void write(@NonNull OutputStream out, @NonNull BackupProtos.BackupFrame frame) throws IOException {
-//            try {
-//                Conversions.intToByteArray(iv, 0, counter++);
-//                cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(cipherKey, "AES"), new IvParameterSpec(iv));
-//
-//                byte[] frameCiphertext = cipher.doFinal(frame.toByteArray());
-//                byte[] frameMac = mac.doFinal(frameCiphertext);
-//                byte[] length = Conversions.intToByteArray(frameCiphertext.length + 10);
-//
-//                out.write(length);
-//                out.write(frameCiphertext);
-//                out.write(frameMac, 0, 10);
-//            } catch (InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
-//                throw new AssertionError(e);
-//            }
-//        }
+        public void write(BackupProtos.SharedPreference preference) throws IOException {
+            write(outputStream, BackupProtos.BackupFrame.newBuilder().setPreference(preference).build());
+        }
+
+        public void write(BackupProtos.SqlStatement statement) throws IOException {
+            write(outputStream, BackupProtos.BackupFrame.newBuilder().setStatement(statement).build());
+        }
+
+        public void write(@NonNull String avatarName, @NonNull InputStream in, long size) throws IOException {
+            write(outputStream, BackupProtos.BackupFrame.newBuilder()
+                    .setAvatar(BackupProtos.Avatar.newBuilder()
+                            .setName(avatarName)
+                            .setLength(Util.toIntExact(size))
+                            .build())
+                    .build());
+
+            writeStream(in);
+        }
+
+        public void write(@NonNull AttachmentId attachmentId, @NonNull InputStream in, long size) throws IOException {
+            write(outputStream, BackupProtos.BackupFrame.newBuilder()
+                    .setAttachment(BackupProtos.Attachment.newBuilder()
+                            .setRowId(attachmentId.getRowId())
+                            .setAttachmentId(attachmentId.getUniqueId())
+                            .setLength(Util.toIntExact(size))
+                            .build())
+                    .build());
+
+            writeStream(in);
+        }
+
+        void writeDatabaseVersion(int version) throws IOException {
+            write(outputStream, BackupProtos.BackupFrame.newBuilder()
+                    .setVersion(BackupProtos.DatabaseVersion.newBuilder().setVersion(version))
+                    .build());
+        }
+
+        void writeEnd() throws IOException {
+            write(outputStream, BackupProtos.BackupFrame.newBuilder().setEnd(true).build());
+        }
+
+        private void writeStream(@NonNull InputStream inputStream) throws IOException {
+            try {
+                Conversions.intToByteArray(iv, 0, counter++);
+                cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(cipherKey, "AES"), new IvParameterSpec(iv));
+                mac.update(iv);
+
+                byte[] buffer = new byte[8192];
+                int read;
+
+                while ((read = inputStream.read(buffer)) != -1) {
+                    byte[] ciphertext = cipher.update(buffer, 0, read);
+
+                    if (ciphertext != null) {
+                        outputStream.write(ciphertext);
+                        mac.update(ciphertext);
+                    }
+                }
+
+                byte[] remainder = cipher.doFinal();
+                outputStream.write(remainder);
+                mac.update(remainder);
+
+                byte[] attachmentDigest = mac.doFinal();
+                outputStream.write(attachmentDigest, 0, 10);
+            } catch (InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
+                throw new AssertionError(e);
+            }
+        }
+
+        private void write(@NonNull OutputStream out, @NonNull BackupProtos.BackupFrame frame) throws IOException {
+            try {
+                Conversions.intToByteArray(iv, 0, counter++);
+                cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(cipherKey, "AES"), new IvParameterSpec(iv));
+
+                byte[] frameCiphertext = cipher.doFinal(frame.toByteArray());
+                byte[] frameMac = mac.doFinal(frameCiphertext);
+                byte[] length = Conversions.intToByteArray(frameCiphertext.length + 10);
+
+                out.write(length);
+                out.write(frameCiphertext);
+                out.write(frameMac, 0, 10);
+            } catch (InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
+                throw new AssertionError(e);
+            }
+        }
 
 
         public void close() throws IOException {
-//            outputStream.close();
+            outputStream.close();
         }
     }
 }
