@@ -72,6 +72,7 @@ import com.muzima.messaging.customcomponents.UnverifiedBannerView;
 import com.muzima.messaging.components.identity.UnverifiedSendDialog;
 import com.muzima.messaging.customcomponents.emoji.EmojiDrawer;
 import com.muzima.messaging.customcomponents.emoji.EmojiStrings;
+import com.muzima.messaging.dialogs.ExpirationDialog;
 import com.muzima.messaging.dialogs.MuteDialog;
 import com.muzima.messaging.events.ReminderUpdateEvent;
 import com.muzima.messaging.exceptions.RecipientFormattingException;
@@ -87,6 +88,7 @@ import com.muzima.messaging.mms.GlideRequests;
 import com.muzima.messaging.mms.ImageSlide;
 import com.muzima.messaging.mms.LocationSlide;
 import com.muzima.messaging.mms.MediaConstraints;
+import com.muzima.messaging.mms.OutgoingExpirationUpdateMessage;
 import com.muzima.messaging.mms.OutgoingMediaMessage;
 import com.muzima.messaging.mms.OutgoingSecureMediaMessage;
 import com.muzima.messaging.mms.QuoteId;
@@ -639,25 +641,24 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
         }
 
         //noinspection CodeBlock2Expr
-//        TODO: ++++++++
-//        ExpirationDialog.show(this, recipient.getExpireMessages(), expirationTime -> {
-//            new AsyncTask<Void, Void, Void>() {
-//                @Override
-//                protected Void doInBackground(Void... params) {
-//                    DatabaseFactory.getRecipientDatabase(ConversationActivity.this).setExpireMessages(recipient, expirationTime);
-//                    OutgoingExpirationUpdateMessage outgoingMessage = new OutgoingExpirationUpdateMessage(getRecipient(), System.currentTimeMillis(), expirationTime * 1000L);
-//                    MessageSender.send(ConversationActivity.this, outgoingMessage, threadId, false, null);
-//
-//                    return null;
-//                }
-//
-//                @Override
-//                protected void onPostExecute(Void result) {
-//                    invalidateOptionsMenu();
-//                    if (fragment != null) fragment.setLastSeen(0);
-//                }
-//            }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-//        });
+        ExpirationDialog.show(this, recipient.getExpireMessages(), expirationTime -> {
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... params) {
+                    DatabaseFactory.getRecipientDatabase(ConversationActivity.this).setExpireMessages(recipient, expirationTime);
+                    OutgoingExpirationUpdateMessage outgoingMessage = new OutgoingExpirationUpdateMessage(getRecipient(), System.currentTimeMillis(), expirationTime * 1000L);
+                    MessageSender.send(ConversationActivity.this, outgoingMessage, threadId, false, null);
+
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void result) {
+                    invalidateOptionsMenu();
+                    if (fragment != null) fragment.setLastSeen(0);
+                }
+            }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        });
     }
 
     private void handleMuteNotifications() {

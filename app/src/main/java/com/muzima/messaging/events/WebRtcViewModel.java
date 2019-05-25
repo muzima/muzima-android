@@ -1,0 +1,104 @@
+package com.muzima.messaging.events;
+
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import com.muzima.messaging.webrtc.CameraState;
+import com.muzima.model.SignalRecipient;
+
+import org.whispersystems.libsignal.IdentityKey;
+
+public class WebRtcViewModel {
+    public enum State {
+        // Normal states
+        CALL_INCOMING,
+        CALL_OUTGOING,
+        CALL_CONNECTED,
+        CALL_RINGING,
+        CALL_BUSY,
+        CALL_DISCONNECTED,
+
+        // Error states
+        NETWORK_FAILURE,
+        RECIPIENT_UNAVAILABLE,
+        NO_SUCH_USER,
+        UNTRUSTED_IDENTITY,
+    }
+
+    private final @NonNull State state;
+    private final @NonNull SignalRecipient recipient;
+    private final @Nullable IdentityKey identityKey;
+
+    private final boolean remoteVideoEnabled;
+
+    private final boolean isBluetoothAvailable;
+    private final boolean isMicrophoneEnabled;
+
+    private final CameraState localCameraState;
+
+    public WebRtcViewModel(@NonNull State       state,
+                           @NonNull SignalRecipient   recipient,
+                           @NonNull CameraState localCameraState,
+                           boolean     remoteVideoEnabled,
+                           boolean     isBluetoothAvailable,
+                           boolean     isMicrophoneEnabled)
+    {
+        this(state,
+                recipient,
+                null,
+                localCameraState,
+                remoteVideoEnabled,
+                isBluetoothAvailable,
+                isMicrophoneEnabled);
+    }
+
+    public WebRtcViewModel(@NonNull  State       state,
+                           @NonNull  SignalRecipient   recipient,
+                           @Nullable IdentityKey identityKey,
+                           @NonNull  CameraState localCameraState,
+                           boolean     remoteVideoEnabled,
+                           boolean     isBluetoothAvailable,
+                           boolean     isMicrophoneEnabled)
+    {
+        this.state                = state;
+        this.recipient            = recipient;
+        this.localCameraState     = localCameraState;
+        this.identityKey          = identityKey;
+        this.remoteVideoEnabled   = remoteVideoEnabled;
+        this.isBluetoothAvailable = isBluetoothAvailable;
+        this.isMicrophoneEnabled  = isMicrophoneEnabled;
+    }
+
+    public @NonNull State getState() {
+        return state;
+    }
+
+    public @NonNull SignalRecipient getRecipient() {
+        return recipient;
+    }
+
+    public @NonNull CameraState getLocalCameraState() {
+        return localCameraState;
+    }
+
+    public @Nullable IdentityKey getIdentityKey() {
+        return identityKey;
+    }
+
+    public boolean isRemoteVideoEnabled() {
+        return remoteVideoEnabled;
+    }
+
+    public boolean isBluetoothAvailable() {
+        return isBluetoothAvailable;
+    }
+
+    public boolean isMicrophoneEnabled() {
+        return isMicrophoneEnabled;
+    }
+
+
+    public String toString() {
+        return "[State: " + state + ", recipient: " + recipient.getAddress() + ", identity: " + identityKey + ", remoteVideo: " + remoteVideoEnabled + ", localVideo: " + localCameraState.isEnabled() + "]";
+    }
+}

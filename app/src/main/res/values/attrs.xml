@@ -203,4 +203,5 @@
         <attr name="radius" format="float"/>
     </declare-styleable>
     <attr name="pref_divider" format="reference" />
+    <attr name="conversation_number_picker_text_color_selected" format="reference|color"/>
 </resources>
