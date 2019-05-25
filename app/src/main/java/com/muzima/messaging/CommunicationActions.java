@@ -16,7 +16,9 @@ import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.messaging.sqlite.database.DatabaseFactory;
 import com.muzima.messaging.sqlite.database.SignalAddress;
+import com.muzima.messaging.webrtc.view.WebRtcCallActivity;
 import com.muzima.model.SignalRecipient;
+import com.muzima.service.WebRtcCallService;
 import com.muzima.utils.Permissions;
 
 public class CommunicationActions {
@@ -29,15 +31,14 @@ public class CommunicationActions {
                         R.drawable.ic_videocam_white_48dp)
                 .withPermanentDenialDialog(activity.getString(R.string.ConversationActivity_signal_needs_the_microphone_and_camera_permissions_in_order_to_call_s, recipient.toShortString()))
                 .onAllGranted(() -> {
-//                    Todo ++++++ handle WebRtcCallService and WebRtcCallActivity
-//                    Intent intent = new Intent(activity, WebRtcCallService.class);
-//                    intent.setAction(WebRtcCallService.ACTION_OUTGOING_CALL);
-//                    intent.putExtra(WebRtcCallService.EXTRA_REMOTE_ADDRESS, recipient.getAddress());
-//                    activity.startService(intent);
-//
-//                    Intent activityIntent = new Intent(activity, WebRtcCallActivity.class);
-//                    activityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    activity.startActivity(activityIntent);
+                    Intent intent = new Intent(activity, WebRtcCallService.class);
+                    intent.setAction(WebRtcCallService.ACTION_OUTGOING_CALL);
+                    intent.putExtra(WebRtcCallService.EXTRA_REMOTE_ADDRESS, recipient.getAddress());
+                    activity.startService(intent);
+
+                    Intent activityIntent = new Intent(activity, WebRtcCallActivity.class);
+                    activityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    activity.startActivity(activityIntent);
                 })
                 .execute();
     }

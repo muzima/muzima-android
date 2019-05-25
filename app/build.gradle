@@ -173,7 +173,7 @@ dependencies {
     compile 'android.arch.lifecycle:common-java8:1.1.1'
     compile 'com.google.android.exoplayer:exoplayer-core:2.9.1'
     compile 'com.google.android.exoplayer:exoplayer-ui:2.9.1'
-    compile 'org.whispersystems:webrtc-android:M74'
+    compile 'org.whispersystems:webrtc-android:M69'
     compile "me.leolin:ShortcutBadger:1.1.16"
     compile 'org.apache.httpcomponents:httpclient-android:4.3.5'
     compile "com.judemanutd:autostarter:1.0.0"
@@ -208,6 +208,9 @@ dependencies {
     }
     compile 'com.google.zxing:android-integration:3.1.0'
     compile 'com.google.zxing:core:3.2.1'
+    compile ('cn.carbswang.android:NumberPickerView:1.0.9') {
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+    }
 
     testCompile fileTree('lib/stickylistheaders-1.0.0.jar')
     testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'
