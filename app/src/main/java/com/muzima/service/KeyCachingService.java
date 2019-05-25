@@ -45,6 +45,7 @@ import com.muzima.messaging.TextSecurePreferences;
 import com.muzima.messaging.crypto.InvalidPassphraseException;
 import com.muzima.messaging.crypto.MasterSecret;
 import com.muzima.messaging.crypto.MasterSecretUtil;
+import com.muzima.notifications.MessageNotifier;
 import com.muzima.notifications.NotificationChannels;
 import com.muzima.utils.ServiceUtil;
 
@@ -186,7 +187,7 @@ public class KeyCachingService extends Service {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-              //  MessageNotifier.updateNotification(KeyCachingService.this);
+                MessageNotifier.updateNotification(KeyCachingService.this);
                 return null;
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

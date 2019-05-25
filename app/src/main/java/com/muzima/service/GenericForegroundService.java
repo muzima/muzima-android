@@ -13,6 +13,8 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.muzima.R;
+import com.muzima.messaging.ConversationListActivity;
+import com.muzima.notifications.NotificationChannels;
 
 import org.whispersystems.libsignal.util.guava.Preconditions;
 
@@ -83,11 +85,11 @@ public class GenericForegroundService extends Service {
     }
 
     private void postObligatoryForegroundNotification(String title, String channelId, @DrawableRes int iconRes) {
-//        startForeground(NOTIFICATION_ID, new NotificationCompat.Builder(this, channelId)
-//                .setSmallIcon(iconRes)
-//                .setContentTitle(title)
-//                .setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, ConversationListActivity.class), 0))
-//                .build());
+        startForeground(NOTIFICATION_ID, new NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(iconRes)
+                .setContentTitle(title)
+                .setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, ConversationListActivity.class), 0))
+                .build());
     }
 
     @Nullable
@@ -97,7 +99,7 @@ public class GenericForegroundService extends Service {
     }
 
     public static void startForegroundTask(@NonNull Context context, @NonNull String task) {
-       // startForegroundTask(context, task, NotificationChannels.OTHER);
+        startForegroundTask(context, task, NotificationChannels.OTHER);
     }
 
     public static void startForegroundTask(@NonNull Context context, @NonNull String task, @NonNull String channelId) {

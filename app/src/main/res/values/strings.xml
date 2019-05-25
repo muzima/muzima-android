@@ -1321,5 +1321,9 @@
     <string name="recipient_preferences__notification_sound">Notification sound</string>
     <string name="recipient_preferences__custom_notifications">Custom notifications</string>
     <string name="recipient_preferences__mute_conversation">Mute conversation</string>
+    <string name="ApplicationMigrationService_import_in_progress">Import in progress</string>
+    <string name="ApplicationMigrationService_importing_text_messages">Importing text messages</string>
+    <string name="ApplicationMigrationService_import_complete">Import complete</string>
+    <string name="ApplicationMigrationService_system_database_import_is_complete">System database import is complete.</string>
 
 </resources>
