@@ -1326,5 +1326,8 @@
     <string name="ApplicationMigrationService_import_complete">Import complete</string>
     <string name="ApplicationMigrationService_system_database_import_is_complete">System database import is complete.</string>
     <string name="GcmBroadcastReceiver_retrieving_a_message">Retrieving a message…</string>
+    <string name="LocalBackupJob_creating_backup">Creating backup…</string>
+    <string name="BackupUtil_never">Never</string>
+    <string name="BackupUtil_unknown">Unknown</string>
 
 </resources>
