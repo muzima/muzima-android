@@ -1325,5 +1325,6 @@
     <string name="ApplicationMigrationService_importing_text_messages">Importing text messages</string>
     <string name="ApplicationMigrationService_import_complete">Import complete</string>
     <string name="ApplicationMigrationService_system_database_import_is_complete">System database import is complete.</string>
+    <string name="GcmBroadcastReceiver_retrieving_a_message">Retrieving a message…</string>
 
 </resources>
