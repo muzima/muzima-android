@@ -1365,5 +1365,7 @@
     <string name="WebRtcCallScreen_accept">Accept</string>
     <string name="WebRtcCallScreen_end_call">End call</string>
     <string name="redphone_call_card__signal_call">mUzima Call</string>
+    <string name="PushDecryptJob_new_locked_message">New locked message</string>
+    <string name="PushDecryptJob_unlock_to_view_pending_messages">Unlock to view pending messages</string>
 
 </resources>
