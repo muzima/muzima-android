@@ -211,6 +211,9 @@ dependencies {
     compile ('cn.carbswang.android:NumberPickerView:1.0.9') {
         exclude group: 'com.android.support', module: 'appcompat-v7'
     }
+    compile ('com.tomergoldst.android:tooltips:1.0.6') {
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+    }
 
     testCompile fileTree('lib/stickylistheaders-1.0.0.jar')
     testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'
