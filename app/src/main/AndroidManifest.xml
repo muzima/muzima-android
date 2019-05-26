@@ -636,6 +636,11 @@
             android:theme="@style/AppThemeNoActionBar.Dark"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
+        <activity android:name="com.muzima.messaging.webrtc.view.WebRtcCallActivity"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|screenSize|fontScale"
+            android:launchMode="singleTask"/>
 
 
         <provider android:name="android.support.v4.content.FileProvider"
@@ -688,7 +693,8 @@
         <service android:enabled="true" android:exported="false" android:name=".service.KeyCachingService"/>
         <service android:enabled="true" android:name=".service.IncomingMessageObserver$ForegroundService"/>
         <service android:name=".service.GenericForegroundService"/>
-
+        <service android:enabled="true" android:name=".service.WebRtcCallService"/>
+        <service android:enabled="true" android:name=".service.ApplicationMigrationService"/>
 
         <receiver android:name=".service.SmsDeliveryListener"
             android:exported="true">
@@ -696,6 +702,13 @@
                 <action android:name="com.muzima.services.MESSAGE_SENT"/>
             </intent-filter>
         </receiver>
+
+        <service android:name=".service.DirectShareService"
+            android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.chooser.ChooserTargetService" />
+            </intent-filter>
+        </service>
 
         <receiver android:name=".service.MmsListener"
             android:enabled="true"

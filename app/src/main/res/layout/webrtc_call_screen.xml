@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/incall_screen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.muzima.messaging.components.webrtc.PercentFrameLayout
+        android:id="@+id/remote_render_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:visibility="invisible" />
+
+    <!-- "Call info" block #1, for the foreground call. -->
+    <RelativeLayout
+        android:id="@+id/call_info_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
+
+        <!-- Contact photo for call_info_1 -->
+        <FrameLayout
+            android:id="@+id/image_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/call_banner_1"
+            android:gravity="top|center_horizontal">
+
+            <ImageView
+                android:id="@+id/photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:scaleType="centerCrop"
+                android:visibility="visible"
+                tools:src="@drawable/ic_person_large" />
+
+            <LinearLayout
+                android:id="@+id/untrusted_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/grey_400"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/untrusted_explanation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:lineSpacingExtra="2sp"
+                    android:maxWidth="270dp"
+                    android:textSize="16sp"
+                    tools:text="The safety numbers for your conversation with Masha have changed. This could either mean that someone is trying to intercept your communication, or that Masha simply re-installed Signal. You may wish to verify safety numbers for this contact." />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:maxWidth="250dp">
+
+                    <Button
+                        android:id="@+id/accept_safety_numbers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/WebRtcCallScreen_accept" />
+
+                    <Button
+                        android:id="@+id/cancel_safety_numbers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@android:string/cancel" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </FrameLayout>
+
+        <!-- "Call Banner" for call #1, the foregound or ringing call.
+             The "call banner" is a block of info about a single call,
+             including the contact name, phone number, call time counter,
+             and other status info.  This info is shown as a "banner"
+             overlaid across the top of contact photo. -->
+        <LinearLayout
+            android:id="@+id/call_banner_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:minHeight="80dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/expanded_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/primary_color"
+                android:clickable="true"
+                android:paddingLeft="24dp"
+                android:paddingTop="16dp"
+                android:paddingRight="24dp">
+
+
+                <!-- Name (or the phone number, if we don't have a name to display). -->
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:paddingRight="50sp"
+                    android:singleLine="true"
+                    android:textColor="#FFFFFF"
+                    android:textSize="40sp"
+                    tools:text="Ali Connors" />
+
+                <!-- Label (like "Mobile" or "Work", if present) and phone number, side by side -->
+                <LinearLayout
+                    android:id="@+id/labelAndNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/name"
+                    android:orientation="horizontal"
+                    android:paddingRight="50sp">
+
+                    <TextView
+                        android:id="@+id/label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:singleLine="true"
+                        android:text="@string/redphone_call_card__signal_call"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#FFFFFF" />
+
+                    <TextView
+                        android:id="@+id/phoneNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#FFFFFF"
+                        tools:text="+14152222222" />
+
+                </LinearLayout>
+
+                <!-- Elapsed time indication for a call in progress. -->
+                <TextView
+                    android:id="@+id/elapsedTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:singleLine="true"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#FFFFFF" />
+
+            </RelativeLayout>
+
+            <com.muzima.messaging.components.webrtc.WebRtcCallControls
+                android:id="@+id/inCallControls"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/primary_color"
+                android:clickable="true"
+                android:paddingLeft="24dp"
+                android:paddingTop="16dp"
+                android:paddingRight="24dp"
+                android:paddingBottom="20dp" />
+
+            <TextView
+                android:id="@+id/callStateLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#8033b5e5"
+                android:gravity="right"
+                android:paddingTop="8dp"
+                android:paddingRight="24dp"
+                android:paddingBottom="8dp"
+                android:textAllCaps="true"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#FFFFFF"
+                tools:text="connected" />
+
+        </LinearLayout>  <!-- End of call_banner for call_info #1. -->
+
+        <!-- The "call state label": In some states, this shows a special
+             indication like "Dialing" or "Incoming call" or "Call ended".
+             It's unused for the normal case of an active ongoing call. -->
+        <!-- This is visually part of the call banner, but it's not actually
+             part of the "call_banner_1" RelativeLayout since it needs a
+             different background color. -->
+
+    </RelativeLayout>
+
+    <com.muzima.messaging.components.webrtc.PercentFrameLayout
+        android:id="@+id/local_render_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:visibility="invisible" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/hangup_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="40dp"
+        android:contentDescription="@string/WebRtcCallScreen_end_call"
+        android:focusable="true"
+        android:src="@drawable/ic_call_end_white_48dp"
+        android:visibility="visible"
+        app:backgroundTint="@color/red_500"
+        tools:visibility="visible" />
+
+
+    <com.muzima.messaging.components.webrtc.WebRtcAnswerDeclineButton
+        android:id="@+id/answer_decline_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="16dp" />
+
+</android.support.design.widget.CoordinatorLayout>

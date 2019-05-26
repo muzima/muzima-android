@@ -159,4 +159,12 @@
     <color name="gray10">#ffdddddd</color>
     <color name="green_500">#4CAF50</color>
     <color name="amber_50">#FFF8E1</color>
+    <color name="green_600">#43A047</color>
+    <color name="gray20">#ffcccccc</color>
+    <color name="green_100">#C8E6C9</color>
+    <color name="red_100">#FFCDD2</color>
+    <color name="red_200">#EF9A9A</color>
+    <color name="red_300">#E57373</color>
+    <color name="red_500">#F44336</color>
+    <color name="red_600">#E53935</color>
 </resources>
