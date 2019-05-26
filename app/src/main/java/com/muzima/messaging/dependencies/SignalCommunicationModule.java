@@ -9,24 +9,36 @@ import com.muzima.messaging.TextSecurePreferences;
 import com.muzima.messaging.crypto.storage.SignalProtocolStoreImpl;
 import com.muzima.messaging.events.ReminderUpdateEvent;
 import com.muzima.messaging.gcm.GcmBroadcastReceiver;
+import com.muzima.messaging.jobs.AttachmentDownloadJob;
+import com.muzima.messaging.jobs.AvatarDownloadJob;
 import com.muzima.messaging.jobs.CleanPreKeysJob;
 import com.muzima.messaging.jobs.CreateSignedPreKeyJob;
 import com.muzima.messaging.jobs.GcmRefreshJob;
 import com.muzima.messaging.jobs.MultiDeviceBlockedUpdateJob;
+import com.muzima.messaging.jobs.MultiDeviceConfigurationUpdateJob;
 import com.muzima.messaging.jobs.MultiDeviceContactUpdateJob;
+import com.muzima.messaging.jobs.MultiDeviceGroupUpdateJob;
+import com.muzima.messaging.jobs.MultiDeviceProfileKeyUpdateJob;
+import com.muzima.messaging.jobs.MultiDeviceReadReceiptUpdateJob;
 import com.muzima.messaging.jobs.MultiDeviceReadUpdateJob;
 import com.muzima.messaging.jobs.MultiDeviceVerifiedUpdateJob;
 import com.muzima.messaging.jobs.PushGroupSendJob;
+import com.muzima.messaging.jobs.PushGroupUpdateJob;
 import com.muzima.messaging.jobs.PushMediaSendJob;
 import com.muzima.messaging.jobs.PushNotificationReceiveJob;
 import com.muzima.messaging.jobs.PushTextSendJob;
 import com.muzima.messaging.jobs.RefreshAttributesJob;
 import com.muzima.messaging.jobs.RefreshPreKeysJob;
 import com.muzima.messaging.jobs.RefreshUnidentifiedDeliveryAbilityJob;
+import com.muzima.messaging.jobs.RequestGroupInfoJob;
+import com.muzima.messaging.jobs.RetrieveProfileAvatarJob;
+import com.muzima.messaging.jobs.RetrieveProfileJob;
 import com.muzima.messaging.jobs.RotateCertificateJob;
 import com.muzima.messaging.jobs.RotateProfileKeyJob;
 import com.muzima.messaging.jobs.RotateSignedPreKeyJob;
+import com.muzima.messaging.jobs.SendDeliveryReceiptJob;
 import com.muzima.messaging.jobs.SendReadReceiptJob;
+import com.muzima.messaging.jobs.TypingSendJob;
 import com.muzima.messaging.push.SecurityEventListener;
 import com.muzima.messaging.push.SignalServiceNetworkAccess;
 import com.muzima.service.IncomingMessageObserver;
@@ -67,8 +79,19 @@ import dagger.Provides;
         GcmBroadcastReceiver.class,
         RotateCertificateJob.class,
         RotateProfileKeyJob.class,
-        RefreshUnidentifiedDeliveryAbilityJob.class
-       })
+        RefreshUnidentifiedDeliveryAbilityJob.class,
+        SendDeliveryReceiptJob.class,
+        AttachmentDownloadJob.class,
+        MultiDeviceGroupUpdateJob.class,
+        RequestGroupInfoJob.class,
+        PushGroupUpdateJob.class,
+        AvatarDownloadJob.class,
+        RetrieveProfileJob.class,
+        RetrieveProfileAvatarJob.class,
+        MultiDeviceProfileKeyUpdateJob.class,
+        MultiDeviceReadReceiptUpdateJob.class,
+        MultiDeviceConfigurationUpdateJob.class,
+        TypingSendJob.class})
 public class SignalCommunicationModule {
     private static final String TAG = SignalCommunicationModule.class.getSimpleName();
 
