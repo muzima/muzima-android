@@ -54,8 +54,7 @@ public abstract class PushReceivedJob extends ContextJob {
     }
 
     private void handleMessage(SignalServiceEnvelope envelope) {
-        // TODO: Work on PushDecryptJob
-        //new PushDecryptJob(context).processMessage(envelope);
+        new PushDecryptJob(context).processMessage(envelope);
     }
 
     @SuppressLint("DefaultLocale")
