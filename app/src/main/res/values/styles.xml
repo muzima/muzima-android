@@ -863,4 +863,9 @@
         <item name="android:textOff">@null</item>
     </style>
 
+    <style name="NoAnimation.Theme.BlackScreen" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+
 </resources>

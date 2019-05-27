@@ -201,6 +201,7 @@ public class WebRtcCallService extends Service implements InjectableType,
     public int onStartCommand(final Intent intent, int flags, int startId) {
         Log.i(TAG, "onStartCommand...");
         if (intent == null || intent.getAction() == null) return START_NOT_STICKY;
+        Log.i(TAG, "TRACE[ onStartCommand... intent != null || intent.getAction() != null "+ intent.getAction()+" isBusy() "+isBusy());
 
         serviceExecutor.execute(() -> {
             if (intent.getAction().equals(ACTION_INCOMING_CALL) && isBusy()) handleBusyCall(intent);
@@ -359,9 +360,7 @@ public class WebRtcCallService extends Service implements InjectableType,
             return;
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            setCallInProgressNotification(TYPE_INCOMING_CONNECTING, this.recipient);
-        }
+        setCallInProgressNotification(TYPE_INCOMING_CONNECTING, this.recipient);
 
         timeoutExecutor.schedule(new TimeoutRunnable(this.callId), 2, TimeUnit.MINUTES);
 
@@ -531,8 +530,8 @@ public class WebRtcCallService extends Service implements InjectableType,
                     intent.getIntExtra(EXTRA_ICE_SDP_LINE_INDEX, 0),
                     intent.getStringExtra(EXTRA_ICE_SDP));
 
-            if (peerConnection != null) peerConnection.addIceCandidate(candidate);
-            else if (pendingIncomingIceUpdates != null) pendingIncomingIceUpdates.add(candidate);
+            if (peerConnection != null)      peerConnection.addIceCandidate(candidate);
+            else if (pendingIncomingIceUpdates != null)  pendingIncomingIceUpdates.add(candidate);
         }
     }
 

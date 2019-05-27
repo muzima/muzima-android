@@ -59,9 +59,12 @@ import com.muzima.messaging.jobs.PushNotificationReceiveJob;
 import com.muzima.messaging.push.SignalServiceNetworkAccess;
 import com.muzima.notifications.NotificationChannels;
 import com.muzima.service.CohortPrefixPreferenceService;
+import com.muzima.service.DirectoryRefreshListener;
 import com.muzima.service.ExpiringMessageManager;
+import com.muzima.service.LocalBackupListener;
 import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.service.RotateSignedPreKeyListener;
 import com.muzima.service.SntpService;
 import com.muzima.util.Constants;
 import com.muzima.util.MuzimaLogger;
@@ -197,13 +200,13 @@ public class MuzimaApplication extends MultiDexApplication implements Dependency
         initializeExpiringMessageManager();
         initializeGcmCheck();
         initializeSignedPreKeyCheck();
+        initializePeriodicTasks();
         initializeCircumvention();
         initializeWebRtc();
         executePendingContactSync();
         initializePendingMessages();
         NotificationChannels.create(this);
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
-
     }
 
     public Context getMuzimaContext() {
@@ -580,6 +583,12 @@ public class MuzimaApplication extends MultiDexApplication implements Dependency
         } catch (UnsatisfiedLinkError e) {
             throw new AssertionError(e);
         }
+    }
+
+    private void initializePeriodicTasks() {
+        RotateSignedPreKeyListener.schedule(this);
+        DirectoryRefreshListener.schedule(this);
+        LocalBackupListener.schedule(this);
     }
 
 }

@@ -8,6 +8,7 @@ import java.util.List;
 public class UncaughtExceptionHandlerManager implements Thread.UncaughtExceptionHandler {
     private final Thread.UncaughtExceptionHandler originalHandler;
     private final List<Thread.UncaughtExceptionHandler> handlers = new ArrayList<Thread.UncaughtExceptionHandler>();
+    private final String TAG = UncaughtExceptionHandlerManager.class.getSimpleName();
 
     public UncaughtExceptionHandlerManager() {
         originalHandler = Thread.getDefaultUncaughtExceptionHandler();
@@ -29,7 +30,7 @@ public class UncaughtExceptionHandlerManager implements Thread.UncaughtException
             try {
                 handlers.get(i).uncaughtException(thread, throwable);
             } catch(Throwable t) {
-                Log.e("UncaughtExceptionHandlerManager", "Error in uncaught exception handling", t);
+                Log.e(TAG, "Error in uncaught exception handling", t);
             }
         }
     }
