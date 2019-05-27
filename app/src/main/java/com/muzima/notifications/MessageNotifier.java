@@ -39,6 +39,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.muzima.R;
+import com.muzima.messaging.ConversationActivity;
 import com.muzima.messaging.TextSecurePreferences;
 import com.muzima.messaging.contactshare.Contact;
 import com.muzima.messaging.contactshare.ContactUtil;
@@ -98,15 +99,14 @@ public class MessageNotifier {
         if (visibleThread == threadId) {
             sendInThreadNotification(context, recipient);
         } else {
-            //TODO work on the conversation
-//            Intent intent = new Intent(context, ConversationActivity.class);
-//            intent.putExtra(ConversationActivity.ADDRESS_EXTRA, recipient.getAddress());
-//            intent.putExtra(ConversationActivity.THREAD_ID_EXTRA, threadId);
-//            intent.setData((Uri.parse("custom://" + System.currentTimeMillis())));
-//
-//            FailedNotificationBuilder builder = new FailedNotificationBuilder(context, TextSecurePreferences.getNotificationPrivacy(context), intent);
-//            ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE))
-//                    .notify((int) threadId, builder.build());
+            Intent intent = new Intent(context, ConversationActivity.class);
+            intent.putExtra(ConversationActivity.ADDRESS_EXTRA, recipient.getAddress());
+            intent.putExtra(ConversationActivity.THREAD_ID_EXTRA, threadId);
+            intent.setData((Uri.parse("custom://" + System.currentTimeMillis())));
+
+            FailedNotificationBuilder builder = new FailedNotificationBuilder(context, TextSecurePreferences.getNotificationPrivacy(context), intent);
+            ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE))
+                    .notify((int) threadId, builder.build());
         }
     }
 

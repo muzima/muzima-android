@@ -28,6 +28,7 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.muzima.R;
+import com.muzima.messaging.MediaPreviewActivity;
 import com.muzima.messaging.attachments.Attachment;
 import com.muzima.messaging.customcomponents.AudioView;
 import com.muzima.messaging.customcomponents.DocumentView;
@@ -472,17 +473,16 @@ public class AttachmentManager {
     }
 
     private void previewImageDraft(final @NonNull Slide slide) {
-//        TODO +++++++++MediaPreviewActivity
-//        if (MediaPreviewActivity.isContentTypeSupported(slide.getContentType()) && slide.getUri() != null) {
-//            Intent intent = new Intent(context, MediaPreviewActivity.class);
-//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//            intent.putExtra(MediaPreviewActivity.SIZE_EXTRA, slide.asAttachment().getSize());
-//            intent.putExtra(MediaPreviewActivity.CAPTION_EXTRA, slide.getCaption().orNull());
-//            intent.putExtra(MediaPreviewActivity.OUTGOING_EXTRA, true);
-//            intent.setDataAndType(slide.getUri(), slide.getContentType());
-//
-//            context.startActivity(intent);
-//        }
+        if (MediaPreviewActivity.isContentTypeSupported(slide.getContentType()) && slide.getUri() != null) {
+            Intent intent = new Intent(context, MediaPreviewActivity.class);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.putExtra(MediaPreviewActivity.SIZE_EXTRA, slide.asAttachment().getSize());
+            intent.putExtra(MediaPreviewActivity.CAPTION_EXTRA, slide.getCaption().orNull());
+            intent.putExtra(MediaPreviewActivity.OUTGOING_EXTRA, true);
+            intent.setDataAndType(slide.getUri(), slide.getContentType());
+
+            context.startActivity(intent);
+        }
     }
 
     private class ThumbnailClickListener implements View.OnClickListener {
